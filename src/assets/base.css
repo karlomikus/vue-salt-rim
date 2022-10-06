@@ -1,0 +1,54 @@
+@import url('https://fonts.googleapis.com/css2?family=Bitter:wght@400;700&display=swap');
+
+:root {
+  --bar-c-bg: #fff4f6;
+  --bar-c-text: #303c63;
+  --bar-c-text-muted: #7c84a0;
+
+  --font-accent: 'Bitter', serif;
+
+  --shadow-color: 350deg 28% 74%;
+  --shadow-elevation-low:
+    0px 0.8px 1.1px hsl(var(--shadow-color) / 0.09),
+    0px 1.3px 1.7px -0.5px hsl(var(--shadow-color) / 0.17),
+    0px 2.6px 3.5px -1.1px hsl(var(--shadow-color) / 0.25);
+  --shadow-elevation-medium:
+    0px 0.8px 1.1px hsl(var(--shadow-color) / 0.1),
+    0px 2.8px 3.7px -0.4px hsl(var(--shadow-color) / 0.16),
+    0px 5.9px 7.9px -0.7px hsl(var(--shadow-color) / 0.22),
+    0.1px 12.9px 17.2px -1.1px hsl(var(--shadow-color) / 0.28);
+  --shadow-elevation-high:
+    0px 0.8px 1.1px hsl(var(--shadow-color) / 0.1),
+    0px 4.9px 6.5px -0.2px hsl(var(--shadow-color) / 0.14),
+    0.1px 8.9px 11.9px -0.4px hsl(var(--shadow-color) / 0.18),
+    0.1px 13.9px 18.6px -0.5px hsl(var(--shadow-color) / 0.21),
+    0.2px 21.4px 28.6px -0.7px hsl(var(--shadow-color) / 0.25),
+    0.3px 32.7px 43.7px -0.9px hsl(var(--shadow-color) / 0.29),
+    0.4px 49.2px 65.7px -1.1px hsl(var(--shadow-color) / 0.33);
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  position: relative;
+  font-weight: normal;
+}
+
+body {
+  color: var(--bar-c-text);
+  background-color: var(--bar-c-bg);
+  /* background-image: url("bg.png"); */
+  line-height: 1.6;
+  font-family: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu,
+    Cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+  font-size: 16px;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+a {
+  color:var(--bar-c-text);
+}

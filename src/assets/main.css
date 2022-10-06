@@ -1,0 +1,20 @@
+@import "./base.css";
+@import "./glasses.css";
+
+#app {
+  font-weight: normal;
+}
+
+main {
+  margin: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Home page cocktails list */
+
+.home-cocktails {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 10px -15px -15px -15px;
+}
