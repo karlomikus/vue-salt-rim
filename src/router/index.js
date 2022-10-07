@@ -19,14 +19,11 @@ const router = createRouter({
       name: 'cocktails.show',
       component: () => import('../views/CocktailView.vue')
     },
-    // {
-    //   path: '/shelf',
-    //   name: 'shelf',
-    //   // route level code-splitting
-    //   // this generates a separate chunk (About.[hash].js) for this route
-    //   // which is lazy-loaded when the route is visited.
-    //   component: () => import('../views/ShelfView.vue')
-    // },
+    {
+      path: '/my-ingredients',
+      name: 'my-ingredients',
+      component: () => import('../views/MyIngredientsView.vue')
+    },
     // {
     //   path: '/profile',
     //   name: 'profile',

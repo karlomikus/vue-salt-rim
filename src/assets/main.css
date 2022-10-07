@@ -7,7 +7,7 @@
 
 main {
   margin: 2rem;
-  max-width: 1200px;
+  max-width: var(--site-width);
   margin: 0 auto;
 }
 

@@ -1,0 +1,29 @@
+<script setup>
+import SingleCocktailItem from './SingleCocktailItem.vue'
+</script>
+<template>
+  <ais-instant-search :search-client="searchClient" index-name="cocktails">
+    <ais-search-box />
+    <ais-hits>
+        <template v-slot:item="{ item }">
+            <SingleCocktailItem :cocktail="item" />
+        </template>
+    </ais-hits>
+  </ais-instant-search>
+</template>
+
+<script>
+import { instantMeiliSearch } from '@meilisearch/instant-meilisearch';
+import Autocomplete from './Autocomplete.vue';
+
+export default {
+  components: { Autocomplete },
+  data: () => ({
+    cocktails: null,
+    searchClient: instantMeiliSearch(
+      'localhost:7700',
+      "YBT-cev!dyj7mju8bur"
+    ),
+  })
+}
+</script>

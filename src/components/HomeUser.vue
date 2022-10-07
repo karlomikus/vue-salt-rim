@@ -1,11 +1,11 @@
 <script setup>
-import HomeCocktailItem from './HomeCocktailItem.vue'
+import SingleCocktailItem from './SingleCocktailItem.vue'
 </script>
 
 <template>
   <h2>Your favorites</h2>
   <div class="home-cocktails">
-    <HomeCocktailItem v-for="cocktail in cocktails" :cocktail="cocktail" :key="cocktail.id" />
+    <SingleCocktailItem v-for="cocktail in cocktails" :cocktail="cocktail" :key="cocktail.id" />
   </div>
   <h2>Popular ingredients</h2>
   <div>TODO</div>
@@ -14,15 +14,9 @@ import HomeCocktailItem from './HomeCocktailItem.vue'
 </template>
 
 <script>
-import { instantMeiliSearch } from '@meilisearch/instant-meilisearch';
-
 export default {
   data: () => ({
     cocktails: null,
-    // searchClient: instantMeiliSearch(
-    //   this.SEARCH_BASE_URL,
-    //   "YBT-cev!dyj7mju8bur"
-    // ),
   }),
   created() {
     this.fetchData();

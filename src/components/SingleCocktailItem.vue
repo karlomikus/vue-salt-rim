@@ -4,9 +4,9 @@
       <div class="home-cocktail-item__graphic__image" :style="{'background-image': 'url(' + cocktail.image_url + ')'}"></div>
     </div>
     <h2 class="home-cocktail-item__title">{{ cocktail.name }}</h2>
-    <p class="home-cocktail-item__ingredients">{{ cocktail.short_ingredients.join(', ') }}</p>
+    <p class="home-cocktail-item__ingredients" v-if="cocktail.short_ingredients">{{ cocktail.short_ingredients.join(', ') }}</p>
     <ul class="home-cocktail-item__tags">
-      <li v-for="tag in cocktail.tags">{{ tag }}</li>
+      <li v-for="tag in cocktail.tags" :key="tag">{{ tag }}</li>
     </ul>
   </div>
 </template>

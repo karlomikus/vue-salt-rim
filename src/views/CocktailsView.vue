@@ -1,10 +1,9 @@
 <script setup>
-import HomeUser from '../components/HomeUser.vue'
+import Cocktails from '../components/Cocktails.vue'
 </script>
 
 <template>
   <main>
-    TEST
-    <!-- <HomeUser /> -->
+    <Cocktails />
   </main>
 </template>

@@ -53,9 +53,6 @@ export default {
 }
 </script>
 <style scoped>
-.cocktail-details {
-    /* background: #fff; */
-}
 .cocktail-details-box {
     background-color: #fff;
     border-radius: 20px;

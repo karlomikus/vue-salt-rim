@@ -1,0 +1,3 @@
+<template>
+  Cocktails list
+</template>

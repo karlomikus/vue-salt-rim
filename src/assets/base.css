@@ -7,6 +7,10 @@
 
   --font-accent: 'Bitter', serif;
 
+  --site-width: 960px;
+
+  --site-header-bg: rgb(115, 125, 183);
+
   --shadow-color: 350deg 28% 74%;
   --shadow-elevation-low:
     0px 0.8px 1.1px hsl(var(--shadow-color) / 0.09),
