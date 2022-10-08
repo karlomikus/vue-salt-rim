@@ -14,19 +14,18 @@ import SingleCocktailItem from './SingleCocktailItem.vue'
 </template>
 
 <script>
+import ApiRequests from '../ApiRequests';
+
+const api = new ApiRequests();
+
 export default {
   data: () => ({
-    cocktails: null,
+    cocktails: [],
   }),
   created() {
-    this.fetchData();
-  },
-  methods: {
-    async fetchData() {
-      const url = `${this.API_BASE_URL}/api/cocktails`
-      let jsonResp = await (await fetch(url)).json();
-      this.cocktails = jsonResp.data
-    },
+    api.fetchCocktails().then(data => {
+      this.cocktails = data
+    })
   }
 }
 </script>

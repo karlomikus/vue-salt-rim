@@ -30,6 +30,9 @@
 
 <script>
 import { marked } from 'marked';
+import ApiRequests from '../ApiRequests';
+
+const api = new ApiRequests();
 
 export default {
   data: () => ({
@@ -41,14 +44,9 @@ export default {
     }
   },
   created() {
-    this.fetchData();
-  },
-  methods: {
-    async fetchData() {
-      const url = `${this.API_BASE_URL}/api/cocktails/${this.$route.params.id}`
-      let jsonResp = await (await fetch(url)).json();
-      this.cocktail = jsonResp.data
-    },
+    api.fetchCocktail(this.$route.params.id).then(data => {
+      this.cocktail = data
+    })
   }
 }
 </script>
