@@ -30,7 +30,7 @@
 
 <script>
 import { marked } from 'marked';
-import ApiRequests from '../ApiRequests';
+import ApiRequests from '../../ApiRequests';
 
 const api = new ApiRequests();
 

@@ -1,5 +1,5 @@
 <script setup>
-import CocktailDetails from '../components/CocktailDetails.vue'
+import CocktailDetails from '../components/Cocktail/CocktailDetails.vue'
 </script>
 
 <template>

@@ -1,8 +1,8 @@
-@import url('https://fonts.googleapis.com/css2?family=Bitter:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Aboreto&family=Bitter:wght@400;700&family=Inter:wght@400;700&family=Montagu+Slab:opsz,wght@16..144,400;16..144,500&display=swap');
 
 :root {
   --bar-c-bg: #fff4f6;
-  --bar-c-text: #303c63;
+  --bar-c-text: #454b60;
   --bar-c-text-muted: #7c84a0;
 
   --font-accent: 'Bitter', serif;

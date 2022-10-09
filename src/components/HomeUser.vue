@@ -1,15 +1,16 @@
 <script setup>
-import SingleCocktailItem from './SingleCocktailItem.vue'
+import SingleCocktailItem from './Cocktail/CocktailGridItem.vue'
+import CocktailGridContainer from './Cocktail/CocktailGridContainer.vue'
 </script>
 
 <template>
-  <h2>Your favorites</h2>
-  <div class="home-cocktails">
+  <h2 class="page-subtitle">Your favorites</h2>
+  <cocktail-grid-container>
     <SingleCocktailItem v-for="cocktail in cocktails" :cocktail="cocktail" :key="cocktail.id" />
-  </div>
-  <h2>Popular ingredients</h2>
+  </cocktail-grid-container>
+  <h2 class="page-subtitle">Popular ingredients</h2>
   <div>TODO</div>
-  <h2>Your collections</h2>
+  <h2 class="page-subtitle">Your collections</h2>
   <div>TODO</div>
 </template>
 

@@ -74,6 +74,12 @@ class ApiRequests {
         return this.parseResponse(jsonResp);
     }
 
+    async fetchUser() {
+        let jsonResp = await this.getRequest(`/api/user`);
+
+        return jsonResp;
+    }
+
     async fetchLoginToken(email, password) {
         const url = `${this.url}/api/login`
 

@@ -9,17 +9,15 @@
             <div class="ingredient-list__description">
                 <h3>{{ ingredient.name }}</h3>
                 <p>{{ ingredient.description }}</p>
-                <button class="button button--icon" @click="removeFromShelf(ingredient)" v-if="userIngredientIds.includes(ingredient.id)">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path fill="none" d="M0 0h24v24H0z"/><path d="M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm-.997-6l7.07-7.071-1.414-1.414-5.656 5.657-2.829-2.829-1.414 1.414L11.003 16z"/></svg>
-                    <span>Remove from shelf</span>
-                </button>
-                <button class="button button--icon" @click="addToShelf(ingredient)" v-else>
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path fill="none" d="M0 0h24v24H0z"/><path d="M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm0-2a8 8 0 1 0 0-16 8 8 0 0 0 0 16z"/></svg>
-                    <span>Add to shelf</span>
-                </button>
+                <a href="#">Learn more <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path fill="none" d="M0 0h24v24H0z"/><path d="M16.172 11l-5.364-5.364 1.414-1.414L20 12l-7.778 7.778-1.414-1.414L16.172 13H4v-2z"/></svg></a>
             </div>
             <div class="ingredient-list__actions">
-                
+                <button class="button-icon-action" @click="removeFromShelf(ingredient)" v-if="userIngredientIds.includes(ingredient.id)">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path fill="none" d="M0 0h24v24H0z"/><path d="M4 3h16a1 1 0 0 1 1 1v16a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1zm7.003 13l7.07-7.071-1.414-1.414-5.656 5.657-2.829-2.829-1.414 1.414L11.003 16z"/></svg>
+                </button>
+                <button class="button-icon-action" @click="addToShelf(ingredient)" v-else>
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path fill="none" d="M0 0h24v24H0z"/><path d="M4 3h16a1 1 0 0 1 1 1v16a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1zm1 2v14h14V5H5z"/></svg>
+                </button>
             </div>
         </li>
     </ul>
@@ -63,7 +61,9 @@ export default {
         },
         removeFromShelf(ingredient) {
             api.removeIngredientFromShelf(ingredient.id)
-            // this.userIngredients.push({ingredient_id: ingredient.id})
+            _.remove(this.userIngredients, function(n) {
+                return n.ingredient_id === ingredient.id;
+            });
         }
     }
 }
@@ -87,6 +87,10 @@ export default {
     width: 100%;
     max-width: 460px;
     display: flex;
+}
+
+.ingredient-list .ingredient-list__description p {
+    color: var(--bar-c-text-muted);
 }
 
 .ingredient-list .ingredient-list__image {

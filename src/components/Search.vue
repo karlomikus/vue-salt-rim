@@ -1,12 +1,12 @@
 <script setup>
-import SingleCocktailItem from './SingleCocktailItem.vue'
+import CocktailGridItem from './Cocktail/CocktailGridItem.vue'
 </script>
 <template>
   <ais-instant-search :search-client="searchClient" index-name="cocktails">
     <ais-search-box />
     <ais-hits>
         <template v-slot:item="{ item }">
-            <SingleCocktailItem :cocktail="item" />
+            <CocktailGridItem :cocktail="item" />
         </template>
     </ais-hits>
   </ais-instant-search>

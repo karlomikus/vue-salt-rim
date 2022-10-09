@@ -1,11 +1,11 @@
 <template>
-  <div class="home-cocktail-item" @click="$router.push({ name: 'cocktails.show', params: { id: cocktail.id } })">
-    <div class="home-cocktail-item__graphic">
-      <div class="home-cocktail-item__graphic__image" :style="{'background-image': 'url(' + cocktail.image_url + ')'}"></div>
+  <div class="cocktail-grid-item" @click="$router.push({ name: 'cocktails.show', params: { id: cocktail.id } })">
+    <div class="cocktail-grid-item__graphic">
+      <div class="cocktail-grid-item__graphic__image" :style="{'background-image': 'url(' + cocktail.image_url + ')'}"></div>
     </div>
-    <h2 class="home-cocktail-item__title">{{ cocktail.name }}</h2>
-    <p class="home-cocktail-item__ingredients" v-if="cocktail.short_ingredients">{{ cocktail.short_ingredients.join(', ') }}</p>
-    <ul class="home-cocktail-item__tags">
+    <h2 class="cocktail-grid-item__title">{{ cocktail.name }}</h2>
+    <p class="cocktail-grid-item__ingredients" v-if="cocktail.short_ingredients">{{ cocktail.short_ingredients.join(', ') }}</p>
+    <ul class="cocktail-grid-item__tags">
       <li v-for="tag in cocktail.tags" :key="tag">{{ tag }}</li>
     </ul>
   </div>
@@ -17,7 +17,7 @@ export default {
 }
 </script>
 <style scoped>
-.home-cocktail-item {
+.cocktail-grid-item {
   width: 300px;
   text-align: center;
   background-color: #fff;
@@ -29,22 +29,22 @@ export default {
   cursor: pointer;
 }
 
-.home-cocktail-item .home-cocktail-item__title {
+.cocktail-grid-item .cocktail-grid-item__title {
   font-family: var(--font-accent);
   font-weight: 700;
   font-size: 1.7rem;
   margin-top: -20px;
 }
 
-.home-cocktail-item__ingredients {
+.cocktail-grid-item__ingredients {
   color: var(--bar-c-text-muted);
 }
 
-.home-cocktail-item__graphic {
+.cocktail-grid-item__graphic {
   transform: translateY(-50px);
 }
 
-.home-cocktail-item__graphic__image {
+.cocktail-grid-item__graphic__image {
   width: 200px;
   height: 200px;
   border-radius: 50%;
@@ -58,7 +58,7 @@ export default {
     0.1px 9.7px 10.9px -2.5px hsl(0deg 0% 63% / 0.36);
 }
 
-.home-cocktail-item__tags {
+.cocktail-grid-item__tags {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
@@ -67,7 +67,7 @@ export default {
   margin: 10px -3px -3px -3px;
 }
 
-.home-cocktail-item__tags li {
+.cocktail-grid-item__tags li {
   background-color: rgb(171, 250, 222);
   border-radius: 4px;
   margin: 3px;
