@@ -1,27 +1,46 @@
+<script setup>
+import Tabs from './Tabs.vue'
+</script>
+
 <template>
-  <div v-for="(ingredients, cat) in groupedByCategory">
-    <h3 class="page-subtitle">{{ cat }}</h3>
-    <ul class="ingredient-list">
-        <li v-for="ingredient in ingredients">
-            <div class="ingredient-list__image">
-                <img src="http://localhost:8000/bottle.png" alt="sas">
-            </div>
-            <div class="ingredient-list__description">
-                <h3>{{ ingredient.name }}</h3>
-                <p>{{ ingredient.description }}</p>
-                <a href="#">Learn more <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path fill="none" d="M0 0h24v24H0z"/><path d="M16.172 11l-5.364-5.364 1.414-1.414L20 12l-7.778 7.778-1.414-1.414L16.172 13H4v-2z"/></svg></a>
-            </div>
-            <div class="ingredient-list__actions">
-                <button class="button-icon-action" @click="removeFromShelf(ingredient)" v-if="userIngredientIds.includes(ingredient.id)">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path fill="none" d="M0 0h24v24H0z"/><path d="M4 3h16a1 1 0 0 1 1 1v16a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1zm7.003 13l7.07-7.071-1.414-1.414-5.656 5.657-2.829-2.829-1.414 1.414L11.003 16z"/></svg>
-                </button>
-                <button class="button-icon-action" @click="addToShelf(ingredient)" v-else>
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path fill="none" d="M0 0h24v24H0z"/><path d="M4 3h16a1 1 0 0 1 1 1v16a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1zm1 2v14h14V5H5z"/></svg>
-                </button>
-            </div>
-        </li>
-    </ul>
-  </div>
+    <tabs />
+    <div v-for="(ingredients, cat) in groupedByCategory">
+        <h3 class="page-subtitle">{{ cat }}</h3>
+        <ul class="ingredient-list">
+            <li v-for="ingredient in ingredients">
+                <div class="ingredient-list__image">
+                    <img src="http://localhost:8000/bottle.png" alt="sas">
+                </div>
+                <div class="ingredient-list__description">
+                    <h3>{{ ingredient.name }}</h3>
+                    <p>{{ ingredient.description }}</p>
+                    <RouterLink :to="{name: 'ingredients.show', params: {id: ingredient.id}}">
+                        Learn more <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+                            <path fill="none" d="M0 0h24v24H0z" />
+                            <path
+                                d="M16.172 11l-5.364-5.364 1.414-1.414L20 12l-7.778 7.778-1.414-1.414L16.172 13H4v-2z" />
+                        </svg></RouterLink>
+                </div>
+                <div class="ingredient-list__actions">
+                    <button class="button-icon-action" @click="removeFromShelf(ingredient)"
+                        v-if="userIngredientIds.includes(ingredient.id)">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+                            <path fill="none" d="M0 0h24v24H0z" />
+                            <path
+                                d="M4 3h16a1 1 0 0 1 1 1v16a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1zm7.003 13l7.07-7.071-1.414-1.414-5.656 5.657-2.829-2.829-1.414 1.414L11.003 16z" />
+                        </svg>
+                    </button>
+                    <button class="button-icon-action" @click="addToShelf(ingredient)" v-else>
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+                            <path fill="none" d="M0 0h24v24H0z" />
+                            <path
+                                d="M4 3h16a1 1 0 0 1 1 1v16a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1zm1 2v14h14V5H5z" />
+                        </svg>
+                    </button>
+                </div>
+            </li>
+        </ul>
+    </div>
 </template>
 
 <script>
@@ -57,11 +76,11 @@ export default {
     methods: {
         addToShelf(ingredient) {
             api.addIngredientToShelf(ingredient.id)
-            this.userIngredients.push({ingredient_id: ingredient.id})
+            this.userIngredients.push({ ingredient_id: ingredient.id })
         },
         removeFromShelf(ingredient) {
             api.removeIngredientFromShelf(ingredient.id)
-            _.remove(this.userIngredients, function(n) {
+            _.remove(this.userIngredients, function (n) {
                 return n.ingredient_id === ingredient.id;
             });
         }
@@ -78,7 +97,7 @@ export default {
     flex-wrap: wrap;
 }
 
-.ingredient-list > li {
+.ingredient-list>li {
     background-color: #fff;
     margin: 20px;
     padding: 15px;

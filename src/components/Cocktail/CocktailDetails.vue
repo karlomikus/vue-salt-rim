@@ -3,27 +3,36 @@
     <div class="cocktail-details__graphic" :style="{'background-image': 'url(' + cocktail.image_url + ')'}">
     </div>
     <div class="cocktail-details-box cocktail-details-box--title">
-        <h3 class="cocktail-details-box__title">{{ cocktail.name }}</h3>
-        <p>{{ cocktail.description }}</p>
+      <h3 class="cocktail-details-box__title">{{ cocktail.name }}</h3>
+      <p>{{ cocktail.description }}</p>
+      <a href="#" class="favorite-cocktail">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+          <path fill="none" d="M0 0H24V24H0z" />
+          <path
+            d="M20.243 4.757c2.262 2.268 2.34 5.88.236 8.236l-8.48 8.492-8.478-8.492c-2.104-2.356-2.025-5.974.236-8.236 2.265-2.264 5.888-2.34 8.244-.228 2.349-2.109 5.979-2.039 8.242.228zM5.172 6.172c-1.49 1.49-1.565 3.875-.192 5.451L12 18.654l7.02-7.03c1.374-1.577 1.299-3.959-.193-5.454-1.487-1.49-3.881-1.562-5.453-.186l-4.202 4.203-1.415-1.414 2.825-2.827-.082-.069c-1.575-1.265-3.877-1.157-5.328.295z" />
+        </svg>
+      </a>
     </div>
     <div class="cocktail-details-box cocktail-details-box--blue">
-        <h3 class="cocktail-details-box__title">Ingredients:</h3>
-        <table>
-          <tbody>
-            <tr v-for="ing in cocktail.ingredients" :key="ing.sort">
-              <td>{{ ing.amount }} {{ ing.units }}</td>
-              <td>{{ ing.name }}</td>
-            </tr>
-          </tbody>
-        </table>
+      <h3 class="cocktail-details-box__title">Ingredients:</h3>
+      <table>
+        <tbody>
+          <tr v-for="ing in cocktail.ingredients" :key="ing.sort">
+            <td>{{ ing.amount }} {{ ing.units }}</td>
+            <td>
+              <a :href="'/ingredients/' + ing.id">{{ ing.name }}</a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
     </div>
     <div class="cocktail-details-box cocktail-details-box--purple">
-        <h3 class="cocktail-details-box__title">Instructions:</h3>
-        <div v-html="parsedInstructions"></div>
+      <h3 class="cocktail-details-box__title">Instructions:</h3>
+      <div v-html="parsedInstructions"></div>
     </div>
     <div class="cocktail-details-box cocktail-details-box--green">
-        <h3 class="cocktail-details-box__title">Garnish:</h3>
-        <p>{{ cocktail.garnish }}</p>
+      <h3 class="cocktail-details-box__title">Garnish:</h3>
+      <p>{{ cocktail.garnish }}</p>
     </div>
   </div>
 </template>
@@ -40,7 +49,7 @@ export default {
   }),
   computed: {
     parsedInstructions() {
-        return marked.parse(this.cocktail.instructions)
+      return marked.parse(this.cocktail.instructions)
     }
   },
   created() {
@@ -52,25 +61,28 @@ export default {
 </script>
 <style scoped>
 .cocktail-details-box {
-    background-color: #fff;
-    border-radius: 20px;
-    border-bottom-left-radius: 0;
-    border-bottom-right-radius: 0;
-    padding: 20px 20px 40px 20px;
-    margin-top: -20px;
+  background-color: #fff;
+  border-radius: 20px;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+  padding: 20px 20px 40px 20px;
+  margin-top: -20px;
 }
 
 .cocktail-details-box.cocktail-details-box--title {
-    background-color: #e0eff9;
+  background-color: #e0eff9;
 }
+
 .cocktail-details-box.cocktail-details-box--purple {
-    background-color: rgb(232, 228, 247);
+  background-color: rgb(232, 228, 247);
 }
+
 .cocktail-details-box.cocktail-details-box--green {
-    background-color: rgb(240, 247, 228);
+  background-color: rgb(240, 247, 228);
 }
+
 .cocktail-details-box.cocktail-details-box--blue {
-    background-color: rgb(206, 217, 236);
+  background-color: rgb(206, 217, 236);
 }
 
 .cocktail-details__graphic {
@@ -115,5 +127,23 @@ export default {
 
 .cocktail-details-box__ingredients li span {
   font-weight: 700;
+}
+
+.favorite-cocktail {
+  width: 70px;
+  height: 70px;
+  background: #fff;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  right: 20px;
+  top: -30px;
+}
+
+.favorite-cocktail svg {
+  width: 32px;
+  height: 32px;
 }
 </style>

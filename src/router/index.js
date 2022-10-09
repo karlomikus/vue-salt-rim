@@ -27,9 +27,19 @@ const router = createRouter({
       component: () => import('../views/CocktailView.vue')
     },
     {
-      path: '/my-ingredients',
-      name: 'my-ingredients',
-      component: () => import('../views/MyIngredientsView.vue')
+      path: '/ingredients/:id',
+      name: 'ingredients.show',
+      component: () => import('../views/IngredientView.vue')
+    },
+    {
+      path: '/shelf',
+      name: 'shelf',
+      component: () => import('../views/ShelfHomeView.vue')
+    },
+    {
+      path: '/shelf-cocktails',
+      name: 'shelf-cocktails',
+      component: () => import('../views/ShelfCocktailsView.vue')
     }
   ]
 })

@@ -42,6 +42,11 @@ export default {
 
 .cocktail-grid-item__graphic {
   transform: translateY(-50px);
+  transition: all ease-in-out .1s;
+}
+
+.cocktail-grid-item:hover .cocktail-grid-item__graphic {
+  transform: translateY(-55px);
 }
 
 .cocktail-grid-item__graphic__image {
