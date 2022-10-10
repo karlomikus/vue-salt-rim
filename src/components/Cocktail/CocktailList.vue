@@ -4,6 +4,7 @@ import CocktailGridContainer from './CocktailGridContainer.vue'
 </script>
 
 <template>
+  <h2 class="page-subtitle">Cocktails</h2>
   <ais-instant-search :search-client="searchClient" index-name="cocktails:name:asc">
     <ais-configure :hitsPerPage="50" />
     <div class="cocktail-list-tags">

@@ -4,11 +4,17 @@ import CocktailGridContainer from './Cocktail/CocktailGridContainer.vue'
 </script>
 
 <template>
+  <h2 class="page-subtitle">Select a cocktail</h2>
+  <a href="#">I'm feeling lucky (random cocktail)</a>
+  <a href="#">Tag by Vodka</a>
+  <a href="#">Tag by Tequila</a>
+  <a href="#">Tag by Gin</a>
+  <a href="#">Tag by Whiskey</a>
   <h2 class="page-subtitle">Your favorites</h2>
   <cocktail-grid-container>
     <SingleCocktailItem v-for="cocktail in cocktails" :cocktail="cocktail" :key="cocktail.id" />
   </cocktail-grid-container>
-  <h2 class="page-subtitle">Popular ingredients</h2>
+  <h2 class="page-subtitle">Your shopping list</h2>
   <div>TODO</div>
   <h2 class="page-subtitle">Your collections</h2>
   <div>TODO</div>

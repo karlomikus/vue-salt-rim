@@ -1,5 +1,5 @@
 <script setup>
-import MyIngredients from '../components/MyIngredients.vue'
+import MyIngredients from '../components/Ingredient/Ingredients.vue'
 </script>
 
 <template>

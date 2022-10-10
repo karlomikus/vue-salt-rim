@@ -70,12 +70,12 @@ export default {
     z-index: 3;
     top: 12px;
     left: 15px;
-    fill: var(--bar-c-text);
+    fill: var(--color-text);
   }
 
   .site-autocomplete__input:focus {
     background-color: #fff;
-    color: var(--bar-c-text);
+    color: var(--color-text);
     border: 0;
     outline: none;
   }
@@ -106,7 +106,7 @@ export default {
   }
 
   .site-autocomplete__results li > h3 {
-    color: var(--site-header-bg);
+    color: var(--color-site-header);
     font-weight: 700;
     text-transform: uppercase;
     font-size: 0.9rem;

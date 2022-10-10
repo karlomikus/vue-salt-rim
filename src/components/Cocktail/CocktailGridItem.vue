@@ -37,7 +37,7 @@ export default {
 }
 
 .cocktail-grid-item__ingredients {
-  color: var(--bar-c-text-muted);
+  color: var(--color-text-muted);
 }
 
 .cocktail-grid-item__graphic {
@@ -47,6 +47,10 @@ export default {
 
 .cocktail-grid-item:hover .cocktail-grid-item__graphic {
   transform: translateY(-55px);
+}
+
+.cocktail-grid-item:hover .cocktail-grid-item__title {
+  color: #aa5076;
 }
 
 .cocktail-grid-item__graphic__image {
@@ -73,7 +77,7 @@ export default {
 }
 
 .cocktail-grid-item__tags li {
-  background-color: rgb(171, 250, 222);
+  background-color: var(--color-tag);
   border-radius: 4px;
   margin: 3px;
   padding: 2px 5px;

@@ -1,4 +1,9 @@
+<script setup>
+import OverlayLoader from './../OverlayLoader.vue'
+</script>
+
 <template>
+  <OverlayLoader v-if="!cocktail.id" />
   <div class="cocktail-details" v-if="cocktail.id">
     <div class="cocktail-details__graphic" :style="{'background-image': 'url(' + cocktail.image_url + ')'}">
     </div>
@@ -20,7 +25,7 @@
           <tr v-for="ing in cocktail.ingredients" :key="ing.sort">
             <td>{{ ing.amount }} {{ ing.units }}</td>
             <td>
-              <a :href="'/ingredients/' + ing.id">{{ ing.name }}</a>
+              <a :href="'/ingredients/' + ing.ingredient_id">{{ ing.name }}</a>
             </td>
           </tr>
         </tbody>
@@ -105,7 +110,7 @@ export default {
   font-family: var(--font-accent);
   font-weight: 700;
   margin: 0 0 20px 0;
-  border-bottom: 1px solid #737db7;
+  border-bottom: 1px solid rgba(0, 0, 0, .1);
   padding-bottom: 15px;
 }
 
@@ -145,5 +150,14 @@ export default {
 .favorite-cocktail svg {
   width: 32px;
   height: 32px;
+  transition: transform ease-in-out .2s;
+}
+
+.favorite-cocktail:hover {
+  background: rgb(243, 196, 196);
+}
+
+.favorite-cocktail:hover svg {
+  transform: scale(1.2, 1.2);
 }
 </style>

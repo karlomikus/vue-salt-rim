@@ -5,16 +5,17 @@ import SiteAutocomplete from '../components/SiteAutocomplete.vue'
 <template>
   <header class="site-header">
     <div class="header-bar">
-      <div class="header-bar__menu">
-        <div class="site-logo">
-          <div class="site-logo__image">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
-              <path fill="none" d="M0 0h24v24H0z" />
-              <path d="M11 19v-5.111L3 5V3h18v2l-8 8.889V19h5v2H6v-2h5zM7.49 7h9.02l1.8-2H5.69l1.8 2z" />
-            </svg>
-          </div>
-          <h1 class="site-logo__title">Salt Rim</h1>
+      <div class="site-logo">
+        <div class="site-logo__image">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+            <path fill="none" d="M0 0h24v24H0z" />
+            <path d="M11 19v-5.111L3 5V3h18v2l-8 8.889V19h5v2H6v-2h5zM7.49 7h9.02l1.8-2H5.69l1.8 2z" />
+          </svg>
         </div>
+        <h1 class="site-logo__title">
+          Salt Rim
+          <span>Your personal bar assistant</span>
+        </h1>
       </div>
       <nav class="header-bar__navigation">
         <RouterLink to="/">Home</RouterLink>
@@ -30,7 +31,7 @@ import SiteAutocomplete from '../components/SiteAutocomplete.vue'
 <style scoped>
 .site-header {
   margin-bottom: 30px;
-  background-color: var(--site-header-bg);
+  background-color: var(--color-site-header);
   padding: 20px 0 20px 0;
 }
 
@@ -78,19 +79,29 @@ import SiteAutocomplete from '../components/SiteAutocomplete.vue'
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 32px;
-  height: 32px;
+  width: 40px;
+  height: 40px;
   border-radius: 3px;
 }
 
 .site-logo__image svg {
-  fill: var(--site-header-bg);
+  fill: var(--color-site-header);
+  width: 32px;
+  height: 32px;
 }
 
 .site-logo__title {
   font-weight: 700;
   margin-left: 10px;
-  text-shadow: 2px 2px 0 var(--site-header-bg),
+  text-shadow: 2px 2px 0 var(--color-site-header),
     5px 4px 0 rgba(0, 0, 0, .3);
+  line-height: 0.9;
+}
+
+.site-logo__title span {
+  display: block;
+  font-size: 0.8rem;
+  text-shadow: none;
+  opacity: .7;
 }
 </style>

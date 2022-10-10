@@ -7,6 +7,7 @@ import Header from './components/Header.vue'
   <Header />
   <RouterView />
   <div style="background: #fff; margin: 40px 0 0 0; padding: 40px 0;">
-    FOOTER
+    <a href="#">Github bar assistant</a>
+    <a href="#">Github vue frontend</a>
   </div>
 </template>

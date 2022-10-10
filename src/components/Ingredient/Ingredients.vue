@@ -1,5 +1,5 @@
 <script setup>
-import Tabs from './Tabs.vue'
+import Tabs from '../Shelf/Tabs.vue'
 </script>
 
 <template>
@@ -9,7 +9,7 @@ import Tabs from './Tabs.vue'
         <ul class="ingredient-list">
             <li v-for="ingredient in ingredients">
                 <div class="ingredient-list__image">
-                    <img src="http://localhost:8000/bottle.png" alt="sas">
+                    <img :src="ingredient.image_url" :alt="ingredient.name">
                 </div>
                 <div class="ingredient-list__description">
                     <h3>{{ ingredient.name }}</h3>
@@ -45,7 +45,7 @@ import Tabs from './Tabs.vue'
 
 <script>
 import _ from 'lodash';
-import ApiRequests from '../ApiRequests';
+import ApiRequests from '../../ApiRequests';
 
 const api = new ApiRequests();
 
@@ -109,7 +109,7 @@ export default {
 }
 
 .ingredient-list .ingredient-list__description p {
-    color: var(--bar-c-text-muted);
+    color: var(--color-text-muted);
 }
 
 .ingredient-list .ingredient-list__image {
