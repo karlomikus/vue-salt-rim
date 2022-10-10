@@ -17,10 +17,18 @@
     display: block;
     width: 100%;
     text-align: center;
-    background: #fff;
+    background: var(--color-btn-default);
+    color: #fff;
     padding: 10px 30px;
     text-decoration: none;
     border-radius: 30px;
     margin: 0 10px;
+    box-shadow: var(--shadow-elevation-low);
+}
+
+.tabs a:hover,
+.tabs a:focus,
+.tabs a:active {
+    background: var(--color-btn-default-hover);
 }
 </style>

@@ -1,10 +1,14 @@
 <script setup>
 import Tabs from '../Shelf/Tabs.vue'
+import Spinner from './../Spinner.vue'
 </script>
 
 <template>
     <tabs />
-    <div v-for="(ingredients, cat) in groupedByCategory">
+    <span v-if="ingredients.length == 0">
+        Loading...
+    </span>
+    <div v-else v-for="(ingredients, cat) in groupedByCategory">
         <h3 class="page-subtitle">{{ cat }}</h3>
         <ul class="ingredient-list">
             <li v-for="ingredient in ingredients">
@@ -14,8 +18,9 @@ import Tabs from '../Shelf/Tabs.vue'
                 <div class="ingredient-list__description">
                     <h3>{{ ingredient.name }}</h3>
                     <p>{{ ingredient.description }}</p>
-                    <RouterLink :to="{name: 'ingredients.show', params: {id: ingredient.id}}">
-                        Learn more <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+                    <RouterLink :to="{name: 'ingredients.show', params: {id: ingredient.id}}" class="button-more">
+                        <span>Learn more</span>
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20">
                             <path fill="none" d="M0 0h24v24H0z" />
                             <path
                                 d="M16.172 11l-5.364-5.364 1.414-1.414L20 12l-7.778 7.778-1.414-1.414L16.172 13H4v-2z" />
@@ -24,14 +29,16 @@ import Tabs from '../Shelf/Tabs.vue'
                 <div class="ingredient-list__actions">
                     <button class="button-icon-action" @click="removeFromShelf(ingredient)"
                         v-if="userIngredientIds.includes(ingredient.id)">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+                        <Spinner v-if="loadingIngredients.includes(ingredient.id)" />
+                        <svg v-else xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
                             <path fill="none" d="M0 0h24v24H0z" />
                             <path
                                 d="M4 3h16a1 1 0 0 1 1 1v16a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1zm7.003 13l7.07-7.071-1.414-1.414-5.656 5.657-2.829-2.829-1.414 1.414L11.003 16z" />
                         </svg>
                     </button>
                     <button class="button-icon-action" @click="addToShelf(ingredient)" v-else>
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+                        <Spinner v-if="loadingIngredients.includes(ingredient.id)" />
+                        <svg v-else xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
                             <path fill="none" d="M0 0h24v24H0z" />
                             <path
                                 d="M4 3h16a1 1 0 0 1 1 1v16a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1zm1 2v14h14V5H5z" />
@@ -53,7 +60,8 @@ export default {
     data() {
         return {
             ingredients: [],
-            userIngredients: []
+            userIngredients: [],
+            loadingIngredients: []
         }
     },
     created() {
@@ -75,11 +83,19 @@ export default {
     },
     methods: {
         addToShelf(ingredient) {
-            api.addIngredientToShelf(ingredient.id)
+            this.loadingIngredients.push(ingredient.id)
+            api.addIngredientToShelf(ingredient.id).then(() => {
+                this.loadingIngredients.splice(this.loadingIngredients.indexOf(ingredient.id), 1)
+            })
+
             this.userIngredients.push({ ingredient_id: ingredient.id })
         },
         removeFromShelf(ingredient) {
-            api.removeIngredientFromShelf(ingredient.id)
+            this.loadingIngredients.push(ingredient.id)
+            api.removeIngredientFromShelf(ingredient.id).then(() => {
+                this.loadingIngredients.splice(this.loadingIngredients.indexOf(ingredient.id), 1)
+            })
+
             _.remove(this.userIngredients, function (n) {
                 return n.ingredient_id === ingredient.id;
             });
@@ -125,5 +141,33 @@ export default {
 .ingredient-list__actions {
     margin-left: auto;
     flex-shrink: 0;
+}
+
+.button-more {
+    display: flex;
+    align-items: center;
+    margin-top: 5px;
+    color: var(--color-text-muted);
+}
+
+.button-more svg {
+    transition: all ease-in-out .1s;
+    fill: var(--color-text-muted);
+}
+.button-more span {
+    margin-right: 3px;
+}
+
+.button-more:hover span,
+.button-more:focus span,
+.button-more:active span {
+    font-weight: 700;
+    color: var(--color-text);
+}
+
+.button-more:hover svg,
+.button-more:focus svg,
+.button-more:active svg {
+    transform: translateX(3px);
 }
 </style>
