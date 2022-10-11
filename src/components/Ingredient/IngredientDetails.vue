@@ -50,7 +50,9 @@ export default {
 
 .ingredient-details .ingredient-details__image {
     flex-shrink: 0;
-    margin-right: 30px;
+    padding: 30px;
+    background-color: #fff;
+    border-radius: 30px;
 }
 
 .ingredient-details .ingredient-details__image img {

@@ -1,6 +1,6 @@
 class ApiRequests {
-    constructor(url = 'http://localhost:8000') {
-        this.url = url;
+    constructor() {
+        this.url = import.meta.env.VITE_BA_API_URL;
         this.token = localStorage.getItem('user_token')
     }
 

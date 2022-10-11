@@ -8,9 +8,8 @@ import './assets/main.css'
 
 const app = createApp(App)
 
-app.config.globalProperties.API_BASE_URL = 'http://127.0.0.1:8000';
-app.config.globalProperties.SEARCH_BASE_URL = 'http://127.0.0.1:7700';
-app.config.globalProperties.test = 'http://127.0.0.1:7700';
+app.config.globalProperties.searchUrl = import.meta.env.VITE_SEARCH_URL;
+app.config.globalProperties.searchKey = import.meta.env.VITE_SEARCH_KEY;
 
 app.use(router)
 app.use(InstantSearch)

@@ -21,8 +21,8 @@ export default {
   data: () => ({
     cocktails: null,
     searchClient: instantMeiliSearch(
-      'localhost:7700',
-      "YBT-cev!dyj7mju8bur"
+      this.searchUrl,
+      this.searchKey
     ),
   })
 }
