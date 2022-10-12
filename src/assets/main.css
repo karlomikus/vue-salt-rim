@@ -29,6 +29,14 @@ main {
   font-size: 1.3rem;
   font-family: var(--font-page-subtitle);
   text-shadow: 1px 1px 0 #f2d4d9;
+  display: flex;
+}
+
+.page-subtitle a {
+  margin-left: auto;
+  font-size: 1rem;
+  font-family: var(--font-primary);
+  text-decoration: none;
 }
 
 .button {

@@ -9,8 +9,15 @@ class Auth {
         localStorage.setItem('user_token', token);
     }
 
-    isLoggedIn() {
-        return localStorage.getItem('user_token') !== null;
+    async isLoggedIn() {
+        try {
+            await api.fetchUser();
+        } catch (e) {
+            localStorage.removeItem('user_token');
+            return false;
+        }
+
+        return true;
     }
 }
 

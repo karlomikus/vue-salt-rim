@@ -1,7 +1,7 @@
 class ApiRequests {
     constructor() {
         this.url = import.meta.env.VITE_BA_API_URL;
-        this.token = localStorage.getItem('user_token')
+        this.token = localStorage.getItem('user_token');
     }
 
     getHeaders() {
@@ -15,17 +15,26 @@ class ApiRequests {
     async getRequest(path) {
         const url = `${this.url}${path}`
 
-        return await (await fetch(url, {
+        const f = fetch(url, {
             headers: this.getHeaders()
-        })).json();
+        }).then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+
+            return response;
+        })
+
+        return await (await f).json();
     }
 
-    async postRequest(path) {
+    async postRequest(path, data = {}) {
         const url = `${this.url}${path}`
 
         return await (await fetch(url, {
             method: 'POST',
-            headers: this.getHeaders()
+            headers: this.getHeaders(),
+            body: JSON.stringify(data)
         })).json();
     }
 
@@ -89,7 +98,19 @@ class ApiRequests {
     async fetchUser() {
         let jsonResp = await this.getRequest(`/api/user`);
 
-        return jsonResp;
+        return this.parseResponse(jsonResp);
+    }
+
+    async favoriteCocktail(id) {
+        let jsonResp = await this.getRequest(`/api/cocktails/${id}/favorite`);
+
+        return this.parseResponse(jsonResp);
+    }
+
+    async saveCocktail(data) {
+        let jsonResp = await this.postRequest(`/api/cocktails`, data);
+
+        return this.parseResponse(jsonResp);
     }
 
     async fetchLoginToken(email, password) {

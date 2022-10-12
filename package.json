@@ -9,9 +9,11 @@
   "dependencies": {
     "@algolia/autocomplete-js": "^1.7.1",
     "@meilisearch/instant-meilisearch": "^0.9.0",
+    "filepond": "^4.30.4",
     "lodash": "^4.17.21",
     "marked": "^4.1.1",
     "vue": "^3.2.38",
+    "vue-filepond": "^7.0.3",
     "vue-instantsearch": "^4.6.0",
     "vue-router": "^4.1.5"
   },
