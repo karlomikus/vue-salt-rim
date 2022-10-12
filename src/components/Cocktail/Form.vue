@@ -23,7 +23,7 @@
         </div>
         <div class="form-group">
             <label class="form-label" for="images">Images:</label>
-            <input class="form-input" type="file" id="images">
+            <input class="form-input" type="file" id="images" @change="processImage">
         </div>
         <h2 class="page-subtitle">Ingredients</h2>
         <ul class="cocktail-form__ingredients">
@@ -90,6 +90,17 @@ export default {
                 name: null,
             });
         },
+        processImage(e) {
+            if (!e.target.files || !e.target.files[0]) return;
+
+            const FR = new FileReader();
+
+            FR.addEventListener("load", evt => {
+                this.cocktail.image = evt.target.result
+            });
+
+            FR.readAsDataURL(e.target.files[0]);
+        },
         submit() {
             const postData = {
                 name: this.cocktail.name,
@@ -97,6 +108,7 @@ export default {
                 instructions: this.cocktail.instructions,
                 history: this.cocktail.history,
                 source: this.cocktail.source,
+                image: this.cocktail.image,
                 tags: ['Strong'],
                 ingredients: this.cocktail.ingredients
             };
