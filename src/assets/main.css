@@ -82,3 +82,21 @@ main {
 .button-icon-action:active {
   background-color: #d4e2f7;
 }
+
+.button.button--outline {
+  border: 2px solid var(--color-text);
+  color: var(--color-text);
+  background: none;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 30px;
+  border-radius: 30px;
+  background-color: rgba(255, 255, 255, .5);
+}
+.empty-state svg {
+  fill: var(--color-text);
+  width: 70px;
+  height: 70px;
+}

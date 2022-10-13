@@ -18,13 +18,12 @@ export default {
 </script>
 <style scoped>
 .cocktail-grid-item {
-  width: 300px;
+  /* width: 300px; */
   text-align: center;
   background-color: #fff;
-  margin: 15px;
   padding: 30px;
   border-radius: 20px;
-  box-shadow: var(--shadow-elevation-medium);
+  box-shadow: 0 4px 0 var(--color-bg-dark);
   margin-top: 50px;
   cursor: pointer;
 }

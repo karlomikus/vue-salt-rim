@@ -5,7 +5,7 @@
   --color-bg-dark: #f2d4d9;
   --color-text: #454b60;
   --color-text-muted: #7c84a0;
-  --color-tag: #abfade;
+  --color-tag: #DFE7FD;
   --color-tag-hover: #faeaab;
   --color-site-header: #737db7;
   --color-btn-default: #454b60;
@@ -78,6 +78,11 @@ a {
   color: #866269;
 }
 
+.form-label--required::after {
+  content: '*';
+  color: rgb(223, 45, 32);
+}
+
 .form-input, .form-select {
   width: 100%;
   -webkit-appearance: none;
@@ -95,6 +100,7 @@ a {
   vertical-align: middle;
   color: var(--color-text);
   font-family: var(--font-primary);
+  transition: all ease-in-out .1s;
 }
 
 textarea.form-input,
@@ -110,4 +116,15 @@ textarea.form-input,
 .form-input:focus, .form-select:focus {
   border-color: var(--color-text);
   background: #fff;
+}
+
+.form-actions {
+  text-align: right;
+  border-top: 2px solid var(--color-bg-dark);
+  margin: 20px 0;
+  padding: 20px 0;
+}
+
+.form-actions .button {
+  margin-left: 10px;
 }

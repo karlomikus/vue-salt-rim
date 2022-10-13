@@ -1,13 +1,14 @@
 <template>
-    <div class="home-cocktails">
+    <div class="cocktail-grid-container">
         <slot />
     </div>
 </template>
 
 <style scoped>
-.home-cocktails {
-    display: flex;
-    flex-wrap: wrap;
-    margin: 10px -15px -15px -15px;
+.cocktail-grid-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    column-gap: 20px;
+    row-gap: 20px;
 }
 </style>

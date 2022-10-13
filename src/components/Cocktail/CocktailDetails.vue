@@ -82,19 +82,19 @@ export default {
 }
 
 .cocktail-details-box.cocktail-details-box--title {
-  background-color: #e0eff9;
+  background-color: #D6E2E9;
 }
 
 .cocktail-details-box.cocktail-details-box--purple {
-  background-color: rgb(232, 228, 247);
+  background-color: #FFF1E6;
 }
 
 .cocktail-details-box.cocktail-details-box--green {
-  background-color: rgb(240, 247, 228);
+  background-color: #FDE2E4;
 }
 
 .cocktail-details-box.cocktail-details-box--blue {
-  background-color: rgb(206, 217, 236);
+  background-color: #E2ECE9;
 }
 
 .cocktail-details__graphic {
@@ -160,6 +160,10 @@ export default {
   width: 32px;
   height: 32px;
   transition: transform ease-in-out .2s;
+}
+
+.favorite-cocktail.favorite-cocktail--active svg {
+  fill: #ff686b;
 }
 
 .favorite-cocktail:hover {

@@ -53,6 +53,12 @@ class ApiRequests {
         return this.parseResponse(jsonResp);
     }
 
+    async fetchUserFavoriteCocktails() {
+        let jsonResp = await this.getRequest(`/api/cocktails/user-favorites`);
+
+        return this.parseResponse(jsonResp);
+    }
+
     async fetchCocktail(id) {
         let jsonResp = await this.getRequest(`/api/cocktails/${id}`);
 

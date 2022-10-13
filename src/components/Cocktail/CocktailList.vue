@@ -18,7 +18,7 @@ import CocktailGridContainer from './CocktailGridContainer.vue'
       </ais-refinement-list>
     </div>
     <div class="cocktail-list-search-container">
-      <ais-search-box placeholder="Filter cocktails..." />
+      <ais-search-box placeholder="Filter cocktails..." :class-names="{'ais-SearchBox-input': 'form-input'}" />
       <ais-sort-by :items="[
         { value: 'cocktails:name:asc', label: 'Name asc.' },
         { value: 'cocktails:name:desc', label: 'Name desc.' },
@@ -114,22 +114,5 @@ export default {
 .cocktail-list-search-container .ais-SearchBox {
   width: 100%;
   margin-right: 15px;
-}
-
-.cocktail-list-search-container .ais-SearchBox-input {
-  width: 100%;
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  appearance: none;
-  background: #fff;
-  border: 0;
-  border-bottom: 2px solid var(--color-bg-dark);
-  border-radius: 5px;
-  height: 3rem;
-  font-size: 1.2rem;
-  line-height: 1.2rem;
-  outline: 0;
-  padding: 10px 15px;
-  vertical-align: middle;
 }
 </style>
