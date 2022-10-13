@@ -43,8 +43,8 @@ import CocktailGridContainer from './CocktailGridContainer.vue'
 
 <script>
 import { instantMeiliSearch } from '@meilisearch/instant-meilisearch';
-import { history } from 'instantsearch.js/es/lib/routers';
-import { singleIndex } from 'instantsearch.js/es/lib/stateMappings';
+import { history as historyRouter } from 'instantsearch.js/es/lib/routers';
+import { singleIndex as singleIndexMapping } from 'instantsearch.js/es/lib/stateMappings';
 
 export default {
   data() {
@@ -57,8 +57,8 @@ export default {
         }
       ),
       routing: {
-        router: history(),
-        stateMapping: singleIndex('cocktails'),
+        router: historyRouter(),
+        stateMapping: singleIndexMapping('cocktails:name:asc'),
       },
     };
   }
