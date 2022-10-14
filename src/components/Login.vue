@@ -1,11 +1,17 @@
 <template>
-    <form @submit.prevent="login">
-        <label for="email">Email:</label>
-        <input type="text" id="email" v-model="email">
-        <label for="password">Password:</label>
-        <input type="password" id="password" v-model="password">
-        <button type="submit" class="button">Login</button>
-    </form>
+    <div class="login-page">
+        <form @submit.prevent="login">
+            <div class="form-group">
+                <label class="form-label" for="email">Email:</label>
+                <input class="form-input" type="text" id="email" v-model="email">
+            </div>
+            <div class="form-group">
+                <label class="form-label" for="password">Password:</label>
+                <input class="form-input" type="password" id="password" v-model="password">
+            </div>
+            <button type="submit" class="button">Login</button>
+        </form>
+    </div>
 </template>
 
 <script>
@@ -29,3 +35,20 @@ export default {
     }
 }
 </script>
+
+<style scope>
+.login-page {
+    background-color: var(--color-site-header);
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.login-page form {
+    background-color: var(--color-bg);
+    width: 400px;
+    padding: 30px;
+    border-radius: 20px;
+}
+</style>
