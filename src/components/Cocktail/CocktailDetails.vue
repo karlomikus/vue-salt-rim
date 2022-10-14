@@ -10,6 +10,7 @@ import OverlayLoader from './../OverlayLoader.vue'
     <div class="cocktail-details-box cocktail-details-box--title">
       <h3 class="cocktail-details-box__title">{{ cocktail.name }}</h3>
       <p>{{ cocktail.description }}</p>
+      <a :href="'/cocktails/form?id=' + cocktail.id">Edit</a>
       <button type="button" class="favorite-cocktail" @click="favorite">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
           <path fill="none" d="M0 0H24V24H0z" />

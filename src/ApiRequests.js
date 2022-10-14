@@ -28,11 +28,11 @@ class ApiRequests {
         return await (await f).json();
     }
 
-    async postRequest(path, data = {}) {
+    async postRequest(path, data = {}, type = 'POST') {
         const url = `${this.url}${path}`
 
         return await (await fetch(url, {
-            method: 'POST',
+            method: type,
             headers: this.getHeaders(),
             body: JSON.stringify(data)
         })).json();
@@ -115,6 +115,12 @@ class ApiRequests {
 
     async saveCocktail(data) {
         let jsonResp = await this.postRequest(`/api/cocktails`, data);
+
+        return this.parseResponse(jsonResp);
+    }
+
+    async updateCocktail(id, data) {
+        let jsonResp = await this.postRequest(`/api/cocktails/${id}`, data, 'PUT');
 
         return this.parseResponse(jsonResp);
     }

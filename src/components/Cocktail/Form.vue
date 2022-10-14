@@ -22,6 +22,10 @@
             <input class="form-input" type="text" id="source" v-model="cocktail.source">
         </div>
         <div class="form-group">
+            <label class="form-label" for="tags">Tags:</label>
+            <input class="form-input" type="text" id="tags" v-model="cocktailTags">
+        </div>
+        <div class="form-group">
             <label class="form-label" for="images">Images:</label>
             <input class="form-input" type="file" id="images" @change="processImage">
         </div>
@@ -69,16 +73,28 @@ export default {
     data() {
         return {
             cocktail: {
-                ingredients: []
+                ingredients: [],
+                tags: []
             },
-            ingredients: []
+            ingredients: [],
+            cocktailId: null
         };
     },
+    computed: {
+        cocktailTags: {
+            get() {
+                return this.cocktail.tags.join(',')
+            },
+            set(newVal) {
+                this.cocktail.tags = newVal.split(',')
+            }
+        }
+    },
     created() {
-        const cocktailId = this.$route.query.id || null;
+        this.cocktailId = this.$route.query.id || null;
 
-        if (cocktailId) {
-            api.fetchCocktail(cocktailId).then(data => {
+        if (this.cocktailId) {
+            api.fetchCocktail(this.cocktailId).then(data => {
                 this.cocktail = data;
             })
         }
@@ -118,13 +134,19 @@ export default {
                 history: this.cocktail.history,
                 source: this.cocktail.source,
                 image: this.cocktail.image,
-                tags: ['Strong'],
+                tags: this.cocktail.tags,
                 ingredients: this.cocktail.ingredients
             };
 
-            api.saveCocktail(postData).then(data => {
-                console.log(data)
-            })
+            if (this.cocktailId) {
+                api.updateCocktail(this.cocktailId, postData).then(data => {
+                    console.log(data)
+                })
+            } else {
+                api.saveCocktail(postData).then(data => {
+                    console.log(data)
+                })
+            }
         }
     }
 }
