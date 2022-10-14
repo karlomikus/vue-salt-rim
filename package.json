@@ -9,6 +9,7 @@
   "dependencies": {
     "@algolia/autocomplete-js": "^1.7.1",
     "@meilisearch/instant-meilisearch": "^0.9.0",
+    "@popperjs/core": "^2.11.6",
     "filepond": "^4.30.4",
     "lodash": "^4.17.21",
     "marked": "^4.1.1",
