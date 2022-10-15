@@ -93,8 +93,7 @@ import SiteAutocomplete from '../components/SiteAutocomplete.vue'
 .site-logo__title {
   font-weight: 700;
   margin-left: 10px;
-  text-shadow: 2px 2px 0 var(--color-site-header),
-    5px 4px 0 rgba(0, 0, 0, .3);
+  text-shadow: 3px 2px 0 rgba(0, 0, 0, .3);
   line-height: 0.9;
 }
 

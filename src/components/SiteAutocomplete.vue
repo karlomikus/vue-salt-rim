@@ -4,27 +4,41 @@
       <ais-configure :hitsPerPage="10" />
       <ais-autocomplete>
         <template v-slot="{ currentRefinement, indices, refine }">
-          <input
-            type="search"
-            :value="currentRefinement"
-            placeholder="Search for a product"
-            class="site-autocomplete__input"
-            @input="refine($event.currentTarget.value)"
-          >
-          <ul class="site-autocomplete__results" v-if="currentRefinement" v-for="index in indices" :key="index.indexId">
-              <li v-for="hit in index.hits" :key="hit.key">
-                <a href="#">
-                  <div class="site-autocomplete__results__image" :style="{'background-image': 'url(' + hit.image_url + ')'}"></div>
-                  <h4>
-                    <ais-highlight attribute="name" :hit="hit"/>
-                    <small>{{ hit.type }}</small>
-                  </h4>
-                </a>
-              </li>
-              <li v-show="index.hits.length <= 0">No results found for term: "{{ currentRefinement }}"</li>
+          <input type="search" :value="currentRefinement" placeholder="Search for a cocktail or ingredient..."
+            class="site-autocomplete__input" @input="refine($event.currentTarget.value)">
+          <svg class="site-autocomplete__search-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24"
+            height="24">
+            <path fill="none" d="M0 0h24v24H0z" />
+            <path
+              d="M18.031 16.617l4.283 4.282-1.415 1.415-4.282-4.283A8.96 8.96 0 0 1 11 20c-4.968 0-9-4.032-9-9s4.032-9 9-9 9 4.032 9 9a8.96 8.96 0 0 1-1.969 5.617zm-2.006-.742A6.977 6.977 0 0 0 18 11c0-3.868-3.133-7-7-7-3.868 0-7 3.132-7 7 0 3.867 3.132 7 7 7a6.977 6.977 0 0 0 4.875-1.975l.15-.15z" />
+          </svg>
+          <ul class="site-autocomplete__results" v-show="currentRefinement" v-for="index in indices"
+            :key="index.indexId">
+            <li v-for="hit in index.hits" :key="hit.key">
+              <a :href="generateLink(hit)">
+                <div class="site-autocomplete__results__image"
+                  :style="{'background-image': 'url(' + hit.image_url + ')'}"></div>
+                <h4>
+                  <ais-highlight attribute="name" :hit="hit" />
+                  <small>{{ hit.type }}</small>
+                </h4>
+              </a>
+            </li>
+            <li v-show="index.hits.length <= 0">No results found for term: "{{ currentRefinement }}"</li>
           </ul>
         </template>
       </ais-autocomplete>
+      <!-- <ais-clear-refinements :included-attributes="['query']">
+        <template v-slot="{ canRefine, refine, createURL }">
+          <button class="site-autocomplete__clear" @click.prevent="refine" v-if="canRefine">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+              <path fill="none" d="M0 0h24v24H0z" />
+              <path
+                d="M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm0-2a8 8 0 1 0 0-16 8 8 0 0 0 0 16zm0-9.414l2.828-2.829 1.415 1.415L13.414 12l2.829 2.828-1.415 1.415L12 13.414l-2.828 2.829-1.415-1.415L10.586 12 7.757 9.172l1.415-1.415L12 10.586z" />
+            </svg>
+          </button>
+        </template>
+      </ais-clear-refinements> -->
     </ais-instant-search>
   </div>
 </template>
@@ -40,13 +54,22 @@ export default {
         this.searchKey,
       )
     }
+  },
+  methods: {
+    generateLink(hit) {
+      if (hit.type == 'cocktail') {
+        return '/cocktails/' + hit.id;
+      }
+
+      return '/ingredients/' + hit.id;
+    }
   }
 }
 </script>
 
 <style>
 .site-autocomplete {
-  padding: 20px 0;
+  padding: 30px 0 20px 0;
   max-width: var(--site-width);
   margin: 0 auto;
 }
@@ -60,6 +83,7 @@ export default {
   padding: 12px 30px 12px 50px;
   border-radius: 30px;
   appearance: none;
+  transition: all ease-in-out .06s;
 }
 
 .site-autocomplete__input:focus {
@@ -115,5 +139,30 @@ export default {
 
 .site-autocomplete .ais-Highlight-highlighted {
   background-color: #fbf8cc;
+}
+
+.site-autocomplete__search-icon {
+  position: absolute;
+  top: 9px;
+  left: 12px;
+  width: 30px;
+  height: 30px;
+  fill: #373f6c;
+}
+
+.site-autocomplete__clear {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  background: none;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+}
+
+.site-autocomplete__clear svg {
+  width: 30px;
+  height: 30px;
+  fill: #373f6c;
 }
 </style>

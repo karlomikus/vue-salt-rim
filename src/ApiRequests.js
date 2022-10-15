@@ -65,6 +65,12 @@ class ApiRequests {
         return this.parseResponse(jsonResp);
     }
 
+    async deleteCocktail(id) {
+        let jsonResp = await this.deleteRequest(`/api/cocktails/${id}`);
+
+        return this.parseResponse(jsonResp);
+    }
+
     async fetchUserCocktail() {
         let jsonResp = await this.getRequest(`/api/cocktails/user`);
 
@@ -108,7 +114,7 @@ class ApiRequests {
     }
 
     async favoriteCocktail(id) {
-        let jsonResp = await this.getRequest(`/api/cocktails/${id}/favorite`);
+        let jsonResp = await this.postRequest(`/api/cocktails/${id}/favorite`);
 
         return this.parseResponse(jsonResp);
     }

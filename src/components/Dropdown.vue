@@ -26,6 +26,11 @@ export default {
                 options: {
                     boundary: 'clippingParents'
                 }
+            }, {
+                name: 'offset',
+                options: {
+                    offset: [0, 5]
+                }
             }]
         });
     },

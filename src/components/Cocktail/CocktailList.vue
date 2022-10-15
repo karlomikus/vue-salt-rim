@@ -6,7 +6,7 @@ import CocktailGridContainer from './CocktailGridContainer.vue'
 <template>
   <h2 class="page-subtitle">Cocktails <RouterLink :to="{name: 'cocktails.form'}">Add cocktail</RouterLink></h2>
   <ais-instant-search :search-client="searchClient" index-name="cocktails:name:asc" :routing="routing">
-    <ais-configure :hitsPerPage="50" />
+    <ais-configure :hitsPerPage="100" />
     <div class="cocktail-list-tags">
       <ais-refinement-list attribute="tags" :sort-by="['name:asc']" operator="and">
         <template v-slot:item="{ item, refine, createURL }">

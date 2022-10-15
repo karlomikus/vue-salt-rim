@@ -23,7 +23,7 @@ export default {
   background-color: #fff;
   padding: 30px;
   border-radius: 20px;
-  box-shadow: 0 4px 0 var(--color-bg-dark);
+  box-shadow: 0 3px 0 var(--color-bg-dark);
   margin-top: 50px;
   cursor: pointer;
 }

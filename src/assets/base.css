@@ -15,7 +15,7 @@
   --font-accent: 'Bitter', serif;
   --font-page-subtitle: 'Aboreto', serif;
 
-  --site-width: 960px;
+  --site-width: 1200px;
 
   --shadow-color: 350deg 28% 74%;
   --shadow-elevation-low:
@@ -63,7 +63,11 @@ body {
 }
 
 a {
-  color:var(--color-text);
+  color: var(--color-text);
+}
+
+a:hover, a:focus, a:active {
+  color: #aa5076;
 }
 
 .form-group {
