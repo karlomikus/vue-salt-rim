@@ -16,7 +16,8 @@
     "vue": "^3.2.38",
     "vue-filepond": "^7.0.3",
     "vue-instantsearch": "^4.6.0",
-    "vue-router": "^4.1.5"
+    "vue-router": "^4.1.5",
+    "vue-toast-notification": "^3.0.4"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^3.0.3",

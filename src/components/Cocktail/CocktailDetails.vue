@@ -122,12 +122,18 @@ export default {
     favorite() {
       api.favoriteCocktail(this.cocktail.id).then(resp => {
         this.isFavorited = resp.is_favorited
+        this.$toast.open({
+          message: this.isFavorited ? 'Added to favorites' : 'Removed from favorites'
+        });
       })
     },
     deleteCocktail() {
       if (confirm('Are you sure you want to delete cocktail?')) {
         api.deleteCocktail(this.cocktail.id).then(resp => {
-          console.log(resp)
+          this.$toast.open({
+            message: `Cocktail "${this.cocktail.name}" successfully removed`
+          });
+          this.$router.push({ name: 'cocktails' })
         })
       }
     }
