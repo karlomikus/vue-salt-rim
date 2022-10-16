@@ -143,6 +143,12 @@ class ApiRequests {
         return this.parseResponse(jsonResp);
     }
 
+    async deleteIngredient(id) {
+        let jsonResp = await this.deleteRequest(`/api/ingredients/${id}`);
+
+        return this.parseResponse(jsonResp);
+    }
+
     async fetchLoginToken(email, password) {
         const url = `${this.url}/api/login`
 

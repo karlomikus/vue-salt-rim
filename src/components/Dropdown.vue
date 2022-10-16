@@ -37,7 +37,7 @@ export default {
         });
 
         document.addEventListener('click', e => {
-            var dw = document.querySelector('.dropdown-wrapper') || null
+            var dw = document.querySelector('.dropdown-wrapper button') || null
             if (dw && !dw.contains(e.target)) {
                 this.isShown = false
             }
