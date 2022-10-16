@@ -29,6 +29,10 @@
             <label class="form-label" for="images">Images:</label>
             <input class="form-input" type="file" id="images" @change="processImage">
         </div>
+        <div class="form-group">
+            <label class="form-label" for="copyright">Image copyright:</label>
+            <input class="form-input" type="text" id="copyright" v-model="images[0].copyright">
+        </div>
         <h2 class="page-subtitle">Ingredients</h2>
         <ul class="cocktail-form__ingredients">
             <li v-for="(ing, index) in cocktail.ingredients">
@@ -74,8 +78,11 @@ export default {
         return {
             cocktail: {
                 ingredients: [],
-                tags: []
+                tags: [],
             },
+            images: [
+                {image: null, copyright: null}
+            ],
             ingredients: [],
             cocktailId: null
         };
@@ -121,7 +128,7 @@ export default {
             const FR = new FileReader();
 
             FR.addEventListener("load", evt => {
-                this.cocktail.image = evt.target.result
+                this.images[0].image = evt.target.result
             });
 
             FR.readAsDataURL(e.target.files[0]);
@@ -134,7 +141,7 @@ export default {
                 history: this.cocktail.history,
                 garnish: this.cocktail.garnish,
                 source: this.cocktail.source,
-                image: this.cocktail.image,
+                images: this.images,
                 tags: this.cocktail.tags,
                 ingredients: this.cocktail.ingredients
             };

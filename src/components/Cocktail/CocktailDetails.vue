@@ -7,7 +7,7 @@ import Dropdown from './../Dropdown.vue';
   <OverlayLoader v-if="!cocktail.id" />
   <div class="cocktail-details" v-if="cocktail.id">
     <div class="cocktail-details__graphic" :style="{'background-image': 'url(' + cocktail.image_url + ')'}">
-      <div class="cocktail-details__graphic__copyright">&copy; Image by Liquor.com</div>
+      <div class="cocktail-details__graphic__copyright">Image &copy; {{ cocktail.image_copyright }}</div>
     </div>
     <div class="cocktail-details-box cocktail-details-box--title">
       <h3 class="cocktail-details-box__title">{{ cocktail.name }}</h3>
@@ -109,9 +109,17 @@ export default {
   }),
   computed: {
     parsedInstructions() {
+      if (!this.cocktail.instructions) {
+        return null;
+      }
+
       return marked.parse(this.cocktail.instructions)
     },
     parsedDescription() {
+      if (!this.cocktail.description) {
+        return null;
+      }
+
       return marked.parse(this.cocktail.description)
     }
   },

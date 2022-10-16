@@ -122,6 +122,9 @@ import SiteAutocomplete from '../components/SiteAutocomplete.vue'
 }
 
 @media (max-width: 750px) {
+  .site-logo {
+    justify-content: center;
+  }
   .header-bar {
     flex-direction: column;
   }

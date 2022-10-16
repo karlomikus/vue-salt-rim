@@ -1,10 +1,8 @@
 <template>
     <div class="ingredient-details" v-if="ingredient.id">
-        <div class="ingredient-details__image">
-            <img :src="ingredient.image_url" :alt="ingredient.name">
-        </div>
         <div class="ingredient-details__content">
             <div class="ingredient-details__content__box ingredient-details__content__box--blue" style="margin-top: 0;">
+                <img :src="ingredient.image_url" :alt="ingredient.name" />
                 <h2 class="ingredient-details__content__box__title">{{ ingredient.name }}</h2>
                 <p>{{ ingredient.description }}</p>
                 <hr>
@@ -18,7 +16,7 @@
                 <h2 class="ingredient-details__content__box__title">Used in {{ ingredient.cocktails.length }} cocktails:</h2>
                 <ul>
                     <li v-for="cocktail in ingredient.cocktails">
-                        <RouterLink :to="{name: 'cocktails.show', params: {id: cocktail.id}}">{{ cocktail.name }}</RouterLink>
+                        <RouterLink :to="{name: 'cocktails.show', params: {id: cocktail.slug}}">{{ cocktail.name }}</RouterLink>
                     </li>
                 </ul>
             </div>
@@ -55,11 +53,6 @@ export default {
     border-radius: 30px;
 }
 
-.ingredient-details .ingredient-details__image img {
-    max-width: 250px;
-    width: 100%;
-}
-
 .ingredient-details .ingredient-details__content {
     display: flex;
     flex-direction: column;
@@ -73,6 +66,14 @@ export default {
     border-bottom-left-radius: 0;
     border-bottom-right-radius: 0;
     margin-top: -20px;
+}
+
+.ingredient-details__content__box img {
+    max-width: 250px;
+    max-height: 400px;
+    /* width: 100%; */
+    margin: 0 auto;
+    display: block;
 }
 
 .ingredient-details__content__box__title {
