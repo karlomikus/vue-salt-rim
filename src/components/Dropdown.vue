@@ -1,8 +1,10 @@
 <template>
     <div class="dropdown-wrapper">
         <slot :toggle-dropdown="toggleDropdown" />
-        <div ref="content" class="dropdown-menu" v-show="isShown">
-            <slot name="content" />
+        <div class="popper" ref="content">
+            <div class="dropdown-menu" v-show="isShown">
+                <slot name="content" />
+            </div>
         </div>
     </div>
 </template>
@@ -33,6 +35,13 @@ export default {
                 }
             }]
         });
+
+        document.addEventListener('click', e => {
+            var dw = document.querySelector('.dropdown-wrapper') || null
+            if (dw && !dw.contains(e.target)) {
+                this.isShown = false
+            }
+        }, false);
     },
     methods: {
         toggleDropdown() {

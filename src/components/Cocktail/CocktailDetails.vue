@@ -7,10 +7,11 @@ import Dropdown from './../Dropdown.vue';
   <OverlayLoader v-if="!cocktail.id" />
   <div class="cocktail-details" v-if="cocktail.id">
     <div class="cocktail-details__graphic" :style="{'background-image': 'url(' + cocktail.image_url + ')'}">
+      <div class="cocktail-details__graphic__copyright">&copy; Image by Liquor.com</div>
     </div>
     <div class="cocktail-details-box cocktail-details-box--title">
       <h3 class="cocktail-details-box__title">{{ cocktail.name }}</h3>
-      <p>{{ cocktail.description }}</p>
+      <div class="cocktail-details-box__description" v-html="parsedDescription"></div>
       <div class="cocktail-details-box__actions">
         <button type="button" class="button-circle" @click="favorite">
           <svg v-if="!isFavorited" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
@@ -70,24 +71,24 @@ import Dropdown from './../Dropdown.vue';
         </Dropdown>
       </div>
     </div>
-    <div class="cocktail-details-box cocktail-details-box--blue">
+    <div class="cocktail-details-box cocktail-details-box--green">
       <h3 class="cocktail-details-box__title">Ingredients:</h3>
-      <table>
-        <tbody>
-          <tr v-for="ing in cocktail.ingredients" :key="ing.sort">
-            <td>{{ ing.amount }} {{ ing.units }}</td>
-            <td>
-              <a :href="'/ingredients/' + ing.ingredient_slug">{{ ing.name }}</a>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+      <div class="cocktail-details__servings">
+        <h4>Servings:</h4>
+        <button :class="{'active-serving': i == servings}" v-for="i in Array.from({length: 4}, (x, i) => i + 1)" @click="servings = i">{{ i }}</button>
+      </div>
+      <ul class="cocktail-details-box__ingredients">
+        <li v-for="ing in cocktail.ingredients" :key="ing.sort">
+          <RouterLink :to="{name: 'ingredients.show', params: {id: ing.ingredient_slug}}">{{ ing.name }}</RouterLink>
+          <span>{{ ing.amount * servings }} {{ ing.units }}</span>
+        </li>
+      </ul>
     </div>
-    <div class="cocktail-details-box cocktail-details-box--purple">
+    <div class="cocktail-details-box cocktail-details-box--yellow">
       <h3 class="cocktail-details-box__title">Instructions:</h3>
       <div v-html="parsedInstructions"></div>
     </div>
-    <div class="cocktail-details-box cocktail-details-box--green">
+    <div class="cocktail-details-box cocktail-details-box--red">
       <h3 class="cocktail-details-box__title">Garnish:</h3>
       <p>{{ cocktail.garnish }}</p>
     </div>
@@ -103,11 +104,15 @@ const api = new ApiRequests();
 export default {
   data: () => ({
     cocktail: {},
-    isFavorited: false
+    isFavorited: false,
+    servings: 1
   }),
   computed: {
     parsedInstructions() {
       return marked.parse(this.cocktail.instructions)
+    },
+    parsedDescription() {
+      return marked.parse(this.cocktail.description)
     }
   },
   created() {
@@ -116,6 +121,12 @@ export default {
       api.fetchUser().then(u => {
         this.isFavorited = u.favorite_cocktails.includes(this.cocktail.id)
       })
+    }).catch(e => {
+      this.$toast.open({
+        message: e,
+        type: 'error',
+        dismissible: false,
+      });
     })
   },
   methods: {
@@ -151,25 +162,24 @@ export default {
 }
 
 .cocktail-details-box.cocktail-details-box--title {
-  background-color: #D6E2E9;
+  background-color: var(--color-var-1);
 }
 
-.cocktail-details-box.cocktail-details-box--purple {
-  background-color: #FFF1E6;
+.cocktail-details-box.cocktail-details-box--yellow {
+  background-color: var(--color-var-2);
+}
+
+.cocktail-details-box.cocktail-details-box--red {
+  background-color: var(--color-var-3);
 }
 
 .cocktail-details-box.cocktail-details-box--green {
-  background-color: #FDE2E4;
-}
-
-.cocktail-details-box.cocktail-details-box--blue {
-  background-color: #E2ECE9;
+  background-color: var(--color-var-4);
 }
 
 .cocktail-details__graphic {
   background-color: #fff;
-  padding: 50px;
-  text-align: center;
+  padding: 10px;
   background-size: cover;
   background-position: center center;
   height: 800px;
@@ -177,11 +187,14 @@ export default {
   border-top-right-radius: 20px;
 }
 
-.cocktail-details__graphic__image {
-  max-width: 500px;
-  height: 500px;
-  background-size: cover;
-  margin: 0 auto;
+.cocktail-details__graphic__copyright {
+  display: inline;
+  background-color: rgba(0, 0, 0, .4);
+  color: #fff;
+  width: 100%;
+  border-radius: 15px;
+  padding: 2px 7px;
+  font-size: 0.7rem;
 }
 
 .cocktail-details-box__title {
@@ -200,16 +213,19 @@ export default {
   list-style: none;
   padding: 0;
   margin: 0;
-  display: flex;
-  flex-direction: column;
 }
 
 .cocktail-details-box__ingredients li {
+  display: flex;
+  background-color: rgb(211, 227, 222);
   margin-bottom: 10px;
+  padding: 5px 10px;
 }
 
 .cocktail-details-box__ingredients li span {
   font-weight: 700;
+  margin-left: auto;
+  text-align: right;
 }
 
 .cocktail-details-box__actions {
@@ -219,5 +235,36 @@ export default {
   display: grid;
   grid-template-columns: 1fr 1fr;
   column-gap: 10px;
+}
+
+.cocktail-details-box__description {
+  overflow-y: auto;
+  max-height: 150px;
+}
+
+.cocktail-details__servings {
+  margin-bottom: 20px;
+}
+
+.cocktail-details__servings h4 {
+  font-size: 0.8rem;
+}
+
+.cocktail-details__servings button {
+  background: rgb(211, 227, 222);
+  border: 3px solid rgb(211, 227, 222);
+  font-size: 1.2rem;
+  width: 30px;
+  cursor: pointer;
+  color: var(--color-text)
+}
+
+.cocktail-details__servings button.active-serving {
+  background-color: rgb(162, 197, 186);
+  border-color: rgb(162, 197, 186);
+}
+
+.cocktail-details__servings button:hover {
+  border-color: rgb(129, 173, 159);
 }
 </style>

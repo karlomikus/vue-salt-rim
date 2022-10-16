@@ -16,25 +16,19 @@
   --font-page-subtitle: 'Aboreto', serif;
 
   --site-width: 1200px;
+  --cocktail-card-width: 250px;
+
+  --color-var-1: #D6E2E9;
+  --color-var-2: #FFF1E6;
+  --color-var-3: #FDE2E4;
+  --color-var-4: #E2ECE9;
 
   --shadow-color: 350deg 28% 74%;
-  --shadow-elevation-low:
-    0px 0.8px 1.1px hsl(var(--shadow-color) / 0.09),
-    0px 1.3px 1.7px -0.5px hsl(var(--shadow-color) / 0.17),
-    0px 2.6px 3.5px -1.1px hsl(var(--shadow-color) / 0.25);
   --shadow-elevation-medium:
     0px 0.8px 1.1px hsl(var(--shadow-color) / 0.1),
     0px 2.8px 3.7px -0.4px hsl(var(--shadow-color) / 0.16),
     0px 5.9px 7.9px -0.7px hsl(var(--shadow-color) / 0.22),
     0.1px 12.9px 17.2px -1.1px hsl(var(--shadow-color) / 0.28);
-  --shadow-elevation-high:
-    0px 0.8px 1.1px hsl(var(--shadow-color) / 0.1),
-    0px 4.9px 6.5px -0.2px hsl(var(--shadow-color) / 0.14),
-    0.1px 8.9px 11.9px -0.4px hsl(var(--shadow-color) / 0.18),
-    0.1px 13.9px 18.6px -0.5px hsl(var(--shadow-color) / 0.21),
-    0.2px 21.4px 28.6px -0.7px hsl(var(--shadow-color) / 0.25),
-    0.3px 32.7px 43.7px -0.9px hsl(var(--shadow-color) / 0.29),
-    0.4px 49.2px 65.7px -1.1px hsl(var(--shadow-color) / 0.33);
 }
 
 *,
@@ -71,7 +65,7 @@ a:hover, a:focus, a:active {
 }
 
 .form-group {
-  margin-bottom: 10px;
+  margin-bottom: 20px;
 }
 
 .form-label {

@@ -1,5 +1,5 @@
 <template>
-  <div class="cocktail-grid-item" @click="$router.push({ name: 'cocktails.show', params: { id: cocktail.id } })">
+  <div class="cocktail-grid-item" @click="$router.push({ name: 'cocktails.show', params: { id: cocktail.slug } })">
     <div class="cocktail-grid-item__graphic">
       <div class="cocktail-grid-item__graphic__image" :style="{'background-image': 'url(' + cocktail.image_url + ')'}"></div>
     </div>
@@ -18,7 +18,7 @@ export default {
 </script>
 <style scoped>
 .cocktail-grid-item {
-  /* width: 300px; */
+  /* max-width: var(--cocktail-card-width); */
   text-align: center;
   background-color: #fff;
   padding: 30px;

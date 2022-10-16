@@ -3,11 +3,11 @@
         <h2 class="page-subtitle">Cocktail information</h2>
         <div class="form-group">
             <label class="form-label form-label--required" for="name">Name:</label>
-            <input class="form-input" type="text" id="name" v-model="cocktail.name">
+            <input class="form-input" type="text" id="name" v-model="cocktail.name" required>
         </div>
         <div class="form-group">
             <label class="form-label form-label--required" for="instructions">Instructions:</label>
-            <textarea rows="3" class="form-input" id="instructions" v-model="cocktail.instructions"></textarea>
+            <textarea rows="3" class="form-input" id="instructions" v-model="cocktail.instructions" required></textarea>
         </div>
         <div class="form-group">
             <label class="form-label" for="garnish">Garnish:</label>
@@ -58,7 +58,7 @@
         <button type="button" @click="addIngredient">Create and add ingredient +</button>
         <button type="button" @click="addIngredient">Add ingredient +</button>
         <div class="form-actions">
-            <button class="button button--outline" type="button">Cancel</button>
+            <a class="button button--outline" href="/cocktails">Cancel</a>
             <button class="button" type="submit">Save</button>
         </div>
     </form>
@@ -132,6 +132,7 @@ export default {
                 description: this.cocktail.description,
                 instructions: this.cocktail.instructions,
                 history: this.cocktail.history,
+                garnish: this.cocktail.garnish,
                 source: this.cocktail.source,
                 image: this.cocktail.image,
                 tags: this.cocktail.tags,
@@ -140,11 +141,17 @@ export default {
 
             if (this.cocktailId) {
                 api.updateCocktail(this.cocktailId, postData).then(data => {
-                    console.log(data)
+                    this.$toast.open({
+                        message: 'Cocktail updated'
+                    });
+                    this.$router.push({ name: 'cocktails.show', params: { id: data.id } })
                 })
             } else {
                 api.saveCocktail(postData).then(data => {
-                    console.log(data)
+                    this.$toast.open({
+                        message: 'Cocktail created'
+                    });
+                    this.$router.push({ name: 'cocktails.show', params: { id: data.id } })
                 })
             }
         }

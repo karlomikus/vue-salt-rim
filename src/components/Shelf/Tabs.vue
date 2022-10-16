@@ -23,7 +23,6 @@
     text-decoration: none;
     border-radius: 30px;
     margin: 0 10px;
-    box-shadow: var(--shadow-elevation-low);
 }
 
 .tabs a:hover,

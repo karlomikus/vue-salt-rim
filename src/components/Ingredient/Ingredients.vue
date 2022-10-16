@@ -5,11 +5,9 @@ import Spinner from './../Spinner.vue'
 
 <template>
     <tabs />
-    <span v-if="ingredients.length == 0">
-        Loading...
-    </span>
+    <OverlayLoader v-if="ingredients.length == 0" />
     <div v-else v-for="(ingredients, cat) in groupedByCategory">
-        <h3 class="page-subtitle">{{ cat }}</h3>
+        <h3 class="page-subtitle">{{ cat }} ({{ ingredients.length }})</h3>
         <ul class="ingredient-list">
             <li v-for="ingredient in ingredients">
                 <div class="ingredient-list__image">
@@ -108,19 +106,18 @@ export default {
 .ingredient-list {
     list-style: none;
     padding: 0;
-    margin: -20px;
-    display: flex;
-    flex-wrap: wrap;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    row-gap: 20px;
+    column-gap: 20px;
 }
 
 .ingredient-list>li {
     background-color: #fff;
-    margin: 20px;
     padding: 15px;
     box-shadow: var(--shadow-elevation-medium);
     border-radius: 10px;
     width: 100%;
-    max-width: 460px;
     display: flex;
 }
 
@@ -132,6 +129,8 @@ export default {
     flex-shrink: 0;
     margin-right: 15px;
     align-self: center;
+    width: 120px;
+    text-align: center;
 }
 
 .ingredient-list .ingredient-list__image img {

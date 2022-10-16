@@ -5,6 +5,9 @@ import SiteAutocomplete from '../components/SiteAutocomplete.vue'
 <template>
   <header class="site-header">
     <div class="header-bar">
+      <!-- <button class="toggle-nav" type="button">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path fill="none" d="M0 0h24v24H0z"/><path d="M3 4h18v2H3V4zm6 7h12v2H9v-2zm-6 7h18v2H3v-2z"/></svg>
+      </button> -->
       <div class="site-logo">
         <div class="site-logo__image">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
@@ -32,7 +35,7 @@ import SiteAutocomplete from '../components/SiteAutocomplete.vue'
 .site-header {
   margin-bottom: 30px;
   background-color: var(--color-site-header);
-  padding: 20px 0 20px 0;
+  padding: 20px;
 }
 
 .header-bar,
@@ -71,7 +74,6 @@ import SiteAutocomplete from '../components/SiteAutocomplete.vue'
   display: flex;
   font-family: var(--font-accent);
   color: #fff;
-  margin-right: 10px;
 }
 
 .site-logo__image {
@@ -102,5 +104,31 @@ import SiteAutocomplete from '../components/SiteAutocomplete.vue'
   font-size: 0.8rem;
   text-shadow: none;
   opacity: .7;
+}
+
+.toggle-nav {
+  border: 0;
+  background: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+
+@media (max-width: 750px) {
+  .header-bar {
+    flex-direction: column;
+  }
+  .header-bar__navigation {
+    /* display: none; */
+    margin: 20px 0 0 0;
+    justify-content: center;
+  }
 }
 </style>

@@ -7,7 +7,7 @@
 <style scoped>
 .cocktail-grid-container {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(var(--cocktail-card-width), 1fr));
     column-gap: 20px;
     row-gap: 20px;
 }

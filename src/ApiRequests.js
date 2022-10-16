@@ -72,7 +72,7 @@ class ApiRequests {
     }
 
     async fetchUserCocktail() {
-        let jsonResp = await this.getRequest(`/api/cocktails/user`);
+        let jsonResp = await this.getRequest(`/api/cocktails/user-shelf`);
 
         return this.parseResponse(jsonResp);
     }

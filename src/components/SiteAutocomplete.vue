@@ -165,4 +165,10 @@ export default {
   height: 30px;
   fill: #373f6c;
 }
+
+@media (max-width: 750px) {
+  .site-autocomplete {
+    padding: 10px 0 10px 0;
+  }
+}
 </style>
