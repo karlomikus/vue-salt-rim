@@ -5,6 +5,7 @@
   --color-bg-dark: #f2d4d9;
   --color-text: #454b60;
   --color-text-muted: #7c84a0;
+  --color-link-hover: #aa5076;
   --color-tag: #DFE7FD;
   --color-tag-hover: #faeaab;
   --color-site-header: #737db7;
@@ -61,7 +62,7 @@ a {
 }
 
 a:hover, a:focus, a:active {
-  color: #aa5076;
+  color: var(--color-link-hover);
 }
 
 .form-group {

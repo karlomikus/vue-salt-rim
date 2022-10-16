@@ -83,6 +83,12 @@ class ApiRequests {
         return this.parseResponse(jsonResp);
     }
 
+    async fetchIngredientCategories() {
+        let jsonResp = await this.getRequest(`/api/ingredients/categories`);
+
+        return this.parseResponse(jsonResp);
+    }
+
     async fetchIngredient(id) {
         let jsonResp = await this.getRequest(`/api/ingredients/${id}`);
 
@@ -127,6 +133,12 @@ class ApiRequests {
 
     async updateCocktail(id, data) {
         let jsonResp = await this.postRequest(`/api/cocktails/${id}`, data, 'PUT');
+
+        return this.parseResponse(jsonResp);
+    }
+
+    async saveIngredient(data) {
+        let jsonResp = await this.postRequest(`/api/ingredients`, data);
 
         return this.parseResponse(jsonResp);
     }

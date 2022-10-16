@@ -1,0 +1,103 @@
+.button {
+    border: 0;
+    padding: 0;
+    margin: 0;
+    border-radius: 30px;
+    font-size: 1rem;
+    height: 2.4rem;
+    line-height: 1.2rem;
+    padding: 8px 20px;
+    font-family: var(--font-accent);
+    cursor: pointer;
+    background: none;
+    appearance: none;
+    display: inline-block;
+    user-select: none;
+    vertical-align: middle;
+    white-space: nowrap;
+    text-decoration: none;
+}
+
+.button:hover {
+    color: var(--color-link-hover);
+    background-color: rgba(0, 0, 0, .05);
+}
+
+.button.button--dark {
+    background-color: var(--color-text);
+    color: #fff;
+}
+
+.button.button--dark:hover {
+    background-color: var(--color-btn-default-hover);
+    color: #fff;
+}
+
+.button.button--outline {
+    border: 2px solid var(--color-text);
+    color: var(--color-text);
+    background: none;
+}
+
+.button.button--outline:hover {
+    border: 2px solid var(--color-link-hover);
+    background-color: var(--color-link-hover);
+    color: #fff;
+}
+
+.button--icon {
+    display: flex;
+    align-items: center;
+}
+
+.button--icon svg {
+    margin-right: 5px;
+}
+
+.button-icon-action {
+    border: 0;
+    padding: 0;
+    margin: 0;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    background-color: #fff;
+    fill: var(--color-text);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.button-icon-action:hover,
+.button-icon-action:focus,
+.button-icon-action:active {
+    background-color: #d4e2f7;
+}
+
+.button-circle {
+    width: 60px;
+    height: 60px;
+    background: #fff;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 0;
+    cursor: pointer;
+    box-shadow: 0 3px 0 rgba(138, 138, 138, 0.295);
+}
+
+.button-circle svg {
+    width: 32px;
+    height: 32px;
+    transition: transform ease-in-out .1s;
+}
+
+.button-circle:hover {
+    background: rgb(241, 241, 241);
+}
+
+.button-circle:hover svg {
+    transform: scale(1.1, 1.1);
+}

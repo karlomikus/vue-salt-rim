@@ -33,7 +33,7 @@ const router = createRouter({
           path: '/cocktails/form',
           name: 'cocktails.form',
           component: () => import('../views/CocktailsFormView.vue'),
-          meta: { title: 'Update cocktail' }
+          meta: { title: 'Cocktail form' }
         },
         {
           path: '/cocktails/:id',
@@ -48,8 +48,14 @@ const router = createRouter({
           meta: { title: 'Ingredients - NAME' }
         },
         {
-          path: '/shelf',
-          name: 'shelf',
+          path: '/ingredients/form',
+          name: 'ingredients.form',
+          component: () => import('../views/IngredientFormView.vue'),
+          meta: { title: 'Ingredient form' }
+        },
+        {
+          path: '/ingredients',
+          name: 'ingredients',
           component: () => import('../views/ShelfHomeView.vue'),
           meta: { title: 'My shelf' }
         },

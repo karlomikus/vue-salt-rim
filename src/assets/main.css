@@ -1,4 +1,5 @@
 @import "./base.css";
+@import "./buttons.css";
 @import "./glasses.css";
 
 #app {
@@ -38,56 +39,6 @@ main {
   font-size: 1rem;
   font-family: var(--font-primary);
   text-decoration: none;
-}
-
-.button {
-  border: 0;
-  padding: 0;
-  margin: 0;
-  border-radius: 30px;
-  font-size: 1rem;
-  height: 40px;
-  padding: 0 30px;
-  background-color: var(--color-text);
-  font-family: var(--font-accent);
-  color: #fff;
-  cursor: pointer;
-}
-
-.button--icon {
-  display: flex;
-  align-items: center;
-}
-
-.button--icon svg {
-  margin-right: 5px;
-}
-
-.button-icon-action {
-  border: 0;
-  padding: 0;
-  margin: 0;
-  border-radius: 50%;
-  width: 40px;
-  height: 40px;
-  background-color: #fff;
-  fill: var(--color-text);
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.button-icon-action:hover,
-.button-icon-action:focus,
-.button-icon-action:active {
-  background-color: #d4e2f7;
-}
-
-.button.button--outline {
-  border: 2px solid var(--color-text);
-  color: var(--color-text);
-  background: none;
 }
 
 .empty-state {
@@ -137,33 +88,6 @@ main {
 
 .dropdown-menu .dropdown-menu__item:hover {
   background-color: #eff7f6;
-}
-
-.button-circle {
-  width: 60px;
-  height: 60px;
-  background: #fff;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border: 0;
-  cursor: pointer;
-  box-shadow: 0 3px 0 rgba(138, 138, 138, 0.295);
-}
-
-.button-circle svg {
-  width: 32px;
-  height: 32px;
-  transition: transform ease-in-out .1s;
-}
-
-.button-circle:hover {
-  background: rgb(241, 241, 241);
-}
-
-.button-circle:hover svg {
-  transform: scale(1.1, 1.1);
 }
 
 @keyframes slide-in-top {

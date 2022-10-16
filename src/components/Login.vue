@@ -16,10 +16,19 @@
 
 <script>
 import Auth from '../Auth'
+import { useUserStore } from './../stores/user'
 
 const auth = new Auth();
 
 export default {
+    setup() {
+        const store = useUserStore()
+
+        return {
+            // you can return the whole store instance to use it in the template
+            store,
+        }
+    },
     data() {
         return {
             email: null,
@@ -29,6 +38,7 @@ export default {
     methods: {
         login() {
             auth.login(this.email, this.password).then(() => {
+                // this.store.setUser(resp)
                 window.location.href = "/"
             });
         }

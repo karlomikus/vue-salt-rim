@@ -55,15 +55,14 @@
                         <input type="checkbox" :id="'is-optional-' + index" :value="true" v-model="ing.optional">
                         Make optional
                     </label>
-                    <button type="button" @click="removeIngredient(ing)">Remove ingredient</button>
+                    <button class="button button--outline" type="button" @click="removeIngredient(ing)">Remove ingredient</button>
                 </div>
             </li>
         </ul>
-        <button type="button" @click="addIngredient">Create and add ingredient +</button>
-        <button type="button" @click="addIngredient">Add ingredient +</button>
+        <button class="button button--outline" type="button" @click="addIngredient">Add ingredient</button>
         <div class="form-actions">
             <a class="button button--outline" href="/cocktails">Cancel</a>
-            <button class="button" type="submit">Save</button>
+            <button class="button button--dark" type="submit">Save</button>
         </div>
     </form>
 </template>
