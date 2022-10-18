@@ -4,7 +4,7 @@ import Spinner from './Spinner.vue'
 
 <template>
     <div class="overlay-loader">
-        <Spinner size="50" />
+        <Spinner :size="50" />
     </div>
 </template>
 

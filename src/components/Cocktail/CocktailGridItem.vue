@@ -1,7 +1,7 @@
 <template>
   <div class="cocktail-grid-item" @click="$router.push({ name: 'cocktails.show', params: { id: cocktail.slug } })">
     <div class="cocktail-grid-item__graphic">
-      <div class="cocktail-grid-item__graphic__image" :style="{'background-image': 'url(' + cocktail.image_url + ')'}"></div>
+      <div class="cocktail-grid-item__graphic__image" :data-img-src="cocktail.image_url"></div>
     </div>
     <h2 class="cocktail-grid-item__title">{{ cocktail.name }}</h2>
     <p class="cocktail-grid-item__ingredients" v-if="cocktail.short_ingredients">{{ cocktail.short_ingredients.join(', ') }}</p>
@@ -13,7 +13,10 @@
 
 <script>
 export default {
-  props: ['cocktail']
+  props: ['cocktail', 'observer'],
+  mounted() {
+    this.observer.observer.observe(this.$el)
+  }
 }
 </script>
 <style scoped>

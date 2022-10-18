@@ -1,8 +1,29 @@
 <template>
     <div class="cocktail-grid-container">
-        <slot />
+        <slot :observer="observer" />
     </div>
 </template>
+
+<script>
+export default {
+    data() {
+        return {
+            observer: null,
+        }
+    },
+    created() {
+        this.observer = new IntersectionObserver((entries, observer) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                    const imgElement = entry.target.querySelector('.cocktail-grid-item__graphic__image');
+                    imgElement.style.backgroundImage = `url('${imgElement.dataset.imgSrc}')`
+                    this.observer.unobserve(entry.target)
+                }
+            });
+        });
+    }
+}
+</script>
 
 <style scoped>
 .cocktail-grid-container {

@@ -31,8 +31,8 @@ import CocktailGridContainer from './CocktailGridContainer.vue'
     </div>
     <ais-infinite-hits>
       <template v-slot="{ items, refineNext, isLastPage }">
-        <CocktailGridContainer>
-          <CocktailGridItem v-for="cocktail in items" :cocktail="cocktail" :key="cocktail.id" />
+        <CocktailGridContainer v-slot="observer">
+          <CocktailGridItem v-for="cocktail in items" :cocktail="cocktail" :key="cocktail.id" :observer="observer" />
         </CocktailGridContainer>
         <div style="text-align: center; margin: 20px 0;">
           <button class="button" v-if="!isLastPage" @click="refineNext">
