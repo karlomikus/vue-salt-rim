@@ -4,7 +4,10 @@ import CocktailGridContainer from './CocktailGridContainer.vue'
 </script>
 
 <template>
-  <h2 class="page-subtitle">Cocktails <RouterLink :to="{name: 'cocktails.form'}">Add cocktail</RouterLink></h2>
+  <div style="text-align: right;">
+    <RouterLink class="button button--outline" :to="{name: 'cocktails.form'}">Add cocktail</RouterLink>
+  </div>
+  <h2 class="page-subtitle" style="margin-top: 10px;">Cocktails</h2>
   <ais-instant-search :search-client="searchClient" index-name="cocktails:name:asc" :routing="routing">
     <ais-configure :hitsPerPage="100" />
     <div class="cocktail-list-tags">

@@ -24,7 +24,7 @@ import SiteAutocomplete from '../components/SiteAutocomplete.vue'
         <RouterLink to="/">Home</RouterLink>
         <RouterLink to="/cocktails">Cocktails</RouterLink>
         <RouterLink to="/ingredients">Ingredients</RouterLink>
-        <RouterLink to="/profile">My shelf</RouterLink>
+        <!-- <RouterLink to="/profile">My shelf</RouterLink> -->
       </nav>
     </div>
     <site-autocomplete />

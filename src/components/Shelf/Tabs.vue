@@ -1,6 +1,5 @@
 <template>
     <div class="tabs">
-        <RouterLink :to="{name: 'ingredients'}">My ingredients</RouterLink>
         <RouterLink :to="{name: 'shelf-cocktails'}">My cocktails</RouterLink>
         <a href="#">My recipies</a>
         <a href="#">My collections</a>

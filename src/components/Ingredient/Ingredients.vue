@@ -1,13 +1,17 @@
 <script setup>
-import Tabs from '../Shelf/Tabs.vue'
 import Spinner from './../Spinner.vue'
 </script>
 
 <template>
-    <tabs />
-    <OverlayLoader v-if="ingredients.length == 0" />
+    <div style="text-align: right;">
+        <RouterLink class="button button--outline" :to="{name: 'ingredients.form'}">Add ingredient</RouterLink>
+    </div>
+    <h2 class="page-subtitle" style="margin-top: 10px;">Ingredients</h2>
+    <div style="text-align: center; padding: 40px;" v-if="ingredients.length == 0">
+        <Spinner :size="64" />
+    </div>
     <div v-else v-for="(ingredients, cat) in groupedByCategory">
-        <h3 class="page-subtitle">{{ cat }} ({{ ingredients.length }})</h3>
+        <h2 class="ingredient-category-title">{{ cat }} ({{ ingredients.length }})</h2>
         <ul class="ingredient-list">
             <li v-for="ingredient in ingredients">
                 <div class="ingredient-list__image">
@@ -110,6 +114,16 @@ export default {
     grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
     row-gap: 20px;
     column-gap: 20px;
+}
+
+.ingredient-category-title {
+    background-color: var(--color-text);
+    color: #fff;
+    display: inline-block;
+    font-size: 1rem;
+    padding: 3px 10px;
+    border-radius: 20px;
+    margin: 20px auto;
 }
 
 .ingredient-list>li {

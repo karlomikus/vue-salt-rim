@@ -5,7 +5,7 @@
     </div>
     <h2 class="cocktail-grid-item__title">{{ cocktail.name }}</h2>
     <p class="cocktail-grid-item__ingredients" v-if="cocktail.short_ingredients">{{ cocktail.short_ingredients.join(', ') }}</p>
-    <ul class="cocktail-grid-item__tags">
+    <ul class="cocktail-tags">
       <li v-for="tag in cocktail.tags" :key="tag">{{ tag }}</li>
     </ul>
   </div>
@@ -64,22 +64,5 @@ export default {
     0px 1.6px 1.8px -0.8px hsl(0deg 0% 63% / 0.36),
     0.1px 4px 4.5px -1.7px hsl(0deg 0% 63% / 0.36),
     0.1px 9.7px 10.9px -2.5px hsl(0deg 0% 63% / 0.36);
-}
-
-.cocktail-grid-item__tags {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  list-style: none;
-  padding: 0;
-  margin: 10px -3px -3px -3px;
-}
-
-.cocktail-grid-item__tags li {
-  background-color: var(--color-tag);
-  border-radius: 4px;
-  margin: 3px;
-  padding: 2px 5px;
-  font-size: 12px;
 }
 </style>

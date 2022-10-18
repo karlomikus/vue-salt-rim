@@ -1,5 +1,10 @@
+<script setup>
+import OverlayLoader from './../OverlayLoader.vue'
+</script>
+
 <template>
     <form @submit.prevent="submit">
+        <OverlayLoader v-if="isLoading" />
         <h2 class="page-subtitle">Cocktail information</h2>
         <div class="form-group">
             <label class="form-label form-label--required" for="name">Name:</label>
@@ -7,7 +12,8 @@
         </div>
         <div class="form-group">
             <label class="form-label form-label--required" for="instructions">Instructions:</label>
-            <textarea rows="3" class="form-input" id="instructions" v-model="cocktail.instructions" required></textarea>
+            <textarea rows="5" class="form-input" id="instructions" v-model="cocktail.instructions" required></textarea>
+            <p class="form-input-hint">This field supports markdown.</p>
         </div>
         <div class="form-group">
             <label class="form-label" for="garnish">Garnish:</label>
@@ -16,6 +22,7 @@
         <div class="form-group">
             <label class="form-label" for="description">Description:</label>
             <textarea rows="3" class="form-input" id="description" v-model="cocktail.description"></textarea>
+            <p class="form-input-hint">This field supports markdown.</p>
         </div>
         <div class="form-group">
             <label class="form-label" for="source">Source:</label>
@@ -27,7 +34,7 @@
         </div>
         <div class="form-group">
             <label class="form-label" for="images">Images:</label>
-            <input class="form-input" type="file" id="images" @change="processImage">
+            <input class="form-input" type="file" id="images" ref="image">
         </div>
         <div class="form-group">
             <label class="form-label" for="copyright">Image copyright:</label>
@@ -52,7 +59,7 @@
                 </div>
                 <div class="cocktail-form__ingredients__actions">
                     <label :for="'is-optional-' + index">
-                        <input type="checkbox" :id="'is-optional-' + index" :value="true" v-model="ing.optional">
+                        <input type="checkbox" :id="'is-optional-' + index" v-model="ing.optional">
                         Make optional
                     </label>
                     <button class="button button--outline" type="button" @click="removeIngredient(ing)">Remove ingredient</button>
@@ -61,7 +68,7 @@
         </ul>
         <button class="button button--outline" type="button" @click="addIngredient">Add ingredient</button>
         <div class="form-actions">
-            <a class="button button--outline" href="/cocktails">Cancel</a>
+            <RouterLink class="button button--outline" :to="{name: 'cocktails'}">Cancel</RouterLink>
             <button class="button button--dark" type="submit">Save</button>
         </div>
     </form>
@@ -75,6 +82,7 @@ const api = new ApiRequests();
 export default {
     data() {
         return {
+            isLoading: false,
             cocktail: {
                 ingredients: [],
                 tags: [],
@@ -97,16 +105,19 @@ export default {
         }
     },
     created() {
+        this.isLoading = true;
         this.cocktailId = this.$route.query.id || null;
 
         if (this.cocktailId) {
             api.fetchCocktail(this.cocktailId).then(data => {
                 this.cocktail = data;
+                this.isLoading = false;
             })
         }
 
         api.fetchIngredients().then(data => {
             this.ingredients = data
+            this.isLoading = false;
         })
     },
     methods: {
@@ -121,18 +132,9 @@ export default {
                 1
             );
         },
-        processImage(e) {
-            if (!e.target.files || !e.target.files[0]) return;
+        async submit() {
+            this.isLoading = true;
 
-            const FR = new FileReader();
-
-            FR.addEventListener("load", evt => {
-                this.images[0].image = evt.target.result
-            });
-
-            FR.readAsDataURL(e.target.files[0]);
-        },
-        submit() {
             const postData = {
                 name: this.cocktail.name,
                 description: this.cocktail.description,
@@ -140,13 +142,30 @@ export default {
                 history: this.cocktail.history,
                 garnish: this.cocktail.garnish,
                 source: this.cocktail.source,
-                images: this.images,
+                images: [],
                 tags: this.cocktail.tags,
                 ingredients: this.cocktail.ingredients
             };
 
+            const image = this.$refs.image.files[0] || null;
+
+            if (image) {
+                const formData = new FormData();
+                formData.append('images[0][image]', image)
+                formData.append('images[0][copyright]', this.images[0].copyright)
+
+                const resp = await api.uploadImages(formData).catch(e => {
+                    console.error('Image upload error!')
+                });
+
+                if (resp) {
+                    postData.images.push(resp[0].id);
+                }
+            }
+
             if (this.cocktailId) {
                 api.updateCocktail(this.cocktailId, postData).then(data => {
+                    this.isLoading = false;
                     this.$toast.open({
                         message: 'Cocktail updated'
                     });
@@ -154,6 +173,7 @@ export default {
                 })
             } else {
                 api.saveCocktail(postData).then(data => {
+                    this.isLoading = false;
                     this.$toast.open({
                         message: 'Cocktail created'
                     });

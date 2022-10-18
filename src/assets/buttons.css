@@ -72,7 +72,7 @@
 .button-icon-action:hover,
 .button-icon-action:focus,
 .button-icon-action:active {
-    background-color: #d4e2f7;
+    background-color: var(--color-var-4);
 }
 
 .button-circle {

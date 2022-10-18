@@ -11,6 +11,9 @@ import Dropdown from './../Dropdown.vue';
     </div>
     <div class="cocktail-details-box cocktail-details-box--title">
       <h3 class="cocktail-details-box__title">{{ cocktail.name }}</h3>
+      <ul class="cocktail-tags" style="margin: 0; margin-bottom: 10px; justify-content: flex-start;">
+        <li v-for="tag in cocktail.tags" style="background-color: #BFD3DF;">{{ tag }}</li>
+      </ul>
       <div class="cocktail-details-box__description" v-html="parsedDescription"></div>
       <div class="cocktail-details-box__actions">
         <button type="button" class="button-circle" @click="favorite">
@@ -35,15 +38,15 @@ import Dropdown from './../Dropdown.vue';
               </svg></button>
           </template>
           <template #content>
-            <a class="dropdown-menu__item" :href="'/cocktails/form?id=' + cocktail.id">
+            <RouterLink class="dropdown-menu__item" :to="{name: 'cocktails.form', query: {id: cocktail.id}}">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
                 <path fill="none" d="M0 0h24v24H0z" />
                 <path
                   d="M6.414 16L16.556 5.858l-1.414-1.414L5 14.586V16h1.414zm.829 2H3v-4.243L14.435 2.322a1 1 0 0 1 1.414 0l2.829 2.829a1 1 0 0 1 0 1.414L7.243 18zM3 20h18v2H3v-2z" />
               </svg>
               Edit
-            </a>
-            <a class="dropdown-menu__item" :href="'/cocktails/form?id=' + cocktail.id">
+            </RouterLink>
+            <a class="dropdown-menu__item" href="#">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
                 <path fill="none" d="M0 0h24v24H0z" />
                 <path
@@ -59,7 +62,7 @@ import Dropdown from './../Dropdown.vue';
               </svg>
               Cocktail source
             </a>
-            <a class="dropdown-menu__item" href="#" @click.prevent="deleteCocktail">
+            <a class="dropdown-menu__item" href="javascript:;" @click.prevent="deleteCocktail">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
                 <path fill="none" d="M0 0h24v24H0z" />
                 <path
@@ -79,7 +82,7 @@ import Dropdown from './../Dropdown.vue';
       </div>
       <ul class="cocktail-details-box__ingredients">
         <li v-for="ing in cocktail.ingredients" :key="ing.sort">
-          <RouterLink :to="{name: 'ingredients.show', params: {id: ing.ingredient_slug}}">{{ ing.name }}</RouterLink>
+          <RouterLink :to="{name: 'ingredients.show', params: {id: ing.ingredient_slug}}">{{ ing.name }} <small v-if="ing.optional">(optional)</small></RouterLink>
           <span>{{ ing.amount * servings }} {{ ing.units }}</span>
         </li>
       </ul>

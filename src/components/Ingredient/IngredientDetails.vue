@@ -19,40 +19,41 @@ import Dropdown from './../Dropdown.vue';
                 </p>
                 <hr>
                 <p><strong>Origin:</strong> {{ ingredient.origin ?? 'n/a' }}</p>
-                <div>
-                    <Dropdown>
-                        <template v-slot:default="{toggleDropdown}">
-                            <button type="button" class="button-circle" @click="toggleDropdown"><svg
-                                    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
-                                    <path fill="none" d="M0 0h24v24H0z" />
-                                    <path
-                                        d="M12 3c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 14c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0-7c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z" />
-                                </svg></button>
-                        </template>
-                        <template #content>
-                            <a class="dropdown-menu__item" :href="'/ingredients/form?id=' + ingredient.id">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
-                                    <path fill="none" d="M0 0h24v24H0z" />
-                                    <path
-                                        d="M6.414 16L16.556 5.858l-1.414-1.414L5 14.586V16h1.414zm.829 2H3v-4.243L14.435 2.322a1 1 0 0 1 1.414 0l2.829 2.829a1 1 0 0 1 0 1.414L7.243 18zM3 20h18v2H3v-2z" />
-                                </svg>
-                                Edit
-                            </a>
-                            <a class="dropdown-menu__item" href="#" @click.prevent="deleteIngredient">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
-                                    <path fill="none" d="M0 0h24v24H0z" />
-                                    <path
-                                        d="M7 4V2h10v2h5v2h-2v15a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V6H2V4h5zM6 6v14h12V6H6zm3 3h2v8H9V9zm4 0h2v8h-2V9z" />
-                                </svg>
-                                Delete
-                            </a>
-                        </template>
-                    </Dropdown>
-                </div>
             </div>
             <img :src="ingredient.image_url" :alt="ingredient.name" />
         </div>
         <div class="ingredient-details__cocktails">
+            <div class="ingredient-details__actions">
+                <button type="button" class="button-circle"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path fill="none" d="M0 0h24v24H0z"/><path d="M4 3h16a1 1 0 0 1 1 1v16a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1zm1 2v14h14V5H5z"/></svg></button>
+                <Dropdown>
+                    <template v-slot:default="{toggleDropdown}">
+                        <button type="button" class="button-circle" @click="toggleDropdown"><svg
+                                xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+                                <path fill="none" d="M0 0h24v24H0z" />
+                                <path
+                                    d="M12 3c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 14c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0-7c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z" />
+                            </svg></button>
+                    </template>
+                    <template #content>
+                        <a class="dropdown-menu__item" :href="'/ingredients/form?id=' + ingredient.id">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+                                <path fill="none" d="M0 0h24v24H0z" />
+                                <path
+                                    d="M6.414 16L16.556 5.858l-1.414-1.414L5 14.586V16h1.414zm.829 2H3v-4.243L14.435 2.322a1 1 0 0 1 1.414 0l2.829 2.829a1 1 0 0 1 0 1.414L7.243 18zM3 20h18v2H3v-2z" />
+                            </svg>
+                            Edit
+                        </a>
+                        <a class="dropdown-menu__item" href="#" @click.prevent="deleteIngredient">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+                                <path fill="none" d="M0 0h24v24H0z" />
+                                <path
+                                    d="M7 4V2h10v2h5v2h-2v15a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V6H2V4h5zM6 6v14h12V6H6zm3 3h2v8H9V9zm4 0h2v8h-2V9z" />
+                            </svg>
+                            Delete
+                        </a>
+                    </template>
+                </Dropdown>
+            </div>
             <h2 class="ingredient-details__box__title">Used in {{ ingredient.cocktails.length }} cocktails:</h2>
             <ul>
                 <li v-for="cocktail in ingredient.cocktails">
@@ -122,6 +123,7 @@ export default {
     max-height: 400px;
     display: block;
     margin-top: -100px;
+    margin-left: 20px;
 }
 
 .ingredient-details__box__content {
@@ -131,7 +133,7 @@ export default {
 .ingredient-details__box__title {
     font-weight: 700;
     font-family: var(--font-accent);
-    margin-bottom: 10px;
+    margin: 10px 0;
     line-height: 1.1rem;
 }
 
@@ -178,5 +180,17 @@ export default {
     display: block;
     padding: 3px 10px;
     background-color: rgb(198, 215, 225);
+}
+
+.ingredient-details__actions {
+    position: absolute;
+    z-index: 5;
+    top: -30px;
+    right: 30px;
+    display: flex;
+}
+
+.ingredient-details__actions .button-circle {
+    margin-left: 10px;
 }
 </style>

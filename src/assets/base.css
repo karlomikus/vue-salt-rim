@@ -93,7 +93,7 @@ a:hover, a:focus, a:active {
   border-radius: 5px;
   height: 3rem;
   font-size: 1.2rem;
-  line-height: 1.2rem;
+  line-height: 1.7rem;
   outline: 0;
   padding: 10px 15px;
   vertical-align: middle;
@@ -126,4 +126,10 @@ textarea.form-input,
 
 .form-actions .button {
   margin-left: 10px;
+}
+
+.form-input-hint {
+  font-size: .7rem;
+  margin-top: .2rem;
+  color: #866269;
 }

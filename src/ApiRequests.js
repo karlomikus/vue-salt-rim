@@ -149,6 +149,18 @@ class ApiRequests {
         return this.parseResponse(jsonResp);
     }
 
+    async uploadImages(formData) {
+        const jsonResp = await (await fetch(`${this.url}/api/images`, {
+            method: 'POST',
+            headers: new Headers({
+                'Authorization': 'Bearer ' + this.token,
+            }),
+            body: formData
+        })).json();
+
+        return this.parseResponse(jsonResp);
+    }
+
     async fetchLoginToken(email, password) {
         const url = `${this.url}/api/login`
 
