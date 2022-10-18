@@ -72,12 +72,21 @@ const api = new ApiRequests();
 
 export default {
     data: () => ({
+        isLoading: false,
         ingredient: {}
     }),
     created() {
-        api.fetchIngredient(this.$route.params.id).then(data => {
-            this.ingredient = data
-        })
+        this.$watch(
+            () => this.$route.params.id,
+            () => {
+                if (this.$route.name == 'ingredients.show') {
+                    api.fetchIngredient(this.$route.params.id).then(data => {
+                        this.ingredient = data
+                    })
+                }
+            },
+            { immediate: true }
+        )
     },
     methods: {
         deleteIngredient() {
