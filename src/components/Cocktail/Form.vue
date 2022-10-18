@@ -68,7 +68,8 @@ import OverlayLoader from './../OverlayLoader.vue'
         </ul>
         <button class="button button--outline" type="button" @click="addIngredient">Add ingredient</button>
         <div class="form-actions">
-            <RouterLink class="button button--outline" :to="{name: 'cocktails'}">Cancel</RouterLink>
+            <RouterLink class="button button--outline" :to="{name: 'cocktails.show', params: {id: cocktailId}}" v-if="cocktailId">Cancel</RouterLink>
+            <RouterLink class="button button--outline" :to="{name: 'cocktails'}" v-else>Cancel</RouterLink>
             <button class="button button--dark" type="submit">Save</button>
         </div>
     </form>

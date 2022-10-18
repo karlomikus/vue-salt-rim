@@ -80,8 +80,10 @@ export default {
             () => this.$route.params.id,
             () => {
                 if (this.$route.name == 'ingredients.show') {
+                    this.isLoading = true;
                     api.fetchIngredient(this.$route.params.id).then(data => {
                         this.ingredient = data
+                        this.isLoading = false;
                     })
                 }
             },
