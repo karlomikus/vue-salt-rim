@@ -49,6 +49,8 @@ export default {
     cocktails: [],
   }),
   created() {
+    // const store = useUserStore();
+    // console.log(userStore())
     api.fetchUserFavoriteCocktails().then(data => {
       this.cocktails = data
     })

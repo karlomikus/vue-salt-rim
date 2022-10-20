@@ -3,16 +3,21 @@ import ApiRequests from "./ApiRequests";
 const api = new ApiRequests();
 
 class Auth {
-    async login(email, password) {
-        const token = await api.fetchLoginToken(email, password);
+    saveUser(user) {
+        localStorage.setItem('user', JSON.stringify(user));
+    }
 
-        localStorage.setItem('user_token', token);
+    static getUser() {
+        return JSON.parse(localStorage.getItem('user'));
     }
 
     async isLoggedIn() {
         try {
-            await api.fetchUser();
+            const user = await api.fetchUser();
+
+            this.saveUser(user)
         } catch (e) {
+            localStorage.removeItem('user');
             localStorage.removeItem('user_token');
             return false;
         }

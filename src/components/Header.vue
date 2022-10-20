@@ -70,42 +70,6 @@ import SiteAutocomplete from '../components/SiteAutocomplete.vue'
   color: #fff;
 }
 
-.site-logo {
-  display: flex;
-  font-family: var(--font-accent);
-  color: #fff;
-}
-
-.site-logo__image {
-  background: #fff;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 40px;
-  height: 40px;
-  border-radius: 3px;
-}
-
-.site-logo__image svg {
-  fill: var(--color-site-header);
-  width: 32px;
-  height: 32px;
-}
-
-.site-logo__title {
-  font-weight: 700;
-  margin-left: 10px;
-  text-shadow: 3px 2px 0 rgba(0, 0, 0, .3);
-  line-height: 0.9;
-}
-
-.site-logo__title span {
-  display: block;
-  font-size: 0.8rem;
-  text-shadow: none;
-  opacity: .7;
-}
-
 .toggle-nav {
   border: 0;
   background: none;

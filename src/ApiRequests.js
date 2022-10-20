@@ -1,12 +1,12 @@
 class ApiRequests {
     constructor() {
         this.url = import.meta.env.VITE_BA_API_URL;
-        this.token = localStorage.getItem('user_token');
+        // this.token = localStorage.getItem('user_token');
     }
 
     getHeaders() {
         return new Headers({
-            'Authorization': 'Bearer ' + this.token,
+            'Authorization': 'Bearer ' + localStorage.getItem('user_token'),
             'Accept': 'application/json',
             'Content-Type': 'application/json',
         });
@@ -153,7 +153,7 @@ class ApiRequests {
         const jsonResp = await (await fetch(`${this.url}/api/images`, {
             method: 'POST',
             headers: new Headers({
-                'Authorization': 'Bearer ' + this.token,
+                'Authorization': 'Bearer ' + localStorage.getItem('user_token'),
             }),
             body: formData
         })).json();
@@ -174,6 +174,12 @@ class ApiRequests {
                 email: email,
                 password: password,
             })
+        }).then(response => {
+            if (!response.ok) {
+                return Promise.reject(response)
+            }
+
+            return response;
         })).json();
 
         return jsonResp.token;

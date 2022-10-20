@@ -106,6 +106,7 @@ import Dropdown from './../Dropdown.vue';
 <script>
 import { marked } from 'marked';
 import ApiRequests from '../../ApiRequests';
+import Auth from '@/Auth';
 
 const api = new ApiRequests();
 
