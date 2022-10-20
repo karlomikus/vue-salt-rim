@@ -36,7 +36,7 @@
             <input class="form-input" type="text" id="copyright" v-model="images[0].copyright">
         </div>
         <div class="form-actions">
-            <a class="button button--outline" href="/ingredients">Cancel</a>
+            <RouterLink class="button button--outline" :to="{name: 'ingredients'}">Cancel</RouterLink>
             <button class="button button--dark" type="submit">Save</button>
         </div>
     </form>

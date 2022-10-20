@@ -112,6 +112,7 @@ export default {
         if (this.cocktailId) {
             api.fetchCocktail(this.cocktailId).then(data => {
                 this.cocktail = data;
+                this.images[0].copyright = this.cocktail.image_copyright;
                 this.isLoading = false;
             })
         }
@@ -156,7 +157,8 @@ export default {
                 formData.append('images[0][copyright]', this.images[0].copyright)
 
                 const resp = await api.uploadImages(formData).catch(e => {
-                    console.error('Image upload error!')
+                    this.$toast.error('An error occured while uploading images!');
+                    console.error(e)
                 });
 
                 if (resp) {
@@ -168,7 +170,7 @@ export default {
                 api.updateCocktail(this.cocktailId, postData).then(data => {
                     this.isLoading = false;
                     this.$toast.open({
-                        message: 'Cocktail updated'
+                        message: `Cocktail updated successfully.`
                     });
                     this.$router.push({ name: 'cocktails.show', params: { id: data.id } })
                 })
@@ -176,7 +178,7 @@ export default {
                 api.saveCocktail(postData).then(data => {
                     this.isLoading = false;
                     this.$toast.open({
-                        message: 'Cocktail created'
+                        message: 'Cocktail created successfully.'
                     });
                     this.$router.push({ name: 'cocktails.show', params: { id: data.id } })
                 })
