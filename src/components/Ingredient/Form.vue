@@ -63,6 +63,7 @@ export default {
         if (ingredientId) {
             api.fetchIngredient(ingredientId).then(data => {
                 this.ingredient = data;
+                this.images[0].copyright = this.ingredient.image_copyright;
             })
         }
 
@@ -71,26 +72,33 @@ export default {
         })
     },
     methods: {
-        processImage(e) {
-            if (!e.target.files || !e.target.files[0]) return;
-
-            const FR = new FileReader();
-
-            FR.addEventListener("load", evt => {
-                this.images[0].image = evt.target.result
-            });
-
-            FR.readAsDataURL(e.target.files[0]);
-        },
-        submit() {
+        async submit() {
             const postData = {
                 name: this.ingredient.name,
                 description: this.ingredient.description,
                 strength: this.ingredient.strength,
                 origin: this.ingredient.origin,
                 color: this.ingredient.color,
+                images: [],
                 ingredient_category_id: this.ingredient.ingredient_category_id,
             };
+
+            const image = this.$refs.image.files[0] || null;
+
+            if (image) {
+                const formData = new FormData();
+                formData.append('images[0][image]', image)
+                formData.append('images[0][copyright]', this.images[0].copyright)
+
+                const resp = await api.uploadImages(formData).catch(e => {
+                    this.$toast.error('An error occured while uploading images!');
+                    console.error(e)
+                });
+
+                if (resp) {
+                    postData.images.push(resp[0].id);
+                }
+            }
 
             if (this.cocktailId) {
                 // api.updateCocktail(this.cocktailId, postData).then(data => {

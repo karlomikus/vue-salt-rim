@@ -24,11 +24,38 @@
             <div class="site-footer__right">
                 Salt Rim v0.5.0
                 <br>
-                Bar Assistant v0.3.2
+                {{ apiVersion }}
             </div>
         </div>
     </footer>
 </template>
+
+<script>
+import ApiRequests from '@/ApiRequests';
+
+const api = new ApiRequests();
+
+export default {
+    data() {
+        return {
+            versions: {
+                api: null,
+                client: null,
+            }
+        }
+    },
+    computed: {
+        apiVersion() {
+            return `Bar Assistant ${this.versions.api}`
+        }
+    },
+    created() {
+        api.fetchApiVersion().then(resp => {
+            this.versions.api = resp.version
+        })
+    }
+}
+</script>
 
 <style scoped>
 .site-footer-wrapper {

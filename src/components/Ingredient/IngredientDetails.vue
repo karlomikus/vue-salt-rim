@@ -93,6 +93,7 @@ export default {
             () => {
                 if (this.$route.name == 'ingredients.show') {
                     this.isLoading = true;
+                    this.isAddedToShelf = false;
                     api.fetchIngredient(this.$route.params.id).then(data => {
                         this.ingredient = data
                         this.isLoading = false;

@@ -185,6 +185,12 @@ class ApiRequests {
         return jsonResp.token;
     }
 
+    async fetchApiVersion() {
+        let jsonResp = await this.getRequest(`/api/version`);
+
+        return this.parseResponse(jsonResp);
+    }
+
     parseResponse(resp) {
         return resp.data;
     }

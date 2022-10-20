@@ -29,6 +29,7 @@ export default {
   box-shadow: 0 3px 0 var(--color-bg-dark);
   margin-top: 50px;
   cursor: pointer;
+  transition: box-shadow ease-in-out 150ms;
 }
 
 .cocktail-grid-item .cocktail-grid-item__title {
@@ -45,6 +46,10 @@ export default {
 .cocktail-grid-item__graphic {
   transform: translateY(-50px);
   transition: all ease-in-out .1s;
+}
+
+.cocktail-grid-item:hover {
+  box-shadow: 0 3px 0 #aa5076;
 }
 
 .cocktail-grid-item:hover .cocktail-grid-item__graphic {
