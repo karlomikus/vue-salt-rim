@@ -207,7 +207,7 @@ export default {
     padding: 10px;
     background-size: cover;
     background-position: center center;
-    height: 800px;
+    height: 1000px;
     border-top-left-radius: 20px;
     border-top-right-radius: 20px;
 }

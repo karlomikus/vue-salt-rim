@@ -5,9 +5,6 @@ import SiteAutocomplete from '../components/SiteAutocomplete.vue'
 <template>
   <header class="site-header">
     <div class="header-bar">
-      <!-- <button class="toggle-nav" type="button">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path fill="none" d="M0 0h24v24H0z"/><path d="M3 4h18v2H3V4zm6 7h12v2H9v-2zm-6 7h18v2H3v-2z"/></svg>
-      </button> -->
       <div class="site-logo">
         <div class="site-logo__image">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
@@ -21,10 +18,9 @@ import SiteAutocomplete from '../components/SiteAutocomplete.vue'
         </h1>
       </div>
       <nav class="header-bar__navigation">
-        <RouterLink to="/">Home</RouterLink>
+        <RouterLink to="/">Shelf</RouterLink>
         <RouterLink to="/cocktails">Cocktails</RouterLink>
         <RouterLink to="/ingredients">Ingredients</RouterLink>
-        <!-- <RouterLink to="/profile">My shelf</RouterLink> -->
       </nav>
     </div>
     <site-autocomplete />

@@ -1,5 +1,5 @@
 <template>
-  <div class="cocktail-grid-item" @click="$router.push({ name: 'cocktails.show', params: { id: cocktail.slug } })">
+  <RouterLink class="cocktail-grid-item" :to="{ name: 'cocktails.show', params: { id: cocktail.slug } }">
     <div class="cocktail-grid-item__graphic">
       <div class="cocktail-grid-item__graphic__image" :data-img-src="cocktail.image_url"></div>
     </div>
@@ -8,7 +8,7 @@
     <ul class="cocktail-tags">
       <li v-for="tag in cocktail.tags" :key="tag">{{ tag }}</li>
     </ul>
-  </div>
+  </RouterLink>
 </template>
 
 <script>
@@ -30,6 +30,7 @@ export default {
   margin-top: 50px;
   cursor: pointer;
   transition: box-shadow ease-in-out 150ms;
+  text-decoration: none;
 }
 
 .cocktail-grid-item .cocktail-grid-item__title {

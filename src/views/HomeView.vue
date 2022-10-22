@@ -1,9 +1,9 @@
 <script setup>
-import HomeUser from '../components/HomeUser.vue'
+import Shelf from '../components/Shelf/Shelf.vue'
 </script>
 
 <template>
   <main>
-    <HomeUser />
+    <Shelf />
   </main>
 </template>

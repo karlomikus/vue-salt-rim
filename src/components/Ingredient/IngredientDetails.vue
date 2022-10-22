@@ -128,12 +128,12 @@ export default {
             if (this.isAddedToShelf) {
                 api.removeIngredientFromShelf(this.ingredient.id).then(() => {
                     this.isAddedToShelf = false;
-                    this.$toast.default('Removed from your shelf');
+                    this.$toast.default(`Removed "${this.ingredient.name}" from your shelf`);
                 })
             } else {
                 api.addIngredientToShelf(this.ingredient.id).then(() => {
                     this.isAddedToShelf = true;
-                    this.$toast.default('Added to your shelf');
+                    this.$toast.default(`Added "${this.ingredient.name}" to your shelf`);
                 })
             }
         }
