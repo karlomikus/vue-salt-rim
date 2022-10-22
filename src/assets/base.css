@@ -17,7 +17,8 @@
   --font-page-subtitle: 'Aboreto', serif;
 
   --site-width: 1200px;
-  --cocktail-card-width: 250px;
+  --cocktail-grid-card-width: 250px;
+  --cocktail-list-card-width: 350px;
 
   --color-var-1: #D6E2E9;
   --color-var-2: #FFF1E6;
