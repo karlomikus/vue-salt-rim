@@ -86,9 +86,12 @@ import Dropdown from './../Dropdown.vue';
             </div>
             <ul class="cocktail-details-box__ingredients">
                 <li v-for="ing in cocktail.ingredients" :key="ing.sort">
-                    <RouterLink :to="{name: 'ingredients.show', params: {id: ing.ingredient_slug}}">{{ ing.name }}
-                        <small v-if="ing.optional">(optional)</small></RouterLink>
-                    <span>{{ ing.amount * servings }} {{ ing.units }}</span>
+                    <RouterLink :to="{name: 'ingredients.show', params: {id: ing.ingredient_slug}}">
+                        {{ ing.name }}
+                        <small v-if="ing.optional">(optional)</small>
+                        <span v-show="!shelfIngredients.includes(ing.ingredient_id)">You are missing this ingredient</span>
+                    </RouterLink>
+                    <div class="cocktail-details-box__ingredients__amount">{{ ing.amount * servings }} {{ ing.units }}</div>
                 </li>
             </ul>
         </div>
@@ -114,7 +117,8 @@ export default {
     data: () => ({
         cocktail: {},
         isFavorited: false,
-        servings: 1
+        servings: 1,
+        shelfIngredients: []
     }),
     computed: {
         parsedInstructions() {
@@ -137,6 +141,8 @@ export default {
             () => this.$route.params,
             () => {
                 if (this.$route.name == 'cocktails.show') {
+                    this.shelfIngredients = Auth.getUser().shelf_ingredients;
+
                     api.fetchCocktail(this.$route.params.id).then(data => {
                         this.cocktail = data
                         api.fetchUser().then(u => {
@@ -242,12 +248,28 @@ export default {
 
 .cocktail-details-box__ingredients li {
     display: flex;
+    align-items: center;
     background-color: rgb(211, 227, 222);
     margin-bottom: 10px;
     padding: 5px 10px;
 }
 
-.cocktail-details-box__ingredients li span {
+.cocktail-details-box__ingredients li a {
+    text-decoration: none;
+}
+
+.cocktail-details-box__ingredients li a small {
+    color: var(--color-link-hover);
+}
+
+
+.cocktail-details-box__ingredients li a span {
+    display: block;
+    font-size: 0.7rem;
+    color: var(--color-text-muted);
+}
+
+.cocktail-details-box__ingredients li .cocktail-details-box__ingredients__amount {
     font-weight: 700;
     margin-left: auto;
     text-align: right;
