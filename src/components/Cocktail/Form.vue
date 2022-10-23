@@ -31,6 +31,7 @@ import OverlayLoader from './../OverlayLoader.vue'
         <div class="form-group">
             <label class="form-label" for="tags">Tags:</label>
             <input class="form-input" type="text" id="tags" v-model="cocktailTags">
+            <p class="form-input-hint">Separate multiple tags with a comma (",").</p>
         </div>
         <div class="form-group">
             <label class="form-label" for="images">Images:</label>
@@ -106,6 +107,8 @@ export default {
         }
     },
     created() {
+        document.title = `Cocktail Form \u22C5 Salt Rim`
+
         this.isLoading = true;
         this.cocktailId = this.$route.query.id || null;
 
@@ -114,6 +117,7 @@ export default {
                 this.cocktail = data;
                 this.images[0].copyright = this.cocktail.image_copyright;
                 this.isLoading = false;
+                document.title = `Cocktail form \u22C5 ${this.cocktail.name} \u22C5 Salt Rim`
             })
         }
 

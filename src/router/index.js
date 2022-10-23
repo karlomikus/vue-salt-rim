@@ -70,11 +70,11 @@ const router = createRouter({
   ]
 });
 
-router.afterEach((to) => {
-  nextTick(() => {
-      document.title = 'Salt Rim - ' + (to.meta.title || DEFAULT_TITLE);
-  });
-});
+// router.afterEach((to) => {
+//   nextTick(() => {
+//       document.title = 'Salt Rim - ' + (to.meta.title || DEFAULT_TITLE);
+//   });
+// });
 
 router.beforeEach(async (to, from) => {
   const auth = new Auth();

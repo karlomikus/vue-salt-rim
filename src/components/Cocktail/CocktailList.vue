@@ -64,6 +64,9 @@ export default {
         stateMapping: singleIndexMapping('cocktails:name:asc'),
       },
     };
+  },
+  created() {
+    document.title = `Cocktails \u22C5 Salt Rim`
   }
 }
 </script>

@@ -87,6 +87,11 @@ export default {
         ingredient: {},
         isAddedToShelf: false,
     }),
+    watch: {
+        ingredient(val) {
+            document.title = `${val.name} \u22C5 Salt Rim`
+        }
+    },
     created() {
         this.$watch(
             () => this.$route.params.id,

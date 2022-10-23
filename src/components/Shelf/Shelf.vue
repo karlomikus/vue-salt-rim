@@ -4,14 +4,12 @@ import CocktailListContainer from '../Cocktail/CocktailListContainer.vue'
 </script>
 
 <template>
-  <button class="button button--outline">My cocktail recipes</button>
-  <button class="button button--outline">Add collection</button>
-  <h2 class="page-subtitle">Select a cocktail</h2>
+  <h2 class="page-subtitle">Quick actions</h2>
   <div class="home-actions">
-    <a href="#">I'm feeling lucky</a>
-    <a href="#">Gin base</a>
-    <a href="#">Whiskey base</a>
-    <a href="#">Vodka base</a>
+    <a href="#">Select a random cocktail</a>
+    <a href="#">My cocktail recipes</a>
+    <a href="#">Create a cocktail</a>
+    <a href="#">Create a collection</a>
     <a href="#">Tequila base</a>
     <a href="#">Brandy base</a>
   </div>
@@ -54,6 +52,8 @@ export default {
     shelfCocktails: []
   }),
   created() {
+    document.title = `Shelf \u22C5 Salt Rim`
+
     api.fetchUserFavoriteCocktails().then(data => {
       this.favoriteCocktails = data
     })

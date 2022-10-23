@@ -58,12 +58,16 @@ export default {
         };
     },
     created() {
+        document.title = `Ingredient Form \u22C5 Salt Rim`
+
         const ingredientId = this.$route.query.id || null;
 
         if (ingredientId) {
             api.fetchIngredient(ingredientId).then(data => {
                 this.ingredient = data;
                 this.images[0].copyright = this.ingredient.image_copyright;
+
+                document.title = `Ingredient Form \u22C5 ${this.ingredient.name} \u22C5 Salt Rim`
             })
         }
 

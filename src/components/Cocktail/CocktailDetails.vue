@@ -136,7 +136,13 @@ export default {
             return marked.parse(this.cocktail.description)
         }
     },
+    watch: {
+        cocktail(val) {
+            document.title = `${val.name} \u22C5 Salt Rim`
+        }
+    },
     created() {
+        document.title = `Cocktail \u22C5 Salt Rim`
         this.$watch(
             () => this.$route.params,
             () => {

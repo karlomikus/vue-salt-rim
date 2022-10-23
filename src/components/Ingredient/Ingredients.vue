@@ -67,6 +67,8 @@ export default {
         }
     },
     created() {
+        document.title = `Ingredients \u22C5 Salt Rim`
+
         api.fetchIngredients().then(data => {
             this.ingredients = data
         });
