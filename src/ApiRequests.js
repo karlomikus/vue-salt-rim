@@ -4,6 +4,16 @@ class ApiRequests {
         // this.token = localStorage.getItem('user_token');
     }
 
+    async handleResponse(response) {
+        if (!response.ok) {
+            const jsonBody = await response.json();
+
+            return Promise.reject(response)
+        }
+
+        return response;
+    }
+
     getHeaders() {
         return new Headers({
             'Authorization': 'Bearer ' + localStorage.getItem('user_token'),
@@ -35,6 +45,12 @@ class ApiRequests {
             method: type,
             headers: this.getHeaders(),
             body: JSON.stringify(data)
+        }).then(response => {
+            if (!response.ok) {
+                return Promise.reject(response)
+            }
+
+            return response;
         })).json();
     }
 
@@ -65,6 +81,12 @@ class ApiRequests {
         return this.parseResponse(jsonResp);
     }
 
+    async randomCocktail() {
+        let jsonResp = await this.getRequest(`/api/cocktails/random`);
+
+        return this.parseResponse(jsonResp);
+    }
+
     async deleteCocktail(id) {
         let jsonResp = await this.deleteRequest(`/api/cocktails/${id}`);
 
@@ -79,6 +101,12 @@ class ApiRequests {
 
     async fetchIngredients() {
         let jsonResp = await this.getRequest(`/api/ingredients`);
+
+        return this.parseResponse(jsonResp);
+    }
+
+    async fetchIngredientsOnShoppingList() {
+        let jsonResp = await this.getRequest(`/api/ingredients?on_shopping_list=true`);
 
         return this.parseResponse(jsonResp);
     }
@@ -143,6 +171,12 @@ class ApiRequests {
         return this.parseResponse(jsonResp);
     }
 
+    async updateIngredient(id, data) {
+        let jsonResp = await this.postRequest(`/api/ingredients/${id}`, data, 'PUT');
+
+        return this.parseResponse(jsonResp);
+    }
+
     async deleteIngredient(id) {
         let jsonResp = await this.deleteRequest(`/api/ingredients/${id}`);
 
@@ -191,8 +225,18 @@ class ApiRequests {
         return this.parseResponse(jsonResp);
     }
 
+    async addIngredientsToShoppingList(data) {
+        let jsonResp = await this.postRequest(`/api/shopping-lists/batch`, data);
+
+        return this.parseResponse(jsonResp);
+    }
+
     parseResponse(resp) {
-        return resp.data;
+        if ('data' in resp) {
+            return resp.data;
+        }
+
+        return resp
     }
 }
 

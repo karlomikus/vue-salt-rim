@@ -8,11 +8,12 @@
         <div class="form-group">
             <label class="form-label form-label--required" for="category">Category:</label>
             <select class="form-select" id="category" v-model="ingredient.ingredient_category_id">
+                <option :value="undefined" disabled>Select a category...</option>
                 <option v-for="cat in categories" :value="cat.id">{{ cat.name }}</option>
             </select>
         </div>
         <div class="form-group">
-            <label class="form-label" for="strength">Strength:</label>
+            <label class="form-label form-label--required" for="strength">Strength (%):</label>
             <input class="form-input" type="text" id="strength" v-model="ingredient.strength" required>
         </div>
         <div class="form-group">
@@ -29,7 +30,7 @@
         </div>
         <div class="form-group">
             <label class="form-label" for="images">Images:</label>
-            <input class="form-input" type="file" id="images" @change="processImage">
+            <input class="form-input" type="file" id="images" ref="image">
         </div>
         <div class="form-group">
             <label class="form-label" for="copyright">Image copyright:</label>
@@ -50,6 +51,7 @@ const api = new ApiRequests();
 export default {
     data() {
         return {
+            ingredientId: null,
             ingredient: {},
             images: [
                 {image: null, copyright: null}
@@ -60,10 +62,10 @@ export default {
     created() {
         document.title = `Ingredient Form \u22C5 Salt Rim`
 
-        const ingredientId = this.$route.query.id || null;
+        this.ingredientId = this.$route.query.id || null;
 
-        if (ingredientId) {
-            api.fetchIngredient(ingredientId).then(data => {
+        if (this.ingredientId) {
+            api.fetchIngredient(this.ingredientId).then(data => {
                 this.ingredient = data;
                 this.images[0].copyright = this.ingredient.image_copyright;
 
@@ -95,8 +97,7 @@ export default {
                 formData.append('images[0][copyright]', this.images[0].copyright)
 
                 const resp = await api.uploadImages(formData).catch(e => {
-                    this.$toast.error('An error occured while uploading images!');
-                    console.error(e)
+                    this.$toast.error('An error occured while uploading images. Your ingredient is still saved.');
                 });
 
                 if (resp) {
@@ -104,18 +105,14 @@ export default {
                 }
             }
 
-            if (this.cocktailId) {
-                // api.updateCocktail(this.cocktailId, postData).then(data => {
-                //     this.$toast.open({
-                //         message: 'Cocktail updated'
-                //     });
-                //     this.$router.push({ name: 'cocktails.show', params: { id: data.id } })
-                // })
+            if (this.ingredientId) {
+                api.updateIngredient(this.ingredientId, postData).then(data => {
+                    this.$toast.default('Ingredient updated');
+                    this.$router.push({ name: 'ingredients.show', params: { id: data.id } })
+                })
             } else {
                 api.saveIngredient(postData).then(data => {
-                    this.$toast.open({
-                        message: 'Ingredient created'
-                    });
+                    this.$toast.default('Ingredient created');
                     this.$router.push({ name: 'ingredients.show', params: { id: data.id } })
                 })
             }
@@ -123,29 +120,3 @@ export default {
     }
 }
 </script>
-
-<style scope>
-.cocktail-form__ingredients {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-}
-
-.cocktail-form__ingredients li {
-    display: grid;
-    grid-template-columns: 4fr 1fr 1fr;
-    grid-template-rows: auto auto;
-    column-gap: 10px;
-    row-gap: 10px;
-}
-
-.cocktail-form__ingredients li .form-group {
-    margin: 0;
-}
-
-.cocktail-form__ingredients__actions {
-    grid-column: span 3;
-    text-align: right;
-    margin-bottom: 20px;
-}
-</style>

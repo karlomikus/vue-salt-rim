@@ -161,8 +161,7 @@ export default {
                 formData.append('images[0][copyright]', this.images[0].copyright)
 
                 const resp = await api.uploadImages(formData).catch(e => {
-                    this.$toast.error('An error occured while uploading images!');
-                    console.error(e)
+                    this.$toast.error('An error occured while uploading images. Your cocktail is still saved.');
                 });
 
                 if (resp) {
@@ -177,6 +176,15 @@ export default {
                         message: `Cocktail updated successfully.`
                     });
                     this.$router.push({ name: 'cocktails.show', params: { id: data.id } })
+                }).catch(async errorResponse => {
+                    if (errorResponse.status == 422) {
+                        const body = await errorResponse.json();
+                        this.$toast.error(body.message);
+                    } else {
+                        this.$toast.error(`Error occured: ${errorResponse.status}`);
+                    }
+
+                    this.isLoading = false;
                 })
             } else {
                 api.saveCocktail(postData).then(data => {
@@ -185,6 +193,15 @@ export default {
                         message: 'Cocktail created successfully.'
                     });
                     this.$router.push({ name: 'cocktails.show', params: { id: data.id } })
+                }).catch(async errorResponse => {
+                    if (errorResponse.status == 422) {
+                        const body = await errorResponse.json();
+                        this.$toast.error(body.message);
+                    } else {
+                        this.$toast.error(`Error occured: ${errorResponse.status}`);
+                    }
+
+                    this.isLoading = false;
                 })
             }
         }

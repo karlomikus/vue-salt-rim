@@ -31,6 +31,9 @@ import SiteAutocomplete from '../components/SiteAutocomplete.vue'
 .site-header {
   margin-bottom: 30px;
   background-color: var(--color-site-header);
+}
+
+.header-bar {
   padding: 20px;
 }
 

@@ -77,7 +77,7 @@ export default {
 
 <style>
 .site-autocomplete {
-    padding: 30px 0 20px 0;
+    padding: 20px 20px 40px 20px;
     max-width: var(--site-width);
     margin: 0 auto;
 }
@@ -132,7 +132,7 @@ export default {
     border-radius: 50%;
     background-color: #eae4e9;
     background-position: center center;
-    background-size: contain;
+    background-size: cover;
     background-repeat: no-repeat;
     margin-right: 10px;
 }
@@ -179,11 +179,5 @@ export default {
     position: absolute;
     top: 10px;
     right: 15px;
-}
-
-@media (max-width: 750px) {
-    .site-autocomplete {
-        padding: 10px 0 10px 0;
-    }
 }
 </style>

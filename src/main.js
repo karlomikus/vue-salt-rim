@@ -3,7 +3,7 @@ import App from './App.vue'
 import ToastPlugin from 'vue-toast-notification';
 import InstantSearch from 'vue-instantsearch/vue3/es';
 import router from './router'
-import 'vue-toast-notification/dist/theme-sugar.css';
+import 'vue-toast-notification/dist/theme-default.css';
 import './assets/main.css'
 
 const app = createApp(App)
@@ -15,7 +15,8 @@ app.use(router)
 app.use(InstantSearch)
 app.use(ToastPlugin, {
     position: 'top',
-    type: 'default'
+    type: 'default',
+    duration: 4000,
 });
 
 app.mount('#app')

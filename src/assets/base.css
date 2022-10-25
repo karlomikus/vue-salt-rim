@@ -1,136 +1,68 @@
 @import url('https://fonts.googleapis.com/css2?family=Aboreto&family=Bitter:wght@400;700&family=Inter:wght@400;700&family=Montagu+Slab:opsz,wght@16..144,400;16..144,500&display=swap');
 
 :root {
-  --color-bg: #fff4f6;
-  --color-bg-dark: #f2d4d9;
-  --color-text: #454b60;
-  --color-text-muted: #7c84a0;
-  --color-link-hover: #aa5076;
-  --color-tag: #DFE7FD;
-  --color-tag-hover: #faeaab;
-  --color-site-header: #737db7;
-  --color-btn-default: #454b60;
-  --color-btn-default-hover: #2b3042;
+    --color-bg: #fff4f6;
+    --color-bg-dark: #f2d4d9;
+    --color-text: #454b60;
+    --color-text-muted: #7c84a0;
+    --color-link-hover: #aa5076;
+    --color-tag: #DFE7FD;
+    --color-tag-hover: #faeaab;
+    --color-site-header: #737db7;
+    --color-btn-default: #454b60;
+    --color-btn-default-hover: #2b3042;
 
-  --font-primary: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
-  --font-accent: 'Bitter', serif;
-  --font-page-subtitle: 'Aboreto', serif;
+    --font-primary: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+    --font-accent: 'Bitter', serif;
+    --font-page-subtitle: 'Aboreto', serif;
 
-  --site-width: 1200px;
-  --cocktail-grid-card-width: 250px;
-  --cocktail-list-card-width: 350px;
+    --site-width: 1200px;
+    --cocktail-grid-card-width: 250px;
+    --cocktail-list-card-width: 350px;
 
-  --color-var-1: #D6E2E9;
-  --color-var-2: #FFF1E6;
-  --color-var-3: #FDE2E4;
-  --color-var-4: #E2ECE9;
+    --color-var-1: #D6E2E9;
+    --color-var-2: #FFF1E6;
+    --color-var-3: #FDE2E4;
+    --color-var-4: #E2ECE9;
 
-  --shadow-color: 350deg 28% 74%;
-  --shadow-elevation-medium:
-    0px 0.8px 1.1px hsl(var(--shadow-color) / 0.1),
-    0px 2.8px 3.7px -0.4px hsl(var(--shadow-color) / 0.16),
-    0px 5.9px 7.9px -0.7px hsl(var(--shadow-color) / 0.22),
-    0.1px 12.9px 17.2px -1.1px hsl(var(--shadow-color) / 0.28);
+    --shadow-color: 350deg 28% 74%;
+    --shadow-elevation-medium:
+        0px 0.8px 1.1px hsl(var(--shadow-color) / 0.1),
+        0px 2.8px 3.7px -0.4px hsl(var(--shadow-color) / 0.16),
+        0px 5.9px 7.9px -0.7px hsl(var(--shadow-color) / 0.22),
+        0.1px 12.9px 17.2px -1.1px hsl(var(--shadow-color) / 0.28);
 }
 
 *,
 *::before,
 *::after {
-  box-sizing: border-box;
-  margin: 0;
-  position: relative;
-  font-weight: normal;
+    box-sizing: border-box;
+    margin: 0;
+    position: relative;
+    font-weight: normal;
 }
 
 strong {
-  font-weight: 700;
+    font-weight: 700;
 }
 
 body {
-  color: var(--color-text);
-  background-color: var(--color-bg);
-  /* background-image: url("bg.png"); */
-  line-height: 1.6;
-  font-family: var(--font-primary);
-  font-size: 16px;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+    color: var(--color-text);
+    background-color: var(--color-bg);
+    line-height: 1.6;
+    font-family: var(--font-primary);
+    font-size: 16px;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
 
 a {
-  color: var(--color-text);
+    color: var(--color-text);
 }
 
-a:hover, a:focus, a:active {
-  color: var(--color-link-hover);
-}
-
-.form-group {
-  margin-bottom: 20px;
-}
-
-.form-label {
-  display: block;
-  display: block;
-  font-size: 0.8rem;
-  margin-bottom: 2px;
-  color: #866269;
-}
-
-.form-label--required::after {
-  content: '*';
-  color: rgb(223, 45, 32);
-}
-
-.form-input, .form-select {
-  width: 100%;
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  appearance: none;
-  background: rgba(255, 255, 255, .5);
-  border: 0;
-  border-bottom: 2px solid var(--color-bg-dark);
-  border-radius: 5px;
-  height: 3rem;
-  font-size: 1.2rem;
-  line-height: 1.7rem;
-  outline: 0;
-  padding: 10px 15px;
-  vertical-align: middle;
-  color: var(--color-text);
-  font-family: var(--font-primary);
-  transition: all ease-in-out .1s;
-}
-
-textarea.form-input,
-.form-input[type="file"] {
-  height: auto;
-}
-
-.form-select:not([multiple]):not([size]) {
-  background: rgba(255, 255, 255, .5) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' width='24' height='24'%3E%3Cpath fill='none' d='M0 0h24v24H0z'/%3E%3Cpath d='M12 15l-4.243-4.243 1.415-1.414L12 12.172l2.828-2.829 1.415 1.414z'/%3E%3C/svg%3E") no-repeat right;
-  padding-right: 1.2rem;
-}
-
-.form-input:focus, .form-select:focus {
-  border-color: var(--color-text);
-  background: #fff;
-}
-
-.form-actions {
-  text-align: right;
-  border-top: 2px solid var(--color-bg-dark);
-  margin: 20px 0;
-  padding: 20px 0;
-}
-
-.form-actions .button {
-  margin-left: 10px;
-}
-
-.form-input-hint {
-  font-size: .7rem;
-  margin-top: .2rem;
-  color: #866269;
+a:hover,
+a:focus,
+a:active {
+    color: var(--color-link-hover);
 }

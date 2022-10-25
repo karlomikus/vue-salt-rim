@@ -48,11 +48,15 @@
 .button--icon {
     display: flex;
     align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    padding: 0;
 }
 
-.button--icon svg {
-    margin-right: 5px;
-}
+/* .button--icon:hover svg {
+    fill: #fff;
+} */
 
 .button-icon-action {
     border: 0;
