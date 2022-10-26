@@ -51,7 +51,12 @@ import CocktailListContainer from '../Cocktail/CocktailListContainer.vue'
 
     <h2 class="page-subtitle">Your shopping list ({{ shoppingListIngredients.length }})</h2>
     <div class="shopping-list-container" v-if="shoppingListIngredients.length > 0">
-        <IngredientListItem v-for="ingredient in shoppingListIngredients" :ingredient="ingredient" :key="ingredient.id" />
+        <IngredientListItem
+            v-for="ingredient in shoppingListIngredients"
+            :ingredient="ingredient"
+            :key="ingredient.id"
+            @removedFromShoppingList="removeIngFromList(ingredient)"
+            @addedToShelf="removeIngFromList(ingredient)" />
     </div>
     <div class="empty-state" v-else>
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
@@ -99,6 +104,9 @@ export default {
             api.randomCocktail().then(resp => {
                 this.$router.push({ name: 'cocktails.show', params: { id: resp.slug } })
             });
+        },
+        removeIngFromList(ingredient) {
+            this.shoppingListIngredients.splice(this.shoppingListIngredients.indexOf(ingredient), 1)
         }
     }
 }

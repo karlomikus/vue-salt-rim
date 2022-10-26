@@ -68,9 +68,16 @@ import Dropdown from './../Dropdown.vue';
         </div>
         <div class="cocktail-details-box cocktail-details-box--green">
             <h3 class="cocktail-details-box__title">Ingredients:</h3>
-            <div class="cocktail-details__servings">
-                <h4>Servings:</h4>
-                <button :class="{ 'active-serving': i == servings }" v-for="i in Array.from({ length: 4 }, (x, i) => i + 1)" @click="servings = i">{{ i }}</button>
+            <div style="display: grid; grid-template-columns: 1fr 1fr;">
+                <div class="cocktail-details__button-row">
+                    <h4>Servings:</h4>
+                    <button :class="{ 'active-serving': i == servings }" v-for="i in Array.from({ length: 4 }, (x, i) => i + 1)" @click="servings = i">{{ i }}</button>
+                </div>
+                <div class="cocktail-details__button-row" style="text-align:right">
+                    <h4>Units:</h4>
+                    <button :class="{ 'active-serving': currentUnit == 'ml' }" @click="currentUnit = 'ml'">ml</button>
+                    <button :class="{ 'active-serving': currentUnit == 'oz' }" @click="currentUnit = 'oz'">oz</button>
+                </div>
             </div>
             <ul class="cocktail-details-box__ingredients">
                 <li v-for="ing in cocktail.ingredients" :key="ing.sort">
@@ -79,10 +86,10 @@ import Dropdown from './../Dropdown.vue';
                         <small v-if="ing.optional">(optional)</small>
                         <span v-show="!shelfIngredients.includes(ing.ingredient_id)">You are missing this ingredient</span>
                     </RouterLink>
-                    <div class="cocktail-details-box__ingredients__amount">{{ ing.amount * servings }} {{ ing.units }}</div>
+                    <div class="cocktail-details-box__ingredients__amount">{{ parseIngredientAmount(ing) }}</div>
                 </li>
             </ul>
-            <button type="button" class="button button--outline" @click="addMissingIngredients">Add missing ingredients to my shopping list</button>
+            <button v-show="missingIngredientIds.length > 0" type="button" class="button button--dark button--small" @click="addMissingIngredients">Add missing ingredients to my shopping list</button>
         </div>
         <div class="cocktail-details-box cocktail-details-box--yellow">
             <h3 class="cocktail-details-box__title">Instructions:</h3>
@@ -99,6 +106,7 @@ import Dropdown from './../Dropdown.vue';
 import { marked } from 'marked';
 import ApiRequests from '../../ApiRequests';
 import Auth from '@/Auth';
+import Unitz from 'unitz'
 
 const api = new ApiRequests();
 
@@ -107,7 +115,9 @@ export default {
         cocktail: {},
         isFavorited: false,
         servings: 1,
-        shelfIngredients: []
+        shelfIngredients: [],
+        shoppingListIngredients: [],
+        currentUnit: 'ml'
     }),
     computed: {
         parsedInstructions() {
@@ -126,7 +136,7 @@ export default {
         },
         missingIngredientIds() {
             return this.cocktail.ingredients.filter(ing => {
-                return !this.shelfIngredients.includes(ing.ingredient_id)
+                return !this.shelfIngredients.includes(ing.ingredient_id) && !this.shoppingListIngredients.includes(ing.ingredient_id)
             }).map(cing => cing.ingredient_id)
         }
     },
@@ -142,12 +152,11 @@ export default {
             () => {
                 if (this.$route.name == 'cocktails.show') {
                     this.shelfIngredients = Auth.getUser().shelf_ingredients;
+                    this.shoppingListIngredients = Auth.getUser().shopping_lists;
 
                     api.fetchCocktail(this.$route.params.id).then(data => {
                         this.cocktail = data
-                        api.fetchUser().then(u => {
-                            this.isFavorited = u.favorite_cocktails.includes(this.cocktail.id)
-                        })
+                        this.isFavorited = Auth.getUser().favorite_cocktails.includes(this.cocktail.id);
                     }).catch(e => {
                         this.$toast.open({
                             message: e,
@@ -164,9 +173,7 @@ export default {
         favorite() {
             api.favoriteCocktail(this.cocktail.id).then(resp => {
                 this.isFavorited = resp.is_favorited
-                this.$toast.open({
-                    message: this.isFavorited ? 'Added to favorites' : 'Removed from favorites'
-                });
+                this.$toast.default(this.isFavorited ? `Added "${this.cocktail.name}" to favorites` : `Removed "${this.cocktail.name}" from favorites`);
             })
         },
         deleteCocktail() {
@@ -184,9 +191,28 @@ export default {
                 ingredient_ids: this.missingIngredientIds
             };
 
-            api.addIngredientsToShoppingList(postData).then(resp => {
-                this.$toast.default(`Added ${this.missingIngredientIds.length} ingredients to your shopping list.`)
+            api.addIngredientsToShoppingList(postData).then(data => {
+                this.$toast.default(`Added ${data.length} ingredients to your shopping list.`)
             })
+        },
+        parseIngredientAmount(ingredient) {
+            let amount = ingredient.amount * this.servings;
+            let units = ingredient.units.toLowerCase();
+
+            // Don't convert unconvertable units
+            if (units != 'ml' && units != 'oz') {
+                return `${amount} ${units}`;
+            }
+
+            if (units == 'ml' && this.currentUnit == 'oz') {
+                return new Unitz.Fraction(amount / 30, [2, 3, 4]).string + ' ' + this.currentUnit
+            }
+
+            if (units == 'oz' && this.currentUnit == 'ml') {
+                return amount * 30 + ' ' + this.currentUnit
+            }
+
+            return `${amount} ${units}`;
         }
     }
 }
@@ -271,7 +297,6 @@ export default {
     color: var(--color-link-hover);
 }
 
-
 .cocktail-details-box__ingredients li a span {
     display: block;
     font-size: 0.7rem;
@@ -280,8 +305,10 @@ export default {
 
 .cocktail-details-box__ingredients li .cocktail-details-box__ingredients__amount {
     font-weight: 700;
+    font-size: 1.2rem;
     margin-left: auto;
     text-align: right;
+    font-feature-settings: "frac";
 }
 
 .cocktail-details-box__actions {
@@ -298,29 +325,29 @@ export default {
     max-height: 150px;
 }
 
-.cocktail-details__servings {
+.cocktail-details__button-row {
     margin-bottom: 20px;
 }
 
-.cocktail-details__servings h4 {
+.cocktail-details__button-row h4 {
     font-size: 0.8rem;
 }
 
-.cocktail-details__servings button {
+.cocktail-details__button-row button {
     background: rgb(211, 227, 222);
     border: 3px solid rgb(211, 227, 222);
     font-size: 1.2rem;
-    width: 30px;
+    width: 35px;
     cursor: pointer;
     color: var(--color-text)
 }
 
-.cocktail-details__servings button.active-serving {
+.cocktail-details__button-row button.active-serving {
     background-color: rgb(162, 197, 186);
     border-color: rgb(162, 197, 186);
 }
 
-.cocktail-details__servings button:hover {
+.cocktail-details__button-row button:hover {
     border-color: rgb(129, 173, 159);
 }
 </style>

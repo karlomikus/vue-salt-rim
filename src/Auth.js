@@ -11,6 +11,12 @@ class Auth {
         return JSON.parse(localStorage.getItem('user'));
     }
 
+    static async refreshUser() {
+        const user = await api.fetchUser();
+
+        localStorage.setItem('user', JSON.stringify(user));
+    }
+
     async isLoggedIn() {
         try {
             const user = await api.fetchUser();

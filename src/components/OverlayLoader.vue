@@ -11,12 +11,14 @@ import Spinner from './Spinner.vue'
 <style scope>
 .overlay-loader {
     position: absolute;
+    top: 0;
+    left: 0;
     display: flex;
     background: rgba(255, 255, 255, 0.7);
     width: 100%;
     height: 100%;
-    min-height: 200px;
-    min-width: 200px;
+    /* min-height: 200px;
+    min-width: 200px; */
     align-items: center;
     justify-content: center;
     z-index: 10;

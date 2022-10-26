@@ -13,6 +13,7 @@
     "lodash": "^4.17.21",
     "marked": "^4.1.1",
     "pinia": "^2.0.23",
+    "unitz": "^0.6.0",
     "vue": "^3.2.40",
     "vue-instantsearch": "^4.6.0",
     "vue-router": "^4.1.5",

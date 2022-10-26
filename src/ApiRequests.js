@@ -231,6 +231,12 @@ class ApiRequests {
         return this.parseResponse(jsonResp);
     }
 
+    async removeIngredientsFromShoppingList(data) {
+        let jsonResp = await this.postRequest(`/api/shopping-lists/batch`, data, 'DELETE');
+
+        return this.parseResponse(jsonResp);
+    }
+
     parseResponse(resp) {
         if ('data' in resp) {
             return resp.data;
