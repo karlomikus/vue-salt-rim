@@ -18,6 +18,12 @@ Salt Rim is a web client made with Vue.js for connecting to Bar Assistant API.
 
 ## Installation
 
+``` bash
+$ docker run --name salt-rim -p 80:8080 --env-file ./.env salt-rim
+```
+
+Required ENV variables:
+
 TODO
 
 ## Contributing

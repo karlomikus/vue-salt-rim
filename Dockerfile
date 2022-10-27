@@ -1,13 +1,21 @@
-FROM node:latest-alpine
+FROM node:current-alpine3.15
 
-RUN mkdir -p /home/node/vue-cocktail/node_modules && chown -R node:node /home/node/vue-cocktail
+ENV VITE_BA_API_URL=
+ENV VITE_SEARCH_URL=
+ENV VITE_SEARCH_KEY=
 
-WORKDIR /home/node/vue-cocktail
+RUN npm install -g http-server
 
-COPY --chown=node:node . .
+WORKDIR /app
 
-USER node
+COPY package*.json ./
 
 RUN npm install
 
+COPY . .
+
 RUN npm run build
+
+EXPOSE 8080
+
+CMD [ "http-server", "dist" ]
