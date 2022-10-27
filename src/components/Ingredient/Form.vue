@@ -13,7 +13,7 @@
             </select>
         </div>
         <div class="form-group">
-            <label class="form-label form-label--required" for="strength">Strength (%):</label>
+            <label class="form-label form-label--required" for="strength">Strength (ABV %):</label>
             <input class="form-input" type="text" id="strength" v-model="ingredient.strength" required>
         </div>
         <div class="form-group">

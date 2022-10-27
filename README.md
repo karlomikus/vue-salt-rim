@@ -1,31 +1,29 @@
-# cocktail
+<p align="center">
+    <a href="https://karlomikus.com" target="_blank"><img width="700" src="https://i.imgur.com/WSKC7Dj.png" alt="Logo"></a>
+</p>
 
-SaltRim
+# 🍹 Salt Rim - Bar Assistent Web Client
 
-This template should help get you started developing with Vue 3 in Vite.
+Salt Rim is a web client made with Vue.js for connecting to Bar Assistant API.
 
-## Recommended IDE Setup
+## Features
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur) + [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin).
+- Beautiful UI for your Bar Asistant API instance
+- Quickly list and search for cocktails and ingredients
+- Add, update or delete cocktails and ingredients
+- Your personal shopping lists
+- Save your favorite cocktails
+- Automatically add missing ingredients to your shopping cart
+- Desktop and mobile support
 
-## Customize configuration
+## Installation
 
-See [Vite Configuration Reference](https://vitejs.dev/config/).
+TODO
 
-## Project Setup
+## Contributing
 
-```sh
-npm install
-```
+TODO
 
-### Compile and Hot-Reload for Development
+## License
 
-```sh
-npm run dev
-```
-
-### Compile and Minify for Production
-
-```sh
-npm run build
-```
+Salt Rim is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).

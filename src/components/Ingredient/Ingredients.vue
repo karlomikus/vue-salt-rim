@@ -171,6 +171,9 @@ export default {
 
 .ingredient-list .ingredient-list__description p {
     color: var(--color-text-muted);
+    overflow: hidden;
+    line-height: 1.6rem;
+    max-height: calc(3 * 1.6rem);
 }
 
 .ingredient-list .ingredient-list__image {

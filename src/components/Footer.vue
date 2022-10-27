@@ -22,7 +22,7 @@
                 </a>
             </div>
             <div class="site-footer__right">
-                Salt Rim v0.5.0
+                {{ clientVersion }}
                 <br>
                 {{ apiVersion }}
             </div>
@@ -40,11 +40,14 @@ export default {
         return {
             versions: {
                 api: null,
-                client: null,
+                client: this.app_version,
             }
         }
     },
     computed: {
+        clientVersion() {
+            return `Salt Rim ${this.versions.client}`
+        },
         apiVersion() {
             return `Bar Assistant ${this.versions.api}`
         }

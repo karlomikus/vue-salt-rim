@@ -13,8 +13,13 @@ import Dropdown from '@/components/Dropdown.vue';
                 <p>{{ ingredient.description }}</p>
                 <hr>
                 <p>
-                    <strong>Strength:</strong>
-                    {{ ingredient.strength <= 0 ? 'Non-alcoholic' : ingredient.strength + '%' }}
+                    <strong>Strength:</strong><br>
+                    <template v-if="ingredient.strength <= 0">
+                        Non-alcoholic
+                    </template>
+                    <template v-else>
+                        <abbr title="Alcohol by volume">ABV</abbr>: {{ ingredient.strength + '%' }} &middot; Proof: {{ ingredient.strength * 2 }}
+                    </template>
                 </p>
                 <hr>
                 <p><strong>Origin:</strong> {{ ingredient.origin ?? 'n/a' }}</p>
@@ -68,11 +73,14 @@ import Dropdown from '@/components/Dropdown.vue';
                 </Dropdown>
             </div>
             <h2 class="ingredient-details__box__title">Used in {{ ingredient.cocktails.length }} cocktails:</h2>
-            <ul>
+            <ul v-if="ingredient.cocktails.length > 0">
                 <li v-for="cocktail in ingredient.cocktails">
                     <RouterLink :to="{name: 'cocktails.show', params: {id: cocktail.slug}}">{{ cocktail.name }}</RouterLink>
                 </li>
             </ul>
+            <div v-else>
+                <RouterLink :to="{name: 'cocktails.form'}">Create a cocktail</RouterLink>
+            </div>
         </div>
     </div>
 </template>
@@ -175,7 +183,7 @@ export default {
 }
 
 .ingredient-details__box img {
-    max-width: 250px;
+    max-width: 350px;
     max-height: 400px;
     display: block;
     margin-top: -100px;
