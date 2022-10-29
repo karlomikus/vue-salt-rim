@@ -1,6 +1,6 @@
 class ApiRequests {
     constructor() {
-        this.url = import.meta.env.VITE_BA_API_URL;
+        this.url = window.srConfig.API_URL;
         // this.token = localStorage.getItem('user_token');
     }
 

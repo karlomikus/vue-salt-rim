@@ -6,13 +6,11 @@ import router from './router'
 import 'vue-toast-notification/dist/theme-default.css';
 import './assets/main.css'
 
-const VERSION = 'v0.1.0';
-
 const app = createApp(App)
 
-app.config.globalProperties.searchUrl = import.meta.env.VITE_SEARCH_URL;
-app.config.globalProperties.searchKey = import.meta.env.VITE_SEARCH_KEY;
-app.config.globalProperties.app_version = VERSION;
+app.config.globalProperties.searchUrl = window.srConfig.SEARCH_URL//import.meta.env.VITE_SEARCH_URL;
+app.config.globalProperties.searchKey = window.srConfig.SEARCH_KEY//import.meta.env.VITE_SEARCH_KEY;
+app.config.globalProperties.app_version = 'v0.1.0';
 
 app.use(router)
 app.use(InstantSearch)

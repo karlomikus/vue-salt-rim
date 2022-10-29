@@ -21,6 +21,7 @@
                 <label class="form-label" for="password">Password:</label>
                 <input class="form-input" type="password" id="password" v-model="password" required>
             </div>
+            <p>Bar Assistant server: <strong>{{ baServer }}</strong></p>
             <div style="text-align: right;">
                 <button type="submit" class="button button--dark">Login</button>
             </div>
@@ -40,6 +41,7 @@ export default {
         return {
             email: null,
             password: null,
+            baServer: import.meta.env.VITE_BA_API_URL
         }
     },
     methods: {

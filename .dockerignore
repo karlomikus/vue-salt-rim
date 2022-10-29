@@ -1,7 +1,10 @@
 /node_modules
 .env
+.env.dist
 README.md
 /art
+public/config.js
+/dist
 
 Dockerfile
 .dockerignore
