@@ -35,7 +35,7 @@ import CocktailGridContainer from './CocktailGridContainer.vue'
           <CocktailGridItem v-for="cocktail in items" :cocktail="cocktail" :key="cocktail.id" :observer="observer" />
         </CocktailGridContainer>
         <div style="text-align: center; margin: 20px 0;">
-          <button class="button" v-if="!isLastPage" @click="refineNext">
+          <button class="button button--dark" v-if="!isLastPage" @click="refineNext">
             Show more results
           </button>
         </div>
@@ -133,5 +133,11 @@ export default {
   cursor: pointer;
   width: 30px;
   height: 30px;
+}
+
+@media (max-width: 500px) {
+  .cocktail-list-search-container {
+    flex-wrap: wrap;
+  }
 }
 </style>

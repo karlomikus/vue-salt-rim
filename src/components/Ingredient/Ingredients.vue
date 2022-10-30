@@ -139,7 +139,7 @@ export default {
     list-style: none;
     padding: 0;
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(370px, 1fr));
     row-gap: 20px;
     column-gap: 20px;
 }
