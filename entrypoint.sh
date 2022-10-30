@@ -9,4 +9,4 @@ RUNTIME_ENV_CONFIG="
 echo $RUNTIME_ENV_CONFIG > dist/config.js
 echo $RUNTIME_ENV_CONFIG > public/config.js
 
-exec http-server dist/ -c-1
+exec http-server dist/ -c-1 --proxy http://localhost:8080?

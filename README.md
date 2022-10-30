@@ -20,13 +20,75 @@ Salt Rim is a web client used for connecting to your [Bar Assistant](https://git
 
 ## Installation
 
+[Docker image](https://hub.docker.com/r/kmikus12/salt-rim)
+
 ``` bash
-$ docker run --name salt-rim -p 80:8080 --env-file ./.env salt-rim
+# Dev server
+$ npm run dev
+
+# Build for prod
+$ npm run build
+```
+
+``` bash
+$ docker run --name salt-rim -p 8080:8080 --env-file .env salt-rim
 ```
 
 Required ENV variables:
 
-TODO
+``` env
+# Bar assistant API url
+API_URL=
+# Meilisearch url
+SEARCH_URL=
+# Meilisearch API key
+SEARCH_KEY=
+```
+
+## Docker compose
+
+Use the following docker compose template to get started with all required services
+
+```
+version: "3"
+
+services:
+  meilisearch:
+    container_name: ba-meilisearch
+    image: getmeili/meilisearch
+    environment:
+      - MEILI_MASTER_KEY=${MEILI_MASTER_KEY}
+      - MEILI_ENV=production
+    ports:
+      - 7777:7700
+    volumes:
+      - ./meilisearch:/meili_data
+
+  bar-assistant:
+    depends_on:
+      - meilisearch
+    container_name: bar-assistant
+    image: kmikus12/bar-assistant-server
+    environment:
+      - APP_URL=${BAR_ASSISTANT_URL}
+      - MEILISEARCH_KEY=${MEILI_MASTER_KEY}
+      - MEILISEARCH_HOST=http://meilisearch:7700
+    ports:
+      - 8000:80
+
+  salt-rim:
+    depends_on:
+      - meilisearch
+      - bar-assistant
+    container_name: salt-rim
+    image: kmikus12/salt-rim
+    environment:
+      - API_URL=${BAR_ASSISTANT_URL}
+      - SEARCH_URL=${MEILISEARCH_URL}
+      - SEARCH_KEY=${MEILI_MASTER_KEY}
+    ports:
+      - 8080:8080
+```
 
 ## Contributing
 
