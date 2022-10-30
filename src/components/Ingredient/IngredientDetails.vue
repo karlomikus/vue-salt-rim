@@ -60,7 +60,12 @@ import Dropdown from '@/components/Dropdown.vue';
                                 <path fill="none" d="M0 0h24v24H0z" />
                                 <path d="M15.366 3.438L18.577 9H22v2h-1.167l-.757 9.083a1 1 0 0 1-.996.917H4.92a1 1 0 0 1-.996-.917L3.166 11H2V9h3.422l3.212-5.562 1.732 1L7.732 9h8.535l-2.633-4.562 1.732-1zM18.826 11H5.173l.667 8h12.319l.667-8zM13 13v4h-2v-4h2zm-4 0v4H7v-4h2zm8 0v4h-2v-4h2z" />
                             </svg>
-                            Add to shopping list
+                            <template v-if="isAddedToShoppingList">
+                                Remove from shopping list
+                            </template>
+                            <template v-else>
+                                Add to shopping list
+                            </template>
                         </a>
                         <a class="dropdown-menu__item" href="#" @click.prevent="deleteIngredient">
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
@@ -87,6 +92,7 @@ import Dropdown from '@/components/Dropdown.vue';
 
 <script>
 import ApiRequests from '../../ApiRequests';
+import Auth from '@/Auth.js'
 
 const api = new ApiRequests();
 
@@ -95,6 +101,7 @@ export default {
         isLoading: false,
         ingredient: {},
         isAddedToShelf: false,
+        isAddedToShoppingList: false,
     }),
     watch: {
         ingredient(val) {
@@ -111,6 +118,9 @@ export default {
                     api.fetchIngredient(this.$route.params.id).then(data => {
                         this.ingredient = data
                         this.isLoading = false;
+
+                        const currUser = Auth.getUser();
+                        this.isAddedToShoppingList = currUser.shopping_lists.includes(this.ingredient.id)
 
                         api.fetchMyShelf().then(data => {
                             data.forEach(i => {
@@ -152,7 +162,21 @@ export default {
             }
         },
         toggleShoppingList() {
-            
+            const postData = {
+                ingredient_ids: [this.ingredient.id]
+            };
+
+            if (this.isAddedToShoppingList) {
+                api.removeIngredientsFromShoppingList(postData).then(() => {
+                    this.$toast.default(`Removed "${this.ingredient.name}" from your shopping list.`);
+                    this.isAddedToShoppingList = false;
+                })
+            } else {
+                api.addIngredientsToShoppingList(postData).then(() => {
+                    this.$toast.default(`Added "${this.ingredient.name}" to your shopping list.`)
+                    this.isAddedToShoppingList = true
+                })
+            }
         }
     }
 }

@@ -94,6 +94,11 @@ export default {
     transition: all ease-in-out .06s;
 }
 
+.site-autocomplete__input::placeholder {
+    color: #b4b8d1;
+    opacity: 1;
+}
+
 .site-autocomplete__input:focus {
     background-color: #fff;
     color: var(--color-text);
