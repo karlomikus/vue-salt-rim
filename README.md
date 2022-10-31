@@ -38,8 +38,7 @@ Create a new config file in `public/config.js`, with the following content
 ``` js
 window.srConfig = {}
 window.srConfig.API_URL = "YOUR_BA_API_URL"
-window.srConfig.SEARCH_URL = "MEILISEARCH_URL"
-window.srConfig.SEARCH_KEY = "MEILISEARCH_API_KEY"
+window.srConfig.MEILISEARCH_HOST = "YOUR_MEILISEARCH_URL"
 ```
 
 4. Run the build commands
@@ -50,54 +49,42 @@ $ npm run build
 
 This will create a `dist/` folder with ready to use static files.
 
-## Docker
-
-Note: Currenty WIP but it should work
-
-[Docker image](https://hub.docker.com/r/kmikus12/salt-rim)
-
-``` bash
-$ docker run --name kmikus12/salt-rim:latest -p 8080:8080 --env-file .env salt-rim
-```
-
-Required ENV variables:
-
-``` env
-# Bar assistant API url
-API_URL=
-# Meilisearch url
-SEARCH_URL=
-# Meilisearch API key
-SEARCH_KEY=
-```
-
 ## Docker compose
 
-Use the following `docker-compose.yml` template to get started with all required services
+    NOTE: Docker configuration for salt rim and bar assistant is still WIP, so anything can and will break.
+
+Use the following `docker-compose.yml` template to get started with all required services.
+
+With this setup you can access application by visiting `http://localhost:8080`.
+
+Default email and password:
+
+```
+email: admin@example.com
+password: password
+```
 
 ``` yml
 version: "3"
 
 services:
   meilisearch:
-    container_name: ba-meilisearch
     image: getmeili/meilisearch
     environment:
-      - MEILI_MASTER_KEY=${MEILI_MASTER_KEY}
+      - MEILI_MASTER_KEY=JwBO9HU24uBj0MQPonm5Ui8I8wBkKFwj6pjwkPZ2YjYzWIcyZu
       - MEILI_ENV=production
     ports:
-      - 7777:7700
+      - 7700:7700
     volumes:
       - ./meilisearch:/meili_data
 
   bar-assistant:
     depends_on:
       - meilisearch
-    container_name: bar-assistant
     image: kmikus12/bar-assistant-server
     environment:
-      - APP_URL=${BAR_ASSISTANT_URL}
-      - MEILISEARCH_KEY=${MEILI_MASTER_KEY}
+      - APP_URL=http://localhost:8000
+      - MEILISEARCH_KEY=JwBO9HU24uBj0MQPonm5Ui8I8wBkKFwj6pjwkPZ2YjYzWIcyZu
       - MEILISEARCH_HOST=http://meilisearch:7700
     ports:
       - 8000:80
@@ -106,12 +93,10 @@ services:
     depends_on:
       - meilisearch
       - bar-assistant
-    container_name: salt-rim
     image: kmikus12/salt-rim
     environment:
-      - API_URL=${BAR_ASSISTANT_URL}
-      - SEARCH_URL=${MEILISEARCH_URL}
-      - SEARCH_KEY=${MEILI_MASTER_KEY}
+      - API_URL=http://localhost:8000
+      - SEARCH_URL=http://localhost:7700
     ports:
       - 8080:8080
 ```
