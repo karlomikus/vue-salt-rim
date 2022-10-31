@@ -139,7 +139,7 @@ export default {
     list-style: none;
     padding: 0;
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(370px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
     row-gap: 20px;
     column-gap: 20px;
 }
@@ -191,6 +191,18 @@ export default {
 
 .ingredient-list .ingredient-list__image img {
     height: 115px;
+}
+
+@media (max-width: 450px) {
+    .ingredient-list .ingredient-list__image {
+        margin-right: 10px;
+        width: 90px;
+        height: 90px;
+    }
+
+    .ingredient-list .ingredient-list__image img {
+        height: 90px;
+    }
 }
 
 .ingredient-list__actions {

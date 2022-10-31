@@ -48,13 +48,14 @@ import CocktailGridContainer from './CocktailGridContainer.vue'
 import { instantMeiliSearch } from '@meilisearch/instant-meilisearch';
 import { history as historyRouter } from 'instantsearch.js/es/lib/routers';
 import { singleIndex as singleIndexMapping } from 'instantsearch.js/es/lib/stateMappings';
+import Auth from '@/Auth.js';
 
 export default {
   data() {
     return {
       searchClient: instantMeiliSearch(
-        this.searchUrl,
-        this.searchKey,
+        Auth.getUserSearchSettings().host,
+        Auth.getUserSearchSettings().key,
         {
           keepZeroFacets: true
         }

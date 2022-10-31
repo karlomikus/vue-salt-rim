@@ -15,7 +15,7 @@
         <form @submit.prevent="login">
             <div class="form-group">
                 <label class="form-label" for="email">Email:</label>
-                <input class="form-input" type="text" id="email" v-model="email" required>
+                <input class="form-input" type="email" id="email" v-model="email" required>
             </div>
             <div class="form-group">
                 <label class="form-label" for="password">Password:</label>
@@ -41,7 +41,7 @@ export default {
         return {
             email: null,
             password: null,
-            baServer: import.meta.env.VITE_BA_API_URL
+            baServer: window.srConfig.API_URL
         }
     },
     methods: {
@@ -71,12 +71,14 @@ export default {
     align-items: center;
     justify-content: center;
     flex-direction: column;
+    padding: 10px;
 }
 
 .login-page form {
     margin-top: 20px;
     background-color: var(--color-bg);
-    width: 400px;
+    width: 100%;
+    max-width: 400px;
     padding: 30px;
     border-radius: 20px;
 }

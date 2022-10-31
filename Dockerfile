@@ -13,7 +13,7 @@ COPY . .
 RUN npm run build
 
 COPY ./entrypoint.sh /usr/local/bin/entrypoint
-RUN chmod guo+rwx /usr/local/bin/entrypoint
+RUN chmod +x /usr/local/bin/entrypoint
 
 EXPOSE 8080
 

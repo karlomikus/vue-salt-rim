@@ -165,7 +165,7 @@ export default {
 
 .shopping-list-container {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(330px, 1fr));
     column-gap: 20px;
     row-gap: 20px;
 }

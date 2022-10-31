@@ -253,6 +253,12 @@ export default {
     border-top-right-radius: 20px;
 }
 
+@media (max-width: 450px) {
+    .cocktail-details__graphic {
+        height: 500px;
+    }
+}
+
 .cocktail-details__graphic__copyright {
     display: inline;
     background-color: rgba(0, 0, 0, .4);
@@ -311,13 +317,19 @@ export default {
     font-feature-settings: "frac";
 }
 
+@media (max-width: 450px) {
+    .cocktail-details-box__ingredients li .cocktail-details-box__ingredients__amount {
+        font-size: 1rem;
+    }
+}
+
 .cocktail-details-box__actions {
     position: absolute;
     right: 20px;
-    top: -30px;
+    top: -25px;
     display: grid;
     grid-template-columns: 1fr 1fr;
-    column-gap: 10px;
+    column-gap: 5px;
 }
 
 .cocktail-details-box__description {

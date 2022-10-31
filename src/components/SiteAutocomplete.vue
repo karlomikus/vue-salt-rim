@@ -4,7 +4,7 @@
             <ais-configure :hitsPerPage="10" />
             <ais-autocomplete>
                 <template v-slot="{ currentRefinement, indices, refine }">
-                    <input type="search" :value="currentRefinement" placeholder="Search for a cocktail or ingredient..."
+                    <input type="text" :value="currentRefinement" placeholder="Search for a cocktail or ingredient..."
                         class="site-autocomplete__input" @input="refine($event.currentTarget.value)"
                         @focus="searchIsFocused = true" @blur="handleBlur">
                     <svg class="site-autocomplete__search-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
@@ -47,14 +47,15 @@
 
 <script>
 import { instantMeiliSearch } from '@meilisearch/instant-meilisearch';
+import Auth from '@/Auth.js';
 
 export default {
     data() {
         return {
             searchIsFocused: false,
             searchClient: instantMeiliSearch(
-                this.searchUrl,
-                this.searchKey,
+                Auth.getUserSearchSettings().host,
+                Auth.getUserSearchSettings().key,
             )
         }
     },
@@ -77,9 +78,15 @@ export default {
 
 <style>
 .site-autocomplete {
-    padding: 20px 20px 40px 20px;
+    padding: 20px 10px 40px 10px;
     max-width: var(--site-width);
     margin: 0 auto;
+}
+
+@media (max-width: 450px) {
+    .site-autocomplete {
+        padding: 5px 10px 20px 10px;
+    }
 }
 
 .site-autocomplete__input {

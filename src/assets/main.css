@@ -12,7 +12,7 @@ main {
     margin: 2rem;
     max-width: var(--site-width);
     margin: 0 auto;
-    padding: 0 20px;
+    padding: 0 10px;
 }
 
 .page-subtitle {

@@ -11,6 +11,15 @@ class Auth {
         return JSON.parse(localStorage.getItem('user'));
     }
 
+    static getUserSearchSettings() {
+        const user = this.getUser();
+
+        return {
+            host: window.srConfig.MEILISEARCH_HOST,
+            key: user.search_api_key,
+        };
+    }
+
     static async refreshUser() {
         const user = await api.fetchUser();
 

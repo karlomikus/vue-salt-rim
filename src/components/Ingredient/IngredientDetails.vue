@@ -24,7 +24,9 @@ import Dropdown from '@/components/Dropdown.vue';
                 <hr>
                 <p><strong>Origin:</strong> {{ ingredient.origin ?? 'n/a' }}</p>
             </div>
-            <img :src="ingredient.image_url" :alt="ingredient.name" />
+            <div class="ingredient-details__box__image-container">
+                <img :src="ingredient.image_url" :alt="ingredient.name" />
+            </div>
         </div>
         <div class="ingredient-details__cocktails">
             <div class="ingredient-details__actions">
@@ -206,12 +208,39 @@ export default {
     display: flex;
 }
 
-.ingredient-details__box img {
+@media (max-width: 450px) {
+    .ingredient-details__box {
+        flex-direction: column-reverse;
+    }
+}
+
+.ingredient-details__box__image-container {
     max-width: 350px;
     max-height: 400px;
-    display: block;
     margin-top: -100px;
     margin-left: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.ingredient-details__box img {
+    display: block;
+    width: auto;
+    height: auto;
+    max-width: 100%;
+    max-height: 100%;
+}
+
+@media (max-width: 450px) {
+    .ingredient-details__box__image-container {
+        margin-left: 0;
+        max-height: none;
+    }
+
+    .ingredient-details__box img {
+        max-height: 300px;
+    }
 }
 
 .ingredient-details__box__content {
@@ -273,12 +302,12 @@ export default {
 .ingredient-details__actions {
     position: absolute;
     z-index: 5;
-    top: -30px;
-    right: 30px;
+    top: -25px;
+    right: 20px;
     display: flex;
 }
 
 .ingredient-details__actions .button-circle {
-    margin-left: 10px;
+    margin-left: 5px;
 }
 </style>

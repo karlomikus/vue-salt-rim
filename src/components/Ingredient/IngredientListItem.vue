@@ -10,7 +10,7 @@ import OverlayLoader from '@/components/OverlayLoader.vue';
         </div>
         <div class="ingredient-list-item__content">
             <h3><RouterLink :to="{ name: 'ingredients.show', params: { id: ingredient.slug } }">{{ ingredient.name }}</RouterLink></h3>
-            <p>{{ ingredient.description }}</p>
+            <!-- <p>{{ ingredient.description }}</p> -->
             <a href="#" @click.prevent="addToShelf">Add to my shelf</a> &middot;
             <a href="#" @click.prevent="removeFromShoppingList">Remove from list</a>
         </div>

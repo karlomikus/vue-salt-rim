@@ -34,7 +34,7 @@ import SiteAutocomplete from '../components/SiteAutocomplete.vue'
 }
 
 .header-bar {
-  padding: 20px;
+  padding: 20px 10px;
 }
 
 .header-bar,
