@@ -63,6 +63,7 @@ main {
 
 .cocktail-tags li {
     background-color: var(--color-tag);
+    color: var(--color-text);
     border-radius: 4px;
     margin: 3px;
     padding: 2px 5px;
@@ -103,4 +104,20 @@ main {
     font-size: 0.8rem;
     text-shadow: none;
     opacity: .7;
+}
+
+.flags {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    font-style: italic;
+    font-size: 0.8rem;
+    row-gap: 5px;
+    display: grid;
+    color: var(--color-text-muted);
+}
+
+.flags li {
+    background-color: rgba(0, 0, 0, .03);
+    border-radius: 2px;
 }

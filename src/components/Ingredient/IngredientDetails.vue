@@ -1,9 +1,11 @@
 <script setup>
 import Dropdown from '@/components/Dropdown.vue';
+import OverlayLoader from '@/components/OverlayLoader.vue'
 </script>
 
 <template>
     <div class="ingredient-details" v-if="ingredient.id">
+        <OverlayLoader v-if="isLoading" />
         <div class="ingredient-details__box ingredient-details__box--green" style="margin-top: 100px;">
             <div class="ingredient-details__box__content">
                 <h2 class="ingredient-details__box__title">
@@ -23,6 +25,11 @@ import Dropdown from '@/components/Dropdown.vue';
                 </p>
                 <hr>
                 <p><strong>Origin:</strong> {{ ingredient.origin ?? 'n/a' }}</p>
+                <hr>
+                <ul class="flags" style="margin-top: 20px;">
+                    <li v-show="isAddedToShelf">You have this ingredient</li>
+                    <li v-show="isAddedToShoppingList">This ingredient is on your shopping list</li>
+                </ul>
             </div>
             <div class="ingredient-details__box__image-container">
                 <img :src="ingredient.image_url" :alt="ingredient.name" />
@@ -141,29 +148,40 @@ export default {
     },
     methods: {
         deleteIngredient() {
-            if (confirm('Are you sure you want to delete ingredient?')) {
+            if (confirm(`Are you sure you want to delete "${this.ingredient.name}"? This action cannot be undone and will impact ${this.ingredient.cocktails.length} cocktails.`)) {
+                this.isLoading = true;
                 api.deleteIngredient(this.ingredient.id).then(resp => {
-                    this.$toast.open({
-                        message: `Ingredient "${this.ingredient.name}" successfully removed`
-                    });
+                    this.$toast.default(`Ingredient "${this.ingredient.name}" successfully removed`);
                     this.$router.push({ name: 'ingredients' })
+                    this.isLoading = false;
+                }).catch(() => {
+                    this.isLoading = false;
                 })
             }
         },
         toggleShelf() {
+            this.isLoading = true;
             if (this.isAddedToShelf) {
                 api.removeIngredientFromShelf(this.ingredient.id).then(() => {
                     this.isAddedToShelf = false;
                     this.$toast.default(`Removed "${this.ingredient.name}" from your shelf`);
+                    this.isLoading = false;
+                }).catch(() => {
+                    this.isLoading = false;
                 })
             } else {
                 api.addIngredientToShelf(this.ingredient.id).then(() => {
                     this.isAddedToShelf = true;
                     this.$toast.default(`Added "${this.ingredient.name}" to your shelf`);
+                    this.isLoading = false;
+                }).catch(() => {
+                    this.isLoading = false;
                 })
             }
         },
         toggleShoppingList() {
+            this.isLoading = true;
+
             const postData = {
                 ingredient_ids: [this.ingredient.id]
             };
@@ -172,11 +190,17 @@ export default {
                 api.removeIngredientsFromShoppingList(postData).then(() => {
                     this.$toast.default(`Removed "${this.ingredient.name}" from your shopping list.`);
                     this.isAddedToShoppingList = false;
+                    this.isLoading = false;
+                }).catch(() => {
+                    this.isLoading = false;
                 })
             } else {
                 api.addIngredientsToShoppingList(postData).then(() => {
                     this.$toast.default(`Added "${this.ingredient.name}" to your shopping list.`)
                     this.isAddedToShoppingList = true
+                    this.isLoading = false;
+                }).catch(() => {
+                    this.isLoading = false;
                 })
             }
         }

@@ -16,7 +16,7 @@
 import Auth from '@/Auth.js';
 
 export default {
-  props: ['cocktail', 'observer'],
+  props: ['cocktail', 'observer', 'isSpan'],
   mounted() {
     this.observer.observer.observe(this.$el)
   },
@@ -41,6 +41,10 @@ export default {
   cursor: pointer;
   transition: box-shadow ease-in-out 150ms;
   text-decoration: none;
+}
+
+.cocktail-grid-item.cocktail-grid-item--span {
+  grid-column-end: span 2;
 }
 
 .cocktail-grid-item__favorited-mark {

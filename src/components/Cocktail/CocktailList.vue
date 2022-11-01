@@ -32,7 +32,7 @@ import CocktailGridContainer from './CocktailGridContainer.vue'
     <ais-infinite-hits>
       <template v-slot="{ items, refineNext, isLastPage }">
         <CocktailGridContainer v-slot="observer">
-          <CocktailGridItem v-for="cocktail in items" :cocktail="cocktail" :key="cocktail.id" :observer="observer" />
+          <CocktailGridItem v-for="(cocktail, i) in items" :cocktail="cocktail" :key="cocktail.id" :observer="observer" />
         </CocktailGridContainer>
         <div style="text-align: center; margin: 20px 0;">
           <button class="button button--dark" v-if="!isLastPage" @click="refineNext">
@@ -49,6 +49,9 @@ import { instantMeiliSearch } from '@meilisearch/instant-meilisearch';
 import { history as historyRouter } from 'instantsearch.js/es/lib/routers';
 import { singleIndex as singleIndexMapping } from 'instantsearch.js/es/lib/stateMappings';
 import Auth from '@/Auth.js';
+import ApiRequests from '@/ApiRequests.js'
+
+const api = new ApiRequests()
 
 export default {
   data() {
@@ -64,10 +67,20 @@ export default {
         router: historyRouter(),
         stateMapping: singleIndexMapping('cocktails:name:asc'),
       },
+      userCocktails: [],
     };
   },
   created() {
     document.title = `Cocktails \u22C5 Salt Rim`
+    const userId = Auth.getUser().id
+    api.fetchUserCocktails(userId).then(data => {
+      this.userCocktails = data
+    })
+  },
+  computed: {
+    userCocktailIds() {
+      return this.userCocktails.map(c => c.id)
+    }
   }
 }
 </script>

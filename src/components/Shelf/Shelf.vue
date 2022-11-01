@@ -11,8 +11,8 @@ import CocktailListContainer from '../Cocktail/CocktailListContainer.vue'
         <a href="#">My cocktail recipes</a>
         <RouterLink :to="{name: 'cocktails.form'}">Create a cocktail</RouterLink>
         <!-- <a href="#">Create a collection</a> -->
-        <!-- <a href="#">Tequila base</a>
-        <a href="#">Brandy base</a> -->
+        <RouterLink :to="{name: 'cocktails', query: {'refinementList[tags][0]': 'Gin'}}">Gin base</RouterLink>
+        <RouterLink :to="{name: 'cocktails', query: {'refinementList[tags][0]': 'Rum'}}">Rum base</RouterLink>
     </div>
 
     <h2 class="page-subtitle">Your favorites ({{ favoriteCocktails.length }})</h2>

@@ -278,7 +278,7 @@ export default {
 }
 
 .cocktail-details-box--title .cocktail-details-box__title {
-    font-size: 1.5rem;
+    font-size: 1.8rem;
 }
 
 .cocktail-details-box__ingredients {

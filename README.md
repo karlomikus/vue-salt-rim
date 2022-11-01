@@ -24,6 +24,8 @@ Salt Rim is a web client used for connecting to your [Bar Assistant](https://git
 
 ## Installation
 
+*This steps will build Salt Rim into a static webpage.*
+
 1. Clone the repository
 2. Install the dependencies
 
@@ -53,16 +55,7 @@ This will create a `dist/` folder with ready to use static files.
 
     NOTE: Docker configuration for salt rim and bar assistant is still WIP, so anything can and will break.
 
-Use the following `docker-compose.yml` template to get started with all required services.
-
-With this setup you can access application by visiting `http://localhost:8080`.
-
-Default email and password:
-
-```
-email: admin@example.com
-password: password
-```
+Use the following `docker-compose.yml` template to get started with all services required to run Bar Assistant and Salt Rim.
 
 ``` yml
 version: "3"
@@ -79,27 +72,49 @@ services:
       - ./meilisearch:/meili_data
 
   bar-assistant:
+    image: kmikus12/bar-assistant-server
     depends_on:
       - meilisearch
-    image: kmikus12/bar-assistant-server
     environment:
-      - APP_URL=http://localhost:8000
+      - APP_URL=http://<YOUR_SERVER_IP>:8000
       - MEILISEARCH_KEY=JwBO9HU24uBj0MQPonm5Ui8I8wBkKFwj6pjwkPZ2YjYzWIcyZu
       - MEILISEARCH_HOST=http://meilisearch:7700
+    volumes:
+      - ba-storage:/var/www/cocktails/storage
     ports:
       - 8000:80
 
   salt-rim:
+    image: kmikus12/salt-rim
     depends_on:
       - meilisearch
       - bar-assistant
-    image: kmikus12/salt-rim
     environment:
-      - API_URL=http://localhost:8000
-      - SEARCH_URL=http://localhost:7700
+      - API_URL=http://<YOUR_SERVER_IP>:8000
+      - MEILISEARCH_HOST=http://<YOUR_SERVER_IP>:7700
     ports:
       - 8080:8080
+
+volumes:
+  ba-storage:
 ```
+
+Access your Salt Rim instance at `http://<SERVER_IP>:8080`.
+
+Login with default email and password:
+
+```
+email: admin@example.com
+password: password
+```
+
+Available ENV variables:
+
+|Env Key|Value|Description|
+|-|-|-
+|MEILI_MASTER_KEY|string|A random string use as a Meilisearch master key.|
+|BAR_ASSISTANT_URL|url|URL of your Bar Assistant server|
+|MEILISEARCH_URL|url|URL of your Meilisearch server|
 
 ## Contributing
 
