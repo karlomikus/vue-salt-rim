@@ -56,4 +56,16 @@ export default {
 .cocktail-list-item__content p {
     color: var(--color-text-muted);
 }
+
+@media (max-width: 450px) {
+    .cocktail-list-item {
+        padding: 15px;
+    }
+
+    .cocktail-list-item__graphic__image {
+        width: 70px;
+        height: 70px;
+        margin-right: 10px;
+    }
+}
 </style>

@@ -134,6 +134,13 @@ export default {
     text-align: center;
 }
 
+@media (max-width: 450px) {
+    .home-actions a {
+        height: 60px;
+        font-size: 1.3rem;
+    }
+}
+
 .home-actions a:nth-child(1) {
     background-color: #C5DEDD;
 }

@@ -32,4 +32,11 @@ export default {
     column-gap: 20px;
     row-gap: 20px;
 }
+
+@media (max-width: 450px) {
+    .cocktail-grid-container {
+        column-gap: 5px;
+        row-gap: 5px;
+    }
+}
 </style>

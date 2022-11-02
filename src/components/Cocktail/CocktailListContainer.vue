@@ -32,4 +32,10 @@ export default {
     column-gap: 20px;
     row-gap: 20px;
 }
+
+@media (max-width: 450px) {
+    .cocktail-list-container {
+        row-gap: 10px;
+    }
+}
 </style>

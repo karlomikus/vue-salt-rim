@@ -33,6 +33,12 @@
         0.1px 12.9px 17.2px -1.1px hsl(var(--shadow-color) / 0.28);
 }
 
+@media (max-width: 450px) {
+    :root {
+        /* --cocktail-grid-card-width: 130px; */
+    }
+}
+
 *,
 *::before,
 *::after {
@@ -55,6 +61,13 @@ body {
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+}
+
+@media (max-width: 450px) {
+    body {
+        font-size: 14px;
+        line-height: 1.6;
+    }
 }
 
 a {
