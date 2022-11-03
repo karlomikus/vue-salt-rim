@@ -5,6 +5,7 @@ import InstantSearch from 'vue-instantsearch/vue3/es';
 import router from './router'
 import 'vue-toast-notification/dist/theme-default.css';
 import './assets/main.css'
+import "vue-select/dist/vue-select.css";
 
 const app = createApp(App)
 

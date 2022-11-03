@@ -1,5 +1,6 @@
 <script setup>
 import OverlayLoader from './../OverlayLoader.vue'
+import VueSelect from 'vue-select';
 </script>
 
 <template>
@@ -46,9 +47,11 @@ import OverlayLoader from './../OverlayLoader.vue'
             <li v-for="(ing, index) in cocktail.ingredients">
                 <div class="form-group">
                     <label class="form-label" for="name">Ingredient:</label>
-                    <select class="form-select" v-model="ing.ingredient_id">
-                        <option v-for="ingOption in ingredients" :value="ingOption.id">{{ ingOption.name }}</option>
-                    </select>
+                    <VueSelect :options="ingredients" label="name" :reduce="ingOption => ingOption.id" v-model="ing.ingredient_id">
+                        <template #search="{ attributes, events }">
+                            <input class="vs__search" :required="!ing.ingredient_id" v-bind="attributes" v-on="events" />
+                        </template>
+                    </VueSelect>
                 </div>
                 <div class="form-group">
                     <label class="form-label">Amount:</label>
@@ -69,8 +72,8 @@ import OverlayLoader from './../OverlayLoader.vue'
         </ul>
         <button class="button button--outline" type="button" @click="addIngredient">Add ingredient</button>
         <div class="form-actions">
-            <RouterLink class="button button--outline" :to="{name: 'cocktails.show', params: {id: cocktailId}}" v-if="cocktailId">Cancel</RouterLink>
-            <RouterLink class="button button--outline" :to="{name: 'cocktails'}" v-else>Cancel</RouterLink>
+            <RouterLink class="button button--outline" :to="{ name: 'cocktails.show', params: { id: cocktailId } }" v-if="cocktailId">Cancel</RouterLink>
+            <RouterLink class="button button--outline" :to="{ name: 'cocktails' }" v-else>Cancel</RouterLink>
             <button class="button button--dark" type="submit">Save</button>
         </div>
     </form>
@@ -90,7 +93,7 @@ export default {
                 tags: [],
             },
             images: [
-                {image: null, copyright: null}
+                { image: null, copyright: null }
             ],
             ingredients: [],
             cocktailId: null
