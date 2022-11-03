@@ -21,7 +21,8 @@
                                     :style="{'background-image': 'url(' + hit.image_url + ')'}"></div>
                                 <h4>
                                     <ais-highlight attribute="name" :hit="hit" />
-                                    <small>{{ hit.type }}</small>
+                                    <small v-if="hit.type == 'cocktail'">Cocktail</small>
+                                    <small v-else>Ingredient</small>
                                 </h4>
                             </RouterLink>
                         </li>
@@ -113,6 +114,13 @@ export default {
     outline: none;
 }
 
+@media (max-width: 450px) {
+    .site-autocomplete__input {
+        font-size: 1.1rem;
+        padding: 8px 20px 8px 40px;
+    }
+}
+
 .site-autocomplete__results {
     list-style: none;
     padding: 0;
@@ -191,5 +199,24 @@ export default {
     position: absolute;
     top: 10px;
     right: 15px;
+}
+
+@media (max-width: 450px) {
+    .site-autocomplete__search-icon {
+        top: 8px;
+        left: 12px;
+        width: 22px;
+        height: 22px;
+    }
+
+    .site-autocomplete__clear svg {
+        width: 22px;
+        height: 22px;
+    }
+
+    .site-autocomplete .ais-ClearRefinements {
+        top: 8px;
+        right: 10px;
+    }
 }
 </style>

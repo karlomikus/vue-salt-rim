@@ -84,7 +84,7 @@ import Dropdown from './../Dropdown.vue';
                     <RouterLink :to="{ name: 'ingredients.show', params: { id: ing.ingredient_slug } }">
                         {{ ing.name }}
                         <small v-if="ing.optional">(optional)</small>
-                        <span v-show="!shelfIngredients.includes(ing.ingredient_id)">You are missing this ingredient</span>
+                        <span v-show="!userShelfIngredients.includes(ing.ingredient_id)">You are missing this ingredient</span>
                     </RouterLink>
                     <div class="cocktail-details-box__ingredients__amount">{{ parseIngredientAmount(ing) }}</div>
                 </li>
@@ -115,8 +115,8 @@ export default {
         cocktail: {},
         isFavorited: false,
         servings: 1,
-        shelfIngredients: [],
-        shoppingListIngredients: [],
+        userShelfIngredients: [],
+        userShoppingListIngredients: [],
         currentUnit: 'ml'
     }),
     computed: {
@@ -136,7 +136,7 @@ export default {
         },
         missingIngredientIds() {
             return this.cocktail.ingredients.filter(ing => {
-                return !this.shelfIngredients.includes(ing.ingredient_id) && !this.shoppingListIngredients.includes(ing.ingredient_id)
+                return !this.userShelfIngredients.includes(ing.ingredient_id) && !this.userShoppingListIngredients.includes(ing.ingredient_id)
             }).map(cing => cing.ingredient_id)
         }
     },
@@ -151,8 +151,8 @@ export default {
             () => this.$route.params,
             () => {
                 if (this.$route.name == 'cocktails.show') {
-                    this.shelfIngredients = Auth.getUser().shelf_ingredients;
-                    this.shoppingListIngredients = Auth.getUser().shopping_lists;
+                    this.userShelfIngredients = Auth.getUser().shelf_ingredients;
+                    this.userShoppingListIngredients = Auth.getUser().shopping_lists;
 
                     api.fetchCocktail(this.$route.params.id).then(data => {
                         this.cocktail = data
@@ -193,6 +193,9 @@ export default {
 
             api.addIngredientsToShoppingList(postData).then(data => {
                 this.$toast.default(`Added ${data.length} ingredients to your shopping list.`)
+                Auth.refreshUser().then(() => {
+                    this.userShoppingListIngredients = Auth.getUser().shopping_lists;
+                })
             })
         },
         parseIngredientAmount(ingredient) {

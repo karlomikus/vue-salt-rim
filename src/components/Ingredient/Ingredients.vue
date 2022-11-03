@@ -11,7 +11,7 @@ import Spinner from './../Spinner.vue'
         <Spinner :size="64" />
     </div>
     <div v-else v-for="(ingredients, cat) in groupedByCategory">
-        <h2 class="ingredient-category-title">{{ cat }} ({{ ingredients.length }})</h2>
+        <h2 class="ingredient-category-title">{{ cat }} ({{ ingredients.filter(i => userIngredientIds.includes(i.id)).length }}/{{ ingredients.length }})</h2>
         <ul class="ingredient-list">
             <li v-for="ingredient in ingredients" :ref="setupObserver">
                 <div class="ingredient-list__image" :style="{ 'background-color': setupColor(ingredient.color) }">

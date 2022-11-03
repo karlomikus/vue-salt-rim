@@ -176,4 +176,12 @@ export default {
     column-gap: 20px;
     row-gap: 20px;
 }
+
+@media (max-width: 450px) {
+    .shopping-list-container {
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        column-gap: 10px;
+        row-gap: 10px;
+    }
+}
 </style>

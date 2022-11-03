@@ -35,6 +35,13 @@ main {
     text-decoration: none;
 }
 
+@media (max-width: 450px) {
+    .page-subtitle {
+        margin: 30px 0 20px 0;
+        font-size: 1.1rem;
+    }
+}
+
 .empty-state {
     text-align: center;
     padding: 30px;
@@ -104,6 +111,26 @@ main {
     font-size: 0.8rem;
     text-shadow: none;
     opacity: .7;
+}
+
+@media (max-width: 450px) {
+    .site-logo__image {
+        width: 30px;
+        height: 30px;
+    }
+    
+    .site-logo__image svg {
+        width: 24px;
+        height: 24px;
+    }
+
+    .site-logo__title {
+        line-height: 0.9;
+    }
+    
+    .site-logo__title span {
+        font-size: 0.6rem;
+    }
 }
 
 .flags {

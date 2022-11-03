@@ -1,17 +1,6 @@
 class ApiRequests {
     constructor() {
         this.url = window.srConfig.API_URL;
-        // this.token = localStorage.getItem('user_token');
-    }
-
-    async handleResponse(response) {
-        if (!response.ok) {
-            const jsonBody = await response.json();
-
-            return Promise.reject(response)
-        }
-
-        return response;
     }
 
     getHeaders() {

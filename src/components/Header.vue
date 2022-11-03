@@ -93,8 +93,17 @@ import SiteAutocomplete from '../components/SiteAutocomplete.vue'
   }
   .header-bar__navigation {
     /* display: none; */
-    margin: 20px 0 0 0;
+    margin: 10px 0 0 0;
     justify-content: center;
+  }
+}
+
+@media (max-width: 450px) {
+  .header-bar {
+    padding: 10px;
+  }
+  .site-header {
+    margin-bottom: 20px;
   }
 }
 </style>
