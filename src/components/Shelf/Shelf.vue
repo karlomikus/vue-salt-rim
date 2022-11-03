@@ -5,6 +5,12 @@ import CocktailListContainer from '../Cocktail/CocktailListContainer.vue'
 </script>
 
 <template>
+    <h2 class="shelf-welcome">Hello, {{ user.name }}</h2>
+    <div class="shelf-stats">
+        <div class="shelf-stat">
+
+        </div>
+    </div>
     <h2 class="page-subtitle">Quick actions</h2>
     <div class="home-actions">
         <a href="#" @click.prevent="randomCocktail()">Random cocktail</a>
@@ -13,6 +19,7 @@ import CocktailListContainer from '../Cocktail/CocktailListContainer.vue'
         <!-- <a href="#">Create a collection</a> -->
         <RouterLink :to="{name: 'cocktails', query: {'refinementList[tags][0]': 'Gin'}}">Gin base</RouterLink>
         <RouterLink :to="{name: 'cocktails', query: {'refinementList[tags][0]': 'Rum'}}">Rum base</RouterLink>
+        <a href="#" @click.prevent="logout">Logout</a>
     </div>
 
     <h2 class="page-subtitle">Your favorites ({{ favoriteCocktails.length }})</h2>
@@ -69,11 +76,13 @@ import CocktailListContainer from '../Cocktail/CocktailListContainer.vue'
 
 <script>
 import ApiRequests from '../../ApiRequests';
+import Auth from '@/Auth.js';
 
 const api = new ApiRequests();
 
 export default {
     data: () => ({
+        user: Auth.getUser(),
         favoriteCocktails: [],
         shelfCocktails: [],
         shoppingListIngredients: [],
@@ -107,6 +116,12 @@ export default {
         },
         removeIngFromList(ingredient) {
             this.shoppingListIngredients.splice(this.shoppingListIngredients.indexOf(ingredient), 1)
+        },
+        logout() {
+            api.logout().then(() => {
+                Auth.forgetUser();
+                this.$router.push({name: 'login'})
+            })
         }
     }
 }
@@ -175,6 +190,12 @@ export default {
     grid-template-columns: repeat(auto-fit, minmax(330px, 1fr));
     column-gap: 20px;
     row-gap: 20px;
+}
+
+.shelf-welcome {
+    font-family: var(--font-accent);
+    font-size: 1.7rem;
+    font-weight: bold;
 }
 
 @media (max-width: 450px) {

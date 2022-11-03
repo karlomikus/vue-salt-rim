@@ -34,7 +34,6 @@ import Auth from '../Auth'
 import ApiRequests from '@/ApiRequests';
 
 const api = new ApiRequests();
-const auth = new Auth();
 
 export default {
     data() {
@@ -46,12 +45,14 @@ export default {
     },
     methods: {
         login() {
-            api.fetchLoginToken(this.email, this.password).then(token => {
-                localStorage.setItem('user_token', token);
-                api.fetchUser().then(userData => {
-                    auth.saveUser(userData)
+            const redirectPath = this.$route.query.redirect || '/'
 
-                    this.$router.push('/');
+            api.fetchLoginToken(this.email, this.password).then(token => {
+                Auth.rememberToken(token)
+                api.fetchUser().then(userData => {
+                    Auth.rememberUser(userData)
+
+                    this.$router.push(redirectPath);
                 })
             }).catch(errorResponse => {
                 errorResponse.json().then(body => {

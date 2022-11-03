@@ -3,8 +3,17 @@ import ApiRequests from "./ApiRequests";
 const api = new ApiRequests();
 
 class Auth {
-    saveUser(user) {
+    static rememberUser(user) {
         localStorage.setItem('user', JSON.stringify(user));
+    }
+
+    static rememberToken(token) {
+        localStorage.setItem('user_token', token);
+    }
+
+    static forgetUser() {
+        localStorage.removeItem('user');
+        localStorage.removeItem('user_token');
     }
 
     static getUser() {
@@ -26,14 +35,13 @@ class Auth {
         localStorage.setItem('user', JSON.stringify(user));
     }
 
-    async isLoggedIn() {
+    static async isLoggedIn() {
         try {
             const user = await api.fetchUser();
 
-            this.saveUser(user)
+            this.rememberUser(user)
         } catch (e) {
-            localStorage.removeItem('user');
-            localStorage.removeItem('user_token');
+            this.forgetUser()
             return false;
         }
 

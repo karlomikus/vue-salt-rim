@@ -232,6 +232,12 @@ class ApiRequests {
         return this.parseResponse(jsonResp);
     }
 
+    async logout() {
+        let jsonResp = await this.postRequest(`/api/logout`);
+
+        return this.parseResponse(jsonResp);
+    }
+
     parseResponse(resp) {
         if ('data' in resp) {
             return resp.data;
