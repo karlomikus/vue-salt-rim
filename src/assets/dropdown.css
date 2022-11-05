@@ -27,7 +27,7 @@
 }
 
 .dropdown-menu .dropdown-menu__item:hover {
-    background-color: #eff7f6;
+    background-color: var(--color-menu-item-hover);
 }
 
 @keyframes slide-in-top {

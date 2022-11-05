@@ -1,5 +1,6 @@
 <script setup>
 import OverlayLoader from './../OverlayLoader.vue'
+import Modal from './../Modal.vue'
 import VueSelect from 'vue-select';
 </script>
 
@@ -44,28 +45,21 @@ import VueSelect from 'vue-select';
         </div>
         <h2 class="page-subtitle">Ingredients</h2>
         <ul class="cocktail-form__ingredients">
-            <li v-for="(ing, index) in cocktail.ingredients">
+            <li v-for="ing in cocktail.ingredients">
                 <div class="form-group">
-                    <label class="form-label" for="name">Ingredient:</label>
-                    <VueSelect :options="ingredients" label="name" :reduce="ingOption => ingOption.id" v-model="ing.ingredient_id">
-                        <template #search="{ attributes, events }">
-                            <input class="vs__search" :required="!ing.ingredient_id" v-bind="attributes" v-on="events" />
-                        </template>
-                    </VueSelect>
+                    <label class="form-label">Ingredient:</label>
+                    <p>{{ ing.name }}<br>{{ ing.optional ? 'Optional' : '' }}</p>
                 </div>
                 <div class="form-group">
                     <label class="form-label">Amount:</label>
-                    <input class="form-input" type="text" v-model="ing.amount">
+                    <p>{{ ing.amount }}</p>
                 </div>
                 <div class="form-group">
                     <label class="form-label">Units:</label>
-                    <input class="form-input" type="text" v-model="ing.units">
+                    <p>{{ ing.units }}</p>
                 </div>
                 <div class="cocktail-form__ingredients__actions">
-                    <label :for="'is-optional-' + index">
-                        <input type="checkbox" :id="'is-optional-' + index" v-model="ing.optional">
-                        Make optional
-                    </label>
+                    <button class="button button--outline" type="button" @click="editIngredient(ing)">Edit</button>
                     <button class="button button--outline" type="button" @click="removeIngredient(ing)">Remove ingredient</button>
                 </div>
             </li>
@@ -77,6 +71,7 @@ import VueSelect from 'vue-select';
             <button class="button button--dark" type="submit">Save</button>
         </div>
     </form>
+    <Modal v-show="isModalVisible" :value="cocktailIngredientForEdit" @close="closeModal" @ingredient-updated="updateCocktailIngredient" />
 </template>
 
 <script>
@@ -87,6 +82,8 @@ const api = new ApiRequests();
 export default {
     data() {
         return {
+            isModalVisible: false,
+            cocktailIngredientForEdit: {},
             isLoading: false,
             cocktail: {
                 ingredients: [],
@@ -130,16 +127,29 @@ export default {
         })
     },
     methods: {
-        addIngredient() {
-            this.cocktail.ingredients.push({
-                name: null,
-            });
-        },
         removeIngredient(ing) {
             this.cocktail.ingredients.splice(
                 this.cocktail.ingredients.findIndex(i => i == ing),
                 1
             );
+        },
+        closeModal() {
+            this.isModalVisible = false;
+            // this.currentIngredientEdit = {};
+        },
+        addIngredient() {
+            this.cocktail.ingredients.push({
+                name: '<missing>',
+                amount: 30,
+                units: 'ml'
+            });
+        },
+        editIngredient(cocktailIngredient) {
+            this.cocktailIngredientForEdit = cocktailIngredient;
+            this.isModalVisible = true;
+        },
+        updateCocktailIngredient(modalIngredient) {
+            // this.cocktail.ingredients.push(modalIngredient);
         },
         async submit() {
             this.isLoading = true;
@@ -221,7 +231,7 @@ export default {
 
 .cocktail-form__ingredients li {
     display: grid;
-    grid-template-columns: 4fr 1fr 1fr;
+    grid-template-columns: 3fr 1fr 1fr 1fr;
     grid-template-rows: auto auto;
     column-gap: 10px;
     row-gap: 10px;
@@ -232,7 +242,7 @@ export default {
 }
 
 .cocktail-form__ingredients__actions {
-    grid-column: span 3;
+    /* grid-column: span 3; */
     text-align: right;
     margin-bottom: 20px;
 }

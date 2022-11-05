@@ -4,6 +4,9 @@
 @import "./dropdown.css";
 @import "./glasses.css";
 
+@import "vue-select/dist/vue-select.css";
+@import "vue-toast-notification/dist/theme-default.css";
+
 #app {
     font-weight: normal;
 }
