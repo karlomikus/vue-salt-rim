@@ -34,13 +34,22 @@ import IngredientModal from './IngredientModal.vue'
             <input class="form-input" type="text" id="tags" v-model="cocktailTags">
             <p class="form-input-hint">Separate multiple tags with a comma (",").</p>
         </div>
-        <div class="form-group">
-            <label class="form-label" for="images">Images:</label>
-            <input class="form-input" type="file" id="images" ref="image">
-        </div>
-        <div class="form-group">
-            <label class="form-label" for="copyright">Image copyright:</label>
-            <input class="form-input" type="text" id="copyright" v-model="images[0].copyright">
+        <div class="form-group form-group--image">
+            <div class="form-group--image__image">
+                <img v-if="cocktail.image_url" :src="cocktail.image_url" alt="Cocktail image">
+                <img v-else :src="noImage" alt="Missing cocktail image">
+                <button v-if="cocktail.image_id" type="button" class="button button--dark button--small" @click="removeImage">Remove</button>
+            </div>
+            <div>
+                <div class="form-group">
+                    <label class="form-label" for="images">Image:</label>
+                    <input class="form-input" type="file" id="images" ref="image">
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="copyright">Image copyright:</label>
+                    <input class="form-input" type="text" id="copyright" v-model="images[0].copyright">
+                </div>
+            </div>
         </div>
         <h2 class="page-subtitle">Ingredients</h2>
         <ul class="cocktail-form__ingredients">
@@ -54,7 +63,7 @@ import IngredientModal from './IngredientModal.vue'
                     <p>{{ ing.amount }} {{ ing.units }}</p>
                 </div>
                 <div class="cocktail-form__ingredients__actions">
-                    <button class="button button--outline button--small" type="button" @click="editIngredient(ing)">
+                    <button class="button button--outline button--small" style="margin-right: 5px;" type="button" @click="editIngredient(ing)">
                         Edit
                     </button>
                     <button class="button button--outline button--small" type="button" @click="removeIngredient(ing)">
@@ -103,6 +112,9 @@ export default {
             set(newVal) {
                 this.cocktail.tags = newVal.split(',')
             }
+        },
+        noImage() {
+            return `${window.srConfig.API_URL}/uploads/cocktails/no-image.jpg`;
         }
     },
     created() {
@@ -150,6 +162,19 @@ export default {
             this.cocktailIngredientForEdit = cocktailIngredient;
             this.isModalVisible = true;
         },
+        removeImage() {
+            if (!confirm('Are you sure you want to remove this image?')) {
+                return;
+            }
+
+            api.deleteImage(this.cocktail.image_id).then(() => {
+                this.$toast.default(`Removed cocktail image successfully.`);
+                this.cocktail.image_url = null;
+                this.cocktail.image_id = null;
+            }).catch(() => {
+                this.$toast.default(`Unable to remove cocktail image.`);
+            })
+        },
         async submit() {
             this.isLoading = true;
 
@@ -184,9 +209,7 @@ export default {
             if (this.cocktailId) {
                 api.updateCocktail(this.cocktailId, postData).then(data => {
                     this.isLoading = false;
-                    this.$toast.open({
-                        message: `Cocktail updated successfully.`
-                    });
+                    this.$toast.default(`Cocktail updated successfully.`);
                     this.$router.push({ name: 'cocktails.show', params: { id: data.id } })
                 }).catch(async errorResponse => {
                     if (errorResponse.status == 422) {
@@ -232,7 +255,7 @@ export default {
 
 .cocktail-form__ingredients li {
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-columns: 2fr 1fr;
     grid-template-rows: auto auto;
     column-gap: 10px;
     row-gap: 10px;
@@ -247,7 +270,6 @@ export default {
 }
 
 .cocktail-form__ingredients__actions {
-    grid-column: span 3;
-    text-align: right;
+    grid-column: span 2;
 }
 </style>

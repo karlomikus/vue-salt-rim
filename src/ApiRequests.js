@@ -238,6 +238,12 @@ class ApiRequests {
         return this.parseResponse(jsonResp);
     }
 
+    async deleteImage(id) {
+        let jsonResp = await this.deleteRequest(`/api/images/${id}`);
+
+        return this.parseResponse(jsonResp);
+    }
+
     parseResponse(resp) {
         if ('data' in resp) {
             return resp.data;

@@ -2,6 +2,34 @@
     margin-bottom: 20px;
 }
 
+.form-group--image {
+    display: grid;
+    grid-template-columns: 1fr 3fr;
+    column-gap: 10px;
+}
+
+.form-group--image__image {
+    padding: 15px;
+    background: rgba(255, 255, 255, .5);
+    border-bottom: 2px solid var(--color-bg-dark);
+    border-radius: 5px;
+    text-align: right;
+}
+
+.form-group--image__image .button {
+    margin-top: 10px;
+}
+
+.form-group--image p {
+    margin-top: 20px;
+    text-align: right;
+}
+
+.form-group--image img {
+    max-width: 100%;
+    display: block;
+}
+
 .form-label {
     display: block;
     display: block;
@@ -23,7 +51,10 @@
     appearance: none;
     background: rgba(255, 255, 255, .5);
     border: 0;
-    border-bottom: 2px solid var(--color-bg-dark);
+    border: 2px solid var(--color-bg-dark);
+    border-top-color: transparent;
+    border-left-color: transparent;
+    border-right-color: transparent;
     border-radius: 5px;
     height: 3rem;
     font-size: 1.2rem;

@@ -10,18 +10,18 @@
 }
 
 .dropdown-menu .dropdown-menu__item {
-    padding: 7px 16px 7px 12px;
+    padding: 6px 16px 6px 12px;
     display: flex;
     align-items: center;
     color: black;
-    font-size: 1rem;
+    font-size: 0.9rem;
     border-radius: 6px;
     text-decoration: none;
     white-space: nowrap;
 }
 
 .dropdown-menu .dropdown-menu__item svg {
-    margin-right: 14px;
+    margin-right: 12px;
     flex-shrink: 0;
     /* width: 20px; */
 }

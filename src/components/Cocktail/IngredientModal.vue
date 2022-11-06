@@ -19,12 +19,12 @@
                 </h3>
                 <div style="display: grid; grid-template-columns: 1fr 2fr; column-gap: 10px;">
                     <div class="form-group">
-                        <label class="form-label">Amount:</label>
-                        <input class="form-input" type="text" v-model="cocktailIngredient.amount">
+                        <label class="form-label" for="ingredient-amount">Amount:</label>
+                        <input class="form-input" type="text" id="ingredient-amount" v-model="cocktailIngredient.amount">
                     </div>
                     <div class="form-group">
-                        <label class="form-label">Units:</label>
-                        <input class="form-input" type="text" v-model="cocktailIngredient.units">
+                        <label class="form-label" for="ingredient-units">Units:</label>
+                        <input class="form-input" type="text" id="ingredient-units" v-model="cocktailIngredient.units">
                     </div>
                 </div>
                 <div class="form-group">
