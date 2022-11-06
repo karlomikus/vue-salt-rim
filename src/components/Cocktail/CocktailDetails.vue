@@ -220,7 +220,7 @@ export default {
     }
 }
 </script>
-<style scoped>
+<style>
 .cocktail-details-box {
     background-color: #fff;
     border-radius: 20px;
@@ -364,5 +364,15 @@ export default {
 
 .cocktail-details__button-row button:hover {
     border-color: rgb(129, 173, 159);
+}
+
+.cocktail-details-box ol {
+    padding-left: 30px;
+}
+
+.cocktail-details-box ol li::marker {
+    font-size: 1.1rem;
+    font-family: var(--font-accent);
+    font-weight: bold;
 }
 </style>

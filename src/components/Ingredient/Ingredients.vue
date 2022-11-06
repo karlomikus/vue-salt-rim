@@ -7,6 +7,10 @@ import Spinner from './../Spinner.vue'
         <RouterLink class="button button--outline" :to="{ name: 'ingredients.form' }">Add ingredient</RouterLink>
     </div>
     <h2 class="page-subtitle" style="margin-top: 10px;">Ingredients</h2>
+    <p class="page-description">
+        This is a list of ingredients available in your Bar Assistant server. You can press the "plus" sign to add specific ingredients to your shelf and this will update what cocktails you can make.
+        By clicking "Learn more" you can see more details about the ingredient, including an option to add it to your shopping list.
+    </p>
     <div style="text-align: center; padding: 40px;" v-if="ingredients.length == 0">
         <Spinner :size="64" />
     </div>
