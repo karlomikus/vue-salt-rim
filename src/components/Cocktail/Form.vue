@@ -84,6 +84,7 @@ import IngredientModal from './IngredientModal.vue'
 
 <script>
 import ApiRequests from "../../ApiRequests";
+import Unitz from 'unitz'
 
 const api = new ApiRequests();
 
@@ -187,7 +188,16 @@ export default {
                 source: this.cocktail.source,
                 images: [],
                 tags: this.cocktail.tags,
-                ingredients: this.cocktail.ingredients.filter(i => i.ingredient_id != null)
+                ingredients: this.cocktail.ingredients
+                    .filter(i => i.ingredient_id != null)
+                    .map(i => {
+                        if (i.units == 'oz') {
+                            i.amount = Unitz.parse(`${i.amount}${i.units}`).value * 30
+                            i.units = 'ml'
+                        }
+
+                        return i;
+                    })
             };
 
             const image = this.$refs.image.files[0] || null;
