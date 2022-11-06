@@ -3,10 +3,8 @@
         <div class="modal">
             <section class="modal-body">
                 <ais-instant-search :search-client="searchClient" index-name="ingredients:name:asc">
-                    <ais-configure :hitsPerPage="30" />
-                    <div class="cocktail-list-search-container">
-                        <ais-search-box placeholder="Search for ingredient..." :class-names="{'ais-SearchBox-input': 'form-input'}" />
-                    </div>
+                    <ais-configure q="apple" :hitsPerPage="30" />
+                    <ais-search-box placeholder="Search for ingredient..." :class-names="{'ais-SearchBox-input': 'form-input'}" />
                     <ais-hits>
                         <template v-slot="{ items }">
                             <div class="ingredients-options">
@@ -15,14 +13,19 @@
                         </template>
                     </ais-hits>
                 </ais-instant-search>
-                <h3 class="selected-ingredient">{{ cocktailIngredient.name }}</h3>
-                <div class="form-group">
-                    <label class="form-label">Amount:</label>
-                    <input class="form-input" type="text" v-model="cocktailIngredient.amount">
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Units:</label>
-                    <input class="form-input" type="text" v-model="cocktailIngredient.units">
+                <h3 class="selected-ingredient">
+                    <small>Current ingredient:</small>
+                    {{ cocktailIngredient.name }}
+                </h3>
+                <div style="display: grid; grid-template-columns: 1fr 2fr; column-gap: 10px;">
+                    <div class="form-group">
+                        <label class="form-label">Amount:</label>
+                        <input class="form-input" type="text" v-model="cocktailIngredient.amount">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Units:</label>
+                        <input class="form-input" type="text" v-model="cocktailIngredient.units">
+                    </div>
                 </div>
                 <div class="form-group">
                     <label for="cocktail-ing-optional">
@@ -31,8 +34,9 @@
                     </label>
                 </div>
             </section>
-            <footer class="modal-actions">
-                <button @click="save">Done</button>
+            <footer class="modal-footer">
+                <button type="button" class="button button--outline" @click="cancel">Cancel</button>
+                <button type="button" class="button button--dark" @click="save">Done</button>
             </footer>
         </div>
     </div>
@@ -46,7 +50,9 @@ export default {
     props: ['value'],
     watch: {
         value(val) {
-            this.orgCocktailIngredient = Object.freeze(Object.assign({}, val));
+            this.defaultQuery = '';
+            console.log(this.defaultQuery)
+            this.orgCocktailIngredient = Object.assign({}, val);
             this.cocktailIngredient = val
         }
     },
@@ -56,28 +62,32 @@ export default {
                 Auth.getUserSearchSettings().host,
                 Auth.getUserSearchSettings().key,
             ),
-            cocktailIngredient: this.value,
+            defaultQuery: '',
+            cocktailIngredient: {},
             orgCocktailIngredient: {}
         }
     },
     methods: {
-        close() {
-            this.$emit('close');
-        },
         selectIngredient(searchItem) {
             this.cocktailIngredient.ingredient_id = searchItem.id;
             this.cocktailIngredient.name = searchItem.name;
             this.cocktailIngredient.ingredient_slug = searchItem.slug;
         },
         save() {
-            // this.$emit('ingredientUpdated', this.cocktailIngredient);
-            this.close();
-        }
+            this.$emit('close');
+        },
+        cancel() {
+            this.$emit('close');
+        },
     },
 };
 </script>
 
 <style>
+:root {
+    --modal-body-padding: 20px;
+}
+
 .modal-backdrop {
     position: fixed;
     top: 0;
@@ -105,7 +115,13 @@ export default {
 
 .modal-body {
     position: relative;
-    padding: 20px;
+    padding: var(--modal-body-padding);
+}
+
+.modal-footer {
+    padding: var(--modal-body-padding);
+    padding-top: 0;
+    text-align: right;
 }
 
 .ingredients-options {
@@ -144,7 +160,14 @@ export default {
     font-family: var(--font-accent);
     font-weight: bold;
     font-size: 1.6rem;
-    margin-top: 10px;
-    margin-bottom: 15px;
+    margin: 15px 0;
+    line-height: 1.3;
+}
+
+.selected-ingredient small {
+    font-weight: normal;
+    font-size: 0.8rem;
+    display: block;
+    color: #866269;
 }
 </style>

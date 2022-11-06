@@ -1,7 +1,6 @@
 <script setup>
 import OverlayLoader from './../OverlayLoader.vue'
-import Modal from './../Modal.vue'
-import VueSelect from 'vue-select';
+import IngredientModal from './IngredientModal.vue'
 </script>
 
 <template>
@@ -52,15 +51,15 @@ import VueSelect from 'vue-select';
                 </div>
                 <div class="form-group">
                     <label class="form-label">Amount:</label>
-                    <p>{{ ing.amount }}</p>
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Units:</label>
-                    <p>{{ ing.units }}</p>
+                    <p>{{ ing.amount }} {{ ing.units }}</p>
                 </div>
                 <div class="cocktail-form__ingredients__actions">
-                    <button class="button button--outline" type="button" @click="editIngredient(ing)">Edit</button>
-                    <button class="button button--outline" type="button" @click="removeIngredient(ing)">Remove ingredient</button>
+                    <button class="button button--outline button--small" type="button" @click="editIngredient(ing)">
+                        Edit
+                    </button>
+                    <button class="button button--outline button--small" type="button" @click="removeIngredient(ing)">
+                        Remove
+                    </button>
                 </div>
             </li>
         </ul>
@@ -71,7 +70,7 @@ import VueSelect from 'vue-select';
             <button class="button button--dark" type="submit">Save</button>
         </div>
     </form>
-    <Modal v-show="isModalVisible" :value="cocktailIngredientForEdit" @close="closeModal" @ingredient-updated="updateCocktailIngredient" />
+    <IngredientModal v-show="isModalVisible" :value="cocktailIngredientForEdit" @close="closeModal" />
 </template>
 
 <script>
@@ -135,21 +134,21 @@ export default {
         },
         closeModal() {
             this.isModalVisible = false;
-            // this.currentIngredientEdit = {};
         },
         addIngredient() {
-            this.cocktail.ingredients.push({
-                name: '<missing>',
+            let placeholderData = {
+                ingredient_id: null,
+                name: '<Not selected>',
                 amount: 30,
                 units: 'ml'
-            });
+            };
+            this.cocktail.ingredients.push(placeholderData);
+
+            this.editIngredient(placeholderData)
         },
         editIngredient(cocktailIngredient) {
             this.cocktailIngredientForEdit = cocktailIngredient;
             this.isModalVisible = true;
-        },
-        updateCocktailIngredient(modalIngredient) {
-            // this.cocktail.ingredients.push(modalIngredient);
         },
         async submit() {
             this.isLoading = true;
@@ -163,7 +162,7 @@ export default {
                 source: this.cocktail.source,
                 images: [],
                 tags: this.cocktail.tags,
-                ingredients: this.cocktail.ingredients
+                ingredients: this.cocktail.ingredients.filter(i => i.ingredient_id != null)
             };
 
             const image = this.$refs.image.files[0] || null;
@@ -227,14 +226,20 @@ export default {
     list-style: none;
     margin: 0;
     padding: 0;
+    display: grid;
+    row-gap: 5px;
 }
 
 .cocktail-form__ingredients li {
     display: grid;
-    grid-template-columns: 3fr 1fr 1fr 1fr;
+    grid-template-columns: 1fr 1fr 1fr;
     grid-template-rows: auto auto;
     column-gap: 10px;
     row-gap: 10px;
+    background: rgba(255, 255, 255, .5);
+    padding: 10px;
+    border-bottom: 2px solid var(--color-bg-dark);
+    border-radius: 5px;
 }
 
 .cocktail-form__ingredients li .form-group {
@@ -242,8 +247,7 @@ export default {
 }
 
 .cocktail-form__ingredients__actions {
-    /* grid-column: span 3; */
+    grid-column: span 3;
     text-align: right;
-    margin-bottom: 20px;
 }
 </style>
