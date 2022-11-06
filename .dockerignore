@@ -5,6 +5,7 @@ README.md
 /art
 public/config.js
 /dist
+/.github
 
 Dockerfile
 .dockerignore
