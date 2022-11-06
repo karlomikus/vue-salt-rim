@@ -7,7 +7,7 @@
         </div>
         <div class="form-group">
             <label class="form-label form-label--required" for="category">Category:</label>
-            <select class="form-select" id="category" v-model="ingredient.ingredient_category_id">
+            <select class="form-select" id="category" v-model="ingredient.ingredient_category_id" required>
                 <option :value="undefined" disabled>Select a category...</option>
                 <option v-for="cat in categories" :value="cat.id">{{ cat.name }}</option>
             </select>
@@ -109,11 +109,29 @@ export default {
                 api.updateIngredient(this.ingredientId, postData).then(data => {
                     this.$toast.default('Ingredient updated');
                     this.$router.push({ name: 'ingredients.show', params: { id: data.id } })
+                }).catch(async errorResponse => {
+                    if (errorResponse.status == 422) {
+                        const body = await errorResponse.json();
+                        this.$toast.error(body.message);
+                    } else {
+                        this.$toast.error(`Error occured: ${errorResponse.status}`);
+                    }
+
+                    this.isLoading = false;
                 })
             } else {
                 api.saveIngredient(postData).then(data => {
                     this.$toast.default('Ingredient created');
                     this.$router.push({ name: 'ingredients.show', params: { id: data.id } })
+                }).catch(async errorResponse => {
+                    if (errorResponse.status == 422) {
+                        const body = await errorResponse.json();
+                        this.$toast.error(body.message);
+                    } else {
+                        this.$toast.error(`Error occured: ${errorResponse.status}`);
+                    }
+
+                    this.isLoading = false;
                 })
             }
         }

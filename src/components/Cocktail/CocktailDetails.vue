@@ -84,7 +84,8 @@ import Dropdown from './../Dropdown.vue';
                     <RouterLink :to="{ name: 'ingredients.show', params: { id: ing.ingredient_slug } }">
                         {{ ing.name }}
                         <small v-if="ing.optional">(optional)</small>
-                        <span v-show="!userShelfIngredients.includes(ing.ingredient_id)">You are missing this ingredient</span>
+                        <span v-if="!userShelfIngredients.includes(ing.ingredient_id)">You are missing this ingredient</span>
+                        <span v-if="userShoppingListIngredients.includes(ing.ingredient_id)">You have this ingredient on shopping list</span>
                     </RouterLink>
                     <div class="cocktail-details-box__ingredients__amount">{{ parseIngredientAmount(ing) }}</div>
                 </li>
@@ -93,6 +94,9 @@ import Dropdown from './../Dropdown.vue';
         </div>
         <div class="cocktail-details-box cocktail-details-box--yellow">
             <h3 class="cocktail-details-box__title">Instructions:</h3>
+            <ul class="cocktail-tags" style="margin: 0; margin-bottom: 10px; justify-content: flex-start;">
+                <li v-if="cocktail.glass" style="background-color: #ffddc0;">Glass: {{ cocktail.glass.name }}</li>
+            </ul>
             <div v-html="parsedInstructions"></div>
         </div>
         <div class="cocktail-details-box cocktail-details-box--red">
