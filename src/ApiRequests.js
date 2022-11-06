@@ -1,17 +1,6 @@
 class ApiRequests {
     constructor() {
         this.url = window.srConfig.API_URL;
-        // this.token = localStorage.getItem('user_token');
-    }
-
-    async handleResponse(response) {
-        if (!response.ok) {
-            const jsonBody = await response.json();
-
-            return Promise.reject(response)
-        }
-
-        return response;
     }
 
     getHeaders() {
@@ -239,6 +228,18 @@ class ApiRequests {
 
     async removeIngredientsFromShoppingList(data) {
         let jsonResp = await this.postRequest(`/api/shopping-lists/batch`, data, 'DELETE');
+
+        return this.parseResponse(jsonResp);
+    }
+
+    async logout() {
+        let jsonResp = await this.postRequest(`/api/logout`);
+
+        return this.parseResponse(jsonResp);
+    }
+
+    async deleteImage(id) {
+        let jsonResp = await this.deleteRequest(`/api/images/${id}`);
 
         return this.parseResponse(jsonResp);
     }

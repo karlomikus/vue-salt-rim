@@ -35,28 +35,28 @@ import Dropdown from './../Dropdown.vue';
                     </template>
                     <template #content>
                         <RouterLink class="dropdown-menu__item" :to="{ name: 'cocktails.form', query: { id: cocktail.id } }">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18">
                                 <path fill="none" d="M0 0h24v24H0z" />
                                 <path d="M6.414 16L16.556 5.858l-1.414-1.414L5 14.586V16h1.414zm.829 2H3v-4.243L14.435 2.322a1 1 0 0 1 1.414 0l2.829 2.829a1 1 0 0 1 0 1.414L7.243 18zM3 20h18v2H3v-2z" />
                             </svg>
                             Edit
                         </RouterLink>
                         <!-- <a class="dropdown-menu__item" href="#">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18">
                                 <path fill="none" d="M0 0h24v24H0z" />
                                 <path d="M12.414 5H21a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h7.414l2 2zM4 5v14h16V7h-8.414l-2-2H4zm7 7V9h2v3h3v2h-3v3h-2v-3H8v-2h3z" />
                             </svg>
                             Add to collection
                         </a> -->
-                        <a class="dropdown-menu__item" target="_blank" :href="cocktail.source">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+                        <a v-show="cocktail.source" class="dropdown-menu__item" target="_blank" :href="cocktail.source">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18">
                                 <path fill="none" d="M0 0h24v24H0z" />
                                 <path d="M10 6v2H5v11h11v-5h2v6a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h6zm11-3v8h-2V6.413l-7.793 7.794-1.414-1.414L17.585 5H13V3h8z" />
                             </svg>
                             Cocktail source
                         </a>
                         <a class="dropdown-menu__item" href="javascript:;" @click.prevent="deleteCocktail">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18">
                                 <path fill="none" d="M0 0h24v24H0z" />
                                 <path d="M7 4V2h10v2h5v2h-2v15a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V6H2V4h5zM6 6v14h12V6H6zm3 3h2v8H9V9zm4 0h2v8h-2V9z" />
                             </svg>
@@ -84,7 +84,8 @@ import Dropdown from './../Dropdown.vue';
                     <RouterLink :to="{ name: 'ingredients.show', params: { id: ing.ingredient_slug } }">
                         {{ ing.name }}
                         <small v-if="ing.optional">(optional)</small>
-                        <span v-show="!shelfIngredients.includes(ing.ingredient_id)">You are missing this ingredient</span>
+                        <span v-if="!userShelfIngredients.includes(ing.ingredient_id)">You are missing this ingredient</span>
+                        <span v-if="userShoppingListIngredients.includes(ing.ingredient_id)">You have this ingredient on shopping list</span>
                     </RouterLink>
                     <div class="cocktail-details-box__ingredients__amount">{{ parseIngredientAmount(ing) }}</div>
                 </li>
@@ -93,6 +94,9 @@ import Dropdown from './../Dropdown.vue';
         </div>
         <div class="cocktail-details-box cocktail-details-box--yellow">
             <h3 class="cocktail-details-box__title">Instructions:</h3>
+            <ul class="cocktail-tags" style="margin: 0; margin-bottom: 10px; justify-content: flex-start;">
+                <li v-if="cocktail.glass" style="background-color: #ffddc0;">Glass: {{ cocktail.glass.name }}</li>
+            </ul>
             <div v-html="parsedInstructions"></div>
         </div>
         <div class="cocktail-details-box cocktail-details-box--red">
@@ -115,8 +119,8 @@ export default {
         cocktail: {},
         isFavorited: false,
         servings: 1,
-        shelfIngredients: [],
-        shoppingListIngredients: [],
+        userShelfIngredients: [],
+        userShoppingListIngredients: [],
         currentUnit: 'ml'
     }),
     computed: {
@@ -136,7 +140,7 @@ export default {
         },
         missingIngredientIds() {
             return this.cocktail.ingredients.filter(ing => {
-                return !this.shelfIngredients.includes(ing.ingredient_id) && !this.shoppingListIngredients.includes(ing.ingredient_id)
+                return !this.userShelfIngredients.includes(ing.ingredient_id) && !this.userShoppingListIngredients.includes(ing.ingredient_id)
             }).map(cing => cing.ingredient_id)
         }
     },
@@ -151,8 +155,8 @@ export default {
             () => this.$route.params,
             () => {
                 if (this.$route.name == 'cocktails.show') {
-                    this.shelfIngredients = Auth.getUser().shelf_ingredients;
-                    this.shoppingListIngredients = Auth.getUser().shopping_lists;
+                    this.userShelfIngredients = Auth.getUser().shelf_ingredients;
+                    this.userShoppingListIngredients = Auth.getUser().shopping_lists;
 
                     api.fetchCocktail(this.$route.params.id).then(data => {
                         this.cocktail = data
@@ -193,6 +197,9 @@ export default {
 
             api.addIngredientsToShoppingList(postData).then(data => {
                 this.$toast.default(`Added ${data.length} ingredients to your shopping list.`)
+                Auth.refreshUser().then(() => {
+                    this.userShoppingListIngredients = Auth.getUser().shopping_lists;
+                })
             })
         },
         parseIngredientAmount(ingredient) {
@@ -217,7 +224,7 @@ export default {
     }
 }
 </script>
-<style scoped>
+<style>
 .cocktail-details-box {
     background-color: #fff;
     border-radius: 20px;
@@ -361,5 +368,15 @@ export default {
 
 .cocktail-details__button-row button:hover {
     border-color: rgb(129, 173, 159);
+}
+
+.cocktail-details-box ol {
+    padding-left: 30px;
+}
+
+.cocktail-details-box ol li::marker {
+    font-size: 1.1rem;
+    font-family: var(--font-accent);
+    font-weight: bold;
 }
 </style>

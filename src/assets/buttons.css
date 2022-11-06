@@ -96,12 +96,13 @@
     border: 0;
     cursor: pointer;
     box-shadow: 0 3px 0 rgba(138, 138, 138, 0.295);
+    transition: transform ease-in-out .06s;
 }
 
 .button-circle svg {
     width: 32px;
     height: 32px;
-    transition: transform ease-in-out .1s;
+    transition: transform ease-in-out .06s;
 }
 
 .button-circle:hover {
@@ -110,4 +111,12 @@
 
 .button-circle:hover svg {
     transform: scale(1.1, 1.1);
+}
+
+.button-circle:focus {
+    box-shadow: 0 0 0 2px #262831;
+}
+
+.button-circle:active {
+    transform: scale(0.9, 0.9);
 }

@@ -5,29 +5,28 @@ import CocktailGridContainer from './CocktailGridContainer.vue'
 
 <template>
   <div style="text-align: right;">
-    <RouterLink class="button button--outline" :to="{name: 'cocktails.form'}">Add cocktail</RouterLink>
+    <RouterLink class="button button--outline" :to="{ name: 'cocktails.form' }">Add cocktail</RouterLink>
   </div>
   <h2 class="page-subtitle" style="margin-top: 10px;">Cocktails</h2>
   <ais-instant-search :search-client="searchClient" index-name="cocktails:name:asc" :routing="routing">
     <ais-configure :hitsPerPage="100" />
     <div class="cocktail-list-tags">
-      <ais-refinement-list attribute="tags" :sort-by="['name:asc']" operator="and">
+      <ais-refinement-list attribute="tags" :sort-by="['name:asc']" operator="and" :transformItems="getRefinementValues">
         <template v-slot:item="{ item, refine, createURL }">
-          <a :href="createURL(item.value)" :class="{ 'is-selected': item.isRefined }"
-            @click.prevent="refine(item.value)">
-            {{item.label}}
+          <a :href="createURL(item.value)" :class="{ 'is-selected': item.isRefined }" @click.prevent="refine(item.value)">
+            {{ item.label }}
           </a>
         </template>
       </ais-refinement-list>
     </div>
     <div class="cocktail-list-search-container">
-      <ais-search-box placeholder="Filter cocktails..." :class-names="{'ais-SearchBox-input': 'form-input', 'ais-SearchBox-reset': 'cocktail-list-search-container__reset'}" />
+      <ais-search-box placeholder="Filter cocktails..." :class-names="{ 'ais-SearchBox-input': 'form-input', 'ais-SearchBox-reset': 'cocktail-list-search-container__reset' }" />
       <ais-sort-by :items="[
         { value: 'cocktails:name:asc', label: 'Name asc.' },
         { value: 'cocktails:name:desc', label: 'Name desc.' },
         { value: 'cocktails:date:asc', label: 'Date modified asc.' },
         { value: 'cocktails:date:desc', label: 'Date modified desc.' },
-      ]" :class-names="{'ais-SortBy-select': 'form-select'}" />
+      ]" :class-names="{ 'ais-SortBy-select': 'form-select' }" />
     </div>
     <ais-infinite-hits>
       <template v-slot="{ items, refineNext, isLastPage }">
@@ -81,6 +80,18 @@ export default {
     userCocktailIds() {
       return this.userCocktails.map(c => c.id)
     }
+  },
+  methods: {
+    getRefinementValues(items) {
+      items.unshift({
+        label: 'My cocktails',
+        value:'My cocktails',
+        count: 0,
+        isRefined: false,
+        highlighted: 'My cocktails',
+      })
+      return items
+    }
   }
 }
 </script>
@@ -123,8 +134,17 @@ export default {
 }
 
 .cocktail-list-search-container {
-  display: flex;
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  row-gap: 10px;
+  column-gap: 10px;
   margin-top: 20px;
+}
+
+@media (max-width: 450px) {
+  .cocktail-list-search-container {
+    grid-template-columns: 1fr;
+  }
 }
 
 .cocktail-list-search-container .ais-SearchBox-submit {
@@ -147,11 +167,5 @@ export default {
   cursor: pointer;
   width: 30px;
   height: 30px;
-}
-
-@media (max-width: 500px) {
-  .cocktail-list-search-container {
-    flex-wrap: wrap;
-  }
 }
 </style>

@@ -1,5 +1,6 @@
 <script setup>
 import OverlayLoader from './../OverlayLoader.vue'
+import IngredientModal from './IngredientModal.vue'
 </script>
 
 <template>
@@ -33,64 +34,72 @@ import OverlayLoader from './../OverlayLoader.vue'
             <input class="form-input" type="text" id="tags" v-model="cocktailTags">
             <p class="form-input-hint">Separate multiple tags with a comma (",").</p>
         </div>
-        <div class="form-group">
-            <label class="form-label" for="images">Images:</label>
-            <input class="form-input" type="file" id="images" ref="image">
-        </div>
-        <div class="form-group">
-            <label class="form-label" for="copyright">Image copyright:</label>
-            <input class="form-input" type="text" id="copyright" v-model="images[0].copyright">
+        <div class="form-group form-group--image">
+            <div class="form-group--image__image">
+                <img v-if="cocktail.image_url" :src="cocktail.image_url" alt="Cocktail image">
+                <img v-else :src="noImage" alt="Missing cocktail image">
+                <button v-if="cocktail.image_id" type="button" class="button button--dark button--small" @click="removeImage">Remove</button>
+            </div>
+            <div>
+                <div class="form-group">
+                    <label class="form-label" for="images">Image:</label>
+                    <input class="form-input" type="file" id="images" ref="image">
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="copyright">Image copyright:</label>
+                    <input class="form-input" type="text" id="copyright" v-model="images[0].copyright">
+                </div>
+            </div>
         </div>
         <h2 class="page-subtitle">Ingredients</h2>
         <ul class="cocktail-form__ingredients">
-            <li v-for="(ing, index) in cocktail.ingredients">
+            <li v-for="ing in cocktail.ingredients">
                 <div class="form-group">
-                    <label class="form-label" for="name">Ingredient:</label>
-                    <select class="form-select" v-model="ing.ingredient_id">
-                        <option v-for="ingOption in ingredients" :value="ingOption.id">{{ ingOption.name }}</option>
-                    </select>
+                    <label class="form-label">Ingredient:</label>
+                    <p>{{ ing.name }}<br>{{ ing.optional ? 'Optional' : '' }}</p>
                 </div>
                 <div class="form-group">
                     <label class="form-label">Amount:</label>
-                    <input class="form-input" type="text" v-model="ing.amount">
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Units:</label>
-                    <input class="form-input" type="text" v-model="ing.units">
+                    <p>{{ ing.amount }} {{ ing.units }}</p>
                 </div>
                 <div class="cocktail-form__ingredients__actions">
-                    <label :for="'is-optional-' + index">
-                        <input type="checkbox" :id="'is-optional-' + index" v-model="ing.optional">
-                        Make optional
-                    </label>
-                    <button class="button button--outline" type="button" @click="removeIngredient(ing)">Remove ingredient</button>
+                    <button class="button button--outline button--small" style="margin-right: 5px;" type="button" @click="editIngredient(ing)">
+                        Edit
+                    </button>
+                    <button class="button button--outline button--small" type="button" @click="removeIngredient(ing)">
+                        Remove
+                    </button>
                 </div>
             </li>
         </ul>
         <button class="button button--outline" type="button" @click="addIngredient">Add ingredient</button>
         <div class="form-actions">
-            <RouterLink class="button button--outline" :to="{name: 'cocktails.show', params: {id: cocktailId}}" v-if="cocktailId">Cancel</RouterLink>
-            <RouterLink class="button button--outline" :to="{name: 'cocktails'}" v-else>Cancel</RouterLink>
+            <RouterLink class="button button--outline" :to="{ name: 'cocktails.show', params: { id: cocktailId } }" v-if="cocktailId">Cancel</RouterLink>
+            <RouterLink class="button button--outline" :to="{ name: 'cocktails' }" v-else>Cancel</RouterLink>
             <button class="button button--dark" type="submit">Save</button>
         </div>
     </form>
+    <IngredientModal v-show="isModalVisible" :value="cocktailIngredientForEdit" @close="closeModal" />
 </template>
 
 <script>
 import ApiRequests from "../../ApiRequests";
+import Unitz from 'unitz'
 
 const api = new ApiRequests();
 
 export default {
     data() {
         return {
+            isModalVisible: false,
+            cocktailIngredientForEdit: {},
             isLoading: false,
             cocktail: {
                 ingredients: [],
                 tags: [],
             },
             images: [
-                {image: null, copyright: null}
+                { image: null, copyright: null }
             ],
             ingredients: [],
             cocktailId: null
@@ -104,6 +113,9 @@ export default {
             set(newVal) {
                 this.cocktail.tags = newVal.split(',')
             }
+        },
+        noImage() {
+            return `${window.srConfig.API_URL}/uploads/cocktails/no-image.jpg`;
         }
     },
     created() {
@@ -127,16 +139,42 @@ export default {
         })
     },
     methods: {
-        addIngredient() {
-            this.cocktail.ingredients.push({
-                name: null,
-            });
-        },
         removeIngredient(ing) {
             this.cocktail.ingredients.splice(
                 this.cocktail.ingredients.findIndex(i => i == ing),
                 1
             );
+        },
+        closeModal() {
+            this.isModalVisible = false;
+        },
+        addIngredient() {
+            let placeholderData = {
+                ingredient_id: null,
+                name: '<Not selected>',
+                amount: 30,
+                units: 'ml'
+            };
+            this.cocktail.ingredients.push(placeholderData);
+
+            this.editIngredient(placeholderData)
+        },
+        editIngredient(cocktailIngredient) {
+            this.cocktailIngredientForEdit = cocktailIngredient;
+            this.isModalVisible = true;
+        },
+        removeImage() {
+            if (!confirm('Are you sure you want to remove this image?')) {
+                return;
+            }
+
+            api.deleteImage(this.cocktail.image_id).then(() => {
+                this.$toast.default(`Removed cocktail image successfully.`);
+                this.cocktail.image_url = null;
+                this.cocktail.image_id = null;
+            }).catch(() => {
+                this.$toast.default(`Unable to remove cocktail image.`);
+            })
         },
         async submit() {
             this.isLoading = true;
@@ -151,6 +189,15 @@ export default {
                 images: [],
                 tags: this.cocktail.tags,
                 ingredients: this.cocktail.ingredients
+                    .filter(i => i.ingredient_id != null)
+                    .map(i => {
+                        if (i.units == 'oz') {
+                            i.amount = Unitz.parse(`${i.amount}${i.units}`).value * 30
+                            i.units = 'ml'
+                        }
+
+                        return i;
+                    })
             };
 
             const image = this.$refs.image.files[0] || null;
@@ -172,9 +219,7 @@ export default {
             if (this.cocktailId) {
                 api.updateCocktail(this.cocktailId, postData).then(data => {
                     this.isLoading = false;
-                    this.$toast.open({
-                        message: `Cocktail updated successfully.`
-                    });
+                    this.$toast.default(`Cocktail updated successfully.`);
                     this.$router.push({ name: 'cocktails.show', params: { id: data.id } })
                 }).catch(async errorResponse => {
                     if (errorResponse.status == 422) {
@@ -214,14 +259,20 @@ export default {
     list-style: none;
     margin: 0;
     padding: 0;
+    display: grid;
+    row-gap: 5px;
 }
 
 .cocktail-form__ingredients li {
     display: grid;
-    grid-template-columns: 4fr 1fr 1fr;
+    grid-template-columns: 2fr 1fr;
     grid-template-rows: auto auto;
     column-gap: 10px;
     row-gap: 10px;
+    background: rgba(255, 255, 255, .5);
+    padding: 10px;
+    border-bottom: 2px solid var(--color-bg-dark);
+    border-radius: 5px;
 }
 
 .cocktail-form__ingredients li .form-group {
@@ -229,8 +280,6 @@ export default {
 }
 
 .cocktail-form__ingredients__actions {
-    grid-column: span 3;
-    text-align: right;
-    margin-bottom: 20px;
+    grid-column: span 2;
 }
 </style>
