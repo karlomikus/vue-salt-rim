@@ -56,6 +56,8 @@ export default {
     props: ['value'],
     watch: {
         value(val) {
+            window.document.body.style.overflow = 'hidden';
+
             // Save original ingredient for cancel action
             this.orgCocktailIngredient = Object.assign({}, val);
 
@@ -90,9 +92,11 @@ export default {
             this.cocktailIngredient.ingredient_slug = item.slug;
         },
         save() {
+            window.document.body.style.overflow = 'auto';
             this.$emit('close');
         },
         cancel() {
+            window.document.body.style.overflow = 'auto';
             this.$emit('close');
         },
         newIngredient() {

@@ -19,6 +19,7 @@
 export default {
     methods: {
         cancel() {
+            window.body.style.overflow = 'auto';
             this.$emit('close');
         },
     },
