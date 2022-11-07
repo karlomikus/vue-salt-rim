@@ -1,7 +1,5 @@
 import ApiRequests from "./ApiRequests";
 
-const api = new ApiRequests();
-
 class Auth {
     static rememberUser(user) {
         localStorage.setItem('user', JSON.stringify(user));
@@ -30,14 +28,14 @@ class Auth {
     }
 
     static async refreshUser() {
-        const user = await api.fetchUser();
+        const user = await ApiRequests.fetchUser();
 
         localStorage.setItem('user', JSON.stringify(user));
     }
 
     static async isLoggedIn() {
         try {
-            const user = await api.fetchUser();
+            const user = await ApiRequests.fetchUser();
 
             this.rememberUser(user)
         } catch (e) {

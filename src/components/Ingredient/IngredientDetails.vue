@@ -103,8 +103,6 @@ import OverlayLoader from '@/components/OverlayLoader.vue'
 import ApiRequests from '../../ApiRequests';
 import Auth from '@/Auth.js'
 
-const api = new ApiRequests();
-
 export default {
     data: () => ({
         isLoading: false,
@@ -124,14 +122,14 @@ export default {
                 if (this.$route.name == 'ingredients.show') {
                     this.isLoading = true;
                     this.isAddedToShelf = false;
-                    api.fetchIngredient(this.$route.params.id).then(data => {
+                    ApiRequests.fetchIngredient(this.$route.params.id).then(data => {
                         this.ingredient = data
                         this.isLoading = false;
 
                         const currUser = Auth.getUser();
                         this.isAddedToShoppingList = currUser.shopping_lists.includes(this.ingredient.id)
 
-                        api.fetchMyShelf().then(data => {
+                        ApiRequests.fetchMyShelf().then(data => {
                             data.forEach(i => {
                                 if (i.ingredient_id == this.ingredient.id) {
                                     this.isAddedToShelf = true;
@@ -150,7 +148,7 @@ export default {
         deleteIngredient() {
             if (confirm(`Are you sure you want to delete "${this.ingredient.name}"? This action cannot be undone and will impact ${this.ingredient.cocktails.length} cocktails.`)) {
                 this.isLoading = true;
-                api.deleteIngredient(this.ingredient.id).then(resp => {
+                ApiRequests.deleteIngredient(this.ingredient.id).then(resp => {
                     this.$toast.default(`Ingredient "${this.ingredient.name}" successfully removed`);
                     this.$router.push({ name: 'ingredients' })
                     this.isLoading = false;
@@ -162,7 +160,7 @@ export default {
         toggleShelf() {
             this.isLoading = true;
             if (this.isAddedToShelf) {
-                api.removeIngredientFromShelf(this.ingredient.id).then(() => {
+                ApiRequests.removeIngredientFromShelf(this.ingredient.id).then(() => {
                     this.isAddedToShelf = false;
                     this.$toast.default(`Removed "${this.ingredient.name}" from your shelf`);
                     this.isLoading = false;
@@ -170,7 +168,7 @@ export default {
                     this.isLoading = false;
                 })
             } else {
-                api.addIngredientToShelf(this.ingredient.id).then(() => {
+                ApiRequests.addIngredientToShelf(this.ingredient.id).then(() => {
                     this.isAddedToShelf = true;
                     this.$toast.default(`Added "${this.ingredient.name}" to your shelf`);
                     this.isLoading = false;
@@ -187,7 +185,7 @@ export default {
             };
 
             if (this.isAddedToShoppingList) {
-                api.removeIngredientsFromShoppingList(postData).then(() => {
+                ApiRequests.removeIngredientsFromShoppingList(postData).then(() => {
                     this.$toast.default(`Removed "${this.ingredient.name}" from your shopping list.`);
                     this.isAddedToShoppingList = false;
                     this.isLoading = false;
@@ -195,7 +193,7 @@ export default {
                     this.isLoading = false;
                 })
             } else {
-                api.addIngredientsToShoppingList(postData).then(() => {
+                ApiRequests.addIngredientsToShoppingList(postData).then(() => {
                     this.$toast.default(`Added "${this.ingredient.name}" to your shopping list.`)
                     this.isAddedToShoppingList = true
                     this.isLoading = false;

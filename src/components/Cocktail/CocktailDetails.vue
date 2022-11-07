@@ -112,8 +112,6 @@ import ApiRequests from '../../ApiRequests';
 import Auth from '@/Auth';
 import Unitz from 'unitz'
 
-const api = new ApiRequests();
-
 export default {
     data: () => ({
         cocktail: {},
@@ -158,7 +156,7 @@ export default {
                     this.userShelfIngredients = Auth.getUser().shelf_ingredients;
                     this.userShoppingListIngredients = Auth.getUser().shopping_lists;
 
-                    api.fetchCocktail(this.$route.params.id).then(data => {
+                    ApiRequests.fetchCocktail(this.$route.params.id).then(data => {
                         this.cocktail = data
                         this.isFavorited = Auth.getUser().favorite_cocktails.includes(this.cocktail.id);
                     }).catch(e => {
@@ -175,14 +173,14 @@ export default {
     },
     methods: {
         favorite() {
-            api.favoriteCocktail(this.cocktail.id).then(resp => {
+            ApiRequests.favoriteCocktail(this.cocktail.id).then(resp => {
                 this.isFavorited = resp.is_favorited
                 this.$toast.default(this.isFavorited ? `Added "${this.cocktail.name}" to favorites` : `Removed "${this.cocktail.name}" from favorites`);
             })
         },
         deleteCocktail() {
             if (confirm('Are you sure you want to delete cocktail?')) {
-                api.deleteCocktail(this.cocktail.id).then(resp => {
+                ApiRequests.deleteCocktail(this.cocktail.id).then(resp => {
                     this.$toast.open({
                         message: `Cocktail "${this.cocktail.name}" successfully removed`
                     });
@@ -195,7 +193,7 @@ export default {
                 ingredient_ids: this.missingIngredientIds
             };
 
-            api.addIngredientsToShoppingList(postData).then(data => {
+            ApiRequests.addIngredientsToShoppingList(postData).then(data => {
                 this.$toast.default(`Added ${data.length} ingredients to your shopping list.`)
                 Auth.refreshUser().then(() => {
                     this.userShoppingListIngredients = Auth.getUser().shopping_lists;

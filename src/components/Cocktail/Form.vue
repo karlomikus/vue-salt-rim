@@ -86,8 +86,6 @@ import IngredientModal from './IngredientModal.vue'
 import ApiRequests from "../../ApiRequests";
 import Unitz from 'unitz'
 
-const api = new ApiRequests();
-
 export default {
     data() {
         return {
@@ -125,7 +123,7 @@ export default {
         this.cocktailId = this.$route.query.id || null;
 
         if (this.cocktailId) {
-            api.fetchCocktail(this.cocktailId).then(data => {
+            ApiRequests.fetchCocktail(this.cocktailId).then(data => {
                 this.cocktail = data;
                 this.images[0].copyright = this.cocktail.image_copyright;
                 this.isLoading = false;
@@ -133,7 +131,7 @@ export default {
             })
         }
 
-        api.fetchIngredients().then(data => {
+        ApiRequests.fetchIngredients().then(data => {
             this.ingredients = data
             this.isLoading = false;
         })
@@ -175,7 +173,7 @@ export default {
                 return;
             }
 
-            api.deleteImage(this.cocktail.image_id).then(() => {
+            ApiRequests.deleteImage(this.cocktail.image_id).then(() => {
                 this.$toast.default(`Removed cocktail image successfully.`);
                 this.cocktail.image_url = null;
                 this.cocktail.image_id = null;
@@ -214,7 +212,7 @@ export default {
                 formData.append('images[0][image]', image)
                 formData.append('images[0][copyright]', this.images[0].copyright)
 
-                const resp = await api.uploadImages(formData).catch(e => {
+                const resp = await ApiRequests.uploadImages(formData).catch(e => {
                     this.$toast.error('An error occured while uploading images. Your cocktail is still saved.');
                 });
 
@@ -224,7 +222,7 @@ export default {
             }
 
             if (this.cocktailId) {
-                api.updateCocktail(this.cocktailId, postData).then(data => {
+                ApiRequests.updateCocktail(this.cocktailId, postData).then(data => {
                     this.isLoading = false;
                     this.$toast.default(`Cocktail updated successfully.`);
                     this.$router.push({ name: 'cocktails.show', params: { id: data.id } })
@@ -239,7 +237,7 @@ export default {
                     this.isLoading = false;
                 })
             } else {
-                api.saveCocktail(postData).then(data => {
+                ApiRequests.saveCocktail(postData).then(data => {
                     this.isLoading = false;
                     this.$toast.open({
                         message: 'Cocktail created successfully.'

@@ -50,8 +50,6 @@ import { instantMeiliSearch } from '@meilisearch/instant-meilisearch';
 import ApiRequests from "../../ApiRequests";
 import Auth from '@/Auth.js';
 
-const api = new ApiRequests();
-
 export default {
     props: ['value'],
     watch: {
@@ -96,7 +94,7 @@ export default {
             this.$emit('close');
         },
         newIngredient() {
-            api.saveIngredient({
+            ApiRequests.saveIngredient({
                 name: this.currentQuery,
                 description: null,
                 strength: 0,

@@ -57,8 +57,6 @@ import Spinner from './../Spinner.vue'
 import _ from 'lodash';
 import ApiRequests from '../../ApiRequests';
 
-const api = new ApiRequests();
-
 export default {
     data() {
         return {
@@ -81,11 +79,11 @@ export default {
             });
         });
 
-        api.fetchIngredients().then(data => {
+        ApiRequests.fetchIngredients().then(data => {
             this.ingredients = data
         });
 
-        api.fetchMyShelf().then(data => {
+        ApiRequests.fetchMyShelf().then(data => {
             this.userIngredients = data
         });
     },
@@ -118,7 +116,7 @@ export default {
         },
         addToShelf(ingredient) {
             this.loadingIngredients.push(ingredient.id)
-            api.addIngredientToShelf(ingredient.id).then(() => {
+            ApiRequests.addIngredientToShelf(ingredient.id).then(() => {
                 this.loadingIngredients.splice(this.loadingIngredients.indexOf(ingredient.id), 1)
             })
 
@@ -126,7 +124,7 @@ export default {
         },
         removeFromShelf(ingredient) {
             this.loadingIngredients.push(ingredient.id)
-            api.removeIngredientFromShelf(ingredient.id).then(() => {
+            ApiRequests.removeIngredientFromShelf(ingredient.id).then(() => {
                 this.loadingIngredients.splice(this.loadingIngredients.indexOf(ingredient.id), 1)
             })
 

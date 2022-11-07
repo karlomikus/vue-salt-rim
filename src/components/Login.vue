@@ -33,8 +33,6 @@
 import Auth from '../Auth'
 import ApiRequests from '@/ApiRequests';
 
-const api = new ApiRequests();
-
 export default {
     data() {
         return {
@@ -47,9 +45,9 @@ export default {
         login() {
             const redirectPath = this.$route.query.redirect || '/'
 
-            api.fetchLoginToken(this.email, this.password).then(token => {
+            ApiRequests.fetchLoginToken(this.email, this.password).then(token => {
                 Auth.rememberToken(token)
-                api.fetchUser().then(userData => {
+                ApiRequests.fetchUser().then(userData => {
                     Auth.rememberUser(userData)
 
                     this.$router.push(redirectPath);

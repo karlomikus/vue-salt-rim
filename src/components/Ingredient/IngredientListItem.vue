@@ -20,8 +20,6 @@ import OverlayLoader from '@/components/OverlayLoader.vue';
 <script>
 import ApiRequests from '../../ApiRequests';
 
-const api = new ApiRequests();
-
 export default {
     props: ['ingredient'],
     data() {
@@ -32,14 +30,14 @@ export default {
     methods: {
         addToShelf() {
             this.isLoading = true;
-            api.addIngredientToShelf(this.ingredient.id).then(() => {
+            ApiRequests.addIngredientToShelf(this.ingredient.id).then(() => {
                 this.$emit('addedToShelf')
                 this.isLoading = false;
             })
         },
         removeFromShoppingList() {
             this.isLoading = true;
-            api.removeIngredientsFromShoppingList({ingredient_ids: [this.ingredient.id]}).then(() => {
+            ApiRequests.removeIngredientsFromShoppingList({ingredient_ids: [this.ingredient.id]}).then(() => {
                 this.$emit('removedFromShoppingList')
                 this.isLoading = false;
             })
