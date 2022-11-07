@@ -33,8 +33,6 @@
 <script>
 import ApiRequests from '@/ApiRequests';
 
-const api = new ApiRequests();
-
 export default {
     data() {
         return {
@@ -53,7 +51,7 @@ export default {
         }
     },
     created() {
-        api.fetchApiVersion().then(resp => {
+        ApiRequests.fetchApiVersion().then(resp => {
             this.versions.api = resp.version
         })
     }

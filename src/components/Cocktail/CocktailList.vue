@@ -50,8 +50,6 @@ import { singleIndex as singleIndexMapping } from 'instantsearch.js/es/lib/state
 import Auth from '@/Auth.js';
 import ApiRequests from '@/ApiRequests.js'
 
-const api = new ApiRequests()
-
 export default {
   data() {
     return {
@@ -72,7 +70,7 @@ export default {
   created() {
     document.title = `Cocktails \u22C5 Salt Rim`
     const userId = Auth.getUser().id
-    api.fetchUserCocktails(userId).then(data => {
+    ApiRequests.fetchUserCocktails(userId).then(data => {
       this.userCocktails = data
     })
   },

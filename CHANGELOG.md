@@ -1,3 +1,8 @@
+# v0.2.1
+- Some fixes for ingredient modal
+- Fix image upload container on smaller devices
+- Update input styling on smaller devices
+
 # v0.2.0
 - Updated cocktail ingredient form
 - Layout fixes for smaller devices

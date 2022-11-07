@@ -1,9 +1,9 @@
 class ApiRequests {
-    constructor() {
-        this.url = window.srConfig.API_URL;
+    static getUrl() {
+        return window.srConfig.API_URL;
     }
 
-    getHeaders() {
+    static getHeaders() {
         return new Headers({
             'Authorization': 'Bearer ' + localStorage.getItem('user_token'),
             'Accept': 'application/json',
@@ -11,8 +11,16 @@ class ApiRequests {
         });
     }
 
-    async getRequest(path) {
-        const url = `${this.url}${path}`
+    static parseResponse(resp) {
+        if ('data' in resp) {
+            return resp.data;
+        }
+
+        return resp
+    }
+
+    static async getRequest(path) {
+        const url = `${this.getUrl()}${path}`
 
         const f = fetch(url, {
             headers: this.getHeaders()
@@ -27,8 +35,8 @@ class ApiRequests {
         return await (await f).json();
     }
 
-    async postRequest(path, data = {}, type = 'POST') {
-        const url = `${this.url}${path}`
+    static async postRequest(path, data = {}, type = 'POST') {
+        const url = `${this.getUrl()}${path}`
 
         return await (await fetch(url, {
             method: type,
@@ -43,8 +51,8 @@ class ApiRequests {
         })).json();
     }
 
-    async deleteRequest(path) {
-        const url = `${this.url}${path}`
+    static async deleteRequest(path) {
+        const url = `${this.getUrl()}${path}`
 
         return await (await fetch(url, {
             method: 'DELETE',
@@ -52,134 +60,8 @@ class ApiRequests {
         })).json();
     }
 
-    async fetchCocktails() {
-        let jsonResp = await this.getRequest(`/api/cocktails`);
-
-        return this.parseResponse(jsonResp);
-    }
-
-    async fetchUserCocktails(userId) {
-        let jsonResp = await this.getRequest(`/api/cocktails?user_id=${userId}`);
-
-        return this.parseResponse(jsonResp);
-    }
-
-    async fetchUserFavoriteCocktails() {
-        let jsonResp = await this.getRequest(`/api/cocktails/user-favorites`);
-
-        return this.parseResponse(jsonResp);
-    }
-
-    async fetchCocktail(id) {
-        let jsonResp = await this.getRequest(`/api/cocktails/${id}`);
-
-        return this.parseResponse(jsonResp);
-    }
-
-    async randomCocktail() {
-        let jsonResp = await this.getRequest(`/api/cocktails/random`);
-
-        return this.parseResponse(jsonResp);
-    }
-
-    async deleteCocktail(id) {
-        let jsonResp = await this.deleteRequest(`/api/cocktails/${id}`);
-
-        return this.parseResponse(jsonResp);
-    }
-
-    async fetchUserCocktail() {
-        let jsonResp = await this.getRequest(`/api/cocktails/user-shelf`);
-
-        return this.parseResponse(jsonResp);
-    }
-
-    async fetchIngredients() {
-        let jsonResp = await this.getRequest(`/api/ingredients`);
-
-        return this.parseResponse(jsonResp);
-    }
-
-    async fetchIngredientsOnShoppingList() {
-        let jsonResp = await this.getRequest(`/api/ingredients?on_shopping_list=true`);
-
-        return this.parseResponse(jsonResp);
-    }
-
-    async fetchIngredientCategories() {
-        let jsonResp = await this.getRequest(`/api/ingredients/categories`);
-
-        return this.parseResponse(jsonResp);
-    }
-
-    async fetchIngredient(id) {
-        let jsonResp = await this.getRequest(`/api/ingredients/${id}`);
-
-        return this.parseResponse(jsonResp);
-    }
-
-    async fetchMyShelf() {
-        let jsonResp = await this.getRequest(`/api/shelf`);
-
-        return this.parseResponse(jsonResp);
-    }
-
-    async addIngredientToShelf(id) {
-        let jsonResp = await this.postRequest(`/api/shelf/${id}`);
-
-        return this.parseResponse(jsonResp);
-    }
-
-    async removeIngredientFromShelf(id) {
-        let jsonResp = await this.deleteRequest(`/api/shelf/${id}`);
-
-        return this.parseResponse(jsonResp);
-    }
-
-    async fetchUser() {
-        let jsonResp = await this.getRequest(`/api/user`);
-
-        return this.parseResponse(jsonResp);
-    }
-
-    async favoriteCocktail(id) {
-        let jsonResp = await this.postRequest(`/api/cocktails/${id}/favorite`);
-
-        return this.parseResponse(jsonResp);
-    }
-
-    async saveCocktail(data) {
-        let jsonResp = await this.postRequest(`/api/cocktails`, data);
-
-        return this.parseResponse(jsonResp);
-    }
-
-    async updateCocktail(id, data) {
-        let jsonResp = await this.postRequest(`/api/cocktails/${id}`, data, 'PUT');
-
-        return this.parseResponse(jsonResp);
-    }
-
-    async saveIngredient(data) {
-        let jsonResp = await this.postRequest(`/api/ingredients`, data);
-
-        return this.parseResponse(jsonResp);
-    }
-
-    async updateIngredient(id, data) {
-        let jsonResp = await this.postRequest(`/api/ingredients/${id}`, data, 'PUT');
-
-        return this.parseResponse(jsonResp);
-    }
-
-    async deleteIngredient(id) {
-        let jsonResp = await this.deleteRequest(`/api/ingredients/${id}`);
-
-        return this.parseResponse(jsonResp);
-    }
-
-    async uploadImages(formData) {
-        const jsonResp = await (await fetch(`${this.url}/api/images`, {
+    static async uploadImages(formData) {
+        const jsonResp = await (await fetch(`${this.getUrl()}/api/images`, {
             method: 'POST',
             headers: new Headers({
                 'Authorization': 'Bearer ' + localStorage.getItem('user_token'),
@@ -190,8 +72,8 @@ class ApiRequests {
         return this.parseResponse(jsonResp);
     }
 
-    async fetchLoginToken(email, password) {
-        const url = `${this.url}/api/login`
+    static async fetchLoginToken(email, password) {
+        const url = `${this.getUrl()}/api/login`
 
         let jsonResp = await (await fetch(url, {
             method: 'POST',
@@ -214,42 +96,160 @@ class ApiRequests {
         return jsonResp.token;
     }
 
-    async fetchApiVersion() {
+    static async fetchCocktails() {
+        let jsonResp = await this.getRequest(`/api/cocktails`);
+
+        return this.parseResponse(jsonResp);
+    }
+
+    static async fetchUserCocktails(userId) {
+        let jsonResp = await this.getRequest(`/api/cocktails?user_id=${userId}`);
+
+        return this.parseResponse(jsonResp);
+    }
+
+    static async fetchUserFavoriteCocktails() {
+        let jsonResp = await this.getRequest(`/api/cocktails/user-favorites`);
+
+        return this.parseResponse(jsonResp);
+    }
+
+    static async fetchCocktail(id) {
+        let jsonResp = await this.getRequest(`/api/cocktails/${id}`);
+
+        return this.parseResponse(jsonResp);
+    }
+
+    static async randomCocktail() {
+        let jsonResp = await this.getRequest(`/api/cocktails/random`);
+
+        return this.parseResponse(jsonResp);
+    }
+
+    static async deleteCocktail(id) {
+        let jsonResp = await this.deleteRequest(`/api/cocktails/${id}`);
+
+        return this.parseResponse(jsonResp);
+    }
+
+    static async fetchUserCocktail() {
+        let jsonResp = await this.getRequest(`/api/cocktails/user-shelf`);
+
+        return this.parseResponse(jsonResp);
+    }
+
+    static async fetchIngredients() {
+        let jsonResp = await this.getRequest(`/api/ingredients`);
+
+        return this.parseResponse(jsonResp);
+    }
+
+    static async fetchIngredientsOnShoppingList() {
+        let jsonResp = await this.getRequest(`/api/ingredients?on_shopping_list=true`);
+
+        return this.parseResponse(jsonResp);
+    }
+
+    static async fetchIngredientCategories() {
+        let jsonResp = await this.getRequest(`/api/ingredients/categories`);
+
+        return this.parseResponse(jsonResp);
+    }
+
+    static async fetchIngredient(id) {
+        let jsonResp = await this.getRequest(`/api/ingredients/${id}`);
+
+        return this.parseResponse(jsonResp);
+    }
+
+    static async fetchMyShelf() {
+        let jsonResp = await this.getRequest(`/api/shelf`);
+
+        return this.parseResponse(jsonResp);
+    }
+
+    static async addIngredientToShelf(id) {
+        let jsonResp = await this.postRequest(`/api/shelf/${id}`);
+
+        return this.parseResponse(jsonResp);
+    }
+
+    static async removeIngredientFromShelf(id) {
+        let jsonResp = await this.deleteRequest(`/api/shelf/${id}`);
+
+        return this.parseResponse(jsonResp);
+    }
+
+    static async fetchUser() {
+        let jsonResp = await this.getRequest(`/api/user`);
+
+        return this.parseResponse(jsonResp);
+    }
+
+    static async favoriteCocktail(id) {
+        let jsonResp = await this.postRequest(`/api/cocktails/${id}/favorite`);
+
+        return this.parseResponse(jsonResp);
+    }
+
+    static async saveCocktail(data) {
+        let jsonResp = await this.postRequest(`/api/cocktails`, data);
+
+        return this.parseResponse(jsonResp);
+    }
+
+    static async updateCocktail(id, data) {
+        let jsonResp = await this.postRequest(`/api/cocktails/${id}`, data, 'PUT');
+
+        return this.parseResponse(jsonResp);
+    }
+
+    static async saveIngredient(data) {
+        let jsonResp = await this.postRequest(`/api/ingredients`, data);
+
+        return this.parseResponse(jsonResp);
+    }
+
+    static async updateIngredient(id, data) {
+        let jsonResp = await this.postRequest(`/api/ingredients/${id}`, data, 'PUT');
+
+        return this.parseResponse(jsonResp);
+    }
+
+    static async deleteIngredient(id) {
+        let jsonResp = await this.deleteRequest(`/api/ingredients/${id}`);
+
+        return this.parseResponse(jsonResp);
+    }
+
+    static async fetchApiVersion() {
         let jsonResp = await this.getRequest(`/api/version`);
 
         return this.parseResponse(jsonResp);
     }
 
-    async addIngredientsToShoppingList(data) {
+    static async addIngredientsToShoppingList(data) {
         let jsonResp = await this.postRequest(`/api/shopping-lists/batch`, data);
 
         return this.parseResponse(jsonResp);
     }
 
-    async removeIngredientsFromShoppingList(data) {
+    static async removeIngredientsFromShoppingList(data) {
         let jsonResp = await this.postRequest(`/api/shopping-lists/batch`, data, 'DELETE');
 
         return this.parseResponse(jsonResp);
     }
 
-    async logout() {
+    static async logout() {
         let jsonResp = await this.postRequest(`/api/logout`);
 
         return this.parseResponse(jsonResp);
     }
 
-    async deleteImage(id) {
+    static async deleteImage(id) {
         let jsonResp = await this.deleteRequest(`/api/images/${id}`);
 
         return this.parseResponse(jsonResp);
-    }
-
-    parseResponse(resp) {
-        if ('data' in resp) {
-            return resp.data;
-        }
-
-        return resp
     }
 }
 

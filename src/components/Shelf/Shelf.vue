@@ -78,8 +78,6 @@ import CocktailListContainer from '../Cocktail/CocktailListContainer.vue'
 import ApiRequests from '../../ApiRequests';
 import Auth from '@/Auth.js';
 
-const api = new ApiRequests();
-
 export default {
     data: () => ({
         user: Auth.getUser(),
@@ -90,19 +88,19 @@ export default {
     created() {
         document.title = `Shelf \u22C5 Salt Rim`
 
-        api.fetchUserFavoriteCocktails().then(data => {
+        ApiRequests.fetchUserFavoriteCocktails().then(data => {
             this.favoriteCocktails = data
         }).catch(e => {
             this.$toast.error('An error occured while fetching your favorite cocktails from a server.');
         })
 
-        api.fetchUserCocktail().then(data => {
+        ApiRequests.fetchUserCocktail().then(data => {
             this.shelfCocktails = data
         }).catch(e => {
             this.$toast.error('An error occured while fetching cocktails you can make from a server.');
         })
 
-        api.fetchIngredientsOnShoppingList().then(data => {
+        ApiRequests.fetchIngredientsOnShoppingList().then(data => {
             this.shoppingListIngredients = data
         }).catch(e => {
             this.$toast.error('An error occured while fetching ingredients on your shopping list from a server.');
@@ -110,7 +108,7 @@ export default {
     },
     methods: {
         randomCocktail() {
-            api.randomCocktail().then(resp => {
+            ApiRequests.randomCocktail().then(resp => {
                 this.$router.push({ name: 'cocktails.show', params: { id: resp.slug } })
             });
         },
@@ -118,7 +116,7 @@ export default {
             this.shoppingListIngredients.splice(this.shoppingListIngredients.indexOf(ingredient), 1)
         },
         logout() {
-            api.logout().then(() => {
+            ApiRequests.logout().then(() => {
                 Auth.forgetUser();
                 this.$router.push({name: 'login'})
             })

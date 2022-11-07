@@ -30,12 +30,18 @@
     display: block;
 }
 
+@media (max-width: 500px) {
+    .form-group--image {
+        grid-template-columns: 1fr;
+    }
+}
+
 .form-label {
     display: block;
     display: block;
-    font-size: 0.8rem;
+    font-size: 0.9rem;
     margin-bottom: 2px;
-    color: #866269;
+    color: #68444b;
 }
 
 .form-label--required::after {
@@ -87,6 +93,11 @@ textarea.form-input,
     background: #fff;
 }
 
+.form-input::placeholder,
+.form-select::placeholder {
+    color: #966d74;
+}
+
 .form-actions {
     text-align: right;
     border-top: 2px solid var(--color-bg-dark);
@@ -102,4 +113,14 @@ textarea.form-input,
     font-size: .7rem;
     margin-top: .2rem;
     color: #866269;
+}
+
+@media (max-width: 450px) {
+    .form-input,
+    .form-select {
+        height: 2.5rem;
+        font-size: 1rem;
+        line-height: 1.3rem;
+        padding: 5px 10px;
+    }
 }

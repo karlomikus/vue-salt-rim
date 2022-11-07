@@ -46,8 +46,6 @@
 <script>
 import ApiRequests from "../../ApiRequests";
 
-const api = new ApiRequests();
-
 export default {
     data() {
         return {
@@ -65,7 +63,7 @@ export default {
         this.ingredientId = this.$route.query.id || null;
 
         if (this.ingredientId) {
-            api.fetchIngredient(this.ingredientId).then(data => {
+            ApiRequests.fetchIngredient(this.ingredientId).then(data => {
                 this.ingredient = data;
                 this.images[0].copyright = this.ingredient.image_copyright;
 
@@ -73,7 +71,7 @@ export default {
             })
         }
 
-        api.fetchIngredientCategories().then(data => {
+        ApiRequests.fetchIngredientCategories().then(data => {
             this.categories = data
         })
     },
@@ -96,7 +94,7 @@ export default {
                 formData.append('images[0][image]', image)
                 formData.append('images[0][copyright]', this.images[0].copyright)
 
-                const resp = await api.uploadImages(formData).catch(e => {
+                const resp = await ApiRequests.uploadImages(formData).catch(e => {
                     this.$toast.error('An error occured while uploading images. Your ingredient is still saved.');
                 });
 
@@ -106,7 +104,7 @@ export default {
             }
 
             if (this.ingredientId) {
-                api.updateIngredient(this.ingredientId, postData).then(data => {
+                ApiRequests.updateIngredient(this.ingredientId, postData).then(data => {
                     this.$toast.default('Ingredient updated');
                     this.$router.push({ name: 'ingredients.show', params: { id: data.id } })
                 }).catch(async errorResponse => {
@@ -120,7 +118,7 @@ export default {
                     this.isLoading = false;
                 })
             } else {
-                api.saveIngredient(postData).then(data => {
+                ApiRequests.saveIngredient(postData).then(data => {
                     this.$toast.default('Ingredient created');
                     this.$router.push({ name: 'ingredients.show', params: { id: data.id } })
                 }).catch(async errorResponse => {
