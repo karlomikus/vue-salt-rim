@@ -2,6 +2,7 @@
 @import "./forms.css";
 @import "./buttons.css";
 @import "./dropdown.css";
+@import "./modal.css";
 @import "./glasses.css";
 
 @import "vue-select/dist/vue-select.css";

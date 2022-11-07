@@ -14,3 +14,13 @@
         </div>
     </div>
 </template>
+
+<script>
+export default {
+    methods: {
+        cancel() {
+            this.$emit('close');
+        },
+    },
+};
+</script>

@@ -1,48 +1,50 @@
+<script setup>
+import Modal from './../Modal.vue'
+</script>
+
 <template>
-    <div class="modal-backdrop">
-        <div class="modal">
-            <section class="modal-body">
-                <ais-instant-search :search-client="searchClient" :index-name="index" :on-state-change="onStateChange">
-                    <ais-configure :hitsPerPage="30" />
-                    <ais-search-box placeholder="Search for ingredient..." :class-names="{'ais-SearchBox-input': 'form-input'}" />
-                    <ais-hits>
-                        <template v-slot="{ items }">
-                            <div class="ingredients-options">
-                                <a href="#" v-for="item in items" @click.prevent="selectIngredient(item)">{{ item.name }}</a>
-                            </div>
-                        </template>
-                    </ais-hits>
-                </ais-instant-search>
-                <div class="ingredient-modal__info" v-show="currentQuery && currentQuery.length > 0">
-                    Not found what you are looking for? <a href="#" @click.prevent="newIngredient">Create ingredient: "{{ currentQuery }}"</a>
-                </div>
-                <h3 class="selected-ingredient">
-                    <small>Current ingredient:</small>
-                    {{ cocktailIngredient.name }}
-                </h3>
-                <div style="display: grid; grid-template-columns: 1fr 2fr; column-gap: 10px;">
-                    <div class="form-group">
-                        <label class="form-label" for="ingredient-amount">Amount:</label>
-                        <input class="form-input" type="text" id="ingredient-amount" v-model="cocktailIngredient.amount">
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label" for="ingredient-units">Units:</label>
-                        <input class="form-input" type="text" id="ingredient-units" v-model="cocktailIngredient.units">
-                    </div>
+    <Modal>
+        <template #body>
+            <ais-instant-search :search-client="searchClient" :index-name="index" :on-state-change="onStateChange">
+                <ais-configure :hitsPerPage="30" />
+                <ais-search-box placeholder="Search for ingredient..." :class-names="{'ais-SearchBox-input': 'form-input'}" />
+                <ais-hits>
+                    <template v-slot="{ items }">
+                        <div class="ingredients-options">
+                            <a href="#" v-for="item in items" @click.prevent="selectIngredient(item)">{{ item.name }}</a>
+                        </div>
+                    </template>
+                </ais-hits>
+            </ais-instant-search>
+            <div class="ingredient-modal__info" v-show="currentQuery && currentQuery.length > 0">
+                Not found what you are looking for? <a href="#" @click.prevent="newIngredient">Create ingredient: "{{ currentQuery }}"</a>
+            </div>
+            <h3 class="selected-ingredient">
+                <small>Current ingredient:</small>
+                {{ cocktailIngredient.name }}
+            </h3>
+            <div style="display: grid; grid-template-columns: 1fr 2fr; column-gap: 10px;">
+                <div class="form-group">
+                    <label class="form-label" for="ingredient-amount">Amount:</label>
+                    <input class="form-input" type="text" id="ingredient-amount" v-model="cocktailIngredient.amount">
                 </div>
                 <div class="form-group">
-                    <label for="cocktail-ing-optional">
-                        <input type="checkbox" id="cocktail-ing-optional" v-model="cocktailIngredient.optional">
-                        Make optional
-                    </label>
+                    <label class="form-label" for="ingredient-units">Units:</label>
+                    <input class="form-input" type="text" id="ingredient-units" v-model="cocktailIngredient.units">
                 </div>
-            </section>
-            <footer class="modal-footer">
-                <button type="button" class="button button--outline" @click="cancel" style="margin-right: 10px;">Cancel</button>
-                <button type="button" class="button button--dark" @click="save">Done</button>
-            </footer>
-        </div>
-    </div>
+            </div>
+            <div class="form-group">
+                <label for="cocktail-ing-optional">
+                    <input type="checkbox" id="cocktail-ing-optional" v-model="cocktailIngredient.optional">
+                    Make optional
+                </label>
+            </div>
+        </template>
+        <template #footer>
+            <button type="button" class="button button--outline" @click="cancel" style="margin-right: 10px;">Cancel</button>
+            <button type="button" class="button button--dark" @click="save">Done</button>
+        </template>
+    </Modal>
 </template>
 
 <script>
@@ -124,46 +126,6 @@ export default {
 </script>
 
 <style>
-:root {
-    --modal-body-padding: 20px;
-}
-
-.modal-backdrop {
-    position: fixed;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    background-color: rgba(0, 0, 0, 0.3);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 10;
-}
-
-.modal {
-    background: var(--color-bg);
-    box-shadow: 0 10px 20px 1px rgb(71, 71, 71, 0.3);
-    border-radius: 15px;
-    overflow-x: auto;
-    display: flex;
-    flex-direction: column;
-    margin: 10px;
-    max-width: calc(var(--site-width) / 2);
-    width: 100%;
-}
-
-.modal-body {
-    position: relative;
-    padding: var(--modal-body-padding);
-}
-
-.modal-footer {
-    padding: var(--modal-body-padding);
-    padding-top: 0;
-    text-align: right;
-}
-
 .ingredients-options {
     display: flex;
     flex-direction: column;
