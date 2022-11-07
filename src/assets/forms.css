@@ -30,6 +30,12 @@
     display: block;
 }
 
+@media (max-width: 500px) {
+    .form-group--image {
+        grid-template-columns: 1fr;
+    }
+}
+
 .form-label {
     display: block;
     display: block;
