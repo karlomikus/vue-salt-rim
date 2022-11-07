@@ -114,3 +114,13 @@ textarea.form-input,
     margin-top: .2rem;
     color: #866269;
 }
+
+@media (max-width: 450px) {
+    .form-input,
+    .form-select {
+        height: 2.5rem;
+        font-size: 1rem;
+        line-height: 1.3rem;
+        padding: 5px 10px;
+    }
+}
