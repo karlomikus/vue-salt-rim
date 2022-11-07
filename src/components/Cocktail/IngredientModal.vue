@@ -2,8 +2,8 @@
     <div class="modal-backdrop">
         <div class="modal">
             <section class="modal-body">
-                <ais-instant-search :search-client="searchClient" index-name="ingredients:name:asc">
-                    <ais-configure q="apple" :hitsPerPage="30" />
+                <ais-instant-search :search-client="searchClient" :index-name="index" :on-state-change="onStateChange">
+                    <ais-configure :hitsPerPage="30" />
                     <ais-search-box placeholder="Search for ingredient..." :class-names="{'ais-SearchBox-input': 'form-input'}" />
                     <ais-hits>
                         <template v-slot="{ items }">
@@ -13,6 +13,9 @@
                         </template>
                     </ais-hits>
                 </ais-instant-search>
+                <div class="ingredient-modal__info" v-show="currentQuery && currentQuery.length > 0">
+                    Not found what you are looking for? <a href="#" @click.prevent="newIngredient">Create ingredient: "{{ currentQuery }}"</a>
+                </div>
                 <h3 class="selected-ingredient">
                     <small>Current ingredient:</small>
                     {{ cocktailIngredient.name }}
@@ -35,7 +38,7 @@
                 </div>
             </section>
             <footer class="modal-footer">
-                <button type="button" class="button button--outline" @click="cancel">Cancel</button>
+                <button type="button" class="button button--outline" @click="cancel" style="margin-right: 10px;">Cancel</button>
                 <button type="button" class="button button--dark" @click="save">Done</button>
             </footer>
         </div>
@@ -44,40 +47,79 @@
 
 <script>
 import { instantMeiliSearch } from '@meilisearch/instant-meilisearch';
+import ApiRequests from "../../ApiRequests";
 import Auth from '@/Auth.js';
+
+const api = new ApiRequests();
 
 export default {
     props: ['value'],
     watch: {
         value(val) {
-            this.defaultQuery = '';
-            console.log(this.defaultQuery)
+            // Save original ingredient for cancel action
             this.orgCocktailIngredient = Object.assign({}, val);
+
+            // Set cocktail ingredient
             this.cocktailIngredient = val
+
+            // Reset search on modal open
+            document.querySelector('.modal-body form').reset()
+
+            // Focus seach input on modal open
+            setTimeout(() => {
+                document.querySelector('.ais-SearchBox input').focus()
+            }, 50)
         }
     },
     data() {
         return {
+            index: 'ingredients:name:asc',
             searchClient: instantMeiliSearch(
                 Auth.getUserSearchSettings().host,
                 Auth.getUserSearchSettings().key,
             ),
-            defaultQuery: '',
             cocktailIngredient: {},
-            orgCocktailIngredient: {}
+            orgCocktailIngredient: {},
+            currentQuery: null,
         }
     },
     methods: {
-        selectIngredient(searchItem) {
-            this.cocktailIngredient.ingredient_id = searchItem.id;
-            this.cocktailIngredient.name = searchItem.name;
-            this.cocktailIngredient.ingredient_slug = searchItem.slug;
+        selectIngredient(item) {
+            this.cocktailIngredient.ingredient_id = item.id;
+            this.cocktailIngredient.name = item.name;
+            this.cocktailIngredient.ingredient_slug = item.slug;
         },
         save() {
             this.$emit('close');
         },
         cancel() {
             this.$emit('close');
+        },
+        newIngredient() {
+            api.saveIngredient({
+                name: this.currentQuery,
+                description: null,
+                strength: 0,
+                origin: null,
+                color: null,
+                images: [],
+                ingredient_category_id: 1,
+            }).then(data => {
+                this.$toast.default(`Created uncategorized ingredient "${data.name}".`);
+                this.selectIngredient({
+                    name: data.name,
+                    slug: data.slug,
+                    id: data.id
+                });
+            }).catch(() => {
+                this.$toast.error('Unable to add ingredient.');
+            })
+        },
+        onStateChange({ uiState, setUiState }) {
+            const indexState = uiState['ingredients:name:asc'] || {}
+            this.currentQuery = indexState.query
+
+            setUiState(uiState);
         },
     },
 };
@@ -169,5 +211,13 @@ export default {
     font-size: 0.8rem;
     display: block;
     color: #866269;
+}
+
+.ingredient-modal__info {
+    background-color: rgb(228, 241, 252);
+    color: rgb(28, 48, 65);
+    padding: 10px;
+    border-radius: 5px;
+    margin-top: 10px;
 }
 </style>

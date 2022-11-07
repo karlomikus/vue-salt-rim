@@ -4,6 +4,8 @@
 
 <p align="center">
     <a href="https://hub.docker.com/r/kmikus12/salt-rim"><img src="https://img.shields.io/docker/v/kmikus12/salt-rim?style=for-the-badge" alt="Docker image"></a>
+    <img src="https://img.shields.io/github/license/karlomikus/vue-salt-rim?style=for-the-badge" alt="License">
+    <img src="https://img.shields.io/github/workflow/status/karlomikus/vue-salt-rim/Build%20docker%20image?style=for-the-badge" alt="Build">
 </p>
 
 # 🍹 Salt Rim - Bar Assistent Web Client

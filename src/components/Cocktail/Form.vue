@@ -146,6 +146,13 @@ export default {
             );
         },
         closeModal() {
+            if (!this.cocktailIngredientForEdit.ingredient_id) {
+                this.cocktail.ingredients.splice(
+                    this.cocktail.ingredients.findIndex(i => i == this.cocktailIngredientForEdit),
+                    1
+                );
+            }
+
             this.isModalVisible = false;
         },
         addIngredient() {
@@ -189,7 +196,7 @@ export default {
                 images: [],
                 tags: this.cocktail.tags,
                 ingredients: this.cocktail.ingredients
-                    .filter(i => i.ingredient_id != null)
+                    .filter(i => i.name != '<Not selected>')
                     .map(i => {
                         if (i.units == 'oz') {
                             i.amount = Unitz.parse(`${i.amount}${i.units}`).value * 30
