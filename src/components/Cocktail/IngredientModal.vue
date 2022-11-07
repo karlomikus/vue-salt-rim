@@ -114,7 +114,7 @@ export default {
             })
         },
         onStateChange({ uiState, setUiState }) {
-            const indexState = uiState['ingredients:name:asc'] || {}
+            const indexState = uiState[this.index] || {}
             this.currentQuery = indexState.query
 
             setUiState(uiState);

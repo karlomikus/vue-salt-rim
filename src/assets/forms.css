@@ -33,9 +33,9 @@
 .form-label {
     display: block;
     display: block;
-    font-size: 0.8rem;
+    font-size: 0.9rem;
     margin-bottom: 2px;
-    color: #866269;
+    color: #68444b;
 }
 
 .form-label--required::after {
@@ -85,6 +85,11 @@ textarea.form-input,
 .form-select:focus {
     border-color: var(--color-text);
     background: #fff;
+}
+
+.form-input::placeholder,
+.form-select::placeholder {
+    color: #966d74;
 }
 
 .form-actions {

@@ -9,29 +9,29 @@ import IngredientModal from './IngredientModal.vue'
         <h2 class="page-subtitle">Cocktail information</h2>
         <div class="form-group">
             <label class="form-label form-label--required" for="name">Name:</label>
-            <input class="form-input" type="text" id="name" v-model="cocktail.name" required>
+            <input class="form-input" type="text" id="name" v-model="cocktail.name" required placeholder="Cocktail name...">
         </div>
         <div class="form-group">
             <label class="form-label form-label--required" for="instructions">Instructions:</label>
-            <textarea rows="5" class="form-input" id="instructions" v-model="cocktail.instructions" required></textarea>
+            <textarea rows="5" class="form-input" id="instructions" v-model="cocktail.instructions" required placeholder="How to prepare the cocktail..."></textarea>
             <p class="form-input-hint">This field supports markdown.</p>
         </div>
         <div class="form-group">
             <label class="form-label" for="garnish">Garnish:</label>
-            <textarea rows="3" class="form-input" id="garnish" v-model="cocktail.garnish"></textarea>
+            <textarea rows="3" class="form-input" id="garnish" v-model="cocktail.garnish" placeholder="Something to make a cocktail pop..."></textarea>
         </div>
         <div class="form-group">
             <label class="form-label" for="description">Description:</label>
-            <textarea rows="3" class="form-input" id="description" v-model="cocktail.description"></textarea>
+            <textarea rows="3" class="form-input" id="description" v-model="cocktail.description" placeholder="Cocktail description or history..."></textarea>
             <p class="form-input-hint">This field supports markdown.</p>
         </div>
         <div class="form-group">
             <label class="form-label" for="source">Source:</label>
-            <input class="form-input" type="text" id="source" v-model="cocktail.source">
+            <input class="form-input" type="text" id="source" v-model="cocktail.source" placeholder="Book or URL...">
         </div>
         <div class="form-group">
             <label class="form-label" for="tags">Tags:</label>
-            <input class="form-input" type="text" id="tags" v-model="cocktailTags">
+            <input class="form-input" type="text" id="tags" v-model="cocktailTags" placeholder="Tags to help you find the cocktail...">
             <p class="form-input-hint">Separate multiple tags with a comma (",").</p>
         </div>
         <div class="form-group form-group--image">
@@ -47,28 +47,29 @@ import IngredientModal from './IngredientModal.vue'
                 </div>
                 <div class="form-group">
                     <label class="form-label" for="copyright">Image copyright:</label>
-                    <input class="form-input" type="text" id="copyright" v-model="images[0].copyright">
+                    <input class="form-input" type="text" id="copyright" v-model="images[0].copyright" placeholder="Image source...">
                 </div>
             </div>
         </div>
         <h2 class="page-subtitle">Ingredients</h2>
-        <ul class="cocktail-form__ingredients">
+        <ul class="cocktail-form__ingredients" style="margin-bottom: 20px;">
             <li v-for="ing in cocktail.ingredients">
                 <div class="form-group">
                     <label class="form-label">Ingredient:</label>
-                    <p>{{ ing.name }}<br>{{ ing.optional ? 'Optional' : '' }}</p>
+                    <p>{{ ing.name }} <small v-show="ing.optional">({{ ing.optional ? 'Optional' : '' }})</small></p>
                 </div>
                 <div class="form-group">
                     <label class="form-label">Amount:</label>
                     <p>{{ ing.amount }} {{ ing.units }}</p>
                 </div>
                 <div class="cocktail-form__ingredients__actions">
-                    <button class="button button--outline button--small" style="margin-right: 5px;" type="button" @click="editIngredient(ing)">
+                    <a href="#" @click.prevent="editIngredient(ing)">
                         Edit
-                    </button>
-                    <button class="button button--outline button--small" type="button" @click="removeIngredient(ing)">
+                    </a>
+                    &middot;
+                    <a href="#" @click.prevent="removeIngredient(ing)">
                         Remove
-                    </button>
+                    </a>
                 </div>
             </li>
         </ul>
@@ -278,6 +279,10 @@ export default {
     padding: 10px;
     border-bottom: 2px solid var(--color-bg-dark);
     border-radius: 5px;
+}
+
+.cocktail-form__ingredients li small {
+    color: var(--color-text-muted);
 }
 
 .cocktail-form__ingredients li .form-group {
