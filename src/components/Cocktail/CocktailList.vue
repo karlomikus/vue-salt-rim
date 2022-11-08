@@ -11,7 +11,7 @@ import CocktailGridContainer from './CocktailGridContainer.vue'
   <ais-instant-search :search-client="searchClient" index-name="cocktails:name:asc" :routing="routing">
     <ais-configure :hitsPerPage="100" />
     <div class="cocktail-list-tags">
-      <ais-refinement-list attribute="tags" :sort-by="['name:asc']" operator="and" :transformItems="getRefinementValues">
+      <ais-refinement-list attribute="tags" :sort-by="['name:asc']" operator="and">
         <template v-slot:item="{ item, refine, createURL }">
           <a :href="createURL(item.value)" :class="{ 'is-selected': item.isRefined }" @click.prevent="refine(item.value)">
             {{ item.label }}
@@ -19,6 +19,11 @@ import CocktailGridContainer from './CocktailGridContainer.vue'
         </template>
       </ais-refinement-list>
     </div>
+    <ais-toggle-refinement
+      attribute="user_id"
+      :on="userId"
+      label="My cocktails"
+    />
     <div class="cocktail-list-search-container">
       <ais-search-box placeholder="Filter cocktails..." :class-names="{ 'ais-SearchBox-input': 'form-input', 'ais-SearchBox-reset': 'cocktail-list-search-container__reset' }" />
       <ais-sort-by :items="[
@@ -65,6 +70,7 @@ export default {
         stateMapping: singleIndexMapping('cocktails:name:asc'),
       },
       userCocktails: [],
+      userId: Auth.getUser().id
     };
   },
   created() {
@@ -77,18 +83,6 @@ export default {
   computed: {
     userCocktailIds() {
       return this.userCocktails.map(c => c.id)
-    }
-  },
-  methods: {
-    getRefinementValues(items) {
-      items.unshift({
-        label: 'My cocktails',
-        value:'My cocktails',
-        count: 0,
-        isRefined: false,
-        highlighted: 'My cocktails',
-      })
-      return items
     }
   }
 }

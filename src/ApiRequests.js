@@ -151,7 +151,7 @@ class ApiRequests {
     }
 
     static async fetchIngredientCategories() {
-        let jsonResp = await this.getRequest(`/api/ingredients/categories`);
+        let jsonResp = await this.getRequest(`/api/ingredient-categories`);
 
         return this.parseResponse(jsonResp);
     }
