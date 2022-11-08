@@ -13,17 +13,20 @@ import CocktailGridContainer from './CocktailGridContainer.vue'
     <div class="cocktail-list-tags">
       <ais-refinement-list attribute="tags" :sort-by="['name:asc']" operator="and">
         <template v-slot:item="{ item, refine, createURL }">
-          <a :href="createURL(item.value)" :class="{ 'is-selected': item.isRefined }" @click.prevent="refine(item.value)">
+          <a :href="createURL(item.value)" class="chips-tag" :class="{ 'is-selected': item.isRefined }" @click.prevent="refine(item.value)">
             {{ item.label }}
           </a>
         </template>
       </ais-refinement-list>
     </div>
-    <ais-toggle-refinement
-      attribute="user_id"
-      :on="userId"
-      label="My cocktails"
-    />
+    <ais-toggle-refinement attribute="user_id" :on="userId">
+      <template v-slot="{ value, refine, createURL }">
+        <a :href="createURL(value)" class="chips-tag" :class="{ 'is-selected': value.isRefined }" @click.prevent="refine(value)">
+          My cocktails
+          ({{ value.count || 0 }})
+        </a>
+      </template>
+    </ais-toggle-refinement>
     <div class="cocktail-list-search-container">
       <ais-search-box placeholder="Filter cocktails..." :class-names="{ 'ais-SearchBox-input': 'form-input', 'ais-SearchBox-reset': 'cocktail-list-search-container__reset' }" />
       <ais-sort-by :items="[
@@ -95,31 +98,30 @@ export default {
   margin: 0;
   display: flex;
   flex-wrap: wrap;
+  gap: 10px;
 }
 
 .cocktail-list-tags .ais-RefinementList-list li {
-  margin-right: 10px;
-  margin-bottom: 5px;
+  margin-bottom: 10px;
 }
 
-.cocktail-list-tags .ais-RefinementList-list li a {
-  display: flex;
+.chips-tag {
   text-decoration: none;
   background-color: none;
   border: 1px solid var(--color-bg-dark);
-  padding: 2px 12px;
+  padding: 4px 12px;
   border-radius: 15px;
   font-size: 0.9rem;
   white-space: nowrap;
 }
 
-.cocktail-list-tags .ais-RefinementList-list li a:hover,
-.cocktail-list-tags .ais-RefinementList-list li a:focus,
-.cocktail-list-tags .ais-RefinementList-list li a:active {
+.chips-tag:hover,
+.chips-tag:focus,
+.chips-tag:active {
   background-color: #fff;
 }
 
-.cocktail-list-tags .ais-RefinementList-list li a.is-selected {
+.chips-tag.is-selected {
   background-color: var(--color-text);
   border: 1px solid var(--color-text);
   color: #fff;

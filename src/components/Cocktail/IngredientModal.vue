@@ -1,10 +1,12 @@
 <script setup>
 import Modal from './../Modal.vue'
+import OverlayLoader from './../OverlayLoader.vue'
 </script>
 
 <template>
     <Modal>
         <template #body>
+            <OverlayLoader v-if="isLoading" />
             <ais-instant-search :search-client="searchClient" :index-name="index" :on-state-change="onStateChange">
                 <ais-configure :hitsPerPage="30" />
                 <ais-search-box placeholder="Search for ingredient..." :class-names="{'ais-SearchBox-input': 'form-input'}" />
@@ -42,7 +44,7 @@ import Modal from './../Modal.vue'
         </template>
         <template #footer>
             <button type="button" class="button button--outline" @click="cancel" style="margin-right: 10px;">Cancel</button>
-            <button type="button" class="button button--dark" @click="save">Done</button>
+            <button type="button" class="button button--dark" @click="save" :disabled="isLoading">Done</button>
         </template>
     </Modal>
 </template>
@@ -75,6 +77,7 @@ export default {
     },
     data() {
         return {
+            isLoading: false,
             index: 'ingredients:name:asc',
             searchClient: instantMeiliSearch(
                 Auth.getUserSearchSettings().host,
@@ -100,6 +103,7 @@ export default {
             this.$emit('close');
         },
         newIngredient() {
+            this.isLoading = true;
             ApiRequests.saveIngredient({
                 name: this.currentQuery,
                 description: null,
@@ -115,8 +119,10 @@ export default {
                     slug: data.slug,
                     id: data.id
                 });
+                this.isLoading = false;
             }).catch(() => {
                 this.$toast.error('Unable to add ingredient.');
+                this.isLoading = false;
             })
         },
         onStateChange({ uiState, setUiState }) {
@@ -178,10 +184,11 @@ export default {
 }
 
 .ingredient-modal__info {
-    background-color: rgb(228, 241, 252);
+    background: rgba(255, 255, 255, .5);
+    border-bottom: 2px solid var(--color-bg-dark);
+    border-radius: 5px;
     color: rgb(28, 48, 65);
     padding: 10px;
-    border-radius: 5px;
     margin-top: 10px;
 }
 </style>

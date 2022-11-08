@@ -88,7 +88,7 @@ export default {
 .cocktail-grid-item__graphic__image {
     width: 200px;
     height: 200px;
-    border-radius: 50%;
+    border-radius: 20px;
     background-color: #fff;
     background-size: cover;
     background-position: center center;
