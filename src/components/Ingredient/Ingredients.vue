@@ -155,7 +155,7 @@ export default {
 .ingredient-list>li {
     background-color: #fff;
     padding: 20px;
-    box-shadow: var(--shadow-elevation-medium);
+    box-shadow: 0 3px 0 var(--color-bg-dark);
     border-radius: 10px;
     width: 100%;
     display: flex;

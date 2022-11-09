@@ -25,13 +25,6 @@
     --color-var-2: #FFF1E6;
     --color-var-3: #FDE2E4;
     --color-var-4: #E2ECE9;
-
-    --shadow-color: 350deg 28% 74%;
-    --shadow-elevation-medium:
-        0px 0.8px 1.1px hsl(var(--shadow-color) / 0.1),
-        0px 2.8px 3.7px -0.4px hsl(var(--shadow-color) / 0.16),
-        0px 5.9px 7.9px -0.7px hsl(var(--shadow-color) / 0.22),
-        0.1px 12.9px 17.2px -1.1px hsl(var(--shadow-color) / 0.28);
 }
 
 @media (max-width: 450px) {

@@ -11,9 +11,9 @@ import Dropdown from './../Dropdown.vue';
         </div>
         <div class="cocktail-details-box cocktail-details-box--title">
             <h3 class="cocktail-details-box__title">{{ cocktail.name }}</h3>
-            <ul class="cocktail-tags" style="margin: 0; margin-bottom: 10px; justify-content: flex-start;">
-                <li v-for="tag in cocktail.tags" style="background-color: #BFD3DF;">{{ tag }}</li>
-            </ul>
+            <div class="tag-container" style="margin-bottom: 20px;">
+                <span v-for="tag in cocktail.tags" class="tag tag--background" style="background-color: #BFD3DF;">{{ tag }}</span>
+            </div>
             <div class="cocktail-details-box__description" v-html="parsedDescription"></div>
             <div class="cocktail-details-box__actions">
                 <button type="button" class="button-circle" @click="favorite">
@@ -94,9 +94,9 @@ import Dropdown from './../Dropdown.vue';
         </div>
         <div class="cocktail-details-box cocktail-details-box--yellow">
             <h3 class="cocktail-details-box__title">Instructions:</h3>
-            <ul class="cocktail-tags" style="margin: 0; margin-bottom: 10px; justify-content: flex-start;">
-                <li v-if="cocktail.glass" style="background-color: #ffddc0;">Glass: {{ cocktail.glass.name }}</li>
-            </ul>
+            <div class="tag-container" style="margin-bottom: 20px;">
+                <span v-if="cocktail.glass" class="tag tag--background" style="background-color: #ffddc0;">Glass: {{ cocktail.glass.name }}</span>
+            </div>
             <div v-html="parsedInstructions"></div>
         </div>
         <div class="cocktail-details-box cocktail-details-box--red">

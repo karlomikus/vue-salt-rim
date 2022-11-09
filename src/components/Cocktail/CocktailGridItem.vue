@@ -10,7 +10,7 @@
         <h2 class="cocktail-grid-item__title">{{ cocktail.name }}</h2>
         <p class="cocktail-grid-item__ingredients" v-if="cocktail.short_ingredients">{{ cocktail.short_ingredients.join(', ') }}</p>
         <ul class="cocktail-tags">
-            <li v-for="tag in cocktail.tags" :key="tag">{{ tag }}</li>
+            <li v-for="tag in cocktail.tags" :key="tag" class="tag tag--background">{{ tag }}</li>
         </ul>
     </RouterLink>
 </template>
@@ -34,7 +34,6 @@ export default {
 </script>
 <style scoped>
 .cocktail-grid-item {
-    /* max-width: var(--cocktail-card-width); */
     text-align: center;
     background-color: #fff;
     padding: 30px;
@@ -61,7 +60,7 @@ export default {
     font-family: var(--font-accent);
     font-weight: 700;
     font-size: 1.7rem;
-    margin-top: -20px;
+    margin-top: -30px;
 }
 
 .cocktail-grid-item__ingredients {
@@ -93,10 +92,28 @@ export default {
     background-size: cover;
     background-position: center center;
     margin: 0 auto;
+    transition: box-shadow ease-in-out .1s;
     box-shadow: 0px 0.5px 0.6px hsl(0deg 0% 63% / 0.36),
         0px 1.6px 1.8px -0.8px hsl(0deg 0% 63% / 0.36),
         0.1px 4px 4.5px -1.7px hsl(0deg 0% 63% / 0.36),
         0.1px 9.7px 10.9px -2.5px hsl(0deg 0% 63% / 0.36);
+}
+
+.cocktail-grid-item:hover .cocktail-grid-item__graphic__image {
+    box-shadow: 0px 0.5px 0.6px hsl(0deg 0% 63% / 0.6),
+        0px 1.6px 2px -0.8px hsl(0deg 0% 63% / 0.6),
+        0.1px 4px 8px -1.7px hsl(0deg 0% 63% / 0.6),
+        0.1px 9.7px 16px -2.5px hsl(0deg 0% 63% / 0.6);
+}
+
+.cocktail-tags {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    list-style: none;
+    padding: 0;
+    gap: 5px;
+    margin-top: 20px;
 }
 
 @media (max-width: 450px) {

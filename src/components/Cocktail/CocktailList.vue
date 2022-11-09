@@ -10,10 +10,10 @@ import CocktailGridContainer from './CocktailGridContainer.vue'
   <h2 class="page-subtitle" style="margin-top: 10px;">Cocktails</h2>
   <ais-instant-search :search-client="searchClient" index-name="cocktails:name:asc" :routing="routing">
     <ais-configure :hitsPerPage="100" />
-    <div class="cocktail-list-tags">
+    <div class="cocktail-list-tags" style="margin-bottom: 10px;">
       <ais-refinement-list attribute="tags" :sort-by="['name:asc']" operator="and">
         <template v-slot:item="{ item, refine, createURL }">
-          <a :href="createURL(item.value)" class="chips-tag" :class="{ 'is-selected': item.isRefined }" @click.prevent="refine(item.value)">
+          <a :href="createURL(item.value)" class="tag tag--link" :class="{ 'tag--is-selected': item.isRefined }" @click.prevent="refine(item.value)">
             {{ item.label }}
           </a>
         </template>
@@ -21,7 +21,7 @@ import CocktailGridContainer from './CocktailGridContainer.vue'
     </div>
     <ais-toggle-refinement attribute="user_id" :on="userId">
       <template v-slot="{ value, refine, createURL }">
-        <a :href="createURL(value)" class="chips-tag" :class="{ 'is-selected': value.isRefined }" @click.prevent="refine(value)">
+        <a :href="createURL(value)" class="tag tag--link" :class="{ 'tag--is-selected': value.isRefined }" @click.prevent="refine(value)">
           My cocktails
           ({{ value.count || 0 }})
         </a>
@@ -99,32 +99,6 @@ export default {
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
-}
-
-.cocktail-list-tags .ais-RefinementList-list li {
-  margin-bottom: 10px;
-}
-
-.chips-tag {
-  text-decoration: none;
-  background-color: none;
-  border: 1px solid var(--color-bg-dark);
-  padding: 4px 12px;
-  border-radius: 15px;
-  font-size: 0.9rem;
-  white-space: nowrap;
-}
-
-.chips-tag:hover,
-.chips-tag:focus,
-.chips-tag:active {
-  background-color: #fff;
-}
-
-.chips-tag.is-selected {
-  background-color: var(--color-text);
-  border: 1px solid var(--color-text);
-  color: #fff;
 }
 
 .cocktail-list-search-container {
