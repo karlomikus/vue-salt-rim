@@ -82,8 +82,11 @@ import Dropdown from './../Dropdown.vue';
             <ul class="cocktail-details-box__ingredients">
                 <li v-for="ing in cocktail.ingredients" :key="ing.sort">
                     <RouterLink :to="{ name: 'ingredients.show', params: { id: ing.ingredient_slug } }">
-                        {{ ing.name }}
-                        <small v-if="ing.optional">(optional)</small>
+                        {{ ing.name }} <small v-if="ing.optional">(optional)</small>
+                        <br>
+                        <template v-for="sub in ing.substitutes">
+                            or {{ sub.name }}
+                        </template>
                         <span v-if="!userShelfIngredients.includes(ing.ingredient_id)">You are missing this ingredient</span>
                         <span v-if="userShoppingListIngredients.includes(ing.ingredient_id)">You have this ingredient on shopping list</span>
                     </RouterLink>

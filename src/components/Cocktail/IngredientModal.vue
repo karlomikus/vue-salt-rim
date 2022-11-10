@@ -4,7 +4,7 @@ import OverlayLoader from './../OverlayLoader.vue'
 </script>
 
 <template>
-    <Modal>
+    <Modal class="ingredient-modal">
         <template #body>
             <OverlayLoader v-if="isLoading" />
             <ais-instant-search :search-client="searchClient" :index-name="index" :on-state-change="onStateChange">
@@ -25,6 +25,12 @@ import OverlayLoader from './../OverlayLoader.vue'
                 <small>Current ingredient:</small>
                 {{ cocktailIngredient.name }}
             </h3>
+            <div class="substitutes">
+                <small>Substitutes:</small>
+                <span v-for="substitute in cocktailIngredient.substitutes">{{ substitute.name }} &middot; <a href="#" @click.prevent="removeSubstitute(substitute)">Remove</a></span>
+                <a v-if="!isAddingSubstitute" href="#" @click.prevent="isAddingSubstitute = true"><input type="checkbox" disabled> Start adding substitute ingredients</a>
+                <a v-else href="#" @click.prevent="isAddingSubstitute = false"><input type="checkbox" disabled checked> Finish adding substitute ingredients</a>
+            </div>
             <div style="display: grid; grid-template-columns: 1fr 2fr; column-gap: 10px;">
                 <div class="form-group">
                     <label class="form-label" for="ingredient-amount">Amount:</label>
@@ -69,6 +75,11 @@ export default {
             // Reset search on modal open
             document.querySelector('.modal-body form').reset()
 
+            // Add substitutes array
+            if (!this.cocktailIngredient.substitutes) {
+                this.cocktailIngredient.substitutes = []
+            }
+
             // Focus seach input on modal open
             setTimeout(() => {
                 document.querySelector('.ais-SearchBox input').focus()
@@ -86,20 +97,31 @@ export default {
             cocktailIngredient: {},
             orgCocktailIngredient: {},
             currentQuery: null,
+            isAddingSubstitute: false
         }
     },
     methods: {
         selectIngredient(item) {
-            this.cocktailIngredient.ingredient_id = item.id;
-            this.cocktailIngredient.name = item.name;
-            this.cocktailIngredient.ingredient_slug = item.slug;
+            if (this.isAddingSubstitute) {
+                this.cocktailIngredient.substitutes.push({
+                    id: item.id,
+                    name: item.name,
+                    slug: item.slug,
+                })
+            } else {
+                this.cocktailIngredient.ingredient_id = item.id;
+                this.cocktailIngredient.name = item.name;
+                this.cocktailIngredient.ingredient_slug = item.slug;
+            }
         },
         save() {
             window.document.body.style.overflow = 'auto';
+            this.isAddingSubstitute = false;
             this.$emit('close');
         },
         cancel() {
             window.document.body.style.overflow = 'auto';
+            this.isAddingSubstitute = false;
             this.$emit('close');
         },
         newIngredient() {
@@ -124,6 +146,12 @@ export default {
                 this.$toast.error('Unable to add ingredient.');
                 this.isLoading = false;
             })
+        },
+        removeSubstitute(ing) {
+            this.cocktailIngredient.substitutes.splice(
+                this.cocktailIngredient.substitutes.findIndex(i => i == ing),
+                1
+            );
         },
         onStateChange({ uiState, setUiState }) {
             const indexState = uiState[this.index] || {}
@@ -176,11 +204,24 @@ export default {
     line-height: 1.3;
 }
 
-.selected-ingredient small {
+.selected-ingredient small,
+.ingredient-modal .substitutes small {
     font-weight: normal;
     font-size: 0.8rem;
     display: block;
     color: #866269;
+}
+
+.ingredient-modal .substitutes {
+    margin-bottom: 20px;
+}
+
+.ingredient-modal .substitutes span {
+    font-weight: normal;
+    font-size: 1rem;
+    display: block;
+    font-family: var(--font-accent);
+    font-weight: 700;
 }
 
 .ingredient-modal__info {

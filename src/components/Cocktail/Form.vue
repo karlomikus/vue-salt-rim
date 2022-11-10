@@ -57,6 +57,11 @@ import IngredientModal from './IngredientModal.vue'
                 <div class="form-group">
                     <label class="form-label">Ingredient:</label>
                     <p>{{ ing.name }} <small v-show="ing.optional">({{ ing.optional ? 'Optional' : '' }})</small></p>
+                    <p class="substitutes" v-if="ing.substitutes && ing.substitutes.length > 0">
+                        <template v-for="sub in ing.substitutes">
+                            or {{ sub.name }} 
+                        </template>
+                    </p>
                 </div>
                 <div class="form-group">
                     <label class="form-label">Amount:</label>
@@ -197,9 +202,15 @@ export default {
                 ingredients: this.cocktail.ingredients
                     .filter(i => i.name != '<Not selected>')
                     .map(i => {
+                        // Convert oz to ml
                         if (i.units == 'oz') {
                             i.amount = Unitz.parse(`${i.amount}${i.units}`).value * 30
                             i.units = 'ml'
+                        }
+
+                        // Just send substitute ids
+                        if (i.substitutes) {
+                            i.substitutes = i.substitutes.map(s => s.id)
                         }
 
                         return i;
@@ -291,5 +302,11 @@ export default {
 
 .cocktail-form__ingredients__actions {
     grid-column: span 2;
+}
+
+.cocktail-form__ingredients .substitutes {
+    font-style: italic;
+    font-size: 0.9rem;
+    color: var(--color-text-muted);
 }
 </style>
