@@ -77,6 +77,7 @@ import Dropdown from './../Dropdown.vue';
                     <h4>Units:</h4>
                     <button :class="{ 'active-serving': currentUnit == 'ml' }" @click="currentUnit = 'ml'">ml</button>
                     <button :class="{ 'active-serving': currentUnit == 'oz' }" @click="currentUnit = 'oz'">oz</button>
+                    <button :class="{ 'active-serving': currentUnit == 'cl' }" @click="currentUnit = 'cl'">cl</button>
                 </div>
             </div>
             <ul class="cocktail-details-box__ingredients">
@@ -204,23 +205,23 @@ export default {
             })
         },
         parseIngredientAmount(ingredient) {
-            let amount = ingredient.amount * this.servings;
-            let units = ingredient.units.toLowerCase();
+            let orgAmountMl = ingredient.amount * this.servings;
+            let orgUnits = ingredient.units.toLowerCase();
 
             // Don't convert unconvertable units
-            if (units != 'ml' && units != 'oz') {
-                return `${amount} ${units}`;
+            if (orgUnits != 'ml' && orgUnits != 'oz' && orgUnits != 'cl') {
+                return `${orgAmountMl} ${orgUnits}`;
             }
 
-            if (units == 'ml' && this.currentUnit == 'oz') {
-                return new Unitz.Fraction(amount / 30, [2, 3, 4]).string + ' ' + this.currentUnit
+            if (this.currentUnit == 'oz') {
+                return new Unitz.Fraction(orgAmountMl / 30, [2, 3, 4]).string + ' ' + this.currentUnit
             }
 
-            if (units == 'oz' && this.currentUnit == 'ml') {
-                return amount * 30 + ' ' + this.currentUnit
+            if (this.currentUnit == 'cl') {
+                return Unitz.parse(`${orgAmountMl} ${orgUnits}`).convert('cl') + ' ' + this.currentUnit
             }
 
-            return `${amount} ${units}`;
+            return `${orgAmountMl} ${orgUnits}`;
         }
     }
 }

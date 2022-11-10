@@ -207,6 +207,11 @@ export default {
                             i.amount = Unitz.parse(`${i.amount}${i.units}`).value * 30
                             i.units = 'ml'
                         }
+                        // Convert cl to ml
+                        if (i.units == 'cl') {
+                            i.amount = i.amount * 10
+                            i.units = 'ml'
+                        }
 
                         // Just send substitute ids
                         if (i.substitutes) {
