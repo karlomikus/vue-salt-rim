@@ -72,6 +72,18 @@ class ApiRequests {
         return this.parseResponse(jsonResp);
     }
 
+    static async patchImage(id, formData) {
+        const jsonResp = await (await fetch(`${this.getUrl()}/api/images/${id}`, {
+            method: 'POST',
+            headers: new Headers({
+                'Authorization': 'Bearer ' + localStorage.getItem('user_token'),
+            }),
+            body: formData
+        })).json();
+
+        return this.parseResponse(jsonResp);
+    }
+
     static async fetchLoginToken(email, password) {
         const url = `${this.getUrl()}/api/login`
 

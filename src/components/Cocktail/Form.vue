@@ -1,6 +1,7 @@
 <script setup>
 import OverlayLoader from './../OverlayLoader.vue'
 import IngredientModal from './IngredientModal.vue'
+import ImageUpload from './../ImageUpload.vue'
 </script>
 
 <template>
@@ -13,16 +14,17 @@ import IngredientModal from './IngredientModal.vue'
         </div>
         <div class="form-group">
             <label class="form-label form-label--required" for="instructions">Instructions:</label>
-            <textarea rows="5" class="form-input" id="instructions" v-model="cocktail.instructions" required placeholder="How to prepare the cocktail..."></textarea>
+            <textarea rows="8" class="form-input" id="instructions" v-model="cocktail.instructions" required placeholder="How to prepare the cocktail..."></textarea>
             <p class="form-input-hint">This field supports markdown.</p>
         </div>
         <div class="form-group">
             <label class="form-label" for="garnish">Garnish:</label>
             <textarea rows="3" class="form-input" id="garnish" v-model="cocktail.garnish" placeholder="Something to make a cocktail pop..."></textarea>
+            <p class="form-input-hint">This field supports markdown.</p>
         </div>
         <div class="form-group">
             <label class="form-label" for="description">Description:</label>
-            <textarea rows="3" class="form-input" id="description" v-model="cocktail.description" placeholder="Cocktail description or history..."></textarea>
+            <textarea rows="5" class="form-input" id="description" v-model="cocktail.description" placeholder="Cocktail description or history..."></textarea>
             <p class="form-input-hint">This field supports markdown.</p>
         </div>
         <div class="form-group">
@@ -34,23 +36,7 @@ import IngredientModal from './IngredientModal.vue'
             <input class="form-input" type="text" id="tags" v-model="cocktailTags" placeholder="Tags to help you find the cocktail...">
             <p class="form-input-hint">Separate multiple tags with a comma (",").</p>
         </div>
-        <div class="form-group form-group--image">
-            <div class="form-group--image__image">
-                <img v-if="cocktail.image_url" :src="cocktail.image_url" alt="Cocktail image">
-                <img v-else :src="noImage" alt="Missing cocktail image">
-                <button v-if="cocktail.image_id" type="button" class="button button--dark button--small" @click="removeImage">Remove</button>
-            </div>
-            <div>
-                <div class="form-group">
-                    <label class="form-label" for="images">Image:</label>
-                    <input class="form-input" type="file" id="images" ref="image">
-                </div>
-                <div class="form-group">
-                    <label class="form-label" for="copyright">Image copyright:</label>
-                    <input class="form-input" type="text" id="copyright" v-model="images[0].copyright" placeholder="Image source...">
-                </div>
-            </div>
-        </div>
+        <ImageUpload ref="imagesUpload" @upload-finished="imagesUploaded" :value="cocktail.images" />
         <h2 class="page-subtitle">Ingredients</h2>
         <ul class="cocktail-form__ingredients" style="margin-bottom: 20px;">
             <li v-for="ing in cocktail.ingredients">
@@ -222,21 +208,11 @@ export default {
                     })
             };
 
-            const image = this.$refs.image.files[0] || null;
-
-            if (image) {
-                const formData = new FormData();
-                formData.append('images[0][image]', image)
-                formData.append('images[0][copyright]', this.images[0].copyright)
-
-                const resp = await ApiRequests.uploadImages(formData).catch(e => {
-                    this.$toast.error('An error occured while uploading images. Your cocktail is still saved.');
-                });
-
-                if (resp) {
-                    postData.images.push(resp[0].id);
-                }
-            }
+            const imageResources = await this.$refs.imagesUpload.uploadPictures().catch(() => {
+                this.$toast.error('An error occured while uploading images. Your cocktail is still saved.');
+            }) || [];
+            
+            postData.images = imageResources.map(img => img.id);
 
             if (this.cocktailId) {
                 ApiRequests.updateCocktail(this.cocktailId, postData).then(data => {

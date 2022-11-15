@@ -7,7 +7,7 @@ import Dropdown from './../Dropdown.vue';
     <OverlayLoader v-if="!cocktail.id" />
     <div class="cocktail-details" v-if="cocktail.id">
         <div class="cocktail-details__graphic" :style="{ 'background-image': 'url(' + cocktail.image_url + ')' }">
-            <div class="cocktail-details__graphic__copyright">Image &copy; {{ cocktail.image_copyright }}</div>
+            <div class="cocktail-details__graphic__copyright" v-if="cocktail.image_copyright">Image &copy; {{ cocktail.image_copyright }}</div>
         </div>
         <div class="cocktail-details-box cocktail-details-box--title">
             <h3 class="cocktail-details-box__title">{{ cocktail.name }}</h3>
@@ -94,7 +94,7 @@ import Dropdown from './../Dropdown.vue';
                     <div class="cocktail-details-box__ingredients__amount">{{ parseIngredientAmount(ing) }}</div>
                 </li>
             </ul>
-            <button v-show="missingIngredientIds.length > 0" type="button" class="button button--dark button--small" @click="addMissingIngredients">Add missing ingredients to my shopping list</button>
+            <a v-show="missingIngredientIds.length > 0" href="#" @click.prevent="addMissingIngredients">Add missing ingredients to my shopping list</a>
         </div>
         <div class="cocktail-details-box cocktail-details-box--yellow">
             <h3 class="cocktail-details-box__title">Instructions:</h3>
@@ -105,7 +105,7 @@ import Dropdown from './../Dropdown.vue';
         </div>
         <div class="cocktail-details-box cocktail-details-box--red">
             <h3 class="cocktail-details-box__title">Garnish:</h3>
-            <p>{{ cocktail.garnish }}</p>
+            <div v-html="parsedGarnish"></div>
         </div>
     </div>
 </template>
@@ -133,6 +133,13 @@ export default {
 
             return marked.parse(this.cocktail.instructions)
         },
+        parsedGarnish() {
+            if (!this.cocktail.garnish) {
+                return null;
+            }
+
+            return marked.parse(this.cocktail.garnish)
+        },
         parsedDescription() {
             if (!this.cocktail.description) {
                 return null;
@@ -144,6 +151,9 @@ export default {
             return this.cocktail.ingredients.filter(ing => {
                 return !this.userShelfIngredients.includes(ing.ingredient_id) && !this.userShoppingListIngredients.includes(ing.ingredient_id)
             }).map(cing => cing.ingredient_id)
+        },
+        mainCocktailImage() {
+            return this.cocktail.images.filter((img) => img.id == this.cocktail.main_image_id)[0] || null;
         }
     },
     watch: {
