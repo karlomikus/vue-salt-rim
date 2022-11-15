@@ -32,7 +32,7 @@ import OverlayLoader from '@/components/OverlayLoader.vue'
                 </ul>
             </div>
             <div class="ingredient-details__box__image-container">
-                <img :src="ingredient.image_url" :alt="ingredient.name" />
+                <img :src="mainIngredientImageUrl" :alt="ingredient.name" />
             </div>
         </div>
         <div class="ingredient-details__cocktails">
@@ -151,6 +151,15 @@ export default {
             },
             { immediate: true }
         )
+    },
+    computed: {
+        mainIngredientImageUrl() {
+            if (!this.ingredient.main_image_id) {
+                return '/no-ingredient.png';
+            }
+
+            return this.ingredient.images.filter((img) => img.id == this.ingredient.main_image_id)[0].url;
+        }
     },
     methods: {
         deleteIngredient() {

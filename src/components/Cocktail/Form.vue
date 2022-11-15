@@ -36,7 +36,7 @@ import ImageUpload from './../ImageUpload.vue'
             <input class="form-input" type="text" id="tags" v-model="cocktailTags" placeholder="Tags to help you find the cocktail...">
             <p class="form-input-hint">Separate multiple tags with a comma (",").</p>
         </div>
-        <ImageUpload ref="imagesUpload" @upload-finished="imagesUploaded" :value="cocktail.images" />
+        <ImageUpload ref="imagesUpload" :value="cocktail.images" />
         <h2 class="page-subtitle">Ingredients</h2>
         <ul class="cocktail-form__ingredients" style="margin-bottom: 20px;">
             <li v-for="ing in cocktail.ingredients">

@@ -6,7 +6,7 @@ import OverlayLoader from '@/components/OverlayLoader.vue';
     <div class="ingredient-list-item">
         <OverlayLoader v-if="isLoading" />
         <div class="ingredient-list-item__image">
-            <img :src="ingredient.image_url" alt="">
+            <img :src="mainIngredientImageUrl" :alt="ingredient.name">
         </div>
         <div class="ingredient-list-item__content">
             <h3><RouterLink :to="{ name: 'ingredients.show', params: { id: ingredient.slug } }">{{ ingredient.name }}</RouterLink></h3>
@@ -25,6 +25,15 @@ export default {
     data() {
         return {
             isLoading: false
+        }
+    },
+    computed: {
+        mainIngredientImageUrl() {
+            if (!this.ingredient.main_image_id) {
+                return '/no-ingredient.png';
+            }
+
+            return this.ingredient.images.filter((img) => img.id == this.ingredient.main_image_id)[0].url;
         }
     },
     methods: {

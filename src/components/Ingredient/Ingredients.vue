@@ -19,7 +19,7 @@ import Spinner from './../Spinner.vue'
         <ul class="ingredient-list">
             <li v-for="ingredient in ingredients" :ref="setupObserver">
                 <div class="ingredient-list__image" :style="{ 'background-color': setupColor(ingredient.color) }">
-                    <img :data-img-src="ingredient.image_url" :alt="ingredient.name">
+                    <img :data-img-src="getImageUrl(ingredient)" :alt="ingredient.name">
                 </div>
                 <div class="ingredient-list__description">
                     <h3>{{ ingredient.name }}</h3>
@@ -127,6 +127,13 @@ export default {
             _.remove(this.userIngredients, function (n) {
                 return n.ingredient_id === ingredient.id;
             });
+        },
+        getImageUrl(ing) {
+            if (!ing.main_image_id) {
+                return '/no-ingredient.png';
+            }
+
+            return ing.images.filter((img) => img.id == ing.main_image_id)[0].url;
         }
     }
 }

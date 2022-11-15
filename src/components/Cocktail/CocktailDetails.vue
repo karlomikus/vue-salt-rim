@@ -6,8 +6,8 @@ import Dropdown from './../Dropdown.vue';
 <template>
     <OverlayLoader v-if="!cocktail.id" />
     <div class="cocktail-details" v-if="cocktail.id">
-        <div class="cocktail-details__graphic" :style="{ 'background-image': 'url(' + cocktail.image_url + ')' }">
-            <div class="cocktail-details__graphic__copyright" v-if="cocktail.image_copyright">Image &copy; {{ cocktail.image_copyright }}</div>
+        <div class="cocktail-details__graphic" :style="{ 'background-image': 'url(' + mainCocktailImageUrl + ')' }">
+            <div class="cocktail-details__graphic__copyright" v-if="mainCocktailImage.copyright">Image &copy; {{ mainCocktailImage.copyright }}</div>
         </div>
         <div class="cocktail-details-box cocktail-details-box--title">
             <h3 class="cocktail-details-box__title">{{ cocktail.name }}</h3>
@@ -153,7 +153,18 @@ export default {
             }).map(cing => cing.ingredient_id)
         },
         mainCocktailImage() {
-            return this.cocktail.images.filter((img) => img.id == this.cocktail.main_image_id)[0] || null;
+            if (this.cocktail.main_image_id == null) {
+                return {};
+            }
+
+            return this.cocktail.images.filter((img) => img.id == this.cocktail.main_image_id)[0];
+        },
+        mainCocktailImageUrl() {
+            if (!this.mainCocktailImage.url) {
+                return '/no-cocktail.jpg';
+            }
+
+            return this.mainCocktailImage.url
         }
     },
     watch: {

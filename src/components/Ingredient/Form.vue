@@ -1,3 +1,7 @@
+<script setup>
+import ImageUpload from './../ImageUpload.vue'
+</script>
+
 <template>
     <form @submit.prevent="submit">
         <h2 class="page-subtitle">Ingredient information</h2>
@@ -28,14 +32,15 @@
             <label class="form-label" for="color">Color:</label>
             <input class="form-input" type="text" id="color" v-model="ingredient.color">
         </div>
-        <div class="form-group">
+        <ImageUpload ref="imagesUpload" :value="ingredient.images" />
+        <!-- <div class="form-group">
             <label class="form-label" for="images">Images:</label>
             <input class="form-input" type="file" id="images" ref="image">
         </div>
         <div class="form-group">
             <label class="form-label" for="copyright">Image copyright:</label>
             <input class="form-input" type="text" id="copyright" v-model="images[0].copyright">
-        </div>
+        </div> -->
         <div class="form-actions">
             <RouterLink class="button button--outline" :to="{name: 'ingredients'}">Cancel</RouterLink>
             <button class="button button--dark" type="submit">Save</button>
@@ -87,21 +92,11 @@ export default {
                 ingredient_category_id: this.ingredient.ingredient_category_id,
             };
 
-            const image = this.$refs.image.files[0] || null;
-
-            if (image) {
-                const formData = new FormData();
-                formData.append('images[0][image]', image)
-                formData.append('images[0][copyright]', this.images[0].copyright)
-
-                const resp = await ApiRequests.uploadImages(formData).catch(e => {
-                    this.$toast.error('An error occured while uploading images. Your ingredient is still saved.');
-                });
-
-                if (resp) {
-                    postData.images.push(resp[0].id);
-                }
-            }
+            const imageResources = await this.$refs.imagesUpload.uploadPictures().catch(() => {
+                this.$toast.error('An error occured while uploading images. Your ingredient is still saved.');
+            }) || [];
+            
+            postData.images = imageResources.map(img => img.id);
 
             if (this.ingredientId) {
                 ApiRequests.updateIngredient(this.ingredientId, postData).then(data => {

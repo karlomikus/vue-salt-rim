@@ -18,7 +18,7 @@
                         <li v-for="hit in index.hits" :key="hit.key">
                             <RouterLink :to="generateRouterObject(hit)">
                                 <div class="site-autocomplete__results__image"
-                                    :style="{'background-image': 'url(' + hit.image_url + ')'}"></div>
+                                    :style="{'background-image': 'url(' + getImageUrl(hit) + ')'}"></div>
                                 <h4>
                                     <ais-highlight attribute="name" :hit="hit" />
                                     <small v-if="hit.type == 'cocktail'">Cocktail</small>
@@ -72,6 +72,17 @@ export default {
             setTimeout(() => {
                 this.searchIsFocused = false;
             }, 200)
+        },
+        getImageUrl(hit) {
+            if (!hit.image_url) {
+                if (hit.type == 'cocktail') {
+                    return '/no-cocktail.jpg';
+                }
+
+                return '/no-ingredient.png';
+            }
+
+            return hit.image_url;
         }
     }
 }
