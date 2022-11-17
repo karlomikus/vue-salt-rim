@@ -28,6 +28,13 @@ import ImageUpload from './../ImageUpload.vue'
             <p class="form-input-hint">This field supports markdown.</p>
         </div>
         <div class="form-group">
+            <label class="form-label" for="glass">Glass:</label>
+            <select class="form-select" id="glass" v-model="glassId">
+                <option :value="undefined" disabled>Select a glass type...</option>
+                <option v-for="glass in glasses" :value="glass.id">{{ glass.name }}</option>
+            </select>
+        </div>
+        <div class="form-group">
             <label class="form-label" for="source">Source:</label>
             <input class="form-input" type="text" id="source" v-model="cocktail.source" placeholder="Book or URL...">
         </div>
@@ -87,11 +94,12 @@ export default {
             cocktail: {
                 ingredients: [],
                 tags: [],
+                glass: null
             },
             images: [
                 { image: null, copyright: null }
             ],
-            ingredients: [],
+            glasses: [],
             cocktailId: null
         };
     },
@@ -102,6 +110,22 @@ export default {
             },
             set(newVal) {
                 this.cocktail.tags = newVal.split(',')
+            }
+        },
+        glassId: {
+            get() {
+                if (!this.cocktail.glass) {
+                    return undefined;
+                }
+
+                return this.cocktail.glass.id
+            },
+            set(newVal) {
+                if (!this.cocktail.glass) {
+                    this.cocktail.glass = {};
+                }
+
+                this.cocktail.glass.id = newVal
             }
         },
         noImage() {
@@ -117,14 +141,13 @@ export default {
         if (this.cocktailId) {
             ApiRequests.fetchCocktail(this.cocktailId).then(data => {
                 this.cocktail = data;
-                this.images[0].copyright = this.cocktail.image_copyright;
                 this.isLoading = false;
                 document.title = `Cocktail form \u22C5 ${this.cocktail.name} \u22C5 Salt Rim`
             })
         }
 
-        ApiRequests.fetchIngredients().then(data => {
-            this.ingredients = data
+        ApiRequests.fetchGlasses().then(data => {
+            this.glasses = data
             this.isLoading = false;
         })
     },
@@ -185,6 +208,7 @@ export default {
                 source: this.cocktail.source,
                 images: [],
                 tags: this.cocktail.tags,
+                glass_id: this.glassId,
                 ingredients: this.cocktail.ingredients
                     .filter(i => i.name != '<Not selected>')
                     .map(i => {

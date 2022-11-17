@@ -263,6 +263,12 @@ class ApiRequests {
 
         return this.parseResponse(jsonResp);
     }
+
+    static async fetchGlasses() {
+        let jsonResp = await this.getRequest(`/api/glasses`);
+
+        return this.parseResponse(jsonResp);
+    }
 }
 
 export default ApiRequests;

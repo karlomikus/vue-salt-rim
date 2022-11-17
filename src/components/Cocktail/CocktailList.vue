@@ -8,6 +8,9 @@ import CocktailGridContainer from './CocktailGridContainer.vue'
     <RouterLink class="button button--outline" :to="{ name: 'cocktails.form' }">Add cocktail</RouterLink>
   </div>
   <h2 class="page-subtitle" style="margin-top: 10px;">Cocktails</h2>
+  <p class="page-description" style="margin-bottom: 20px;">
+      This is a list of cocktails available in your Bar Assistant server. You can search for a specific cocktails by filtering them with the tags you added or by using an search term.
+  </p>
   <ais-instant-search :search-client="searchClient" index-name="cocktails:name:asc" :routing="routing">
     <ais-configure :hitsPerPage="100" />
     <div class="cocktail-list-tags" style="margin-bottom: 10px;">
