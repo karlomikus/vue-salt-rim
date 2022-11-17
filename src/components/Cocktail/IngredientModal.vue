@@ -27,9 +27,10 @@ import OverlayLoader from './../OverlayLoader.vue'
             </h3>
             <div class="substitutes">
                 <small>Substitutes:</small>
+                <label for="substitute-adding">
+                    <input id="substitute-adding" type="checkbox" v-model="isAddingSubstitute"> Select substitute ingredients
+                </label>
                 <span v-for="substitute in cocktailIngredient.substitutes">{{ substitute.name }} &middot; <a href="#" @click.prevent="removeSubstitute(substitute)">Remove</a></span>
-                <a v-if="!isAddingSubstitute" href="#" @click.prevent="isAddingSubstitute = true"><input type="checkbox" disabled> Start adding substitute ingredients</a>
-                <a v-else href="#" @click.prevent="isAddingSubstitute = false"><input type="checkbox" disabled checked> Finish adding substitute ingredients</a>
             </div>
             <div style="display: grid; grid-template-columns: 1fr 2fr; column-gap: 10px;">
                 <div class="form-group">
@@ -103,6 +104,10 @@ export default {
     methods: {
         selectIngredient(item) {
             if (this.isAddingSubstitute) {
+                if (this.cocktailIngredient.substitutes && this.cocktailIngredient.substitutes.some(sub => sub.id == item.id)) {
+                    return;
+                }
+
                 this.cocktailIngredient.substitutes.push({
                     id: item.id,
                     name: item.name,
