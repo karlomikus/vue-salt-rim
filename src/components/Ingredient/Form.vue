@@ -1,5 +1,6 @@
 <script setup>
 import ImageUpload from './../ImageUpload.vue'
+import { ColorPicker } from 'vue-accessible-color-picker'
 </script>
 
 <template>
@@ -30,17 +31,13 @@ import ImageUpload from './../ImageUpload.vue'
         </div>
         <div class="form-group">
             <label class="form-label" for="color">Color:</label>
-            <input class="form-input" type="text" id="color" v-model="ingredient.color">
+            <button type="button" class="colorpicker-button" @click="showColorPicker = !showColorPicker">
+                <span :style="{'background-color': ingredient.color}"></span>
+            </button>
+            <!-- <input class="form-input" type="text" id="color" v-model="ingredient.color"> -->
+            <ColorPicker v-if="showColorPicker" alpha-channel="hide" :visible-formats="['hex']" :color="ingredient.color" @color-change="updateColor" />
         </div>
         <ImageUpload ref="imagesUpload" :value="ingredient.images" />
-        <!-- <div class="form-group">
-            <label class="form-label" for="images">Images:</label>
-            <input class="form-input" type="file" id="images" ref="image">
-        </div>
-        <div class="form-group">
-            <label class="form-label" for="copyright">Image copyright:</label>
-            <input class="form-input" type="text" id="copyright" v-model="images[0].copyright">
-        </div> -->
         <div class="form-actions">
             <RouterLink class="button button--outline" :to="{name: 'ingredients'}">Cancel</RouterLink>
             <button class="button button--dark" type="submit">Save</button>
@@ -55,6 +52,7 @@ export default {
     data() {
         return {
             ingredientId: null,
+            showColorPicker: false,
             ingredient: {},
             images: [
                 {image: null, copyright: null}
@@ -127,7 +125,29 @@ export default {
                     this.isLoading = false;
                 })
             }
+        },
+        updateColor(eventData) {
+            this.ingredient.color = eventData.cssColor
         }
     }
 }
 </script>
+<style scoped>
+.colorpicker-button {
+    padding: 10px;
+    width: 100%;
+    display: flex;
+    background: rgba(255, 255, 255, .5);
+    border-radius: 5px;
+    height: 3rem;
+    border: 2px solid var(--color-bg-dark);
+    border-top-color: transparent;
+    border-left-color: transparent;
+    border-right-color: transparent;
+}
+
+.colorpicker-button span {
+    display: flex;
+    width: 100%;
+}
+</style>
