@@ -19,17 +19,13 @@ import Spinner from './../Spinner.vue'
         <ul class="ingredient-list">
             <li v-for="ingredient in ingredients" :ref="setupObserver">
                 <div class="ingredient-list__image" :style="{ 'background-color': setupColor(ingredient.color) }">
-                    <img :data-img-src="ingredient.image_url" :alt="ingredient.name">
+                    <img :data-img-src="getImageUrl(ingredient)" :alt="ingredient.name">
                 </div>
                 <div class="ingredient-list__description">
                     <h3>{{ ingredient.name }}</h3>
                     <p>{{ ingredient.description }}</p>
-                    <RouterLink :to="{ name: 'ingredients.show', params: { id: ingredient.slug } }" class="button-more">
-                        <span>Learn more</span>
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20">
-                            <path fill="none" d="M0 0h24v24H0z" />
-                            <path d="M16.172 11l-5.364-5.364 1.414-1.414L20 12l-7.778 7.778-1.414-1.414L16.172 13H4v-2z" />
-                        </svg>
+                    <RouterLink :to="{ name: 'ingredients.show', params: { id: ingredient.slug } }">
+                        Learn more
                     </RouterLink>
                 </div>
                 <div class="ingredient-list__actions">
@@ -131,6 +127,13 @@ export default {
             _.remove(this.userIngredients, function (n) {
                 return n.ingredient_id === ingredient.id;
             });
+        },
+        getImageUrl(ing) {
+            if (!ing.main_image_id) {
+                return '/no-ingredient.png';
+            }
+
+            return ing.images.filter((img) => img.id == ing.main_image_id)[0].url;
         }
     }
 }
@@ -159,7 +162,7 @@ export default {
 .ingredient-list>li {
     background-color: #fff;
     padding: 20px;
-    box-shadow: var(--shadow-elevation-medium);
+    box-shadow: 0 3px 0 var(--color-bg-dark);
     border-radius: 10px;
     width: 100%;
     display: flex;
@@ -174,8 +177,8 @@ export default {
 .ingredient-list .ingredient-list__description p {
     color: var(--color-text-muted);
     overflow: hidden;
-    line-height: 1.6rem;
-    max-height: calc(3 * 1.6rem);
+    line-height: 1.3rem;
+    max-height: calc(3 * 1.3rem);
 }
 
 .ingredient-list .ingredient-list__image {
@@ -210,6 +213,9 @@ export default {
 .ingredient-list__actions {
     margin-left: auto;
     flex-shrink: 0;
+    position: absolute;
+    top: 2px;
+    right: 2px;
 }
 
 .button-more {

@@ -22,7 +22,7 @@ class Auth {
         const user = this.getUser();
 
         return {
-            host: window.srConfig.MEILISEARCH_HOST,
+            host: user.search_host,//window.srConfig.MEILISEARCH_HOST,
             key: user.search_api_key,
         };
     }

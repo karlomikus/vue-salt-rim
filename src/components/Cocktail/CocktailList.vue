@@ -8,17 +8,28 @@ import CocktailGridContainer from './CocktailGridContainer.vue'
     <RouterLink class="button button--outline" :to="{ name: 'cocktails.form' }">Add cocktail</RouterLink>
   </div>
   <h2 class="page-subtitle" style="margin-top: 10px;">Cocktails</h2>
+  <p class="page-description" style="margin-bottom: 20px;">
+      This is a list of cocktails available in your Bar Assistant server. You can search for a specific cocktails by filtering them with the tags you added or by using an search term.
+  </p>
   <ais-instant-search :search-client="searchClient" index-name="cocktails:name:asc" :routing="routing">
     <ais-configure :hitsPerPage="100" />
-    <div class="cocktail-list-tags">
-      <ais-refinement-list attribute="tags" :sort-by="['name:asc']" operator="and" :transformItems="getRefinementValues">
+    <div class="cocktail-list-tags" style="margin-bottom: 10px;">
+      <ais-refinement-list attribute="tags" :sort-by="['name:asc']" :limit="30" operator="and">
         <template v-slot:item="{ item, refine, createURL }">
-          <a :href="createURL(item.value)" :class="{ 'is-selected': item.isRefined }" @click.prevent="refine(item.value)">
+          <a :href="createURL(item.value)" class="tag tag--link" :class="{ 'tag--is-selected': item.isRefined }" @click.prevent="refine(item.value)">
             {{ item.label }}
           </a>
         </template>
       </ais-refinement-list>
     </div>
+    <ais-toggle-refinement attribute="user_id" :on="userId">
+      <template v-slot="{ value, refine, createURL }">
+        <a :href="createURL(value)" class="tag tag--link" :class="{ 'tag--is-selected': value.isRefined }" @click.prevent="refine(value)">
+          My cocktails
+          ({{ value.count || 0 }})
+        </a>
+      </template>
+    </ais-toggle-refinement>
     <div class="cocktail-list-search-container">
       <ais-search-box placeholder="Filter cocktails..." :class-names="{ 'ais-SearchBox-input': 'form-input', 'ais-SearchBox-reset': 'cocktail-list-search-container__reset' }" />
       <ais-sort-by :items="[
@@ -65,6 +76,7 @@ export default {
         stateMapping: singleIndexMapping('cocktails:name:asc'),
       },
       userCocktails: [],
+      userId: Auth.getUser().id
     };
   },
   created() {
@@ -78,18 +90,6 @@ export default {
     userCocktailIds() {
       return this.userCocktails.map(c => c.id)
     }
-  },
-  methods: {
-    getRefinementValues(items) {
-      items.unshift({
-        label: 'My cocktails',
-        value:'My cocktails',
-        count: 0,
-        isRefined: false,
-        highlighted: 'My cocktails',
-      })
-      return items
-    }
   }
 }
 </script>
@@ -101,34 +101,7 @@ export default {
   margin: 0;
   display: flex;
   flex-wrap: wrap;
-}
-
-.cocktail-list-tags .ais-RefinementList-list li {
-  margin-right: 10px;
-  margin-bottom: 5px;
-}
-
-.cocktail-list-tags .ais-RefinementList-list li a {
-  display: flex;
-  text-decoration: none;
-  background-color: none;
-  border: 1px solid var(--color-bg-dark);
-  padding: 2px 12px;
-  border-radius: 15px;
-  font-size: 0.9rem;
-  white-space: nowrap;
-}
-
-.cocktail-list-tags .ais-RefinementList-list li a:hover,
-.cocktail-list-tags .ais-RefinementList-list li a:focus,
-.cocktail-list-tags .ais-RefinementList-list li a:active {
-  background-color: #fff;
-}
-
-.cocktail-list-tags .ais-RefinementList-list li a.is-selected {
-  background-color: var(--color-text);
-  border: 1px solid var(--color-text);
-  color: #fff;
+  gap: 10px;
 }
 
 .cocktail-list-search-container {

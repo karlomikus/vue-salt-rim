@@ -6,15 +6,18 @@ import Dropdown from './../Dropdown.vue';
 <template>
     <OverlayLoader v-if="!cocktail.id" />
     <div class="cocktail-details" v-if="cocktail.id">
-        <div class="cocktail-details__graphic" :style="{ 'background-image': 'url(' + cocktail.image_url + ')' }">
-            <div class="cocktail-details__graphic__copyright">Image &copy; {{ cocktail.image_copyright }}</div>
+        <div class="cocktail-details__graphic" :style="{ 'background-image': 'url(' + mainCocktailImageUrl + ')' }">
+            <div class="cocktail-details__graphic__copyright" v-if="mainCocktailImage.copyright">Image &copy; {{ mainCocktailImage.copyright }}</div>
         </div>
         <div class="cocktail-details-box cocktail-details-box--title">
             <h3 class="cocktail-details-box__title">{{ cocktail.name }}</h3>
-            <ul class="cocktail-tags" style="margin: 0; margin-bottom: 10px; justify-content: flex-start;">
-                <li v-for="tag in cocktail.tags" style="background-color: #BFD3DF;">{{ tag }}</li>
-            </ul>
-            <div class="cocktail-details-box__description" v-html="parsedDescription"></div>
+            <div class="tag-container" style="margin-bottom: 20px;">
+                <span v-for="tag in cocktail.tags" class="tag tag--background" style="background-color: #BFD3DF;">{{ tag }}</span>
+            </div>
+            <div class="cocktail-details-box__description">
+                <div v-html="parsedDescription"></div>
+                <!-- <p v-if="cocktail.source"><strong>Cocktail source:</strong> {{ cocktail.source }}</p> -->
+            </div>
             <div class="cocktail-details-box__actions">
                 <button type="button" class="button-circle" @click="favorite">
                     <svg v-if="!isFavorited" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
@@ -77,31 +80,39 @@ import Dropdown from './../Dropdown.vue';
                     <h4>Units:</h4>
                     <button :class="{ 'active-serving': currentUnit == 'ml' }" @click="currentUnit = 'ml'">ml</button>
                     <button :class="{ 'active-serving': currentUnit == 'oz' }" @click="currentUnit = 'oz'">oz</button>
+                    <button :class="{ 'active-serving': currentUnit == 'cl' }" @click="currentUnit = 'cl'">cl</button>
                 </div>
             </div>
             <ul class="cocktail-details-box__ingredients">
                 <li v-for="ing in cocktail.ingredients" :key="ing.sort">
-                    <RouterLink :to="{ name: 'ingredients.show', params: { id: ing.ingredient_slug } }">
-                        {{ ing.name }}
+                    <div class="cocktail-details-box__ingredients__content">
+                        <RouterLink :to="{ name: 'ingredients.show', params: { id: ing.ingredient_slug } }">
+                            {{ ing.name }}
+                        </RouterLink>
                         <small v-if="ing.optional">(optional)</small>
+                        <div class="cocktail-details-box__ingredients__content__substitutes">
+                            <template v-for="sub in ing.substitutes">
+                                or <RouterLink :to="{ name: 'ingredients.show', params: { id: sub.slug } }">{{ sub.name }}</RouterLink>
+                            </template>
+                        </div>
                         <span v-if="!userShelfIngredients.includes(ing.ingredient_id)">You are missing this ingredient</span>
                         <span v-if="userShoppingListIngredients.includes(ing.ingredient_id)">You have this ingredient on shopping list</span>
-                    </RouterLink>
+                    </div>
                     <div class="cocktail-details-box__ingredients__amount">{{ parseIngredientAmount(ing) }}</div>
                 </li>
             </ul>
-            <button v-show="missingIngredientIds.length > 0" type="button" class="button button--dark button--small" @click="addMissingIngredients">Add missing ingredients to my shopping list</button>
+            <a v-show="missingIngredientIds.length > 0" href="#" @click.prevent="addMissingIngredients">Add missing ingredients to my shopping list</a>
         </div>
         <div class="cocktail-details-box cocktail-details-box--yellow">
             <h3 class="cocktail-details-box__title">Instructions:</h3>
-            <ul class="cocktail-tags" style="margin: 0; margin-bottom: 10px; justify-content: flex-start;">
-                <li v-if="cocktail.glass" style="background-color: #ffddc0;">Glass: {{ cocktail.glass.name }}</li>
-            </ul>
+            <div class="tag-container" style="margin-bottom: 20px;">
+                <span v-if="cocktail.glass" class="tag tag--background" style="background-color: #ffddc0;">Glass: {{ cocktail.glass.name }}</span>
+            </div>
             <div v-html="parsedInstructions"></div>
         </div>
         <div class="cocktail-details-box cocktail-details-box--red">
             <h3 class="cocktail-details-box__title">Garnish:</h3>
-            <p>{{ cocktail.garnish }}</p>
+            <div v-html="parsedGarnish"></div>
         </div>
     </div>
 </template>
@@ -129,6 +140,13 @@ export default {
 
             return marked.parse(this.cocktail.instructions)
         },
+        parsedGarnish() {
+            if (!this.cocktail.garnish) {
+                return null;
+            }
+
+            return marked.parse(this.cocktail.garnish)
+        },
         parsedDescription() {
             if (!this.cocktail.description) {
                 return null;
@@ -140,6 +158,20 @@ export default {
             return this.cocktail.ingredients.filter(ing => {
                 return !this.userShelfIngredients.includes(ing.ingredient_id) && !this.userShoppingListIngredients.includes(ing.ingredient_id)
             }).map(cing => cing.ingredient_id)
+        },
+        mainCocktailImage() {
+            if (this.cocktail.main_image_id == null) {
+                return {};
+            }
+
+            return this.cocktail.images.filter((img) => img.id == this.cocktail.main_image_id)[0];
+        },
+        mainCocktailImageUrl() {
+            if (!this.mainCocktailImage.url) {
+                return '/no-cocktail.jpg';
+            }
+
+            return this.mainCocktailImage.url
         }
     },
     watch: {
@@ -201,23 +233,23 @@ export default {
             })
         },
         parseIngredientAmount(ingredient) {
-            let amount = ingredient.amount * this.servings;
-            let units = ingredient.units.toLowerCase();
+            let orgAmountMl = ingredient.amount * this.servings;
+            let orgUnits = ingredient.units.toLowerCase();
 
             // Don't convert unconvertable units
-            if (units != 'ml' && units != 'oz') {
-                return `${amount} ${units}`;
+            if (orgUnits != 'ml' && orgUnits != 'oz' && orgUnits != 'cl') {
+                return `${orgAmountMl} ${orgUnits}`;
             }
 
-            if (units == 'ml' && this.currentUnit == 'oz') {
-                return new Unitz.Fraction(amount / 30, [2, 3, 4]).string + ' ' + this.currentUnit
+            if (this.currentUnit == 'oz') {
+                return new Unitz.Fraction(orgAmountMl / 30, [2, 3, 4]).string + ' ' + this.currentUnit
             }
 
-            if (units == 'oz' && this.currentUnit == 'ml') {
-                return amount * 30 + ' ' + this.currentUnit
+            if (this.currentUnit == 'cl') {
+                return Unitz.parse(`${orgAmountMl} ${orgUnits}`).convert('cl') + ' ' + this.currentUnit
             }
 
-            return `${amount} ${units}`;
+            return `${orgAmountMl} ${orgUnits}`;
         }
     }
 }
@@ -300,16 +332,22 @@ export default {
     padding: 5px 10px;
 }
 
-.cocktail-details-box__ingredients li a {
+/* .cocktail-details-box__ingredients li a {
     text-decoration: none;
-}
+} */
 
-.cocktail-details-box__ingredients li a small {
+.cocktail-details-box__ingredients li .cocktail-details-box__ingredients__content small {
     color: var(--color-link-hover);
+    margin-left: 5px;
 }
 
-.cocktail-details-box__ingredients li a span {
+.cocktail-details-box__ingredients li .cocktail-details-box__ingredients__content span {
     display: block;
+    font-size: 0.7rem;
+    color: var(--color-text-muted);
+}
+
+.cocktail-details-box__ingredients li .cocktail-details-box__ingredients__content .cocktail-details-box__ingredients__content__substitutes {
     font-size: 0.7rem;
     color: var(--color-text-muted);
 }

@@ -32,7 +32,7 @@ import OverlayLoader from '@/components/OverlayLoader.vue'
                 </ul>
             </div>
             <div class="ingredient-details__box__image-container">
-                <img :src="ingredient.image_url" :alt="ingredient.name" />
+                <img :src="mainIngredientImageUrl" :alt="ingredient.name" />
             </div>
         </div>
         <div class="ingredient-details__cocktails">
@@ -87,7 +87,7 @@ import OverlayLoader from '@/components/OverlayLoader.vue'
                 </Dropdown>
             </div>
             <h2 class="ingredient-details__box__title">Used in {{ ingredient.cocktails.length }} cocktails:</h2>
-            <ul v-if="ingredient.cocktails.length > 0">
+            <ul class="ingredient-chips-list" v-if="ingredient.cocktails.length > 0">
                 <li v-for="cocktail in ingredient.cocktails">
                     <RouterLink :to="{name: 'cocktails.show', params: {id: cocktail.slug}}">{{ cocktail.name }}</RouterLink>
                 </li>
@@ -95,6 +95,14 @@ import OverlayLoader from '@/components/OverlayLoader.vue'
             <div v-else>
                 <RouterLink :to="{name: 'cocktails.form'}">Create a cocktail</RouterLink>
             </div>
+        </div>
+        <div class="ingredient-details__varieties" v-if="ingredient.varieties.length > 0">
+            <h2 class="ingredient-details__box__title">See also:</h2>
+            <ul class="ingredient-chips-list">
+                <li v-for="variety in ingredient.varieties">
+                    <RouterLink :to="{name: 'ingredients.show', params: {id: variety.slug}}">{{ variety.name }}</RouterLink>
+                </li>
+            </ul>
         </div>
     </div>
 </template>
@@ -143,6 +151,15 @@ export default {
             },
             { immediate: true }
         )
+    },
+    computed: {
+        mainIngredientImageUrl() {
+            if (!this.ingredient.main_image_id) {
+                return '/no-ingredient.png';
+            }
+
+            return this.ingredient.images.filter((img) => img.id == this.ingredient.main_image_id)[0].url;
+        }
     },
     methods: {
         deleteIngredient() {
@@ -305,20 +322,21 @@ export default {
     margin-top: -20px;
 }
 
-.ingredient-details__cocktails ul {
+.ingredient-chips-list {
     list-style: none;
     padding: 0;
     margin: 30px 0 0 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
 }
 
-.ingredient-details__cocktails ul li {
-    margin-bottom: 10px;
-}
-
-.ingredient-details__cocktails ul li a {
+.ingredient-chips-list li a {
     display: block;
     padding: 3px 10px;
-    background-color: rgb(198, 215, 225);
+    border: 1px solid var(--color-text);
+    border-radius: 5px;
+    text-decoration: none;
 }
 
 .ingredient-details__actions {
@@ -331,5 +349,14 @@ export default {
 
 .ingredient-details__actions .button-circle {
     margin-left: 5px;
+}
+
+.ingredient-details__varieties {
+    background-color: var(--color-var-2);
+    padding: 20px 20px 40px 20px;
+    border-radius: 20px;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+    margin-top: -20px;
 }
 </style>

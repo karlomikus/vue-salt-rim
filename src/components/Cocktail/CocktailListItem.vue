@@ -1,7 +1,7 @@
 <template>
     <RouterLink class="cocktail-list-item" :to="{ name: 'cocktails.show', params: { id: cocktail.slug } }">
         <div class="cocktail-list-item__graphic">
-            <div class="cocktail-list-item__graphic__image" :data-img-src="cocktail.image_url"></div>
+            <div class="cocktail-list-item__graphic__image" :data-img-src="mainCocktailImageUrl"></div>
         </div>
         <div class="cocktail-list-item__content">
             <h3>{{ cocktail.name }}</h3>
@@ -17,6 +17,15 @@ export default {
     props: ['cocktail', 'observer'],
     mounted() {
         this.observer.observer.observe(this.$el)
+    },
+    computed: {
+        mainCocktailImageUrl() {
+            if (this.cocktail.main_image_id == null) {
+                return '/no-cocktail.jpg';
+            }
+
+            return this.cocktail.images.filter((img) => img.id == this.cocktail.main_image_id)[0].url;
+        }
     }
 }
 </script>

@@ -4,6 +4,7 @@
 @import "./dropdown.css";
 @import "./modal.css";
 @import "./glasses.css";
+@import "./tags.css";
 
 @import "vue-select/dist/vue-select.css";
 @import "vue-toast-notification/dist/theme-default.css";
@@ -61,24 +62,6 @@ main {
 
 .popper {
     z-index: 10;
-}
-
-.cocktail-tags {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    list-style: none;
-    padding: 0;
-    margin: 10px -3px -3px -3px;
-}
-
-.cocktail-tags li {
-    background-color: var(--color-tag);
-    color: var(--color-text);
-    border-radius: 4px;
-    margin: 3px;
-    padding: 2px 5px;
-    font-size: 12px;
 }
 
 .site-logo {

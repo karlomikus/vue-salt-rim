@@ -41,8 +41,7 @@ Create a new config file in `public/config.js`, with the following content
 
 ``` js
 window.srConfig = {}
-window.srConfig.API_URL = "YOUR_BA_API_URL"
-window.srConfig.MEILISEARCH_HOST = "YOUR_MEILISEARCH_URL"
+window.srConfig.API_URL = "http://YOUR_BA_API_URL"
 ```
 
 4. Run the build commands
@@ -53,9 +52,26 @@ $ npm run build
 
 This will create a `dist/` folder with ready to use static files.
 
-## Docker compose
+## Docker
 
-    NOTE: Docker configuration for salt rim and bar assistant is still WIP, so anything can and will break.
+Required environment variables:
+
+|Env Key|Value|Description|Example
+|-|-|-|-
+|API_URL|url|URL of your Bar Assistant server|http://bar-assistant.local
+
+Image by default exposes port `8080`
+
+You can run docker image with the following command:
+
+```
+$ docker run -d \
+    -p 8080:8080 \
+    -e API_URL=http://BA_SERVER_URL \
+    kmikus12/salt-rim
+```
+
+## Docker compose
 
 Use the following `docker-compose.yml` template to get started with all services required to run Bar Assistant and Salt Rim.
 
@@ -66,7 +82,7 @@ services:
   meilisearch:
     image: getmeili/meilisearch
     environment:
-      - MEILI_MASTER_KEY=JwBO9HU24uBj0MQPonm5Ui8I8wBkKFwj6pjwkPZ2YjYzWIcyZu
+      - MEILI_MASTER_KEY=masterKey
       - MEILI_ENV=production
     ports:
       - 7700:7700
@@ -78,9 +94,9 @@ services:
     depends_on:
       - meilisearch
     environment:
-      - APP_URL=http://<YOUR_SERVER_IP>:8000
-      - MEILISEARCH_KEY=JwBO9HU24uBj0MQPonm5Ui8I8wBkKFwj6pjwkPZ2YjYzWIcyZu
-      - MEILISEARCH_HOST=http://meilisearch:7700
+      - APP_URL=http://YOUR_BA_API_SERVER_IP
+      - MEILISEARCH_KEY=masterKey
+      - MEILISEARCH_HOST=http://YOUR_MEILISEARCH_SERVER_IP
     volumes:
       - ba-storage:/var/www/cocktails/storage
     ports:
@@ -92,8 +108,7 @@ services:
       - meilisearch
       - bar-assistant
     environment:
-      - API_URL=http://<YOUR_SERVER_IP>:8000
-      - MEILISEARCH_HOST=http://<YOUR_SERVER_IP>:7700
+      - API_URL=http://YOUR_BA_API_SERVER_IP
     ports:
       - 8080:8080
 
@@ -109,14 +124,6 @@ Login with default email and password:
 email: admin@example.com
 password: password
 ```
-
-Available ENV variables:
-
-|Env Key|Value|Description|
-|-|-|-
-|MEILI_MASTER_KEY|string|A random string use as a Meilisearch master key.|
-|BAR_ASSISTANT_URL|url|URL of your Bar Assistant server|
-|MEILISEARCH_URL|url|URL of your Meilisearch server|
 
 ## Contributing
 

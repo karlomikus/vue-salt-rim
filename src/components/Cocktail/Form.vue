@@ -1,6 +1,7 @@
 <script setup>
 import OverlayLoader from './../OverlayLoader.vue'
 import IngredientModal from './IngredientModal.vue'
+import ImageUpload from './../ImageUpload.vue'
 </script>
 
 <template>
@@ -13,17 +14,25 @@ import IngredientModal from './IngredientModal.vue'
         </div>
         <div class="form-group">
             <label class="form-label form-label--required" for="instructions">Instructions:</label>
-            <textarea rows="5" class="form-input" id="instructions" v-model="cocktail.instructions" required placeholder="How to prepare the cocktail..."></textarea>
+            <textarea rows="8" class="form-input" id="instructions" v-model="cocktail.instructions" required placeholder="How to prepare the cocktail..."></textarea>
             <p class="form-input-hint">This field supports markdown.</p>
         </div>
         <div class="form-group">
             <label class="form-label" for="garnish">Garnish:</label>
             <textarea rows="3" class="form-input" id="garnish" v-model="cocktail.garnish" placeholder="Something to make a cocktail pop..."></textarea>
+            <p class="form-input-hint">This field supports markdown.</p>
         </div>
         <div class="form-group">
             <label class="form-label" for="description">Description:</label>
-            <textarea rows="3" class="form-input" id="description" v-model="cocktail.description" placeholder="Cocktail description or history..."></textarea>
+            <textarea rows="5" class="form-input" id="description" v-model="cocktail.description" placeholder="Cocktail description or history..."></textarea>
             <p class="form-input-hint">This field supports markdown.</p>
+        </div>
+        <div class="form-group">
+            <label class="form-label" for="glass">Glass:</label>
+            <select class="form-select" id="glass" v-model="glassId">
+                <option :value="undefined" disabled>Select a glass type...</option>
+                <option v-for="glass in glasses" :value="glass.id">{{ glass.name }}</option>
+            </select>
         </div>
         <div class="form-group">
             <label class="form-label" for="source">Source:</label>
@@ -34,29 +43,18 @@ import IngredientModal from './IngredientModal.vue'
             <input class="form-input" type="text" id="tags" v-model="cocktailTags" placeholder="Tags to help you find the cocktail...">
             <p class="form-input-hint">Separate multiple tags with a comma (",").</p>
         </div>
-        <div class="form-group form-group--image">
-            <div class="form-group--image__image">
-                <img v-if="cocktail.image_url" :src="cocktail.image_url" alt="Cocktail image">
-                <img v-else :src="noImage" alt="Missing cocktail image">
-                <button v-if="cocktail.image_id" type="button" class="button button--dark button--small" @click="removeImage">Remove</button>
-            </div>
-            <div>
-                <div class="form-group">
-                    <label class="form-label" for="images">Image:</label>
-                    <input class="form-input" type="file" id="images" ref="image">
-                </div>
-                <div class="form-group">
-                    <label class="form-label" for="copyright">Image copyright:</label>
-                    <input class="form-input" type="text" id="copyright" v-model="images[0].copyright" placeholder="Image source...">
-                </div>
-            </div>
-        </div>
+        <ImageUpload ref="imagesUpload" :value="cocktail.images" />
         <h2 class="page-subtitle">Ingredients</h2>
         <ul class="cocktail-form__ingredients" style="margin-bottom: 20px;">
             <li v-for="ing in cocktail.ingredients">
                 <div class="form-group">
                     <label class="form-label">Ingredient:</label>
                     <p>{{ ing.name }} <small v-show="ing.optional">({{ ing.optional ? 'Optional' : '' }})</small></p>
+                    <p class="substitutes" v-if="ing.substitutes && ing.substitutes.length > 0">
+                        <template v-for="sub in ing.substitutes">
+                            or {{ sub.name }} 
+                        </template>
+                    </p>
                 </div>
                 <div class="form-group">
                     <label class="form-label">Amount:</label>
@@ -96,11 +94,10 @@ export default {
             cocktail: {
                 ingredients: [],
                 tags: [],
+                glass: null,
+                images: []
             },
-            images: [
-                { image: null, copyright: null }
-            ],
-            ingredients: [],
+            glasses: [],
             cocktailId: null
         };
     },
@@ -111,6 +108,22 @@ export default {
             },
             set(newVal) {
                 this.cocktail.tags = newVal.split(',')
+            }
+        },
+        glassId: {
+            get() {
+                if (!this.cocktail.glass) {
+                    return undefined;
+                }
+
+                return this.cocktail.glass.id
+            },
+            set(newVal) {
+                if (!this.cocktail.glass) {
+                    this.cocktail.glass = {};
+                }
+
+                this.cocktail.glass.id = newVal
             }
         },
         noImage() {
@@ -126,14 +139,13 @@ export default {
         if (this.cocktailId) {
             ApiRequests.fetchCocktail(this.cocktailId).then(data => {
                 this.cocktail = data;
-                this.images[0].copyright = this.cocktail.image_copyright;
                 this.isLoading = false;
                 document.title = `Cocktail form \u22C5 ${this.cocktail.name} \u22C5 Salt Rim`
             })
         }
 
-        ApiRequests.fetchIngredients().then(data => {
-            this.ingredients = data
+        ApiRequests.fetchGlasses().then(data => {
+            this.glasses = data
             this.isLoading = false;
         })
     },
@@ -194,33 +206,35 @@ export default {
                 source: this.cocktail.source,
                 images: [],
                 tags: this.cocktail.tags,
+                glass_id: this.glassId,
                 ingredients: this.cocktail.ingredients
                     .filter(i => i.name != '<Not selected>')
                     .map(i => {
+                        // Convert oz to ml
                         if (i.units == 'oz') {
                             i.amount = Unitz.parse(`${i.amount}${i.units}`).value * 30
                             i.units = 'ml'
+                        }
+                        // Convert cl to ml
+                        if (i.units == 'cl') {
+                            i.amount = i.amount * 10
+                            i.units = 'ml'
+                        }
+
+                        // Just send substitute ids
+                        if (i.substitutes) {
+                            i.substitutes = i.substitutes.map(s => s.id)
                         }
 
                         return i;
                     })
             };
 
-            const image = this.$refs.image.files[0] || null;
-
-            if (image) {
-                const formData = new FormData();
-                formData.append('images[0][image]', image)
-                formData.append('images[0][copyright]', this.images[0].copyright)
-
-                const resp = await ApiRequests.uploadImages(formData).catch(e => {
-                    this.$toast.error('An error occured while uploading images. Your cocktail is still saved.');
-                });
-
-                if (resp) {
-                    postData.images.push(resp[0].id);
-                }
-            }
+            const imageResources = await this.$refs.imagesUpload.uploadPictures().catch(() => {
+                this.$toast.error('An error occured while uploading images. Your cocktail is still saved.');
+            }) || [];
+            
+            postData.images = imageResources.map(img => img.id);
 
             if (this.cocktailId) {
                 ApiRequests.updateCocktail(this.cocktailId, postData).then(data => {
@@ -291,5 +305,11 @@ export default {
 
 .cocktail-form__ingredients__actions {
     grid-column: span 2;
+}
+
+.cocktail-form__ingredients .substitutes {
+    font-style: italic;
+    font-size: 0.9rem;
+    color: var(--color-text-muted);
 }
 </style>

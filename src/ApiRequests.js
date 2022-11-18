@@ -72,6 +72,18 @@ class ApiRequests {
         return this.parseResponse(jsonResp);
     }
 
+    static async patchImage(id, formData) {
+        const jsonResp = await (await fetch(`${this.getUrl()}/api/images/${id}`, {
+            method: 'POST',
+            headers: new Headers({
+                'Authorization': 'Bearer ' + localStorage.getItem('user_token'),
+            }),
+            body: formData
+        })).json();
+
+        return this.parseResponse(jsonResp);
+    }
+
     static async fetchLoginToken(email, password) {
         const url = `${this.getUrl()}/api/login`
 
@@ -151,7 +163,7 @@ class ApiRequests {
     }
 
     static async fetchIngredientCategories() {
-        let jsonResp = await this.getRequest(`/api/ingredients/categories`);
+        let jsonResp = await this.getRequest(`/api/ingredient-categories`);
 
         return this.parseResponse(jsonResp);
     }
@@ -187,7 +199,7 @@ class ApiRequests {
     }
 
     static async favoriteCocktail(id) {
-        let jsonResp = await this.postRequest(`/api/cocktails/${id}/favorite`);
+        let jsonResp = await this.postRequest(`/api/cocktails/${id}/toggle-favorite`);
 
         return this.parseResponse(jsonResp);
     }
@@ -248,6 +260,12 @@ class ApiRequests {
 
     static async deleteImage(id) {
         let jsonResp = await this.deleteRequest(`/api/images/${id}`);
+
+        return this.parseResponse(jsonResp);
+    }
+
+    static async fetchGlasses() {
+        let jsonResp = await this.getRequest(`/api/glasses`);
 
         return this.parseResponse(jsonResp);
     }
