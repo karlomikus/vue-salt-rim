@@ -199,7 +199,7 @@ class ApiRequests {
     }
 
     static async favoriteCocktail(id) {
-        let jsonResp = await this.postRequest(`/api/cocktails/${id}/favorite`);
+        let jsonResp = await this.postRequest(`/api/cocktails/${id}/toggle-favorite`);
 
         return this.parseResponse(jsonResp);
     }
