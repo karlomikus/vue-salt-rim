@@ -94,11 +94,9 @@ export default {
             cocktail: {
                 ingredients: [],
                 tags: [],
-                glass: null
+                glass: null,
+                images: []
             },
-            images: [
-                { image: null, copyright: null }
-            ],
             glasses: [],
             cocktailId: null
         };
