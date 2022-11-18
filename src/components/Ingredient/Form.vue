@@ -34,7 +34,6 @@ import { ColorPicker } from 'vue-accessible-color-picker'
             <button type="button" class="colorpicker-button" @click="showColorPicker = !showColorPicker">
                 <span :style="{'background-color': ingredient.color}"></span>
             </button>
-            <!-- <input class="form-input" type="text" id="color" v-model="ingredient.color"> -->
             <ColorPicker v-if="showColorPicker" alpha-channel="hide" :visible-formats="['hex']" :color="ingredient.color" @color-change="updateColor" />
         </div>
         <ImageUpload ref="imagesUpload" :value="ingredient.images" />
@@ -134,6 +133,7 @@ export default {
 </script>
 <style scoped>
 .colorpicker-button {
+    cursor: pointer;
     padding: 10px;
     width: 100%;
     display: flex;
@@ -149,5 +149,12 @@ export default {
 .colorpicker-button span {
     display: flex;
     width: 100%;
+}
+
+.colorpicker-button:hover,
+.colorpicker-button:active,
+.colorpicker-button:focus {
+    background: #fff;
+    border-color: var(--color-text);
 }
 </style>

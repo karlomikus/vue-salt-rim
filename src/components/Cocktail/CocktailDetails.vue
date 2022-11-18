@@ -14,7 +14,10 @@ import Dropdown from './../Dropdown.vue';
             <div class="tag-container" style="margin-bottom: 20px;">
                 <span v-for="tag in cocktail.tags" class="tag tag--background" style="background-color: #BFD3DF;">{{ tag }}</span>
             </div>
-            <div class="cocktail-details-box__description" v-html="parsedDescription"></div>
+            <div class="cocktail-details-box__description">
+                <div v-html="parsedDescription"></div>
+                <!-- <p v-if="cocktail.source"><strong>Cocktail source:</strong> {{ cocktail.source }}</p> -->
+            </div>
             <div class="cocktail-details-box__actions">
                 <button type="button" class="button-circle" @click="favorite">
                     <svg v-if="!isFavorited" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
