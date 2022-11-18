@@ -10,6 +10,9 @@ import OverlayLoader from './../OverlayLoader.vue'
             <ais-instant-search :search-client="searchClient" :index-name="index" :on-state-change="onStateChange">
                 <ais-configure :hitsPerPage="30" />
                 <ais-search-box placeholder="Search for ingredient..." :class-names="{'ais-SearchBox-input': 'form-input'}" />
+                <label for="substitute-adding">
+                    <input id="substitute-adding" type="checkbox" v-model="isAddingSubstitute"> Select substitute ingredients
+                </label>
                 <ais-hits>
                     <template v-slot="{ items }">
                         <div class="ingredients-options">
@@ -27,9 +30,6 @@ import OverlayLoader from './../OverlayLoader.vue'
             </h3>
             <div class="substitutes">
                 <small>Substitutes:</small>
-                <label for="substitute-adding">
-                    <input id="substitute-adding" type="checkbox" v-model="isAddingSubstitute"> Select substitute ingredients
-                </label>
                 <span v-for="substitute in cocktailIngredient.substitutes">{{ substitute.name }} &middot; <a href="#" @click.prevent="removeSubstitute(substitute)">Remove</a></span>
             </div>
             <div style="display: grid; grid-template-columns: 1fr 2fr; column-gap: 10px;">
