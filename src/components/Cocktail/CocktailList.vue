@@ -14,7 +14,7 @@ import CocktailGridContainer from './CocktailGridContainer.vue'
   <ais-instant-search :search-client="searchClient" index-name="cocktails:name:asc" :routing="routing">
     <ais-configure :hitsPerPage="100" />
     <div class="cocktail-list-tags" style="margin-bottom: 10px;">
-      <ais-refinement-list attribute="tags" :sort-by="['name:asc']" operator="and">
+      <ais-refinement-list attribute="tags" :sort-by="['name:asc']" :limit="30" operator="and">
         <template v-slot:item="{ item, refine, createURL }">
           <a :href="createURL(item.value)" class="tag tag--link" :class="{ 'tag--is-selected': item.isRefined }" @click.prevent="refine(item.value)">
             {{ item.label }}
