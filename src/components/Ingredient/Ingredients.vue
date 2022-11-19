@@ -185,8 +185,8 @@ export default {
     flex-shrink: 0;
     margin-right: 15px;
     align-self: center;
-    width: 120px;
-    height: 120px;
+    width: 95px;
+    height: 95px;
     text-align: center;
     border-radius: 50%;
     display: flex;
@@ -195,7 +195,7 @@ export default {
 }
 
 .ingredient-list .ingredient-list__image img {
-    height: 115px;
+    height: 90px;
 }
 
 @media (max-width: 450px) {
