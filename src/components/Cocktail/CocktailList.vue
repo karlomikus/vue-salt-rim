@@ -9,7 +9,7 @@ import CocktailGridContainer from './CocktailGridContainer.vue'
   </div>
   <h2 class="page-subtitle" style="margin-top: 10px;">Cocktails</h2>
   <p class="page-description" style="margin-bottom: 20px;">
-      This is a list of cocktails available in your Bar Assistant server. You can search for a specific cocktails by filtering them with the tags you added or by using an search term.
+      This is a list of cocktails available in your Bar Assistant server. You can search for a specific cocktails by filtering them with the tags you added or by using a search term.
   </p>
   <ais-instant-search :search-client="searchClient" index-name="cocktails:name:asc" :routing="routing">
     <ais-configure :hitsPerPage="100" />

@@ -233,8 +233,10 @@ export default {
             const imageResources = await this.$refs.imagesUpload.uploadPictures().catch(() => {
                 this.$toast.error('An error occured while uploading images. Your cocktail is still saved.');
             }) || [];
-            
-            postData.images = imageResources.map(img => img.id);
+
+            if (Array.isArray(imageResources)) {
+                postData.images = imageResources.map(img => img.id);
+            }
 
             if (this.cocktailId) {
                 ApiRequests.updateCocktail(this.cocktailId, postData).then(data => {
