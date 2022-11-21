@@ -235,7 +235,7 @@ class ApiRequests {
     }
 
     static async fetchApiVersion() {
-        let jsonResp = await this.getRequest(`/api/version`);
+        let jsonResp = await this.getRequest(`/api/server/version`);
 
         return this.parseResponse(jsonResp);
     }
