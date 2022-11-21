@@ -3,6 +3,17 @@ import Auth from '../Auth'
 
 const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
+    scrollBehavior(to, from, savedPosition) {
+        if (savedPosition) {
+            return new Promise((resolve, reject) => {
+                setTimeout(() => {
+                    resolve(savedPosition)
+                }, 300)
+            })
+        } else {
+            return { top: 0 }
+        }
+    },
     routes: [
         {
             path: '/login',

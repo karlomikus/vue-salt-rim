@@ -1,3 +1,10 @@
+# v0.4.0
+- Add more server info on login
+- Sync endpoints with BA api
+
+# v0.3.1
+- Removed arm-v7 from build
+
 # v0.3.0
 ## New
 - Support adding cocktail ingredient substitutes

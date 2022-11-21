@@ -1,3 +1,7 @@
+<script setup>
+import OverlayLoader from '@/components/OverlayLoader.vue';
+</script>
+
 <template>
     <div class="login-page">
         <div class="site-logo">
@@ -13,6 +17,7 @@
             </h1>
         </div>
         <form @submit.prevent="login">
+            <OverlayLoader v-if="isLoading"></OverlayLoader>
             <div class="form-group">
                 <label class="form-label" for="email">Email:</label>
                 <input class="form-input" type="email" id="email" v-model="email" required>
@@ -21,7 +26,16 @@
                 <label class="form-label" for="password">Password:</label>
                 <input class="form-input" type="password" id="password" v-model="password" required>
             </div>
-            <p>Bar Assistant server: <strong>{{ baServer }}</strong></p>
+            <p>
+                Bar Assistant server:<br>
+                <strong>{{ baServer }}</strong><br>
+                <template v-if="server.version">
+                    Status: Available &middot; {{ server.version }}
+                </template>
+                <template v-else>
+                    Status: Not available
+                </template>
+            </p>
             <div style="text-align: right;">
                 <button type="submit" class="button button--dark">Login</button>
             </div>
@@ -36,13 +50,25 @@ import ApiRequests from '@/ApiRequests';
 export default {
     data() {
         return {
+            isLoading: false,
             email: null,
             password: null,
-            baServer: window.srConfig.API_URL
+            baServer: window.srConfig.API_URL,
+            server: {}
         }
+    },
+    created() {
+        this.isLoading = true
+        ApiRequests.fetchApiVersion().then(data => {
+            this.server = data
+            this.isLoading = false
+        }).catch(() => {
+            this.isLoading = false
+        })
     },
     methods: {
         login() {
+            this.isLoading = true
             const redirectPath = this.$route.query.redirect || '/'
 
             ApiRequests.fetchLoginToken(this.email, this.password).then(token => {
@@ -53,6 +79,7 @@ export default {
                     this.$router.push(redirectPath);
                 })
             }).catch(errorResponse => {
+                this.isLoading = false
                 errorResponse.json().then(body => {
                     this.$toast.error(body.message)
                 })

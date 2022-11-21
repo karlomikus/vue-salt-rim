@@ -112,21 +112,21 @@ export default {
         },
         addToShelf(ingredient) {
             this.loadingIngredients.push(ingredient.id)
+
             ApiRequests.addIngredientToShelf(ingredient.id).then(() => {
                 this.loadingIngredients.splice(this.loadingIngredients.indexOf(ingredient.id), 1)
+                this.userIngredients.push({ ingredient_id: ingredient.id })
+            }).catch(() => {
+                this.loadingIngredients.splice(this.loadingIngredients.indexOf(ingredient.id), 1)
             })
-
-            this.userIngredients.push({ ingredient_id: ingredient.id })
         },
         removeFromShelf(ingredient) {
             this.loadingIngredients.push(ingredient.id)
+
             ApiRequests.removeIngredientFromShelf(ingredient.id).then(() => {
                 this.loadingIngredients.splice(this.loadingIngredients.indexOf(ingredient.id), 1)
+                this.userIngredients.splice(this.userIngredients.indexOf(ingredient.id), 1)
             })
-
-            _.remove(this.userIngredients, function (n) {
-                return n.ingredient_id === ingredient.id;
-            });
         },
         getImageUrl(ing) {
             if (!ing.main_image_id) {
@@ -185,8 +185,8 @@ export default {
     flex-shrink: 0;
     margin-right: 15px;
     align-self: center;
-    width: 120px;
-    height: 120px;
+    width: 95px;
+    height: 95px;
     text-align: center;
     border-radius: 50%;
     display: flex;
@@ -195,7 +195,7 @@ export default {
 }
 
 .ingredient-list .ingredient-list__image img {
-    height: 115px;
+    height: 90px;
 }
 
 @media (max-width: 450px) {

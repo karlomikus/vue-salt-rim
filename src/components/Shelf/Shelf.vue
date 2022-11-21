@@ -6,19 +6,14 @@ import CocktailListContainer from '../Cocktail/CocktailListContainer.vue'
 
 <template>
     <h2 class="shelf-welcome">Hello, {{ user.name }}</h2>
-    <div class="shelf-stats">
-        <div class="shelf-stat">
-
-        </div>
-    </div>
-    <h2 class="page-subtitle">Quick actions</h2>
+    <!-- <h2 class="page-subtitle">Quick actions</h2> -->
     <div class="home-actions">
         <a href="#" @click.prevent="randomCocktail()">Random cocktail</a>
-        <RouterLink :to="{name: 'cocktails', query: {'toggle[user_id]': true}}">My cocktail recipes</RouterLink>
+        <!-- <RouterLink :to="{name: 'cocktails', query: {'toggle[user_id]': true}}">My cocktail recipes</RouterLink> -->
         <RouterLink :to="{name: 'cocktails.form'}">Create a cocktail</RouterLink>
         <!-- <a href="#">Create a collection</a> -->
-        <RouterLink :to="{name: 'cocktails', query: {'refinementList[tags][0]': 'Gin'}}">Gin base</RouterLink>
-        <RouterLink :to="{name: 'cocktails', query: {'refinementList[tags][0]': 'Rum'}}">Rum base</RouterLink>
+        <!-- <RouterLink :to="{name: 'cocktails', query: {'refinementList[tags][0]': 'Gin'}}">Gin base</RouterLink>
+        <RouterLink :to="{name: 'cocktails', query: {'refinementList[tags][0]': 'Rum'}}">Rum base</RouterLink> -->
         <a href="#" @click.prevent="logout">Logout</a>
     </div>
 

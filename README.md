@@ -16,15 +16,29 @@ Salt Rim is a web client used for connecting to your [Bar Assistant](https://git
 
 - Beautiful UI for your Bar Asistant server
 - Desktop and mobile support
-- Search for cocktails and ingredients using [Meilisearch](https://www.meilisearch.com/) and [Vue Instantsearch](https://www.algolia.com/doc/guides/building-search-ui/what-is-instantsearch/vue/)
+- Easily search and filter cocktails and ingredients using [Vue Instantsearch](https://www.algolia.com/doc/guides/building-search-ui/what-is-instantsearch/vue/)
 - Add, update or delete cocktails and ingredients
 - Manage your personal shopping lists
 - Save your favorite cocktails
-- Markdown support
+- Markdown render support
 - Automatically add missing ingredients to your shopping cart
 - Implements all supported functionality of Bar Assistant
 
-## Installation
+## Docker installation
+
+Image by exposes port `8080`.
+
+You can run docker image with the following command:
+
+```
+$ docker run -d \
+    --name salt-rim \
+    -e API_URL=http://your-bar-assistant-url \
+    -p 8080:8080 \
+    kmikus12/salt-rim
+```
+
+## Manual installation
 
 *This steps will build Salt Rim into a static webpage.*
 
@@ -51,79 +65,6 @@ $ npm run build
 ```
 
 This will create a `dist/` folder with ready to use static files.
-
-## Docker
-
-Required environment variables:
-
-|Env Key|Value|Description|Example
-|-|-|-|-
-|API_URL|url|URL of your Bar Assistant server|http://bar-assistant.local
-
-Image by default exposes port `8080`
-
-You can run docker image with the following command:
-
-```
-$ docker run -d \
-    -p 8080:8080 \
-    -e API_URL=http://BA_SERVER_URL \
-    kmikus12/salt-rim
-```
-
-## Docker compose
-
-Use the following `docker-compose.yml` template to get started with all services required to run Bar Assistant and Salt Rim.
-
-``` yml
-version: "3"
-
-services:
-  meilisearch:
-    image: getmeili/meilisearch
-    environment:
-      - MEILI_MASTER_KEY=masterKey
-      - MEILI_ENV=production
-    ports:
-      - 7700:7700
-    volumes:
-      - ./meilisearch:/meili_data
-
-  bar-assistant:
-    image: kmikus12/bar-assistant-server
-    depends_on:
-      - meilisearch
-    environment:
-      - APP_URL=http://YOUR_BA_API_SERVER_IP
-      - MEILISEARCH_KEY=masterKey
-      - MEILISEARCH_HOST=http://YOUR_MEILISEARCH_SERVER_IP
-    volumes:
-      - ba-storage:/var/www/cocktails/storage
-    ports:
-      - 8000:80
-
-  salt-rim:
-    image: kmikus12/salt-rim
-    depends_on:
-      - meilisearch
-      - bar-assistant
-    environment:
-      - API_URL=http://YOUR_BA_API_SERVER_IP
-    ports:
-      - 8080:8080
-
-volumes:
-  ba-storage:
-```
-
-Access your Salt Rim instance at `http://<SERVER_IP>:8080`.
-
-Login with default email and password:
-
-```
-email: admin@example.com
-password: password
-```
 
 ## Contributing
 
