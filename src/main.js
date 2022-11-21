@@ -7,7 +7,7 @@ import './assets/main.css'
 
 const app = createApp(App)
 
-app.config.globalProperties.app_version = 'v0.3.0';
+app.config.globalProperties.app_version = 'v0.4.0';
 
 app.use(router)
 app.use(InstantSearch)
