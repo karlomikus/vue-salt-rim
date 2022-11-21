@@ -1,3 +1,6 @@
+# v0.4.1
+- Fix missing login request body due to `script setup`
+
 # v0.4.0
 - Add more server info on login
 - Sync endpoints with BA api
