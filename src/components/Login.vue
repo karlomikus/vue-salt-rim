@@ -1,7 +1,3 @@
-<script setup>
-import OverlayLoader from '@/components/OverlayLoader.vue';
-</script>
-
 <template>
     <div class="login-page">
         <div class="site-logo">
@@ -46,6 +42,7 @@ import OverlayLoader from '@/components/OverlayLoader.vue';
 <script>
 import Auth from '../Auth'
 import ApiRequests from '@/ApiRequests';
+import OverlayLoader from '@/components/OverlayLoader.vue';
 
 export default {
     data() {
@@ -56,6 +53,9 @@ export default {
             baServer: window.srConfig.API_URL,
             server: {}
         }
+    },
+    components: {
+        OverlayLoader: OverlayLoader
     },
     created() {
         this.isLoading = true
