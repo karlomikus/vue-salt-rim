@@ -170,6 +170,11 @@ export default {
     border-radius: 10px;
     width: 100%;
     display: flex;
+    transition: box-shadow ease-in-out 150ms;
+}
+
+.ingredient-list>li:hover {
+    box-shadow: 0 3px 0 var(--color-link-hover);
 }
 
 .ingredient-list .ingredient-list__description h3 {
@@ -220,34 +225,5 @@ export default {
     position: absolute;
     top: 2px;
     right: 2px;
-}
-
-.button-more {
-    display: flex;
-    align-items: center;
-    margin-top: 5px;
-    color: var(--color-text-muted);
-}
-
-.button-more svg {
-    transition: all ease-in-out .1s;
-    fill: var(--color-text-muted);
-}
-
-.button-more span {
-    margin-right: 3px;
-}
-
-.button-more:hover span,
-.button-more:focus span,
-.button-more:active span {
-    font-weight: 700;
-    color: var(--color-text);
-}
-
-.button-more:hover svg,
-.button-more:focus svg,
-.button-more:active svg {
-    transform: translateX(3px);
 }
 </style>
