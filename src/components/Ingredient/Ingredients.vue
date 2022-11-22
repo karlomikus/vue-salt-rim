@@ -116,7 +116,8 @@ export default {
             ApiRequests.addIngredientToShelf(ingredient.id).then(() => {
                 this.loadingIngredients.splice(this.loadingIngredients.indexOf(ingredient.id), 1)
                 this.userIngredients.push({ ingredient_id: ingredient.id })
-            }).catch(() => {
+            }).catch(e => {
+                this.$toast.error(e.message)
                 this.loadingIngredients.splice(this.loadingIngredients.indexOf(ingredient.id), 1)
             })
         },
@@ -126,6 +127,9 @@ export default {
             ApiRequests.removeIngredientFromShelf(ingredient.id).then(() => {
                 this.loadingIngredients.splice(this.loadingIngredients.indexOf(ingredient.id), 1)
                 this.userIngredients.splice(this.userIngredients.indexOf(ingredient.id), 1)
+            }).catch(e => {
+                this.$toast.error(e.message)
+                this.loadingIngredients.splice(this.loadingIngredients.indexOf(ingredient.id), 1)
             })
         },
         getImageUrl(ing) {

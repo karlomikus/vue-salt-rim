@@ -10,9 +10,6 @@ import OverlayLoader from './../OverlayLoader.vue'
             <ais-instant-search :search-client="searchClient" :index-name="index" :on-state-change="onStateChange">
                 <ais-configure :hitsPerPage="30" />
                 <ais-search-box placeholder="Search for ingredient..." :class-names="{'ais-SearchBox-input': 'form-input'}" />
-                <label for="substitute-adding">
-                    <input id="substitute-adding" type="checkbox" v-model="isAddingSubstitute"> Select substitute ingredients
-                </label>
                 <ais-hits>
                     <template v-slot="{ items }">
                         <div class="ingredients-options">
@@ -21,6 +18,9 @@ import OverlayLoader from './../OverlayLoader.vue'
                     </template>
                 </ais-hits>
             </ais-instant-search>
+            <label for="substitute-adding">
+                <input id="substitute-adding" type="checkbox" v-model="isAddingSubstitute"> Select substitute ingredients
+            </label>
             <div class="ingredient-modal__info" v-show="currentQuery && currentQuery.length > 0">
                 Not found what you are looking for? <a href="#" @click.prevent="newIngredient">Create ingredient: "{{ currentQuery }}"</a>
             </div>

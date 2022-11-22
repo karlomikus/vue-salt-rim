@@ -1,14 +1,28 @@
-class ApiRequests {
+class ApiRequests
+{
     static getUrl() {
         return window.srConfig.API_URL;
     }
 
     static getHeaders() {
-        return new Headers({
-            'Authorization': 'Bearer ' + localStorage.getItem('user_token'),
+        const defaultHeaders = {
             'Accept': 'application/json',
             'Content-Type': 'application/json',
-        });
+        };
+
+        if (localStorage.getItem('user_token')) {
+            defaultHeaders['Authorization'] = 'Bearer ' + localStorage.getItem('user_token');
+        }
+
+        return new Headers(defaultHeaders);
+    }
+
+    static async handleResponseErrors(response) {
+        if (!response.ok) {
+            return Promise.reject(await response.json())
+        }
+
+        return response;
     }
 
     static parseResponse(resp) {
@@ -24,13 +38,7 @@ class ApiRequests {
 
         const f = fetch(url, {
             headers: this.getHeaders()
-        }).then(response => {
-            if (!response.ok) {
-                throw new Error(`HTTP error! Status: ${response.status}`);
-            }
-
-            return response;
-        })
+        }).then(this.handleResponseErrors)
 
         return await (await f).json();
     }
@@ -42,13 +50,7 @@ class ApiRequests {
             method: type,
             headers: this.getHeaders(),
             body: JSON.stringify(data)
-        }).then(response => {
-            if (!response.ok) {
-                return Promise.reject(response)
-            }
-
-            return response;
-        })).json();
+        }).then(this.handleResponseErrors)).json();
     }
 
     static async deleteRequest(path) {
@@ -57,56 +59,14 @@ class ApiRequests {
         return await (await fetch(url, {
             method: 'DELETE',
             headers: this.getHeaders()
-        })).json();
+        }).then(this.handleResponseErrors)).json();
     }
 
-    static async uploadImages(formData) {
-        const jsonResp = await (await fetch(`${this.getUrl()}/api/images`, {
-            method: 'POST',
-            headers: new Headers({
-                'Authorization': 'Bearer ' + localStorage.getItem('user_token'),
-            }),
-            body: formData
-        })).json();
-
-        return this.parseResponse(jsonResp);
-    }
-
-    static async patchImage(id, formData) {
-        const jsonResp = await (await fetch(`${this.getUrl()}/api/images/${id}`, {
-            method: 'POST',
-            headers: new Headers({
-                'Authorization': 'Bearer ' + localStorage.getItem('user_token'),
-            }),
-            body: formData
-        })).json();
-
-        return this.parseResponse(jsonResp);
-    }
-
-    static async fetchLoginToken(email, password) {
-        const url = `${this.getUrl()}/api/login`
-
-        let jsonResp = await (await fetch(url, {
-            method: 'POST',
-            headers: new Headers({
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            }),
-            body: JSON.stringify({
-                email: email,
-                password: password,
-            })
-        }).then(response => {
-            if (!response.ok) {
-                return Promise.reject(response)
-            }
-
-            return response;
-        })).json();
-
-        return jsonResp.token;
-    }
+    /**
+     * =============================
+     * Cocktails
+     * =============================
+     */
 
     static async fetchCocktails() {
         let jsonResp = await this.getRequest(`/api/cocktails`);
@@ -150,6 +110,30 @@ class ApiRequests {
         return this.parseResponse(jsonResp);
     }
 
+    static async favoriteCocktail(id) {
+        let jsonResp = await this.postRequest(`/api/cocktails/${id}/toggle-favorite`);
+
+        return this.parseResponse(jsonResp);
+    }
+
+    static async saveCocktail(data) {
+        let jsonResp = await this.postRequest(`/api/cocktails`, data);
+
+        return this.parseResponse(jsonResp);
+    }
+
+    static async updateCocktail(id, data) {
+        let jsonResp = await this.postRequest(`/api/cocktails/${id}`, data, 'PUT');
+
+        return this.parseResponse(jsonResp);
+    }
+
+    /**
+     * =============================
+     * Ingredients
+     * =============================
+     */
+
     static async fetchIngredients() {
         let jsonResp = await this.getRequest(`/api/ingredients`);
 
@@ -174,48 +158,6 @@ class ApiRequests {
         return this.parseResponse(jsonResp);
     }
 
-    static async fetchMyShelf() {
-        let jsonResp = await this.getRequest(`/api/shelf`);
-
-        return this.parseResponse(jsonResp);
-    }
-
-    static async addIngredientToShelf(id) {
-        let jsonResp = await this.postRequest(`/api/shelf/${id}`);
-
-        return this.parseResponse(jsonResp);
-    }
-
-    static async removeIngredientFromShelf(id) {
-        let jsonResp = await this.deleteRequest(`/api/shelf/${id}`);
-
-        return this.parseResponse(jsonResp);
-    }
-
-    static async fetchUser() {
-        let jsonResp = await this.getRequest(`/api/user`);
-
-        return this.parseResponse(jsonResp);
-    }
-
-    static async favoriteCocktail(id) {
-        let jsonResp = await this.postRequest(`/api/cocktails/${id}/toggle-favorite`);
-
-        return this.parseResponse(jsonResp);
-    }
-
-    static async saveCocktail(data) {
-        let jsonResp = await this.postRequest(`/api/cocktails`, data);
-
-        return this.parseResponse(jsonResp);
-    }
-
-    static async updateCocktail(id, data) {
-        let jsonResp = await this.postRequest(`/api/cocktails/${id}`, data, 'PUT');
-
-        return this.parseResponse(jsonResp);
-    }
-
     static async saveIngredient(data) {
         let jsonResp = await this.postRequest(`/api/ingredients`, data);
 
@@ -234,11 +176,59 @@ class ApiRequests {
         return this.parseResponse(jsonResp);
     }
 
+    /**
+     * =============================
+     * Shelf
+     * =============================
+     */
+
+    static async fetchMyShelf() {
+        let jsonResp = await this.getRequest(`/api/shelf`);
+
+        return this.parseResponse(jsonResp);
+    }
+
+    static async addIngredientToShelf(id) {
+        let jsonResp = await this.postRequest(`/api/shelf/${id}`);
+
+        return this.parseResponse(jsonResp);
+    }
+
+    static async removeIngredientFromShelf(id) {
+        let jsonResp = await this.deleteRequest(`/api/shelf/${id}`);
+
+        return this.parseResponse(jsonResp);
+    }
+
+    /**
+     * =============================
+     * Users
+     * =============================
+     */
+
+    static async fetchUser() {
+        let jsonResp = await this.getRequest(`/api/user`);
+
+        return this.parseResponse(jsonResp);
+    }
+
+    /**
+     * =============================
+     * Server
+     * =============================
+     */
+
     static async fetchApiVersion() {
         let jsonResp = await this.getRequest(`/api/server/version`);
 
         return this.parseResponse(jsonResp);
     }
+
+    /**
+     * =============================
+     * Shopping lists
+     * =============================
+     */
 
     static async addIngredientsToShoppingList(data) {
         let jsonResp = await this.postRequest(`/api/shopping-lists/batch`, data);
@@ -252,17 +242,68 @@ class ApiRequests {
         return this.parseResponse(jsonResp);
     }
 
+    /**
+     * =============================
+     * Auth
+     * =============================
+     */
+
+     static async fetchLoginToken(email, password) {
+        const jsonResp = await this.postRequest(`/api/login`, {
+            email: email,
+            password: password
+        });
+
+        return jsonResp.token;
+    }
+
     static async logout() {
         let jsonResp = await this.postRequest(`/api/logout`);
 
         return this.parseResponse(jsonResp);
     }
 
+    /**
+     * =============================
+     * Images
+     * =============================
+     */
+
     static async deleteImage(id) {
         let jsonResp = await this.deleteRequest(`/api/images/${id}`);
 
         return this.parseResponse(jsonResp);
     }
+
+    static async uploadImages(formData) {
+        const jsonResp = await (await fetch(`${this.getUrl()}/api/images`, {
+            method: 'POST',
+            headers: new Headers({
+                'Authorization': 'Bearer ' + localStorage.getItem('user_token'),
+            }),
+            body: formData
+        }).then(this.handleResponseErrors)).json();
+
+        return this.parseResponse(jsonResp);
+    }
+
+    static async patchImage(id, formData) {
+        const jsonResp = await (await fetch(`${this.getUrl()}/api/images/${id}`, {
+            method: 'POST',
+            headers: new Headers({
+                'Authorization': 'Bearer ' + localStorage.getItem('user_token'),
+            }),
+            body: formData
+        }).then(this.handleResponseErrors)).json();
+
+        return this.parseResponse(jsonResp);
+    }
+
+    /**
+     * =============================
+     * Glasses
+     * =============================
+     */
 
     static async fetchGlasses() {
         let jsonResp = await this.getRequest(`/api/glasses`);

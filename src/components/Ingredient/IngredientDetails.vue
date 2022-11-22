@@ -145,7 +145,7 @@ export default {
                             })
                         });
                     }).catch(e => {
-                        this.$toast.error(e);
+                        this.$toast.error(e.message);
                     })
                 }
             },
@@ -169,7 +169,8 @@ export default {
                     this.$toast.default(`Ingredient "${this.ingredient.name}" successfully removed`);
                     this.$router.push({ name: 'ingredients' })
                     this.isLoading = false;
-                }).catch(() => {
+                }).catch(e => {
+                    this.$toast.error(e.message)
                     this.isLoading = false;
                 })
             }
@@ -181,7 +182,8 @@ export default {
                     this.isAddedToShelf = false;
                     this.$toast.default(`Removed "${this.ingredient.name}" from your shelf`);
                     this.isLoading = false;
-                }).catch(() => {
+                }).catch(e => {
+                    this.$toast.error(e.message)
                     this.isLoading = false;
                 })
             } else {
@@ -189,7 +191,8 @@ export default {
                     this.isAddedToShelf = true;
                     this.$toast.default(`Added "${this.ingredient.name}" to your shelf`);
                     this.isLoading = false;
-                }).catch(() => {
+                }).catch(e => {
+                    this.$toast.error(e.message)
                     this.isLoading = false;
                 })
             }
@@ -206,7 +209,8 @@ export default {
                     this.$toast.default(`Removed "${this.ingredient.name}" from your shopping list.`);
                     this.isAddedToShoppingList = false;
                     this.isLoading = false;
-                }).catch(() => {
+                }).catch(e => {
+                    this.$toast.error(e.message)
                     this.isLoading = false;
                 })
             } else {
@@ -214,7 +218,8 @@ export default {
                     this.$toast.default(`Added "${this.ingredient.name}" to your shopping list.`)
                     this.isAddedToShoppingList = true
                     this.isLoading = false;
-                }).catch(() => {
+                }).catch(e => {
+                    this.$toast.error(e.message)
                     this.isLoading = false;
                 })
             }

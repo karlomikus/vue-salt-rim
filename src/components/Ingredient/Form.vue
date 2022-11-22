@@ -99,28 +99,16 @@ export default {
                 ApiRequests.updateIngredient(this.ingredientId, postData).then(data => {
                     this.$toast.default('Ingredient updated');
                     this.$router.push({ name: 'ingredients.show', params: { id: data.id } })
-                }).catch(async errorResponse => {
-                    if (errorResponse.status == 422) {
-                        const body = await errorResponse.json();
-                        this.$toast.error(body.message);
-                    } else {
-                        this.$toast.error(`Error occured: ${errorResponse.status}`);
-                    }
-
+                }).catch(e => {
+                    this.$toast.error(e.message);
                     this.isLoading = false;
                 })
             } else {
                 ApiRequests.saveIngredient(postData).then(data => {
                     this.$toast.default('Ingredient created');
                     this.$router.push({ name: 'ingredients.show', params: { id: data.id } })
-                }).catch(async errorResponse => {
-                    if (errorResponse.status == 422) {
-                        const body = await errorResponse.json();
-                        this.$toast.error(body.message);
-                    } else {
-                        this.$toast.error(`Error occured: ${errorResponse.status}`);
-                    }
-
+                }).catch(e => {
+                    this.$toast.error(e.message);
                     this.isLoading = false;
                 })
             }

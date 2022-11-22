@@ -78,11 +78,9 @@ export default {
 
                     this.$router.push(redirectPath);
                 })
-            }).catch(errorResponse => {
+            }).catch(e => {
                 this.isLoading = false
-                errorResponse.json().then(body => {
-                    this.$toast.error(body.message)
-                })
+                this.$toast.error(e.message)
             });
         }
     }
