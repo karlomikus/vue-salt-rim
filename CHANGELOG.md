@@ -1,3 +1,7 @@
+# v0.4.2
+- Improve error handling
+- Add dev docker image
+
 # v0.4.1
 - Fix missing login request body due to `script setup`
 
