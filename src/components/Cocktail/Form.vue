@@ -5,7 +5,7 @@ import ImageUpload from './../ImageUpload.vue'
 </script>
 
 <template>
-    <form @submit.prevent="submit">
+    <form @submit.prevent="submit" novalidate>
         <OverlayLoader v-if="isLoading" />
         <h2 class="page-subtitle">Cocktail information</h2>
         <div class="form-group">
@@ -243,14 +243,8 @@ export default {
                     this.isLoading = false;
                     this.$toast.default(`Cocktail updated successfully.`);
                     this.$router.push({ name: 'cocktails.show', params: { id: data.id } })
-                }).catch(async errorResponse => {
-                    if (errorResponse.status == 422) {
-                        const body = await errorResponse.json();
-                        this.$toast.error(body.message);
-                    } else {
-                        this.$toast.error(`Error occured: ${errorResponse.status}`);
-                    }
-
+                }).catch(e => {
+                    this.$toast.error(e.message);
                     this.isLoading = false;
                 })
             } else {
@@ -260,14 +254,8 @@ export default {
                         message: 'Cocktail created successfully.'
                     });
                     this.$router.push({ name: 'cocktails.show', params: { id: data.id } })
-                }).catch(async errorResponse => {
-                    if (errorResponse.status == 422) {
-                        const body = await errorResponse.json();
-                        this.$toast.error(body.message);
-                    } else {
-                        this.$toast.error(`Error occured: ${errorResponse.status}`);
-                    }
-
+                }).catch(e => {
+                    this.$toast.error(e.message);
                     this.isLoading = false;
                 })
             }

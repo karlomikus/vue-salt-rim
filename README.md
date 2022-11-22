@@ -12,6 +12,14 @@
 
 Salt Rim is a web client used for connecting to your [Bar Assistant](https://github.com/karlomikus/bar-assistant) server. It's made with Vue.js and it builds to a static webpage that can be easily hosted anywhere.
 
+<p align="center">
+    <a href="https://bar.karlomikus.com" target="_blank">Click here to view frontend demo.</a>
+    <br>
+    <a href="https://bar-api.karlomikus.com" target="_blank">Click here to view API demo.</a>
+    <br>
+    <strong>Email:</strong> admin@example.com &middot; <strong>Password:</strong> password
+</p>
+
 ## Features
 
 - Beautiful UI for your Bar Asistant server
@@ -26,7 +34,7 @@ Salt Rim is a web client used for connecting to your [Bar Assistant](https://git
 
 ## Docker installation
 
-Image by exposes port `8080`.
+Image exposes port `8080`.
 
 You can run docker image with the following command:
 

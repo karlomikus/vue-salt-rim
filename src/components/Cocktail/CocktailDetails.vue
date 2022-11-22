@@ -192,11 +192,7 @@ export default {
                         this.cocktail = data
                         this.isFavorited = Auth.getUser().favorite_cocktails.includes(this.cocktail.id);
                     }).catch(e => {
-                        this.$toast.open({
-                            message: e,
-                            type: 'error',
-                            dismissible: false,
-                        });
+                        this.$toast.error(e.message);
                     })
                 }
             },
@@ -208,6 +204,8 @@ export default {
             ApiRequests.favoriteCocktail(this.cocktail.id).then(resp => {
                 this.isFavorited = resp.is_favorited
                 this.$toast.default(this.isFavorited ? `Added "${this.cocktail.name}" to favorites` : `Removed "${this.cocktail.name}" from favorites`);
+            }).catch(e => {
+                this.$toast.error(e.message);
             })
         },
         deleteCocktail() {
@@ -217,6 +215,8 @@ export default {
                         message: `Cocktail "${this.cocktail.name}" successfully removed`
                     });
                     this.$router.push({ name: 'cocktails' })
+                }).catch(e => {
+                    this.$toast.error(e.message);
                 })
             }
         },
@@ -230,6 +230,8 @@ export default {
                 Auth.refreshUser().then(() => {
                     this.userShoppingListIngredients = Auth.getUser().shopping_lists;
                 })
+            }).catch(e => {
+                this.$toast.error(e.message);
             })
         },
         parseIngredientAmount(ingredient) {

@@ -24,6 +24,7 @@
                                     <small v-if="hit.type == 'cocktail'">Cocktail</small>
                                     <small v-else>Ingredient</small>
                                 </h4>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
                             </RouterLink>
                         </li>
                         <li v-show="index.hits.length <= 0">No results found for term: "{{ currentRefinement }}"</li>
@@ -147,6 +148,7 @@ export default {
 
 .site-autocomplete__results li a {
     display: flex;
+    align-items: center;
     width: 100%;
     padding: 10px;
     border-radius: 8px;
@@ -168,12 +170,18 @@ export default {
     margin-right: 10px;
 }
 
-.site-autocomplete__results li a h4 {
+.site-autocomplete__results li a h4 span,
+.site-autocomplete__results li a h4 span > mark {
+    font-family: var(--font-accent);
     font-weight: 700;
 }
 
 .site-autocomplete__results li a h4 small {
     display: block;
+}
+
+.site-autocomplete__results li a svg {
+    margin-left: auto;
 }
 
 .site-autocomplete .ais-Highlight-highlighted {
