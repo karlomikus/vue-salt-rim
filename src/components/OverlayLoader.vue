@@ -22,5 +22,6 @@ import Spinner from './Spinner.vue'
     align-items: center;
     justify-content: center;
     z-index: 10;
+    border-radius: 15px;
 }
 </style>
