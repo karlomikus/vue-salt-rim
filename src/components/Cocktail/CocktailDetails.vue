@@ -210,10 +210,8 @@ export default {
         },
         deleteCocktail() {
             if (confirm('Are you sure you want to delete cocktail?')) {
-                ApiRequests.deleteCocktail(this.cocktail.id).then(resp => {
-                    this.$toast.open({
-                        message: `Cocktail "${this.cocktail.name}" successfully removed`
-                    });
+                ApiRequests.deleteCocktail(this.cocktail.id).then(() => {
+                    this.$toast.default(`Cocktail "${this.cocktail.name}" successfully removed`);
                     this.$router.push({ name: 'cocktails' })
                 }).catch(e => {
                     this.$toast.error(e.message);
