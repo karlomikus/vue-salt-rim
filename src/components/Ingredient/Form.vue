@@ -38,7 +38,8 @@ import { ColorPicker } from 'vue-accessible-color-picker'
         </div>
         <ImageUpload ref="imagesUpload" :value="ingredient.images" />
         <div class="form-actions">
-            <RouterLink class="button button--outline" :to="{name: 'ingredients'}">Cancel</RouterLink>
+            <RouterLink v-if="ingredientId" class="button button--outline" :to="{name: 'ingredients.show', params: { id: ingredientId }}">Cancel</RouterLink>
+            <RouterLink v-else class="button button--outline" :to="{name: 'ingredients'}">Cancel</RouterLink>
             <button class="button button--dark" type="submit">Save</button>
         </div>
     </form>

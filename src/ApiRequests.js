@@ -59,7 +59,7 @@ class ApiRequests
         return await (await fetch(url, {
             method: 'DELETE',
             headers: this.getHeaders()
-        }).then(this.handleResponseErrors)).json();
+        }).then(this.handleResponseErrors));
     }
 
     /**
@@ -99,9 +99,7 @@ class ApiRequests
     }
 
     static async deleteCocktail(id) {
-        let jsonResp = await this.deleteRequest(`/api/cocktails/${id}`);
-
-        return this.parseResponse(jsonResp);
+        return await this.deleteRequest(`/api/cocktails/${id}`);
     }
 
     static async fetchUserCocktail() {
@@ -171,9 +169,7 @@ class ApiRequests
     }
 
     static async deleteIngredient(id) {
-        let jsonResp = await this.deleteRequest(`/api/ingredients/${id}`);
-
-        return this.parseResponse(jsonResp);
+        return await this.deleteRequest(`/api/ingredients/${id}`);
     }
 
     /**
@@ -195,9 +191,7 @@ class ApiRequests
     }
 
     static async removeIngredientFromShelf(id) {
-        let jsonResp = await this.deleteRequest(`/api/shelf/${id}`);
-
-        return this.parseResponse(jsonResp);
+        return await this.deleteRequest(`/api/shelf/${id}`);
     }
 
     /**
@@ -231,13 +225,13 @@ class ApiRequests
      */
 
     static async addIngredientsToShoppingList(data) {
-        let jsonResp = await this.postRequest(`/api/shopping-lists/batch`, data);
+        let jsonResp = await this.postRequest(`/api/shopping-list/batch-store`, data);
 
         return this.parseResponse(jsonResp);
     }
 
     static async removeIngredientsFromShoppingList(data) {
-        let jsonResp = await this.postRequest(`/api/shopping-lists/batch`, data, 'DELETE');
+        let jsonResp = await this.postRequest(`/api/shopping-list/batch-delete`, data);
 
         return this.parseResponse(jsonResp);
     }
@@ -270,9 +264,7 @@ class ApiRequests
      */
 
     static async deleteImage(id) {
-        let jsonResp = await this.deleteRequest(`/api/images/${id}`);
-
-        return this.parseResponse(jsonResp);
+        return await this.deleteRequest(`/api/images/${id}`);
     }
 
     static async uploadImages(formData) {

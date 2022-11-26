@@ -21,6 +21,13 @@ import CocktailGridContainer from './CocktailGridContainer.vue'
           </a>
         </template>
       </ais-refinement-list>
+      <!-- <ais-refinement-list attribute="glass" :sort-by="['name:asc']" :limit="30" operator="or">
+        <template v-slot:item="{ item, refine, createURL }">
+          <a :href="createURL(item.value)" class="tag tag--link" :class="{ 'tag--is-selected': item.isRefined }" @click.prevent="refine(item.value)">
+            {{ item.label }}
+          </a>
+        </template>
+      </ais-refinement-list> -->
     </div>
     <ais-toggle-refinement attribute="user_id" :on="userId">
       <template v-slot="{ value, refine, createURL }">
