@@ -1,7 +1,3 @@
-<script setup>
-import Spinner from './../Spinner.vue'
-</script>
-
 <template>
     <div style="text-align: right;">
         <RouterLink class="button button--outline" :to="{ name: 'ingredients.form' }">Add ingredient</RouterLink>
@@ -52,6 +48,7 @@ import Spinner from './../Spinner.vue'
 <script>
 import _ from 'lodash';
 import ApiRequests from '../../ApiRequests';
+import Spinner from './../Spinner.vue'
 
 export default {
     data() {
@@ -61,6 +58,9 @@ export default {
             userIngredients: [],
             loadingIngredients: []
         }
+    },
+    components: {
+        Spinner
     },
     created() {
         document.title = `Ingredients \u22C5 Salt Rim`

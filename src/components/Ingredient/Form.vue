@@ -1,8 +1,3 @@
-<script setup>
-import ImageUpload from './../ImageUpload.vue'
-import { ColorPicker } from 'vue-accessible-color-picker'
-</script>
-
 <template>
     <form @submit.prevent="submit">
         <h2 class="page-subtitle">Ingredient information</h2>
@@ -47,6 +42,8 @@ import { ColorPicker } from 'vue-accessible-color-picker'
 
 <script>
 import ApiRequests from "../../ApiRequests";
+import ImageUpload from './../ImageUpload.vue'
+import { ColorPicker } from 'vue-accessible-color-picker'
 
 export default {
     data() {
@@ -59,6 +56,10 @@ export default {
             ],
             categories: []
         };
+    },
+    components: {
+        ImageUpload,
+        ColorPicker
     },
     created() {
         document.title = `Ingredient Form \u22C5 Salt Rim`

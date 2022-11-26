@@ -1,7 +1,3 @@
-<script setup>
-import OverlayLoader from '@/components/OverlayLoader.vue';
-</script>
-
 <template>
     <div class="ingredient-list-item">
         <OverlayLoader v-if="isLoading" />
@@ -19,6 +15,7 @@ import OverlayLoader from '@/components/OverlayLoader.vue';
 
 <script>
 import ApiRequests from '../../ApiRequests';
+import OverlayLoader from '@/components/OverlayLoader.vue';
 
 export default {
     props: ['ingredient'],
@@ -26,6 +23,9 @@ export default {
         return {
             isLoading: false
         }
+    },
+    components: {
+        OverlayLoader
     },
     computed: {
         mainIngredientImageUrl() {

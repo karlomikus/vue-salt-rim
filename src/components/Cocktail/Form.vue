@@ -1,9 +1,3 @@
-<script setup>
-import OverlayLoader from './../OverlayLoader.vue'
-import IngredientModal from './IngredientModal.vue'
-import ImageUpload from './../ImageUpload.vue'
-</script>
-
 <template>
     <form @submit.prevent="submit" novalidate>
         <OverlayLoader v-if="isLoading" />
@@ -84,6 +78,9 @@ import ImageUpload from './../ImageUpload.vue'
 <script>
 import ApiRequests from "../../ApiRequests";
 import Unitz from 'unitz'
+import OverlayLoader from './../OverlayLoader.vue'
+import IngredientModal from './IngredientModal.vue'
+import ImageUpload from './../ImageUpload.vue'
 
 export default {
     data() {
@@ -100,6 +97,11 @@ export default {
             glasses: [],
             cocktailId: null
         };
+    },
+    components: {
+        OverlayLoader,
+        IngredientModal,
+        ImageUpload,
     },
     computed: {
         cocktailTags: {

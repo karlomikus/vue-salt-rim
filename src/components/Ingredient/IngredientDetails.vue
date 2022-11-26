@@ -1,8 +1,3 @@
-<script setup>
-import Dropdown from '@/components/Dropdown.vue';
-import OverlayLoader from '@/components/OverlayLoader.vue'
-</script>
-
 <template>
     <div class="ingredient-details" v-if="ingredient.id">
         <OverlayLoader v-if="isLoading" />
@@ -110,6 +105,8 @@ import OverlayLoader from '@/components/OverlayLoader.vue'
 <script>
 import ApiRequests from '../../ApiRequests';
 import Auth from '@/Auth.js'
+import Dropdown from '@/components/Dropdown.vue';
+import OverlayLoader from '@/components/OverlayLoader.vue'
 
 export default {
     data: () => ({
@@ -118,6 +115,10 @@ export default {
         isAddedToShelf: false,
         isAddedToShoppingList: false,
     }),
+    components: {
+        Dropdown,
+        OverlayLoader
+    },
     watch: {
         ingredient(val) {
             document.title = `${val.name} \u22C5 Salt Rim`
