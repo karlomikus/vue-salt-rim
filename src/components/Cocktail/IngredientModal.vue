@@ -1,8 +1,3 @@
-<script setup>
-import Modal from './../Modal.vue'
-import OverlayLoader from './../OverlayLoader.vue'
-</script>
-
 <template>
     <Modal class="ingredient-modal">
         <template #body>
@@ -60,6 +55,8 @@ import OverlayLoader from './../OverlayLoader.vue'
 import { instantMeiliSearch } from '@meilisearch/instant-meilisearch';
 import ApiRequests from "../../ApiRequests";
 import Auth from '@/Auth.js';
+import Modal from './../Modal.vue'
+import OverlayLoader from './../OverlayLoader.vue'
 
 export default {
     props: ['value'],
@@ -100,6 +97,10 @@ export default {
             currentQuery: null,
             isAddingSubstitute: false
         }
+    },
+    components: {
+        Modal,
+        OverlayLoader
     },
     methods: {
         selectIngredient(item) {

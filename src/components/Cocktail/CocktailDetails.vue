@@ -1,8 +1,3 @@
-<script setup>
-import OverlayLoader from './../OverlayLoader.vue'
-import Dropdown from './../Dropdown.vue';
-</script>
-
 <template>
     <OverlayLoader v-if="!cocktail.id" />
     <div class="cocktail-details" v-if="cocktail.id">
@@ -122,6 +117,8 @@ import { marked } from 'marked';
 import ApiRequests from '../../ApiRequests';
 import Auth from '@/Auth';
 import Unitz from 'unitz'
+import OverlayLoader from './../OverlayLoader.vue'
+import Dropdown from './../Dropdown.vue';
 
 export default {
     data: () => ({
@@ -132,6 +129,10 @@ export default {
         userShoppingListIngredients: [],
         currentUnit: 'ml'
     }),
+    components: {
+        OverlayLoader,
+        Dropdown
+    },
     computed: {
         parsedInstructions() {
             if (!this.cocktail.instructions) {

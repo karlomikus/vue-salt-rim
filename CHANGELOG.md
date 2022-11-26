@@ -1,3 +1,6 @@
+# v0.4.4
+- Fix issues related to `script setup`
+
 # v0.4.3
 - Fix issues #14, #15
 - Update delete response handling
