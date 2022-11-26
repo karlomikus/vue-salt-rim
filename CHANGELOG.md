@@ -1,3 +1,8 @@
+# v0.4.3
+- Fix issues #14, #15
+- Update delete response handling
+- Add icons to site autocomplete
+
 # v0.4.2
 - Improve error handling
 - Add dev docker image
