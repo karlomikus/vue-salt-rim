@@ -206,6 +206,12 @@ class ApiRequests
         return this.parseResponse(jsonResp);
     }
 
+    static async registerNewUser(data) {
+        let jsonResp = await this.postRequest(`/api/register`, data);
+
+        return this.parseResponse(jsonResp);
+    }
+
     /**
      * =============================
      * Server

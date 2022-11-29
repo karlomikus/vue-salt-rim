@@ -135,3 +135,22 @@ main {
     background-color: rgba(0, 0, 0, .03);
     border-radius: 2px;
 }
+
+.login-page {
+    background-color: var(--color-site-header);
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    padding: 10px;
+}
+
+.login-page form {
+    margin-top: 20px;
+    background-color: var(--color-bg);
+    width: 100%;
+    max-width: 400px;
+    padding: 30px;
+    border-radius: 20px;
+}
