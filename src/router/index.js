@@ -64,6 +64,11 @@ const router = createRouter({
                     path: '/shelf-cocktails',
                     name: 'shelf-cocktails',
                     component: () => import('../views/ShelfCocktailsView.vue'),
+                },
+                {
+                    path: '/profile',
+                    name: 'profile',
+                    component: () => import('../views/ProfileView.vue'),
                 }
             ]
         }
