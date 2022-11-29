@@ -11,6 +11,9 @@
 
 #app {
     font-weight: normal;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
 }
 
 main {
@@ -18,6 +21,8 @@ main {
     max-width: var(--site-width);
     margin: 0 auto;
     padding: 0 10px;
+    width: 100%;
+    flex: 1;
 }
 
 .page-subtitle {
