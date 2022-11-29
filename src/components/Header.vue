@@ -69,6 +69,10 @@ import SiteAutocomplete from '../components/SiteAutocomplete.vue'
   color: #fff;
 }
 
+.header-bar__navigation a.router-link-exact-active {
+  text-decoration: underline;
+}
+
 .toggle-nav {
   border: 0;
   background: none;
