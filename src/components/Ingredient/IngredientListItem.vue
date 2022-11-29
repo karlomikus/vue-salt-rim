@@ -1,7 +1,7 @@
 <template>
     <div class="ingredient-list-item">
         <OverlayLoader v-if="isLoading" />
-        <div class="ingredient-list-item__image">
+        <div class="ingredient-list-item__image" :style="{ 'background-color': setupColor(ingredient.color) }">
             <img :src="mainIngredientImageUrl" :alt="ingredient.name">
         </div>
         <div class="ingredient-list-item__content">
@@ -37,6 +37,19 @@ export default {
         }
     },
     methods: {
+        setupColor(hex) {
+            var c;
+            if (/^#([A-Fa-f0-9]{3}){1,2}$/.test(hex)) {
+                c = hex.substring(1).split('');
+                if (c.length == 3) {
+                    c = [c[0], c[0], c[1], c[1], c[2], c[2]];
+                }
+                c = '0x' + c.join('');
+                return 'rgba(' + [(c >> 16) & 255, (c >> 8) & 255, c & 255].join(',') + ',.13)';
+            }
+
+            return hex;
+        },
         addToShelf() {
             this.isLoading = true;
             ApiRequests.addIngredientToShelf(this.ingredient.id).then(() => {
@@ -63,20 +76,28 @@ export default {
     box-shadow: 0 3px 0 var(--color-bg-dark);
     transition: box-shadow ease-in-out 150ms;
     text-decoration: none;
+    gap: 10px;
+}
+
+.ingredient-list-item:hover {
+    box-shadow: 0 3px 0 var(--color-link-hover);
 }
 
 .ingredient-list-item__image {
     width: 60px;
     height: 60px;
-    border-radius: 50%;
+    border-radius: 10px;
     display: flex;
     align-items: center;
     justify-content: center;
     flex-shrink: 0;
+    overflow: hidden;
 }
 
 .ingredient-list-item img {
-    height: 50px;
+    height: 100px;
+    position: absolute;
+    top: 10px;
 }
 
 .ingredient-list-item__content h3 a {
