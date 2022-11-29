@@ -48,7 +48,7 @@ export default {
 .cocktail-list-item__graphic__image {
     width: 80px;
     height: 80px;
-    border-radius: 50%;
+    border-radius: 8px;
     background-color: #fff;
     background-size: cover;
     background-position: center center;
@@ -64,6 +64,7 @@ export default {
 
 .cocktail-list-item__content p {
     color: var(--color-text-muted);
+    font-size: 0.8rem;
 }
 
 @media (max-width: 450px) {
