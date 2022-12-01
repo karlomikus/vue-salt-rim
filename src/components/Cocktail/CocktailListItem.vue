@@ -34,7 +34,7 @@ export default {
     display: flex;
     align-items: center;
     background-color: #fff;
-    padding: 20px;
+    padding: 15px;
     border-radius: 10px;
     box-shadow: 0 3px 0 var(--color-bg-dark);
     transition: box-shadow ease-in-out 150ms;
@@ -48,7 +48,7 @@ export default {
 .cocktail-list-item__graphic__image {
     width: 80px;
     height: 80px;
-    border-radius: 8px;
+    border-radius: 5px;
     background-color: #fff;
     background-size: cover;
     background-position: center center;
