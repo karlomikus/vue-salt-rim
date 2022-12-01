@@ -98,6 +98,11 @@ export default {
     height: 100px;
     position: absolute;
     top: 10px;
+    transition: top ease-in-out .1s;
+}
+
+.ingredient-list-item:hover img {
+    top: 5px;
 }
 
 .ingredient-list-item__content h3 a {
