@@ -1,5 +1,5 @@
 <template>
-    <form @submit.prevent="submit" novalidate>
+    <form @submit.prevent="submit">
         <OverlayLoader v-if="isLoading" />
         <h2 class="page-subtitle">Cocktail information</h2>
         <div class="form-group">

@@ -24,6 +24,28 @@
                 </svg>
             </button>
         </div>
+        <ais-current-refinements>
+            <template v-slot="{ items, createURL }">
+                <div class="cocktail-current-refinements">
+                    <template v-for="item in items">
+                        <template v-if="item.label == 'id'">
+                            <div class="cocktail-current-refinements__refinement">
+                                <a href="#" :href="createURL(refinement)" @click.prevent="item.refinements.forEach(r => item.refine(r))">
+                                    My favorites <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16"><path fill="none" d="M0 0h24v24H0z"/><path d="M12 10.586l4.95-4.95 1.414 1.414-4.95 4.95 4.95 4.95-1.414 1.414-4.95-4.95-4.95 4.95-1.414-1.414 4.95-4.95-4.95-4.95L7.05 5.636z"/></svg>
+                                </a>
+                            </div>
+                        </template>
+                        <template v-else>
+                            <div class="cocktail-current-refinements__refinement" v-for="refinement in item.refinements">
+                                <a href="#" :href="createURL(refinement)" @click.prevent="item.refine(refinement)">
+                                    {{ handleRefinementTag(refinement) }} <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16"><path fill="none" d="M0 0h24v24H0z"/><path d="M12 10.586l4.95-4.95 1.414 1.414-4.95 4.95 4.95 4.95-1.414 1.414-4.95-4.95-4.95 4.95-1.414-1.414 4.95-4.95-4.95-4.95L7.05 5.636z"/></svg>
+                                </a>
+                            </div>
+                        </template>
+                    </template>
+                </div>
+            </template>
+        </ais-current-refinements>
         <ais-panel>
             <template v-slot:default="{ hasRefinements }">
                 <div class="cocktail-list-tags" style="margin-bottom: 10px;" v-show="showFilterContainer">
@@ -43,7 +65,7 @@
                             </a>
                         </template>
                     </ais-refinement-list>
-                    <h4>User filters</h4>
+                    <h4>User filters:</h4>
                     <ais-toggle-refinement attribute="user_id" :on="userId">
                         <template v-slot="{ value, refine, createURL }">
                             <a :href="createURL(value)" class="tag tag--link" :class="{ 'tag--is-selected': value.isRefined }" @click.prevent="refine(value)">
@@ -124,21 +146,32 @@ export default {
         favoritedCocktailsIds() {
             return Auth.getUser().favorite_cocktails;
         }
+    },
+    methods: {
+        handleRefinementTag(ref) {
+            if (ref.attribute == 'user_id') {
+                return `My cocktails`;
+            }
+
+            return `${ref.attribute}: ${ref.label}`;
+        }
     }
 }
 </script>
 
 <style scope>
 .cocktail-list-tags {
-    padding: 15px;
-    background-color: #fff;
-    margin-top: 20px;
+    padding: 20px;
+    background-color: rgba(255, 255, 255, .5);
+    margin-top: 10px;
     border-radius: 10px;
+    box-shadow: 0 3px 0 var(--color-bg-dark);
 }
 
 .cocktail-list-tags h4 {
     font-size: 0.9rem;
     font-weight: bold;
+    margin-bottom: 6px;
 }
 
 .cocktail-list-tags .ais-RefinementList-list {
@@ -147,7 +180,8 @@ export default {
     margin: 0;
     display: flex;
     flex-wrap: wrap;
-    gap: 10px;
+    gap: 8px;
+    margin-bottom: 15px;
 }
 
 .cocktail-list-search-container {
@@ -183,5 +217,34 @@ export default {
     cursor: pointer;
     width: 30px;
     height: 30px;
+}
+
+.cocktail-current-refinements {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 8px;
+}
+
+.cocktail-current-refinements__refinement a {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: var(--color-text);
+    color: #fff;
+    padding: 2px 10px;
+    font-size: 0.7rem;
+    border-radius: 20px;
+    text-decoration: none;
+}
+
+.cocktail-current-refinements__refinement a svg {
+    fill: #fff;
+}
+
+.cocktail-current-refinements__refinement a:hover,
+.cocktail-current-refinements__refinement a:active,
+.cocktail-current-refinements__refinement a:focus {
+    background: var(--color-link-hover);
 }
 </style>
