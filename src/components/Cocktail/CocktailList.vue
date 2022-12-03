@@ -144,7 +144,12 @@ export default {
             return this.userCocktails.map(c => c.id)
         },
         favoritedCocktailsIds() {
-            return Auth.getUser().favorite_cocktails;
+            const ids = Auth.getUser().favorite_cocktails;
+            if (ids.length === 0) {
+                return null;
+            }
+
+            return ids;
         }
     },
     methods: {
