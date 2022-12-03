@@ -12,6 +12,7 @@ import OverlayLoader from '../OverlayLoader.vue'
         <a href="#" @click.prevent="randomCocktail()">Random cocktail</a>
         <!-- <RouterLink :to="{name: 'cocktails', query: {'toggle[user_id]': true}}">My cocktail recipes</RouterLink> -->
         <RouterLink :to="{name: 'cocktails.form'}">Create a cocktail</RouterLink>
+        <RouterLink :to="{name: 'profile'}">Edit profile</RouterLink>
         <!-- <a href="#">Create a collection</a> -->
         <!-- <RouterLink :to="{name: 'cocktails', query: {'refinementList[tags][0]': 'Gin'}}">Gin base</RouterLink>
         <RouterLink :to="{name: 'cocktails', query: {'refinementList[tags][0]': 'Rum'}}">Rum base</RouterLink> -->
@@ -142,7 +143,7 @@ export default {
 <style>
 .home-actions {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
     column-gap: 10px;
     row-gap: 10px;
 }
@@ -154,10 +155,10 @@ export default {
     background-size: cover;
     background-position: center center;
     border-radius: 10px;
-    height: 100px;
+    height: 80px;
     align-items: center;
     justify-content: center;
-    font-size: 1.5rem;
+    font-size: 1.3rem;
     text-align: center;
 }
 
