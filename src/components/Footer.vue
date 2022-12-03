@@ -61,7 +61,7 @@ export default {
 <style scoped>
 .site-footer-wrapper {
     background-color: #fff;
-    margin-top: 50px;
+    margin-top: 20px;
 }
 
 .site-footer {

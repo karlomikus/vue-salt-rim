@@ -32,8 +32,9 @@
                     Status: Not available
                 </template>
             </p>
-            <div style="text-align: right;">
-                <button type="submit" class="button button--dark">Login</button>
+            <div style="text-align: right; margin-top: 20px;">
+                <RouterLink class="button button--outline" :to="{ name: 'register' }">Register</RouterLink>
+                <button type="submit" class="button button--dark" style="margin-left: 5px;">Login</button>
             </div>
         </form>
     </div>
@@ -86,24 +87,3 @@ export default {
     }
 }
 </script>
-
-<style scope>
-.login-page {
-    background-color: var(--color-site-header);
-    height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    padding: 10px;
-}
-
-.login-page form {
-    margin-top: 20px;
-    background-color: var(--color-bg);
-    width: 100%;
-    max-width: 400px;
-    padding: 30px;
-    border-radius: 20px;
-}
-</style>

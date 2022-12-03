@@ -121,3 +121,36 @@
 .button-circle:active {
     transform: scale(0.9, 0.9);
 }
+
+.button--input {
+    background-color: rgba(255, 255, 255, 0.5);
+    border: 2px solid var(--color-bg-dark);
+    border-top-color: transparent;
+    border-left-color: transparent;
+    border-right-color: transparent;
+    border-radius: 5px;
+    height: 3rem;
+}
+
+.button--input:hover,
+.button--input:active,
+.button--input:focus {
+    background-color: #fff;
+    border-color: var(--color-text);
+}
+
+.button--input svg {
+    fill: #262831;
+}
+
+@media (max-width: 450px) {
+    .button--input {
+        height: 2.5rem;
+    }
+
+    .button--input svg {
+        fill: #262831;
+        width: 18px;
+        height: 18px;
+    }
+}

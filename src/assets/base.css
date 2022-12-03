@@ -27,12 +27,6 @@
     --color-var-4: #E2ECE9;
 }
 
-@media (max-width: 450px) {
-    :root {
-        /* --cocktail-grid-card-width: 130px; */
-    }
-}
-
 *,
 *::before,
 *::after {

@@ -27,7 +27,12 @@
 }
 
 .dropdown-menu .dropdown-menu__item:hover {
-    background-color: var(--color-menu-item-hover);
+    color: #fff;
+    background-color: var(--color-text);
+}
+
+.dropdown-menu .dropdown-menu__item:hover svg {
+    fill: #fff;
 }
 
 @keyframes slide-in-top {

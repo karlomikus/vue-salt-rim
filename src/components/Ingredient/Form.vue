@@ -29,7 +29,7 @@
             <button type="button" class="colorpicker-button" @click="showColorPicker = !showColorPicker">
                 <span :style="{'background-color': ingredient.color}"></span>
             </button>
-            <ColorPicker v-if="showColorPicker" alpha-channel="hide" :visible-formats="['hex']" :color="ingredient.color" @color-change="updateColor" />
+            <ColorPicker v-if="showColorPicker" alpha-channel="hide" :visible-formats="['hex']" :color="ingredient.color ?? {}" @color-change="updateColor" />
         </div>
         <ImageUpload ref="imagesUpload" :value="ingredient.images" />
         <div class="form-actions">

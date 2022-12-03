@@ -1,3 +1,14 @@
+# v0.5.0
+- Fix colorpicker issues with null values
+- Add profile page
+- Small changes to styling and design
+- Add register page
+- Make footer sticky
+- Updates to cocktails searching
+    - Enabled filtering by glass type
+    - Enabled filtering by favorites
+    - Show current search refinements
+
 # v0.4.4
 - Fix issues related to `script setup`
 
