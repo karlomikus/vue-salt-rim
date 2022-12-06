@@ -48,7 +48,7 @@
         </ais-current-refinements>
         <ais-panel>
             <template v-slot:default="{ hasRefinements }">
-                <div class="cocktail-list-tags" style="margin-bottom: 10px;" v-show="showFilterContainer">
+                <div class="cocktail-list-filter-panel" style="margin-bottom: 10px;" v-show="showFilterContainer">
                     <h4>Filter by tags:</h4>
                     <ais-refinement-list attribute="tags" :sort-by="['name:asc']" :limit="30" operator="and">
                         <template v-slot:item="{ item, refine, createURL }">
@@ -66,22 +66,24 @@
                         </template>
                     </ais-refinement-list>
                     <h4>User filters:</h4>
-                    <ais-toggle-refinement attribute="user_id" :on="userId">
-                        <template v-slot="{ value, refine, createURL }">
-                            <a :href="createURL(value)" class="tag tag--link" :class="{ 'tag--is-selected': value.isRefined }" @click.prevent="refine(value)">
-                                My cocktails
-                                ({{ value.count || 0 }})
-                            </a>
-                        </template>
-                    </ais-toggle-refinement>
-                    <ais-toggle-refinement attribute="id" :on="favoritedCocktailsIds">
-                        <template v-slot="{ value, refine, createURL }">
-                            <a :href="createURL(value)" class="tag tag--link" :class="{ 'tag--is-selected': value.isRefined }" @click.prevent="refine(value)">
-                                My favorites
-                                ({{ value.count || 0 }})
-                            </a>
-                        </template>
-                    </ais-toggle-refinement>
+                    <div class="cocktail-list-filter-panel__toggle-refinements">
+                        <ais-toggle-refinement attribute="user_id" :on="userId">
+                            <template v-slot="{ value, refine, createURL }">
+                                <a :href="createURL(value)" class="tag tag--link" :class="{ 'tag--is-selected': value.isRefined }" @click.prevent="refine(value)">
+                                    My cocktails
+                                    ({{ value.count || 0 }})
+                                </a>
+                            </template>
+                        </ais-toggle-refinement>
+                        <ais-toggle-refinement attribute="id" :on="favoritedCocktailsIds">
+                            <template v-slot="{ value, refine, createURL }">
+                                <a :href="createURL(value)" class="tag tag--link" :class="{ 'tag--is-selected': value.isRefined }" @click.prevent="refine(value)">
+                                    My favorites
+                                    ({{ value.count || 0 }})
+                                </a>
+                            </template>
+                        </ais-toggle-refinement>
+                    </div>
                 </div>
             </template>
         </ais-panel>
@@ -158,14 +160,14 @@ export default {
                 return `My cocktails`;
             }
 
-            return `${ref.attribute}: ${ref.label}`;
+            return `${ref.attribute.toUpperCase()}: ${ref.label}`;
         }
     }
 }
 </script>
 
 <style scope>
-.cocktail-list-tags {
+.cocktail-list-filter-panel {
     padding: 20px;
     background-color: rgba(255, 255, 255, .5);
     margin-top: 10px;
@@ -173,13 +175,13 @@ export default {
     box-shadow: 0 3px 0 var(--color-bg-dark);
 }
 
-.cocktail-list-tags h4 {
+.cocktail-list-filter-panel h4 {
     font-size: 0.9rem;
     font-weight: bold;
     margin-bottom: 6px;
 }
 
-.cocktail-list-tags .ais-RefinementList-list {
+.cocktail-list-filter-panel .ais-RefinementList-list {
     list-style: none;
     padding: 0;
     margin: 0;
@@ -187,6 +189,12 @@ export default {
     flex-wrap: wrap;
     gap: 8px;
     margin-bottom: 15px;
+}
+
+.cocktail-list-filter-panel .cocktail-list-filter-panel__toggle-refinements {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
 }
 
 .cocktail-list-search-container {
