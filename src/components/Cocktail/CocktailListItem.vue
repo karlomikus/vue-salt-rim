@@ -13,6 +13,8 @@
 </template>
 
 <script>
+import ApiRequests from '@/ApiRequests.js';
+
 export default {
     props: ['cocktail', 'observer'],
     mounted() {
@@ -24,7 +26,8 @@ export default {
                 return '/no-cocktail.jpg';
             }
 
-            return this.cocktail.images.filter((img) => img.id == this.cocktail.main_image_id)[0].url;
+            // return this.cocktail.images.filter((img) => img.id == this.cocktail.main_image_id)[0].url;
+            return ApiRequests.imageThumbUrl(this.cocktail.main_image_id);
         }
     }
 }

@@ -18,6 +18,7 @@
 
 <script>
 import Auth from '@/Auth.js';
+import ApiRequests from '@/ApiRequests.js';
 
 export default {
     props: ['cocktail', 'observer', 'isSpan'],
@@ -40,7 +41,7 @@ export default {
                 return '/no-cocktail.jpg';
             }
 
-            return this.cocktail.image_url
+            return ApiRequests.imageThumbUrl(this.cocktail.main_image_id);
         }
     }
 }

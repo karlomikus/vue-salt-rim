@@ -303,6 +303,10 @@ class ApiRequests
         return this.parseResponse(jsonResp);
     }
 
+    static imageThumbUrl(id) {
+        return `${this.getUrl()}/api/images/${id}/thumb`;
+    }
+
     /**
      * =============================
      * Glasses
