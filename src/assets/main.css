@@ -73,6 +73,13 @@ main {
     display: flex;
     font-family: var(--font-accent);
     color: #fff;
+    text-decoration: none;
+}
+
+a.site-logo:hover,
+a.site-logo:active,
+a.site-logo:focus {
+    color: #fff;
 }
 
 .site-logo__image {
