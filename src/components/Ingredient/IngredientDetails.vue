@@ -334,15 +334,24 @@ export default {
     margin: 30px 0 0 0;
     display: flex;
     flex-wrap: wrap;
-    gap: 10px;
+    gap: 8px;
 }
 
 .ingredient-chips-list li a {
     display: block;
-    padding: 3px 10px;
-    border: 1px solid var(--color-text);
-    border-radius: 5px;
+    padding: 1px 8px;
+    font-size: 0.9rem;
+    box-shadow: 0 2px 0 rgba(0, 0, 0, .1);
+    background-color: rgba(255, 255, 255, .5);
+    border-radius: 3px;
     text-decoration: none;
+}
+
+.ingredient-chips-list li a:hover,
+.ingredient-chips-list li a:active,
+.ingredient-chips-list li a:focus {
+    box-shadow: 0 2px 0 var(--color-link-hover);
+    background-color: #fff;
 }
 
 .ingredient-details__actions {
