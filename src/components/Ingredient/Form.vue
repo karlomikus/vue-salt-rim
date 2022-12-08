@@ -1,6 +1,8 @@
 <template>
     <form @submit.prevent="submit">
-        <h2 class="page-subtitle">Ingredient information</h2>
+        <PageHeader>
+            Ingredient information
+        </PageHeader>
         <div class="form-group">
             <label class="form-label form-label--required" for="name">Name:</label>
             <input class="form-input" type="text" id="name" v-model="ingredient.name" required>
@@ -19,6 +21,7 @@
         <div class="form-group">
             <label class="form-label" for="description">Description:</label>
             <textarea rows="4" class="form-input" id="description" v-model="ingredient.description"></textarea>
+            <p class="form-input-hint">This field supports markdown.</p>
         </div>
         <div class="form-group">
             <label class="form-label" for="origin">Origin:</label>
@@ -44,6 +47,7 @@
 import ApiRequests from "../../ApiRequests";
 import ImageUpload from './../ImageUpload.vue'
 import { ColorPicker } from 'vue-accessible-color-picker'
+import PageHeader from '@/components/PageHeader.vue'
 
 export default {
     data() {
@@ -59,7 +63,8 @@ export default {
     },
     components: {
         ImageUpload,
-        ColorPicker
+        ColorPicker,
+        PageHeader
     },
     created() {
         document.title = `Ingredient Form \u22C5 Salt Rim`

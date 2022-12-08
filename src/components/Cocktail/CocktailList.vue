@@ -1,8 +1,10 @@
 <template>
-    <div style="text-align: right;">
-        <RouterLink class="button button--outline" :to="{ name: 'cocktails.form' }">Add cocktail</RouterLink>
-    </div>
-    <h2 class="page-subtitle" style="margin-top: 10px;">Cocktails</h2>
+    <PageHeader>
+        Cocktails
+        <template #actions>
+            <RouterLink class="button button--outline" :to="{ name: 'cocktails.form' }">Add cocktail</RouterLink>
+        </template>
+    </PageHeader>
     <p class="page-description" style="margin-bottom: 20px;">
         This is a list of cocktails available in your Bar Assistant server. You can search for a specific cocktails by filtering them with the tags you added or by using a search term.
     </p>
@@ -110,6 +112,7 @@ import Auth from '@/Auth.js';
 import ApiRequests from '@/ApiRequests.js'
 import CocktailGridItem from './CocktailGridItem.vue'
 import CocktailGridContainer from './CocktailGridContainer.vue'
+import PageHeader from '@/components/PageHeader.vue'
 
 export default {
     data() {
@@ -132,7 +135,8 @@ export default {
     },
     components: {
         CocktailGridItem,
-        CocktailGridContainer
+        CocktailGridContainer,
+        PageHeader
     },
     created() {
         document.title = `Cocktails \u22C5 Salt Rim`

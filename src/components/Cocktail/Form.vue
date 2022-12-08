@@ -1,7 +1,9 @@
 <template>
     <form @submit.prevent="submit">
         <OverlayLoader v-if="isLoading" />
-        <h2 class="page-subtitle">Cocktail information</h2>
+        <PageHeader>
+            Cocktail information
+        </PageHeader>
         <div class="form-group">
             <label class="form-label form-label--required" for="name">Name:</label>
             <input class="form-input" type="text" id="name" v-model="cocktail.name" required placeholder="Cocktail name...">
@@ -81,6 +83,7 @@ import Unitz from 'unitz'
 import OverlayLoader from './../OverlayLoader.vue'
 import IngredientModal from './IngredientModal.vue'
 import ImageUpload from './../ImageUpload.vue'
+import PageHeader from '@/components/PageHeader.vue'
 
 export default {
     data() {
@@ -102,6 +105,7 @@ export default {
         OverlayLoader,
         IngredientModal,
         ImageUpload,
+        PageHeader,
     },
     computed: {
         cocktailTags: {

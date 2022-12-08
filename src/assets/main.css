@@ -5,6 +5,7 @@
 @import "./modal.css";
 @import "./glasses.css";
 @import "./tags.css";
+@import "./table.css";
 
 @import "vue-select/dist/vue-select.css";
 @import "vue-toast-notification/dist/theme-default.css";
@@ -165,4 +166,24 @@ a.site-logo:focus {
     max-width: 400px;
     padding: 30px;
     border-radius: 20px;
+}
+
+.settings-page {
+    display: flex;
+    gap: 20px;
+}
+
+.settings-page__nav {
+    flex-basis: 200px;
+    flex: 1;
+}
+
+.settings-page__content {
+    flex: 3;
+}
+
+@media (max-width: 750px) {
+    .settings-page {
+        flex-direction: column;
+    }
 }

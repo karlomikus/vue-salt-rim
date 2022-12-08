@@ -72,9 +72,34 @@ const router = createRouter({
                     component: () => import('../views/ShelfCocktailsView.vue'),
                 },
                 {
-                    path: '/profile',
-                    name: 'profile',
-                    component: () => import('../views/ProfileView.vue'),
+                    path: '/settings',
+                    name: 'settings',
+                    redirect: { name: 'settings.profile' }
+                },
+                {
+                    path: '/settings/profile',
+                    name: 'settings.profile',
+                    component: () => import('../views/SettingsProfileView.vue'),
+                },
+                {
+                    path: '/settings/categories',
+                    name: 'settings.categories',
+                    component: () => import('../views/SettingsCategoriesView.vue'),
+                },
+                {
+                    path: '/settings/categories/form',
+                    name: 'settings.categories.form',
+                    component: () => import('../views/CategoryFormView.vue'),
+                },
+                {
+                    path: '/settings/glasses',
+                    name: 'settings.glasses',
+                    component: () => import('../views/SettingsGlassesView.vue'),
+                },
+                {
+                    path: '/settings/glasses/form',
+                    name: 'settings.glasses.form',
+                    component: () => import('../views/GlassFormView.vue'),
                 }
             ]
         }
