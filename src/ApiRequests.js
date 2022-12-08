@@ -128,6 +128,40 @@ class ApiRequests
 
     /**
      * =============================
+     * Ingredient Categories
+     * =============================
+     */
+
+    static async fetchIngredientCategories() {
+        let jsonResp = await this.getRequest(`/api/ingredient-categories`);
+
+        return this.parseResponse(jsonResp);
+    }
+
+    static async fetchIngredientCategory(id) {
+        let jsonResp = await this.getRequest(`/api/ingredient-categories/${id}`);
+
+        return this.parseResponse(jsonResp);
+    }
+
+    static async saveIngredientCategory(data) {
+        let jsonResp = await this.postRequest(`/api/ingredient-categories`, data);
+
+        return this.parseResponse(jsonResp);
+    }
+
+    static async updateIngredientCategory(id, data) {
+        let jsonResp = await this.postRequest(`/api/ingredient-categories/${id}`, data, 'PUT');
+
+        return this.parseResponse(jsonResp);
+    }
+
+    static async deleteIngredientCategory(id) {
+        return await this.deleteRequest(`/api/ingredient-categories/${id}`);
+    }
+
+    /**
+     * =============================
      * Ingredients
      * =============================
      */
@@ -140,12 +174,6 @@ class ApiRequests
 
     static async fetchIngredientsOnShoppingList() {
         let jsonResp = await this.getRequest(`/api/ingredients?on_shopping_list=true`);
-
-        return this.parseResponse(jsonResp);
-    }
-
-    static async fetchIngredientCategories() {
-        let jsonResp = await this.getRequest(`/api/ingredient-categories`);
 
         return this.parseResponse(jsonResp);
     }
@@ -317,6 +345,28 @@ class ApiRequests
         let jsonResp = await this.getRequest(`/api/glasses`);
 
         return this.parseResponse(jsonResp);
+    }
+
+    static async fetchGlass(id) {
+        let jsonResp = await this.getRequest(`/api/glasses/${id}`);
+
+        return this.parseResponse(jsonResp);
+    }
+
+    static async saveGlass(data) {
+        let jsonResp = await this.postRequest(`/api/glasses`, data);
+
+        return this.parseResponse(jsonResp);
+    }
+
+    static async updateGlass(id, data) {
+        let jsonResp = await this.postRequest(`/api/glasses/${id}`, data, 'PUT');
+
+        return this.parseResponse(jsonResp);
+    }
+
+    static async deleteGlass(id) {
+        return await this.deleteRequest(`/api/glasses/${id}`);
     }
 }
 
