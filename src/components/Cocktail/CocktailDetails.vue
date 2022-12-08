@@ -73,9 +73,9 @@
                 </div>
                 <div class="cocktail-details__button-row" style="text-align:right">
                     <h4>Units:</h4>
-                    <button :class="{ 'active-serving': currentUnit == 'ml' }" @click="currentUnit = 'ml'">ml</button>
-                    <button :class="{ 'active-serving': currentUnit == 'oz' }" @click="currentUnit = 'oz'">oz</button>
-                    <button :class="{ 'active-serving': currentUnit == 'cl' }" @click="currentUnit = 'cl'">cl</button>
+                    <button type="button" :class="{ 'active-serving': currentUnit == 'ml' }" @click="changeMeasurementUnit('ml')">ml</button>
+                    <button type="button" :class="{ 'active-serving': currentUnit == 'oz' }" @click="changeMeasurementUnit('oz')">oz</button>
+                    <button type="button" :class="{ 'active-serving': currentUnit == 'cl' }" @click="changeMeasurementUnit('cl')">cl</button>
                 </div>
             </div>
             <ul class="cocktail-details-box__ingredients">
@@ -114,11 +114,11 @@
 
 <script>
 import { marked } from 'marked';
-import ApiRequests from '../../ApiRequests';
+import ApiRequests from '@/ApiRequests';
 import Auth from '@/Auth';
 import Unitz from 'unitz'
-import OverlayLoader from './../OverlayLoader.vue'
-import Dropdown from './../Dropdown.vue';
+import OverlayLoader from '@/components/OverlayLoader.vue'
+import Dropdown from '@/components/Dropdown.vue';
 
 export default {
     data: () => ({
@@ -156,9 +156,9 @@ export default {
             return marked.parse(this.cocktail.description)
         },
         missingIngredientIds() {
-            return this.cocktail.ingredients.filter(ing => {
-                return !this.userShelfIngredients.includes(ing.ingredient_id) && !this.userShoppingListIngredients.includes(ing.ingredient_id)
-            }).map(cing => cing.ingredient_id)
+            return this.cocktail.ingredients.filter(userIngredient => {
+                return !this.userShelfIngredients.includes(userIngredient.ingredient_id) && !this.userShoppingListIngredients.includes(userIngredient.ingredient_id)
+            }).map(cocktailIngredient => cocktailIngredient.ingredient_id)
         },
         mainCocktailImage() {
             if (this.cocktail.main_image_id == null) {
@@ -199,6 +199,10 @@ export default {
             },
             { immediate: true }
         )
+
+        if (localStorage.getItem('defaultUnit')) {
+            this.currentUnit = localStorage.getItem('defaultUnit')
+        }
     },
     methods: {
         favorite() {
@@ -251,6 +255,10 @@ export default {
             }
 
             return `${orgAmountMl} ${orgUnits}`;
+        },
+        changeMeasurementUnit(toUnit) {
+            this.currentUnit = toUnit;
+            localStorage.setItem('defaultUnit', toUnit);
         }
     }
 }
@@ -311,8 +319,6 @@ export default {
     font-family: var(--font-accent);
     font-weight: 700;
     margin: 0 0 20px 0;
-    border-bottom: 1px solid rgba(0, 0, 0, .1);
-    padding-bottom: 15px;
 }
 
 .cocktail-details-box--title .cocktail-details-box__title {
@@ -332,10 +338,6 @@ export default {
     margin-bottom: 10px;
     padding: 5px 10px;
 }
-
-/* .cocktail-details-box__ingredients li a {
-    text-decoration: none;
-} */
 
 .cocktail-details-box__ingredients li .cocktail-details-box__ingredients__content small {
     color: var(--color-link-hover);
