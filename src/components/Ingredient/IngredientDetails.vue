@@ -7,7 +7,7 @@
                     <small>{{ ingredient.category.name }}</small>
                     {{ ingredient.name }}
                 </h2>
-                <p>{{ ingredient.description }}</p>
+                <div v-html="parsedDescription"></div>
                 <hr>
                 <p>
                     <strong>Strength:</strong><br>
@@ -103,10 +103,11 @@
 </template>
 
 <script>
-import ApiRequests from '../../ApiRequests';
+import ApiRequests from '@/ApiRequests';
 import Auth from '@/Auth.js'
 import Dropdown from '@/components/Dropdown.vue';
 import OverlayLoader from '@/components/OverlayLoader.vue'
+import { marked } from 'marked';
 
 export default {
     data: () => ({
@@ -160,7 +161,14 @@ export default {
             }
 
             return this.ingredient.images.filter((img) => img.id == this.ingredient.main_image_id)[0].url;
-        }
+        },
+        parsedDescription() {
+            if (!this.ingredient.description) {
+                return null;
+            }
+
+            return marked.parse(this.ingredient.description)
+        },
     },
     methods: {
         deleteIngredient() {
