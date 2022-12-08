@@ -77,12 +77,6 @@ main {
     text-decoration: none;
 }
 
-a.site-logo:hover,
-a.site-logo:active,
-a.site-logo:focus {
-    color: #fff;
-}
-
 .site-logo__image {
     background: #fff;
     display: flex;
@@ -102,7 +96,7 @@ a.site-logo:focus {
 .site-logo__title {
     font-weight: 700;
     margin-left: 10px;
-    text-shadow: 3px 2px 0 rgba(0, 0, 0, .3);
+    text-shadow: 3px 2px 0 rgba(0, 0, 0, .2);
     line-height: 0.9;
 }
 
@@ -111,6 +105,22 @@ a.site-logo:focus {
     font-size: 0.8rem;
     text-shadow: none;
     opacity: .7;
+}
+
+a.site-logo:hover,
+a.site-logo:active,
+a.site-logo:focus,
+a.site-logo:hover .site-logo__title span,
+a.site-logo:active .site-logo__title span,
+a.site-logo:focus .site-logo__title span {
+    color: #fff;
+    opacity: 1;
+}
+
+a.site-logo:hover .site-logo__title,
+a.site-logo:active .site-logo__title,
+a.site-logo:focus .site-logo__title {
+    text-shadow: 3px 2px 0 rgba(0, 0, 0, .4);
 }
 
 @media (max-width: 450px) {
