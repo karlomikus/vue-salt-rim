@@ -212,10 +212,15 @@ export default {
 }
 
 @media (max-width: 450px) {
+    .ingredient-list {
+        row-gap: 10px;
+        column-gap: 10px;
+    }
+
     .ingredient-list .ingredient-list__image {
         margin-right: 10px;
-        width: 90px;
-        height: 90px;
+        width: 70px;
+        height: 70px;
     }
 
     .ingredient-list .ingredient-list__image img {

@@ -13,6 +13,9 @@
                 <option :value="undefined" disabled>Select a category...</option>
                 <option v-for="cat in categories" :value="cat.id">{{ cat.name }}</option>
             </select>
+            <p class="form-input-hint">
+                <RouterLink :to="{name: 'settings.categories'}" target="_blank">Edit categories</RouterLink>
+            </p>
         </div>
         <div class="form-group">
             <label class="form-label form-label--required" for="strength">Strength (ABV %):</label>

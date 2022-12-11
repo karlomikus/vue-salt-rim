@@ -10,12 +10,17 @@
     display: flex;
     flex-direction: column;
     gap: 10px;
-    /* margin-top: 40px; */
 }
 
 .settings-nav a {
     padding: 5px 10px;
     background-color: rgba(255, 255, 255, .5);
     text-decoration: none;
+    border-radius: 5px;
+}
+
+.settings-nav a.router-link-exact-active {
+    background-color: var(--color-text);
+    color: #fff;
 }
 </style>
