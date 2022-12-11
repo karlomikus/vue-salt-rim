@@ -1,3 +1,15 @@
+# v0.6.0
+- Update site search component
+- Add settings page
+    - Move profile settings to settings page
+    - Add ingredient categories editing
+    - Add glass types editing
+- Use thumbnail for cocktail list images
+- Update cocktail list filters
+- Remember selected measurement unit
+- Enable markdown for ingredient description
+- Fix empty tags handling
+
 # v0.5.0
 - Fix colorpicker issues with null values
 - Add profile page
