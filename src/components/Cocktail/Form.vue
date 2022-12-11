@@ -29,6 +29,9 @@
                 <option :value="undefined" disabled>Select a glass type...</option>
                 <option v-for="glass in glasses" :value="glass.id">{{ glass.name }}</option>
             </select>
+            <p class="form-input-hint">
+                <RouterLink :to="{name: 'settings.glasses'}" target="_blank">Edit glasses</RouterLink>
+            </p>
         </div>
         <div class="form-group">
             <label class="form-label" for="source">Source:</label>
@@ -113,7 +116,11 @@ export default {
                 return this.cocktail.tags.join(',')
             },
             set(newVal) {
-                this.cocktail.tags = newVal.split(',')
+                if (newVal == '' || newVal == null || newVal == undefined) {
+                    this.cocktail.tags = []
+                } else {
+                    this.cocktail.tags = newVal.split(',')
+                }
             }
         },
         glassId: {
@@ -211,7 +218,7 @@ export default {
                 garnish: this.cocktail.garnish,
                 source: this.cocktail.source,
                 images: [],
-                tags: this.cocktail.tags,
+                tags: this.cocktail.tags.filter(tag => tag != ''),
                 glass_id: this.glassId,
                 ingredients: this.cocktail.ingredients
                     .filter(i => i.name != '<Not selected>')
