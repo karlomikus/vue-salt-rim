@@ -7,7 +7,7 @@
                     <small>{{ ingredient.category.name }}</small>
                     {{ ingredient.name }}
                 </h2>
-                <p>{{ ingredient.description }}</p>
+                <div v-html="parsedDescription"></div>
                 <hr>
                 <p>
                     <strong>Strength:</strong><br>
@@ -103,10 +103,11 @@
 </template>
 
 <script>
-import ApiRequests from '../../ApiRequests';
+import ApiRequests from '@/ApiRequests';
 import Auth from '@/Auth.js'
 import Dropdown from '@/components/Dropdown.vue';
 import OverlayLoader from '@/components/OverlayLoader.vue'
+import { marked } from 'marked';
 
 export default {
     data: () => ({
@@ -160,7 +161,14 @@ export default {
             }
 
             return this.ingredient.images.filter((img) => img.id == this.ingredient.main_image_id)[0].url;
-        }
+        },
+        parsedDescription() {
+            if (!this.ingredient.description) {
+                return null;
+            }
+
+            return marked.parse(this.ingredient.description)
+        },
     },
     methods: {
         deleteIngredient() {
@@ -334,15 +342,24 @@ export default {
     margin: 30px 0 0 0;
     display: flex;
     flex-wrap: wrap;
-    gap: 10px;
+    gap: 8px;
 }
 
 .ingredient-chips-list li a {
     display: block;
-    padding: 3px 10px;
-    border: 1px solid var(--color-text);
-    border-radius: 5px;
+    padding: 1px 8px;
+    font-size: 0.9rem;
+    box-shadow: 0 2px 0 rgba(0, 0, 0, .1);
+    background-color: rgba(255, 255, 255, .5);
+    border-radius: 3px;
     text-decoration: none;
+}
+
+.ingredient-chips-list li a:hover,
+.ingredient-chips-list li a:active,
+.ingredient-chips-list li a:focus {
+    box-shadow: 0 2px 0 var(--color-link-hover);
+    background-color: #fff;
 }
 
 .ingredient-details__actions {

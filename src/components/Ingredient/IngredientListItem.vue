@@ -71,7 +71,7 @@ export default {
 .ingredient-list-item {
     display: flex;
     background-color: #fff;
-    padding: 20px;
+    padding: 15px;
     border-radius: 10px;
     box-shadow: 0 3px 0 var(--color-bg-dark);
     transition: box-shadow ease-in-out 150ms;

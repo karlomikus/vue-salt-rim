@@ -1,0 +1,84 @@
+<template>
+    <PageHeader>
+        Ingredient categories
+    </PageHeader>
+    <div class="settings-page">
+        <div class="settings-page__nav">
+            <Navigation />
+        </div>
+        <div class="settings-page__content">
+            <OverlayLoader v-if="isLoading" />
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Name / Description</th>
+                        <th><RouterLink :to="{name: 'settings.categories.form'}">Create</RouterLink></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="category in categories">
+                        <td>
+                            <RouterLink :to="{name: 'settings.categories.form', query: {id: category.id}}">{{ category.name }}</RouterLink>
+                            <br>
+                            <small>{{ category.description }}</small>
+                        </td>
+                        <td>
+                            <a class="list-group__action" href="#" @click.prevent="deleteCategory(category.id)">Delete</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</template>
+
+<script>
+import ApiRequests from "@/ApiRequests";
+import OverlayLoader from '@/components/OverlayLoader.vue'
+import PageHeader from '@/components/PageHeader.vue'
+import Navigation from '@/components/Settings/Navigation.vue'
+
+export default {
+    components: {
+        OverlayLoader,
+        Navigation,
+        PageHeader
+    },
+    data() {
+        return {
+            isLoading: false,
+            categories: [],
+        }
+    },
+    created() {
+        document.title = `Ingredient categories \u22C5 Salt Rim`
+
+        this.refreshCategories()
+    },
+    methods: {
+        refreshCategories() {
+            this.isLoading = true;
+            ApiRequests.fetchIngredientCategories().then(data => {
+                this.categories = data;
+                this.isLoading = false;
+            }).catch(e => {
+                this.$toast.error(e.message);
+            })
+        },
+        deleteCategory(id) {
+            if (confirm('Are you sure you want to delete this category?')) {
+                this.isLoading = true
+                ApiRequests.deleteIngredientCategory(id).then(() => {
+                    this.isLoading = false;
+                    this.$toast.default(`Ingredient category deleted successfully.`);
+                    this.$router.push({ name: 'settings.categories' })
+                    this.refreshCategories()
+                }).catch(e => {
+                    this.$toast.error(e.message);
+                    this.isLoading = false;
+                })
+            }
+        }
+    }
+}
+</script>

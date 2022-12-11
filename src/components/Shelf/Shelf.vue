@@ -1,18 +1,12 @@
-<script setup>
-import IngredientListItem from '../Ingredient/IngredientListItem.vue'
-import CocktailListItem from '../Cocktail/CocktailListItem.vue'
-import CocktailListContainer from '../Cocktail/CocktailListContainer.vue'
-import OverlayLoader from '../OverlayLoader.vue'
-</script>
-
 <template>
-    <h2 class="shelf-welcome">Hello, {{ user.name }}</h2>
-    <!-- <h2 class="page-subtitle">Quick actions</h2> -->
+    <PageHeader>
+        Hello, {{ user.name }}
+    </PageHeader>
     <div class="home-actions">
         <a href="#" @click.prevent="randomCocktail()">Random cocktail</a>
         <!-- <RouterLink :to="{name: 'cocktails', query: {'toggle[user_id]': true}}">My cocktail recipes</RouterLink> -->
         <RouterLink :to="{name: 'cocktails.form'}">Create a cocktail</RouterLink>
-        <RouterLink :to="{name: 'profile'}">Edit profile</RouterLink>
+        <RouterLink :to="{name: 'settings'}">Settings</RouterLink>
         <!-- <a href="#">Create a collection</a> -->
         <!-- <RouterLink :to="{name: 'cocktails', query: {'refinementList[tags][0]': 'Gin'}}">Gin base</RouterLink>
         <RouterLink :to="{name: 'cocktails', query: {'refinementList[tags][0]': 'Rum'}}">Rum base</RouterLink> -->
@@ -75,8 +69,13 @@ import OverlayLoader from '../OverlayLoader.vue'
 </template>
 
 <script>
-import ApiRequests from '../../ApiRequests';
+import ApiRequests from '@/ApiRequests';
 import Auth from '@/Auth.js';
+import IngredientListItem from '@/components/Ingredient/IngredientListItem.vue'
+import CocktailListItem from '@/components/Cocktail/CocktailListItem.vue'
+import CocktailListContainer from '@/components/Cocktail/CocktailListContainer.vue'
+import OverlayLoader from '@/components/OverlayLoader.vue'
+import PageHeader from '@/components/PageHeader.vue'
 
 export default {
     data: () => ({
@@ -90,6 +89,13 @@ export default {
             list: false,
         }
     }),
+    components: {
+        IngredientListItem,
+        CocktailListItem,
+        CocktailListContainer,
+        OverlayLoader,
+        PageHeader,
+    },
     created() {
         document.title = `Shelf \u22C5 Salt Rim`
 

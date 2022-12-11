@@ -4,14 +4,13 @@
         <div class="cocktail-details__graphic" :style="{ 'background-image': 'url(' + mainCocktailImageUrl + ')' }">
             <div class="cocktail-details__graphic__copyright" v-if="mainCocktailImage.copyright">Image &copy; {{ mainCocktailImage.copyright }}</div>
         </div>
-        <div class="cocktail-details-box cocktail-details-box--title">
+        <div class="cocktail-details-box cocktail-details-box--blue">
             <h3 class="cocktail-details-box__title">{{ cocktail.name }}</h3>
-            <div class="tag-container" style="margin-bottom: 20px;">
+            <div class="tag-container" style="margin-bottom: 20px;" v-if="cocktail.tags.length > 0">
                 <span v-for="tag in cocktail.tags" class="tag tag--background" style="background-color: #BFD3DF;">{{ tag }}</span>
             </div>
             <div class="cocktail-details-box__description">
                 <div v-html="parsedDescription"></div>
-                <!-- <p v-if="cocktail.source"><strong>Cocktail source:</strong> {{ cocktail.source }}</p> -->
             </div>
             <div class="cocktail-details-box__actions">
                 <button type="button" class="button-circle" @click="favorite">
@@ -67,25 +66,25 @@
         <div class="cocktail-details-box cocktail-details-box--green">
             <h3 class="cocktail-details-box__title">Ingredients:</h3>
             <div style="display: grid; grid-template-columns: 1fr 1fr;">
-                <div class="cocktail-details__button-row">
+                <div class="cocktail-button-group">
                     <h4>Servings:</h4>
                     <button :class="{ 'active-serving': i == servings }" v-for="i in Array.from({ length: 4 }, (x, i) => i + 1)" @click="servings = i">{{ i }}</button>
                 </div>
-                <div class="cocktail-details__button-row" style="text-align:right">
+                <div class="cocktail-button-group" style="text-align:right">
                     <h4>Units:</h4>
-                    <button :class="{ 'active-serving': currentUnit == 'ml' }" @click="currentUnit = 'ml'">ml</button>
-                    <button :class="{ 'active-serving': currentUnit == 'oz' }" @click="currentUnit = 'oz'">oz</button>
-                    <button :class="{ 'active-serving': currentUnit == 'cl' }" @click="currentUnit = 'cl'">cl</button>
+                    <button type="button" :class="{ 'active-serving': currentUnit == 'ml' }" @click="changeMeasurementUnit('ml')">ml</button>
+                    <button type="button" :class="{ 'active-serving': currentUnit == 'oz' }" @click="changeMeasurementUnit('oz')">oz</button>
+                    <button type="button" :class="{ 'active-serving': currentUnit == 'cl' }" @click="changeMeasurementUnit('cl')">cl</button>
                 </div>
             </div>
-            <ul class="cocktail-details-box__ingredients">
+            <ul class="cocktail-ingredients">
                 <li v-for="ing in cocktail.ingredients" :key="ing.sort">
-                    <div class="cocktail-details-box__ingredients__content">
+                    <div class="cocktail-ingredients__content">
                         <RouterLink :to="{ name: 'ingredients.show', params: { id: ing.ingredient_slug } }">
                             {{ ing.name }}
                         </RouterLink>
                         <small v-if="ing.optional">(optional)</small>
-                        <div class="cocktail-details-box__ingredients__content__substitutes">
+                        <div class="cocktail-ingredients__content__substitutes">
                             <template v-for="sub in ing.substitutes">
                                 or <RouterLink :to="{ name: 'ingredients.show', params: { id: sub.slug } }">{{ sub.name }}</RouterLink>
                             </template>
@@ -93,15 +92,15 @@
                         <span v-if="!userShelfIngredients.includes(ing.ingredient_id)">You are missing this ingredient</span>
                         <span v-if="userShoppingListIngredients.includes(ing.ingredient_id)">You have this ingredient on shopping list</span>
                     </div>
-                    <div class="cocktail-details-box__ingredients__amount">{{ parseIngredientAmount(ing) }}</div>
+                    <div class="cocktail-ingredients__amount">{{ parseIngredientAmount(ing) }}</div>
                 </li>
             </ul>
             <a v-show="missingIngredientIds.length > 0" href="#" @click.prevent="addMissingIngredients">Add missing ingredients to my shopping list</a>
         </div>
         <div class="cocktail-details-box cocktail-details-box--yellow">
             <h3 class="cocktail-details-box__title">Instructions:</h3>
-            <div class="tag-container" style="margin-bottom: 20px;">
-                <span v-if="cocktail.glass" class="tag tag--background" style="background-color: #ffddc0;">Glass: {{ cocktail.glass.name }}</span>
+            <div class="tag-container" style="margin-bottom: 20px;" v-if="cocktail.glass">
+                <span class="tag tag--background" style="background-color: #ffddc0;">Glass: {{ cocktail.glass.name }}</span>
             </div>
             <div v-html="parsedInstructions"></div>
         </div>
@@ -114,11 +113,11 @@
 
 <script>
 import { marked } from 'marked';
-import ApiRequests from '../../ApiRequests';
+import ApiRequests from '@/ApiRequests';
 import Auth from '@/Auth';
 import Unitz from 'unitz'
-import OverlayLoader from './../OverlayLoader.vue'
-import Dropdown from './../Dropdown.vue';
+import OverlayLoader from '@/components/OverlayLoader.vue'
+import Dropdown from '@/components/Dropdown.vue';
 
 export default {
     data: () => ({
@@ -156,9 +155,9 @@ export default {
             return marked.parse(this.cocktail.description)
         },
         missingIngredientIds() {
-            return this.cocktail.ingredients.filter(ing => {
-                return !this.userShelfIngredients.includes(ing.ingredient_id) && !this.userShoppingListIngredients.includes(ing.ingredient_id)
-            }).map(cing => cing.ingredient_id)
+            return this.cocktail.ingredients.filter(userIngredient => {
+                return !this.userShelfIngredients.includes(userIngredient.ingredient_id) && !this.userShoppingListIngredients.includes(userIngredient.ingredient_id)
+            }).map(cocktailIngredient => cocktailIngredient.ingredient_id)
         },
         mainCocktailImage() {
             if (this.cocktail.main_image_id == null) {
@@ -199,6 +198,10 @@ export default {
             },
             { immediate: true }
         )
+
+        if (localStorage.getItem('defaultUnit')) {
+            this.currentUnit = localStorage.getItem('defaultUnit')
+        }
     },
     methods: {
         favorite() {
@@ -251,36 +254,16 @@ export default {
             }
 
             return `${orgAmountMl} ${orgUnits}`;
+        },
+        changeMeasurementUnit(toUnit) {
+            this.currentUnit = toUnit;
+            localStorage.setItem('defaultUnit', toUnit);
         }
     }
 }
 </script>
+
 <style>
-.cocktail-details-box {
-    background-color: #fff;
-    border-radius: 20px;
-    border-bottom-left-radius: 0;
-    border-bottom-right-radius: 0;
-    padding: 20px 20px 40px 20px;
-    margin-top: -20px;
-}
-
-.cocktail-details-box.cocktail-details-box--title {
-    background-color: var(--color-var-1);
-}
-
-.cocktail-details-box.cocktail-details-box--yellow {
-    background-color: var(--color-var-2);
-}
-
-.cocktail-details-box.cocktail-details-box--red {
-    background-color: var(--color-var-3);
-}
-
-.cocktail-details-box.cocktail-details-box--green {
-    background-color: var(--color-var-4);
-}
-
 .cocktail-details__graphic {
     background-color: #fff;
     padding: 10px;
@@ -307,25 +290,48 @@ export default {
     font-size: 0.7rem;
 }
 
+.cocktail-details-box {
+    background-color: #fff;
+    border-radius: 20px;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+    padding: 20px 20px 40px 20px;
+    margin-top: -20px;
+}
+
+.cocktail-details-box.cocktail-details-box--blue {
+    background-color: var(--color-var-1);
+}
+
+.cocktail-details-box.cocktail-details-box--yellow {
+    background-color: var(--color-var-2);
+}
+
+.cocktail-details-box.cocktail-details-box--red {
+    background-color: var(--color-var-3);
+}
+
+.cocktail-details-box.cocktail-details-box--green {
+    background-color: var(--color-var-4);
+}
+
 .cocktail-details-box__title {
     font-family: var(--font-accent);
     font-weight: 700;
     margin: 0 0 20px 0;
-    border-bottom: 1px solid rgba(0, 0, 0, .1);
-    padding-bottom: 15px;
 }
 
-.cocktail-details-box--title .cocktail-details-box__title {
+.cocktail-details-box--blue .cocktail-details-box__title {
     font-size: 1.8rem;
 }
 
-.cocktail-details-box__ingredients {
+.cocktail-ingredients {
     list-style: none;
     padding: 0;
     margin: 0;
 }
 
-.cocktail-details-box__ingredients li {
+.cocktail-ingredients li {
     display: flex;
     align-items: center;
     background-color: rgb(211, 227, 222);
@@ -333,27 +339,23 @@ export default {
     padding: 5px 10px;
 }
 
-/* .cocktail-details-box__ingredients li a {
-    text-decoration: none;
-} */
-
-.cocktail-details-box__ingredients li .cocktail-details-box__ingredients__content small {
+.cocktail-ingredients li .cocktail-ingredients__content small {
     color: var(--color-link-hover);
     margin-left: 5px;
 }
 
-.cocktail-details-box__ingredients li .cocktail-details-box__ingredients__content span {
+.cocktail-ingredients li .cocktail-ingredients__content span {
     display: block;
     font-size: 0.7rem;
     color: var(--color-text-muted);
 }
 
-.cocktail-details-box__ingredients li .cocktail-details-box__ingredients__content .cocktail-details-box__ingredients__content__substitutes {
+.cocktail-ingredients li .cocktail-ingredients__content .cocktail-ingredients__content__substitutes {
     font-size: 0.7rem;
     color: var(--color-text-muted);
 }
 
-.cocktail-details-box__ingredients li .cocktail-details-box__ingredients__amount {
+.cocktail-ingredients li .cocktail-ingredients__amount {
     font-weight: 700;
     font-size: 1.2rem;
     margin-left: auto;
@@ -362,7 +364,7 @@ export default {
 }
 
 @media (max-width: 450px) {
-    .cocktail-details-box__ingredients li .cocktail-details-box__ingredients__amount {
+    .cocktail-ingredients li .cocktail-ingredients__amount {
         font-size: 1rem;
     }
 }
@@ -381,15 +383,15 @@ export default {
     max-height: 150px;
 }
 
-.cocktail-details__button-row {
+.cocktail-button-group {
     margin-bottom: 20px;
 }
 
-.cocktail-details__button-row h4 {
+.cocktail-button-group h4 {
     font-size: 0.8rem;
 }
 
-.cocktail-details__button-row button {
+.cocktail-button-group button {
     background: rgb(211, 227, 222);
     border: 3px solid rgb(211, 227, 222);
     font-size: 1.2rem;
@@ -398,12 +400,12 @@ export default {
     color: var(--color-text)
 }
 
-.cocktail-details__button-row button.active-serving {
+.cocktail-button-group button.active-serving {
     background-color: rgb(162, 197, 186);
     border-color: rgb(162, 197, 186);
 }
 
-.cocktail-details__button-row button:hover {
+.cocktail-button-group button:hover {
     border-color: rgb(129, 173, 159);
 }
 

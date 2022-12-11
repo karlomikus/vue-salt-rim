@@ -1,7 +1,7 @@
 <template>
     <form @submit.prevent="submit">
         <OverlayLoader v-if="isLoading" />
-        <h2 class="page-subtitle">Profile</h2>
+        <h2 class="page-subtitle" style="margin-top: 0">Profile</h2>
         <div class="form-group">
             <label class="form-label form-label--required" for="name">Name:</label>
             <input class="form-input" type="text" id="name" v-model="user.name" required placeholder="Your name...">

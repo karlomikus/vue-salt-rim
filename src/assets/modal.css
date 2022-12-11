@@ -37,3 +37,13 @@
     padding-top: 0;
     text-align: right;
 }
+
+@media (max-width: 450px) {
+    .modal {
+        border-radius: 8px;
+    }
+
+    .modal-body {
+        --modal-body-padding: 10px;
+    }
+}

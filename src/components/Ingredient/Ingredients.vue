@@ -1,8 +1,10 @@
 <template>
-    <div style="text-align: right;">
-        <RouterLink class="button button--outline" :to="{ name: 'ingredients.form' }">Add ingredient</RouterLink>
-    </div>
-    <h2 class="page-subtitle" style="margin-top: 10px;">Ingredients</h2>
+    <PageHeader>
+        Ingredients
+        <template #actions>
+            <RouterLink class="button button--outline" :to="{ name: 'ingredients.form' }">Add ingredient</RouterLink>
+        </template>
+    </PageHeader>
     <p class="page-description">
         This is a list of ingredients available in your Bar Assistant server. You can press the "plus" sign to add specific ingredients to your shelf and this will update what cocktails you can make.
         By clicking "Learn more" you can see more details about the ingredient, including an option to add it to your shopping list.
@@ -49,6 +51,7 @@
 import _ from 'lodash';
 import ApiRequests from '../../ApiRequests';
 import Spinner from './../Spinner.vue'
+import PageHeader from '@/components/PageHeader.vue'
 
 export default {
     data() {
@@ -60,7 +63,8 @@ export default {
         }
     },
     components: {
-        Spinner
+        Spinner,
+        PageHeader
     },
     created() {
         document.title = `Ingredients \u22C5 Salt Rim`
@@ -208,10 +212,15 @@ export default {
 }
 
 @media (max-width: 450px) {
+    .ingredient-list {
+        row-gap: 10px;
+        column-gap: 10px;
+    }
+
     .ingredient-list .ingredient-list__image {
         margin-right: 10px;
-        width: 90px;
-        height: 90px;
+        width: 70px;
+        height: 70px;
     }
 
     .ingredient-list .ingredient-list__image img {

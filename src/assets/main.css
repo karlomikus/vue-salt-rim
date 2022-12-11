@@ -5,6 +5,7 @@
 @import "./modal.css";
 @import "./glasses.css";
 @import "./tags.css";
+@import "./table.css";
 
 @import "vue-select/dist/vue-select.css";
 @import "vue-toast-notification/dist/theme-default.css";
@@ -73,6 +74,7 @@ main {
     display: flex;
     font-family: var(--font-accent);
     color: #fff;
+    text-decoration: none;
 }
 
 .site-logo__image {
@@ -94,7 +96,7 @@ main {
 .site-logo__title {
     font-weight: 700;
     margin-left: 10px;
-    text-shadow: 3px 2px 0 rgba(0, 0, 0, .3);
+    text-shadow: 3px 2px 0 rgba(0, 0, 0, .2);
     line-height: 0.9;
 }
 
@@ -103,6 +105,22 @@ main {
     font-size: 0.8rem;
     text-shadow: none;
     opacity: .7;
+}
+
+a.site-logo:hover,
+a.site-logo:active,
+a.site-logo:focus,
+a.site-logo:hover .site-logo__title span,
+a.site-logo:active .site-logo__title span,
+a.site-logo:focus .site-logo__title span {
+    color: #fff;
+    opacity: 1;
+}
+
+a.site-logo:hover .site-logo__title,
+a.site-logo:active .site-logo__title,
+a.site-logo:focus .site-logo__title {
+    text-shadow: 3px 2px 0 rgba(0, 0, 0, .4);
 }
 
 @media (max-width: 450px) {
@@ -158,4 +176,24 @@ main {
     max-width: 400px;
     padding: 30px;
     border-radius: 20px;
+}
+
+.settings-page {
+    display: flex;
+    gap: 20px;
+}
+
+.settings-page__nav {
+    flex-basis: 200px;
+    flex: 1;
+}
+
+.settings-page__content {
+    flex: 3;
+}
+
+@media (max-width: 750px) {
+    .settings-page {
+        flex-direction: column;
+    }
 }

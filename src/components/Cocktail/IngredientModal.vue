@@ -13,7 +13,7 @@
                     </template>
                 </ais-hits>
             </ais-instant-search>
-            <label for="substitute-adding">
+            <label for="substitute-adding" style="margin-top: 15px; display: block;">
                 <input id="substitute-adding" type="checkbox" v-model="isAddingSubstitute"> Select substitute ingredients
             </label>
             <div class="ingredient-modal__info" v-show="currentQuery && currentQuery.length > 0">
@@ -237,5 +237,11 @@ export default {
     color: rgb(28, 48, 65);
     padding: 10px;
     margin-top: 10px;
+}
+
+@media (max-width: 450px) {
+    .ingredient-modal {
+        padding: 5px;
+    }
 }
 </style>
