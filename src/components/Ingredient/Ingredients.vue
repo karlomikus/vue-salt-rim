@@ -191,7 +191,7 @@ export default {
     color: var(--color-text-muted);
     overflow: hidden;
     line-height: 1.3rem;
-    max-height: calc(3 * 1.3rem);
+    max-height: calc(2 * 1.3rem);
 }
 
 .ingredient-list .ingredient-list__image {
@@ -201,7 +201,7 @@ export default {
     width: 95px;
     height: 95px;
     text-align: center;
-    border-radius: 50%;
+    border-radius: 8px;
     display: flex;
     align-items: center;
     justify-content: center;
