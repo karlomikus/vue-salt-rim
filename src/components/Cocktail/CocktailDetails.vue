@@ -63,7 +63,7 @@
                 </Dropdown>
             </div>
         </div>
-        <div class="cocktail-details-box cocktail-details-box--green">
+        <div class="cocktail-details-box cocktail-details-box--green" v-if="cocktail.ingredients.length > 0">
             <h3 class="cocktail-details-box__title">Ingredients:</h3>
             <div style="display: grid; grid-template-columns: 1fr 1fr;">
                 <div class="cocktail-button-group">
