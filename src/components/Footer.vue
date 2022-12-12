@@ -25,6 +25,8 @@
                 {{ clientVersion }}
                 <br>
                 {{ apiVersion }}
+                <br>
+                Powered by <a href="https://www.meilisearch.com/" target="_blank">Meilisearch</a>
             </div>
         </div>
     </footer>
@@ -97,6 +99,12 @@ export default {
 .site-footer__left a:hover svg {
     margin-right: 5px;
     fill: var(--color-link-hover)
+}
+
+.site-footer__left a:hover,
+.site-footer__left a:active,
+.site-footer__left a:focus {
+    color: var(--color-link-hover)
 }
 
 .site-footer__right {
