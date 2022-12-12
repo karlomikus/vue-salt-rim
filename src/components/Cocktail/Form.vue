@@ -93,6 +93,7 @@ export default {
         return {
             isModalVisible: false,
             cocktailIngredientForEdit: {},
+            cocktailIngredientForEditOriginal: {},
             isLoading: false,
             cocktail: {
                 ingredients: [],
@@ -169,12 +170,24 @@ export default {
                 1
             );
         },
-        closeModal() {
+        closeModal(eventData) {
             if (!this.cocktailIngredientForEdit.ingredient_id) {
                 this.cocktail.ingredients.splice(
                     this.cocktail.ingredients.findIndex(i => i == this.cocktailIngredientForEdit),
                     1
                 );
+            }
+
+            if (eventData.type == 'cancel') {
+                this.cocktailIngredientForEdit.id = this.cocktailIngredientForEditOriginal.id;
+                this.cocktailIngredientForEdit.name = this.cocktailIngredientForEditOriginal.name;
+                this.cocktailIngredientForEdit.ingredient_id = this.cocktailIngredientForEditOriginal.ingredient_id;
+                this.cocktailIngredientForEdit.ingredient_slug = this.cocktailIngredientForEditOriginal.ingredient_slug;
+                this.cocktailIngredientForEdit.amount = this.cocktailIngredientForEditOriginal.amount;
+                this.cocktailIngredientForEdit.units = this.cocktailIngredientForEditOriginal.units;
+                this.cocktailIngredientForEdit.optional = this.cocktailIngredientForEditOriginal.optional;
+                this.cocktailIngredientForEdit.sort = this.cocktailIngredientForEditOriginal.sort;
+                this.cocktailIngredientForEdit.substitutes = this.cocktailIngredientForEditOriginal.substitutes;
             }
 
             this.isModalVisible = false;
@@ -191,6 +204,7 @@ export default {
             this.editIngredient(placeholderData)
         },
         editIngredient(cocktailIngredient) {
+            this.cocktailIngredientForEditOriginal = JSON.parse(JSON.stringify(cocktailIngredient));
             this.cocktailIngredientForEdit = cocktailIngredient;
             this.isModalVisible = true;
         },

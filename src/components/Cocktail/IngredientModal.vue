@@ -64,9 +64,6 @@ export default {
         value(val) {
             window.document.body.style.overflow = 'hidden';
 
-            // Save original ingredient for cancel action
-            this.orgCocktailIngredient = Object.assign({}, val);
-
             // Set cocktail ingredient
             this.cocktailIngredient = val
 
@@ -93,7 +90,6 @@ export default {
                 Auth.getUserSearchSettings().key,
             ),
             cocktailIngredient: {},
-            orgCocktailIngredient: {},
             currentQuery: null,
             isAddingSubstitute: false
         }
@@ -123,12 +119,13 @@ export default {
         save() {
             window.document.body.style.overflow = 'auto';
             this.isAddingSubstitute = false;
-            this.$emit('close');
+            this.$emit('close', {type: 'save'});
         },
         cancel() {
             window.document.body.style.overflow = 'auto';
+            // this.cocktailIngredient.ingredient_id = null
             this.isAddingSubstitute = false;
-            this.$emit('close');
+            this.$emit('close', {type: 'cancel'});
         },
         newIngredient() {
             this.isLoading = true;
