@@ -104,7 +104,7 @@
             </div>
             <div v-html="parsedInstructions"></div>
         </div>
-        <div class="cocktail-details-box cocktail-details-box--red">
+        <div class="cocktail-details-box cocktail-details-box--red" v-if="cocktail.garnish">
             <h3 class="cocktail-details-box__title">Garnish:</h3>
             <div v-html="parsedGarnish"></div>
         </div>
@@ -335,6 +335,7 @@ export default {
     display: flex;
     align-items: center;
     background-color: rgb(211, 227, 222);
+    border-radius: 4px;
     margin-bottom: 10px;
     padding: 5px 10px;
 }
