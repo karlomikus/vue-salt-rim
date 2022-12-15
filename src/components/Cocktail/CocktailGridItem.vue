@@ -48,6 +48,10 @@ export default {
 </script>
 <style scoped>
 .cocktail-grid-item {
+    --cocktail-grid-image-size: 200px;
+}
+
+.cocktail-grid-item {
     text-align: center;
     background-color: #fff;
     padding: 30px;
@@ -99,8 +103,8 @@ export default {
 }
 
 .cocktail-grid-item__graphic__image {
-    width: 200px;
-    height: 200px;
+    width: var(--cocktail-grid-image-size);
+    height: var(--cocktail-grid-image-size);
     border-radius: 20px;
     background-color: #fff;
     background-size: cover;
@@ -135,11 +139,6 @@ export default {
         padding: 20px;
         border-radius: 15px;
         margin-top: 40px;
-    }
-
-    .cocktail-grid-item__graphic__image {
-        width: 250px;
-        height: 250px;
     }
 }
 </style>
