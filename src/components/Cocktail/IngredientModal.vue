@@ -25,7 +25,8 @@
             </h3>
             <div class="substitutes">
                 <small>Substitutes:</small>
-                <span v-for="substitute in cocktailIngredient.substitutes">{{ substitute.name }} &middot; <a href="#" @click.prevent="removeSubstitute(substitute)">Remove</a></span>
+                <span v-if="cocktailIngredient.substitutes.length > 0" v-for="substitute in cocktailIngredient.substitutes">{{ substitute.name }} &middot; <a href="#" @click.prevent="removeSubstitute(substitute)">Remove</a></span>
+                <span v-else>No substitutes selected.</span>
             </div>
             <div style="display: grid; grid-template-columns: 1fr 2fr; column-gap: 10px;">
                 <div class="form-group">
@@ -34,7 +35,16 @@
                 </div>
                 <div class="form-group">
                     <label class="form-label" for="ingredient-units">Units:</label>
-                    <input class="form-input" type="text" id="ingredient-units" v-model="cocktailIngredient.units">
+                    <input class="form-input" type="text" id="ingredient-units" list="common-units" v-model="cocktailIngredient.units">
+                    <p class="form-input-hint">Use "oz", "cl", "ml" for common fluid units to enable unit conversion on cocktail page.</p>
+                    <datalist id="common-units">
+                        <option>ml</option>
+                        <option>oz</option>
+                        <option>cl</option>
+                        <option>dashes</option>
+                        <option>barspoon</option>
+                        <option>drops</option>
+                    </datalist>
                 </div>
             </div>
             <div class="form-group">
@@ -70,11 +80,6 @@ export default {
             // Reset search on modal open
             document.querySelector('.modal-body form').reset()
 
-            // Add substitutes array
-            if (!this.cocktailIngredient.substitutes) {
-                this.cocktailIngredient.substitutes = []
-            }
-
             // Focus seach input on modal open
             setTimeout(() => {
                 document.querySelector('.ais-SearchBox input').focus()
@@ -89,7 +94,9 @@ export default {
                 Auth.getUserSearchSettings().host,
                 Auth.getUserSearchSettings().key,
             ),
-            cocktailIngredient: {},
+            cocktailIngredient: {
+                substitutes: []
+            },
             currentQuery: null,
             isAddingSubstitute: false
         }

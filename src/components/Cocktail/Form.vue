@@ -208,6 +208,10 @@ export default {
             this.editIngredient(placeholderData)
         },
         editIngredient(cocktailIngredient) {
+            if (!cocktailIngredient.substitutes) {
+                cocktailIngredient.substitutes = []
+            }
+
             this.cocktailIngredientForEditOriginal = JSON.parse(JSON.stringify(cocktailIngredient));
             this.cocktailIngredientForEdit = cocktailIngredient;
             this.isModalVisible = true;
