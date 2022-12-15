@@ -244,24 +244,26 @@ export default {
                 glass_id: this.glassId,
                 ingredients: this.cocktail.ingredients
                     .filter(i => i.name != '<Not selected>')
-                    .map(i => {
+                    .map((ingredient, idx) => {
                         // Convert oz to ml
-                        if (i.units == 'oz') {
-                            i.amount = Unitz.parse(`${i.amount}${i.units}`).value * 30
-                            i.units = 'ml'
+                        if (ingredient.units == 'oz') {
+                            ingredient.amount = Unitz.parse(`${ingredient.amount}${ingredient.units}`).value * 30
+                            ingredient.units = 'ml'
                         }
                         // Convert cl to ml
-                        if (i.units == 'cl') {
-                            i.amount = i.amount * 10
-                            i.units = 'ml'
+                        if (ingredient.units == 'cl') {
+                            ingredient.amount = ingredient.amount * 10
+                            ingredient.units = 'ml'
                         }
 
                         // Just send substitute ids
-                        if (i.substitutes) {
-                            i.substitutes = i.substitutes.map(s => s.id)
+                        if (ingredient.substitutes) {
+                            ingredient.substitutes = ingredient.substitutes.map(s => s.id)
                         }
 
-                        return i;
+                        ingredient.sort = idx + 1;
+
+                        return ingredient;
                     })
             };
 
