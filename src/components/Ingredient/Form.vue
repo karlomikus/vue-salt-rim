@@ -47,8 +47,9 @@
 </template>
 
 <script>
-import ApiRequests from "../../ApiRequests";
-import ImageUpload from './../ImageUpload.vue'
+import ApiRequests from "@/ApiRequests";
+import Utils from "@/Utils";
+import ImageUpload from '@/components/ImageUpload.vue'
 import { ColorPicker } from 'vue-accessible-color-picker'
 import PageHeader from '@/components/PageHeader.vue'
 
@@ -75,6 +76,8 @@ export default {
 
         if (this.ingredientId) {
             ApiRequests.fetchIngredient(this.ingredientId).then(data => {
+                data.description = Utils.decodeHtml(data.description);
+
                 this.ingredient = data;
 
                 document.title = `Ingredient Form \u22C5 ${this.ingredient.name} \u22C5 Salt Rim`

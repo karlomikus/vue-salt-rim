@@ -81,11 +81,12 @@
 </template>
 
 <script>
-import ApiRequests from "../../ApiRequests";
+import Utils from "@/Utils";
+import ApiRequests from "@/ApiRequests";
 import Unitz from 'unitz'
-import OverlayLoader from './../OverlayLoader.vue'
-import IngredientModal from './IngredientModal.vue'
-import ImageUpload from './../ImageUpload.vue'
+import OverlayLoader from '@/components/OverlayLoader.vue'
+import IngredientModal from '@/components/Cocktail/IngredientModal.vue'
+import ImageUpload from '@/components/ImageUpload.vue'
 import PageHeader from '@/components/PageHeader.vue'
 
 export default {
@@ -152,6 +153,9 @@ export default {
 
         if (this.cocktailId) {
             ApiRequests.fetchCocktail(this.cocktailId).then(data => {
+                data.description = Utils.decodeHtml(data.description);
+                data.instructions = Utils.decodeHtml(data.instructions);
+                data.garnish = Utils.decodeHtml(data.garnish);
                 this.cocktail = data;
                 this.isLoading = false;
                 document.title = `Cocktail form \u22C5 ${this.cocktail.name} \u22C5 Salt Rim`
