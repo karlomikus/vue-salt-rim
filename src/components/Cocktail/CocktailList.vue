@@ -10,7 +10,6 @@
     </p>
     <ais-instant-search :search-client="searchClient" index-name="cocktails:name:asc" :routing="routing">
         <ais-configure :hitsPerPage="100" :stalledSearchDelay="200" />
-        <!-- <ais-current-refinements></ais-current-refinements> -->
         <div class="cocktail-list-search-container">
             <ais-search-box placeholder="Type to filter cocktails..." :class-names="{ 'ais-SearchBox-input': 'form-input', 'ais-SearchBox-reset': 'cocktail-list-search-container__reset' }" />
             <ais-sort-by :items="[
@@ -26,21 +25,27 @@
                 </svg>
             </button>
         </div>
-        <ais-current-refinements>
+        <ais-current-refinements :transform-items="transformCurrentRefinements">
             <template v-slot="{ items, createURL }">
                 <div class="cocktail-current-refinements">
                     <template v-for="item in items">
                         <template v-if="item.label == 'id'">
                             <div class="cocktail-current-refinements__refinement">
                                 <a href="#" :href="createURL(refinement)" @click.prevent="item.refinements.forEach(r => item.refine(r))">
-                                    My favorites <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16"><path fill="none" d="M0 0h24v24H0z"/><path d="M12 10.586l4.95-4.95 1.414 1.414-4.95 4.95 4.95 4.95-1.414 1.414-4.95-4.95-4.95 4.95-1.414-1.414 4.95-4.95-4.95-4.95L7.05 5.636z"/></svg>
+                                    Specific cocktails <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16">
+                                        <path fill="none" d="M0 0h24v24H0z" />
+                                        <path d="M12 10.586l4.95-4.95 1.414 1.414-4.95 4.95 4.95 4.95-1.414 1.414-4.95-4.95-4.95 4.95-1.414-1.414 4.95-4.95-4.95-4.95L7.05 5.636z" />
+                                    </svg>
                                 </a>
                             </div>
                         </template>
                         <template v-else>
                             <div class="cocktail-current-refinements__refinement" v-for="refinement in item.refinements">
                                 <a href="#" :href="createURL(refinement)" @click.prevent="item.refine(refinement)">
-                                    {{ handleRefinementTag(refinement) }} <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16"><path fill="none" d="M0 0h24v24H0z"/><path d="M12 10.586l4.95-4.95 1.414 1.414-4.95 4.95 4.95 4.95-1.414 1.414-4.95-4.95-4.95 4.95-1.414-1.414 4.95-4.95-4.95-4.95L7.05 5.636z"/></svg>
+                                    {{ handleRefinementTag(refinement) }} <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16">
+                                        <path fill="none" d="M0 0h24v24H0z" />
+                                        <path d="M12 10.586l4.95-4.95 1.414 1.414-4.95 4.95 4.95 4.95-1.414 1.414-4.95-4.95-4.95 4.95-1.414-1.414 4.95-4.95-4.95-4.95L7.05 5.636z" />
+                                    </svg>
                                 </a>
                             </div>
                         </template>
@@ -81,6 +86,14 @@
                             <template v-slot="{ value, refine, createURL }">
                                 <a :href="createURL(value)" class="tag tag--link" :class="{ 'tag--is-selected': value.isRefined }" @click.prevent="refine(value)">
                                     My favorites
+                                    ({{ value.count || 0 }})
+                                </a>
+                            </template>
+                        </ais-toggle-refinement>
+                        <ais-toggle-refinement attribute="id" :on="shelfCocktailIds">
+                            <template v-slot="{ value, refine, createURL }">
+                                <a :href="createURL(value)" class="tag tag--link" :class="{ 'tag--is-selected': value.isRefined }" @click.prevent="refine(value)">
+                                    Shelf cocktails
                                     ({{ value.count || 0 }})
                                 </a>
                             </template>
@@ -129,7 +142,7 @@ export default {
                 stateMapping: singleIndexMapping('cocktails:name:asc'),
             },
             userCocktails: [],
-            shelfCocktails: [],
+            shelfCocktailIds: [],
             userId: Auth.getUser().id,
             showFilterContainer: false,
         };
@@ -146,9 +159,9 @@ export default {
             this.userCocktails = data
         })
 
-        // ApiRequests.fetchShelfCocktails(true).then(data => {
-        //     this.shelfCocktails = data;
-        // });
+        ApiRequests.fetchShelfCocktails(true).then(data => {
+            this.shelfCocktailIds = data;
+        });
     },
     computed: {
         userCocktailIds() {
