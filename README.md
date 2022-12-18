@@ -5,12 +5,12 @@
 <p align="center">
     <a href="https://hub.docker.com/r/kmikus12/salt-rim"><img src="https://img.shields.io/docker/v/kmikus12/salt-rim?style=for-the-badge&sort=semver" alt="Docker image"></a>
     <img src="https://img.shields.io/github/license/karlomikus/vue-salt-rim?style=for-the-badge" alt="License">
-    <img src="https://img.shields.io/github/workflow/status/karlomikus/vue-salt-rim/Build%20docker%20image?style=for-the-badge" alt="Build">
+    <img src="https://img.shields.io/github/actions/workflow/status/karlomikus/vue-salt-rim/build-image.yml?branch=master&style=for-the-badge" alt="Build">
 </p>
 
 # 🍹 Salt Rim - Bar Assistent Web Client
 
-Salt Rim is a web client used for connecting to your [Bar Assistant](https://github.com/karlomikus/bar-assistant) server. It's made with Vue.js and it builds to a static webpage that can be easily hosted anywhere.
+Salt Rim is a web client used for connecting to your [Bar Assistant](https://github.com/karlomikus/bar-assistant) server. It's made with Vue 3 and it builds to a static webpage that can be easily hosted anywhere.
 
 <p align="center">
     <a href="https://bar.karlomikus.com" target="_blank">Click here to view frontend demo.</a>
@@ -23,28 +23,27 @@ Salt Rim is a web client used for connecting to your [Bar Assistant](https://git
 ## Features
 
 - Beautiful UI for your Bar Asistant server
+- Implements all supported features of Bar Assistant
 - Desktop and mobile support
-- Easily search and filter cocktails and ingredients using [Vue Instantsearch](https://www.algolia.com/doc/guides/building-search-ui/what-is-instantsearch/vue/)
-- Add, update or delete cocktails and ingredients
-- Manage your personal shopping lists
-- Save your favorite cocktails
-- Markdown render support
+- Powerful search and filtering using [Vue Instantsearch](https://www.algolia.com/doc/guides/building-search-ui/what-is-instantsearch/vue/)
+- Support for multiple measurement units
+- Manage your personal shopping list
+- Support for markdown in cocktails and ingredients
 - Automatically add missing ingredients to your shopping cart
-- Implements all supported functionality of Bar Assistant
 
 ## Docker installation
 
-Image exposes port `8080`.
+Once you have your BA api instance running, you just need to set `API_URL` env variable:
 
-You can run docker image with the following command:
-
-```
+``` bash
 $ docker run -d \
     --name salt-rim \
     -e API_URL=http://your-bar-assistant-url \
     -p 8080:8080 \
     kmikus12/salt-rim
 ```
+
+[For a complete docker compose setup click here](https://github.com/bar-assistant/docker/).
 
 ## Manual installation
 
@@ -74,12 +73,15 @@ $ npm run build
 
 This will create a `dist/` folder with ready to use static files.
 
-## Contributing
+5. Or run a dev server with the following command
 
 ``` bash
-# Dev server
 $ npm run dev
 ```
+
+## Contributing
+
+Fork the respository, follow manual installation steps and make your changes. Issues and PR's are appreciated.
 
 ## License
 

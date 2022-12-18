@@ -1,6 +1,6 @@
 {
-  "name": "cocktail",
-  "version": "0.6.0",
+  "name": "vue-salt-rim",
+  "version": "1.0.0",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
