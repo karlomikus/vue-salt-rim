@@ -102,8 +102,14 @@ class ApiRequests
         return await this.deleteRequest(`/api/cocktails/${id}`);
     }
 
-    static async fetchUserCocktail() {
-        let jsonResp = await this.getRequest(`/api/cocktails/user-shelf`);
+    static async fetchShelfCocktails(onlyIds = false) {
+        let url = `/api/cocktails/user-shelf`;
+
+        if (onlyIds) {
+           url = `/api/cocktails/user-shelf?format=ids`;
+        }
+
+        let jsonResp = await this.getRequest(url);
 
         return this.parseResponse(jsonResp);
     }
