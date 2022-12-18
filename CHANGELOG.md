@@ -5,6 +5,7 @@
 - Update `sort` attribute on cocktail ingredient on update and save
 - Fix canceling ingredient modal not properly resetting ingredient
 - Fix ingredient image upload sticking on route change
+- Make tags and glass tags clickable
 
 # v0.6.0
 - Update site search component
