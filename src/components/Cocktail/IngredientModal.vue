@@ -25,7 +25,8 @@
             </h3>
             <div class="substitutes">
                 <small>Substitutes:</small>
-                <span v-for="substitute in cocktailIngredient.substitutes">{{ substitute.name }} &middot; <a href="#" @click.prevent="removeSubstitute(substitute)">Remove</a></span>
+                <span v-if="cocktailIngredient.substitutes.length > 0" v-for="substitute in cocktailIngredient.substitutes">{{ substitute.name }} &middot; <a href="#" @click.prevent="removeSubstitute(substitute)">Remove</a></span>
+                <span v-else>No substitutes selected.</span>
             </div>
             <div style="display: grid; grid-template-columns: 1fr 2fr; column-gap: 10px;">
                 <div class="form-group">
@@ -34,7 +35,16 @@
                 </div>
                 <div class="form-group">
                     <label class="form-label" for="ingredient-units">Units:</label>
-                    <input class="form-input" type="text" id="ingredient-units" v-model="cocktailIngredient.units">
+                    <input class="form-input" type="text" id="ingredient-units" list="common-units" v-model="cocktailIngredient.units">
+                    <p class="form-input-hint">Use "oz", "cl", "ml" for common fluid units to enable unit conversion on cocktail page.</p>
+                    <datalist id="common-units">
+                        <option>ml</option>
+                        <option>oz</option>
+                        <option>cl</option>
+                        <option>dashes</option>
+                        <option>barspoon</option>
+                        <option>drops</option>
+                    </datalist>
                 </div>
             </div>
             <div class="form-group">
@@ -64,19 +74,11 @@ export default {
         value(val) {
             window.document.body.style.overflow = 'hidden';
 
-            // Save original ingredient for cancel action
-            this.orgCocktailIngredient = Object.assign({}, val);
-
             // Set cocktail ingredient
             this.cocktailIngredient = val
 
             // Reset search on modal open
             document.querySelector('.modal-body form').reset()
-
-            // Add substitutes array
-            if (!this.cocktailIngredient.substitutes) {
-                this.cocktailIngredient.substitutes = []
-            }
 
             // Focus seach input on modal open
             setTimeout(() => {
@@ -92,8 +94,9 @@ export default {
                 Auth.getUserSearchSettings().host,
                 Auth.getUserSearchSettings().key,
             ),
-            cocktailIngredient: {},
-            orgCocktailIngredient: {},
+            cocktailIngredient: {
+                substitutes: []
+            },
             currentQuery: null,
             isAddingSubstitute: false
         }
@@ -123,12 +126,13 @@ export default {
         save() {
             window.document.body.style.overflow = 'auto';
             this.isAddingSubstitute = false;
-            this.$emit('close');
+            this.$emit('close', {type: 'save'});
         },
         cancel() {
             window.document.body.style.overflow = 'auto';
+            // this.cocktailIngredient.ingredient_id = null
             this.isAddingSubstitute = false;
-            this.$emit('close');
+            this.$emit('close', {type: 'cancel'});
         },
         newIngredient() {
             this.isLoading = true;

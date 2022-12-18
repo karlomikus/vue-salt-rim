@@ -81,11 +81,12 @@
 </template>
 
 <script>
-import ApiRequests from "../../ApiRequests";
+import Utils from "@/Utils";
+import ApiRequests from "@/ApiRequests";
 import Unitz from 'unitz'
-import OverlayLoader from './../OverlayLoader.vue'
-import IngredientModal from './IngredientModal.vue'
-import ImageUpload from './../ImageUpload.vue'
+import OverlayLoader from '@/components/OverlayLoader.vue'
+import IngredientModal from '@/components/Cocktail/IngredientModal.vue'
+import ImageUpload from '@/components/ImageUpload.vue'
 import PageHeader from '@/components/PageHeader.vue'
 
 export default {
@@ -93,6 +94,7 @@ export default {
         return {
             isModalVisible: false,
             cocktailIngredientForEdit: {},
+            cocktailIngredientForEditOriginal: {},
             isLoading: false,
             cocktail: {
                 ingredients: [],
@@ -151,6 +153,9 @@ export default {
 
         if (this.cocktailId) {
             ApiRequests.fetchCocktail(this.cocktailId).then(data => {
+                data.description = Utils.decodeHtml(data.description);
+                data.instructions = Utils.decodeHtml(data.instructions);
+                data.garnish = Utils.decodeHtml(data.garnish);
                 this.cocktail = data;
                 this.isLoading = false;
                 document.title = `Cocktail form \u22C5 ${this.cocktail.name} \u22C5 Salt Rim`
@@ -169,12 +174,24 @@ export default {
                 1
             );
         },
-        closeModal() {
+        closeModal(eventData) {
             if (!this.cocktailIngredientForEdit.ingredient_id) {
                 this.cocktail.ingredients.splice(
                     this.cocktail.ingredients.findIndex(i => i == this.cocktailIngredientForEdit),
                     1
                 );
+            }
+
+            if (eventData.type == 'cancel') {
+                this.cocktailIngredientForEdit.id = this.cocktailIngredientForEditOriginal.id;
+                this.cocktailIngredientForEdit.name = this.cocktailIngredientForEditOriginal.name;
+                this.cocktailIngredientForEdit.ingredient_id = this.cocktailIngredientForEditOriginal.ingredient_id;
+                this.cocktailIngredientForEdit.ingredient_slug = this.cocktailIngredientForEditOriginal.ingredient_slug;
+                this.cocktailIngredientForEdit.amount = this.cocktailIngredientForEditOriginal.amount;
+                this.cocktailIngredientForEdit.units = this.cocktailIngredientForEditOriginal.units;
+                this.cocktailIngredientForEdit.optional = this.cocktailIngredientForEditOriginal.optional;
+                this.cocktailIngredientForEdit.sort = this.cocktailIngredientForEditOriginal.sort;
+                this.cocktailIngredientForEdit.substitutes = this.cocktailIngredientForEditOriginal.substitutes;
             }
 
             this.isModalVisible = false;
@@ -191,6 +208,11 @@ export default {
             this.editIngredient(placeholderData)
         },
         editIngredient(cocktailIngredient) {
+            if (!cocktailIngredient.substitutes) {
+                cocktailIngredient.substitutes = []
+            }
+
+            this.cocktailIngredientForEditOriginal = JSON.parse(JSON.stringify(cocktailIngredient));
             this.cocktailIngredientForEdit = cocktailIngredient;
             this.isModalVisible = true;
         },
@@ -222,24 +244,26 @@ export default {
                 glass_id: this.glassId,
                 ingredients: this.cocktail.ingredients
                     .filter(i => i.name != '<Not selected>')
-                    .map(i => {
+                    .map((ingredient, idx) => {
                         // Convert oz to ml
-                        if (i.units == 'oz') {
-                            i.amount = Unitz.parse(`${i.amount}${i.units}`).value * 30
-                            i.units = 'ml'
+                        if (ingredient.units == 'oz') {
+                            ingredient.amount = Unitz.parse(`${ingredient.amount}${ingredient.units}`).value * 30
+                            ingredient.units = 'ml'
                         }
                         // Convert cl to ml
-                        if (i.units == 'cl') {
-                            i.amount = i.amount * 10
-                            i.units = 'ml'
+                        if (ingredient.units == 'cl') {
+                            ingredient.amount = ingredient.amount * 10
+                            ingredient.units = 'ml'
                         }
 
                         // Just send substitute ids
-                        if (i.substitutes) {
-                            i.substitutes = i.substitutes.map(s => s.id)
+                        if (ingredient.substitutes) {
+                            ingredient.substitutes = ingredient.substitutes.map(s => s.id)
                         }
 
-                        return i;
+                        ingredient.sort = idx + 1;
+
+                        return ingredient;
                     })
             };
 

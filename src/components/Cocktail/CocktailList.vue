@@ -129,6 +129,7 @@ export default {
                 stateMapping: singleIndexMapping('cocktails:name:asc'),
             },
             userCocktails: [],
+            shelfCocktails: [],
             userId: Auth.getUser().id,
             showFilterContainer: false,
         };
@@ -144,6 +145,10 @@ export default {
         ApiRequests.fetchUserCocktails(userId).then(data => {
             this.userCocktails = data
         })
+
+        // ApiRequests.fetchShelfCocktails(true).then(data => {
+        //     this.shelfCocktails = data;
+        // });
     },
     computed: {
         userCocktailIds() {

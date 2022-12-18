@@ -111,7 +111,7 @@ export default {
             this.$toast.error('An error occured while fetching your favorite cocktails from a server.');
         })
 
-        ApiRequests.fetchUserCocktail().then(data => {
+        ApiRequests.fetchShelfCocktails().then(data => {
             this.loaders.cocktails = false;
             this.shelfCocktails = data
         }).catch(e => {

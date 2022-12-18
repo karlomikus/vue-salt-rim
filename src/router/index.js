@@ -67,11 +67,6 @@ const router = createRouter({
                     component: () => import('../views/ShelfHomeView.vue'),
                 },
                 {
-                    path: '/shelf-cocktails',
-                    name: 'shelf-cocktails',
-                    component: () => import('../views/ShelfCocktailsView.vue'),
-                },
-                {
                     path: '/settings',
                     name: 'settings',
                     redirect: { name: 'settings.profile' }

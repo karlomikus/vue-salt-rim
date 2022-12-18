@@ -1,3 +1,12 @@
+# v1.0.0
+- Fix markdown display issues
+- Update footer styling
+- Add some help notes to ingredient modal
+- Update `sort` attribute on cocktail ingredient on update and save
+- Fix canceling ingredient modal not properly resetting ingredient
+- Fix ingredient image upload sticking on route change
+- Make tags and glass tags clickable
+
 # v0.6.0
 - Update site search component
 - Add settings page

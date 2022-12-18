@@ -1,6 +1,9 @@
 <template>
     <PageHeader>
         Ingredient categories
+        <template #actions>
+            <RouterLink class="button button--outline" :to="{name: 'settings.categories.form'}">Add category</RouterLink>
+        </template>
     </PageHeader>
     <div class="settings-page">
         <div class="settings-page__nav">
@@ -12,7 +15,7 @@
                 <thead>
                     <tr>
                         <th>Name / Description</th>
-                        <th><RouterLink :to="{name: 'settings.categories.form'}">Create</RouterLink></th>
+                        <th></th>
                     </tr>
                 </thead>
                 <tbody>

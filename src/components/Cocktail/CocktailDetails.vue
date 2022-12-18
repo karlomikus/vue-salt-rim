@@ -7,7 +7,7 @@
         <div class="cocktail-details-box cocktail-details-box--blue">
             <h3 class="cocktail-details-box__title">{{ cocktail.name }}</h3>
             <div class="tag-container" style="margin-bottom: 20px;" v-if="cocktail.tags.length > 0">
-                <span v-for="tag in cocktail.tags" class="tag tag--background" style="background-color: #BFD3DF;">{{ tag }}</span>
+                <RouterLink :to="{name: 'cocktails', query: {'refinementList[tags][0]': tag}}" v-for="tag in cocktail.tags" class="tag tag--background" style="background-color: #BFD3DF;">{{ tag }}</RouterLink>
             </div>
             <div class="cocktail-details-box__description">
                 <div v-html="parsedDescription"></div>
@@ -63,7 +63,7 @@
                 </Dropdown>
             </div>
         </div>
-        <div class="cocktail-details-box cocktail-details-box--green">
+        <div class="cocktail-details-box cocktail-details-box--green" v-if="cocktail.ingredients.length > 0">
             <h3 class="cocktail-details-box__title">Ingredients:</h3>
             <div style="display: grid; grid-template-columns: 1fr 1fr;">
                 <div class="cocktail-button-group">
@@ -80,13 +80,13 @@
             <ul class="cocktail-ingredients">
                 <li v-for="ing in cocktail.ingredients" :key="ing.sort">
                     <div class="cocktail-ingredients__content">
-                        <RouterLink :to="{ name: 'ingredients.show', params: { id: ing.ingredient_slug } }">
+                        <RouterLink :to="{ name: 'ingredients.show', params: { id: ing.ingredient_slug } }" data-ingredient="preferred">
                             {{ ing.name }}
                         </RouterLink>
                         <small v-if="ing.optional">(optional)</small>
                         <div class="cocktail-ingredients__content__substitutes">
                             <template v-for="sub in ing.substitutes">
-                                or <RouterLink :to="{ name: 'ingredients.show', params: { id: sub.slug } }">{{ sub.name }}</RouterLink>
+                                or <RouterLink :to="{ name: 'ingredients.show', params: { id: sub.slug } }" data-ingredient="substitute">{{ sub.name }}</RouterLink>
                             </template>
                         </div>
                         <span v-if="!userShelfIngredients.includes(ing.ingredient_id)">You are missing this ingredient</span>
@@ -100,11 +100,11 @@
         <div class="cocktail-details-box cocktail-details-box--yellow">
             <h3 class="cocktail-details-box__title">Instructions:</h3>
             <div class="tag-container" style="margin-bottom: 20px;" v-if="cocktail.glass">
-                <span class="tag tag--background" style="background-color: #ffddc0;">Glass: {{ cocktail.glass.name }}</span>
+                <RouterLink :to="{name: 'cocktails', query: {'refinementList[glass][0]': cocktail.glass.name}}" class="tag tag--background" style="background-color: #ffddc0;">Glass: {{ cocktail.glass.name }}</RouterLink>
             </div>
             <div v-html="parsedInstructions"></div>
         </div>
-        <div class="cocktail-details-box cocktail-details-box--red">
+        <div class="cocktail-details-box cocktail-details-box--red" v-if="cocktail.garnish">
             <h3 class="cocktail-details-box__title">Garnish:</h3>
             <div v-html="parsedGarnish"></div>
         </div>
@@ -335,6 +335,7 @@ export default {
     display: flex;
     align-items: center;
     background-color: rgb(211, 227, 222);
+    border-radius: 4px;
     margin-bottom: 10px;
     padding: 5px 10px;
 }

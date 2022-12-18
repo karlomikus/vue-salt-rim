@@ -47,8 +47,9 @@
 </template>
 
 <script>
-import ApiRequests from "../../ApiRequests";
-import ImageUpload from './../ImageUpload.vue'
+import ApiRequests from "@/ApiRequests";
+import Utils from "@/Utils";
+import ImageUpload from '@/components/ImageUpload.vue'
 import { ColorPicker } from 'vue-accessible-color-picker'
 import PageHeader from '@/components/PageHeader.vue'
 
@@ -57,10 +58,9 @@ export default {
         return {
             ingredientId: null,
             showColorPicker: false,
-            ingredient: {},
-            images: [
-                {image: null, copyright: null}
-            ],
+            ingredient: {
+                images: []
+            },
             categories: []
         };
     },
@@ -76,8 +76,9 @@ export default {
 
         if (this.ingredientId) {
             ApiRequests.fetchIngredient(this.ingredientId).then(data => {
+                data.description = Utils.decodeHtml(data.description);
+
                 this.ingredient = data;
-                this.images[0].copyright = this.ingredient.image_copyright;
 
                 document.title = `Ingredient Form \u22C5 ${this.ingredient.name} \u22C5 Salt Rim`
             })
@@ -102,8 +103,10 @@ export default {
             const imageResources = await this.$refs.imagesUpload.uploadPictures().catch(() => {
                 this.$toast.error('An error occured while uploading images. Your ingredient is still saved.');
             }) || [];
-            
-            postData.images = imageResources.map(img => img.id);
+
+            if (Array.isArray(imageResources)) {
+                postData.images = imageResources.map(img => img.id);
+            }
 
             if (this.ingredientId) {
                 ApiRequests.updateIngredient(this.ingredientId, postData).then(data => {
