@@ -8,6 +8,12 @@
             <div class="cocktail-grid-item__graphic__image" :data-img-src="mainCocktailImageUrl"></div>
         </div>
         <h2 class="cocktail-grid-item__title">{{ cocktail.name }}</h2>
+        <div class="cocktail-grid-item__rating">
+            <span v-for="val in 5">
+                <template v-if="val > cocktail.average_rating">☆</template>
+                <template v-else>★</template>
+            </span>
+        </div>
         <p class="cocktail-grid-item__ingredients" v-if="cocktail.short_ingredients">{{ cocktail.short_ingredients.join(', ') }}</p>
         <ul class="cocktail-tags">
             <li v-for="tag in cocktail.tags.slice(0, maxTags)" :key="tag" class="tag tag--background">{{ tag }}</li>
@@ -140,5 +146,9 @@ export default {
         border-radius: 15px;
         margin-top: 40px;
     }
+}
+
+.cocktail-grid-item__rating {
+    color: rgb(235, 133, 0);
 }
 </style>

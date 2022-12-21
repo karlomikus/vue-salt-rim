@@ -13,8 +13,11 @@
         <div class="cocktail-list-search-container">
             <ais-search-box placeholder="Type to filter cocktails..." :class-names="{ 'ais-SearchBox-input': 'form-input', 'ais-SearchBox-reset': 'cocktail-list-search-container__reset' }" />
             <ais-sort-by :items="[
+                { value: 'cocktails', label: 'Relevency' },
                 { value: 'cocktails:name:asc', label: 'Name asc.' },
                 { value: 'cocktails:name:desc', label: 'Name desc.' },
+                { value: 'cocktails:average_rating:asc', label: 'Rating asc.' },
+                { value: 'cocktails:average_rating:desc', label: 'Rating desc.' },
                 { value: 'cocktails:date:asc', label: 'Date modified asc.' },
                 { value: 'cocktails:date:desc', label: 'Date modified desc.' },
             ]" :class-names="{ 'ais-SortBy-select': 'form-select' }" />
@@ -60,7 +63,7 @@
                     <ais-refinement-list attribute="tags" :sort-by="['name:asc']" :limit="30" operator="and">
                         <template v-slot:item="{ item, refine, createURL }">
                             <a :href="createURL(item.value)" class="tag tag--link" :class="{ 'tag--is-selected': item.isRefined }" @click.prevent="refine(item.value)">
-                                {{ item.label }}
+                                {{ item.label }} ({{ item.count }})
                             </a>
                         </template>
                     </ais-refinement-list>
@@ -68,11 +71,22 @@
                     <ais-refinement-list attribute="glass" :sort-by="['name:asc']" :limit="30" operator="or">
                         <template v-slot:item="{ item, refine, createURL }">
                             <a :href="createURL(item.value)" class="tag tag--link" :class="{ 'tag--is-selected': item.isRefined }" @click.prevent="refine(item.value)">
-                                {{ item.label }}
+                                {{ item.label }} ({{ item.count }})
                             </a>
                         </template>
                     </ais-refinement-list>
-                    <h4>User filters:</h4>
+                    <h4>Rating</h4>
+                    <ais-rating-menu attribute="average_rating">
+                        <template v-slot="{ items, refine, createURL }">
+                            <a v-for="item in items" :key="item.value" :href="createURL(item.value)" class="tag tag--link" :class="{ 'tag--is-selected': item.isRefined }" @click.prevent="refine(item.value)">
+                                <span v-for="(full, index) in item.stars" :key="index">
+                                    {{ full ? '★' : '☆' }}
+                                </span>
+                                & up ({{ item.count }})
+                            </a>
+                        </template>
+                    </ais-rating-menu>
+                    <h4>Cocktail filters:</h4>
                     <div class="cocktail-list-filter-panel__toggle-refinements">
                         <ais-toggle-refinement attribute="user_id" :on="userId">
                             <template v-slot="{ value, refine, createURL }">
@@ -281,5 +295,12 @@ export default {
 .cocktail-current-refinements__refinement a:active,
 .cocktail-current-refinements__refinement a:focus {
     background: var(--color-link-hover);
+}
+
+.cocktail-list-filter-panel .ais-RatingMenu {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 15px;
 }
 </style>
