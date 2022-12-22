@@ -22,6 +22,7 @@ export default {
     },
     data() {
         return {
+            isLoading: false,
             currentRating: this.rating,
             max: 5,
             min: 1
@@ -29,19 +30,28 @@ export default {
     },
     methods: {
         rate(rating) {
+            if (this.isLoading) {
+                return;
+            }
+
+            this.isLoading = true;
             if (this.currentRating == rating) {
                 ApiRequests.deleteCocktailUserRating(this.id).then(() => {
                     this.currentRating = 0
                     this.$toast.default(`Removed cocktail rating.`)
+                    this.isLoading = false;
                 }).catch(e => {
                     this.$toast.error(e.message)
+                    this.isLoading = false;
                 })
             } else {
                 ApiRequests.rateCocktail(this.id, { rating: rating }).then(() => {
                     this.currentRating = rating
                     this.$toast.default(`Cocktail rated with ${rating} stars.`)
+                    this.isLoading = false;
                 }).catch(e => {
                     this.$toast.error(e.message)
+                    this.isLoading = false;
                 })
             }
         }
@@ -81,8 +91,11 @@ export default {
     color: var(--color-rated);
 }
 
-.rating a:active,
-.rating a:focus {
+.rating:hover a:focus {
+    color: var(--color-rated);
+}
+
+.rating:not(:hover) a:focus {
     color: var(--color-unrated);
 }
 </style>
