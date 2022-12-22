@@ -374,6 +374,22 @@ class ApiRequests
     static async deleteGlass(id) {
         return await this.deleteRequest(`/api/glasses/${id}`);
     }
+
+    /**
+     * =============================
+     * Ratings
+     * =============================
+     */
+
+    static async rateCocktail(id, data) {
+        let jsonResp = await this.postRequest(`/api/ratings/cocktails/${id}`, data);
+
+        return this.parseResponse(jsonResp);
+    }
+
+    static async deleteCocktailUserRating(id) {
+        return await this.deleteRequest(`/api/ratings/cocktails/${id}`);
+    }
 }
 
 export default ApiRequests;

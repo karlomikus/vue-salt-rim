@@ -10,12 +10,14 @@
     </p>
     <ais-instant-search :search-client="searchClient" index-name="cocktails:name:asc" :routing="routing">
         <ais-configure :hitsPerPage="100" :stalledSearchDelay="200" />
-        <!-- <ais-current-refinements></ais-current-refinements> -->
         <div class="cocktail-list-search-container">
             <ais-search-box placeholder="Type to filter cocktails..." :class-names="{ 'ais-SearchBox-input': 'form-input', 'ais-SearchBox-reset': 'cocktail-list-search-container__reset' }" />
             <ais-sort-by :items="[
+                { value: 'cocktails', label: 'Relevency' },
                 { value: 'cocktails:name:asc', label: 'Name asc.' },
                 { value: 'cocktails:name:desc', label: 'Name desc.' },
+                { value: 'cocktails:average_rating:asc', label: 'Rating asc.' },
+                { value: 'cocktails:average_rating:desc', label: 'Rating desc.' },
                 { value: 'cocktails:date:asc', label: 'Date modified asc.' },
                 { value: 'cocktails:date:desc', label: 'Date modified desc.' },
             ]" :class-names="{ 'ais-SortBy-select': 'form-select' }" />
@@ -26,21 +28,27 @@
                 </svg>
             </button>
         </div>
-        <ais-current-refinements>
+        <ais-current-refinements :transform-items="transformCurrentRefinements">
             <template v-slot="{ items, createURL }">
                 <div class="cocktail-current-refinements">
                     <template v-for="item in items">
                         <template v-if="item.label == 'id'">
                             <div class="cocktail-current-refinements__refinement">
                                 <a href="#" :href="createURL(refinement)" @click.prevent="item.refinements.forEach(r => item.refine(r))">
-                                    My favorites <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16"><path fill="none" d="M0 0h24v24H0z"/><path d="M12 10.586l4.95-4.95 1.414 1.414-4.95 4.95 4.95 4.95-1.414 1.414-4.95-4.95-4.95 4.95-1.414-1.414 4.95-4.95-4.95-4.95L7.05 5.636z"/></svg>
+                                    Specific cocktails <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16">
+                                        <path fill="none" d="M0 0h24v24H0z" />
+                                        <path d="M12 10.586l4.95-4.95 1.414 1.414-4.95 4.95 4.95 4.95-1.414 1.414-4.95-4.95-4.95 4.95-1.414-1.414 4.95-4.95-4.95-4.95L7.05 5.636z" />
+                                    </svg>
                                 </a>
                             </div>
                         </template>
                         <template v-else>
                             <div class="cocktail-current-refinements__refinement" v-for="refinement in item.refinements">
                                 <a href="#" :href="createURL(refinement)" @click.prevent="item.refine(refinement)">
-                                    {{ handleRefinementTag(refinement) }} <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16"><path fill="none" d="M0 0h24v24H0z"/><path d="M12 10.586l4.95-4.95 1.414 1.414-4.95 4.95 4.95 4.95-1.414 1.414-4.95-4.95-4.95 4.95-1.414-1.414 4.95-4.95-4.95-4.95L7.05 5.636z"/></svg>
+                                    {{ handleRefinementTag(refinement) }} <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16">
+                                        <path fill="none" d="M0 0h24v24H0z" />
+                                        <path d="M12 10.586l4.95-4.95 1.414 1.414-4.95 4.95 4.95 4.95-1.414 1.414-4.95-4.95-4.95 4.95-1.414-1.414 4.95-4.95-4.95-4.95L7.05 5.636z" />
+                                    </svg>
                                 </a>
                             </div>
                         </template>
@@ -55,7 +63,7 @@
                     <ais-refinement-list attribute="tags" :sort-by="['name:asc']" :limit="30" operator="and">
                         <template v-slot:item="{ item, refine, createURL }">
                             <a :href="createURL(item.value)" class="tag tag--link" :class="{ 'tag--is-selected': item.isRefined }" @click.prevent="refine(item.value)">
-                                {{ item.label }}
+                                {{ item.label }} ({{ item.count }})
                             </a>
                         </template>
                     </ais-refinement-list>
@@ -63,11 +71,22 @@
                     <ais-refinement-list attribute="glass" :sort-by="['name:asc']" :limit="30" operator="or">
                         <template v-slot:item="{ item, refine, createURL }">
                             <a :href="createURL(item.value)" class="tag tag--link" :class="{ 'tag--is-selected': item.isRefined }" @click.prevent="refine(item.value)">
-                                {{ item.label }}
+                                {{ item.label }} ({{ item.count }})
                             </a>
                         </template>
                     </ais-refinement-list>
-                    <h4>User filters:</h4>
+                    <h4>Rating</h4>
+                    <ais-rating-menu attribute="average_rating">
+                        <template v-slot="{ items, refine, createURL }">
+                            <a v-for="item in items" :key="item.value" :href="createURL(item.value)" class="tag tag--link" :class="{ 'tag--is-selected': item.isRefined }" @click.prevent="refine(item.value)">
+                                <span v-for="(full, index) in item.stars" :key="index">
+                                    {{ full ? '★' : '☆' }}
+                                </span>
+                                & up ({{ item.count }})
+                            </a>
+                        </template>
+                    </ais-rating-menu>
+                    <h4>Cocktail filters:</h4>
                     <div class="cocktail-list-filter-panel__toggle-refinements">
                         <ais-toggle-refinement attribute="user_id" :on="userId">
                             <template v-slot="{ value, refine, createURL }">
@@ -81,6 +100,14 @@
                             <template v-slot="{ value, refine, createURL }">
                                 <a :href="createURL(value)" class="tag tag--link" :class="{ 'tag--is-selected': value.isRefined }" @click.prevent="refine(value)">
                                     My favorites
+                                    ({{ value.count || 0 }})
+                                </a>
+                            </template>
+                        </ais-toggle-refinement>
+                        <ais-toggle-refinement attribute="id" :on="shelfCocktailIds">
+                            <template v-slot="{ value, refine, createURL }">
+                                <a :href="createURL(value)" class="tag tag--link" :class="{ 'tag--is-selected': value.isRefined }" @click.prevent="refine(value)">
+                                    Shelf cocktails
                                     ({{ value.count || 0 }})
                                 </a>
                             </template>
@@ -129,7 +156,7 @@ export default {
                 stateMapping: singleIndexMapping('cocktails:name:asc'),
             },
             userCocktails: [],
-            shelfCocktails: [],
+            shelfCocktailIds: [],
             userId: Auth.getUser().id,
             showFilterContainer: false,
         };
@@ -146,9 +173,9 @@ export default {
             this.userCocktails = data
         })
 
-        // ApiRequests.fetchShelfCocktails(true).then(data => {
-        //     this.shelfCocktails = data;
-        // });
+        ApiRequests.fetchShelfCocktails(true).then(data => {
+            this.shelfCocktailIds = data;
+        });
     },
     computed: {
         userCocktailIds() {
@@ -268,5 +295,12 @@ export default {
 .cocktail-current-refinements__refinement a:active,
 .cocktail-current-refinements__refinement a:focus {
     background: var(--color-link-hover);
+}
+
+.cocktail-list-filter-panel .ais-RatingMenu {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 15px;
 }
 </style>

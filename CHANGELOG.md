@@ -1,3 +1,13 @@
+# v1.1.0
+## New
+- Added cocktail ratings
+
+## Changes
+- Updated cocktail filters
+    - Show total number of items in refinement
+    - Added rating refinement
+    - Added shelf cocktails refinement
+
 # v1.0.0
 - Fix markdown display issues
 - Update footer styling
