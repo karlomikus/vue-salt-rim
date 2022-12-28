@@ -1,6 +1,7 @@
 <template>
     <nav class="settings-nav">
         <RouterLink :to="{name: 'settings.profile'}">Profile</RouterLink>
+        <RouterLink :to="{name: 'settings.users'}">Users</RouterLink>
         <RouterLink :to="{name: 'settings.categories'}">Ingredient categories</RouterLink>
         <RouterLink :to="{name: 'settings.glasses'}">Glass types</RouterLink>
     </nav>

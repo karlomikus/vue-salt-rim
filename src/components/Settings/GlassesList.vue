@@ -25,7 +25,7 @@
                             <br>
                             <small>{{ glass.description }}</small>
                         </td>
-                        <td>
+                        <td style="text-align: right;">
                             <a class="list-group__action" href="#" @click.prevent="deleteGlass(glass.id)">Delete</a>
                         </td>
                     </tr>

@@ -1,8 +1,8 @@
 <template>
     <PageHeader>
-        Ingredient categories
+        Users
         <template #actions>
-            <RouterLink class="button button--outline" :to="{name: 'settings.categories.form'}">Add category</RouterLink>
+            <RouterLink class="button button--outline" :to="{name: 'settings.users.form'}">Add user</RouterLink>
         </template>
     </PageHeader>
     <div class="settings-page">
@@ -14,19 +14,28 @@
             <table class="table">
                 <thead>
                     <tr>
-                        <th>Name / Description</th>
+                        <th>Name / Email</th>
+                        <th>Admin</th>
                         <th></th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr v-for="category in categories">
+                    <tr v-for="user in users">
                         <td>
-                            <RouterLink :to="{name: 'settings.categories.form', query: {id: category.id}}">{{ category.name }}</RouterLink>
+                            <RouterLink :to="{name: 'settings.users.form', query: {id: user.id}}">{{ user.name }}</RouterLink>
                             <br>
-                            <small>{{ category.description }}</small>
+                            <small>{{ user.email }}</small>
+                        </td>
+                        <td>
+                            <template v-if="user.is_admin">
+                                ✅
+                            </template>
+                            <template v-else>
+                                ❌
+                            </template>
                         </td>
                         <td style="text-align: right;">
-                            <a class="list-group__action" href="#" @click.prevent="deleteCategory(category.id)">Delete</a>
+                            <a class="list-group__action" href="#" @click.prevent="deleteUser(user.id)">Delete</a>
                         </td>
                     </tr>
                 </tbody>
@@ -50,32 +59,32 @@ export default {
     data() {
         return {
             isLoading: false,
-            categories: [],
+            users: [],
         }
     },
     created() {
-        document.title = `Ingredient categories \u22C5 Salt Rim`
+        document.title = `Users \u22C5 Salt Rim`
 
-        this.refreshCategories()
+        this.refreshUsers()
     },
     methods: {
-        refreshCategories() {
+        refreshUsers() {
             this.isLoading = true;
-            ApiRequests.fetchIngredientCategories().then(data => {
-                this.categories = data;
+            ApiRequests.fetchUsers().then(data => {
+                this.users = data;
                 this.isLoading = false;
             }).catch(e => {
                 this.$toast.error(e.message);
             })
         },
-        deleteCategory(id) {
-            if (confirm('Are you sure you want to delete this category?')) {
+        deleteUser(id) {
+            if (confirm('Are you sure you want to delete this user?')) {
                 this.isLoading = true
-                ApiRequests.deleteIngredientCategory(id).then(() => {
+                ApiRequests.deleteUser(id).then(() => {
                     this.isLoading = false;
-                    this.$toast.default(`Ingredient category deleted successfully.`);
-                    this.$router.push({ name: 'settings.categories' })
-                    this.refreshCategories()
+                    this.$toast.default(`User deleted successfully.`);
+                    this.$router.push({ name: 'settings.users' })
+                    this.refreshUsers()
                 }).catch(e => {
                     this.$toast.error(e.message);
                     this.isLoading = false;

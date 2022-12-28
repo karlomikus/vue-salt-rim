@@ -95,7 +95,17 @@ const router = createRouter({
                     path: '/settings/glasses/form',
                     name: 'settings.glasses.form',
                     component: () => import('../views/GlassFormView.vue'),
-                }
+                },
+                {
+                    path: '/settings/users',
+                    name: 'settings.users',
+                    component: () => import('../views/SettingsUsersView.vue'),
+                },
+                {
+                    path: '/settings/users/form',
+                    name: 'settings.users.form',
+                    component: () => import('../views/UserFormView.vue'),
+                },
             ]
         },
         {
