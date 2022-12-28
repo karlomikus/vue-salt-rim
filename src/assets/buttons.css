@@ -101,8 +101,8 @@
 }
 
 .button-circle svg {
-    width: 32px;
-    height: 32px;
+    width: 28px;
+    height: 28px;
     transition: transform ease-in-out .06s;
 }
 

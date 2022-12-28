@@ -97,6 +97,17 @@ const router = createRouter({
                     component: () => import('../views/GlassFormView.vue'),
                 }
             ]
+        },
+        {
+            path: '/print',
+            component: () => import('../PrintLayout.vue'),
+            children: [
+                {
+                    path: 'cocktail/:id',
+                    name: 'print.cocktail',
+                    component: () => import('../views/CocktailPrintView.vue'),
+                }
+            ]
         }
     ]
 });

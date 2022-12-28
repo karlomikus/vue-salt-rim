@@ -7,7 +7,6 @@
 @import "./tags.css";
 @import "./table.css";
 
-@import "vue-select/dist/vue-select.css";
 @import "vue-toast-notification/dist/theme-default.css";
 
 #app {
