@@ -1,12 +1,16 @@
 <template>
     <div class="cocktail-print-container">
-        <h1>{{ cocktail.name }}</h1>
-        <template v-if="cocktail.description">
-            <h2>Description:</h2>
-            <div v-html="parsedDescription"></div>
-        </template>
-        <div class="cocktail-print-image" v-if="cocktail.main_image_id">
-            <img :src="cocktail.images[0].url" :alt="cocktail.images[0].copyright">
+        <div class="print-first-row">
+            <div class="cocktail-print-image" v-if="cocktail.main_image_id">
+                <img :src="cocktail.images[0].url" :alt="cocktail.images[0].copyright">
+            </div>
+            <div class="cocktail-main-info">
+                <h1>{{ cocktail.name }}</h1>
+                <template v-if="cocktail.description">
+                    <h2>Description:</h2>
+                    <div v-html="parsedDescription"></div>
+                </template>
+            </div>
         </div>
         <div class="print-second-row">
             <div class="print-ingredients">
@@ -14,6 +18,7 @@
                 <ul>
                     <li v-for="ingredient in cocktail.ingredients">
                         {{ ingredient.amount }} {{ ingredient.units }} &middot; {{ ingredient.name }}
+                        <i v-if="ingredient.optional">(optional)</i>
                     </li>
                 </ul>
             </div>
@@ -55,9 +60,16 @@ export default {
         },
     },
     created() {
+        window.addEventListener('afterprint', (e) => {
+            window.close();
+        });
+
         ApiRequests.fetchCocktail(this.$route.params.id).then(data => {
             this.cocktail = data
             this.printReady = true
+            // this.$nextTick(() => {
+            //     window.print();
+            // })
         }).catch(e => {
             this.$toast.error(e.message);
         })
@@ -69,11 +81,16 @@ export default {
 .cocktail-print-container {
     color: #000;
     font-size: 0.7rem;
-    border: 2px dotted #000;
+    border: 1px dotted #000;
     padding: 10px;
     background-color: #fff;
     margin: 20px auto;
     max-width: 700px;
+}
+
+.print-first-row {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
 }
 
 h1 {
@@ -90,6 +107,10 @@ ul, ol {
     padding-left: 15px;
 }
 
+.print-instructions :deep(ol) {
+    padding-left: 15px;
+}
+
 .print-second-row {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -102,9 +123,11 @@ ul, ol {
 }
 
 .cocktail-print-image img {
+    padding: 10px;
     max-height: 200px;
+    max-width: 300px;
     display: block;
-    margin: 20px auto;
+    margin: 0 auto;
 }
 
 .cocktail-print-footer {
