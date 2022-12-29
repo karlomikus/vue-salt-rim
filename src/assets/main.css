@@ -8,6 +8,7 @@
 @import "./table.css";
 
 @import "vue-toast-notification/dist/theme-default.css";
+@import "tom-select/dist/css/tom-select.css";
 
 #app {
     font-weight: normal;
