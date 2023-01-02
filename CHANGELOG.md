@@ -1,3 +1,14 @@
+# v1.2.0
+## New
+- Added cocktail recipe printing
+- Added users management
+- Check for admin permissions on some actions
+
+## Fixes
+- Show user rating instead of average rating in cocktail details
+- Correctly handle dropdown click away when multiple dropdowns are present
+- Add missing loader on ingredient form
+
 # v1.1.0
 ## New
 - Added cocktail ratings

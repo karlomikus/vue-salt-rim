@@ -19,7 +19,7 @@ export default {
         }
     },
     mounted() {
-        const btn = this.$el.querySelectorAll('button')[0];
+        const btn = this.$el.querySelector('button');
 
         this.popper = createPopper(btn, this.$refs.content, {
             placement: 'bottom-end',
@@ -37,7 +37,7 @@ export default {
         });
 
         document.addEventListener('click', e => {
-            var dw = document.querySelector('.dropdown-wrapper button') || null
+            var dw = btn || null
             if (dw && !dw.contains(e.target)) {
                 this.isShown = false
             }

@@ -1,5 +1,6 @@
 <template>
     <form @submit.prevent="submit">
+        <OverlayLoader v-if="isLoading" />
         <PageHeader>
             Ingredient information
         </PageHeader>
@@ -52,10 +53,12 @@ import Utils from "@/Utils";
 import ImageUpload from '@/components/ImageUpload.vue'
 import { ColorPicker } from 'vue-accessible-color-picker'
 import PageHeader from '@/components/PageHeader.vue'
+import OverlayLoader from '@/components/OverlayLoader.vue'
 
 export default {
     data() {
         return {
+            isLoading: false,
             ingredientId: null,
             showColorPicker: false,
             ingredient: {
@@ -67,7 +70,8 @@ export default {
     components: {
         ImageUpload,
         ColorPicker,
-        PageHeader
+        PageHeader,
+        OverlayLoader
     },
     created() {
         document.title = `Ingredient Form \u22C5 Salt Rim`
@@ -75,12 +79,14 @@ export default {
         this.ingredientId = this.$route.query.id || null;
 
         if (this.ingredientId) {
+            this.isLoading = true;
             ApiRequests.fetchIngredient(this.ingredientId).then(data => {
                 data.description = Utils.decodeHtml(data.description);
 
                 this.ingredient = data;
 
                 document.title = `Ingredient Form \u22C5 ${this.ingredient.name} \u22C5 Salt Rim`
+                this.isLoading = false;
             })
         }
 
@@ -90,6 +96,8 @@ export default {
     },
     methods: {
         async submit() {
+            this.isLoading = true;
+
             const postData = {
                 name: this.ingredient.name,
                 description: this.ingredient.description,
@@ -112,16 +120,20 @@ export default {
                 ApiRequests.updateIngredient(this.ingredientId, postData).then(data => {
                     this.$toast.default('Ingredient updated');
                     this.$router.push({ name: 'ingredients.show', params: { id: data.id } })
+                    this.isLoading = false;
                 }).catch(e => {
                     this.$toast.error(e.message);
+                    this.isLoading = false;
                     this.isLoading = false;
                 })
             } else {
                 ApiRequests.saveIngredient(postData).then(data => {
                     this.$toast.default('Ingredient created');
                     this.$router.push({ name: 'ingredients.show', params: { id: data.id } })
+                    this.isLoading = false;
                 }).catch(e => {
                     this.$toast.error(e.message);
+                    this.isLoading = false;
                     this.isLoading = false;
                 })
             }

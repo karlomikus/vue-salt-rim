@@ -18,6 +18,10 @@ class Auth {
         return JSON.parse(localStorage.getItem('user'));
     }
 
+    static isAdmin() {
+        return this.getUser().is_admin;
+    }
+
     static getUserSearchSettings() {
         const user = this.getUser();
 

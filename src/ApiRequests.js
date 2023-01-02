@@ -390,6 +390,40 @@ class ApiRequests
     static async deleteCocktailUserRating(id) {
         return await this.deleteRequest(`/api/ratings/cocktails/${id}`);
     }
+
+    /**
+     * =============================
+     * Users
+     * =============================
+     */
+
+    static async fetchUsers() {
+        let jsonResp = await this.getRequest(`/api/users`);
+
+        return this.parseResponse(jsonResp);
+    }
+
+    static async fetchUserById(id) {
+        let jsonResp = await this.getRequest(`/api/users/${id}`);
+
+        return this.parseResponse(jsonResp);
+    }
+
+    static async saveUser(data) {
+        let jsonResp = await this.postRequest(`/api/users`, data);
+
+        return this.parseResponse(jsonResp);
+    }
+
+    static async updateUserById(id, data) {
+        let jsonResp = await this.postRequest(`/api/users/${id}`, data, 'PUT');
+
+        return this.parseResponse(jsonResp);
+    }
+
+    static async deleteUser(id) {
+        return await this.deleteRequest(`/api/users/${id}`);
+    }
 }
 
 export default ApiRequests;
