@@ -34,6 +34,16 @@
     color: #fff;
 }
 
+.button.button--red {
+    background-color: #c6342a;
+    color: #fff;
+}
+
+.button.button--red:hover {
+    background-color: #8c1d16;
+    color: #fff;
+}
+
 .button.button--outline {
     border: 2px solid var(--color-text);
     color: var(--color-text);
