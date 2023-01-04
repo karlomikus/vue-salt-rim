@@ -70,6 +70,7 @@ export default {
 <style scoped>
 .ingredient-list-item {
     display: flex;
+    align-items: center;
     background-color: #fff;
     padding: 15px;
     border-radius: 10px;
@@ -84,9 +85,9 @@ export default {
 }
 
 .ingredient-list-item__image {
-    width: 60px;
-    height: 60px;
-    border-radius: 10px;
+    width: 70px;
+    height: 70px;
+    border-radius: 5px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -107,7 +108,7 @@ export default {
 
 .ingredient-list-item__content h3 a {
     text-decoration: none;
-    font-size: 1.2rem;
+    font-size: 1.1rem;
     font-family: var(--font-accent);
     font-weight: 700;
 }
@@ -118,5 +119,9 @@ export default {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+}
+
+.ingredient-list-item__content a {
+    font-size: .9rem;
 }
 </style>

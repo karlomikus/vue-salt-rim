@@ -4,7 +4,7 @@
             <div class="cocktail-list-item__graphic__image" :data-img-src="mainCocktailImageUrl"></div>
         </div>
         <div class="cocktail-list-item__content">
-            <h3>{{ cocktail.name }}</h3>
+            <h3>{{ cocktail.name }} <MiniRating v-if="cocktail.user_rating > 0" :rating="cocktail.user_rating"></MiniRating></h3>
             <p v-if="cocktail.short_ingredients">
                 {{ cocktail.short_ingredients.join(', ') }}
             </p>
@@ -14,9 +14,13 @@
 
 <script>
 import ApiRequests from '@/ApiRequests.js';
+import MiniRating from '@/components/MiniRating.vue'
 
 export default {
     props: ['cocktail', 'observer'],
+    components: {
+        MiniRating
+    },
     mounted() {
         this.observer.observer.observe(this.$el)
     },
@@ -49,18 +53,18 @@ export default {
 }
 
 .cocktail-list-item__graphic__image {
-    width: 80px;
-    height: 80px;
+    width: 70px;
+    height: 70px;
     border-radius: 5px;
     background-color: #fff;
     background-size: cover;
     background-position: center center;
     flex-shrink: 0;
-    margin-right: 20px;
+    margin-right: 10px;
 }
 
 .cocktail-list-item__content h3 {
-    font-size: 1.2rem;
+    font-size: 1.1rem;
     font-family: var(--font-accent);
     font-weight: 700;
 }

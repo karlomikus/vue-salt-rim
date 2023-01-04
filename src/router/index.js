@@ -106,6 +106,16 @@ const router = createRouter({
                     name: 'settings.users.form',
                     component: () => import('../views/UserFormView.vue'),
                 },
+                {
+                    path: '/shelf/cocktails',
+                    name: 'shelf.cocktails',
+                    component: () => import('../views/ShelfCocktailsView.vue'),
+                },
+                {
+                    path: '/shelf/shopping-list',
+                    name: 'shelf.shopping-list',
+                    component: () => import('../views/ShelfShoppingListView.vue'),
+                },
             ]
         },
         {
@@ -116,7 +126,12 @@ const router = createRouter({
                     path: 'cocktail/:id',
                     name: 'print.cocktail',
                     component: () => import('../views/CocktailPrintView.vue'),
-                }
+                },
+                {
+                    path: 'shopping-list',
+                    name: 'print.shopping-list',
+                    component: () => import('../views/ShelfShoppingListPrintView.vue'),
+                },
             ]
         }
     ]

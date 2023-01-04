@@ -33,11 +33,15 @@ class ApiRequests
         return resp
     }
 
-    static async getRequest(path) {
-        const url = `${this.getUrl()}${path}`
+    static async getRequest(path, queryParams = {}) {
+        let url = `${this.getUrl()}${path}`
+        const queryString = new URLSearchParams(queryParams).toString()
+        if (queryString != '') {
+            url += `?${queryString}`;
+        }
 
         const f = fetch(url, {
-            headers: this.getHeaders()
+            headers: this.getHeaders(),
         }).then(this.handleResponseErrors)
 
         return await (await f).json();
@@ -68,8 +72,8 @@ class ApiRequests
      * =============================
      */
 
-    static async fetchCocktails() {
-        let jsonResp = await this.getRequest(`/api/cocktails`);
+    static async fetchCocktails(queryParams = {}) {
+        let jsonResp = await this.getRequest(`/api/cocktails`, queryParams);
 
         return this.parseResponse(jsonResp);
     }
@@ -80,8 +84,12 @@ class ApiRequests
         return this.parseResponse(jsonResp);
     }
 
-    static async fetchUserFavoriteCocktails() {
-        let jsonResp = await this.getRequest(`/api/cocktails/user-favorites`);
+    static async fetchUserFavoriteCocktails(limit = null) {
+        let url = `/api/cocktails/user-favorites`;
+        if (limit) {
+            url += `?limit=${limit}`;
+        }
+        let jsonResp = await this.getRequest(url);
 
         return this.parseResponse(jsonResp);
     }
@@ -102,12 +110,18 @@ class ApiRequests
         return await this.deleteRequest(`/api/cocktails/${id}`);
     }
 
-    static async fetchShelfCocktails(onlyIds = false) {
-        let url = `/api/cocktails/user-shelf`;
-
+    static async fetchShelfCocktails(onlyIds = false, limit = null) {
+        let query = {};
         if (onlyIds) {
-           url = `/api/cocktails/user-shelf?format=ids`;
+            query['format'] = 'ids';
         }
+
+        if (limit) {
+            query['limit'] = limit;
+        }
+
+        const params = new URLSearchParams(query);
+        const url = `/api/cocktails/user-shelf?${params.toString()}`;
 
         let jsonResp = await this.getRequest(url);
 
@@ -178,8 +192,12 @@ class ApiRequests
         return this.parseResponse(jsonResp);
     }
 
-    static async fetchIngredientsOnShoppingList() {
-        let jsonResp = await this.getRequest(`/api/ingredients?on_shopping_list=true`);
+    static async fetchIngredientsOnShoppingList(limit = null) {
+        let url = `/api/ingredients?on_shopping_list=true`;
+        if (limit) {
+            url += `&limit=${limit}`
+        }
+        let jsonResp = await this.getRequest(url);
 
         return this.parseResponse(jsonResp);
     }
@@ -423,6 +441,18 @@ class ApiRequests
 
     static async deleteUser(id) {
         return await this.deleteRequest(`/api/users/${id}`);
+    }
+
+    /**
+     * =============================
+     * Stats
+     * =============================
+     */
+
+    static async fetchStats() {
+        let jsonResp = await this.getRequest(`/api/stats`);
+
+        return this.parseResponse(jsonResp);
     }
 }
 
