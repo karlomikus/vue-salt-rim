@@ -99,8 +99,8 @@ export default {
 }
 
 .cocktail-grid-item__graphic img {
-    width: var(--image-size);
-    height: var(--image-size);
+    width: 100%;
+    height: auto;
     border-radius: 0.825rem;
     object-fit: cover;
     transition: box-shadow ease-in-out .1s;

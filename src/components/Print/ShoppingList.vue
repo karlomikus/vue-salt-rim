@@ -54,19 +54,36 @@ export default {
     list-style: none;
     margin: 0;
     padding: 0;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
 }
 
 .list-print-container ul li {
     display: flex;
+    align-items: center;
     gap: 10px;
     margin-bottom: 10px;
+}
+
+h3 {
+    border-bottom: 3px double #333;
+    text-align: center;
+    font-family: var(--font-heading);
+    font-size: 1.5rem;
+    margin-bottom: 20px;
 }
 
 .checkbox {
     width: 25px;
     height: 25px;
-    border: 1px solid #000;
+    border: 2px solid #000;
     flex-grow: 0;
     flex-shrink: 0;
+}
+
+.list-print-footer {
+    text-align: center;
+    font-size: 0.6rem;
+    margin-top: 10px;
 }
 </style>

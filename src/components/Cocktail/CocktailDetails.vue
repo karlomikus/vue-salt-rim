@@ -6,7 +6,7 @@
         </div>
         <div class="cocktail-details-box cocktail-details-box--blue">
             <h3 class="cocktail-details-box__title">{{ cocktail.name }}</h3>
-            <div class="tag-container" style="margin-bottom: 20px;" v-if="cocktail.tags.length > 0">
+            <div class="tag-container" v-if="cocktail.tags.length > 0">
                 <RouterLink :to="{name: 'cocktails', query: {'refinementList[tags][0]': tag}}" v-for="tag in cocktail.tags" class="tag tag--background" style="background-color: #BFD3DF;">{{ tag }}</RouterLink>
             </div>
             <Rating :rating="cocktail.user_rating" type="cocktail" :id="cocktail.id"></Rating>
