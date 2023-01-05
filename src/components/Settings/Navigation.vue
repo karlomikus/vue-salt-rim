@@ -5,6 +5,7 @@
             <RouterLink :to="{name: 'settings.users'}">Users</RouterLink>
             <RouterLink :to="{name: 'settings.categories'}">Ingredient categories</RouterLink>
             <RouterLink :to="{name: 'settings.glasses'}">Glass types</RouterLink>
+            <RouterLink :to="{name: 'settings.tags'}">Tags</RouterLink>
         </template>
     </nav>
 </template>

@@ -454,6 +454,40 @@ class ApiRequests
 
         return this.parseResponse(jsonResp);
     }
+
+    /**
+     * =============================
+     * Tags
+     * =============================
+     */
+
+    static async fetchTags() {
+        let jsonResp = await this.getRequest(`/api/tags`);
+
+        return this.parseResponse(jsonResp);
+    }
+
+    static async fetchTag(id) {
+        let jsonResp = await this.getRequest(`/api/tags/${id}`);
+
+        return this.parseResponse(jsonResp);
+    }
+
+    static async saveTag(data) {
+        let jsonResp = await this.postRequest(`/api/tags`, data);
+
+        return this.parseResponse(jsonResp);
+    }
+
+    static async updateTag(id, data) {
+        let jsonResp = await this.postRequest(`/api/tags/${id}`, data, 'PUT');
+
+        return this.parseResponse(jsonResp);
+    }
+
+    static async deleteTag(id) {
+        return await this.deleteRequest(`/api/tags/${id}`);
+    }
 }
 
 export default ApiRequests;

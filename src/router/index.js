@@ -116,6 +116,16 @@ const router = createRouter({
                     name: 'shelf.shopping-list',
                     component: () => import('../views/ShelfShoppingListView.vue'),
                 },
+                {
+                    path: '/settings/tags',
+                    name: 'settings.tags',
+                    component: () => import('../views/SettingsTagsView.vue'),
+                },
+                {
+                    path: '/settings/tags/form',
+                    name: 'settings.tags.form',
+                    component: () => import('../views/TagFormView.vue'),
+                },
             ]
         },
         {
