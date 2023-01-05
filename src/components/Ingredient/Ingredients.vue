@@ -182,7 +182,7 @@ export default {
 }
 
 .ingredient-list .ingredient-list__description h3 {
-    font-family: var(--font-accent);
+    font-family: var(--font-heading);
     font-weight: bold;
     font-size: 1.3rem;
 }

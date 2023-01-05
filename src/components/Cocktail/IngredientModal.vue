@@ -207,7 +207,6 @@ export default {
 }
 
 .selected-ingredient {
-    font-family: var(--font-accent);
     font-weight: bold;
     font-size: 1.6rem;
     margin: 15px 0;
@@ -230,7 +229,6 @@ export default {
     font-weight: normal;
     font-size: 1rem;
     display: block;
-    font-family: var(--font-accent);
     font-weight: 700;
 }
 

@@ -340,13 +340,13 @@ export default {
 }
 
 .cocktail-details-box__title {
-    font-family: var(--font-accent);
+    font-family: var(--font-heading);
     font-weight: 700;
     margin: 0 0 20px 0;
 }
 
 .cocktail-details-box--blue .cocktail-details-box__title {
-    font-size: 1.8rem;
+    font-size: 2rem;
 }
 
 .cocktail-ingredients {
@@ -440,7 +440,6 @@ export default {
 
 .cocktail-details-box ol li::marker {
     font-size: 1.1rem;
-    font-family: var(--font-accent);
     font-weight: bold;
 }
 </style>

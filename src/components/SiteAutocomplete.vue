@@ -212,7 +212,6 @@ export default {
 
 .site-autocomplete__results li a h4 span,
 .site-autocomplete__results li a h4 span>mark {
-    font-family: var(--font-accent);
     font-weight: 700;
 }
 

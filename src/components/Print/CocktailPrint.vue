@@ -96,10 +96,12 @@ export default {
 h1 {
     border-bottom: 3px double #333;
     text-align: center;
+    font-family: var(--font-heading);
+    font-size: 1.5rem;
 }
 
 h2 {
-    font-size: 1rem;
+    font-size: 0.8rem;
     font-weight: bold;
 }
 

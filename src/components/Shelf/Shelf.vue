@@ -27,7 +27,7 @@
 
     <div class="list-grid">
         <div class="list-grid__col">
-            <h3>Latest cocktails</h3>
+            <h3 class="page-subtitle">Latest cocktails</h3>
             <CocktailListContainer v-if="latestCocktails.length > 0" v-slot="observer">
                 <CocktailListItem v-for="cocktail in latestCocktails" :cocktail="cocktail" :key="cocktail.id" :observer="observer" />
                 <RouterLink class="more-link" :to="{name: 'cocktails'}">View all <svg height="21" viewBox="0 0 21 21" width="21" xmlns="http://www.w3.org/2000/svg"><g fill="none" fill-rule="evenodd" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" transform="translate(4 6)"><path d="m9.5.497 4 4.002-4 4.001"/><path d="m.5 4.5h13"/></g></svg></RouterLink>
@@ -44,7 +44,7 @@
             </div>
         </div>
         <div class="list-grid__col">
-            <h3>Your recent favorites</h3>
+            <h3 class="page-subtitle">Your recent favorites</h3>
             <CocktailListContainer v-if="favoriteCocktails.length > 0" v-slot="observer">
                 <CocktailListItem v-for="cocktail in favoriteCocktails" :cocktail="cocktail" :key="cocktail.id" :observer="observer" />
                 <RouterLink class="more-link" :to="{name: 'cocktails'}">View all <svg height="21" viewBox="0 0 21 21" width="21" xmlns="http://www.w3.org/2000/svg"><g fill="none" fill-rule="evenodd" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" transform="translate(4 6)"><path d="m9.5.497 4 4.002-4 4.001"/><path d="m.5 4.5h13"/></g></svg></RouterLink>
@@ -61,7 +61,7 @@
             </div>
         </div>
         <div class="list-grid__col">
-            <h3>Your shopping list</h3>
+            <h3 class="page-subtitle">Your shopping list</h3>
             <IngredientListContainer v-if="shoppingListIngredients.length > 0">
                 <IngredientListItem
                     v-for="ingredient in shoppingListIngredients"
@@ -247,14 +247,12 @@ export default {
 }
 
 .list-grid h3 {
-    border-bottom: 3px double var(--color-bg-dark);
     padding-bottom: 5px;
     margin-bottom: 10px;
 }
 
 .stats {
     margin-top: 20px;
-    margin-bottom: 20px;
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
     column-gap: 10px;

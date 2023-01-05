@@ -109,7 +109,6 @@ export default {
 .ingredient-list-item__content h3 a {
     text-decoration: none;
     font-size: 1.1rem;
-    font-family: var(--font-accent);
     font-weight: 700;
 }
 

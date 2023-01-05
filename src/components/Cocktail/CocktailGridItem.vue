@@ -1,11 +1,7 @@
 <template>
     <RouterLink class="cocktail-grid-item" :to="{ name: 'cocktails.show', params: { id: cocktail.slug } }">
-        <svg v-show="isFavorited" class="cocktail-grid-item__favorited-mark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
-            <path fill="none" d="M0 0H24V24H0z" />
-            <path d="M20.243 4.757c2.262 2.268 2.34 5.88.236 8.236l-8.48 8.492-8.478-8.492c-2.104-2.356-2.025-5.974.236-8.236 2.265-2.264 5.888-2.34 8.244-.228 2.349-2.109 5.979-2.039 8.242.228zM5.172 6.172c-1.49 1.49-1.565 3.875-.192 5.451L12 18.654l7.02-7.03c1.374-1.577 1.299-3.959-.193-5.454-1.487-1.49-3.881-1.562-5.453-.186l-4.202 4.203-1.415-1.414 2.825-2.827-.082-.069c-1.575-1.265-3.877-1.157-5.328.295z" />
-        </svg>
         <div class="cocktail-grid-item__graphic">
-            <div class="cocktail-grid-item__graphic__image" :data-img-src="mainCocktailImageUrl"></div>
+            <img :data-img-src="mainCocktailImageUrl" alt="Main image of the cocktail">
         </div>
         <h2 class="cocktail-grid-item__title">{{ cocktail.name }}</h2>
         <div class="cocktail-grid-item__rating">
@@ -54,37 +50,43 @@ export default {
 </script>
 <style scoped>
 .cocktail-grid-item {
-    --cocktail-grid-image-size: 200px;
-}
+    --image-size: 200px;
+    --image-offset: -3rem;
+    --image-offset-hover: -3.5rem;
+    --content-spacing: 0.325rem;
 
-.cocktail-grid-item {
+    display: flex;
+    flex-direction: column;
+    gap: var(--content-spacing);
     text-align: center;
     background-color: #fff;
-    padding: 30px;
-    border-radius: 20px;
+    padding: 1.5rem;
+    border-radius: 1rem;
     box-shadow: 0 3px 0 var(--color-bg-dark);
-    margin-top: 50px;
+    margin-top: calc(var(--image-offset) * -1);
     cursor: pointer;
     transition: box-shadow ease-in-out 150ms;
     text-decoration: none;
 }
 
-.cocktail-grid-item.cocktail-grid-item--span {
-    grid-column-end: span 2;
-}
-
-.cocktail-grid-item__favorited-mark {
-    position: absolute;
-    right: 10px;
-    top: 10px;
-    fill: var(--color-link-hover);
-}
-
-.cocktail-grid-item .cocktail-grid-item__title {
-    font-family: var(--font-accent);
-    font-weight: 700;
+.cocktail-grid-item__title {
     font-size: 1.7rem;
-    margin-top: -30px;
+    font-family: var(--font-heading);
+    font-weight: var(--fw-bold);
+    line-height: 1.3;
+    margin-top: calc(var(--image-offset) + 1rem);
+}
+
+.cocktail-grid-item:hover {
+    box-shadow: 0 3px 0 var(--color-link-hover);
+}
+
+.cocktail-grid-item:hover .cocktail-grid-item__graphic {
+    transform: translateY(var(--image-offset-hover));
+}
+
+.cocktail-grid-item:hover .cocktail-grid-item__title {
+    color: var(--color-link-hover);
 }
 
 .cocktail-grid-item__ingredients {
@@ -92,30 +94,15 @@ export default {
 }
 
 .cocktail-grid-item__graphic {
-    transform: translateY(-50px);
+    transform: translateY(var(--image-offset));
     transition: all ease-in-out .1s;
 }
 
-.cocktail-grid-item:hover {
-    box-shadow: 0 3px 0 #aa5076;
-}
-
-.cocktail-grid-item:hover .cocktail-grid-item__graphic {
-    transform: translateY(-55px);
-}
-
-.cocktail-grid-item:hover .cocktail-grid-item__title {
-    color: #aa5076;
-}
-
-.cocktail-grid-item__graphic__image {
-    width: var(--cocktail-grid-image-size);
-    height: var(--cocktail-grid-image-size);
-    border-radius: 20px;
-    background-color: #fff;
-    background-size: cover;
-    background-position: center center;
-    margin: 0 auto;
+.cocktail-grid-item__graphic img {
+    width: var(--image-size);
+    height: var(--image-size);
+    border-radius: 0.825rem;
+    object-fit: cover;
     transition: box-shadow ease-in-out .1s;
     box-shadow: 0px 0.5px 0.6px hsl(0deg 0% 63% / 0.36),
         0px 1.6px 1.8px -0.8px hsl(0deg 0% 63% / 0.36),
@@ -123,7 +110,7 @@ export default {
         0.1px 9.7px 10.9px -2.5px hsl(0deg 0% 63% / 0.36);
 }
 
-.cocktail-grid-item:hover .cocktail-grid-item__graphic__image {
+.cocktail-grid-item:hover .cocktail-grid-item__graphic img {
     box-shadow: 0px 0.5px 0.6px hsl(0deg 0% 63% / 0.6),
         0px 1.6px 2px -0.8px hsl(0deg 0% 63% / 0.6),
         0.1px 4px 8px -1.7px hsl(0deg 0% 63% / 0.6),
@@ -137,7 +124,6 @@ export default {
     list-style: none;
     padding: 0;
     gap: 5px;
-    margin-top: 20px;
 }
 
 @media (max-width: 450px) {
