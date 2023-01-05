@@ -44,13 +44,13 @@ export default {
     background-color: #fff;
     padding: 0.825rem;
     border-radius: 0.5rem;
-    box-shadow: 0 3px 0 var(--color-bg-dark);
+    box-shadow: 0 3px 0 var(--clr-red-300);
     transition: box-shadow ease-in-out 150ms;
     text-decoration: none;
 }
 
 .cocktail-list-item:hover {
-  box-shadow: 0 3px 0 var(--color-link-hover);
+  box-shadow: 0 3px 0 var(--clr-red-800);
 }
 
 .cocktail-list-item__graphic__image {
@@ -76,7 +76,7 @@ export default {
 }
 
 .cocktail-list-item__content p {
-    color: var(--color-text-muted);
+    color: var(--clr-gray-500);
     font-size: 0.8rem;
 }
 </style>

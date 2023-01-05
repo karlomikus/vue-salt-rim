@@ -89,23 +89,23 @@ export default {
     display: flex;
     margin-bottom: 5px;
     text-decoration: none;
-    color: var(--color-text-muted)
+    color: var(--clr-gray-500)
 }
 
 .site-footer__left a svg {
     margin-right: 5px;
-    fill: var(--color-text-muted)
+    fill: var(--clr-gray-500)
 }
 
 .site-footer__left a:hover svg {
     margin-right: 5px;
-    fill: var(--color-link-hover)
+    fill: var(--clr-red-800)
 }
 
 .site-footer__left a:hover,
 .site-footer__left a:active,
 .site-footer__left a:focus {
-    color: var(--color-link-hover)
+    color: var(--clr-red-800)
 }
 
 .site-footer__right {

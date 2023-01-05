@@ -317,7 +317,7 @@ export default {
     display: block;
     font-size: 1rem;
     font-family: var(--font-primary);
-    color: var(--color-text-muted);
+    color: var(--clr-gray-500);
 }
 
 .ingredient-details__box hr {
@@ -365,7 +365,7 @@ export default {
 .ingredient-chips-list li a:hover,
 .ingredient-chips-list li a:active,
 .ingredient-chips-list li a:focus {
-    box-shadow: 0 2px 0 var(--color-link-hover);
+    box-shadow: 0 2px 0 var(--clr-red-800);
     background-color: #fff;
 }
 

@@ -208,7 +208,7 @@ export default {
     background-color: rgba(255, 255, 255, .5);
     margin-top: 10px;
     border-radius: 10px;
-    box-shadow: 0 3px 0 var(--color-bg-dark);
+    box-shadow: 0 3px 0 var(--clr-red-300);
 }
 
 .cocktail-list-filter-panel h4 {
@@ -279,7 +279,7 @@ export default {
     display: flex;
     justify-content: center;
     align-items: center;
-    background: var(--color-text);
+    background: var(--clr-gray-800);
     color: #fff;
     padding: 2px 10px;
     font-size: 0.7rem;
@@ -294,7 +294,7 @@ export default {
 .cocktail-current-refinements__refinement a:hover,
 .cocktail-current-refinements__refinement a:active,
 .cocktail-current-refinements__refinement a:focus {
-    background: var(--color-link-hover);
+    background: var(--clr-red-800);
 }
 
 .cocktail-list-filter-panel .ais-RatingMenu {

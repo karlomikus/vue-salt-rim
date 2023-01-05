@@ -158,7 +158,7 @@ export default {
 }
 
 .ingredient-category-title {
-    background-color: var(--color-text);
+    background-color: var(--clr-gray-800);
     color: #fff;
     display: inline-block;
     font-size: 1rem;
@@ -170,7 +170,7 @@ export default {
 .ingredient-list>li {
     background-color: #fff;
     padding: 20px;
-    box-shadow: 0 3px 0 var(--color-bg-dark);
+    box-shadow: 0 3px 0 var(--clr-red-300);
     border-radius: 10px;
     width: 100%;
     display: flex;
@@ -178,7 +178,7 @@ export default {
 }
 
 .ingredient-list>li:hover {
-    box-shadow: 0 3px 0 var(--color-link-hover);
+    box-shadow: 0 3px 0 var(--clr-red-800);
 }
 
 .ingredient-list .ingredient-list__description h3 {
@@ -188,7 +188,7 @@ export default {
 }
 
 .ingredient-list .ingredient-list__description p {
-    color: var(--color-text-muted);
+    color: var(--clr-gray-500);
     overflow: hidden;
     line-height: 1.3rem;
     max-height: calc(2 * 1.3rem);

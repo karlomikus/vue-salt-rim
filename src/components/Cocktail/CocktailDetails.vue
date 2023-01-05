@@ -365,19 +365,19 @@ export default {
 }
 
 .cocktail-ingredients li .cocktail-ingredients__content small {
-    color: var(--color-link-hover);
+    color: var(--clr-red-800);
     margin-left: 5px;
 }
 
 .cocktail-ingredients li .cocktail-ingredients__content span {
     display: block;
     font-size: 0.7rem;
-    color: var(--color-text-muted);
+    color: var(--clr-gray-500);
 }
 
 .cocktail-ingredients li .cocktail-ingredients__content .cocktail-ingredients__content__substitutes {
     font-size: 0.7rem;
-    color: var(--color-text-muted);
+    color: var(--clr-gray-500);
 }
 
 .cocktail-ingredients li .cocktail-ingredients__amount {
@@ -422,7 +422,7 @@ export default {
     font-size: 1.2rem;
     width: 35px;
     cursor: pointer;
-    color: var(--color-text)
+    color: var(--clr-gray-800)
 }
 
 .cocktail-button-group button.active-serving {

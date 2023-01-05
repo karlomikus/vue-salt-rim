@@ -34,7 +34,7 @@ export default {
 }
 
 .settings-nav a.router-link-exact-active {
-    background-color: var(--color-text);
+    background-color: var(--clr-gray-800);
     color: #fff;
 }
 </style>

@@ -57,7 +57,7 @@ main {
 }
 
 .empty-state svg {
-    fill: var(--color-text);
+    fill: var(--clr-gray-800);
     width: 70px;
     height: 70px;
 }
@@ -147,7 +147,7 @@ a.site-logo:focus .site-logo__title {
     font-size: 0.8rem;
     row-gap: 5px;
     display: grid;
-    color: var(--color-text-muted);
+    color: var(--clr-gray-500);
 }
 
 .flags li {
@@ -167,7 +167,7 @@ a.site-logo:focus .site-logo__title {
 
 .login-page form {
     margin-top: 20px;
-    background-color: var(--color-bg);
+    background-color: var(--clr-red-100);
     width: 100%;
     max-width: 400px;
     padding: 30px;

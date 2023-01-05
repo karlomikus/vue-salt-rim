@@ -12,7 +12,7 @@
 <style scoped>
 .site-page-header {
     display: flex;
-    border-bottom: 3px solid var(--color-bg-dark);
+    border-bottom: 3px solid var(--clr-red-300);
     padding-bottom: 20px;
     margin-bottom: 20px;
     align-items: center;

@@ -76,14 +76,14 @@ export default {
     background-color: #fff;
     padding: 0.825rem;
     border-radius: 0.5rem;
-    box-shadow: 0 3px 0 var(--color-bg-dark);
+    box-shadow: 0 3px 0 var(--clr-red-300);
     transition: box-shadow ease-in-out 150ms;
     text-decoration: none;
     gap: 10px;
 }
 
 .ingredient-list-item:hover {
-    box-shadow: 0 3px 0 var(--color-link-hover);
+    box-shadow: 0 3px 0 var(--clr-red-800);
 }
 
 .ingredient-list-item__image {
@@ -116,7 +116,7 @@ export default {
 }
 
 .ingredient-list-item__content p {
-    color: var(--color-text-muted);
+    color: var(--clr-gray-500);
     max-width: 300px;
     white-space: nowrap;
     overflow: hidden;

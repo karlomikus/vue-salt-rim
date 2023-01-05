@@ -15,7 +15,7 @@
 }
 
 .tag.tag--link {
-    border: 1px solid var(--color-bg-dark);
+    border: 1px solid var(--clr-red-300);
 }
 
 .tag.tag--link:hover,
@@ -25,12 +25,12 @@
 }
 
 .tag.tag--link.tag--is-selected {
-    background-color: var(--color-text);
-    border: 1px solid var(--color-text);
+    background-color: var(--clr-gray-800);
+    border: 1px solid var(--clr-gray-800);
     color: #fff;
 }
 
 .tag.tag--background {
     background-color: var(--color-tag);
-    color: var(--color-text);
+    color: var(--clr-gray-800);
 }

@@ -2,11 +2,13 @@
 /* @import url('https://fonts.googleapis.com/css2?family=Alice&family=Philosopher:wght@400;700&display=swap'); */
 
 :root {
-    --color-bg: #fff4f6;
-    --color-bg-dark: #f2d4d9;
-    --color-text: #454b60;
-    --color-text-muted: #7c84a0;
-    --color-link-hover: #aa5076;
+    --clr-red-100: hsl(349, 100%, 98%);
+    --clr-red-300: hsl(349, 54%, 90%);
+    --clr-red-800: hsl(349, 36%, 49%);
+
+    --clr-gray-800: hsl(227, 16%, 32%);
+    --clr-gray-500: hsl(227, 16%, 57%);
+
     --color-tag: #DFE7FD;
     --color-tag-hover: #faeaab;
     --color-site-header: #737db7;
@@ -53,8 +55,8 @@ strong {
 }
 
 body {
-    color: var(--color-text);
-    background-color: var(--color-bg);
+    color: var(--clr-gray-800);
+    background-color: var(--clr-red-100);
     line-height: 1.6;
     font-family: var(--font-primary);
     font-size: 16px;
@@ -71,13 +73,13 @@ body {
 }
 
 a {
-    color: var(--color-text);
+    color: var(--clr-gray-800);
 }
 
 a:hover,
 a:focus,
 a:active {
-    color: var(--color-link-hover);
+    color: var(--clr-red-800);
 }
 
 input,

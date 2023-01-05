@@ -61,8 +61,8 @@ export default {
 
 <style scoped>
 .rating {
-    --color-unrated: var(--color-text);
-    --color-rated: var(--color-link-hover);
+    --color-unrated: var(--clr-gray-800);
+    --color-rated: var(--clr-red-800);
     font-size: 1.5rem;
     display: inline-block;
 }

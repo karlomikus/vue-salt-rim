@@ -181,7 +181,7 @@ export default {
     overflow-y: auto;
     background: rgba(255, 255, 255, .5);
     padding: 15px;
-    border-bottom: 2px solid var(--color-bg-dark);
+    border-bottom: 2px solid var(--clr-red-300);
     border-radius: 5px;
     margin-top: 5px;
 }
@@ -234,7 +234,7 @@ export default {
 
 .ingredient-modal__info {
     background: rgba(255, 255, 255, .5);
-    border-bottom: 2px solid var(--color-bg-dark);
+    border-bottom: 2px solid var(--clr-red-300);
     border-radius: 5px;
     color: rgb(28, 48, 65);
     padding: 10px;

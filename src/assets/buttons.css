@@ -19,12 +19,12 @@
 }
 
 .button:hover {
-    color: var(--color-link-hover);
+    color: var(--clr-red-800);
     background-color: rgba(0, 0, 0, .05);
 }
 
 .button.button--dark {
-    background-color: var(--color-text);
+    background-color: var(--clr-gray-800);
     color: #fff;
 }
 
@@ -44,14 +44,14 @@
 }
 
 .button.button--outline {
-    border: 2px solid var(--color-text);
-    color: var(--color-text);
+    border: 2px solid var(--clr-gray-800);
+    color: var(--clr-gray-800);
     background: none;
 }
 
 .button.button--outline:hover {
-    border: 2px solid var(--color-link-hover);
-    background-color: var(--color-link-hover);
+    border: 2px solid var(--clr-red-800);
+    background-color: var(--clr-red-800);
     color: #fff;
 }
 
@@ -82,7 +82,7 @@
     width: 40px;
     height: 40px;
     background-color: #fff;
-    fill: var(--color-text);
+    fill: var(--clr-gray-800);
     cursor: pointer;
     display: flex;
     align-items: center;
@@ -133,7 +133,7 @@
 
 .button--input {
     background-color: rgba(255, 255, 255, 0.5);
-    border: 2px solid var(--color-bg-dark);
+    border: 2px solid var(--clr-red-300);
     border-top-color: transparent;
     border-left-color: transparent;
     border-right-color: transparent;
@@ -145,7 +145,7 @@
 .button--input:active,
 .button--input:focus {
     background-color: #fff;
-    border-color: var(--color-text);
+    border-color: var(--clr-gray-800);
 }
 
 .button--input svg {

@@ -62,7 +62,7 @@ export default {
     background-color: #fff;
     padding: 1.5rem;
     border-radius: 1rem;
-    box-shadow: 0 3px 0 var(--color-bg-dark);
+    box-shadow: 0 3px 0 var(--clr-red-300);
     margin-top: calc(var(--image-offset) * -1);
     cursor: pointer;
     transition: box-shadow ease-in-out 150ms;
@@ -78,7 +78,7 @@ export default {
 }
 
 .cocktail-grid-item:hover {
-    box-shadow: 0 3px 0 var(--color-link-hover);
+    box-shadow: 0 3px 0 var(--clr-red-800);
 }
 
 .cocktail-grid-item:hover .cocktail-grid-item__graphic {
@@ -86,11 +86,11 @@ export default {
 }
 
 .cocktail-grid-item:hover .cocktail-grid-item__title {
-    color: var(--color-link-hover);
+    color: var(--clr-red-800);
 }
 
 .cocktail-grid-item__ingredients {
-    color: var(--color-text-muted);
+    color: var(--clr-gray-500);
 }
 
 .cocktail-grid-item__graphic {

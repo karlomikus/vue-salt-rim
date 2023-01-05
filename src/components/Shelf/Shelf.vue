@@ -231,7 +231,7 @@ export default {
 }
 
 .home-actions a:hover {
-    background-color: var(--color-text);
+    background-color: var(--clr-gray-800);
     color: #fff;
 }
 

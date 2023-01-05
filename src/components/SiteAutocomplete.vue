@@ -155,7 +155,7 @@ export default {
 .site-autocomplete__input {
     width: 100%;
     border: 0;
-    border-bottom: 2px solid var(--color-text);
+    border-bottom: 2px solid var(--clr-gray-800);
     font-size: 1.3rem;
     opacity: 0.4;
     padding: 12px 30px 12px 50px;
@@ -196,7 +196,7 @@ export default {
 
 .site-autocomplete__results li a:hover {
     background-color: rgba(0, 0, 0, .05);
-    color: var(--color-text);
+    color: var(--clr-gray-800);
 }
 
 .site-autocomplete__results li a .site-autocomplete__results__image {
@@ -287,7 +287,7 @@ export default {
     display: none;
     padding: 3px 10px;
     margin: 0 10px;
-    border: 2px solid var(--color-text);
+    border: 2px solid var(--clr-gray-800);
     border-radius: 4px;
 }
 
