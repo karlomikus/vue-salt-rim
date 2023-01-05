@@ -4,7 +4,7 @@
             <div class="cocktail-list-item__graphic__image" :data-img-src="mainCocktailImageUrl"></div>
         </div>
         <div class="cocktail-list-item__content">
-            <h3>{{ cocktail.name }} <MiniRating v-if="cocktail.user_rating > 0" :rating="cocktail.user_rating"></MiniRating></h3>
+            <h4 class="cocktail-list-item__title">{{ cocktail.name }} <MiniRating v-if="cocktail.user_rating > 0" :rating="cocktail.user_rating"></MiniRating></h4>
             <p v-if="cocktail.short_ingredients">
                 {{ cocktail.short_ingredients.join(', ') }}
             </p>
@@ -30,7 +30,6 @@ export default {
                 return '/no-cocktail.jpg';
             }
 
-            // return this.cocktail.images.filter((img) => img.id == this.cocktail.main_image_id)[0].url;
             return ApiRequests.imageThumbUrl(this.cocktail.main_image_id);
         }
     }
@@ -38,24 +37,26 @@ export default {
 </script>
 <style scoped>
 .cocktail-list-item {
+    --image-size: 70px;
+
     display: flex;
     align-items: center;
     background-color: #fff;
-    padding: 15px;
-    border-radius: 10px;
+    padding: 0.825rem;
+    border-radius: 0.5rem;
     box-shadow: 0 3px 0 var(--color-bg-dark);
     transition: box-shadow ease-in-out 150ms;
     text-decoration: none;
 }
 
 .cocktail-list-item:hover {
-  box-shadow: 0 3px 0 #aa5076;
+  box-shadow: 0 3px 0 var(--color-link-hover);
 }
 
 .cocktail-list-item__graphic__image {
-    width: 70px;
-    height: 70px;
-    border-radius: 5px;
+    width: var(--image-size);
+    height: var(--image-size);
+    border-radius: 0.325rem;
     background-color: #fff;
     background-size: cover;
     background-position: center center;
@@ -63,25 +64,19 @@ export default {
     margin-right: 10px;
 }
 
-.cocktail-list-item__content h3 {
+.cocktail-list-item__title {
     font-size: 1.1rem;
-    font-weight: 700;
+    font-family: var(--font-heading);
+    font-weight: var(--fw-bold);
+}
+
+.cocktail-list-item__content {
+    display: flex;
+    flex-direction: column;
 }
 
 .cocktail-list-item__content p {
     color: var(--color-text-muted);
     font-size: 0.8rem;
-}
-
-@media (max-width: 450px) {
-    .cocktail-list-item {
-        padding: 15px;
-    }
-
-    .cocktail-list-item__graphic__image {
-        width: 70px;
-        height: 70px;
-        margin-right: 10px;
-    }
 }
 </style>

@@ -5,7 +5,7 @@
             <img :src="mainIngredientImageUrl" :alt="ingredient.name">
         </div>
         <div class="ingredient-list-item__content">
-            <h3><RouterLink :to="{ name: 'ingredients.show', params: { id: ingredient.slug } }">{{ ingredient.name }}</RouterLink></h3>
+            <h4 class="ingredient-list-item__title"><RouterLink :to="{ name: 'ingredients.show', params: { id: ingredient.slug } }">{{ ingredient.name }}</RouterLink></h4>
             <!-- <p>{{ ingredient.description }}</p> -->
             <a href="#" @click.prevent="addToShelf">Add to my shelf</a> &middot;
             <a href="#" @click.prevent="removeFromShoppingList">Remove from list</a>
@@ -69,11 +69,13 @@ export default {
 </script>
 <style scoped>
 .ingredient-list-item {
+    --image-size: 70px;
+
     display: flex;
     align-items: center;
     background-color: #fff;
-    padding: 15px;
-    border-radius: 10px;
+    padding: 0.825rem;
+    border-radius: 0.5rem;
     box-shadow: 0 3px 0 var(--color-bg-dark);
     transition: box-shadow ease-in-out 150ms;
     text-decoration: none;
@@ -106,10 +108,11 @@ export default {
     top: 5px;
 }
 
-.ingredient-list-item__content h3 a {
+.ingredient-list-item__title a {
     text-decoration: none;
     font-size: 1.1rem;
-    font-weight: 700;
+    font-family: var(--font-heading);
+    font-weight: var(--fw-bold);
 }
 
 .ingredient-list-item__content p {
@@ -118,9 +121,5 @@ export default {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-}
-
-.ingredient-list-item__content a {
-    font-size: .9rem;
 }
 </style>
