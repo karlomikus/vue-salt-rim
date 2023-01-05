@@ -50,7 +50,7 @@ export default {
 </script>
 <style scoped>
 .cocktail-grid-item {
-    --image-size: 200px;
+    --image-size: 350px;
     --image-offset: -3rem;
     --image-offset-hover: -3.5rem;
     --content-spacing: 0.325rem;
@@ -100,6 +100,7 @@ export default {
 
 .cocktail-grid-item__graphic img {
     width: 100%;
+    max-width: var(--image-size);
     height: auto;
     border-radius: 0.825rem;
     object-fit: cover;
