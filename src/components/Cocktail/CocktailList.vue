@@ -9,7 +9,7 @@
         This is a list of cocktails available in your Bar Assistant server. You can search for a specific cocktails by filtering them with the tags you added or by using a search term.
     </p>
     <ais-instant-search :search-client="searchClient" index-name="cocktails:name:asc" :routing="routing">
-        <ais-configure :hitsPerPage="100" :stalledSearchDelay="200" />
+        <ais-configure :hitsPerPage="100" :stalledSearchDelay="200" :filters="filters" />
         <div class="cocktail-list-search-container">
             <ais-search-box placeholder="Type to filter cocktails..." :class-names="{ 'ais-SearchBox-input': 'form-input', 'ais-SearchBox-reset': 'cocktail-list-search-container__reset' }" />
             <ais-sort-by :items="[
@@ -59,6 +59,20 @@
         <ais-panel>
             <template v-slot:default="{ hasRefinements }">
                 <div class="cocktail-list-filter-panel" style="margin-bottom: 10px;" v-show="showFilterContainer">
+                    <h4>Cocktail filters:</h4>
+                    <div class="cocktail-list-filter-panel__toggle-refinements">
+                        <ais-toggle-refinement attribute="user_id" :on="userId">
+                            <template v-slot="{ value, refine, createURL }">
+                                <a :href="createURL(value)" class="tag tag--link" :class="{ 'tag--is-selected': value.isRefined }" @click.prevent="refine(value)">
+                                    My cocktails
+                                    ({{ value.count || 0 }})
+                                </a>
+                            </template>
+                        </ais-toggle-refinement>
+                        <a v-for="(customFilter, index) in filtersConfig" href="#" class="tag tag--link" :class="{ 'tag--is-selected': customFilter.isActive }" @click.prevent="toggleArrayFiltersConfig(index)">
+                            {{ customFilter.label }} ({{ customFilter.values.length }})
+                        </a>
+                    </div>
                     <h4>Filter by tags:</h4>
                     <ais-refinement-list attribute="tags" :sort-by="['name:asc']" :limit="30" operator="and">
                         <template v-slot:item="{ item, refine, createURL }">
@@ -80,39 +94,12 @@
                         <template v-slot="{ items, refine, createURL }">
                             <a v-for="item in items" :key="item.value" :href="createURL(item.value)" class="tag tag--link" :class="{ 'tag--is-selected': item.isRefined }" @click.prevent="refine(item.value)">
                                 <span v-for="(full, index) in item.stars" :key="index">
-                                    {{ full ? '★' : '☆' }}
+                                    {{ full? '★': '☆' }}
                                 </span>
                                 & up ({{ item.count }})
                             </a>
                         </template>
                     </ais-rating-menu>
-                    <h4>Cocktail filters:</h4>
-                    <div class="cocktail-list-filter-panel__toggle-refinements">
-                        <ais-toggle-refinement attribute="user_id" :on="userId">
-                            <template v-slot="{ value, refine, createURL }">
-                                <a :href="createURL(value)" class="tag tag--link" :class="{ 'tag--is-selected': value.isRefined }" @click.prevent="refine(value)">
-                                    My cocktails
-                                    ({{ value.count || 0 }})
-                                </a>
-                            </template>
-                        </ais-toggle-refinement>
-                        <ais-toggle-refinement attribute="id" :on="favoritedCocktailsIds">
-                            <template v-slot="{ value, refine, createURL }">
-                                <a :href="createURL(value)" class="tag tag--link" :class="{ 'tag--is-selected': value.isRefined }" @click.prevent="refine(value)">
-                                    My favorites
-                                    ({{ value.count || 0 }})
-                                </a>
-                            </template>
-                        </ais-toggle-refinement>
-                        <ais-toggle-refinement attribute="id" :on="shelfCocktailIds">
-                            <template v-slot="{ value, refine, createURL }">
-                                <a :href="createURL(value)" class="tag tag--link" :class="{ 'tag--is-selected': value.isRefined }" @click.prevent="refine(value)">
-                                    Shelf cocktails
-                                    ({{ value.count || 0 }})
-                                </a>
-                            </template>
-                        </ais-toggle-refinement>
-                    </div>
                 </div>
             </template>
         </ais-panel>
@@ -155,10 +142,20 @@ export default {
                 router: historyRouter(),
                 stateMapping: singleIndexMapping('cocktails:name:asc'),
             },
-            userCocktails: [],
-            shelfCocktailIds: [],
             userId: Auth.getUser().id,
             showFilterContainer: false,
+            filtersConfig: {
+                shelf: {
+                    isActive: false,
+                    label: "Cocktails I can make",
+                    values: []
+                },
+                favorites: {
+                    isActive: false,
+                    label: "My favorites",
+                    values: []
+                },
+            },
         };
     },
     components: {
@@ -168,29 +165,33 @@ export default {
     },
     created() {
         document.title = `Cocktails \u22C5 Salt Rim`
-        const userId = Auth.getUser().id
-        ApiRequests.fetchUserCocktails(userId).then(data => {
-            this.userCocktails = data
-        })
 
-        ApiRequests.fetchShelfCocktails(true).then(data => {
-            this.shelfCocktailIds = data;
-        });
+        this.setupFilters()
     },
     computed: {
-        userCocktailIds() {
-            return this.userCocktails.map(c => c.id)
-        },
-        favoritedCocktailsIds() {
-            const ids = Auth.getUser().favorite_cocktails;
-            if (ids.length === 0) {
-                return null;
+        filters() {
+            const activeFilters = Object.values(this.filtersConfig).filter(c => c.isActive);
+
+            if (activeFilters.length == 0) {
+                return '';
             }
 
-            return ids;
+            const values = activeFilters.map(filter => filter.values).reduce((arr1, arr2) => [...arr1, ...arr2])
+
+            return `id IN [${values.join(', ')}]`;
         }
     },
     methods: {
+        setupFilters() {
+            ApiRequests.fetchShelfCocktails(true).then(data => {
+                this.filtersConfig.shelf.values = data;
+            });
+
+            this.filtersConfig.favorites.values = Auth.getUser().favorite_cocktails;
+        },
+        toggleArrayFiltersConfig(key) {
+            this.filtersConfig[key].isActive = !this.filtersConfig[key].isActive
+        },
         handleRefinementTag(ref) {
             if (ref.attribute == 'user_id') {
                 return `My cocktails`;
@@ -231,6 +232,7 @@ export default {
     display: flex;
     flex-wrap: wrap;
     gap: 8px;
+    margin-bottom: 10px;
 }
 
 .cocktail-list-search-container {

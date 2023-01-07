@@ -3,7 +3,7 @@
         <div class="cocktail-grid-item__graphic">
             <img :data-img-src="mainCocktailImageUrl" alt="Main image of the cocktail">
         </div>
-        <h2 class="cocktail-grid-item__title">{{ cocktail.name }}</h2>
+        <h2 class="cocktail-grid-item__title">{{ cocktail.name }} <span v-if="isFavorited">♡</span></h2>
         <div class="cocktail-grid-item__rating">
             <span v-for="val in 5">
                 <template v-if="val > cocktail.average_rating">☆</template>

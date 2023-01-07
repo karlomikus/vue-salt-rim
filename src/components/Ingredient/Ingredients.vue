@@ -185,6 +185,7 @@ export default {
     font-family: var(--font-heading);
     font-weight: bold;
     font-size: 1.3rem;
+    line-height: 1.3;
 }
 
 .ingredient-list .ingredient-list__description p {
