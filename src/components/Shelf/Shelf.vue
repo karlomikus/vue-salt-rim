@@ -13,15 +13,15 @@
         <OverlayLoader v-if="loaders.stats"></OverlayLoader>
         <div class="stats__stat">
             <h3>{{ stats.total_cocktails }}</h3>
-            <p>Total Cocktails</p>
+            <p><RouterLink :to="{name: 'cocktails'}">Total cocktails</RouterLink></p>
         </div>
         <div class="stats__stat">
             <h3>{{ stats.total_ingredients }}</h3>
-            <p>Total Ingredients</p>
+            <p><RouterLink :to="{name: 'ingredients'}">Total ingredients</RouterLink></p>
         </div>
         <div class="stats__stat">
             <h3>{{ stats.total_shelf_cocktails }}</h3>
-            <p>Cocktails you can make</p>
+            <p><RouterLink :to="{name: 'cocktails', query: {shelf: true}}">Cocktails you can make</RouterLink></p>
         </div>
     </div>
 
