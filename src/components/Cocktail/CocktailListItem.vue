@@ -53,6 +53,10 @@ export default {
   box-shadow: 0 3px 0 var(--clr-red-800);
 }
 
+.cocktail-list-item__graphic {
+    align-self: start;
+}
+
 .cocktail-list-item__graphic__image {
     width: var(--image-size);
     height: var(--image-size);

@@ -41,6 +41,14 @@
                             </a>
                         </div>
                     </template>
+                    <div class="cocktail-current-refinements__refinement" v-for="filter in activeFilters">
+                        <a href="#" @click.prevent="filter.isActive = false">
+                            {{ filter.label }} <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16">
+                                <path fill="none" d="M0 0h24v24H0z" />
+                                <path d="M12 10.586l4.95-4.95 1.414 1.414-4.95 4.95 4.95 4.95-1.414 1.414-4.95-4.95-4.95 4.95-1.414-1.414 4.95-4.95-4.95-4.95L7.05 5.636z" />
+                            </svg>
+                        </a>
+                    </div>
                 </div>
             </template>
         </ais-current-refinements>
@@ -190,7 +198,7 @@ export default {
     },
     computed: {
         filters() {
-            const activeFilters = Object.values(this.filtersConfig).filter(c => c.isActive);
+            const activeFilters = this.activeFilters;
 
             if (activeFilters.length == 0) {
                 return '';
@@ -199,6 +207,9 @@ export default {
             const values = activeFilters.map(filter => filter.values).reduce((arr1, arr2) => [...arr1, ...arr2])
 
             return `id IN [${values.join(', ')}]`;
+        },
+        activeFilters() {
+            return Object.values(this.filtersConfig).filter(c => c.isActive);
         }
     },
     methods: {
