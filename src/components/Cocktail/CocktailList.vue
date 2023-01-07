@@ -178,6 +178,14 @@ export default {
     created() {
         document.title = `Cocktails \u22C5 Salt Rim`
 
+        if (this.$route.query.favorites) {
+            this.toggleArrayFiltersConfig('favorites');
+        }
+
+        if (this.$route.query.shelf) {
+            this.toggleArrayFiltersConfig('shelf');
+        }
+
         this.setupFilters()
     },
     computed: {
