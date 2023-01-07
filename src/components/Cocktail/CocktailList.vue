@@ -105,7 +105,6 @@
 <script>
 import { instantMeiliSearch } from '@meilisearch/instant-meilisearch';
 import { history as historyRouter } from 'instantsearch.js/es/lib/routers';
-import { singleIndex as singleIndexMapping } from 'instantsearch.js/es/lib/stateMappings';
 import Auth from '@/Auth.js';
 import ApiRequests from '@/ApiRequests.js'
 import CocktailGridItem from './CocktailGridItem.vue'
@@ -124,7 +123,36 @@ export default {
             ),
             routing: {
                 router: historyRouter(),
-                stateMapping: singleIndexMapping('cocktails:name:asc'),
+                stateMapping: {
+                    stateToRoute(uiState) {
+                        const indexUiState = uiState['cocktails:name:asc'];
+
+                        return {
+                            q: indexUiState.query,
+                            tags: indexUiState.refinementList && indexUiState.refinementList.tags,
+                            glass: indexUiState.refinementList && indexUiState.refinementList.glass,
+                            my_cocktails: indexUiState.toggle && indexUiState.toggle.user_id != null,
+                            avg_rating: indexUiState.ratingMenu && indexUiState.ratingMenu.average_rating
+                        }
+                    },
+                    routeToState(routeState) {
+                        return {
+                            ['cocktails:name:asc']: {
+                                query: routeState.q,
+                                refinementList: {
+                                    tags: routeState.tags,
+                                    glass: routeState.glass,
+                                },
+                                ratingMenu: {
+                                    average_rating: routeState.avg_rating
+                                },
+                                toggle: {
+                                    user_id: routeState.my_cocktails
+                                }
+                            }
+                        }
+                    }
+                }
             },
             userId: Auth.getUser().id,
             showFilterContainer: false,
