@@ -163,3 +163,7 @@
         height: 18px;
     }
 }
+
+.button[disabled] {
+    opacity: 0.5;
+}

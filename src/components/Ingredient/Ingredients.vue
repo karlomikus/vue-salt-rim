@@ -6,78 +6,123 @@
         </template>
     </PageHeader>
     <p class="page-description">
-        This is a list of ingredients available in your Bar Assistant server. You can press the "plus" sign to add specific ingredients to your shelf and this will update what cocktails you can make.
-        By clicking "Learn more" you can see more details about the ingredient, including an option to add it to your shopping list.
+        This is a list of ingredients available in your Bar Assistant server. You can add specific ingredients to your shelf and this will update what cocktails you can make.
+        You can also add ingredient to your shopping list.
     </p>
-    <div style="text-align: center; padding: 40px;" v-if="ingredients.length == 0">
-        <Spinner :size="64" />
-    </div>
-    <div v-else v-for="(ingredients, cat) in groupedByCategory">
-        <h2 class="ingredient-category-title">{{ cat }} ({{ ingredients.filter(i => userIngredientIds.includes(i.id)).length }}/{{ ingredients.length }})</h2>
-        <ul class="ingredient-list">
-            <li v-for="ingredient in ingredients" :ref="setupObserver">
-                <div class="ingredient-list__image" :style="{ 'background-color': setupColor(ingredient.color) }">
-                    <img :data-img-src="getImageUrl(ingredient)" :alt="ingredient.name">
-                </div>
-                <div class="ingredient-list__description">
-                    <h3>{{ ingredient.name }}</h3>
-                    <p>{{ ingredient.description }}</p>
-                    <RouterLink :to="{ name: 'ingredients.show', params: { id: ingredient.slug } }">
-                        Learn more
-                    </RouterLink>
-                </div>
-                <div class="ingredient-list__actions">
-                    <button class="button button--icon" title="Remove from my bar shelf" @click="removeFromShelf(ingredient)" v-if="userIngredientIds.includes(ingredient.id)">
-                        <Spinner v-if="loadingIngredients.includes(ingredient.id)" />
-                        <svg v-else xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+    <ais-instant-search :search-client="searchClient" index-name="ingredients:name:asc" :routing="routing">
+        <ais-configure :hitsPerPage="60" :stalledSearchDelay="200" />
+        <div class="inpage-search" :class="{'inpage-search--hide-filters': !showFilters}">
+            <div class="inpage-search__filter" v-show="showFilters">
+                <h3>Filters</h3>
+                <button class="inpage-search__filter__close">Close</button>
+                <h4>Sort:</h4>
+                <ais-sort-by :items="[
+                    { value: 'ingredients', label: 'Relevancy' },
+                    { value: 'ingredients:name:asc', label: 'Name asc.' },
+                    { value: 'ingredients:name:desc', label: 'Name desc.' },
+                ]" :class-names="{ 'ais-SortBy-select': 'form-select' }" />
+                <h4>Category:</h4>
+                <ais-refinement-list attribute="category" :sort-by="['name']" :limit="20" :show-more-limit="50" :class-names="{
+                    'ais-RefinementList-showMore': 'button button--outline button--small'
+                }" show-more></ais-refinement-list>
+                <h4>ABV:</h4>
+                <ais-numeric-menu attribute="strength_abv" :items="[
+                    { label: 'All' },
+                    { label: 'Not Alcoholic', start: 0, end: 0 },
+                    { label: '<= 20%', start: 1, end: 20 },
+                    { label: '20% - 40%', start: 20, end: 40 },
+                    { label: '>= 40', start: 40 },
+                ]" />
+                <h4>Origin:</h4>
+                <ais-refinement-list attribute="origin" :sort-by="['name']" :limit="10" :show-more-limit="50" :class-names="{
+                    'ais-RefinementList-showMore': 'button button--outline button--small'
+                }" show-more></ais-refinement-list>
+            </div>
+            <div class="inpage-search__results">
+                <div class="inpage-search__searchbox">
+                    <button type="button" class="button button--input" @click.prevent="showFilters = !showFilters">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
                             <path fill="none" d="M0 0h24v24H0z" />
-                            <path d="M10 15.172l9.192-9.193 1.415 1.414L10 18l-6.364-6.364 1.414-1.414z" />
+                            <path d="M6.17 18a3.001 3.001 0 0 1 5.66 0H22v2H11.83a3.001 3.001 0 0 1-5.66 0H2v-2h4.17zm6-7a3.001 3.001 0 0 1 5.66 0H22v2h-4.17a3.001 3.001 0 0 1-5.66 0H2v-2h10.17zm-6-7a3.001 3.001 0 0 1 5.66 0H22v2H11.83a3.001 3.001 0 0 1-5.66 0H2V4h4.17z" />
                         </svg>
                     </button>
-                    <button class="button button--icon" title="Add to my bar shelf" @click="addToShelf(ingredient)" v-else>
-                        <Spinner v-if="loadingIngredients.includes(ingredient.id)" />
-                        <svg v-else xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
-                            <path fill="none" d="M0 0h24v24H0z" />
-                            <path d="M11 11V5h2v6h6v2h-6v6h-2v-6H5v-2z" />
-                        </svg>
-                    </button>
+                    <ais-search-box placeholder="Search for ingredients..." :class-names="{ 'ais-SearchBox-input': 'form-input', 'ais-SearchBox-reset': 'cocktail-list-search-container__reset' }" />
                 </div>
-            </li>
-        </ul>
-    </div>
+                <ais-infinite-hits>
+                    <template v-slot="{ items, refineNext, isLastPage }">
+                        <IngredientGridContainer>
+                            <IngredientGridItem v-for="ingredient in items" :ingredient="ingredient" :user-ingredients="userIngredientIds" :shopping-list="shoppingListIds" :key="ingredient.id" />
+                        </IngredientGridContainer>
+                    </template>
+                </ais-infinite-hits>
+            </div>
+        </div>
+    </ais-instant-search>
 </template>
 
 <script>
-import _ from 'lodash';
-import ApiRequests from '../../ApiRequests';
-import Spinner from './../Spinner.vue'
+import { history as historyRouter } from 'instantsearch.js/es/lib/routers';
+import ApiRequests from '@/ApiRequests';
 import PageHeader from '@/components/PageHeader.vue'
+import IngredientGridContainer from '@/components/Ingredient/IngredientGridContainer.vue'
+import IngredientGridItem from '@/components/Ingredient/IngredientGridItem.vue'
+import { instantMeiliSearch } from '@meilisearch/instant-meilisearch';
+import Auth from '@/Auth.js';
 
 export default {
     data() {
         return {
-            observer: null,
+            searchClient: instantMeiliSearch(
+                Auth.getUserSearchSettings().host,
+                Auth.getUserSearchSettings().key,
+                {
+                    keepZeroFacets: true
+                }
+            ),
+            routing: {
+                router: historyRouter(),
+                stateMapping: {
+                    stateToRoute(uiState) {
+                        const indexUiState = uiState['ingredients:name:asc'];
+
+                        return {
+                            q: indexUiState.query,
+                            category: indexUiState.refinementList && indexUiState.refinementList.category,
+                            origin: indexUiState.refinementList && indexUiState.refinementList.origin,
+                            abv: indexUiState.numericMenu && indexUiState.numericMenu.strength_abv,
+                            sort: indexUiState.sortBy
+                        }
+                    },
+                    routeToState(routeState) {
+                        return {
+                            ['ingredients:name:asc']: {
+                                query: routeState.q,
+                                sortBy: routeState.sort,
+                                refinementList: {
+                                    category: routeState.category,
+                                    origin: routeState.origin,
+                                },
+                                numericMenu: {
+                                    strength_abv: routeState.abv
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            showFilters: true,
             ingredients: [],
             userIngredients: [],
             loadingIngredients: []
         }
     },
     components: {
-        Spinner,
+        IngredientGridItem,
+        IngredientGridContainer,
         PageHeader
     },
     created() {
         document.title = `Ingredients \u22C5 Salt Rim`
-
-        this.observer = new IntersectionObserver((entries, observer) => {
-            entries.forEach((entry) => {
-                if (entry.isIntersecting) {
-                    const imgElement = entry.target.querySelector('img');
-                    imgElement.setAttribute('src', imgElement.dataset.imgSrc);
-                    this.observer.unobserve(entry.target)
-                }
-            });
-        });
 
         ApiRequests.fetchIngredients().then(data => {
             this.ingredients = data
@@ -88,11 +133,11 @@ export default {
         });
     },
     computed: {
-        groupedByCategory() {
-            return _.groupBy(this.ingredients, 'category.name');
-        },
         userIngredientIds() {
             return this.userIngredients.map(ui => ui.ingredient_id)
+        },
+        shoppingListIds() {
+            return Auth.getUser().shopping_lists;
         }
     },
     methods: {
@@ -109,33 +154,6 @@ export default {
 
             return hex;
         },
-        setupObserver(el) {
-            if (el) {
-                this.observer.observe(el)
-            }
-        },
-        addToShelf(ingredient) {
-            this.loadingIngredients.push(ingredient.id)
-
-            ApiRequests.addIngredientToShelf(ingredient.id).then(() => {
-                this.loadingIngredients.splice(this.loadingIngredients.indexOf(ingredient.id), 1)
-                this.userIngredients.push({ ingredient_id: ingredient.id })
-            }).catch(e => {
-                this.$toast.error(e.message)
-                this.loadingIngredients.splice(this.loadingIngredients.indexOf(ingredient.id), 1)
-            })
-        },
-        removeFromShelf(ingredient) {
-            this.loadingIngredients.push(ingredient.id)
-
-            ApiRequests.removeIngredientFromShelf(ingredient.id).then(() => {
-                this.loadingIngredients.splice(this.loadingIngredients.indexOf(ingredient.id), 1)
-                this.userIngredients.splice(this.userIngredients.indexOf(ingredient.id), 1)
-            }).catch(e => {
-                this.$toast.error(e.message)
-                this.loadingIngredients.splice(this.loadingIngredients.indexOf(ingredient.id), 1)
-            })
-        },
         getImageUrl(ing) {
             if (!ing.main_image_id) {
                 return '/no-ingredient.png';
@@ -148,92 +166,116 @@ export default {
 </script>
 
 <style scoped>
-.ingredient-list {
-    list-style: none;
-    padding: 0;
+.inpage-search {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
-    row-gap: 20px;
-    column-gap: 20px;
+    grid-template-columns: 1fr 4fr;
+    gap: 20px;
+    margin-top: 1rem;
 }
 
-.ingredient-category-title {
-    background-color: var(--clr-gray-800);
-    color: #fff;
-    display: inline-block;
-    font-size: 1rem;
-    padding: 3px 10px;
-    border-radius: 20px;
-    margin: 20px auto;
+.inpage-search.inpage-search--hide-filters {
+    grid-template-columns: 1fr;
 }
 
-.ingredient-list>li {
-    background-color: #fff;
-    padding: 20px;
-    box-shadow: 0 3px 0 var(--clr-red-300);
-    border-radius: 10px;
-    width: 100%;
+.inpage-search__filter h4 {
+    font-weight: var(--fw-bold);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-size: 0.715rem;
+    margin-bottom: 0.5rem;
+    margin-top: 0.5rem;
+    padding-top: 0.5rem;
+    border-top: 3px double var(--clr-red-300);
+}
+
+.inpage-search__filter__close,.inpage-search__filter h3 {
+    display: none;
+}
+
+.ais-RefinementList, .ais-NumericMenu {
+    margin-bottom: 0.5rem;
+}
+
+:deep(.ais-RefinementList-list),
+:deep(.ais-NumericMenu-list) {
+    margin: 0;
+    padding: 0;
+    list-style: none;
     display: flex;
-    transition: box-shadow ease-in-out 150ms;
+    flex-direction: column;
+    gap: 0.125rem;
 }
 
-.ingredient-list>li:hover {
-    box-shadow: 0 3px 0 var(--clr-red-800);
-}
-
-.ingredient-list .ingredient-list__description h3 {
-    font-family: var(--font-heading);
-    font-weight: bold;
-    font-size: 1.3rem;
-    line-height: 1.3;
-}
-
-.ingredient-list .ingredient-list__description p {
-    color: var(--clr-gray-500);
-    overflow: hidden;
-    line-height: 1.3rem;
-    max-height: calc(2 * 1.3rem);
-}
-
-.ingredient-list .ingredient-list__image {
-    flex-shrink: 0;
-    margin-right: 15px;
-    align-self: center;
-    width: 95px;
-    height: 95px;
-    text-align: center;
-    border-radius: 8px;
+:deep(.ais-RefinementList-label),
+:deep(.ais-NumericMenu-label) {
     display: flex;
+    gap: 0.215rem;
+}
+
+:deep(.ais-RefinementList-count) {
+    display: inline-flex;
     align-items: center;
     justify-content: center;
-}
-
-.ingredient-list .ingredient-list__image img {
-    height: 90px;
-}
-
-@media (max-width: 450px) {
-    .ingredient-list {
-        row-gap: 10px;
-        column-gap: 10px;
-    }
-
-    .ingredient-list .ingredient-list__image {
-        margin-right: 10px;
-        width: 70px;
-        height: 70px;
-    }
-
-    .ingredient-list .ingredient-list__image img {
-        height: 90px;
-    }
-}
-
-.ingredient-list__actions {
+    background-color: var(--clr-red-300);
+    padding: 1px 6px;
+    border-radius: 2px;
+    font-size: 0.8rem;
     margin-left: auto;
-    flex-shrink: 0;
-    position: absolute;
-    top: 2px;
-    right: 2px;
+}
+
+:deep(.ais-RefinementList-item:hover) {
+    color: var(--clr-gray-900);
+}
+
+:deep(.ais-RefinementList-item:hover .ais-RefinementList-count) {
+    background-color: var(--clr-red-400);
+}
+
+.inpage-search__searchbox {
+    margin-bottom: 1rem;
+    gap: 10px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+}
+
+.inpage-search__searchbox .ais-SearchBox {
+    flex-grow: 3;
+    flex-basis: 400px;
+}
+
+:deep(.inpage-search__searchbox .ais-SearchBox-reset),
+:deep(.inpage-search__searchbox .ais-SearchBox-submit) {
+    display: none;
+}
+
+@media (max-width: 750px) {
+    .inpage-search {
+        grid-template-columns: 1fr;
+    }
+
+    .inpage-search__filter {
+        position: fixed;
+        display: none;
+        top: 0;
+        left: 0;
+        background: #fff5f5;
+        width: 85%;
+        z-index: 99;
+        height: 100%;
+        padding: 1.5rem;
+        overflow: scroll;
+    }
+
+    .inpage-search__filter h3 {
+        display: block;
+        font-family: var(--font-heading);
+        font-weight: var(--fw-bold);
+        font-size: 1.3rem;
+    }
+
+    .inpage-search__filter__close {
+        display: inline-block;
+    }
 }
 </style>
