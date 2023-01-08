@@ -15,8 +15,8 @@ export default {
         this.observer = new IntersectionObserver((entries, observer) => {
             entries.forEach((entry) => {
                 if (entry.isIntersecting) {
-                    const imgElement = entry.target.querySelector('.cocktail-grid-item__graphic__image');
-                    imgElement.style.backgroundImage = `url('${imgElement.dataset.imgSrc}')`
+                    const imgElement = entry.target.querySelector('.cocktail-grid-item__graphic img');
+                    imgElement.src = imgElement.dataset.imgSrc
                     this.observer.unobserve(entry.target)
                 }
             });
@@ -30,7 +30,7 @@ export default {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(var(--cocktail-grid-card-width), 1fr));
     column-gap: 20px;
-    row-gap: 20px;
+    row-gap: 0;
 }
 
 @media (max-width: 450px) {

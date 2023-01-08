@@ -6,7 +6,7 @@
         </div>
         <div class="cocktail-details-box cocktail-details-box--blue">
             <h3 class="cocktail-details-box__title">{{ cocktail.name }}</h3>
-            <div class="tag-container" style="margin-bottom: 20px;" v-if="cocktail.tags.length > 0">
+            <div class="tag-container" v-if="cocktail.tags.length > 0">
                 <RouterLink :to="{name: 'cocktails', query: {'refinementList[tags][0]': tag}}" v-for="tag in cocktail.tags" class="tag tag--background" style="background-color: #BFD3DF;">{{ tag }}</RouterLink>
             </div>
             <Rating :rating="cocktail.user_rating" type="cocktail" :id="cocktail.id"></Rating>
@@ -340,13 +340,13 @@ export default {
 }
 
 .cocktail-details-box__title {
-    font-family: var(--font-accent);
+    font-family: var(--font-heading);
     font-weight: 700;
     margin: 0 0 20px 0;
 }
 
 .cocktail-details-box--blue .cocktail-details-box__title {
-    font-size: 1.8rem;
+    font-size: 2rem;
 }
 
 .cocktail-ingredients {
@@ -365,19 +365,19 @@ export default {
 }
 
 .cocktail-ingredients li .cocktail-ingredients__content small {
-    color: var(--color-link-hover);
+    color: var(--clr-red-800);
     margin-left: 5px;
 }
 
 .cocktail-ingredients li .cocktail-ingredients__content span {
     display: block;
     font-size: 0.7rem;
-    color: var(--color-text-muted);
+    color: var(--clr-gray-500);
 }
 
 .cocktail-ingredients li .cocktail-ingredients__content .cocktail-ingredients__content__substitutes {
     font-size: 0.7rem;
-    color: var(--color-text-muted);
+    color: var(--clr-gray-500);
 }
 
 .cocktail-ingredients li .cocktail-ingredients__amount {
@@ -422,7 +422,7 @@ export default {
     font-size: 1.2rem;
     width: 35px;
     cursor: pointer;
-    color: var(--color-text)
+    color: var(--clr-gray-800)
 }
 
 .cocktail-button-group button.active-serving {
@@ -440,7 +440,6 @@ export default {
 
 .cocktail-details-box ol li::marker {
     font-size: 1.1rem;
-    font-family: var(--font-accent);
     font-weight: bold;
 }
 </style>

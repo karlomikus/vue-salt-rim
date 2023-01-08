@@ -1,11 +1,16 @@
-@import url('https://fonts.googleapis.com/css2?family=Aboreto&family=Bitter:wght@400;700&family=Inter:wght@400;700&family=Montagu+Slab:opsz,wght@16..144,400;16..144,500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Alice&family=Inter:wght@400;700&display=swap');
+/* @import url('https://fonts.googleapis.com/css2?family=Alice&family=Philosopher:wght@400;700&display=swap'); */
 
 :root {
-    --color-bg: #fff4f6;
-    --color-bg-dark: #f2d4d9;
-    --color-text: #454b60;
-    --color-text-muted: #7c84a0;
-    --color-link-hover: #aa5076;
+    --clr-red-100: hsl(349, 100%, 98%);
+    --clr-red-300: hsl(349, 54%, 90%);
+    --clr-red-400: hsl(349, 54%, 80%);
+    --clr-red-800: hsl(349, 36%, 49%);
+
+    --clr-gray-900: hsl(227, 16%, 22%);
+    --clr-gray-800: hsl(227, 16%, 32%);
+    --clr-gray-500: hsl(227, 16%, 57%);
+
     --color-tag: #DFE7FD;
     --color-tag-hover: #faeaab;
     --color-site-header: #737db7;
@@ -15,9 +20,11 @@
 
     --font-primary: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
     --font-accent: 'Bitter', serif;
-    --font-page-subtitle: 'Aboreto', serif;
+    --font-heading: 'Alice', serif;
 
-    --site-width: 1200px;
+    --fw-bold: 700;
+
+    --site-width: 1440px;
     --cocktail-grid-card-width: 250px;
     --cocktail-list-card-width: 350px;
 
@@ -36,13 +43,22 @@
     font-weight: normal;
 }
 
+* {
+    margin: 0;
+}
+
+html,
+body {
+    height: 100%;
+}
+
 strong {
     font-weight: 700;
 }
 
 body {
-    color: var(--color-text);
-    background-color: var(--color-bg);
+    color: var(--clr-gray-800);
+    background-color: var(--clr-red-100);
     line-height: 1.6;
     font-family: var(--font-primary);
     font-size: 16px;
@@ -59,11 +75,28 @@ body {
 }
 
 a {
-    color: var(--color-text);
+    color: var(--clr-gray-800);
 }
 
 a:hover,
 a:focus,
 a:active {
-    color: var(--color-link-hover);
+    color: var(--clr-red-800);
+}
+
+input,
+button,
+textarea,
+select {
+    font: inherit;
+}
+
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    overflow-wrap: break-word;
 }

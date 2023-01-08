@@ -4,7 +4,7 @@
             <div class="cocktail-list-item__graphic__image" :data-img-src="mainCocktailImageUrl"></div>
         </div>
         <div class="cocktail-list-item__content">
-            <h3>{{ cocktail.name }}</h3>
+            <h4 class="cocktail-list-item__title">{{ cocktail.name }} <MiniRating v-if="cocktail.user_rating > 0" :rating="cocktail.user_rating"></MiniRating></h4>
             <p v-if="cocktail.short_ingredients">
                 {{ cocktail.short_ingredients.join(', ') }}
             </p>
@@ -14,9 +14,13 @@
 
 <script>
 import ApiRequests from '@/ApiRequests.js';
+import MiniRating from '@/components/MiniRating.vue'
 
 export default {
     props: ['cocktail', 'observer'],
+    components: {
+        MiniRating
+    },
     mounted() {
         this.observer.observer.observe(this.$el)
     },
@@ -26,7 +30,6 @@ export default {
                 return '/no-cocktail.jpg';
             }
 
-            // return this.cocktail.images.filter((img) => img.id == this.cocktail.main_image_id)[0].url;
             return ApiRequests.imageThumbUrl(this.cocktail.main_image_id);
         }
     }
@@ -34,51 +37,50 @@ export default {
 </script>
 <style scoped>
 .cocktail-list-item {
+    --image-size: 70px;
+
     display: flex;
     align-items: center;
     background-color: #fff;
-    padding: 15px;
-    border-radius: 10px;
-    box-shadow: 0 3px 0 var(--color-bg-dark);
+    padding: 0.825rem;
+    border-radius: 0.5rem;
+    box-shadow: 0 3px 0 var(--clr-red-300);
     transition: box-shadow ease-in-out 150ms;
     text-decoration: none;
 }
 
 .cocktail-list-item:hover {
-  box-shadow: 0 3px 0 #aa5076;
+  box-shadow: 0 3px 0 var(--clr-red-800);
+}
+
+.cocktail-list-item__graphic {
+    align-self: start;
 }
 
 .cocktail-list-item__graphic__image {
-    width: 80px;
-    height: 80px;
-    border-radius: 5px;
+    width: var(--image-size);
+    height: var(--image-size);
+    border-radius: 0.325rem;
     background-color: #fff;
     background-size: cover;
     background-position: center center;
     flex-shrink: 0;
-    margin-right: 20px;
+    margin-right: 10px;
 }
 
-.cocktail-list-item__content h3 {
-    font-size: 1.2rem;
-    font-family: var(--font-accent);
-    font-weight: 700;
+.cocktail-list-item__title {
+    font-size: 1.1rem;
+    font-family: var(--font-heading);
+    font-weight: var(--fw-bold);
+}
+
+.cocktail-list-item__content {
+    display: flex;
+    flex-direction: column;
 }
 
 .cocktail-list-item__content p {
-    color: var(--color-text-muted);
+    color: var(--clr-gray-500);
     font-size: 0.8rem;
-}
-
-@media (max-width: 450px) {
-    .cocktail-list-item {
-        padding: 15px;
-    }
-
-    .cocktail-list-item__graphic__image {
-        width: 70px;
-        height: 70px;
-        margin-right: 10px;
-    }
 }
 </style>

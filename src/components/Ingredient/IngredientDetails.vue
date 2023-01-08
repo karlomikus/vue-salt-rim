@@ -3,7 +3,7 @@
         <OverlayLoader v-if="isLoading" />
         <div class="ingredient-details__box ingredient-details__box--green" style="margin-top: 100px;">
             <div class="ingredient-details__box__content">
-                <h2 class="ingredient-details__box__title">
+                <h2 class="ingredient-details__box__title ingredient-details__box__title--main">
                     <small>{{ ingredient.category.name }}</small>
                     {{ ingredient.name }}
                 </h2>
@@ -302,15 +302,22 @@ export default {
 
 .ingredient-details__box__title {
     font-weight: 700;
-    font-family: var(--font-accent);
+    font-family: var(--font-heading);
     margin: 10px 0;
     line-height: 1.3rem;
 }
 
+.ingredient-details__box__title.ingredient-details__box__title--main {
+    font-size: 2rem;
+    line-height: 1.6rem;
+    margin-bottom: 20px;
+}
+
 .ingredient-details__box__title small {
     display: block;
-    font-size: 0.8rem;
-    color: var(--color-text-muted);
+    font-size: 1rem;
+    font-family: var(--font-primary);
+    color: var(--clr-gray-500);
 }
 
 .ingredient-details__box hr {
@@ -358,7 +365,7 @@ export default {
 .ingredient-chips-list li a:hover,
 .ingredient-chips-list li a:active,
 .ingredient-chips-list li a:focus {
-    box-shadow: 0 2px 0 var(--color-link-hover);
+    box-shadow: 0 2px 0 var(--clr-red-800);
     background-color: #fff;
 }
 

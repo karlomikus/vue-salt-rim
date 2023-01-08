@@ -6,6 +6,7 @@
 @import "./glasses.css";
 @import "./tags.css";
 @import "./table.css";
+/* @import "./instant-theme.css"; */
 
 @import "vue-toast-notification/dist/theme-default.css";
 @import "tom-select/dist/css/tom-select.css";
@@ -27,14 +28,10 @@ main {
 }
 
 .page-subtitle {
-    border-bottom: 2px solid #f2d4d9;
+    border-bottom: 3px double #f2d4d9;
     padding-bottom: 10px;
-    margin: 40px 0 20px 0;
-    font-weight: 700;
-    /* letter-spacing: 1px; */
-    text-transform: uppercase;
-    font-size: 1.3rem;
-    font-family: var(--font-page-subtitle);
+    margin: 20px 0;
+    font-size: 1.2rem;
     text-shadow: 1px 1px 0 #f2d4d9;
     display: flex;
 }
@@ -61,7 +58,7 @@ main {
 }
 
 .empty-state svg {
-    fill: var(--color-text);
+    fill: var(--clr-gray-800);
     width: 70px;
     height: 70px;
 }
@@ -72,7 +69,7 @@ main {
 
 .site-logo {
     display: flex;
-    font-family: var(--font-accent);
+    /* font-family: var(--font-heading); */
     color: #fff;
     text-decoration: none;
 }
@@ -151,7 +148,7 @@ a.site-logo:focus .site-logo__title {
     font-size: 0.8rem;
     row-gap: 5px;
     display: grid;
-    color: var(--color-text-muted);
+    color: var(--clr-gray-500);
 }
 
 .flags li {
@@ -171,7 +168,7 @@ a.site-logo:focus .site-logo__title {
 
 .login-page form {
     margin-top: 20px;
-    background-color: var(--color-bg);
+    background-color: var(--clr-red-100);
     width: 100%;
     max-width: 400px;
     padding: 30px;

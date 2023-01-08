@@ -318,12 +318,12 @@ export default {
     row-gap: 10px;
     background: rgba(255, 255, 255, .5);
     padding: 10px;
-    border-bottom: 2px solid var(--color-bg-dark);
+    border-bottom: 2px solid var(--clr-red-300);
     border-radius: 5px;
 }
 
 .cocktail-form__ingredients li small {
-    color: var(--color-text-muted);
+    color: var(--clr-gray-500);
 }
 
 .cocktail-form__ingredients li .form-group {
@@ -337,6 +337,6 @@ export default {
 .cocktail-form__ingredients .substitutes {
     font-style: italic;
     font-size: 0.9rem;
-    color: var(--color-text-muted);
+    color: var(--clr-gray-500);
 }
 </style>

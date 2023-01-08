@@ -181,7 +181,7 @@ export default {
     overflow-y: auto;
     background: rgba(255, 255, 255, .5);
     padding: 15px;
-    border-bottom: 2px solid var(--color-bg-dark);
+    border-bottom: 2px solid var(--clr-red-300);
     border-radius: 5px;
     margin-top: 5px;
 }
@@ -207,7 +207,6 @@ export default {
 }
 
 .selected-ingredient {
-    font-family: var(--font-accent);
     font-weight: bold;
     font-size: 1.6rem;
     margin: 15px 0;
@@ -230,13 +229,12 @@ export default {
     font-weight: normal;
     font-size: 1rem;
     display: block;
-    font-family: var(--font-accent);
     font-weight: 700;
 }
 
 .ingredient-modal__info {
     background: rgba(255, 255, 255, .5);
-    border-bottom: 2px solid var(--color-bg-dark);
+    border-bottom: 2px solid var(--clr-red-300);
     border-radius: 5px;
     color: rgb(28, 48, 65);
     padding: 10px;

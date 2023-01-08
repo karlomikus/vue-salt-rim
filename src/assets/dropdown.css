@@ -28,7 +28,7 @@
 
 .dropdown-menu .dropdown-menu__item:hover {
     color: #fff;
-    background-color: var(--color-text);
+    background-color: var(--clr-gray-800);
 }
 
 .dropdown-menu .dropdown-menu__item:hover svg {

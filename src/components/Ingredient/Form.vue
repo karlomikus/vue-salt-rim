@@ -153,7 +153,7 @@ export default {
     background: rgba(255, 255, 255, .5);
     border-radius: 5px;
     height: 3rem;
-    border: 2px solid var(--color-bg-dark);
+    border: 2px solid var(--clr-red-300);
     border-top-color: transparent;
     border-left-color: transparent;
     border-right-color: transparent;
@@ -169,6 +169,6 @@ export default {
 .colorpicker-button:active,
 .colorpicker-button:focus {
     background: #fff;
-    border-color: var(--color-text);
+    border-color: var(--clr-gray-800);
 }
 </style>

@@ -5,7 +5,7 @@
             <img :src="mainIngredientImageUrl" :alt="ingredient.name">
         </div>
         <div class="ingredient-list-item__content">
-            <h3><RouterLink :to="{ name: 'ingredients.show', params: { id: ingredient.slug } }">{{ ingredient.name }}</RouterLink></h3>
+            <h4 class="ingredient-list-item__title"><RouterLink :to="{ name: 'ingredients.show', params: { id: ingredient.slug } }">{{ ingredient.name }}</RouterLink></h4>
             <!-- <p>{{ ingredient.description }}</p> -->
             <a href="#" @click.prevent="addToShelf">Add to my shelf</a> &middot;
             <a href="#" @click.prevent="removeFromShoppingList">Remove from list</a>
@@ -69,24 +69,27 @@ export default {
 </script>
 <style scoped>
 .ingredient-list-item {
+    --image-size: 70px;
+
     display: flex;
+    align-items: center;
     background-color: #fff;
-    padding: 15px;
-    border-radius: 10px;
-    box-shadow: 0 3px 0 var(--color-bg-dark);
+    padding: 0.825rem;
+    border-radius: 0.5rem;
+    box-shadow: 0 3px 0 var(--clr-red-300);
     transition: box-shadow ease-in-out 150ms;
     text-decoration: none;
     gap: 10px;
 }
 
 .ingredient-list-item:hover {
-    box-shadow: 0 3px 0 var(--color-link-hover);
+    box-shadow: 0 3px 0 var(--clr-red-800);
 }
 
 .ingredient-list-item__image {
-    width: 60px;
-    height: 60px;
-    border-radius: 10px;
+    width: 70px;
+    height: 70px;
+    border-radius: 5px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -105,15 +108,15 @@ export default {
     top: 5px;
 }
 
-.ingredient-list-item__content h3 a {
+.ingredient-list-item__title a {
     text-decoration: none;
-    font-size: 1.2rem;
-    font-family: var(--font-accent);
-    font-weight: 700;
+    font-size: 1.1rem;
+    font-family: var(--font-heading);
+    font-weight: var(--fw-bold);
 }
 
 .ingredient-list-item__content p {
-    color: var(--color-text-muted);
+    color: var(--clr-gray-500);
     max-width: 300px;
     white-space: nowrap;
     overflow: hidden;

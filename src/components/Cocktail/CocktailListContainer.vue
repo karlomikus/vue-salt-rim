@@ -29,13 +29,11 @@ export default {
 .cocktail-list-container {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(var(--cocktail-list-card-width), 1fr));
-    column-gap: 20px;
-    row-gap: 20px;
+    gap: 10px;
 }
 
 @media (max-width: 450px) {
     .cocktail-list-container {
-        row-gap: 10px;
         grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     }
 }
