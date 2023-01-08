@@ -11,7 +11,7 @@
     </p>
     <ais-instant-search :search-client="searchClient" index-name="ingredients:name:asc" :routing="routing">
         <ais-configure :hitsPerPage="60" :stalledSearchDelay="200" />
-        <div class="inpage-search">
+        <div class="inpage-search inpage-search--hide-filters">
             <div class="inpage-search__filter">
                 <h3>Filters</h3>
                 <button class="button button--dark button--small inpage-search__filter__close" @click.prevent="toggleShown">Close</button>
