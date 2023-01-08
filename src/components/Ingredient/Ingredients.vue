@@ -11,10 +11,10 @@
     </p>
     <ais-instant-search :search-client="searchClient" index-name="ingredients:name:asc" :routing="routing">
         <ais-configure :hitsPerPage="60" :stalledSearchDelay="200" />
-        <div class="inpage-search" :class="{'inpage-search--hide-filters': !showFilters}">
-            <div class="inpage-search__filter" v-show="showFilters">
+        <div class="inpage-search">
+            <div class="inpage-search__filter">
                 <h3>Filters</h3>
-                <button class="button button--dark button--small inpage-search__filter__close" @click.prevent="showFilters = !showFilters">Close</button>
+                <button class="button button--dark button--small inpage-search__filter__close" @click.prevent="toggleShown">Close</button>
                 <h4>Sort:</h4>
                 <ais-sort-by :items="[
                     { value: 'ingredients', label: 'Relevancy' },
@@ -40,7 +40,7 @@
             </div>
             <div class="inpage-search__results">
                 <div class="inpage-search__searchbox">
-                    <button type="button" class="button button--input" @click.prevent="showFilters = !showFilters">
+                    <button type="button" class="button button--input" @click.prevent="toggleShown">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
                             <path fill="none" d="M0 0h24v24H0z" />
                             <path d="M6.17 18a3.001 3.001 0 0 1 5.66 0H22v2H11.83a3.001 3.001 0 0 1-5.66 0H2v-2h4.17zm6-7a3.001 3.001 0 0 1 5.66 0H22v2h-4.17a3.001 3.001 0 0 1-5.66 0H2v-2h10.17zm-6-7a3.001 3.001 0 0 1 5.66 0H22v2H11.83a3.001 3.001 0 0 1-5.66 0H2V4h4.17z" />
@@ -165,6 +165,9 @@ export default {
             }
 
             return ing.images.filter((img) => img.id == ing.main_image_id)[0].url;
+        },
+        toggleShown() {
+            document.querySelector('.inpage-search').classList.toggle('inpage-search--hide-filters')
         }
     }
 }
@@ -180,6 +183,10 @@ export default {
 
 .inpage-search.inpage-search--hide-filters {
     grid-template-columns: 1fr;
+}
+
+.inpage-search.inpage-search--hide-filters .inpage-search__filter {
+    display: none;
 }
 
 .inpage-search__filter h4 {
@@ -269,10 +276,6 @@ export default {
         height: 100%;
         padding: 1.5rem;
         overflow-y: scroll;
-    }
-
-    .inpage-search.inpage-search--hide-filters .inpage-search__filter {
-        display: none;
     }
 
     .inpage-search__filter h3 {
