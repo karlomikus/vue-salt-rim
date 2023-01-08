@@ -11,17 +11,6 @@ export default {
             observer: null,
         }
     },
-    // created() {
-    //     this.observer = new IntersectionObserver((entries, observer) => {
-    //         entries.forEach((entry) => {
-    //             if (entry.isIntersecting) {
-    //                 const imgElement = entry.target.querySelector('.cocktail-grid-item__graphic img');
-    //                 imgElement.src = imgElement.dataset.imgSrc
-    //                 this.observer.unobserve(entry.target)
-    //             }
-    //         });
-    //     });
-    // }
 }
 </script>
 
@@ -30,5 +19,11 @@ export default {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
     gap: 10px;
+}
+
+@media (max-width: 450px) {
+    .ingredient-grid-container {
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    }
 }
 </style>

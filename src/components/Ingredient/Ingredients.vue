@@ -14,7 +14,7 @@
         <div class="inpage-search" :class="{'inpage-search--hide-filters': !showFilters}">
             <div class="inpage-search__filter" v-show="showFilters">
                 <h3>Filters</h3>
-                <button class="inpage-search__filter__close">Close</button>
+                <button class="button button--dark button--small inpage-search__filter__close" @click.prevent="showFilters = !showFilters">Close</button>
                 <h4>Sort:</h4>
                 <ais-sort-by :items="[
                     { value: 'ingredients', label: 'Relevancy' },
@@ -53,6 +53,11 @@
                         <IngredientGridContainer>
                             <IngredientGridItem v-for="ingredient in items" :ingredient="ingredient" :user-ingredients="userIngredientIds" :shopping-list="shoppingListIds" :key="ingredient.id" />
                         </IngredientGridContainer>
+                        <div style="text-align: center; margin: 20px 0;">
+                            <button class="button button--dark" v-if="!isLastPage" @click="refineNext">
+                                Show more results
+                            </button>
+                        </div>
                     </template>
                 </ais-infinite-hits>
             </div>
@@ -110,7 +115,7 @@ export default {
                     }
                 }
             },
-            showFilters: true,
+            showFilters: false,
             ingredients: [],
             userIngredients: [],
             loadingIngredients: []
@@ -241,7 +246,7 @@ export default {
 
 .inpage-search__searchbox .ais-SearchBox {
     flex-grow: 3;
-    flex-basis: 400px;
+    flex-basis: 200px;
 }
 
 :deep(.inpage-search__searchbox .ais-SearchBox-reset),
@@ -256,7 +261,6 @@ export default {
 
     .inpage-search__filter {
         position: fixed;
-        display: none;
         top: 0;
         left: 0;
         background: #fff5f5;
@@ -264,7 +268,11 @@ export default {
         z-index: 99;
         height: 100%;
         padding: 1.5rem;
-        overflow: scroll;
+        overflow-y: scroll;
+    }
+
+    .inpage-search.inpage-search--hide-filters .inpage-search__filter {
+        display: none;
     }
 
     .inpage-search__filter h3 {
