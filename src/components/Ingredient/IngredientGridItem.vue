@@ -185,6 +185,7 @@ export default {
     font-weight: bold;
     font-size: 1.3rem;
     line-height: 1.3;
+    text-decoration: none;
 }
 
 .ingredient-grid-item__content {
