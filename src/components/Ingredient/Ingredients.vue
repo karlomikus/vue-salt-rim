@@ -22,9 +22,7 @@
                     { value: 'ingredients:name:desc', label: 'Name desc.' },
                 ]" :class-names="{ 'ais-SortBy-select': 'form-select' }" />
                 <h4>Category:</h4>
-                <ais-refinement-list attribute="category" :sort-by="['name']" :limit="20" :show-more-limit="50" :class-names="{
-                    'ais-RefinementList-showMore': 'button button--outline button--small'
-                }" show-more></ais-refinement-list>
+                <ais-refinement-list attribute="category" :sort-by="['name']" :limit="20" :show-more-limit="50" show-more></ais-refinement-list>
                 <h4>ABV:</h4>
                 <ais-numeric-menu attribute="strength_abv" :items="[
                     { label: 'All' },
@@ -34,9 +32,7 @@
                     { label: '>= 40', start: 40 },
                 ]" />
                 <h4>Origin:</h4>
-                <ais-refinement-list attribute="origin" :sort-by="['name']" :limit="10" :show-more-limit="50" :class-names="{
-                    'ais-RefinementList-showMore': 'button button--outline button--small'
-                }" show-more></ais-refinement-list>
+                <ais-refinement-list attribute="origin" :sort-by="['name']" :limit="10" :show-more-limit="50" show-more></ais-refinement-list>
             </div>
             <div class="inpage-search__results">
                 <div class="inpage-search__searchbox">
@@ -46,8 +42,9 @@
                             <path d="M6.17 18a3.001 3.001 0 0 1 5.66 0H22v2H11.83a3.001 3.001 0 0 1-5.66 0H2v-2h4.17zm6-7a3.001 3.001 0 0 1 5.66 0H22v2h-4.17a3.001 3.001 0 0 1-5.66 0H2v-2h10.17zm-6-7a3.001 3.001 0 0 1 5.66 0H22v2H11.83a3.001 3.001 0 0 1-5.66 0H2V4h4.17z" />
                         </svg>
                     </button>
-                    <ais-search-box placeholder="Search for ingredients..." :class-names="{ 'ais-SearchBox-input': 'form-input', 'ais-SearchBox-reset': 'cocktail-list-search-container__reset' }" />
+                    <ais-search-box placeholder="Search for ingredients..." />
                 </div>
+                <ais-current-refinements />
                 <ais-infinite-hits>
                     <template v-slot="{ items, refineNext, isLastPage }">
                         <IngredientGridContainer>
@@ -115,7 +112,6 @@ export default {
                     }
                 }
             },
-            showFilters: false,
             ingredients: [],
             userIngredients: [],
             loadingIngredients: []
@@ -204,47 +200,8 @@ export default {
     display: none;
 }
 
-.ais-RefinementList, .ais-NumericMenu {
-    margin-bottom: 0.5rem;
-}
-
-:deep(.ais-RefinementList-list),
-:deep(.ais-NumericMenu-list) {
-    margin: 0;
-    padding: 0;
-    list-style: none;
-    display: flex;
-    flex-direction: column;
-    gap: 0.125rem;
-}
-
-:deep(.ais-RefinementList-label),
-:deep(.ais-NumericMenu-label) {
-    display: flex;
-    gap: 0.215rem;
-}
-
-:deep(.ais-RefinementList-count) {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    background-color: var(--clr-red-300);
-    padding: 1px 6px;
-    border-radius: 2px;
-    font-size: 0.8rem;
-    margin-left: auto;
-}
-
-:deep(.ais-RefinementList-item:hover) {
-    color: var(--clr-gray-900);
-}
-
-:deep(.ais-RefinementList-item:hover .ais-RefinementList-count) {
-    background-color: var(--clr-red-400);
-}
-
 .inpage-search__searchbox {
-    margin-bottom: 1rem;
+    /* margin-bottom: 1rem; */
     gap: 10px;
     display: flex;
     flex-wrap: wrap;
@@ -256,9 +213,8 @@ export default {
     flex-basis: 200px;
 }
 
-:deep(.inpage-search__searchbox .ais-SearchBox-reset),
-:deep(.inpage-search__searchbox .ais-SearchBox-submit) {
-    display: none;
+.ais-CurrentRefinements {
+    margin-bottom: 1rem;
 }
 
 @media (max-width: 750px) {
