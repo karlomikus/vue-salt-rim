@@ -37,13 +37,15 @@
                         </div>
                     </template>
                 </ais-toggle-refinement>
-                <div class="ais-ToggleRefinement" v-for="(customFilter, index) in filtersConfig">
-                    <label class="ais-ToggleRefinement-label">
-                        <span class="ais-ToggleRefinement-labelText">{{ customFilter.label }}</span>
-                        <span class="ais-ToggleRefinement-count">{{ customFilter.values.length }}</span>
-                        <input class="ais-ToggleRefinement-checkbox" type="checkbox" @change.prevent="toggleArrayFiltersConfig(index)" />
-                    </label>
-                </div>
+                <ais-panel>
+                    <div class="ais-ToggleRefinement" v-for="(customFilter, index) in filtersConfig">
+                        <label class="ais-ToggleRefinement-label">
+                            <span class="ais-ToggleRefinement-labelText">{{ customFilter.label }}</span>
+                            <span class="ais-ToggleRefinement-count">{{ customFilter.values.length }}</span>
+                            <input class="ais-ToggleRefinement-checkbox" type="checkbox" @change.prevent="toggleArrayFiltersConfig(index)" />
+                        </label>
+                    </div>
+                </ais-panel>
                 <h4>Main ingredient:</h4>
                 <ais-refinement-list attribute="main_ingredient_name" :sort-by="['name:asc']" :limit="10" :show-more-limit="50" show-more />
                 <h4>Tags:</h4>
@@ -213,26 +215,5 @@ export default {
 }
 </script>
 
-<style scope>
-.cocktail-list-filter-panel {
-    padding: 20px;
-    background-color: rgba(255, 255, 255, .5);
-    margin-top: 10px;
-    margin-bottom: 10px;
-    border-radius: 10px;
-    box-shadow: 0 3px 0 var(--clr-red-300);
-}
-
-.cocktail-list-filter-panel h4 {
-    font-size: 0.9rem;
-    font-weight: bold;
-    margin-bottom: 6px;
-}
-
-.cocktail-list-filter-panel .cocktail-list-filter-panel__toggle-refinements {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    margin-bottom: 10px;
-}
+<style scoped>
 </style>
