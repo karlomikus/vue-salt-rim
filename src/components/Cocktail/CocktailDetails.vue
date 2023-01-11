@@ -7,7 +7,7 @@
         <div class="cocktail-details-box cocktail-details-box--blue">
             <h3 class="cocktail-details-box__title">{{ cocktail.name }}</h3>
             <div class="tag-container" v-if="cocktail.tags.length > 0">
-                <RouterLink :to="{name: 'cocktails', query: {'refinementList[tags][0]': tag}}" v-for="tag in cocktail.tags" class="tag tag--background" style="background-color: #BFD3DF;">{{ tag }}</RouterLink>
+                <RouterLink :to="{name: 'cocktails', query: {'tags[0]': tag}}" v-for="tag in cocktail.tags" class="tag tag--background" style="background-color: #BFD3DF;">{{ tag }}</RouterLink>
             </div>
             <Rating :rating="cocktail.user_rating" type="cocktail" :id="cocktail.id"></Rating>
             <div class="cocktail-details-box__description">
@@ -122,7 +122,7 @@
         <div class="cocktail-details-box cocktail-details-box--yellow">
             <h3 class="cocktail-details-box__title">Instructions:</h3>
             <div class="tag-container" style="margin-bottom: 20px;" v-if="cocktail.glass">
-                <RouterLink :to="{name: 'cocktails', query: {'refinementList[glass][0]': cocktail.glass.name}}" class="tag tag--background" style="background-color: #ffddc0;">Glass: {{ cocktail.glass.name }}</RouterLink>
+                <RouterLink :to="{name: 'cocktails', query: {'glass[0]': cocktail.glass.name}}" class="tag tag--background" style="background-color: #ffddc0;">Glass: {{ cocktail.glass.name }}</RouterLink>
             </div>
             <div v-html="parsedInstructions"></div>
         </div>
@@ -287,7 +287,12 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
+.cocktail-details {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
 .cocktail-details__graphic {
     background-color: #fff;
     padding: 10px;

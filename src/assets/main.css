@@ -7,6 +7,7 @@
 @import "./tags.css";
 @import "./table.css";
 @import "./instant-theme.css";
+@import "./search.css";
 
 @import "vue-toast-notification/dist/theme-default.css";
 @import "tom-select/dist/css/tom-select.css";

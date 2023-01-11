@@ -226,7 +226,6 @@ export default {
 }
 
 .ingredient-modal .substitutes span {
-    font-weight: normal;
     font-size: 1rem;
     display: block;
     font-weight: 700;

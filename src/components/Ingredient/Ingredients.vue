@@ -15,12 +15,13 @@
             <div class="inpage-search__filter">
                 <h3>Filters</h3>
                 <button class="button button--dark button--small inpage-search__filter__close" @click.prevent="toggleShown">Close</button>
+                <ais-clear-refinements></ais-clear-refinements>
                 <h4>Sort:</h4>
                 <ais-sort-by :items="[
                     { value: 'ingredients', label: 'Relevancy' },
                     { value: 'ingredients:name:asc', label: 'Name asc.' },
                     { value: 'ingredients:name:desc', label: 'Name desc.' },
-                ]" :class-names="{ 'ais-SortBy-select': 'form-select' }" />
+                ]" :class-names="{ 'ais-SortBy-select': 'ais-SortBy-select form-select' }" />
                 <h4>Category:</h4>
                 <ais-refinement-list attribute="category" :sort-by="['name']" :limit="20" :show-more-limit="50" show-more></ais-refinement-list>
                 <h4>ABV:</h4>
@@ -170,79 +171,5 @@ export default {
 </script>
 
 <style scoped>
-.inpage-search {
-    display: grid;
-    grid-template-columns: 1fr 4fr;
-    gap: 20px;
-    margin-top: 1rem;
-}
 
-.inpage-search.inpage-search--hide-filters {
-    grid-template-columns: 1fr;
-}
-
-.inpage-search.inpage-search--hide-filters .inpage-search__filter {
-    display: none;
-}
-
-.inpage-search__filter h4 {
-    font-weight: var(--fw-bold);
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    font-size: 0.715rem;
-    margin-bottom: 0.5rem;
-    margin-top: 0.5rem;
-    padding-top: 0.5rem;
-    border-top: 3px double var(--clr-red-300);
-}
-
-.inpage-search__filter__close,.inpage-search__filter h3 {
-    display: none;
-}
-
-.inpage-search__searchbox {
-    /* margin-bottom: 1rem; */
-    gap: 10px;
-    display: flex;
-    flex-wrap: wrap;
-    align-items: flex-end;
-}
-
-.inpage-search__searchbox .ais-SearchBox {
-    flex-grow: 3;
-    flex-basis: 200px;
-}
-
-.ais-CurrentRefinements {
-    margin-bottom: 1rem;
-}
-
-@media (max-width: 750px) {
-    .inpage-search {
-        grid-template-columns: 1fr;
-    }
-
-    .inpage-search__filter {
-        position: fixed;
-        top: 0;
-        left: 0;
-        background: #fff5f5;
-        width: 85%;
-        z-index: 99;
-        height: 100%;
-        padding: 1.5rem;
-        overflow-y: scroll;
-    }
-
-    .inpage-search__filter h3 {
-        display: block;
-        font-family: var(--font-heading);
-        font-weight: var(--fw-bold);
-        font-size: 1.3rem;
-    }
-
-    .inpage-search__filter__close {
-        display: inline-block;
-    }
-}
 </style>
