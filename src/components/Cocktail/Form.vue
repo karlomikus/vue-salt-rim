@@ -34,6 +34,18 @@
             </p>
         </div>
         <div class="form-group">
+            <label class="form-label" for="glass">Method:</label>
+            <select class="form-select" id="glass" v-model="cocktail.cocktail_method_id">
+                <option :value="undefined" disabled>Select a method...</option>
+                <option :value="1">Build</option>
+                <option :value="2">Shake</option>
+                <option :value="3">Blend</option>
+                <option :value="4">Stir</option>
+                <option :value="5">Muddle</option>
+                <option :value="6">Layer</option>
+            </select>
+        </div>
+        <div class="form-group">
             <label class="form-label" for="source">Source:</label>
             <input class="form-input" type="text" id="source" v-model="cocktail.source" placeholder="Book or URL...">
         </div>
@@ -239,6 +251,7 @@ export default {
                 history: this.cocktail.history,
                 garnish: this.cocktail.garnish,
                 source: this.cocktail.source,
+                cocktail_method_id: this.cocktail.cocktail_method_id,
                 images: [],
                 tags: this.cocktail.tags.filter(tag => tag != ''),
                 glass_id: this.glassId,

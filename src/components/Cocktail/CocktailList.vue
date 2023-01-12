@@ -48,6 +48,16 @@
                 </ais-panel>
                 <h4>Main ingredient:</h4>
                 <ais-refinement-list attribute="main_ingredient_name" :sort-by="['name:asc']" :limit="10" :show-more-limit="50" show-more />
+                <h4>Method:</h4>
+                <ais-refinement-list attribute="method" :sort-by="['name:asc']" />
+                <h4>Strength:</h4>
+                <ais-numeric-menu attribute="calculated_abv" :items="[
+                    { label: 'All' },
+                    { label: 'Non alcoholic', start: 0, end: 0 },
+                    { label: 'Weak', start: 1, end: 20 },
+                    { label: 'Medium', start: 20, end: 35 },
+                    { label: 'Strong', start: 35 },
+                ]" />
                 <h4>Tags:</h4>
                 <ais-refinement-list attribute="tags" :sort-by="['name:asc']" :limit="10" operator="and" :show-more-limit="50" show-more />
                 <h4>Glass type:</h4>

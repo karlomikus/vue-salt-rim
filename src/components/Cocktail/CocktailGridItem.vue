@@ -10,6 +10,7 @@
                 <template v-else>★</template>
             </span>
         </div>
+        <p>calc abv: {{ cocktail.calculated_abv }}</p>
         <p class="cocktail-grid-item__ingredients" v-if="cocktail.short_ingredients">{{ cocktail.short_ingredients.join(', ') }}</p>
         <ul class="cocktail-tags">
             <li v-for="tag in cocktail.tags.slice(0, maxTags)" :key="tag" class="tag tag--background">{{ tag }}</li>
