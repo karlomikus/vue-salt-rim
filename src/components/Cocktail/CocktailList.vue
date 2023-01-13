@@ -26,7 +26,7 @@
                     { value: 'cocktails:date:desc', label: 'Date modified desc.' },
                 ]" :class-names="{ 'ais-SortBy-select': 'form-select' }" />
                 <h4>Cocktail filters:</h4>
-                <ais-toggle-refinement attribute="user_id" :on="userId">
+                <ais-toggle-refinement label="My cocktails" attribute="user_id" :on="userId">
                     <template v-slot="{ value, refine, createURL, sendEvent }">
                         <div class="ais-ToggleRefinement">
                             <label class="ais-ToggleRefinement-label">
@@ -54,9 +54,9 @@
                 <ais-numeric-menu attribute="calculated_abv" :items="[
                     { label: 'All' },
                     { label: 'Non alcoholic', start: 0, end: 0 },
-                    { label: 'Weak', start: 1, end: 20 },
-                    { label: 'Medium', start: 20, end: 35 },
-                    { label: 'Strong', start: 35 },
+                    { label: 'Weak', start: 1, end: 18 },
+                    { label: 'Medium', start: 18, end: 28 },
+                    { label: 'Strong', start: 28 },
                 ]" />
                 <h4>Tags:</h4>
                 <ais-refinement-list attribute="tags" :sort-by="['name:asc']" :limit="10" operator="and" :show-more-limit="50" show-more />
@@ -75,7 +75,7 @@
                     </button>
                     <ais-search-box placeholder="Type to filter cocktails..." />
                 </div>
-                <ais-current-refinements />
+                <ais-current-refinements :transform-items="transformCurrentRefinements" />
                 <ais-infinite-hits>
                     <template v-slot="{ items, refineNext, isLastPage }">
                         <CocktailGridContainer v-slot="observer">
@@ -214,12 +214,22 @@ export default {
         toggleArrayFiltersConfig(key) {
             this.filtersConfig[key].isActive = !this.filtersConfig[key].isActive
         },
-        handleRefinementTag(ref) {
-            if (ref.attribute == 'user_id') {
-                return `My cocktails`;
-            }
+        transformCurrentRefinements(items) {
+            const labelMap = {
+                'main_ingredient_name': 'Main ingredient',
+                'method': 'Method',
+                'tags': 'Tags',
+                'user_id': 'My cocktails',
+                'calculated_abv': 'Strength (ABV)',
+                'glass': 'Glass type',
+            };
 
-            return `${ref.attribute.toUpperCase()}: ${ref.label}`;
+            items.map(item => {
+                if (labelMap[item.label])
+                    item.label = labelMap[item.label]
+            });
+
+            return items;
         }
     }
 }
