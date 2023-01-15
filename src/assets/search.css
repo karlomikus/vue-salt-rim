@@ -30,7 +30,7 @@
 }
 
 .inpage-search__searchbox {
-    /* margin-bottom: 1rem; */
+    margin-bottom: 1rem;
     gap: 10px;
     display: flex;
     flex-wrap: wrap;
@@ -40,10 +40,6 @@
 .inpage-search__searchbox .ais-SearchBox {
     flex-grow: 3;
     flex-basis: 200px;
-}
-
-.ais-CurrentRefinements {
-    margin-bottom: 1rem;
 }
 
 @media (max-width: 750px) {

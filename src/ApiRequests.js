@@ -488,6 +488,40 @@ class ApiRequests
     static async deleteTag(id) {
         return await this.deleteRequest(`/api/tags/${id}`);
     }
+
+    /**
+     * =============================
+     * Cocktail methods
+     * =============================
+     */
+
+    static async fetchCocktailMethods() {
+        let jsonResp = await this.getRequest(`/api/cocktail-methods`);
+
+        return this.parseResponse(jsonResp);
+    }
+
+    static async fetchCocktailMethod(id) {
+        let jsonResp = await this.getRequest(`/api/cocktail-methods/${id}`);
+
+        return this.parseResponse(jsonResp);
+    }
+
+    static async saveCocktailMethod(data) {
+        let jsonResp = await this.postRequest(`/api/cocktail-methods`, data);
+
+        return this.parseResponse(jsonResp);
+    }
+
+    static async updateCocktailMethod(id, data) {
+        let jsonResp = await this.postRequest(`/api/cocktail-methods/${id}`, data, 'PUT');
+
+        return this.parseResponse(jsonResp);
+    }
+
+    static async deleteCocktailMethod(id) {
+        return await this.deleteRequest(`/api/cocktail-methods/${id}`);
+    }
 }
 
 export default ApiRequests;

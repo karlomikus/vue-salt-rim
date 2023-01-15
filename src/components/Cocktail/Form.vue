@@ -35,14 +35,9 @@
         </div>
         <div class="form-group">
             <label class="form-label" for="glass">Method:</label>
-            <select class="form-select" id="glass" v-model="cocktail.cocktail_method_id">
+            <select class="form-select" id="glass" v-model="methodId">
                 <option :value="undefined" disabled>Select a method...</option>
-                <option :value="1">Build</option>
-                <option :value="2">Shake</option>
-                <option :value="3">Blend</option>
-                <option :value="4">Stir</option>
-                <option :value="5">Muddle</option>
-                <option :value="6">Layer</option>
+                <option v-for="method in methods" :value="method.id">{{ method.name }}</option>
             </select>
         </div>
         <div class="form-group">
@@ -115,6 +110,7 @@ export default {
                 images: []
             },
             glasses: [],
+            methods: [],
             cocktailId: null
         };
     },
@@ -153,6 +149,22 @@ export default {
                 this.cocktail.glass.id = newVal
             }
         },
+        methodId: {
+            get() {
+                if (!this.cocktail.method) {
+                    return undefined;
+                }
+
+                return this.cocktail.method.id
+            },
+            set(newVal) {
+                if (!this.cocktail.method) {
+                    this.cocktail.method = {};
+                }
+
+                this.cocktail.method.id = newVal
+            }
+        },
         noImage() {
             return `${window.srConfig.API_URL}/uploads/cocktails/no-image.jpg`;
         }
@@ -176,6 +188,11 @@ export default {
 
         ApiRequests.fetchGlasses().then(data => {
             this.glasses = data
+            this.isLoading = false;
+        })
+
+        ApiRequests.fetchCocktailMethods().then(data => {
+            this.methods = data
             this.isLoading = false;
         })
     },
@@ -251,7 +268,7 @@ export default {
                 history: this.cocktail.history,
                 garnish: this.cocktail.garnish,
                 source: this.cocktail.source,
-                cocktail_method_id: this.cocktail.cocktail_method_id,
+                cocktail_method_id: this.methodId,
                 images: [],
                 tags: this.cocktail.tags.filter(tag => tag != ''),
                 glass_id: this.glassId,
