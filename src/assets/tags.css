@@ -34,3 +34,37 @@
     background-color: var(--color-tag);
     color: var(--clr-gray-800);
 }
+
+.chips-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.chips-list li a,
+.chips-list li span {
+    display: block;
+    padding: 1px 8px;
+    font-size: 0.9rem;
+    box-shadow: 0 2px 0 rgba(0, 0, 0, .1);
+    background-color: rgba(255, 255, 255, .5);
+    border-radius: 0.25rem;
+    text-decoration: none;
+}
+
+.chips-list li a:hover,
+.chips-list li a:active,
+.chips-list li a:focus {
+    box-shadow: 0 2px 0 var(--clr-red-800);
+    background-color: #fff;
+}
+
+.chips-list__spacer::before {
+    content: '·';
+    font-size: 3rem;
+    line-height: 0.4;
+    opacity: .4;
+}

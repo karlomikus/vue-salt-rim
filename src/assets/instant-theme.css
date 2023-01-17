@@ -677,8 +677,9 @@
  */
 .ais-Highlight-highlighted,
 .ais-Snippet-highlighted {
-    background-color: rgba(84, 104, 255, 0.1);
-    color: #5468ff;
+    background-color: #ffdf93;
+    color: #3d2c03;
+    border-radius: 2px;
     font-style: normal;
 }
 

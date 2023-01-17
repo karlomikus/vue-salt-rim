@@ -223,11 +223,6 @@ export default {
     margin-left: auto;
 }
 
-.site-autocomplete .ais-Highlight-highlighted {
-    background-color: #ffdf93;
-    border-radius: 2px;
-}
-
 .site-autocomplete__search-icon {
     position: absolute;
     top: 16px;

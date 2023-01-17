@@ -122,7 +122,9 @@ export default {
                             q: indexUiState.query,
                             tags: indexUiState.refinementList && indexUiState.refinementList.tags,
                             glass: indexUiState.refinementList && indexUiState.refinementList.glass,
+                            method: indexUiState.refinementList && indexUiState.refinementList.method,
                             ingredient: indexUiState.refinementList && indexUiState.refinementList.main_ingredient_name,
+                            strength: indexUiState.numericMenu && indexUiState.numericMenu.calculated_abv,
                             my_cocktails: indexUiState.toggle && indexUiState.toggle.user_id != null,
                             avg_rating: indexUiState.ratingMenu && indexUiState.ratingMenu.average_rating,
                             sort: indexUiState.sortBy,
@@ -137,12 +139,16 @@ export default {
                                     tags: routeState.tags,
                                     glass: routeState.glass,
                                     main_ingredient_name: routeState.ingredient,
+                                    method: routeState.method,
                                 },
                                 ratingMenu: {
                                     average_rating: routeState.avg_rating
                                 },
                                 toggle: {
                                     user_id: routeState.my_cocktails
+                                },
+                                numericMenu: {
+                                    calculated_abv: routeState.strength
                                 }
                             }
                         }
