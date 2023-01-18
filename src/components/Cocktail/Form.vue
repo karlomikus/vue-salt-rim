@@ -52,28 +52,31 @@
         <ImageUpload ref="imagesUpload" :value="cocktail.images" />
         <h2 class="page-subtitle">Ingredients</h2>
         <ul class="cocktail-form__ingredients" style="margin-bottom: 20px;">
-            <li v-for="ing in cocktail.ingredients">
-                <div class="form-group">
-                    <label class="form-label">Ingredient:</label>
-                    <p>{{ ing.name }} <small v-show="ing.optional">({{ ing.optional ? 'Optional' : '' }})</small></p>
-                    <p class="substitutes" v-if="ing.substitutes && ing.substitutes.length > 0">
-                        <template v-for="sub in ing.substitutes">
-                            or {{ sub.name }} 
-                        </template>
-                    </p>
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Amount:</label>
-                    <p>{{ ing.amount }} {{ ing.units }}</p>
-                </div>
-                <div class="cocktail-form__ingredients__actions">
-                    <a href="#" @click.prevent="editIngredient(ing)">
-                        Edit
-                    </a>
-                    &middot;
-                    <a href="#" @click.prevent="removeIngredient(ing)">
-                        Remove
-                    </a>
+            <li v-for="ing in cocktail.ingredients" :data-id="ing.sort">
+                <div class="drag-handle"></div>
+                <div class="cocktail-form__ingredients__content">
+                    <div class="form-group">
+                        <label class="form-label">Ingredient:</label>
+                        <p>{{ ing.name }} <small v-show="ing.optional">({{ ing.optional ? 'Optional' : '' }})</small></p>
+                        <p class="substitutes" v-if="ing.substitutes && ing.substitutes.length > 0">
+                            <template v-for="sub in ing.substitutes">
+                                or {{ sub.name }} 
+                            </template>
+                        </p>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Amount:</label>
+                        <p>{{ ing.amount }} {{ ing.units }}</p>
+                    </div>
+                    <div class="cocktail-form__ingredients__actions">
+                        <a href="#" @click.prevent="editIngredient(ing)">
+                            Edit
+                        </a>
+                        &middot;
+                        <a href="#" @click.prevent="removeIngredient(ing)">
+                            Remove
+                        </a>
+                    </div>
                 </div>
             </li>
         </ul>
@@ -95,6 +98,7 @@ import OverlayLoader from '@/components/OverlayLoader.vue'
 import IngredientModal from '@/components/Cocktail/IngredientModal.vue'
 import ImageUpload from '@/components/ImageUpload.vue'
 import PageHeader from '@/components/PageHeader.vue'
+import Sortable from 'sortablejs';
 
 export default {
     data() {
@@ -111,7 +115,8 @@ export default {
             },
             glasses: [],
             methods: [],
-            cocktailId: null
+            cocktailId: null,
+            sortable: null
         };
     },
     components: {
@@ -196,6 +201,13 @@ export default {
             this.isLoading = false;
         })
     },
+    mounted() {
+        this.sortable = Sortable.create(document.querySelector('.cocktail-form__ingredients'), {
+            handle: '.drag-handle',
+            ghostClass: 'cocktail-form__ingredients__placeholder',
+            animation: 150
+        });
+    },
     methods: {
         removeIngredient(ing) {
             this.cocktail.ingredients.splice(
@@ -230,7 +242,8 @@ export default {
                 ingredient_id: null,
                 name: '<Not selected>',
                 amount: 30,
-                units: 'ml'
+                units: 'ml',
+                sort: this.cocktail.ingredients.length + 1
             };
             this.cocktail.ingredients.push(placeholderData);
 
@@ -259,6 +272,8 @@ export default {
             })
         },
         async submit() {
+            const sortedIngredientList = this.sortable.toArray();
+
             this.isLoading = true;
 
             const postData = {
@@ -291,7 +306,7 @@ export default {
                             ingredient.substitutes = ingredient.substitutes.map(s => s.id)
                         }
 
-                        ingredient.sort = idx + 1;
+                        ingredient.sort = sortedIngredientList.findIndex(el => el == ingredient.sort) + 1;
 
                         return ingredient;
                     })
@@ -341,15 +356,15 @@ export default {
 }
 
 .cocktail-form__ingredients li {
-    display: grid;
-    grid-template-columns: 2fr 1fr;
-    grid-template-rows: auto auto;
-    column-gap: 10px;
-    row-gap: 10px;
+    display: flex;
     background: rgba(255, 255, 255, .5);
     padding: 10px;
     border-bottom: 2px solid var(--clr-red-300);
     border-radius: 5px;
+}
+
+.cocktail-form__ingredients li.cocktail-form__ingredients__placeholder {
+    background: rgba(158, 236, 255, 0.2);
 }
 
 .cocktail-form__ingredients li small {
@@ -368,5 +383,23 @@ export default {
     font-style: italic;
     font-size: 0.9rem;
     color: var(--clr-gray-500);
+}
+
+.cocktail-form__ingredients__content {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    grid-template-rows: auto auto;
+    column-gap: 10px;
+    row-gap: 10px;
+    width: 100%;
+    margin-left: 0.5rem;
+}
+
+.drag-handle {
+    width: 20px;
+    height: 100%;
+    background-image: radial-gradient(circle at 1px 1px, var(--clr-gray-300) 1px, transparent 0);
+    background-size: 4px 4px;
+    cursor: move;
 }
 </style>

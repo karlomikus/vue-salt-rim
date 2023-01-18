@@ -23,6 +23,14 @@
                         </li>
                     </ul>
                 </div>
+                <div class="cocktail-details__chips__group" v-if="cocktail.method">
+                    <div class="cocktail-details__chips__group__title">Method:</div>
+                    <ul class="chips-list">
+                        <li>
+                            <RouterLink :to="{ name: 'cocktails', query: { 'method[0]': cocktail.method.name } }">{{ cocktail.method.name }}</RouterLink>
+                        </li>
+                    </ul>
+                </div>
                 <div class="cocktail-details__chips__group" v-if="cocktail.abv && cocktail.abv > 0">
                     <div class="cocktail-details__chips__group__title">ABV:</div>
                     <ul class="chips-list">
@@ -33,14 +41,6 @@
                     <div class="cocktail-details__chips__group__title">Avg rating:</div>
                     <ul class="chips-list">
                         <li><span>{{ cocktail.average_rating }} stars</span></li>
-                    </ul>
-                </div>
-                <div class="cocktail-details__chips__group" v-if="cocktail.method">
-                    <div class="cocktail-details__chips__group__title">Method:</div>
-                    <ul class="chips-list">
-                        <li>
-                            <RouterLink :to="{ name: 'cocktails', query: { 'method[0]': cocktail.method.name } }">{{ cocktail.method.name }}</RouterLink>
-                        </li>
                     </ul>
                 </div>
                 <div class="cocktail-details__chips__group" >
@@ -393,6 +393,7 @@ export default {
 
 .cocktail-details-box__title {
     font-family: var(--font-heading);
+    font-size: 1.3rem;
     font-weight: 700;
     margin: 0 0 20px 0;
 }

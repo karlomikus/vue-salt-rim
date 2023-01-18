@@ -803,9 +803,9 @@
  * CurrentRefinements
  */
 .ais-CurrentRefinements-list {
-    display: inline-grid;
-    gap: 1rem;
-    grid-auto-flow: column;
+    display: flex;
+    flex-wrap: wrap;
+    gap: .5rem;
 }
 
 .ais-CurrentRefinements-item {
