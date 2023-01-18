@@ -169,9 +169,6 @@ export default {
 
                 this.cocktail.method.id = newVal
             }
-        },
-        noImage() {
-            return `${window.srConfig.API_URL}/uploads/cocktails/no-image.jpg`;
         }
     },
     created() {
@@ -216,6 +213,7 @@ export default {
             );
         },
         closeModal(eventData) {
+            // User didnt select any ingredient in modal, so we remove the placeholder
             if (!this.cocktailIngredientForEdit.ingredient_id) {
                 this.cocktail.ingredients.splice(
                     this.cocktail.ingredients.findIndex(i => i == this.cocktailIngredientForEdit),
@@ -223,6 +221,7 @@ export default {
                 );
             }
 
+            // User canceled ingredient edit
             if (eventData.type == 'cancel') {
                 this.cocktailIngredientForEdit.id = this.cocktailIngredientForEditOriginal.id;
                 this.cocktailIngredientForEdit.name = this.cocktailIngredientForEditOriginal.name;
@@ -247,6 +246,7 @@ export default {
             };
             this.cocktail.ingredients.push(placeholderData);
 
+            // Show modal after adding ingredient
             this.editIngredient(placeholderData)
         },
         editIngredient(cocktailIngredient) {
@@ -257,19 +257,6 @@ export default {
             this.cocktailIngredientForEditOriginal = JSON.parse(JSON.stringify(cocktailIngredient));
             this.cocktailIngredientForEdit = cocktailIngredient;
             this.isModalVisible = true;
-        },
-        removeImage() {
-            if (!confirm('Are you sure you want to remove this image?')) {
-                return;
-            }
-
-            ApiRequests.deleteImage(this.cocktail.image_id).then(() => {
-                this.$toast.default(`Removed cocktail image successfully.`);
-                this.cocktail.image_url = null;
-                this.cocktail.image_id = null;
-            }).catch(() => {
-                this.$toast.default(`Unable to remove cocktail image.`);
-            })
         },
         async submit() {
             const sortedIngredientList = this.sortable.toArray();
@@ -289,7 +276,7 @@ export default {
                 glass_id: this.glassId,
                 ingredients: this.cocktail.ingredients
                     .filter(i => i.name != '<Not selected>')
-                    .map((ingredient, idx) => {
+                    .map((ingredient) => {
                         // Convert oz to ml
                         if (ingredient.units == 'oz') {
                             ingredient.amount = Unitz.parse(`${ingredient.amount}${ingredient.units}`).value * 30
@@ -346,7 +333,7 @@ export default {
 }
 </script>
 
-<style scope>
+<style scoped>
 .cocktail-form__ingredients {
     list-style: none;
     margin: 0;
