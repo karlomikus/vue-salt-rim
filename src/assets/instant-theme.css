@@ -500,6 +500,12 @@
     transition: all ease-in-out .1s;
 }
 
+@media (max-width: 450px) {
+    .ais-SearchBox-input, .ais-SearchBox-form {
+        height: 2.5rem;
+    }
+}
+
 .ais-SearchBox-input::-webkit-input-placeholder {
     color: var(--clr-gray-800);
 }
@@ -754,8 +760,9 @@
     align-items: center;
     background-color: var(--clr-gray-800);
     color: #fff;
-    border-radius: 999px;
+    border-radius: .25rem;
     display: inline-flex;
+    flex-wrap: wrap;
     font-size: 0.95rem;
     line-height: 1.5;
     min-height: 1.5rem;

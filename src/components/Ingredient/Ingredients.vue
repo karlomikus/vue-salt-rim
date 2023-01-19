@@ -13,27 +13,29 @@
         <ais-configure :hitsPerPage="60" :stalledSearchDelay="200" />
         <div class="inpage-search inpage-search--hide-filters">
             <div class="inpage-search__filter">
-                <h3>Filters</h3>
-                <button class="button button--dark button--small inpage-search__filter__close" @click.prevent="toggleShown">Close</button>
-                <ais-clear-refinements></ais-clear-refinements>
-                <h4>Sort:</h4>
-                <ais-sort-by :items="[
-                    { value: 'ingredients', label: 'Relevancy' },
-                    { value: 'ingredients:name:asc', label: 'Name asc.' },
-                    { value: 'ingredients:name:desc', label: 'Name desc.' },
-                ]" :class-names="{ 'ais-SortBy-select': 'ais-SortBy-select form-select' }" />
-                <h4>Category:</h4>
-                <ais-refinement-list attribute="category" :sort-by="['name']" :limit="20" :show-more-limit="50" show-more></ais-refinement-list>
-                <h4>ABV:</h4>
-                <ais-numeric-menu attribute="strength_abv" :items="[
-                    { label: 'All' },
-                    { label: 'Not Alcoholic', start: 0, end: 0 },
-                    { label: '<= 20%', start: 1, end: 20 },
-                    { label: '20% - 40%', start: 20, end: 40 },
-                    { label: '>= 40', start: 40 },
-                ]" />
-                <h4>Origin:</h4>
-                <ais-refinement-list attribute="origin" :sort-by="['name']" :limit="10" :show-more-limit="50" show-more></ais-refinement-list>
+                <div class="inpage-search__filter__body">
+                    <h3>Filters</h3>
+                    <button class="button button--dark button--small inpage-search__filter__close" @click.prevent="toggleShown">X</button>
+                    <ais-clear-refinements></ais-clear-refinements>
+                    <h4>Sort:</h4>
+                    <ais-sort-by :items="[
+                        { value: 'ingredients', label: 'Relevancy' },
+                        { value: 'ingredients:name:asc', label: 'Name asc.' },
+                        { value: 'ingredients:name:desc', label: 'Name desc.' },
+                    ]" :class-names="{ 'ais-SortBy-select': 'ais-SortBy-select form-select' }" />
+                    <h4>Category:</h4>
+                    <ais-refinement-list attribute="category" :sort-by="['name']" :limit="20" :show-more-limit="50" show-more></ais-refinement-list>
+                    <h4>ABV:</h4>
+                    <ais-numeric-menu attribute="strength_abv" :items="[
+                        { label: 'All' },
+                        { label: 'Not Alcoholic', start: 0, end: 0 },
+                        { label: '<= 20%', start: 1, end: 20 },
+                        { label: '20% - 40%', start: 20, end: 40 },
+                        { label: '>= 40', start: 40 },
+                    ]" />
+                    <h4>Origin:</h4>
+                    <ais-refinement-list attribute="origin" :sort-by="['name']" :limit="10" :show-more-limit="50" show-more></ais-refinement-list>
+                </div>
             </div>
             <div class="inpage-search__results">
                 <div class="inpage-search__searchbox">
@@ -143,26 +145,6 @@ export default {
         }
     },
     methods: {
-        setupColor(hex) {
-            var c;
-            if (/^#([A-Fa-f0-9]{3}){1,2}$/.test(hex)) {
-                c = hex.substring(1).split('');
-                if (c.length == 3) {
-                    c = [c[0], c[0], c[1], c[1], c[2], c[2]];
-                }
-                c = '0x' + c.join('');
-                return 'rgba(' + [(c >> 16) & 255, (c >> 8) & 255, c & 255].join(',') + ',.13)';
-            }
-
-            return hex;
-        },
-        getImageUrl(ing) {
-            if (!ing.main_image_id) {
-                return '/no-ingredient.png';
-            }
-
-            return ing.images.filter((img) => img.id == ing.main_image_id)[0].url;
-        },
         toggleShown() {
             document.querySelector('.inpage-search').classList.toggle('inpage-search--hide-filters')
         }
