@@ -43,7 +43,7 @@
                             <label class="ais-ToggleRefinement-label">
                                 <span class="ais-ToggleRefinement-labelText">{{ customFilter.label }}</span>
                                 <span class="ais-ToggleRefinement-count">{{ customFilter.values.length }}</span>
-                                <input class="ais-ToggleRefinement-checkbox" type="checkbox" @change.prevent="toggleArrayFiltersConfig(index)" />
+                                <input class="ais-ToggleRefinement-checkbox" type="checkbox" :checked="filtersConfig[index].isActive" @change.prevent="toggleArrayFiltersConfig(index)" />
                             </label>
                         </div>
                     </ais-panel>
@@ -138,6 +138,8 @@ export default {
                             ['cocktails:name:asc']: {
                                 query: routeState.q,
                                 sortBy: routeState.sort,
+                                bar_favorites: routeState.favorites,
+                                bar_shelf: routeState.shelf,
                                 refinementList: {
                                     tags: routeState.tags,
                                     glass: routeState.glass,

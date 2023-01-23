@@ -50,7 +50,7 @@
                 <ais-current-refinements />
                 <ais-infinite-hits>
                     <template v-slot="{ items, refineNext, isLastPage }">
-                        <IngredientGridContainer>
+                        <IngredientGridContainer style="margin-top: 1rem;">
                             <IngredientGridItem v-for="ingredient in items" :ingredient="ingredient" :user-ingredients="userIngredientIds" :shopping-list="shoppingListIds" :key="ingredient.id" />
                         </IngredientGridContainer>
                         <div style="text-align: center; margin: 20px 0;">
