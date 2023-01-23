@@ -1,3 +1,16 @@
+# v1.4.0
+## New
+- You can now sort cocktail ingredients by dragging and dropping
+    - Putting ingredinent on first place will mark it as a main ingredient of the cocktail
+
+## Changes
+- Updated cocktails list page
+    - Now includes more filters: main ingredient, strenght, method
+- Use theme for instantsearch components
+- Updated cocktail page
+    - Added more details: calculated ABV, method, average rating
+- Move links from shelf to navigation
+
 # v1.3.0
 ## New
 - Updated ingredients page
