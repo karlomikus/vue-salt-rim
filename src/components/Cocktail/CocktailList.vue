@@ -164,11 +164,13 @@ export default {
             showFilterContainer: false,
             filtersConfig: {
                 shelf: {
+                    attribute: 'shelf',
                     isActive: false,
                     label: "Cocktails I can make",
                     values: []
                 },
                 favorites: {
+                    attribute: 'favorites',
                     isActive: false,
                     label: "My favorites",
                     values: []
@@ -236,9 +238,30 @@ export default {
             };
 
             items.map(item => {
-                if (labelMap[item.label])
+                if (labelMap[item.label]) {
                     item.label = labelMap[item.label]
+                }
             });
+
+            if (this.activeFilters.length > 0) {
+                let customRefinement = {
+                    attribute: null,
+                    label: 'Cocktail filters',
+                    refinements: [],
+                    refine: (refinement) => {
+                        this.toggleArrayFiltersConfig(refinement.value)
+                    }
+                };
+
+                this.activeFilters.forEach(filter => {
+                    customRefinement.refinements.push({
+                        label: filter.label,
+                        value: filter.attribute
+                    })
+                })
+
+                items.push(customRefinement);
+            }
 
             return items;
         }
