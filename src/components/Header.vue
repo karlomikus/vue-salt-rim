@@ -21,15 +21,19 @@
                     </svg>
                     Search
                 </a>
-                <RouterLink to="/">Shelf</RouterLink>
-                <RouterLink to="/cocktails">Cocktails</RouterLink>
-                <RouterLink to="/ingredients">Ingredients</RouterLink>
+                <RouterLink :to="{name: 'home'}" exact-active-class="current-nav">Shelf</RouterLink>
+                <RouterLink :to="{name: 'cocktails'}" :class="{ 'current-nav': $route.path.startsWith('/cocktails') }">Cocktails</RouterLink>
+                <RouterLink :to="{name: 'ingredients'}" :class="{ 'current-nav': $route.path.startsWith('/ingredients') }">Ingredients</RouterLink>
+                <RouterLink :to="{name: 'settings'}" :class="{ 'current-nav': $route.path.startsWith('/settings') }">Settings</RouterLink>
+                <a href="#" @click.prevent="logout">Logout</a>
             </nav>
         </div>
         <site-autocomplete ref="siteAutocompleteComponent" @closeAutocomplete="searchShown = false" :shown="searchShown" v-show="searchShown" />
     </header>
 </template>
 <script>
+import ApiRequests from '@/ApiRequests';
+import Auth from '@/Auth.js';
 import SiteAutocomplete from '@/components/SiteAutocomplete.vue'
 
 export default {
@@ -56,6 +60,14 @@ export default {
             }
         )
     },
+    methods: {
+        logout() {
+            ApiRequests.logout().then(() => {
+                Auth.forgetUser();
+                this.$router.push({name: 'login'})
+            })
+        }
+    }
 }
 </script>
 <style scoped>
@@ -92,7 +104,7 @@ export default {
     color: #fff;
 }
 
-.header-bar__navigation a.router-link-exact-active {
+.header-bar__navigation a.current-nav {
     text-decoration: underline;
 }
 

@@ -6,10 +6,48 @@
         </div>
         <div class="cocktail-details-box cocktail-details-box--blue">
             <h3 class="cocktail-details-box__title">{{ cocktail.name }}</h3>
-            <div class="tag-container" v-if="cocktail.tags.length > 0">
-                <RouterLink :to="{name: 'cocktails', query: {'refinementList[tags][0]': tag}}" v-for="tag in cocktail.tags" class="tag tag--background" style="background-color: #BFD3DF;">{{ tag }}</RouterLink>
+            <div class="cocktail-details__chips">
+                <div class="cocktail-details__chips__group" v-if="cocktail.tags.length > 0">
+                    <div class="cocktail-details__chips__group__title">Tags:</div>
+                    <ul class="chips-list">
+                        <li v-for="tag in cocktail.tags">
+                            <RouterLink :to="{ name: 'cocktails', query: { 'tags[0]': tag } }">{{ tag }}</RouterLink>
+                        </li>
+                    </ul>
+                </div>
+                <div class="cocktail-details__chips__group" v-if="cocktail.glass">
+                    <div class="cocktail-details__chips__group__title">Glass:</div>
+                    <ul class="chips-list">
+                        <li>
+                            <RouterLink :to="{ name: 'cocktails', query: { 'glass[0]': cocktail.glass.name } }">{{ cocktail.glass.name }}</RouterLink>
+                        </li>
+                    </ul>
+                </div>
+                <div class="cocktail-details__chips__group" v-if="cocktail.method">
+                    <div class="cocktail-details__chips__group__title">Method:</div>
+                    <ul class="chips-list">
+                        <li>
+                            <RouterLink :to="{ name: 'cocktails', query: { 'method[0]': cocktail.method.name } }">{{ cocktail.method.name }}</RouterLink>
+                        </li>
+                    </ul>
+                </div>
+                <div class="cocktail-details__chips__group" v-if="cocktail.abv && cocktail.abv > 0">
+                    <div class="cocktail-details__chips__group__title">ABV:</div>
+                    <ul class="chips-list">
+                        <li><span>{{ cocktail.abv }}%</span></li>
+                    </ul>
+                </div>
+                <div class="cocktail-details__chips__group">
+                    <div class="cocktail-details__chips__group__title">Avg rating:</div>
+                    <ul class="chips-list">
+                        <li><span>{{ cocktail.average_rating }} stars</span></li>
+                    </ul>
+                </div>
+                <div class="cocktail-details__chips__group" >
+                    <div class="cocktail-details__chips__group__title">Your rating:</div>
+                    <Rating :rating="cocktail.user_rating" type="cocktail" :id="cocktail.id"></Rating>
+                </div>
             </div>
-            <Rating :rating="cocktail.user_rating" type="cocktail" :id="cocktail.id"></Rating>
             <div class="cocktail-details-box__description">
                 <div v-html="parsedDescription"></div>
             </div>
@@ -27,20 +65,32 @@
                 <Dropdown>
                     <template #default="{ toggleDropdown }">
                         <button type="button" class="button-circle" @click="toggleDropdown">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path fill="none" d="M0 0h24v24H0z"/><path d="M13.12 17.023l-4.199-2.29a4 4 0 1 1 0-5.465l4.2-2.29a4 4 0 1 1 .959 1.755l-4.2 2.29a4.008 4.008 0 0 1 0 1.954l4.199 2.29a4 4 0 1 1-.959 1.755zM6 14a2 2 0 1 0 0-4 2 2 0 0 0 0 4zm11-6a2 2 0 1 0 0-4 2 2 0 0 0 0 4zm0 12a2 2 0 1 0 0-4 2 2 0 0 0 0 4z"/></svg>
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+                                <path fill="none" d="M0 0h24v24H0z" />
+                                <path d="M13.12 17.023l-4.199-2.29a4 4 0 1 1 0-5.465l4.2-2.29a4 4 0 1 1 .959 1.755l-4.2 2.29a4.008 4.008 0 0 1 0 1.954l4.199 2.29a4 4 0 1 1-.959 1.755zM6 14a2 2 0 1 0 0-4 2 2 0 0 0 0 4zm11-6a2 2 0 1 0 0-4 2 2 0 0 0 0 4zm0 12a2 2 0 1 0 0-4 2 2 0 0 0 0 4z" />
+                            </svg>
                         </button>
                     </template>
                     <template #content>
-                        <RouterLink class="dropdown-menu__item" target="_blank" :to="{name: 'print.cocktail', params: {id: cocktail.slug}}">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18"><path fill="none" d="M0 0h24v24H0z"/><path d="M6 19H3a1 1 0 0 1-1-1V8a1 1 0 0 1 1-1h3V3a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v4h3a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1h-3v2a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1v-2zm0-2v-1a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v1h2V9H4v8h2zM8 4v3h8V4H8zm0 13v3h8v-3H8zm-3-7h3v2H5v-2z"/></svg>
+                        <RouterLink class="dropdown-menu__item" target="_blank" :to="{ name: 'print.cocktail', params: { id: cocktail.slug } }">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18">
+                                <path fill="none" d="M0 0h24v24H0z" />
+                                <path d="M6 19H3a1 1 0 0 1-1-1V8a1 1 0 0 1 1-1h3V3a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v4h3a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1h-3v2a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1v-2zm0-2v-1a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v1h2V9H4v8h2zM8 4v3h8V4H8zm0 13v3h8v-3H8zm-3-7h3v2H5v-2z" />
+                            </svg>
                             Print recipe
                         </RouterLink>
-                        <!-- <a class="dropdown-menu__item" target="_blank">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18"><path fill="none" d="M0 0h24v24H0z"/><path d="M6 19H3a1 1 0 0 1-1-1V8a1 1 0 0 1 1-1h3V3a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v4h3a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1h-3v2a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1v-2zm0-2v-1a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v1h2V9H4v8h2zM8 4v3h8V4H8zm0 13v3h8v-3H8zm-3-7h3v2H5v-2z"/></svg>
-                            Download as ld+json
-                        </a>
+                        <!-- <RouterLink class="dropdown-menu__item" target="_blank" :to="{ name: 'print.cocktail', params: { id: cocktail.slug } }">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18">
+                                <path fill="none" d="M0 0h24v24H0z" />
+                                <path d="M18.364 15.536L16.95 14.12l1.414-1.414a5 5 0 1 0-7.071-7.071L9.879 7.05 8.464 5.636 9.88 4.222a7 7 0 0 1 9.9 9.9l-1.415 1.414zm-2.828 2.828l-1.415 1.414a7 7 0 0 1-9.9-9.9l1.415-1.414L7.05 9.88l-1.414 1.414a5 5 0 1 0 7.071 7.071l1.414-1.414 1.415 1.414zm-.708-10.607l1.415 1.415-7.071 7.07-1.415-1.414 7.071-7.07z" />
+                            </svg>
+                            Copy public link
+                        </RouterLink>
                         <a class="dropdown-menu__item" target="_blank">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18"><path fill="none" d="M0 0h24v24H0z"/><path d="M6 19H3a1 1 0 0 1-1-1V8a1 1 0 0 1 1-1h3V3a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v4h3a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1h-3v2a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1v-2zm0-2v-1a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v1h2V9H4v8h2zM8 4v3h8V4H8zm0 13v3h8v-3H8zm-3-7h3v2H5v-2z"/></svg>
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18">
+                                <path fill="none" d="M0 0h24v24H0z" />
+                                <path d="M4.828 21l-.02.02-.021-.02H2.992A.993.993 0 0 1 2 20.007V3.993A1 1 0 0 1 2.992 3h18.016c.548 0 .992.445.992.993v16.014a1 1 0 0 1-.992.993H4.828zM20 15V5H4v14L14 9l6 6zm0 2.828l-6-6L6.828 19H20v-1.172zM8 11a2 2 0 1 1 0-4 2 2 0 0 1 0 4z" />
+                            </svg>
                             Download as image
                         </a> -->
                     </template>
@@ -121,9 +171,6 @@
         </div>
         <div class="cocktail-details-box cocktail-details-box--yellow">
             <h3 class="cocktail-details-box__title">Instructions:</h3>
-            <div class="tag-container" style="margin-bottom: 20px;" v-if="cocktail.glass">
-                <RouterLink :to="{name: 'cocktails', query: {'refinementList[glass][0]': cocktail.glass.name}}" class="tag tag--background" style="background-color: #ffddc0;">Glass: {{ cocktail.glass.name }}</RouterLink>
-            </div>
             <div v-html="parsedInstructions"></div>
         </div>
         <div class="cocktail-details-box cocktail-details-box--red" v-if="cocktail.garnish">
@@ -287,7 +334,12 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
+.cocktail-details {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
 .cocktail-details__graphic {
     background-color: #fff;
     padding: 10px;
@@ -341,6 +393,7 @@ export default {
 
 .cocktail-details-box__title {
     font-family: var(--font-heading);
+    font-size: 1.3rem;
     font-weight: 700;
     margin: 0 0 20px 0;
 }
@@ -413,14 +466,14 @@ export default {
 }
 
 .cocktail-button-group h4 {
-    font-size: 0.8rem;
+    font-size: 0.7rem;
 }
 
 .cocktail-button-group button {
     background: rgb(211, 227, 222);
     border: 3px solid rgb(211, 227, 222);
-    font-size: 1.2rem;
-    width: 35px;
+    font-size: 1rem;
+    min-width: 2rem;
     cursor: pointer;
     color: var(--clr-gray-800)
 }
@@ -441,5 +494,21 @@ export default {
 .cocktail-details-box ol li::marker {
     font-size: 1.1rem;
     font-weight: bold;
+}
+
+.cocktail-details__chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.cocktail-details__chips__group__title {
+    font-size: 0.7rem;
+    margin-bottom: 0.25rem;
+}
+
+.cocktail-details__chips .rating {
+    line-height: 1;
 }
 </style>

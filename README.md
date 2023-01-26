@@ -8,7 +8,7 @@
     <img src="https://img.shields.io/github/actions/workflow/status/karlomikus/vue-salt-rim/build-image.yml?style=for-the-badge" alt="Build">
 </p>
 
-# 🍹 Salt Rim - Bar Assistent Web Client
+# 🍹 Salt Rim - Bar Assistant Web Client
 
 Salt Rim is a web client used for connecting to your [Bar Assistant](https://github.com/karlomikus/bar-assistant) server. It's made with Vue 3 and it builds to a static webpage that can be easily hosted anywhere.
 

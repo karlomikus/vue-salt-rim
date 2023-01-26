@@ -1,7 +1,8 @@
 .table {
     width: 100%;
     caption-side: bottom;
-    border-collapse: collapse;
+    border-collapse: separate;
+    border-spacing: 0 0.5rem;
     text-align: left;
 }
 
@@ -18,5 +19,24 @@
 }
 
 .table td {
-    border-bottom: 1px solid var(--clr-red-300);
+    background: #fff;
+    border: 1px solid var(--clr-red-300);
+}
+
+.table td:first-child {
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+    border-right: 0;
+}
+
+.table td:last-child {
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+    border-left: 0;
+}
+
+.table td small {
+    color: var(--clr-gray-500);
+    line-height: 1.4;
+    display: block;
 }

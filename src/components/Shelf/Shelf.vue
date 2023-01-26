@@ -2,12 +2,12 @@
     <PageHeader>
         Hello, {{ user.name }} 👋
     </PageHeader>
-    <div class="home-actions">
+    <!-- <div class="home-actions">
         <a href="#" @click.prevent="randomCocktail()">Random cocktail</a>
         <RouterLink :to="{name: 'cocktails.form'}">Create a cocktail</RouterLink>
         <RouterLink :to="{name: 'settings'}">Settings</RouterLink>
         <a href="#" @click.prevent="logout">Logout</a>
-    </div>
+    </div> -->
 
     <div class="stats">
         <OverlayLoader v-if="loaders.stats"></OverlayLoader>
