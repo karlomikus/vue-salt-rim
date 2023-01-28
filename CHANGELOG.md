@@ -1,11 +1,16 @@
+# v1.4.1
+## Fixes
+- Auto-update PWA cache on version change
+- Fix sort not updating when cocktail ingredient sort attribute is duplicated or missing
+
 # v1.4.0
 ## New
 - You can now sort cocktail ingredients by dragging and dropping
-    - Putting ingredinent on first place will mark it as a main ingredient of the cocktail
+    - Putting ingredient on first place will mark it as a main ingredient of the cocktail
 
 ## Changes
 - Updated cocktails list page
-    - Now includes more filters: main ingredient, strenght, method
+    - Now includes more filters: main ingredient, strength, method
 - Use theme for instantsearch components
 - Updated cocktail page
     - Added more details: calculated ABV, method, average rating

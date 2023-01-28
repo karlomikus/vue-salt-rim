@@ -522,6 +522,11 @@ class ApiRequests
     static async deleteCocktailMethod(id) {
         return await this.deleteRequest(`/api/cocktail-methods/${id}`);
     }
+
+    static async checkVersions() {
+        // https://api.github.com/repos/karlomikus/bar-assistant/releases/latest
+        // https://api.github.com/repos/karlomikus/vue-salt-rim/releases/latest
+    }
 }
 
 export default ApiRequests;

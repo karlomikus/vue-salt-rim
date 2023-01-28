@@ -52,7 +52,7 @@
         <ImageUpload ref="imagesUpload" :value="cocktail.images" />
         <h2 class="page-subtitle">Ingredients</h2>
         <ul class="cocktail-form__ingredients" style="margin-bottom: 20px;">
-            <li v-for="ing in cocktail.ingredients" :data-id="ing.sort">
+            <li v-for="ing in cocktail.ingredients" :data-id="ing.ingredient_id">
                 <div class="drag-handle"></div>
                 <div class="cocktail-form__ingredients__content">
                     <div class="form-group">
@@ -260,6 +260,7 @@ export default {
         },
         async submit() {
             const sortedIngredientList = this.sortable.toArray();
+            console.log(sortedIngredientList);
 
             this.isLoading = true;
 
@@ -276,26 +277,27 @@ export default {
                 glass_id: this.glassId,
                 ingredients: this.cocktail.ingredients
                     .filter(i => i.name != '<Not selected>')
-                    .map((ingredient) => {
+                    .map((cIngredient) => {
                         // Convert oz to ml
-                        if (ingredient.units == 'oz') {
-                            ingredient.amount = Unitz.parse(`${ingredient.amount}${ingredient.units}`).value * 30
-                            ingredient.units = 'ml'
+                        if (cIngredient.units == 'oz') {
+                            cIngredient.amount = Unitz.parse(`${cIngredient.amount}${cIngredient.units}`).value * 30
+                            cIngredient.units = 'ml'
                         }
                         // Convert cl to ml
-                        if (ingredient.units == 'cl') {
-                            ingredient.amount = ingredient.amount * 10
-                            ingredient.units = 'ml'
+                        if (cIngredient.units == 'cl') {
+                            cIngredient.amount = cIngredient.amount * 10
+                            cIngredient.units = 'ml'
                         }
 
                         // Just send substitute ids
-                        if (ingredient.substitutes) {
-                            ingredient.substitutes = ingredient.substitutes.map(s => s.id)
+                        if (cIngredient.substitutes) {
+                            cIngredient.substitutes = cIngredient.substitutes.map(s => s.id)
                         }
 
-                        ingredient.sort = sortedIngredientList.findIndex(el => el == ingredient.sort) + 1;
+                        cIngredient.sort = sortedIngredientList.findIndex(sortedId => sortedId == cIngredient.ingredient_id) + 1;
+                        console.log('ing:' + cIngredient.sort)
 
-                        return ingredient;
+                        return cIngredient;
                     })
             };
 
