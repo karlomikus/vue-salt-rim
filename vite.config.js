@@ -26,7 +26,8 @@ const manifest = {
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [vue(), VitePWA({
-    manifest: manifest
+    manifest: manifest,
+    registerType: 'autoUpdate',
   })],
   envDir: './',
   resolve: {
