@@ -1,6 +1,7 @@
 # v1.4.1
 ## Fixes
 - Auto-update PWA cache on version change
+- Fix sort not updating when cocktail ingredient sort attribute is duplicated or missing
 
 # v1.4.0
 ## New
