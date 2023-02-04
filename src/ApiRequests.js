@@ -527,6 +527,13 @@ class ApiRequests
         // https://api.github.com/repos/karlomikus/bar-assistant/releases/latest
         // https://api.github.com/repos/karlomikus/vue-salt-rim/releases/latest
     }
+
+    static async checkMeilisearchStatus(meiliHost) {
+        const f = fetch(`${meiliHost}/health`, {
+        }).then(this.handleResponseErrors)
+
+        return await (await f).json();
+    }
 }
 
 export default ApiRequests;

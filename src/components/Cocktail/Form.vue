@@ -260,7 +260,6 @@ export default {
         },
         async submit() {
             const sortedIngredientList = this.sortable.toArray();
-            console.log(sortedIngredientList);
 
             this.isLoading = true;
 
@@ -295,7 +294,6 @@ export default {
                         }
 
                         cIngredient.sort = sortedIngredientList.findIndex(sortedId => sortedId == cIngredient.ingredient_id) + 1;
-                        console.log('ing:' + cIngredient.sort)
 
                         return cIngredient;
                     })
