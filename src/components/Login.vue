@@ -66,6 +66,7 @@ export default {
             email: null,
             password: null,
             baServer: window.srConfig.API_URL,
+            meiliServer: window.srConfig.MEILISEARCH_URL,
             server: {},
             meiliServer: {}
         }
@@ -79,7 +80,7 @@ export default {
             this.server = data
             this.isLoading = false
             this.isLoading = true
-            ApiRequests.checkMeilisearchStatus(this.server.meilisearch_host).then(mData => {
+            ApiRequests.checkMeilisearchStatus(this.meiliServer).then(mData => {
                 this.meiliServer = mData;
                 this.isLoading = false
             }).catch(() => {
