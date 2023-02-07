@@ -5,7 +5,7 @@
 <p align="center">
     <a href="https://hub.docker.com/r/kmikus12/salt-rim"><img src="https://img.shields.io/docker/v/kmikus12/salt-rim?style=for-the-badge&sort=semver" alt="Docker image"></a>
     <img src="https://img.shields.io/github/license/karlomikus/vue-salt-rim?style=for-the-badge" alt="License">
-    <img src="https://img.shields.io/github/actions/workflow/status/karlomikus/vue-salt-rim/build-image.yml?branch=master&style=for-the-badge" alt="Build">
+    <img src="https://img.shields.io/github/actions/workflow/status/karlomikus/vue-salt-rim/build-image.yml?style=for-the-badge" alt="Build">
 </p>
 
 # 🍹 Salt Rim - Bar Assistant Web Client
