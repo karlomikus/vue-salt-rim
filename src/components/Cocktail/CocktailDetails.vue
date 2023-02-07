@@ -265,14 +265,14 @@ export default {
                     }).catch(e => {
                         this.$toast.error(e.message);
                     })
+
+                    if (localStorage.getItem('defaultUnit')) {
+                        this.currentUnit = localStorage.getItem('defaultUnit')
+                    }
                 }
             },
             { immediate: true }
         )
-
-        if (localStorage.getItem('defaultUnit')) {
-            this.currentUnit = localStorage.getItem('defaultUnit')
-        }
     },
     methods: {
         favorite() {

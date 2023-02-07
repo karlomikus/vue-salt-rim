@@ -28,6 +28,11 @@ export default {
             min: 1
         }
     },
+    watch: {
+        rating(newVal) {
+            this.currentRating = newVal
+        }
+    },
     methods: {
         rate(rating) {
             if (this.isLoading) {
