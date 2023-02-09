@@ -376,19 +376,19 @@ export default {
 }
 
 .cocktail-details-box.cocktail-details-box--blue {
-    background-color: var(--color-var-1);
+    background-color: var(--clr-accent-blue);
 }
 
 .cocktail-details-box.cocktail-details-box--yellow {
-    background-color: var(--color-var-2);
+    background-color: var(--clr-accent-yellow);
 }
 
 .cocktail-details-box.cocktail-details-box--red {
-    background-color: var(--color-var-3);
+    background-color: var(--clr-accent-red);
 }
 
 .cocktail-details-box.cocktail-details-box--green {
-    background-color: var(--color-var-4);
+    background-color: var(--clr-accent-green);
 }
 
 .cocktail-details-box__title {

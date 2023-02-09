@@ -84,8 +84,8 @@
                         <CocktailGridContainer v-slot="observer">
                             <CocktailGridItem v-for="(cocktail, i) in items" :cocktail="cocktail" :key="cocktail.id" :observer="observer" />
                         </CocktailGridContainer>
-                        <div style="text-align: center; margin: 20px 0;">
-                            <button class="button button--dark" v-if="!isLastPage" @click="refineNext">
+                        <div style="text-align: center; margin: 20px 0;" v-if="!isLastPage">
+                            <button class="button button--dark" @click="refineNext">
                                 Show more results
                             </button>
                         </div>

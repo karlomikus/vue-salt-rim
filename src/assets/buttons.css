@@ -91,7 +91,7 @@
 .button-icon-action:hover,
 .button-icon-action:focus,
 .button-icon-action:active {
-    background-color: var(--color-var-4);
+    background-color: var(--clr-accent-green);
 }
 
 .button-circle {
