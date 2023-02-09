@@ -19,6 +19,19 @@
             </p>
         </div>
         <div class="form-group">
+            <label class="form-label" for="is-variety">
+                <input type="checkbox" id="is-variety" v-model="isParent"> Ingredient is variety of another ingredient
+            </label>
+        </div>
+        <div class="form-group">
+            <div v-show="isParent">
+                <label class="form-label" for="parent-ingredient">Parent ingredient:</label>
+                <TomSelect id="parent-ingredient" v-model="ingredient.parent_ingredient_id">
+                    <option v-for="ingredient in parentIngredientsList" :value="ingredient.id">{{ ingredient.name }}</option>
+                </TomSelect>
+            </div>
+        </div>
+        <div class="form-group">
             <label class="form-label form-label--required" for="strength">Strength (ABV %):</label>
             <input class="form-input" type="text" id="strength" v-model="ingredient.strength" required>
         </div>
@@ -54,6 +67,7 @@ import ImageUpload from '@/components/ImageUpload.vue'
 import { ColorPicker } from 'vue-accessible-color-picker'
 import PageHeader from '@/components/PageHeader.vue'
 import OverlayLoader from '@/components/OverlayLoader.vue'
+import TomSelect from '@/components/TomSelect.vue'
 
 export default {
     data() {
@@ -61,6 +75,8 @@ export default {
             isLoading: false,
             ingredientId: null,
             showColorPicker: false,
+            isParent: false,
+            ingredients: [],
             ingredient: {
                 images: []
             },
@@ -71,7 +87,8 @@ export default {
         ImageUpload,
         ColorPicker,
         PageHeader,
-        OverlayLoader
+        OverlayLoader,
+        TomSelect
     },
     created() {
         document.title = `Ingredient Form \u22C5 Salt Rim`
@@ -84,6 +101,7 @@ export default {
                 data.description = Utils.decodeHtml(data.description);
 
                 this.ingredient = data;
+                this.isParent = this.ingredient.parent_ingredient_id != null;
 
                 document.title = `Ingredient Form \u22C5 ${this.ingredient.name} \u22C5 Salt Rim`
                 this.isLoading = false;
@@ -93,6 +111,15 @@ export default {
         ApiRequests.fetchIngredientCategories().then(data => {
             this.categories = data
         })
+
+        ApiRequests.fetchIngredients().then(data => {
+            this.ingredients = data
+        })
+    },
+    computed: {
+        parentIngredientsList() {
+            return this.ingredients.filter(pIng => pIng.id != this.ingredient.id)
+        }
     },
     methods: {
         async submit() {
@@ -104,6 +131,7 @@ export default {
                 strength: this.ingredient.strength,
                 origin: this.ingredient.origin,
                 color: this.ingredient.color,
+                parent_ingredient_id: this.isParent ? this.ingredient.parent_ingredient_id : null,
                 images: [],
                 ingredient_category_id: this.ingredient.ingredient_category_id,
             };
