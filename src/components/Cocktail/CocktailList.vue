@@ -3,7 +3,7 @@
         Cocktails
         <template #actions>
             <RouterLink class="button button--outline" :to="{ name: 'cocktails.scrape' }">Add cocktail from URL</RouterLink>
-            <RouterLink class="button button--outline" :to="{ name: 'cocktails.form' }">Add cocktail</RouterLink>
+            <RouterLink class="button button--dark" :to="{ name: 'cocktails.form' }">Add cocktail</RouterLink>
         </template>
     </PageHeader>
     <p class="page-description" style="margin-bottom: 20px;">

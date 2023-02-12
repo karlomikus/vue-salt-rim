@@ -2,7 +2,7 @@
     <PageHeader>
         Ingredients
         <template #actions>
-            <RouterLink class="button button--outline" :to="{ name: 'ingredients.form' }">Add ingredient</RouterLink>
+            <RouterLink class="button button--dark" :to="{ name: 'ingredients.form' }">Add ingredient</RouterLink>
         </template>
     </PageHeader>
     <p class="page-description">
