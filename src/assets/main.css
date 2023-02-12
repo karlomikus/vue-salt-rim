@@ -8,6 +8,7 @@
 @import "./table.css";
 @import "./instant-theme.css";
 @import "./search.css";
+@import "./alerts.css";
 
 @import "vue-toast-notification/dist/theme-default.css";
 @import "tom-select/dist/css/tom-select.css";

@@ -25,5 +25,7 @@
 
 .site-page-header__actions {
     margin-left: auto;
+    display: flex;
+    gap: 1rem;
 }
 </style>

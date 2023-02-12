@@ -146,6 +146,12 @@ class ApiRequests
         return this.parseResponse(jsonResp);
     }
 
+    static async scrapeCocktail(data) {
+        let jsonResp = await this.postRequest(`/api/scrape/cocktail`, data);
+
+        return this.parseResponse(jsonResp);
+    }
+
     /**
      * =============================
      * Ingredient Categories
@@ -222,6 +228,12 @@ class ApiRequests
 
     static async deleteIngredient(id) {
         return await this.deleteRequest(`/api/ingredients/${id}`);
+    }
+
+    static async findIngredient(query) {
+        let jsonResp = await this.getRequest(`/api/ingredients/find`, query);
+
+        return this.parseResponse(jsonResp);
     }
 
     /**
@@ -391,6 +403,12 @@ class ApiRequests
 
     static async deleteGlass(id) {
         return await this.deleteRequest(`/api/glasses/${id}`);
+    }
+
+    static async findGlass(query) {
+        let jsonResp = await this.getRequest(`/api/glasses/find`, query);
+
+        return this.parseResponse(jsonResp);
     }
 
     /**

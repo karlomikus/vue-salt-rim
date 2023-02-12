@@ -48,6 +48,11 @@ const router = createRouter({
                     component: () => import('../views/CocktailsFormView.vue'),
                 },
                 {
+                    path: '/cocktails/scrape',
+                    name: 'cocktails.scrape',
+                    component: () => import('../views/CocktailsScrapeView.vue'),
+                },
+                {
                     path: '/cocktails/:id',
                     name: 'cocktails.show',
                     component: () => import('../views/CocktailView.vue'),

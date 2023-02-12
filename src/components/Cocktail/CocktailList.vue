@@ -2,6 +2,7 @@
     <PageHeader>
         Cocktails
         <template #actions>
+            <RouterLink class="button button--outline" :to="{ name: 'cocktails.scrape' }">Add cocktail from URL</RouterLink>
             <RouterLink class="button button--outline" :to="{ name: 'cocktails.form' }">Add cocktail</RouterLink>
         </template>
     </PageHeader>
