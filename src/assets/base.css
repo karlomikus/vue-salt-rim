@@ -104,6 +104,11 @@ h6 {
     overflow-wrap: break-word;
 }
 
+hr {
+    border: 2px solid var(--clr-red-400);
+    margin: 1rem 0;
+}
+
 
 
 /* 

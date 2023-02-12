@@ -5,16 +5,16 @@
             Cocktail Scraper
         </PageHeader>
         <div class="form-group-import-input">
-            <input class="form-input" type="text" id="import" v-model="url" placeholder="Enter recipe URL...">
+            <input class="form-input" type="url" id="import" v-model="url" placeholder="Enter recipe URL...">
             <button type="button" class="button button--input" @click.prevent="scrape">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path fill="none" d="M0 0h24v24H0z"/><path d="M12 13H4v-2h8V4l8 8-8 8z"/></svg>
             </button>
         </div>
+        <p class="form-input-hint">Bar Assistant will do it's best to find recipe information from the URL.</p>
         <div class="scraper-form" v-if="result">
             <div class="alert alert--info" style="margin: 1rem 0;">
                 <h3>Information</h3>
-                <p>Existing ingredients and glass will be matched by their name (case insensitive). If ingredient or glass does not exist, it will be created. Common units are automatically converted to "ml".<br>
-                    You can use this form to quickly edit scraped information, or continue editing with the default cocktail form.</p>
+                <p>Existing ingredients and glass will be matched by their name (case insensitive). If ingredient or glass does not exist, it will be created. Common units are automatically converted to "ml".</p>
             </div>
             <div class="form-group">
                 <label for="name">Name</label><br>
@@ -48,7 +48,7 @@
                 <label for="tags">Tags</label><br>
                 <input type="text" class="form-input" id="tags" v-model="cocktailTags">
             </div>
-            <h3>Ingredients:</h3>
+            <hr>
             <div class="scraper-ingredients">
                 <div class="scraper-ingredients__ingredient" v-for="(ingredient, idx) in result.ingredients">
                     <div class="form-group">
@@ -64,15 +64,17 @@
                         <input type="text" class="form-input" :id="'ingredient_units_' + idx" v-model="ingredient.units">
                     </div>
                     <div class="form-group">
-                        <label :for="'ingredient_optional_' + idx">Optional</label><br>
-                        <input type="checkbox" :id="'ingredient_optional_' + idx" :value="true" v-model="ingredient.optional">
+                        <label :for="'ingredient_optional_' + idx">
+                            <input type="checkbox" :id="'ingredient_optional_' + idx" :value="true" v-model="ingredient.optional">
+                            Optional
+                        </label>
                     </div>
                     <a href="#" @click.prevent="removeIngredient(ingredient)">Remove</a>
                 </div>
             </div>
             <div class="form-actions">
                 <RouterLink class="button button--outline" :to="{ name: 'cocktails' }">Cancel</RouterLink>
-                <button type="button" class="button button--outline" @click="goTo('cocktails.form')">Continue with editing</button>
+                <button type="button" class="button button--dark" @click="goTo('cocktails.form')">Continue with editing</button>
                 <!-- <button type="button" class="button button--dark" @click="goTo">Import and save</button> -->
             </div>
         </div>
@@ -218,6 +220,7 @@ export default {
 .scraper-ingredients__ingredient {
     display: flex;
     flex-wrap: wrap;
+    align-items: center;
     margin-bottom: 1rem;
 }
 </style>
