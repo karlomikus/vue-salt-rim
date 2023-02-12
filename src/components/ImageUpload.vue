@@ -93,7 +93,7 @@ export default {
             }
 
             if (Array.from(formData.values()).length > 0) {
-                return ApiRequests.uploadImages(formData).catch(e => console.log(e));
+                return ApiRequests.uploadImages(formData);
             }
 
             return Promise.resolve();

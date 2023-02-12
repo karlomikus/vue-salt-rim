@@ -319,8 +319,7 @@ export default {
                     })
             };
 
-            const imageResources = await this.$refs.imagesUpload.uploadPictures().catch((err) => {
-                console.error(err)
+            const imageResources = await this.$refs.imagesUpload.uploadPictures().catch(() => {
                 this.$toast.error('An error occured while uploading images. Your cocktail is still saved.');
             }) || [];
 
