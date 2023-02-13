@@ -199,6 +199,26 @@ export default {
         })
     },
     mounted() {
+        const scraped = localStorage.getItem('scrapeResult');
+        if (scraped) {
+            localStorage.removeItem('scrapeResult');
+            const parsedScrapeResult = JSON.parse(scraped);
+
+            this.cocktail = parsedScrapeResult
+            if (parsedScrapeResult.glass_id) {
+                this.cocktail.glass = {};
+                this.glassId = parsedScrapeResult.glass_id;
+            }
+
+            this.cocktail.images = [
+                {
+                    copyright: parsedScrapeResult.image.copyright,
+                    url: parsedScrapeResult.image.url,
+                    file: parsedScrapeResult.image.url,
+                }
+            ]
+        }
+
         this.sortable = Sortable.create(document.querySelector('.cocktail-form__ingredients'), {
             handle: '.drag-handle',
             ghostClass: 'cocktail-form__ingredients__placeholder',
@@ -260,7 +280,6 @@ export default {
         },
         async submit() {
             const sortedIngredientList = this.sortable.toArray();
-            console.log(sortedIngredientList);
 
             this.isLoading = true;
 
@@ -295,7 +314,6 @@ export default {
                         }
 
                         cIngredient.sort = sortedIngredientList.findIndex(sortedId => sortedId == cIngredient.ingredient_id) + 1;
-                        console.log('ing:' + cIngredient.sort)
 
                         return cIngredient;
                     })

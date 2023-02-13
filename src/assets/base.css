@@ -29,10 +29,12 @@
     --cocktail-grid-card-width: 250px;
     --cocktail-list-card-width: 350px;
 
-    --color-var-1: #D6E2E9;
-    --color-var-2: #FFF1E6;
-    --color-var-3: #FDE2E4;
-    --color-var-4: #E2ECE9;
+    --clr-accent-blue: #D6E2E9;
+    --clr-accent-yellow: #FFF1E6;
+    --clr-accent-red: #FDE2E4;
+    --clr-accent-green: #E2ECE9;
+    --clr-accent-purple: #dfd7e3;
+    --clr-accent-orange: #f1dcca;
 }
 
 *,
@@ -101,3 +103,57 @@ h5,
 h6 {
     overflow-wrap: break-word;
 }
+
+hr {
+    border: 2px solid var(--clr-red-400);
+    margin: 1rem 0;
+}
+
+
+
+/* 
+Pineapple Cream
+
+    Iron Maiden
+    #dad5e1
+    Pastel Day
+    #dfd7e3
+    Peekaboo
+    #eae1eb
+    Violet Vogue
+    #f1e8f1
+    Ephemeral Red
+    #ead6e4
+    Petite Pink
+    #e6c3c4
+    Heavy Cream
+    #eee2cb
+    Pineapple Sorbet
+    #f6f5db
+    Race the Sun
+    #f0f5cf
+    Mellow Mint
+    #e2f3bd
+    Tea Green
+    #d3f2b6
+    Herbal Vapors
+    #cef4be
+    Pastel Mint
+    #d6f8d2
+    Toxic Latte
+    #e3fbe5
+    Mint Coffee
+    #d7fbe3
+    Ice
+    #c8fbf8
+    Puffy Cloud
+    #d9e3f6
+    Silver Phoenix
+    #f0f0f9
+    Diamond Cut
+    #e9e8f2
+    Velvet Scarf
+    #dedbe7
+
+
+ */

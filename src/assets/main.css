@@ -8,9 +8,11 @@
 @import "./table.css";
 @import "./instant-theme.css";
 @import "./search.css";
+@import "./alerts.css";
 
 @import "vue-toast-notification/dist/theme-default.css";
-@import "tom-select/dist/css/tom-select.css";
+/* @import "tom-select/dist/css/tom-select.css"; */
+@import "./tom-select.css";
 
 #app {
     font-weight: normal;
@@ -20,7 +22,6 @@
 }
 
 main {
-    margin: 2rem;
     max-width: var(--site-width);
     margin: 0 auto;
     padding: 0 10px;
@@ -70,7 +71,6 @@ main {
 
 .site-logo {
     display: flex;
-    /* font-family: var(--font-heading); */
     color: #fff;
     text-decoration: none;
 }

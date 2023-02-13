@@ -12,6 +12,7 @@
 <style scoped>
 .site-page-header {
     display: flex;
+    flex-wrap: wrap;
     border-bottom: 3px solid var(--clr-red-300);
     padding-bottom: 20px;
     margin-bottom: 20px;
@@ -25,5 +26,14 @@
 
 .site-page-header__actions {
     margin-left: auto;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+@media (max-width: 450px) {
+    .site-page-header__actions {
+        gap: 0.5rem;
+    }
 }
 </style>

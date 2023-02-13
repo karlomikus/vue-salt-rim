@@ -2,7 +2,8 @@
     <PageHeader>
         Cocktails
         <template #actions>
-            <RouterLink class="button button--outline" :to="{ name: 'cocktails.form' }">Add cocktail</RouterLink>
+            <RouterLink class="button button--outline" :to="{ name: 'cocktails.scrape' }">Add cocktail from URL</RouterLink>
+            <RouterLink class="button button--dark" :to="{ name: 'cocktails.form' }">Add cocktail</RouterLink>
         </template>
     </PageHeader>
     <p class="page-description" style="margin-bottom: 20px;">
@@ -84,8 +85,8 @@
                         <CocktailGridContainer v-slot="observer">
                             <CocktailGridItem v-for="(cocktail, i) in items" :cocktail="cocktail" :key="cocktail.id" :observer="observer" />
                         </CocktailGridContainer>
-                        <div style="text-align: center; margin: 20px 0;">
-                            <button class="button button--dark" v-if="!isLastPage" @click="refineNext">
+                        <div style="text-align: center; margin: 20px 0;" v-if="!isLastPage">
+                            <button class="button button--dark" @click="refineNext">
                                 Show more results
                             </button>
                         </div>

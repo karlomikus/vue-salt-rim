@@ -1,3 +1,16 @@
+# v1.5.0
+## New
+- Added form for cocktail scraping
+- Added ingredient variety updating
+- Added 404 page
+
+## Changes
+- Updated PWA icons
+- Docker image now uses nginx for serving the application
+
+## Fixes
+- Fixed rating not changing when selecting a different cocktail
+
 # v1.4.1
 ## Fixes
 - Auto-update PWA cache on version change

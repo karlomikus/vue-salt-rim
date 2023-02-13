@@ -331,11 +331,11 @@ export default {
 }
 
 .ingredient-details__box.ingredient-details__box--green {
-    background-color: var(--color-var-4);
+    background-color: var(--clr-accent-green);
 }
 
 .ingredient-details__cocktails {
-    background-color: var(--color-var-1);
+    background-color: var(--clr-accent-blue);
     padding: 20px 20px 40px 20px;
     border-radius: 20px;
     border-bottom-left-radius: 0;
@@ -382,7 +382,7 @@ export default {
 }
 
 .ingredient-details__varieties {
-    background-color: var(--color-var-2);
+    background-color: var(--clr-accent-yellow);
     padding: 20px 20px 40px 20px;
     border-radius: 20px;
     border-bottom-left-radius: 0;

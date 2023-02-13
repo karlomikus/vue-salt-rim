@@ -15,6 +15,7 @@ const router = createRouter({
         }
     },
     routes: [
+        { path: '/:pathMatch(.*)*', name: 'NotFound', component: () => import('../views/404.vue') },
         {
             path: '/login',
             name: 'login',
@@ -45,6 +46,11 @@ const router = createRouter({
                     path: '/cocktails/form',
                     name: 'cocktails.form',
                     component: () => import('../views/CocktailsFormView.vue'),
+                },
+                {
+                    path: '/cocktails/scrape',
+                    name: 'cocktails.scrape',
+                    component: () => import('../views/CocktailsScrapeView.vue'),
                 },
                 {
                     path: '/cocktails/:id',

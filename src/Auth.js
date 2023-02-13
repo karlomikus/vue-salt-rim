@@ -25,8 +25,21 @@ class Auth {
     static getUserSearchSettings() {
         const user = this.getUser();
 
+        let searchHost = window.srConfig.MEILISEARCH_URL;
+        if (!searchHost) {
+            searchHost = user.search_host;
+        }
+
+        if (!(searchHost.startsWith('http://') || searchHost.startsWith('https://'))) {
+            if (!searchHost.startsWith('/')) {
+                searchHost = '/' + searchHost;
+            }
+
+            searchHost = window.location.origin + searchHost;
+        }
+
         return {
-            host: user.search_host,//window.srConfig.MEILISEARCH_HOST,
+            host: searchHost,
             key: user.search_api_key,
         };
     }

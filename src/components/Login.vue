@@ -22,19 +22,33 @@
                 <label class="form-label" for="password">Password:</label>
                 <input class="form-input" type="password" id="password" v-model="password" required>
             </div>
-            <p>
-                Bar Assistant server:<br>
-                <strong>{{ baServer }}</strong><br>
-                <template v-if="server.version">
-                    Status: Available &middot; {{ server.version }}
-                </template>
-                <template v-else>
-                    Status: Not available
-                </template>
-            </p>
-            <div style="text-align: right; margin-top: 20px;">
+            <div class="server-status">
+                <div class="server-status__title">Bar Assistant server:</div>
+                <a :href="baServer" target="_blank" class="server-status__url">{{ baServer }}</a>
+                <div class="server-status__status">
+                    <template v-if="baServerAvailable">
+                        Status: Available &middot; {{ server.version }}
+                    </template>
+                    <template v-else>
+                        Status: Not available
+                    </template>
+                </div>
+            </div>
+            <!-- <div class="server-status">
+                <div class="server-status__title">Meilisearch server:</div>
+                <a :href="server.meilisearch_host" target="_blank" class="server-status__url">{{ server.meilisearch_host }}</a>
+                <div class="server-status__status">
+                    <template v-if="meiliServerAvailable">
+                        Status: Available &middot; {{ server.meilisearch_version }}
+                    </template>
+                    <template v-else>
+                        Status: Not available
+                    </template>
+                </div>
+            </div> -->
+            <div style="text-align: right; margin-top: 20px;" v-if="baServerAvailable">
                 <RouterLink class="button button--outline" :to="{ name: 'register' }">Register</RouterLink>
-                <button type="submit" class="button button--dark" style="margin-left: 5px;">Login</button>
+                <button type="submit" class="button button--dark" style="margin-left: 5px;" :disabled="!baServerAvailable">Login</button>
             </div>
         </form>
     </div>
@@ -52,7 +66,9 @@ export default {
             email: null,
             password: null,
             baServer: window.srConfig.API_URL,
-            server: {}
+            meiliServer: window.srConfig.MEILISEARCH_URL,
+            server: {},
+            meiliServer: {}
         }
     },
     components: {
@@ -63,9 +79,24 @@ export default {
         ApiRequests.fetchApiVersion().then(data => {
             this.server = data
             this.isLoading = false
+            this.isLoading = true
+            ApiRequests.checkMeilisearchStatus(this.meiliServer).then(mData => {
+                this.meiliServer = mData;
+                this.isLoading = false
+            }).catch(() => {
+                this.isLoading = false
+            })
         }).catch(() => {
             this.isLoading = false
         })
+    },
+    computed: {
+        baServerAvailable() {
+            return this.server.version != null;
+        },
+        meiliServerAvailable() {
+            return this.meiliServer.status == 'available';
+        }
     },
     methods: {
         login() {
@@ -87,3 +118,25 @@ export default {
     }
 }
 </script>
+
+<style scoped>
+.server-status {
+    background: #fff;
+    margin-bottom: 1rem;
+    padding: 0.5rem;
+    border-radius: 0.25rem;
+    border: 1px solid var(--clr-red-400);
+}
+
+.server-status__title {
+    font-size: 0.75rem;
+}
+
+.server-status__url {
+    font-weight: var(--fw-bold);
+}
+
+.server-status__status {
+    font-size: 0.85rem;
+}
+</style>

@@ -79,16 +79,18 @@ export default {
         },
         async uploadPictures() {
             const formData = new FormData();
-            this.images.forEach(async (img, idx) => {
+            for (let i = 0; i < this.images.length; i++) {
+                let img = this.images[i];
+
                 if (img.id) {
                     const updateFormData = new FormData();
                     updateFormData.append('copyright', img.copyright ? img.copyright : '')
                     await ApiRequests.patchImage(img.id, updateFormData)
                 } else {
-                    formData.append('images[' + idx + '][image]', img.file)
-                    formData.append('images[' + idx + '][copyright]', img.copyright ? img.copyright : '')
+                    formData.append('images[' + i + '][image]', img.file)
+                    formData.append('images[' + i + '][copyright]', img.copyright ? img.copyright : '')
                 }
-            })
+            }
 
             if (Array.from(formData.values()).length > 0) {
                 return ApiRequests.uploadImages(formData);

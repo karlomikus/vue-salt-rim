@@ -22,7 +22,6 @@
     -moz-appearance: none;
     appearance: none;
     background: rgba(255, 255, 255, .5);
-    border: 0;
     border: 2px solid var(--clr-red-300);
     border-top-color: transparent;
     border-left-color: transparent;

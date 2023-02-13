@@ -1,5 +1,5 @@
 <template>
-    <div class="ingredient-grid-item">
+    <div class="ingredient-grid-item" :class="{'ingredient-grid-item--shelf': inShelf}">
         <OverlayLoader v-if="isLoading" />
         <div class="ingredient-grid-item__image" :style="{ 'background-color': setupColor(ingredient.color) }">
             <img :src="image" alt="Main image of the ingredient">

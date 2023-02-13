@@ -257,7 +257,7 @@ export default {
 }
 
 .site-autocomplete__footer {
-    background: var(--color-var-4);
+    background: var(--clr-accent-green);
     padding: 8px 10px;
     border-radius: 10px;
     border-top-left-radius: 0;
