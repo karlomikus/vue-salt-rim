@@ -22,7 +22,6 @@
 }
 
 main {
-    margin: 2rem;
     max-width: var(--site-width);
     margin: 0 auto;
     padding: 0 10px;
@@ -72,7 +71,6 @@ main {
 
 .site-logo {
     display: flex;
-    /* font-family: var(--font-heading); */
     color: #fff;
     text-decoration: none;
 }

@@ -1,5 +1,4 @@
 .button {
-    border: 0;
     margin: 0;
     border-radius: 30px;
     font-size: 1rem;
@@ -15,6 +14,7 @@
     white-space: nowrap;
     text-decoration: none;
     font-weight: 700;
+    border: 2px solid transparent;
 }
 
 .button:hover {
@@ -160,6 +160,12 @@
         fill: #262831;
         width: 18px;
         height: 18px;
+    }
+
+    .button {
+        line-height: 100%;
+        height: 2.1rem;
+        font-size: 0.95rem;
     }
 }
 
