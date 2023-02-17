@@ -1,3 +1,7 @@
+# v1.5.1
+## Fixes
+- Fix pagination when there is a lot of data
+
 # v1.5.0
 ## New
 - Added form for cocktail scraping
