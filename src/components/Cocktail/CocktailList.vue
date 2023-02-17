@@ -113,7 +113,9 @@ export default {
                 Auth.getUserSearchSettings().host,
                 Auth.getUserSearchSettings().key,
                 {
-                    keepZeroFacets: true
+                    keepZeroFacets: true,
+                    // finitePagination: true,
+                    paginationTotalHits: 2000
                 }
             ),
             routing: {
