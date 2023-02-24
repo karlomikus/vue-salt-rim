@@ -1,3 +1,7 @@
+# v1.6.0
+
+Official docker image moved to `barassistant/salt-rim`.
+
 # v1.5.1
 ## Fixes
 - Fix pagination when there is a lot of data
