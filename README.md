@@ -3,7 +3,7 @@
 </p>
 
 <p align="center">
-    <a href="https://hub.docker.com/r/kmikus12/salt-rim"><img src="https://img.shields.io/docker/v/kmikus12/salt-rim?style=for-the-badge&sort=semver" alt="Docker image"></a>
+    <a href="https://hub.docker.com/r/barassistant/salt-rim"><img src="https://img.shields.io/docker/v/barassistant/salt-rim?style=for-the-badge&sort=semver" alt="Docker image"></a>
     <img src="https://img.shields.io/github/license/karlomikus/vue-salt-rim?style=for-the-badge" alt="License">
     <img src="https://img.shields.io/github/actions/workflow/status/karlomikus/vue-salt-rim/build-image.yml?style=for-the-badge" alt="Build">
 </p>
@@ -31,6 +31,10 @@ Salt Rim is a web client used for connecting to your [Bar Assistant](https://git
 - Support for markdown in cocktails and ingredients
 - Automatically add missing ingredients to your shopping cart
 
+## Documentation
+
+[Official documentation is available here.](https://bar-assistant.github.io/docs/)
+
 ## Docker installation
 
 Once you have your BA api instance running, you just need to set `API_URL` env variable:
@@ -39,8 +43,9 @@ Once you have your BA api instance running, you just need to set `API_URL` env v
 $ docker run -d \
     --name salt-rim \
     -e API_URL=http://your-bar-assistant-url \
+    -e MEILISEARCH_URL=http://your-meilisearch-url \
     -p 8080:8080 \
-    kmikus12/salt-rim
+    barassistant/salt-rim
 ```
 
 [For a complete docker compose setup click here](https://github.com/bar-assistant/docker/).
@@ -62,7 +67,8 @@ Create a new config file in `public/config.js`, with the following content
 
 ``` js
 window.srConfig = {}
-window.srConfig.API_URL = "http://YOUR_BA_API_URL"
+window.srConfig.API_URL = "$API_URL"
+window.srConfig.MEILISEARCH_URL = "$MEILISEARCH_URL"
 ```
 
 4. Run the build commands
