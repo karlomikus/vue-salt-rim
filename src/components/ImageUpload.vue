@@ -1,7 +1,9 @@
 <template>
     <div class="image-upload">
         <div class="form-group">
-            <label class="form-label" for="images">Image:</label>
+            <label class="image-upload__select" for="images">
+                Click here to browse for images. Max file size is 100mb.
+            </label>
             <input class="form-input" type="file" id="images" accept="image/*" :multiple="multiple" @change="fileInputChanged" :disabled="hasMaxImages">
         </div>
         <div class="image-upload__list">
@@ -32,7 +34,11 @@ export default {
         },
         multiple: {
             type: Boolean,
-            default: false
+            default: true
+        },
+        maxImages: {
+            type: Number,
+            default: 1
         }
     },
     watch: {
@@ -47,7 +53,7 @@ export default {
     },
     computed: {
         hasMaxImages() {
-            return this.multiple === false && this.images.length >= 1
+            return this.multiple === false && this.images.length >= this.maxImages
         }
     },
     methods: {
@@ -80,12 +86,12 @@ export default {
         async uploadPictures() {
             const formData = new FormData();
             for (let i = 0; i < this.images.length; i++) {
-                let img = this.images[i];
+                const img = this.images[i];
 
                 if (img.id) {
-                    const updateFormData = new FormData();
-                    updateFormData.append('copyright', img.copyright ? img.copyright : '')
-                    await ApiRequests.patchImage(img.id, updateFormData)
+                    // const updateFormData = new FormData();
+                    // updateFormData.append('copyright', img.copyright ? img.copyright : '')
+                    // await ApiRequests.patchImage(img.id, updateFormData)
                 } else {
                     formData.append('images[' + i + '][image]', img.file)
                     formData.append('images[' + i + '][copyright]', img.copyright ? img.copyright : '')
@@ -96,7 +102,7 @@ export default {
                 return ApiRequests.uploadImages(formData);
             }
 
-            return Promise.resolve();
+            return Promise.resolve([]);
         },
         removeImage(img) {
             if (!img.id) {
@@ -127,6 +133,23 @@ export default {
 </script>
 
 <style scoped>
+#images {
+    display: none;
+}
+
+.image-upload__select {
+    border: 2px dashed var(--clr-red-300);
+    border-radius: 4px;
+    display: block;
+    text-align: center;
+    background-color: rgba(255, 255, 255, .5);
+    padding: 2rem;
+}
+
+.image-upload__select:is(:hover, :active, :focus) {
+    border-color: var(--clr-red-500);
+}
+
 .image-upload__list {
     display: grid;
     row-gap: 10px;
@@ -138,7 +161,7 @@ export default {
 }
 
 .image-upload__list__item__image {
-    width: 100px;
+    width: 80px;
     flex-shrink: 0;
 }
 

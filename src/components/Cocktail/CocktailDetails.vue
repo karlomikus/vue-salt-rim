@@ -1,8 +1,14 @@
 <template>
     <OverlayLoader v-if="!cocktail.id" />
     <div class="cocktail-details" v-if="cocktail.id">
-        <div class="cocktail-details__graphic" :style="{ 'background-image': 'url(' + mainCocktailImageUrl + ')' }">
-            <div class="cocktail-details__graphic__copyright" v-if="mainCocktailImage.copyright">Image &copy; {{ mainCocktailImage.copyright }}</div>
+        <div class="cocktail-details__graphic">
+            <swiper v-if="cocktail.images.length > 0" :modules="sliderModules" navigation :pagination="{ clickable: true }" :follow-finger="false">
+                <swiper-slide v-for="image in cocktail.images">
+                    <img :src="image.url" :alt="image.copyright" />
+                    <div class="cocktail-details__graphic__copyright" v-if="image.copyright">Image &copy; {{ image.copyright }}</div>
+                </swiper-slide>
+            </swiper>
+            <img v-else src="/no-cocktail.jpg" alt="This cocktail does not have an image." />
         </div>
         <div class="cocktail-details-box cocktail-details-box--blue">
             <h3 class="cocktail-details-box__title">{{ cocktail.name }}</h3>
@@ -188,6 +194,12 @@ import Unitz from 'unitz'
 import OverlayLoader from '@/components/OverlayLoader.vue'
 import Dropdown from '@/components/Dropdown.vue';
 import Rating from '@/components/Rating.vue';
+import { Swiper, SwiperSlide } from 'swiper/vue';
+import { Navigation, Pagination } from 'swiper';
+
+import 'swiper/css';
+import 'swiper/css/navigation';
+import 'swiper/css/pagination';
 
 export default {
     data: () => ({
@@ -196,12 +208,15 @@ export default {
         servings: 1,
         userShelfIngredients: [],
         userShoppingListIngredients: [],
-        currentUnit: 'ml'
+        currentUnit: 'ml',
+        sliderModules: [Navigation, Pagination]
     }),
     components: {
         OverlayLoader,
         Dropdown,
-        Rating
+        Rating,
+        Swiper,
+        SwiperSlide
     },
     computed: {
         parsedInstructions() {
@@ -338,29 +353,42 @@ export default {
 .cocktail-details {
     max-width: 1200px;
     margin: 0 auto;
+    isolation: isolate;
+    --cocktail-graphic-height: 900px;
+    --swiper-theme-color: #fff;
+    --swiper-pagination-bottom: 3rem;
+    --swiper-pagination-bullet-size: 0.65rem;
+    --swiper-navigation-size: 2rem;
+}
+
+@media (max-width: 450px) {
+    .cocktail-details {
+        --cocktail-graphic-height: 500px;
+        --swiper-navigation-size: 1.5rem;
+        --swiper-pagination-bullet-size: 0.45rem;
+    }
 }
 
 .cocktail-details__graphic {
     background-color: #fff;
-    padding: 10px;
-    background-size: cover;
-    background-position: center center;
-    height: 1000px;
     border-top-left-radius: 20px;
     border-top-right-radius: 20px;
+    overflow: hidden;
 }
 
-@media (max-width: 450px) {
-    .cocktail-details__graphic {
-        height: 500px;
-    }
+.cocktail-details__graphic img {
+    width: 100%;
+    height: var(--cocktail-graphic-height);
+    object-fit: cover;
 }
 
 .cocktail-details__graphic__copyright {
-    display: inline;
+    position: absolute;
+    top: 1rem;
+    left: 1rem;
+    display: inline-block;
     background-color: rgba(0, 0, 0, .4);
     color: #fff;
-    width: 100%;
     border-radius: 15px;
     padding: 2px 7px;
     font-size: 0.7rem;
@@ -373,6 +401,7 @@ export default {
     border-bottom-right-radius: 0;
     padding: 20px 20px 40px 20px;
     margin-top: -20px;
+    z-index: 5;
 }
 
 .cocktail-details-box.cocktail-details-box--blue {
