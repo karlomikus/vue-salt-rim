@@ -3,15 +3,21 @@
 
 :root {
     --clr-red-100: hsl(349, 100%, 98%);
+    --clr-red-200: hsl(349, 70%, 94%);
     --clr-red-300: hsl(349, 54%, 90%);
     --clr-red-400: hsl(349, 54%, 80%);
     --clr-red-500: hsl(349, 60%, 74%);
     --clr-red-800: hsl(349, 36%, 49%);
+    --clr-red-900: hsl(349, 40%, 29%);
 
     --clr-gray-900: hsl(227, 16%, 22%);
     --clr-gray-800: hsl(227, 16%, 32%);
+    --clr-gray-700: hsl(227, 16%, 37%);
+    --clr-gray-600: hsl(227, 16%, 47%);
     --clr-gray-500: hsl(227, 16%, 57%);
     --clr-gray-300: hsl(227, 16%, 77%);
+    --clr-gray-200: hsl(227, 16%, 80%);
+    --clr-gray-100: hsl(227, 16%, 90%);
 
     --color-tag: #DFE7FD;
     --color-tag-hover: #faeaab;
@@ -110,11 +116,31 @@ hr {
     margin: 1rem 0;
 }
 
+.block-container {
+    background: rgba(255, 255, 255, .7);
+    border-bottom: 2px solid var(--clr-red-300);
+    border-radius: 5px;
+}
 
+.block-container.block-container--placeholder {
+    background: #d9e3f6;
+    border-color: #a7badd;
+}
 
-/* 
-Pineapple Cream
+.block-container.block-container--padded {
+    padding: 1rem;
+}
 
+.drag-handle {
+    width: 12px;
+    flex-shrink: 0;
+    height: 100%;
+    background-image: radial-gradient(circle at 1px 1px, var(--clr-gray-300) 1px, transparent 0);
+    background-size: 4px 4px;
+    cursor: grab;
+}
+
+/*
     Iron Maiden
     #dad5e1
     Pastel Day
@@ -155,6 +181,4 @@ Pineapple Cream
     #e9e8f2
     Velvet Scarf
     #dedbe7
-
-
  */

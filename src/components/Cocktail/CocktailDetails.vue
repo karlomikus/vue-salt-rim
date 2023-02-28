@@ -3,7 +3,7 @@
     <div class="cocktail-details" v-if="cocktail.id">
         <div class="cocktail-details__graphic">
             <swiper v-if="cocktail.images.length > 0" :modules="sliderModules" navigation :pagination="{ clickable: true }" :follow-finger="false">
-                <swiper-slide v-for="image in cocktail.images">
+                <swiper-slide v-for="image in sortedImages">
                     <img :src="image.url" :alt="image.copyright" />
                     <div class="cocktail-details__graphic__copyright" v-if="image.copyright">Image &copy; {{ image.copyright }}</div>
                 </swiper-slide>
@@ -245,20 +245,9 @@ export default {
                 return !this.userShelfIngredients.includes(userIngredient.ingredient_id) && !this.userShoppingListIngredients.includes(userIngredient.ingredient_id)
             }).map(cocktailIngredient => cocktailIngredient.ingredient_id)
         },
-        mainCocktailImage() {
-            if (this.cocktail.main_image_id == null) {
-                return {};
-            }
-
-            return this.cocktail.images.filter((img) => img.id == this.cocktail.main_image_id)[0];
+        sortedImages() {
+            return this.cocktail.images.sort((a, b) => a.sort - b.sort)
         },
-        mainCocktailImageUrl() {
-            if (!this.mainCocktailImage.url) {
-                return '/no-cocktail.jpg';
-            }
-
-            return this.mainCocktailImage.url
-        }
     },
     watch: {
         cocktail(val) {
@@ -359,6 +348,7 @@ export default {
     --swiper-pagination-bottom: 3rem;
     --swiper-pagination-bullet-size: 0.65rem;
     --swiper-navigation-size: 2rem;
+    --swiper-pagination-bullet-inactive-color: #fff;
 }
 
 @media (max-width: 450px) {

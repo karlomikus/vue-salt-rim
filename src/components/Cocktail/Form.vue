@@ -4,55 +4,58 @@
         <PageHeader>
             Cocktail information
         </PageHeader>
-        <div class="form-group">
-            <label class="form-label form-label--required" for="name">Name:</label>
-            <input class="form-input" type="text" id="name" v-model="cocktail.name" required placeholder="Cocktail name...">
+        <div class="block-container block-container--padded">
+            <div class="form-group">
+                <label class="form-label form-label--required" for="name">Name:</label>
+                <input class="form-input" type="text" id="name" v-model="cocktail.name" required placeholder="Cocktail name...">
+            </div>
+            <div class="form-group">
+                <label class="form-label form-label--required" for="instructions">Instructions:</label>
+                <textarea rows="8" class="form-input" id="instructions" v-model="cocktail.instructions" required placeholder="How to prepare the cocktail..."></textarea>
+                <p class="form-input-hint">This field supports markdown.</p>
+            </div>
+            <div class="form-group">
+                <label class="form-label" for="garnish">Garnish:</label>
+                <textarea rows="3" class="form-input" id="garnish" v-model="cocktail.garnish" placeholder="Something to make a cocktail pop..."></textarea>
+                <p class="form-input-hint">This field supports markdown.</p>
+            </div>
+            <div class="form-group">
+                <label class="form-label" for="description">Description:</label>
+                <textarea rows="5" class="form-input" id="description" v-model="cocktail.description" placeholder="Cocktail description or history..."></textarea>
+                <p class="form-input-hint">This field supports markdown.</p>
+            </div>
+            <div class="form-group">
+                <label class="form-label" for="glass">Glass:</label>
+                <select class="form-select" id="glass" v-model="glassId">
+                    <option :value="undefined" disabled>Select a glass type...</option>
+                    <option v-for="glass in glasses" :value="glass.id">{{ glass.name }}</option>
+                </select>
+                <p class="form-input-hint">
+                    <RouterLink :to="{name: 'settings.glasses'}" target="_blank">Edit glasses</RouterLink>
+                </p>
+            </div>
+            <div class="form-group">
+                <label class="form-label" for="glass">Method:</label>
+                <select class="form-select" id="glass" v-model="methodId">
+                    <option :value="undefined" disabled>Select a method...</option>
+                    <option v-for="method in methods" :value="method.id">{{ method.name }}</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label class="form-label" for="source">Source:</label>
+                <input class="form-input" type="text" id="source" v-model="cocktail.source" placeholder="Book or URL...">
+            </div>
+            <div class="form-group">
+                <label class="form-label" for="tags">Tags:</label>
+                <input class="form-input" type="text" id="tags" v-model="cocktailTags" placeholder="Tags to help you find the cocktail...">
+                <p class="form-input-hint">Separate multiple tags with a comma (",").</p>
+            </div>
         </div>
-        <div class="form-group">
-            <label class="form-label form-label--required" for="instructions">Instructions:</label>
-            <textarea rows="8" class="form-input" id="instructions" v-model="cocktail.instructions" required placeholder="How to prepare the cocktail..."></textarea>
-            <p class="form-input-hint">This field supports markdown.</p>
-        </div>
-        <div class="form-group">
-            <label class="form-label" for="garnish">Garnish:</label>
-            <textarea rows="3" class="form-input" id="garnish" v-model="cocktail.garnish" placeholder="Something to make a cocktail pop..."></textarea>
-            <p class="form-input-hint">This field supports markdown.</p>
-        </div>
-        <div class="form-group">
-            <label class="form-label" for="description">Description:</label>
-            <textarea rows="5" class="form-input" id="description" v-model="cocktail.description" placeholder="Cocktail description or history..."></textarea>
-            <p class="form-input-hint">This field supports markdown.</p>
-        </div>
-        <div class="form-group">
-            <label class="form-label" for="glass">Glass:</label>
-            <select class="form-select" id="glass" v-model="glassId">
-                <option :value="undefined" disabled>Select a glass type...</option>
-                <option v-for="glass in glasses" :value="glass.id">{{ glass.name }}</option>
-            </select>
-            <p class="form-input-hint">
-                <RouterLink :to="{name: 'settings.glasses'}" target="_blank">Edit glasses</RouterLink>
-            </p>
-        </div>
-        <div class="form-group">
-            <label class="form-label" for="glass">Method:</label>
-            <select class="form-select" id="glass" v-model="methodId">
-                <option :value="undefined" disabled>Select a method...</option>
-                <option v-for="method in methods" :value="method.id">{{ method.name }}</option>
-            </select>
-        </div>
-        <div class="form-group">
-            <label class="form-label" for="source">Source:</label>
-            <input class="form-input" type="text" id="source" v-model="cocktail.source" placeholder="Book or URL...">
-        </div>
-        <div class="form-group">
-            <label class="form-label" for="tags">Tags:</label>
-            <input class="form-input" type="text" id="tags" v-model="cocktailTags" placeholder="Tags to help you find the cocktail...">
-            <p class="form-input-hint">Separate multiple tags with a comma (",").</p>
-        </div>
+        <h2 class="page-subtitle">Images</h2>
         <ImageUpload ref="imagesUpload" :value="cocktail.images" />
         <h2 class="page-subtitle">Ingredients</h2>
         <ul class="cocktail-form__ingredients" style="margin-bottom: 20px;">
-            <li v-for="ing in cocktail.ingredients" :data-id="ing.ingredient_id">
+            <li class="block-container" v-for="ing in cocktail.ingredients" :data-id="ing.ingredient_id">
                 <div class="drag-handle"></div>
                 <div class="cocktail-form__ingredients__content">
                     <div class="form-group">
@@ -221,7 +224,7 @@ export default {
 
         this.sortable = Sortable.create(document.querySelector('.cocktail-form__ingredients'), {
             handle: '.drag-handle',
-            ghostClass: 'cocktail-form__ingredients__placeholder',
+            ghostClass: 'block-container--placeholder',
             animation: 150
         });
     },
@@ -359,15 +362,12 @@ export default {
     margin: 0;
     padding: 0;
     display: grid;
-    row-gap: 5px;
+    row-gap: 1rem;
 }
 
 .cocktail-form__ingredients li {
     display: flex;
-    background: rgba(255, 255, 255, .5);
-    padding: 10px;
-    border-bottom: 2px solid var(--clr-red-300);
-    border-radius: 5px;
+    padding: 0.5rem;
 }
 
 .cocktail-form__ingredients li.cocktail-form__ingredients__placeholder {
@@ -400,13 +400,5 @@ export default {
     row-gap: 10px;
     width: 100%;
     margin-left: 0.5rem;
-}
-
-.drag-handle {
-    width: 20px;
-    height: 100%;
-    background-image: radial-gradient(circle at 1px 1px, var(--clr-gray-300) 1px, transparent 0);
-    background-size: 4px 4px;
-    cursor: move;
 }
 </style>
