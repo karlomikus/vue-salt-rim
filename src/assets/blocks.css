@@ -1,0 +1,19 @@
+.block-container {
+    background: rgba(255, 255, 255, .7);
+    border-bottom: 2px solid var(--clr-red-200);
+    border-radius: 5px;
+    transition: border-color ease-in-out 150ms;
+}
+
+.block-container.block-container--placeholder {
+    background: #d9e3f6;
+    border-color: #a7badd;
+}
+
+.block-container.block-container--padded {
+    padding: 2rem;
+}
+
+.block-container.block-container--hover:hover {
+    border-color: var(--clr-red-500);
+}

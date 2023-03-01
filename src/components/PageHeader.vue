@@ -13,7 +13,7 @@
 .site-page-header {
     display: flex;
     flex-wrap: wrap;
-    border-bottom: 3px solid var(--clr-red-300);
+    border-bottom: 3px solid var(--clr-red-200);
     padding-bottom: 20px;
     margin-bottom: 20px;
     align-items: center;

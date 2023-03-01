@@ -1,9 +1,7 @@
 <template>
     <form @submit.prevent="submit">
         <OverlayLoader v-if="isLoading" />
-        <PageHeader>
-            Cocktail information
-        </PageHeader>
+        <h3 class="form-section-title">Recipe information</h3>
         <div class="block-container block-container--padded">
             <div class="form-group">
                 <label class="form-label form-label--required" for="name">Name:</label>
@@ -19,6 +17,42 @@
                 <textarea rows="3" class="form-input" id="garnish" v-model="cocktail.garnish" placeholder="Something to make a cocktail pop..."></textarea>
                 <p class="form-input-hint">This field supports markdown.</p>
             </div>
+        </div>
+        <h3 class="form-section-title">Media</h3>
+        <ImageUpload ref="imagesUpload" :value="cocktail.images" />
+        <h3 class="form-section-title">Ingredients</h3>
+        <ul class="cocktail-form__ingredients" style="margin-bottom: 20px;">
+            <li class="block-container" v-for="ing in cocktail.ingredients" :data-id="ing.ingredient_id">
+                <div class="drag-handle"></div>
+                <div class="cocktail-form__ingredients__content">
+                    <div class="form-group">
+                        <label class="form-label">Ingredient:</label>
+                        <p>{{ ing.name }} <small v-show="ing.optional">({{ ing.optional ? 'Optional' : '' }})</small></p>
+                        <p class="substitutes" v-if="ing.substitutes && ing.substitutes.length > 0">
+                            <template v-for="sub in ing.substitutes">
+                                or {{ sub.name }} 
+                            </template>
+                        </p>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Amount:</label>
+                        <p>{{ ing.amount }} {{ ing.units }}</p>
+                    </div>
+                    <div class="cocktail-form__ingredients__actions">
+                        <a href="#" @click.prevent="editIngredient(ing)">
+                            Edit
+                        </a>
+                        &middot;
+                        <a href="#" @click.prevent="removeIngredient(ing)">
+                            Remove
+                        </a>
+                    </div>
+                </div>
+            </li>
+        </ul>
+        <button class="button button--outline" type="button" @click="addIngredient">Add ingredient</button>
+        <h3 class="form-section-title">Additional information</h3>
+        <div class="block-container block-container--padded">
             <div class="form-group">
                 <label class="form-label" for="description">Description:</label>
                 <textarea rows="5" class="form-input" id="description" v-model="cocktail.description" placeholder="Cocktail description or history..."></textarea>
@@ -51,39 +85,6 @@
                 <p class="form-input-hint">Separate multiple tags with a comma (",").</p>
             </div>
         </div>
-        <h2 class="page-subtitle">Images</h2>
-        <ImageUpload ref="imagesUpload" :value="cocktail.images" />
-        <h2 class="page-subtitle">Ingredients</h2>
-        <ul class="cocktail-form__ingredients" style="margin-bottom: 20px;">
-            <li class="block-container" v-for="ing in cocktail.ingredients" :data-id="ing.ingredient_id">
-                <div class="drag-handle"></div>
-                <div class="cocktail-form__ingredients__content">
-                    <div class="form-group">
-                        <label class="form-label">Ingredient:</label>
-                        <p>{{ ing.name }} <small v-show="ing.optional">({{ ing.optional ? 'Optional' : '' }})</small></p>
-                        <p class="substitutes" v-if="ing.substitutes && ing.substitutes.length > 0">
-                            <template v-for="sub in ing.substitutes">
-                                or {{ sub.name }} 
-                            </template>
-                        </p>
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">Amount:</label>
-                        <p>{{ ing.amount }} {{ ing.units }}</p>
-                    </div>
-                    <div class="cocktail-form__ingredients__actions">
-                        <a href="#" @click.prevent="editIngredient(ing)">
-                            Edit
-                        </a>
-                        &middot;
-                        <a href="#" @click.prevent="removeIngredient(ing)">
-                            Remove
-                        </a>
-                    </div>
-                </div>
-            </li>
-        </ul>
-        <button class="button button--outline" type="button" @click="addIngredient">Add ingredient</button>
         <div class="form-actions">
             <RouterLink class="button button--outline" :to="{ name: 'cocktails.show', params: { id: cocktailId } }" v-if="cocktailId">Cancel</RouterLink>
             <RouterLink class="button button--outline" :to="{ name: 'cocktails' }" v-else>Cancel</RouterLink>
@@ -367,7 +368,7 @@ export default {
 
 .cocktail-form__ingredients li {
     display: flex;
-    padding: 0.5rem;
+    padding: 1rem;
 }
 
 .cocktail-form__ingredients li.cocktail-form__ingredients__placeholder {

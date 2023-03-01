@@ -1,10 +1,16 @@
 <template>
     <div class="image-upload">
+        <OverlayLoader v-if="isLoading" />
         <div class="form-group">
             <label class="image-upload__select" for="images">
-                Click here to browse for images. Max file size is 100mb.<br>
-                PNG, JPG, WEBP or GIF, rec. 1000x1000px<br>
-                Added {{ images.length }}/{{ maxImages }} images.
+                <div class="image-upload__select__icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path fill="none" d="M0 0h24v24H0z"/><path d="M4 19h16v-7h2v8a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1v-8h2v7zm9-10v7h-2V9H6l6-6 6 6h-5z"/></svg>
+                </div>
+                <p>
+                    Click here to browse for images.<br>
+                    PNG, JPG, WEBP or GIF &middot; Max 100MB<br>
+                    Added <strong>{{ images.length }}/{{ maxImages }}</strong> images.
+                </p>
             </label>
             <input class="form-input" type="file" id="images" accept="image/*" :multiple="multiple" @change="fileInputChanged" :disabled="hasMaxImages">
         </div>
@@ -27,6 +33,7 @@
 <script>
 import ApiRequests from "@/ApiRequests";
 import Sortable from 'sortablejs';
+import OverlayLoader from '@/components/OverlayLoader.vue'
 
 export default {
     props: {
@@ -39,6 +46,9 @@ export default {
             default: 10
         }
     },
+    components: {
+        OverlayLoader
+    },
     watch: {
         value(newVal) {
             this.images = newVal
@@ -46,6 +56,7 @@ export default {
     },
     data() {
         return {
+            isLoading: false,
             images: this.value,
             sortable: null
         }
@@ -133,13 +144,17 @@ export default {
                 return;
             }
 
+            this.isLoading = true;
+
             ApiRequests.deleteImage(img.id).then(() => {
+                this.isLoading = false;
                 this.$toast.default(`Image removed successfully.`);
                 this.images.splice(
                     this.images.findIndex(i => i == img),
                     1
                 );
             }).catch(() => {
+                this.isLoading = false;
                 this.$toast.default(`Unable to remove the image.`);
             })
         }
@@ -155,8 +170,7 @@ export default {
 .image-upload__select {
     border: 2px dashed var(--clr-red-300);
     border-radius: 4px;
-    display: block;
-    text-align: center;
+    display: flex;
     background-color: rgba(255, 255, 255, .5);
     padding: 2rem;
     cursor: pointer;
@@ -164,6 +178,19 @@ export default {
 
 .image-upload__select:is(:hover, :active, :focus) {
     border-color: var(--clr-red-500);
+    background-color: #fff;
+}
+
+.image-upload__select__icon {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    margin-right: 1rem;
+    flex-shrink: 0;
+    background: var(--clr-red-100);
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .image-upload__list {
@@ -173,8 +200,7 @@ export default {
 
 .image-upload__list__item {
     display: flex;
-    align-items: center;
-    padding: 0.5rem;
+    padding: 1rem;
     gap: 1rem;
 }
 
@@ -192,6 +218,8 @@ export default {
 }
 
 .image-upload__list__item__actions {
-    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
 }
 </style>

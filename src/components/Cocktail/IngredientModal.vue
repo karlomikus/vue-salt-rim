@@ -218,7 +218,7 @@ export default {
     font-weight: normal;
     font-size: 0.8rem;
     display: block;
-    color: #866269;
+    color: var(--clr-gray-600);
 }
 
 .ingredient-modal .substitutes {

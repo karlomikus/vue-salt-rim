@@ -1,5 +1,5 @@
 <template>
-    <div class="ingredient-grid-item" :class="{'ingredient-grid-item--shelf': inShelf}">
+    <div class="block-container block-container--hover ingredient-grid-item" :class="{'ingredient-grid-item--shelf': inShelf}">
         <OverlayLoader v-if="isLoading" />
         <div class="ingredient-grid-item__image" :style="{ 'background-color': setupColor(ingredient.color) }">
             <img :src="image" alt="Main image of the ingredient">
@@ -152,15 +152,8 @@ export default {
 
     display: flex;
     width: 100%;
-    background-color: #fff;
     padding: 1rem;
-    box-shadow: 0 3px 0 var(--clr-red-300);
-    border-radius: 0.815rem;
-    transition: box-shadow ease-in-out 150ms;
-}
-
-.ingredient-grid-item:hover {
-    box-shadow: 0 3px 0 var(--clr-red-800);
+    transition: border-color ease-in-out 150ms;
 }
 
 .ingredient-grid-item__image {

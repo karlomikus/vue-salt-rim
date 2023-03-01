@@ -1,5 +1,5 @@
 <template>
-    <div class="ingredient-list-item">
+    <div class="block-container block-container--hover ingredient-list-item">
         <OverlayLoader v-if="isLoading" />
         <div class="ingredient-list-item__image" :style="{ 'background-color': setupColor(ingredient.color) }">
             <img :src="mainIngredientImageUrl" :alt="ingredient.name">
@@ -73,17 +73,9 @@ export default {
 
     display: flex;
     align-items: center;
-    background-color: #fff;
     padding: 0.825rem;
-    border-radius: 0.5rem;
-    box-shadow: 0 3px 0 var(--clr-red-300);
-    transition: box-shadow ease-in-out 150ms;
     text-decoration: none;
     gap: 10px;
-}
-
-.ingredient-list-item:hover {
-    box-shadow: 0 3px 0 var(--clr-red-800);
 }
 
 .ingredient-list-item__image {

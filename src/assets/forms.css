@@ -1,16 +1,20 @@
 .form-group {
-    margin-bottom: 20px;
+    margin-bottom: 2rem;
     display: flex;
     flex-direction: column;
     flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.form-group:last-child {
+    margin-bottom: 0;
 }
 
 .form-label {
-    display: block;
-    font-size: 0.9rem;
+    font-size: 1rem;
     font-weight: var(--fw-bold);
-    margin-bottom: 2px;
     color: var(--clr-gray-800);
+    line-height: 1;
 }
 
 .form-label--required::after {
@@ -72,7 +76,7 @@ textarea.form-input,
 
 .form-actions {
     text-align: right;
-    border-top: 2px solid var(--clr-red-300);
+    border-top: 2px solid var(--clr-red-100);
     margin: 20px 0;
     padding: 20px 0;
 }
@@ -82,8 +86,7 @@ textarea.form-input,
 }
 
 .form-input-hint {
-    font-size: .7rem;
-    margin-top: .2rem;
+    font-size: .75rem;
     color: var(--clr-gray-700);
 }
 

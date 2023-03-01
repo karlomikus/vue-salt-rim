@@ -23,12 +23,12 @@
 }
 
 .button.button--dark {
-    background-color: var(--clr-gray-800);
+    background-color: var(--clr-gray-700);
     color: #fff;
 }
 
 .button.button--dark:hover {
-    background-color: var(--color-btn-default-hover);
+    background-color: var(--clr-gray-900);
     color: #fff;
 }
 
@@ -127,7 +127,7 @@
 }
 
 .button-circle:active {
-    transform: scale(0.9, 0.9);
+    transform: scale(0.95, 0.95);
 }
 
 .button--input {
