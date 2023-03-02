@@ -2,56 +2,60 @@
     <form @submit.prevent="submit">
         <OverlayLoader v-if="isLoading" />
         <PageHeader>
-            Ingredient information
+            Ingredient
         </PageHeader>
-        <div class="form-group">
-            <label class="form-label form-label--required" for="name">Name:</label>
-            <input class="form-input" type="text" id="name" v-model="ingredient.name" required>
-        </div>
-        <div class="form-group">
-            <label class="form-label form-label--required" for="category">Category:</label>
-            <select class="form-select" id="category" v-model="ingredient.ingredient_category_id" required>
-                <option :value="undefined" disabled>Select a category...</option>
-                <option v-for="cat in categories" :value="cat.id">{{ cat.name }}</option>
-            </select>
-            <p class="form-input-hint">
-                <RouterLink :to="{name: 'settings.categories'}" target="_blank">Edit categories</RouterLink>
-            </p>
-        </div>
-        <div class="form-group">
-            <label class="form-label" for="is-variety">
-                <input type="checkbox" id="is-variety" v-model="isParent"> Ingredient is variety of another ingredient
-            </label>
-        </div>
-        <div class="form-group">
-            <div v-show="isParent">
-                <label class="form-label" for="parent-ingredient">Parent ingredient:</label>
-                <TomSelect id="parent-ingredient" v-model="ingredient.parent_ingredient_id">
-                    <option v-for="ingredient in parentIngredientsList" :value="ingredient.id">{{ ingredient.name }}</option>
-                </TomSelect>
+        <h3 class="form-section-title">Ingredient information</h3>
+        <div class="block-container block-container--padded">
+            <div class="form-group">
+                <label class="form-label form-label--required" for="name">Name:</label>
+                <input class="form-input" type="text" id="name" v-model="ingredient.name" required>
+            </div>
+            <div class="form-group">
+                <label class="form-label form-label--required" for="category">Category:</label>
+                <select class="form-select" id="category" v-model="ingredient.ingredient_category_id" required>
+                    <option :value="undefined" disabled>Select a category...</option>
+                    <option v-for="cat in categories" :value="cat.id">{{ cat.name }}</option>
+                </select>
+                <p class="form-input-hint">
+                    <RouterLink :to="{name: 'settings.categories'}" target="_blank">Edit categories</RouterLink>
+                </p>
+            </div>
+            <div class="form-group">
+                <label class="form-label" for="is-variety">
+                    <input type="checkbox" id="is-variety" v-model="isParent"> Ingredient is variety of another ingredient
+                </label>
+            </div>
+            <div class="form-group">
+                <div v-show="isParent">
+                    <label class="form-label" for="parent-ingredient">Parent ingredient:</label>
+                    <TomSelect id="parent-ingredient" v-model="ingredient.parent_ingredient_id">
+                        <option v-for="ingredient in parentIngredientsList" :value="ingredient.id">{{ ingredient.name }}</option>
+                    </TomSelect>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="form-label form-label--required" for="strength">Strength (ABV %):</label>
+                <input class="form-input" type="text" id="strength" v-model="ingredient.strength" required>
+            </div>
+            <div class="form-group">
+                <label class="form-label" for="description">Description:</label>
+                <textarea rows="4" class="form-input" id="description" v-model="ingredient.description"></textarea>
+                <p class="form-input-hint">This field supports markdown.</p>
+            </div>
+            <div class="form-group">
+                <label class="form-label" for="origin">Origin:</label>
+                <input class="form-input" type="text" id="origin" v-model="ingredient.origin">
+            </div>
+            <div class="form-group">
+                <label class="form-label" for="color">Color:</label>
+                <button type="button" class="colorpicker-button" @click="showColorPicker = !showColorPicker">
+                    <span :style="{'background-color': ingredient.color}"></span>
+                </button>
+                <ColorPicker v-if="showColorPicker" alpha-channel="hide" :visible-formats="['hex']" :color="ingredient.color ?? {}" @color-change="updateColor" />
             </div>
         </div>
-        <div class="form-group">
-            <label class="form-label form-label--required" for="strength">Strength (ABV %):</label>
-            <input class="form-input" type="text" id="strength" v-model="ingredient.strength" required>
-        </div>
-        <div class="form-group">
-            <label class="form-label" for="description">Description:</label>
-            <textarea rows="4" class="form-input" id="description" v-model="ingredient.description"></textarea>
-            <p class="form-input-hint">This field supports markdown.</p>
-        </div>
-        <div class="form-group">
-            <label class="form-label" for="origin">Origin:</label>
-            <input class="form-input" type="text" id="origin" v-model="ingredient.origin">
-        </div>
-        <div class="form-group">
-            <label class="form-label" for="color">Color:</label>
-            <button type="button" class="colorpicker-button" @click="showColorPicker = !showColorPicker">
-                <span :style="{'background-color': ingredient.color}"></span>
-            </button>
-            <ColorPicker v-if="showColorPicker" alpha-channel="hide" :visible-formats="['hex']" :color="ingredient.color ?? {}" @color-change="updateColor" />
-        </div>
-        <ImageUpload ref="imagesUpload" :value="ingredient.images" />
+        <h3 class="form-section-title">Media</h3>
+        <ImageUpload ref="imagesUpload" :value="ingredient.images" :max-images="1" />
         <div class="form-actions">
             <RouterLink v-if="ingredientId" class="button button--outline" :to="{name: 'ingredients.show', params: { id: ingredientId }}">Cancel</RouterLink>
             <RouterLink v-else class="button button--outline" :to="{name: 'ingredients'}">Cancel</RouterLink>
