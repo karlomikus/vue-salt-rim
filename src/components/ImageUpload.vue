@@ -167,6 +167,16 @@ export default {
     display: none;
 }
 
+.image-upload {
+    --image-upload-img-size: 80px;
+}
+
+@media (max-width: 450px) {
+    .image-upload {
+        --image-upload-img-size: 60px;
+    }
+}
+
 .image-upload__select {
     border: 2px dashed var(--clr-red-300);
     border-radius: 4px;
@@ -174,6 +184,13 @@ export default {
     background-color: rgba(255, 255, 255, .5);
     padding: 2rem;
     cursor: pointer;
+}
+
+@media (max-width: 450px) {
+    .image-upload__select {
+        flex-direction: column;
+        text-align: center;
+    }
 }
 
 .image-upload__select:is(:hover, :active, :focus) {
@@ -193,6 +210,12 @@ export default {
     justify-content: center;
 }
 
+@media (max-width: 450px) {
+    .image-upload__select__icon {
+        margin: 0 auto 1rem auto;
+    }
+}
+
 .image-upload__list {
     display: grid;
     row-gap: 1rem;
@@ -205,7 +228,7 @@ export default {
 }
 
 .image-upload__list__item__image {
-    width: 80px;
+    width: var(--image-upload-img-size);
     flex-shrink: 0;
     text-align: center;
     font-size: 0.85rem;
@@ -221,5 +244,9 @@ export default {
     display: flex;
     flex-direction: column;
     gap: 0.25rem;
+}
+
+.image-upload__list__item__actions .form-input {
+    width: 100%;
 }
 </style>

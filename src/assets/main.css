@@ -12,8 +12,11 @@
 @import "./blocks.css";
 
 @import "vue-toast-notification/dist/theme-default.css";
-/* @import "tom-select/dist/css/tom-select.css"; */
 @import "./tom-select.css";
+
+@import "swiper/css";
+@import "swiper/css/navigation";
+@import "swiper/css/pagination";
 
 #app {
     font-weight: normal;

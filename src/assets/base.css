@@ -24,6 +24,8 @@
     --clr-gray-800: #2D303E;
     --clr-gray-900: #181921;
 
+    --clr-light-bg-base: rgba(255, 255, 255, .7);
+
     --color-tag: #DFE7FD;
     --color-tag-hover: #faeaab;
     --color-site-header: #737db7;
@@ -34,6 +36,8 @@
     --font-primary: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
     --font-accent: 'Bitter', serif;
     --font-heading: 'Alice', serif;
+    --body-ff-color: var(--clr-gray-800);
+    --body-bg-color: var(--clr-red-50);
 
     --fw-bold: 700;
 
@@ -48,6 +52,14 @@
     --clr-accent-purple: #dfd7e3;
     --clr-accent-orange: #f1dcca;
 }
+
+/* @media (prefers-color-scheme: dark) {
+    :root {
+        --body-ff-color: #fff;
+        --body-bg-color: var(--clr-gray-800);
+        --color-site-header: #131627;
+    }
+} */
 
 *,
 *::before,
@@ -72,8 +84,8 @@ strong {
 }
 
 body {
-    color: var(--clr-gray-800);
-    background-color: var(--clr-red-50);
+    color: var(--body-ff-color);
+    background-color: var(--body-bg-color);
     line-height: 1.6;
     font-family: var(--font-primary);
     font-size: 16px;

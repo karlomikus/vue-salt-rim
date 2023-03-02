@@ -1,6 +1,9 @@
 <template>
     <form @submit.prevent="submit">
         <OverlayLoader v-if="isLoading" />
+        <PageHeader>
+            Cocktail
+        </PageHeader>
         <h3 class="form-section-title">Recipe information</h3>
         <div class="block-container block-container--padded">
             <div class="form-group">
@@ -68,12 +71,16 @@
                     <RouterLink :to="{name: 'settings.glasses'}" target="_blank">Edit glasses</RouterLink>
                 </p>
             </div>
-            <div class="form-group">
-                <label class="form-label" for="glass">Method:</label>
-                <select class="form-select" id="glass" v-model="methodId">
-                    <option :value="undefined" disabled>Select a method...</option>
-                    <option v-for="method in methods" :value="method.id">{{ method.name }}</option>
-                </select>
+            <div style="margin-bottom: 2rem;">
+                <label class="form-label">Method:</label>
+                <div class="cocktail-methods">
+                    <label class="cocktail-method" v-for="method in methods" :for="'method_' + method.id" :class="{'cocktail-method--selected': method.id == methodId}">
+                        <!-- <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path fill="none" d="M0 0h24v24H0z"/><path d="M5 16v6H3V3h9.382a1 1 0 0 1 .894.553L14 5h6a1 1 0 0 1 1 1v11a1 1 0 0 1-1 1h-6.382a1 1 0 0 1-.894-.553L12 16H5zM5 5v9h8.236l1 2H19V7h-6.236l-1-2H5z"/></svg> -->
+                        <div class="cocktail-method__title">{{ method.name }}</div>
+                        <small>{{ method.dilution_percentage }}%</small>
+                        <input type="radio" :id="'method_' + method.id" :value="method.id" v-model="methodId">
+                    </label>
+                </div>
             </div>
             <div class="form-group">
                 <label class="form-label" for="source">Source:</label>
@@ -401,5 +408,39 @@ export default {
     row-gap: 10px;
     width: 100%;
     margin-left: 0.5rem;
+}
+
+.cocktail-methods {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.cocktail-method {
+    background: #fff;
+    flex-basis: 100px;
+    flex-grow: 1;
+    border: 2px solid var(--clr-gray-200);
+    padding: 0.5rem;
+    border-radius: 0.25rem;
+    text-align: center;
+    cursor: pointer;
+}
+
+.cocktail-method.cocktail-method--selected {
+    box-shadow: 0 0 0 3px var(--clr-gray-200);
+    border-color: var(--clr-gray-500);
+}
+
+.cocktail-method input {
+    display: none;
+}
+
+.cocktail-method small {
+    color: var(--clr-gray-400);
+}
+
+.cocktail-method:hover {
+    border-color: var(--clr-gray-500);
 }
 </style>

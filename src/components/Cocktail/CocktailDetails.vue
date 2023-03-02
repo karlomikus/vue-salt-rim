@@ -10,8 +10,8 @@
             </swiper>
             <img v-else src="/no-cocktail.jpg" alt="This cocktail does not have an image." />
         </div>
-        <div class="cocktail-details-box cocktail-details-box--blue">
-            <h3 class="cocktail-details-box__title">{{ cocktail.name }}</h3>
+        <div class="details-block-container details-block-container--blue cocktail-details-box">
+            <h3 class="cocktail-title">{{ cocktail.name }}</h3>
             <div class="cocktail-details__chips">
                 <div class="cocktail-details__chips__group" v-if="cocktail.tags.length > 0">
                     <div class="cocktail-details__chips__group__title">Tags:</div>
@@ -141,8 +141,8 @@
                 </Dropdown>
             </div>
         </div>
-        <div class="cocktail-details-box cocktail-details-box--green" v-if="cocktail.ingredients.length > 0">
-            <h3 class="cocktail-details-box__title">Ingredients:</h3>
+        <div class="details-block-container details-block-container--green" v-if="cocktail.ingredients.length > 0">
+            <h3 class="details-block-container__title">Ingredients</h3>
             <div style="display: grid; grid-template-columns: 1fr 1fr;">
                 <div class="cocktail-button-group">
                     <h4>Servings:</h4>
@@ -175,12 +175,12 @@
             </ul>
             <a v-show="missingIngredientIds.length > 0" href="#" @click.prevent="addMissingIngredients">Add missing ingredients to my shopping list</a>
         </div>
-        <div class="cocktail-details-box cocktail-details-box--yellow">
-            <h3 class="cocktail-details-box__title">Instructions:</h3>
+        <div class="details-block-container details-block-container--yellow">
+            <h3 class="details-block-container__title">Instructions</h3>
             <div v-html="parsedInstructions"></div>
         </div>
-        <div class="cocktail-details-box cocktail-details-box--red" v-if="cocktail.garnish">
-            <h3 class="cocktail-details-box__title">Garnish:</h3>
+        <div class="details-block-container details-block-container--red" v-if="cocktail.garnish">
+            <h3 class="details-block-container__title">Garnish</h3>
             <div v-html="parsedGarnish"></div>
         </div>
     </div>
@@ -196,10 +196,6 @@ import Dropdown from '@/components/Dropdown.vue';
 import Rating from '@/components/Rating.vue';
 import { Swiper, SwiperSlide } from 'swiper/vue';
 import { Navigation, Pagination } from 'swiper';
-
-import 'swiper/css';
-import 'swiper/css/navigation';
-import 'swiper/css/pagination';
 
 export default {
     data: () => ({
@@ -343,7 +339,7 @@ export default {
     max-width: 1200px;
     margin: 0 auto;
     isolation: isolate;
-    --cocktail-graphic-height: 900px;
+    --cocktail-graphic-height: 1000px;
     --swiper-theme-color: #fff;
     --swiper-pagination-bottom: 3rem;
     --swiper-pagination-bullet-size: 0.65rem;
@@ -384,41 +380,15 @@ export default {
     font-size: 0.7rem;
 }
 
-.cocktail-details-box {
-    background-color: #fff;
-    border-radius: 20px;
-    border-bottom-left-radius: 0;
-    border-bottom-right-radius: 0;
-    padding: 20px 20px 40px 20px;
-    margin-top: -20px;
-    z-index: 5;
+.details-block-container {
+    z-index: 2;
 }
 
-.cocktail-details-box.cocktail-details-box--blue {
-    background-color: var(--clr-accent-blue);
-}
-
-.cocktail-details-box.cocktail-details-box--yellow {
-    background-color: var(--clr-accent-yellow);
-}
-
-.cocktail-details-box.cocktail-details-box--red {
-    background-color: var(--clr-accent-red);
-}
-
-.cocktail-details-box.cocktail-details-box--green {
-    background-color: var(--clr-accent-green);
-}
-
-.cocktail-details-box__title {
+.cocktail-title {
     font-family: var(--font-heading);
-    font-size: 1.3rem;
-    font-weight: 700;
-    margin: 0 0 20px 0;
-}
-
-.cocktail-details-box--blue .cocktail-details-box__title {
     font-size: 2rem;
+    font-weight: 700;
+    margin: 0 0 1.5rem 0;
 }
 
 .cocktail-ingredients {
