@@ -67,18 +67,21 @@ export default {
             })
         },
         deleteTag(id) {
-            if (confirm('Are you sure you want to delete this tag?')) {
-                this.isLoading = true
-                ApiRequests.deleteTag(id).then(() => {
-                    this.isLoading = false;
-                    this.$toast.default(`Tag deleted successfully.`);
-                    this.$router.push({ name: 'settings.tags' })
-                    this.refreshTags()
-                }).catch(e => {
-                    this.$toast.error(e.message);
-                    this.isLoading = false;
-                })
-            }
+            this.$dialog('This will permanently delete this tag.', {
+                onConfirmed: (dialog) => {
+                    this.isLoading = true
+                    dialog.close()
+                    ApiRequests.deleteTag(id).then(() => {
+                        this.isLoading = false;
+                        this.$toast.default(`Tag deleted successfully.`);
+                        this.$router.push({ name: 'settings.tags' })
+                        this.refreshTags()
+                    }).catch(e => {
+                        this.$toast.error(e.message);
+                        this.isLoading = false;
+                    })
+                }
+            });
         }
     }
 }

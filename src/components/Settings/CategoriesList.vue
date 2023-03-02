@@ -69,18 +69,21 @@ export default {
             })
         },
         deleteCategory(id) {
-            if (confirm('Are you sure you want to delete this category?')) {
-                this.isLoading = true
-                ApiRequests.deleteIngredientCategory(id).then(() => {
-                    this.isLoading = false;
-                    this.$toast.default(`Ingredient category deleted successfully.`);
-                    this.$router.push({ name: 'settings.categories' })
-                    this.refreshCategories()
-                }).catch(e => {
-                    this.$toast.error(e.message);
-                    this.isLoading = false;
-                })
-            }
+            this.$dialog('This will permanently delete this category.', {
+                onConfirmed: (dialog) => {
+                    this.isLoading = true
+                    dialog.close();
+                    ApiRequests.deleteIngredientCategory(id).then(() => {
+                        this.isLoading = false;
+                        this.$toast.default(`Ingredient category deleted successfully.`);
+                        this.$router.push({ name: 'settings.categories' })
+                        this.refreshCategories()
+                    }).catch(e => {
+                        this.$toast.error(e.message);
+                        this.isLoading = false;
+                    })
+                }
+            });
         }
     }
 }

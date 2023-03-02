@@ -69,18 +69,21 @@ export default {
             })
         },
         deleteGlass(id) {
-            if (confirm('Are you sure you want to delete this glass?')) {
-                this.isLoading = true
-                ApiRequests.deleteGlass(id).then(() => {
-                    this.isLoading = false;
-                    this.$toast.default(`Glass deleted successfully.`);
-                    this.$router.push({ name: 'settings.glasses' })
-                    this.refreshGlasses()
-                }).catch(e => {
-                    this.$toast.error(e.message);
-                    this.isLoading = false;
-                })
-            }
+            this.$dialog('This will permanently delete this glass type.', {
+                onConfirmed: (dialog) => {
+                    this.isLoading = true
+                    dialog.close()
+                    ApiRequests.deleteGlass(id).then(() => {
+                        this.isLoading = false;
+                        this.$toast.default(`Glass deleted successfully.`);
+                        this.$router.push({ name: 'settings.glasses' })
+                        this.refreshGlasses()
+                    }).catch(e => {
+                        this.$toast.error(e.message);
+                        this.isLoading = false;
+                    })
+                }
+            });
         }
     }
 }

@@ -78,18 +78,21 @@ export default {
             })
         },
         deleteUser(id) {
-            if (confirm('Are you sure you want to delete this user?')) {
-                this.isLoading = true
-                ApiRequests.deleteUser(id).then(() => {
-                    this.isLoading = false;
-                    this.$toast.default(`User deleted successfully.`);
-                    this.$router.push({ name: 'settings.users' })
-                    this.refreshUsers()
-                }).catch(e => {
-                    this.$toast.error(e.message);
-                    this.isLoading = false;
-                })
-            }
+            this.$dialog('This will permanently delete this user.', {
+                onConfirmed: (dialog) => {
+                    this.isLoading = true
+                    dialog.close()
+                    ApiRequests.deleteUser(id).then(() => {
+                        this.isLoading = false;
+                        this.$toast.default(`User deleted successfully.`);
+                        this.$router.push({ name: 'settings.users' })
+                        this.refreshUsers()
+                    }).catch(e => {
+                        this.$toast.error(e.message);
+                        this.isLoading = false;
+                    })
+                }
+            });
         }
     }
 }

@@ -3,6 +3,7 @@ import App from './App.vue'
 import ToastPlugin from 'vue-toast-notification';
 import InstantSearch from 'vue-instantsearch/vue3/es';
 import router from './router'
+import dialog from './components/Dialog/plugin';
 import './assets/main.css'
 
 const app = createApp(App)
@@ -10,6 +11,7 @@ const app = createApp(App)
 app.config.globalProperties.app_version = 'v1.6.0';
 
 app.use(router)
+app.use(dialog)
 app.use(InstantSearch)
 app.use(ToastPlugin, {
     position: 'top',
