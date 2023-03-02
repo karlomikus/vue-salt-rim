@@ -1,5 +1,5 @@
 <template>
-    <RouterLink class="cocktail-grid-item" :to="{ name: 'cocktails.show', params: { id: cocktail.slug } }">
+    <RouterLink class="block-container block-container--hover cocktail-grid-item" :to="{ name: 'cocktails.show', params: { id: cocktail.slug } }">
         <div class="cocktail-grid-item__graphic">
             <img :data-img-src="mainCocktailImageUrl" alt="Main image of the cocktail">
         </div>
@@ -59,13 +59,11 @@ export default {
     flex-direction: column;
     gap: var(--content-spacing);
     text-align: center;
-    background-color: #fff;
     padding: 1.5rem;
     border-radius: 1rem;
-    box-shadow: 0 3px 0 var(--clr-red-300);
+    border-width: 3px;
     margin-top: calc(var(--image-offset) * -1);
     cursor: pointer;
-    transition: box-shadow ease-in-out 150ms;
     text-decoration: none;
 }
 
@@ -75,10 +73,6 @@ export default {
     font-weight: var(--fw-bold);
     line-height: 1.3;
     margin-top: calc(var(--image-offset) + 1rem);
-}
-
-.cocktail-grid-item:hover {
-    box-shadow: 0 3px 0 var(--clr-red-800);
 }
 
 .cocktail-grid-item:hover .cocktail-grid-item__graphic {
