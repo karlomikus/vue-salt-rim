@@ -12,7 +12,6 @@
     position: fixed;
     inset: 0;
     z-index: 1000;
-    transition: opacity 0.3s ease;
 }
 
 .dialog-container {
@@ -22,5 +21,6 @@
     justify-content: center;
     flex-direction: column;
     height: 100%;
+    padding: 1rem;
 }
 </style>
