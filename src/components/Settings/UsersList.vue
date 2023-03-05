@@ -2,7 +2,14 @@
     <PageHeader>
         Users
         <template #actions>
-            <RouterLink class="button button--outline" :to="{name: 'settings.users.form'}">Add user</RouterLink>
+            <Dialog v-model="showDialog">
+                <template #trigger="{ toggleDialog }">
+                    <button type="button" class="button button--outline" @click.prevent="toggleDialog">Add user</button>
+                </template>
+                <template #dialog="{ toggleDialog }">
+                    <UserForm @close="toggleDialog" @user-saved="refreshUsers" />
+                </template>
+            </Dialog>
         </template>
     </PageHeader>
     <div class="settings-page">
@@ -35,7 +42,7 @@
                             </template>
                         </td>
                         <td style="text-align: right;">
-                            <a class="list-group__action" href="#" @click.prevent="deleteUser(user.id)">Delete</a>
+                            <a class="list-group__action" href="#" @click.prevent="deleteUser(user)">Delete</a>
                         </td>
                     </tr>
                 </tbody>
@@ -49,16 +56,21 @@ import ApiRequests from "@/ApiRequests";
 import OverlayLoader from '@/components/OverlayLoader.vue'
 import PageHeader from '@/components/PageHeader.vue'
 import Navigation from '@/components/Settings/Navigation.vue'
+import Dialog from '@/components/Dialog/Dialog.vue'
+import UserForm from '@/components/Settings/UserForm.vue'
 
 export default {
     components: {
         OverlayLoader,
         Navigation,
-        PageHeader
+        PageHeader,
+        Dialog,
+        UserForm
     },
     data() {
         return {
             isLoading: false,
+            showDialog: false,
             users: [],
         }
     },
@@ -77,12 +89,12 @@ export default {
                 this.$toast.error(e.message);
             })
         },
-        deleteUser(id) {
-            this.$dialog('This will permanently delete this user.', {
-                onConfirmed: (dialog) => {
+        deleteUser(user) {
+            this.$confirm(`This will permanently delete user with name "${user.name}".`, {
+                onResolved: (dialog) => {
                     this.isLoading = true
                     dialog.close()
-                    ApiRequests.deleteUser(id).then(() => {
+                    ApiRequests.deleteUser(user.id).then(() => {
                         this.isLoading = false;
                         this.$toast.default(`User deleted successfully.`);
                         this.$router.push({ name: 'settings.users' })

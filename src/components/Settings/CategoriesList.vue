@@ -69,8 +69,8 @@ export default {
             })
         },
         deleteCategory(id) {
-            this.$dialog('This will permanently delete this category.', {
-                onConfirmed: (dialog) => {
+            this.$confirm('This will permanently delete this category.', {
+                onResolved: (dialog) => {
                     this.isLoading = true
                     dialog.close();
                     ApiRequests.deleteIngredientCategory(id).then(() => {

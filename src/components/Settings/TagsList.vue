@@ -67,8 +67,8 @@ export default {
             })
         },
         deleteTag(id) {
-            this.$dialog('This will permanently delete this tag.', {
-                onConfirmed: (dialog) => {
+            this.$confirm('This will permanently delete this tag.', {
+                onResolved: (dialog) => {
                     this.isLoading = true
                     dialog.close()
                     ApiRequests.deleteTag(id).then(() => {

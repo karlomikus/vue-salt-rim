@@ -1,0 +1,69 @@
+.dialog {
+    --shadow-color: 250deg 70% 10%;
+    --shadow-elevation-high:
+        0px 1px 1.1px hsl(var(--shadow-color) / 0.1),
+        -0.2px 5.8px 6.5px -0.4px hsl(var(--shadow-color) / 0.1),
+        -0.3px 10.8px 12.2px -0.7px hsl(var(--shadow-color) / 0.1),
+        -0.5px 17.7px 19.9px -1.1px hsl(var(--shadow-color) / 0.1),
+        -0.8px 28.2px 31.7px -1.4px hsl(var(--shadow-color) / 0.1),
+        -1.3px 44.1px 49.6px -1.8px hsl(var(--shadow-color) / 0.1),
+        -2px 67.1px 75.5px -2.1px hsl(var(--shadow-color) / 0.1),
+        -2.9px 98.8px 111.2px -2.5px hsl(var(--shadow-color) / 0.1);
+
+    display: flex;
+    inset: 0;
+    pointer-events: none;
+    position: fixed;
+    align-items: center;
+    justify-content: center;
+    margin: auto;
+    z-index: 500;
+    transition: opacity 200ms ease, backdrop-filter 200ms ease;
+}
+
+.dialog-animation-enter-from,
+.dialog-animation-leave-to {
+    opacity: 0;
+    backdrop-filter: blur(0)
+}
+
+.dialog__overlay {
+    background-color: rgba(21, 13, 34, 0.6);
+    position: fixed;
+    inset: 0;
+    pointer-events: auto;
+    backdrop-filter: blur(2px);
+}
+
+.dialog__content {
+    outline: none;
+    /* position: absolute; */
+    pointer-events: auto;
+    contain: layout;
+    background-color: var(--clr-gray-50);
+    padding: 2rem;
+    margin: 0.75rem;
+    border-radius: 0.5rem;
+    transition: all 300ms cubic-bezier(0.16, 1, 0.3, 1);
+    max-width: 600px;
+    width: 100%;
+    box-shadow: var(--shadow-elevation-high);
+}
+
+.dialog-animation-enter-from .dialog__content,
+.dialog-animation-leave-to .dialog__content {
+    transform: translate(0, 2rem);
+    opacity: 0;
+}
+
+.dialog-title {
+    font-size: 1.75rem;
+    margin-bottom: 1.5rem;
+    line-height: 1;
+}
+
+.dialog-actions {
+    display: flex;
+    justify-content: end;
+    gap: 0.5rem;
+}

@@ -10,6 +10,7 @@
 @import "./search.css";
 @import "./alerts.css";
 @import "./blocks.css";
+@import "./dialog.css";
 
 @import "vue-toast-notification/dist/theme-default.css";
 @import "./tom-select.css";

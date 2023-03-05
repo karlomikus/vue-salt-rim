@@ -1,51 +1,54 @@
 <template>
-    <DialogOverlay>
-        <div class="dialog-confirm">
-            <h6 class="dialog-confirm__title">Are you sure?</h6>
-            <p class="dialog-confirm__message">{{ body }}</p>
-            <div class="dialog-confirm__actions">
-                <button class="button button--small button--outline" @click.prevent="cancel">Cancel</button>
-                <button class="button button--small button--dark" @click.prevent="confirm">Confirm</button>
+    <Teleport to="body">
+        <Transition name="dialog-animation">
+            <div class="dialog" v-if="shown">
+                <div class="dialog__overlay"></div>
+                <div class="dialog__content">
+                    <div class="dialog-confirm">
+                        <h6 class="dialog-confirm__title">Are you sure?</h6>
+                        <p class="dialog-confirm__message">{{ body }}</p>
+                        <div class="dialog-confirm__actions">
+                            <button class="button button--small button--outline" @click.prevent="cancel">Cancel</button>
+                            <button class="button button--small button--dark" @click.prevent="confirm">Confirm</button>
+                        </div>
+                    </div>
+                </div>
             </div>
-        </div>
-    </DialogOverlay>
+        </Transition>
+    </Teleport>
 </template>
 
 <script>
-import DialogOverlay from "./DialogOverlay.vue";
-
 export default {
-    props: {
-        body: {
-            type: String,
-            default: 'This will permanently delete this resource.'
+    data() {
+        return {
+            shown: false,
+            resolve: null
         }
     },
-    components: {
-        DialogOverlay
+    mounted() {
+        this.$eventBus.on('requestConfirm', (payload) => this.show(payload))
     },
     methods: {
+        show(payload) {
+            this.body = payload.body
+            this.resolve = payload.onResolved
+            this.shown = true;
+        },
         confirm() {
-            this.$emit('confirmed', { close: this.close })
+            this.resolve(this)
         },
         cancel() {
             this.close()
         },
         close() {
-            this.$root.$el.remove(this.$root.$el);
+            this.shown = false;
         }
     }
 }
 </script>
 
 <style scoped>
-.dialog-confirm {
-    background-color: #fff;
-    border-radius: 0.25rem;
-    padding: 1.5rem;
-    max-width: 500px;
-}
-
 .dialog-confirm__title {
     font-size: 1.15rem;
     margin-bottom: 0.25rem;

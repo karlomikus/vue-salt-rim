@@ -69,8 +69,8 @@ export default {
             })
         },
         deleteGlass(id) {
-            this.$dialog('This will permanently delete this glass type.', {
-                onConfirmed: (dialog) => {
+            this.$confirm('This will permanently delete this glass type.', {
+                onResolved: (dialog) => {
                     this.isLoading = true
                     dialog.close()
                     ApiRequests.deleteGlass(id).then(() => {

@@ -1,9 +1,7 @@
 <template>
-    <PageHeader>
-        User information
-    </PageHeader>
     <form @submit.prevent="submit">
         <OverlayLoader v-if="isLoading" />
+        <div class="dialog-title">User data</div>
         <div class="form-group">
             <label class="form-label form-label--required" for="name">Name:</label>
             <input class="form-input" type="text" id="name" v-model="user.name" required placeholder="User name...">
@@ -28,8 +26,8 @@
                 <input type="checkbox" id="admin" v-model="user.is_admin" :value="true"> Is administrator
             </label>
         </div>
-        <div class="form-actions">
-            <RouterLink class="button button--outline" :to="{ name: 'settings.users' }">Cancel</RouterLink>
+        <div class="dialog-actions">
+            <button class="button button--outline" @click.prevent="$emit('close')">Cancel</button>
             <button class="button button--dark" type="submit">Save</button>
         </div>
     </form>
@@ -87,7 +85,8 @@ export default {
                 ApiRequests.updateUserById(this.userId, postData).then(() => {
                     this.isLoading = false;
                     this.$toast.default(`User updated successfully.`);
-                    this.$router.push({ name: 'settings.users' })
+                    this.$emit('userSaved')
+                    this.$emit('close')
                 }).catch(e => {
                     this.$toast.error(e.message);
                     this.isLoading = false;
@@ -97,7 +96,8 @@ export default {
                 ApiRequests.saveUser(postData).then(() => {
                     this.isLoading = false;
                     this.$toast.default(`User added successfully.`);
-                    this.$router.push({ name: 'settings.users' })
+                    this.$emit('userSaved')
+                    this.$emit('close')
                 }).catch(e => {
                     this.$toast.error(e.message);
                     this.isLoading = false;
