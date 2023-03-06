@@ -88,11 +88,6 @@ const router = createRouter({
                     component: () => import('../views/SettingsCategoriesView.vue'),
                 },
                 {
-                    path: '/settings/categories/form',
-                    name: 'settings.categories.form',
-                    component: () => import('../views/CategoryFormView.vue'),
-                },
-                {
                     path: '/settings/glasses',
                     name: 'settings.glasses',
                     component: () => import('../views/SettingsGlassesView.vue'),
