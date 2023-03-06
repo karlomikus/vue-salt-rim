@@ -108,11 +108,6 @@ const router = createRouter({
                     component: () => import('../views/SettingsUsersView.vue'),
                 },
                 {
-                    path: '/settings/users/form',
-                    name: 'settings.users.form',
-                    component: () => import('../views/UserFormView.vue'),
-                },
-                {
                     path: '/shelf/cocktails',
                     name: 'shelf.cocktails',
                     component: () => import('../views/ShelfCocktailsView.vue'),

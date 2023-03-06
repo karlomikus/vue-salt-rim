@@ -26,7 +26,7 @@
                             <small>{{ glass.description }}</small>
                         </td>
                         <td style="text-align: right;">
-                            <a class="list-group__action" href="#" @click.prevent="deleteGlass(glass.id)">Delete</a>
+                            <a class="list-group__action" href="#" @click.prevent="deleteGlass(glass)">Delete</a>
                         </td>
                     </tr>
                 </tbody>
@@ -68,12 +68,12 @@ export default {
                 this.$toast.error(e.message);
             })
         },
-        deleteGlass(id) {
-            this.$confirm('This will permanently delete this glass type.', {
+        deleteGlass(glass) {
+            this.$confirm(`This will permanently delete glass type with name "${glass.name}".`, {
                 onResolved: (dialog) => {
                     this.isLoading = true
                     dialog.close()
-                    ApiRequests.deleteGlass(id).then(() => {
+                    ApiRequests.deleteGlass(glass.id).then(() => {
                         this.isLoading = false;
                         this.$toast.default(`Glass deleted successfully.`);
                         this.$router.push({ name: 'settings.glasses' })

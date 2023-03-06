@@ -1,7 +1,7 @@
 <template>
     <form @submit.prevent="submit">
         <OverlayLoader v-if="isLoading" />
-        <div class="dialog-title">User data</div>
+        <div class="dialog-title">{{ dialogTitle }}</div>
         <div class="form-group">
             <label class="form-label form-label--required" for="name">Name:</label>
             <input class="form-input" type="text" id="name" v-model="user.name" required placeholder="User name...">
@@ -27,7 +27,7 @@
             </label>
         </div>
         <div class="dialog-actions">
-            <button class="button button--outline" @click.prevent="$emit('close')">Cancel</button>
+            <button class="button button--outline" @click.prevent="$emit('userDialogClosed')">Cancel</button>
             <button class="button button--dark" type="submit">Save</button>
         </div>
     </form>
@@ -39,33 +39,16 @@ import OverlayLoader from '@/components/OverlayLoader.vue'
 import PageHeader from '@/components/PageHeader.vue'
 
 export default {
+    props: ['sourceUser', 'dialogTitle'],
     data() {
         return {
             isLoading: false,
-            userId: null,
-            user: {},
+            user: this.sourceUser,
         };
     },
     components: {
         OverlayLoader,
         PageHeader
-    },
-    created() {
-        document.title = `User information \u22C5 Salt Rim`
-
-        this.userId = this.$route.query.id || null;
-
-        if (this.userId) {
-            this.isLoading = true;
-
-            ApiRequests.fetchUserById(this.userId).then(data => {
-                this.isLoading = false
-                this.user = data;
-            }).catch(e => {
-                this.isLoading = false
-                this.$toast.error(e.message)
-            })
-        }
     },
     methods: {
         submit() {
@@ -77,16 +60,15 @@ export default {
                 is_admin: this.user.is_admin || false,
             };
 
-            if (this.userId) {
+            if (this.user.id) {
                 if (this.user.password) {
                     postData.password = this.user.password;
                 }
 
-                ApiRequests.updateUserById(this.userId, postData).then(() => {
+                ApiRequests.updateUserById(this.user.id, postData).then(() => {
                     this.isLoading = false;
                     this.$toast.default(`User updated successfully.`);
-                    this.$emit('userSaved')
-                    this.$emit('close')
+                    this.$emit('userDialogClosed')
                 }).catch(e => {
                     this.$toast.error(e.message);
                     this.isLoading = false;
@@ -96,8 +78,7 @@ export default {
                 ApiRequests.saveUser(postData).then(() => {
                     this.isLoading = false;
                     this.$toast.default(`User added successfully.`);
-                    this.$emit('userSaved')
-                    this.$emit('close')
+                    this.$emit('userDialogClosed')
                 }).catch(e => {
                     this.$toast.error(e.message);
                     this.isLoading = false;
@@ -107,7 +88,3 @@ export default {
     }
 }
 </script>
-
-<style scope>
-
-</style>

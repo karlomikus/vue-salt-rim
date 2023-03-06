@@ -284,14 +284,19 @@ export default {
             })
         },
         deleteCocktail() {
-            if (confirm('Are you sure you want to delete cocktail?')) {
-                ApiRequests.deleteCocktail(this.cocktail.id).then(() => {
-                    this.$toast.default(`Cocktail "${this.cocktail.name}" successfully removed`);
-                    this.$router.push({ name: 'cocktails' })
-                }).catch(e => {
-                    this.$toast.error(e.message);
-                })
-            }
+            this.$confirm(`This will permanently delete cocktail with name "${this.cocktail.name}".`, {
+                onResolved: (dialog) => {
+                    dialog.close()
+                    ApiRequests.deleteCocktail(this.cocktail.id).then(() => {
+                        this.$toast.default(`Cocktail "${this.cocktail.name}" successfully removed`);
+                        this.$router.push({ name: 'cocktails' })
+                        dialog.close()
+                    }).catch(e => {
+                        this.$toast.error(e.message);
+                        dialog.close()
+                    })
+                }
+            });
         },
         addMissingIngredients() {
             const postData = {

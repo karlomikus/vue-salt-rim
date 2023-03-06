@@ -3,11 +3,11 @@
         Users
         <template #actions>
             <Dialog v-model="showDialog">
-                <template #trigger="{ toggleDialog }">
-                    <button type="button" class="button button--outline" @click.prevent="toggleDialog">Add user</button>
+                <template #trigger>
+                    <button type="button" class="button button--outline" @click.prevent="openDialog('Add user', {})">Add user</button>
                 </template>
-                <template #dialog="{ toggleDialog }">
-                    <UserForm @close="toggleDialog" @user-saved="refreshUsers" />
+                <template #dialog>
+                    <UserForm :source-user="editUser" :dialog-title="dialogTitle" @user-dialog-closed="refreshUsers" />
                 </template>
             </Dialog>
         </template>
@@ -18,35 +18,37 @@
         </div>
         <div class="settings-page__content">
             <OverlayLoader v-if="isLoading" />
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>Name / Email</th>
-                        <th>Admin</th>
-                        <th></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr v-for="user in users">
-                        <td>
-                            <RouterLink :to="{name: 'settings.users.form', query: {id: user.id}}">{{ user.name }}</RouterLink>
-                            <br>
-                            <small>{{ user.email }}</small>
-                        </td>
-                        <td>
-                            <template v-if="user.is_admin">
-                                ✅
-                            </template>
-                            <template v-else>
-                                ❌
-                            </template>
-                        </td>
-                        <td style="text-align: right;">
-                            <a class="list-group__action" href="#" @click.prevent="deleteUser(user)">Delete</a>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+            <div class="block-container block-container--padded">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Name / Email</th>
+                            <th>Administrator</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-for="user in users">
+                            <td>
+                                <a href="#" @click.prevent="openDialog('Edit user', user)">{{ user.name }}</a>
+                                <br>
+                                <small>{{ user.email }}</small>
+                            </td>
+                            <td>
+                                <template v-if="user.is_admin">
+                                    ✅
+                                </template>
+                                <template v-else>
+                                    ❌
+                                </template>
+                            </td>
+                            <td style="text-align: right;">
+                                <a class="list-group__action" href="#" @click.prevent="deleteUser(user)">Delete</a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 </template>
@@ -71,6 +73,8 @@ export default {
         return {
             isLoading: false,
             showDialog: false,
+            dialogTitle: 'User data',
+            editUser: {},
             users: [],
         }
     },
@@ -81,6 +85,7 @@ export default {
     },
     methods: {
         refreshUsers() {
+            this.showDialog = false
             this.isLoading = true;
             ApiRequests.fetchUsers().then(data => {
                 this.users = data;
@@ -88,6 +93,11 @@ export default {
             }).catch(e => {
                 this.$toast.error(e.message);
             })
+        },
+        openDialog(title, obj) {
+            this.dialogTitle = title
+            this.editUser = obj
+            this.showDialog = true;
         },
         deleteUser(user) {
             this.$confirm(`This will permanently delete user with name "${user.name}".`, {
@@ -97,7 +107,6 @@ export default {
                     ApiRequests.deleteUser(user.id).then(() => {
                         this.isLoading = false;
                         this.$toast.default(`User deleted successfully.`);
-                        this.$router.push({ name: 'settings.users' })
                         this.refreshUsers()
                     }).catch(e => {
                         this.$toast.error(e.message);
