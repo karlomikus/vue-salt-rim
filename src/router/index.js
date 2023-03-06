@@ -122,11 +122,6 @@ const router = createRouter({
                     name: 'settings.tags',
                     component: () => import('../views/SettingsTagsView.vue'),
                 },
-                {
-                    path: '/settings/tags/form',
-                    name: 'settings.tags.form',
-                    component: () => import('../views/TagFormView.vue'),
-                },
             ]
         },
         {
