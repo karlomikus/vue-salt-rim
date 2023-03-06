@@ -93,11 +93,6 @@ const router = createRouter({
                     component: () => import('../views/SettingsGlassesView.vue'),
                 },
                 {
-                    path: '/settings/glasses/form',
-                    name: 'settings.glasses.form',
-                    component: () => import('../views/GlassFormView.vue'),
-                },
-                {
                     path: '/settings/users',
                     name: 'settings.users',
                     component: () => import('../views/SettingsUsersView.vue'),
