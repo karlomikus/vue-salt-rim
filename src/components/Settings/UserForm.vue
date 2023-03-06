@@ -36,7 +36,6 @@
 <script>
 import ApiRequests from "@/ApiRequests";
 import OverlayLoader from '@/components/OverlayLoader.vue'
-import PageHeader from '@/components/PageHeader.vue'
 
 export default {
     props: ['sourceUser', 'dialogTitle'],
@@ -48,7 +47,6 @@ export default {
     },
     components: {
         OverlayLoader,
-        PageHeader
     },
     methods: {
         submit() {
