@@ -1,91 +1,72 @@
 <template>
-    <Modal class="ingredient-modal">
-        <template #body>
-            <OverlayLoader v-if="isLoading" />
-            <ais-instant-search :search-client="searchClient" :index-name="index" :on-state-change="onStateChange">
-                <ais-configure :hitsPerPage="30" />
-                <ais-search-box placeholder="Search for ingredient..." :class-names="{'ais-SearchBox-input': 'form-input'}" />
-                <ais-hits>
-                    <template v-slot="{ items }">
-                        <div class="ingredients-options">
-                            <a href="#" v-for="item in items" @click.prevent="selectIngredient(item)">{{ item.name }}</a>
-                        </div>
-                    </template>
-                </ais-hits>
-            </ais-instant-search>
-            <label for="substitute-adding" style="margin-top: 15px; display: block;">
-                <input id="substitute-adding" type="checkbox" v-model="isAddingSubstitute"> Select substitute ingredients
-            </label>
-            <div class="ingredient-modal__info" v-show="currentQuery && currentQuery.length > 0">
-                Not found what you are looking for? <a href="#" @click.prevent="newIngredient">Create ingredient: "{{ currentQuery }}"</a>
-            </div>
-            <h3 class="selected-ingredient">
-                <small>Current ingredient:</small>
-                {{ cocktailIngredient.name }}
-            </h3>
-            <div class="substitutes">
-                <small>Substitutes:</small>
-                <span v-if="cocktailIngredient.substitutes.length > 0" v-for="substitute in cocktailIngredient.substitutes">{{ substitute.name }} &middot; <a href="#" @click.prevent="removeSubstitute(substitute)">Remove</a></span>
-                <span v-else>No substitutes selected.</span>
-            </div>
-            <div style="display: grid; grid-template-columns: 1fr 2fr; column-gap: 10px;">
-                <div class="form-group">
-                    <label class="form-label" for="ingredient-amount">Amount:</label>
-                    <input class="form-input" type="text" id="ingredient-amount" v-model="cocktailIngredient.amount">
-                </div>
-                <div class="form-group">
-                    <label class="form-label" for="ingredient-units">Units:</label>
-                    <input class="form-input" type="text" id="ingredient-units" list="common-units" v-model="cocktailIngredient.units">
-                    <p class="form-input-hint">Use "oz", "cl", "ml" for common fluid units to enable unit conversion on cocktail page.</p>
-                    <datalist id="common-units">
-                        <option>ml</option>
-                        <option>oz</option>
-                        <option>cl</option>
-                        <option>dashes</option>
-                        <option>barspoon</option>
-                        <option>drops</option>
-                    </datalist>
-                </div>
+    <div>
+        <OverlayLoader v-if="isLoading" />
+        <ais-instant-search :search-client="searchClient" :index-name="index" :on-state-change="onStateChange">
+            <ais-configure :hitsPerPage="30" />
+            <ais-search-box placeholder="Search for ingredient..." :class-names="{'ais-SearchBox-input': 'form-input'}" />
+            <ais-hits>
+                <template v-slot="{ items }">
+                    <div class="ingredients-options">
+                        <a href="#" v-for="item in items" @click.prevent="selectIngredient(item)">{{ item.name }}</a>
+                    </div>
+                </template>
+            </ais-hits>
+        </ais-instant-search>
+        <label for="substitute-adding" style="margin-top: 15px; display: block;">
+            <input id="substitute-adding" type="checkbox" v-model="isAddingSubstitute"> Select substitute ingredients
+        </label>
+        <div class="ingredient-modal__info" v-show="currentQuery && currentQuery.length > 0">
+            Not found what you are looking for? <a href="#" @click.prevent="newIngredient">Create ingredient: "{{ currentQuery }}"</a>
+        </div>
+        <h3 class="selected-ingredient">
+            <small>Current ingredient:</small>
+            {{ cocktailIngredient.name }}
+        </h3>
+        <div class="substitutes">
+            <small>Substitutes:</small>
+            <span v-if="cocktailIngredient.substitutes.length > 0" v-for="substitute in cocktailIngredient.substitutes">{{ substitute.name }} &middot; <a href="#" @click.prevent="removeSubstitute(substitute)">Remove</a></span>
+            <span v-else>No substitutes selected.</span>
+        </div>
+        <div class="ingredient-form-group">
+            <div class="form-group">
+                <label class="form-label" for="ingredient-amount">Amount:</label>
+                <input class="form-input" type="text" id="ingredient-amount" v-model="cocktailIngredient.amount">
             </div>
             <div class="form-group">
-                <label for="cocktail-ing-optional">
-                    <input type="checkbox" id="cocktail-ing-optional" v-model="cocktailIngredient.optional">
-                    Make optional
-                </label>
+                <label class="form-label" for="ingredient-units">Units:</label>
+                <input class="form-input" type="text" id="ingredient-units" list="common-units" v-model="cocktailIngredient.units">
+                <p class="form-input-hint">Use "oz", "cl", "ml" for common fluid units to enable unit conversion on cocktail page.</p>
+                <datalist id="common-units">
+                    <option>ml</option>
+                    <option>oz</option>
+                    <option>cl</option>
+                    <option>dashes</option>
+                    <option>barspoon</option>
+                    <option>drops</option>
+                </datalist>
             </div>
-        </template>
-        <template #footer>
-            <button type="button" class="button button--outline" @click="cancel" style="margin-right: 10px;">Cancel</button>
+        </div>
+        <div class="form-group">
+            <label for="cocktail-ing-optional">
+                <input type="checkbox" id="cocktail-ing-optional" v-model="cocktailIngredient.optional">
+                Make optional
+            </label>
+        </div>
+        <div class="dialog-actions">
+            <button type="button" class="button button--outline" @click="cancel">Cancel</button>
             <button type="button" class="button button--dark" @click="save" :disabled="isLoading">Done</button>
-        </template>
-    </Modal>
+        </div>
+    </div>
 </template>
 
 <script>
 import { instantMeiliSearch } from '@meilisearch/instant-meilisearch';
 import ApiRequests from "../../ApiRequests";
 import Auth from '@/Auth.js';
-import Modal from './../Modal.vue'
 import OverlayLoader from './../OverlayLoader.vue'
 
 export default {
     props: ['value'],
-    watch: {
-        value(val) {
-            window.document.body.style.overflow = 'hidden';
-
-            // Set cocktail ingredient
-            this.cocktailIngredient = val
-
-            // Reset search on modal open
-            document.querySelector('.modal-body form').reset()
-
-            // Focus seach input on modal open
-            setTimeout(() => {
-                document.querySelector('.ais-SearchBox input').focus()
-            }, 50)
-        }
-    },
     data() {
         return {
             isLoading: false,
@@ -94,15 +75,12 @@ export default {
                 Auth.getUserSearchSettings().host,
                 Auth.getUserSearchSettings().key,
             ),
-            cocktailIngredient: {
-                substitutes: []
-            },
+            cocktailIngredient: this.value,
             currentQuery: null,
             isAddingSubstitute: false
         }
     },
     components: {
-        Modal,
         OverlayLoader
     },
     methods: {
@@ -244,5 +222,24 @@ export default {
     .ingredient-modal {
         padding: 5px;
     }
+}
+
+.ingredient-form-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.ingredient-form-group .form-group:first-child {
+    flex-basis: 150px;
+}
+
+.ingredient-form-group .form-group:last-child {
+    flex-basis: 200px;
+    flex-grow: 1;
+}
+
+.ingredient-form-group input {
+    width: 100%;
 }
 </style>

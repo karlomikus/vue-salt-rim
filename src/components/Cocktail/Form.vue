@@ -53,7 +53,14 @@
                 </div>
             </li>
         </ul>
-        <button class="button button--outline" type="button" @click="addIngredient">Add ingredient</button>
+        <Dialog v-model="showDialog">
+            <template #trigger>
+                <button class="button button--outline" type="button" @click="addIngredient">Add ingredient</button>
+            </template>
+            <template #dialog>
+                <IngredientModal :value="cocktailIngredientForEdit" @close="closeModal" />
+            </template>
+        </Dialog>
         <h3 class="form-section-title">Additional information</h3>
         <div class="block-container block-container--padded">
             <div class="form-group">
@@ -98,7 +105,6 @@
             <button class="button button--dark" type="submit">Save</button>
         </div>
     </form>
-    <IngredientModal v-show="isModalVisible" :value="cocktailIngredientForEdit" @close="closeModal" />
 </template>
 
 <script>
@@ -110,11 +116,12 @@ import IngredientModal from '@/components/Cocktail/IngredientModal.vue'
 import ImageUpload from '@/components/ImageUpload.vue'
 import PageHeader from '@/components/PageHeader.vue'
 import Sortable from 'sortablejs';
+import Dialog from '@/components/Dialog/Dialog.vue';
 
 export default {
     data() {
         return {
-            isModalVisible: false,
+            showDialog: false,
             cocktailIngredientForEdit: {},
             cocktailIngredientForEditOriginal: {},
             isLoading: false,
@@ -135,6 +142,7 @@ export default {
         IngredientModal,
         ImageUpload,
         PageHeader,
+        Dialog,
     },
     computed: {
         cocktailTags: {
@@ -244,6 +252,7 @@ export default {
             );
         },
         closeModal(eventData) {
+            // debugger;
             // User didnt select any ingredient in modal, so we remove the placeholder
             if (!this.cocktailIngredientForEdit.ingredient_id) {
                 this.cocktail.ingredients.splice(
@@ -265,7 +274,7 @@ export default {
                 this.cocktailIngredientForEdit.substitutes = this.cocktailIngredientForEditOriginal.substitutes;
             }
 
-            this.isModalVisible = false;
+            this.showDialog = false;
         },
         addIngredient() {
             let placeholderData = {
@@ -287,7 +296,7 @@ export default {
 
             this.cocktailIngredientForEditOriginal = JSON.parse(JSON.stringify(cocktailIngredient));
             this.cocktailIngredientForEdit = cocktailIngredient;
-            this.isModalVisible = true;
+            this.showDialog = true;
         },
         async submit() {
             const sortedIngredientList = this.sortable.toArray();
