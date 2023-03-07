@@ -20,11 +20,7 @@
                     <RouterLink :to="{name: 'settings.categories'}" target="_blank">Edit categories</RouterLink>
                 </p>
             </div>
-            <div class="form-group">
-                <label class="form-label" for="is-variety">
-                    <input type="checkbox" id="is-variety" v-model="isParent"> Ingredient is variety of another ingredient
-                </label>
-            </div>
+            <Checkbox v-model="isParent" id="is-variety">Ingredient is variety of another ingredient</Checkbox>
             <div class="form-group">
                 <div v-show="isParent">
                     <label class="form-label" for="parent-ingredient">Parent ingredient:</label>
@@ -72,6 +68,7 @@ import { ColorPicker } from 'vue-accessible-color-picker'
 import PageHeader from '@/components/PageHeader.vue'
 import OverlayLoader from '@/components/OverlayLoader.vue'
 import TomSelect from '@/components/TomSelect.vue'
+import Checkbox from '@/components/Checkbox.vue'
 
 export default {
     data() {
@@ -92,7 +89,8 @@ export default {
         ColorPicker,
         PageHeader,
         OverlayLoader,
-        TomSelect
+        TomSelect,
+        Checkbox
     },
     created() {
         document.title = `Ingredient Form \u22C5 Salt Rim`

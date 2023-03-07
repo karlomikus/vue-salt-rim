@@ -26,6 +26,15 @@ export default {
             resolve: null
         }
     },
+    watch: {
+        shown(val) {
+            if (val) {
+                document.body.style.overflow = "hidden";
+            } else {
+                document.body.style.overflow = "auto";
+            }
+        }
+    },
     mounted() {
         this.$eventBus.on('requestConfirm', (payload) => this.show(payload))
     },

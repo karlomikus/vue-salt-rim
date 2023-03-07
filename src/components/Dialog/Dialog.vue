@@ -32,6 +32,15 @@ export default {
         }
     },
     emits: ['update:modelValue'],
+    watch: {
+        modelValue(val) {
+            if (val) {
+                document.body.style.overflow = "hidden";
+            } else {
+                document.body.style.overflow = "auto";
+            }
+        }
+    },
     methods: {
         toggleDialog() {
             this.$emit('update:modelValue', !this.modelValue)

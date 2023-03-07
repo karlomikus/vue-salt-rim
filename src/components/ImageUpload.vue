@@ -140,23 +140,23 @@ export default {
                 return;
             }
 
-            if (!confirm(`Are you sure you want to delete this image?`)) {
-                return;
-            }
-
-            this.isLoading = true;
-
-            ApiRequests.deleteImage(img.id).then(() => {
-                this.isLoading = false;
-                this.$toast.default(`Image removed successfully.`);
-                this.images.splice(
-                    this.images.findIndex(i => i == img),
-                    1
-                );
-            }).catch(() => {
-                this.isLoading = false;
-                this.$toast.default(`Unable to remove the image.`);
-            })
+            this.$confirm(`This will permanently remove the image.`, {
+                onResolved: (dialog) => {
+                    dialog.close();
+                    this.isLoading = true;
+                    ApiRequests.deleteImage(img.id).then(() => {
+                        this.isLoading = false;
+                        this.$toast.default(`Image removed successfully.`);
+                        this.images.splice(
+                            this.images.findIndex(i => i == img),
+                            1
+                        );
+                    }).catch(() => {
+                        this.isLoading = false;
+                        this.$toast.default(`Unable to remove the image.`);
+                    })
+                }
+            });
         }
     }
 }

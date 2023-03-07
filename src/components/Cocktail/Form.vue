@@ -82,6 +82,11 @@
                 <label class="form-label">Method:</label>
                 <div class="cocktail-methods">
                     <label class="cocktail-method" v-for="method in methods" :for="'method_' + method.id" :class="{'cocktail-method--selected': method.id == methodId}">
+                        <Transition name="cocktail-method__selected--transition">
+                            <div class="cocktail-method__selected" v-show="method.id == methodId">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path fill="none" d="M0 0h24v24H0z"/><path d="M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm-.997-6l7.07-7.071-1.414-1.414-5.656 5.657-2.829-2.829-1.414 1.414L11.003 16z"/></svg>
+                            </div>
+                        </Transition>
                         <!-- <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path fill="none" d="M0 0h24v24H0z"/><path d="M5 16v6H3V3h9.382a1 1 0 0 1 .894.553L14 5h6a1 1 0 0 1 1 1v11a1 1 0 0 1-1 1h-6.382a1 1 0 0 1-.894-.553L12 16H5zM5 5v9h8.236l1 2H19V7h-6.236l-1-2H5z"/></svg> -->
                         <div class="cocktail-method__title">{{ method.name }}</div>
                         <small>{{ method.dilution_percentage }}%</small>
@@ -246,13 +251,26 @@ export default {
     },
     methods: {
         removeIngredient(ing) {
-            this.cocktail.ingredients.splice(
-                this.cocktail.ingredients.findIndex(i => i == ing),
-                1
-            );
+            if (!ing.ingredient_id) {
+                this.cocktail.ingredients.splice(
+                    this.cocktail.ingredients.findIndex(i => i == ing),
+                    1
+                );
+
+                return;
+            }
+
+            this.$confirm(`This will remove ingredient "${ing.name}" from the recipe.`, {
+                onResolved: (dialog) => {
+                    dialog.close();
+                    this.cocktail.ingredients.splice(
+                        this.cocktail.ingredients.findIndex(i => i == ing),
+                        1
+                    );
+                }
+            });
         },
         closeModal(eventData) {
-            // debugger;
             // User didnt select any ingredient in modal, so we remove the placeholder
             if (!this.cocktailIngredientForEdit.ingredient_id) {
                 this.cocktail.ingredients.splice(
@@ -423,6 +441,7 @@ export default {
     display: flex;
     flex-wrap: wrap;
     gap: 1rem;
+    margin-top: 0.5rem;
 }
 
 .cocktail-method {
@@ -434,6 +453,24 @@ export default {
     border-radius: 0.25rem;
     text-align: center;
     cursor: pointer;
+    transition: box-shadow 100ms cubic-bezier(0.455, 0.03, 0.515, 0.955);
+}
+
+.cocktail-method__selected {
+    position: absolute;
+    top: -0.5rem;
+    right: -0.5rem;
+    transition: transform 150ms cubic-bezier(0.455, 0.03, 0.515, 0.955), opacity 100ms cubic-bezier(0.455, 0.03, 0.515, 0.955);
+}
+
+.cocktail-method__selected svg {
+    fill: var(--clr-red-700);
+}
+
+.cocktail-method__selected--transition-enter-from,
+.cocktail-method__selected--transition-leave-to {
+    transform: translate(0, -0.25rem);
+    opacity: 0;
 }
 
 .cocktail-method.cocktail-method--selected {
