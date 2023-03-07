@@ -172,17 +172,20 @@ export default {
     },
     methods: {
         deleteIngredient() {
-            if (confirm(`Are you sure you want to delete "${this.ingredient.name}"? This action cannot be undone and will impact ${this.ingredient.cocktails.length} cocktails.`)) {
-                this.isLoading = true;
-                ApiRequests.deleteIngredient(this.ingredient.id).then(resp => {
-                    this.$toast.default(`Ingredient "${this.ingredient.name}" successfully removed`);
-                    this.$router.push({ name: 'ingredients' })
-                    this.isLoading = false;
-                }).catch(e => {
-                    this.$toast.error(e.message)
-                    this.isLoading = false;
-                })
-            }
+            this.$confirm(`This will permanently delete ingredient with name "${this.ingredient.name}". This action will impact ${this.ingredient.cocktails.length} cocktails!`, {
+                onResolved: (dialog) => {
+                    dialog.close()
+                    this.isLoading = true;
+                    ApiRequests.deleteIngredient(this.ingredient.id).then(resp => {
+                        this.$toast.default(`Ingredient "${this.ingredient.name}" successfully removed`);
+                        this.$router.push({ name: 'ingredients' })
+                        this.isLoading = false;
+                    }).catch(e => {
+                        this.$toast.error(e.message)
+                        this.isLoading = false;
+                    })
+                }
+            });
         },
         toggleShelf() {
             this.isLoading = true;

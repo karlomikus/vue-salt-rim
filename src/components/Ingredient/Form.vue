@@ -20,14 +20,14 @@
                     <RouterLink :to="{name: 'settings.categories'}" target="_blank">Edit categories</RouterLink>
                 </p>
             </div>
-            <Checkbox v-model="isParent" id="is-variety">Ingredient is variety of another ingredient</Checkbox>
-            <div class="form-group">
-                <div v-show="isParent">
-                    <label class="form-label" for="parent-ingredient">Parent ingredient:</label>
-                    <TomSelect id="parent-ingredient" v-model="ingredient.parent_ingredient_id">
-                        <option v-for="ingredient in parentIngredientsList" :value="ingredient.id">{{ ingredient.name }}</option>
-                    </TomSelect>
-                </div>
+            <div style="margin: 1rem 0;">
+                <Checkbox v-model="isParent" id="is-variety">Ingredient is variety of another ingredient</Checkbox>
+            </div>
+            <div class="form-group" v-show="isParent">
+                <label class="form-label" for="parent-ingredient">Parent ingredient:</label>
+                <TomSelect id="parent-ingredient" v-model="ingredient.parent_ingredient_id">
+                    <option v-for="ingredient in parentIngredientsList" :value="ingredient.id">{{ ingredient.name }}</option>
+                </TomSelect>
             </div>
             <div class="form-group">
                 <label class="form-label form-label--required" for="strength">Strength (ABV %):</label>
@@ -44,7 +44,7 @@
             </div>
             <div class="form-group">
                 <label class="form-label" for="color">Color:</label>
-                <button type="button" class="colorpicker-button" @click="showColorPicker = !showColorPicker">
+                <button type="button" class="button colorpicker-button" @click="showColorPicker = !showColorPicker">
                     <span :style="{'background-color': ingredient.color}"></span>
                 </button>
                 <ColorPicker v-if="showColorPicker" alpha-channel="hide" :visible-formats="['hex']" :color="ingredient.color ?? {}" @color-change="updateColor" />
@@ -79,6 +79,7 @@ export default {
             isParent: false,
             ingredients: [],
             ingredient: {
+                color: '#000',
                 images: []
             },
             categories: []
@@ -181,12 +182,9 @@ export default {
     width: 100%;
     display: flex;
     background: rgba(255, 255, 255, .5);
+    border: 2px solid var(--clr-gray-100);
     border-radius: 5px;
     height: 3rem;
-    border: 2px solid var(--clr-red-300);
-    border-top-color: transparent;
-    border-left-color: transparent;
-    border-right-color: transparent;
 }
 
 .colorpicker-button span {

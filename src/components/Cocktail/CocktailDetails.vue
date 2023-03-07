@@ -405,7 +405,7 @@ export default {
 .cocktail-ingredients li {
     display: flex;
     align-items: center;
-    background-color: rgb(211, 227, 222);
+    background-color: rgba(255, 255, 255, .3);
     border-radius: 4px;
     margin-bottom: 10px;
     padding: 5px 10px;
@@ -464,8 +464,8 @@ export default {
 }
 
 .cocktail-button-group button {
-    background: rgb(211, 227, 222);
-    border: 3px solid rgb(211, 227, 222);
+    background: none;
+    border: none;
     font-size: 1rem;
     min-width: 2rem;
     cursor: pointer;
@@ -473,12 +473,11 @@ export default {
 }
 
 .cocktail-button-group button.active-serving {
-    background-color: rgb(162, 197, 186);
-    border-color: rgb(162, 197, 186);
+    background-color: rgb(255, 255, 255, .6);
 }
 
 .cocktail-button-group button:hover {
-    border-color: rgb(129, 173, 159);
+    background-color: rgb(255, 255, 255, .3);
 }
 
 .cocktail-details-box ol {
