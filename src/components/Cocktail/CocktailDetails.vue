@@ -175,11 +175,11 @@
             </ul>
             <a v-show="missingIngredientIds.length > 0" href="#" @click.prevent="addMissingIngredients">Add missing ingredients to my shopping list</a>
         </div>
-        <div class="details-block-container details-block-container--yellow">
+        <div class="details-block-container details-block-container--yellow" v-once>
             <h3 class="details-block-container__title">Instructions</h3>
             <div v-html="parsedInstructions"></div>
         </div>
-        <div class="details-block-container details-block-container--red" v-if="cocktail.garnish">
+        <div class="details-block-container details-block-container--red" v-if="cocktail.garnish" v-once>
             <h3 class="details-block-container__title">Garnish</h3>
             <div v-html="parsedGarnish"></div>
         </div>

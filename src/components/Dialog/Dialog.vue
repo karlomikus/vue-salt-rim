@@ -33,12 +33,14 @@ export default {
             default: true
         }
     },
-    emits: ['update:modelValue'],
+    emits: ['update:modelValue', 'dialogOpened', 'dialogClosed'],
     watch: {
         modelValue(val) {
             if (val) {
+                this.$emit('dialogOpened')
                 document.body.style.overflow = "hidden";
             } else {
+                this.$emit('dialogClosed')
                 document.body.style.overflow = "auto";
             }
         }

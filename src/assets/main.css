@@ -194,7 +194,7 @@ a.site-logo:focus .site-logo__title {
 
 .login-page form {
     margin-top: 20px;
-    background-color: var(--clr-red-100);
+    background-color: var(--clr-gray-50);
     width: 100%;
     max-width: 400px;
     padding: 30px;

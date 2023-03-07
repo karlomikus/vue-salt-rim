@@ -49,7 +49,7 @@
             </div>
         </div>
         <div style="margin: 1rem 0;">
-            <Checkbox v-model="cocktailIngredient.optional" id="is-cocktail-ing-optional">Ingredient is variety of another ingredient</Checkbox>
+            <Checkbox v-model="cocktailIngredient.optional" id="is-cocktail-ing-optional">Make this ingredient optional.</Checkbox>
         </div>
         <div class="dialog-actions">
             <button type="button" class="button button--outline" @click="cancel">Cancel</button>

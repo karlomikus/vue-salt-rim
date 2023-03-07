@@ -25,7 +25,7 @@
                         </a>
                     </template>
                     <template #dialog>
-                        <site-autocomplete ref="siteAutocompleteComponent" @closeAutocomplete="searchShown = false" :shown="searchShown" v-show="searchShown" />
+                        <SiteAutocomplete @closeAutocomplete="searchShown = false" />
                     </template>
                 </Dialog>
                 <RouterLink :to="{name: 'home'}" exact-active-class="current-nav">Shelf</RouterLink>
@@ -60,13 +60,6 @@ export default {
                 this.searchShown = !this.searchShown;
             }
         })
-
-        // this.$watch(
-        //     () => this.$route.params,
-        //     () => {
-        //         this.$refs.siteAutocompleteComponent.close();
-        //     }
-        // )
     },
     methods: {
         logout() {
