@@ -31,8 +31,8 @@ label {
     border-radius: 3px;
     padding: 0;
     background: var(--clr-gray-50);
-    width: 24px;
-    height: 24px;
+    width: 20px;
+    height: 20px;
     cursor: pointer;
     display: inline-flex;
     align-items: center;
