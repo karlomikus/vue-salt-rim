@@ -1,5 +1,5 @@
 <template>
-    <form class="site-autocomplete" novalidate>
+    <form class="site-autocomplete" novalidate @keyup.esc="close">
         <ais-instant-search :search-client="searchClient" index-name="site_search_index">
             <ais-configure :hitsPerPage="10" />
             <ais-autocomplete>
@@ -9,11 +9,11 @@
                         <li v-for="hit in index.hits" :key="hit.key">
                             <a href="#" @click.prevent="goTo(hit)">
                                 <div class="site-autocomplete__results__image" :style="{ 'background-image': 'url(' + getImageUrl(hit) + ')' }"></div>
-                                <h4>
+                                <div class="site-autocomplete__results__content">
                                     <ais-highlight attribute="name" :hit="hit" />
                                     <small v-if="hit.type == 'cocktail'">Cocktail</small>
                                     <small v-else>Ingredient</small>
-                                </h4>
+                                </div>
                             </a>
                         </li>
                         <li v-show="index.hits.length <= 0">No results found for term: "{{ currentRefinement }}"</li>
@@ -43,7 +43,6 @@ import { instantMeiliSearch } from '@meilisearch/instant-meilisearch';
 import Auth from '@/Auth.js';
 
 export default {
-    props: ['shown'],
     data() {
         return {
             searchClient: instantMeiliSearch(
@@ -52,35 +51,17 @@ export default {
             )
         }
     },
-    created() {
-        this.bindShortcuts();
-    },
+    emits: ['closeAutocomplete'],
     mounted() {
-        this.$el.addEventListener('click', e => {
-            if (e.target.classList[0] == 'site-autocomplete-wrapper') {
-                this.$emit('closeAutocomplete');
-            }
+        this.$nextTick(() => {
+            setTimeout(() => {
+                this.$refs.sinput.focus()
+            }, 200)
         })
-    },
-    watch: {
-        shown(newVal) {
-            if (newVal == true) {
-                setTimeout(() => {
-                    this.$refs.sinput.focus()
-                }, 100)
-            }
-        }
     },
     methods: {
         close() {
             this.$emit('closeAutocomplete');
-        },
-        bindShortcuts() {
-            document.addEventListener('keyup', evt => {
-                if (evt.key === "Escape") {
-                    this.close();
-                }
-            })
         },
         goTo(hit) {
             this.close();
@@ -144,7 +125,12 @@ export default {
     margin-right: 10px;
 }
 
-.site-autocomplete__results li a h4 small {
+.site-autocomplete__results__content span,
+:deep(.site-autocomplete__results__content span .ais-Highlight-highlighted) {
+    font-weight: var(--fw-bold);
+}
+
+.site-autocomplete__results__content small {
     display: block;
 }
 
