@@ -10,7 +10,7 @@ import './assets/main.css'
 const emitter = mitt()
 const app = createApp(App)
 
-app.config.globalProperties.app_version = 'v1.6.0';
+app.config.globalProperties.app_version = '{{VERSION}}';
 app.config.globalProperties.$eventBus = emitter;
 
 app.use(router)
