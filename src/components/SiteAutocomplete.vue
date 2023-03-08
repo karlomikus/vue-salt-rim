@@ -7,14 +7,14 @@
                     <input type="text" ref="sinput" :value="currentRefinement" placeholder="Search for a cocktail or ingredient..." class="form-input" @input="refine($event.currentTarget.value)" autocorrect="off" autocapitalize="none" autocomplete="off" spellcheck="false" autofocus>
                     <ul class="site-autocomplete__results" v-for="index in indices" :key="index.indexId" v-show="currentRefinement">
                         <li v-for="hit in index.hits" :key="hit.key">
-                            <RouterLink :to="generateRouterObject(hit)">
+                            <a href="#" @click.prevent="goTo(hit)">
                                 <div class="site-autocomplete__results__image" :style="{ 'background-image': 'url(' + getImageUrl(hit) + ')' }"></div>
                                 <h4>
                                     <ais-highlight attribute="name" :hit="hit" />
                                     <small v-if="hit.type == 'cocktail'">Cocktail</small>
                                     <small v-else>Ingredient</small>
                                 </h4>
-                            </RouterLink>
+                            </a>
                         </li>
                         <li v-show="index.hits.length <= 0">No results found for term: "{{ currentRefinement }}"</li>
                     </ul>
@@ -82,12 +82,16 @@ export default {
                 }
             })
         },
-        generateRouterObject(hit) {
+        goTo(hit) {
+            this.close();
+
             if (hit.type == 'cocktail') {
-                return { name: 'cocktails.show', params: { id: hit.slug } };
+                this.$router.push({ name: 'cocktails.show', params: { id: hit.slug } })
+                return;
             }
 
-            return { name: 'ingredients.show', params: { id: hit.slug } };
+            this.$router.push({ name: 'ingredients.show', params: { id: hit.slug } })
+            return;
         },
         getImageUrl(hit) {
             if (!hit.image_url) {
