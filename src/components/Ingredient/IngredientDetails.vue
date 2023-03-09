@@ -3,7 +3,7 @@
         <OverlayLoader v-if="isLoading" />
         <div class="details-block-container details-block-container--blue ingredient-details__box" style="margin-top: 100px;">
             <div class="ingredient-details__box__content">
-                <h2 class="ingredient-details__box__title ingredient-details__box__title--main">
+                <h2 class="ingredient-details__box__title">
                     <small>{{ ingredient.category.name }}</small>
                     {{ ingredient.name }}
                 </h2>
@@ -301,10 +301,6 @@ export default {
     font-weight: 700;
     font-family: var(--font-heading);
     margin: 10px 0;
-    line-height: 1.3rem;
-}
-
-.ingredient-details__box__title.ingredient-details__box__title--main {
     font-size: 2rem;
     line-height: 1.6rem;
     margin-bottom: 20px;
@@ -319,6 +315,7 @@ export default {
 
 .ingredient-details__box hr {
     border: 0;
+    margin: 0.25rem 0;
     border-top: 2px solid rgba(0, 0, 0, .1);
 }
 
