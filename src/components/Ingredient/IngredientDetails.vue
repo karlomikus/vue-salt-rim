@@ -1,7 +1,7 @@
 <template>
     <div class="ingredient-details" v-if="ingredient.id">
         <OverlayLoader v-if="isLoading" />
-        <div class="ingredient-details__box ingredient-details__box--green" style="margin-top: 100px;">
+        <div class="details-block-container details-block-container--blue ingredient-details__box" style="margin-top: 100px;">
             <div class="ingredient-details__box__content">
                 <h2 class="ingredient-details__box__title ingredient-details__box__title--main">
                     <small>{{ ingredient.category.name }}</small>
@@ -30,7 +30,7 @@
                 <img :src="mainIngredientImageUrl" :alt="ingredient.name" />
             </div>
         </div>
-        <div class="ingredient-details__cocktails">
+        <div class="details-block-container details-block-container--green ingredient-details__cocktails">
             <div class="ingredient-details__actions">
                 <button type="button" class="button-circle" @click="toggleShelf">
                     <svg v-if="!isAddedToShelf" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
@@ -81,7 +81,7 @@
                     </template>
                 </Dropdown>
             </div>
-            <h2 class="ingredient-details__box__title">Used in {{ ingredient.cocktails.length }} cocktails:</h2>
+            <h2 class="details-block-container__title">Used in {{ ingredient.cocktails.length }} cocktails:</h2>
             <ul class="ingredient-chips-list" v-if="ingredient.cocktails.length > 0">
                 <li v-for="cocktail in ingredient.cocktails">
                     <RouterLink :to="{name: 'cocktails.show', params: {id: cocktail.slug}}">{{ cocktail.name }}</RouterLink>
@@ -91,8 +91,8 @@
                 <RouterLink :to="{name: 'cocktails.form'}">Create a cocktail</RouterLink>
             </div>
         </div>
-        <div class="ingredient-details__varieties" v-if="ingredient.varieties.length > 0">
-            <h2 class="ingredient-details__box__title">See also:</h2>
+        <div class="details-block-container details-block-container--yellow" v-if="ingredient.varieties.length > 0">
+            <h2 class="details-block-container__title">See also:</h2>
             <ul class="ingredient-chips-list">
                 <li v-for="variety in ingredient.varieties">
                     <RouterLink :to="{name: 'ingredients.show', params: {id: variety.slug}}">{{ variety.name }}</RouterLink>
@@ -255,12 +255,6 @@ export default {
 }
 
 .ingredient-details__box {
-    background-color: #fff;
-    padding: 20px 20px 40px 20px;
-    border-radius: 20px;
-    border-bottom-left-radius: 0;
-    border-bottom-right-radius: 0;
-    margin-top: -20px;
     display: flex;
 }
 
@@ -333,19 +327,6 @@ export default {
     padding: 5px 0;
 }
 
-.ingredient-details__box.ingredient-details__box--green {
-    background-color: var(--clr-accent-green);
-}
-
-.ingredient-details__cocktails {
-    background-color: var(--clr-accent-blue);
-    padding: 20px 20px 40px 20px;
-    border-radius: 20px;
-    border-bottom-left-radius: 0;
-    border-bottom-right-radius: 0;
-    margin-top: -20px;
-}
-
 .ingredient-chips-list {
     list-style: none;
     padding: 0;
@@ -382,14 +363,5 @@ export default {
 
 .ingredient-details__actions .button-circle {
     margin-left: 5px;
-}
-
-.ingredient-details__varieties {
-    background-color: var(--clr-accent-yellow);
-    padding: 20px 20px 40px 20px;
-    border-radius: 20px;
-    border-bottom-left-radius: 0;
-    border-bottom-right-radius: 0;
-    margin-top: -20px;
 }
 </style>

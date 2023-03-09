@@ -5,7 +5,7 @@
             Cocktail Scraper
         </PageHeader>
         <div class="form-group-import-input">
-            <input class="form-input" type="url" id="import" v-model="url" placeholder="Enter recipe URL...">
+            <input class="form-input form-input--red" type="url" id="import" v-model="url" placeholder="Enter recipe URL..." style="width: 100%;">
             <button type="button" class="button button--input" @click.prevent="scrape">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path fill="none" d="M0 0h24v24H0z"/><path d="M12 13H4v-2h8V4l8 8-8 8z"/></svg>
             </button>
@@ -16,60 +16,62 @@
                 <h3>Information</h3>
                 <p>Existing ingredients and glass will be matched by their name (case insensitive). If ingredient or glass does not exist, it will be created. Common units are automatically converted to "ml".</p>
             </div>
-            <div class="form-group">
-                <label for="name">Name</label><br>
-                <input type="text" class="form-input" id="name" v-model="result.name">
+            <h3 class="form-section-title">Recipe information</h3>
+            <div class="block-container block-container--padded">
+                <div class="form-group">
+                    <label for="name">Name</label>
+                    <input type="text" class="form-input" id="name" v-model="result.name">
+                </div>
+                <div class="form-group">
+                    <label for="description">Description</label>
+                    <textarea class="form-input" rows="2" id="description" v-model="result.description"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="source">Source</label>
+                    <input type="text" class="form-input" id="source" v-model="result.source">
+                </div>
+                <div class="form-group">
+                    <label for="glass">Glass name</label>
+                    <input type="text" class="form-input" id="glass" v-model="result.glass">
+                </div>
+                <div class="form-group">
+                    <label for="instructions">Instructions</label>
+                    <textarea class="form-input" rows="2" id="instructions" v-model="result.instructions"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="image_url">Image url</label>
+                    <input type="text" class="form-input" id="image_url" v-model="result.image.url">
+                </div>
+                <div class="form-group">
+                    <label for="image_copyrigh">Image copyright</label>
+                    <input type="text" class="form-input" id="image_copyrigh" v-model="result.image.copyright">
+                </div>
+                <div class="form-group">
+                    <label for="tags">Tags</label>
+                    <input type="text" class="form-input" id="tags" v-model="cocktailTags">
+                </div>
             </div>
-            <div class="form-group">
-                <label for="description">Description</label><br>
-                <textarea class="form-input" rows="2" id="description" v-model="result.description"></textarea>
-            </div>
-            <div class="form-group">
-                <label for="source">Source</label><br>
-                <input type="text" class="form-input" id="source" v-model="result.source">
-            </div>
-            <div class="form-group">
-                <label for="glass">Glass name</label><br>
-                <input type="text" class="form-input" id="glass" v-model="result.glass">
-            </div>
-            <div class="form-group">
-                <label for="instructions">Instructions</label><br>
-                <textarea class="form-input" rows="2" id="instructions" v-model="result.instructions"></textarea>
-            </div>
-            <div class="form-group">
-                <label for="image_url">Image url</label><br>
-                <input type="text" class="form-input" id="image_url" v-model="result.image.url">
-            </div>
-            <div class="form-group">
-                <label for="image_copyrigh">Image copyright</label><br>
-                <input type="text" class="form-input" id="image_copyrigh" v-model="result.image.copyright">
-            </div>
-            <div class="form-group">
-                <label for="tags">Tags</label><br>
-                <input type="text" class="form-input" id="tags" v-model="cocktailTags">
-            </div>
-            <hr>
-            <div class="scraper-ingredients">
+            <h3 class="form-section-title">Recipe ingredients</h3>
+            <div class="block-container block-container--padded">
                 <div class="scraper-ingredients__ingredient" v-for="(ingredient, idx) in result.ingredients">
                     <div class="form-group">
-                        <label :for="'ingredient_name_' + idx">Name</label><br>
+                        <label :for="'ingredient_name_' + idx">Name</label>
                         <input type="text" class="form-input" :id="'ingredient_name_' + idx" v-model="ingredient.name">
                     </div>
                     <div class="form-group">
-                        <label :for="'ingredient_amount_' + idx">Amount</label><br>
+                        <label :for="'ingredient_amount_' + idx">Amount</label>
                         <input type="text" class="form-input" :id="'ingredient_amount_' + idx" v-model="ingredient.amount">
                     </div>
                     <div class="form-group">
-                        <label :for="'ingredient_units_' + idx">Units</label><br>
+                        <label :for="'ingredient_units_' + idx">Units</label>
                         <input type="text" class="form-input" :id="'ingredient_units_' + idx" v-model="ingredient.units">
                     </div>
                     <div class="form-group">
-                        <label :for="'ingredient_optional_' + idx">
-                            <input type="checkbox" :id="'ingredient_optional_' + idx" :value="true" v-model="ingredient.optional">
-                            Optional
-                        </label>
+                        <Checkbox v-model="ingredient.optional" :id="'ingredient_optional_' + idx">Optional</Checkbox>
                     </div>
-                    <a href="#" @click.prevent="removeIngredient(ingredient)">Remove</a>
+                    <div class="form-group">
+                        <a href="#" @click.prevent="removeIngredient(ingredient)">Remove</a>
+                    </div>
                 </div>
             </div>
             <div class="form-actions">
@@ -85,6 +87,7 @@
 import ApiRequests from "@/ApiRequests";
 import OverlayLoader from '@/components/OverlayLoader.vue'
 import PageHeader from '@/components/PageHeader.vue'
+import Checkbox from '@/components/Checkbox.vue'
 
 export default {
     data() {
@@ -97,6 +100,7 @@ export default {
     components: {
         OverlayLoader,
         PageHeader,
+        Checkbox
     },
     created() {
         document.title = `Cocktail Scraping \u22C5 Salt Rim`
@@ -199,9 +203,8 @@ export default {
 <style scoped>
 .scraper-form .form-group {
     display: flex;
+    flex-direction: row;
     flex-wrap: wrap;
-    padding: .5rem;
-    margin: -2px 0 0 0;
 }
 
 .scraper-form .form-group label {
@@ -222,5 +225,6 @@ export default {
     flex-wrap: wrap;
     align-items: center;
     margin-bottom: 1rem;
+    gap: 0.5rem;
 }
 </style>

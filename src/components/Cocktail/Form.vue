@@ -149,6 +149,16 @@ export default {
         PageHeader,
         Dialog,
     },
+    watch: {
+        showDialog(newVal) {
+            if (newVal == false) {
+                const emptyIngredient = this.cocktail.ingredients.findIndex(i => i.ingredient_id == null);
+                if (emptyIngredient != -1) {
+                    this.cocktail.ingredients.splice(emptyIngredient, 1);
+                }
+            }
+        }
+    },
     computed: {
         cocktailTags: {
             get() {
@@ -271,14 +281,6 @@ export default {
             });
         },
         closeModal(eventData) {
-            // User didnt select any ingredient in modal, so we remove the placeholder
-            if (!this.cocktailIngredientForEdit.ingredient_id) {
-                this.cocktail.ingredients.splice(
-                    this.cocktail.ingredients.findIndex(i => i == this.cocktailIngredientForEdit),
-                    1
-                );
-            }
-
             // User canceled ingredient edit
             if (eventData.type == 'cancel') {
                 this.cocktailIngredientForEdit.id = this.cocktailIngredientForEditOriginal.id;

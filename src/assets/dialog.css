@@ -85,20 +85,25 @@
 
 .dialog__close {
     position: absolute;
-    top: 0.5rem;
-    right: 0.5rem;
+    top: -0.5rem;
+    right: -0.5rem;
     width: 1.5rem;
     height: 1.5rem;
+    border-radius: 50%;
+    background: var(--clr-gray-600);
     display: flex;
     border: 0;
     padding: 0;
-    background: none;
     cursor: pointer;
 }
 
 .dialog__close svg {
     display: block;
     fill: var(--clr-gray-300);
+}
+
+.dialog__close:is(:hover,:focus,:active) {
+    background: var(--clr-gray-300);
 }
 
 .dialog__close:is(:hover,:focus,:active) svg {

@@ -22,9 +22,7 @@
             <input class="form-input" type="password" id="password" v-model="user.password" :required="!user.id" placeholder="Password...">
         </div>
         <div class="form-group">
-            <label class="form-label" for="admin">
-                <input type="checkbox" id="admin" v-model="user.is_admin" :value="true"> Is administrator
-            </label>
+            <Checkbox id="admin" v-model="user.is_admin">Is administrator</Checkbox>
         </div>
         <div class="dialog-actions">
             <button class="button button--outline" @click.prevent="$emit('userDialogClosed')">Cancel</button>
@@ -36,6 +34,7 @@
 <script>
 import ApiRequests from "@/ApiRequests";
 import OverlayLoader from '@/components/OverlayLoader.vue'
+import Checkbox from '@/components/Checkbox.vue'
 
 export default {
     props: ['sourceUser', 'dialogTitle'],
@@ -47,6 +46,7 @@ export default {
     },
     components: {
         OverlayLoader,
+        Checkbox
     },
     methods: {
         submit() {

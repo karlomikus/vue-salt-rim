@@ -55,11 +55,30 @@
     transition: all ease-in-out .1s;
 }
 
+@media (max-width: 450px) {
+    .form-input,
+    .form-select {
+        height: 2.5rem;
+        font-size: 1rem;
+        line-height: 1.3rem;
+        padding: 5px 10px;
+    }
+}
+
 .form-input.form-input--small,
 .form-select.form-select--small {
     height: 2.5rem;
     font-size: 1rem;
     line-height: 1.3rem;
+}
+
+.form-input.form-input--red,
+.form-select.form-select--red {
+    background-color: rgba(255, 255, 255, 0.5);
+    border: 2px solid var(--clr-red-200);
+    border-top-color: transparent;
+    border-left-color: transparent;
+    border-right-color: transparent;
 }
 
 textarea.form-input,
@@ -106,14 +125,4 @@ textarea.form-input,
 .form-input:disabled {
     opacity: .8;
     background: none;
-}
-
-@media (max-width: 450px) {
-    .form-input,
-    .form-select {
-        height: 2.5rem;
-        font-size: 1rem;
-        line-height: 1.3rem;
-        padding: 5px 10px;
-    }
 }

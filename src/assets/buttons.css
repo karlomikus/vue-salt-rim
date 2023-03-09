@@ -1,7 +1,9 @@
 .button {
-    height: 2.25rem;
+    --button-padding: 0.5rem 1.5rem;
+    --button-height: 2.25rem;
+    height: var(--button-height);
     line-height: 1;
-    padding: 0.5rem 1.5rem;
+    padding: var(--button-padding);
     border: 2px solid transparent;
     margin: 0;
     border-radius: 0.25rem;
@@ -15,6 +17,12 @@
     white-space: nowrap;
     text-decoration: none;
     font-weight: 700;
+}
+
+@media (max-width: 450px) {
+    .button {
+        --button-padding: 0.25rem 0.75rem;
+    }
 }
 
 .button--small {
@@ -51,35 +59,42 @@
 }
 
 .button-circle {
-    width: 50px;
-    height: 50px;
-    background: #fff;
+    width: 3rem;
+    height: 3rem;
+    background: var(--clr-gray-50);
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    border: 0;
+    border: 2px solid transparent;
     cursor: pointer;
-    box-shadow: 0 3px 0 rgba(138, 138, 138, 0.295);
     transition: transform ease-in-out .06s;
+    --shadow-color: 0deg 0% 0%;
+    --shadow-elevation-medium:
+      0px 0.4px 0.5px hsl(var(--shadow-color) / 0.11),
+      0px 1.4px 1.6px -0.8px hsl(var(--shadow-color) / 0.11),
+      0px 3.4px 3.8px -1.7px hsl(var(--shadow-color) / 0.11),
+      0px 8.3px 9.3px -2.5px hsl(var(--shadow-color) / 0.11);
+    box-shadow: var(--shadow-elevation-medium);
 }
 
 .button-circle svg {
-    width: 28px;
-    height: 28px;
-    transition: transform ease-in-out .06s;
+    width: 1.75rem;
+    height: 1.75rem;
+    fill: var(--clr-gray-600);
+    transition: transform 150ms cubic-bezier(0.785, 0.135, 0.15, 0.86);
 }
 
 .button-circle:hover {
-    background: rgb(241, 241, 241);
+    background: var(--clr-gray-100);
 }
 
 .button-circle:hover svg {
-    transform: scale(1.1, 1.1);
+    fill: var(--clr-gray-900);
 }
 
 .button-circle:focus {
-    box-shadow: 0 0 0 2px #262831;
+    border-color: var(--clr-gray-800);
 }
 
 .button-circle:active {
@@ -88,7 +103,7 @@
 
 .button--input {
     background-color: rgba(255, 255, 255, 0.5);
-    border: 2px solid var(--clr-red-300);
+    border: 2px solid var(--clr-red-200);
     border-top-color: transparent;
     border-left-color: transparent;
     border-right-color: transparent;
@@ -96,33 +111,28 @@
     height: 3rem;
 }
 
-.button--input:hover,
-.button--input:active,
-.button--input:focus {
-    background-color: #fff;
-    border-color: var(--clr-gray-800);
-}
-
 .button--input svg {
-    fill: #262831;
+    fill: var(--clr-gray-800);
 }
 
 @media (max-width: 450px) {
     .button--input {
         height: 2.5rem;
+        line-height: 1.3rem;
+        padding: 5px 10px;
     }
 
     .button--input svg {
-        fill: #262831;
         width: 18px;
         height: 18px;
     }
+}
 
-    .button {
-        line-height: 100%;
-        height: 2.1rem;
-        font-size: 0.95rem;
-    }
+.button--input:hover,
+.button--input:active,
+.button--input:focus {
+    background-color: #fff;
+    border-color: var(--clr-gray-800);
 }
 
 .button[disabled] {
