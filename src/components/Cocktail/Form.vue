@@ -299,21 +299,11 @@ export default {
         addIngredient() {
             let placeholderData = {
                 ingredient_id: null,
+                amount: 30,
+                units: 'ml',
                 name: '<Not selected>',
                 sort: this.cocktail.ingredients.length + 1
             };
-
-            const defaultUnit = localStorage.getItem('defaultUnit');
-            if (defaultUnit === 'oz') {
-                placeholderData.amount = 1;
-                placeholderData.units = 'oz';
-            } else if (defaultUnit === 'cl') {
-                placeholderData.amount = 3;
-                placeholderData.units = 'cl';
-            } else {
-                placeholderData.amount = 30;
-                placeholderData.units = 'ml';
-            }
 
             this.cocktail.ingredients.push(placeholderData);
 
