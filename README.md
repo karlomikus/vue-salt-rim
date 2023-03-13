@@ -15,7 +15,7 @@ Salt Rim is a web client used for connecting to your [Bar Assistant](https://git
 <p align="center">
     <a href="https://bar.karlomikus.com" target="_blank">Click here to view frontend demo.</a>
     <br>
-    <a href="https://bar-api.karlomikus.com" target="_blank">Click here to view API demo.</a>
+    <a href="https://bar.karlomikus.com/bar/docs" target="_blank">Click here to view API demo.</a>
     <br>
     <strong>Email:</strong> admin@example.com &middot; <strong>Password:</strong> password
 </p>
