@@ -39,7 +39,7 @@
                     </div>
                     <div class="form-group">
                         <label class="form-label">Amount:</label>
-                        <p>{{ ing.amount }} {{ ing.units }}</p>
+                        <p :title="ing.amount + ' ' + ing.units">{{ printIngredientAmount(ing) }}</p>
                     </div>
                     <div class="cocktail-form__ingredients__actions">
                         <a href="#" @click.prevent="editIngredient(ing)">
@@ -79,7 +79,7 @@
                 </p>
             </div>
             <div style="margin-bottom: 2rem;">
-                <label class="form-label">Method:</label>
+                <label class="form-label">Method &amp; dilution:</label>
                 <div class="cocktail-methods">
                     <label class="cocktail-method" v-for="method in methods" :for="'method_' + method.id" :class="{'cocktail-method--selected': method.id == methodId}">
                         <Transition name="cocktail-method__selected--transition">
@@ -300,14 +300,30 @@ export default {
             let placeholderData = {
                 ingredient_id: null,
                 name: '<Not selected>',
-                amount: 30,
-                units: 'ml',
                 sort: this.cocktail.ingredients.length + 1
             };
+
+            const defaultUnit = localStorage.getItem('defaultUnit');
+            if (defaultUnit === 'oz') {
+                placeholderData.amount = 1;
+                placeholderData.units = 'oz';
+            } else if (defaultUnit === 'cl') {
+                placeholderData.amount = 3;
+                placeholderData.units = 'cl';
+            } else {
+                placeholderData.amount = 30;
+                placeholderData.units = 'ml';
+            }
+
             this.cocktail.ingredients.push(placeholderData);
 
             // Show modal after adding ingredient
             this.editIngredient(placeholderData)
+        },
+        printIngredientAmount(ing) {
+            const defaultUnit = localStorage.getItem('defaultUnit');
+
+            return Utils.printIngredientAmount(ing, defaultUnit)
         },
         editIngredient(cocktailIngredient) {
             if (!cocktailIngredient.substitutes) {
@@ -315,6 +331,16 @@ export default {
             }
 
             this.cocktailIngredientForEditOriginal = JSON.parse(JSON.stringify(cocktailIngredient));
+
+            const defaultUnit = localStorage.getItem('defaultUnit');
+            if (defaultUnit === 'oz') {
+                cocktailIngredient.amount = Utils.ml2oz(cocktailIngredient.amount);
+                cocktailIngredient.units = 'oz';
+            } else if (defaultUnit === 'cl') {
+                cocktailIngredient.amount = Utils.ml2cl(cocktailIngredient.amount);
+                cocktailIngredient.units = 'cl';
+            }
+
             this.cocktailIngredientForEdit = cocktailIngredient;
             this.showDialog = true;
         },

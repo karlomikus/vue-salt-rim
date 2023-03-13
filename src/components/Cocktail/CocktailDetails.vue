@@ -190,12 +190,12 @@
 import { marked } from 'marked';
 import ApiRequests from '@/ApiRequests';
 import Auth from '@/Auth';
-import Unitz from 'unitz'
 import OverlayLoader from '@/components/OverlayLoader.vue'
 import Dropdown from '@/components/Dropdown.vue';
 import Rating from '@/components/Rating.vue';
 import { Swiper, SwiperSlide } from 'swiper/vue';
 import { Navigation, Pagination } from 'swiper';
+import Utils from '@/Utils';
 
 export default {
     data: () => ({
@@ -313,23 +313,7 @@ export default {
             })
         },
         parseIngredientAmount(ingredient) {
-            let orgAmountMl = ingredient.amount * this.servings;
-            let orgUnits = ingredient.units.toLowerCase();
-
-            // Don't convert unconvertable units
-            if (orgUnits != 'ml' && orgUnits != 'oz' && orgUnits != 'cl') {
-                return `${orgAmountMl} ${orgUnits}`;
-            }
-
-            if (this.currentUnit == 'oz') {
-                return new Unitz.Fraction(orgAmountMl / 30, [2, 3, 4]).string + ' ' + this.currentUnit
-            }
-
-            if (this.currentUnit == 'cl') {
-                return Unitz.parse(`${orgAmountMl} ${orgUnits}`).convert('cl') + ' ' + this.currentUnit
-            }
-
-            return `${orgAmountMl} ${orgUnits}`;
+            return Utils.printIngredientAmount(ingredient, this.currentUnit, this.servings);
         },
         changeMeasurementUnit(toUnit) {
             this.currentUnit = toUnit;
