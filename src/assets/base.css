@@ -2,40 +2,67 @@
 /* @import url('https://fonts.googleapis.com/css2?family=Alice&family=Philosopher:wght@400;700&display=swap'); */
 
 :root {
-    --clr-red-100: hsl(349, 100%, 98%);
-    --clr-red-300: hsl(349, 54%, 90%);
-    --clr-red-400: hsl(349, 54%, 80%);
-    --clr-red-800: hsl(349, 36%, 49%);
+    /* Base color scheme */
+    --clr-red-50: #FAF5F8;
+    --clr-red-100: #F5EAF2;
+    --clr-red-200: #ECD5E5;
+    --clr-red-300: #E1BDD5;
+    --clr-red-400: #D29DC1;
+    --clr-red-500: #C178AA;
+    --clr-red-600: #B8659E;
+    --clr-red-700: #AF5091;
+    --clr-red-800: #8F4277;
+    --clr-red-900: #693057;
 
-    --clr-gray-900: hsl(227, 16%, 22%);
-    --clr-gray-800: hsl(227, 16%, 32%);
-    --clr-gray-500: hsl(227, 16%, 57%);
-    --clr-gray-300: hsl(227, 16%, 77%);
+    --clr-gray-50: #F3F4F6;
+    --clr-gray-100: #E7E9EE;
+    --clr-gray-200: #CDD0DB;
+    --clr-gray-300: #ACB1C3;
+    --clr-gray-400: #838AA5;
+    --clr-gray-500: #454A5F;
+    --clr-gray-600: #404559;
+    --clr-gray-700: #333747;
+    --clr-gray-800: #2D303E;
+    --clr-gray-900: #181921;
 
-    --color-tag: #DFE7FD;
-    --color-tag-hover: #faeaab;
-    --color-site-header: #737db7;
-    --color-btn-default: #454b60;
-    --color-btn-default-hover: #2b3042;
-    --color-menu-item-hover: #eff7f6;
+    /* Base component color scheme */
+    --clr-link-color: var(--clr-gray-800);
+    --clr-link-color-hover: var(--clr-red-800);
+    --clr-body-font: var(--clr-gray-800);
+    --clr-body-bg: var(--clr-red-50);
 
     --font-primary: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
     --font-accent: 'Bitter', serif;
     --font-heading: 'Alice', serif;
-
     --fw-bold: 700;
+
+    --color-site-header: #4b4c75;
+    --color-btn-default: #454b60;
+    --color-btn-default-hover: #2b3042;
+    --color-menu-item-hover: #eff7f6;
 
     --site-width: 1440px;
     --cocktail-grid-card-width: 250px;
     --cocktail-list-card-width: 350px;
 
-    --clr-accent-blue: #D6E2E9;
+    --clr-accent-blue: #d2e4ee;
     --clr-accent-yellow: #FFF1E6;
     --clr-accent-red: #FDE2E4;
-    --clr-accent-green: #E2ECE9;
+    --clr-accent-green: #d4e9e4;
     --clr-accent-purple: #dfd7e3;
     --clr-accent-orange: #f1dcca;
 }
+
+/* @media (prefers-color-scheme: dark) {
+    :root {
+        --clr-link-color: var(--clr-gray-200);
+        --clr-link-color-hover: var(--clr-gray-100);
+        --clr-body-font: var(--clr-gray-50);
+        --clr-body-bg: var(--clr-gray-800);
+
+        --color-site-header: var(--clr-gray-900);
+    }
+} */
 
 *,
 *::before,
@@ -60,14 +87,15 @@ strong {
 }
 
 body {
-    color: var(--clr-gray-800);
-    background-color: var(--clr-red-100);
+    color: var(--clr-body-font);
+    background-color: var(--clr-body-bg);
     line-height: 1.6;
     font-family: var(--font-primary);
     font-size: 16px;
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    counter-reset: section;
 }
 
 @media (max-width: 450px) {
@@ -78,13 +106,13 @@ body {
 }
 
 a {
-    color: var(--clr-gray-800);
+    color: var(--clr-link-color);
 }
 
 a:hover,
 a:focus,
 a:active {
-    color: var(--clr-red-800);
+    color: var(--clr-link-color-hover);
 }
 
 input,
@@ -109,11 +137,7 @@ hr {
     margin: 1rem 0;
 }
 
-
-
-/* 
-Pineapple Cream
-
+/*
     Iron Maiden
     #dad5e1
     Pastel Day
@@ -154,6 +178,4 @@ Pineapple Cream
     #e9e8f2
     Velvet Scarf
     #dedbe7
-
-
  */

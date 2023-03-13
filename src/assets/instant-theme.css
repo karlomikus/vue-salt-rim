@@ -483,16 +483,13 @@
     -moz-appearance: none;
     appearance: none;
     background: rgba(255, 255, 255, .5);
-    border: 2px solid var(--clr-red-300);
-    border-top-color: transparent;
-    border-left-color: transparent;
-    border-right-color: transparent;
+    border: 2px solid var(--clr-gray-100);
     border-radius: 5px;
     height: 3rem;
-    font-size: 1.2rem;
-    line-height: 1.7rem;
+    font-size: 1.1rem;
+    line-height: 1.5rem;
     outline: 0;
-    padding: 10px 15px;
+    padding: 0.5rem 0.75rem;
     padding-left: 2.5rem;
     vertical-align: middle;
     color: var(--clr-gray-800);
@@ -626,7 +623,6 @@
     background-color: #ffdf93;
     color: #3d2c03;
     border-radius: 2px;
-    font-style: normal;
 }
 
 /**

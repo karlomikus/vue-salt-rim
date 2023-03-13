@@ -2,7 +2,14 @@
     <PageHeader>
         Tags
         <template #actions>
-            <RouterLink class="button button--outline" :to="{name: 'settings.tags.form'}">Add category</RouterLink>
+            <Dialog v-model="showDialog">
+                <template #trigger>
+                    <button type="button" class="button button--outline" @click.prevent="openDialog('Add tag', {})">Add tag</button>
+                </template>
+                <template #dialog>
+                    <TagForm :source-tag="editTag" :dialog-title="dialogTitle" @tag-dialog-closed="refreshTags" />
+                </template>
+            </Dialog>
         </template>
     </PageHeader>
     <div class="settings-page">
@@ -11,24 +18,26 @@
         </div>
         <div class="settings-page__content">
             <OverlayLoader v-if="isLoading" />
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>Name</th>
-                        <th></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr v-for="tag in tags">
-                        <td>
-                            <RouterLink :to="{name: 'settings.tags.form', query: {id: tag.id}}">{{ tag.name }}</RouterLink>
-                        </td>
-                        <td style="text-align: right;">
-                            <a class="list-group__action" href="#" @click.prevent="deleteTag(tag.id)">Delete</a>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+            <div class="block-container block-container--padded">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-for="tag in tags">
+                            <td>
+                                <a href="#" @click.prevent="openDialog('Edit tag', tag)">{{ tag.name }}</a>
+                            </td>
+                            <td style="text-align: right;">
+                                <a class="list-group__action" href="#" @click.prevent="deleteTag(tag)">Delete</a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 </template>
@@ -38,16 +47,23 @@ import ApiRequests from "@/ApiRequests";
 import OverlayLoader from '@/components/OverlayLoader.vue'
 import PageHeader from '@/components/PageHeader.vue'
 import Navigation from '@/components/Settings/Navigation.vue'
+import Dialog from '@/components/Dialog/Dialog.vue'
+import TagForm from '@/components/Settings/TagForm.vue'
 
 export default {
     components: {
         OverlayLoader,
         Navigation,
-        PageHeader
+        PageHeader,
+        TagForm,
+        Dialog
     },
     data() {
         return {
             isLoading: false,
+            showDialog: false,
+            dialogTitle: 'Tags data',
+            editTag: {},
             tags: [],
         }
     },
@@ -58,6 +74,7 @@ export default {
     },
     methods: {
         refreshTags() {
+            this.showDialog = false
             this.isLoading = true;
             ApiRequests.fetchTags().then(data => {
                 this.tags = data;
@@ -66,19 +83,26 @@ export default {
                 this.$toast.error(e.message);
             })
         },
-        deleteTag(id) {
-            if (confirm('Are you sure you want to delete this tag?')) {
-                this.isLoading = true
-                ApiRequests.deleteTag(id).then(() => {
-                    this.isLoading = false;
-                    this.$toast.default(`Tag deleted successfully.`);
-                    this.$router.push({ name: 'settings.tags' })
-                    this.refreshTags()
-                }).catch(e => {
-                    this.$toast.error(e.message);
-                    this.isLoading = false;
-                })
-            }
+        openDialog(title, obj) {
+            this.dialogTitle = title
+            this.editTag = obj
+            this.showDialog = true;
+        },
+        deleteTag(tag) {
+            this.$confirm(`This will permanently tag with name "${tag.name}".`, {
+                onResolved: (dialog) => {
+                    this.isLoading = true
+                    dialog.close()
+                    ApiRequests.deleteTag(tag.id).then(() => {
+                        this.isLoading = false;
+                        this.$toast.default(`Tag deleted successfully.`);
+                        this.refreshTags()
+                    }).catch(e => {
+                        this.$toast.error(e.message);
+                        this.isLoading = false;
+                    })
+                }
+            });
         }
     }
 }

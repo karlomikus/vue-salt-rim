@@ -1,38 +1,42 @@
 .table {
+    --table-border-width: 1px;
+    --table-border-color: var(--clr-red-100);
     width: 100%;
     caption-side: bottom;
-    border-collapse: separate;
-    border-spacing: 0 0.5rem;
+    border-collapse: collapse;
+    border-spacing: 0;
     text-align: left;
 }
 
-.table > thead {
-    vertical-align: bottom;
+.table td {
+    padding: .5rem;
+    box-shadow: inset var(--table-border-width) calc(var(--table-border-width) * -1) 0 0 var(--table-border-color);
 }
 
-.table th, .table td {
-    padding: .5rem .5rem;
+.table tr:last-child td {
+    box-shadow: inset var(--table-border-width) 0 0 0 var(--table-border-color);
+}
+
+.table td:first-child {
+    box-shadow: inset 0 calc(var(--table-border-width) * -1) 0 0 var(--table-border-color);
+}
+
+.table td:first-child {
+    box-shadow: inset 0 calc(var(--table-border-width) * -1) 0 0 var(--table-border-color);
+}
+
+.table tr:last-child td:first-child {
+    box-shadow: none;
 }
 
 .table th {
     font-weight: bold;
+    font-size: 0.75rem;
+    padding: .5rem;
 }
 
-.table td {
-    background: #fff;
-    border: 1px solid var(--clr-red-300);
-}
-
-.table td:first-child {
-    border-top-left-radius: 5px;
-    border-bottom-left-radius: 5px;
-    border-right: 0;
-}
-
-.table td:last-child {
-    border-top-right-radius: 5px;
-    border-bottom-right-radius: 5px;
-    border-left: 0;
+.table tr:hover td {
+    background-color: var(--clr-red-50);
 }
 
 .table td small {

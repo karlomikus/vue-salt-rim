@@ -2,57 +2,30 @@
     <form @submit.prevent="submit">
         <OverlayLoader v-if="isLoading" />
         <PageHeader>
-            Cocktail information
+            Cocktail
         </PageHeader>
-        <div class="form-group">
-            <label class="form-label form-label--required" for="name">Name:</label>
-            <input class="form-input" type="text" id="name" v-model="cocktail.name" required placeholder="Cocktail name...">
+        <h3 class="form-section-title">Recipe information</h3>
+        <div class="block-container block-container--padded">
+            <div class="form-group">
+                <label class="form-label form-label--required" for="name">Name:</label>
+                <input class="form-input" type="text" id="name" v-model="cocktail.name" required placeholder="Cocktail name...">
+            </div>
+            <div class="form-group">
+                <label class="form-label form-label--required" for="instructions">Instructions:</label>
+                <textarea rows="8" class="form-input" id="instructions" v-model="cocktail.instructions" required placeholder="How to prepare the cocktail..."></textarea>
+                <p class="form-input-hint">This field supports markdown.</p>
+            </div>
+            <div class="form-group">
+                <label class="form-label" for="garnish">Garnish:</label>
+                <textarea rows="3" class="form-input" id="garnish" v-model="cocktail.garnish" placeholder="Something to make a cocktail pop..."></textarea>
+                <p class="form-input-hint">This field supports markdown.</p>
+            </div>
         </div>
-        <div class="form-group">
-            <label class="form-label form-label--required" for="instructions">Instructions:</label>
-            <textarea rows="8" class="form-input" id="instructions" v-model="cocktail.instructions" required placeholder="How to prepare the cocktail..."></textarea>
-            <p class="form-input-hint">This field supports markdown.</p>
-        </div>
-        <div class="form-group">
-            <label class="form-label" for="garnish">Garnish:</label>
-            <textarea rows="3" class="form-input" id="garnish" v-model="cocktail.garnish" placeholder="Something to make a cocktail pop..."></textarea>
-            <p class="form-input-hint">This field supports markdown.</p>
-        </div>
-        <div class="form-group">
-            <label class="form-label" for="description">Description:</label>
-            <textarea rows="5" class="form-input" id="description" v-model="cocktail.description" placeholder="Cocktail description or history..."></textarea>
-            <p class="form-input-hint">This field supports markdown.</p>
-        </div>
-        <div class="form-group">
-            <label class="form-label" for="glass">Glass:</label>
-            <select class="form-select" id="glass" v-model="glassId">
-                <option :value="undefined" disabled>Select a glass type...</option>
-                <option v-for="glass in glasses" :value="glass.id">{{ glass.name }}</option>
-            </select>
-            <p class="form-input-hint">
-                <RouterLink :to="{name: 'settings.glasses'}" target="_blank">Edit glasses</RouterLink>
-            </p>
-        </div>
-        <div class="form-group">
-            <label class="form-label" for="glass">Method:</label>
-            <select class="form-select" id="glass" v-model="methodId">
-                <option :value="undefined" disabled>Select a method...</option>
-                <option v-for="method in methods" :value="method.id">{{ method.name }}</option>
-            </select>
-        </div>
-        <div class="form-group">
-            <label class="form-label" for="source">Source:</label>
-            <input class="form-input" type="text" id="source" v-model="cocktail.source" placeholder="Book or URL...">
-        </div>
-        <div class="form-group">
-            <label class="form-label" for="tags">Tags:</label>
-            <input class="form-input" type="text" id="tags" v-model="cocktailTags" placeholder="Tags to help you find the cocktail...">
-            <p class="form-input-hint">Separate multiple tags with a comma (",").</p>
-        </div>
+        <h3 class="form-section-title">Media</h3>
         <ImageUpload ref="imagesUpload" :value="cocktail.images" />
-        <h2 class="page-subtitle">Ingredients</h2>
+        <h3 class="form-section-title">Ingredients</h3>
         <ul class="cocktail-form__ingredients" style="margin-bottom: 20px;">
-            <li v-for="ing in cocktail.ingredients" :data-id="ing.ingredient_id">
+            <li class="block-container" v-for="ing in cocktail.ingredients" :data-id="ing.ingredient_id">
                 <div class="drag-handle"></div>
                 <div class="cocktail-form__ingredients__content">
                     <div class="form-group">
@@ -66,7 +39,7 @@
                     </div>
                     <div class="form-group">
                         <label class="form-label">Amount:</label>
-                        <p>{{ ing.amount }} {{ ing.units }}</p>
+                        <p :title="ing.amount + ' ' + ing.units">{{ printIngredientAmount(ing) }}</p>
                     </div>
                     <div class="cocktail-form__ingredients__actions">
                         <a href="#" @click.prevent="editIngredient(ing)">
@@ -80,14 +53,63 @@
                 </div>
             </li>
         </ul>
-        <button class="button button--outline" type="button" @click="addIngredient">Add ingredient</button>
+        <Dialog v-model="showDialog">
+            <template #trigger>
+                <button class="button button--outline" type="button" @click="addIngredient">Add ingredient</button>
+            </template>
+            <template #dialog>
+                <IngredientModal :value="cocktailIngredientForEdit" @close="closeModal" />
+            </template>
+        </Dialog>
+        <h3 class="form-section-title">Additional information</h3>
+        <div class="block-container block-container--padded">
+            <div class="form-group">
+                <label class="form-label" for="description">Description:</label>
+                <textarea rows="5" class="form-input" id="description" v-model="cocktail.description" placeholder="Cocktail description or history..."></textarea>
+                <p class="form-input-hint">This field supports markdown.</p>
+            </div>
+            <div class="form-group">
+                <label class="form-label" for="glass">Glass:</label>
+                <select class="form-select" id="glass" v-model="glassId">
+                    <option :value="undefined" disabled>Select a glass type...</option>
+                    <option v-for="glass in glasses" :value="glass.id">{{ glass.name }}</option>
+                </select>
+                <p class="form-input-hint">
+                    <RouterLink :to="{name: 'settings.glasses'}" target="_blank">Edit glasses</RouterLink>
+                </p>
+            </div>
+            <div style="margin-bottom: 2rem;">
+                <label class="form-label">Method &amp; dilution:</label>
+                <div class="cocktail-methods">
+                    <label class="cocktail-method" v-for="method in methods" :for="'method_' + method.id" :class="{'cocktail-method--selected': method.id == methodId}">
+                        <Transition name="cocktail-method__selected--transition">
+                            <div class="cocktail-method__selected" v-show="method.id == methodId">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path fill="none" d="M0 0h24v24H0z"/><path d="M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm-.997-6l7.07-7.071-1.414-1.414-5.656 5.657-2.829-2.829-1.414 1.414L11.003 16z"/></svg>
+                            </div>
+                        </Transition>
+                        <!-- <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path fill="none" d="M0 0h24v24H0z"/><path d="M5 16v6H3V3h9.382a1 1 0 0 1 .894.553L14 5h6a1 1 0 0 1 1 1v11a1 1 0 0 1-1 1h-6.382a1 1 0 0 1-.894-.553L12 16H5zM5 5v9h8.236l1 2H19V7h-6.236l-1-2H5z"/></svg> -->
+                        <div class="cocktail-method__title">{{ method.name }}</div>
+                        <small>{{ method.dilution_percentage }}%</small>
+                        <input type="radio" :id="'method_' + method.id" :value="method.id" v-model="methodId">
+                    </label>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="form-label" for="source">Source:</label>
+                <input class="form-input" type="text" id="source" v-model="cocktail.source" placeholder="Book or URL...">
+            </div>
+            <div class="form-group">
+                <label class="form-label" for="tags">Tags:</label>
+                <input class="form-input" type="text" id="tags" v-model="cocktailTags" placeholder="Tags to help you find the cocktail...">
+                <p class="form-input-hint">Separate multiple tags with a comma (",").</p>
+            </div>
+        </div>
         <div class="form-actions">
             <RouterLink class="button button--outline" :to="{ name: 'cocktails.show', params: { id: cocktailId } }" v-if="cocktailId">Cancel</RouterLink>
             <RouterLink class="button button--outline" :to="{ name: 'cocktails' }" v-else>Cancel</RouterLink>
             <button class="button button--dark" type="submit">Save</button>
         </div>
     </form>
-    <IngredientModal v-show="isModalVisible" :value="cocktailIngredientForEdit" @close="closeModal" />
 </template>
 
 <script>
@@ -99,11 +121,12 @@ import IngredientModal from '@/components/Cocktail/IngredientModal.vue'
 import ImageUpload from '@/components/ImageUpload.vue'
 import PageHeader from '@/components/PageHeader.vue'
 import Sortable from 'sortablejs';
+import Dialog from '@/components/Dialog/Dialog.vue';
 
 export default {
     data() {
         return {
-            isModalVisible: false,
+            showDialog: false,
             cocktailIngredientForEdit: {},
             cocktailIngredientForEditOriginal: {},
             isLoading: false,
@@ -124,6 +147,17 @@ export default {
         IngredientModal,
         ImageUpload,
         PageHeader,
+        Dialog,
+    },
+    watch: {
+        showDialog(newVal) {
+            if (newVal == false) {
+                const emptyIngredient = this.cocktail.ingredients.findIndex(i => i.ingredient_id == null);
+                if (emptyIngredient != -1) {
+                    this.cocktail.ingredients.splice(emptyIngredient, 1);
+                }
+            }
+        }
     },
     computed: {
         cocktailTags: {
@@ -221,26 +255,32 @@ export default {
 
         this.sortable = Sortable.create(document.querySelector('.cocktail-form__ingredients'), {
             handle: '.drag-handle',
-            ghostClass: 'cocktail-form__ingredients__placeholder',
+            ghostClass: 'block-container--placeholder',
             animation: 150
         });
     },
     methods: {
         removeIngredient(ing) {
-            this.cocktail.ingredients.splice(
-                this.cocktail.ingredients.findIndex(i => i == ing),
-                1
-            );
-        },
-        closeModal(eventData) {
-            // User didnt select any ingredient in modal, so we remove the placeholder
-            if (!this.cocktailIngredientForEdit.ingredient_id) {
+            if (!ing.ingredient_id) {
                 this.cocktail.ingredients.splice(
-                    this.cocktail.ingredients.findIndex(i => i == this.cocktailIngredientForEdit),
+                    this.cocktail.ingredients.findIndex(i => i == ing),
                     1
                 );
+
+                return;
             }
 
+            this.$confirm(`This will remove ingredient "${ing.name}" from the recipe.`, {
+                onResolved: (dialog) => {
+                    dialog.close();
+                    this.cocktail.ingredients.splice(
+                        this.cocktail.ingredients.findIndex(i => i == ing),
+                        1
+                    );
+                }
+            });
+        },
+        closeModal(eventData) {
             // User canceled ingredient edit
             if (eventData.type == 'cancel') {
                 this.cocktailIngredientForEdit.id = this.cocktailIngredientForEditOriginal.id;
@@ -254,20 +294,26 @@ export default {
                 this.cocktailIngredientForEdit.substitutes = this.cocktailIngredientForEditOriginal.substitutes;
             }
 
-            this.isModalVisible = false;
+            this.showDialog = false;
         },
         addIngredient() {
             let placeholderData = {
                 ingredient_id: null,
-                name: '<Not selected>',
                 amount: 30,
                 units: 'ml',
+                name: '<Not selected>',
                 sort: this.cocktail.ingredients.length + 1
             };
+
             this.cocktail.ingredients.push(placeholderData);
 
             // Show modal after adding ingredient
             this.editIngredient(placeholderData)
+        },
+        printIngredientAmount(ing) {
+            const defaultUnit = localStorage.getItem('defaultUnit');
+
+            return Utils.printIngredientAmount(ing, defaultUnit)
         },
         editIngredient(cocktailIngredient) {
             if (!cocktailIngredient.substitutes) {
@@ -275,8 +321,18 @@ export default {
             }
 
             this.cocktailIngredientForEditOriginal = JSON.parse(JSON.stringify(cocktailIngredient));
+
+            const defaultUnit = localStorage.getItem('defaultUnit');
+            if (defaultUnit === 'oz') {
+                cocktailIngredient.amount = Utils.ml2oz(cocktailIngredient.amount);
+                cocktailIngredient.units = 'oz';
+            } else if (defaultUnit === 'cl') {
+                cocktailIngredient.amount = Utils.ml2cl(cocktailIngredient.amount);
+                cocktailIngredient.units = 'cl';
+            }
+
             this.cocktailIngredientForEdit = cocktailIngredient;
-            this.isModalVisible = true;
+            this.showDialog = true;
         },
         async submit() {
             const sortedIngredientList = this.sortable.toArray();
@@ -321,9 +377,9 @@ export default {
 
             const imageResources = await this.$refs.imagesUpload.uploadPictures().catch(() => {
                 this.$toast.error('An error occured while uploading images. Your cocktail is still saved.');
-            }) || [];
+            });
 
-            if (Array.isArray(imageResources)) {
+            if (imageResources.length > 0) {
                 postData.images = imageResources.map(img => img.id);
             }
 
@@ -359,15 +415,12 @@ export default {
     margin: 0;
     padding: 0;
     display: grid;
-    row-gap: 5px;
+    row-gap: 1rem;
 }
 
 .cocktail-form__ingredients li {
     display: flex;
-    background: rgba(255, 255, 255, .5);
-    padding: 10px;
-    border-bottom: 2px solid var(--clr-red-300);
-    border-radius: 5px;
+    padding: 1rem;
 }
 
 .cocktail-form__ingredients li.cocktail-form__ingredients__placeholder {
@@ -402,11 +455,56 @@ export default {
     margin-left: 0.5rem;
 }
 
-.drag-handle {
-    width: 20px;
-    height: 100%;
-    background-image: radial-gradient(circle at 1px 1px, var(--clr-gray-300) 1px, transparent 0);
-    background-size: 4px 4px;
-    cursor: move;
+.cocktail-methods {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-top: 0.5rem;
+}
+
+.cocktail-method {
+    background: #fff;
+    flex-basis: 100px;
+    flex-grow: 1;
+    border: 2px solid var(--clr-gray-200);
+    padding: 0.5rem;
+    border-radius: 0.25rem;
+    text-align: center;
+    cursor: pointer;
+    transition: box-shadow 100ms cubic-bezier(0.455, 0.03, 0.515, 0.955);
+}
+
+.cocktail-method__selected {
+    position: absolute;
+    top: -0.5rem;
+    right: -0.5rem;
+    transition: transform 150ms cubic-bezier(0.455, 0.03, 0.515, 0.955), opacity 100ms cubic-bezier(0.455, 0.03, 0.515, 0.955);
+}
+
+.cocktail-method__selected svg {
+    fill: var(--clr-red-700);
+}
+
+.cocktail-method__selected--transition-enter-from,
+.cocktail-method__selected--transition-leave-to {
+    transform: translate(0, -0.25rem);
+    opacity: 0;
+}
+
+.cocktail-method.cocktail-method--selected {
+    box-shadow: 0 0 0 3px var(--clr-gray-200);
+    border-color: var(--clr-gray-500);
+}
+
+.cocktail-method input {
+    display: none;
+}
+
+.cocktail-method small {
+    color: var(--clr-gray-400);
+}
+
+.cocktail-method:hover {
+    border-color: var(--clr-gray-500);
 }
 </style>

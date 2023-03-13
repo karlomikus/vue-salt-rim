@@ -14,7 +14,7 @@
 }
 
 .modal {
-    background: var(--clr-red-100);
+    background: var(--clr-red-50);
     box-shadow: 0 10px 20px 1px rgb(71, 71, 71, 0.3);
     border-radius: 15px;
     overflow-x: auto;

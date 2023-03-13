@@ -17,7 +17,7 @@
                 <h2>Ingredients:</h2>
                 <ul>
                     <li v-for="ingredient in cocktail.ingredients">
-                        {{ ingredient.amount }} {{ ingredient.units }} &middot; {{ ingredient.name }}
+                        {{ ingredientAmount(ingredient) }} &middot; {{ ingredient.name }}
                         <i v-if="ingredient.optional">(optional)</i>
                     </li>
                 </ul>
@@ -35,6 +35,7 @@
 <script>
 import { marked } from 'marked';
 import ApiRequests from '@/ApiRequests';
+import Utils from "@/Utils";
 
 export default {
     data() {
@@ -73,6 +74,13 @@ export default {
         }).catch(e => {
             this.$toast.error(e.message);
         })
+    },
+    methods: {
+        ingredientAmount(ing) {
+            const defaultUnit = localStorage.getItem('defaultUnit');
+
+            return Utils.printIngredientAmount(ing, defaultUnit)
+        }
     }
 }
 </script>

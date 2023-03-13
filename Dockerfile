@@ -1,9 +1,14 @@
 FROM node:current-alpine3.15 as build
 
+ARG BUILD_VERSION
+ENV BUILD_VERSION=${BUILD_VERSION:-develop}
+
 WORKDIR /app
 COPY package*.json .
 RUN npm install
 COPY . .
+
+RUN sed -i "s/{{VERSION}}/$BUILD_VERSION/g" ./src/main.js
 
 RUN npm run build
 

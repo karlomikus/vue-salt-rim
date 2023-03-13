@@ -46,10 +46,10 @@ export default {
     },
     computed: {
         clientVersion() {
-            return `Salt Rim ${this.versions.client}`
+            return `Salt Rim: ${this.versions.client}`
         },
         apiVersion() {
-            return `Bar Assistant ${this.versions.api}`
+            return `Bar Assistant: ${this.versions.api}`
         }
     },
     created() {

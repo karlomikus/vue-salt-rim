@@ -1,5 +1,5 @@
 <template>
-    <RouterLink class="cocktail-list-item" :to="{ name: 'cocktails.show', params: { id: cocktail.slug } }">
+    <RouterLink class="block-container block-container--hover cocktail-list-item" :to="{ name: 'cocktails.show', params: { id: cocktail.slug } }">
         <div class="cocktail-list-item__graphic">
             <div class="cocktail-list-item__graphic__image" :data-img-src="mainCocktailImageUrl"></div>
         </div>
@@ -41,16 +41,8 @@ export default {
 
     display: flex;
     align-items: center;
-    background-color: #fff;
     padding: 0.825rem;
-    border-radius: 0.5rem;
-    box-shadow: 0 3px 0 var(--clr-red-300);
-    transition: box-shadow ease-in-out 150ms;
     text-decoration: none;
-}
-
-.cocktail-list-item:hover {
-  box-shadow: 0 3px 0 var(--clr-red-800);
 }
 
 .cocktail-list-item__graphic {

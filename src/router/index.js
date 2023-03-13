@@ -88,29 +88,14 @@ const router = createRouter({
                     component: () => import('../views/SettingsCategoriesView.vue'),
                 },
                 {
-                    path: '/settings/categories/form',
-                    name: 'settings.categories.form',
-                    component: () => import('../views/CategoryFormView.vue'),
-                },
-                {
                     path: '/settings/glasses',
                     name: 'settings.glasses',
                     component: () => import('../views/SettingsGlassesView.vue'),
                 },
                 {
-                    path: '/settings/glasses/form',
-                    name: 'settings.glasses.form',
-                    component: () => import('../views/GlassFormView.vue'),
-                },
-                {
                     path: '/settings/users',
                     name: 'settings.users',
                     component: () => import('../views/SettingsUsersView.vue'),
-                },
-                {
-                    path: '/settings/users/form',
-                    name: 'settings.users.form',
-                    component: () => import('../views/UserFormView.vue'),
                 },
                 {
                     path: '/shelf/cocktails',
@@ -126,11 +111,6 @@ const router = createRouter({
                     path: '/settings/tags',
                     name: 'settings.tags',
                     component: () => import('../views/SettingsTagsView.vue'),
-                },
-                {
-                    path: '/settings/tags/form',
-                    name: 'settings.tags.form',
-                    component: () => import('../views/TagFormView.vue'),
                 },
             ]
         },

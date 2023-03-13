@@ -1,11 +1,17 @@
 <template>
     <OverlayLoader v-if="!cocktail.id" />
     <div class="cocktail-details" v-if="cocktail.id">
-        <div class="cocktail-details__graphic" :style="{ 'background-image': 'url(' + mainCocktailImageUrl + ')' }">
-            <div class="cocktail-details__graphic__copyright" v-if="mainCocktailImage.copyright">Image &copy; {{ mainCocktailImage.copyright }}</div>
+        <div class="cocktail-details__graphic">
+            <swiper v-if="cocktail.images.length > 0" :modules="sliderModules" navigation :pagination="{ clickable: true }" :follow-finger="false">
+                <swiper-slide v-for="image in sortedImages">
+                    <img :src="image.url" :alt="image.copyright" />
+                    <div class="cocktail-details__graphic__copyright" v-if="image.copyright">Image &copy; {{ image.copyright }}</div>
+                </swiper-slide>
+            </swiper>
+            <img v-else src="/no-cocktail.jpg" alt="This cocktail does not have an image." />
         </div>
-        <div class="cocktail-details-box cocktail-details-box--blue">
-            <h3 class="cocktail-details-box__title">{{ cocktail.name }}</h3>
+        <div class="details-block-container details-block-container--blue cocktail-details-box">
+            <h3 class="cocktail-title">{{ cocktail.name }}</h3>
             <div class="cocktail-details__chips">
                 <div class="cocktail-details__chips__group" v-if="cocktail.tags.length > 0">
                     <div class="cocktail-details__chips__group__title">Tags:</div>
@@ -57,7 +63,7 @@
                         <path fill="none" d="M0 0H24V24H0z" />
                         <path d="M20.243 4.757c2.262 2.268 2.34 5.88.236 8.236l-8.48 8.492-8.478-8.492c-2.104-2.356-2.025-5.974.236-8.236 2.265-2.264 5.888-2.34 8.244-.228 2.349-2.109 5.979-2.039 8.242.228zM5.172 6.172c-1.49 1.49-1.565 3.875-.192 5.451L12 18.654l7.02-7.03c1.374-1.577 1.299-3.959-.193-5.454-1.487-1.49-3.881-1.562-5.453-.186l-4.202 4.203-1.415-1.414 2.825-2.827-.082-.069c-1.575-1.265-3.877-1.157-5.328.295z" />
                     </svg>
-                    <svg v-else xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="#ee6055">
+                    <svg v-else xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="#C6375F">
                         <path fill="none" d="M0 0H24V24H0z" />
                         <path d="M20.243 4.757c2.262 2.268 2.34 5.88.236 8.236l-8.48 8.492-8.478-8.492c-2.104-2.356-2.025-5.974.236-8.236C5.515 3 8.093 2.56 10.261 3.44L6.343 7.358l1.414 1.415L12 4.53l-.013-.014.014.013c2.349-2.109 5.979-2.039 8.242.228z" />
                     </svg>
@@ -135,8 +141,8 @@
                 </Dropdown>
             </div>
         </div>
-        <div class="cocktail-details-box cocktail-details-box--green" v-if="cocktail.ingredients.length > 0">
-            <h3 class="cocktail-details-box__title">Ingredients:</h3>
+        <div class="details-block-container details-block-container--green" v-if="cocktail.ingredients.length > 0">
+            <h3 class="details-block-container__title">Ingredients</h3>
             <div style="display: grid; grid-template-columns: 1fr 1fr;">
                 <div class="cocktail-button-group">
                     <h4>Servings:</h4>
@@ -169,12 +175,12 @@
             </ul>
             <a v-show="missingIngredientIds.length > 0" href="#" @click.prevent="addMissingIngredients">Add missing ingredients to my shopping list</a>
         </div>
-        <div class="cocktail-details-box cocktail-details-box--yellow">
-            <h3 class="cocktail-details-box__title">Instructions:</h3>
+        <div class="details-block-container details-block-container--yellow" v-once>
+            <h3 class="details-block-container__title">Instructions</h3>
             <div v-html="parsedInstructions"></div>
         </div>
-        <div class="cocktail-details-box cocktail-details-box--red" v-if="cocktail.garnish">
-            <h3 class="cocktail-details-box__title">Garnish:</h3>
+        <div class="details-block-container details-block-container--red" v-if="cocktail.garnish" v-once>
+            <h3 class="details-block-container__title">Garnish</h3>
             <div v-html="parsedGarnish"></div>
         </div>
     </div>
@@ -184,10 +190,12 @@
 import { marked } from 'marked';
 import ApiRequests from '@/ApiRequests';
 import Auth from '@/Auth';
-import Unitz from 'unitz'
 import OverlayLoader from '@/components/OverlayLoader.vue'
 import Dropdown from '@/components/Dropdown.vue';
 import Rating from '@/components/Rating.vue';
+import { Swiper, SwiperSlide } from 'swiper/vue';
+import { Navigation, Pagination } from 'swiper';
+import Utils from '@/Utils';
 
 export default {
     data: () => ({
@@ -196,12 +204,15 @@ export default {
         servings: 1,
         userShelfIngredients: [],
         userShoppingListIngredients: [],
-        currentUnit: 'ml'
+        currentUnit: 'ml',
+        sliderModules: [Navigation, Pagination]
     }),
     components: {
         OverlayLoader,
         Dropdown,
-        Rating
+        Rating,
+        Swiper,
+        SwiperSlide
     },
     computed: {
         parsedInstructions() {
@@ -230,20 +241,9 @@ export default {
                 return !this.userShelfIngredients.includes(userIngredient.ingredient_id) && !this.userShoppingListIngredients.includes(userIngredient.ingredient_id)
             }).map(cocktailIngredient => cocktailIngredient.ingredient_id)
         },
-        mainCocktailImage() {
-            if (this.cocktail.main_image_id == null) {
-                return {};
-            }
-
-            return this.cocktail.images.filter((img) => img.id == this.cocktail.main_image_id)[0];
+        sortedImages() {
+            return this.cocktail.images.sort((a, b) => a.sort - b.sort)
         },
-        mainCocktailImageUrl() {
-            if (!this.mainCocktailImage.url) {
-                return '/no-cocktail.jpg';
-            }
-
-            return this.mainCocktailImage.url
-        }
     },
     watch: {
         cocktail(val) {
@@ -284,14 +284,19 @@ export default {
             })
         },
         deleteCocktail() {
-            if (confirm('Are you sure you want to delete cocktail?')) {
-                ApiRequests.deleteCocktail(this.cocktail.id).then(() => {
-                    this.$toast.default(`Cocktail "${this.cocktail.name}" successfully removed`);
-                    this.$router.push({ name: 'cocktails' })
-                }).catch(e => {
-                    this.$toast.error(e.message);
-                })
-            }
+            this.$confirm(`This will permanently delete cocktail with name "${this.cocktail.name}".`, {
+                onResolved: (dialog) => {
+                    dialog.close()
+                    ApiRequests.deleteCocktail(this.cocktail.id).then(() => {
+                        this.$toast.default(`Cocktail "${this.cocktail.name}" successfully removed`);
+                        this.$router.push({ name: 'cocktails' })
+                        dialog.close()
+                    }).catch(e => {
+                        this.$toast.error(e.message);
+                        dialog.close()
+                    })
+                }
+            });
         },
         addMissingIngredients() {
             const postData = {
@@ -308,23 +313,7 @@ export default {
             })
         },
         parseIngredientAmount(ingredient) {
-            let orgAmountMl = ingredient.amount * this.servings;
-            let orgUnits = ingredient.units.toLowerCase();
-
-            // Don't convert unconvertable units
-            if (orgUnits != 'ml' && orgUnits != 'oz' && orgUnits != 'cl') {
-                return `${orgAmountMl} ${orgUnits}`;
-            }
-
-            if (this.currentUnit == 'oz') {
-                return new Unitz.Fraction(orgAmountMl / 30, [2, 3, 4]).string + ' ' + this.currentUnit
-            }
-
-            if (this.currentUnit == 'cl') {
-                return Unitz.parse(`${orgAmountMl} ${orgUnits}`).convert('cl') + ' ' + this.currentUnit
-            }
-
-            return `${orgAmountMl} ${orgUnits}`;
+            return Utils.printIngredientAmount(ingredient, this.currentUnit, this.servings);
         },
         changeMeasurementUnit(toUnit) {
             this.currentUnit = toUnit;
@@ -338,68 +327,57 @@ export default {
 .cocktail-details {
     max-width: 1200px;
     margin: 0 auto;
+    isolation: isolate;
+    --cocktail-graphic-height: 1000px;
+    --swiper-theme-color: #fff;
+    --swiper-pagination-bottom: 3rem;
+    --swiper-pagination-bullet-size: 0.65rem;
+    --swiper-navigation-size: 2rem;
+    --swiper-pagination-bullet-inactive-color: #fff;
+}
+
+@media (max-width: 450px) {
+    .cocktail-details {
+        --cocktail-graphic-height: 500px;
+        --swiper-navigation-size: 1.5rem;
+        --swiper-pagination-bullet-size: 0.45rem;
+    }
 }
 
 .cocktail-details__graphic {
     background-color: #fff;
-    padding: 10px;
-    background-size: cover;
-    background-position: center center;
-    height: 1000px;
     border-top-left-radius: 20px;
     border-top-right-radius: 20px;
+    overflow: hidden;
 }
 
-@media (max-width: 450px) {
-    .cocktail-details__graphic {
-        height: 500px;
-    }
+.cocktail-details__graphic img {
+    width: 100%;
+    height: var(--cocktail-graphic-height);
+    object-fit: cover;
 }
 
 .cocktail-details__graphic__copyright {
-    display: inline;
+    position: absolute;
+    top: 1rem;
+    left: 1rem;
+    display: inline-block;
     background-color: rgba(0, 0, 0, .4);
     color: #fff;
-    width: 100%;
     border-radius: 15px;
     padding: 2px 7px;
     font-size: 0.7rem;
 }
 
-.cocktail-details-box {
-    background-color: #fff;
-    border-radius: 20px;
-    border-bottom-left-radius: 0;
-    border-bottom-right-radius: 0;
-    padding: 20px 20px 40px 20px;
-    margin-top: -20px;
+.details-block-container {
+    z-index: 2;
 }
 
-.cocktail-details-box.cocktail-details-box--blue {
-    background-color: var(--clr-accent-blue);
-}
-
-.cocktail-details-box.cocktail-details-box--yellow {
-    background-color: var(--clr-accent-yellow);
-}
-
-.cocktail-details-box.cocktail-details-box--red {
-    background-color: var(--clr-accent-red);
-}
-
-.cocktail-details-box.cocktail-details-box--green {
-    background-color: var(--clr-accent-green);
-}
-
-.cocktail-details-box__title {
+.cocktail-title {
     font-family: var(--font-heading);
-    font-size: 1.3rem;
-    font-weight: 700;
-    margin: 0 0 20px 0;
-}
-
-.cocktail-details-box--blue .cocktail-details-box__title {
     font-size: 2rem;
+    font-weight: 700;
+    margin: 0 0 1.5rem 0;
 }
 
 .cocktail-ingredients {
@@ -411,7 +389,7 @@ export default {
 .cocktail-ingredients li {
     display: flex;
     align-items: center;
-    background-color: rgb(211, 227, 222);
+    background-color: rgba(255, 255, 255, .3);
     border-radius: 4px;
     margin-bottom: 10px;
     padding: 5px 10px;
@@ -470,8 +448,8 @@ export default {
 }
 
 .cocktail-button-group button {
-    background: rgb(211, 227, 222);
-    border: 3px solid rgb(211, 227, 222);
+    background: none;
+    border: none;
     font-size: 1rem;
     min-width: 2rem;
     cursor: pointer;
@@ -479,12 +457,11 @@ export default {
 }
 
 .cocktail-button-group button.active-serving {
-    background-color: rgb(162, 197, 186);
-    border-color: rgb(162, 197, 186);
+    background-color: rgb(255, 255, 255, .6);
 }
 
 .cocktail-button-group button:hover {
-    border-color: rgb(129, 173, 159);
+    background-color: rgb(255, 255, 255, .3);
 }
 
 .cocktail-details-box ol {

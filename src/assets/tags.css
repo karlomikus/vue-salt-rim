@@ -5,6 +5,8 @@
 }
 
 .tag {
+    --color-tag: #DFE7FD;
+
     text-decoration: none;
     background-color: none;
     padding: 4px 10px;

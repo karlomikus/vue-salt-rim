@@ -125,7 +125,7 @@ export default {
     margin-bottom: 1rem;
     padding: 0.5rem;
     border-radius: 0.25rem;
-    border: 1px solid var(--clr-red-400);
+    border: 2px solid var(--clr-gray-200);
 }
 
 .server-status__title {

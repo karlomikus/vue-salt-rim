@@ -1,3 +1,14 @@
+# v1.7.0
+## New
+- You can now upload multiple cocktail images
+    - You can sort images, first one in the list is used for default thumbnail
+- Added confirm dialogs
+- Selected fluid units are now also used as default when adding ingredients #60
+
+## Changes
+- Updated UI styling
+- Version now automatically updated from github ref
+
 # v1.6.0
 
 Official docker image moved to `barassistant/salt-rim`.
