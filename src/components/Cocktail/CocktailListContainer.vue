@@ -34,7 +34,7 @@ export default {
 
 @media (max-width: 450px) {
     .cocktail-list-container {
-        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        grid-template-columns: 100%;
     }
 }
 </style>

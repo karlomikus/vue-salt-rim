@@ -2,12 +2,6 @@
     <PageHeader>
         Hello, {{ user.name }} 👋
     </PageHeader>
-    <!-- <div class="home-actions">
-        <a href="#" @click.prevent="randomCocktail()">Random cocktail</a>
-        <RouterLink :to="{name: 'cocktails.form'}">Create a cocktail</RouterLink>
-        <RouterLink :to="{name: 'settings'}">Settings</RouterLink>
-        <a href="#" @click.prevent="logout">Logout</a>
-    </div> -->
 
     <div class="stats">
         <OverlayLoader v-if="loaders.stats"></OverlayLoader>
@@ -178,68 +172,17 @@ export default {
 </script>
 
 <style scoped>
-.home-actions {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    column-gap: 10px;
-    row-gap: 10px;
-}
-
-.home-actions a {
-    display: flex;
-    text-decoration: none;
-    background-color: #fff;
-    background-size: cover;
-    background-position: center center;
-    border-radius: 10px;
-    height: 80px;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.3rem;
-    text-align: center;
-}
-
-@media (max-width: 450px) {
-    .home-actions a {
-        height: 60px;
-        font-size: 1.3rem;
-    }
-}
-
-.home-actions a:nth-child(1) {
-    background-color: #C5DEDD;
-}
-
-.home-actions a:nth-child(2) {
-    background-color: #D6E2E9;
-}
-
-.home-actions a:nth-child(3) {
-    background-color: #FAD2E1;
-}
-
-.home-actions a:nth-child(4) {
-    background-color: #EDDCD2;
-}
-
-.home-actions a:nth-child(5) {
-    background-color: #F0EFEB;
-}
-
-.home-actions a:nth-child(6) {
-    background-color: #dbcdf0;
-}
-
-.home-actions a:hover {
-    background-color: var(--clr-gray-800);
-    color: #fff;
-}
-
 .list-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(var(--cocktail-list-card-width), 1fr));
     column-gap: 10px;
     row-gap: 10px;
+}
+
+@media (max-width: 450px) {
+    .list-grid {
+        grid-template-columns: 100%;
+    }
 }
 
 .list-grid__col {

@@ -13,7 +13,7 @@
 
 @media (max-width: 450px) {
     .shopping-list-container {
-        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        grid-template-columns: 100%;
     }
 }
 </style>
