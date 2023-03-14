@@ -26,7 +26,7 @@
                 <br>
                 {{ apiVersion }}
                 <br>
-                Powered by <a href="https://www.meilisearch.com/" target="_blank">Meilisearch</a>
+                {{ meiliVersion }}
             </div>
         </div>
     </footer>
@@ -41,6 +41,7 @@ export default {
             versions: {
                 api: null,
                 client: this.app_version,
+                meili: null
             }
         }
     },
@@ -50,13 +51,18 @@ export default {
         },
         apiVersion() {
             return `Bar Assistant: ${this.versions.api}`
+        },
+        meiliVersion() {
+            return `Meilisearch: ${this.versions.meili}`
         }
     },
     created() {
         ApiRequests.fetchApiVersion().then(resp => {
             this.versions.api = resp.version
+            this.versions.meili = resp.meilisearch_version
         }).catch(() => {
             this.versions.api = 'Fetch error';
+            this.versions = 'Fetch error';
         })
     }
 }
