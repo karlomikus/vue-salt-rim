@@ -105,6 +105,13 @@ body {
     }
 }
 
+@media print {
+    .no-print,
+    .no-print * {
+        display: none !important;
+    }
+}
+
 a {
     color: var(--clr-link-color);
 }
