@@ -85,14 +85,21 @@
                             </svg>
                             Print recipe
                         </RouterLink>
-                        <!-- <RouterLink class="dropdown-menu__item" target="_blank" :to="{ name: 'print.cocktail', params: { id: cocktail.slug } }">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18">
-                                <path fill="none" d="M0 0h24v24H0z" />
-                                <path d="M18.364 15.536L16.95 14.12l1.414-1.414a5 5 0 1 0-7.071-7.071L9.879 7.05 8.464 5.636 9.88 4.222a7 7 0 0 1 9.9 9.9l-1.415 1.414zm-2.828 2.828l-1.415 1.414a7 7 0 0 1-9.9-9.9l1.415-1.414L7.05 9.88l-1.414 1.414a5 5 0 1 0 7.071 7.071l1.414-1.414 1.415 1.414zm-.708-10.607l1.415 1.415-7.071 7.07-1.415-1.414 7.071-7.07z" />
-                            </svg>
-                            Copy public link
-                        </RouterLink>
-                        <a class="dropdown-menu__item" target="_blank">
+                        <Dialog v-model="showPublicDialog">
+                            <template #trigger>
+                                <a class="dropdown-menu__item" href="#" @click.prevent="showPublicDialog = !showPublicDialog">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18">
+                                        <path fill="none" d="M0 0h24v24H0z" />
+                                        <path d="M18.364 15.536L16.95 14.12l1.414-1.414a5 5 0 1 0-7.071-7.071L9.879 7.05 8.464 5.636 9.88 4.222a7 7 0 0 1 9.9 9.9l-1.415 1.414zm-2.828 2.828l-1.415 1.414a7 7 0 0 1-9.9-9.9l1.415-1.414L7.05 9.88l-1.414 1.414a5 5 0 1 0 7.071 7.071l1.414-1.414 1.415 1.414zm-.708-10.607l1.415 1.415-7.071 7.07-1.415-1.414 7.071-7.07z" />
+                                    </svg>
+                                    Create public link
+                                </a>
+                            </template>
+                            <template #dialog>
+                                <PublicLinkDialog :cocktail="cocktail" @publicDialogClosed="showPublicDialog = false" />
+                            </template>
+                        </Dialog>
+                        <!-- <a class="dropdown-menu__item" target="_blank">
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18">
                                 <path fill="none" d="M0 0h24v24H0z" />
                                 <path d="M4.828 21l-.02.02-.021-.02H2.992A.993.993 0 0 1 2 20.007V3.993A1 1 0 0 1 2.992 3h18.016c.548 0 .992.445.992.993v16.014a1 1 0 0 1-.992.993H4.828zM20 15V5H4v14L14 9l6 6zm0 2.828l-6-6L6.828 19H20v-1.172zM8 11a2 2 0 1 1 0-4 2 2 0 0 1 0 4z" />
@@ -196,6 +203,8 @@ import Rating from '@/components/Rating.vue';
 import { Swiper, SwiperSlide } from 'swiper/vue';
 import { Navigation, Pagination } from 'swiper';
 import Utils from '@/Utils';
+import Dialog from '@/components/Dialog/Dialog.vue'
+import PublicLinkDialog from '@/components/Cocktail/PublicLinkDialog.vue'
 
 export default {
     data: () => ({
@@ -205,14 +214,17 @@ export default {
         userShelfIngredients: [],
         userShoppingListIngredients: [],
         currentUnit: 'ml',
-        sliderModules: [Navigation, Pagination]
+        sliderModules: [Navigation, Pagination],
+        showPublicDialog: false
     }),
     components: {
         OverlayLoader,
         Dropdown,
         Rating,
         Swiper,
-        SwiperSlide
+        SwiperSlide,
+        Dialog,
+        PublicLinkDialog
     },
     computed: {
         parsedInstructions() {
@@ -378,6 +390,7 @@ export default {
     font-size: 2rem;
     font-weight: 700;
     margin: 0 0 1.5rem 0;
+    line-height: 1.3;
 }
 
 .cocktail-ingredients {

@@ -29,6 +29,12 @@ const router = createRouter({
             meta: { requiresAuth: false }
         },
         {
+            path: '/e/cocktail/:ulid/:slug',
+            name: 'e.cocktail',
+            component: () => import('../views/PublicCocktailView.vue'),
+            meta: { requiresAuth: false }
+        },
+        {
             path: '/',
             component: () => import('../AuthLayout.vue'),
             children: [

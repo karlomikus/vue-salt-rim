@@ -10,6 +10,7 @@
     "@algolia/autocomplete-js": "^1.7.1",
     "@meilisearch/instant-meilisearch": "^0.9.0",
     "@popperjs/core": "^2.11.6",
+    "dayjs": "^1.11.7",
     "lodash": "^4.17.21",
     "marked": "^4.1.1",
     "mitt": "^3.0.0",

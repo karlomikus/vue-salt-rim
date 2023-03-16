@@ -26,6 +26,10 @@
     height: 100vh;
 }
 
+.public-body {
+    background-color: var(--color-site-header);
+}
+
 main {
     max-width: var(--site-width);
     margin: 0 auto;

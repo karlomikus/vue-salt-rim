@@ -152,6 +152,22 @@ class ApiRequests
         return this.parseResponse(jsonResp);
     }
 
+    static async createPublicLink(id) {
+        let jsonResp = await this.postRequest(`/api/cocktails/${id}/public-link`);
+
+        return this.parseResponse(jsonResp);
+    }
+
+    static async deletePublicLink(id) {
+        return await this.deleteRequest(`/api/cocktails/${id}/public-link`);
+    }
+
+    static async fetchCocktailByPublicId(ulid) {
+        let jsonResp = await this.getRequest(`/api/explore/cocktails/${ulid}`);
+
+        return this.parseResponse(jsonResp);
+    }
+
     /**
      * =============================
      * Ingredient Categories

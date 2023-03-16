@@ -39,6 +39,17 @@
                             </div>
                         </template>
                     </ais-toggle-refinement>
+                    <ais-toggle-refinement label="Shared publicly" attribute="has_public_link">
+                        <template v-slot="{ value, refine }">
+                            <div class="ais-ToggleRefinement">
+                                <label class="ais-ToggleRefinement-label">
+                                    <span class="ais-ToggleRefinement-labelText">Shared publicly</span>
+                                    <span class="ais-ToggleRefinement-count">{{ value.count ?? 0 }}</span>
+                                    <input class="ais-ToggleRefinement-checkbox" type="checkbox" @change.prevent="refine(value)" />
+                                </label>
+                            </div>
+                        </template>
+                    </ais-toggle-refinement>
                     <ais-panel>
                         <div class="ais-ToggleRefinement" v-for="(customFilter, index) in filtersConfig">
                             <label class="ais-ToggleRefinement-label">
@@ -132,6 +143,7 @@ export default {
                             ingredient: indexUiState.refinementList && indexUiState.refinementList.main_ingredient_name,
                             strength: indexUiState.numericMenu && indexUiState.numericMenu.calculated_abv,
                             my_cocktails: indexUiState.toggle && indexUiState.toggle.user_id != null,
+                            public_link: indexUiState.toggle && indexUiState.toggle.has_public_link != null,
                             avg_rating: indexUiState.ratingMenu && indexUiState.ratingMenu.average_rating,
                             sort: indexUiState.sortBy,
                         }
@@ -153,7 +165,8 @@ export default {
                                     average_rating: routeState.avg_rating
                                 },
                                 toggle: {
-                                    user_id: routeState.my_cocktails
+                                    user_id: routeState.my_cocktails,
+                                    has_public_link: routeState.public_link,
                                 },
                                 numericMenu: {
                                     calculated_abv: routeState.strength
