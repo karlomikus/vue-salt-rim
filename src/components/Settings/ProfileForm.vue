@@ -1,6 +1,6 @@
 <template>
     <PageHeader>
-        Profile settings
+        {{ $t('profile') }}
     </PageHeader>
     <div class="settings-page">
         <div class="settings-page__nav">

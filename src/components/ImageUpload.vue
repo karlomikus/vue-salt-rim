@@ -7,9 +7,9 @@
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path fill="none" d="M0 0h24v24H0z"/><path d="M4 19h16v-7h2v8a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1v-8h2v7zm9-10v7h-2V9H6l6-6 6 6h-5z"/></svg>
                 </div>
                 <p>
-                    Click here to browse for images.<br>
-                    PNG, JPG, WEBP or GIF &middot; Max 100MB<br>
-                    Added <strong>{{ images.length }}/{{ maxImages }}</strong> images.
+                    {{ $t('imageupload.browse') }}<br>
+                    {{ $t('imageupload.validation') }}<br>
+                    {{ $t('imageupload.status', {current: images.length, max: maxImages}) }}
                 </p>
             </label>
             <input class="form-input" type="file" id="images" accept="image/*" :multiple="multiple" @change="fileInputChanged" :disabled="hasMaxImages">
@@ -19,11 +19,11 @@
                 <div class="drag-handle"></div>
                 <div class="image-upload__list__item__image">
                     <img :src="img.url" alt="Cocktail image">
-                    <a href="#" @click.prevent="removeImage(img)">Remove</a>
+                    <a href="#" @click.prevent="removeImage(img)">{{ $t('remove') }}</a>
                 </div>
                 <div class="image-upload__list__item__actions">
-                    <label class="form-label" :for="'copyright-' + idx">Image copyright:</label>
-                    <input class="form-input form-input--small" type="text" :id="'copyright-' + idx" v-model="img.copyright" placeholder="Image source URL or other reference...">
+                    <label class="form-label" :for="'copyright-' + idx">{{ $t('image-copyright') }}:</label>
+                    <input class="form-input form-input--small" type="text" :id="'copyright-' + idx" v-model="img.copyright" :placeholder="$t('placeholder.image-copyright')">
                 </div>
             </div>
         </div>
@@ -140,20 +140,20 @@ export default {
                 return;
             }
 
-            this.$confirm(`This will permanently remove the image.`, {
+            this.$confirm(this.$t('imageupload.delete-confirm'), {
                 onResolved: (dialog) => {
                     dialog.close();
                     this.isLoading = true;
                     ApiRequests.deleteImage(img.id).then(() => {
                         this.isLoading = false;
-                        this.$toast.default(`Image removed successfully.`);
+                        this.$toast.default(this.$t('imageupload.delete-success'));
                         this.images.splice(
                             this.images.findIndex(i => i == img),
                             1
                         );
                     }).catch(() => {
                         this.isLoading = false;
-                        this.$toast.default(`Unable to remove the image.`);
+                        this.$toast.default(this.$t('imageupload.delete-fail'));
                     })
                 }
             });

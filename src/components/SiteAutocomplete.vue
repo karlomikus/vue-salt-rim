@@ -11,12 +11,12 @@
                                 <div class="site-autocomplete__results__image" :style="{ 'background-image': 'url(' + getImageUrl(hit) + ')' }"></div>
                                 <div class="site-autocomplete__results__content">
                                     <ais-highlight attribute="name" :hit="hit" />
-                                    <small v-if="hit.type == 'cocktail'">Cocktail</small>
-                                    <small v-else>Ingredient</small>
+                                    <small v-if="hit.type == 'cocktail'">{{ $t('cocktail')}}</small>
+                                    <small v-else>{{ $t('ingredient')}}</small>
                                 </div>
                             </a>
                         </li>
-                        <li v-show="index.hits.length <= 0">No results found for term: "{{ currentRefinement }}"</li>
+                        <li v-show="index.hits.length <= 0">{{ $t('search.empty', {term: currentRefinement})}}</li>
                     </ul>
                 </template>
             </ais-autocomplete>
