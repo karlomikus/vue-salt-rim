@@ -17,13 +17,13 @@
                     <ais-clear-refinements />
                     <h4>{{ $t('sort') }}</h4>
                     <ais-sort-by :items="[
-                        { value: 'cocktails', label: 'Relevency' },
-                        { value: 'cocktails:name:asc', label: 'Name asc.' },
-                        { value: 'cocktails:name:desc', label: 'Name desc.' },
-                        { value: 'cocktails:average_rating:asc', label: 'Rating asc.' },
-                        { value: 'cocktails:average_rating:desc', label: 'Rating desc.' },
-                        { value: 'cocktails:date:asc', label: 'Date modified asc.' },
-                        { value: 'cocktails:date:desc', label: 'Date modified desc.' },
+                        { value: 'cocktails', label: $t('sort.relevancy') },
+                        { value: 'cocktails:name:asc', label: $t('sort.name-asc') },
+                        { value: 'cocktails:name:desc', label: $t('sort.name-desc') },
+                        { value: 'cocktails:average_rating:asc', label: $t('sort.rating-asc') },
+                        { value: 'cocktails:average_rating:desc', label: $t('sort.rating-desc') },
+                        { value: 'cocktails:date:asc', label: $t('sort.date-modified-asc') },
+                        { value: 'cocktails:date:desc', label: $t('sort.date-modified-desc') },
                     ]" :class-names="{ 'ais-SortBy-select': 'form-select' }" />
                     <h4>{{ $t('cocktail.filters') }}</h4>
                     <ais-toggle-refinement label="My cocktails" attribute="user_id" :on="userId">
@@ -198,7 +198,7 @@ export default {
         PageHeader
     },
     created() {
-        document.title = `Cocktails \u22C5 Salt Rim`
+        document.title = `${this.$t('cocktails')} \u22C5 Salt Rim`
 
         if (this.$route.query.favorites) {
             this.toggleArrayFiltersConfig('favorites');

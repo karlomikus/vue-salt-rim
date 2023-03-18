@@ -12,19 +12,19 @@
             <div class="ingredient-grid-item__actions">
                 <a href="#" @click.prevent="toggleShelf">
                     <template v-if="!inShelf">
-                        Add to shelf
+                        {{ $t('ingredient.add-to-shelf') }}
                     </template>
                     <template v-else>
-                        Remove from shelf
+                        {{ $t('ingredient.remove-from-shelf') }}
                     </template>
                 </a>
                 &middot;
                 <a href="#" @click.prevent="toggleList">
                     <template v-if="!inList">
-                        Add to shopping list
+                        {{ $t('ingredient.add-to-list') }}
                     </template>
                     <template v-else>
-                        Remove from shopping list
+                        {{ $t('ingredient.remove-from-list') }}
                     </template>
                 </a>
             </div>
