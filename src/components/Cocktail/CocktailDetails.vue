@@ -463,8 +463,12 @@ export default {
 .cocktail-button-group button {
     background: none;
     border: none;
-    font-size: 1rem;
-    min-width: 2rem;
+    font-size: 0.85rem;
+    font-weight: bold;
+    margin: 0;
+    padding: 0.15rem 0.5rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
     cursor: pointer;
     color: var(--clr-gray-800)
 }
