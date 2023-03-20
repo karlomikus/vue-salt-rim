@@ -5,7 +5,7 @@
             <swiper v-if="cocktail.images.length > 0" :modules="sliderModules" navigation :pagination="{ clickable: true }" :follow-finger="false">
                 <swiper-slide v-for="image in sortedImages">
                     <img :src="image.url" :alt="image.copyright" />
-                    <div class="cocktail-details__graphic__copyright" v-if="image.copyright">{{ $t('image-copyright-notice', {copyright: image.copyright})}}</div>
+                    <div class="cocktail-details__graphic__copyright" v-if="image.copyright">{{ $t('image-copyright-notice', { copyright: image.copyright }) }}</div>
                 </swiper-slide>
             </swiper>
             <img v-else src="/no-cocktail.jpg" alt="This cocktail does not have an image." />
@@ -49,9 +49,13 @@
                         <li><span>{{ cocktail.average_rating }} stars</span></li>
                     </ul>
                 </div>
-                <div class="cocktail-details__chips__group" >
+                <div class="cocktail-details__chips__group">
                     <div class="cocktail-details__chips__group__title">{{ $t('your-rating') }}:</div>
                     <Rating :rating="cocktail.user_rating" type="cocktail" :id="cocktail.id"></Rating>
+                </div>
+                <div class="cocktail-details__chips__group" v-if="cocktail.has_public_link">
+                    <div class="cocktail-details__chips__group__title">{{ $t('public-link') }}:</div>
+                    <RouterLink :to="{ name: 'e.cocktail', params: { ulid: cocktail.public_id, slug: cocktail.slug } }" target="_blank">{{ $t('click-here') }}</RouterLink>
                 </div>
             </div>
             <div class="cocktail-details-box__description">
@@ -290,17 +294,17 @@ export default {
         favorite() {
             ApiRequests.favoriteCocktail(this.cocktail.id).then(resp => {
                 this.isFavorited = resp.is_favorited
-                this.$toast.default(this.isFavorited ? this.$t('cocktail.favorited', {name: this.cocktail.name}) : this.$t('cocktail.unfavorited', {name: this.cocktail.name}));
+                this.$toast.default(this.isFavorited ? this.$t('cocktail.favorited', { name: this.cocktail.name }) : this.$t('cocktail.unfavorited', { name: this.cocktail.name }));
             }).catch(e => {
                 this.$toast.error(e.message);
             })
         },
         deleteCocktail() {
-            this.$confirm(this.$t('cocktail.confirm-delete', {name: this.cocktail.name}), {
+            this.$confirm(this.$t('cocktail.confirm-delete', { name: this.cocktail.name }), {
                 onResolved: (dialog) => {
                     dialog.close()
                     ApiRequests.deleteCocktail(this.cocktail.id).then(() => {
-                        this.$toast.default(this.$t('cocktail.delete-success', {name: this.cocktail.name}));
+                        this.$toast.default(this.$t('cocktail.delete-success', { name: this.cocktail.name }));
                         this.$router.push({ name: 'cocktails' })
                         dialog.close()
                     }).catch(e => {
@@ -316,7 +320,7 @@ export default {
             };
 
             ApiRequests.addIngredientsToShoppingList(postData).then(data => {
-                this.$toast.default(this.$t('cocktail.ingredients-added-success', {total: data.length}))
+                this.$toast.default(this.$t('cocktail.ingredients-added-success', { total: data.length }))
                 Auth.refreshUser().then(() => {
                     this.userShoppingListIngredients = Auth.getUser().shopping_lists;
                 })

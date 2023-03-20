@@ -217,7 +217,9 @@ const messages = {
             "copy-success": "Cocktail public URL copied",
             "copy-fail": "Unable to write link to clipboard"
         }
-    }
+    },
+    "public-link": "Public at",
+    "click-here": "Click here"
 };
 
 const datetime = {

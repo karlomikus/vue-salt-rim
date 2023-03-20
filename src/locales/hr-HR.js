@@ -217,7 +217,9 @@ const messages = {
             "copy-success": "Javna poveznica kopirana",
             "copy-fail": "Greška kod kopiranja poveznice"
         }
-    }
+    },
+    "public-link": "Javan na",
+    "click-here": "Kliknite ovdje"
 };
 
 const datetime = {
