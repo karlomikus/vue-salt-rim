@@ -170,7 +170,7 @@ export default {
     border-radius: 3px;
     font-size: 0.8rem;
     border: 1px solid rgb(197, 197, 197);
-    background-color: #fff;
+    background-color: var(--clr-bg);
     padding: 1px 4px;
 }
 </style>

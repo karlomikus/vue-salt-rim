@@ -341,11 +341,11 @@ export default {
     margin: 0 auto;
     isolation: isolate;
     --cocktail-graphic-height: 1000px;
-    --swiper-theme-color: #fff;
+    --swiper-theme-color: var(--clr-bg);
     --swiper-pagination-bottom: 3rem;
     --swiper-pagination-bullet-size: 0.65rem;
     --swiper-navigation-size: 2rem;
-    --swiper-pagination-bullet-inactive-color: #fff;
+    --swiper-pagination-bullet-inactive-color: var(--clr-bg);
 }
 
 @media (max-width: 450px) {
@@ -357,7 +357,7 @@ export default {
 }
 
 .cocktail-details__graphic {
-    background-color: #fff;
+    background-color: var(--clr-bg);
     border-top-left-radius: 20px;
     border-top-right-radius: 20px;
     overflow: hidden;
@@ -375,7 +375,7 @@ export default {
     left: 1rem;
     display: inline-block;
     background-color: rgba(0, 0, 0, .4);
-    color: #fff;
+    color: var(--clr-bg);
     border-radius: 15px;
     padding: 2px 7px;
     font-size: 0.7rem;

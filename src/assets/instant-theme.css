@@ -158,7 +158,7 @@
 
 .ais-RangeSlider .rheostat-background {
     position: relative;
-    background-color: #ffffff;
+    background-color: var(--clr-bg);
     border: 1px solid #aaa;
 }
 
@@ -174,7 +174,7 @@
     z-index: 1;
     width: 20px;
     height: 20px;
-    background-color: #fff;
+    background-color: var(--clr-bg);
     border: 1px solid #333;
     border-radius: 50%;
     cursor: -webkit-grab;
@@ -278,7 +278,7 @@
 .ais-GeoSearch-redo:hover,
 .ais-GeoSearch-reset:hover,
 .ais-VoiceSearch-button:hover {
-    background-color: #fff;
+    background-color: var(--clr-bg);
     border-color: var(--clr-gray-800);
 }
 
@@ -438,12 +438,12 @@
 .ais-HitsPerPage-select:focus,
 .ais-SortBy-select:focus {
     border-color: var(--clr-gray-800);
-    background: #fff;
+    background: var(--clr-bg);
 }
 
 .ais-HitsPerPage-select:disabled,
 .ais-SortBy-select:disabled {
-    background-image: url('data:image/svg+xml;utf8,<svg width="14" height="24" xmlns="http://www.w3.org/2000/svg"><g stroke="%23b6b7d5" stroke-width="2" fill="none" fill-rule="evenodd"><path d="M13 7L7 1 1 7M1 17l6 6 6-6"/></g></svg>'), linear-gradient(-180deg, #fff, #f5f5fa);
+    background-image: url('data:image/svg+xml;utf8,<svg width="14" height="24" xmlns="http://www.w3.org/2000/svg"><g stroke="%23b6b7d5" stroke-width="2" fill="none" fill-rule="evenodd"><path d="M13 7L7 1 1 7M1 17l6 6 6-6"/></g></svg>'), linear-gradient(-180deg, var(--clr-bg), #f5f5fa);
     border-color: #efeff5;
     -webkit-box-shadow: none;
     box-shadow: none;
@@ -517,13 +517,13 @@
 
 .ais-SearchBox-input:focus {
     border-color: var(--clr-gray-800);
-    background: #fff;
+    background: var(--clr-bg);
     outline: currentcolor none medium;
 }
 
 .ais-SearchBox-input:disabled {
-    background: transparent -webkit-gradient(linear, left top, left bottom, from(#fff), to(#f5f5fa)) repeat scroll 0% 0%;
-    background: transparent linear-gradient(-180deg, #fff, #f5f5fa) repeat scroll 0% 0%;
+    background: transparent -webkit-gradient(linear, left top, left bottom, from(var(--clr-bg)), to(#f5f5fa)) repeat scroll 0% 0%;
+    background: transparent linear-gradient(-180deg, var(--clr-bg), #f5f5fa) repeat scroll 0% 0%;
     border-color: #efeff5;
     -webkit-box-shadow: none;
     box-shadow: none;
@@ -577,7 +577,7 @@
 
 .ais-SearchBox-reset:focus {
     background: #b6b7d5;
-    fill: #fff;
+    fill: var(--clr-bg);
     outline: 0;
 }
 
@@ -633,7 +633,7 @@
     -webkit-appearance: none;
     -moz-appearance: none;
     appearance: none;
-    background-color: #fff;
+    background-color: var(--clr-bg);
     background-position: 50%;
     background-size: 180%;
     border: 1px solid currentcolor;
@@ -681,7 +681,7 @@
     -webkit-appearance: none;
     -moz-appearance: none;
     appearance: none;
-    background: #fff;
+    background: var(--clr-bg);
     border: 1px solid var(--clr-gray-500);
     border-radius: 50%;
     height: 16px;
@@ -755,7 +755,7 @@
     -ms-flex-align: center;
     align-items: center;
     background-color: var(--clr-gray-800);
-    color: #fff;
+    color: var(--clr-bg);
     border-radius: .25rem;
     display: inline-flex;
     flex-wrap: wrap;
@@ -780,7 +780,7 @@
 }
 
 .ais-CurrentRefinements-delete:hover {
-    color: #fff;
+    color: var(--clr-bg);
 }
 
 .ais-CurrentRefinements-label {
@@ -818,7 +818,7 @@
 }
 
 .ais-ToggleRefinement-checkbox::after {
-    background: #fff;
+    background: var(--clr-bg);
     border-radius: 9999px;
     content: '';
     height: 16px;
@@ -842,7 +842,7 @@
     -webkit-box-align: center;
     -ms-flex-align: center;
     align-items: center;
-    background-color: #fff;
+    background-color: var(--clr-bg);
     border: 1px solid #d6d6e7;
     border-radius: 3px;
     -webkit-box-shadow: inset 0 1px 4px 0 rgba(119, 122, 175, 0.3);
@@ -918,9 +918,9 @@
 }
 
 .ais-RangeSlider .rheostat-handle {
-    background-color: #fff;
-    background-image: -webkit-gradient(linear, left top, left bottom, from(#fff), to(#fcfcfd));
-    background-image: linear-gradient(-180deg, #fff, #fcfcfd);
+    background-color: var(--clr-bg);
+    background-image: -webkit-gradient(linear, left top, left bottom, from(var(--clr-bg)), to(#fcfcfd));
+    background-image: linear-gradient(-180deg, var(--clr-bg), #fcfcfd);
     border: 1px solid #d6d6e7;
     border-radius: 2px;
     -webkit-box-shadow: 0 1px 0 0 rgba(35, 38, 59, 0.05);

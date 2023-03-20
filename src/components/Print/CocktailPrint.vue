@@ -91,7 +91,7 @@ export default {
     font-size: 0.7rem;
     border: 1px dotted #000;
     padding: 10px;
-    background-color: #fff;
+    background-color: var(--clr-bg);
     margin: 20px auto;
     max-width: 700px;
 }

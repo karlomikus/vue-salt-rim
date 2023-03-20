@@ -195,7 +195,7 @@ export default {
 
 .image-upload__select:is(:hover, :active, :focus) {
     border-color: var(--clr-red-500);
-    background-color: #fff;
+    background-color: var(--clr-bg);
 }
 
 .image-upload__select__icon {

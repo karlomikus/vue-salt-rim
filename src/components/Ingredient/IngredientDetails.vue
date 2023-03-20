@@ -244,7 +244,7 @@ export default {
 .ingredient-details .ingredient-details__image {
     flex-shrink: 0;
     padding: 30px;
-    background-color: #fff;
+    background-color: var(--clr-bg);
     border-radius: 30px;
 }
 
@@ -347,7 +347,7 @@ export default {
 .ingredient-chips-list li a:active,
 .ingredient-chips-list li a:focus {
     box-shadow: 0 2px 0 var(--clr-red-800);
-    background-color: #fff;
+    background-color: var(--clr-bg);
 }
 
 .ingredient-details__actions {

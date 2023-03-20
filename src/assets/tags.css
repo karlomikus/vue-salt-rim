@@ -23,13 +23,13 @@
 .tag.tag--link:hover,
 .tag.tag--link:focus,
 .tag.tag--link:active {
-  background-color: #fff;
+  background-color: var(--clr-bg);
 }
 
 .tag.tag--link.tag--is-selected {
     background-color: var(--clr-gray-800);
     border: 1px solid var(--clr-gray-800);
-    color: #fff;
+    color: var(--clr-bg);
 }
 
 .tag.tag--background {
@@ -61,7 +61,7 @@
 .chips-list li a:active,
 .chips-list li a:focus {
     box-shadow: 0 2px 0 var(--clr-red-800);
-    background-color: #fff;
+    background-color: var(--clr-bg);
 }
 
 .chips-list__spacer::before {

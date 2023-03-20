@@ -92,13 +92,13 @@ textarea.form-input,
 }
 
 .form-select:not([multiple]):not([size]):focus {
-    background: var(--clr-form-bg) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' width='24' height='24'%3E%3Cpath fill='none' d='M0 0h24v24H0z'/%3E%3Cpath d='M12 15l-4.243-4.243 1.415-1.414L12 12.172l2.828-2.829 1.415 1.414z'/%3E%3C/svg%3E") no-repeat right;
+    background: var(--clr-bg) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' width='24' height='24'%3E%3Cpath fill='none' d='M0 0h24v24H0z'/%3E%3Cpath d='M12 15l-4.243-4.243 1.415-1.414L12 12.172l2.828-2.829 1.415 1.414z'/%3E%3C/svg%3E") no-repeat right;
 }
 
 .form-input:focus,
 .form-select:focus {
     border-color: var(--clr-form-text);
-    background: var(--clr-form-bg);
+    background: var(--clr-bg);
 }
 
 .form-input::placeholder,

@@ -196,7 +196,7 @@ export default {
 .colorpicker-button:hover,
 .colorpicker-button:active,
 .colorpicker-button:focus {
-    background: #fff;
+    background: var(--clr-bg);
     border-color: var(--clr-gray-800);
 }
 </style>

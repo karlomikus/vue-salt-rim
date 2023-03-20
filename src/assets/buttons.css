@@ -32,30 +32,30 @@
 }
 
 .button:hover {
-    color: var(--clr-red-800);
-    background-color: rgba(0, 0, 0, .05);
+    color: var(--clr-button-hover-text);
+    background-color: var(--clr-button-hover-bg);
 }
 
 .button.button--dark {
-    background-color: var(--clr-gray-700);
-    color: var(--clr-gray-50);
+    background-color: var(--clr-button-dark-bg);
+    color: var(--clr-button-dark-text);
 }
 
 .button.button--dark:hover {
-    background-color: var(--clr-gray-900);
-    color: var(--clr-gray-50);
+    background-color: var(--clr-button-dark-hover-bg);
+    color: var(--clr-button-dark-hover-text);
 }
 
 .button.button--outline {
-    border: 2px solid var(--clr-gray-800);
-    color: var(--clr-gray-800);
+    border: 2px solid var(--clr-button-outline-bg);
+    color: var(--clr-button-outline-text);
     background: none;
 }
 
 .button.button--outline:hover {
-    border: 2px solid var(--clr-red-800);
-    background-color: var(--clr-red-800);
-    color: var(--clr-gray-50);
+    border: 2px solid var(--clr-button-outline-hover-bg);
+    background-color: var(--clr-button-outline-hover-bg);
+    color: var(--clr-button-outline-hover-text);
 }
 
 .button-circle {
@@ -131,7 +131,7 @@
 .button--input:hover,
 .button--input:active,
 .button--input:focus {
-    background-color: #fff;
+    background-color: var(--clr-bg);
     border-color: var(--clr-gray-800);
 }
 

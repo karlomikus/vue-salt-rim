@@ -1,7 +1,6 @@
 .alert {
-    --clr-info: rgb(64, 75, 112);
-    background-color: rgb(247, 249, 255);
-    border: 2px solid #fff;
+    background-color: var(--clr-bg);
+    border: 2px solid var(--clr-bg);
     padding: 1rem;
     border-radius: .5rem;
     color: var(--clr-info);

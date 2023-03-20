@@ -65,7 +65,7 @@ h3.form-section-title::before {
     content: counter(section);
     background: var(--clr-red-800);
     border-radius: 3px;
-    color: #fff;
+    color: var(--clr-bg);
     display: flex;
     width: 1.25rem;
     height: 1.25rem;
@@ -100,12 +100,12 @@ h3.form-section-title::before {
 
 .site-logo {
     display: flex;
-    color: #fff;
+    color: var(--clr-bg);
     text-decoration: none;
 }
 
 .site-logo__image {
-    background: #fff;
+    background: var(--clr-bg);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -140,7 +140,7 @@ a.site-logo:focus,
 a.site-logo:hover .site-logo__title span,
 a.site-logo:active .site-logo__title span,
 a.site-logo:focus .site-logo__title span {
-    color: #fff;
+    color: var(--clr-bg);
     opacity: 1;
 }
 

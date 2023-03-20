@@ -53,7 +53,7 @@ export default {
     width: var(--image-size);
     height: var(--image-size);
     border-radius: 0.325rem;
-    background-color: #fff;
+    background-color: var(--clr-bg);
     background-size: cover;
     background-position: center center;
     flex-shrink: 0;

@@ -4,7 +4,7 @@
       0px 1px 1.1px hsl(var(--shadow-color) / 0.1),
       0px 1.7px 1.9px -1.2px hsl(var(--shadow-color) / 0.1),
       0px 4px 4.5px -2.5px hsl(var(--shadow-color) / 0.1);
-    background-color: #fff;
+    background-color: var(--clr-bg);
     padding: 8px;
     border-radius: 12px;
     display: flex;
@@ -32,12 +32,12 @@
 }
 
 .dropdown-menu .dropdown-menu__item:hover {
-    color: #fff;
+    color: var(--clr-bg);
     background-color: var(--clr-gray-800);
 }
 
 .dropdown-menu .dropdown-menu__item:hover svg {
-    fill: #fff;
+    fill: var(--clr-bg);
 }
 
 @keyframes slide-in-top {

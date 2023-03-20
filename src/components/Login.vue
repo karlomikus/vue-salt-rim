@@ -121,7 +121,7 @@ export default {
 
 <style scoped>
 .server-status {
-    background: #fff;
+    background: var(--clr-bg);
     margin-bottom: 1rem;
     padding: 0.5rem;
     border-radius: 0.25rem;

@@ -28,7 +28,7 @@
 .details-block-container {
     --details-block-offset: 1.5rem;
     --details-block-padding: 1.5rem;
-    background-color: #fff;
+    background-color: var(--clr-bg);
     padding: var(--details-block-padding) var(--details-block-padding) calc(var(--details-block-padding) * 2) var(--details-block-padding);
     margin-top: calc(var(--details-block-offset) * -1);
     border-radius: var(--details-block-offset);

@@ -32,7 +32,7 @@
     background: #f2f2f2 !important;
     background: rgba(0, 0, 0, 0.06) !important;
     border: 0 none !important;
-    box-shadow: inset 0 0 12px 4px #fff;
+    box-shadow: inset 0 0 12px 4px var(--clr-bg);
 }
 
 .ts-wrapper.plugin-drag_drop .ui-sortable-placeholder::after {
@@ -237,7 +237,7 @@
 
 .ts-control,
 .ts-wrapper.single.input-active .ts-control {
-    background: #fff;
+    background: var(--clr-bg);
     cursor: text;
 }
 
@@ -268,7 +268,7 @@
 }
 
 .full .ts-control {
-    background-color: #fff;
+    background-color: var(--clr-bg);
 }
 
 .disabled .ts-control,
@@ -370,7 +370,7 @@
     width: 100%;
     z-index: 10;
     border: 1px solid #d0d0d0;
-    background: #fff;
+    background: var(--clr-bg);
     margin: 0.25rem 0 0 0;
     border-top: 0 none;
     box-sizing: border-box;
@@ -413,7 +413,7 @@
 
 .ts-dropdown .optgroup-header {
     color: #303030;
-    background: #fff;
+    background: var(--clr-bg);
     cursor: default;
 }
 

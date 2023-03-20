@@ -46,7 +46,7 @@ label {
 
 .checkbox-button svg {
     display: none;
-    fill: #fff;
+    fill: var(--clr-bg);
 }
 
 .checkbox-button--selected svg {

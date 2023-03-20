@@ -463,7 +463,7 @@ export default {
 }
 
 .cocktail-method {
-    background: #fff;
+    background: var(--clr-bg);
     flex-basis: 100px;
     flex-grow: 1;
     border: 2px solid var(--clr-gray-200);

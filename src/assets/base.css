@@ -58,8 +58,24 @@
     --clr-empty-state: rgba(255, 255, 255, .5);
     --clr-empty-state-svg: var(--clr-gray-800);
 
+    
+    --clr-button-hover-bg: rgba(0, 0, 0, .05);
+    --clr-button-hover-text: var(--clr-red-800);
+    --clr-button-dark-bg: var(--clr-gray-700);
+    --clr-button-dark-text: var(--clr-gray-50);
+    --clr-button-dark-hover-bg: var(--clr-gray-900);
+    --clr-button-dark-hover-text: var(--clr-gray-50);
+    --clr-button-outline-bg: var(--clr-gray-800);
+    --clr-button-outline-text: var(--clr-gray-800);
+    --clr-button-outline-hover-bg: var(--clr-red-800);
+    --clr-button-outline-hover-text: var(--clr-gray-50);
+
     --clr-form-text: var(--clr-gray-800);
-    --clr-form-bg: #fff;
+    --clr-bg: #fff;
+
+    --clr-info: rgb(64, 75, 112);
+
+    --clr-cocktail-shadow: hsl(0deg 0% 63% / 0.6);
 
     --clr-small:  var(--clr-gray-500);
     --color-footer-bg: #fff;

@@ -106,10 +106,10 @@ export default {
 }
 
 .cocktail-grid-item:hover .cocktail-grid-item__graphic img {
-    box-shadow: 0px 0.5px 0.6px hsl(0deg 0% 63% / 0.6),
-        0px 1.6px 2px -0.8px hsl(0deg 0% 63% / 0.6),
-        0.1px 4px 8px -1.7px hsl(0deg 0% 63% / 0.6),
-        0.1px 9.7px 16px -2.5px hsl(0deg 0% 63% / 0.6);
+    box-shadow: 0px 0.5px 0.6px var(--clr-cocktail-shadow),
+        0px 1.6px 2px -0.8px var(--clr-cocktail-shadow),
+        0.1px 4px 8px -1.7px var(--clr-cocktail-shadow),
+        0.1px 9.7px 16px -2.5px var(--clr-cocktail-shadow);
 }
 
 .cocktail-tags {

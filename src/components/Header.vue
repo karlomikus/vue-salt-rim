@@ -102,7 +102,7 @@ export default {
 .header-bar__navigation a:hover,
 .header-bar__navigation a:focus,
 .header-bar__navigation a:active {
-    color: #fff;
+    color: var(--clr-bg);
 }
 
 .header-bar__navigation a.current-nav {
@@ -111,14 +111,14 @@ export default {
 
 .header-bar__navigation a span {
     font-size: 0.7rem;
-    border: 1px solid #fff;
+    border: 1px solid var(--clr-bg);
     padding: 1px 3px;
     border-radius: 2px;
     opacity: .6;
 }
 
 .header-bar__navigation a svg {
-    fill: #fff;
+    fill: var(--clr-bg);
 }
 
 @media (max-width: 750px) {
