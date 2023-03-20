@@ -100,12 +100,12 @@ h3.form-section-title::before {
 
 .site-logo {
     display: flex;
-    color: var(--clr-bg);
+    color: var(--clr-logo);
     text-decoration: none;
 }
 
 .site-logo__image {
-    background: var(--clr-bg);
+    background: var(--clr-logo);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -140,7 +140,7 @@ a.site-logo:focus,
 a.site-logo:hover .site-logo__title span,
 a.site-logo:active .site-logo__title span,
 a.site-logo:focus .site-logo__title span {
-    color: var(--clr-bg);
+    color: var(--clr-logo);
     opacity: 1;
 }
 
