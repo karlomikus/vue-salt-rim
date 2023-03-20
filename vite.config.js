@@ -23,12 +23,28 @@ const manifest = {
     ]
 };
 
+function externalCSSPlugin() {
+    return {
+        name: 'external-userstyles',
+        transformIndexHtml: {
+            enforce: 'post',
+            transform() {
+                return [{
+                    tag: "link",
+                    attrs: {"rel": "stylesheet", "type": "text/css", "href": "/userstyles.css"},
+                    injectTo: "head"
+                }]
+            }
+        }
+    }
+}
+
 // https://vitejs.dev/config/
 export default defineConfig({
     plugins: [vue(), VitePWA({
         manifest: manifest,
         registerType: 'autoUpdate',
-    })],
+    }), externalCSSPlugin()],
     resolve: {
         alias: {
             '@': fileURLToPath(new URL('./src', import.meta.url))
