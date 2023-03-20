@@ -125,6 +125,7 @@ h3.form-section-title::before {
     margin-left: 10px;
     text-shadow: 3px 2px 0 rgba(0, 0, 0, .2);
     line-height: 0.9;
+    align-self: center;
 }
 
 .site-logo__title span {
