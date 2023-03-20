@@ -9,8 +9,8 @@
                     </svg>
                 </div>
                 <h1 class="site-logo__title">
-                    Salt Rim
-                    <span>Your personal bar assistant</span>
+                    {{ name }}
+                    <span v-if="description">{{ description }}</span>
                 </h1>
             </RouterLink>
             <nav class="header-bar__navigation">
@@ -51,6 +51,14 @@ export default {
     data() {
         return {
             searchShown: false,
+        }
+    },
+    computed: {
+        name() {
+            return window.srConfig.BAR_NAME || 'Salt Rim';
+        },
+        description() {
+            return window.srConfig.DESCRIPTION;
         }
     },
     created() {
