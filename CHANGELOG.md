@@ -1,3 +1,18 @@
+# v1.8.0
+## New
+- Added internationalization
+    - Currently supports English (US) and Croatian
+    - Checkout `locales/` folder if you are intereseted in contributing a new language
+- You can now share public link of a cocktail recipe
+- You can now change bar name and description, this will update the application logo
+
+## Changes
+- Added print button to print pages
+- Added Meilisearch version to footer
+
+## Fixes
+- Fixed container overflow on shelf page on smaller screens
+
 # v1.7.1
 ## Fixes
 - Fix nginx post body size #62
