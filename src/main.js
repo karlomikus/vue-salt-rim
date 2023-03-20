@@ -11,10 +11,15 @@ import './assets/main.css'
 import en_US from './locales/en-US';
 import hr_HR from './locales/hr-HR';
 
+const userSelectedLocale = window.localStorage.getItem('ui-language');
+if (!userSelectedLocale) {
+    userSelectedLocale = 'en-US';
+}
+
 const emitter = mitt()
 const app = createApp(App)
 const i18n = createI18n({
-    locale: 'en-US',
+    locale: userSelectedLocale,
     fallbackLocale: 'en-US',
     numberFormats: {
         'en-US': en_US.numbers,

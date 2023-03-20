@@ -219,7 +219,8 @@ const messages = {
         }
     },
     "public-link": "Javan na",
-    "click-here": "Kliknite ovdje"
+    "click-here": "Kliknite ovdje",
+    "ui-language": "Jezik sučelja"
 };
 
 const datetime = {

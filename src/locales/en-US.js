@@ -219,7 +219,8 @@ const messages = {
         }
     },
     "public-link": "Public at",
-    "click-here": "Click here"
+    "click-here": "Click here",
+    "ui-language": "Language"
 };
 
 const datetime = {

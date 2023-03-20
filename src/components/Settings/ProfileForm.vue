@@ -25,6 +25,12 @@
                     <label class="form-label" for="repeat-new-password">{{ $t('repeat-password') }}:</label>
                     <input class="form-input" type="password" id="repeat-new-password" v-model="user.repeatPassword">
                 </div>
+                <div class="form-group">
+                    <label class="form-label" for="repeat-new-password">{{ $t('ui-language') }}:</label>
+                    <select class="form-select" v-model="currentLocale">
+                        <option :value="locale" v-for="locale in $i18n.availableLocales">{{ $t('locales.' + locale) }}</option>
+                    </select>
+                </div>
                 <div class="form-actions">
                     <button class="button button--dark" type="submit">{{ $t('save') }}</button>
                 </div>
@@ -45,6 +51,7 @@ export default {
         return {
             isLoading: false,
             user: {},
+            currentLocale: this.$i18n.locale
         };
     },
     components: {
@@ -75,6 +82,11 @@ export default {
                 password: this.user.password,
                 password_confirmation: this.user.repeatPassword,
             };
+
+            if (this.currentLocale) {
+                window.localStorage.setItem('ui-language', this.currentLocale);
+                this.$i18n.locale = this.currentLocale;
+            }
 
             ApiRequests.updateUser(postData).then(data => {
                 Auth.rememberUser(data);
