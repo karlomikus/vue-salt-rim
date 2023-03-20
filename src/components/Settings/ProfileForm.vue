@@ -10,24 +10,23 @@
             <OverlayLoader v-if="isLoading" />
             <form @submit.prevent="submit">
                 <div class="form-group">
-                    <label class="form-label form-label--required" for="name">Name:</label>
-                    <input class="form-input" type="text" id="name" v-model="user.name" required placeholder="Your name...">
+                    <label class="form-label form-label--required" for="name">{{ $t('user.name') }}:</label>
+                    <input class="form-input" type="text" id="name" v-model="user.name" required>
                 </div>
                 <div class="form-group">
-                    <label class="form-label form-label--required" for="email">Email:</label>
-                    <input class="form-input" type="email" id="email" v-model="user.email" required placeholder="Enter your email...">
+                    <label class="form-label form-label--required" for="email">{{ $t('email') }}:</label>
+                    <input class="form-input" type="email" id="email" v-model="user.email" required>
                 </div>
                 <div class="form-group">
-                    <label class="form-label" for="new-password">New password:</label>
-                    <input class="form-input" type="password" id="new-password" v-model="user.password" placeholder="Type your new password...">
+                    <label class="form-label" for="new-password">{{ $t('new-password') }}:</label>
+                    <input class="form-input" type="password" id="new-password" v-model="user.password">
                 </div>
                 <div class="form-group">
-                    <label class="form-label" for="repeat-new-password">Repeat password:</label>
-                    <input class="form-input" type="password" id="repeat-new-password" v-model="user.repeatPassword" placeholder="Repeat your new password...">
+                    <label class="form-label" for="repeat-new-password">{{ $t('repeat-password') }}:</label>
+                    <input class="form-input" type="password" id="repeat-new-password" v-model="user.repeatPassword">
                 </div>
                 <div class="form-actions">
-                    <RouterLink class="button button--outline" :to="{ name: 'home' }">Cancel</RouterLink>
-                    <button class="button button--dark" type="submit">Save</button>
+                    <button class="button button--dark" type="submit">{{ $t('save') }}</button>
                 </div>
             </form>
         </div>
@@ -54,7 +53,7 @@ export default {
         PageHeader
     },
     created() {
-        document.title = `Edit profile \u22C5 Salt Rim`
+        document.title = `${this.$t('profile')} \u22C5 Salt Rim`
 
         this.isLoading = true;
 
@@ -80,7 +79,7 @@ export default {
             ApiRequests.updateUser(postData).then(data => {
                 Auth.rememberUser(data);
                 this.isLoading = false;
-                this.$toast.default('Your profile is updated.');
+                this.$toast.default(this.$t('profile-updated'));
                 this.user.password = null;
                 this.user.repeatPassword = null;
             }).catch(e => {

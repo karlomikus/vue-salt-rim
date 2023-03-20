@@ -86,7 +86,7 @@
                             <path d="M6.17 18a3.001 3.001 0 0 1 5.66 0H22v2H11.83a3.001 3.001 0 0 1-5.66 0H2v-2h4.17zm6-7a3.001 3.001 0 0 1 5.66 0H22v2h-4.17a3.001 3.001 0 0 1-5.66 0H2v-2h10.17zm-6-7a3.001 3.001 0 0 1 5.66 0H22v2H11.83a3.001 3.001 0 0 1-5.66 0H2V4h4.17z" />
                         </svg>
                     </button>
-                    <ais-search-box placeholder="Type to filter cocktails..." :class-names="{'ais-SearchBox-input': 'ais-SearchBox-input form-input form-input--red'}" />
+                    <ais-search-box :placeholder="$t('placeholder.search-cocktails')" :class-names="{'ais-SearchBox-input': 'ais-SearchBox-input form-input form-input--red'}" />
                 </div>
                 <ais-current-refinements :transform-items="transformCurrentRefinements" />
                 <ais-infinite-hits>

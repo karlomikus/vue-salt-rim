@@ -97,7 +97,7 @@ export default {
             if (this.inShelf) {
                 ApiRequests.removeIngredientFromShelf(this.ingredient.id).then(() => {
                     this.isLoading = false;
-                    this.$toast.default(`Removed "${this.ingredient.name}" from your shelf.`);
+                    this.$toast.default(this.$t('ingredient.shelf-remove-success', {name: this.ingredient.name}));
                     this.scopedUserIngredients.splice(this.scopedUserIngredients.indexOf(this.ingredient.id), 1)
                 }).catch(e => {
                     this.$toast.error(e.message)
@@ -106,7 +106,7 @@ export default {
             } else {
                 ApiRequests.addIngredientToShelf(this.ingredient.id).then(() => {
                     this.isLoading = false;
-                    this.$toast.default(`Added "${this.ingredient.name}" to your shelf.`)
+                    this.$toast.default(this.$t('ingredient.shelf-add-success', {name: this.ingredient.name}))
                     this.scopedUserIngredients.push(this.ingredient.id)
                 }).catch(e => {
                     this.$toast.error(e.message)
@@ -124,7 +124,7 @@ export default {
             if (this.inList) {
                 ApiRequests.removeIngredientsFromShoppingList(postData).then(() => {
                     this.isLoading = false;
-                    this.$toast.default(`Removed "${this.ingredient.name}" from your shopping list.`);
+                    this.$toast.default(this.$t('ingredient.list-remove-success', {name: this.ingredient.name}));
                     this.scopedShoppingList.splice(this.scopedShoppingList.indexOf(this.ingredient.id), 1)
                 }).catch(e => {
                     this.$toast.error(e.message)
@@ -133,7 +133,7 @@ export default {
             } else {
                 ApiRequests.addIngredientsToShoppingList(postData).then(() => {
                     this.isLoading = false;
-                    this.$toast.default(`Added "${this.ingredient.name}" to your shopping list.`)
+                    this.$toast.default(this.$t('ingredient.list-add-success', {name: this.ingredient.name}))
                     this.scopedShoppingList.push(this.ingredient.id)
                 }).catch(e => {
                     this.$toast.error(e.message)

@@ -3,16 +3,16 @@
         <OverlayLoader v-if="isLoading" />
         <div class="dialog-title">{{ dialogTitle }}</div>
         <div class="form-group">
-            <label class="form-label form-label--required" for="name">Name:</label>
-            <input class="form-input" type="text" id="name" v-model="category.name" required placeholder="Category name...">
+            <label class="form-label form-label--required" for="name">{{ $t('name') }}:</label>
+            <input class="form-input" type="text" id="name" v-model="category.name" required>
         </div>
         <div class="form-group">
-            <label class="form-label" for="description">Description:</label>
-            <textarea rows="5" class="form-input" id="description" v-model="category.description" placeholder="Category description..."></textarea>
+            <label class="form-label" for="description">{{ $t('description') }}:</label>
+            <textarea rows="5" class="form-input" id="description" v-model="category.description"></textarea>
         </div>
         <div class="dialog-actions">
-            <button class="button button--outline" @click.prevent="$emit('categoryDialogClosed')">Cancel</button>
-            <button class="button button--dark" type="submit">Save</button>
+            <button class="button button--outline" @click.prevent="$emit('categoryDialogClosed')">{{ $t('cancel') }}</button>
+            <button class="button button--dark" type="submit">{{ $t('save') }}</button>
         </div>
     </form>
 </template>
@@ -45,7 +45,7 @@ export default {
             if (this.category.id) {
                 ApiRequests.updateIngredientCategory(this.category.id, postData).then(data => {
                     this.isLoading = false;
-                    this.$toast.default(`Ingredient category updated successfully.`);
+                    this.$toast.default(this.$t('category.update-success'));
                     this.$emit('categoryDialogClosed')
                 }).catch(e => {
                     this.$toast.error(e.message);
@@ -54,7 +54,7 @@ export default {
             } else {
                 ApiRequests.saveIngredientCategory(postData).then(data => {
                     this.isLoading = false;
-                    this.$toast.default(`Ingredient category added successfully.`);
+                    this.$toast.default(this.$t('category.add-success'));
                     this.$emit('categoryDialogClosed')
                 }).catch(e => {
                     this.$toast.error(e.message);

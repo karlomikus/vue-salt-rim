@@ -4,7 +4,7 @@
             <ais-configure :hitsPerPage="10" />
             <ais-autocomplete>
                 <template v-slot="{ currentRefinement, indices, refine }">
-                    <input type="text" ref="sinput" :value="currentRefinement" placeholder="Search for a cocktail or ingredient..." class="form-input" @input="refine($event.currentTarget.value)" autocorrect="off" autocapitalize="none" autocomplete="off" spellcheck="false" autofocus>
+                    <input type="text" ref="sinput" :value="currentRefinement" :placeholder="$t('placeholder.site-search')" class="form-input" @input="refine($event.currentTarget.value)" autocorrect="off" autocapitalize="none" autocomplete="off" spellcheck="false" autofocus>
                     <ul class="site-autocomplete__results" v-for="index in indices" :key="index.indexId" v-show="currentRefinement">
                         <li v-for="hit in index.hits" :key="hit.key">
                             <a href="#" @click.prevent="goTo(hit)">

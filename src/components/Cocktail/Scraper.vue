@@ -2,82 +2,81 @@
     <form @submit.prevent="submit">
         <OverlayLoader v-if="isLoading" />
         <PageHeader>
-            Cocktail Scraper
+            {{ $t('cocktails.add-from-url') }}
         </PageHeader>
         <div class="form-group-import-input">
-            <input class="form-input form-input--red" type="url" id="import" v-model="url" placeholder="Enter recipe URL..." style="width: 100%;">
+            <input class="form-input form-input--red" type="url" id="import" v-model="url" :placeholder="$t('placeholder.scraper')" style="width: 100%;">
             <button type="button" class="button button--input" @click.prevent="scrape">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path fill="none" d="M0 0h24v24H0z"/><path d="M12 13H4v-2h8V4l8 8-8 8z"/></svg>
             </button>
         </div>
-        <p class="form-input-hint">Bar Assistant will do it's best to find recipe information from the URL.</p>
+        <p class="form-input-hint">{{ $t('scraper.input-hint') }}</p>
         <div class="scraper-form" v-if="result">
             <div class="alert alert--info" style="margin: 1rem 0;">
-                <h3>Information</h3>
-                <p>Existing ingredients and glass will be matched by their name (case insensitive). If ingredient or glass does not exist, it will be created. Common units are automatically converted to "ml".</p>
+                <h3>{{ $t('information') }}</h3>
+                <p>{{ $t('scraper.information') }}</p>
             </div>
-            <h3 class="form-section-title">Recipe information</h3>
+            <h3 class="form-section-title">{{ $t('recipe-information') }}</h3>
             <div class="block-container block-container--padded">
                 <div class="form-group">
-                    <label for="name">Name</label>
+                    <label for="name">{{ $t('name') }}</label>
                     <input type="text" class="form-input" id="name" v-model="result.name">
                 </div>
                 <div class="form-group">
-                    <label for="description">Description</label>
+                    <label for="description">{{ $t('description') }}</label>
                     <textarea class="form-input" rows="2" id="description" v-model="result.description"></textarea>
                 </div>
                 <div class="form-group">
-                    <label for="source">Source</label>
+                    <label for="source">{{ $t('source') }}</label>
                     <input type="text" class="form-input" id="source" v-model="result.source">
                 </div>
                 <div class="form-group">
-                    <label for="glass">Glass name</label>
+                    <label for="glass">{{ $t('glass-type') }}</label>
                     <input type="text" class="form-input" id="glass" v-model="result.glass">
                 </div>
                 <div class="form-group">
-                    <label for="instructions">Instructions</label>
+                    <label for="instructions">{{ $t('instructions') }}</label>
                     <textarea class="form-input" rows="2" id="instructions" v-model="result.instructions"></textarea>
                 </div>
                 <div class="form-group">
-                    <label for="image_url">Image url</label>
+                    <label for="image_url">{{ $t('image-url') }}</label>
                     <input type="text" class="form-input" id="image_url" v-model="result.image.url">
                 </div>
                 <div class="form-group">
-                    <label for="image_copyrigh">Image copyright</label>
+                    <label for="image_copyrigh">{{ $t('image-copyright') }}</label>
                     <input type="text" class="form-input" id="image_copyrigh" v-model="result.image.copyright">
                 </div>
                 <div class="form-group">
-                    <label for="tags">Tags</label>
+                    <label for="tags">{{ $t('tags') }}</label>
                     <input type="text" class="form-input" id="tags" v-model="cocktailTags">
                 </div>
             </div>
-            <h3 class="form-section-title">Recipe ingredients</h3>
+            <h3 class="form-section-title">{{ $t('ingredients') }}</h3>
             <div class="block-container block-container--padded">
                 <div class="scraper-ingredients__ingredient" v-for="(ingredient, idx) in result.ingredients">
                     <div class="form-group">
-                        <label :for="'ingredient_name_' + idx">Name</label>
+                        <label :for="'ingredient_name_' + idx">{{ $t('name') }}</label>
                         <input type="text" class="form-input" :id="'ingredient_name_' + idx" v-model="ingredient.name">
                     </div>
                     <div class="form-group">
-                        <label :for="'ingredient_amount_' + idx">Amount</label>
+                        <label :for="'ingredient_amount_' + idx">{{ $t('amount') }}</label>
                         <input type="text" class="form-input" :id="'ingredient_amount_' + idx" v-model="ingredient.amount">
                     </div>
                     <div class="form-group">
-                        <label :for="'ingredient_units_' + idx">Units</label>
+                        <label :for="'ingredient_units_' + idx">{{ $t('units') }}</label>
                         <input type="text" class="form-input" :id="'ingredient_units_' + idx" v-model="ingredient.units">
                     </div>
                     <div class="form-group">
-                        <Checkbox v-model="ingredient.optional" :id="'ingredient_optional_' + idx">Optional</Checkbox>
+                        <Checkbox v-model="ingredient.optional" :id="'ingredient_optional_' + idx">{{ $t('optional') }}</Checkbox>
                     </div>
                     <div class="form-group">
-                        <a href="#" @click.prevent="removeIngredient(ingredient)">Remove</a>
+                        <a href="#" @click.prevent="removeIngredient(ingredient)">{{ $t('remove') }}</a>
                     </div>
                 </div>
             </div>
             <div class="form-actions">
-                <RouterLink class="button button--outline" :to="{ name: 'cocktails' }">Cancel</RouterLink>
-                <button type="button" class="button button--dark" @click="goTo('cocktails.form')">Continue with editing</button>
-                <!-- <button type="button" class="button button--dark" @click="goTo">Import and save</button> -->
+                <RouterLink class="button button--outline" :to="{ name: 'cocktails' }">{{ $t('cancel') }}</RouterLink>
+                <button type="button" class="button button--dark" @click="goTo('cocktails.form')">{{ $t('scraper.continue') }}</button>
             </div>
         </div>
     </form>

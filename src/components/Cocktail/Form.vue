@@ -88,7 +88,7 @@
                             </div>
                         </Transition>
                         <!-- <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path fill="none" d="M0 0h24v24H0z"/><path d="M5 16v6H3V3h9.382a1 1 0 0 1 .894.553L14 5h6a1 1 0 0 1 1 1v11a1 1 0 0 1-1 1h-6.382a1 1 0 0 1-.894-.553L12 16H5zM5 5v9h8.236l1 2H19V7h-6.236l-1-2H5z"/></svg> -->
-                        <div class="cocktail-method__title">{{ method.name }}</div>
+                        <div class="cocktail-method__title">{{ $t('method.' + method.name) }}</div>
                         <small>{{ method.dilution_percentage }}%</small>
                         <input type="radio" :id="'method_' + method.id" :value="method.id" v-model="methodId">
                     </label>
@@ -206,7 +206,7 @@ export default {
         }
     },
     created() {
-        document.title = `Cocktail Form \u22C5 Salt Rim`
+        document.title = `${this.$t('cocktail')} \u22C5 Salt Rim`
 
         this.isLoading = true;
         this.cocktailId = this.$route.query.id || null;
@@ -218,7 +218,7 @@ export default {
                 data.garnish = Utils.decodeHtml(data.garnish);
                 this.cocktail = data;
                 this.isLoading = false;
-                document.title = `Cocktail form \u22C5 ${this.cocktail.name} \u22C5 Salt Rim`
+                document.title = `${this.$t('cocktail')} \u22C5 ${this.cocktail.name} \u22C5 Salt Rim`
             })
         }
 
@@ -270,7 +270,7 @@ export default {
                 return;
             }
 
-            this.$confirm(`This will remove ingredient "${ing.name}" from the recipe.`, {
+            this.$confirm(this.$t('cocktail.ingredient-remove', {name: ing.name}), {
                 onResolved: (dialog) => {
                     dialog.close();
                     this.cocktail.ingredients.splice(
@@ -301,7 +301,7 @@ export default {
                 ingredient_id: null,
                 amount: 30,
                 units: 'ml',
-                name: '<Not selected>',
+                name: this.$t('ingredient.name-placeholder'),
                 sort: this.cocktail.ingredients.length + 1
             };
 
@@ -351,7 +351,7 @@ export default {
                 tags: this.cocktail.tags.filter(tag => tag != ''),
                 glass_id: this.glassId,
                 ingredients: this.cocktail.ingredients
-                    .filter(i => i.name != '<Not selected>')
+                    .filter(i => i.ingredient_id != null)
                     .map((cIngredient) => {
                         // Convert oz to ml
                         if (cIngredient.units == 'oz') {
@@ -376,7 +376,7 @@ export default {
             };
 
             const imageResources = await this.$refs.imagesUpload.uploadPictures().catch(() => {
-                this.$toast.error('An error occured while uploading images. Your cocktail is still saved.');
+                this.$toast.error(`${this.$t('image-upload-error')} ${this.$t('image-upload-error.cocktail')}`);
             });
 
             if (imageResources.length > 0) {
@@ -386,7 +386,7 @@ export default {
             if (this.cocktailId) {
                 ApiRequests.updateCocktail(this.cocktailId, postData).then(data => {
                     this.isLoading = false;
-                    this.$toast.default(`Cocktail updated successfully.`);
+                    this.$toast.default(this.$t('cocktail.update-success'));
                     this.$router.push({ name: 'cocktails.show', params: { id: data.id } })
                 }).catch(e => {
                     this.$toast.error(e.message);
@@ -396,7 +396,7 @@ export default {
                 ApiRequests.saveCocktail(postData).then(data => {
                     this.isLoading = false;
                     this.$toast.open({
-                        message: 'Cocktail created successfully.'
+                        message: this.$t('cocktail.create-success')
                     });
                     this.$router.push({ name: 'cocktails.show', params: { id: data.id } })
                 }).catch(e => {

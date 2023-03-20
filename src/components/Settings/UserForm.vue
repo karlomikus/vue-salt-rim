@@ -3,30 +3,30 @@
         <OverlayLoader v-if="isLoading" />
         <div class="dialog-title">{{ dialogTitle }}</div>
         <div class="form-group">
-            <label class="form-label form-label--required" for="name">Name:</label>
-            <input class="form-input" type="text" id="name" v-model="user.name" required placeholder="User name...">
+            <label class="form-label form-label--required" for="name">{{ $t('user.name') }}:</label>
+            <input class="form-input" type="text" id="name" v-model="user.name" required>
         </div>
         <div class="form-group">
-            <label class="form-label form-label--required" for="email">Email:</label>
-            <input class="form-input" type="email" id="email" v-model="user.email" required placeholder="Email...">
+            <label class="form-label form-label--required" for="email">{{ $t('email') }}:</label>
+            <input class="form-input" type="email" id="email" v-model="user.email" required>
         </div>
         <div class="form-group">
             <label class="form-label" :class="{'form-label--required': !user.id}" for="password">
                 <template v-if="!user.id">
-                    Password:
+                    {{ $t('password') }}:
                 </template>
                 <template v-else>
-                    Update password:
+                    {{ $t('update-password') }}:
                 </template>
             </label>
-            <input class="form-input" type="password" id="password" v-model="user.password" :required="!user.id" placeholder="Password...">
+            <input class="form-input" type="password" id="password" v-model="user.password" :required="!user.id">
         </div>
         <div class="form-group">
-            <Checkbox id="admin" v-model="user.is_admin">Is administrator</Checkbox>
+            <Checkbox id="admin" v-model="user.is_admin">{{ $t('is-admin') }}</Checkbox>
         </div>
         <div class="dialog-actions">
-            <button class="button button--outline" @click.prevent="$emit('userDialogClosed')">Cancel</button>
-            <button class="button button--dark" type="submit">Save</button>
+            <button class="button button--outline" @click.prevent="$emit('userDialogClosed')">{{ $t('cancel') }}</button>
+            <button class="button button--dark" type="submit">{{ $t('save') }}</button>
         </div>
     </form>
 </template>
@@ -65,7 +65,7 @@ export default {
 
                 ApiRequests.updateUserById(this.user.id, postData).then(() => {
                     this.isLoading = false;
-                    this.$toast.default(`User updated successfully.`);
+                    this.$toast.default(this.$t('user.update-success'));
                     this.$emit('userDialogClosed')
                 }).catch(e => {
                     this.$toast.error(e.message);
@@ -75,7 +75,7 @@ export default {
                 postData.password = this.user.password;
                 ApiRequests.saveUser(postData).then(() => {
                     this.isLoading = false;
-                    this.$toast.default(`User added successfully.`);
+                    this.$toast.default(this.$t('user.add-success'));
                     this.$emit('userDialogClosed')
                 }).catch(e => {
                     this.$toast.error(e.message);

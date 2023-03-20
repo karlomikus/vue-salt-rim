@@ -33,7 +33,7 @@
                     <div class="cocktail-details__chips__group__title">{{ $t('method') }}:</div>
                     <ul class="chips-list">
                         <li>
-                            <RouterLink :to="{ name: 'cocktails', query: { 'method[0]': cocktail.method.name } }">{{ cocktail.method.name }}</RouterLink>
+                            <RouterLink :to="{ name: 'cocktails', query: { 'method[0]': cocktail.method.name } }">{{ $t('method.' + cocktail.method.name) }}</RouterLink>
                         </li>
                     </ul>
                 </div>
@@ -175,7 +175,7 @@
                             </template>
                         </div>
                         <span v-if="!userShelfIngredients.includes(ing.ingredient_id)">{{ $t('cocktail.missing-ing') }}</span>
-                        <span v-if="userShoppingListIngredients.includes(ing.ingredient_id)">{{ $t('cocktail.shopping-ing') }}</span>
+                        <span v-if="userShoppingListIngredients.includes(ing.ingredient_id)">{{ $t('ingredient.on-shopping-list') }}</span>
                     </div>
                     <div class="cocktail-ingredients__amount">{{ parseIngredientAmount(ing) }}</div>
                 </li>

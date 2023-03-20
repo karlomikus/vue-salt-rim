@@ -3,7 +3,7 @@
         <OverlayLoader v-if="isLoading" />
         <ais-instant-search :search-client="searchClient" :index-name="index" :on-state-change="onStateChange">
             <ais-configure :hitsPerPage="30" />
-            <ais-search-box placeholder="Search for ingredient..." :class-names="{'ais-SearchBox-input': 'form-input'}" />
+            <ais-search-box :placeholder="$t('placeholder.search-ingredients')" :class-names="{'ais-SearchBox-input': 'form-input'}" />
             <ais-hits>
                 <template v-slot="{ items }">
                     <div class="block-container ingredients-options">

@@ -1,10 +1,10 @@
 <template>
     <PageHeader>
-        Glass types
+        {{ $t('glass-types') }}
         <template #actions>
             <Dialog v-model="showDialog">
                 <template #trigger>
-                    <button type="button" class="button button--outline" @click.prevent="openDialog('Add glass type', {})">Add glass type</button>
+                    <button type="button" class="button button--outline" @click.prevent="openDialog($t('glass-type.add'), {})">{{ $t('glass-type.add') }}</button>
                 </template>
                 <template #dialog>
                     <GlassForm :source-glass="editGlass" :dialog-title="dialogTitle" @glass-dialog-closed="refreshGlasses" />
@@ -22,19 +22,19 @@
                 <table class="table">
                     <thead>
                         <tr>
-                            <th>Name / Description</th>
+                            <th>{{ $t('name') }} / {{ $t('description') }}</th>
                             <th></th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr v-for="glass in glasses">
                             <td>
-                                <a href="#" @click.prevent="openDialog('Edit glass type', glass)">{{ glass.name }}</a>
+                                <a href="#" @click.prevent="openDialog($t('glass-type.edit'), glass)">{{ glass.name }}</a>
                                 <br>
                                 <small>{{ glass.description }}</small>
                             </td>
                             <td style="text-align: right;">
-                                <a class="list-group__action" href="#" @click.prevent="deleteGlass(glass)">Delete</a>
+                                <a class="list-group__action" href="#" @click.prevent="deleteGlass(glass)">{{ $t('remove') }}</a>
                             </td>
                         </tr>
                     </tbody>
@@ -70,7 +70,7 @@ export default {
         }
     },
     created() {
-        document.title = `Glass types \u22C5 Salt Rim`
+        document.title = `${this.$t('glass-types')} \u22C5 Salt Rim`
 
         this.refreshGlasses()
     },
@@ -91,13 +91,13 @@ export default {
             this.showDialog = true;
         },
         deleteGlass(glass) {
-            this.$confirm(`This will permanently delete glass type with name "${glass.name}".`, {
+            this.$confirm(this.$t('glass-type.confirm-delete', {name: glass.name}), {
                 onResolved: (dialog) => {
                     this.isLoading = true
                     dialog.close()
                     ApiRequests.deleteGlass(glass.id).then(() => {
                         this.isLoading = false;
-                        this.$toast.default(`Glass deleted successfully.`);
+                        this.$toast.default(this.$t('glass-type.delete-success'));
                         this.refreshGlasses()
                     }).catch(e => {
                         this.$toast.error(e.message);

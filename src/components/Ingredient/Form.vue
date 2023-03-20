@@ -140,7 +140,7 @@ export default {
             };
 
             const imageResources = await this.$refs.imagesUpload.uploadPictures().catch(() => {
-                this.$toast.error('An error occured while uploading images. Your ingredient is still saved.');
+                this.$toast.error(`${this.$t('image-upload-error')} ${this.$t('image-upload-error.ingredient')}`);
             }) || [];
 
             if (Array.isArray(imageResources)) {
@@ -149,7 +149,7 @@ export default {
 
             if (this.ingredientId) {
                 ApiRequests.updateIngredient(this.ingredientId, postData).then(data => {
-                    this.$toast.default('Ingredient updated');
+                    this.$toast.default(this.$t('ingredient.update-success'));
                     this.$router.push({ name: 'ingredients.show', params: { id: data.id } })
                     this.isLoading = false;
                 }).catch(e => {
@@ -159,7 +159,7 @@ export default {
                 })
             } else {
                 ApiRequests.saveIngredient(postData).then(data => {
-                    this.$toast.default('Ingredient created');
+                    this.$toast.default(this.$t('ingredient.create-success'));
                     this.$router.push({ name: 'ingredients.show', params: { id: data.id } })
                     this.isLoading = false;
                 }).catch(e => {
