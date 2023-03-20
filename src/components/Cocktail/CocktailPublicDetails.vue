@@ -1,18 +1,7 @@
 <template>
     <div class="public-page">
         <div class="public-page__header">
-            <div class="site-logo">
-                <div class="site-logo__image">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
-                        <path fill="none" d="M0 0h24v24H0z" />
-                        <path d="M11 19v-5.111L3 5V3h18v2l-8 8.889V19h5v2H6v-2h5zM7.49 7h9.02l1.8-2H5.69l1.8 2z" />
-                    </svg>
-                </div>
-                <h1 class="site-logo__title">
-                    Salt Rim
-                    <span>Your personal bar assistant</span>
-                </h1>
-            </div>
+            <Logo></Logo>
         </div>
         <div class="public-cocktail-recipe">
             <div class="public-cocktail-recipe__image" :style="{'background-image': 'url(' + mainImage.url + ')'}">
@@ -54,8 +43,12 @@
 import ApiRequests from '@/ApiRequests';
 import { marked } from 'marked';
 import Utils from '@/Utils';
+import Logo from '@/components/Logo.vue'
 
 export default {
+    components: {
+        Logo
+    },
     data() {
         return {
             isLoading: false,
@@ -113,7 +106,7 @@ export default {
     mounted() {
         document.body.classList.add('public-body')
     },
-    destroyed () {
+    unmounted() {
         document.body.classList.remove('public-body')
     },
     methods: {

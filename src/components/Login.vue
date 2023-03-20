@@ -1,17 +1,6 @@
 <template>
     <div class="login-page">
-        <div class="site-logo">
-            <div class="site-logo__image">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
-                    <path fill="none" d="M0 0h24v24H0z" />
-                    <path d="M11 19v-5.111L3 5V3h18v2l-8 8.889V19h5v2H6v-2h5zM7.49 7h9.02l1.8-2H5.69l1.8 2z" />
-                </svg>
-            </div>
-            <h1 class="site-logo__title">
-                Salt Rim
-                <span>Your personal bar assistant</span>
-            </h1>
-        </div>
+        <Logo></Logo>
         <form @submit.prevent="login">
             <OverlayLoader v-if="isLoading"></OverlayLoader>
             <div class="form-group">
@@ -58,6 +47,7 @@
 import Auth from '../Auth'
 import ApiRequests from '@/ApiRequests';
 import OverlayLoader from '@/components/OverlayLoader.vue';
+import Logo from '@/components/Logo.vue';
 
 export default {
     data() {
@@ -72,7 +62,8 @@ export default {
         }
     },
     components: {
-        OverlayLoader: OverlayLoader
+        OverlayLoader,
+        Logo
     },
     created() {
         this.isLoading = true
