@@ -29,7 +29,7 @@ export default {
 
 .settings-nav a {
     padding: 5px 10px;
-    background-color: rgba(255, 255, 255, .5);
+    background-color: var(--clr-empty-state);
     text-decoration: none;
     border-radius: 5px;
 }

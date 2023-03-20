@@ -20,7 +20,7 @@
 .form-label {
     font-size: 1rem;
     font-weight: var(--fw-bold);
-    color: var(--clr-gray-800);
+    color: var(--clr-form-text);
     line-height: 1;
 }
 
@@ -41,7 +41,7 @@
     -webkit-appearance: none;
     -moz-appearance: none;
     appearance: none;
-    background: rgba(255, 255, 255, .5);
+    background: var(--clr-empty-state);
     border: 2px solid var(--clr-gray-100);
     border-radius: 5px;
     height: 3rem;
@@ -50,7 +50,7 @@
     outline: 0;
     padding: 0.5rem 0.75rem;
     vertical-align: middle;
-    color: var(--clr-gray-800);
+    color: var(--clr-form-text);
     font-family: var(--font-primary);
     transition: all ease-in-out .1s;
 }
@@ -74,8 +74,8 @@
 
 .form-input.form-input--red,
 .form-select.form-select--red {
-    background-color: rgba(255, 255, 255, 0.5);
-    border: 2px solid var(--clr-red-200);
+    background-color: var(--clr-block-bg);
+    border: 2px solid var(--clr-block-bottom-border);
     border-top-color: transparent;
     border-left-color: transparent;
     border-right-color: transparent;
@@ -87,18 +87,18 @@ textarea.form-input,
 }
 
 .form-select:not([multiple]):not([size]) {
-    background: rgba(255, 255, 255, .5) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' width='24' height='24'%3E%3Cpath fill='none' d='M0 0h24v24H0z'/%3E%3Cpath d='M12 15l-4.243-4.243 1.415-1.414L12 12.172l2.828-2.829 1.415 1.414z'/%3E%3C/svg%3E") no-repeat right;
+    background: var(--clr-empty-state) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' width='24' height='24'%3E%3Cpath fill='none' d='M0 0h24v24H0z'/%3E%3Cpath d='M12 15l-4.243-4.243 1.415-1.414L12 12.172l2.828-2.829 1.415 1.414z'/%3E%3C/svg%3E") no-repeat right;
     padding-right: 1.2rem;
 }
 
 .form-select:not([multiple]):not([size]):focus {
-    background: #fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' width='24' height='24'%3E%3Cpath fill='none' d='M0 0h24v24H0z'/%3E%3Cpath d='M12 15l-4.243-4.243 1.415-1.414L12 12.172l2.828-2.829 1.415 1.414z'/%3E%3C/svg%3E") no-repeat right;
+    background: var(--clr-form-bg) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' width='24' height='24'%3E%3Cpath fill='none' d='M0 0h24v24H0z'/%3E%3Cpath d='M12 15l-4.243-4.243 1.415-1.414L12 12.172l2.828-2.829 1.415 1.414z'/%3E%3C/svg%3E") no-repeat right;
 }
 
 .form-input:focus,
 .form-select:focus {
-    border-color: var(--clr-gray-800);
-    background: #fff;
+    border-color: var(--clr-form-text);
+    background: var(--clr-form-bg);
 }
 
 .form-input::placeholder,

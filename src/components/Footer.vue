@@ -70,10 +70,6 @@ export default {
 
 <style scoped>
 .site-footer-wrapper {
-    --color-footer-bg: #fff;
-}
-
-.site-footer-wrapper {
     background-color: var(--color-footer-bg);
     margin-top: 20px;
 }
@@ -95,12 +91,12 @@ export default {
     display: flex;
     margin-bottom: 5px;
     text-decoration: none;
-    color: var(--clr-gray-500)
+    color: var(--color-footer-text)
 }
 
 .site-footer__left a svg {
     margin-right: 5px;
-    fill: var(--clr-gray-500)
+    fill: var(--color-footer-text)
 }
 
 .site-footer__left a:hover svg {

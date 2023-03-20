@@ -203,7 +203,7 @@ export default {
 }
 
 .stats__stat {
-    background-color: #F0EFEB;
+    background-color: var(--stats-color);
     border-radius: 10px;
     padding: 15px;
 }

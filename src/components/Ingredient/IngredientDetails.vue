@@ -310,7 +310,7 @@ export default {
     display: block;
     font-size: 1rem;
     font-family: var(--font-primary);
-    color: var(--clr-gray-500);
+    color: var(--clr-small);
 }
 
 .ingredient-details__box hr {
@@ -338,7 +338,7 @@ export default {
     padding: 1px 8px;
     font-size: 0.9rem;
     box-shadow: 0 2px 0 rgba(0, 0, 0, .1);
-    background-color: rgba(255, 255, 255, .5);
+    background-color: var(--clr-empty-state);
     border-radius: 3px;
     text-decoration: none;
 }

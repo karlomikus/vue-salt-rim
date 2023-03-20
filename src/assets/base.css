@@ -51,6 +51,20 @@
     --clr-accent-green: #d4e9e4;
     --clr-accent-purple: #dfd7e3;
     --clr-accent-orange: #f1dcca;
+
+    --stats-color: #F0EFEB;
+    --clr-block-bg: rgba(255, 255, 255, .7);
+    --clr-block-bottom-border: var(--clr-block-bottom-border);
+    --clr-empty-state: rgba(255, 255, 255, .5);
+    --clr-empty-state-svg: var(--clr-gray-800);
+
+    --clr-form-text: var(--clr-gray-800);
+    --clr-form-bg: #fff;
+
+    --clr-small:  var(--clr-gray-500);
+    --color-footer-bg: #fff;
+    --color-footer-text: var(--clr-gray-500);
+    
 }
 
 /* @media (prefers-color-scheme: dark) {

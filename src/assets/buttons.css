@@ -103,7 +103,7 @@
 
 .button--input {
     background-color: rgba(255, 255, 255, 0.5);
-    border: 2px solid var(--clr-red-200);
+    border: 2px solid var(--clr-block-bottom-border);
     border-top-color: transparent;
     border-left-color: transparent;
     border-right-color: transparent;

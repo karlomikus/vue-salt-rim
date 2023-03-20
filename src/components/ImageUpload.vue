@@ -181,7 +181,7 @@ export default {
     border: 2px dashed var(--clr-red-300);
     border-radius: 4px;
     display: flex;
-    background-color: rgba(255, 255, 255, .5);
+    background-color: var(--clr-empty-state);
     padding: 2rem;
     cursor: pointer;
 }

@@ -1,8 +1,7 @@
 .block-container {
-    --clr-block-bg: rgba(255, 255, 255, .7);
     --bc-padding: 2rem;
     background: var(--clr-block-bg);
-    border-bottom: 2px solid var(--clr-red-200);
+    border-bottom: 2px solid var(--clr-block-bottom-border);
     border-radius: 5px;
     transition: border-color ease-in-out 100ms;
 }

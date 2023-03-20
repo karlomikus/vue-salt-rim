@@ -39,7 +39,7 @@ main {
 }
 
 .page-subtitle {
-    border-bottom: 3px double var(--clr-red-200);
+    border-bottom: 3px double var(--clr-block-bottom-border);
     padding-bottom: 10px;
     margin: 20px 0;
     font-size: 1.2rem;
@@ -85,11 +85,11 @@ h3.form-section-title::before {
     text-align: center;
     padding: 30px;
     border-radius: 30px;
-    background-color: rgba(255, 255, 255, .5);
+    background-color: var(--clr-empty-state);
 }
 
 .empty-state svg {
-    fill: var(--clr-gray-800);
+    fill: var(--clr-empty-state-svg);
     width: 70px;
     height: 70px;
 }

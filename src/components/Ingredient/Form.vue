@@ -181,7 +181,7 @@ export default {
     padding: 10px;
     width: 100%;
     display: flex;
-    background: rgba(255, 255, 255, .5);
+    background: var(--clr-empty-state);
     border: 2px solid var(--clr-gray-100);
     border-radius: 5px;
     height: 3rem;

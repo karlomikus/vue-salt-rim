@@ -400,7 +400,7 @@
     -webkit-appearance: none;
     -moz-appearance: none;
     appearance: none;
-    background: rgba(255, 255, 255, .5);
+    background: var(--clr-empty-state);
     border: 2px solid var(--clr-red-300);
     border-top-color: transparent;
     border-left-color: transparent;
@@ -482,7 +482,7 @@
     -webkit-appearance: none;
     -moz-appearance: none;
     appearance: none;
-    background: rgba(255, 255, 255, .5);
+    background: var(--clr-empty-state);
     border: 2px solid var(--clr-gray-100);
     border-radius: 5px;
     height: 3rem;
