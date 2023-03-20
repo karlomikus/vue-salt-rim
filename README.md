@@ -66,9 +66,11 @@ $ npm install
 Create a new config file in `public/config.js`, with the following content
 
 ``` js
-window.srConfig = {}
-window.srConfig.API_URL = "$API_URL"
-window.srConfig.MEILISEARCH_URL = "$MEILISEARCH_URL"
+window.srConfig = {};
+window.srConfig.API_URL = "$API_URL";
+window.srConfig.MEILISEARCH_URL = "$MEILISEARCH_URL";
+window.srConfig.BAR_NAME = "My bar";
+// window.srConfig.BAR_DESCRIPTION = "Your personal bar assistant"; // Optional
 ```
 
 4. Run the build commands

@@ -20,7 +20,7 @@ export default {
             return window.srConfig.BAR_NAME || 'Salt Rim';
         },
         description() {
-            return window.srConfig.DESCRIPTION || 'Your personal bar assistant';
+            return window.srConfig.BAR_DESCRIPTION || 'Your personal bar assistant';
         }
     }
 }
