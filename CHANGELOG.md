@@ -1,3 +1,7 @@
+# v1.7.1
+## Fixes
+- Fix nginx post body size #62
+
 # v1.7.0
 ## New
 - You can now upload multiple cocktail images
