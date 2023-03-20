@@ -2,7 +2,7 @@
 ## New
 - Added internationalization
     - Currently supports English (US) and Croatian
-    - Checkout `locales/` folder if you are intereseted in contributing a new language
+    - Checkout `src/locales/` folder if you are intereseted in contributing a new language
 - You can now share public link of a cocktail recipe
 - You can now change bar name and description, this will update the application logo
 

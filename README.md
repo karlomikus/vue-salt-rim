@@ -91,6 +91,10 @@ $ npm run dev
 
 Fork the respository, follow manual installation steps and make your changes. Issues and PR's are appreciated.
 
+### Internationalization
+
+If you want to contribute translations of the UI you can find all the strings that need translations in `src/locales/` directory. Copy one of the locale files and start translating the strings. For extra information you can check out the [i18n plugin this project is using here](https://vue-i18n.intlify.dev/).
+
 ## License
 
 Salt Rim is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
