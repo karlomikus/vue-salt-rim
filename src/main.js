@@ -8,17 +8,25 @@ import mitt from 'mitt'
 import dialog from './components/Dialog/plugin';
 import './assets/main.css'
 
-import en from './locales/en.json';
-import hr from './locales/hr.json';
+import en_US from './locales/en-US';
+import hr_HR from './locales/hr-HR';
 
 const emitter = mitt()
 const app = createApp(App)
 const i18n = createI18n({
-    locale: 'en',
-    fallbackLocale: 'en',
+    locale: 'en-US',
+    fallbackLocale: 'en-US',
+    numberFormats: {
+        'en-US': en_US.numbers,
+        'hr-HR': hr_HR.numbers,
+    },
+    datetimeFormats: {
+        'en-US': en_US.datetime,
+        'hr-HR': hr_HR.datetime,
+    },
     messages: {
-        en,
-        hr
+        'en-US': en_US.messages,
+        'hr-HR': hr_HR.messages,
     }
 })
 

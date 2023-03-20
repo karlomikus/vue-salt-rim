@@ -1,4 +1,8 @@
-{
+const messages = {
+    locales: {
+        "en-US": "Engleski (US)",
+        "hr-HR": "Hrvatski"
+    },
     "cocktails": "Kokteli",
     "ingredients": "Sastojci",
     "shelf": "Polica",
@@ -201,5 +205,40 @@
     "scraper.information": "Postojeći podaci će biti spojeni ako se imena podudaraju (neovisno o velikim i malim slovima). Ako sastojak ili čaša ne postoje, nove će biti kreirane. Najčešće jedinice se automatski pretvaraju u \"ml\".",
     "scraper.continue": "Nastavi s uređivanjem",
     "placeholder.scraper": "Unesi URL sa receptom...",
-    "image-url": "URL slike"
-}
+    "image-url": "URL slike",
+    "public-dialog": {
+        "title": "Javna poveznica koktela",
+        "public_at": "Poveznica stvorena: {date}",
+        "missing": "Javna poveznica ne postoji",
+        "action-copy": "Kopiraj poveznicu",
+        "action-delete": "Ukloni poveznicu",
+        "action-generate": "Generiraj poveznicu",
+        "toasts": {
+            "copy-success": "Javna poveznica kopirana",
+            "copy-fail": "Greška kod kopiranja poveznice"
+        }
+    }
+};
+
+const datetime = {
+    "short": {
+        "year": "numeric",
+        "month": "short",
+        "day": "numeric"
+    },
+    "long": {
+        "year": "numeric",
+        "month": "short",
+        "day": "numeric",
+        "hour": "numeric",
+        "minute": "numeric"
+    }
+};
+
+const numbers = {
+    decimal: {
+        style: 'decimal', minimumFractionDigits: 2, maximumFractionDigits: 2
+    }
+};
+
+export default { messages, datetime, numbers }

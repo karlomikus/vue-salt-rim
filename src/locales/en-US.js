@@ -1,4 +1,8 @@
-{
+const messages = {
+    locales: {
+        "en-US": "English (US)",
+        "hr-HR": "Croatian"
+    },
     "cocktails": "Cocktails",
     "ingredients": "Ingredients",
     "shelf": "Shelf",
@@ -201,5 +205,41 @@
     "scraper.information": "Existing ingredients and glass will be matched by their name (case insensitive). If ingredient or glass does not exist, it will be created. Common units are automatically converted to \"ml\".",
     "scraper.continue": "Continue with editing",
     "placeholder.scraper": "Enter recipe URL...",
-    "image-url": "Image URL"
-}
+    "image-url": "Image URL",
+    "public-dialog": {
+        "title": "Cocktail public link",
+        "public_at": "Made public on: {date}",
+        "missing": "No public link available",
+        "action-copy": "Copy link",
+        "action-delete": "Delete link",
+        "action-generate": "Generate link",
+        "toasts": {
+            "copy-success": "Cocktail public URL copied",
+            "copy-fail": "Unable to write link to clipboard"
+        }
+    }
+};
+
+const datetime = {
+    "short": {
+        "year": "numeric",
+        "month": "short",
+        "day": "numeric"
+    },
+    "long": {
+        "year": "numeric",
+        "month": "short",
+        "day": "numeric",
+        "weekday": "short",
+        "hour": "numeric",
+        "minute": "numeric"
+    }
+};
+
+const numbers = {
+    decimal: {
+        style: 'decimal', minimumFractionDigits: 2, maximumFractionDigits: 2
+    }
+};
+
+export default { messages, datetime, numbers }
