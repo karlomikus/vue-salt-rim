@@ -17,7 +17,7 @@
                         <SiteAutocomplete @closeAutocomplete="searchShown = false" />
                     </template>
                 </Dialog>
-                <RouterLink :to="{name: 'home'}" exact-active-class="current-nav">{{ $t('shelf') }}</RouterLink>
+                <RouterLink :to="{name: 'home'}" exact-active-class="current-nav">{{ $t('shelf.title') }}</RouterLink>
                 <RouterLink :to="{name: 'cocktails'}" :class="{ 'current-nav': $route.path.startsWith('/cocktails') }">{{ $t('cocktails') }}</RouterLink>
                 <RouterLink :to="{name: 'ingredients'}" :class="{ 'current-nav': $route.path.startsWith('/ingredients') }">{{ $t('ingredients') }}</RouterLink>
                 <RouterLink :to="{name: 'settings'}" :class="{ 'current-nav': $route.path.startsWith('/settings') }">{{ $t('settings') }}</RouterLink>

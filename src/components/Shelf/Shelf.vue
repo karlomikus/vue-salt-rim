@@ -15,7 +15,7 @@
         </div>
         <div class="stats__stat">
             <h3>{{ stats.total_shelf_cocktails }}</h3>
-            <p><RouterLink :to="{name: 'cocktails', query: {shelf: true}}">{{ $t('shelf.cocktails') }}</RouterLink></p>
+            <p><RouterLink :to="{name: 'cocktails', query: {shelf: true}}">{{ $t('shelf.title') }}</RouterLink></p>
         </div>
     </div>
 
@@ -121,7 +121,7 @@ export default {
             this.favoriteCocktails = data
         }).catch(e => {
             this.loaders.favorites = false;
-            this.$toast.error('An error occured while fetching your favorite cocktails from a server.');
+            this.$toast.error(this.$t('shelf.toasts.favorites-error'));
         })
 
         ApiRequests.fetchCocktails({per_page: 5, order_by: 'created_at:desc'}).then(data => {
@@ -129,7 +129,7 @@ export default {
             this.latestCocktails = data
         }).catch(e => {
             this.loaders.cocktails = false;
-            this.$toast.error('An error occured while fetching cocktails you can make from a server.');
+            this.$toast.error(this.$t('shelf.toasts.shelf-error'));
         })
 
         this.fetchShoppingList();
@@ -139,7 +139,7 @@ export default {
             this.stats = data
         }).catch(e => {
             this.loaders.stats = false;
-            this.$toast.error('An error occured while fetching stats from a server.');
+            this.$toast.error(this.$t('shelf.toasts.stats-error'));
         })
     },
     methods: {
@@ -150,7 +150,7 @@ export default {
                 this.shoppingListIngredients = data
             }).catch(e => {
                 this.loaders.list = false;
-                this.$toast.error('An error occured while fetching ingredients on your shopping list from a server.');
+                this.$toast.error(this.$t('shelf.toasts.list-error'));
             })
         },
         randomCocktail() {
