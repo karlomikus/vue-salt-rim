@@ -1,6 +1,6 @@
 <template>
     <div class="list-print-container">
-        <h3>Shopping list</h3>
+        <h3>{{ $t('your-shopping-list') }}</h3>
         <ul>
             <li v-for="ingredient in list">
                 <div class="checkbox"></div>

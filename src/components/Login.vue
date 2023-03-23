@@ -4,11 +4,11 @@
         <form @submit.prevent="login">
             <OverlayLoader v-if="isLoading"></OverlayLoader>
             <div class="form-group">
-                <label class="form-label" for="email">Email:</label>
+                <label class="form-label" for="email">{{ $t('email') }}:</label>
                 <input class="form-input" type="email" id="email" v-model="email" required>
             </div>
             <div class="form-group">
-                <label class="form-label" for="password">Password:</label>
+                <label class="form-label" for="password">{{ $t('password') }}:</label>
                 <input class="form-input" type="password" id="password" v-model="password" required>
             </div>
             <div class="server-status">
@@ -16,28 +16,16 @@
                 <a :href="baServer" target="_blank" class="server-status__url">{{ baServer }}</a>
                 <div class="server-status__status">
                     <template v-if="baServerAvailable">
-                        Status: Available &middot; {{ server.version }}
+                        {{ $t('status') }}: {{ $t('status-available') }} &middot; {{ server.version }}
                     </template>
                     <template v-else>
-                        Status: Not available
+                        {{ $t('status') }}: {{ $t('status-not-available') }}
                     </template>
                 </div>
             </div>
-            <!-- <div class="server-status">
-                <div class="server-status__title">Meilisearch server:</div>
-                <a :href="server.meilisearch_host" target="_blank" class="server-status__url">{{ server.meilisearch_host }}</a>
-                <div class="server-status__status">
-                    <template v-if="meiliServerAvailable">
-                        Status: Available &middot; {{ server.meilisearch_version }}
-                    </template>
-                    <template v-else>
-                        Status: Not available
-                    </template>
-                </div>
-            </div> -->
             <div style="text-align: right; margin-top: 20px;" v-if="baServerAvailable">
-                <RouterLink class="button button--outline" :to="{ name: 'register' }">Register</RouterLink>
-                <button type="submit" class="button button--dark" style="margin-left: 5px;" :disabled="!baServerAvailable">Login</button>
+                <RouterLink class="button button--outline" :to="{ name: 'register' }">{{ $t('register') }}</RouterLink>
+                <button type="submit" class="button button--dark" style="margin-left: 5px;" :disabled="!baServerAvailable">{{ $t('login') }}</button>
             </div>
         </form>
     </div>

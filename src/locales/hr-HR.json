@@ -229,5 +229,12 @@
   "public-link": "Javan na",
   "click-here": "Kliknite ovdje",
   "ui-language": "Jezik sučelja",
-  "print": "Ispiši"
+  "print": "Ispiši",
+  "register": "Registracija",
+  "login": "Prijava",
+  "status": "Status",
+  "status-available": "Dostupan",
+  "status-not-available": "Nije dostupan",
+  "passwords-not-match": "Lozinke nisu jednake",
+  "register-success": "Registracija je uspješna, sada se možete prijaviti"
 }

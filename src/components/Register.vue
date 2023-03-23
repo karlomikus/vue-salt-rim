@@ -4,24 +4,24 @@
         <form @submit.prevent="register">
             <OverlayLoader v-if="isLoading"></OverlayLoader>
             <div class="form-group">
-                <label class="form-label form-label--required" for="email">Email:</label>
+                <label class="form-label form-label--required" for="email">{{ $t('email') }}:</label>
                 <input class="form-input" type="email" id="email" v-model="newUser.email" required>
             </div>
             <div class="form-group">
-                <label class="form-label form-label--required" for="password">Password:</label>
+                <label class="form-label form-label--required" for="password">{{ $t('password') }}:</label>
                 <input class="form-input" type="password" id="password" v-model="newUser.password" required>
             </div>
             <div class="form-group">
-                <label class="form-label form-label--required" for="password-repeat">Repeat password:</label>
+                <label class="form-label form-label--required" for="password-repeat">{{ $t('repeat-password') }}:</label>
                 <input class="form-input" type="password" id="password-repeat" v-model="newUser.passwordRepeat" required>
             </div>
             <div class="form-group">
-                <label class="form-label form-label--required" for="name">Name:</label>
+                <label class="form-label form-label--required" for="name">{{ $t('user.name') }}:</label>
                 <input class="form-input" type="text" id="name" v-model="newUser.name" required>
             </div>
             <div style="text-align: right; margin-top: 20px;">
-                <RouterLink class="button button--outline" :to="{ name: 'login' }">Cancel</RouterLink>
-                <button type="submit" class="button button--dark" style="margin-left: 5px;">Register</button>
+                <RouterLink class="button button--outline" :to="{ name: 'login' }">{{ $t('cancel') }}</RouterLink>
+                <button type="submit" class="button button--dark" style="margin-left: 5px;">{{ $t('register') }}</button>
             </div>
         </form>
     </div>
@@ -52,13 +52,13 @@ export default {
             };
 
             if (this.newUser.password != this.newUser.passwordRepeat) {
-                this.$toast.error('Passwords do not match!')
+                this.$toast.error(this.$t('passwords-not-match'))
                 return;
             }
 
             this.isLoading = true
             ApiRequests.registerNewUser(postData).then(() => {
-                this.$toast.default('You are now registered, you can now login with your information!')
+                this.$toast.default(this.$t('register-success'))
                 this.$router.push('/login');
             }).catch(e => {
                 this.isLoading = false
