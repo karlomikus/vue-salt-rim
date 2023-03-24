@@ -12,9 +12,10 @@
         <div class="inpage-search inpage-search--hide-filters">
             <div class="inpage-search__filter">
                 <div class="inpage-search__filter__body">
-                    <h3>{{ $t('filters') }}</h3>
-                    <button class="button button--dark button--small inpage-search__filter__close" @click.prevent="toggleShow">X</button>
-                    <ais-clear-refinements />
+                    <div class="inpage-search__filter__mobile-header">
+                        <h3>{{ $t('filters') }}</h3>
+                        <button class="button button--dark button--small inpage-search__filter__close" @click.prevent="toggleFiltersShown">X</button>
+                    </div>
                     <h4>{{ $t('sort') }}</h4>
                     <ais-sort-by :items="[
                         { value: 'cocktails', label: $t('sort.relevancy') },
@@ -58,7 +59,11 @@
                         </div>
                     </ais-panel>
                     <h4>{{ $t('ingredient.main') }}</h4>
-                    <ais-refinement-list attribute="main_ingredient_name" :sort-by="['name:asc']" :limit="10" :show-more-limit="50" show-more />
+                    <ais-refinement-list attribute="main_ingredient_name" :sort-by="['name:asc']" :limit="10" :show-more-limit="50" show-more>
+                        <template v-slot:showMoreLabel="{ isShowingMore }">
+                            {{ !isShowingMore ? $t('show-more') : $t('show-less') }}
+                        </template>
+                    </ais-refinement-list>
                     <h4>{{ $t('method') }}</h4>
                     <ais-refinement-list attribute="method" :sort-by="['name:asc']" />
                     <h4>{{ $t('strength') }}</h4>
@@ -70,23 +75,40 @@
                         { label: $t('strong'), start: 28 },
                     ]" />
                     <h4>{{ $t('tag') }}</h4>
-                    <ais-refinement-list attribute="tags" :sort-by="['name:asc']" :limit="10" operator="and" :show-more-limit="50" show-more />
+                    <ais-refinement-list attribute="tags" :sort-by="['name:asc']" :limit="10" operator="and" :show-more-limit="50" show-more>
+                        <template v-slot:showMoreLabel="{ isShowingMore }">
+                            {{ !isShowingMore ? $t('show-more') : $t('show-less') }}
+                        </template>
+                    </ais-refinement-list>
                     <h4>{{ $t('glass-type') }}</h4>
-                    <ais-refinement-list attribute="glass" :sort-by="['name:asc']" :limit="10" :show-more-limit="50" show-more />
+                    <ais-refinement-list attribute="glass" :sort-by="['name:asc']" :limit="10" :show-more-limit="50" show-more>
+                        <template v-slot:showMoreLabel="{ isShowingMore }">
+                            {{ !isShowingMore ? $t('show-more') : $t('show-less') }}
+                        </template>
+                    </ais-refinement-list>
                     <h4>{{ $t('rating') }}</h4>
                     <ais-rating-menu attribute="average_rating" />
-                    <!-- <button class="button button--dark button--small" @click.prevent="toggleShow">Apply filters</button> -->
+                    <div class="inpage-search__filter__body__actions">
+                        <ais-clear-refinements>
+                            <template #default="{ canRefine, refine }">
+                                <button type="reset" class="button button--outline" @click.prevent="refine" :disabled="!canRefine">
+                                    {{ $t('clear-filters') }}
+                                </button>
+                            </template>
+                        </ais-clear-refinements>
+                        <button class="button button--dark" @click.prevent="toggleFiltersShown">{{ $t('apply-filters') }}</button>
+                    </div>
                 </div>
             </div>
             <div class="inpage-search__results">
                 <div class="inpage-search__searchbox">
-                    <button type="button" class="button button--input" @click.prevent="toggleShow">
+                    <button type="button" class="button button--input" @click.prevent="toggleFiltersShown">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
                             <path fill="none" d="M0 0h24v24H0z" />
                             <path d="M6.17 18a3.001 3.001 0 0 1 5.66 0H22v2H11.83a3.001 3.001 0 0 1-5.66 0H2v-2h4.17zm6-7a3.001 3.001 0 0 1 5.66 0H22v2h-4.17a3.001 3.001 0 0 1-5.66 0H2v-2h10.17zm-6-7a3.001 3.001 0 0 1 5.66 0H22v2H11.83a3.001 3.001 0 0 1-5.66 0H2V4h4.17z" />
                         </svg>
                     </button>
-                    <ais-search-box :placeholder="$t('placeholder.search-cocktails')" :class-names="{'ais-SearchBox-input': 'ais-SearchBox-input form-input form-input--red'}" />
+                    <ais-search-box :placeholder="$t('placeholder.search-cocktails')" :class-names="{ 'ais-SearchBox-input': 'ais-SearchBox-input form-input form-input--red' }" />
                 </div>
                 <ais-current-refinements :transform-items="transformCurrentRefinements" />
                 <ais-infinite-hits>
@@ -227,7 +249,7 @@ export default {
         }
     },
     methods: {
-        toggleShow() {
+        toggleFiltersShown() {
             // Instantsearch has some weird issues with refinements if using v-show
             document.querySelector('.inpage-search').classList.toggle('inpage-search--hide-filters')
         },

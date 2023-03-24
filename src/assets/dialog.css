@@ -88,7 +88,7 @@
     width: 1.5rem;
     height: 1.5rem;
     border-radius: 50%;
-    background: var(--clr-gray-600);
+    background: rgb(146, 27, 53);
     display: flex;
     border: 0;
     padding: 0;
@@ -97,7 +97,7 @@
 
 .dialog__close svg {
     display: block;
-    fill: var(--clr-gray-300);
+    fill: var(--clr-gray-100);
 }
 
 .dialog__close:is(:hover,:focus,:active) {
@@ -111,5 +111,6 @@
 .dialog-actions {
     display: flex;
     justify-content: end;
+    flex-wrap: wrap;
     gap: 0.5rem;
 }

@@ -236,5 +236,8 @@
   "status-available": "Dostupan",
   "status-not-available": "Nije dostupan",
   "passwords-not-match": "Lozinke nisu jednake",
-  "register-success": "Registracija je uspješna, sada se možete prijaviti"
+  "register-success": "Registracija je uspješna, sada se možete prijaviti",
+  "apply-filters": "Primjeni filtere",
+  "show-less": "Prikaži manje",
+  "clear-filters": "Poništi filtere"
 }

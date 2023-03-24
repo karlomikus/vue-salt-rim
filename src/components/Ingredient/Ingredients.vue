@@ -11,9 +11,10 @@
         <div class="inpage-search inpage-search--hide-filters">
             <div class="inpage-search__filter">
                 <div class="inpage-search__filter__body">
-                    <h3>{{ $t('filters') }}</h3>
-                    <button class="button button--dark button--small inpage-search__filter__close" @click.prevent="toggleShown">X</button>
-                    <ais-clear-refinements></ais-clear-refinements>
+                    <div class="inpage-search__filter__mobile-header">
+                        <h3>{{ $t('filters') }}</h3>
+                        <button class="button button--dark button--small inpage-search__filter__close" @click.prevent="toggleFiltersShown">X</button>
+                    </div>
                     <h4>{{ $t('sort') }}</h4>
                     <ais-sort-by :items="[
                         { value: 'ingredients', label: $t('sort.relevancy') },
@@ -21,7 +22,11 @@
                         { value: 'ingredients:name:desc', label: $t('sort.name-desc') },
                     ]" :class-names="{ 'ais-SortBy-select': 'ais-SortBy-select form-select' }" />
                     <h4>{{ $t('category') }}</h4>
-                    <ais-refinement-list attribute="category" :sort-by="['name']" :limit="20" :show-more-limit="50" show-more></ais-refinement-list>
+                    <ais-refinement-list attribute="category" :sort-by="['name']" :limit="20" :show-more-limit="50" show-more>
+                        <template v-slot:showMoreLabel="{ isShowingMore }">
+                            {{ !isShowingMore ? $t('show-more') : $t('show-less') }}
+                        </template>
+                    </ais-refinement-list>
                     <h4>{{ $t('ABV') }}</h4>
                     <ais-numeric-menu attribute="strength_abv" :items="[
                         { label: $t('all') },
@@ -31,12 +36,26 @@
                         { label: '>= 40', start: 40 },
                     ]" />
                     <h4>{{ $t('origin') }}</h4>
-                    <ais-refinement-list attribute="origin" :sort-by="['name']" :limit="10" :show-more-limit="50" show-more></ais-refinement-list>
+                    <ais-refinement-list attribute="origin" :sort-by="['name']" :limit="10" :show-more-limit="50" show-more>
+                        <template v-slot:showMoreLabel="{ isShowingMore }">
+                            {{ !isShowingMore ? $t('show-more') : $t('show-less') }}
+                        </template>
+                    </ais-refinement-list>
+                    <div class="inpage-search__filter__body__actions">
+                        <ais-clear-refinements>
+                            <template #default="{ canRefine, refine }">
+                                <button type="reset" class="button button--outline" @click.prevent="refine" :disabled="!canRefine">
+                                    {{ $t('clear-filters') }}
+                                </button>
+                            </template>
+                        </ais-clear-refinements>
+                        <button class="button button--dark" @click.prevent="toggleFiltersShown">{{ $t('apply-filters') }}</button>
+                    </div>
                 </div>
             </div>
             <div class="inpage-search__results">
                 <div class="inpage-search__searchbox">
-                    <button type="button" class="button button--input" @click.prevent="toggleShown">
+                    <button type="button" class="button button--input" @click.prevent="toggleFiltersShown">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
                             <path fill="none" d="M0 0h24v24H0z" />
                             <path d="M6.17 18a3.001 3.001 0 0 1 5.66 0H22v2H11.83a3.001 3.001 0 0 1-5.66 0H2v-2h4.17zm6-7a3.001 3.001 0 0 1 5.66 0H22v2h-4.17a3.001 3.001 0 0 1-5.66 0H2v-2h10.17zm-6-7a3.001 3.001 0 0 1 5.66 0H22v2H11.83a3.001 3.001 0 0 1-5.66 0H2V4h4.17z" />
@@ -143,7 +162,7 @@ export default {
         }
     },
     methods: {
-        toggleShown() {
+        toggleFiltersShown() {
             document.querySelector('.inpage-search').classList.toggle('inpage-search--hide-filters')
         }
     }

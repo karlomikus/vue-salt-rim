@@ -236,5 +236,8 @@
   "status-available": "Available",
   "status-not-available": "Not available",
   "passwords-not-match": "Passwords do not match",
-  "register-success": "You are now registered, you can now login with your information"
+  "register-success": "You are now registered, you can now login with your information",
+  "apply-filters": "Apply filters",
+  "show-less": "Show less",
+  "clear-filters": "Clear all filters"
 }

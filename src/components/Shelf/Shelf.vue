@@ -15,7 +15,7 @@
         </div>
         <div class="stats__stat">
             <h3>{{ stats.total_shelf_cocktails }}</h3>
-            <p><RouterLink :to="{name: 'cocktails', query: {shelf: true}}">{{ $t('shelf.title') }}</RouterLink></p>
+            <p><RouterLink :to="{name: 'cocktails', query: {shelf: true}}">{{ $t('shelf.cocktails') }}</RouterLink></p>
         </div>
     </div>
 
@@ -110,7 +110,7 @@ export default {
         PageHeader,
     },
     created() {
-        document.title = `Shelf \u22C5 Salt Rim`
+        document.title = `${this.$t('shelf.title')} \u22C5 Salt Rim`
 
         this.loaders.favorites = true;
         this.loaders.cocktails = true;
