@@ -239,5 +239,7 @@
   "register-success": "Registracija je uspješna, sada se možete prijaviti",
   "apply-filters": "Primjeni filtere",
   "show-less": "Prikaži manje",
-  "clear-filters": "Poništi filtere"
+  "clear-filters": "Poništi filtere",
+  "rating-removed": "Ocjena uklonjena",
+  "rating-rated": "Koktel ocijenjen sa ocjenom {rating}"
 }

@@ -239,5 +239,7 @@
   "register-success": "You are now registered, you can now login with your information",
   "apply-filters": "Apply filters",
   "show-less": "Show less",
-  "clear-filters": "Clear all filters"
+  "clear-filters": "Clear all filters",
+  "rating-removed": "Removed cocktail rating",
+  "rating-rated": "Cocktail rated with {rating} stars"
 }
