@@ -38,6 +38,10 @@ class Utils {
             return this.ml2cl(orgAmount) + ' cl'
         }
 
+        if (convertTo == 'ml') {
+            return orgAmount + ' ml'
+        }
+
         return `${orgAmount} ${orgUnits}`;
     }
 
