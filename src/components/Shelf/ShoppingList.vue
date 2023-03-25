@@ -1,8 +1,8 @@
 <template>
     <PageHeader>
-        Your shopping list
+        {{ $t('your-shopping-list') }}
         <template #actions>
-            <RouterLink class="button button--outline" target="_blank" :to="{ name: 'print.shopping-list' }">Print</RouterLink>
+            <RouterLink class="button button--outline" target="_blank" :to="{ name: 'print.shopping-list' }">{{ $t('print') }}</RouterLink>
         </template>
     </PageHeader>
     <OverlayLoader v-if="isLoading"></OverlayLoader>

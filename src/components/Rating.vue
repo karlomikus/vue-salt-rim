@@ -43,7 +43,7 @@ export default {
             if (this.currentRating == rating) {
                 ApiRequests.deleteCocktailUserRating(this.id).then(() => {
                     this.currentRating = 0
-                    this.$toast.default(`Removed cocktail rating.`)
+                    this.$toast.default(this.$t('rating-removed'))
                     this.isLoading = false;
                 }).catch(e => {
                     this.$toast.error(e.message)
@@ -52,7 +52,7 @@ export default {
             } else {
                 ApiRequests.rateCocktail(this.id, { rating: rating }).then(() => {
                     this.currentRating = rating
-                    this.$toast.default(`Cocktail rated with ${rating} stars.`)
+                    this.$toast.default(this.$t('rating-rated', {rating: rating}))
                     this.isLoading = false;
                 }).catch(e => {
                     this.$toast.error(e.message)

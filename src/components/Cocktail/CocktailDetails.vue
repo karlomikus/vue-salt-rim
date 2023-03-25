@@ -5,7 +5,7 @@
             <swiper v-if="cocktail.images.length > 0" :modules="sliderModules" navigation :pagination="{ clickable: true }" :follow-finger="false">
                 <swiper-slide v-for="image in sortedImages">
                     <img :src="image.url" :alt="image.copyright" />
-                    <div class="cocktail-details__graphic__copyright" v-if="image.copyright">Image &copy; {{ image.copyright }}</div>
+                    <div class="cocktail-details__graphic__copyright" v-if="image.copyright">{{ $t('image-copyright-notice', { copyright: image.copyright }) }}</div>
                 </swiper-slide>
             </swiper>
             <img v-else src="/no-cocktail.jpg" alt="This cocktail does not have an image." />
@@ -14,7 +14,7 @@
             <h3 class="cocktail-title">{{ cocktail.name }}</h3>
             <div class="cocktail-details__chips">
                 <div class="cocktail-details__chips__group" v-if="cocktail.tags.length > 0">
-                    <div class="cocktail-details__chips__group__title">Tags:</div>
+                    <div class="cocktail-details__chips__group__title">{{ $t('tags') }}:</div>
                     <ul class="chips-list">
                         <li v-for="tag in cocktail.tags">
                             <RouterLink :to="{ name: 'cocktails', query: { 'tags[0]': tag } }">{{ tag }}</RouterLink>
@@ -22,7 +22,7 @@
                     </ul>
                 </div>
                 <div class="cocktail-details__chips__group" v-if="cocktail.glass">
-                    <div class="cocktail-details__chips__group__title">Glass:</div>
+                    <div class="cocktail-details__chips__group__title">{{ $t('glass-type') }}:</div>
                     <ul class="chips-list">
                         <li>
                             <RouterLink :to="{ name: 'cocktails', query: { 'glass[0]': cocktail.glass.name } }">{{ cocktail.glass.name }}</RouterLink>
@@ -30,28 +30,32 @@
                     </ul>
                 </div>
                 <div class="cocktail-details__chips__group" v-if="cocktail.method">
-                    <div class="cocktail-details__chips__group__title">Method:</div>
+                    <div class="cocktail-details__chips__group__title">{{ $t('method') }}:</div>
                     <ul class="chips-list">
                         <li>
-                            <RouterLink :to="{ name: 'cocktails', query: { 'method[0]': cocktail.method.name } }">{{ cocktail.method.name }}</RouterLink>
+                            <RouterLink :to="{ name: 'cocktails', query: { 'method[0]': cocktail.method.name } }">{{ $t('method.' + cocktail.method.name) }}</RouterLink>
                         </li>
                     </ul>
                 </div>
                 <div class="cocktail-details__chips__group" v-if="cocktail.abv && cocktail.abv > 0">
-                    <div class="cocktail-details__chips__group__title">ABV:</div>
+                    <div class="cocktail-details__chips__group__title">{{ $t('ABV') }}:</div>
                     <ul class="chips-list">
                         <li><span>{{ cocktail.abv }}%</span></li>
                     </ul>
                 </div>
                 <div class="cocktail-details__chips__group">
-                    <div class="cocktail-details__chips__group__title">Avg rating:</div>
+                    <div class="cocktail-details__chips__group__title">{{ $t('avg-rating') }}:</div>
                     <ul class="chips-list">
                         <li><span>{{ cocktail.average_rating }} stars</span></li>
                     </ul>
                 </div>
-                <div class="cocktail-details__chips__group" >
-                    <div class="cocktail-details__chips__group__title">Your rating:</div>
+                <div class="cocktail-details__chips__group">
+                    <div class="cocktail-details__chips__group__title">{{ $t('your-rating') }}:</div>
                     <Rating :rating="cocktail.user_rating" type="cocktail" :id="cocktail.id"></Rating>
+                </div>
+                <div class="cocktail-details__chips__group" v-if="cocktail.has_public_link">
+                    <div class="cocktail-details__chips__group__title">{{ $t('public-link') }}:</div>
+                    <RouterLink :to="{ name: 'e.cocktail', params: { ulid: cocktail.public_id, slug: cocktail.slug } }" target="_blank">{{ $t('click-here') }}</RouterLink>
                 </div>
             </div>
             <div class="cocktail-details-box__description">
@@ -83,16 +87,23 @@
                                 <path fill="none" d="M0 0h24v24H0z" />
                                 <path d="M6 19H3a1 1 0 0 1-1-1V8a1 1 0 0 1 1-1h3V3a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v4h3a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1h-3v2a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1v-2zm0-2v-1a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v1h2V9H4v8h2zM8 4v3h8V4H8zm0 13v3h8v-3H8zm-3-7h3v2H5v-2z" />
                             </svg>
-                            Print recipe
+                            {{ $t('print-recipe') }}
                         </RouterLink>
-                        <!-- <RouterLink class="dropdown-menu__item" target="_blank" :to="{ name: 'print.cocktail', params: { id: cocktail.slug } }">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18">
-                                <path fill="none" d="M0 0h24v24H0z" />
-                                <path d="M18.364 15.536L16.95 14.12l1.414-1.414a5 5 0 1 0-7.071-7.071L9.879 7.05 8.464 5.636 9.88 4.222a7 7 0 0 1 9.9 9.9l-1.415 1.414zm-2.828 2.828l-1.415 1.414a7 7 0 0 1-9.9-9.9l1.415-1.414L7.05 9.88l-1.414 1.414a5 5 0 1 0 7.071 7.071l1.414-1.414 1.415 1.414zm-.708-10.607l1.415 1.415-7.071 7.07-1.415-1.414 7.071-7.07z" />
-                            </svg>
-                            Copy public link
-                        </RouterLink>
-                        <a class="dropdown-menu__item" target="_blank">
+                        <Dialog v-model="showPublicDialog">
+                            <template #trigger>
+                                <a class="dropdown-menu__item" href="#" @click.prevent="showPublicDialog = !showPublicDialog">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18">
+                                        <path fill="none" d="M0 0h24v24H0z" />
+                                        <path d="M18.364 15.536L16.95 14.12l1.414-1.414a5 5 0 1 0-7.071-7.071L9.879 7.05 8.464 5.636 9.88 4.222a7 7 0 0 1 9.9 9.9l-1.415 1.414zm-2.828 2.828l-1.415 1.414a7 7 0 0 1-9.9-9.9l1.415-1.414L7.05 9.88l-1.414 1.414a5 5 0 1 0 7.071 7.071l1.414-1.414 1.415 1.414zm-.708-10.607l1.415 1.415-7.071 7.07-1.415-1.414 7.071-7.07z" />
+                                    </svg>
+                                    {{ $t('create-public-link') }}
+                                </a>
+                            </template>
+                            <template #dialog>
+                                <PublicLinkDialog :cocktail="cocktail" @publicDialogClosed="showPublicDialog = false" />
+                            </template>
+                        </Dialog>
+                        <!-- <a class="dropdown-menu__item" target="_blank">
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18">
                                 <path fill="none" d="M0 0h24v24H0z" />
                                 <path d="M4.828 21l-.02.02-.021-.02H2.992A.993.993 0 0 1 2 20.007V3.993A1 1 0 0 1 2.992 3h18.016c.548 0 .992.445.992.993v16.014a1 1 0 0 1-.992.993H4.828zM20 15V5H4v14L14 9l6 6zm0 2.828l-6-6L6.828 19H20v-1.172zM8 11a2 2 0 1 1 0-4 2 2 0 0 1 0 4z" />
@@ -114,7 +125,7 @@
                                 <path fill="none" d="M0 0h24v24H0z" />
                                 <path d="M6.414 16L16.556 5.858l-1.414-1.414L5 14.586V16h1.414zm.829 2H3v-4.243L14.435 2.322a1 1 0 0 1 1.414 0l2.829 2.829a1 1 0 0 1 0 1.414L7.243 18zM3 20h18v2H3v-2z" />
                             </svg>
-                            Edit
+                            {{ $t('edit') }}
                         </RouterLink>
                         <!-- <a class="dropdown-menu__item" href="#">
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18">
@@ -128,28 +139,28 @@
                                 <path fill="none" d="M0 0h24v24H0z" />
                                 <path d="M10 6v2H5v11h11v-5h2v6a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h6zm11-3v8h-2V6.413l-7.793 7.794-1.414-1.414L17.585 5H13V3h8z" />
                             </svg>
-                            Cocktail source
+                            {{ $t('cocktail-source') }}
                         </a>
                         <a class="dropdown-menu__item" href="javascript:;" @click.prevent="deleteCocktail">
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18">
                                 <path fill="none" d="M0 0h24v24H0z" />
                                 <path d="M7 4V2h10v2h5v2h-2v15a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V6H2V4h5zM6 6v14h12V6H6zm3 3h2v8H9V9zm4 0h2v8h-2V9z" />
                             </svg>
-                            Delete
+                            {{ $t('remove') }}
                         </a>
                     </template>
                 </Dropdown>
             </div>
         </div>
         <div class="details-block-container details-block-container--green" v-if="cocktail.ingredients.length > 0">
-            <h3 class="details-block-container__title">Ingredients</h3>
+            <h3 class="details-block-container__title">{{ $t('ingredients') }}</h3>
             <div style="display: grid; grid-template-columns: 1fr 1fr;">
                 <div class="cocktail-button-group">
-                    <h4>Servings:</h4>
+                    <h4>{{ $t('servings') }}:</h4>
                     <button :class="{ 'active-serving': i == servings }" v-for="i in Array.from({ length: 4 }, (x, i) => i + 1)" @click="servings = i">{{ i }}</button>
                 </div>
                 <div class="cocktail-button-group" style="text-align:right">
-                    <h4>Units:</h4>
+                    <h4>{{ $t('units') }}:</h4>
                     <button type="button" :class="{ 'active-serving': currentUnit == 'ml' }" @click="changeMeasurementUnit('ml')">ml</button>
                     <button type="button" :class="{ 'active-serving': currentUnit == 'oz' }" @click="changeMeasurementUnit('oz')">oz</button>
                     <button type="button" :class="{ 'active-serving': currentUnit == 'cl' }" @click="changeMeasurementUnit('cl')">cl</button>
@@ -164,23 +175,23 @@
                         <small v-if="ing.optional">(optional)</small>
                         <div class="cocktail-ingredients__content__substitutes">
                             <template v-for="sub in ing.substitutes">
-                                or <RouterLink :to="{ name: 'ingredients.show', params: { id: sub.slug } }" data-ingredient="substitute">{{ sub.name }}</RouterLink>
+                                {{ $t('or').toLowerCase() }} <RouterLink :to="{ name: 'ingredients.show', params: { id: sub.slug } }" data-ingredient="substitute">{{ sub.name }}</RouterLink>
                             </template>
                         </div>
-                        <span v-if="!userShelfIngredients.includes(ing.ingredient_id)">You are missing this ingredient</span>
-                        <span v-if="userShoppingListIngredients.includes(ing.ingredient_id)">You have this ingredient on shopping list</span>
+                        <span v-if="!userShelfIngredients.includes(ing.ingredient_id)">{{ $t('cocktail.missing-ing') }}</span>
+                        <span v-if="userShoppingListIngredients.includes(ing.ingredient_id)">{{ $t('ingredient.on-shopping-list') }}</span>
                     </div>
                     <div class="cocktail-ingredients__amount">{{ parseIngredientAmount(ing) }}</div>
                 </li>
             </ul>
-            <a v-show="missingIngredientIds.length > 0" href="#" @click.prevent="addMissingIngredients">Add missing ingredients to my shopping list</a>
+            <a v-show="missingIngredientIds.length > 0" href="#" @click.prevent="addMissingIngredients">{{ $t('cocktail.missing-ing-action') }}</a>
         </div>
         <div class="details-block-container details-block-container--yellow" v-once>
-            <h3 class="details-block-container__title">Instructions</h3>
+            <h3 class="details-block-container__title">{{ $t('instructions') }}</h3>
             <div v-html="parsedInstructions"></div>
         </div>
         <div class="details-block-container details-block-container--red" v-if="cocktail.garnish" v-once>
-            <h3 class="details-block-container__title">Garnish</h3>
+            <h3 class="details-block-container__title">{{ $t('garnish') }}</h3>
             <div v-html="parsedGarnish"></div>
         </div>
     </div>
@@ -196,6 +207,8 @@ import Rating from '@/components/Rating.vue';
 import { Swiper, SwiperSlide } from 'swiper/vue';
 import { Navigation, Pagination } from 'swiper';
 import Utils from '@/Utils';
+import Dialog from '@/components/Dialog/Dialog.vue'
+import PublicLinkDialog from '@/components/Cocktail/PublicLinkDialog.vue'
 
 export default {
     data: () => ({
@@ -205,14 +218,17 @@ export default {
         userShelfIngredients: [],
         userShoppingListIngredients: [],
         currentUnit: 'ml',
-        sliderModules: [Navigation, Pagination]
+        sliderModules: [Navigation, Pagination],
+        showPublicDialog: false
     }),
     components: {
         OverlayLoader,
         Dropdown,
         Rating,
         Swiper,
-        SwiperSlide
+        SwiperSlide,
+        Dialog,
+        PublicLinkDialog
     },
     computed: {
         parsedInstructions() {
@@ -251,7 +267,7 @@ export default {
         }
     },
     created() {
-        document.title = `Cocktail \u22C5 Salt Rim`
+        document.title = `${this.$t('cocktail')} \u22C5 Salt Rim`
         this.$watch(
             () => this.$route.params,
             () => {
@@ -278,17 +294,17 @@ export default {
         favorite() {
             ApiRequests.favoriteCocktail(this.cocktail.id).then(resp => {
                 this.isFavorited = resp.is_favorited
-                this.$toast.default(this.isFavorited ? `Added "${this.cocktail.name}" to favorites` : `Removed "${this.cocktail.name}" from favorites`);
+                this.$toast.default(this.isFavorited ? this.$t('cocktail.favorited', { name: this.cocktail.name }) : this.$t('cocktail.unfavorited', { name: this.cocktail.name }));
             }).catch(e => {
                 this.$toast.error(e.message);
             })
         },
         deleteCocktail() {
-            this.$confirm(`This will permanently delete cocktail with name "${this.cocktail.name}".`, {
+            this.$confirm(this.$t('cocktail.confirm-delete', { name: this.cocktail.name }), {
                 onResolved: (dialog) => {
                     dialog.close()
                     ApiRequests.deleteCocktail(this.cocktail.id).then(() => {
-                        this.$toast.default(`Cocktail "${this.cocktail.name}" successfully removed`);
+                        this.$toast.default(this.$t('cocktail.delete-success', { name: this.cocktail.name }));
                         this.$router.push({ name: 'cocktails' })
                         dialog.close()
                     }).catch(e => {
@@ -304,7 +320,7 @@ export default {
             };
 
             ApiRequests.addIngredientsToShoppingList(postData).then(data => {
-                this.$toast.default(`Added ${data.length} ingredients to your shopping list.`)
+                this.$toast.default(this.$t('cocktail.ingredients-added-success', { total: data.length }))
                 Auth.refreshUser().then(() => {
                     this.userShoppingListIngredients = Auth.getUser().shopping_lists;
                 })
@@ -378,6 +394,7 @@ export default {
     font-size: 2rem;
     font-weight: 700;
     margin: 0 0 1.5rem 0;
+    line-height: 1.3;
 }
 
 .cocktail-ingredients {
@@ -450,8 +467,12 @@ export default {
 .cocktail-button-group button {
     background: none;
     border: none;
-    font-size: 1rem;
-    min-width: 2rem;
+    font-size: 0.85rem;
+    font-weight: bold;
+    margin: 0;
+    padding: 0.15rem 0.5rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
     cursor: pointer;
     color: var(--clr-gray-800)
 }

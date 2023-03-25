@@ -1,11 +1,11 @@
 <template>
     <nav class="settings-nav">
-        <RouterLink :to="{name: 'settings.profile'}">Profile</RouterLink>
+        <RouterLink :to="{name: 'settings.profile'}">{{ $t('profile') }}</RouterLink>
         <template v-if="isAdmin">
-            <RouterLink :to="{name: 'settings.users'}">Users</RouterLink>
-            <RouterLink :to="{name: 'settings.categories'}">Ingredient categories</RouterLink>
-            <RouterLink :to="{name: 'settings.glasses'}">Glass types</RouterLink>
-            <RouterLink :to="{name: 'settings.tags'}">Tags</RouterLink>
+            <RouterLink :to="{name: 'settings.users'}">{{ $t('users') }}</RouterLink>
+            <RouterLink :to="{name: 'settings.categories'}">{{ $t('ingredient.categories') }}</RouterLink>
+            <RouterLink :to="{name: 'settings.glasses'}">{{ $t('glass-types') }}</RouterLink>
+            <RouterLink :to="{name: 'settings.tags'}">{{ $t('tags') }}</RouterLink>
         </template>
     </nav>
 </template>

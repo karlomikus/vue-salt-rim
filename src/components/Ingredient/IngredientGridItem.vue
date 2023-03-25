@@ -12,19 +12,19 @@
             <div class="ingredient-grid-item__actions">
                 <a href="#" @click.prevent="toggleShelf">
                     <template v-if="!inShelf">
-                        Add to shelf
+                        {{ $t('ingredient.add-to-shelf') }}
                     </template>
                     <template v-else>
-                        Remove from shelf
+                        {{ $t('ingredient.remove-from-shelf') }}
                     </template>
                 </a>
                 &middot;
                 <a href="#" @click.prevent="toggleList">
                     <template v-if="!inList">
-                        Add to shopping list
+                        {{ $t('ingredient.add-to-list') }}
                     </template>
                     <template v-else>
-                        Remove from shopping list
+                        {{ $t('ingredient.remove-from-list') }}
                     </template>
                 </a>
             </div>
@@ -97,7 +97,7 @@ export default {
             if (this.inShelf) {
                 ApiRequests.removeIngredientFromShelf(this.ingredient.id).then(() => {
                     this.isLoading = false;
-                    this.$toast.default(`Removed "${this.ingredient.name}" from your shelf.`);
+                    this.$toast.default(this.$t('ingredient.shelf-remove-success', {name: this.ingredient.name}));
                     this.scopedUserIngredients.splice(this.scopedUserIngredients.indexOf(this.ingredient.id), 1)
                 }).catch(e => {
                     this.$toast.error(e.message)
@@ -106,7 +106,7 @@ export default {
             } else {
                 ApiRequests.addIngredientToShelf(this.ingredient.id).then(() => {
                     this.isLoading = false;
-                    this.$toast.default(`Added "${this.ingredient.name}" to your shelf.`)
+                    this.$toast.default(this.$t('ingredient.shelf-add-success', {name: this.ingredient.name}))
                     this.scopedUserIngredients.push(this.ingredient.id)
                 }).catch(e => {
                     this.$toast.error(e.message)
@@ -124,7 +124,7 @@ export default {
             if (this.inList) {
                 ApiRequests.removeIngredientsFromShoppingList(postData).then(() => {
                     this.isLoading = false;
-                    this.$toast.default(`Removed "${this.ingredient.name}" from your shopping list.`);
+                    this.$toast.default(this.$t('ingredient.list-remove-success', {name: this.ingredient.name}));
                     this.scopedShoppingList.splice(this.scopedShoppingList.indexOf(this.ingredient.id), 1)
                 }).catch(e => {
                     this.$toast.error(e.message)
@@ -133,7 +133,7 @@ export default {
             } else {
                 ApiRequests.addIngredientsToShoppingList(postData).then(() => {
                     this.isLoading = false;
-                    this.$toast.default(`Added "${this.ingredient.name}" to your shopping list.`)
+                    this.$toast.default(this.$t('ingredient.list-add-success', {name: this.ingredient.name}))
                     this.scopedShoppingList.push(this.ingredient.id)
                 }).catch(e => {
                     this.$toast.error(e.message)

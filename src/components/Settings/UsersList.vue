@@ -1,10 +1,10 @@
 <template>
     <PageHeader>
-        Users
+        {{ $t('users') }}
         <template #actions>
             <Dialog v-model="showDialog">
                 <template #trigger>
-                    <button type="button" class="button button--outline" @click.prevent="openDialog('Add user', {})">Add user</button>
+                    <button type="button" class="button button--outline" @click.prevent="openDialog($t('users.add'), {})">{{ $t('users.add') }}</button>
                 </template>
                 <template #dialog>
                     <UserForm :source-user="editUser" :dialog-title="dialogTitle" @user-dialog-closed="refreshUsers" />
@@ -22,15 +22,15 @@
                 <table class="table">
                     <thead>
                         <tr>
-                            <th>Name / Email</th>
-                            <th>Administrator</th>
+                            <th>{{ $t('user.name') }} / {{ $t('email') }}</th>
+                            <th>{{ $t('admin') }}</th>
                             <th></th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr v-for="user in users">
                             <td>
-                                <a href="#" @click.prevent="openDialog('Edit user', user)">{{ user.name }}</a>
+                                <a href="#" @click.prevent="openDialog($t('users.edit'), user)">{{ user.name }}</a>
                                 <br>
                                 <small>{{ user.email }}</small>
                             </td>
@@ -43,7 +43,7 @@
                                 </template>
                             </td>
                             <td style="text-align: right;">
-                                <a class="list-group__action" href="#" @click.prevent="deleteUser(user)">Delete</a>
+                                <a class="list-group__action" href="#" @click.prevent="deleteUser(user)">{{ $t('remove') }}</a>
                             </td>
                         </tr>
                     </tbody>
@@ -79,7 +79,7 @@ export default {
         }
     },
     created() {
-        document.title = `Users \u22C5 Salt Rim`
+        document.title = `${this.$t('users')} \u22C5 Salt Rim`
 
         this.refreshUsers()
     },
@@ -100,13 +100,13 @@ export default {
             this.showDialog = true;
         },
         deleteUser(user) {
-            this.$confirm(`This will permanently delete user with name "${user.name}".`, {
+            this.$confirm(this.$t('users.confirm-delete', {name: user.name}), {
                 onResolved: (dialog) => {
                     this.isLoading = true
                     dialog.close()
                     ApiRequests.deleteUser(user.id).then(() => {
                         this.isLoading = false;
-                        this.$toast.default(`User deleted successfully.`);
+                        this.$toast.default(this.$t('users.delete-success'));
                         this.refreshUsers()
                     }).catch(e => {
                         this.$toast.error(e.message);

@@ -1,38 +1,48 @@
 <template>
     <PageHeader>
-        Cocktails
+        {{ $t('cocktails') }}
         <template #actions>
-            <RouterLink class="button button--outline" :to="{ name: 'cocktails.scrape' }">Add cocktail from URL</RouterLink>
-            <RouterLink class="button button--dark" :to="{ name: 'cocktails.form' }">Add cocktail</RouterLink>
+            <RouterLink class="button button--outline" :to="{ name: 'cocktails.scrape' }">{{ $t('cocktails.add-from-url') }}</RouterLink>
+            <RouterLink class="button button--dark" :to="{ name: 'cocktails.form' }">{{ $t('cocktails.add') }}</RouterLink>
         </template>
     </PageHeader>
-    <p class="page-description" style="margin-bottom: 20px;">
-        This is a list of cocktails available in your Bar Assistant server. You can search for a specific cocktails by filtering them with the tags you added or by using a search term.
-    </p>
+    <p class="page-description" style="margin-bottom: 2rem;">{{ $t('cocktails.page.description') }}</p>
     <ais-instant-search :search-client="searchClient" index-name="cocktails:name:asc" :routing="routing">
         <ais-configure :hitsPerPage="100" :stalledSearchDelay="200" :filters="filters" />
         <div class="inpage-search inpage-search--hide-filters">
             <div class="inpage-search__filter">
                 <div class="inpage-search__filter__body">
-                    <h3>Filters</h3>
-                    <button class="button button--dark button--small inpage-search__filter__close" @click.prevent="toggleShow">X</button>
-                    <ais-clear-refinements />
-                    <h4>Sort:</h4>
+                    <div class="inpage-search__filter__mobile-header">
+                        <h3>{{ $t('filters') }}</h3>
+                        <button class="button button--dark button--small inpage-search__filter__close" @click.prevent="toggleFiltersShown">X</button>
+                    </div>
+                    <h4>{{ $t('sort') }}</h4>
                     <ais-sort-by :items="[
-                        { value: 'cocktails', label: 'Relevency' },
-                        { value: 'cocktails:name:asc', label: 'Name asc.' },
-                        { value: 'cocktails:name:desc', label: 'Name desc.' },
-                        { value: 'cocktails:average_rating:asc', label: 'Rating asc.' },
-                        { value: 'cocktails:average_rating:desc', label: 'Rating desc.' },
-                        { value: 'cocktails:date:asc', label: 'Date modified asc.' },
-                        { value: 'cocktails:date:desc', label: 'Date modified desc.' },
+                        { value: 'cocktails', label: $t('sort.relevancy') },
+                        { value: 'cocktails:name:asc', label: $t('sort.name-asc') },
+                        { value: 'cocktails:name:desc', label: $t('sort.name-desc') },
+                        { value: 'cocktails:average_rating:asc', label: $t('sort.rating-asc') },
+                        { value: 'cocktails:average_rating:desc', label: $t('sort.rating-desc') },
+                        { value: 'cocktails:date:asc', label: $t('sort.date-modified-asc') },
+                        { value: 'cocktails:date:desc', label: $t('sort.date-modified-desc') },
                     ]" :class-names="{ 'ais-SortBy-select': 'form-select' }" />
-                    <h4>Cocktail filters:</h4>
+                    <h4>{{ $t('cocktail.filters') }}</h4>
                     <ais-toggle-refinement label="My cocktails" attribute="user_id" :on="userId">
                         <template v-slot="{ value, refine, createURL, sendEvent }">
                             <div class="ais-ToggleRefinement">
                                 <label class="ais-ToggleRefinement-label">
-                                    <span class="ais-ToggleRefinement-labelText">My cocktails</span>
+                                    <span class="ais-ToggleRefinement-labelText">{{ $t('my.cocktails') }}</span>
+                                    <span class="ais-ToggleRefinement-count">{{ value.count ?? 0 }}</span>
+                                    <input class="ais-ToggleRefinement-checkbox" type="checkbox" @change.prevent="refine(value)" />
+                                </label>
+                            </div>
+                        </template>
+                    </ais-toggle-refinement>
+                    <ais-toggle-refinement label="Shared publicly" attribute="has_public_link">
+                        <template v-slot="{ value, refine }">
+                            <div class="ais-ToggleRefinement">
+                                <label class="ais-ToggleRefinement-label">
+                                    <span class="ais-ToggleRefinement-labelText">{{ $t('cocktails.shared') }}</span>
                                     <span class="ais-ToggleRefinement-count">{{ value.count ?? 0 }}</span>
                                     <input class="ais-ToggleRefinement-checkbox" type="checkbox" @change.prevent="refine(value)" />
                                 </label>
@@ -48,36 +58,57 @@
                             </label>
                         </div>
                     </ais-panel>
-                    <h4>Main ingredient:</h4>
-                    <ais-refinement-list attribute="main_ingredient_name" :sort-by="['name:asc']" :limit="10" :show-more-limit="50" show-more />
-                    <h4>Method:</h4>
+                    <h4>{{ $t('ingredient.main') }}</h4>
+                    <ais-refinement-list attribute="main_ingredient_name" :sort-by="['name:asc']" :limit="10" :show-more-limit="50" show-more>
+                        <template v-slot:showMoreLabel="{ isShowingMore }">
+                            {{ !isShowingMore ? $t('show-more') : $t('show-less') }}
+                        </template>
+                    </ais-refinement-list>
+                    <h4>{{ $t('method') }}</h4>
                     <ais-refinement-list attribute="method" :sort-by="['name:asc']" />
-                    <h4>Strength:</h4>
+                    <h4>{{ $t('strength') }}</h4>
                     <ais-numeric-menu attribute="calculated_abv" :items="[
-                        { label: 'All' },
-                        { label: 'Non alcoholic', start: 0, end: 0 },
-                        { label: 'Weak', start: 1, end: 18 },
-                        { label: 'Medium', start: 18, end: 28 },
-                        { label: 'Strong', start: 28 },
+                        { label: $t('all') },
+                        { label: $t('non-alcoholic'), start: 0, end: 0 },
+                        { label: $t('weak'), start: 1, end: 18 },
+                        { label: $t('medium'), start: 18, end: 28 },
+                        { label: $t('strong'), start: 28 },
                     ]" />
-                    <h4>Tags:</h4>
-                    <ais-refinement-list attribute="tags" :sort-by="['name:asc']" :limit="10" operator="and" :show-more-limit="50" show-more />
-                    <h4>Glass type:</h4>
-                    <ais-refinement-list attribute="glass" :sort-by="['name:asc']" :limit="10" :show-more-limit="50" show-more />
-                    <h4>Rating:</h4>
+                    <h4>{{ $t('tag') }}</h4>
+                    <ais-refinement-list attribute="tags" :sort-by="['name:asc']" :limit="10" operator="and" :show-more-limit="50" show-more>
+                        <template v-slot:showMoreLabel="{ isShowingMore }">
+                            {{ !isShowingMore ? $t('show-more') : $t('show-less') }}
+                        </template>
+                    </ais-refinement-list>
+                    <h4>{{ $t('glass-type') }}</h4>
+                    <ais-refinement-list attribute="glass" :sort-by="['name:asc']" :limit="10" :show-more-limit="50" show-more>
+                        <template v-slot:showMoreLabel="{ isShowingMore }">
+                            {{ !isShowingMore ? $t('show-more') : $t('show-less') }}
+                        </template>
+                    </ais-refinement-list>
+                    <h4>{{ $t('rating') }}</h4>
                     <ais-rating-menu attribute="average_rating" />
-                    <!-- <button class="button button--dark button--small" @click.prevent="toggleShow">Apply filters</button> -->
+                    <div class="inpage-search__filter__body__actions">
+                        <ais-clear-refinements>
+                            <template #default="{ canRefine, refine }">
+                                <button type="reset" class="button button--outline" @click.prevent="refine" :disabled="!canRefine">
+                                    {{ $t('clear-filters') }}
+                                </button>
+                            </template>
+                        </ais-clear-refinements>
+                        <button class="button button--dark" @click.prevent="toggleFiltersShown">{{ $t('apply-filters') }}</button>
+                    </div>
                 </div>
             </div>
             <div class="inpage-search__results">
                 <div class="inpage-search__searchbox">
-                    <button type="button" class="button button--input" @click.prevent="toggleShow">
+                    <button type="button" class="button button--input" @click.prevent="toggleFiltersShown">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
                             <path fill="none" d="M0 0h24v24H0z" />
                             <path d="M6.17 18a3.001 3.001 0 0 1 5.66 0H22v2H11.83a3.001 3.001 0 0 1-5.66 0H2v-2h4.17zm6-7a3.001 3.001 0 0 1 5.66 0H22v2h-4.17a3.001 3.001 0 0 1-5.66 0H2v-2h10.17zm-6-7a3.001 3.001 0 0 1 5.66 0H22v2H11.83a3.001 3.001 0 0 1-5.66 0H2V4h4.17z" />
                         </svg>
                     </button>
-                    <ais-search-box placeholder="Type to filter cocktails..." :class-names="{'ais-SearchBox-input': 'ais-SearchBox-input form-input form-input--red'}" />
+                    <ais-search-box :placeholder="$t('placeholder.search-cocktails')" :class-names="{ 'ais-SearchBox-input': 'ais-SearchBox-input form-input form-input--red' }" />
                 </div>
                 <ais-current-refinements :transform-items="transformCurrentRefinements" />
                 <ais-infinite-hits>
@@ -87,7 +118,7 @@
                         </CocktailGridContainer>
                         <div style="text-align: center; margin: 20px 0;" v-if="!isLastPage">
                             <button class="button button--dark" @click="refineNext">
-                                Show more results
+                                {{ $t('show-more') }}
                             </button>
                         </div>
                     </template>
@@ -132,6 +163,7 @@ export default {
                             ingredient: indexUiState.refinementList && indexUiState.refinementList.main_ingredient_name,
                             strength: indexUiState.numericMenu && indexUiState.numericMenu.calculated_abv,
                             my_cocktails: indexUiState.toggle && indexUiState.toggle.user_id != null,
+                            public_link: indexUiState.toggle && indexUiState.toggle.has_public_link != null,
                             avg_rating: indexUiState.ratingMenu && indexUiState.ratingMenu.average_rating,
                             sort: indexUiState.sortBy,
                         }
@@ -153,7 +185,8 @@ export default {
                                     average_rating: routeState.avg_rating
                                 },
                                 toggle: {
-                                    user_id: routeState.my_cocktails
+                                    user_id: routeState.my_cocktails,
+                                    has_public_link: routeState.public_link,
                                 },
                                 numericMenu: {
                                     calculated_abv: routeState.strength
@@ -169,13 +202,13 @@ export default {
                 shelf: {
                     attribute: 'shelf',
                     isActive: false,
-                    label: "Cocktails I can make",
+                    label: this.$t('shelf.cocktails'),
                     values: []
                 },
                 favorites: {
                     attribute: 'favorites',
                     isActive: false,
-                    label: "My favorites",
+                    label: this.$t('my.favorites'),
                     values: []
                 },
             },
@@ -187,7 +220,7 @@ export default {
         PageHeader
     },
     created() {
-        document.title = `Cocktails \u22C5 Salt Rim`
+        document.title = `${this.$t('cocktails')} \u22C5 Salt Rim`
 
         if (this.$route.query.favorites) {
             this.toggleArrayFiltersConfig('favorites');
@@ -216,7 +249,7 @@ export default {
         }
     },
     methods: {
-        toggleShow() {
+        toggleFiltersShown() {
             // Instantsearch has some weird issues with refinements if using v-show
             document.querySelector('.inpage-search').classList.toggle('inpage-search--hide-filters')
         },
@@ -232,12 +265,14 @@ export default {
         },
         transformCurrentRefinements(items) {
             const labelMap = {
-                'main_ingredient_name': 'Main ingredient',
-                'method': 'Method',
-                'tags': 'Tags',
-                'user_id': 'My cocktails',
-                'calculated_abv': 'Strength (ABV)',
-                'glass': 'Glass type',
+                'main_ingredient_name': this.$t('ingredient.main'),
+                'method': this.$t('method'),
+                'tags': this.$t('tags'),
+                'user_id': this.$t('my.cocktails'),
+                'calculated_abv': this.$t('strength'),
+                'glass': this.$t('glass-type'),
+                'average_rating': this.$t('avg-rating'),
+                'has_public_link': this.$t('cocktails.shared'),
             };
 
             items.map(item => {
@@ -249,7 +284,7 @@ export default {
             if (this.activeFilters.length > 0) {
                 let customRefinement = {
                     attribute: null,
-                    label: 'Cocktail filters',
+                    label: this.$t('cocktail.filters'),
                     refinements: [],
                     refine: (refinement) => {
                         this.toggleArrayFiltersConfig(refinement.value)

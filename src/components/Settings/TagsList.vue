@@ -1,10 +1,10 @@
 <template>
     <PageHeader>
-        Tags
+        {{ $t('tags') }}
         <template #actions>
             <Dialog v-model="showDialog">
                 <template #trigger>
-                    <button type="button" class="button button--outline" @click.prevent="openDialog('Add tag', {})">Add tag</button>
+                    <button type="button" class="button button--outline" @click.prevent="openDialog($t('tag.add'), {})">{{ $t('tag.add') }}</button>
                 </template>
                 <template #dialog>
                     <TagForm :source-tag="editTag" :dialog-title="dialogTitle" @tag-dialog-closed="refreshTags" />
@@ -22,17 +22,17 @@
                 <table class="table">
                     <thead>
                         <tr>
-                            <th>Name</th>
+                            <th>{{ $t('name') }}</th>
                             <th></th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr v-for="tag in tags">
                             <td>
-                                <a href="#" @click.prevent="openDialog('Edit tag', tag)">{{ tag.name }}</a>
+                                <a href="#" @click.prevent="openDialog($t('tag.edit'), tag)">{{ tag.name }}</a>
                             </td>
                             <td style="text-align: right;">
-                                <a class="list-group__action" href="#" @click.prevent="deleteTag(tag)">Delete</a>
+                                <a class="list-group__action" href="#" @click.prevent="deleteTag(tag)">{{ $t('remove') }}</a>
                             </td>
                         </tr>
                     </tbody>
@@ -68,7 +68,7 @@ export default {
         }
     },
     created() {
-        document.title = `Tags \u22C5 Salt Rim`
+        document.title = `${this.$t('tags')} \u22C5 Salt Rim`
 
         this.refreshTags()
     },
@@ -89,13 +89,13 @@ export default {
             this.showDialog = true;
         },
         deleteTag(tag) {
-            this.$confirm(`This will permanently tag with name "${tag.name}".`, {
+            this.$confirm(this.$t('tag.confirm-delete', {name: tag.name}), {
                 onResolved: (dialog) => {
                     this.isLoading = true
                     dialog.close()
                     ApiRequests.deleteTag(tag.id).then(() => {
                         this.isLoading = false;
-                        this.$toast.default(`Tag deleted successfully.`);
+                        this.$toast.default(this.$t('tag.delete-success'));
                         this.refreshTags()
                     }).catch(e => {
                         this.$toast.error(e.message);

@@ -138,3 +138,19 @@
 .button[disabled] {
     opacity: 0.5;
 }
+
+.button--public {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    padding: 0.15rem 0.25rem;
+    height: 100%;
+    color: var(--clr-gray-600);
+    background-color: var(--clr-gray-100);
+    border-radius: 0;
+}
+
+.button--public:is(:hover, :active, :focus),
+.button--public.button--active {
+    background-color: var(--clr-gray-200);
+    color: var(--clr-gray-800);
+}

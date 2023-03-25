@@ -1,10 +1,10 @@
 <template>
     <PageHeader>
-        Ingredient categories
+        {{ $t('ingredient.categories') }}
         <template #actions>
             <Dialog v-model="showDialog">
                 <template #trigger>
-                    <button type="button" class="button button--outline" @click.prevent="openDialog('Add category', {})">Add category</button>
+                    <button type="button" class="button button--outline" @click.prevent="openDialog($t('category.add'), {})">{{ $t('category.add') }}</button>
                 </template>
                 <template #dialog>
                     <CategoryForm :source-category="editCategory" :dialog-title="dialogTitle" @category-dialog-closed="refreshCategories" />
@@ -22,19 +22,19 @@
                 <table class="table">
                     <thead>
                         <tr>
-                            <th>Name / Description</th>
+                            <th>{{ $t('name') }} / {{ $t('description') }}</th>
                             <th></th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr v-for="category in categories">
                             <td>
-                                <a href="#" @click.prevent="openDialog('Edit category', category)">{{ category.name }}</a>
+                                <a href="#" @click.prevent="openDialog($t('category.edit'), category)">{{ category.name }}</a>
                                 <br>
                                 <small>{{ category.description }}</small>
                             </td>
                             <td style="text-align: right;">
-                                <a class="list-group__action" href="#" @click.prevent="deleteCategory(category)">Delete</a>
+                                <a class="list-group__action" href="#" @click.prevent="deleteCategory(category)">{{ $t('remove') }}</a>
                             </td>
                         </tr>
                     </tbody>
@@ -70,7 +70,7 @@ export default {
         }
     },
     created() {
-        document.title = `Ingredient categories \u22C5 Salt Rim`
+        document.title = `${this.$t('ingredient.categories')} \u22C5 Salt Rim`
 
         this.refreshCategories()
     },
@@ -91,13 +91,13 @@ export default {
             this.showDialog = true;
         },
         deleteCategory(category) {
-            this.$confirm(`This will permanently category with name "${category.name}".`, {
+            this.$confirm(this.$t('ingredient-category.confirm-delete', {name: category.name}), {
                 onResolved: (dialog) => {
                     this.isLoading = true
                     dialog.close();
                     ApiRequests.deleteIngredientCategory(category.id).then(() => {
                         this.isLoading = false;
-                        this.$toast.default(`Ingredient category deleted successfully.`);
+                        this.$toast.default(this.$t('ingredient-category.delete-success'));
                         this.refreshCategories()
                     }).catch(e => {
                         this.$toast.error(e.message);

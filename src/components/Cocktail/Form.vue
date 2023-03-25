@@ -2,52 +2,52 @@
     <form @submit.prevent="submit">
         <OverlayLoader v-if="isLoading" />
         <PageHeader>
-            Cocktail
+            {{ $t('cocktail') }}
         </PageHeader>
-        <h3 class="form-section-title">Recipe information</h3>
+        <h3 class="form-section-title">{{ $t('recipe-information') }}</h3>
         <div class="block-container block-container--padded">
             <div class="form-group">
-                <label class="form-label form-label--required" for="name">Name:</label>
-                <input class="form-input" type="text" id="name" v-model="cocktail.name" required placeholder="Cocktail name...">
+                <label class="form-label form-label--required" for="name">{{ $t('name') }}:</label>
+                <input class="form-input" type="text" id="name" v-model="cocktail.name" required :placeholder="$t('placeholder.cocktai-name')">
             </div>
             <div class="form-group">
-                <label class="form-label form-label--required" for="instructions">Instructions:</label>
-                <textarea rows="8" class="form-input" id="instructions" v-model="cocktail.instructions" required placeholder="How to prepare the cocktail..."></textarea>
-                <p class="form-input-hint">This field supports markdown.</p>
+                <label class="form-label form-label--required" for="instructions">{{ $t('instructions') }}:</label>
+                <textarea rows="8" class="form-input" id="instructions" v-model="cocktail.instructions" required :placeholder="$t('placeholder.cocktail-instructions')"></textarea>
+                <p class="form-input-hint">{{ $t('md.support') }}</p>
             </div>
             <div class="form-group">
-                <label class="form-label" for="garnish">Garnish:</label>
-                <textarea rows="3" class="form-input" id="garnish" v-model="cocktail.garnish" placeholder="Something to make a cocktail pop..."></textarea>
-                <p class="form-input-hint">This field supports markdown.</p>
+                <label class="form-label" for="garnish">{{ $t('garnish') }}:</label>
+                <textarea rows="3" class="form-input" id="garnish" v-model="cocktail.garnish" :placeholder="$t('placeholder.cocktail-garnish')"></textarea>
+                <p class="form-input-hint">{{ $t('md.support') }}</p>
             </div>
         </div>
-        <h3 class="form-section-title">Media</h3>
+        <h3 class="form-section-title">{{ $t('media') }}</h3>
         <ImageUpload ref="imagesUpload" :value="cocktail.images" />
-        <h3 class="form-section-title">Ingredients</h3>
+        <h3 class="form-section-title">{{ $t('ingredients') }}</h3>
         <ul class="cocktail-form__ingredients" style="margin-bottom: 20px;">
             <li class="block-container" v-for="ing in cocktail.ingredients" :data-id="ing.ingredient_id">
                 <div class="drag-handle"></div>
                 <div class="cocktail-form__ingredients__content">
                     <div class="form-group">
-                        <label class="form-label">Ingredient:</label>
-                        <p>{{ ing.name }} <small v-show="ing.optional">({{ ing.optional ? 'Optional' : '' }})</small></p>
+                        <label class="form-label">{{ $t('ingredient') }}:</label>
+                        <p>{{ ing.name }} <small v-show="ing.optional">({{ ing.optional ? $t('optional') : '' }})</small></p>
                         <p class="substitutes" v-if="ing.substitutes && ing.substitutes.length > 0">
                             <template v-for="sub in ing.substitutes">
-                                or {{ sub.name }} 
+                                {{ $t('or').toLowerCase() }} {{ sub.name }}&nbsp;
                             </template>
                         </p>
                     </div>
                     <div class="form-group">
-                        <label class="form-label">Amount:</label>
+                        <label class="form-label">{{ $t('amount') }}:</label>
                         <p :title="ing.amount + ' ' + ing.units">{{ printIngredientAmount(ing) }}</p>
                     </div>
                     <div class="cocktail-form__ingredients__actions">
                         <a href="#" @click.prevent="editIngredient(ing)">
-                            Edit
+                            {{ $t('edit') }}
                         </a>
                         &middot;
                         <a href="#" @click.prevent="removeIngredient(ing)">
-                            Remove
+                            {{ $t('remove') }}
                         </a>
                     </div>
                 </div>
@@ -55,31 +55,31 @@
         </ul>
         <Dialog v-model="showDialog">
             <template #trigger>
-                <button class="button button--outline" type="button" @click="addIngredient">Add ingredient</button>
+                <button class="button button--outline" type="button" @click="addIngredient">{{ $t('ingredient.add') }}</button>
             </template>
             <template #dialog>
                 <IngredientModal :value="cocktailIngredientForEdit" @close="closeModal" />
             </template>
         </Dialog>
-        <h3 class="form-section-title">Additional information</h3>
+        <h3 class="form-section-title">{{ $t('additional-information') }}</h3>
         <div class="block-container block-container--padded">
             <div class="form-group">
-                <label class="form-label" for="description">Description:</label>
-                <textarea rows="5" class="form-input" id="description" v-model="cocktail.description" placeholder="Cocktail description or history..."></textarea>
-                <p class="form-input-hint">This field supports markdown.</p>
+                <label class="form-label" for="description">{{ $t('description') }}:</label>
+                <textarea rows="5" class="form-input" id="description" v-model="cocktail.description" :placeholder="$t('placeholder.cocktail-description')"></textarea>
+                <p class="form-input-hint">{{ $t('md.support') }}</p>
             </div>
             <div class="form-group">
-                <label class="form-label" for="glass">Glass:</label>
+                <label class="form-label" for="glass">{{ $t('glass-type') }}:</label>
                 <select class="form-select" id="glass" v-model="glassId">
                     <option :value="undefined" disabled>Select a glass type...</option>
                     <option v-for="glass in glasses" :value="glass.id">{{ glass.name }}</option>
                 </select>
                 <p class="form-input-hint">
-                    <RouterLink :to="{name: 'settings.glasses'}" target="_blank">Edit glasses</RouterLink>
+                    <RouterLink :to="{name: 'settings.glasses'}" target="_blank">{{ $t('edit-glasses') }}</RouterLink>
                 </p>
             </div>
             <div style="margin-bottom: 2rem;">
-                <label class="form-label">Method &amp; dilution:</label>
+                <label class="form-label">{{ $t('method-and-dilution') }}:</label>
                 <div class="cocktail-methods">
                     <label class="cocktail-method" v-for="method in methods" :for="'method_' + method.id" :class="{'cocktail-method--selected': method.id == methodId}">
                         <Transition name="cocktail-method__selected--transition">
@@ -88,26 +88,26 @@
                             </div>
                         </Transition>
                         <!-- <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path fill="none" d="M0 0h24v24H0z"/><path d="M5 16v6H3V3h9.382a1 1 0 0 1 .894.553L14 5h6a1 1 0 0 1 1 1v11a1 1 0 0 1-1 1h-6.382a1 1 0 0 1-.894-.553L12 16H5zM5 5v9h8.236l1 2H19V7h-6.236l-1-2H5z"/></svg> -->
-                        <div class="cocktail-method__title">{{ method.name }}</div>
+                        <div class="cocktail-method__title">{{ $t('method.' + method.name) }}</div>
                         <small>{{ method.dilution_percentage }}%</small>
                         <input type="radio" :id="'method_' + method.id" :value="method.id" v-model="methodId">
                     </label>
                 </div>
             </div>
             <div class="form-group">
-                <label class="form-label" for="source">Source:</label>
-                <input class="form-input" type="text" id="source" v-model="cocktail.source" placeholder="Book or URL...">
+                <label class="form-label" for="source">{{ $t('source') }}:</label>
+                <input class="form-input" type="text" id="source" v-model="cocktail.source" :placeholder="$t('placeholder.source')">
             </div>
             <div class="form-group">
-                <label class="form-label" for="tags">Tags:</label>
-                <input class="form-input" type="text" id="tags" v-model="cocktailTags" placeholder="Tags to help you find the cocktail...">
-                <p class="form-input-hint">Separate multiple tags with a comma (",").</p>
+                <label class="form-label" for="tags">{{ $t('tags') }}:</label>
+                <input class="form-input" type="text" id="tags" v-model="cocktailTags" :placeholder="$t('placeholder.tags')">
+                <p class="form-input-hint">{{ $t('tags.help-text') }}</p>
             </div>
         </div>
         <div class="form-actions">
-            <RouterLink class="button button--outline" :to="{ name: 'cocktails.show', params: { id: cocktailId } }" v-if="cocktailId">Cancel</RouterLink>
-            <RouterLink class="button button--outline" :to="{ name: 'cocktails' }" v-else>Cancel</RouterLink>
-            <button class="button button--dark" type="submit">Save</button>
+            <RouterLink class="button button--outline" :to="{ name: 'cocktails.show', params: { id: cocktailId } }" v-if="cocktailId">{{ $t('cancel') }}</RouterLink>
+            <RouterLink class="button button--outline" :to="{ name: 'cocktails' }" v-else>{{ $t('cancel') }}</RouterLink>
+            <button class="button button--dark" type="submit">{{ $t('save') }}</button>
         </div>
     </form>
 </template>
@@ -206,7 +206,7 @@ export default {
         }
     },
     created() {
-        document.title = `Cocktail Form \u22C5 Salt Rim`
+        document.title = `${this.$t('cocktail')} \u22C5 Salt Rim`
 
         this.isLoading = true;
         this.cocktailId = this.$route.query.id || null;
@@ -218,7 +218,7 @@ export default {
                 data.garnish = Utils.decodeHtml(data.garnish);
                 this.cocktail = data;
                 this.isLoading = false;
-                document.title = `Cocktail form \u22C5 ${this.cocktail.name} \u22C5 Salt Rim`
+                document.title = `${this.$t('cocktail')} \u22C5 ${this.cocktail.name} \u22C5 Salt Rim`
             })
         }
 
@@ -270,7 +270,7 @@ export default {
                 return;
             }
 
-            this.$confirm(`This will remove ingredient "${ing.name}" from the recipe.`, {
+            this.$confirm(this.$t('cocktail.ingredient-remove', {name: ing.name}), {
                 onResolved: (dialog) => {
                     dialog.close();
                     this.cocktail.ingredients.splice(
@@ -301,7 +301,7 @@ export default {
                 ingredient_id: null,
                 amount: 30,
                 units: 'ml',
-                name: '<Not selected>',
+                name: this.$t('ingredient.name-placeholder'),
                 sort: this.cocktail.ingredients.length + 1
             };
 
@@ -351,7 +351,7 @@ export default {
                 tags: this.cocktail.tags.filter(tag => tag != ''),
                 glass_id: this.glassId,
                 ingredients: this.cocktail.ingredients
-                    .filter(i => i.name != '<Not selected>')
+                    .filter(i => i.ingredient_id != null)
                     .map((cIngredient) => {
                         // Convert oz to ml
                         if (cIngredient.units == 'oz') {
@@ -376,7 +376,7 @@ export default {
             };
 
             const imageResources = await this.$refs.imagesUpload.uploadPictures().catch(() => {
-                this.$toast.error('An error occured while uploading images. Your cocktail is still saved.');
+                this.$toast.error(`${this.$t('image-upload-error')} ${this.$t('image-upload-error.cocktail')}`);
             });
 
             if (imageResources.length > 0) {
@@ -386,7 +386,7 @@ export default {
             if (this.cocktailId) {
                 ApiRequests.updateCocktail(this.cocktailId, postData).then(data => {
                     this.isLoading = false;
-                    this.$toast.default(`Cocktail updated successfully.`);
+                    this.$toast.default(this.$t('cocktail.update-success'));
                     this.$router.push({ name: 'cocktails.show', params: { id: data.id } })
                 }).catch(e => {
                     this.$toast.error(e.message);
@@ -396,7 +396,7 @@ export default {
                 ApiRequests.saveCocktail(postData).then(data => {
                     this.isLoading = false;
                     this.$toast.open({
-                        message: 'Cocktail created successfully.'
+                        message: this.$t('cocktail.create-success')
                     });
                     this.$router.push({ name: 'cocktails.show', params: { id: data.id } })
                 }).catch(e => {

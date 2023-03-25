@@ -24,15 +24,8 @@
     border-top: 3px double var(--clr-red-300);
 }
 
-.inpage-search__filter__close,
-.inpage-search__filter h3 {
-    display: none;
-}
-
 .inpage-search__filter__close {
-    position: absolute;
-    top: 1rem;
-    right: 1rem;
+    margin-left: auto;
 }
 
 .inpage-search__searchbox {
@@ -48,7 +41,24 @@
     flex-basis: 200px;
 }
 
+.inpage-search__filter__body__actions {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: 1rem;
+    justify-content: flex-end;
+}
+
+.inpage-search__filter__mobile-header {
+    display: none;
+    margin-bottom: 1rem;
+    align-items: center;
+}
+
 @media (max-width: 750px) {
+    .inpage-search__filter__mobile-header {
+        display: flex;
+    }
+
     .inpage-search {
         grid-template-columns: 1fr;
     }
@@ -57,7 +67,7 @@
         position: fixed;
         top: 0;
         left: 0;
-        background: rgba(0,0,0,.3);
+        background-color: rgba(21, 13, 34, 0.5);
         width: 100%;
         z-index: 99;
         height: 100%;

@@ -10,20 +10,20 @@
                 <div v-html="parsedDescription"></div>
                 <hr>
                 <p>
-                    <strong>Strength:</strong><br>
+                    <strong>{{ $t('strength') }}:</strong><br>
                     <template v-if="ingredient.strength <= 0">
-                        Non-alcoholic
+                        {{ $t('non-alcoholic') }}
                     </template>
                     <template v-else>
-                        <abbr title="Alcohol by volume">ABV</abbr>: {{ ingredient.strength + '%' }} &middot; Proof: {{ ingredient.strength * 2 }}
+                        <abbr :title="$t('ABV.definition')">{{ $t('ABV') }}</abbr>: {{ ingredient.strength + '%' }} &middot; {{ $t('alcohol-proof') }}: {{ ingredient.strength * 2 }}
                     </template>
                 </p>
                 <hr>
-                <p><strong>Origin:</strong> {{ ingredient.origin ?? 'n/a' }}</p>
+                <p><strong>{{ $t('origin') }}:</strong> {{ ingredient.origin ?? 'n/a' }}</p>
                 <hr>
                 <ul class="flags" style="margin-top: 20px;">
-                    <li v-show="isAddedToShelf">You have this ingredient</li>
-                    <li v-show="isAddedToShoppingList">This ingredient is on your shopping list</li>
+                    <li v-show="isAddedToShelf">{{ $t('ingredient.in-shelf') }}</li>
+                    <li v-show="isAddedToShoppingList">{{ $t('ingredient.on-shopping-list') }}</li>
                 </ul>
             </div>
             <div class="ingredient-details__box__image-container">
@@ -57,7 +57,7 @@
                                 <path fill="none" d="M0 0h24v24H0z" />
                                 <path d="M6.414 16L16.556 5.858l-1.414-1.414L5 14.586V16h1.414zm.829 2H3v-4.243L14.435 2.322a1 1 0 0 1 1.414 0l2.829 2.829a1 1 0 0 1 0 1.414L7.243 18zM3 20h18v2H3v-2z" />
                             </svg>
-                            Edit
+                            {{ $t('edit') }}
                         </RouterLink>
                         <a class="dropdown-menu__item" href="#" @click.prevent="toggleShoppingList">
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
@@ -65,10 +65,10 @@
                                 <path d="M15.366 3.438L18.577 9H22v2h-1.167l-.757 9.083a1 1 0 0 1-.996.917H4.92a1 1 0 0 1-.996-.917L3.166 11H2V9h3.422l3.212-5.562 1.732 1L7.732 9h8.535l-2.633-4.562 1.732-1zM18.826 11H5.173l.667 8h12.319l.667-8zM13 13v4h-2v-4h2zm-4 0v4H7v-4h2zm8 0v4h-2v-4h2z" />
                             </svg>
                             <template v-if="isAddedToShoppingList">
-                                Remove from shopping list
+                                {{ $t('ingredient.remove-from-list') }}
                             </template>
                             <template v-else>
-                                Add to shopping list
+                                {{ $t('ingredient.add-to-list') }}
                             </template>
                         </a>
                         <a class="dropdown-menu__item" href="#" @click.prevent="deleteIngredient">
@@ -76,23 +76,23 @@
                                 <path fill="none" d="M0 0h24v24H0z" />
                                 <path d="M7 4V2h10v2h5v2h-2v15a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V6H2V4h5zM6 6v14h12V6H6zm3 3h2v8H9V9zm4 0h2v8h-2V9z" />
                             </svg>
-                            Delete
+                            {{ $t('remove') }}
                         </a>
                     </template>
                 </Dropdown>
             </div>
-            <h2 class="details-block-container__title">Used in {{ ingredient.cocktails.length }} cocktails:</h2>
+            <h2 class="details-block-container__title">{{ $t('ingredient.cocktail-children', {total: ingredient.cocktails.length}) }}</h2>
             <ul class="ingredient-chips-list" v-if="ingredient.cocktails.length > 0">
                 <li v-for="cocktail in ingredient.cocktails">
                     <RouterLink :to="{name: 'cocktails.show', params: {id: cocktail.slug}}">{{ cocktail.name }}</RouterLink>
                 </li>
             </ul>
             <div v-else>
-                <RouterLink :to="{name: 'cocktails.form'}">Create a cocktail</RouterLink>
+                <RouterLink :to="{name: 'cocktails.form'}">{{ $t('cocktails.add') }}</RouterLink>
             </div>
         </div>
         <div class="details-block-container details-block-container--yellow" v-if="ingredient.varieties.length > 0">
-            <h2 class="details-block-container__title">See also:</h2>
+            <h2 class="details-block-container__title">{{ $t('see-also') }}</h2>
             <ul class="ingredient-chips-list">
                 <li v-for="variety in ingredient.varieties">
                     <RouterLink :to="{name: 'ingredients.show', params: {id: variety.slug}}">{{ variety.name }}</RouterLink>
@@ -172,7 +172,7 @@ export default {
     },
     methods: {
         deleteIngredient() {
-            this.$confirm(`This will permanently delete ingredient with name "${this.ingredient.name}". This action will impact ${this.ingredient.cocktails.length} cocktails!`, {
+            this.$confirm(this.$t('ingredient.delete-confirm', {name: this.ingredient.name, total: this.ingredient.cocktails.length}), {
                 onResolved: (dialog) => {
                     dialog.close()
                     this.isLoading = true;
@@ -192,7 +192,7 @@ export default {
             if (this.isAddedToShelf) {
                 ApiRequests.removeIngredientFromShelf(this.ingredient.id).then(() => {
                     this.isAddedToShelf = false;
-                    this.$toast.default(`Removed "${this.ingredient.name}" from your shelf`);
+                    this.$toast.default(this.$t('ingredient.shelf-remove-success', {name: this.ingredient.name}));
                     this.isLoading = false;
                 }).catch(e => {
                     this.$toast.error(e.message)
@@ -201,7 +201,7 @@ export default {
             } else {
                 ApiRequests.addIngredientToShelf(this.ingredient.id).then(() => {
                     this.isAddedToShelf = true;
-                    this.$toast.default(`Added "${this.ingredient.name}" to your shelf`);
+                    this.$toast.default(this.$t('ingredient.shelf-add-success', {name: this.ingredient.name}));
                     this.isLoading = false;
                 }).catch(e => {
                     this.$toast.error(e.message)
@@ -218,7 +218,7 @@ export default {
 
             if (this.isAddedToShoppingList) {
                 ApiRequests.removeIngredientsFromShoppingList(postData).then(() => {
-                    this.$toast.default(`Removed "${this.ingredient.name}" from your shopping list.`);
+                    this.$toast.default(this.$t('ingredient.list-remove-success', {name: this.ingredient.name}));
                     this.isAddedToShoppingList = false;
                     this.isLoading = false;
                 }).catch(e => {
@@ -227,7 +227,7 @@ export default {
                 })
             } else {
                 ApiRequests.addIngredientsToShoppingList(postData).then(() => {
-                    this.$toast.default(`Added "${this.ingredient.name}" to your shopping list.`)
+                    this.$toast.default(this.$t('ingredient.list-add-success', {name: this.ingredient.name}))
                     this.isAddedToShoppingList = true
                     this.isLoading = false;
                 }).catch(e => {

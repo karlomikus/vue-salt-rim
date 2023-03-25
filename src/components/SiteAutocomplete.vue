@@ -4,19 +4,19 @@
             <ais-configure :hitsPerPage="10" />
             <ais-autocomplete>
                 <template v-slot="{ currentRefinement, indices, refine }">
-                    <input type="text" ref="sinput" :value="currentRefinement" placeholder="Search for a cocktail or ingredient..." class="form-input" @input="refine($event.currentTarget.value)" autocorrect="off" autocapitalize="none" autocomplete="off" spellcheck="false" autofocus>
+                    <input type="text" ref="sinput" :value="currentRefinement" :placeholder="$t('placeholder.site-search')" class="form-input" @input="refine($event.currentTarget.value)" autocorrect="off" autocapitalize="none" autocomplete="off" spellcheck="false" autofocus>
                     <ul class="site-autocomplete__results" v-for="index in indices" :key="index.indexId" v-show="currentRefinement">
                         <li v-for="hit in index.hits" :key="hit.key">
                             <a href="#" @click.prevent="goTo(hit)">
                                 <div class="site-autocomplete__results__image" :style="{ 'background-image': 'url(' + getImageUrl(hit) + ')' }"></div>
                                 <div class="site-autocomplete__results__content">
                                     <ais-highlight attribute="name" :hit="hit" />
-                                    <small v-if="hit.type == 'cocktail'">Cocktail</small>
-                                    <small v-else>Ingredient</small>
+                                    <small v-if="hit.type == 'cocktail'">{{ $t('cocktail')}}</small>
+                                    <small v-else>{{ $t('ingredient')}}</small>
                                 </div>
                             </a>
                         </li>
-                        <li v-show="index.hits.length <= 0">No results found for term: "{{ currentRefinement }}"</li>
+                        <li v-show="index.hits.length <= 0">{{ $t('search.empty', {term: currentRefinement})}}</li>
                     </ul>
                 </template>
             </ais-autocomplete>

@@ -3,7 +3,7 @@
         <OverlayLoader v-if="isLoading" />
         <ais-instant-search :search-client="searchClient" :index-name="index" :on-state-change="onStateChange">
             <ais-configure :hitsPerPage="30" />
-            <ais-search-box placeholder="Search for ingredient..." :class-names="{'ais-SearchBox-input': 'form-input'}" />
+            <ais-search-box :placeholder="$t('placeholder.search-ingredients')" :class-names="{'ais-SearchBox-input': 'form-input'}" />
             <ais-hits>
                 <template v-slot="{ items }">
                     <div class="block-container ingredients-options">
@@ -13,31 +13,31 @@
             </ais-hits>
         </ais-instant-search>
         <div style="margin: 1rem 0;">
-            <Checkbox v-model="isAddingSubstitute" id="substitute-adding">Select substitute ingredients</Checkbox>
+            <Checkbox v-model="isAddingSubstitute" id="substitute-adding">{{ $t('ingredient-dialog.select-substitutes') }}</Checkbox>
         </div>
         <div class="block-container ingredient-modal__info" v-show="currentQuery && currentQuery.length > 0">
-            Not found what you are looking for? <a href="#" @click.prevent="newIngredient">Create ingredient: "{{ currentQuery }}"</a>
+            {{ $t('ingredient-dialog.search-not-found') }} <a href="#" @click.prevent="newIngredient">{{ $t('ingredient-dialog.create-ingredient', {name: currentQuery}) }}</a>
         </div>
         <div class="selected-ingredient">
-            <small>Current ingredient:</small>
+            <small>{{ $t('ingredient-dialog.current') }}:</small>
             <p>{{ cocktailIngredient.name }}</p>
         </div>
         <div class="selected-ingredient selected-ingredient--substitutes">
-            <small>Substitutes:</small>
+            <small>{{ $t('substitutes') }}:</small>
             <p>
-                <span v-if="cocktailIngredient.substitutes.length > 0" v-for="substitute in cocktailIngredient.substitutes">{{ substitute.name }} &middot; <a href="#" @click.prevent="removeSubstitute(substitute)">Remove</a></span>
-                <span v-else>No substitutes selected.</span>
+                <span v-if="cocktailIngredient.substitutes.length > 0" v-for="substitute in cocktailIngredient.substitutes">{{ substitute.name }} &middot; <a href="#" @click.prevent="removeSubstitute(substitute)">{{ $t('remove') }}</a></span>
+                <span v-else>{{ $t('no-substitutes') }}</span>
             </p>
         </div>
         <div class="ingredient-form-group">
             <div class="form-group">
-                <label class="form-label" for="ingredient-amount">Amount:</label>
+                <label class="form-label" for="ingredient-amount">{{ $t('amount') }}:</label>
                 <input class="form-input" type="text" id="ingredient-amount" v-model="cocktailIngredient.amount">
             </div>
             <div class="form-group">
-                <label class="form-label" for="ingredient-units">Units:</label>
+                <label class="form-label" for="ingredient-units">{{ $t('units') }}:</label>
                 <input class="form-input" type="text" id="ingredient-units" list="common-units" v-model="cocktailIngredient.units">
-                <p class="form-input-hint">Use "oz", "cl", "ml" for common fluid units to enable unit conversion on cocktail page.</p>
+                <p class="form-input-hint">{{ $t('units-help-text') }}</p>
                 <datalist id="common-units">
                     <option>ml</option>
                     <option>oz</option>
@@ -49,11 +49,11 @@
             </div>
         </div>
         <div style="margin: 1rem 0;">
-            <Checkbox v-model="cocktailIngredient.optional" id="is-cocktail-ing-optional">Make this ingredient optional.</Checkbox>
+            <Checkbox v-model="cocktailIngredient.optional" id="is-cocktail-ing-optional">{{ $t('ingredient-dialog.optional-checkbox') }}</Checkbox>
         </div>
         <div class="dialog-actions">
-            <button type="button" class="button button--outline" @click="cancel">Cancel</button>
-            <button type="button" class="button button--dark" @click="save" :disabled="isLoading">Done</button>
+            <button type="button" class="button button--outline" @click="cancel">{{ $t('cancel') }}</button>
+            <button type="button" class="button button--dark" @click="save" :disabled="isLoading">{{ $t('save') }}</button>
         </div>
     </div>
 </template>
@@ -122,7 +122,7 @@ export default {
                 images: [],
                 ingredient_category_id: 1,
             }).then(data => {
-                this.$toast.default(`Created uncategorized ingredient "${data.name}".`);
+                this.$toast.default(this.$t('ingredient-dialog.new-ingredient-success', {name: data.name}));
                 this.selectIngredient({
                     name: data.name,
                     slug: data.slug,
@@ -130,7 +130,7 @@ export default {
                 });
                 this.isLoading = false;
             }).catch(() => {
-                this.$toast.error('Unable to add ingredient.');
+                this.$toast.error(this.$t('ingredient-dialog.new-ingredient-fail'));
                 this.isLoading = false;
             })
         },

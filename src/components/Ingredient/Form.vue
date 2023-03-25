@@ -2,60 +2,60 @@
     <form @submit.prevent="submit">
         <OverlayLoader v-if="isLoading" />
         <PageHeader>
-            Ingredient
+            {{ $t('ingredient') }}
         </PageHeader>
-        <h3 class="form-section-title">Ingredient information</h3>
+        <h3 class="form-section-title">{{ $t('ingredient-information') }}</h3>
         <div class="block-container block-container--padded">
             <div class="form-group">
-                <label class="form-label form-label--required" for="name">Name:</label>
+                <label class="form-label form-label--required" for="name">{{ $t('name') }}:</label>
                 <input class="form-input" type="text" id="name" v-model="ingredient.name" required>
             </div>
             <div class="form-group">
-                <label class="form-label form-label--required" for="category">Category:</label>
+                <label class="form-label form-label--required" for="category">{{ $t('category') }}:</label>
                 <select class="form-select" id="category" v-model="ingredient.ingredient_category_id" required>
-                    <option :value="undefined" disabled>Select a category...</option>
+                    <option :value="undefined" disabled>{{ $t('select-category') }}</option>
                     <option v-for="cat in categories" :value="cat.id">{{ cat.name }}</option>
                 </select>
                 <p class="form-input-hint">
-                    <RouterLink :to="{name: 'settings.categories'}" target="_blank">Edit categories</RouterLink>
+                    <RouterLink :to="{name: 'settings.categories'}" target="_blank">{{ $t('edit-categories') }}</RouterLink>
                 </p>
             </div>
             <div style="margin: 1rem 0;">
-                <Checkbox v-model="isParent" id="is-variety">Ingredient is variety of another ingredient</Checkbox>
+                <Checkbox v-model="isParent" id="is-variety">{{ $t('ingredient-is-variety') }}</Checkbox>
             </div>
             <div class="form-group" v-show="isParent">
-                <label class="form-label" for="parent-ingredient">Parent ingredient:</label>
+                <label class="form-label" for="parent-ingredient">{{ $t('parent-ingredient') }}:</label>
                 <TomSelect id="parent-ingredient" v-model="ingredient.parent_ingredient_id">
                     <option v-for="ingredient in parentIngredientsList" :value="ingredient.id">{{ ingredient.name }}</option>
                 </TomSelect>
             </div>
             <div class="form-group">
-                <label class="form-label form-label--required" for="strength">Strength (ABV %):</label>
+                <label class="form-label form-label--required" for="strength">{{ $t('strength') }} ({{ $t('ABV') }} %):</label>
                 <input class="form-input" type="text" id="strength" v-model="ingredient.strength" required>
             </div>
             <div class="form-group">
-                <label class="form-label" for="description">Description:</label>
+                <label class="form-label" for="description">{{ $t('description') }}:</label>
                 <textarea rows="4" class="form-input" id="description" v-model="ingredient.description"></textarea>
-                <p class="form-input-hint">This field supports markdown.</p>
+                <p class="form-input-hint">{{ $t('md.support') }}</p>
             </div>
             <div class="form-group">
-                <label class="form-label" for="origin">Origin:</label>
+                <label class="form-label" for="origin">{{ $t('origin') }}:</label>
                 <input class="form-input" type="text" id="origin" v-model="ingredient.origin">
             </div>
             <div class="form-group">
-                <label class="form-label" for="color">Color:</label>
+                <label class="form-label" for="color">{{ $t('color') }}:</label>
                 <button type="button" class="button colorpicker-button" @click="showColorPicker = !showColorPicker">
                     <span :style="{'background-color': ingredient.color}"></span>
                 </button>
                 <ColorPicker v-if="showColorPicker" alpha-channel="hide" :visible-formats="['hex']" :color="ingredient.color ?? {}" @color-change="updateColor" />
             </div>
         </div>
-        <h3 class="form-section-title">Media</h3>
+        <h3 class="form-section-title">{{ $t('media') }}</h3>
         <ImageUpload ref="imagesUpload" :value="ingredient.images" :max-images="1" />
         <div class="form-actions">
-            <RouterLink v-if="ingredientId" class="button button--outline" :to="{name: 'ingredients.show', params: { id: ingredientId }}">Cancel</RouterLink>
-            <RouterLink v-else class="button button--outline" :to="{name: 'ingredients'}">Cancel</RouterLink>
-            <button class="button button--dark" type="submit">Save</button>
+            <RouterLink v-if="ingredientId" class="button button--outline" :to="{name: 'ingredients.show', params: { id: ingredientId }}">{{ $t('cancel') }}</RouterLink>
+            <RouterLink v-else class="button button--outline" :to="{name: 'ingredients'}">{{ $t('cancel') }}</RouterLink>
+            <button class="button button--dark" type="submit">{{ $t('save') }}</button>
         </div>
     </form>
 </template>
@@ -94,7 +94,7 @@ export default {
         Checkbox
     },
     created() {
-        document.title = `Ingredient Form \u22C5 Salt Rim`
+        document.title = `${this.$t('ingredient')} \u22C5 Salt Rim`
 
         this.ingredientId = this.$route.query.id || null;
 
@@ -106,7 +106,7 @@ export default {
                 this.ingredient = data;
                 this.isParent = this.ingredient.parent_ingredient_id != null;
 
-                document.title = `Ingredient Form \u22C5 ${this.ingredient.name} \u22C5 Salt Rim`
+                document.title = `${this.$t('ingredient')} \u22C5 ${this.ingredient.name} \u22C5 Salt Rim`
                 this.isLoading = false;
             })
         }
@@ -140,7 +140,7 @@ export default {
             };
 
             const imageResources = await this.$refs.imagesUpload.uploadPictures().catch(() => {
-                this.$toast.error('An error occured while uploading images. Your ingredient is still saved.');
+                this.$toast.error(`${this.$t('image-upload-error')} ${this.$t('image-upload-error.ingredient')}`);
             }) || [];
 
             if (Array.isArray(imageResources)) {
@@ -149,7 +149,7 @@ export default {
 
             if (this.ingredientId) {
                 ApiRequests.updateIngredient(this.ingredientId, postData).then(data => {
-                    this.$toast.default('Ingredient updated');
+                    this.$toast.default(this.$t('ingredient.update-success'));
                     this.$router.push({ name: 'ingredients.show', params: { id: data.id } })
                     this.isLoading = false;
                 }).catch(e => {
@@ -159,7 +159,7 @@ export default {
                 })
             } else {
                 ApiRequests.saveIngredient(postData).then(data => {
-                    this.$toast.default('Ingredient created');
+                    this.$toast.default(this.$t('ingredient.create-success'));
                     this.$router.push({ name: 'ingredients.show', params: { id: data.id } })
                     this.isLoading = false;
                 }).catch(e => {

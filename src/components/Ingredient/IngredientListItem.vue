@@ -6,9 +6,8 @@
         </div>
         <div class="ingredient-list-item__content">
             <h4 class="ingredient-list-item__title"><RouterLink :to="{ name: 'ingredients.show', params: { id: ingredient.slug } }">{{ ingredient.name }}</RouterLink></h4>
-            <!-- <p>{{ ingredient.description }}</p> -->
-            <a href="#" @click.prevent="addToShelf">Add to my shelf</a> &middot;
-            <a href="#" @click.prevent="removeFromShoppingList">Remove from list</a>
+            <a href="#" @click.prevent="addToShelf">{{ $t('add-to-shelf') }}</a> &middot;
+            <a href="#" @click.prevent="removeFromShoppingList">{{ $t('remove-from-list') }}</a>
         </div>
     </div>
 </template>

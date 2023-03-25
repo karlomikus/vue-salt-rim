@@ -6,11 +6,11 @@
                 <div class="dialog__container">
                     <div class="dialog__content">
                         <div class="dialog-confirm">
-                            <h6 class="dialog-confirm__title">Are you sure?</h6>
+                            <h6 class="dialog-confirm__title">{{ $t('confirm-dialog.title') }}</h6>
                             <p class="dialog-confirm__message">{{ body }}</p>
                             <div class="dialog-confirm__actions">
-                                <button class="button button--small button--outline" @click.prevent="cancel">Cancel</button>
-                                <button class="button button--small button--dark" @click.prevent="confirm">Confirm</button>
+                                <button class="button button--small button--outline" @click.prevent="cancel">{{ $t('cancel') }}</button>
+                                <button class="button button--small button--dark" @click.prevent="confirm">{{ $t('confirm') }}</button>
                             </div>
                         </div>
                     </div>
