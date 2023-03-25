@@ -11,7 +11,7 @@ import './assets/main.css'
 import en_US from './locales/en-US';
 import hr_HR from './locales/hr-HR';
 
-const userSelectedLocale = window.localStorage.getItem('ui-language');
+let userSelectedLocale = window.localStorage.getItem('ui-language');
 if (!userSelectedLocale) {
     userSelectedLocale = 'en-US';
 }
