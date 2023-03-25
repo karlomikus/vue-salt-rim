@@ -63,7 +63,7 @@
                     </button>
                     <ais-search-box :placeholder="$t('placeholder.search-ingredients')" :class-names="{'ais-SearchBox-input': 'ais-SearchBox-input form-input form-input--red'}" />
                 </div>
-                <ais-current-refinements />
+                <ais-current-refinements :transform-items="transformCurrentRefinements" />
                 <ais-infinite-hits>
                     <template v-slot="{ items, refineNext, isLastPage }">
                         <IngredientGridContainer style="margin-top: 1rem;">
@@ -164,6 +164,21 @@ export default {
     methods: {
         toggleFiltersShown() {
             document.querySelector('.inpage-search').classList.toggle('inpage-search--hide-filters')
+        },
+        transformCurrentRefinements(items) {
+            const labelMap = {
+                'category': this.$t('category'),
+                'strength_abv': this.$t('ABV'),
+                'origin': this.$t('origin'),
+            };
+
+            items.map(item => {
+                if (labelMap[item.label]) {
+                    item.label = labelMap[item.label]
+                }
+            });
+
+            return items;
         }
     }
 }

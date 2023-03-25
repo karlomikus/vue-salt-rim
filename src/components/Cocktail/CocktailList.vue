@@ -118,7 +118,7 @@
                         </CocktailGridContainer>
                         <div style="text-align: center; margin: 20px 0;" v-if="!isLastPage">
                             <button class="button button--dark" @click="refineNext">
-                                Show more results
+                                {{ $t('show-more') }}
                             </button>
                         </div>
                     </template>
@@ -265,12 +265,14 @@ export default {
         },
         transformCurrentRefinements(items) {
             const labelMap = {
-                'main_ingredient_name': 'Main ingredient',
-                'method': 'Method',
-                'tags': 'Tags',
-                'user_id': 'My cocktails',
-                'calculated_abv': 'Strength (ABV)',
-                'glass': 'Glass type',
+                'main_ingredient_name': this.$t('ingredient.main'),
+                'method': this.$t('method'),
+                'tags': this.$t('tags'),
+                'user_id': this.$t('my.cocktails'),
+                'calculated_abv': this.$t('strength'),
+                'glass': this.$t('glass-type'),
+                'average_rating': this.$t('avg-rating'),
+                'has_public_link': this.$t('cocktails.shared'),
             };
 
             items.map(item => {
@@ -282,7 +284,7 @@ export default {
             if (this.activeFilters.length > 0) {
                 let customRefinement = {
                     attribute: null,
-                    label: 'Cocktail filters',
+                    label: this.$t('cocktail.filters'),
                     refinements: [],
                     refine: (refinement) => {
                         this.toggleArrayFiltersConfig(refinement.value)
