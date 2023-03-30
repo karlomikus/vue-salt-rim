@@ -15,6 +15,17 @@
                         <h3>{{ $t('filters') }}</h3>
                         <button class="button button--dark button--small inpage-search__filter__close" @click.prevent="toggleFiltersShown">X</button>
                     </div>
+                    <!-- <ais-toggle-refinement label="Shelf ingredients" attribute="id" :on="userIngredientIds">
+                        <template v-slot="{ value, refine }">
+                            <div class="ais-ToggleRefinement">
+                                <label class="ais-ToggleRefinement-label">
+                                    <span class="ais-ToggleRefinement-labelText">{{ $t('shelf-ingredients') }}</span>
+                                    <span class="ais-ToggleRefinement-count">{{ value.count ?? 0 }}</span>
+                                    <input class="ais-ToggleRefinement-checkbox" type="checkbox" @change.prevent="refine(value)" />
+                                </label>
+                            </div>
+                        </template>
+                    </ais-toggle-refinement> -->
                     <h4>{{ $t('sort') }}</h4>
                     <ais-sort-by :items="[
                         { value: 'ingredients', label: $t('sort.relevancy') },

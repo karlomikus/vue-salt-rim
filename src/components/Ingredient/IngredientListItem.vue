@@ -54,12 +54,18 @@ export default {
             ApiRequests.addIngredientToShelf(this.ingredient.id).then(() => {
                 this.$emit('addedToShelf')
                 this.isLoading = false;
+            }).catch(e => {
+                this.$toast.error(e.message)
+                this.isLoading = false;
             })
         },
         removeFromShoppingList() {
             this.isLoading = true;
             ApiRequests.removeIngredientsFromShoppingList({ingredient_ids: [this.ingredient.id]}).then(() => {
                 this.$emit('removedFromShoppingList')
+                this.isLoading = false;
+            }).catch(e => {
+                this.$toast.error(e.message)
                 this.isLoading = false;
             })
         }

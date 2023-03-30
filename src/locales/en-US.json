@@ -241,5 +241,6 @@
   "show-less": "Show less",
   "clear-filters": "Clear all filters",
   "rating-removed": "Removed cocktail rating",
-  "rating-rated": "Cocktail rated with {rating} stars"
+  "rating-rated": "Cocktail rated with {rating} stars",
+  "shelf-ingredients": "Shelf ingredients"
 }
