@@ -377,7 +377,9 @@ export default {
 
             const imageResources = await this.$refs.imagesUpload.uploadPictures().catch(() => {
                 this.$toast.error(`${this.$t('image-upload-error')} ${this.$t('image-upload-error.cocktail')}`);
-            });
+            }) || [];
+
+            console.log('sadasdasdas', imageResources);
 
             if (imageResources.length > 0) {
                 postData.images = imageResources.map(img => img.id);

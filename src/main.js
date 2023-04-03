@@ -13,7 +13,7 @@ import hr_HR from './locales/hr-HR';
 
 let userSelectedLocale = window.localStorage.getItem('ui-language');
 if (!userSelectedLocale) {
-    userSelectedLocale = 'en-US';
+    userSelectedLocale = window.srConfig.DEFAULT_LOCALE || 'en-US';
 }
 
 const emitter = mitt()

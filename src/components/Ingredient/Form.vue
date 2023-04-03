@@ -143,7 +143,7 @@ export default {
                 this.$toast.error(`${this.$t('image-upload-error')} ${this.$t('image-upload-error.ingredient')}`);
             }) || [];
 
-            if (Array.isArray(imageResources)) {
+            if (imageResources.length > 0) {
                 postData.images = imageResources.map(img => img.id);
             }
 

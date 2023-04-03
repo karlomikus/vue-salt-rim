@@ -241,5 +241,7 @@
   "show-less": "Prikaži manje",
   "clear-filters": "Poništi filtere",
   "rating-removed": "Ocjena uklonjena",
-  "rating-rated": "Koktel ocijenjen sa ocjenom {rating}"
+  "rating-rated": "Koktel ocijenjen sa ocjenom {rating}",
+  "shelf-ingredients": "Sastojci u polici",
+  "shopping-list-ingredients": "Sastojci na popisu za kupovinu"
 }

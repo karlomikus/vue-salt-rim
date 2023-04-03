@@ -1,7 +1,7 @@
 <template>
     <RouterLink class="block-container block-container--hover cocktail-grid-item" :to="{ name: 'cocktails.show', params: { id: cocktail.slug } }">
         <div class="cocktail-grid-item__graphic">
-            <img :data-img-src="mainCocktailImageUrl" alt="Main image of the cocktail">
+            <img :data-img-src="mainCocktailImageUrl" :src="placeholderImage" alt="Main image of the cocktail">
         </div>
         <h2 class="cocktail-grid-item__title">{{ cocktail.name }} <span v-if="isFavorited">♡</span></h2>
         <div class="cocktail-grid-item__rating">
@@ -21,6 +21,7 @@
 <script>
 import Auth from '@/Auth.js';
 import ApiRequests from '@/ApiRequests.js';
+import { thumbHashToDataURL } from 'thumbhash'
 
 export default {
     props: ['cocktail', 'observer', 'isSpan'],
@@ -33,6 +34,11 @@ export default {
         this.observer.observer.observe(this.$el)
     },
     computed: {
+        placeholderImage() {
+            return thumbHashToDataURL(
+                Uint8Array.from(atob(this.cocktail.image_hash), c => c.charCodeAt(0))
+            );
+        },
         isFavorited() {
             const user = Auth.getUser();
 
