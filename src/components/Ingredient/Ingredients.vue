@@ -7,7 +7,7 @@
     </PageHeader>
     <p class="page-description">{{ $t('ingredients.page.description') }}</p>
     <ais-instant-search :search-client="searchClient" index-name="ingredients:name:asc" :routing="routing">
-        <ais-configure :hitsPerPage="60" :stalledSearchDelay="200" />
+        <ais-configure :hitsPerPage="60" :stalledSearchDelay="200" :filters="filterQuery" />
         <div class="inpage-search inpage-search--hide-filters">
             <div class="inpage-search__filter">
                 <div class="inpage-search__filter__body">
@@ -15,17 +15,15 @@
                         <h3>{{ $t('filters') }}</h3>
                         <button class="button button--dark button--small inpage-search__filter__close" @click.prevent="toggleFiltersShown">X</button>
                     </div>
-                    <!-- <ais-toggle-refinement label="Shelf ingredients" attribute="id" :on="userIngredientIds">
-                        <template v-slot="{ value, refine }">
-                            <div class="ais-ToggleRefinement">
-                                <label class="ais-ToggleRefinement-label">
-                                    <span class="ais-ToggleRefinement-labelText">{{ $t('shelf-ingredients') }}</span>
-                                    <span class="ais-ToggleRefinement-count">{{ value.count ?? 0 }}</span>
-                                    <input class="ais-ToggleRefinement-checkbox" type="checkbox" @change.prevent="refine(value)" />
-                                </label>
-                            </div>
-                        </template>
-                    </ais-toggle-refinement> -->
+                    <ais-panel>
+                        <div class="ais-ToggleRefinement" v-for="(customFilter, index) in filtersConfig">
+                            <label class="ais-ToggleRefinement-label">
+                                <span class="ais-ToggleRefinement-labelText">{{ customFilter.label }}</span>
+                                <span class="ais-ToggleRefinement-count">{{ customFilter.values.length }}</span>
+                                <input class="ais-ToggleRefinement-checkbox" type="checkbox" :checked="filtersConfig[index].isActive" @change.prevent="toggleArrayFiltersConfig(index)" />
+                            </label>
+                        </div>
+                    </ais-panel>
                     <h4>{{ $t('sort') }}</h4>
                     <ais-sort-by :items="[
                         { value: 'ingredients', label: $t('sort.relevancy') },
@@ -143,9 +141,22 @@ export default {
                     }
                 }
             },
-            ingredients: [],
             userIngredients: [],
-            loadingIngredients: []
+            loadingIngredients: [],
+            filtersConfig: {
+                shelf: {
+                    attribute: 'shelf',
+                    isActive: false,
+                    label: this.$t('shelf-ingredients'),
+                    values: []
+                },
+                shoppingList: {
+                    attribute: 'shopping-list',
+                    isActive: false,
+                    label: this.$t('shopping-list-ingredients'),
+                    values: []
+                },
+            },
         }
     },
     components: {
@@ -156,13 +167,13 @@ export default {
     created() {
         document.title = `${this.$t('ingredients')} \u22C5 Salt Rim`
 
-        ApiRequests.fetchIngredients().then(data => {
-            this.ingredients = data
-        });
-
         ApiRequests.fetchMyShelf().then(data => {
             this.userIngredients = data
+
+            this.filtersConfig.shelf.values = this.userIngredientIds;
         });
+
+        this.filtersConfig.shoppingList.values = this.shoppingListIds;
     },
     computed: {
         userIngredientIds() {
@@ -170,9 +181,26 @@ export default {
         },
         shoppingListIds() {
             return Auth.getUser().shopping_lists;
+        },
+        filterQuery() {
+            const activeFilters = this.activeFilters;
+
+            if (activeFilters.length == 0) {
+                return '';
+            }
+
+            const values = activeFilters.map(filter => filter.values).reduce((arr1, arr2) => [...arr1, ...arr2])
+
+            return `id IN [${values.join(', ')}]`;
+        },
+        activeFilters() {
+            return Object.values(this.filtersConfig).filter(c => c.isActive);
         }
     },
     methods: {
+        toggleArrayFiltersConfig(key) {
+            this.filtersConfig[key].isActive = !this.filtersConfig[key].isActive
+        },
         toggleFiltersShown() {
             document.querySelector('.inpage-search').classList.toggle('inpage-search--hide-filters')
         },
