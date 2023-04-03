@@ -1,3 +1,13 @@
+# v1.9.0
+## New
+- Added `Shelf ingredients` and `Shopping list ingredients` filtering to ingredients page.
+- Added ThumbHash placeholder image while the real images are loading to cocktails page
+- Added `DEFAULT_LOCALE` environment variable to override default language
+- Added `ANALYTICS_SCRIPT` environment variable to setup opt in analytics tracking
+
+## Fixes
+- Added missing error message handling when doing actions on the ingredients in the shelf
+
 # v1.8.0
 ## New
 - Added internationalization
