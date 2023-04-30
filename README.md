@@ -69,8 +69,10 @@ Create a new config file in `public/config.js`, with the following content
 window.srConfig = {};
 window.srConfig.API_URL = "$API_URL";
 window.srConfig.MEILISEARCH_URL = "$MEILISEARCH_URL";
+// Optional variables
 window.srConfig.BAR_NAME = "My bar";
-// window.srConfig.BAR_DESCRIPTION = "Your personal bar assistant"; // Optional
+// window.srConfig.BAR_DESCRIPTION = "Your personal bar assistant";
+// window.srConfig.DEFAULT_LOCALE = "en-US"; // Locale name from src/locales
 ```
 
 4. Run the build commands
