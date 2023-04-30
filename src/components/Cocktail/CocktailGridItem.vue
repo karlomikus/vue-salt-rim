@@ -60,6 +60,9 @@ export default {
     --image-offset: -3rem;
     --image-offset-hover: -3.5rem;
     --content-spacing: 0.325rem;
+    --box-shadow: hsl(0deg 0% 63% / 0.36);
+    --box-shadow-hover: hsl(0deg 0% 63% / 0.6);
+    --clr-content: var(--clr-gray-500);
 
     display: flex;
     flex-direction: column;
@@ -72,6 +75,14 @@ export default {
     cursor: pointer;
     text-decoration: none;
 }
+
+/* @media (prefers-color-scheme: dark) {
+    .cocktail-grid-item {
+        --box-shadow: hsl(225deg 40% 5% / 0.36);
+        --box-shadow-hover: hsl(225deg 40% 5% / 0.6);
+        --clr-content: var(--clr-gray-200);
+    }
+} */
 
 .cocktail-grid-item__title {
     font-size: 1.7rem;
@@ -90,7 +101,7 @@ export default {
 }
 
 .cocktail-grid-item__ingredients {
-    color: var(--clr-gray-500);
+    color: var(--clr-content);
 }
 
 .cocktail-grid-item__graphic {
@@ -105,17 +116,17 @@ export default {
     border-radius: 0.825rem;
     object-fit: cover;
     transition: box-shadow ease-in-out .1s;
-    box-shadow: 0px 0.5px 0.6px hsl(0deg 0% 63% / 0.36),
-        0px 1.6px 1.8px -0.8px hsl(0deg 0% 63% / 0.36),
-        0.1px 4px 4.5px -1.7px hsl(0deg 0% 63% / 0.36),
-        0.1px 9.7px 10.9px -2.5px hsl(0deg 0% 63% / 0.36);
+    box-shadow: 0px 0.5px 0.6px var(--box-shadow),
+        0px 1.6px 1.8px -0.8px var(--box-shadow),
+        0.1px 4px 4.5px -1.7px var(--box-shadow),
+        0.1px 9.7px 10.9px -2.5px var(--box-shadow);
 }
 
 .cocktail-grid-item:hover .cocktail-grid-item__graphic img {
-    box-shadow: 0px 0.5px 0.6px hsl(0deg 0% 63% / 0.6),
-        0px 1.6px 2px -0.8px hsl(0deg 0% 63% / 0.6),
-        0.1px 4px 8px -1.7px hsl(0deg 0% 63% / 0.6),
-        0.1px 9.7px 16px -2.5px hsl(0deg 0% 63% / 0.6);
+    box-shadow: 0px 0.5px 0.6px var(--box-shadow-hover),
+        0px 1.6px 2px -0.8px var(--box-shadow-hover),
+        0.1px 4px 8px -1.7px var(--box-shadow-hover),
+        0.1px 9.7px 16px -2.5px var(--box-shadow-hover);
 }
 
 .cocktail-tags {
