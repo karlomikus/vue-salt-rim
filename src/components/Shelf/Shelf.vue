@@ -14,6 +14,10 @@
             <p><RouterLink :to="{name: 'ingredients'}">{{ $t('ingredients.total') }}</RouterLink></p>
         </div>
         <div class="stats__stat">
+            <h3>{{ stats.total_shelf_ingredients }}</h3>
+            <p><RouterLink :to="{name: 'ingredients', query: {shelf: true}}">{{ $t('shelf-ingredients') }}</RouterLink></p>
+        </div>
+        <div class="stats__stat">
             <h3>{{ stats.total_shelf_cocktails }}</h3>
             <p><RouterLink :to="{name: 'cocktails', query: {shelf: true}}">{{ $t('shelf.cocktails') }}</RouterLink></p>
         </div>
