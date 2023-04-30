@@ -1,3 +1,11 @@
+# v1.10.0
+## New
+- New locale supported: French
+- Added new stat: Total shelf ingredients
+
+## Fixes
+- Removed leftover `console.log`
+
 # v1.9.0
 ## New
 - Added `Shelf ingredients` and `Shopping list ingredients` filtering to ingredients page.
