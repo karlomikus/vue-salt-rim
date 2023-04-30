@@ -72,7 +72,8 @@ window.srConfig.MEILISEARCH_URL = "$MEILISEARCH_URL";
 // Optional variables
 window.srConfig.BAR_NAME = "My bar";
 // window.srConfig.BAR_DESCRIPTION = "Your personal bar assistant";
-// window.srConfig.DEFAULT_LOCALE = "en-US"; // Locale name from src/locales
+// Valid locales: en-US, hr-HR, fr-FR
+// window.srConfig.DEFAULT_LOCALE = "en-US";
 ```
 
 4. Run the build commands
