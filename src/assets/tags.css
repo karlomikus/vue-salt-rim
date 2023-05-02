@@ -6,6 +6,7 @@
 
 .tag {
     --color-tag: #DFE7FD;
+    --color-text: var(--clr-gray-800);
 
     text-decoration: none;
     background-color: none;
@@ -15,6 +16,13 @@
     line-height: 1.3;
     white-space: nowrap;
 }
+
+/* @media (prefers-color-scheme: dark) {
+    .tag {
+        --color-tag: var(--clr-gray-700);
+        --color-text: var(--clr-gray-200);
+    }
+} */
 
 .tag.tag--link {
     border: 1px solid var(--clr-red-300);
@@ -29,12 +37,12 @@
 .tag.tag--link.tag--is-selected {
     background-color: var(--clr-gray-800);
     border: 1px solid var(--clr-gray-800);
-    color: #fff;
+    color: var(--color-text);
 }
 
 .tag.tag--background {
     background-color: var(--color-tag);
-    color: var(--clr-gray-800);
+    color: var(--color-text);
 }
 
 .chips-list {
