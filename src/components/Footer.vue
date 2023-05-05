@@ -66,11 +66,21 @@ export default {
 
 <style scoped>
 .site-footer-wrapper {
-    --color-footer-bg: #fff;
+    --clr-footer-bg: #fff;
+    --clr-footer-link: var(--clr-gray-500);
+    --clr-footer-link-hover: var(--clr-red-800);
+}
+
+@media (prefers-color-scheme: dark) {
+    .site-footer-wrapper {
+        --clr-footer-bg: var(--clr-dark-main-900);
+        --clr-footer-link: var(--clr-dark-main-400);
+        --clr-footer-link-hover: var(--clr-red-300);
+    }
 }
 
 .site-footer-wrapper {
-    background-color: var(--color-footer-bg);
+    background-color: var(--clr-footer-bg);
     margin-top: 20px;
 }
 
@@ -91,23 +101,23 @@ export default {
     display: flex;
     margin-bottom: 5px;
     text-decoration: none;
-    color: var(--clr-gray-500)
+    color: var(--clr-footer-link);
 }
 
 .site-footer__left a svg {
     margin-right: 5px;
-    fill: var(--clr-gray-500)
+    fill: var(--clr-footer-link);
 }
 
 .site-footer__left a:hover svg {
     margin-right: 5px;
-    fill: var(--clr-red-800)
+    fill: var(--clr-footer-link-hover);
 }
 
 .site-footer__left a:hover,
 .site-footer__left a:active,
 .site-footer__left a:focus {
-    color: var(--clr-red-800)
+    color: var(--clr-footer-link-hover)
 }
 
 .site-footer__right {

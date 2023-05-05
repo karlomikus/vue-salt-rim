@@ -39,7 +39,8 @@ main {
 }
 
 .page-subtitle {
-    border-bottom: 3px double var(--clr-red-200);
+    --ps-clr-border: var(--clr-red-200);
+    border-bottom: 3px double var(--ps-clr-border);
     padding-bottom: 10px;
     margin: 20px 0;
     font-size: 1.2rem;
@@ -51,6 +52,12 @@ main {
     font-size: 1rem;
     font-family: var(--font-primary);
     text-decoration: none;
+}
+
+@media (prefers-color-scheme: dark) {
+    .page-subtitle {
+        --ps-clr-border: var(--clr-dark-main-800);
+    }
 }
 
 h3.form-section-title {

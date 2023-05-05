@@ -62,6 +62,13 @@
     box-shadow: var(--shadow-elevation-high);
 }
 
+@media (prefers-color-scheme: dark) {
+    .dialog__content {
+        background-color: var(--clr-dark-main-950);
+        border: 1px solid var(--clr-dark-main-800);
+    }
+}
+
 .dialog-animation-enter-from .dialog__content,
 .dialog-animation-leave-to .dialog__content {
     transform: translate(0, 2rem);

@@ -66,10 +66,19 @@ export default {
 
 <style scoped>
 .rating {
+    --color-base: var(--clr-link-color);
     --color-unrated: var(--clr-gray-800);
     --color-rated: var(--clr-red-800);
     font-size: 1.5rem;
     display: inline-block;
+}
+
+@media (prefers-color-scheme: dark) {
+    .rating {
+        --color-base: rgb(218, 139, 21);
+        --color-unrated: rgb(252, 242, 215);
+        --color-rated: rgb(218, 139, 21);
+    }
 }
 
 .rating:hover a {
@@ -78,6 +87,7 @@ export default {
 
 .rating a {
     text-decoration: none;
+    color: var(--color-base);
 }
 
 .rating a:before {

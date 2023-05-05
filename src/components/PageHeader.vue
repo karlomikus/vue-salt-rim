@@ -11,12 +11,19 @@
 
 <style scoped>
 .site-page-header {
+    --sph-clr-border: var(--clr-red-200);
     display: flex;
     flex-wrap: wrap;
-    border-bottom: 3px solid var(--clr-red-200);
-    padding-bottom: 20px;
-    margin-bottom: 20px;
+    border-bottom: 3px solid var(--sph-clr-border);
+    padding-bottom: 1rem;
+    margin-bottom: 1rem;
     align-items: center;
+}
+
+@media (prefers-color-scheme: dark) {
+    .site-page-header {
+        --sph-clr-border: var(--clr-dark-main-800)
+    }
 }
 
 .site-page-header__title h2 {

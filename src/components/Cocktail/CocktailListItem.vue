@@ -38,11 +38,18 @@ export default {
 <style scoped>
 .cocktail-list-item {
     --image-size: 70px;
+    --cli-clr-content: var(--clr-gray-500);
 
     display: flex;
     align-items: center;
     padding: 0.825rem;
     text-decoration: none;
+}
+
+@media (prefers-color-scheme: dark) {
+    .cocktail-list-item {
+        --cli-clr-content: var(--clr-gray-400);
+    }
 }
 
 .cocktail-list-item__graphic {
@@ -72,7 +79,7 @@ export default {
 }
 
 .cocktail-list-item__content p {
-    color: var(--clr-gray-500);
+    color: var(--cli-clr-content);
     font-size: 0.8rem;
 }
 </style>

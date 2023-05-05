@@ -313,6 +313,12 @@ export default {
     color: var(--clr-gray-500);
 }
 
+@media (prefers-color-scheme: dark) {
+    .ingredient-details__box__title small {
+        color: var(--clr-gray-400);
+    }
+}
+
 .ingredient-details__box hr {
     border: 0;
     margin: 0.25rem 0;
@@ -325,6 +331,10 @@ export default {
 }
 
 .ingredient-chips-list {
+    --icl-clr-bg: rgba(255, 255, 255, .5);
+    --icl-clr-bg-hover: #fff;
+    --icl-clr-border: rgba(0, 0, 0, .1);
+    --icl-clr-border-hover: var(--clr-red-800);
     list-style: none;
     padding: 0;
     margin: 30px 0 0 0;
@@ -333,12 +343,21 @@ export default {
     gap: 8px;
 }
 
+@media (prefers-color-scheme: dark) {
+    .ingredient-chips-list {
+        --icl-clr-bg: rgba(255, 255, 255, .05);
+        --icl-clr-bg-hover: rgba(255, 255, 255, .1);
+        --icl-clr-border: rgba(0, 0, 0, .2);
+        --icl-clr-border-hover: rgba(0, 0, 0, .4);
+    }
+}
+
 .ingredient-chips-list li a {
     display: block;
     padding: 1px 8px;
     font-size: 0.9rem;
-    box-shadow: 0 2px 0 rgba(0, 0, 0, .1);
-    background-color: rgba(255, 255, 255, .5);
+    box-shadow: 0 2px 0 var(--icl-clr-border);
+    background-color: var(--icl-clr-bg);
     border-radius: 3px;
     text-decoration: none;
 }
@@ -346,8 +365,8 @@ export default {
 .ingredient-chips-list li a:hover,
 .ingredient-chips-list li a:active,
 .ingredient-chips-list li a:focus {
-    box-shadow: 0 2px 0 var(--clr-red-800);
-    background-color: #fff;
+    box-shadow: 0 2px 0 var(--icl-clr-border-hover);
+    background-color: var(--icl-clr-bg-hover);
 }
 
 .ingredient-details__actions {
