@@ -31,6 +31,8 @@
     --clr-body-font: var(--clr-gray-800);
     --clr-body-bg: var(--clr-red-50);
 
+    --default-scheme: light;
+
     --font-primary: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
     --font-accent: 'Bitter', serif;
     --font-heading: 'Alice', serif;
@@ -66,22 +68,34 @@
     --clr-dark-main-950: #0A090C;
 }
 
-@media (prefers-color-scheme: dark) {
-    :root {
-        --clr-link-color: var(--clr-gray-200);
-        --clr-link-color-hover: #fff;
-        --clr-body-font: var(--clr-gray-50);
-        --clr-body-bg: var(--clr-dark-main-950);
+.dark-theme {
+    --clr-red-50: #F2EAF6;
+    --clr-red-100: #E5D4ED;
+    --clr-red-200: #C9A6D9;
+    --clr-red-300: #B07BC6;
+    --clr-red-400: #9650B4;
+    --clr-red-500: #723B8A;
+    --clr-red-600: #5C2F6F;
+    --clr-red-700: #442352;
+    --clr-red-800: #2C1736;
+    --clr-red-900: #180C1D;
+    --clr-red-950: #0C060E;
 
-        --color-site-header: var(--clr-dark-main-900);
+    --default-scheme: dark;
 
-        --clr-accent-blue: #0d212b;
-        --clr-accent-yellow: #26160a;
-        --clr-accent-red: #2f1214;
-        --clr-accent-green: #132823;
-        --clr-accent-purple: #dfd7e3;
-        --clr-accent-orange: #f1dcca;
-    }
+    --clr-link-color: var(--clr-gray-200);
+    --clr-link-color-hover: #fff;
+    --clr-body-font: var(--clr-gray-50);
+    --clr-body-bg: var(--clr-dark-main-950);
+
+    --color-site-header: var(--clr-dark-main-900);
+
+    --clr-accent-blue: #0d212b;
+    --clr-accent-yellow: #26160a;
+    --clr-accent-red: #2f1214;
+    --clr-accent-green: #132823;
+    --clr-accent-purple: #dfd7e3;
+    --clr-accent-orange: #f1dcca;
 }
 
 *,
@@ -116,6 +130,7 @@ body {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     counter-reset: section;
+    color-scheme: var(--default-scheme);
 }
 
 @media (max-width: 450px) {

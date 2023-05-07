@@ -17,11 +17,9 @@
     white-space: nowrap;
 }
 
-@media (prefers-color-scheme: dark) {
-    .tag {
-        --color-tag: var(--clr-gray-700);
-        --color-text: var(--clr-gray-200);
-    }
+.dark-theme .tag {
+    --color-tag: var(--clr-gray-700);
+    --color-text: var(--clr-gray-200);
 }
 
 .tag.tag--link {
@@ -58,13 +56,11 @@
     gap: 0.5rem;
 }
 
-@media (prefers-color-scheme: dark) {
-    .chips-list {
-        --cl-clr-bg: rgba(255, 255, 255, .05);
-        --cl-clr-bg-hover: rgba(255, 255, 255, .1);
-        --cl-clr-border: rgba(0, 0, 0, .2);
-        --cl-clr-border-hover: rgba(0, 0, 0, .4);
-    }
+.dark-theme .chips-list {
+    --cl-clr-bg: rgba(255, 255, 255, .05);
+    --cl-clr-bg-hover: rgba(255, 255, 255, .1);
+    --cl-clr-border: rgba(0, 0, 0, .2);
+    --cl-clr-border-hover: rgba(0, 0, 0, .4);
 }
 
 .chips-list li a,

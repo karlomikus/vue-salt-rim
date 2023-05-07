@@ -404,10 +404,8 @@ export default {
     margin: 0;
 }
 
-@media (prefers-color-scheme: dark) {
-    .cocktail-ingredients {
-        --ci-clr-list-bg: rgba(0, 0, 0, .4);
-    }
+.dark-theme .cocktail-ingredients {
+    --ci-clr-list-bg: rgba(0, 0, 0, .4);
 }
 
 .cocktail-ingredients li {
@@ -471,13 +469,11 @@ export default {
     margin-bottom: 20px;
 }
 
-@media (prefers-color-scheme: dark) {
-    .cocktail-button-group {
-        --cbg-clr-content: var(--clr-gray-200);
-        --cbg-clr-bg: rgba(0, 0, 0, .2);
-        --cbg-clr-bg-hover: rgb(0, 0, 0, .4);
-        --cbg-clr-bg-active: rgb(0, 0, 0, .6);
-    }
+.dark-theme .cocktail-button-group {
+    --cbg-clr-content: var(--clr-gray-200);
+    --cbg-clr-bg: rgba(0, 0, 0, .2);
+    --cbg-clr-bg-hover: rgb(0, 0, 0, .4);
+    --cbg-clr-bg-active: rgb(0, 0, 0, .6);
 }
 
 .cocktail-button-group h4 {
@@ -527,10 +523,8 @@ export default {
     margin-bottom: 0.25rem;
 }
 
-@media (prefers-color-scheme: dark) {
-    .cocktail-details__chips__group__title {
-        color: rgba(255, 255, 255, .4);
-    }
+.dark-theme .cocktail-details__chips__group__title {
+    color: rgba(255, 255, 255, .4);
 }
 
 .cocktail-details__chips .rating {

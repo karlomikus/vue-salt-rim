@@ -207,15 +207,13 @@ export default {
     row-gap: 10px;
 }
 
-@media (prefers-color-scheme: dark) {
-    .stats {
-        --stats-clr-bg: #0d0f0f;
-    }
+.dark-theme .stats {
+    --stats-clr-bg: #0d0f0f;
+}
 
-    .stats__stat {
-        background-image: linear-gradient(180deg, var(--stats-clr-bg) 20%, var(--clr-dark-main-950) 110%);
-        border-top: 1px solid #161a1a;
-    }
+.dark-theme .stats__stat {
+    background-image: linear-gradient(180deg, var(--stats-clr-bg) 20%, var(--clr-dark-main-950) 110%);
+    border-top: 1px solid #161a1a;
 }
 
 .stats__stat {

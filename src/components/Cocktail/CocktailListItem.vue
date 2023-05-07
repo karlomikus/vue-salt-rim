@@ -46,10 +46,8 @@ export default {
     text-decoration: none;
 }
 
-@media (prefers-color-scheme: dark) {
-    .cocktail-list-item {
-        --cli-clr-content: var(--clr-gray-400);
-    }
+.dark-theme .cocktail-list-item {
+    --cli-clr-content: var(--clr-gray-400);
 }
 
 .cocktail-list-item__graphic {
@@ -65,6 +63,10 @@ export default {
     background-position: center center;
     flex-shrink: 0;
     margin-right: 10px;
+}
+
+.dark-theme .cocktail-list-item__graphic__image {
+    background-color: var(--clr-dark-main-800);
 }
 
 .cocktail-list-item__title {

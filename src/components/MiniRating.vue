@@ -24,4 +24,9 @@ export default {
     padding: 1px 5px;
     border-radius: 4px;
 }
+
+.dark-theme .mini-rating {
+    background-color: rgb(94, 52, 5);
+    color: rgb(255, 236, 207);
+}
 </style>

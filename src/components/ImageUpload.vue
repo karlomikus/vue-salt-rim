@@ -178,12 +178,19 @@ export default {
 }
 
 .image-upload__select {
-    border: 2px dashed var(--clr-red-300);
+    --iu-clr-bg: rgba(255, 255, 255, .5);
+    --iu-clr-border: var(--clr-red-300);
+    border: 2px dashed var(--iu-clr-border);
     border-radius: 4px;
     display: flex;
-    background-color: rgba(255, 255, 255, .5);
+    background: var(--iu-clr-bg);
     padding: 2rem;
     cursor: pointer;
+}
+
+.dark-theme .image-upload__select {
+    --iu-clr-bg: linear-gradient(160deg, var(--clr-dark-main-900) 10%, var(--clr-dark-main-950) 110%);
+    --iu-clr-border: var(--clr-dark-main-800);
 }
 
 @media (max-width: 450px) {
@@ -208,6 +215,14 @@ export default {
     display: flex;
     align-items: center;
     justify-content: center;
+}
+
+.dark-theme .image-upload__select__icon {
+    background: var(--clr-dark-main-800);
+}
+
+.dark-theme .image-upload__select__icon svg {
+    fill: var(--clr-dark-main-300);
 }
 
 @media (max-width: 450px) {

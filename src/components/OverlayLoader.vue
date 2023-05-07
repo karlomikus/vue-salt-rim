@@ -10,11 +10,12 @@ import Spinner from './Spinner.vue'
 
 <style scope>
 .overlay-loader {
+    --ol-clr-bg: rgba(255, 255, 255, 0.7);
     position: absolute;
     top: 0;
     left: 0;
     display: flex;
-    background: rgba(255, 255, 255, 0.7);
+    background: var(--ol-clr-bg);
     width: 100%;
     height: 100%;
     /* min-height: 200px;
@@ -23,5 +24,9 @@ import Spinner from './Spinner.vue'
     justify-content: center;
     z-index: 10;
     border-radius: 15px;
+}
+
+.dark-theme .overlay-loader {
+    --ol-clr-bg: rgba(0, 0, 0, 0.7);
 }
 </style>

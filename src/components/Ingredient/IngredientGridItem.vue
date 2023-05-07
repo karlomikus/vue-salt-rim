@@ -157,10 +157,8 @@ export default {
     transition: border-color ease-in-out 150ms;
 }
 
-@media (prefers-color-scheme: dark) {
-    .ingredient-grid-item {
-        --igi-clr-content: var(--clr-gray-400);
-    }
+.dark-theme .ingredient-grid-item {
+    --igi-clr-content: var(--clr-gray-400);
 }
 
 .ingredient-grid-item__image {

@@ -313,10 +313,8 @@ export default {
     color: var(--clr-gray-500);
 }
 
-@media (prefers-color-scheme: dark) {
-    .ingredient-details__box__title small {
-        color: var(--clr-gray-400);
-    }
+.dark-theme .ingredient-details__box__title small {
+    color: var(--clr-gray-400);
 }
 
 .ingredient-details__box hr {
@@ -343,13 +341,11 @@ export default {
     gap: 8px;
 }
 
-@media (prefers-color-scheme: dark) {
-    .ingredient-chips-list {
-        --icl-clr-bg: rgba(255, 255, 255, .05);
-        --icl-clr-bg-hover: rgba(255, 255, 255, .1);
-        --icl-clr-border: rgba(0, 0, 0, .2);
-        --icl-clr-border-hover: rgba(0, 0, 0, .4);
-    }
+.dark-theme .ingredient-chips-list {
+    --icl-clr-bg: rgba(255, 255, 255, .05);
+    --icl-clr-bg-hover: rgba(255, 255, 255, .1);
+    --icl-clr-border: rgba(0, 0, 0, .2);
+    --icl-clr-border-hover: rgba(0, 0, 0, .4);
 }
 
 .ingredient-chips-list li a {

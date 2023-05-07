@@ -78,12 +78,11 @@ export default {
     margin-top: 1rem;
 }
 
-@media (prefers-color-scheme: dark) {
-    .dialog-confirm__title {
-        color: var(--clr-gray-100);
-    }
-    .dialog-confirm__message {
-        color: var(--clr-gray-300);
-    }
+.dark-theme .dialog-confirm__title {
+    color: var(--clr-gray-100);
+}
+
+.dark-theme .dialog-confirm__message {
+    color: var(--clr-gray-300);
 }
 </style>

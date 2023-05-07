@@ -54,10 +54,8 @@ main {
     text-decoration: none;
 }
 
-@media (prefers-color-scheme: dark) {
-    .page-subtitle {
-        --ps-clr-border: var(--clr-dark-main-800);
-    }
+.dark-theme .page-subtitle {
+    --ps-clr-border: var(--clr-dark-main-800);
 }
 
 h3.form-section-title {
@@ -238,10 +236,15 @@ a.site-logo:focus .site-logo__title {
 }
 
 .drag-handle {
+    --clr-handle: var(--clr-gray-300);
     width: 12px;
     flex-shrink: 0;
     height: 100%;
-    background-image: radial-gradient(circle at 1px 1px, var(--clr-gray-300) 1px, transparent 0);
+    background-image: radial-gradient(circle at 1px 1px, var(--clr-handle) 1px, transparent 0);
     background-size: 4px 4px;
     cursor: grab;
+}
+
+.dark-theme .drag-handle {
+    --clr-handle: var(--clr-gray-700);
 }

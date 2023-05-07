@@ -84,10 +84,8 @@ export default {
     gap: 10px;
 }
 
-@media (prefers-color-scheme: dark) {
-    .ingredient-list-item {
-        --ili-clr-content: var(--clr-gray-300);
-    }
+.dark-theme .ingredient-list-item {
+    --ili-clr-content: var(--clr-gray-300);
 }
 
 .ingredient-list-item__image {
@@ -99,6 +97,11 @@ export default {
     justify-content: center;
     flex-shrink: 0;
     overflow: hidden;
+    background-color: #fff;
+}
+
+.dark-theme .ingredient-list-item__image {
+    background-color: var(--clr-dark-main-800);
 }
 
 .ingredient-list-item img {

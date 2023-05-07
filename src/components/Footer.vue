@@ -71,12 +71,10 @@ export default {
     --clr-footer-link-hover: var(--clr-red-800);
 }
 
-@media (prefers-color-scheme: dark) {
-    .site-footer-wrapper {
-        --clr-footer-bg: var(--clr-dark-main-900);
-        --clr-footer-link: var(--clr-dark-main-400);
-        --clr-footer-link-hover: var(--clr-red-300);
-    }
+.dark-theme .site-footer-wrapper {
+    --clr-footer-bg: var(--clr-dark-main-900);
+    --clr-footer-link: var(--clr-dark-main-400);
+    --clr-footer-link-hover: var(--clr-red-300);
 }
 
 .site-footer-wrapper {

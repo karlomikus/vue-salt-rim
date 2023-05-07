@@ -22,6 +22,7 @@
                 <RouterLink :to="{name: 'ingredients'}" :class="{ 'current-nav': $route.path.startsWith('/ingredients') }">{{ $t('ingredients') }}</RouterLink>
                 <RouterLink :to="{name: 'settings'}" :class="{ 'current-nav': $route.path.startsWith('/settings') }">{{ $t('settings') }}</RouterLink>
                 <a href="#" @click.prevent="logout">{{ $t('logout') }}</a>
+                <ThemeToggle></ThemeToggle>
             </nav>
         </div>
     </header>
@@ -32,12 +33,14 @@ import Auth from '@/Auth.js';
 import SiteAutocomplete from '@/components/SiteAutocomplete.vue'
 import Dialog from '@/components/Dialog/Dialog.vue'
 import Logo from '@/components/Logo.vue'
+import ThemeToggle from '@/components/ThemeToggle.vue'
 
 export default {
     components: {
         SiteAutocomplete,
         Dialog,
-        Logo
+        Logo,
+        ThemeToggle
     },
     data() {
         return {

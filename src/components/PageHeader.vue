@@ -20,10 +20,8 @@
     align-items: center;
 }
 
-@media (prefers-color-scheme: dark) {
-    .site-page-header {
-        --sph-clr-border: var(--clr-dark-main-800)
-    }
+.dark-theme .site-page-header {
+    --sph-clr-border: var(--clr-dark-main-800)
 }
 
 .site-page-header__title h2 {

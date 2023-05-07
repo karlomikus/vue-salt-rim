@@ -22,20 +22,27 @@ export default {
 </script>
 <style scoped>
 .settings-nav {
+    --sn-clr-bg: rgba(255, 255, 255, .5);
+    --sn-clr-bg-hover: var(--clr-gray-800);
     display: flex;
     flex-direction: column;
     gap: 10px;
 }
 
+.dark-theme .settings-nav {
+    --sn-clr-bg: rgba(0, 0, 0, .5);
+    --sn-clr-bg-hover: var(--clr-dark-main-800);
+}
+
 .settings-nav a {
     padding: 5px 10px;
-    background-color: rgba(255, 255, 255, .5);
+    background-color: var(--sn-clr-bg);
     text-decoration: none;
     border-radius: 5px;
 }
 
 .settings-nav a.router-link-exact-active {
-    background-color: var(--clr-gray-800);
+    background-color: var(--sn-clr-bg-hover);
     color: #fff;
 }
 </style>

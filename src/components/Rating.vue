@@ -73,12 +73,10 @@ export default {
     display: inline-block;
 }
 
-@media (prefers-color-scheme: dark) {
-    .rating {
-        --color-base: rgb(218, 139, 21);
-        --color-unrated: rgb(252, 242, 215);
-        --color-rated: rgb(218, 139, 21);
-    }
+.dark-theme .rating {
+    --color-base: rgb(218, 139, 21);
+    --color-unrated: rgb(252, 242, 215);
+    --color-rated: rgb(218, 139, 21);
 }
 
 .rating:hover a {
