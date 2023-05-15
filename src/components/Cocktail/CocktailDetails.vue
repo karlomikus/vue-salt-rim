@@ -186,11 +186,11 @@
             </ul>
             <a v-show="missingIngredientIds.length > 0" href="#" @click.prevent="addMissingIngredients">{{ $t('cocktail.missing-ing-action') }}</a>
         </div>
-        <div class="details-block-container details-block-container--yellow" v-once>
+        <div class="details-block-container details-block-container--yellow">
             <h3 class="details-block-container__title">{{ $t('instructions') }}</h3>
             <div v-html="parsedInstructions"></div>
         </div>
-        <div class="details-block-container details-block-container--red" v-if="cocktail.garnish" v-once>
+        <div class="details-block-container details-block-container--red" v-if="cocktail.garnish">
             <h3 class="details-block-container__title">{{ $t('garnish') }}</h3>
             <div v-html="parsedGarnish"></div>
         </div>
@@ -261,11 +261,6 @@ export default {
             return this.cocktail.images.sort((a, b) => a.sort - b.sort)
         },
     },
-    watch: {
-        cocktail(val) {
-            document.title = `${val.name} \u22C5 Salt Rim`
-        }
-    },
     created() {
         document.title = `${this.$t('cocktail')} \u22C5 Salt Rim`
         this.$watch(
@@ -278,6 +273,7 @@ export default {
                     ApiRequests.fetchCocktail(this.$route.params.id).then(data => {
                         this.cocktail = data
                         this.isFavorited = Auth.getUser().favorite_cocktails.includes(this.cocktail.id);
+                        document.title = `${this.cocktail.name} \u22C5 Salt Rim`
                     }).catch(e => {
                         this.$toast.error(e.message);
                     })
