@@ -17,6 +17,11 @@ if (!userSelectedLocale) {
     userSelectedLocale = window.srConfig.DEFAULT_LOCALE || 'en-US';
 }
 
+let userSelectedTheme = window.localStorage.getItem('_ba_theme');
+if (userSelectedTheme == 'dark' && !document.body.classList.contains('dark-theme')) {
+    document.body.classList.add('dark-theme');
+}
+
 const emitter = mitt()
 const app = createApp(App)
 const i18n = createI18n({

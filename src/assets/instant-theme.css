@@ -378,6 +378,15 @@
     padding: 0 0.25rem;
 }
 
+.dark-theme .ais-ToggleRefinement-count,
+.dark-theme .ais-HierarchicalMenu-count,
+.dark-theme .ais-Menu-count,
+.dark-theme .ais-RatingMenu-count,
+.dark-theme .ais-RefinementList-count {
+    background: var(--clr-gray-700) none repeat scroll 0% 0%;
+    color: var(--clr-gray-300);
+}
+
 /**
  * No Results
  */
@@ -645,6 +654,12 @@
     min-width: 1rem;
 }
 
+.dark-theme .ais-RefinementList-checkbox,
+.dark-theme .ais-GeoSearch-input {
+    background-color: var(--clr-dark-main-900);
+    color: var(--clr-gray-500);
+}
+
 .ais-RefinementList-item--selected .ais-RefinementList-checkbox,
 .ais-GeoSearch-input:checked {
     background-image: url("data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22%23aa5060%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpolyline%20points%3D%2220%206%209%2017%204%2012%22%3E%3C%2Fpolyline%3E%3C%2Fsvg%3E");
@@ -689,6 +704,10 @@
     outline: 0;
     position: relative;
     width: 16px;
+}
+
+.ais-NumericMenu-radio {
+    background-color: var(--clr-dark-main-900);
 }
 
 .ais-NumericMenu-radio:checked,

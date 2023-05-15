@@ -12,6 +12,13 @@ export default {
             current: 'light'
         }
     },
+    mounted() {
+        if (document.body.classList.contains('dark-theme')) {
+            this.current = 'dark';
+        } else {
+            this.current = 'light';
+        }
+    },
     methods: {
         toggleTheme() {
             if (this.current == 'dark') {
@@ -21,6 +28,11 @@ export default {
                 document.body.classList.add('dark-theme');
                 this.current = 'dark'
             }
+
+            this.rememberTheme();
+        },
+        rememberTheme() {
+            localStorage.setItem('_ba_theme', this.current);
         }
     }
 }
@@ -32,11 +44,23 @@ export default {
     padding: 0;
     margin: 0;
     background: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    cursor: pointer;
+    border-radius: 50%;
+    margin-left: 0.25rem;
+}
+
+.btn-toggle-theme:is(:hover, :active) {
+    background-color: rgba(255, 255, 255, .1);
 }
 
 .btn-toggle-theme svg {
-    width: 20px;
-    height: 20px;
-    fill: #fff;
+    width: 24px;
+    height: 24px;
+    fill: rgba(255, 255, 255, .8);
 }
 </style>

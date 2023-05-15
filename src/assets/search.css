@@ -1,8 +1,15 @@
 .inpage-search {
+    --clr-border: var(--clr-red-300);
+    --clr-header-title: var(--clr-body-font);
     display: grid;
     grid-template-columns: 1fr 4fr;
     gap: 20px;
     margin-top: 1rem;
+}
+
+.dark-theme .inpage-search {
+    --clr-border: var(--clr-red-800);
+    --clr-header-title: var(--clr-gray-300);
 }
 
 .inpage-search.inpage-search--hide-filters {
@@ -14,6 +21,7 @@
 }
 
 .inpage-search__filter h4 {
+    color: var(--clr-header-title);
     font-weight: var(--fw-bold);
     text-transform: uppercase;
     letter-spacing: 1px;
@@ -21,7 +29,7 @@
     margin-bottom: 0.5rem;
     margin-top: 0.5rem;
     padding-top: 0.5rem;
-    border-top: 3px double var(--clr-red-300);
+    border-top: 3px double var(--clr-border);
 }
 
 .inpage-search__filter__close {

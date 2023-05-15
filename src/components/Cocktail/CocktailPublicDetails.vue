@@ -143,6 +143,9 @@ export default {
 }
 
 .public-cocktail-recipe {
+    --clr-content-bg: var(--clr-gray-50);
+    --clr-content: var(--clr-gray-600);
+    --clr-marker: var(--clr-red-800);
     --shadow-color: 239deg 26% 22%;
     --shadow-elevation-medium:
         0px 0.8px 0.9px hsl(var(--shadow-color) / 0.28),
@@ -153,11 +156,19 @@ export default {
     grid-template-columns: 1fr 1fr;
     place-content: center;
     margin-inline: auto;
-    background-color: var(--clr-gray-50);
+    background: var(--clr-content-bg);
     border-radius: 1rem;
     overflow: hidden;
     box-shadow: var(--shadow-elevation-medium);
     align-items: start;
+}
+
+.dark-theme .public-cocktail-recipe {
+    --clr-content-bg: linear-gradient(160deg, var(--clr-dark-main-900) -15%, var(--clr-dark-main-950) 80%);
+    --clr-content: var(--clr-gray-200);
+    --shadow-color: 239deg 15% 5%;
+    --clr-marker: var(--clr-red-400);
+    border-top: 1px solid var(--clr-dark-main-800);
 }
 
 @media (max-width: 700px) {
@@ -226,17 +237,17 @@ export default {
 }
 
 .public-cocktail-recipe__content {
-    color: var(--clr-gray-600);
+    color: var(--clr-content);
 }
 
 :deep(.public-cocktail-recipe__summary ol) {
     padding-left: 18px;
-    color: var(--clr-gray-600);
+    color: var(--clr-content);
     width: 100%;
 }
 
 :deep(.public-cocktail-recipe__summary ol li::marker) {
-    color: var(--clr-red-800);
+    color: var(--clr-marker);
 }
 
 .public-cocktail-recipe__summary ul {

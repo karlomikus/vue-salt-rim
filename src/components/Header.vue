@@ -1,7 +1,10 @@
 <template>
     <header class="site-header">
         <div class="header-bar">
-            <Logo></Logo>
+            <div class="header-bar__left">
+                <Logo></Logo>
+                <ThemeToggle></ThemeToggle>
+            </div>
             <nav class="header-bar__navigation">
                 <Dialog v-model="searchShown">
                     <template #trigger>
@@ -22,7 +25,6 @@
                 <RouterLink :to="{name: 'ingredients'}" :class="{ 'current-nav': $route.path.startsWith('/ingredients') }">{{ $t('ingredients') }}</RouterLink>
                 <RouterLink :to="{name: 'settings'}" :class="{ 'current-nav': $route.path.startsWith('/settings') }">{{ $t('settings') }}</RouterLink>
                 <a href="#" @click.prevent="logout">{{ $t('logout') }}</a>
-                <ThemeToggle></ThemeToggle>
             </nav>
         </div>
     </header>
@@ -78,6 +80,10 @@ export default {
     margin: 0 auto;
 }
 
+.header-bar__left {
+    display: flex;
+}
+
 .header-bar__navigation {
     margin-left: auto;
     display: flex;
@@ -118,6 +124,10 @@ export default {
 @media (max-width: 750px) {
     .header-bar {
         flex-direction: column;
+    }
+
+    .header-bar__left {
+        margin: 0 auto;
     }
 
     .header-bar__navigation {

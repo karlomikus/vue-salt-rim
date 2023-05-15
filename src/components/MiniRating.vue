@@ -19,6 +19,7 @@ export default {
 .mini-rating {
     display: inline;
     background-color: rgb(252, 242, 215);
+    font-family: var(--font-primary);
     color: rgb(180, 108, 0);
     font-size: 0.7rem;
     padding: 1px 5px;
