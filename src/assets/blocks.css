@@ -79,6 +79,10 @@
     background-color: var(--clr-accent-red);
 }
 
+.details-block-container.details-block-container--purple {
+    background-color: var(--clr-accent-purple);
+}
+
 .dark-theme .details-block-container {
     border-top: 1px solid rgba(255, 255, 255, .15);
 }
@@ -101,6 +105,11 @@
 .dark-theme .details-block-container.details-block-container--red {
     background-image: linear-gradient(160deg, var(--clr-accent-red), var(--clr-dark-main-950) 70%);
     border-top-color: var(--clr-accent-red);
+}
+
+.dark-theme .details-block-container.details-block-container--purple {
+    background-image: linear-gradient(160deg, var(--clr-accent-purple), var(--clr-dark-main-950) 70%);
+    border-top-color: var(--clr-accent-purple);
 }
 
 .details-block-container__title {

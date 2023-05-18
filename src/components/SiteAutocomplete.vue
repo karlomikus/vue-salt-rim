@@ -114,6 +114,11 @@ export default {
     color: var(--clr-gray-800);
 }
 
+.dark-theme .site-autocomplete__results li a:hover {
+    background-color: var(--clr-dark-main-900);
+    color: var(--clr-gray-50);
+}
+
 .site-autocomplete__results li a .site-autocomplete__results__image {
     width: 45px;
     height: 45px;
@@ -159,18 +164,27 @@ export default {
 }
 
 .site-autocomplete__footer {
-    background: var(--clr-gray-100);
+    --clr-bg: var(--clr-gray-100);
+    --clr-key-bg: #fff;
+    --clr-key-border: var(--clr-gray-200);
+    background: var(--clr-bg);
     padding: 0.5rem 1rem;
     border-radius: 0.125rem;
     font-size: 0.9rem;
     margin-top: 1rem;
 }
 
+.dark-theme .site-autocomplete__footer {
+    --clr-bg: var(--clr-dark-main-900);
+    --clr-key-bg: var(--clr-dark-main-700);
+    --clr-key-border: var(--clr-dark-main-700);
+}
+
 .site-autocomplete__footer span {
     border-radius: 3px;
     font-size: 0.8rem;
-    border: 1px solid rgb(197, 197, 197);
-    background-color: #fff;
+    border: 1px solid var(--clr-key-border);
+    background-color: var(--clr-key-bg);
     padding: 1px 4px;
 }
 </style>

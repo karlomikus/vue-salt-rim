@@ -171,6 +171,10 @@ export default {
     background-color: var(--clr-gray-50);
 }
 
+.dark-theme .ingredients-options a:hover {
+    background-color: var(--clr-gray-900);
+}
+
 .modal .ais-SearchBox-reset,
 .modal .ais-SearchBox-submit {
     display: none;

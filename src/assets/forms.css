@@ -46,14 +46,14 @@
     --form-clr-text: var(--clr-gray-800);
     --form-clr-bg: rgba(255, 255, 255, .5);
     --form-clr-bg-focus: #fff;
-    --form-clr-border-bg: var(--clr-gray-100);
-    --form-clr-border-bg-focus: var(--clr-gray-800);
+    --form-clr-border: var(--clr-gray-100);
+    --form-clr-border-focus: var(--clr-gray-800);
     --form-clr-placeholder: var(--clr-gray-600);
     -webkit-appearance: none;
     -moz-appearance: none;
     appearance: none;
     background: var(--form-clr-bg);
-    border: 2px solid var(--form-clr-border-bg);
+    border: 2px solid var(--form-clr-border);
     border-radius: 5px;
     height: 3rem;
     font-size: 1.1rem;
@@ -71,8 +71,8 @@
     --form-clr-text: var(--clr-gray-100);
     --form-clr-bg: rgba(255, 255, 255, .04);
     --form-clr-bg-focus: rgba(255, 255, 255, .09);
-    --form-clr-border-bg: transparent;
-    --form-clr-border-bg-focus: rgba(0, 0, 0, .3);
+    --form-clr-border: transparent;
+    --form-clr-border-focus: rgba(0, 0, 0, .3);
     --form-clr-placeholder: var(--clr-gray-400);
     border-width: 1px;
 }
@@ -87,20 +87,27 @@
     }
 }
 
+.form-input.form-input--red,
+.form-select.form-select--red {
+    --form-clr-bg: rgba(255, 255, 255, .5);
+    --form-clr-border: var(--clr-red-200);
+    border-width: 2px;
+    border-top-color: transparent;
+    border-left-color: transparent;
+    border-right-color: transparent;
+}
+
+.dark-theme .form-input.form-input--red,
+.dark-theme .form-select.form-select--red {
+    --form-clr-bg: rgba(255, 255, 255, .04);
+    --form-clr-border: var(--clr-dark-main-800);
+}
+
 .form-input.form-input--small,
 .form-select.form-select--small {
     height: 2.5rem;
     font-size: 1rem;
     line-height: 1.3rem;
-}
-
-.form-input.form-input--red,
-.form-select.form-select--red {
-    background-color: var(--form-clr-bg);
-    border: 2px solid var(--clr-red-200);
-    border-top-color: transparent;
-    border-left-color: transparent;
-    border-right-color: transparent;
 }
 
 textarea.form-input,
@@ -119,7 +126,7 @@ textarea.form-input,
 
 .form-input:focus,
 .form-select:focus {
-    border-color: var(--form-clr-border-bg-focus);
+    border-color: var(--form-clr-border-focus);
     background: var(--form-clr-bg-focus);
 }
 

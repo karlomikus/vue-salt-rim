@@ -51,7 +51,7 @@
     --clr-accent-yellow: #FFF1E6;
     --clr-accent-red: #FDE2E4;
     --clr-accent-green: #d4e9e4;
-    --clr-accent-purple: #dfd7e3;
+    --clr-accent-purple: #eaeaff;
     --clr-accent-orange: #f1dcca;
 
     /* Dark mode scheme */
@@ -94,7 +94,7 @@
     --clr-accent-yellow: #26160a;
     --clr-accent-red: #2f1214;
     --clr-accent-green: #132823;
-    --clr-accent-purple: #dfd7e3;
+    --clr-accent-purple: #1f1f29;
     --clr-accent-orange: #f1dcca;
 }
 

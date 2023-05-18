@@ -122,8 +122,12 @@
 }
 
 .button--input {
-    background-color: rgba(255, 255, 255, 0.5);
-    border: 2px solid var(--clr-red-200);
+    --clr-border: var(--clr-red-200);
+    --clr-bg: rgba(255, 255, 255, 0.5);
+    --clr-border-hover: var(--clr-gray-800);
+    --clr-bg-hover: #fff;
+    background-color: var(--clr-bg);
+    border: 2px solid var(--clr-border);
     border-top-color: transparent;
     border-left-color: transparent;
     border-right-color: transparent;
@@ -133,6 +137,17 @@
 
 .button--input svg {
     fill: var(--clr-gray-800);
+}
+
+.dark-theme .button--input {
+    --clr-border: var(--clr-dark-main-700);
+    --clr-bg: rgba(255, 255, 255, .04);
+    --clr-border-hover: var(--clr-dark-main-600);
+    --clr-bg-hover: rgba(255, 255, 255, .09);
+}
+
+.dark-theme .button--input svg {
+    fill: var(--clr-gray-300);
 }
 
 @media (max-width: 450px) {
@@ -151,8 +166,8 @@
 .button--input:hover,
 .button--input:active,
 .button--input:focus {
-    background-color: #fff;
-    border-color: var(--clr-gray-800);
+    background-color: var(--clr-bg-hover);
+    border-color: var(--clr-border-hover);
 }
 
 .button[disabled] {

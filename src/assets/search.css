@@ -89,6 +89,10 @@
         overflow-y: scroll;
     }
 
+    .dark-theme .inpage-search__filter__body {
+        background: var(--clr-dark-main-950);
+    }
+
     .inpage-search__filter h3 {
         display: block;
         font-family: var(--font-heading);
