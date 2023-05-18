@@ -134,6 +134,19 @@
                             </svg>
                             Add to collection
                         </a> -->
+                        <Dialog v-model="showNoteDialog">
+                            <template #trigger>
+                                <a class="dropdown-menu__item" href="#" @click.prevent="showNoteDialog = !showNoteDialog">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18">
+                                        <path d="M21 15L15 20.996L4.00221 21C3.4487 21 3 20.5551 3 20.0066V3.9934C3 3.44476 3.44495 3 3.9934 3H20.0066C20.5552 3 21 3.45576 21 4.00247V15ZM19 5H5V19H13V14C13 13.4872 13.386 13.0645 13.8834 13.0067L14 13L19 12.999V5ZM18.171 14.999L15 15V18.169L18.171 14.999Z"></path>
+                                    </svg>
+                                    {{ $t('note.add') }}
+                                </a>
+                            </template>
+                            <template #dialog>
+                                <NoteDialog :resourceId="cocktail.id" resource="cocktail" @noteDialogClosed="handleNoteDialogCloseEvent" />
+                            </template>
+                        </Dialog>
                         <a v-show="cocktail.source" class="dropdown-menu__item" target="_blank" :href="cocktail.source">
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18">
                                 <path fill="none" d="M0 0h24v24H0z" />
@@ -194,6 +207,10 @@
             <h3 class="details-block-container__title">{{ $t('garnish') }}</h3>
             <div v-html="parsedGarnish"></div>
         </div>
+        <div class="details-block-container details-block-container--purple" v-if="cocktail.notes.length > 0">
+            <h3 class="details-block-container__title">{{ $t('notes') }}</h3>
+            <Note v-for="note in cocktail.notes" :note="note" @noteDeleted="fetchCocktail"></Note>
+        </div>
     </div>
 </template>
 
@@ -208,6 +225,8 @@ import { Swiper, SwiperSlide } from 'swiper/vue';
 import { Navigation, Pagination } from 'swiper';
 import Utils from '@/Utils';
 import Dialog from '@/components/Dialog/Dialog.vue'
+import Note from '@/components/Note.vue'
+import NoteDialog from '@/components/NoteDialog.vue'
 import PublicLinkDialog from '@/components/Cocktail/PublicLinkDialog.vue'
 
 export default {
@@ -219,7 +238,8 @@ export default {
         userShoppingListIngredients: [],
         currentUnit: 'ml',
         sliderModules: [Navigation, Pagination],
-        showPublicDialog: false
+        showPublicDialog: false,
+        showNoteDialog: false,
     }),
     components: {
         OverlayLoader,
@@ -228,7 +248,9 @@ export default {
         Swiper,
         SwiperSlide,
         Dialog,
-        PublicLinkDialog
+        PublicLinkDialog,
+        Note,
+        NoteDialog
     },
     computed: {
         parsedInstructions() {
@@ -267,26 +289,29 @@ export default {
             () => this.$route.params,
             () => {
                 if (this.$route.name == 'cocktails.show') {
-                    this.userShelfIngredients = Auth.getUser().shelf_ingredients;
-                    this.userShoppingListIngredients = Auth.getUser().shopping_lists;
-
-                    ApiRequests.fetchCocktail(this.$route.params.id).then(data => {
-                        this.cocktail = data
-                        this.isFavorited = Auth.getUser().favorite_cocktails.includes(this.cocktail.id);
-                        document.title = `${this.cocktail.name} \u22C5 Salt Rim`
-                    }).catch(e => {
-                        this.$toast.error(e.message);
-                    })
-
-                    if (localStorage.getItem('defaultUnit')) {
-                        this.currentUnit = localStorage.getItem('defaultUnit')
-                    }
+                    this.fetchCocktail();
                 }
             },
             { immediate: true }
         )
     },
     methods: {
+        fetchCocktail() {
+            this.userShelfIngredients = Auth.getUser().shelf_ingredients;
+            this.userShoppingListIngredients = Auth.getUser().shopping_lists;
+
+            ApiRequests.fetchCocktail(this.$route.params.id).then(data => {
+                this.cocktail = data
+                this.isFavorited = Auth.getUser().favorite_cocktails.includes(this.cocktail.id);
+                document.title = `${this.cocktail.name} \u22C5 Salt Rim`
+            }).catch(e => {
+                this.$toast.error(e.message);
+            })
+
+            if (localStorage.getItem('defaultUnit')) {
+                this.currentUnit = localStorage.getItem('defaultUnit')
+            }
+        },
         favorite() {
             ApiRequests.favoriteCocktail(this.cocktail.id).then(resp => {
                 this.isFavorited = resp.is_favorited
@@ -330,6 +355,10 @@ export default {
         changeMeasurementUnit(toUnit) {
             this.currentUnit = toUnit;
             localStorage.setItem('defaultUnit', toUnit);
+        },
+        handleNoteDialogCloseEvent() {
+            this.fetchCocktail();
+            this.showNoteDialog = false;
         }
     }
 }

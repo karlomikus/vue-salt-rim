@@ -568,6 +568,22 @@ class ApiRequests
 
         return await (await f).json();
     }
+
+    /**
+     * =============================
+     * Notes
+     * =============================
+     */
+
+    static async saveNote(data) {
+        let jsonResp = await this.postRequest(`/api/notes`, data);
+
+        return this.parseResponse(jsonResp);
+    }
+
+    static async deleteNote(id) {
+        return await this.deleteRequest(`/api/notes/${id}`);
+    }
 }
 
 export default ApiRequests;
