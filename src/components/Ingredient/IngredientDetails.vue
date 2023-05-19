@@ -367,7 +367,7 @@ export default {
 
 .ingredient-details__actions {
     position: absolute;
-    z-index: 5;
+    /* z-index: 5; */
     top: -25px;
     right: 20px;
     display: flex;

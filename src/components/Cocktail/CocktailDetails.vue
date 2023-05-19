@@ -390,6 +390,7 @@ export default {
     border-top-left-radius: 20px;
     border-top-right-radius: 20px;
     overflow: hidden;
+    isolation: isolate;
 }
 
 .cocktail-details__graphic img {
@@ -408,10 +409,6 @@ export default {
     border-radius: 15px;
     padding: 2px 7px;
     font-size: 0.7rem;
-}
-
-.details-block-container {
-    z-index: 2;
 }
 
 .cocktail-title {

@@ -6,6 +6,8 @@
 
 ## Fixes
 - Fix some cocktail data not updating when switching cocktails #73
+- Fix ingredient actions sometimes showing on top of dialogs
+- Fix cocktail actions sometimes showing on top of dialogs
 
 # v1.10.0
 ## New
