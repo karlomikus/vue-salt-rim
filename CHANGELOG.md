@@ -1,3 +1,12 @@
+# v1.11.0
+## New
+- Added dark theme
+- Added light/dark thme switcher
+- Added support for cocktail notes
+
+## Fixes
+- Fix some cocktail data not updating when switching cocktails #73
+
 # v1.10.0
 ## New
 - New locale supported: French

@@ -24,9 +24,11 @@ export default {
             if (this.current == 'dark') {
                 document.body.classList.remove('dark-theme');
                 this.current = 'light'
+                document.querySelector('meta[name="theme-color"]').setAttribute("content", '#4b4c75');
             } else if (this.current == 'light') {
                 document.body.classList.add('dark-theme');
                 this.current = 'dark'
+                document.querySelector('meta[name="theme-color"]').setAttribute("content", '#16141A');
             }
 
             this.rememberTheme();
