@@ -197,7 +197,9 @@ a.site-logo:focus .site-logo__title {
 }
 
 .login-page {
-    background-color: var(--color-site-header);
+    --clr-lp-bg: var(--color-site-header);
+    --clr-lp-form-bg: var(--clr-gray-50);
+    background: var(--clr-lp-bg);
     height: 100vh;
     display: flex;
     align-items: center;
@@ -206,13 +208,21 @@ a.site-logo:focus .site-logo__title {
     padding: 10px;
 }
 
+.dark-theme .login-page {
+    --clr-lp-form-bg: linear-gradient(160deg, var(--clr-dark-main-800) -30%, var(--clr-dark-main-950) 80%);
+}
+
 .login-page form {
     margin-top: 20px;
-    background-color: var(--clr-gray-50);
+    background: var(--clr-lp-form-bg);
     width: 100%;
     max-width: 400px;
     padding: 30px;
     border-radius: 20px;
+}
+
+.dark-theme .login-page form {
+    border-top: 1px solid var(--clr-dark-main-800);
 }
 
 .settings-page {
