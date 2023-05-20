@@ -137,7 +137,7 @@
   "sort.rating-desc": "@:notation - @:trie-desc",
   "date-modified": "Date de modification",
   "sort.date-modified-asc": "@:date de modification - @:sort-asc",
-  "sort.date-modified-desc":"@:date de modification - @:sort-desc",
+  "sort.date-modified-desc": "@:date de modification - @:sort-desc",
   "placeholder.search-ingredients": "Recherche d’ingrédients...",
   "ingredient.add-to-shelf": "Ajouter à l’étagère",
   "ingredient.remove-from-shelf": "Retirer de l’étagère",
@@ -217,7 +217,7 @@
   "image-url": "URL de l’image",
   "public-dialog": {
     "title": "Lien public cocktail",
-    "public_at": " Rendu public le: {date} " ,
+    "public_at": " Rendu public le: {date} ",
     "missing": "Pas de lien public disponible",
     "action-copy": "Copier le lien",
     "action-delete": "Supprimer le lien",
@@ -244,5 +244,13 @@
   "rating-removed": "Suppression de la note cocktail",
   "rating-rated": "Cocktail noté avec {rating} étoiles",
   "shelf-ingredients": "Ingrédients de rayon",
-  "shopping-list-ingredients": "Ingrédients de la liste de courses"
+  "shopping-list-ingredients": "Ingrédients de la liste de courses",
+  "notes": "Remarques",
+  "note": {
+    "add": "Ajouter une note"
+  },
+  "note-dialog": {
+    "title": "Remarquer"
+  },
+  "content": "Contenu"
 }

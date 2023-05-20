@@ -7,7 +7,6 @@ const manifest = {
     name: 'Salt Rim for Bar Assistant',
     short_name: 'Salt Rim',
     description: 'Bar assistant is a self hosted application for managing your home bar.',
-    theme_color: '#4b4c75',
     orientation: "portrait",
     icons: [
         {

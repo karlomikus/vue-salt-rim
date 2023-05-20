@@ -199,6 +199,7 @@ export default {
 }
 
 .stats {
+    --stats-clr-bg: #F0EFEB;
     margin-top: 20px;
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -206,8 +207,17 @@ export default {
     row-gap: 10px;
 }
 
+.dark-theme .stats {
+    --stats-clr-bg: #0d0f0f;
+}
+
+.dark-theme .stats__stat {
+    background-image: linear-gradient(180deg, var(--stats-clr-bg) 20%, var(--clr-dark-main-950) 110%);
+    border-top: 1px solid #161a1a;
+}
+
 .stats__stat {
-    background-color: #F0EFEB;
+    background-color: var(--stats-clr-bg);
     border-radius: 10px;
     padding: 15px;
 }

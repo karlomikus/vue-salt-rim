@@ -77,4 +77,12 @@ export default {
     justify-content: end;
     margin-top: 1rem;
 }
+
+.dark-theme .dialog-confirm__title {
+    color: var(--clr-gray-100);
+}
+
+.dark-theme .dialog-confirm__message {
+    color: var(--clr-gray-300);
+}
 </style>

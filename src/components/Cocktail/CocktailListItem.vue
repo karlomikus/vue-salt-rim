@@ -38,11 +38,16 @@ export default {
 <style scoped>
 .cocktail-list-item {
     --image-size: 70px;
+    --cli-clr-content: var(--clr-gray-500);
 
     display: flex;
     align-items: center;
     padding: 0.825rem;
     text-decoration: none;
+}
+
+.dark-theme .cocktail-list-item {
+    --cli-clr-content: var(--clr-gray-400);
 }
 
 .cocktail-list-item__graphic {
@@ -60,6 +65,10 @@ export default {
     margin-right: 10px;
 }
 
+.dark-theme .cocktail-list-item__graphic__image {
+    background-color: var(--clr-dark-main-800);
+}
+
 .cocktail-list-item__title {
     font-size: 1.1rem;
     font-family: var(--font-heading);
@@ -72,7 +81,7 @@ export default {
 }
 
 .cocktail-list-item__content p {
-    color: var(--clr-gray-500);
+    color: var(--cli-clr-content);
     font-size: 0.8rem;
 }
 </style>

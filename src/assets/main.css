@@ -39,7 +39,8 @@ main {
 }
 
 .page-subtitle {
-    border-bottom: 3px double var(--clr-red-200);
+    --ps-clr-border: var(--clr-red-200);
+    border-bottom: 3px double var(--ps-clr-border);
     padding-bottom: 10px;
     margin: 20px 0;
     font-size: 1.2rem;
@@ -51,6 +52,10 @@ main {
     font-size: 1rem;
     font-family: var(--font-primary);
     text-decoration: none;
+}
+
+.dark-theme .page-subtitle {
+    --ps-clr-border: var(--clr-dark-main-800);
 }
 
 h3.form-section-title {
@@ -192,7 +197,9 @@ a.site-logo:focus .site-logo__title {
 }
 
 .login-page {
-    background-color: var(--color-site-header);
+    --clr-lp-bg: var(--color-site-header);
+    --clr-lp-form-bg: var(--clr-gray-50);
+    background: var(--clr-lp-bg);
     height: 100vh;
     display: flex;
     align-items: center;
@@ -201,13 +208,21 @@ a.site-logo:focus .site-logo__title {
     padding: 10px;
 }
 
+.dark-theme .login-page {
+    --clr-lp-form-bg: linear-gradient(160deg, var(--clr-dark-main-800) -30%, var(--clr-dark-main-950) 80%);
+}
+
 .login-page form {
     margin-top: 20px;
-    background-color: var(--clr-gray-50);
+    background: var(--clr-lp-form-bg);
     width: 100%;
     max-width: 400px;
     padding: 30px;
     border-radius: 20px;
+}
+
+.dark-theme .login-page form {
+    border-top: 1px solid var(--clr-dark-main-800);
 }
 
 .settings-page {
@@ -231,10 +246,15 @@ a.site-logo:focus .site-logo__title {
 }
 
 .drag-handle {
+    --clr-handle: var(--clr-gray-300);
     width: 12px;
     flex-shrink: 0;
     height: 100%;
-    background-image: radial-gradient(circle at 1px 1px, var(--clr-gray-300) 1px, transparent 0);
+    background-image: radial-gradient(circle at 1px 1px, var(--clr-handle) 1px, transparent 0);
     background-size: 4px 4px;
     cursor: grab;
+}
+
+.dark-theme .drag-handle {
+    --clr-handle: var(--clr-gray-700);
 }

@@ -244,5 +244,16 @@
   "rating-removed": "Removed cocktail rating",
   "rating-rated": "Cocktail rated with {rating} stars",
   "shelf-ingredients": "Shelf ingredients",
-  "shopping-list-ingredients": "Shopping list ingredients"
+  "shopping-list-ingredients": "Shopping list ingredients",
+  "notes": "Notes",
+  "note": {
+    "add": "Add note",
+    "confirm-delete": "This will permanently delete selected note.",
+    "delete-success": "Note successfully removed"
+  },
+  "note-dialog": {
+    "title": "Note"
+  },
+  "content": "Content",
+  "note-added": "Note added successfully"
 }

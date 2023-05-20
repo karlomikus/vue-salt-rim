@@ -89,4 +89,8 @@ export default {
     font-family: monospace;
     border-radius: 0.25rem;
 }
+
+.dark-theme .public-url {
+    background: var(--clr-gray-900);
+}
 </style>

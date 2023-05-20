@@ -244,5 +244,16 @@
   "rating-removed": "Ocjena uklonjena",
   "rating-rated": "Koktel ocijenjen sa ocjenom {rating}",
   "shelf-ingredients": "Sastojci u polici",
-  "shopping-list-ingredients": "Sastojci na popisu za kupovinu"
+  "shopping-list-ingredients": "Sastojci na popisu za kupovinu",
+  "notes": "Bilješke",
+  "note": {
+    "add": "Dodaj bilješku",
+    "confirm-delete": "Ova akcija će trajno ukloniti odabranu bilješku.",
+    "delete-success": "Bilješka je uspješno uklonjena"
+  },
+  "note-dialog": {
+    "title": "Bilješka"
+  },
+  "content": "Sadržaj",
+  "note-added": "Uspiješno dodana bilješka"
 }

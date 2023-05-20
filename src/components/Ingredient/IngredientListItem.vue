@@ -75,12 +75,17 @@ export default {
 <style scoped>
 .ingredient-list-item {
     --image-size: 70px;
+    --ili-clr-content: var(--clr-gray-500);
 
     display: flex;
     align-items: center;
     padding: 0.825rem;
     text-decoration: none;
     gap: 10px;
+}
+
+.dark-theme .ingredient-list-item {
+    --ili-clr-content: var(--clr-gray-300);
 }
 
 .ingredient-list-item__image {
@@ -92,6 +97,11 @@ export default {
     justify-content: center;
     flex-shrink: 0;
     overflow: hidden;
+    background-color: #fff;
+}
+
+.dark-theme .ingredient-list-item__image {
+    background-color: var(--clr-dark-main-800);
 }
 
 .ingredient-list-item img {
@@ -113,7 +123,7 @@ export default {
 }
 
 .ingredient-list-item__content p {
-    color: var(--clr-gray-500);
+    color: var(--ili-clr-content);
     max-width: 300px;
     white-space: nowrap;
     overflow: hidden;

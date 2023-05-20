@@ -463,15 +463,26 @@ export default {
 }
 
 .cocktail-method {
-    background: #fff;
+    --cm-clr-bg: #fff;
+    --cm-clr-border: var(--clr-gray-200);
+    --cm-clr-border-selected: var(--clr-gray-500);
+    --cm-clr-shadow-selected: var(--clr-gray-200);
+    background: var(--cm-clr-bg);
     flex-basis: 100px;
     flex-grow: 1;
-    border: 2px solid var(--clr-gray-200);
+    border: 2px solid var(--cm-clr-border);
     padding: 0.5rem;
     border-radius: 0.25rem;
     text-align: center;
     cursor: pointer;
     transition: box-shadow 100ms cubic-bezier(0.455, 0.03, 0.515, 0.955);
+}
+
+.dark-theme .cocktail-method {
+    --cm-clr-bg: var(--clr-dark-main-900);
+    --cm-clr-border: var(--clr-dark-main-800);
+    --cm-clr-border-selected: var(--clr-dark-main-700);
+    --cm-clr-shadow-selected: var(--clr-dark-main-800);
 }
 
 .cocktail-method__selected {
@@ -492,8 +503,8 @@ export default {
 }
 
 .cocktail-method.cocktail-method--selected {
-    box-shadow: 0 0 0 3px var(--clr-gray-200);
-    border-color: var(--clr-gray-500);
+    box-shadow: 0 0 0 3px var(--cm-clr-shadow-selected);
+    border-color: var(--cm-clr-border-selected);
 }
 
 .cocktail-method input {

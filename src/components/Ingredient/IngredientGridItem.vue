@@ -149,11 +149,16 @@ export default {
 .ingredient-grid-item {
     --image-size: 70px;
     --content-padding: 0.315rem;
+    --igi-clr-content: var(--clr-gray-500);
 
     display: flex;
     width: 100%;
     padding: 1rem;
     transition: border-color ease-in-out 150ms;
+}
+
+.dark-theme .ingredient-grid-item {
+    --igi-clr-content: var(--clr-gray-400);
 }
 
 .ingredient-grid-item__image {
@@ -188,7 +193,7 @@ export default {
 }
 
 .ingredient-grid-item__content p {
-    color: var(--clr-gray-500);
+    color: var(--igi-clr-content);
     overflow: hidden;
     font-size: 0.815rem;
     max-height: calc(3 * 1.3rem);

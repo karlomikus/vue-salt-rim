@@ -1,7 +1,10 @@
 <template>
     <header class="site-header">
         <div class="header-bar">
-            <Logo></Logo>
+            <div class="header-bar__left">
+                <Logo></Logo>
+                <ThemeToggle></ThemeToggle>
+            </div>
             <nav class="header-bar__navigation">
                 <Dialog v-model="searchShown">
                     <template #trigger>
@@ -32,12 +35,14 @@ import Auth from '@/Auth.js';
 import SiteAutocomplete from '@/components/SiteAutocomplete.vue'
 import Dialog from '@/components/Dialog/Dialog.vue'
 import Logo from '@/components/Logo.vue'
+import ThemeToggle from '@/components/ThemeToggle.vue'
 
 export default {
     components: {
         SiteAutocomplete,
         Dialog,
-        Logo
+        Logo,
+        ThemeToggle
     },
     data() {
         return {
@@ -73,6 +78,10 @@ export default {
     display: flex;
     max-width: var(--site-width);
     margin: 0 auto;
+}
+
+.header-bar__left {
+    display: flex;
 }
 
 .header-bar__navigation {
@@ -115,6 +124,10 @@ export default {
 @media (max-width: 750px) {
     .header-bar {
         flex-direction: column;
+    }
+
+    .header-bar__left {
+        margin: 0 auto;
     }
 
     .header-bar__navigation {

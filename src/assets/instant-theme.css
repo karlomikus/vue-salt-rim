@@ -251,6 +251,21 @@
     height: 3rem;
 }
 
+.dark-theme .ais-HierarchicalMenu-showMore,
+.dark-theme .ais-Menu-showMore,
+.dark-theme .ais-RefinementList-showMore,
+.dark-theme .ais-ClearRefinements-button,
+.dark-theme .ais-InfiniteHits-loadMore,
+.dark-theme .ais-RangeInput-submit,
+.dark-theme .ais-InfiniteHits-loadPrevious,
+.dark-theme .ais-Pagination-link,
+.dark-theme .ais-GeoSearch-redo,
+.dark-theme .ais-GeoSearch-reset,
+.dark-theme .ais-VoiceSearch-button {
+    background-color: rgba(0, 0, 0, 0.3);
+    border: 2px solid var(--clr-gray-600);
+}
+
 .ais-HierarchicalMenu-showMore,
 .ais-Menu-showMore,
 .ais-RefinementList-showMore,
@@ -279,6 +294,21 @@
 .ais-GeoSearch-reset:hover,
 .ais-VoiceSearch-button:hover {
     background-color: #fff;
+    border-color: var(--clr-gray-800);
+}
+
+.dark-theme .ais-HierarchicalMenu-showMore:hover,
+.dark-theme .ais-Menu-showMore:hover,
+.dark-theme .ais-RefinementList-showMore:hover,
+.dark-theme .ais-ClearRefinements-button:hover,
+.dark-theme .ais-InfiniteHits-loadMore:hover,
+.dark-theme .ais-RangeInput-submit:hover,
+.dark-theme .ais-InfiniteHits-loadPrevious:hover,
+.dark-theme .ais-Pagination-item:not(.ais-Pagination-item--selected):not(.ais-Pagination-item--disabled) .ais-Pagination-link:hover,
+.dark-theme .ais-GeoSearch-redo:hover,
+.dark-theme .ais-GeoSearch-reset:hover,
+.dark-theme .ais-VoiceSearch-button:hover {
+    background-color: rgba(0, 0, 0, 0.8);
     border-color: var(--clr-gray-800);
 }
 
@@ -376,6 +406,15 @@
     margin-left: 0.5rem;
     overflow: hidden;
     padding: 0 0.25rem;
+}
+
+.dark-theme .ais-ToggleRefinement-count,
+.dark-theme .ais-HierarchicalMenu-count,
+.dark-theme .ais-Menu-count,
+.dark-theme .ais-RatingMenu-count,
+.dark-theme .ais-RefinementList-count {
+    background: var(--clr-gray-700) none repeat scroll 0% 0%;
+    color: var(--clr-gray-300);
 }
 
 /**
@@ -497,28 +536,38 @@
     transition: all ease-in-out .1s;
 }
 
+.dark-theme .ais-SearchBox-input {
+    background: rgba(255, 255, 255, .04);
+    border: 2px solid var(--clr-dark-main-800);
+}
+
 @media (max-width: 450px) {
     .ais-SearchBox-input, .ais-SearchBox-form {
         height: 2.5rem;
     }
 }
 
-.ais-SearchBox-input::-webkit-input-placeholder {
-    color: var(--clr-gray-800);
-}
-
+.ais-SearchBox-input::-webkit-input-placeholder,
+.ais-SearchBox-input::placeholder,
 .ais-SearchBox-input:-ms-input-placeholder {
     color: var(--clr-gray-800);
 }
 
-.ais-SearchBox-input::placeholder {
-    color: var(--clr-gray-800);
+.dark-theme .ais-SearchBox-input::-webkit-input-placeholder,
+.dark-theme .ais-SearchBox-input::placeholder,
+.dark-theme .ais-SearchBox-input:-ms-input-placeholder {
+    color: var(--clr-gray-400);
 }
 
 .ais-SearchBox-input:focus {
     border-color: var(--clr-gray-800);
     background: #fff;
     outline: currentcolor none medium;
+}
+
+.dark-theme .ais-SearchBox-input:focus {
+    background: rgba(255, 255, 255, .09);
+    color: var(--clr-gray-100);
 }
 
 .ais-SearchBox-input:disabled {
@@ -645,6 +694,12 @@
     min-width: 1rem;
 }
 
+.dark-theme .ais-RefinementList-checkbox,
+.dark-theme .ais-GeoSearch-input {
+    background-color: var(--clr-dark-main-900);
+    color: var(--clr-gray-500);
+}
+
 .ais-RefinementList-item--selected .ais-RefinementList-checkbox,
 .ais-GeoSearch-input:checked {
     background-image: url("data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22%23aa5060%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpolyline%20points%3D%2220%206%209%2017%204%2012%22%3E%3C%2Fpolyline%3E%3C%2Fsvg%3E");
@@ -689,6 +744,10 @@
     outline: 0;
     position: relative;
     width: 16px;
+}
+
+.dark-theme .ais-NumericMenu-radio {
+    background-color: var(--clr-dark-main-900);
 }
 
 .ais-NumericMenu-radio:checked,

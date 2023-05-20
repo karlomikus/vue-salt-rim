@@ -1,11 +1,19 @@
 .table {
     --table-border-width: 1px;
     --table-border-color: var(--clr-red-100);
+    --table-row-hover-clr: var(--clr-red-50);
+    --table-small-clr: var(--clr-gray-500);
     width: 100%;
     caption-side: bottom;
     border-collapse: collapse;
     border-spacing: 0;
     text-align: left;
+}
+
+.dark-theme .table {
+    --table-row-hover-clr: var(--clr-dark-main-900);
+    --table-border-color: var(--clr-dark-main-800);
+    --table-small-clr: var(--clr-dark-main-400);
 }
 
 .table td {
@@ -36,11 +44,11 @@
 }
 
 .table tr:hover td {
-    background-color: var(--clr-red-50);
+    background-color: var(--table-row-hover-clr);
 }
 
 .table td small {
-    color: var(--clr-gray-500);
+    color: var(--table-small-clr);
     line-height: 1.4;
     display: block;
 }

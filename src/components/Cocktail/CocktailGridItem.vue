@@ -76,13 +76,11 @@ export default {
     text-decoration: none;
 }
 
-/* @media (prefers-color-scheme: dark) {
-    .cocktail-grid-item {
-        --box-shadow: hsl(225deg 40% 5% / 0.36);
-        --box-shadow-hover: hsl(225deg 40% 5% / 0.6);
-        --clr-content: var(--clr-gray-200);
-    }
-} */
+.dark-theme .cocktail-grid-item {
+    --box-shadow: hsl(225deg 40% 5% / 0.36);
+    --box-shadow-hover: hsl(225deg 40% 5% / 0.6);
+    --clr-content: var(--clr-gray-400);
+}
 
 .cocktail-grid-item__title {
     font-size: 1.7rem;
@@ -98,6 +96,10 @@ export default {
 
 .cocktail-grid-item:hover .cocktail-grid-item__title {
     color: var(--clr-red-800);
+}
+
+.dark-theme .cocktail-grid-item:hover .cocktail-grid-item__title {
+    color: #fff;
 }
 
 .cocktail-grid-item__ingredients {

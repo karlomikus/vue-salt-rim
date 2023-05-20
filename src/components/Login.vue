@@ -107,6 +107,12 @@ export default {
     border: 2px solid var(--clr-gray-200);
 }
 
+.dark-theme .server-status {
+    background-image: linear-gradient(160deg, var(--clr-accent-purple), var(--clr-dark-main-950) 70%);
+    border: 0;
+    border-top: 1px solid var(--clr-accent-purple);
+}
+
 .server-status__title {
     font-size: 0.75rem;
 }
