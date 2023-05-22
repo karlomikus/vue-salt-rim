@@ -119,3 +119,7 @@
     flex-wrap: wrap;
     gap: 0.5rem;
 }
+
+.site-autocomplete-dialog .dialog__content {
+    margin-top: 3rem;
+}

@@ -1,25 +1,42 @@
 <template>
     <form class="site-autocomplete" novalidate @keyup.esc="close">
-        <ais-instant-search :search-client="searchClient" index-name="site_search_index">
-            <ais-configure :hitsPerPage="10" />
-            <ais-autocomplete>
-                <template v-slot="{ currentRefinement, indices, refine }">
-                    <input type="text" ref="sinput" :value="currentRefinement" :placeholder="$t('placeholder.site-search')" class="form-input" @input="refine($event.currentTarget.value)" autocorrect="off" autocapitalize="none" autocomplete="off" spellcheck="false" autofocus>
-                    <ul class="site-autocomplete__results" v-for="index in indices" :key="index.indexId" v-show="currentRefinement">
-                        <li v-for="hit in index.hits" :key="hit.key">
-                            <a href="#" @click.prevent="goTo(hit)">
-                                <div class="site-autocomplete__results__image" :style="{ 'background-image': 'url(' + getImageUrl(hit) + ')' }"></div>
+        <ais-instant-search :search-client="searchClient" index-name="cocktails">
+            <ais-configure :hitsPerPage="5" />
+            <ais-search-box />
+            <h4 class="site-autocomplete__index-name">{{ $t('cocktails')}}</h4>
+            <ais-hits>
+                <template v-slot="{ items }">
+                    <ul class="site-autocomplete__results">
+                        <li v-for="hit in items">
+                            <a href="#" @click.prevent="goTo(hit, 'cocktail')">
+                                <div class="site-autocomplete__results__image" :style="{ 'background-image': 'url(' + getImageUrl(hit, 'cocktail') + ')' }"></div>
                                 <div class="site-autocomplete__results__content">
                                     <ais-highlight attribute="name" :hit="hit" />
-                                    <small v-if="hit.type == 'cocktail'">{{ $t('cocktail')}}</small>
-                                    <small v-else>{{ $t('ingredient')}}</small>
+                                    <small>{{ $t('cocktail')}}</small>
                                 </div>
                             </a>
                         </li>
-                        <li v-show="index.hits.length <= 0">{{ $t('search.empty', {term: currentRefinement})}}</li>
                     </ul>
                 </template>
-            </ais-autocomplete>
+            </ais-hits>
+            <h4 class="site-autocomplete__index-name">{{ $t('ingredients')}}</h4>
+            <ais-index index-name="ingredients">
+                <ais-hits>
+                    <template v-slot="{ items }">
+                        <ul class="site-autocomplete__results">
+                            <li v-for="hit in items">
+                                <a href="#" @click.prevent="goTo(hit, 'ingredient')">
+                                    <div class="site-autocomplete__results__image" :style="{ 'background-image': 'url(' + getImageUrl(hit, 'ingredient') + ')' }"></div>
+                                    <div class="site-autocomplete__results__content">
+                                        <ais-highlight attribute="name" :hit="hit" />
+                                        <small>{{ $t('ingredient')}}</small>
+                                    </div>
+                                </a>
+                            </li>
+                        </ul>
+                    </template>
+                </ais-hits>
+            </ais-index>
             <ais-clear-refinements :included-attributes="['query']">
                 <template v-slot="{ canRefine, refine }">
                     <button class="site-autocomplete__clear" @click.prevent="refine" v-if="canRefine">
@@ -55,7 +72,7 @@ export default {
     mounted() {
         this.$nextTick(() => {
             setTimeout(() => {
-                this.$refs.sinput.focus()
+                // this.$refs.sinput.focus()
             }, 200)
         })
     },
@@ -63,10 +80,10 @@ export default {
         close() {
             this.$emit('closeAutocomplete');
         },
-        goTo(hit) {
+        goTo(hit, type) {
             this.close();
 
-            if (hit.type == 'cocktail') {
+            if (type == 'cocktail') {
                 this.$router.push({ name: 'cocktails.show', params: { id: hit.slug } })
                 return;
             }
@@ -74,9 +91,9 @@ export default {
             this.$router.push({ name: 'ingredients.show', params: { id: hit.slug } })
             return;
         },
-        getImageUrl(hit) {
+        getImageUrl(hit, type) {
             if (!hit.image_url) {
-                if (hit.type == 'cocktail') {
+                if (type == 'cocktail') {
                     return '/no-cocktail.jpg';
                 }
 
@@ -90,14 +107,24 @@ export default {
 </script>
 
 <style scoped>
+.site-autocomplete {
+    --clr-sa-results-bg: rgba(255, 255, 255, .5);
+}
+
+.dark-theme .site-autocomplete {
+    --clr-sa-results-bg: var(--clr-dark-main-900);
+}
+
 .site-autocomplete .form-input {
     width: 100%;
 }
 
 .site-autocomplete__results {
     list-style: none;
-    margin: 1rem 0 0 0;
-    padding: 0;
+    margin: 0;
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+    background: var(--clr-sa-results-bg);
 }
 
 .site-autocomplete__results li a {
@@ -115,7 +142,7 @@ export default {
 }
 
 .dark-theme .site-autocomplete__results li a:hover {
-    background-color: var(--clr-dark-main-900);
+    background-color: var(--clr-dark-main-800);
     color: var(--clr-gray-50);
 }
 

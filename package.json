@@ -8,7 +8,7 @@
   },
   "dependencies": {
     "@algolia/autocomplete-js": "^1.7.1",
-    "@meilisearch/instant-meilisearch": "^0.9.0",
+    "@meilisearch/instant-meilisearch": "^0.12.0",
     "@popperjs/core": "^2.11.6",
     "dayjs": "^1.11.7",
     "html-to-image": "^1.11.11",
