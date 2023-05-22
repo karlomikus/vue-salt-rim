@@ -1,9 +1,9 @@
 {
   "locales": {
-    "en-US": "English (US)",
-    "fr-FR": "French",
-    "hr-HR": "Croatian"
-    "de-DE": "German"
+    "en-US": "Englisch (USA)",
+    "fr-FR": "Französich",
+    "hr-HR": "Kroatisch",
+    "de-DE": "Deutsch"
   },
   "shelf": {
     "title": "Regal",
