@@ -2,7 +2,8 @@
   "locales": {
     "en-US": "Anglais (US)",
     "fr-FR": "Francais",
-    "hr-HR": "Croate"
+    "hr-HR": "Croate",
+    "de-DE": "Allemand"
   },
   "shelf": {
     "title": "Étagère",
