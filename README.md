@@ -30,6 +30,9 @@ Salt Rim is a web client used for connecting to your [Bar Assistant](https://git
 - Manage your personal shopping list
 - Support for markdown in cocktails and ingredients
 - Automatically add missing ingredients to your shopping cart
+- Dark theme support
+- Localizations available: English, German, Croatian, French
+- PWA Support
 
 ## Documentation
 

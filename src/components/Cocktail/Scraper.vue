@@ -133,7 +133,12 @@ export default {
             for (const key in this.result.ingredients) {
                 if (Object.hasOwnProperty.call(this.result.ingredients, key)) {
                     let scrapedIng = this.result.ingredients[key];
-                    let dbIngredient = await ApiRequests.findIngredient({name: scrapedIng.name}).catch(() => { return null })
+
+                    const dbIngredients = await ApiRequests.fetchIngredients({"filter[name_exact]": scrapedIng.name, "per_page": 1}).catch(() => { return null })
+                    let dbIngredient = null;
+                    if (dbIngredients.length > 0) {
+                        dbIngredient = dbIngredients[0];
+                    }
 
                     scrapedIng.substitutes = [];
                     scrapedIng.sort = 0;

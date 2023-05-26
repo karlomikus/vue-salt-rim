@@ -120,7 +120,7 @@ export default {
         this.loaders.cocktails = true;
         this.loaders.stats = true;
 
-        ApiRequests.fetchUserFavoriteCocktails(5).then(data => {
+        ApiRequests.fetchCocktails({'filter[favorites]': true, sort: '-favorited_at'}).then(data => {
             this.loaders.favorites = false;
             this.favoriteCocktails = data
         }).catch(e => {
@@ -128,7 +128,7 @@ export default {
             this.$toast.error(this.$t('shelf.toasts.favorites-error'));
         })
 
-        ApiRequests.fetchCocktails({per_page: 5, order_by: 'created_at:desc'}).then(data => {
+        ApiRequests.fetchCocktails({per_page: 5, sort: '-created_at'}).then(data => {
             this.loaders.cocktails = false;
             this.latestCocktails = data
         }).catch(e => {
@@ -149,18 +149,13 @@ export default {
     methods: {
         fetchShoppingList() {
             this.loaders.list = true;
-            ApiRequests.fetchIngredientsOnShoppingList(5).then(data => {
+            ApiRequests.fetchIngredients({'filter[on_shopping_list]': true, per_page: 5}).then(data => {
                 this.loaders.list = false;
                 this.shoppingListIngredients = data
             }).catch(e => {
                 this.loaders.list = false;
                 this.$toast.error(this.$t('shelf.toasts.list-error'));
             })
-        },
-        randomCocktail() {
-            ApiRequests.randomCocktail().then(resp => {
-                this.$router.push({ name: 'cocktails.show', params: { id: resp.slug } })
-            });
         },
         removeIngFromList() {
             this.fetchShoppingList();

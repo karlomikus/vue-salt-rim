@@ -17,6 +17,16 @@ class ApiRequests
         return new Headers(defaultHeaders);
     }
 
+    static generateBAQueryString(queryObject) {
+        if (Object.keys(queryObject).length == 0) {
+            return '';
+        }
+
+        let qs = Object.keys(queryObject).map(k => k + '=' + encodeURIComponent(queryObject[k])).join('&');
+
+        return `?${qs}`;
+    }
+
     static async handleResponseErrors(response) {
         if (!response.ok) {
             return Promise.reject(await response.json())
@@ -73,7 +83,9 @@ class ApiRequests
      */
 
     static async fetchCocktails(queryParams = {}) {
-        let jsonResp = await this.getRequest(`/api/cocktails`, queryParams);
+        const q = this.generateBAQueryString(queryParams);
+
+        let jsonResp = await this.getRequest(`/api/cocktails${q}`);
 
         return this.parseResponse(jsonResp);
     }
@@ -84,24 +96,8 @@ class ApiRequests
         return this.parseResponse(jsonResp);
     }
 
-    static async fetchUserFavoriteCocktails(limit = null) {
-        let url = `/api/cocktails/user-favorites`;
-        if (limit) {
-            url += `?limit=${limit}`;
-        }
-        let jsonResp = await this.getRequest(url);
-
-        return this.parseResponse(jsonResp);
-    }
-
     static async fetchCocktail(id) {
         let jsonResp = await this.getRequest(`/api/cocktails/${id}`);
-
-        return this.parseResponse(jsonResp);
-    }
-
-    static async randomCocktail() {
-        let jsonResp = await this.getRequest(`/api/cocktails/random`);
 
         return this.parseResponse(jsonResp);
     }
@@ -110,18 +106,10 @@ class ApiRequests
         return await this.deleteRequest(`/api/cocktails/${id}`);
     }
 
-    static async fetchShelfCocktails(onlyIds = false, limit = null) {
-        let query = {};
-        if (onlyIds) {
-            query['format'] = 'ids';
-        }
+    static async fetchShelfCocktails(queryParams = {}) {
+        const q = this.generateBAQueryString(queryParams);
 
-        if (limit) {
-            query['limit'] = limit;
-        }
-
-        const params = new URLSearchParams(query);
-        const url = `/api/cocktails/user-shelf?${params.toString()}`;
+        const url = `/api/shelf/cocktails${q}`;
 
         let jsonResp = await this.getRequest(url);
 
@@ -208,18 +196,10 @@ class ApiRequests
      * =============================
      */
 
-    static async fetchIngredients() {
-        let jsonResp = await this.getRequest(`/api/ingredients`);
+    static async fetchIngredients(query) {
+        const queryString = this.generateBAQueryString(query);
 
-        return this.parseResponse(jsonResp);
-    }
-
-    static async fetchIngredientsOnShoppingList(limit = null) {
-        let url = `/api/ingredients?on_shopping_list=true`;
-        if (limit) {
-            url += `&limit=${limit}`
-        }
-        let jsonResp = await this.getRequest(url);
+        let jsonResp = await this.getRequest(`/api/ingredients${queryString}`);
 
         return this.parseResponse(jsonResp);
     }
@@ -246,12 +226,6 @@ class ApiRequests
         return await this.deleteRequest(`/api/ingredients/${id}`);
     }
 
-    static async findIngredient(query) {
-        let jsonResp = await this.getRequest(`/api/ingredients/find`, query);
-
-        return this.parseResponse(jsonResp);
-    }
-
     /**
      * =============================
      * Shelf
@@ -259,19 +233,19 @@ class ApiRequests
      */
 
     static async fetchMyShelf() {
-        let jsonResp = await this.getRequest(`/api/shelf`);
+        let jsonResp = await this.getRequest(`/api/shelf/ingredients`);
 
         return this.parseResponse(jsonResp);
     }
 
     static async addIngredientToShelf(id) {
-        let jsonResp = await this.postRequest(`/api/shelf/${id}`);
+        let jsonResp = await this.postRequest(`/api/shelf/ingredients/${id}`);
 
         return this.parseResponse(jsonResp);
     }
 
     static async removeIngredientFromShelf(id) {
-        return await this.deleteRequest(`/api/shelf/${id}`);
+        return await this.deleteRequest(`/api/shelf/ingredients/${id}`);
     }
 
     /**
