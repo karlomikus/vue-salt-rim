@@ -96,7 +96,7 @@ export default {
                 data.description = Utils.decodeHtml(data.description);
 
                 this.ingredient = data;
-                this.isParent = this.ingredient.parent_ingredient_id != null;
+                this.isParent = this.ingredient.parent_ingredient != null;
 
                 document.title = `${this.$t('ingredient')} \u22C5 ${this.ingredient.name} \u22C5 Salt Rim`
                 this.isLoading = false;
