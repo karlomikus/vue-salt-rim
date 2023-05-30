@@ -120,7 +120,7 @@ export default {
         this.loaders.cocktails = true;
         this.loaders.stats = true;
 
-        ApiRequests.fetchCocktails({'filter[favorites]': true, sort: '-favorited_at'}).then(data => {
+        ApiRequests.fetchCocktails({'filter[favorites]': true, per_page: 5, sort: '-favorited_at'}).then(data => {
             this.loaders.favorites = false;
             this.favoriteCocktails = data
         }).catch(e => {
