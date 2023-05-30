@@ -58,13 +58,6 @@ export default {
         ApiRequests.fetchApiVersion().then(data => {
             this.server = data
             this.isLoading = false
-            this.isLoading = true
-            ApiRequests.checkMeilisearchStatus(this.meiliServer).then(mData => {
-                this.meiliServer = mData;
-                this.isLoading = false
-            }).catch(() => {
-                this.isLoading = false
-            })
         }).catch(() => {
             this.isLoading = false
         })

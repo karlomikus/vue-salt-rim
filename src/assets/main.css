@@ -93,10 +93,18 @@ h3.form-section-title::before {
     background-color: rgba(255, 255, 255, .5);
 }
 
+.dark-theme .empty-state {
+    background-color: rgba(0, 0, 0, .5);
+}
+
 .empty-state svg {
     fill: var(--clr-gray-800);
     width: 70px;
     height: 70px;
+}
+
+.dark-theme .empty-state svg {
+    fill: var(--clr-gray-600);
 }
 
 .popper {

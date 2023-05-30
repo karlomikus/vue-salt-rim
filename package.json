@@ -1,14 +1,12 @@
 {
   "name": "vue-salt-rim",
-  "version": "1.6.0",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview --port 4173"
   },
   "dependencies": {
-    "@algolia/autocomplete-js": "^1.7.1",
-    "@meilisearch/instant-meilisearch": "^0.9.0",
+    "@meilisearch/instant-meilisearch": "^0.12.0",
     "@popperjs/core": "^2.11.6",
     "dayjs": "^1.11.7",
     "html-to-image": "^1.11.11",
@@ -18,10 +16,8 @@
     "sortablejs": "^1.15.0",
     "swiper": "^9.0.5",
     "thumbhash": "^0.1.1",
-    "tom-select": "^2.2.2",
     "unitz": "^0.6.0",
     "vue": "^3.2.40",
-    "vue-accessible-color-picker": "^4.1.0",
     "vue-i18n": "^9.2.2",
     "vue-instantsearch": "^4.6.0",
     "vue-router": "^4.1.5",

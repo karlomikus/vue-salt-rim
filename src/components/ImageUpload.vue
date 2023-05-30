@@ -106,29 +106,35 @@ export default {
         },
         async uploadPictures() {
             const sortedImageList = this.sortable.toArray();
+            let uploadedImages = [];
 
-            const formData = new FormData();
+            const newImagesFormData = new FormData();
             for (let i = 0; i < this.images.length; i++) {
                 const img = this.images[i];
                 const newSort = sortedImageList.findIndex(sortedId => sortedId == img.file_path) + 1;
 
                 if (img.id) {
-                    const updateFormData = new FormData();
-                    updateFormData.append('copyright', img.copyright ? img.copyright : '')
-                    updateFormData.append('sort', newSort)
-                    await ApiRequests.patchImage(img.id, updateFormData)
+                    const updateImageFormData = new FormData();
+                    updateImageFormData.append('copyright', img.copyright ? img.copyright : '')
+                    updateImageFormData.append('sort', newSort)
+                    uploadedImages.push(await ApiRequests.updateSingleImage(img.id, updateImageFormData))
                 } else {
-                    formData.append('images[' + i + '][image]', img.file)
-                    formData.append('images[' + i + '][copyright]', img.copyright ? img.copyright : '')
-                    formData.append('images[' + i + '][sort]', newSort)
+                    if (img.file instanceof File) {
+                        newImagesFormData.append('images[' + i + '][image]', img.file)
+                    } else {
+                        newImagesFormData.append('images[' + i + '][image_url]', img.file)
+                    }
+                    newImagesFormData.append('images[' + i + '][copyright]', img.copyright ? img.copyright : '')
+                    newImagesFormData.append('images[' + i + '][sort]', newSort)
                 }
             }
 
-            if (Array.from(formData.values()).length > 0) {
-                return ApiRequests.uploadImages(formData);
+            if (Array.from(newImagesFormData.values()).length > 0) {
+                const newImages = await ApiRequests.uploadImages(newImagesFormData);
+                uploadedImages = [...uploadedImages, ...newImages]
             }
 
-            return Promise.resolve([]);
+            return Promise.resolve(uploadedImages);
         },
         removeImage(img) {
             if (!img.id) {

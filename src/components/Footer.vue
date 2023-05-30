@@ -55,7 +55,7 @@ export default {
     created() {
         ApiRequests.fetchApiVersion().then(resp => {
             this.versions.api = resp.version
-            this.versions.meili = resp.meilisearch_version
+            this.versions.meili = resp.search_version
         }).catch(() => {
             this.versions.api = 'Fetch error';
             this.versions = 'Fetch error';

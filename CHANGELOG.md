@@ -1,7 +1,16 @@
+# v1.12.0
+## New
+- Supports Bar Assistant version > 2.0.0
+- New locale supported: German
+
+## Changes
+- Use native color picker when possible
+- Updated parent ingredient picker
+
 # v1.11.0
 ## New
 - Added dark theme
-- Added light/dark thme switcher
+- Added light/dark theme switcher
 - Added support for cocktail notes
 
 ## Fixes

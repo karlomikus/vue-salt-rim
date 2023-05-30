@@ -29,7 +29,7 @@ export default {
             window.close();
         });
 
-        ApiRequests.fetchIngredientsOnShoppingList().then(data => {
+        ApiRequests.fetchIngredients({'filter[on_shopping_list]': true}).then(data => {
             this.list = data
             this.printReady = true
         }).catch(e => {

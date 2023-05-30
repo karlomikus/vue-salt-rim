@@ -11,6 +11,7 @@ import './assets/main.css'
 import en_US from './locales/en-US';
 import hr_HR from './locales/hr-HR';
 import fr_FR from './locales/fr-FR';
+import de_DE from './locales/de-DE';
 
 let userSelectedLocale = window.localStorage.getItem('ui-language');
 if (!userSelectedLocale) {
@@ -32,16 +33,19 @@ const i18n = createI18n({
         'en-US': en_US.numbers,
         'hr-HR': hr_HR.numbers,
         'fr-FR': fr_FR.numbers,
+        'de-DE': de_DE.numbers,
     },
     datetimeFormats: {
         'en-US': en_US.datetime,
         'hr-HR': hr_HR.datetime,
         'fr-FR': fr_FR.datetime,
+        'de-DE': de_DE.datetime,
     },
     messages: {
         'en-US': en_US.messages,
         'hr-HR': hr_HR.messages,
         'fr-FR': fr_FR.messages,
+        'de-DE': de_DE.messages,
     }
 })
 

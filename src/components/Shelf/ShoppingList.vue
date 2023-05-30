@@ -46,7 +46,7 @@ export default {
 
         this.isLoading = true;
 
-        ApiRequests.fetchIngredientsOnShoppingList().then(data => {
+        ApiRequests.fetchIngredients({'filter[on_shopping_list]': true}).then(data => {
             this.isLoading = false;
             this.shoppingListIngredients = data
         }).catch(e => {
