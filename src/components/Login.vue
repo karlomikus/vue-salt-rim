@@ -58,7 +58,6 @@ export default {
         ApiRequests.fetchApiVersion().then(data => {
             this.server = data
             this.isLoading = false
-            this.isLoading = true
         }).catch(() => {
             this.isLoading = false
         })
