@@ -25,9 +25,7 @@
             </div>
             <div class="form-group" v-show="isParent">
                 <label class="form-label" for="parent-ingredient">{{ $t('parent-ingredient') }}:</label>
-                <TomSelect id="parent-ingredient" v-model="ingredient.parent_ingredient_id">
-                    <option v-for="ingredient in parentIngredientsList" :value="ingredient.id">{{ ingredient.name }}</option>
-                </TomSelect>
+                <IngredientFinder v-model="ingredient.parent_ingredient" :block="blockIngredients"></IngredientFinder>
             </div>
             <div class="form-group">
                 <label class="form-label form-label--required" for="strength">{{ $t('strength') }} ({{ $t('ABV') }} %):</label>
@@ -44,10 +42,7 @@
             </div>
             <div class="form-group">
                 <label class="form-label" for="color">{{ $t('color') }}:</label>
-                <button type="button" class="button colorpicker-button" @click="showColorPicker = !showColorPicker">
-                    <span :style="{'background-color': ingredient.color}"></span>
-                </button>
-                <ColorPicker v-if="showColorPicker" alpha-channel="hide" :visible-formats="['hex']" :color="ingredient.color ?? {}" @color-change="updateColor" />
+                <input class="form-input" type="color" id="color" v-model="ingredient.color" style="width: 100%">
             </div>
         </div>
         <h3 class="form-section-title">{{ $t('media') }}</h3>
@@ -64,18 +59,16 @@
 import ApiRequests from "@/ApiRequests";
 import Utils from "@/Utils";
 import ImageUpload from '@/components/ImageUpload.vue'
-import { ColorPicker } from 'vue-accessible-color-picker'
 import PageHeader from '@/components/PageHeader.vue'
 import OverlayLoader from '@/components/OverlayLoader.vue'
-import TomSelect from '@/components/TomSelect.vue'
 import Checkbox from '@/components/Checkbox.vue'
+import IngredientFinder from '@/components/IngredientFinder.vue'
 
 export default {
     data() {
         return {
             isLoading: false,
             ingredientId: null,
-            showColorPicker: false,
             isParent: false,
             ingredients: [],
             ingredient: {
@@ -87,11 +80,10 @@ export default {
     },
     components: {
         ImageUpload,
-        ColorPicker,
         PageHeader,
         OverlayLoader,
-        TomSelect,
-        Checkbox
+        Checkbox,
+        IngredientFinder
     },
     created() {
         document.title = `${this.$t('ingredient')} \u22C5 Salt Rim`
@@ -114,14 +106,14 @@ export default {
         ApiRequests.fetchIngredientCategories().then(data => {
             this.categories = data
         })
-
-        ApiRequests.fetchIngredients().then(data => {
-            this.ingredients = data
-        })
     },
     computed: {
-        parentIngredientsList() {
-            return this.ingredients.filter(pIng => pIng.id != this.ingredient.id)
+        blockIngredients() {
+            if (!this.ingredient.id) {
+                return [];
+            }
+
+            return [this.ingredient.id];
         }
     },
     methods: {
@@ -134,7 +126,7 @@ export default {
                 strength: this.ingredient.strength,
                 origin: this.ingredient.origin,
                 color: this.ingredient.color,
-                parent_ingredient_id: this.isParent ? this.ingredient.parent_ingredient_id : null,
+                parent_ingredient_id: this.isParent && this.ingredient.parent_ingredient ? this.ingredient.parent_ingredient.id : null,
                 images: [],
                 ingredient_category_id: this.ingredient.ingredient_category_id,
             };
@@ -168,35 +160,7 @@ export default {
                     this.isLoading = false;
                 })
             }
-        },
-        updateColor(eventData) {
-            this.ingredient.color = eventData.cssColor
         }
     }
 }
 </script>
-<style scoped>
-.colorpicker-button {
-    cursor: pointer;
-    padding: 10px;
-    width: 100%;
-    display: flex;
-    background: rgba(255, 255, 255, .5);
-    border: 2px solid var(--clr-gray-100);
-    border-radius: 5px;
-    height: 3rem;
-}
-
-.colorpicker-button span {
-    display: flex;
-    width: 100%;
-    height: 100%;
-}
-
-.colorpicker-button:hover,
-.colorpicker-button:active,
-.colorpicker-button:focus {
-    background: #fff;
-    border-color: var(--clr-gray-800);
-}
-</style>

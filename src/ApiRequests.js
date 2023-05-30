@@ -196,7 +196,7 @@ class ApiRequests
      * =============================
      */
 
-    static async fetchIngredients(query) {
+    static async fetchIngredients(query = {}) {
         const queryString = this.generateBAQueryString(query);
 
         let jsonResp = await this.getRequest(`/api/ingredients${queryString}`);
@@ -345,11 +345,12 @@ class ApiRequests
         return this.parseResponse(jsonResp);
     }
 
-    static async patchImage(id, formData) {
+    static async updateSingleImage(id, formData) {
         const jsonResp = await (await fetch(`${this.getUrl()}/api/images/${id}`, {
             method: 'POST',
             headers: new Headers({
                 'Authorization': 'Bearer ' + localStorage.getItem('user_token'),
+                'Accept': 'application/json',
             }),
             body: formData
         }).then(this.handleResponseErrors)).json();
