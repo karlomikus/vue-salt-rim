@@ -7,7 +7,6 @@ import router from './router'
 import mitt from 'mitt'
 import dialog from './components/Dialog/plugin';
 import './assets/main.css'
-import Auth from './Auth';
 
 import en_US from './locales/en-US';
 import hr_HR from './locales/hr-HR';
