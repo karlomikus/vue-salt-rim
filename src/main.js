@@ -7,6 +7,7 @@ import router from './router'
 import mitt from 'mitt'
 import dialog from './components/Dialog/plugin';
 import './assets/main.css'
+import Auth from './Auth';
 
 import en_US from './locales/en-US';
 import hr_HR from './locales/hr-HR';
@@ -22,6 +23,10 @@ let userSelectedTheme = window.localStorage.getItem('_ba_theme');
 if (userSelectedTheme == 'dark' && !document.body.classList.contains('dark-theme')) {
     document.body.classList.add('dark-theme');
     document.querySelector('meta[name="theme-color"]').setAttribute("content", '#16141A');
+}
+
+if (window.srConfig.DISABLE_LOGIN === true) {
+    await Auth.refreshUser();
 }
 
 const emitter = mitt()

@@ -24,7 +24,7 @@
                 <RouterLink :to="{name: 'cocktails'}" :class="{ 'current-nav': $route.path.startsWith('/cocktails') }">{{ $t('cocktails') }}</RouterLink>
                 <RouterLink :to="{name: 'ingredients'}" :class="{ 'current-nav': $route.path.startsWith('/ingredients') }">{{ $t('ingredients') }}</RouterLink>
                 <RouterLink :to="{name: 'settings'}" :class="{ 'current-nav': $route.path.startsWith('/settings') }">{{ $t('settings') }}</RouterLink>
-                <a href="#" @click.prevent="logout">{{ $t('logout') }}</a>
+                <a v-if="loginDisabled !== true" href="#" @click.prevent="logout">{{ $t('logout') }}</a>
             </nav>
         </div>
     </header>
@@ -47,6 +47,7 @@ export default {
     data() {
         return {
             searchShown: false,
+            loginDisabled: window.srConfig.DISABLE_LOGIN
         }
     },
     created() {

@@ -51,6 +51,10 @@ class Auth {
     }
 
     static async isLoggedIn() {
+        if (window.srConfig.DISABLE_LOGIN === true) {
+            return true;
+        }
+
         try {
             const user = await ApiRequests.fetchUser();
 
