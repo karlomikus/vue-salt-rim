@@ -25,10 +25,6 @@ if (userSelectedTheme == 'dark' && !document.body.classList.contains('dark-theme
     document.querySelector('meta[name="theme-color"]').setAttribute("content", '#16141A');
 }
 
-if (window.srConfig.DISABLE_LOGIN === true) {
-    await Auth.refreshUser();
-}
-
 const emitter = mitt()
 const app = createApp(App)
 const i18n = createI18n({

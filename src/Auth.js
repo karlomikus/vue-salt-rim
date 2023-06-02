@@ -52,6 +52,8 @@ class Auth {
 
     static async isLoggedIn() {
         if (window.srConfig.DISABLE_LOGIN === true) {
+            await this.refreshUser();
+
             return true;
         }
 
