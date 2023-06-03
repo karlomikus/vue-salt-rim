@@ -1,3 +1,9 @@
+# v1.13.0
+## New
+- Added support for DISABLE_LOGIN=true variable
+    - This will disable the need to authenticate to Bar Assistant API instnace
+    - Note that Bar Assistant API also needs to have this variable set to true
+
 # v1.12.0
 ## New
 - Supports Bar Assistant version > 2.0.0
