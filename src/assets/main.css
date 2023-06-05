@@ -268,7 +268,7 @@ a.site-logo:focus .site-logo__title {
 }
 
 .image-export-wrapper {
-    padding: 1rem;
+    padding: 2rem 2rem 1.75rem 2rem;
     background: var(--color-site-header);
     width: 1000px;
 }

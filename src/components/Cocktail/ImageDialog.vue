@@ -5,9 +5,13 @@
         <div class="image-download-preview">
             <img v-if="imagePayload" :src="imagePayload" alt="">
             <div v-else class="image-export-wrapper" ref="exportElement">
-                <PublicRecipe :cocktail="cocktail" :currentUnit="currentUnit" :hideUnits="true"></PublicRecipe>
+                <PublicRecipe :cocktail="cocktail" :currentUnit="currentUnit" :hideUnits="true" :hideHeader="features.hideHeader" :hideFooter="features.hideFooter"></PublicRecipe>
             </div>
         </div>
+        <!-- <div style="margin: 1rem 0;">
+            <Checkbox v-model="features.hideHeader" id="id-features-hide-logo">{{ $t('generate-image-dialog.hide-header') }}</Checkbox>
+            <Checkbox v-model="features.hideFooter" id="id-features-hide-logo">{{ $t('generate-image-dialog.hide-footer') }}</Checkbox>
+        </div> -->
         <div class="dialog-actions" style="margin-top: 1rem;">
             <button type="button" class="button button--outline" @click="$emit('publicDialogClosed')">{{ $t('cancel') }}</button>
             <button v-if="shareEnabled" type="button" class="button button--outline" @click="shareAction">{{ $t('share') }}</button>
@@ -19,6 +23,7 @@
 <script>
 import OverlayLoader from '@/components/OverlayLoader.vue'
 import PublicRecipe from '@/components/Cocktail/PublicRecipe.vue'
+import Checkbox from '@/components/Checkbox.vue';
 import * as htmlToImage from 'html-to-image';
 
 export default {
@@ -29,12 +34,27 @@ export default {
             imagePayload: null,
             currentUnit: 'ml',
             shareEnabled: false,
+            features: {
+                hideHeader: true,
+                hideFooter: false,
+            }
         }
     },
     components: {
         OverlayLoader,
-        PublicRecipe
+        PublicRecipe,
+        Checkbox
     },
+    // watch: {
+    //     features: {
+    //         handler() {
+    //             this.$nextTick(() => {
+    //                 this.generateImage();
+    //             })
+    //         },
+    //         deep: true
+    //     }
+    // },
     computed: {
         fileName() {
             return this.cocktail.slug + '.png';
@@ -49,10 +69,10 @@ export default {
             this.shareEnabled = true;
         }
 
-        this.downloadImage();
+        this.generateImage();
     },
     methods: {
-        downloadImage() {
+        generateImage() {
             this.isLoading = true;
             htmlToImage.toPng(this.$refs.exportElement, {
                 cacheBust: true
@@ -67,7 +87,7 @@ export default {
         },
         async shareAction() {
             const blobData = await (await fetch(this.imagePayload)).blob()
-            const file = new File([blobData], this.fileName, {type: blobData.type})
+            const file = new File([blobData], this.fileName, {type: 'image/png'})
 
             try {
                 await navigator.share({
