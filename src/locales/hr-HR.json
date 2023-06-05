@@ -256,5 +256,6 @@
     "title": "Bilješka"
   },
   "content": "Sadržaj",
-  "note-added": "Uspiješno dodana bilješka"
+  "note-added": "Uspiješno dodana bilješka",
+  "generate-image": "Generiraj sliku"
 }

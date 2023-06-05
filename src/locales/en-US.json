@@ -256,5 +256,12 @@
     "title": "Note"
   },
   "content": "Content",
-  "note-added": "Note added successfully"
+  "note-added": "Note added successfully",
+  "generate-image": "Generate recipe image",
+  "generate-image-dialog": {
+    "preview": "Image preview",
+    "generation-failed": "Error occured trying to generate an image"
+  },
+  "download": "Download",
+  "share": "Share"
 }
