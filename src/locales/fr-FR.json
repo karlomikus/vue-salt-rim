@@ -253,5 +253,11 @@
   "note-dialog": {
     "title": "Remarquer"
   },
-  "content": "Contenu"
+  "content": "Contenu",
+  "share": "Partager",
+  "download": "Télécharger",
+  "generate-image-dialog": {
+    "preview": "Aperçu de l'image"
+  },
+  "generate-image": "Générer une image"
 }

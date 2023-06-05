@@ -256,5 +256,12 @@
     "title": "Bilješka"
   },
   "content": "Sadržaj",
-  "note-added": "Uspiješno dodana bilješka"
+  "note-added": "Uspiješno dodana bilješka",
+  "generate-image": "Generiraj sliku",
+  "generate-image-dialog": {
+    "generation-failed": "Greška prilikom generiranja slike",
+    "preview": "Pregled slike"
+  },
+  "download": "Preuzmi",
+  "share": "Podijeli"
 }

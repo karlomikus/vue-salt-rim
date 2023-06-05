@@ -2,11 +2,11 @@
     <form class="site-autocomplete" novalidate @keyup.esc="close">
         <ais-instant-search :search-client="searchClient" index-name="cocktails">
             <ais-configure :hitsPerPage="5" />
-            <ais-search-box />
-            <h4 class="site-autocomplete__index-name">{{ $t('cocktails')}}</h4>
+            <ais-search-box autofocus />
             <ais-hits>
                 <template v-slot="{ items }">
-                    <ul class="site-autocomplete__results">
+                    <h4 class="site-autocomplete__index-name" v-show="items.length > 0">{{ $t('cocktails')}}</h4>
+                    <ul class="site-autocomplete__results" v-show="items.length > 0">
                         <li v-for="hit in items">
                             <a href="#" @click.prevent="goTo(hit, 'cocktail')">
                                 <div class="site-autocomplete__results__image" :style="{ 'background-image': 'url(' + getImageUrl(hit, 'cocktail') + ')' }"></div>
@@ -19,11 +19,11 @@
                     </ul>
                 </template>
             </ais-hits>
-            <h4 class="site-autocomplete__index-name">{{ $t('ingredients')}}</h4>
             <ais-index index-name="ingredients">
                 <ais-hits>
                     <template v-slot="{ items }">
-                        <ul class="site-autocomplete__results">
+                        <h4 class="site-autocomplete__index-name" v-show="items.length > 0">{{ $t('ingredients')}}</h4>
+                        <ul class="site-autocomplete__results" v-show="items.length > 0">
                             <li v-for="hit in items">
                                 <a href="#" @click.prevent="goTo(hit, 'ingredient')">
                                     <div class="site-autocomplete__results__image" :style="{ 'background-image': 'url(' + getImageUrl(hit, 'ingredient') + ')' }"></div>
@@ -72,7 +72,7 @@ export default {
     mounted() {
         this.$nextTick(() => {
             setTimeout(() => {
-                // this.$refs.sinput.focus()
+                document.querySelector('.ais-SearchBox-input').focus();
             }, 200)
         })
     },
@@ -213,5 +213,13 @@ export default {
     border: 1px solid var(--clr-key-border);
     background-color: var(--clr-key-bg);
     padding: 1px 4px;
+}
+
+.site-autocomplete__index-name {
+    font-size: 0.7rem;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    font-weight: bold;
+    margin: 0.75rem 0;
 }
 </style>
