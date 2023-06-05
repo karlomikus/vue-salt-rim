@@ -75,6 +75,7 @@ export default {
         generateImage() {
             this.isLoading = true;
             htmlToImage.toPng(this.$refs.exportElement, {
+                pixelRatio: 1,
                 cacheBust: true
             }).then((dataUrl) => {
                 this.isLoading = false;

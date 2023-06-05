@@ -1,3 +1,7 @@
+# v1.14.0
+## New
+- Added support for generating and sharing recipe images
+
 # v1.13.0
 ## New
 - Added support for DISABLE_LOGIN=true variable

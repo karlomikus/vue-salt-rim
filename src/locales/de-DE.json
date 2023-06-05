@@ -256,5 +256,11 @@
     "title": "Notiz"
   },
   "content": "Inhalt",
-  "note-added": "Notiz hinzugefügt"
+  "note-added": "Notiz hinzugefügt",
+  "share": "Aktie",
+  "download": "Herunterladen",
+  "generate-image-dialog": {
+    "preview": "Bildvorschau"
+  },
+  "generate-image": "Bild generieren"
 }
