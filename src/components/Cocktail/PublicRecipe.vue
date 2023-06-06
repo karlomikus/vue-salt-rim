@@ -4,7 +4,7 @@
     </div>
     <div class="public-cocktail-recipe" ref="recipe">
         <div class="public-cocktail-recipe__image" :style="{'background-image': 'url(' + mainImage.url + ')'}">
-            <div class="public-cocktail-recipe__image__copyright" v-if="mainImage.copyright">Image &copy; {{ mainImage.copyright }}</div>
+            <div class="public-cocktail-recipe__image__copyright" v-if="mainImage.copyright">{{ $t('image-copyright-notice', { copyright: mainImage.copyright }) }}</div>
         </div>
         <div class="public-cocktail-recipe__summary">
             <h2>{{ cocktail.name }}</h2>
@@ -15,7 +15,7 @@
                 <button type="button" class="button button--public" :class="{'button--active': currentUnit == 'cl'}" @click="currentUnit = 'cl'">cl</button>
             </div>
             <div class="public-cocktail-recipe__summary__section">
-                <h3>Ingredients</h3>
+                <h3>{{ $t('ingredients') }}</h3>
                 <ul>
                     <li v-for="ing in cocktail.ingredients">
                         <span>{{ ing.name }}</span><span class="spacer"></span><span class="amount-units">{{ parseIngredientAmount(ing) }}</span>
@@ -23,11 +23,11 @@
                 </ul>
             </div>
             <div class="public-cocktail-recipe__summary__section">
-                <h3>Instructions</h3>
+                <h3>{{ $t('instructions') }}</h3>
                 <div class="public-cocktail-recipe__content" v-html="parsedInstructions"></div>
             </div>
             <div class="public-cocktail-recipe__summary__section" v-show="!!cocktail.garnish">
-                <h3>Garnish</h3>
+                <h3>{{ $t('garnish') }}</h3>
                 <div class="public-cocktail-recipe__content" v-html="parsedGarnish"></div>
             </div>
         </div>
