@@ -46,6 +46,10 @@ export default {
             }
         }
     },
+    unmounted() {
+        this.$emit('dialogClosed')
+        document.body.style.overflow = "auto";
+    },
     methods: {
         toggleDialog() {
             this.$emit('update:modelValue', !this.modelValue)
