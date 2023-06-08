@@ -137,7 +137,7 @@
   "sort.rating-asc": "@:rating - @:sort-asc",
   "sort.rating-desc": "@:rating - @:sort-desc",
   "date-modified": "Date modified",
-  "sort.date-modified-asc": "@:date-modified - @:sort-desc",
+  "sort.date-modified-asc": "@:date-modified - @:sort-asc",
   "sort.date-modified-desc": "@:date-modified - @:sort-desc",
   "placeholder.search-ingredients": "Search for ingredients...",
   "ingredient.add-to-shelf": "Add to shelf",

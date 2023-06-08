@@ -1,3 +1,8 @@
+# v1.14.1
+## Fixes
+- Fix translation errors #85
+- Fix opened dialog back interaction #82
+
 # v1.14.0
 ## New
 - Added support for generating and sharing recipe images
