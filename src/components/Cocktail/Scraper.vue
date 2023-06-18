@@ -4,13 +4,27 @@
         <PageHeader>
             {{ $t('cocktails.add-from-url') }}
         </PageHeader>
-        <div class="form-group-import-input">
-            <input class="form-input form-input--red" type="url" id="import" v-model="url" :placeholder="$t('placeholder.scraper')" style="width: 100%;">
-            <button type="button" class="button button--input" @click.prevent="scrape">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path fill="none" d="M0 0h24v24H0z"/><path d="M12 13H4v-2h8V4l8 8-8 8z"/></svg>
-            </button>
+        <h3 class="form-section-title">{{ $t('import-type') }}</h3>
+        <div class="block-container block-container--padded">
+            <div class="form-group">
+                <label class="form-label form-label--required">{{ $t('type') }}:</label>
+                <label>
+                    <input type="radio" name="import-type" value="url" v-model="importType"> URL
+                </label>
+                <label>
+                    <input type="radio" name="import-type" value="json" v-model="importType"> JSON
+                </label>
+                <label>
+                    <input type="radio" name="import-type" value="yaml" v-model="importType"> YAML
+                </label>
+            </div>
+            <div class="form-group">
+                <label class="form-label form-label--required" for="import-source">{{ $t('source') }}:</label>
+                <textarea class="form-input" id="import-source" rows="5" v-model="source" required></textarea>
+                <!-- <p class="form-input-hint">{{ $t('scraper.input-hint') }}</p> -->
+            </div>
+            <button type="button" class="button button--dark" @click.prevent="importCocktail">{{ $t('start-import') }}</button>
         </div>
-        <p class="form-input-hint">{{ $t('scraper.input-hint') }}</p>
         <div class="scraper-form" v-if="result">
             <div class="alert alert--info" style="margin: 1rem 0;">
                 <h3>{{ $t('information') }}</h3>
@@ -38,14 +52,16 @@
                     <label for="instructions">{{ $t('instructions') }}</label>
                     <textarea class="form-input" rows="2" id="instructions" v-model="result.instructions"></textarea>
                 </div>
-                <div class="form-group">
-                    <label for="image_url">{{ $t('image-url') }}</label>
-                    <input type="text" class="form-input" id="image_url" v-model="result.image.url">
-                </div>
-                <div class="form-group">
-                    <label for="image_copyrigh">{{ $t('image-copyright') }}</label>
-                    <input type="text" class="form-input" id="image_copyrigh" v-model="result.image.copyright">
-                </div>
+                <template v-for="image in result.images">
+                    <div class="form-group">
+                        <label for="image_url">{{ $t('image-url') }}</label>
+                        <input type="text" class="form-input" id="image_url" v-model="image.url">
+                    </div>
+                    <div class="form-group">
+                        <label for="image_copyrigh">{{ $t('image-copyright') }}</label>
+                        <input type="text" class="form-input" id="image_copyrigh" v-model="image.copyright">
+                    </div>
+                </template>
                 <div class="form-group">
                     <label for="tags">{{ $t('tags') }}</label>
                     <input type="text" class="form-input" id="tags" v-model="cocktailTags">
@@ -92,8 +108,9 @@ export default {
     data() {
         return {
             isLoading: false,
-            url: null,
-            result: null
+            importType: 'url',
+            source: null,
+            result: null,
         };
     },
     components: {
@@ -119,10 +136,10 @@ export default {
         },
     },
     methods: {
-        scrape() {
+        importCocktail() {
             this.isLoading = true;
-            ApiRequests.scrapeCocktail({url: this.url}).then(data => {
-                this.result = data.result
+            ApiRequests.importCocktail({ source: this.source }, { type: this.importType }).then(data => {
+                this.result = data
                 this.isLoading = false;
             }).catch(e => {
                 this.isLoading = false;

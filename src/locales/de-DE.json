@@ -262,5 +262,11 @@
   "generate-image-dialog": {
     "preview": "Bildvorschau"
   },
-  "generate-image": "Bild generieren"
+  "generate-image": "Bild generieren",
+  "share-copy-json": "Im JSON-Format kopieren",
+  "share-format-copied": "Cocktailrezept kopiert",
+  "share-format-copy-failed": "Das Kopieren des Cocktailrezepts ist fehlgeschlagen",
+  "start-import": "Import starten",
+  "import-type": "Importformat",
+  "type": "Typ"
 }

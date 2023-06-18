@@ -27,7 +27,7 @@
   "tags": "Tags",
   "cocktail": "Cocktail",
   "ingredient": "Ingredient",
-  "cocktails.add-from-url": "Import cocktail from URL",
+  "cocktails.add-from-url": "Import cocktail",
   "cocktails.add": "Add cocktail",
   "cocktails.page.description": "This is a list of cocktails available in your Bar Assistant server. You can search for a specific cocktails by filtering them with the tags you added or by using a search term.",
   "filters": "Filters",
@@ -263,5 +263,11 @@
     "generation-failed": "Error occured trying to generate an image"
   },
   "download": "Download",
-  "share": "Share"
+  "share": "Share",
+  "share-copy-json": "Copy as JSON",
+  "share-format-copied": "Cocktail recipe copied",
+  "share-format-copy-failed": "Cocktail recipe copy failed",
+  "start-import": "Start import",
+  "import-type": "Import format",
+  "type": "Type"
 }

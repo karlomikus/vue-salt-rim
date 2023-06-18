@@ -169,6 +169,9 @@ export default {
                         }
                     },
                     routeToState(routeState) {
+                        if (!routeState) {
+                            return {};
+                        }
                         return {
                             ['cocktails:name:asc']: {
                                 query: routeState.q,
@@ -302,10 +305,56 @@ export default {
             }
 
             return items;
+        },
+        getRouter() {
+            const vueRouter = this.$router;
+            const currentRoute = this.$route;
+
+            const routing = {
+                read() {
+                    console.log('read', currentRoute)
+                    return currentRoute.query;
+                },
+                write(routeState) {
+                    console.log('write', routeState)
+                    if (this.createURL(routeState) === this.createURL(this.read())) {
+                        return;
+                    }
+
+                    vueRouter.push({
+                        query: routeState,
+                    });
+                },
+                createURL(routeState) {
+                    console.log('createURL', routeState)
+                    return vueRouter.resolve({
+                        query: routeState,
+                    }).href;
+                },
+                onUpdate(cb) {
+                    console.log('onUpdate', cb)
+                    this._removeAfterEach = vueRouter.afterEach(() => {
+                        cb(this.read());
+                    });
+
+                    this._onPopState = () => {
+                        cb(this.read());
+                    };
+
+                    window.addEventListener('popstate', this._onPopState);
+                },
+                dispose() {
+                    if (this._onPopState) {
+                        window.removeEventListener('popstate', this._onPopState);
+                    }
+                    if (this._removeAfterEach) {
+                        this._removeAfterEach();
+                    }
+                },
+            };
+
+            return routing;
         }
     }
 }
 </script>
-
-<style scoped>
-</style>

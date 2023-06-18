@@ -91,7 +91,7 @@
                         </RouterLink>
                         <Dialog v-model="showPublicDialog">
                             <template #trigger>
-                                <a class="dropdown-menu__item" href="#" @click.prevent="showPublicDialog = !showPublicDialog">
+                                <a class="dropdown-menu__item" href="#makepublic" @click.prevent="showPublicDialog = !showPublicDialog">
                                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18">
                                         <path fill="none" d="M0 0h24v24H0z" />
                                         <path d="M18.364 15.536L16.95 14.12l1.414-1.414a5 5 0 1 0-7.071-7.071L9.879 7.05 8.464 5.636 9.88 4.222a7 7 0 0 1 9.9 9.9l-1.415 1.414zm-2.828 2.828l-1.415 1.414a7 7 0 0 1-9.9-9.9l1.415-1.414L7.05 9.88l-1.414 1.414a5 5 0 1 0 7.071 7.071l1.414-1.414 1.415 1.414zm-.708-10.607l1.415 1.415-7.071 7.07-1.415-1.414 7.071-7.07z" />
@@ -105,7 +105,7 @@
                         </Dialog>
                         <Dialog v-model="showDownloadImageDialog">
                             <template #trigger>
-                                <a class="dropdown-menu__item" href="#" @click.prevent="showDownloadImageDialog = !showDownloadImageDialog">
+                                <a class="dropdown-menu__item" href="#generateimage" @click.prevent="showDownloadImageDialog = !showDownloadImageDialog">
                                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18">
                                         <path fill="none" d="M0 0h24v24H0z" />
                                         <path d="M4.828 21l-.02.02-.021-.02H2.992A.993.993 0 0 1 2 20.007V3.993A1 1 0 0 1 2.992 3h18.016c.548 0 .992.445.992.993v16.014a1 1 0 0 1-.992.993H4.828zM20 15V5H4v14L14 9l6 6zm0 2.828l-6-6L6.828 19H20v-1.172zM8 11a2 2 0 1 1 0-4 2 2 0 0 1 0 4z" />
@@ -117,6 +117,12 @@
                                 <ImageDialog :cocktail="cocktail" @publicDialogClosed="showDownloadImageDialog = false" />
                             </template>
                         </Dialog>
+                        <a class="dropdown-menu__item" href="#copy" @click.prevent="shareFromFormat('json')">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18">
+                                <path d="M6.9998 6V3C6.9998 2.44772 7.44752 2 7.9998 2H19.9998C20.5521 2 20.9998 2.44772 20.9998 3V17C20.9998 17.5523 20.5521 18 19.9998 18H16.9998V20.9991C16.9998 21.5519 16.5499 22 15.993 22H4.00666C3.45059 22 3 21.5554 3 20.9991L3.0026 7.00087C3.0027 6.44811 3.45264 6 4.00942 6H6.9998ZM5.00242 8L5.00019 20H14.9998V8H5.00242ZM8.9998 6H16.9998V16H18.9998V4H8.9998V6ZM7 11H13V13H7V11ZM7 15H13V17H7V15Z"></path>
+                            </svg>
+                            {{ $t('share-copy-json') }}
+                        </a>
                     </template>
                 </Dropdown>
                 <Dropdown>
@@ -369,6 +375,15 @@ export default {
         handleNoteDialogCloseEvent() {
             this.fetchCocktail();
             this.showNoteDialog = false;
+        },
+        shareFromFormat(format) {
+            ApiRequests.shareCocktail(this.cocktail.slug, { type: format }).then(data => {
+                navigator.clipboard.writeText(data).then(() => {
+                    this.$toast.default(this.$t('share-format-copied'));
+                }, () => {
+                    this.$toast.error(this.$t('share-format-copy-failed'));
+                });
+            })
         }
     }
 }

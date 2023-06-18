@@ -259,5 +259,11 @@
   "generate-image-dialog": {
     "preview": "Aperçu de l'image"
   },
-  "generate-image": "Générer une image"
+  "generate-image": "Générer une image",
+  "share-copy-json": "Copie au format JSON",
+  "share-format-copied": "Recette de cocktail copiée",
+  "share-format-copy-failed": "Échec de la copie de la recette du cocktail",
+  "start-import": "Démarrer l'importation",
+  "import-type": "Format d'importation",
+  "type": "Taper"
 }

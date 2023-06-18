@@ -263,5 +263,11 @@
     "preview": "Pregled slike"
   },
   "download": "Preuzmi",
-  "share": "Podijeli"
+  "share": "Podijeli",
+  "share-copy-json": "Kopiraj u JSON formatu",
+  "share-format-copied": "Recept kopiran",
+  "share-format-copy-failed": "Kopiranje recepta za koktel nije uspjelo",
+  "start-import": "Započni uvoz",
+  "import-type": "Format uvoza",
+  "type": "Tip"
 }

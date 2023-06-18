@@ -1,7 +1,12 @@
+# v1.15.0
+## Fixes
+- Fix site search auto focusing on wrong input
+
 # v1.14.1
 ## Fixes
 - Fix translation errors #85
 - Fix opened dialog back interaction #82
+- Fix missing translations on public recipe
 
 # v1.14.0
 ## New
