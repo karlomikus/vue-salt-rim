@@ -72,8 +72,8 @@ export default {
     mounted() {
         this.$nextTick(() => {
             setTimeout(() => {
-                document.querySelector('.ais-SearchBox-input').focus();
-            }, 200)
+                document.querySelector('.site-autocomplete .ais-SearchBox-input').focus();
+            }, 100)
         })
     },
     methods: {
