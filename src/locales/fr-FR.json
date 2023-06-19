@@ -265,5 +265,6 @@
   "share-format-copy-failed": "Échec de la copie de la recette du cocktail",
   "start-import": "Démarrer l'importation",
   "import-type": "Format d'importation",
-  "type": "Taper"
+  "type": "Taper",
+  "share-copy-text": "Copier en texte brut"
 }

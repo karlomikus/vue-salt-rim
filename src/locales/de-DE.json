@@ -268,5 +268,6 @@
   "share-format-copy-failed": "Das Kopieren des Cocktailrezepts ist fehlgeschlagen",
   "start-import": "Import starten",
   "import-type": "Importformat",
-  "type": "Typ"
+  "type": "Typ",
+  "share-copy-text": "Als Klartext kopieren"
 }

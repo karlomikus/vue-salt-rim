@@ -269,5 +269,6 @@
   "share-format-copy-failed": "Cocktail recipe copy failed",
   "start-import": "Start import",
   "import-type": "Import format",
-  "type": "Type"
+  "type": "Type",
+  "share-copy-text": "Copy as plain text"
 }
