@@ -243,6 +243,16 @@ export default {
                 this.cocktail.glass = {};
                 this.glassId = parsedScrapeResult.glass_id;
             }
+
+            if (parsedScrapeResult.images.length > 0) {
+                this.cocktail.images = [
+                    {
+                        copyright: parsedScrapeResult.images[0].copyright,
+                        url: parsedScrapeResult.images[0].url,
+                        file: parsedScrapeResult.images[0].url,
+                    }
+                ]
+            }
         }
 
         this.sortable = Sortable.create(document.querySelector('.cocktail-form__ingredients'), {
