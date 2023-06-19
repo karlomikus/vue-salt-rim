@@ -8,13 +8,13 @@
                     <h4 class="site-autocomplete__index-name" v-show="items.length > 0">{{ $t('cocktails')}}</h4>
                     <ul class="site-autocomplete__results" v-show="items.length > 0">
                         <li v-for="hit in items">
-                            <a href="#" @click.prevent="goTo(hit, 'cocktail')">
+                            <RouterLink :to="{ name: 'cocktails.show', params: { id: hit.slug } }" @click="close">
                                 <div class="site-autocomplete__results__image" :style="{ 'background-image': 'url(' + getImageUrl(hit, 'cocktail') + ')' }"></div>
                                 <div class="site-autocomplete__results__content">
                                     <ais-highlight attribute="name" :hit="hit" />
                                     <small>{{ $t('cocktail')}}</small>
                                 </div>
-                            </a>
+                            </RouterLink>
                         </li>
                     </ul>
                 </template>
@@ -25,13 +25,13 @@
                         <h4 class="site-autocomplete__index-name" v-show="items.length > 0">{{ $t('ingredients')}}</h4>
                         <ul class="site-autocomplete__results" v-show="items.length > 0">
                             <li v-for="hit in items">
-                                <a href="#" @click.prevent="goTo(hit, 'ingredient')">
+                                <RouterLink :to="{ name: 'ingredients.show', params: { id: hit.slug } }" @click="close">
                                     <div class="site-autocomplete__results__image" :style="{ 'background-image': 'url(' + getImageUrl(hit, 'ingredient') + ')' }"></div>
                                     <div class="site-autocomplete__results__content">
                                         <ais-highlight attribute="name" :hit="hit" />
                                         <small>{{ $t('ingredient')}}</small>
                                     </div>
-                                </a>
+                                </RouterLink>
                             </li>
                         </ul>
                     </template>
@@ -79,17 +79,6 @@ export default {
     methods: {
         close() {
             this.$emit('closeAutocomplete');
-        },
-        goTo(hit, type) {
-            this.close();
-
-            if (type == 'cocktail') {
-                this.$router.push({ name: 'cocktails.show', params: { id: hit.slug } })
-                return;
-            }
-
-            this.$router.push({ name: 'ingredients.show', params: { id: hit.slug } })
-            return;
         },
         getImageUrl(hit, type) {
             if (!hit.image_url) {
