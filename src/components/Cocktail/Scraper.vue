@@ -2,7 +2,7 @@
     <form @submit.prevent="submit">
         <OverlayLoader v-if="isLoading" />
         <PageHeader>
-            {{ $t('cocktails.add-from-url') }}
+            {{ $t('cocktails.import') }}
         </PageHeader>
         <h3 class="form-section-title">{{ $t('import-type') }}</h3>
         <div class="block-container block-container--padded">

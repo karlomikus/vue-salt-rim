@@ -27,7 +27,7 @@
   "tags": "Oznake",
   "cocktail": "Koktel",
   "ingredient": "Sastojak",
-  "cocktails.add-from-url": "Uvezi koktel iz URL-a",
+  "cocktails.import": "Uvezi koktel",
   "cocktails.add": "Dodaj koktel",
   "cocktails.page.description": "Ovdje možete pronaći popis koktela koji su uneseni u Bar Assistant server. Dostupne su mnoge opcije za pretraživanje i filtriranje koktela.",
   "filters": "Filteri",

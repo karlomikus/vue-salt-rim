@@ -2,7 +2,7 @@
     <PageHeader>
         {{ $t('cocktails') }}
         <template #actions>
-            <RouterLink class="button button--outline" :to="{ name: 'cocktails.scrape' }">{{ $t('cocktails.add-from-url') }}</RouterLink>
+            <RouterLink class="button button--outline" :to="{ name: 'cocktails.scrape' }">{{ $t('cocktails.import') }}</RouterLink>
             <RouterLink class="button button--dark" :to="{ name: 'cocktails.form' }">{{ $t('cocktails.add') }}</RouterLink>
         </template>
     </PageHeader>
