@@ -357,6 +357,15 @@ export default {
                     cocktailIngredient.units = 'cl';
                     cocktailIngredient.amount = Utils.oz2cl(cocktailIngredient.amount);
                 }
+            } else if (userUnit === 'ml') {
+                if (cocktailIngredient.units == 'oz') {
+                    cocktailIngredient.units = 'ml';
+                    cocktailIngredient.amount = Utils.oz2ml(cocktailIngredient.amount);
+                }
+                if (cocktailIngredient.units == 'cl') {
+                    cocktailIngredient.units = 'ml';
+                    cocktailIngredient.amount = Utils.cl2ml(cocktailIngredient.amount);
+                }
             }
 
             this.cocktailIngredientForEdit = cocktailIngredient;

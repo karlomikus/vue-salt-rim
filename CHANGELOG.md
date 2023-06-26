@@ -6,10 +6,12 @@
 - Improved cocktail importing
     - Added importing from YAML and JSON formats
 - Added support for Meilisearch v1.2
+- Allow fractional amounts without leading zeros #91
 
 ## Fixes
 - Fix site search auto focusing on wrong input
-- Fix missing sync between vue router and instantsearch history
+- Fix missing sync between vue router and instantsearch history #87
+- Fix unit/amount converting
 
 # v1.14.1
 ## Fixes
