@@ -38,7 +38,7 @@
 </template>
 
 <script>
-import { marked } from 'marked';
+import {micromark} from 'micromark'
 import Utils from '@/Utils';
 import Logo from '@/components/Logo.vue'
 
@@ -86,21 +86,21 @@ export default {
                 return null;
             }
 
-            return marked.parse(this.cocktail.description)
+            return micromark(this.cocktail.description)
         },
         parsedInstructions() {
             if (!this.cocktail.instructions) {
                 return null;
             }
 
-            return marked.parse(this.cocktail.instructions)
+            return micromark(this.cocktail.instructions)
         },
         parsedGarnish() {
             if (!this.cocktail.garnish) {
                 return null;
             }
 
-            return marked.parse(this.cocktail.garnish)
+            return micromark(this.cocktail.garnish)
         },
     },
     methods: {

@@ -134,8 +134,9 @@ class ApiRequests
         return this.parseResponse(jsonResp);
     }
 
-    static async scrapeCocktail(data) {
-        let jsonResp = await this.postRequest(`/api/scrape/cocktail`, data);
+    static async importCocktail(data, query = {}) {
+        const q = this.generateBAQueryString(query);
+        let jsonResp = await this.postRequest(`/api/import/cocktail${q}`, data);
 
         return this.parseResponse(jsonResp);
     }
@@ -154,6 +155,20 @@ class ApiRequests
         let jsonResp = await this.getRequest(`/api/explore/cocktails/${ulid}`);
 
         return this.parseResponse(jsonResp);
+    }
+
+    static async shareCocktail(id, queryParams = {}) {
+        let url = `${this.getUrl()}/api/cocktails/${id}/share`
+        const queryString = new URLSearchParams(queryParams).toString()
+        if (queryString != '') {
+            url += `?${queryString}`;
+        }
+
+        const f = fetch(url, {
+            headers: this.getHeaders(),
+        }).then(this.handleResponseErrors)
+
+        return await (await f).text();
     }
 
     /**

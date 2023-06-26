@@ -98,9 +98,11 @@ import IngredientGridContainer from '@/components/Ingredient/IngredientGridConta
 import IngredientGridItem from '@/components/Ingredient/IngredientGridItem.vue'
 import { instantMeiliSearch } from '@meilisearch/instant-meilisearch';
 import Auth from '@/Auth.js';
+import qs from 'qs';
 
 export default {
     data() {
+        const vueRouter = this.$router
         return {
             searchClient: instantMeiliSearch(
                 Auth.getUserSearchSettings().host,
@@ -111,7 +113,13 @@ export default {
                 }
             ),
             routing: {
-                router: historyRouter(),
+                router: historyRouter({
+                    push(url) {
+                        vueRouter.push({
+                            query: qs.parse((new URL(url)).searchParams.toString())
+                        })
+                    }
+                }),
                 stateMapping: {
                     stateToRoute(uiState) {
                         const indexUiState = uiState['ingredients:name:asc'];

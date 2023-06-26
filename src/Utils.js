@@ -49,16 +49,24 @@ class Utils {
         return amount * 10;
     }
 
-    static ml2cl(amount) {
-        return amount / 10;
+    static cl2oz(amount) {
+        return this.ml2oz(amount * 10);
     }
 
     static oz2ml(amount) {
         return Unitz.parse(`${amount} fl-oz`).value * 30
     }
 
+    static oz2cl(amount) {
+        return this.oz2ml(amount) / 10;
+    }
+
     static ml2oz(amount) {
         return new Unitz.Fraction(amount / 30, [2, 3, 4]).string
+    }
+
+    static ml2cl(amount) {
+        return amount / 10;
     }
 }
 

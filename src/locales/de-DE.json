@@ -27,7 +27,7 @@
   "tags": "Tags",
   "cocktail": "Cocktail",
   "ingredient": "Besandteil",
-  "cocktails.add-from-url": "Importire einen Cocktail von einer URL",
+  "cocktails.import": "Importire einen Cocktail",
   "cocktails.add": "Neuer Cocktail",
   "cocktails.page.description": "Dies ist eine Liste der Cocktails, die auf Ihrem Bar Assistant-Server verfügbar sind. Sie können nach bestimmten Cocktails suchen, indem Sie sie mit den von Ihnen hinzugefügten Tags filtern oder einen Suchbegriff verwenden.",
   "filters": "Filter",
@@ -262,5 +262,12 @@
   "generate-image-dialog": {
     "preview": "Bildvorschau"
   },
-  "generate-image": "Bild generieren"
+  "generate-image": "Bild generieren",
+  "share-copy-json": "Im JSON-Format kopieren",
+  "share-format-copied": "Cocktailrezept kopiert",
+  "share-format-copy-failed": "Das Kopieren des Cocktailrezepts ist fehlgeschlagen",
+  "start-import": "Import starten",
+  "import-type": "Importformat",
+  "type": "Typ",
+  "share-copy-text": "Als Klartext kopieren"
 }

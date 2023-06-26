@@ -244,13 +244,15 @@ export default {
                 this.glassId = parsedScrapeResult.glass_id;
             }
 
-            this.cocktail.images = [
-                {
-                    copyright: parsedScrapeResult.image.copyright,
-                    url: parsedScrapeResult.image.url,
-                    file: parsedScrapeResult.image.url,
-                }
-            ]
+            if (parsedScrapeResult.images.length > 0) {
+                this.cocktail.images = [
+                    {
+                        copyright: parsedScrapeResult.images[0].copyright,
+                        url: parsedScrapeResult.images[0].url,
+                        file: parsedScrapeResult.images[0].url,
+                    }
+                ]
+            }
         }
 
         this.sortable = Sortable.create(document.querySelector('.cocktail-form__ingredients'), {
@@ -297,10 +299,24 @@ export default {
             this.showDialog = false;
         },
         addIngredient() {
+            const userUnit = localStorage.getItem('defaultUnit');
+            let defaultAmount = 30;
+            let defaultUnits = 'ml';
+
+            if (userUnit == 'oz') {
+                defaultAmount = 1
+                defaultUnits = 'oz'
+            }
+
+            if (userUnit == 'cl') {
+                defaultAmount = 3
+                defaultUnits = 'cl'
+            }
+
             let placeholderData = {
                 ingredient_id: null,
-                amount: 30,
-                units: 'ml',
+                amount: defaultAmount,
+                units: defaultUnits,
                 name: this.$t('ingredient.name-placeholder'),
                 sort: this.cocktail.ingredients.length + 1
             };
@@ -322,13 +338,34 @@ export default {
 
             this.cocktailIngredientForEditOriginal = JSON.parse(JSON.stringify(cocktailIngredient));
 
-            const defaultUnit = localStorage.getItem('defaultUnit');
-            if (defaultUnit === 'oz') {
-                cocktailIngredient.amount = Utils.ml2oz(cocktailIngredient.amount);
-                cocktailIngredient.units = 'oz';
-            } else if (defaultUnit === 'cl') {
-                cocktailIngredient.amount = Utils.ml2cl(cocktailIngredient.amount);
-                cocktailIngredient.units = 'cl';
+            const userUnit = localStorage.getItem('defaultUnit');
+            if (userUnit === 'oz') {
+                if (cocktailIngredient.units == 'ml') {
+                    cocktailIngredient.units = 'oz';
+                    cocktailIngredient.amount = Utils.ml2oz(cocktailIngredient.amount);
+                }
+                if (cocktailIngredient.units == 'cl') {
+                    cocktailIngredient.units = 'oz';
+                    cocktailIngredient.amount = Utils.cl2oz(cocktailIngredient.amount);
+                }
+            } else if (userUnit === 'cl') {
+                if (cocktailIngredient.units == 'ml') {
+                    cocktailIngredient.units = 'cl';
+                    cocktailIngredient.amount = Utils.ml2cl(cocktailIngredient.amount);
+                }
+                if (cocktailIngredient.units == 'oz') {
+                    cocktailIngredient.units = 'cl';
+                    cocktailIngredient.amount = Utils.oz2cl(cocktailIngredient.amount);
+                }
+            } else if (userUnit === 'ml') {
+                if (cocktailIngredient.units == 'oz') {
+                    cocktailIngredient.units = 'ml';
+                    cocktailIngredient.amount = Utils.oz2ml(cocktailIngredient.amount);
+                }
+                if (cocktailIngredient.units == 'cl') {
+                    cocktailIngredient.units = 'ml';
+                    cocktailIngredient.amount = Utils.cl2ml(cocktailIngredient.amount);
+                }
             }
 
             this.cocktailIngredientForEdit = cocktailIngredient;

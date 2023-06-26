@@ -1,7 +1,23 @@
+# v1.15.0
+## New
+- You can now copy cocktail recipe details
+    - As JSON for sharing to other Bar Assistant instances
+    - As plain text for general sharing
+- Improved cocktail importing
+    - Added importing from YAML and JSON formats
+- Added support for Meilisearch v1.2
+- Allow fractional amounts without leading zeros #91
+
+## Fixes
+- Fix site search auto focusing on wrong input
+- Fix missing sync between vue router and instantsearch history #87
+- Fix unit/amount converting
+
 # v1.14.1
 ## Fixes
 - Fix translation errors #85
 - Fix opened dialog back interaction #82
+- Fix missing translations on public recipe
 
 # v1.14.0
 ## New

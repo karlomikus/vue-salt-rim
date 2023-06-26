@@ -11,7 +11,7 @@
     "dayjs": "^1.11.7",
     "html-to-image": "^1.11.11",
     "lodash": "^4.17.21",
-    "marked": "^4.1.1",
+    "micromark": "^3.2.0",
     "mitt": "^3.0.0",
     "sortablejs": "^1.15.0",
     "swiper": "^9.0.5",

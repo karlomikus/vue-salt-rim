@@ -33,7 +33,7 @@
     </div>
 </template>
 <script>
-import { marked } from 'marked';
+import {micromark} from 'micromark'
 import ApiRequests from '@/ApiRequests';
 import Utils from "@/Utils";
 
@@ -50,14 +50,14 @@ export default {
                 return null;
             }
 
-            return marked.parse(this.cocktail.description)
+            return micromark(this.cocktail.description)
         },
         parsedInstructions() {
             if (!this.cocktail.instructions) {
                 return null;
             }
 
-            return marked.parse(this.cocktail.instructions)
+            return micromark(this.cocktail.instructions)
         },
     },
     created() {

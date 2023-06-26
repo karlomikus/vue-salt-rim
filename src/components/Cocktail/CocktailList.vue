@@ -2,7 +2,7 @@
     <PageHeader>
         {{ $t('cocktails') }}
         <template #actions>
-            <RouterLink class="button button--outline" :to="{ name: 'cocktails.scrape' }">{{ $t('cocktails.add-from-url') }}</RouterLink>
+            <RouterLink class="button button--outline" :to="{ name: 'cocktails.scrape' }">{{ $t('cocktails.import') }}</RouterLink>
             <RouterLink class="button button--dark" :to="{ name: 'cocktails.form' }">{{ $t('cocktails.add') }}</RouterLink>
         </template>
     </PageHeader>
@@ -136,9 +136,11 @@ import ApiRequests from '@/ApiRequests.js'
 import CocktailGridItem from './CocktailGridItem.vue'
 import CocktailGridContainer from './CocktailGridContainer.vue'
 import PageHeader from '@/components/PageHeader.vue'
+import qs from 'qs';
 
 export default {
     data() {
+        const vueRouter = this.$router
         return {
             searchClient: instantMeiliSearch(
                 Auth.getUserSearchSettings().host,
@@ -150,7 +152,13 @@ export default {
                 }
             ),
             routing: {
-                router: historyRouter(),
+                router: historyRouter({
+                    push(url) {
+                        vueRouter.push({
+                            query: qs.parse((new URL(url)).searchParams.toString())
+                        })
+                    }
+                }),
                 stateMapping: {
                     stateToRoute(uiState) {
                         const indexUiState = uiState['cocktails:name:asc'];
@@ -169,6 +177,10 @@ export default {
                         }
                     },
                     routeToState(routeState) {
+                        if (!routeState) {
+                            return {};
+                        }
+
                         return {
                             ['cocktails:name:asc']: {
                                 query: routeState.q,
@@ -302,10 +314,7 @@ export default {
             }
 
             return items;
-        }
+        },
     }
 }
 </script>
-
-<style scoped>
-</style>

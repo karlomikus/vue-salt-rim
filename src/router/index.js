@@ -1,8 +1,9 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import Auth from '../Auth'
+import qs from 'qs';
 
 const router = createRouter({
-    history: createWebHistory(import.meta.env.BASE_URL),
+    history: createWebHistory(),
     scrollBehavior(to, from, savedPosition) {
         if (savedPosition) {
             return new Promise((resolve, reject) => {
@@ -13,6 +14,14 @@ const router = createRouter({
         } else {
             return { top: 0 }
         }
+    },
+    parseQuery(query) {
+        return qs.parse(query);
+    },
+    stringifyQuery(query) {
+        const result = qs.stringify(query);
+
+        return result ? `${result}` : '';
     },
     routes: [
         // { path: '/:pathMatch(.*)*', name: 'NotFound', component: () => import('../views/404.vue') },

@@ -107,7 +107,7 @@ import ApiRequests from '@/ApiRequests';
 import Auth from '@/Auth.js'
 import Dropdown from '@/components/Dropdown.vue';
 import OverlayLoader from '@/components/OverlayLoader.vue'
-import { marked } from 'marked';
+import {micromark} from 'micromark'
 
 export default {
     data: () => ({
@@ -167,7 +167,7 @@ export default {
                 return null;
             }
 
-            return marked.parse(this.ingredient.description)
+            return micromark(this.ingredient.description)
         },
     },
     methods: {

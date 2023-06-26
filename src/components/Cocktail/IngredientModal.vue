@@ -32,7 +32,7 @@
         <div class="ingredient-form-group">
             <div class="form-group">
                 <label class="form-label" for="ingredient-amount">{{ $t('amount') }}:</label>
-                <input class="form-input" type="text" id="ingredient-amount" v-model="cocktailIngredient.amount">
+                <input class="form-input" type="text" id="ingredient-amount" v-model="normalizedAmount">
             </div>
             <div class="form-group">
                 <label class="form-label" for="ingredient-units">{{ $t('units') }}:</label>
@@ -83,6 +83,20 @@ export default {
     components: {
         OverlayLoader,
         Checkbox
+    },
+    computed: {
+        normalizedAmount: {
+            get() {
+                return this.cocktailIngredient.amount
+            },
+            set(newValue) {
+                if (newValue.startsWith('.')) {
+                    this.cocktailIngredient.amount = '0' + newValue
+                } else {
+                    this.cocktailIngredient.amount = newValue
+                }
+            }
+        }
     },
     methods: {
         selectIngredient(item) {
