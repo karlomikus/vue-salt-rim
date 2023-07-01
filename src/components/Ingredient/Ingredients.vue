@@ -133,10 +133,16 @@ export default {
                         }
                     },
                     routeToState(routeState) {
+                        if (!routeState) {
+                            return {};
+                        }
+
                         return {
                             ['ingredients:name:asc']: {
                                 query: routeState.q,
                                 sortBy: routeState.sort,
+                                bar_shelf: routeState.shelf,
+                                bar_shopping_list: routeState.shopping_list,
                                 refinementList: {
                                     category: routeState.category,
                                     origin: routeState.origin,
@@ -174,6 +180,14 @@ export default {
     },
     created() {
         document.title = `${this.$t('ingredients')} \u22C5 Salt Rim`
+
+        if (this.$route.query.shelf) {
+            this.toggleArrayFiltersConfig('shelf');
+        }
+
+        if (this.$route.query.shopping_list) {
+            this.toggleArrayFiltersConfig('shopping-list');
+        }
 
         ApiRequests.fetchMyShelf().then(data => {
             this.userIngredients = data
