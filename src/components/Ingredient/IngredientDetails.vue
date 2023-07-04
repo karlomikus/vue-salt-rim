@@ -118,7 +118,7 @@ export default {
     }),
     components: {
         Dropdown,
-        OverlayLoader
+        OverlayLoader,
     },
     watch: {
         ingredient(val) {

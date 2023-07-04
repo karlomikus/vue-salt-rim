@@ -1,3 +1,7 @@
+# v1.15.1
+## Fixes
+- Fix vue-router/instantsearch URL syncing #95
+
 # v1.15.0
 ## New
 - You can now copy cocktail recipe details
