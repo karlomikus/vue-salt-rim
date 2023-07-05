@@ -39,13 +39,18 @@ main {
 }
 
 .page-subtitle {
-    --ps-clr-bg: #f7eaef;
+    --ps-clr-bg: #eeeaf7;
+    --ps-clr-text: #6c6380;
     padding: 0.5rem 1rem;
     border-radius: 8px;
     margin: 1rem 0;
-    font-size: 1.2rem;
+    font-size: 0.85rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1px;
     display: flex;
     background: var(--ps-clr-bg);
+    color: var(--ps-clr-text);
 }
 
 .page-subtitle a {

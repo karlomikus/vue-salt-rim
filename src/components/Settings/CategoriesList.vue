@@ -31,7 +31,7 @@
                             <td>
                                 <a href="#" @click.prevent="openDialog($t('category.edit'), category)">{{ category.name }}</a>
                                 <br>
-                                <small>{{ category.description }}</small>
+                                <small>{{ overflowText(category.description, 100) }}</small>
                             </td>
                             <td style="text-align: right;">
                                 <a class="list-group__action" href="#" @click.prevent="deleteCategory(category)">{{ $t('remove') }}</a>
@@ -105,6 +105,13 @@ export default {
                     })
                 }
             });
+        },
+        overflowText(input, len) {
+            if (!input) {
+                return input
+            };
+
+            return input.length > len ? `${input.substring(0, len)}...` : input;
         }
     }
 }

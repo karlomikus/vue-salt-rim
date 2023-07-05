@@ -65,9 +65,7 @@
                             <RouterLink :to="{ name: 'e.cocktail', params: { ulid: cocktail.public_id, slug: cocktail.slug } }" target="_blank">{{ $t('click-here') }}</RouterLink>
                         </div>
                     </div>
-                    <div class="cocktail-details-box__description">
-                        <div v-html="parsedDescription"></div>
-                    </div>
+                    <div class="cocktail-details-box__description" v-html="parsedDescription"></div>
                     <div class="cocktail-details-box__actions">
                         <button type="button" class="button-circle" @click="favorite">
                             <svg v-if="!isFavorited" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
@@ -203,7 +201,9 @@
                     <div style="display: grid; grid-template-columns: 1fr 1fr;">
                         <div class="cocktail-button-group">
                             <h4>{{ $t('servings') }}:</h4>
-                            <button :class="{ 'active-serving': i == servings }" v-for="i in Array.from({ length: 4 }, (x, i) => i + 1)" @click="servings = i">{{ i }}</button>
+                            <button @click="servings <= 1 ? servings = 1 : servings--">-</button>
+                            <button class="active-serving">{{ servings }}</button>
+                            <button @click="servings++">+</button>
                         </div>
                         <div class="cocktail-button-group" style="text-align:right">
                             <h4>{{ $t('units') }}:</h4>
@@ -214,22 +214,28 @@
                     </div>
                     <ul class="cocktail-ingredients">
                         <li v-for="ing in cocktail.ingredients" :key="ing.sort">
-                            <div class="cocktail-ingredients__content">
-                                <RouterLink :to="{ name: 'ingredients.show', params: { id: ing.ingredient_slug } }" data-ingredient="preferred">
-                                    {{ ing.name }}
+                            <div class="cocktail-ingredients__ingredient">
+                                <RouterLink class="cocktail-ingredients__ingredient__name" :to="{ name: 'ingredients.show', params: { id: ing.ingredient_slug } }" data-ingredient="preferred">
+                                    {{ ing.name }} <small v-if="ing.optional">({{ $t('optional') }})</small>
                                 </RouterLink>
-                                <small v-if="ing.optional">(optional)</small>
-                                <div class="cocktail-ingredients__content__substitutes">
-                                    <template v-for="sub in ing.substitutes">
-                                        {{ $t('or').toLowerCase() }} <RouterLink :to="{ name: 'ingredients.show', params: { id: sub.slug } }" data-ingredient="substitute">{{ sub.name }}</RouterLink>
+                                <div class="cocktail-ingredients__ingredient__amount">{{ parseIngredientAmount(ing) }}</div>
+                            </div>
+                            <div class="cocktail-ingredients__flags">
+                                <div class="cocktail-ingredients__flags__flag" v-if="ing.substitutes.length > 0">
+                                    &middot; {{ $t('substitutes') }}:
+                                    <template v-for="(sub, index) in ing.substitutes">
+                                        <RouterLink :to="{ name: 'ingredients.show', params: { id: sub.slug } }" data-ingredient="substitute">{{ sub.name }}</RouterLink>
+                                        <template v-if="index + 1 !== ing.substitutes.length">, </template>
                                     </template>
                                 </div>
-                                <span v-if="!userShelfIngredients.includes(ing.ingredient_id)">{{ $t('cocktail.missing-ing') }}</span>
-                                <span v-if="userShoppingListIngredients.includes(ing.ingredient_id)">{{ $t('ingredient.on-shopping-list') }}</span>
+                                <div class="cocktail-ingredients__flags__flag" v-if="!userShelfIngredients.includes(ing.ingredient_id)">&middot; {{ $t('cocktail.missing-ing') }}</div>
+                                <div class="cocktail-ingredients__flags__flag" v-if="userShoppingListIngredients.includes(ing.ingredient_id)">&middot; {{ $t('ingredient.on-shopping-list') }}</div>
                             </div>
-                            <div class="cocktail-ingredients__amount">{{ parseIngredientAmount(ing) }}</div>
                         </li>
                     </ul>
+                    <!-- <div class="cocktail-ingredients__total-amount">
+                        Total: ~{{ totalLiquid }}
+                    </div> -->
                     <a v-show="missingIngredientIds.length > 0" href="#" @click.prevent="addMissingIngredients">{{ $t('cocktail.missing-ing-action') }}</a>
                 </div>
                 <div class="details-block-container details-block-container--yellow">
@@ -338,6 +344,13 @@ export default {
             const date = dayjs(this.cocktail.created_at).toDate();
 
             return this.$d(date, 'long');
+        },
+        totalLiquid() {
+            const amount = this.cocktail.ingredients.filter(ing => ['ml', 'cl', 'oz'].includes(ing.units)).reduce((acc, ing) => {
+                return parseFloat(ing.amount) + acc
+            }, 0) * this.servings;
+
+            return Utils.printIngredientAmount({amount: amount, units: 'ml'}, this.currentUnit, this.servings);
         }
     },
     created() {
@@ -444,14 +457,10 @@ export default {
 
 .cocktail-details__main {
     display: flex;
-    /* grid-template-columns: 3fr 1fr; */
     gap: 1rem;
 }
 
 .cocktail-details__main__content {
-    /* max-width: var(--site-width);
-    width: 100%; */
-    /* margin: 0 auto; */
     flex-basis: 100%;
     isolation: isolate;
 }
@@ -465,6 +474,15 @@ export default {
         --cocktail-graphic-height: 500px;
         --swiper-navigation-size: 1.5rem;
         --swiper-pagination-bullet-size: 0.45rem;
+    }
+}
+
+@media (max-width: 800px) {
+    .cocktail-details__main {
+        display: block;
+    }
+    .cocktail-details__main__aside {
+        margin-top: 2rem;
     }
 }
 
@@ -485,6 +503,8 @@ export default {
 
 .cocktail-details__title {
     margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid var(--clr-red-200);
 }
 
 .cocktail-details__title h2 {
@@ -497,7 +517,8 @@ export default {
 
 .cocktail-details__title p {
     font-size: 0.85rem;
-    opacity: .6;
+    color: var(--clr-dark-main-800);
+    opacity: .5;
 }
 
 .cocktail-details__graphic__copyright {
@@ -531,32 +552,36 @@ export default {
     --ci-clr-list-bg: rgba(0, 0, 0, .4);
 }
 
+.cocktail-ingredients__total-amount {
+    text-align: right;
+    font-weight: bold;
+    font-size: 0.85rem;
+}
+
 .cocktail-ingredients li {
-    display: flex;
-    align-items: center;
     background-color: var(--ci-clr-list-bg);
     border-radius: 4px;
-    margin-bottom: 10px;
-    padding: 5px 10px;
+    margin-bottom: 0.5rem;
+    padding: 0.5rem 0.75rem;
 }
 
-.cocktail-ingredients li .cocktail-ingredients__content small {
-    color: var(--clr-red-800);
-    margin-left: 5px;
+.cocktail-ingredients__ingredient {
+    display: flex;
 }
 
-.cocktail-ingredients li .cocktail-ingredients__content span {
-    display: block;
+.cocktail-ingredients__flags {
     font-size: 0.7rem;
-    color: var(--clr-gray-500);
 }
 
-.cocktail-ingredients li .cocktail-ingredients__content .cocktail-ingredients__content__substitutes {
-    font-size: 0.7rem;
-    color: var(--clr-gray-500);
+.cocktail-ingredients__ingredient__name {
+    font-weight: 700;
 }
 
-.cocktail-ingredients li .cocktail-ingredients__amount {
+.cocktail-ingredients__ingredient__name small {
+    font-size: 0.70rem;
+}
+
+.cocktail-ingredients__ingredient__amount {
     font-weight: 700;
     font-size: 1.2rem;
     margin-left: auto;
@@ -565,7 +590,7 @@ export default {
 }
 
 @media (max-width: 450px) {
-    .cocktail-ingredients li .cocktail-ingredients__amount {
+    .cocktail-ingredients__ingredient__amount {
         font-size: 1rem;
     }
 }
@@ -577,11 +602,6 @@ export default {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
     column-gap: 5px;
-}
-
-.cocktail-details-box__description {
-    /* overflow-y: auto;
-    max-height: 150px; */
 }
 
 .cocktail-button-group {
