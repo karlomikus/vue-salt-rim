@@ -271,5 +271,6 @@
   "import-type": "Format uvoza",
   "type": "Tip",
   "share-copy-text": "Kopiraj kao običan tekst",
-  "cocktails-similar": "Slični kokteli"
+  "cocktails-similar": "Slični kokteli",
+  "no-cocktails": "Nisu pronađeni kokteli"
 }

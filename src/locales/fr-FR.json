@@ -267,5 +267,6 @@
   "import-type": "Format d'importation",
   "type": "Taper",
   "share-copy-text": "Copier en texte brut",
-  "cocktails-similar": "Cocktails similaires"
+  "cocktails-similar": "Cocktails similaires",
+  "no-cocktails": "Aucun cocktail trouvé"
 }

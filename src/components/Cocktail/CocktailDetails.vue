@@ -466,7 +466,7 @@ export default {
 }
 
 .cocktail-details__main__aside {
-    flex-basis: 100px;
+    flex-basis: 300px;
 }
 
 @media (max-width: 450px) {

@@ -270,5 +270,6 @@
   "import-type": "Importformat",
   "type": "Typ",
   "share-copy-text": "Als Klartext kopieren",
-  "cocktails-similar": "Ähnliche Cocktails"
+  "cocktails-similar": "Ähnliche Cocktails",
+  "no-cocktails": "Keine Cocktails gefunden"
 }

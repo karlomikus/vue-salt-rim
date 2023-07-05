@@ -4,6 +4,9 @@
         <CocktailListContainer v-if="similarCocktails.length > 0" v-slot="observer">
             <CocktailListItem v-for="cocktail in similarCocktails" :cocktail="cocktail" :key="cocktail.id" :observer="observer" />
         </CocktailListContainer>
+        <div v-else class="empty-state">
+            <p>{{ $t('no-cocktails') }}</p>
+        </div>
     </div>
 </template>
 <script>

@@ -277,5 +277,6 @@
     "add-cocktail": "Add cocktail to collection",
     "collection": "Collection",
     "create": "Create a new collection"
-  }
+  },
+  "no-cocktails": "No cocktails found"
 }
