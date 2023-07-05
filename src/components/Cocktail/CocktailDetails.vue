@@ -254,6 +254,8 @@
             <div class="cocktail-details__main__aside">
                 <h3 class="page-subtitle" style="margin-top: 0">{{ $t('cocktails-similar') }}</h3>
                 <SimilarCocktails :cocktail="cocktail"></SimilarCocktails>
+                <h3 class="page-subtitle">{{ $t('ingredient-spotlight') }}</h3>
+                <IngredientSpotlight :id="cocktail.ingredients[0].ingredient_id"></IngredientSpotlight>
                 <!-- <h3 class="page-subtitle">{{ $t('cocktail-collections') }}</h3>
                 <CocktailCollections :cocktail="cocktail"></CocktailCollections> -->
             </div>
@@ -277,6 +279,7 @@ import NoteDialog from '@/components/NoteDialog.vue'
 import PublicLinkDialog from '@/components/Cocktail/PublicLinkDialog.vue'
 import ImageDialog from './ImageDialog.vue';
 import SimilarCocktails from './SimilarCocktails.vue';
+import IngredientSpotlight from './../Ingredient/IngredientSpotlight.vue';
 import CocktailCollections from './CocktailCollections.vue';
 import CollectionDialog from './CollectionDialog.vue';
 import dayjs from 'dayjs'
@@ -309,6 +312,7 @@ export default {
         SimilarCocktails,
         CollectionDialog,
         CocktailCollections,
+        IngredientSpotlight,
     },
     computed: {
         parsedInstructions() {
@@ -507,6 +511,10 @@ export default {
     border-bottom: 2px solid var(--clr-red-200);
 }
 
+.dark-theme .cocktail-details__title {
+    border-bottom: 2px solid var(--clr-dark-main-800);
+}
+
 .cocktail-details__title h2 {
     font-family: var(--font-heading);
     font-size: 2.5rem;
@@ -519,6 +527,10 @@ export default {
     font-size: 0.85rem;
     color: var(--clr-dark-main-800);
     opacity: .5;
+}
+
+.dark-theme .cocktail-details__title p {
+    color: var(--clr-gray-300);
 }
 
 @media (max-width: 450px) {

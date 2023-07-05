@@ -278,5 +278,6 @@
     "collection": "Collection",
     "create": "Create a new collection"
   },
-  "no-cocktails": "No cocktails found"
+  "no-cocktails": "No cocktails found",
+  "ingredient-spotlight": "Ingredient spotlight"
 }
