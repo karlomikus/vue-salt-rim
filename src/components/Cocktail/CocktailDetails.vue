@@ -521,6 +521,12 @@ export default {
     opacity: .5;
 }
 
+@media (max-width: 450px) {
+    .cocktail-details__title h2 {
+        font-size: 2rem;
+    }
+}
+
 .cocktail-details__graphic__copyright {
     position: absolute;
     top: 1rem;
