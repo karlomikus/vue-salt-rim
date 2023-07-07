@@ -232,7 +232,7 @@ export default {
         PageHeader
     },
     created() {
-        document.title = `${this.$t('cocktails')} \u22C5 Salt Rim`
+        document.title = `${this.$t('cocktails')} \u22C5 ${this.site_title}`
 
         if (this.$route.query.favorites) {
             this.toggleArrayFiltersConfig('favorites');

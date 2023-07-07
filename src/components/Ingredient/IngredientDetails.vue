@@ -118,11 +118,11 @@ export default {
     }),
     components: {
         Dropdown,
-        OverlayLoader
+        OverlayLoader,
     },
     watch: {
         ingredient(val) {
-            document.title = `${val.name} \u22C5 Salt Rim`
+            document.title = `${val.name} \u22C5 ${this.site_title}`
         }
     },
     created() {

@@ -38,7 +38,7 @@
                 </div>
                 <div class="form-group">
                     <label for="description">{{ $t('description') }}</label>
-                    <textarea class="form-input" rows="2" id="description" v-model="result.description"></textarea>
+                    <textarea class="form-input" rows="4" id="description" v-model="result.description"></textarea>
                 </div>
                 <div class="form-group">
                     <label for="source">{{ $t('source') }}</label>
@@ -50,7 +50,15 @@
                 </div>
                 <div class="form-group">
                     <label for="instructions">{{ $t('instructions') }}</label>
-                    <textarea class="form-input" rows="2" id="instructions" v-model="result.instructions"></textarea>
+                    <textarea class="form-input" rows="4" id="instructions" v-model="result.instructions"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="garnish">{{ $t('garnish') }}</label>
+                    <textarea class="form-input" rows="3" id="garnish" v-model="result.garnish"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="method">{{ $t('method') }}</label>
+                    <input type="text" class="form-input" id="method" v-model="result.method">
                 </div>
                 <template v-for="image in result.images">
                     <div class="form-group">
@@ -119,7 +127,7 @@ export default {
         Checkbox
     },
     created() {
-        document.title = `Cocktail Scraping \u22C5 Salt Rim`
+        document.title = `Cocktail Scraping \u22C5 ${this.site_title}`
     },
     computed: {
         cocktailTags: {

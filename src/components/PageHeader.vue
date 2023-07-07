@@ -14,7 +14,7 @@
     --sph-clr-border: var(--clr-red-200);
     display: flex;
     flex-wrap: wrap;
-    border-bottom: 3px solid var(--sph-clr-border);
+    border-bottom: 2px solid var(--sph-clr-border);
     padding-bottom: 1rem;
     margin-bottom: 1rem;
     align-items: center;

@@ -115,7 +115,7 @@ export default {
         PageHeader,
     },
     created() {
-        document.title = `${this.$t('shelf.title')} \u22C5 Salt Rim`
+        document.title = `${this.$t('shelf.title')} \u22C5 ${this.site_title}`
 
         this.loaders.favorites = true;
         this.loaders.cocktails = true;

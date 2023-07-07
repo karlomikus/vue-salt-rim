@@ -270,5 +270,14 @@
   "start-import": "Start import",
   "import-type": "Import format",
   "type": "Type",
-  "share-copy-text": "Copy as plain text"
+  "share-copy-text": "Copy as plain text",
+  "cocktails-similar": "Similar cocktails",
+  "collections": {
+    "add-to": "Add to collection",
+    "add-cocktail": "Add cocktail to collection",
+    "collection": "Collection",
+    "create": "Create a new collection"
+  },
+  "no-cocktails": "No cocktails found",
+  "ingredient-spotlight": "Ingredient spotlight"
 }

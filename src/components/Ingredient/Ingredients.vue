@@ -179,7 +179,7 @@ export default {
         PageHeader
     },
     created() {
-        document.title = `${this.$t('ingredients')} \u22C5 Salt Rim`
+        document.title = `${this.$t('ingredients')} \u22C5 ${this.site_title}`
 
         if (this.$route.query.shelf) {
             this.toggleArrayFiltersConfig('shelf');

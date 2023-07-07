@@ -86,7 +86,7 @@ export default {
         IngredientFinder
     },
     created() {
-        document.title = `${this.$t('ingredient')} \u22C5 Salt Rim`
+        document.title = `${this.$t('ingredient')} \u22C5 ${this.site_title}`
 
         this.ingredientId = this.$route.query.id || null;
 
@@ -98,7 +98,7 @@ export default {
                 this.ingredient = data;
                 this.isParent = this.ingredient.parent_ingredient != null;
 
-                document.title = `${this.$t('ingredient')} \u22C5 ${this.ingredient.name} \u22C5 Salt Rim`
+                document.title = `${this.$t('ingredient')} \u22C5 ${this.ingredient.name} \u22C5 ${this.site_title}`
                 this.isLoading = false;
             })
         }

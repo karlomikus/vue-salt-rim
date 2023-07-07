@@ -70,7 +70,7 @@ export default {
         }
     },
     created() {
-        document.title = `${this.$t('glass-types')} \u22C5 Salt Rim`
+        document.title = `${this.$t('glass-types')} \u22C5 ${this.site_title}`
 
         this.refreshGlasses()
     },

@@ -171,6 +171,12 @@ class ApiRequests
         return await (await f).text();
     }
 
+    static async fetchSimilarCocktails(id) {
+        let jsonResp = await this.getRequest(`/api/cocktails/${id}/similar`);
+
+        return this.parseResponse(jsonResp);
+    }
+
     /**
      * =============================
      * Ingredient Categories
@@ -573,6 +579,38 @@ class ApiRequests
 
     static async deleteNote(id) {
         return await this.deleteRequest(`/api/notes/${id}`);
+    }
+
+    /**
+     * =============================
+     * Collections
+     * =============================
+     */
+
+    static async fetchCollections(query = {}) {
+        const queryString = this.generateBAQueryString(query);
+
+        let jsonResp = await this.getRequest(`/api/collections${queryString}`);
+
+        return this.parseResponse(jsonResp);
+    }
+
+    static async saveCollection(data) {
+        let jsonResp = await this.postRequest(`/api/collections`, data);
+
+        return this.parseResponse(jsonResp);
+    }
+
+    static async updateCollection(id, data) {
+        let jsonResp = await this.postRequest(`/api/collections/${id}`, data, 'PUT');
+
+        return this.parseResponse(jsonResp);
+    }
+
+    static async putCocktailInCollection(collectionId, cocktailId) {
+        let jsonResp = await this.postRequest(`/api/collections/${collectionId}/cocktails/${cocktailId}`, {}, 'PUT');
+
+        return this.parseResponse(jsonResp);
     }
 }
 

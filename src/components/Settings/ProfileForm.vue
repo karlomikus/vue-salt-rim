@@ -60,7 +60,7 @@ export default {
         PageHeader
     },
     created() {
-        document.title = `${this.$t('profile')} \u22C5 Salt Rim`
+        document.title = `${this.$t('profile')} \u22C5 ${this.site_title}`
 
         this.isLoading = true;
 
