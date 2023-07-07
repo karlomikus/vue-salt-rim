@@ -358,7 +358,7 @@ export default {
         }
     },
     created() {
-        document.title = `${this.$t('cocktail')} \u22C5 Salt Rim`
+        document.title = `${this.$t('cocktail')} \u22C5 ${this.site_title}`
         this.$watch(
             () => this.$route.params,
             () => {
@@ -377,7 +377,7 @@ export default {
             ApiRequests.fetchCocktail(this.$route.params.id).then(data => {
                 this.cocktail = data
                 this.isFavorited = Auth.getUser().favorite_cocktails.includes(this.cocktail.id);
-                document.title = `${this.cocktail.name} \u22C5 Salt Rim`
+                document.title = `${this.cocktail.name} \u22C5 ${this.site_title}`
             }).catch(e => {
                 this.$toast.error(e.message);
             })

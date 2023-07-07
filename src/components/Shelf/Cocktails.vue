@@ -33,7 +33,7 @@ export default {
         PageHeader,
     },
     created() {
-        document.title = `Cocktails you can make \u22C5 Salt Rim`
+        document.title = `Cocktails you can make \u22C5 ${this.site_title}`
 
         this.isLoading = true;
 

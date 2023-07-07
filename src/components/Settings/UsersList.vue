@@ -79,7 +79,7 @@ export default {
         }
     },
     created() {
-        document.title = `${this.$t('users')} \u22C5 Salt Rim`
+        document.title = `${this.$t('users')} \u22C5 ${this.site_title}`
 
         this.refreshUsers()
     },

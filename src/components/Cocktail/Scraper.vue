@@ -119,7 +119,7 @@ export default {
         Checkbox
     },
     created() {
-        document.title = `Cocktail Scraping \u22C5 Salt Rim`
+        document.title = `Cocktail Scraping \u22C5 ${this.site_title}`
     },
     computed: {
         cocktailTags: {

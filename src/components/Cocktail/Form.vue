@@ -206,7 +206,7 @@ export default {
         }
     },
     created() {
-        document.title = `${this.$t('cocktail')} \u22C5 Salt Rim`
+        document.title = `${this.$t('cocktail')} \u22C5 ${this.site_title}`
 
         this.isLoading = true;
         this.cocktailId = this.$route.query.id || null;
@@ -218,7 +218,7 @@ export default {
                 data.garnish = Utils.decodeHtml(data.garnish);
                 this.cocktail = data;
                 this.isLoading = false;
-                document.title = `${this.$t('cocktail')} \u22C5 ${this.cocktail.name} \u22C5 Salt Rim`
+                document.title = `${this.$t('cocktail')} \u22C5 ${this.cocktail.name} \u22C5 ${this.site_title}`
             })
         }
 
