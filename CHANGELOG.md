@@ -1,3 +1,10 @@
+# v1.16.0
+## New
+- Added cocktail details sidebar
+    - Added similar cocktails
+    - Added ingredient spotlight
+- Use custom bar name if set in window titles #94
+
 # v1.15.1
 ## Fixes
 - Fix vue-router/instantsearch URL syncing #95
