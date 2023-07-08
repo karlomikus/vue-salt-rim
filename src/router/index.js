@@ -58,6 +58,11 @@ const router = createRouter({
                     component: () => import('../views/CocktailsView.vue'),
                 },
                 {
+                    path: '/cocktails-server',
+                    name: 'cocktails-server',
+                    component: () => import('../views/CocktailsServerView.vue'),
+                },
+                {
                     path: '/cocktails/form',
                     name: 'cocktails.form',
                     component: () => import('../views/CocktailsFormView.vue'),

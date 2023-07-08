@@ -35,9 +35,19 @@ export default {
     },
     computed: {
         placeholderImage() {
-            return thumbHashToDataURL(
-                Uint8Array.from(atob(this.cocktail.image_hash), c => c.charCodeAt(0))
-            );
+            if (this.cocktail.image_hash) {
+                return thumbHashToDataURL(
+                    Uint8Array.from(atob(this.cocktail.image_hash), c => c.charCodeAt(0))
+                );
+            }
+
+            if (this.cocktail.images && this.cocktail.images.length > 0) {
+                return thumbHashToDataURL(
+                    Uint8Array.from(atob(this.cocktail.images.filter((img) => img.id == this.cocktail.main_image_id)[0].placeholder_hash), c => c.charCodeAt(0))
+                );
+            }
+
+            return '';
         },
         isFavorited() {
             const user = Auth.getUser();
@@ -45,11 +55,15 @@ export default {
             return user.favorite_cocktails.includes(this.cocktail.id);
         },
         mainCocktailImageUrl() {
-            if (!this.cocktail.image_url) {
-                return '/no-cocktail.jpg';
+            if (this.cocktail.image_url) {
+                return ApiRequests.imageThumbUrl(this.cocktail.main_image_id);
             }
 
-            return ApiRequests.imageThumbUrl(this.cocktail.main_image_id);
+            if (this.cocktail.images && this.cocktail.images.length > 0) {
+                return ApiRequests.imageThumbUrl(this.cocktail.main_image_id);
+            }
+
+            return '/no-cocktail.jpg';
         }
     }
 }

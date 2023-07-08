@@ -87,7 +87,7 @@ class ApiRequests
 
         let jsonResp = await this.getRequest(`/api/cocktails${q}`);
 
-        return this.parseResponse(jsonResp);
+        return jsonResp;
     }
 
     static async fetchUserCocktails(userId) {

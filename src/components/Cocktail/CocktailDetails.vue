@@ -254,8 +254,10 @@
             <div class="cocktail-details__main__aside">
                 <h3 class="page-subtitle" style="margin-top: 0">{{ $t('cocktails-similar') }}</h3>
                 <SimilarCocktails :cocktail="cocktail"></SimilarCocktails>
-                <h3 class="page-subtitle">{{ $t('ingredient-spotlight') }}</h3>
-                <IngredientSpotlight :id="cocktail.ingredients[0].ingredient_id"></IngredientSpotlight>
+                <template v-if="cocktail.ingredients.length > 0">
+                    <h3 class="page-subtitle">{{ $t('ingredient-spotlight') }}</h3>
+                    <IngredientSpotlight :id="cocktail.ingredients[0].ingredient_id"></IngredientSpotlight>
+                </template>
                 <!-- <h3 class="page-subtitle">{{ $t('cocktail-collections') }}</h3>
                 <CocktailCollections :cocktail="cocktail"></CocktailCollections> -->
             </div>

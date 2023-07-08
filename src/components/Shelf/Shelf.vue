@@ -121,17 +121,17 @@ export default {
         this.loaders.cocktails = true;
         this.loaders.stats = true;
 
-        ApiRequests.fetchCocktails({'filter[favorites]': true, per_page: this.maxItems, sort: '-favorited_at'}).then(data => {
+        ApiRequests.fetchCocktails({'filter[favorites]': true, per_page: this.maxItems, sort: '-favorited_at'}).then(resp => {
             this.loaders.favorites = false;
-            this.favoriteCocktails = data
+            this.favoriteCocktails = resp.data
         }).catch(e => {
             this.loaders.favorites = false;
             this.$toast.error(this.$t('shelf.toasts.favorites-error'));
         })
 
-        ApiRequests.fetchCocktails({per_page: this.maxItems, sort: '-created_at'}).then(data => {
+        ApiRequests.fetchCocktails({per_page: this.maxItems, sort: '-created_at'}).then(resp => {
             this.loaders.cocktails = false;
-            this.latestCocktails = data
+            this.latestCocktails = resp.data
         }).catch(e => {
             this.loaders.cocktails = false;
             this.$toast.error(this.$t('shelf.toasts.shelf-error'));

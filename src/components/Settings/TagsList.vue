@@ -30,6 +30,8 @@
                         <tr v-for="tag in tags">
                             <td>
                                 <a href="#" @click.prevent="openDialog($t('tag.edit'), tag)">{{ tag.name }}</a>
+                                <br>
+                                <small>{{ $t('cocktails') }}: {{ tag.cocktails_count }}</small>
                             </td>
                             <td style="text-align: right;">
                                 <a class="list-group__action" href="#" @click.prevent="deleteTag(tag)">{{ $t('remove') }}</a>

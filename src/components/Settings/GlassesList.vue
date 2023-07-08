@@ -31,7 +31,7 @@
                             <td>
                                 <a href="#" @click.prevent="openDialog($t('glass-type.edit'), glass)">{{ glass.name }}</a>
                                 <br>
-                                <small>{{ glass.description }}</small>
+                                <small>{{ $t('cocktails') }}: {{ glass.cocktails_count }} &middot; {{ glass.description }}</small>
                             </td>
                             <td style="text-align: right;">
                                 <a class="list-group__action" href="#" @click.prevent="deleteGlass(glass)">{{ $t('remove') }}</a>
