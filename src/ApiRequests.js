@@ -1,3 +1,5 @@
+import qs from 'qs';
+
 class ApiRequests
 {
     static getUrl() {
@@ -83,7 +85,10 @@ class ApiRequests
      */
 
     static async fetchCocktails(queryParams = {}) {
-        const q = this.generateBAQueryString(queryParams);
+        let q = '';
+        if (Object.keys(queryParams).length > 0) {
+            q = '?' + qs.stringify(queryParams);
+        }
 
         let jsonResp = await this.getRequest(`/api/cocktails${q}`);
 

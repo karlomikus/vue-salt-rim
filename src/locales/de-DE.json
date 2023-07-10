@@ -272,5 +272,7 @@
   "share-copy-text": "Als Klartext kopieren",
   "cocktails-similar": "Ähnliche Cocktails",
   "no-cocktails": "Keine Cocktails gefunden",
-  "ingredient-spotlight": "Hauptzutat"
+  "ingredient-spotlight": "Hauptzutat",
+  "global": "Global",
+  "none": "Keiner"
 }
