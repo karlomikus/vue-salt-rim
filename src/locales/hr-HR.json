@@ -275,5 +275,10 @@
   "no-cocktails": "Nisu pronađeni kokteli",
   "ingredient-spotlight": "Glavni sastojak",
   "global": "Globalno",
-  "none": "Nijedan"
+  "none": "Nijedan",
+  "date-added": "Datum uređivanja",
+  "date-favorited": "Datum favoriziranja",
+  "average-rating": "Prosječna ocjena",
+  "missing-ingredients": "Nedostajali sastojci",
+  "user-rating": "Korisnička ocijena"
 }

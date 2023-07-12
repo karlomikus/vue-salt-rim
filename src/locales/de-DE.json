@@ -274,5 +274,10 @@
   "no-cocktails": "Keine Cocktails gefunden",
   "ingredient-spotlight": "Hauptzutat",
   "global": "Global",
-  "none": "Keiner"
+  "none": "Keiner",
+  "date-added": "Datum hinzugefügt",
+  "date-favorited": "Datum als Favorit",
+  "average-rating": "Durchschnittliche Bewertung",
+  "missing-ingredients": "Fehlende Zutaten",
+  "user-rating": "Benutzer-Bewertung"
 }

@@ -9,15 +9,15 @@
                 <h3 class="page-subtitle" style="margin-top: 0">{{ $t('filters') }}</h3>
                 <Refinement :title="$t('global')" id="global">
                     <div class="cocktails-search__refinements__refinement__item" v-for="filter in availableRefinements.global">
-                        <input type="checkbox" :id="'global-' + filter.id" :value="filter.active" v-model="filters[filter.id]">
+                        <input type="checkbox" :id="'global-' + filter.id" :value="filter.active" v-model="activeFilters[filter.id]">
                         <label :for="'global-' + filter.id">{{ filter.name }}</label>
                     </div>
                 </Refinement>
-                <Refinement :title="$t('method')" :refinements="refineMethods" id="method" v-model="filters.methods"></Refinement>
-                <Refinement :title="$t('strength')" :refinements="refineABV" id="abv" v-model="filters.abv" type="radio"></Refinement>
-                <Refinement :title="$t('tags')" :refinements="refineTags" id="tag" v-model="filters.tags"></Refinement>
-                <Refinement :title="$t('glass-type')" :refinements="refineGlasses" id="glass" v-model="filters.glasses"></Refinement>
-                <Refinement :title="$t('rating')" :refinements="refineRatings" id="user-rating" v-model="filters.user_rating"></Refinement>
+                <Refinement :title="$t('method')" :refinements="refineMethods" id="method" v-model="activeFilters.methods"></Refinement>
+                <Refinement :title="$t('strength')" :refinements="refineABV" id="abv" v-model="activeFilters.abv" type="radio"></Refinement>
+                <Refinement :title="$t('tags')" :refinements="refineTags" id="tag" v-model="activeFilters.tags"></Refinement>
+                <Refinement :title="$t('glass-type')" :refinements="refineGlasses" id="glass" v-model="activeFilters.glasses"></Refinement>
+                <Refinement :title="$t('rating')" :refinements="refineRatings" id="user-rating" v-model="activeFilters.user_rating"></Refinement>
             </div>
             <div class="cocktails-search__content">
                 <div class="cocktails-search__content__filter">
@@ -29,17 +29,18 @@
                     </button>
                     <input class="form-input" type="text" :placeholder="$t('placeholder.search-cocktails')" v-model="searchQuery" style="flex-basis: 100%;" @input="debounceQuery">
                     <select class="form-select" v-model="sort">
+                        <option disabled>{{ $t('sort') }}:</option>
                         <option value="name">{{ $t('name') }}</option>
-                        <option value="created_at">Date added</option>
-                        <option value="favorited_at">Date favorited</option>
-                        <option value="average_rating">Average rating</option>
-                        <option value="missing_ingredients">Missing ingredients</option>
-                        <option value="user_rating">User rating</option>
-                        <option value="abv">ABV</option>
+                        <option value="created_at">{{ $t('date-added') }}</option>
+                        <option value="favorited_at">{{ $t('date-favorited') }}</option>
+                        <option value="average_rating">{{ $t('average-rating') }}</option>
+                        <option value="missing_ingredients">{{ $t('missing-ingredients') }}</option>
+                        <option value="user_rating">{{ $t('user-rating') }}</option>
+                        <option value="abv">{{ $t('ABV') }}</option>
                     </select>
                     <select class="form-select" v-model="sort_dir">
-                        <option value="">Ascending</option>
-                        <option value="-">Descending</option>
+                        <option value="">{{ $t('sort-asc') }}</option>
+                        <option value="-">{{ $t('sort-desc') }}</option>
                     </select>
                     <select class="form-select" v-model="per_page">
                         <option value="25">25</option>
@@ -55,10 +56,10 @@
                 </CocktailGridContainer>
                 <div class="cocktails-search__content__pagination">
                     <div class="cocktails-search__content__pagination__page_info">
-                        Showing {{ meta.to || 0 }}/{{ meta.total }} results
+                        {{ $t('pagination.results', {'on_page_results': meta.to || 0, total_results: meta.total}) }}
                     </div>
                     <div class="cocktails-search__content__pagination__links">
-                        <button type="button" class="button button--outline" @click="changePage('prev')">Prev</button> Page {{ meta.current_page }}/{{ meta.last_page }} <button type="button" class="button button--outline" @click="changePage('next')">Next</button>
+                        <button type="button" class="button button--input" @click="changePage('prev')"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path d="M10.8284 12.0007L15.7782 16.9504L14.364 18.3646L8 12.0007L14.364 5.63672L15.7782 7.05093L10.8284 12.0007Z"></path></svg></button> {{ $t('page') }} {{ meta.current_page }}/{{ meta.last_page }} <button type="button" class="button button--input" @click="changePage('next')"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path d="M13.1714 12.0007L8.22168 7.05093L9.63589 5.63672L15.9999 12.0007L9.63589 18.3646L8.22168 16.9504L13.1714 12.0007Z"></path></svg></button>
                     </div>
                 </div>
             </div>
@@ -108,8 +109,7 @@ export default {
                 methods: [],
             },
             per_page: 25,
-            filters: {
-                global: [],
+            activeFilters: {
                 on_shelf: false,
                 favorites: false,
                 is_public: false,
@@ -131,7 +131,7 @@ export default {
         Refinement
     },
     watch: {
-        filters: {
+        activeFilters: {
             handler() {
                 this.refreshRouteQuery()
             },
@@ -260,14 +260,14 @@ export default {
             const state = qs.parse(this.$route.query);
 
             if (state.filter) {
-                this.filters.tags = state.filter.tag_id ? state.filter.tag_id.split(',') : []
-                this.filters.methods = state.filter.cocktail_method_id ? state.filter.cocktail_method_id.split(',') : []
-                this.filters.glasses = state.filter.glass_id ? state.filter.glass_id.split(',') : []
-                this.filters.on_shelf = state.filter.on_shelf ? state.filter.on_shelf : null
-                this.filters.favorites = state.filter.favorites ? state.filter.favorites : null
-                this.filters.is_public = state.filter.is_public ? state.filter.is_public : null
-                this.filters.user_id = state.filter.user_id ? true : null
-                this.filters.user_rating = state.filter.user_rating_min ? state.filter.user_rating_min : null
+                this.activeFilters.tags = state.filter.tag_id ? state.filter.tag_id.split(',') : []
+                this.activeFilters.methods = state.filter.cocktail_method_id ? state.filter.cocktail_method_id.split(',') : []
+                this.activeFilters.glasses = state.filter.glass_id ? state.filter.glass_id.split(',') : []
+                this.activeFilters.on_shelf = state.filter.on_shelf ? state.filter.on_shelf : null
+                this.activeFilters.favorites = state.filter.favorites ? state.filter.favorites : null
+                this.activeFilters.is_public = state.filter.is_public ? state.filter.is_public : null
+                this.activeFilters.user_id = state.filter.user_id ? true : null
+                this.activeFilters.user_rating = state.filter.user_rating_min ? state.filter.user_rating_min : null
                 this.searchQuery = state.filter.name ? state.filter.name : null
             }
 
@@ -298,16 +298,16 @@ export default {
 
             const filters = {
                 name: (this.searchQuery != null && this.searchQuery != '') ? this.searchQuery : null,
-                on_shelf: this.filters.on_shelf,
-                favorites: this.filters.favorites,
-                is_public: this.filters.is_public,
-                user_id: this.filters.user_id ? Auth.getUser().id : null,
-                user_rating_min: this.filters.user_rating ? this.filters.user_rating : null,
-                tag_id: this.filters.tags.length > 0 ? this.filters.tags.join(',') : null,
-                glass_id: this.filters.glasses.length > 0 ? this.filters.glasses.join(',') : null,
-                cocktail_method_id: this.filters.methods.length > 0 ? this.filters.methods.join(',') : null,
-                abv_min: this.filters.abv ? this.filters.abv.min : null,
-                abv_max: this.filters.abv ? this.filters.abv.max : null,
+                on_shelf: this.activeFilters.on_shelf,
+                favorites: this.activeFilters.favorites,
+                is_public: this.activeFilters.is_public,
+                user_id: this.activeFilters.user_id ? Auth.getUser().id : null,
+                user_rating_min: this.activeFilters.user_rating ? this.activeFilters.user_rating : null,
+                tag_id: this.activeFilters.tags.length > 0 ? this.activeFilters.tags.join(',') : null,
+                glass_id: this.activeFilters.glasses.length > 0 ? this.activeFilters.glasses.join(',') : null,
+                cocktail_method_id: this.activeFilters.methods.length > 0 ? this.activeFilters.methods.join(',') : null,
+                abv_min: this.activeFilters.abv ? this.activeFilters.abv.min : null,
+                abv_max: this.activeFilters.abv ? this.activeFilters.abv.max : null,
             };
 
             query.filter = Object.fromEntries(Object.entries(filters).filter(([_, v]) => v !== null && v !== false));
