@@ -3,33 +3,36 @@
         {{ $t('cocktails') }}
     </PageHeader>
     <p class="page-description" style="margin-bottom: 2rem;">{{ $t('cocktails.page.description') }}</p>
-    <div class="cocktails-search-wrapper">
+    <div class="resource-search-wrapper">
         <OverlayLoader v-if="isLoading" />
-        <div class="cocktails-search">
-            <div class="cocktails-search__refinements" v-show="showRefinements">
-                <h3 class="page-subtitle" style="margin-top: 0">{{ $t('filters') }}</h3>
-                <Refinement :title="$t('global')" id="global">
-                    <div class="cocktails-search__refinements__refinement__item" v-for="filter in availableRefinements.global">
-                        <input type="checkbox" :id="'global-' + filter.id" :value="filter.active" v-model="activeFilters[filter.id]">
-                        <label :for="'global-' + filter.id">{{ filter.name }}</label>
-                    </div>
-                </Refinement>
-                <Refinement :title="$t('ingredient.main')" :refinements="refineMainIngredients" id="main-ingredient" v-model="activeFilters.ingredients"></Refinement>
-                <Refinement :title="$t('method')" :refinements="refineMethods" id="method" v-model="activeFilters.methods"></Refinement>
-                <Refinement :title="$t('strength')" :refinements="refineABV" id="abv" v-model="activeFilters.abv" type="radio"></Refinement>
-                <Refinement :title="$t('tags')" :refinements="refineTags" id="tag" v-model="activeFilters.tags"></Refinement>
-                <Refinement :title="$t('glass-type')" :refinements="refineGlasses" id="glass" v-model="activeFilters.glasses"></Refinement>
-                <Refinement :title="$t('rating')" :refinements="refineRatings" id="user-rating" v-model="activeFilters.user_rating"></Refinement>
+        <div class="resource-search">
+            <div class="resource-search__refinements" v-show="showRefinements" @click="handleClickAway">
+                <div class="resource-search__refinements__body">
+                    <h3 class="page-subtitle" style="margin-top: 0">{{ $t('filters') }}</h3>
+                    <Refinement :title="$t('global')" id="global">
+                        <div class="resource-search__refinements__refinement__item" v-for="filter in availableRefinements.global">
+                            <input type="checkbox" :id="'global-' + filter.id" :value="filter.active" v-model="activeFilters[filter.id]">
+                            <label :for="'global-' + filter.id">{{ filter.name }}</label>
+                        </div>
+                    </Refinement>
+                    <Refinement :title="$t('ingredient.main')" :refinements="refineMainIngredients" id="main-ingredient" v-model="activeFilters.ingredients"></Refinement>
+                    <Refinement :title="$t('method')" :refinements="refineMethods" id="method" v-model="activeFilters.methods"></Refinement>
+                    <Refinement :title="$t('strength')" :refinements="refineABV" id="abv" v-model="activeFilters.abv" type="radio"></Refinement>
+                    <Refinement :title="$t('tags')" :refinements="refineTags" id="tag" v-model="activeFilters.tags"></Refinement>
+                    <Refinement :title="$t('glass-type')" :refinements="refineGlasses" id="glass" v-model="activeFilters.glasses"></Refinement>
+                    <Refinement :title="$t('rating')" :refinements="refineRatings" id="user-rating" v-model="activeFilters.user_rating"></Refinement>
+                    <button class="button button--dark sm-show" type="button" @click="showRefinements = false">{{ $t('cancel') }}</button>
+                </div>
             </div>
-            <div class="cocktails-search__content">
-                <div class="cocktails-search__content__filter">
+            <div class="resource-search__content">
+                <div class="resource-search__content__filter">
                     <button type="button" class="button button--input" @click.prevent="showRefinements = !showRefinements">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
                             <path fill="none" d="M0 0h24v24H0z" />
                             <path d="M6.17 18a3.001 3.001 0 0 1 5.66 0H22v2H11.83a3.001 3.001 0 0 1-5.66 0H2v-2h4.17zm6-7a3.001 3.001 0 0 1 5.66 0H22v2h-4.17a3.001 3.001 0 0 1-5.66 0H2v-2h10.17zm-6-7a3.001 3.001 0 0 1 5.66 0H22v2H11.83a3.001 3.001 0 0 1-5.66 0H2V4h4.17z" />
                         </svg>
                     </button>
-                    <input class="form-input" type="text" :placeholder="$t('placeholder.search-cocktails')" v-model="searchQuery" style="flex-basis: 100%;" @input="debounceQuery">
+                    <input class="form-input" type="text" :placeholder="$t('placeholder.search-cocktails')" v-model="searchQuery" @input="debounceQuery">
                     <select class="form-select" v-model="sort">
                         <option disabled>{{ $t('sort') }}:</option>
                         <option value="name">{{ $t('name') }}</option>
@@ -56,11 +59,11 @@
                 <CocktailGridContainer v-if="cocktails.length > 0" v-slot="observer">
                     <CocktailGridItem v-for="cocktail in cocktails" :cocktail="cocktail" :key="cocktail.id" :observer="observer" />
                 </CocktailGridContainer>
-                <div class="cocktails-search__content__pagination">
-                    <div class="cocktails-search__content__pagination__page_info">
+                <div class="resource-search__content__pagination">
+                    <div class="resource-search__content__pagination__page_info">
                         {{ $t('pagination.results', {'on_page_results': meta.to || 0, total_results: meta.total}) }}
                     </div>
-                    <div class="cocktails-search__content__pagination__links">
+                    <div class="resource-search__content__pagination__links">
                         <button type="button" class="button button--input" @click="changePage('prev')"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path d="M10.8284 12.0007L15.7782 16.9504L14.364 18.3646L8 12.0007L14.364 5.63672L15.7782 7.05093L10.8284 12.0007Z"></path></svg></button> {{ $t('page') }} {{ meta.current_page }}/{{ meta.last_page }} <button type="button" class="button button--input" @click="changePage('next')"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path d="M13.1714 12.0007L8.22168 7.05093L9.63589 5.63672L15.9999 12.0007L9.63589 18.3646L8.22168 16.9504L13.1714 12.0007Z"></path></svg></button>
                     </div>
                 </div>
@@ -357,36 +360,83 @@ export default {
                 user_rating: null,
                 abv: null
             };
+        },
+        handleClickAway(e) {
+            if (e && e.target && e.target.classList.contains('resource-search__refinements')) {
+                this.showRefinements = !this.showRefinements
+            }
         }
     }
 }
 </script>
 <style scoped>
-.cocktails-search {
+.sm-show {
+    display: none;
+}
+
+.resource-search {
     display: flex;
     gap: 1rem;
 }
 
-.cocktails-search__refinements {
+.resource-search__refinements {
     width: 300px;
 }
 
-.cocktails-search__content {
+.resource-search__content {
     width: 100%;
 }
 
-.cocktails-search__content__filter {
+.resource-search__content__filter {
     display: flex;
     gap: 0.5rem;
 }
 
-.cocktails-search__content__pagination {
+.resource-search__content__filter .form-input {
+    flex-basis: 100%;
+}
+
+@media (max-width: 850px) {
+    .resource-search__content__filter {
+        flex-wrap: wrap;
+    }
+
+    .resource-search__content__filter .form-input {
+        flex-basis: auto;
+    }
+}
+
+.resource-search__content__pagination {
     margin-top: 1rem;
     display: flex;
     align-items: center;
 }
 
-.cocktails-search__content__pagination__links {
+.resource-search__content__pagination__links {
     margin-left: auto;
+}
+
+@media (max-width: 750px) {
+    .sm-show {
+        display: block;
+    }
+
+    .resource-search__refinements {
+        position: fixed;
+        top: 0;
+        left: 0;
+        background-color: rgba(21, 13, 34, 0.5);
+        width: 100%;
+        z-index: 99;
+        height: 100%;
+    }
+
+    .resource-search__refinements__body {
+        background: #fff5f5;
+        width: 80%;
+        height: 100%;
+        padding: 1.5rem;
+        overflow-y: scroll;
+    }
 }
 </style>

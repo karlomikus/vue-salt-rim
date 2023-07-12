@@ -1,9 +1,9 @@
 <template>
-    <div class="cocktails-search__refinements__refinement">
-        <h4 class="cocktails-search__refinements__refinement__title">{{ title }} <a href="#" v-show="model && model.length > 0" @click.prevent="clear">{{ $t('clear') }}</a></h4>
-        <div class="cocktails-search__refinements__refinement__body">
+    <div class="resource-search__refinements__refinement">
+        <h4 class="resource-search__refinements__refinement__title">{{ title }} <a href="#" v-show="model && model.length > 0" @click.prevent="clear">{{ $t('clear') }}</a></h4>
+        <div class="resource-search__refinements__refinement__body">
             <slot>
-                <div class="cocktails-search__refinements__refinement__item" v-for="refinement in refinements">
+                <div class="resource-search__refinements__refinement__item" v-for="refinement in refinements">
                     <input :type="type" :id="id + '-' + refinement.id" :value="refinement.value" v-model="model">
                     <label :for="id + '-' + refinement.id">{{ refinement.name }}</label>
                 </div>
@@ -55,18 +55,18 @@ export default {
 }
 </script>
 <style>
-.cocktails-search__refinements__refinement {
+.resource-search__refinements__refinement {
     padding: 1rem 0 0 0;
     margin-bottom: 0.5rem;
     border-top: 3px double var(--clr-red-300);
 }
 
-.cocktails-search__refinements__refinement__body {
+.resource-search__refinements__refinement__body {
     max-height: 300px;
     overflow-y: auto;
 }
 
-.cocktails-search__refinements__refinement__title {
+.resource-search__refinements__refinement__title {
     color: var(--clr-header-title);
     font-weight: var(--fw-bold);
     text-transform: uppercase;
@@ -75,12 +75,12 @@ export default {
     margin-bottom: 0.5rem;
 }
 
-.cocktails-search__refinements__refinement__item {
+.resource-search__refinements__refinement__item {
     margin-bottom: 0.25rem;
 }
 
-.cocktails-search__refinements__refinement__item input[type="checkbox"],
-.cocktails-search__refinements__refinement__item input[type="radio"] {
+.resource-search__refinements__refinement__item input[type="checkbox"],
+.resource-search__refinements__refinement__item input[type="radio"] {
     margin-right: 0.25rem;
     width: 1rem;
     height: 1rem;
