@@ -1,7 +1,8 @@
 <template>
     <PageHeader>
-        [SERVER] {{ $t('cocktails') }}
+        {{ $t('cocktails') }}
     </PageHeader>
+    <p class="page-description" style="margin-bottom: 2rem;">{{ $t('cocktails.page.description') }}</p>
     <div class="cocktails-search-wrapper">
         <OverlayLoader v-if="isLoading" />
         <div class="cocktails-search">
@@ -13,6 +14,7 @@
                         <label :for="'global-' + filter.id">{{ filter.name }}</label>
                     </div>
                 </Refinement>
+                <Refinement :title="$t('ingredient.main')" :refinements="refineMainIngredients" id="main-ingredient" v-model="activeFilters.ingredients"></Refinement>
                 <Refinement :title="$t('method')" :refinements="refineMethods" id="method" v-model="activeFilters.methods"></Refinement>
                 <Refinement :title="$t('strength')" :refinements="refineABV" id="abv" v-model="activeFilters.abv" type="radio"></Refinement>
                 <Refinement :title="$t('tags')" :refinements="refineTags" id="tag" v-model="activeFilters.tags"></Refinement>
@@ -107,6 +109,7 @@ export default {
                 tags: [],
                 glasses: [],
                 methods: [],
+                main_ingredients: [],
             },
             per_page: 25,
             activeFilters: {
@@ -117,6 +120,7 @@ export default {
                 tags: [],
                 glasses: [],
                 methods: [],
+                ingredients: [],
                 user_rating: null,
                 abv: null
             }
@@ -207,6 +211,15 @@ export default {
                     name: '>= ' + '★'.repeat(r)
                 }
             })
+        },
+        refineMainIngredients() {
+            return this.availableRefinements.main_ingredients.map(i => {
+                return {
+                    id: i.id,
+                    value: i.id,
+                    name: i.name
+                }
+            })
         }
     },
     methods: {
@@ -221,6 +234,10 @@ export default {
 
             ApiRequests.fetchCocktailMethods().then(data => {
                 this.availableRefinements.methods = data
+            })
+
+            ApiRequests.fetchIngredients({'filter[main_ingredients]': true}).then(data => {
+                this.availableRefinements.main_ingredients = data
             })
         },
         refreshRouteQuery() {
@@ -263,6 +280,7 @@ export default {
                 this.activeFilters.tags = state.filter.tag_id ? state.filter.tag_id.split(',') : []
                 this.activeFilters.methods = state.filter.cocktail_method_id ? state.filter.cocktail_method_id.split(',') : []
                 this.activeFilters.glasses = state.filter.glass_id ? state.filter.glass_id.split(',') : []
+                this.activeFilters.ingredients = state.filter.main_ingredient_id ? state.filter.main_ingredient_id.split(',') : []
                 this.activeFilters.on_shelf = state.filter.on_shelf ? state.filter.on_shelf : null
                 this.activeFilters.favorites = state.filter.favorites ? state.filter.favorites : null
                 this.activeFilters.is_public = state.filter.is_public ? state.filter.is_public : null
@@ -306,6 +324,7 @@ export default {
                 tag_id: this.activeFilters.tags.length > 0 ? this.activeFilters.tags.join(',') : null,
                 glass_id: this.activeFilters.glasses.length > 0 ? this.activeFilters.glasses.join(',') : null,
                 cocktail_method_id: this.activeFilters.methods.length > 0 ? this.activeFilters.methods.join(',') : null,
+                main_ingredient_id: this.activeFilters.ingredients.length > 0 ? this.activeFilters.ingredients.join(',') : null,
                 abv_min: this.activeFilters.abv ? this.activeFilters.abv.min : null,
                 abv_max: this.activeFilters.abv ? this.activeFilters.abv.max : null,
             };
@@ -326,14 +345,15 @@ export default {
             this.sort = 'name'
             this.sort_dir = '',
             this.currentPage = 1,
-            this.filters = {
+            this.activeFilters = {
                 on_shelf: false,
                 favorites: false,
                 is_public: false,
-                user: false,
+                user_id: false,
                 tags: [],
                 glasses: [],
                 methods: [],
+                ingredients: [],
                 user_rating: null,
                 abv: null
             };
