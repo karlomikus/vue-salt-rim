@@ -7,67 +7,17 @@
         <div class="cocktails-search">
             <div class="cocktails-search__refinements" v-show="showRefinements">
                 <h3 class="page-subtitle" style="margin-top: 0">{{ $t('filters') }}</h3>
-                <div class="block-container cocktails-search__refinements__refinement">
-                    <h4 class="cocktails-search__refinements__refinement__title">{{ $t('global') }}</h4>
-                    <div class="cocktails-search__refinements__refinement__body">
-                        <div class="cocktails-search__refinements__refinement__item" v-for="filter in availableRefinements.global">
-                            <input type="checkbox" :id="'global-' + filter.id" :value="filter.active" v-model="filters[filter.id]">
-                            <label :for="'global-' + filter.id">{{ filter.name }}</label>
-                        </div>
+                <Refinement :title="$t('global')" id="global">
+                    <div class="cocktails-search__refinements__refinement__item" v-for="filter in availableRefinements.global">
+                        <input type="checkbox" :id="'global-' + filter.id" :value="filter.active" v-model="filters[filter.id]">
+                        <label :for="'global-' + filter.id">{{ filter.name }}</label>
                     </div>
-                </div>
-                <div class="block-container cocktails-search__refinements__refinement">
-                    <h4 class="cocktails-search__refinements__refinement__title">{{ $t('method') }}</h4>
-                    <div class="cocktails-search__refinements__refinement__body">
-                        <div class="cocktails-search__refinements__refinement__item" v-for="method in availableRefinements.methods">
-                            <input type="checkbox" :id="'method-' + method.id" :value="method.id" v-model="filters.methods">
-                            <label :for="'method-' + method.id">{{ method.name }}</label>
-                        </div>
-                    </div>
-                </div>
-                <div class="block-container cocktails-search__refinements__refinement">
-                    <h4 class="cocktails-search__refinements__refinement__title">{{ $t('strength') }}</h4>
-                    <div class="cocktails-search__refinements__refinement__body">
-                        <div class="cocktails-search__refinements__refinement__item" v-for="abv in availableRefinements.abv">
-                            <input type="radio" :id="'abv-' + abv.id" :value="abv" v-model="filters.abv">
-                            <label :for="'abv-' + abv.id">{{ abv.name }}</label>
-                        </div>
-                    </div>
-                </div>
-                <div class="block-container cocktails-search__refinements__refinement">
-                    <h4 class="cocktails-search__refinements__refinement__title">{{ $t('tags') }} <a href="#" @click.prevent="filters.tags = []">Clear</a></h4>
-                    <div class="cocktails-search__refinements__refinement__body">
-                        <div class="cocktails-search__refinements__refinement__item" v-for="tag in availableRefinements.tags">
-                            <input type="checkbox" :id="'tag-' + tag.id" :value="tag.id" v-model="filters.tags">
-                            <label :for="'tag-' + tag.id">{{ tag.name }}</label>
-                        </div>
-                    </div>
-                </div>
-                <div class="block-container cocktails-search__refinements__refinement">
-                    <h4 class="cocktails-search__refinements__refinement__title">{{ $t('glass-type') }}</h4>
-                    <div class="cocktails-search__refinements__refinement__body">
-                        <div class="cocktails-search__refinements__refinement__item" v-for="glass in availableRefinements.glasses">
-                            <input type="checkbox" :id="'glass-' + glass.id" :value="glass.id" v-model="filters.glasses">
-                            <label :for="'glass-' + glass.id">{{ glass.name }}</label>
-                        </div>
-                    </div>
-                </div>
-                <div class="block-container cocktails-search__refinements__refinement">
-                    <h4 class="cocktails-search__refinements__refinement__title">{{ $t('rating') }}</h4>
-                    <div class="cocktails-search__refinements__refinement__body">
-                        <div class="cocktails-search__refinements__refinement__item">
-                            <input type="radio" id="user-rating-none" :value="rating" v-model="filters.user_rating">
-                            <label for="user-rating-none">{{ $t('none') }}</label>
-                        </div>
-                        <div class="cocktails-search__refinements__refinement__item" v-for="rating in 5">
-                            <input type="radio" :id="'user-rating-' + rating" :value="rating" v-model="filters.user_rating">
-                            <label :for="'user-rating-' + rating">
-                                <template v-for="r in rating">★</template>
-                                &amp; up
-                            </label>
-                        </div>
-                    </div>
-                </div>
+                </Refinement>
+                <Refinement :title="$t('method')" :refinements="refineMethods" id="method" v-model="filters.methods"></Refinement>
+                <Refinement :title="$t('strength')" :refinements="refineABV" id="abv" v-model="filters.abv" type="radio"></Refinement>
+                <Refinement :title="$t('tags')" :refinements="refineTags" id="tag" v-model="filters.tags"></Refinement>
+                <Refinement :title="$t('glass-type')" :refinements="refineGlasses" id="glass" v-model="filters.glasses"></Refinement>
+                <Refinement :title="$t('rating')" :refinements="refineRatings" id="user-rating" v-model="filters.user_rating"></Refinement>
             </div>
             <div class="cocktails-search__content">
                 <div class="cocktails-search__content__filter">
@@ -80,7 +30,7 @@
                     <input class="form-input" type="text" :placeholder="$t('placeholder.search-cocktails')" v-model="searchQuery" style="flex-basis: 100%;" @input="debounceQuery">
                     <select class="form-select" v-model="sort">
                         <option value="name">{{ $t('name') }}</option>
-                        <option value="created_at">Date created</option>
+                        <option value="created_at">Date added</option>
                         <option value="favorited_at">Date favorited</option>
                         <option value="average_rating">Average rating</option>
                         <option value="missing_ingredients">Missing ingredients</option>
@@ -104,7 +54,12 @@
                     <CocktailGridItem v-for="cocktail in cocktails" :cocktail="cocktail" :key="cocktail.id" :observer="observer" />
                 </CocktailGridContainer>
                 <div class="cocktails-search__content__pagination">
-                    Showing {{ meta.to }}/{{ meta.total }} results &middot; <button type="button" @click="changePage('prev')">Prev</button> &middot; Page {{ meta.current_page }}/{{ meta.last_page }} &middot; <button type="button" @click="changePage('next')">Next</button>
+                    <div class="cocktails-search__content__pagination__page_info">
+                        Showing {{ meta.to || 0 }}/{{ meta.total }} results
+                    </div>
+                    <div class="cocktails-search__content__pagination__links">
+                        <button type="button" class="button button--outline" @click="changePage('prev')">Prev</button> Page {{ meta.current_page }}/{{ meta.last_page }} <button type="button" class="button button--outline" @click="changePage('next')">Next</button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -119,6 +74,7 @@ import CocktailGridItem from './CocktailGridItem.vue'
 import CocktailGridContainer from './CocktailGridContainer.vue'
 import PageHeader from '@/components/PageHeader.vue'
 import Auth from '@/Auth.js';
+import Refinement from './Search/Refinement.vue';
 import qs from 'qs';
 
 export default {
@@ -153,6 +109,7 @@ export default {
             },
             per_page: 25,
             filters: {
+                global: [],
                 on_shelf: false,
                 favorites: false,
                 is_public: false,
@@ -170,7 +127,8 @@ export default {
         CocktailGridContainer,
         PageHeader,
         Checkbox,
-        OverlayLoader
+        OverlayLoader,
+        Refinement
     },
     watch: {
         filters: {
@@ -203,6 +161,53 @@ export default {
             },
             { immediate: true }
         )
+    },
+    computed: {
+        refineMethods() {
+            return this.availableRefinements.methods.map(m => {
+                return {
+                    id: m.id,
+                    value: m.id,
+                    name: m.name
+                }
+            })
+        },
+        refineGlasses() {
+            return this.availableRefinements.glasses.map(m => {
+                return {
+                    id: m.id,
+                    value: m.id,
+                    name: m.name
+                }
+            })
+        },
+        refineTags() {
+            return this.availableRefinements.tags.map(m => {
+                return {
+                    id: m.id,
+                    value: m.id,
+                    name: m.name
+                }
+            })
+        },
+        refineABV() {
+            return this.availableRefinements.abv.map(m => {
+                return {
+                    id: m.id,
+                    value: {min: m.min, max: m.max},
+                    name: m.name
+                }
+            })
+        },
+        refineRatings() {
+            return [1, 2, 3, 4, 5].map(r => {
+                return {
+                    id: r,
+                    value: r,
+                    name: '>= ' + '★'.repeat(r)
+                }
+            })
+        }
     },
     methods: {
         fetchRefinements() {
@@ -264,6 +269,24 @@ export default {
                 this.filters.user_id = state.filter.user_id ? true : null
                 this.filters.user_rating = state.filter.user_rating_min ? state.filter.user_rating_min : null
                 this.searchQuery = state.filter.name ? state.filter.name : null
+            }
+
+            if (state.per_page) {
+                this.per_page = state.per_page
+            }
+
+            if (state.page) {
+                this.currentPage = state.page
+            }
+
+            if (state.sort) {
+                if (state.sort.startsWith('-')) {
+                    this.sort_dir = '-';
+                    this.sort = state.sort.substring(1)
+                } else {
+                    this.sort_dir = '';
+                    this.sort = state.sort
+                }
             }
         },
         stateToQuery() {
@@ -328,25 +351,6 @@ export default {
     width: 300px;
 }
 
-.cocktails-search__refinements__refinement {
-    padding: 1rem;
-    margin-bottom: 0.5rem;
-}
-
-.cocktails-search__refinements__refinement__body {
-    max-height: 300px;
-    overflow-y: auto;
-}
-
-.cocktails-search__refinements__refinement__title {
-    color: var(--clr-header-title);
-    font-weight: var(--fw-bold);
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    font-size: 0.715rem;
-    margin-bottom: 0.5rem;
-}
-
 .cocktails-search__content {
     width: 100%;
 }
@@ -356,14 +360,13 @@ export default {
     gap: 0.5rem;
 }
 
-.cocktails-search__refinements__refinement__item {
-    margin-bottom: 0.25rem;
+.cocktails-search__content__pagination {
+    margin-top: 1rem;
+    display: flex;
+    align-items: center;
 }
 
-.cocktails-search__refinements__refinement__item input[type="checkbox"],
-.cocktails-search__refinements__refinement__item input[type="radio"] {
-    margin-right: 0.25rem;
-    width: 1rem;
-    height: 1rem;
+.cocktails-search__content__pagination__links {
+    margin-left: auto;
 }
 </style>
