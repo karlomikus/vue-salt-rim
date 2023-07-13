@@ -20,7 +20,7 @@
                     <Refinement :title="$t('strength')" :refinements="refineABV" id="abv" v-model="activeFilters.abv" type="radio"></Refinement>
                     <Refinement :title="$t('tags')" :refinements="refineTags" id="tag" v-model="activeFilters.tags"></Refinement>
                     <Refinement :title="$t('glass-type')" :refinements="refineGlasses" id="glass" v-model="activeFilters.glasses"></Refinement>
-                    <Refinement :title="$t('rating')" :refinements="refineRatings" id="user-rating" v-model="activeFilters.user_rating"></Refinement>
+                    <Refinement :title="$t('rating')" :refinements="refineRatings" id="user-rating" v-model="activeFilters.user_rating" type="radio"></Refinement>
                     <button class="button button--dark sm-show" type="button" @click="showRefinements = false">{{ $t('cancel') }}</button>
                 </div>
             </div>
@@ -103,9 +103,8 @@ export default {
                     { name: this.$t('my.cocktails'), active: false, id: 'user_id' },
                 ],
                 abv: [
-                    { name: this.$t('all'), min: null, max: null, id: 'abv_all' },
                     { name: this.$t('non-alcoholic'), min: null, max: 2, id: 'abv_non_alcoholic' },
-                    { name: this.$t('weak'), min: 1, max: 18, id: 'abv_weak' },
+                    { name: this.$t('weak'), min: 2, max: 18, id: 'abv_weak' },
                     { name: this.$t('medium'), min: 18, max: 28, id: 'abv_medium' },
                     { name: this.$t('strong'), min: 28, max: null, id: 'abv_strong' },
                 ],
@@ -210,7 +209,7 @@ export default {
             return [1, 2, 3, 4, 5].map(r => {
                 return {
                     id: r,
-                    value: r,
+                    value: parseInt(r),
                     name: '>= ' + '★'.repeat(r)
                 }
             })
@@ -432,11 +431,15 @@ export default {
     }
 
     .resource-search__refinements__body {
-        background: #fff5f5;
+        background: var(--clr-red-50);
         width: 80%;
         height: 100%;
         padding: 1.5rem;
         overflow-y: scroll;
+    }
+
+    .dark-theme .resource-search__refinements__body {
+        background: var(--clr-dark-main-950);
     }
 }
 </style>

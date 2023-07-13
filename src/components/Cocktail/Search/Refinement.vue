@@ -1,6 +1,6 @@
 <template>
     <div class="resource-search__refinements__refinement">
-        <h4 class="resource-search__refinements__refinement__title">{{ title }} <a href="#" v-show="model && model.length > 0" @click.prevent="clear">{{ $t('clear') }}</a></h4>
+        <h4 class="resource-search__refinements__refinement__title">{{ title }} <a href="#" v-show="isClearable" @click.prevent="clear">{{ $t('clear') }}</a></h4>
         <div class="resource-search__refinements__refinement__body">
             <slot>
                 <div class="resource-search__refinements__refinement__item" v-for="refinement in refinements">
@@ -44,12 +44,20 @@ export default {
             }
         },
         isClearable() {
+            if (this.type == 'radio') {
+                return this.model && this.model != null;
+            }
+
             return this.model && this.model.length > 0;
         }
     },
     methods: {
         clear() {
-            this.model = [];
+            if (this.type == 'checkbox') {
+                this.model = [];
+            } else {
+                this.model = null;
+            }
         }
     }
 }
@@ -59,6 +67,10 @@ export default {
     padding: 1rem 0 0 0;
     margin-bottom: 0.5rem;
     border-top: 3px double var(--clr-red-300);
+}
+
+.dark-theme .resource-search__refinements__refinement {
+    border-color: var(--clr-dark-main-800);
 }
 
 .resource-search__refinements__refinement__body {
