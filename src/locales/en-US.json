@@ -31,7 +31,7 @@
   "cocktails.add": "Add cocktail",
   "cocktails.page.description": "This is a list of cocktails available in your Bar Assistant server. You can search for a specific cocktails by filtering them with the tags you added or by using a search term.",
   "filters": "Filters",
-  "sort": "Sort",
+  "sort": "Sort by",
   "cocktail.filters": "Cocktail filters",
   "my.cocktails": "My cocktails",
   "my.favorites": "My favorites",

@@ -279,23 +279,25 @@ export default {
             const state = qs.parse(this.$route.query);
 
             if (state.filter) {
-                this.activeFilters.tags = state.filter.tag_id ? state.filter.tag_id.split(',') : []
-                this.activeFilters.methods = state.filter.cocktail_method_id ? state.filter.cocktail_method_id.split(',') : []
-                this.activeFilters.glasses = state.filter.glass_id ? state.filter.glass_id.split(',') : []
-                this.activeFilters.ingredients = state.filter.main_ingredient_id ? state.filter.main_ingredient_id.split(',') : []
+                this.activeFilters.tags = state.filter.tag_id ? String(state.filter.tag_id).split(',') : []
+                this.activeFilters.methods = state.filter.cocktail_method_id ? String(state.filter.cocktail_method_id).split(',') : []
+                this.activeFilters.glasses = state.filter.glass_id ? String(state.filter.glass_id).split(',') : []
+                this.activeFilters.ingredients = state.filter.main_ingredient_id ? String(state.filter.main_ingredient_id).split(',') : []
                 this.activeFilters.on_shelf = state.filter.on_shelf ? state.filter.on_shelf : null
                 this.activeFilters.favorites = state.filter.favorites ? state.filter.favorites : null
                 this.activeFilters.is_public = state.filter.is_public ? state.filter.is_public : null
                 this.activeFilters.user_id = state.filter.user_id ? true : null
                 this.activeFilters.user_rating = state.filter.user_rating_min ? state.filter.user_rating_min : null
                 this.searchQuery = state.filter.name ? state.filter.name : null
+                // this.activeFilters.abv.min = state.filter.abv_min ? state.filter.abv_min : null
+                // this.activeFilters.abv.max = state.filter.abv_max ? state.filter.abv_max : null
             }
 
-            if (state.per_page) {
+            if (state.per_page != this.per_page) {
                 this.per_page = state.per_page
             }
 
-            if (state.page) {
+            if (state.page != this.currentPage) {
                 this.currentPage = state.page
             }
 

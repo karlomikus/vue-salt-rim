@@ -53,13 +53,13 @@ const router = createRouter({
                     component: () => import('../views/HomeView.vue'),
                 },
                 {
-                    path: '/cocktails',
-                    name: 'cocktails',
+                    path: '/cocktails-legacy',
+                    name: 'cocktails-legacy',
                     component: () => import('../views/CocktailsView.vue'),
                 },
                 {
-                    path: '/cocktails-server',
-                    name: 'cocktails-server',
+                    path: '/cocktails',
+                    name: 'cocktails',
                     component: () => import('../views/CocktailsServerView.vue'),
                 },
                 {

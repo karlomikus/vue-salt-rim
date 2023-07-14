@@ -32,7 +32,7 @@
                             <div class="cocktail-details__chips__group__title">{{ $t('glass-type') }}:</div>
                             <ul class="chips-list">
                                 <li>
-                                    <RouterLink :to="{ name: 'cocktails', query: { 'glass[0]': cocktail.glass.name } }">{{ cocktail.glass.name }}</RouterLink>
+                                    <RouterLink :to="{ name: 'cocktails', query: { 'filter[glass_id]': cocktail.glass.id } }">{{ cocktail.glass.name }}</RouterLink>
                                 </li>
                             </ul>
                         </div>
@@ -40,14 +40,16 @@
                             <div class="cocktail-details__chips__group__title">{{ $t('method') }}:</div>
                             <ul class="chips-list">
                                 <li>
-                                    <RouterLink :to="{ name: 'cocktails', query: { 'method[0]': cocktail.method.name } }">{{ $t('method.' + cocktail.method.name) }}</RouterLink>
+                                    <RouterLink :to="{ name: 'cocktails', query: { 'filter[cocktail_method_id]': cocktail.method.id } }">{{ $t('method.' + cocktail.method.name) }}</RouterLink>
                                 </li>
                             </ul>
                         </div>
                         <div class="cocktail-details__chips__group" v-if="cocktail.abv && cocktail.abv > 0">
                             <div class="cocktail-details__chips__group__title">{{ $t('ABV') }}:</div>
                             <ul class="chips-list">
-                                <li><span>{{ cocktail.abv }}%</span></li>
+                                <li>
+                                    <RouterLink :to="{ name: 'cocktails', query: { 'filter[abv_min]': cocktail.abv } }">{{ cocktail.abv }}%</RouterLink>
+                                </li>
                             </ul>
                         </div>
                         <div class="cocktail-details__chips__group">
