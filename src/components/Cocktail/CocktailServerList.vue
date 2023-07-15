@@ -289,8 +289,7 @@ export default {
                 this.activeFilters.user_id = state.filter.user_id ? true : null
                 this.activeFilters.user_rating = state.filter.user_rating_min ? state.filter.user_rating_min : null
                 this.searchQuery = state.filter.name ? state.filter.name : null
-                // this.activeFilters.abv.min = state.filter.abv_min ? state.filter.abv_min : null
-                // this.activeFilters.abv.max = state.filter.abv_max ? state.filter.abv_max : null
+                this.activeFilters.abv = { min: state.filter.abv_min ? state.filter.abv_min : null, max: state.filter.abv_max ? state.filter.abv_max : null }
             }
 
             if (state.per_page != this.per_page) {
