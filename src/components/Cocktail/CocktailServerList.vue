@@ -157,10 +157,11 @@ export default {
         document.title = `${this.$t('cocktails')} \u22C5 ${this.site_title}`
         this.fetchRefinements();
 
+        this.queryToState();
+
         this.$watch(
             () => this.$route.query,
             (newVal, oldVal) => {
-                this.queryToState();
                 if (JSON.stringify(newVal) != JSON.stringify(oldVal)) {
                     this.refreshCocktails(qs.parse(this.$route.query))
                 }
@@ -169,6 +170,23 @@ export default {
         )
     },
     computed: {
+        sortWithDir: {
+            set(val) {
+                if (!val) {
+                    return
+                }
+                if (val.startsWith('-')) {
+                    this.sort_dir = '-';
+                    this.sort = val.substring(1)
+                } else {
+                    this.sort_dir = '';
+                    this.sort = val
+                }
+            },
+            get() {
+                return (this.sort != null && this.sort != '') ? this.sort_dir + this.sort : null;
+            }
+        },
         refineMethods() {
             return this.availableRefinements.methods.map(m => {
                 return {
@@ -300,21 +318,18 @@ export default {
                 this.currentPage = state.page
             }
 
-            if (state.sort) {
-                if (state.sort.startsWith('-')) {
-                    this.sort_dir = '-';
-                    this.sort = state.sort.substring(1)
-                } else {
-                    this.sort_dir = '';
-                    this.sort = state.sort
-                }
-            }
+            // if (state.sort != undefined && state.sort != null && state.sort != this.sortWithDir) {
+            //     console.log(state.sort)
+            //     this.sortWithDir = state.sort
+            // } else {
+            //     this.sortWithDir = 'name'
+            // }
         },
         stateToQuery() {
             const query = {
                 per_page: this.per_page,
                 page: this.currentPage,
-                sort: (this.sort != null && this.sort != '') ? this.sort_dir + this.sort : null,
+                sort: this.sortWithDir
             };
 
             const filters = {
