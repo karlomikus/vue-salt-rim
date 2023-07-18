@@ -132,6 +132,11 @@ const router = createRouter({
                     name: 'settings.tags',
                     component: () => import('../views/SettingsTagsView.vue'),
                 },
+                {
+                    path: '/collections/cocktail',
+                    name: 'collections.cocktails',
+                    component: () => import('../views/CocktailCollections.vue'),
+                },
             ]
         },
         {

@@ -1,6 +1,7 @@
 <template>
     <OverlayLoader v-if="!cocktail.id" />
     <div class="cocktail-details" v-else>
+        <OverlayLoader v-if="isLoading" />
         <div class="cocktail-details__title">
             <h2>{{ cocktail.name }}</h2>
             <p>Added on {{ createdDate }} by {{ cocktail.user_name || '<unknown>' }}</p>
@@ -153,7 +154,7 @@
                                     </svg>
                                     {{ $t('edit') }}
                                 </RouterLink>
-                                <!-- <Dialog v-model="showCollectionDialog">
+                                <Dialog v-model="showCollectionDialog">
                                     <template #trigger>
                                         <a class="dropdown-menu__item" href="#generateimage" @click.prevent="showCollectionDialog = !showCollectionDialog">
                                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18">
@@ -164,9 +165,9 @@
                                         </a>
                                     </template>
                                     <template #dialog>
-                                        <CollectionDialog :cocktail="cocktail" @collectionDialogClosed="showCollectionDialog = false" />
+                                        <CollectionDialog :cocktail="cocktail" @collectionDialogClosed="showCollectionDialog = false" @refreshCocktail="fetchCocktail" />
                                     </template>
-                                </Dialog> -->
+                                </Dialog>
                                 <Dialog v-model="showNoteDialog">
                                     <template #trigger>
                                         <a class="dropdown-menu__item" href="#" @click.prevent="showNoteDialog = !showNoteDialog">
@@ -260,8 +261,8 @@
                     <h3 class="page-subtitle">{{ $t('ingredient-spotlight') }}</h3>
                     <IngredientSpotlight :id="cocktail.ingredients[0].ingredient_id"></IngredientSpotlight>
                 </template>
-                <!-- <h3 class="page-subtitle">{{ $t('cocktail-collections') }}</h3>
-                <CocktailCollections :cocktail="cocktail"></CocktailCollections> -->
+                <h3 class="page-subtitle">{{ $t('cocktail-collections') }}</h3>
+                <CocktailCollections :cocktail="cocktail"></CocktailCollections>
             </div>
         </div>
     </div>
@@ -291,6 +292,7 @@ import dayjs from 'dayjs'
 export default {
     data: () => ({
         cocktail: {},
+        isLoading: false,
         isFavorited: false,
         servings: 1,
         userShelfIngredients: [],
@@ -375,14 +377,17 @@ export default {
     },
     methods: {
         fetchCocktail() {
+            this.isLoading = true;
             this.userShelfIngredients = Auth.getUser().shelf_ingredients;
             this.userShoppingListIngredients = Auth.getUser().shopping_lists;
 
             ApiRequests.fetchCocktail(this.$route.params.id).then(data => {
+                this.isLoading = false;
                 this.cocktail = data
                 this.isFavorited = Auth.getUser().favorite_cocktails.includes(this.cocktail.id);
                 document.title = `${this.cocktail.name} \u22C5 ${this.site_title}`
             }).catch(e => {
+                this.isLoading = false;
                 this.$toast.error(e.message);
             })
 

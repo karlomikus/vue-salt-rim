@@ -1,7 +1,9 @@
 <template>
     <div class="cocktail-collections-wrapper">
         <OverlayLoader v-if="isLoading" />
-        <a href="#" v-for="collection in collections">{{ collection.name }}</a>
+        <RouterLink v-for="collection in collections" :to="{ name: 'cocktails', query: {'filter[collection_id]': collection.id} }">
+            {{ collection.name }}
+        </RouterLink>
     </div>
 </template>
 <script>

@@ -617,6 +617,14 @@ class ApiRequests
 
         return this.parseResponse(jsonResp);
     }
+
+    static async removeCocktailFromCollection(collectionId, cocktailId) {
+        return await this.deleteRequest(`/api/collections/${collectionId}/cocktails/${cocktailId}`);
+    }
+
+    static async deleteCollection(collectionId) {
+        return await this.deleteRequest(`/api/collections/${collectionId}`);
+    }
 }
 
 export default ApiRequests;

@@ -15,6 +15,7 @@
                             <label :for="'global-' + filter.id">{{ filter.name }}</label>
                         </div>
                     </Refinement>
+                    <Refinement :title="$t('your-collections')" :refinements="refineCollections" id="collection" v-model="activeFilters.collections"></Refinement>
                     <Refinement :title="$t('ingredient.main')" :refinements="refineMainIngredients" id="main-ingredient" v-model="activeFilters.ingredients"></Refinement>
                     <Refinement :title="$t('method')" :refinements="refineMethods" id="method" v-model="activeFilters.methods"></Refinement>
                     <Refinement :title="$t('strength')" :refinements="refineABV" id="abv" v-model="activeFilters.abv" type="radio"></Refinement>
@@ -44,10 +45,12 @@
                         <option value="abv">{{ $t('ABV') }}</option>
                     </select>
                     <select class="form-select" v-model="sort_dir">
+                        <option disabled>{{ $t('sort-direction') }}:</option>
                         <option value="">{{ $t('sort-asc') }}</option>
                         <option value="-">{{ $t('sort-desc') }}</option>
                     </select>
                     <select class="form-select" v-model="per_page">
+                        <!-- <option disabled>{{ $t('results-per-page') }}:</option> -->
                         <option value="25">25</option>
                         <option value="50">50</option>
                         <option value="100">100</option>
@@ -112,6 +115,7 @@ export default {
                 glasses: [],
                 methods: [],
                 main_ingredients: [],
+                collections: [],
             },
             per_page: 25,
             activeFilters: {
@@ -123,6 +127,7 @@ export default {
                 glasses: [],
                 methods: [],
                 ingredients: [],
+                collections: [],
                 user_rating: null,
                 abv: null
             }
@@ -150,6 +155,9 @@ export default {
             this.refreshRouteQuery()
         },
         per_page() {
+            this.refreshRouteQuery()
+        },
+        currentPage() {
             this.refreshRouteQuery()
         }
     },
@@ -240,7 +248,16 @@ export default {
                     name: i.name
                 }
             })
-        }
+        },
+        refineCollections() {
+            return this.availableRefinements.collections.map(m => {
+                return {
+                    id: m.id,
+                    value: m.id,
+                    name: m.name
+                }
+            })
+        },
     },
     methods: {
         fetchRefinements() {
@@ -256,8 +273,12 @@ export default {
                 this.availableRefinements.methods = data
             })
 
-            ApiRequests.fetchIngredients({'filter[main_ingredients]': true}).then(data => {
+            ApiRequests.fetchIngredients({'filter[main_ingredients]': true, per_page: 100}).then(data => {
                 this.availableRefinements.main_ingredients = data
+            })
+
+            ApiRequests.fetchCollections({per_page: 100}).then(data => {
+                this.availableRefinements.collections = data
             })
         },
         refreshRouteQuery() {
@@ -282,14 +303,12 @@ export default {
             if (dir == 'prev') {
                 if (this.currentPage > 1) {
                     this.currentPage--;
-                    this.refreshRouteQuery();
                 }
             }
 
             if (dir == 'next') {
                 if (this.currentPage < this.meta.last_page) {
                     this.currentPage++;
-                    this.refreshRouteQuery();
                 }
             }
         },
@@ -301,6 +320,7 @@ export default {
                 this.activeFilters.methods = state.filter.cocktail_method_id ? String(state.filter.cocktail_method_id).split(',') : []
                 this.activeFilters.glasses = state.filter.glass_id ? String(state.filter.glass_id).split(',') : []
                 this.activeFilters.ingredients = state.filter.main_ingredient_id ? String(state.filter.main_ingredient_id).split(',') : []
+                this.activeFilters.collections = state.filter.collection_id ? String(state.filter.collection_id).split(',') : []
                 this.activeFilters.on_shelf = state.filter.on_shelf ? state.filter.on_shelf : null
                 this.activeFilters.favorites = state.filter.favorites ? state.filter.favorites : null
                 this.activeFilters.is_public = state.filter.is_public ? state.filter.is_public : null
@@ -310,20 +330,17 @@ export default {
                 this.activeFilters.abv = { min: state.filter.abv_min ? state.filter.abv_min : null, max: state.filter.abv_max ? state.filter.abv_max : null }
             }
 
-            if (state.per_page != this.per_page) {
+            if (state.per_page && state.per_page != this.per_page) {
                 this.per_page = state.per_page
             }
 
-            if (state.page != this.currentPage) {
+            if (state.page && state.page != this.currentPage) {
                 this.currentPage = state.page
             }
 
-            // if (state.sort != undefined && state.sort != null && state.sort != this.sortWithDir) {
-            //     console.log(state.sort)
-            //     this.sortWithDir = state.sort
-            // } else {
-            //     this.sortWithDir = 'name'
-            // }
+            if (state.sort && state.sort != this.sortWithDir) {
+                this.sortWithDir = state.sort
+            }
         },
         stateToQuery() {
             const query = {
@@ -343,6 +360,7 @@ export default {
                 glass_id: this.activeFilters.glasses.length > 0 ? this.activeFilters.glasses.join(',') : null,
                 cocktail_method_id: this.activeFilters.methods.length > 0 ? this.activeFilters.methods.join(',') : null,
                 main_ingredient_id: this.activeFilters.ingredients.length > 0 ? this.activeFilters.ingredients.join(',') : null,
+                collection_id: this.activeFilters.collections.length > 0 ? this.activeFilters.collections.join(',') : null,
                 abv_min: this.activeFilters.abv ? this.activeFilters.abv.min : null,
                 abv_max: this.activeFilters.abv ? this.activeFilters.abv.max : null,
             };
@@ -363,6 +381,7 @@ export default {
             this.sort = 'name'
             this.sort_dir = '',
             this.currentPage = 1,
+            this.per_page = 25,
             this.activeFilters = {
                 on_shelf: false,
                 favorites: false,
@@ -372,6 +391,7 @@ export default {
                 glasses: [],
                 methods: [],
                 ingredients: [],
+                collections: [],
                 user_rating: null,
                 abv: null
             };
