@@ -1,3 +1,7 @@
+# v1.16.1
+## Fixes
+- Fix cocktail without ingredients blank page #100
+
 # v1.16.0
 ## New
 - Added cocktail details sidebar
