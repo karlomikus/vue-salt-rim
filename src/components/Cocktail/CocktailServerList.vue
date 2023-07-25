@@ -365,6 +365,7 @@ export default {
                 abv_max: this.activeFilters.abv ? this.activeFilters.abv.max : null,
             };
 
+            // Remove null values
             query.filter = Object.fromEntries(Object.entries(filters).filter(([_, v]) => v !== null && v !== false));
 
             return query;

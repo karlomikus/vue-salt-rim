@@ -6,19 +6,19 @@
             <form action="">
                 <div class="form-group">
                     <label class="form-label" for="dialog-collection-id">{{ $t('collections.collection') }}:</label>
-                    <select class="form-select" id="dialog-collection-id" v-model="collection">
-                        <option :value="{}"> - {{ $t('collections.create') }} - </option>
-                        <option v-for="collection in collections" :value="collection">{{ collection.name }}</option>
+                    <select class="form-select" id="dialog-collection-id" v-model="collectionId">
+                        <option :value="null"> - {{ $t('collections.create') }} - </option>
+                        <option v-for="collection in collections" :value="collection.id">{{ collection.name }}</option>
                     </select>
                 </div>
-                <template v-if="!collection || !collection.id">
+                <template v-if="!collectionId">
                     <div class="form-group">
                         <label class="form-label" for="dialog-collection-name">{{ $t('name') }}:</label>
-                        <input class="form-input" type="text" id="dialog-collection-name" v-model="collection.name">
+                        <input class="form-input" type="text" id="dialog-collection-name" v-model="newCollection.name">
                     </div>
                     <div class="form-group">
                         <label class="form-label" for="dialog-collection-description">{{ $t('description') }}:</label>
-                        <textarea rows="5" class="form-input" id="dialog-collection-description" v-model="collection.description"></textarea>
+                        <textarea rows="5" class="form-input" id="dialog-collection-description" v-model="newCollection.description"></textarea>
                     </div>
                 </template>
             </form>
@@ -41,7 +41,8 @@ export default {
         return {
             isLoading: false,
             collections: [],
-            collection: {}
+            newCollection: {},
+            collectionId: null
         }
     },
     components: {
@@ -52,11 +53,11 @@ export default {
     },
     computed: {
         isPartOfCollection() {
-            if (!this.collection.id) {
+            if (!this.collectionId) {
                 return false;
             }
 
-            return this.cocktail.collections.includes(this.collection.id);
+            return this.cocktail.collections.find((val) => val.id == this.collectionId)
         }
     },
     methods: {
@@ -69,7 +70,7 @@ export default {
         },
         addCocktailToCollection() {
             this.isLoading = true;
-            ApiRequests.putCocktailInCollection(this.collection.id, this.cocktail.id).then(data => {
+            ApiRequests.putCocktailInCollection(this.collectionId, this.cocktail.id).then(data => {
                 this.isLoading = false;
                 this.$toast.default('collections.cocktail-add-succes')
                 this.$emit('collectionDialogClosed')
@@ -84,7 +85,7 @@ export default {
                 onResolved: (dialog) => {
                     this.isLoading = true;
                     dialog.close();
-                    ApiRequests.removeCocktailFromCollection(this.collection.id, this.cocktail.id).then(data => {
+                    ApiRequests.removeCocktailFromCollection(this.collectionId, this.cocktail.id).then(data => {
                         this.$toast.default('collections.delete-succes')
                         this.$emit('collectionDialogClosed')
                         this.$emit('refreshCocktail', {id: this.cocktail.id})
@@ -97,13 +98,11 @@ export default {
             });
         },
         saveAndClose() {
-            if (this.collection.id) {
-                ApiRequests.updateCollection(this.collection.id, this.collection).then(collectionData => {
-                    this.addCocktailToCollection();
-                })
+            if (this.collectionId) {
+                this.addCocktailToCollection();
             } else {
-                ApiRequests.saveCollection(this.collection).then(collectionData => {
-                    this.collection = collectionData
+                ApiRequests.saveCollection(this.newCollection).then(collectionData => {
+                    this.collectionId = collectionData.id
                     this.addCocktailToCollection();
                 })
             }

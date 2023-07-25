@@ -1,3 +1,22 @@
+# v1.17.0
+## New
+- Added user cocktail collections
+    - You can now filter cocktails by collection
+- Added new sorting options to cocktail list
+    - Sort by average rating
+    - Sort by missing ingredients
+    - Sort by date favorited
+    - Sort by user rating
+    - Sort by ABV
+
+## Changes
+- Cocktails list is now using Bar Assistant API for filtering and searching
+    - This is a bit slower but should solve a lot of issues with syncing state between Instantsearch and Salt Rim
+    - New implementation is missing total results per refinement
+    - Old implementation is still available at `/cocktails-legacy` URL
+
+## Fixes
+
 # v1.16.1
 ## Fixes
 - Fix cocktail without ingredients blank page #100
