@@ -19,14 +19,13 @@ class ApiRequests
         return new Headers(defaultHeaders);
     }
 
-    static generateBAQueryString(queryObject) {
-        if (Object.keys(queryObject).length == 0) {
-            return '';
+    static generateBAQueryString(queryParams) {
+        let q = '';
+        if (Object.keys(queryParams).length > 0) {
+            q = '?' + qs.stringify(queryParams);
         }
 
-        let qs = Object.keys(queryObject).map(k => k + '=' + encodeURIComponent(queryObject[k])).join('&');
-
-        return `?${qs}`;
+        return q;
     }
 
     static async handleResponseErrors(response) {
@@ -85,10 +84,7 @@ class ApiRequests
      */
 
     static async fetchCocktails(queryParams = {}) {
-        let q = '';
-        if (Object.keys(queryParams).length > 0) {
-            q = '?' + qs.stringify(queryParams);
-        }
+        let q = this.generateBAQueryString(queryParams)
 
         let jsonResp = await this.getRequest(`/api/cocktails${q}`);
 
