@@ -316,7 +316,7 @@ export default {
             })
         },
         refreshCocktails() {
-            const query = this.stateToQuery();
+            const query = qs.parse(this.$route.query);
 
             this.isLoading = true;
             ApiRequests.fetchCocktails(query).then(resp => {
