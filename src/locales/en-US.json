@@ -276,7 +276,14 @@
     "add-to": "Add to collection",
     "add-cocktail": "Add cocktail to collection",
     "collection": "Collection",
-    "create": "Create a new collection"
+    "create": "Create a new collection",
+    "title": "Collections",
+    "add": "Create collection",
+    "edit": "Edit collection",
+    "confirm-delete": "This will permanently delete collection with name \"{name}\".",
+    "delete-success": "Collection successfully removed",
+    "update-success": "Collection updated successfully",
+    "add-success": "Collection added successfully"
   },
   "no-cocktails": "No cocktails found",
   "ingredient-spotlight": "Ingredient spotlight",
@@ -293,5 +300,6 @@
   "page-next": "Next",
   "remove-cocktail-from-collection": "Remove cocktail from collection",
   "cocktail-collections": "Cocktail collections",
-  "cocktails-not-found": "No cocktails found"
+  "cocktails-not-found": "No cocktails found",
+  "your-collections": "Your collections"
 }

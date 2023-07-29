@@ -283,5 +283,12 @@
   "user-rating": "Korisnička ocijena",
   "remove-cocktail-from-collection": "Ukloni koktel iz zbirke",
   "cocktail-collections": "Kolekcije koktela",
-  "cocktails-not-found": "Nisu pronađeni kokteli"
+  "cocktails-not-found": "Nisu pronađeni kokteli",
+  "collections": {
+    "create": "Napravite novu kolekciju",
+    "title": "Zbirke",
+    "add": "Stvori zbirku",
+    "edit": "Uredi zbirku"
+  },
+  "your-collections": "Vaše zbirke"
 }

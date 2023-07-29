@@ -45,7 +45,7 @@ export default {
             if (this.collection.id) {
                 ApiRequests.updateCollection(this.collection.id, postData).then(data => {
                     this.isLoading = false;
-                    this.$toast.default(this.$t('category.update-success'));
+                    this.$toast.default(this.$t('collections.update-success'));
                     this.$emit('collectionDialogClosed')
                 }).catch(e => {
                     this.$toast.error(e.message);
@@ -54,7 +54,7 @@ export default {
             } else {
                 ApiRequests.saveCollection(postData).then(data => {
                     this.isLoading = false;
-                    this.$toast.default(this.$t('category.add-success'));
+                    this.$toast.default(this.$t('collections.add-success'));
                     this.$emit('collectionDialogClosed')
                 }).catch(e => {
                     this.$toast.error(e.message);

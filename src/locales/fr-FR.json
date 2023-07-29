@@ -279,5 +279,12 @@
   "user-rating": "Note de l'utilisateur",
   "remove-cocktail-from-collection": "Retirer le cocktail de la collection",
   "cocktail-collections": "Collections de cocktails",
-  "cocktails-not-found": "Aucun cocktail trouvé"
+  "cocktails-not-found": "Aucun cocktail trouvé",
+  "collections": {
+    "create": "Créer une nouvelle collection",
+    "title": "Collections",
+    "add": "Créer une collection",
+    "edit": "Modifier la collection"
+  },
+  "your-collections": "Vos collections"
 }

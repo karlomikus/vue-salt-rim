@@ -1,10 +1,10 @@
 <template>
     <PageHeader>
-        {{ $t('collections') }}
+        {{ $t('collections.title') }}
         <template #actions>
             <Dialog v-model="showDialog">
                 <template #trigger>
-                    <button type="button" class="button button--outline" @click.prevent="openDialog($t('category.add'), {})">{{ $t('category.add') }}</button>
+                    <button type="button" class="button button--outline" @click.prevent="openDialog($t('collections.add'), {})">{{ $t('collections.add') }}</button>
                 </template>
                 <template #dialog>
                     <CollectionsForm :source-collection="editCollection" :dialog-title="dialogTitle" @collection-dialog-closed="refreshCollections" />
@@ -26,7 +26,7 @@
                     <tbody>
                         <tr v-for="collection in collections">
                             <td>
-                                <a href="#" @click.prevent="openDialog($t('category.edit'), collection)">{{ collection.name }}</a>
+                                <a href="#" @click.prevent="openDialog($t('collections.edit'), collection)">{{ collection.name }}</a>
                                 <br>
                                 <small>{{ overflowText(collection.description, 100) }}</small>
                             </td>
@@ -67,7 +67,7 @@ export default {
         }
     },
     created() {
-        document.title = `${this.$t('ingredient.categories')} \u22C5 ${this.site_title}`
+        document.title = `${this.$t('collections.title')} \u22C5 ${this.site_title}`
 
         this.refreshCollections()
     },
@@ -88,13 +88,13 @@ export default {
             this.showDialog = true;
         },
         deleteCollection(collection) {
-            this.$confirm(this.$t('ingredient-category.confirm-delete', {name: collection.name}), {
+            this.$confirm(this.$t('collections.confirm-delete', {name: collection.name}), {
                 onResolved: (dialog) => {
                     this.isLoading = true
                     dialog.close();
                     ApiRequests.deleteCollection(collection.id).then(() => {
                         this.isLoading = false;
-                        this.$toast.default(this.$t('ingredient-category.delete-success'));
+                        this.$toast.default(this.$t('collections.delete-success'));
                         this.refreshCollections()
                     }).catch(e => {
                         this.$toast.error(e.message);
