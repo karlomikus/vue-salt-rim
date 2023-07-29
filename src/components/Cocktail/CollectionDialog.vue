@@ -1,7 +1,7 @@
 <template>
     <div>
         <OverlayLoader v-if="isLoading" />
-        <div class="dialog-title">{{ $t('collections.add-to') }}</div>
+        <div class="dialog-title">{{ $t(title) }}</div>
         <div class="dialog-content">
             <form action="">
                 <div class="form-group">
@@ -46,6 +46,10 @@ export default {
         cocktailCollections: {
             type: Array,
             default: []
+        },
+        title: {
+            type: String,
+            default: 'collections.add-to'
         }
     },
     data() {

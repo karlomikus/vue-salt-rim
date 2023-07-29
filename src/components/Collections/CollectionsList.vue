@@ -16,7 +16,7 @@
         <div class="settings-page__content">
             <OverlayLoader v-if="isLoading" />
             <div class="block-container block-container--padded">
-                <table class="table">
+                <table class="table" v-if="collections.length > 0">
                     <thead>
                         <tr>
                             <th>{{ $t('name') }} / {{ $t('description') }}</th>
@@ -28,14 +28,20 @@
                             <td>
                                 <a href="#" @click.prevent="openDialog($t('collections.edit'), collection)">{{ collection.name }}</a>
                                 <br>
-                                <small>{{ collection.cocktails.length }} {{ $t('cocktails') }} &middot; {{ overflowText(collection.description, 100) }}</small>
+                                <small>{{ collection.cocktails.length }} {{ $t('cocktails') }} &middot; {{ collection.description ? overflowText(collection.description, 100) : 'n/a' }}</small>
                             </td>
                             <td style="text-align: right;">
                                 <a class="list-group__action" href="#" @click.prevent="deleteCollection(collection)">{{ $t('remove') }}</a>
+                                &middot;
+                                <RouterLink class="list-group__action" :to="{ name: 'cocktails', query: { 'filter[collection_id]': collection.id } }">{{ $t('view') }}</RouterLink>
                             </td>
                         </tr>
                     </tbody>
                 </table>
+                <div v-else class="empty-state">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path d="M12 1L21.5 6.5V17.5L12 23L2.5 17.5V6.5L12 1ZM5.49388 7.0777L13.0001 11.4234V20.11L19.5 16.3469V7.65311L12 3.311L5.49388 7.0777ZM4.5 8.81329V16.3469L11.0001 20.1101V12.5765L4.5 8.81329Z"></path></svg>
+                    <p>{{ $t('missing-collections') }}</p>
+                </div>
             </div>
         </div>
     </div>

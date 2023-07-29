@@ -22,7 +22,6 @@
             <p><RouterLink :to="{name: 'cocktails', query: {'filter[on_shelf]': true}}">{{ $t('shelf.cocktails') }}</RouterLink></p>
         </div>
     </div>
-
     <div class="list-grid">
         <div class="list-grid__col">
             <h3 class="page-subtitle">{{ $t('cocktails.latest') }}</h3>

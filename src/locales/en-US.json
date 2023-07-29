@@ -284,7 +284,8 @@
     "delete-success": "Collection successfully removed",
     "update-success": "Collection updated successfully",
     "add-success": "Collection added successfully",
-    "confirm-remove-cocktail": "Are you sure you want to remove cocktail from collection?"
+    "confirm-remove-cocktail": "Are you sure you want to remove cocktail from collection?",
+    "add-from-query": "Add to collection from current filters"
   },
   "no-cocktails": "No cocktails found",
   "ingredient-spotlight": "Ingredient spotlight",
@@ -302,5 +303,7 @@
   "remove-cocktail-from-collection": "Remove cocktail from collection",
   "cocktail-collections": "Cocktail collections",
   "cocktails-not-found": "No cocktails found",
-  "your-collections": "Your collections"
+  "your-collections": "Your collections",
+  "view": "View",
+  "missing-collections": "You don't have any collections"
 }
