@@ -150,7 +150,6 @@ export default {
     watch: {
         activeFilters: {
             handler() {
-                this.currentPage = 1
                 this.refreshRouteQuery()
             },
             deep: true

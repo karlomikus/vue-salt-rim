@@ -56,7 +56,9 @@
                         <div class="cocktail-details__chips__group">
                             <div class="cocktail-details__chips__group__title">{{ $t('avg-rating') }}:</div>
                             <ul class="chips-list">
-                                <li><span>{{ cocktail.average_rating }} stars</span></li>
+                                <li>
+                                    <RouterLink :to="{ name: 'cocktails', query: { 'filter[user_rating_min]': cocktail.average_rating } }">{{ cocktail.average_rating }} ★</RouterLink>
+                                </li>
                             </ul>
                         </div>
                         <div class="cocktail-details__chips__group">
@@ -261,8 +263,10 @@
                     <h3 class="page-subtitle">{{ $t('ingredient-spotlight') }}</h3>
                     <IngredientSpotlight :id="cocktail.ingredients[0].ingredient_id"></IngredientSpotlight>
                 </template>
-                <h3 class="page-subtitle">{{ $t('cocktail-collections') }}</h3>
-                <CocktailCollections :cocktail="cocktail"></CocktailCollections>
+                <template v-if="cocktail.collections.length > 0">
+                    <h3 class="page-subtitle">{{ $t('cocktail-collections') }}</h3>
+                    <CocktailCollections :cocktail="cocktail"></CocktailCollections>
+                </template>
             </div>
         </div>
     </div>
