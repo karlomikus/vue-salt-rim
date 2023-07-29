@@ -283,7 +283,8 @@
     "confirm-delete": "This will permanently delete collection with name \"{name}\".",
     "delete-success": "Collection successfully removed",
     "update-success": "Collection updated successfully",
-    "add-success": "Collection added successfully"
+    "add-success": "Collection added successfully",
+    "confirm-remove-cocktail": "Are you sure you want to remove cocktail from collection?"
   },
   "no-cocktails": "No cocktails found",
   "ingredient-spotlight": "Ingredient spotlight",

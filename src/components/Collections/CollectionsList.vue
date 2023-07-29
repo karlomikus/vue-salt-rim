@@ -28,7 +28,7 @@
                             <td>
                                 <a href="#" @click.prevent="openDialog($t('collections.edit'), collection)">{{ collection.name }}</a>
                                 <br>
-                                <small>{{ overflowText(collection.description, 100) }}</small>
+                                <small>{{ collection.cocktails.length }} {{ $t('cocktails') }} &middot; {{ overflowText(collection.description, 100) }}</small>
                             </td>
                             <td style="text-align: right;">
                                 <a class="list-group__action" href="#" @click.prevent="deleteCollection(collection)">{{ $t('remove') }}</a>

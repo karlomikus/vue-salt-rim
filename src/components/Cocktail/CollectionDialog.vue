@@ -26,7 +26,9 @@
         <div class="dialog-actions" style="margin-top: 1rem;">
             <button type="button" class="button button--outline" @click="$emit('collectionDialogClosed')">{{ $t('cancel') }}</button>
             <button v-if="isPartOfCollection" type="button" class="button button--dark" @click="removeCocktailFromCollection">{{ $t('remove-cocktail-from-collection') }}</button>
-            <button v-else type="button" class="button button--dark" @click="saveAndClose">{{ $t('collections.add-cocktail') }}</button>
+            <button v-else type="button" class="button button--dark" @click="saveAndClose">
+                {{ $t('collections.add-to') }} <template v-if="cocktails.length > 1">({{ cocktails.length }} {{ $t('cocktails') }})</template>
+            </button>
         </div>
     </div>
 </template>
@@ -36,7 +38,16 @@ import ApiRequests from '@/ApiRequests';
 import OverlayLoader from '@/components/OverlayLoader.vue'
 
 export default {
-    props: ['cocktail'],
+    props: {
+        cocktails: {
+            type: Array,
+            default: []
+        },
+        cocktailCollections: {
+            type: Array,
+            default: []
+        }
+    },
     data() {
         return {
             isLoading: false,
@@ -57,7 +68,7 @@ export default {
                 return false;
             }
 
-            return this.cocktail.collections.find((val) => val.id == this.collectionId)
+            return this.cocktailCollections.find((val) => val.id == this.collectionId)
         }
     },
     methods: {
@@ -68,27 +79,15 @@ export default {
                 this.collections = data
             })
         },
-        addCocktailToCollection() {
-            this.isLoading = true;
-            ApiRequests.putCocktailInCollection(this.collectionId, this.cocktail.id).then(data => {
-                this.isLoading = false;
-                this.$toast.default('collections.cocktail-add-succes')
-                this.$emit('collectionDialogClosed')
-                this.$emit('refreshCocktail', {id: this.cocktail.id})
-            }).catch(e => {
-                this.$toast.error(e.message)
-                this.isLoading = false
-            })
-        },
         removeCocktailFromCollection() {
-            this.$confirm(this.$t('collections.confirm-delete'), {
+            this.$confirm(this.$t('collections.confirm-remove-cocktail'), {
                 onResolved: (dialog) => {
                     this.isLoading = true;
                     dialog.close();
-                    ApiRequests.removeCocktailFromCollection(this.collectionId, this.cocktail.id).then(data => {
+                    ApiRequests.removeCocktailFromCollection(this.collectionId, this.cocktails[0]).then(data => {
                         this.$toast.default('collections.delete-succes')
                         this.$emit('collectionDialogClosed')
-                        this.$emit('refreshCocktail', {id: this.cocktail.id})
+                        this.$emit('refreshCocktail', {id: this.cocktails[0]})
                         this.isLoading = false
                     }).catch(e => {
                         this.$toast.error(e.message)
@@ -99,11 +98,27 @@ export default {
         },
         saveAndClose() {
             if (this.collectionId) {
-                this.addCocktailToCollection();
+                this.isLoading = true;
+                ApiRequests.addCocktailsToCollection(this.collectionId, this.cocktails).then(data => {
+                    this.isLoading = false;
+                    this.$toast.default('collections.cocktail-add-succes')
+                    this.$emit('collectionDialogClosed')
+                    this.$emit('refreshCocktail')
+                }).catch(e => {
+                    this.$toast.error(e.message)
+                    this.isLoading = false
+                })
             } else {
+                this.isLoading = true;
+                this.newCollection.cocktails = this.cocktails;
                 ApiRequests.saveCollection(this.newCollection).then(collectionData => {
+                    this.isLoading = false;
                     this.collectionId = collectionData.id
-                    this.addCocktailToCollection();
+                    this.$emit('collectionDialogClosed')
+                    this.$emit('refreshCocktail')
+                }).catch(e => {
+                    this.$toast.error(e.message)
+                    this.isLoading = false
                 })
             }
         }

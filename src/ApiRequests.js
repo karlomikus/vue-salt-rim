@@ -608,6 +608,14 @@ class ApiRequests
         return this.parseResponse(jsonResp);
     }
 
+    static async addCocktailsToCollection(collectionId, cocktailIds) {
+        let jsonResp = await this.postRequest(`/api/collections/${collectionId}/cocktails`, {
+            cocktails: cocktailIds
+        });
+
+        return this.parseResponse(jsonResp);
+    }
+
     static async putCocktailInCollection(collectionId, cocktailId) {
         let jsonResp = await this.postRequest(`/api/collections/${collectionId}/cocktails/${cocktailId}`, {}, 'PUT');
 
