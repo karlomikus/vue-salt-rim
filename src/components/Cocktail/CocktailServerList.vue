@@ -62,6 +62,12 @@
                 <CocktailGridContainer v-if="cocktails.length > 0" v-slot="observer">
                     <CocktailGridItem v-for="cocktail in cocktails" :cocktail="cocktail" :key="cocktail.id" :observer="observer" />
                 </CocktailGridContainer>
+                <div v-else class="empty-state">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+                        <path d="M11 2C15.968 2 20 6.032 20 11C20 15.968 15.968 20 11 20C6.032 20 2 15.968 2 11C2 6.032 6.032 2 11 2ZM11 18C14.8675 18 18 14.8675 18 11C18 7.1325 14.8675 4 11 4C7.1325 4 4 7.1325 4 11C4 14.8675 7.1325 18 11 18ZM19.4853 18.0711L22.3137 20.8995L20.8995 22.3137L18.0711 19.4853L19.4853 18.0711Z"></path>
+                    </svg>
+                    <p>{{ $t('cocktails-not-found') }}</p>
+                </div>
                 <div class="resource-search__content__pagination">
                     <div class="resource-search__content__pagination__page_info">
                         {{ $t('pagination.results', {'on_page_results': meta.to || 0, total_results: meta.total}) }}
@@ -117,7 +123,7 @@ export default {
                 main_ingredients: [],
                 collections: [],
             },
-            per_page: 25,
+            per_page: 50,
             activeFilters: {
                 on_shelf: false,
                 favorites: false,
@@ -144,6 +150,7 @@ export default {
     watch: {
         activeFilters: {
             handler() {
+                this.currentPage = 1
                 this.refreshRouteQuery()
             },
             deep: true
@@ -163,15 +170,15 @@ export default {
     },
     created() {
         document.title = `${this.$t('cocktails')} \u22C5 ${this.site_title}`
-        this.fetchRefinements();
 
-        this.queryToState();
+        this.fetchRefinements();
 
         this.$watch(
             () => this.$route.query,
             (newVal, oldVal) => {
+                this.queryToState();
                 if (JSON.stringify(newVal) != JSON.stringify(oldVal)) {
-                    this.refreshCocktails(qs.parse(this.$route.query))
+                    this.refreshCocktails()
                 }
             },
             { immediate: true }
@@ -288,7 +295,9 @@ export default {
                 query: query
             })
         },
-        refreshCocktails(query = {}) {
+        refreshCocktails() {
+            const query = this.stateToQuery();
+
             this.isLoading = true;
             ApiRequests.fetchCocktails(query).then(resp => {
                 this.cocktails = resp.data
@@ -327,7 +336,9 @@ export default {
                 this.activeFilters.user_id = state.filter.user_id ? true : null
                 this.activeFilters.user_rating = state.filter.user_rating_min ? state.filter.user_rating_min : null
                 this.searchQuery = state.filter.name ? state.filter.name : null
-                this.activeFilters.abv = { min: state.filter.abv_min ? state.filter.abv_min : null, max: state.filter.abv_max ? state.filter.abv_max : null }
+                if (state.filter.abv_min || state.filter.abv_max) {
+                    this.activeFilters.abv = { min: state.filter.abv_min ? state.filter.abv_min : null, max: state.filter.abv_max ? state.filter.abv_max : null }
+                }
             }
 
             if (state.per_page && state.per_page != this.per_page) {
@@ -382,7 +393,7 @@ export default {
             this.sort = 'name'
             this.sort_dir = '',
             this.currentPage = 1,
-            this.per_page = 25,
+            this.per_page = 50,
             this.activeFilters = {
                 on_shelf: false,
                 favorites: false,

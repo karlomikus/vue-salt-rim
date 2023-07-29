@@ -279,5 +279,8 @@
   "date-favorited": "Datum als Favorit",
   "average-rating": "Durchschnittliche Bewertung",
   "missing-ingredients": "Fehlende Zutaten",
-  "user-rating": "Benutzer-Bewertung"
+  "user-rating": "Benutzer-Bewertung",
+  "remove-cocktail-from-collection": "Cocktail aus der Sammlung nehmen",
+  "cocktail-collections": "Cocktailsammlungen",
+  "cocktails-not-found": "Keine Cocktails gefunden"
 }

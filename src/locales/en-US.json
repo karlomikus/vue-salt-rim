@@ -290,5 +290,8 @@
   "pagination.results": "Showing {on_page_results}/{total_results} results",
   "page": "Page",
   "page-prev": "Prev",
-  "page-next": "Next"
+  "page-next": "Next",
+  "remove-cocktail-from-collection": "Remove cocktail from collection",
+  "cocktail-collections": "Cocktail collections",
+  "cocktails-not-found": "No cocktails found"
 }

@@ -280,5 +280,8 @@
   "date-favorited": "Datum favoriziranja",
   "average-rating": "Prosječna ocjena",
   "missing-ingredients": "Nedostajali sastojci",
-  "user-rating": "Korisnička ocijena"
+  "user-rating": "Korisnička ocijena",
+  "remove-cocktail-from-collection": "Ukloni koktel iz zbirke",
+  "cocktail-collections": "Kolekcije koktela",
+  "cocktails-not-found": "Nisu pronađeni kokteli"
 }
