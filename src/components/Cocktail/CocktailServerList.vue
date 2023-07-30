@@ -11,17 +11,17 @@
                     <h3 class="page-subtitle" style="margin-top: 0">{{ $t('filters') }}</h3>
                     <Refinement :title="$t('global')" id="global">
                         <div class="resource-search__refinements__refinement__item" v-for="filter in availableRefinements.global">
-                            <input type="checkbox" :id="'global-' + filter.id" :value="filter.active" v-model="activeFilters[filter.id]">
+                            <input type="checkbox" :id="'global-' + filter.id" :value="filter.active" v-model="activeFilters[filter.id]" @change="refreshRouteQuery">
                             <label :for="'global-' + filter.id">{{ filter.name }}</label>
                         </div>
                     </Refinement>
-                    <Refinement :title="$t('your-collections')" :refinements="refineCollections" id="collection" v-model="activeFilters.collections" v-if="refineCollections.length > 0"></Refinement>
-                    <Refinement :title="$t('ingredient.main')" :refinements="refineMainIngredients" id="main-ingredient" v-model="activeFilters.ingredients"></Refinement>
-                    <Refinement :title="$t('method')" :refinements="refineMethods" id="method" v-model="activeFilters.methods"></Refinement>
-                    <Refinement :title="$t('strength')" :refinements="refineABV" id="abv" v-model="activeFilters.abv" type="radio"></Refinement>
-                    <Refinement :title="$t('tags')" :refinements="refineTags" id="tag" v-model="activeFilters.tags"></Refinement>
-                    <Refinement :title="$t('glass-type')" :refinements="refineGlasses" id="glass" v-model="activeFilters.glasses"></Refinement>
-                    <Refinement :title="$t('rating')" :refinements="refineRatings" id="user-rating" v-model="activeFilters.user_rating" type="radio"></Refinement>
+                    <Refinement :title="$t('your-collections')" :refinements="refineCollections" id="collection" v-model="activeFilters.collections" v-if="refineCollections.length > 0" @refinementChanged="refreshRouteQuery"></Refinement>
+                    <Refinement :title="$t('ingredient.main')" :refinements="refineMainIngredients" id="main-ingredient" v-model="activeFilters.ingredients" @refinementChanged="refreshRouteQuery"></Refinement>
+                    <Refinement :title="$t('method')" :refinements="refineMethods" id="method" v-model="activeFilters.methods" @refinementChanged="refreshRouteQuery"></Refinement>
+                    <Refinement :title="$t('strength')" :refinements="refineABV" id="abv" v-model="activeFilters.abv" type="radio" @refinementChanged="refreshRouteQuery"></Refinement>
+                    <Refinement :title="$t('tags')" :refinements="refineTags" id="tag" v-model="activeFilters.tags" @refinementChanged="refreshRouteQuery"></Refinement>
+                    <Refinement :title="$t('glass-type')" :refinements="refineGlasses" id="glass" v-model="activeFilters.glasses" @refinementChanged="refreshRouteQuery"></Refinement>
+                    <Refinement :title="$t('your-rating')" :refinements="refineRatings" id="user-rating" v-model="activeFilters.user_rating" type="radio" @refinementChanged="refreshRouteQuery"></Refinement>
                     <button class="button button--dark sm-show" type="button" @click="showRefinements = false">{{ $t('cancel') }}</button>
                 </div>
             </div>
@@ -33,8 +33,8 @@
                             <path d="M6.17 18a3.001 3.001 0 0 1 5.66 0H22v2H11.83a3.001 3.001 0 0 1-5.66 0H2v-2h4.17zm6-7a3.001 3.001 0 0 1 5.66 0H22v2h-4.17a3.001 3.001 0 0 1-5.66 0H2v-2h10.17zm-6-7a3.001 3.001 0 0 1 5.66 0H22v2H11.83a3.001 3.001 0 0 1-5.66 0H2V4h4.17z" />
                         </svg>
                     </button>
-                    <input class="form-input" type="text" :placeholder="$t('placeholder.search-cocktails')" v-model="searchQuery" @input="debounceQuery">
-                    <select class="form-select" v-model="sort">
+                    <input class="form-input" type="text" :placeholder="$t('placeholder.search-cocktails')" v-model="searchQuery" @input="debounceQuery" @keyup.enter="refreshRouteQuery">
+                    <select class="form-select" v-model="sort" @change="refreshRouteQuery">
                         <option disabled>{{ $t('sort') }}:</option>
                         <option value="name">{{ $t('name') }}</option>
                         <option value="created_at">{{ $t('date-added') }}</option>
@@ -44,12 +44,12 @@
                         <option value="user_rating">{{ $t('user-rating') }}</option>
                         <option value="abv">{{ $t('ABV') }}</option>
                     </select>
-                    <select class="form-select" v-model="sort_dir">
+                    <select class="form-select" v-model="sort_dir" @change="refreshRouteQuery">
                         <option disabled>{{ $t('sort-direction') }}:</option>
                         <option value="">{{ $t('sort-asc') }}</option>
                         <option value="-">{{ $t('sort-desc') }}</option>
                     </select>
-                    <select class="form-select" v-model="per_page">
+                    <select class="form-select" v-model="per_page" @change="refreshRouteQuery">
                         <!-- <option disabled>{{ $t('results-per-page') }}:</option> -->
                         <option value="25">25</option>
                         <option value="50">50</option>
@@ -165,26 +165,6 @@ export default {
         Dialog,
         CollectionDialog
     },
-    watch: {
-        activeFilters: {
-            handler() {
-                this.refreshRouteQuery()
-            },
-            deep: true
-        },
-        sort() {
-            this.refreshRouteQuery()
-        },
-        sort_dir() {
-            this.refreshRouteQuery()
-        },
-        per_page() {
-            this.refreshRouteQuery()
-        },
-        currentPage() {
-            this.refreshRouteQuery()
-        }
-    },
     created() {
         document.title = `${this.$t('cocktails')} \u22C5 ${this.site_title}`
 
@@ -192,11 +172,9 @@ export default {
 
         this.$watch(
             () => this.$route.query,
-            (newVal, oldVal) => {
+            () => {
                 this.queryToState();
-                if (JSON.stringify(newVal) != JSON.stringify(oldVal)) {
-                    this.refreshCocktails()
-                }
+                this.refreshCocktails()
             },
             { immediate: true }
         )
@@ -316,7 +294,7 @@ export default {
             })
         },
         refreshCocktails() {
-            const query = qs.parse(this.$route.query);
+            const query = this.stateToQuery();
 
             this.isLoading = true;
             ApiRequests.fetchCocktails(query).then(resp => {
@@ -340,36 +318,36 @@ export default {
                     this.currentPage++;
                 }
             }
+
+            this.refreshRouteQuery()
         },
         queryToState() {
             const state = qs.parse(this.$route.query);
 
-            if (state.filter) {
-                this.activeFilters.tags = state.filter.tag_id ? String(state.filter.tag_id).split(',') : []
-                this.activeFilters.methods = state.filter.cocktail_method_id ? String(state.filter.cocktail_method_id).split(',') : []
-                this.activeFilters.glasses = state.filter.glass_id ? String(state.filter.glass_id).split(',') : []
-                this.activeFilters.ingredients = state.filter.main_ingredient_id ? String(state.filter.main_ingredient_id).split(',') : []
-                this.activeFilters.collections = state.filter.collection_id ? String(state.filter.collection_id).split(',') : []
-                this.activeFilters.on_shelf = state.filter.on_shelf ? state.filter.on_shelf : null
-                this.activeFilters.favorites = state.filter.favorites ? state.filter.favorites : null
-                this.activeFilters.is_public = state.filter.is_public ? state.filter.is_public : null
-                this.activeFilters.user_id = state.filter.user_id ? true : null
-                this.activeFilters.user_rating = state.filter.user_rating_min ? state.filter.user_rating_min : null
-                this.searchQuery = state.filter.name ? state.filter.name : null
-                if (state.filter.abv_min || state.filter.abv_max) {
-                    this.activeFilters.abv = { min: state.filter.abv_min ? state.filter.abv_min : null, max: state.filter.abv_max ? state.filter.abv_max : null }
-                }
+            this.activeFilters.tags = state.filter && state.filter.tag_id ? String(state.filter.tag_id).split(',') : []
+            this.activeFilters.methods = state.filter && state.filter.cocktail_method_id ? String(state.filter.cocktail_method_id).split(',') : []
+            this.activeFilters.glasses = state.filter && state.filter.glass_id ? String(state.filter.glass_id).split(',') : []
+            this.activeFilters.ingredients = state.filter && state.filter.main_ingredient_id ? String(state.filter.main_ingredient_id).split(',') : []
+            this.activeFilters.collections = state.filter && state.filter.collection_id ? String(state.filter.collection_id).split(',') : []
+            this.activeFilters.on_shelf = state.filter && state.filter.on_shelf ? state.filter.on_shelf : null
+            this.activeFilters.favorites = state.filter && state.filter.favorites ? state.filter.favorites : null
+            this.activeFilters.is_public = state.filter && state.filter.is_public ? state.filter.is_public : null
+            this.activeFilters.user_id = state.filter && state.filter.user_id ? true : null
+            this.activeFilters.user_rating = state.filter && state.filter.user_rating_min ? state.filter.user_rating_min : null
+            this.searchQuery = state.filter && state.filter.name ? state.filter.name : null
+            if (state.filter && (state.filter.abv_min || state.filter.abv_max)) {
+                this.activeFilters.abv = { min: state.filter.abv_min ? state.filter.abv_min : null, max: state.filter.abv_max ? state.filter.abv_max : null }
             }
 
-            if (state.per_page && state.per_page != this.per_page) {
+            if (state.per_page) {
                 this.per_page = state.per_page
             }
 
-            if (state.page && state.page != this.currentPage) {
+            if (state.page) {
                 this.currentPage = state.page
             }
 
-            if (state.sort && state.sort != this.sortWithDir) {
+            if (state.sort) {
                 this.sortWithDir = state.sort
             }
         },
@@ -432,6 +410,8 @@ export default {
                 user_rating: null,
                 abv: null
             };
+
+            this.refreshRouteQuery();
         },
         handleClickAway(e) {
             if (e && e.target && e.target.classList.contains('resource-search__refinements')) {

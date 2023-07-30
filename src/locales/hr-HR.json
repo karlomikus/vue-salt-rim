@@ -285,10 +285,19 @@
   "cocktail-collections": "Kolekcije koktela",
   "cocktails-not-found": "Nisu pronađeni kokteli",
   "collections": {
+    "add-to": "Dodaj u kolekciju",
     "create": "Napravite novu kolekciju",
-    "title": "Zbirke",
-    "add": "Stvori zbirku",
-    "edit": "Uredi zbirku"
+    "title": "Kolekcije",
+    "add": "Nova kolekcija",
+    "edit": "Uredi kolekciju",
+    "collection": "Kolekcija",
+    "confirm-delete": "This will permanently delete collection with name \"{name}\".",
+    "delete-success": "Kolekcija uspješno uklonjena",
+    "update-success": "Kolekcija uspješno uređena",
+    "add-success": "Kolekcija uspješno dodana",
+    "confirm-remove-cocktail": "Ova će akcija trajno ukloniti ovu kolekciju",
+    "add-from-query": "Kreiraj kolekciju iz trenutnih filtera"
   },
-  "your-collections": "Vaše zbirke"
+  "your-collections": "Vaše zbirke",
+  "missing-collections": "Nema pronađenih kolekcija"
 }
