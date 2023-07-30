@@ -53,9 +53,14 @@ const router = createRouter({
                     component: () => import('../views/HomeView.vue'),
                 },
                 {
+                    path: '/cocktails-legacy',
+                    name: 'cocktails-legacy',
+                    component: () => import('../views/CocktailsView.vue'),
+                },
+                {
                     path: '/cocktails',
                     name: 'cocktails',
-                    component: () => import('../views/CocktailsView.vue'),
+                    component: () => import('../views/CocktailsServerView.vue'),
                 },
                 {
                     path: '/cocktails/form',
@@ -126,6 +131,11 @@ const router = createRouter({
                     path: '/settings/tags',
                     name: 'settings.tags',
                     component: () => import('../views/SettingsTagsView.vue'),
+                },
+                {
+                    path: '/collections/cocktail',
+                    name: 'collections.cocktails',
+                    component: () => import('../views/CocktailCollections.vue'),
                 },
             ]
         },

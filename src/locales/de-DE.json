@@ -272,5 +272,22 @@
   "share-copy-text": "Als Klartext kopieren",
   "cocktails-similar": "Ähnliche Cocktails",
   "no-cocktails": "Keine Cocktails gefunden",
-  "ingredient-spotlight": "Hauptzutat"
+  "ingredient-spotlight": "Hauptzutat",
+  "global": "Global",
+  "none": "Keiner",
+  "date-added": "Datum hinzugefügt",
+  "date-favorited": "Datum als Favorit",
+  "average-rating": "Durchschnittliche Bewertung",
+  "missing-ingredients": "Fehlende Zutaten",
+  "user-rating": "Benutzer-Bewertung",
+  "remove-cocktail-from-collection": "Cocktail aus der Sammlung nehmen",
+  "cocktail-collections": "Cocktailsammlungen",
+  "cocktails-not-found": "Keine Cocktails gefunden",
+  "collections": {
+    "create": "Erstellen Sie eine neue Sammlung",
+    "title": "Sammlungen",
+    "add": "Sammlung erstellen",
+    "edit": "Sammlung bearbeiten"
+  },
+  "your-collections": "Ihre Sammlungen"
 }

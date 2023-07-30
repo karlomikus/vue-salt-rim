@@ -1,3 +1,5 @@
+import qs from 'qs';
+
 class ApiRequests
 {
     static getUrl() {
@@ -17,14 +19,13 @@ class ApiRequests
         return new Headers(defaultHeaders);
     }
 
-    static generateBAQueryString(queryObject) {
-        if (Object.keys(queryObject).length == 0) {
-            return '';
+    static generateBAQueryString(queryParams) {
+        let q = '';
+        if (Object.keys(queryParams).length > 0) {
+            q = '?' + qs.stringify(queryParams);
         }
 
-        let qs = Object.keys(queryObject).map(k => k + '=' + encodeURIComponent(queryObject[k])).join('&');
-
-        return `?${qs}`;
+        return q;
     }
 
     static async handleResponseErrors(response) {
@@ -83,11 +84,11 @@ class ApiRequests
      */
 
     static async fetchCocktails(queryParams = {}) {
-        const q = this.generateBAQueryString(queryParams);
+        let q = this.generateBAQueryString(queryParams)
 
         let jsonResp = await this.getRequest(`/api/cocktails${q}`);
 
-        return this.parseResponse(jsonResp);
+        return jsonResp;
     }
 
     static async fetchUserCocktails(userId) {
@@ -607,10 +608,26 @@ class ApiRequests
         return this.parseResponse(jsonResp);
     }
 
+    static async addCocktailsToCollection(collectionId, cocktailIds) {
+        let jsonResp = await this.postRequest(`/api/collections/${collectionId}/cocktails`, {
+            cocktails: cocktailIds
+        });
+
+        return this.parseResponse(jsonResp);
+    }
+
     static async putCocktailInCollection(collectionId, cocktailId) {
         let jsonResp = await this.postRequest(`/api/collections/${collectionId}/cocktails/${cocktailId}`, {}, 'PUT');
 
         return this.parseResponse(jsonResp);
+    }
+
+    static async removeCocktailFromCollection(collectionId, cocktailId) {
+        return await this.deleteRequest(`/api/collections/${collectionId}/cocktails/${cocktailId}`);
+    }
+
+    static async deleteCollection(collectionId) {
+        return await this.deleteRequest(`/api/collections/${collectionId}`);
     }
 }
 

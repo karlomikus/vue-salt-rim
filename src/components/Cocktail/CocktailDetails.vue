@@ -1,6 +1,7 @@
 <template>
     <OverlayLoader v-if="!cocktail.id" />
     <div class="cocktail-details" v-else>
+        <OverlayLoader v-if="isLoading" />
         <div class="cocktail-details__title">
             <h2>{{ cocktail.name }}</h2>
             <p>Added on {{ createdDate }} by {{ cocktail.user_name || '<unknown>' }}</p>
@@ -23,8 +24,8 @@
                         <div class="cocktail-details__chips__group" v-if="cocktail.tags.length > 0">
                             <div class="cocktail-details__chips__group__title">{{ $t('tags') }}:</div>
                             <ul class="chips-list">
-                                <li v-for="tag in cocktail.tags">
-                                    <RouterLink :to="{ name: 'cocktails', query: { 'tags[0]': tag } }">{{ tag }}</RouterLink>
+                                <li v-for="tag in cocktail.cocktail_tags">
+                                    <RouterLink :to="{ name: 'cocktails', query: { 'filter[tag_id]': tag.id } }">{{ tag.name }}</RouterLink>
                                 </li>
                             </ul>
                         </div>
@@ -32,7 +33,7 @@
                             <div class="cocktail-details__chips__group__title">{{ $t('glass-type') }}:</div>
                             <ul class="chips-list">
                                 <li>
-                                    <RouterLink :to="{ name: 'cocktails', query: { 'glass[0]': cocktail.glass.name } }">{{ cocktail.glass.name }}</RouterLink>
+                                    <RouterLink :to="{ name: 'cocktails', query: { 'filter[glass_id]': cocktail.glass.id } }">{{ cocktail.glass.name }}</RouterLink>
                                 </li>
                             </ul>
                         </div>
@@ -40,20 +41,24 @@
                             <div class="cocktail-details__chips__group__title">{{ $t('method') }}:</div>
                             <ul class="chips-list">
                                 <li>
-                                    <RouterLink :to="{ name: 'cocktails', query: { 'method[0]': cocktail.method.name } }">{{ $t('method.' + cocktail.method.name) }}</RouterLink>
+                                    <RouterLink :to="{ name: 'cocktails', query: { 'filter[cocktail_method_id]': cocktail.method.id } }">{{ $t('method.' + cocktail.method.name) }}</RouterLink>
                                 </li>
                             </ul>
                         </div>
                         <div class="cocktail-details__chips__group" v-if="cocktail.abv && cocktail.abv > 0">
                             <div class="cocktail-details__chips__group__title">{{ $t('ABV') }}:</div>
                             <ul class="chips-list">
-                                <li><span>{{ cocktail.abv }}%</span></li>
+                                <li>
+                                    <RouterLink :to="{ name: 'cocktails', query: { 'filter[abv_min]': cocktail.abv } }">{{ cocktail.abv }}%</RouterLink>
+                                </li>
                             </ul>
                         </div>
                         <div class="cocktail-details__chips__group">
                             <div class="cocktail-details__chips__group__title">{{ $t('avg-rating') }}:</div>
                             <ul class="chips-list">
-                                <li><span>{{ cocktail.average_rating }} stars</span></li>
+                                <li>
+                                    <RouterLink :to="{ name: 'cocktails', query: { 'filter[user_rating_min]': cocktail.average_rating } }">{{ cocktail.average_rating }} ★</RouterLink>
+                                </li>
                             </ul>
                         </div>
                         <div class="cocktail-details__chips__group">
@@ -151,9 +156,9 @@
                                     </svg>
                                     {{ $t('edit') }}
                                 </RouterLink>
-                                <!-- <Dialog v-model="showCollectionDialog">
+                                <Dialog v-model="showCollectionDialog">
                                     <template #trigger>
-                                        <a class="dropdown-menu__item" href="#generateimage" @click.prevent="showCollectionDialog = !showCollectionDialog">
+                                        <a class="dropdown-menu__item" href="#" @click.prevent="showCollectionDialog = !showCollectionDialog">
                                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18">
                                                 <path fill="none" d="M0 0h24v24H0z" />
                                                 <path d="M12.414 5H21a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h7.414l2 2zM4 5v14h16V7h-8.414l-2-2H4zm7 7V9h2v3h3v2h-3v3h-2v-3H8v-2h3z" />
@@ -162,9 +167,9 @@
                                         </a>
                                     </template>
                                     <template #dialog>
-                                        <CollectionDialog :cocktail="cocktail" @collectionDialogClosed="showCollectionDialog = false" />
+                                        <CollectionDialog :cocktails="[cocktail.id]" :cocktailCollections="cocktail.collections" @collectionDialogClosed="showCollectionDialog = false" @refreshCocktail="fetchCocktail" />
                                     </template>
-                                </Dialog> -->
+                                </Dialog>
                                 <Dialog v-model="showNoteDialog">
                                     <template #trigger>
                                         <a class="dropdown-menu__item" href="#" @click.prevent="showNoteDialog = !showNoteDialog">
@@ -258,8 +263,10 @@
                     <h3 class="page-subtitle">{{ $t('ingredient-spotlight') }}</h3>
                     <IngredientSpotlight :id="cocktail.ingredients[0].ingredient_id"></IngredientSpotlight>
                 </template>
-                <!-- <h3 class="page-subtitle">{{ $t('cocktail-collections') }}</h3>
-                <CocktailCollections :cocktail="cocktail"></CocktailCollections> -->
+                <template v-if="cocktail.collections.length > 0">
+                    <h3 class="page-subtitle">{{ $t('cocktail-collections') }}</h3>
+                    <CocktailCollections :cocktail="cocktail"></CocktailCollections>
+                </template>
             </div>
         </div>
     </div>
@@ -289,6 +296,7 @@ import dayjs from 'dayjs'
 export default {
     data: () => ({
         cocktail: {},
+        isLoading: false,
         isFavorited: false,
         servings: 1,
         userShelfIngredients: [],
@@ -373,14 +381,17 @@ export default {
     },
     methods: {
         fetchCocktail() {
+            this.isLoading = true;
             this.userShelfIngredients = Auth.getUser().shelf_ingredients;
             this.userShoppingListIngredients = Auth.getUser().shopping_lists;
 
             ApiRequests.fetchCocktail(this.$route.params.id).then(data => {
+                this.isLoading = false;
                 this.cocktail = data
                 this.isFavorited = Auth.getUser().favorite_cocktails.includes(this.cocktail.id);
                 document.title = `${this.cocktail.name} \u22C5 ${this.site_title}`
             }).catch(e => {
+                this.isLoading = false;
                 this.$toast.error(e.message);
             })
 

@@ -73,7 +73,7 @@ export default {
         this.$nextTick(() => {
             setTimeout(() => {
                 document.querySelector('.site-autocomplete .ais-SearchBox-input').focus();
-            }, 100)
+            }, 200)
         })
     },
     methods: {
