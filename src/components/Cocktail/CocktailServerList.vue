@@ -1,6 +1,10 @@
 <template>
     <PageHeader>
         {{ $t('cocktails') }}
+        <template #actions>
+            <RouterLink class="button button--outline" :to="{ name: 'cocktails.scrape' }">{{ $t('cocktails.import') }}</RouterLink>
+            <RouterLink class="button button--dark" :to="{ name: 'cocktails.form' }">{{ $t('cocktails.add') }}</RouterLink>
+        </template>
     </PageHeader>
     <p class="page-description" style="margin-bottom: 2rem;">{{ $t('cocktails.page.description') }}</p>
     <div class="resource-search-wrapper">
