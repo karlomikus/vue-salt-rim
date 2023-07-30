@@ -24,8 +24,8 @@
                         <div class="cocktail-details__chips__group" v-if="cocktail.tags.length > 0">
                             <div class="cocktail-details__chips__group__title">{{ $t('tags') }}:</div>
                             <ul class="chips-list">
-                                <li v-for="tag in cocktail.tags">
-                                    <RouterLink :to="{ name: 'cocktails', query: { 'tags[0]': tag } }">{{ tag }}</RouterLink>
+                                <li v-for="tag in cocktail.cocktail_tags">
+                                    <RouterLink :to="{ name: 'cocktails', query: { 'filter[tag_id]': tag.id } }">{{ tag.name }}</RouterLink>
                                 </li>
                             </ul>
                         </div>
