@@ -1,5 +1,5 @@
 .button {
-    --button-padding: 0.5rem 1.5rem;
+    --button-padding: 0.5rem 1.25rem;
     --button-height: 2.25rem;
     height: var(--button-height);
     line-height: 1;
@@ -47,35 +47,46 @@
 }
 
 .dark-theme .button.button--dark {
-    background-color: #27143e;
+    background-color: var(--clr-dark-main-200);
+    color: var(--clr-dark-main-800);
 }
 
 .dark-theme .button.button--dark:hover {
-    background-color: #190e27;
+    background-color: var(--clr-dark-main-50);
 }
 
+/* Outline button */
 .button.button--outline {
-    border: 2px solid var(--clr-gray-800);
-    color: var(--clr-gray-800);
+    border: 2px solid var(--clr-gray-700);
+    color: var(--clr-gray-700);
     background: none;
 }
 
 .button.button--outline:hover {
-    border: 2px solid var(--clr-red-800);
-    background-color: var(--clr-red-800);
+    border: 2px solid var(--clr-gray-900);
+    background-color: var(--clr-gray-900);
     color: var(--clr-gray-50);
 }
 
+.button.button--outline > svg {
+    fill: var(--clr-gray-700);
+}
+
+.button.button--outline:hover > svg {
+    fill: var(--clr-gray-50);
+}
+
+/* Dark outline button */
 .dark-theme .button.button--outline {
-    border: 2px solid var(--clr-gray-800);
-    color: var(--clr-gray-300);
+    border: 2px solid var(--clr-dark-main-200);
+    color: var(--clr-dark-main-200);
     background: none;
 }
 
 .dark-theme .button.button--outline:hover {
-    border: 2px solid var(--clr-dark-main-800);
-    background-color: var(--clr-dark-main-800);
-    color: var(--clr-gray-50);
+    border: 2px solid var(--clr-dark-main-50);
+    background-color: var(--clr-dark-main-50);
+    color: var(--clr-dark-main-800);
 }
 
 .button-circle {
