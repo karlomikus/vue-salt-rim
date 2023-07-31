@@ -71,39 +71,3 @@ export default {
     }
 }
 </script>
-<style>
-.resource-search__refinements__refinement {
-    padding: 1rem 0 0 0;
-    margin-bottom: 0.5rem;
-    border-top: 3px double var(--clr-red-300);
-}
-
-.dark-theme .resource-search__refinements__refinement {
-    border-color: var(--clr-dark-main-800);
-}
-
-.resource-search__refinements__refinement__body {
-    max-height: 300px;
-    overflow-y: auto;
-}
-
-.resource-search__refinements__refinement__title {
-    color: var(--clr-header-title);
-    font-weight: var(--fw-bold);
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    font-size: 0.715rem;
-    margin-bottom: 0.5rem;
-}
-
-.resource-search__refinements__refinement__item {
-    margin-bottom: 0.25rem;
-}
-
-.resource-search__refinements__refinement__item input[type="checkbox"],
-.resource-search__refinements__refinement__item input[type="radio"] {
-    margin-right: 0.25rem;
-    width: 1rem;
-    height: 1rem;
-}
-</style>

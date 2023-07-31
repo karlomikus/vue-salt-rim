@@ -1,3 +1,109 @@
+.resource-search {
+    display: flex;
+    gap: 1rem;
+}
+
+.resource-search__refinements {
+    width: 300px;
+}
+
+.resource-search__content {
+    width: 100%;
+}
+
+.resource-search__content__filter {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.resource-search__content__filter .form-input {
+    flex-basis: 100%;
+}
+
+@media (max-width: 850px) {
+    .resource-search__content__filter {
+        flex-wrap: wrap;
+    }
+
+    .resource-search__content__filter .form-input {
+        flex-basis: auto;
+    }
+}
+
+.resource-search__content__pagination {
+    margin-top: 1rem;
+    display: flex;
+    align-items: center;
+}
+
+.resource-search__content__pagination__links {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+@media (max-width: 750px) {
+    .resource-search__refinements {
+        position: fixed;
+        top: 0;
+        left: 0;
+        background-color: rgba(21, 13, 34, 0.5);
+        width: 100%;
+        z-index: 99;
+        height: 100%;
+    }
+
+    .resource-search__refinements__body {
+        background: var(--clr-red-50);
+        width: 80%;
+        height: 100%;
+        padding: 1.5rem;
+        overflow-y: scroll;
+    }
+
+    .dark-theme .resource-search__refinements__body {
+        background: var(--clr-dark-main-950);
+    }
+}
+
+.resource-search__refinements__refinement {
+    padding: 1rem 0 0 0;
+    margin-bottom: 0.5rem;
+    border-top: 3px double var(--clr-red-300);
+}
+
+.dark-theme .resource-search__refinements__refinement {
+    border-color: var(--clr-dark-main-800);
+}
+
+.resource-search__refinements__refinement__body {
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.resource-search__refinements__refinement__title {
+    color: var(--clr-header-title);
+    font-weight: var(--fw-bold);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-size: 0.715rem;
+    margin-bottom: 0.5rem;
+}
+
+.resource-search__refinements__refinement__item {
+    margin-bottom: 0.25rem;
+}
+
+.resource-search__refinements__refinement__item input[type="checkbox"],
+.resource-search__refinements__refinement__item input[type="radio"] {
+    margin-right: 0.25rem;
+    width: 1rem;
+    height: 1rem;
+}
+
+
+/*legacy*/
 .inpage-search {
     --clr-border: var(--clr-red-300);
     --clr-header-title: var(--clr-body-font);

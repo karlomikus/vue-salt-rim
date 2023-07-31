@@ -179,6 +179,16 @@ hr {
     margin: 1rem 0;
 }
 
+.sm-show {
+    display: none;
+}
+
+@media (max-width: 750px) {
+    .sm-show {
+        display: block;
+    }
+}
+
 /*
     Iron Maiden
     #dad5e1
