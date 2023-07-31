@@ -19,13 +19,13 @@
                             <label :for="'global-' + filter.id">{{ filter.name }}</label>
                         </div>
                     </Refinement>
-                    <Refinement :title="$t('your-collections')" :refinements="refineCollections" id="collection" v-model="activeFilters.collections" v-if="refineCollections.length > 0" @refinementChanged="updateRouterPath"></Refinement>
-                    <Refinement :title="$t('ingredient.main')" :refinements="refineMainIngredients" id="main-ingredient" v-model="activeFilters.ingredients" @refinementChanged="updateRouterPath"></Refinement>
-                    <Refinement :title="$t('method')" :refinements="refineMethods" id="method" v-model="activeFilters.methods" @refinementChanged="updateRouterPath"></Refinement>
-                    <Refinement :title="$t('strength')" :refinements="refineABV" id="abv" v-model="activeFilters.abv" type="radio" @refinementChanged="updateRouterPath"></Refinement>
-                    <Refinement :title="$t('tags')" :refinements="refineTags" id="tag" v-model="activeFilters.tags" @refinementChanged="updateRouterPath"></Refinement>
-                    <Refinement :title="$t('glass-type')" :refinements="refineGlasses" id="glass" v-model="activeFilters.glasses" @refinementChanged="updateRouterPath"></Refinement>
-                    <Refinement :title="$t('your-rating')" :refinements="refineRatings" id="user-rating" v-model="activeFilters.user_rating" type="radio" @refinementChanged="updateRouterPath"></Refinement>
+                    <Refinement :title="$t('your-collections')" :refinements="refineCollections" id="collection" v-model="activeFilters.collections" v-if="refineCollections.length > 0" @change="updateRouterPath"></Refinement>
+                    <Refinement :title="$t('ingredient.main')" :refinements="refineMainIngredients" id="main-ingredient" v-model="activeFilters.ingredients" @change="updateRouterPath"></Refinement>
+                    <Refinement :title="$t('method')" :refinements="refineMethods" id="method" v-model="activeFilters.methods" @change="updateRouterPath"></Refinement>
+                    <Refinement :title="$t('strength')" :refinements="refineABV" id="abv" v-model="activeFilters.abv" type="radio" @change="updateRouterPath"></Refinement>
+                    <Refinement :title="$t('tags')" :refinements="refineTags" id="tag" v-model="activeFilters.tags" @change="updateRouterPath"></Refinement>
+                    <Refinement :title="$t('glass-type')" :refinements="refineGlasses" id="glass" v-model="activeFilters.glasses" @change="updateRouterPath"></Refinement>
+                    <Refinement :title="$t('your-rating')" :refinements="refineRatings" id="user-rating" v-model="activeFilters.user_rating" type="radio" @change="updateRouterPath"></Refinement>
                     <button class="button button--dark sm-show" type="button" @click="showRefinements = false">{{ $t('cancel') }}</button>
                 </div>
             </div>
