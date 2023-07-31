@@ -83,7 +83,7 @@
 
 .button.button--icon {
     padding: 0.5rem;
-    display: flex;
+    display: inline-flex;
     align-content: center;
     justify-content: center;
     height: 2.85rem;
