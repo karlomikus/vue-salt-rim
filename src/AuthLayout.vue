@@ -1,11 +1,11 @@
 <script setup>
 import { RouterView } from 'vue-router'
 import SiteHeader from './components/Layout/SiteHeader.vue'
-import Footer from './components/Footer.vue'
+import SiteFooter from './components/Layout/SiteFooter.vue'
 </script>
 
 <template>
   <SiteHeader />
   <RouterView />
-  <Footer />
+  <SiteFooter />
 </template>
