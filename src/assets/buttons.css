@@ -68,14 +68,6 @@
     color: var(--clr-gray-50);
 }
 
-.button.button--outline > svg {
-    fill: var(--clr-gray-700);
-}
-
-.button.button--outline:hover > svg {
-    fill: var(--clr-gray-50);
-}
-
 /* Dark outline button */
 .dark-theme .button.button--outline {
     border: 2px solid var(--clr-dark-main-200);
@@ -87,6 +79,43 @@
     border: 2px solid var(--clr-dark-main-50);
     background-color: var(--clr-dark-main-50);
     color: var(--clr-dark-main-800);
+}
+
+.button.button--icon {
+    padding: 0.5rem;
+    display: flex;
+    align-content: center;
+    justify-content: center;
+    height: 2.85rem;
+    width: 2.85rem;
+    background-color: #fff;
+    border-color: var(--clr-gray-100);
+    flex-shrink: 0;
+    flex-grow: 0;
+}
+
+.button.button--icon > svg {
+    fill: var(--clr-gray-700);
+}
+
+.button.button--icon:hover > svg {
+    fill: var(--clr-gray-50);
+}
+
+.dark-theme .button.button--icon {
+    border-color: var(--clr-gray-700);
+}
+
+.dark-theme .button.button--icon:hover {
+    background: #0c0b0e;
+}
+
+.dark-theme .button.button--icon > svg {
+    fill: var(--clr-gray-100);
+}
+
+.dark-theme .button.button--icon:hover > svg {
+    fill: var(--clr-gray-100);
 }
 
 .button-circle {

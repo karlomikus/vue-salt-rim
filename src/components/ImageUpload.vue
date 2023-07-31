@@ -190,7 +190,7 @@ export default {
     border-radius: 4px;
     display: flex;
     background: var(--iu-clr-bg);
-    padding: 2rem;
+    padding: 1rem;
     cursor: pointer;
 }
 

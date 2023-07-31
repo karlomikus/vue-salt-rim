@@ -31,7 +31,7 @@
             </div>
             <div class="resource-search__content">
                 <div class="resource-search__content__filter">
-                    <button type="button" class="button button--input" @click.prevent="showRefinements = !showRefinements">
+                    <button type="button" class="button button--outline button--icon" @click.prevent="showRefinements = !showRefinements">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
                             <path fill="none" d="M0 0h24v24H0z" />
                             <path d="M6.17 18a3.001 3.001 0 0 1 5.66 0H22v2H11.83a3.001 3.001 0 0 1-5.66 0H2v-2h4.17zm6-7a3.001 3.001 0 0 1 5.66 0H22v2h-4.17a3.001 3.001 0 0 1-5.66 0H2v-2h10.17zm-6-7a3.001 3.001 0 0 1 5.66 0H22v2H11.83a3.001 3.001 0 0 1-5.66 0H2V4h4.17z" />
@@ -61,7 +61,7 @@
                     </select>
                     <Dialog v-model="showCollectionDialog">
                         <template #trigger>
-                            <button type="button" class="button button--input" @click.prevent="showCollectionDialog = !showCollectionDialog" :title="$t('collections.add')">
+                            <button type="button" class="button button--outline button--icon" @click.prevent="showCollectionDialog = !showCollectionDialog" :title="$t('collections.add')">
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
                                     <path fill="none" d="M0 0h24v24H0z" />
                                     <path d="M12.414 5H21a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h7.414l2 2zM4 5v14h16V7h-8.414l-2-2H4zm7 7V9h2v3h3v2h-3v3h-2v-3H8v-2h3z" />
@@ -72,7 +72,7 @@
                             <CollectionDialog title="collections.add-from-query" :cocktails="currentCocktailIds" @collectionDialogClosed="handleCollectionsDialogClosed" />
                         </template>
                     </Dialog>
-                    <button type="button" class="button button--input" @click.prevent="clearRefinements" :title="$t('clear-filters')">
+                    <button type="button" class="button button--outline button--icon" @click.prevent="clearRefinements" :title="$t('clear-filters')">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path d="M12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22ZM12 20C16.4183 20 20 16.4183 20 12C20 7.58172 16.4183 4 12 4C7.58172 4 4 7.58172 4 12C4 16.4183 7.58172 20 12 20ZM12 10.5858L14.8284 7.75736L16.2426 9.17157L13.4142 12L16.2426 14.8284L14.8284 16.2426L12 13.4142L9.17157 16.2426L7.75736 14.8284L10.5858 12L7.75736 9.17157L9.17157 7.75736L12 10.5858Z"></path></svg>
                     </button>
                 </div>
