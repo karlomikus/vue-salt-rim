@@ -90,7 +90,7 @@ const router = createRouter({
                 {
                     path: '/ingredients',
                     name: 'ingredients',
-                    component: () => import('../views/ShelfHomeView.vue'),
+                    component: () => import('../views/Ingredients.vue'),
                 },
                 {
                     path: '/settings',
