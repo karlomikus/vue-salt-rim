@@ -6,10 +6,10 @@
                 <ThemeToggle></ThemeToggle>
             </div>
             <nav class="header-bar__navigation">
-                <Dialog v-model="searchShown" class="site-autocomplete-dialog">
+                <Dialog v-model="showSearchDialog" class="site-autocomplete-dialog">
                     <template #trigger>
-                        <a href="#" @click.prevent="searchShown = !searchShown">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="12" height="12">
+                        <a href="#" @click.prevent="showSearchDialog = !showSearchDialog">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="14" height="14">
                                 <path fill="none" d="M0 0h24v24H0z" />
                                 <path d="M18.031 16.617l4.283 4.282-1.415 1.415-4.282-4.283A8.96 8.96 0 0 1 11 20c-4.968 0-9-4.032-9-9s4.032-9 9-9 9 4.032 9 9a8.96 8.96 0 0 1-1.969 5.617zm-2.006-.742A6.977 6.977 0 0 0 18 11c0-3.868-3.133-7-7-7-3.868 0-7 3.132-7 7 0 3.867 3.132 7 7 7a6.977 6.977 0 0 0 4.875-1.975l.15-.15z" />
                             </svg>
@@ -17,26 +17,26 @@
                         </a>
                     </template>
                     <template #dialog>
-                        <SiteAutocomplete @closeAutocomplete="searchShown = false" />
+                        <SiteAutocomplete @closeAutocomplete="showSearchDialog = false"></SiteAutocomplete>
                     </template>
                 </Dialog>
-                <RouterLink :to="{name: 'home'}" exact-active-class="current-nav">{{ $t('shelf.title') }}</RouterLink>
-                <RouterLink :to="{name: 'cocktails'}" :class="{ 'current-nav': $route.path.startsWith('/cocktails') }">{{ $t('cocktails') }}</RouterLink>
-                <RouterLink :to="{name: 'ingredients'}" :class="{ 'current-nav': $route.path.startsWith('/ingredients') }">{{ $t('ingredients') }}</RouterLink>
-                <RouterLink :to="{name: 'collections.cocktails'}" :class="{ 'current-nav': $route.path.startsWith('/collections') }">{{ $t('collections.title') }}</RouterLink>
-                <RouterLink :to="{name: 'settings'}" :class="{ 'current-nav': $route.path.startsWith('/settings') }">{{ $t('settings') }}</RouterLink>
-                <a v-if="loginDisabled !== true" href="#" @click.prevent="logout">{{ $t('logout') }}</a>
+                <RouterLink :to="{ name: 'home' }" exact-active-class="current-nav">{{ $t('shelf.title') }}</RouterLink>
+                <RouterLink :to="{ name: 'cocktails' }" :class="{ 'current-nav': $route.path.startsWith('/cocktails') }">{{ $t('cocktails') }}</RouterLink>
+                <RouterLink :to="{ name: 'ingredients' }" :class="{ 'current-nav': $route.path.startsWith('/ingredients') }">{{ $t('ingredients') }}</RouterLink>
+                <RouterLink :to="{ name: 'collections.cocktails' }" :class="{ 'current-nav': $route.path.startsWith('/collections') }">{{ $t('collections.title') }}</RouterLink>
+                <RouterLink :to="{ name: 'settings' }" :class="{ 'current-nav': $route.path.startsWith('/settings') }">{{ $t('settings') }}</RouterLink>
+                <a v-if="isLoginDisabled !== true" href="#" @click.prevent="logout">{{ $t('logout') }}</a>
             </nav>
         </div>
     </header>
 </template>
 <script>
-import ApiRequests from '@/ApiRequests';
-import Auth from '@/Auth.js';
-import SiteAutocomplete from '@/components/SiteAutocomplete.vue'
-import Dialog from '@/components/Dialog/Dialog.vue'
-import Logo from '@/components/Logo.vue'
-import ThemeToggle from '@/components/ThemeToggle.vue'
+import ApiRequests from './../../ApiRequests';
+import Auth from './../../Auth.js';
+import SiteAutocomplete from './../SiteAutocomplete.vue'
+import Dialog from './../Dialog/Dialog.vue'
+import Logo from './../Logo.vue'
+import ThemeToggle from './../ThemeToggle.vue'
 
 export default {
     components: {
@@ -47,36 +47,41 @@ export default {
     },
     data() {
         return {
-            searchShown: false,
-            loginDisabled: window.srConfig.DISABLE_LOGIN
+            showSearchDialog: false,
+            isLoginDisabled: window.srConfig.DISABLE_LOGIN
         }
     },
     created() {
         document.addEventListener('keydown', evt => {
             if (evt.ctrlKey && evt.key === "k") {
                 evt.preventDefault()
-                this.searchShown = !this.searchShown;
+                this.showSearchDialog = !this.showSearchDialog;
             }
         })
     },
     methods: {
         logout() {
-            ApiRequests.logout().then(() => {
-                Auth.forgetUser();
-                this.$router.push({name: 'login'})
-            })
+            this.$confirm(this.$t('auth.confirm-logout'), {
+                onResolved: (dialog) => {
+                    dialog.close();
+                    ApiRequests.logout().then(() => {
+                        Auth.forgetUser();
+                        this.$router.push({ name: 'login' })
+                    })
+                }
+            });
         }
     }
 }
 </script>
 <style scoped>
 .site-header {
-    margin-bottom: 30px;
+    margin-bottom: 1rem;
     background-color: var(--color-site-header);
 }
 
 .header-bar {
-    padding: 20px 10px;
+    padding: 1rem 0.5rem;
     display: flex;
     max-width: var(--site-width);
     margin: 0 auto;
@@ -90,6 +95,7 @@ export default {
     margin-left: auto;
     display: flex;
     flex-wrap: wrap;
+    align-items: center;
 }
 
 .header-bar__navigation a {
@@ -108,7 +114,9 @@ export default {
 }
 
 .header-bar__navigation a.current-nav {
-    text-decoration: underline;
+    border-radius: 3px;
+    color: #fff;
+    background-color: rgba(0, 0, 0, .3);
 }
 
 .header-bar__navigation a span {

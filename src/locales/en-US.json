@@ -306,5 +306,8 @@
   "your-collections": "Your collections",
   "view": "View",
   "missing-collections": "You don't have any collections",
-  "sort-direction": "Sort order"
+  "sort-direction": "Sort order",
+  "auth": {
+    "confirm-logout": "Are you sure you want to sign out of your current session?"
+  }
 }
