@@ -1,6 +1,6 @@
 <template>
     <div class="resource-search__refinements__refinement">
-        <h4 class="resource-search__refinements__refinement__title">{{ title }} <a href="#" v-show="isClearable" @click.prevent="clear">{{ $t('clear') }}</a></h4>
+        <h4 class="resource-search__refinements__refinement__title">{{ title }} <a href="#" v-show="isClearable" @click.prevent="clear">{{ $t('clear') }} {{ totalSelected }}</a></h4>
         <div class="resource-search__refinements__refinement__body">
             <slot>
                 <div class="resource-search__refinements__refinement__item" v-for="refinement in refinements">
@@ -49,6 +49,13 @@ export default {
             }
 
             return this.model && this.model.length > 0;
+        },
+        totalSelected() {
+            if (!this.model || this.type == 'radio' || this.model.length == 0) {
+                return ''
+            }
+
+            return `(${this.model.length})`
         }
     },
     methods: {
@@ -58,6 +65,8 @@ export default {
             } else {
                 this.model = null;
             }
+
+            this.$emit("change", this.model);
         }
     }
 }
