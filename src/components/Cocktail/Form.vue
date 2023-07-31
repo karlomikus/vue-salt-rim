@@ -24,7 +24,7 @@
         <h3 class="form-section-title">{{ $t('media') }}</h3>
         <ImageUpload ref="imagesUpload" :value="cocktail.images" />
         <h3 class="form-section-title">{{ $t('ingredients') }}</h3>
-        <ul class="cocktail-form__ingredients" style="margin-bottom: 20px;">
+        <ul class="cocktail-form__ingredients" style="margin-bottom: 20px;" v-show="cocktail.ingredients.length > 0">
             <li class="block-container" v-for="ing in cocktail.ingredients" :data-id="ing.ingredient_id">
                 <div class="drag-handle"></div>
                 <div class="cocktail-form__ingredients__content">
