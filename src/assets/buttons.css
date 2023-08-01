@@ -94,6 +94,12 @@
     flex-grow: 0;
 }
 
+@media (max-width: 450px) {
+    .button.button--icon {
+        height: 2.5rem;
+    }
+}
+
 .button.button--icon > svg {
     fill: var(--clr-gray-700);
 }
