@@ -33,10 +33,36 @@ Salt Rim is a web client used for connecting to your [Bar Assistant](https://git
 - Dark theme support
 - Localizations available: English, German, Croatian, French
 - PWA Support
+- Organize your personal recipe collections
+- Easily copy and share your recipes
 
 ## Documentation
 
 [Official documentation is available here.](https://bar-assistant.github.io/docs/)
+
+## Screenshots
+
+<p align="center">
+    <picture>
+      <img src="./art/your-shelf.png" alt="Shelf" />
+    </picture>
+</p>
+
+---
+
+<p align="center">
+    <picture>
+      <img src="./art/db.png" alt="Shelf" />
+    </picture>
+</p>
+
+---
+
+<p align="center">
+    <picture>
+      <img src="./art/organize.png" alt="Shelf" />
+    </picture>
+</p>
 
 ## Docker installation
 
