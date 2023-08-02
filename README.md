@@ -44,14 +44,6 @@ Salt Rim is a web client used for connecting to your [Bar Assistant](https://git
 
 <p align="center">
     <picture>
-      <img src="./art/your-shelf.png" alt="Shelf" />
-    </picture>
-</p>
-
----
-
-<p align="center">
-    <picture>
       <img src="./art/db.png" alt="Shelf" />
     </picture>
 </p>
@@ -60,7 +52,23 @@ Salt Rim is a web client used for connecting to your [Bar Assistant](https://git
 
 <p align="center">
     <picture>
+      <img src="./art/your-shelf.png" alt="Shelf" />
+    </picture>
+</p>
+
+---
+
+<p align="center">
+    <picture>
       <img src="./art/organize.png" alt="Shelf" />
+    </picture>
+</p>
+
+---
+
+<p align="center">
+    <picture>
+      <img src="./art/import.png" alt="Shelf" />
     </picture>
 </p>
 
