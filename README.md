@@ -1,5 +1,9 @@
 <p align="center">
-    <a href="https://karlomikus.com" target="_blank"><img width="700" src="art/hero.png" alt="Logo"></a>
+  <picture>
+      <source media="(prefers-color-scheme: dark)" srcset="art/logo_dark.png">
+      <source media="(prefers-color-scheme: light)" srcset="art/logo.png">
+      <img src="art/logo.png" alt="Logo" />
+  </picture>
 </p>
 
 <p align="center">

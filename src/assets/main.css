@@ -117,19 +117,21 @@ h3.form-section-title::before {
 }
 
 .site-logo__image {
-    background: #fff;
+    /* background: #fff; */
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 40px;
-    height: 40px;
-    border-radius: 3px;
+    /* width: 40px;
+    height: 40px; */
+    /* border-radius: 6px;
+    border-top-left-radius: 24px;
+    border-top-right-radius: 24px; */
 }
 
 .site-logo__image svg {
-    fill: var(--color-site-header);
-    width: 32px;
-    height: 32px;
+    fill: #fff;
+    width: 40px;
+    height: 40px;
 }
 
 .site-logo__title {
@@ -138,6 +140,7 @@ h3.form-section-title::before {
     text-shadow: 3px 2px 0 rgba(0, 0, 0, .2);
     line-height: 0.9;
     align-self: center;
+    font-size: 1.7rem;
 }
 
 .site-logo__title span {
