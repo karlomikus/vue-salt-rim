@@ -81,17 +81,7 @@
             <div style="margin-bottom: 2rem;">
                 <label class="form-label">{{ $t('method-and-dilution') }}:</label>
                 <div class="cocktail-methods">
-                    <label class="cocktail-method" v-for="method in methods" :for="'method_' + method.id" :class="{'cocktail-method--selected': method.id == methodId}">
-                        <Transition name="cocktail-method__selected--transition">
-                            <div class="cocktail-method__selected" v-show="method.id == methodId">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path fill="none" d="M0 0h24v24H0z"/><path d="M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm-.997-6l7.07-7.071-1.414-1.414-5.656 5.657-2.829-2.829-1.414 1.414L11.003 16z"/></svg>
-                            </div>
-                        </Transition>
-                        <!-- <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path fill="none" d="M0 0h24v24H0z"/><path d="M5 16v6H3V3h9.382a1 1 0 0 1 .894.553L14 5h6a1 1 0 0 1 1 1v11a1 1 0 0 1-1 1h-6.382a1 1 0 0 1-.894-.553L12 16H5zM5 5v9h8.236l1 2H19V7h-6.236l-1-2H5z"/></svg> -->
-                        <div class="cocktail-method__title">{{ $t('method.' + method.name) }}</div>
-                        <small>{{ method.dilution_percentage }}%</small>
-                        <input type="radio" :id="'method_' + method.id" :value="method.id" v-model="methodId">
-                    </label>
+                    <Radio v-for="method in methods" :value="method.id" :title="method.name" :description="method.dilution_percentage + '%'" v-model="methodId"></Radio>
                 </div>
             </div>
             <div class="form-group">
@@ -125,6 +115,7 @@ import ImageUpload from '@/components/ImageUpload.vue'
 import PageHeader from '@/components/PageHeader.vue'
 import Sortable from 'sortablejs';
 import Dialog from '@/components/Dialog/Dialog.vue';
+import Radio from "../Radio.vue";
 
 export default {
     data() {
@@ -152,6 +143,7 @@ export default {
         ImageUpload,
         PageHeader,
         Dialog,
+        Radio
     },
     watch: {
         showDialog(newVal) {
@@ -502,66 +494,9 @@ export default {
 }
 
 .cocktail-methods {
-    display: flex;
-    flex-wrap: wrap;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
     gap: 1rem;
     margin-top: 0.5rem;
-}
-
-.cocktail-method {
-    --cm-clr-bg: #fff;
-    --cm-clr-border: var(--clr-gray-200);
-    --cm-clr-border-selected: var(--clr-gray-500);
-    --cm-clr-shadow-selected: var(--clr-gray-200);
-    background: var(--cm-clr-bg);
-    flex-basis: 100px;
-    flex-grow: 1;
-    border: 2px solid var(--cm-clr-border);
-    padding: 0.5rem;
-    border-radius: 0.25rem;
-    text-align: center;
-    cursor: pointer;
-    transition: box-shadow 100ms cubic-bezier(0.455, 0.03, 0.515, 0.955);
-}
-
-.dark-theme .cocktail-method {
-    --cm-clr-bg: var(--clr-dark-main-900);
-    --cm-clr-border: var(--clr-dark-main-800);
-    --cm-clr-border-selected: var(--clr-dark-main-700);
-    --cm-clr-shadow-selected: var(--clr-dark-main-800);
-}
-
-.cocktail-method__selected {
-    position: absolute;
-    top: -0.5rem;
-    right: -0.5rem;
-    transition: transform 150ms cubic-bezier(0.455, 0.03, 0.515, 0.955), opacity 100ms cubic-bezier(0.455, 0.03, 0.515, 0.955);
-}
-
-.cocktail-method__selected svg {
-    fill: var(--clr-red-700);
-}
-
-.cocktail-method__selected--transition-enter-from,
-.cocktail-method__selected--transition-leave-to {
-    transform: translate(0, -0.25rem);
-    opacity: 0;
-}
-
-.cocktail-method.cocktail-method--selected {
-    box-shadow: 0 0 0 3px var(--cm-clr-shadow-selected);
-    border-color: var(--cm-clr-border-selected);
-}
-
-.cocktail-method input {
-    display: none;
-}
-
-.cocktail-method small {
-    color: var(--clr-gray-400);
-}
-
-.cocktail-method:hover {
-    border-color: var(--clr-gray-500);
 }
 </style>

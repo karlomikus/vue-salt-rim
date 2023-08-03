@@ -8,15 +8,9 @@
         <div class="block-container block-container--padded">
             <div class="form-group">
                 <label class="form-label form-label--required">{{ $t('type') }}:</label>
-                <label>
-                    <input type="radio" name="import-type" value="url" v-model="importType"> URL
-                </label>
-                <label>
-                    <input type="radio" name="import-type" value="json" v-model="importType"> JSON
-                </label>
-                <label>
-                    <input type="radio" name="import-type" value="yaml" v-model="importType"> YAML
-                </label>
+                <Radio title="URL" description="Import from a supported website" value="url" v-model="importType"></Radio>
+                <Radio title="JSON" description="Import from JSON format" value="json" v-model="importType"></Radio>
+                <Radio title="YAML" description="Import from YAML format" value="yaml" v-model="importType"></Radio>
             </div>
             <div class="form-group">
                 <label class="form-label form-label--required" for="import-source">{{ $t('source') }}:</label>
@@ -111,6 +105,7 @@ import ApiRequests from "@/ApiRequests";
 import OverlayLoader from '@/components/OverlayLoader.vue'
 import PageHeader from '@/components/PageHeader.vue'
 import Checkbox from '@/components/Checkbox.vue'
+import Radio from "../Radio.vue";
 
 export default {
     data() {
@@ -124,7 +119,8 @@ export default {
     components: {
         OverlayLoader,
         PageHeader,
-        Checkbox
+        Checkbox,
+        Radio
     },
     created() {
         document.title = `Cocktail Scraping \u22C5 ${this.site_title}`
