@@ -1,22 +1,9 @@
 <template>
     <div>
         <OverlayLoader v-if="isLoading" />
-        <ais-instant-search :search-client="searchClient" :index-name="index" :on-state-change="onStateChange">
-            <ais-configure :hitsPerPage="30" />
-            <ais-search-box :placeholder="$t('placeholder.search-ingredients')" :class-names="{'ais-SearchBox-input': 'form-input'}" />
-            <ais-hits>
-                <template v-slot="{ items }">
-                    <div class="block-container ingredients-options">
-                        <a href="#" v-for="item in items" @click.prevent="selectIngredient(item)">{{ item.name }}</a>
-                    </div>
-                </template>
-            </ais-hits>
-        </ais-instant-search>
+        <IngredientFinder @ingredientSelected="selectIngredient"></IngredientFinder>
         <div style="margin: 1rem 0;">
             <Checkbox v-model="isAddingSubstitute" id="substitute-adding">{{ $t('ingredient-dialog.select-substitutes') }}</Checkbox>
-        </div>
-        <div class="block-container ingredient-modal__info" v-show="currentQuery && currentQuery.length > 0">
-            {{ $t('ingredient-dialog.search-not-found') }} <a href="#" @click.prevent="newIngredient">{{ $t('ingredient-dialog.create-ingredient', {name: currentQuery}) }}</a>
         </div>
         <div class="selected-ingredient">
             <small>{{ $t('ingredient-dialog.current') }}:</small>
@@ -59,22 +46,15 @@
 </template>
 
 <script>
-import { instantMeiliSearch } from '@meilisearch/instant-meilisearch';
-import ApiRequests from "../../ApiRequests";
-import Auth from '@/Auth.js';
-import Checkbox from '@/components/Checkbox.vue';
+import Checkbox from './../Checkbox.vue';
 import OverlayLoader from './../OverlayLoader.vue'
+import IngredientFinder from './../IngredientFinder.vue'
 
 export default {
     props: ['value'],
     data() {
         return {
             isLoading: false,
-            index: 'ingredients:name:asc',
-            searchClient: instantMeiliSearch(
-                Auth.getUserSearchSettings().host,
-                Auth.getUserSearchSettings().key,
-            ),
             cocktailIngredient: this.value,
             currentQuery: null,
             isAddingSubstitute: false
@@ -82,6 +62,7 @@ export default {
     },
     components: {
         OverlayLoader,
+        IngredientFinder,
         Checkbox
     },
     computed: {
@@ -125,70 +106,17 @@ export default {
             this.isAddingSubstitute = false;
             this.$emit('close', {type: 'cancel'});
         },
-        newIngredient() {
-            this.isLoading = true;
-            ApiRequests.saveIngredient({
-                name: this.currentQuery,
-                description: null,
-                strength: 0,
-                origin: null,
-                color: null,
-                images: [],
-                ingredient_category_id: 1,
-            }).then(data => {
-                this.$toast.default(this.$t('ingredient-dialog.new-ingredient-success', {name: data.name}));
-                this.selectIngredient({
-                    name: data.name,
-                    slug: data.slug,
-                    id: data.id
-                });
-                this.isLoading = false;
-            }).catch(() => {
-                this.$toast.error(this.$t('ingredient-dialog.new-ingredient-fail'));
-                this.isLoading = false;
-            })
-        },
         removeSubstitute(ing) {
             this.cocktailIngredient.substitutes.splice(
                 this.cocktailIngredient.substitutes.findIndex(i => i == ing),
                 1
             );
-        },
-        onStateChange({ uiState, setUiState }) {
-            const indexState = uiState[this.index] || {}
-            this.currentQuery = indexState.query
-
-            setUiState(uiState);
-        },
+        }
     },
 };
 </script>
 
 <style scoped>
-.ingredients-options {
-    display: flex;
-    flex-direction: column;
-    height: 200px;
-    overflow-y: auto;
-    padding: 1rem;
-    border-radius: 5px;
-    margin-top: 0.5rem;
-}
-
-.ingredients-options a {
-    display: block;
-    padding: 0.125rem 0.25rem;
-    border-radius: 4px;
-}
-
-.ingredients-options a:hover {
-    background-color: var(--clr-gray-50);
-}
-
-.dark-theme .ingredients-options a:hover {
-    background-color: var(--clr-gray-900);
-}
-
 .modal .ais-SearchBox-reset,
 .modal .ais-SearchBox-submit {
     display: none;

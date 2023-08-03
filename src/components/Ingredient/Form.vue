@@ -25,7 +25,11 @@
             </div>
             <div class="form-group" v-show="isParent">
                 <label class="form-label" for="parent-ingredient">{{ $t('parent-ingredient') }}:</label>
-                <IngredientFinder v-model="ingredient.parent_ingredient" :block="blockIngredients"></IngredientFinder>
+                <IngredientFinder v-show="ingredient.parent_ingredient == null" v-model="ingredient.parent_ingredient" :disabledIngredients="blockIngredients"></IngredientFinder>
+                <div v-if="ingredient.parent_ingredient" style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+                    <button type="button" class="button button--outline">{{ ingredient.parent_ingredient.name }}</button>
+                    <button type="button" class="button button--dark" @click="ingredient.parent_ingredient = null">{{ $t('remove') }}</button>
+                </div>
             </div>
             <div class="form-group">
                 <label class="form-label form-label--required" for="strength">{{ $t('strength') }} ({{ $t('ABV') }} %):</label>

@@ -100,7 +100,10 @@
             </div>
             <div class="form-group">
                 <label class="form-label" for="tags">{{ $t('tags') }}:</label>
-                <input class="form-input" type="text" id="tags" v-model="cocktailTags" :placeholder="$t('placeholder.tags')">
+                <input class="form-input" type="text" id="tags" list="existing-tags" v-model="cocktailTags" :placeholder="$t('placeholder.tags')">
+                <datalist id="existing-tags">
+                    <option v-for="tag in tags" :value="tag.name"></option>
+                </datalist>
                 <p class="form-input-hint">{{ $t('tags.help-text') }}</p>
             </div>
         </div>
@@ -138,6 +141,7 @@ export default {
             },
             glasses: [],
             methods: [],
+            tags: [],
             cocktailId: null,
             sortable: null
         };
@@ -229,6 +233,11 @@ export default {
 
         ApiRequests.fetchCocktailMethods().then(data => {
             this.methods = data
+            this.isLoading = false;
+        })
+
+        ApiRequests.fetchTags().then(data => {
+            this.tags = data
             this.isLoading = false;
         })
     },
