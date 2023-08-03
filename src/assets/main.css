@@ -171,16 +171,6 @@ a.site-logo:focus .site-logo__title {
         justify-content: center;
     }
 
-    .site-logo__image {
-        width: 30px;
-        height: 30px;
-    }
-    
-    .site-logo__image svg {
-        width: 24px;
-        height: 24px;
-    }
-
     .site-logo__title {
         line-height: 0.9;
     }
