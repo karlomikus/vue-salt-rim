@@ -285,7 +285,9 @@
     "update-success": "Collection updated successfully",
     "add-success": "Collection added successfully",
     "confirm-remove-cocktail": "Are you sure you want to remove cocktail from collection?",
-    "add-from-query": "Add to collection from current filters"
+    "add-from-query": "Add to collection from current filters",
+    "cocktail-remove-success": "Cocktail removed from collection",
+    "cocktail-add-success": "Cocktail added to collection"
   },
   "no-cocktails": "No cocktails found",
   "ingredient-spotlight": "Ingredient spotlight",

@@ -89,7 +89,7 @@ export default {
                     this.isLoading = true;
                     dialog.close();
                     ApiRequests.removeCocktailFromCollection(this.collectionId, this.cocktails[0]).then(data => {
-                        this.$toast.default('collections.delete-succes')
+                        this.$toast.default(this.$t('collections.cocktail-remove-success'))
                         this.$emit('collectionDialogClosed')
                         this.$emit('refreshCocktail', {id: this.cocktails[0]})
                         this.isLoading = false
@@ -105,7 +105,7 @@ export default {
                 this.isLoading = true;
                 ApiRequests.addCocktailsToCollection(this.collectionId, this.cocktails).then(data => {
                     this.isLoading = false;
-                    this.$toast.default('collections.cocktail-add-succes')
+                    this.$toast.default(this.$t('collections.cocktail-add-success'))
                     this.$emit('collectionDialogClosed')
                     this.$emit('refreshCocktail')
                 }).catch(e => {
@@ -117,6 +117,7 @@ export default {
                 this.newCollection.cocktails = this.cocktails;
                 ApiRequests.saveCollection(this.newCollection).then(collectionData => {
                     this.isLoading = false;
+                    this.$toast.default(this.$t('collections.cocktail-add-success'))
                     this.collectionId = collectionData.id
                     this.$emit('collectionDialogClosed')
                     this.$emit('refreshCocktail')
