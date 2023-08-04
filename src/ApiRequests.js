@@ -226,6 +226,14 @@ class ApiRequests
         return this.parseResponse(jsonResp);
     }
 
+    static async fetchIngredientsTODO(query = {}) {
+        let q = this.generateBAQueryString(query)
+
+        let jsonResp = await this.getRequest(`/api/ingredients${q}`);
+
+        return jsonResp;
+    }
+
     static async fetchIngredient(id) {
         let jsonResp = await this.getRequest(`/api/ingredients/${id}`);
 

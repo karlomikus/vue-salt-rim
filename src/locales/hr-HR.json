@@ -299,5 +299,6 @@
     "add-from-query": "Kreiraj kolekciju iz trenutnih filtera"
   },
   "your-collections": "Vaše zbirke",
-  "missing-collections": "Nema pronađenih kolekcija"
+  "missing-collections": "Nema pronađenih kolekcija",
+  "results-per-page": "Rezultati po stranici"
 }

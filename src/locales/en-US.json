@@ -285,7 +285,9 @@
     "update-success": "Collection updated successfully",
     "add-success": "Collection added successfully",
     "confirm-remove-cocktail": "Are you sure you want to remove cocktail from collection?",
-    "add-from-query": "Add to collection from current filters"
+    "add-from-query": "Add to collection from current filters",
+    "cocktail-remove-success": "Cocktail removed from collection",
+    "cocktail-add-success": "Cocktail added to collection"
   },
   "no-cocktails": "No cocktails found",
   "ingredient-spotlight": "Ingredient spotlight",
@@ -306,5 +308,11 @@
   "your-collections": "Your collections",
   "view": "View",
   "missing-collections": "You don't have any collections",
-  "sort-direction": "Sort order"
+  "sort-direction": "Sort order",
+  "auth": {
+    "confirm-logout": "Are you sure you want to sign out of your current session?"
+  },
+  "results-per-page": "Per page",
+  "used-as-main-ingredient": "Used as main ingredient",
+  "total-cocktails": "Total cocktails"
 }

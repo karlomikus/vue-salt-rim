@@ -15,30 +15,30 @@
                     <h3 class="page-subtitle" style="margin-top: 0">{{ $t('filters') }}</h3>
                     <Refinement :title="$t('global')" id="global">
                         <div class="resource-search__refinements__refinement__item" v-for="filter in availableRefinements.global">
-                            <input type="checkbox" :id="'global-' + filter.id" :value="filter.active" v-model="activeFilters[filter.id]" @change="refreshRouteQuery">
+                            <input type="checkbox" :id="'global-' + filter.id" :value="filter.active" v-model="activeFilters[filter.id]" @change="updateRouterPath">
                             <label :for="'global-' + filter.id">{{ filter.name }}</label>
                         </div>
                     </Refinement>
-                    <Refinement :title="$t('your-collections')" :refinements="refineCollections" id="collection" v-model="activeFilters.collections" v-if="refineCollections.length > 0" @refinementChanged="refreshRouteQuery"></Refinement>
-                    <Refinement :title="$t('ingredient.main')" :refinements="refineMainIngredients" id="main-ingredient" v-model="activeFilters.ingredients" @refinementChanged="refreshRouteQuery"></Refinement>
-                    <Refinement :title="$t('method')" :refinements="refineMethods" id="method" v-model="activeFilters.methods" @refinementChanged="refreshRouteQuery"></Refinement>
-                    <Refinement :title="$t('strength')" :refinements="refineABV" id="abv" v-model="activeFilters.abv" type="radio" @refinementChanged="refreshRouteQuery"></Refinement>
-                    <Refinement :title="$t('tags')" :refinements="refineTags" id="tag" v-model="activeFilters.tags" @refinementChanged="refreshRouteQuery"></Refinement>
-                    <Refinement :title="$t('glass-type')" :refinements="refineGlasses" id="glass" v-model="activeFilters.glasses" @refinementChanged="refreshRouteQuery"></Refinement>
-                    <Refinement :title="$t('your-rating')" :refinements="refineRatings" id="user-rating" v-model="activeFilters.user_rating" type="radio" @refinementChanged="refreshRouteQuery"></Refinement>
+                    <Refinement :title="$t('your-collections')" :refinements="refineCollections" id="collection" v-model="activeFilters.collections" v-if="refineCollections.length > 0" @change="updateRouterPath"></Refinement>
+                    <Refinement :title="$t('ingredient.main')" :refinements="refineMainIngredients" id="main-ingredient" v-model="activeFilters.ingredients" @change="updateRouterPath"></Refinement>
+                    <Refinement :title="$t('method')" :refinements="refineMethods" id="method" v-model="activeFilters.methods" @change="updateRouterPath"></Refinement>
+                    <Refinement :title="$t('strength')" :refinements="refineABV" id="abv" v-model="activeFilters.abv" type="radio" @change="updateRouterPath"></Refinement>
+                    <Refinement :title="$t('tags')" :refinements="refineTags" id="tag" v-model="activeFilters.tags" @change="updateRouterPath"></Refinement>
+                    <Refinement :title="$t('glass-type')" :refinements="refineGlasses" id="glass" v-model="activeFilters.glasses" @change="updateRouterPath"></Refinement>
+                    <Refinement :title="$t('your-rating')" :refinements="refineRatings" id="user-rating" v-model="activeFilters.user_rating" type="radio" @change="updateRouterPath"></Refinement>
                     <button class="button button--dark sm-show" type="button" @click="showRefinements = false">{{ $t('cancel') }}</button>
                 </div>
             </div>
             <div class="resource-search__content">
                 <div class="resource-search__content__filter">
-                    <button type="button" class="button button--input" @click.prevent="showRefinements = !showRefinements">
+                    <button type="button" class="button button--outline button--icon" @click.prevent="showRefinements = !showRefinements">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
                             <path fill="none" d="M0 0h24v24H0z" />
                             <path d="M6.17 18a3.001 3.001 0 0 1 5.66 0H22v2H11.83a3.001 3.001 0 0 1-5.66 0H2v-2h4.17zm6-7a3.001 3.001 0 0 1 5.66 0H22v2h-4.17a3.001 3.001 0 0 1-5.66 0H2v-2h10.17zm-6-7a3.001 3.001 0 0 1 5.66 0H22v2H11.83a3.001 3.001 0 0 1-5.66 0H2V4h4.17z" />
                         </svg>
                     </button>
-                    <input class="form-input" type="text" :placeholder="$t('placeholder.search-cocktails')" v-model="searchQuery" @input="debounceQuery" @keyup.enter="refreshRouteQuery">
-                    <select class="form-select" v-model="sort" @change="refreshRouteQuery">
+                    <input class="form-input" type="text" :placeholder="$t('placeholder.search-cocktails')" v-model="searchQuery" @input="debounceCocktailNameSearch" @keyup.enter="updateRouterPath">
+                    <select class="form-select" v-model="sort" @change="updateRouterPath">
                         <option disabled>{{ $t('sort') }}:</option>
                         <option value="name">{{ $t('name') }}</option>
                         <option value="created_at">{{ $t('date-added') }}</option>
@@ -48,20 +48,20 @@
                         <option value="user_rating">{{ $t('user-rating') }}</option>
                         <option value="abv">{{ $t('ABV') }}</option>
                     </select>
-                    <select class="form-select" v-model="sort_dir" @change="refreshRouteQuery">
+                    <select class="form-select" v-model="sort_dir" @change="updateRouterPath">
                         <option disabled>{{ $t('sort-direction') }}:</option>
                         <option value="">{{ $t('sort-asc') }}</option>
                         <option value="-">{{ $t('sort-desc') }}</option>
                     </select>
-                    <select class="form-select" v-model="per_page" @change="refreshRouteQuery">
-                        <!-- <option disabled>{{ $t('results-per-page') }}:</option> -->
+                    <select class="form-select" v-model="per_page" @change="updateRouterPath">
+                        <option disabled>{{ $t('results-per-page') }}:</option>
                         <option value="25">25</option>
                         <option value="50">50</option>
                         <option value="100">100</option>
                     </select>
-                    <Dialog v-model="showCollectionDialog">
+                    <Dialog v-model="showCreateNewCollectionDialog">
                         <template #trigger>
-                            <button type="button" class="button button--input" @click.prevent="showCollectionDialog = !showCollectionDialog" :title="$t('collections.add')">
+                            <button type="button" class="button button--outline button--icon" @click.prevent="showCreateNewCollectionDialog = !showCreateNewCollectionDialog" :title="$t('collections.add')">
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
                                     <path fill="none" d="M0 0h24v24H0z" />
                                     <path d="M12.414 5H21a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h7.414l2 2zM4 5v14h16V7h-8.414l-2-2H4zm7 7V9h2v3h3v2h-3v3h-2v-3H8v-2h3z" />
@@ -72,7 +72,7 @@
                             <CollectionDialog title="collections.add-from-query" :cocktails="currentCocktailIds" @collectionDialogClosed="handleCollectionsDialogClosed" />
                         </template>
                     </Dialog>
-                    <button type="button" class="button button--input" @click.prevent="clearRefinements" :title="$t('clear-filters')">
+                    <button type="button" class="button button--outline button--icon" @click.prevent="clearRefinements" :title="$t('clear-filters')">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path d="M12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22ZM12 20C16.4183 20 20 16.4183 20 12C20 7.58172 16.4183 4 12 4C7.58172 4 4 7.58172 4 12C4 16.4183 7.58172 20 12 20ZM12 10.5858L14.8284 7.75736L16.2426 9.17157L13.4142 12L16.2426 14.8284L14.8284 16.2426L12 13.4142L9.17157 16.2426L7.75736 14.8284L10.5858 12L7.75736 9.17157L9.17157 7.75736L12 10.5858Z"></path></svg>
                     </button>
                 </div>
@@ -85,36 +85,30 @@
                     </svg>
                     <p>{{ $t('cocktails-not-found') }}</p>
                 </div>
-                <div class="resource-search__content__pagination">
-                    <div class="resource-search__content__pagination__page_info">
-                        {{ $t('pagination.results', {'on_page_results': meta.to || 0, total_results: meta.total}) }}
-                    </div>
-                    <div class="resource-search__content__pagination__links">
-                        <button type="button" class="button button--input" @click="changePage('prev')"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path d="M10.8284 12.0007L15.7782 16.9504L14.364 18.3646L8 12.0007L14.364 5.63672L15.7782 7.05093L10.8284 12.0007Z"></path></svg></button> {{ $t('page') }} {{ meta.current_page }}/{{ meta.last_page }} <button type="button" class="button button--input" @click="changePage('next')"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path d="M13.1714 12.0007L8.22168 7.05093L9.63589 5.63672L15.9999 12.0007L9.63589 18.3646L8.22168 16.9504L13.1714 12.0007Z"></path></svg></button>
-                    </div>
-                </div>
+                <Pagination :meta="meta" @pageChanged="handlePageChange"></Pagination>
             </div>
         </div>
     </div>
 </template>
 
 <script>
-import OverlayLoader from '@/components/OverlayLoader.vue'
-import ApiRequests from '@/ApiRequests.js'
-import Checkbox from '@/components/Checkbox.vue'
+import OverlayLoader from './../OverlayLoader.vue'
+import ApiRequests from './../../ApiRequests.js'
+import Checkbox from './../Checkbox.vue'
 import CocktailGridItem from './CocktailGridItem.vue'
 import CocktailGridContainer from './CocktailGridContainer.vue'
-import PageHeader from '@/components/PageHeader.vue'
-import Auth from '@/Auth.js';
-import Refinement from './Search/Refinement.vue';
+import PageHeader from './../PageHeader.vue'
+import Auth from './../../Auth.js';
+import Refinement from './../Search/Refinement.vue';
+import Pagination from './../Search/Pagination.vue';
 import CollectionDialog from './../Cocktail/CollectionDialog.vue';
-import Dialog from '@/components/Dialog/Dialog.vue'
+import Dialog from './../Dialog/Dialog.vue'
 import qs from 'qs';
 
 export default {
     data() {
         return {
-            showCollectionDialog: false,
+            showCreateNewCollectionDialog: false,
             isLoading: false,
             showRefinements: false,
             cocktails: [],
@@ -124,6 +118,7 @@ export default {
             meta: {},
             queryTimer: null,
             currentPage: 1,
+            per_page: 50,
             availableRefinements: {
                 global: [
                     { name: this.$t('shelf.cocktails'), active: false, id: 'on_shelf' },
@@ -143,7 +138,6 @@ export default {
                 main_ingredients: [],
                 collections: [],
             },
-            per_page: 50,
             activeFilters: {
                 on_shelf: false,
                 favorites: false,
@@ -167,7 +161,8 @@ export default {
         OverlayLoader,
         Refinement,
         Dialog,
-        CollectionDialog
+        CollectionDialog,
+        Pagination
     },
     created() {
         document.title = `${this.$t('cocktails')} \u22C5 ${this.site_title}`
@@ -290,7 +285,7 @@ export default {
                 this.availableRefinements.collections = data
             })
         },
-        refreshRouteQuery() {
+        updateRouterPath() {
             const query = this.stateToQuery();
 
             this.$router.push({
@@ -310,20 +305,9 @@ export default {
                 this.isLoading = false;
             })
         },
-        changePage(dir) {
-            if (dir == 'prev') {
-                if (this.currentPage > 1) {
-                    this.currentPage--;
-                }
-            }
-
-            if (dir == 'next') {
-                if (this.currentPage < this.meta.last_page) {
-                    this.currentPage++;
-                }
-            }
-
-            this.refreshRouteQuery()
+        handlePageChange(toPage) {
+            this.currentPage = toPage
+            this.updateRouterPath()
         },
         queryToState() {
             const state = qs.parse(this.$route.query);
@@ -384,15 +368,15 @@ export default {
             return query;
         },
         handleCollectionsDialogClosed() {
-            this.showCollectionDialog = false
+            this.showCreateNewCollectionDialog = false
             this.fetchRefinements()
             this.refreshCocktails()
         },
-        debounceQuery() {
+        debounceCocktailNameSearch() {
             clearTimeout(this.queryTimer)
 
             this.queryTimer = setTimeout(() => {
-                this.refreshRouteQuery()
+                this.updateRouterPath()
             }, 300)
         },
         clearRefinements() {
@@ -415,7 +399,7 @@ export default {
                 abv: null
             };
 
-            this.refreshRouteQuery();
+            this.updateRouterPath();
         },
         handleClickAway(e) {
             if (e && e.target && e.target.classList.contains('resource-search__refinements')) {
@@ -425,78 +409,3 @@ export default {
     }
 }
 </script>
-<style scoped>
-.sm-show {
-    display: none;
-}
-
-.resource-search {
-    display: flex;
-    gap: 1rem;
-}
-
-.resource-search__refinements {
-    width: 300px;
-}
-
-.resource-search__content {
-    width: 100%;
-}
-
-.resource-search__content__filter {
-    display: flex;
-    gap: 0.5rem;
-}
-
-.resource-search__content__filter .form-input {
-    flex-basis: 100%;
-}
-
-@media (max-width: 850px) {
-    .resource-search__content__filter {
-        flex-wrap: wrap;
-    }
-
-    .resource-search__content__filter .form-input {
-        flex-basis: auto;
-    }
-}
-
-.resource-search__content__pagination {
-    margin-top: 1rem;
-    display: flex;
-    align-items: center;
-}
-
-.resource-search__content__pagination__links {
-    margin-left: auto;
-}
-
-@media (max-width: 750px) {
-    .sm-show {
-        display: block;
-    }
-
-    .resource-search__refinements {
-        position: fixed;
-        top: 0;
-        left: 0;
-        background-color: rgba(21, 13, 34, 0.5);
-        width: 100%;
-        z-index: 99;
-        height: 100%;
-    }
-
-    .resource-search__refinements__body {
-        background: var(--clr-red-50);
-        width: 80%;
-        height: 100%;
-        padding: 1.5rem;
-        overflow-y: scroll;
-    }
-
-    .dark-theme .resource-search__refinements__body {
-        background: var(--clr-dark-main-950);
-    }
-}
-</style>

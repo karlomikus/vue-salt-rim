@@ -1,5 +1,9 @@
 <p align="center">
-    <a href="https://karlomikus.com" target="_blank"><img width="700" src="art/hero.png" alt="Logo"></a>
+  <picture>
+      <source media="(prefers-color-scheme: dark)" srcset="art/logo_dark.png">
+      <source media="(prefers-color-scheme: light)" srcset="art/logo.png">
+      <img src="art/logo.png" alt="Logo" />
+  </picture>
 </p>
 
 <p align="center">
@@ -33,10 +37,44 @@ Salt Rim is a web client used for connecting to your [Bar Assistant](https://git
 - Dark theme support
 - Localizations available: English, German, Croatian, French
 - PWA Support
+- Organize your personal recipe collections
+- Easily copy and share your recipes
 
 ## Documentation
 
 [Official documentation is available here.](https://bar-assistant.github.io/docs/)
+
+## Screenshots
+
+<p align="center">
+    <picture>
+      <img src="./art/db.png" alt="Shelf" />
+    </picture>
+</p>
+
+---
+
+<p align="center">
+    <picture>
+      <img src="./art/your-shelf.png" alt="Shelf" />
+    </picture>
+</p>
+
+---
+
+<p align="center">
+    <picture>
+      <img src="./art/organize.png" alt="Shelf" />
+    </picture>
+</p>
+
+---
+
+<p align="center">
+    <picture>
+      <img src="./art/import.png" alt="Shelf" />
+    </picture>
+</p>
 
 ## Docker installation
 

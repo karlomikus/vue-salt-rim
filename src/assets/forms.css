@@ -26,7 +26,7 @@
 }
 
 .dark-theme .form-label {
-    --form-clr-label: var(--clr-gray-300);
+    --form-clr-label: var(--clr-gray-200);
 }
 
 @media (max-width: 450px) {
@@ -44,19 +44,19 @@
 .form-input,
 .form-select {
     --form-clr-text: var(--clr-gray-800);
-    --form-clr-bg: rgba(255, 255, 255, .5);
+    --form-clr-bg: #fff;
     --form-clr-bg-focus: #fff;
     --form-clr-border: var(--clr-gray-100);
     --form-clr-border-focus: var(--clr-gray-800);
-    --form-clr-placeholder: var(--clr-gray-600);
+    --form-clr-placeholder: var(--clr-gray-500);
     -webkit-appearance: none;
     -moz-appearance: none;
     appearance: none;
     background: var(--form-clr-bg);
     border: 2px solid var(--form-clr-border);
     border-radius: 5px;
-    height: 3rem;
-    font-size: 1.1rem;
+    height: 2.85rem;
+    font-size: 1.15rem;
     line-height: 1.5rem;
     outline: 0;
     padding: 0.5rem 0.75rem;
@@ -69,12 +69,11 @@
 .dark-theme .form-input,
 .dark-theme .form-select {
     --form-clr-text: var(--clr-gray-100);
-    --form-clr-bg: var(--clr-dark-main-900);
-    --form-clr-bg-focus: rgba(255, 255, 255, .09);
-    --form-clr-border: transparent;
-    --form-clr-border-focus: rgba(0, 0, 0, .3);
+    --form-clr-bg: #0c0b0e;
+    --form-clr-bg-focus: #0b0a0e;
+    --form-clr-border: var(--clr-gray-700);
+    --form-clr-border-focus: var(--clr-gray-200);
     --form-clr-placeholder: var(--clr-gray-400);
-    border-width: 1px;
 }
 
 @media (max-width: 450px) {

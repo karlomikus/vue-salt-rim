@@ -1,3 +1,14 @@
+# v1.18.0
+## New
+- Added sort ingredients by number of cocktails
+
+## Changes
+- Ingredients list is now using Bar Assistant API fro filtering and searching
+    - This changes follows the changes introduced in last version with cocktails filtering
+
+## Fixes
+- Added missing collection dialog translations
+
 # v1.17.0
 ## New
 - Added user cocktail collections

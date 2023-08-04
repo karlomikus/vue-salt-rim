@@ -21,6 +21,8 @@
                 <hr>
                 <p><strong>{{ $t('origin') }}:</strong> {{ ingredient.origin ?? 'n/a' }}</p>
                 <hr>
+                <p><strong>{{ $t('category') }}:</strong> {{ ingredient.category.description ?? 'n/a' }}</p>
+                <hr>
                 <ul class="flags" style="margin-top: 20px;">
                     <li v-show="isAddedToShelf">{{ $t('ingredient.in-shelf') }}</li>
                     <li v-show="isAddedToShoppingList">{{ $t('ingredient.on-shopping-list') }}</li>

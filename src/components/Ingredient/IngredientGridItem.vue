@@ -64,11 +64,15 @@ export default {
     },
     computed: {
         image() {
-            if (!this.ingredient.image_url) {
-                return '/no-ingredient.png';
+            if (this.ingredient.image_url) {
+                return this.ingredient.image_url;
             }
 
-            return this.ingredient.image_url;
+            if (this.ingredient.images && this.ingredient.images.length > 0) {
+                return this.ingredient.images.filter(img => img.id == this.ingredient.main_image_id)[0].url
+            }
+
+            return '/no-ingredient.png';
         },
         inShelf() {
             return this.scopedUserIngredients.includes(this.ingredient.id)
