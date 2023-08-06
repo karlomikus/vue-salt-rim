@@ -146,6 +146,9 @@ export default {
             ApiRequests.importCocktail({ source: this.source }, { type: this.importType }).then(data => {
                 this.result = data
                 this.isLoading = false;
+                if (this.importType == 'collection') {
+                    this.$router.push({ name: 'cocktails', query: { 'filter[collection_id]': this.result.id } })
+                }
             }).catch(e => {
                 this.isLoading = false;
                 this.$toast.error(e.message);
