@@ -257,6 +257,10 @@
                     <h3 class="details-block-container__title">{{ $t('notes') }}</h3>
                     <Note v-for="note in cocktail.notes" :note="note" @noteDeleted="fetchCocktail"></Note>
                 </div>
+                <div class="cocktail-details__navigation">
+                    <RouterLink v-if="cocktail.navigation.prev" :to="{name: 'cocktails.show', params: {id: cocktail.navigation.prev}}">{{ $t('cocktail-prev') }}</RouterLink>
+                    <RouterLink v-if="cocktail.navigation.next" :to="{name: 'cocktails.show', params: {id: cocktail.navigation.next}}">{{ $t('cocktail-next') }}</RouterLink>
+                </div>
             </div>
             <div class="cocktail-details__main__aside">
                 <h3 class="page-subtitle" style="margin-top: 0">{{ $t('cocktails-similar') }}</h3>
@@ -387,7 +391,7 @@ export default {
             this.userShelfIngredients = Auth.getUser().shelf_ingredients;
             this.userShoppingListIngredients = Auth.getUser().shopping_lists;
 
-            ApiRequests.fetchCocktail(this.$route.params.id).then(data => {
+            ApiRequests.fetchCocktail(this.$route.params.id, {navigation: true}).then(data => {
                 this.isLoading = false;
                 this.cocktail = data
                 this.isFavorited = Auth.getUser().favorite_cocktails.includes(this.cocktail.id);
@@ -710,5 +714,13 @@ export default {
 
 .cocktail-details__chips .rating {
     line-height: 1;
+}
+
+.cocktail-details__navigation {
+    display: flex;
+    padding: 0.5rem 0;
+}
+.cocktail-details__navigation a:last-child {
+    margin-left: auto;
 }
 </style>

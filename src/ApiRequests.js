@@ -97,8 +97,9 @@ class ApiRequests
         return this.parseResponse(jsonResp);
     }
 
-    static async fetchCocktail(id) {
-        let jsonResp = await this.getRequest(`/api/cocktails/${id}`);
+    static async fetchCocktail(id, queryParams = {}) {
+        const q = this.generateBAQueryString(queryParams)
+        let jsonResp = await this.getRequest(`/api/cocktails/${id}${q}`);
 
         return this.parseResponse(jsonResp);
     }
