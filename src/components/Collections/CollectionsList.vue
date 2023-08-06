@@ -31,6 +31,8 @@
                                 <small>{{ collection.cocktails.length }} {{ $t('cocktails') }} &middot; {{ collection.description ? overflowText(collection.description, 100) : 'n/a' }}</small>
                             </td>
                             <td style="text-align: right;">
+                                <a class="list-group__action" href="#" @click.prevent="shareCollection(collection)">{{ $t('share') }}</a>
+                                &middot;
                                 <a class="list-group__action" href="#" @click.prevent="deleteCollection(collection)">{{ $t('remove') }}</a>
                                 &middot;
                                 <RouterLink class="list-group__action" :to="{ name: 'cocktails', query: { 'filter[collection_id]': collection.id } }">{{ $t('view') }}</RouterLink>
@@ -48,7 +50,7 @@
 </template>
 
 <script>
-import ApiRequests from "@/ApiRequests";
+import ApiRequests from "./../../ApiRequests";
 import OverlayLoader from '@/components/OverlayLoader.vue'
 import PageHeader from '@/components/PageHeader.vue'
 import Navigation from '@/components/Settings/Navigation.vue'
@@ -108,6 +110,15 @@ export default {
                     })
                 }
             });
+        },
+        shareCollection(collection) {
+            ApiRequests.shareCollection(collection.id).then(data => {
+                navigator.clipboard.writeText(JSON.stringify(data)).then(() => {
+                    this.$toast.default(this.$t('collections.share-format-copied'));
+                }, () => {
+                    this.$toast.error(this.$t('collections.share-format-copy-failed'));
+                });
+            })
         },
         overflowText(input, len) {
             if (!input) {

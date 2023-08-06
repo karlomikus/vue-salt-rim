@@ -637,6 +637,12 @@ class ApiRequests
     static async deleteCollection(collectionId) {
         return await this.deleteRequest(`/api/collections/${collectionId}`);
     }
+
+    static async shareCollection(id) {
+        let jsonResp = await this.getRequest(`/api/collections/${id}/share`);
+
+        return this.parseResponse(jsonResp);
+    }
 }
 
 export default ApiRequests;
