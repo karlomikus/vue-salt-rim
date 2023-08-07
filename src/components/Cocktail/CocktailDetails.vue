@@ -20,53 +20,53 @@
                 <div class="details-block-container details-block-container--blue cocktail-details-box" style="margin-top: 0">
                     <!-- <h3 class="cocktail-title">{{ cocktail.name }}</h3> -->
                     <h3 class="details-block-container__title">{{ $t('description') }}</h3>
-                    <div class="cocktail-details__chips">
-                        <div class="cocktail-details__chips__group" v-if="cocktail.tags.length > 0">
-                            <div class="cocktail-details__chips__group__title">{{ $t('tags') }}:</div>
+                    <div class="item-details__chips">
+                        <div class="item-details__chips__group" v-if="cocktail.tags.length > 0">
+                            <div class="item-details__chips__group__title">{{ $t('tags') }}:</div>
                             <ul class="chips-list">
                                 <li v-for="tag in cocktail.cocktail_tags">
                                     <RouterLink :to="{ name: 'cocktails', query: { 'filter[tag_id]': tag.id } }">{{ tag.name }}</RouterLink>
                                 </li>
                             </ul>
                         </div>
-                        <div class="cocktail-details__chips__group" v-if="cocktail.glass">
-                            <div class="cocktail-details__chips__group__title">{{ $t('glass-type') }}:</div>
+                        <div class="item-details__chips__group" v-if="cocktail.glass">
+                            <div class="item-details__chips__group__title">{{ $t('glass-type') }}:</div>
                             <ul class="chips-list">
                                 <li>
                                     <RouterLink :to="{ name: 'cocktails', query: { 'filter[glass_id]': cocktail.glass.id } }">{{ cocktail.glass.name }}</RouterLink>
                                 </li>
                             </ul>
                         </div>
-                        <div class="cocktail-details__chips__group" v-if="cocktail.method">
-                            <div class="cocktail-details__chips__group__title">{{ $t('method') }}:</div>
+                        <div class="item-details__chips__group" v-if="cocktail.method">
+                            <div class="item-details__chips__group__title">{{ $t('method') }}:</div>
                             <ul class="chips-list">
                                 <li>
                                     <RouterLink :to="{ name: 'cocktails', query: { 'filter[cocktail_method_id]': cocktail.method.id } }">{{ $t('method.' + cocktail.method.name) }}</RouterLink>
                                 </li>
                             </ul>
                         </div>
-                        <div class="cocktail-details__chips__group" v-if="cocktail.abv && cocktail.abv > 0">
-                            <div class="cocktail-details__chips__group__title">{{ $t('ABV') }}:</div>
+                        <div class="item-details__chips__group" v-if="cocktail.abv && cocktail.abv > 0">
+                            <div class="item-details__chips__group__title">{{ $t('ABV') }}:</div>
                             <ul class="chips-list">
                                 <li>
                                     <RouterLink :to="{ name: 'cocktails', query: { 'filter[abv_min]': cocktail.abv } }">{{ cocktail.abv }}%</RouterLink>
                                 </li>
                             </ul>
                         </div>
-                        <div class="cocktail-details__chips__group">
-                            <div class="cocktail-details__chips__group__title">{{ $t('avg-rating') }}:</div>
+                        <div class="item-details__chips__group">
+                            <div class="item-details__chips__group__title">{{ $t('avg-rating') }}:</div>
                             <ul class="chips-list">
                                 <li>
                                     <RouterLink :to="{ name: 'cocktails', query: { 'filter[user_rating_min]': cocktail.average_rating } }">{{ cocktail.average_rating }} ★</RouterLink>
                                 </li>
                             </ul>
                         </div>
-                        <div class="cocktail-details__chips__group">
-                            <div class="cocktail-details__chips__group__title">{{ $t('your-rating') }}:</div>
+                        <div class="item-details__chips__group">
+                            <div class="item-details__chips__group__title">{{ $t('your-rating') }}:</div>
                             <Rating :rating="cocktail.user_rating" type="cocktail" :id="cocktail.id"></Rating>
                         </div>
-                        <div class="cocktail-details__chips__group" v-if="cocktail.has_public_link">
-                            <div class="cocktail-details__chips__group__title">{{ $t('public-link') }}:</div>
+                        <div class="item-details__chips__group" v-if="cocktail.has_public_link">
+                            <div class="item-details__chips__group__title">{{ $t('public-link') }}:</div>
                             <RouterLink :to="{ name: 'e.cocktail', params: { ulid: cocktail.public_id, slug: cocktail.slug } }" target="_blank">{{ $t('click-here') }}</RouterLink>
                         </div>
                     </div>
@@ -694,33 +694,5 @@ export default {
 :deep(.details-block-container hr) {
     border: 1px solid rgba(0, 0, 0, .15);
     margin: 0.75rem 0;
-}
-
-.cocktail-details__chips {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 1rem;
-    margin-bottom: 1rem;
-}
-
-.cocktail-details__chips__group__title {
-    font-size: 0.7rem;
-    margin-bottom: 0.25rem;
-}
-
-.dark-theme .cocktail-details__chips__group__title {
-    color: rgba(255, 255, 255, .4);
-}
-
-.cocktail-details__chips .rating {
-    line-height: 1;
-}
-
-.cocktail-details__navigation {
-    display: flex;
-    padding: 0.5rem 0;
-}
-.cocktail-details__navigation a:last-child {
-    margin-left: auto;
 }
 </style>

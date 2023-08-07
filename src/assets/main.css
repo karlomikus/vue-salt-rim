@@ -11,6 +11,7 @@
 @import "./alerts.css";
 @import "./blocks.css";
 @import "./dialog.css";
+@import "./chips.css";
 
 @import "vue-toast-notification/dist/theme-default.css";
 @import "./tom-select.css";

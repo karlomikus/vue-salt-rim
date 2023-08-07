@@ -1,0 +1,27 @@
+.item-details__chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.item-details__chips__group__title {
+    font-size: 0.7rem;
+    margin-bottom: 0.25rem;
+}
+
+.dark-theme .item-details__chips__group__title {
+    color: rgba(255, 255, 255, .4);
+}
+
+.item-details__chips .rating {
+    line-height: 1;
+}
+
+.item-details__navigation {
+    display: flex;
+    padding: 0.5rem 0;
+}
+.item-details__navigation a:last-child {
+    margin-left: auto;
+}
