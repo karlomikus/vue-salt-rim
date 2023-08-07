@@ -257,6 +257,12 @@ class ApiRequests
         return await this.deleteRequest(`/api/ingredients/${id}`);
     }
 
+    static async fetchExtraCocktailsWithIngredient(id) {
+        let jsonResp = await this.getRequest(`/api/ingredients/${id}/extra`);
+
+        return this.parseResponse(jsonResp);
+    }
+
     /**
      * =============================
      * Shelf
