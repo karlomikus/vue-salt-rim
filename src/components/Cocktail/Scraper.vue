@@ -129,13 +129,16 @@ export default {
     computed: {
         cocktailTags: {
             get() {
-                return this.result.tags.join(',')
+                return this.result.tags.map(i => i.name).join(',')
             },
             set(newVal) {
                 if (newVal == '' || newVal == null || newVal == undefined) {
                     this.result.tags = []
                 } else {
-                    this.result.tags = newVal.split(',')
+                    this.result.tags = [];
+                    newVal.split(',').forEach(tagName => {
+                        this.result.tags.push({name: tagName})
+                    })
                 }
             }
         },

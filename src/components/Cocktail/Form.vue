@@ -158,13 +158,16 @@ export default {
     computed: {
         cocktailTags: {
             get() {
-                return this.cocktail.tags.join(',')
+                return this.cocktail.tags.map(i => i.name).join(',')
             },
             set(newVal) {
                 if (newVal == '' || newVal == null || newVal == undefined) {
                     this.cocktail.tags = []
                 } else {
-                    this.cocktail.tags = newVal.split(',')
+                    this.cocktail.tags = [];
+                    newVal.split(',').forEach(tagName => {
+                        this.cocktail.tags.push({name: tagName})
+                    })
                 }
             }
         },
@@ -386,7 +389,7 @@ export default {
                 source: this.cocktail.source,
                 cocktail_method_id: this.methodId,
                 images: [],
-                tags: this.cocktail.tags.filter(tag => tag != ''),
+                tags: this.cocktail.tags.filter(tag => tag.name != '').map(tag => tag.name),
                 glass_id: this.glassId,
                 ingredients: this.cocktail.ingredients
                     .filter(i => i.ingredient_id != null)
