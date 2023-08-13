@@ -339,6 +339,16 @@ class ApiRequests
         return this.parseResponse(jsonResp);
     }
 
+    static async shareShoppingList(query = {}) {
+        const queryString = this.generateBAQueryString(query);
+
+        const f = fetch(`${this.getUrl()}/api/shopping-list/share${queryString}`, {
+            headers: this.getHeaders(),
+        }).then(this.handleResponseErrors)
+
+        return await (await f).text();
+    }
+
     /**
      * =============================
      * Auth
