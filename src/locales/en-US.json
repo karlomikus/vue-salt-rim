@@ -318,5 +318,7 @@
   "share-copy-md": "Copy as Markdown",
   "cocktail-prev": "Previous cocktail",
   "cocktail-next": "Next cocktail",
-  "total-ingredients": "Number of ingredients"
+  "total-ingredients": "Number of ingredients",
+  "ingredient-extra-cocktails-info": "Add to shelf and you can make",
+  "ingredient-cocktails-rest": "Rest of the cocktails"
 }

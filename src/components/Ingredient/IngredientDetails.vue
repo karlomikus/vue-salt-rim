@@ -110,7 +110,12 @@
             </div>
             <h2 class="details-block-container__title">{{ $t('ingredient.cocktail-children', {total: ingredient.cocktails.length}) }}</h2>
             <ul class="ingredient-chips-list" v-if="ingredient.cocktails.length > 0">
-                <li v-for="cocktail in ingredient.cocktails">
+                <li class="ingredient-chips-list__label" v-if="extraIfAddedToShelf.length > 0">{{ $t('ingredient-extra-cocktails-info') }}:</li>
+                <li v-for="cocktail in extraIfAddedToShelf">
+                    <RouterLink :to="{name: 'cocktails.show', params: {id: cocktail.slug}}">{{ cocktail.name }}</RouterLink>
+                </li>
+                <li class="ingredient-chips-list__label" v-if="extraIfAddedToShelf.length > 0">{{ $t('ingredient-cocktails-rest') }}:</li>
+                <li v-for="cocktail in defaultCocktails">
                     <RouterLink :to="{name: 'cocktails.show', params: {id: cocktail.slug}}">{{ cocktail.name }}</RouterLink>
                 </li>
             </ul>
@@ -175,11 +180,7 @@ export default {
                             })
                         });
 
-                        ApiRequests.fetchExtraCocktailsWithIngredient(this.ingredient.id).then(data => {
-                            this.extraIfAddedToShelf = data;
-                        }).catch(e => {
-                            this.$toast.error(e.message);
-                        })
+                        this.refreshExtraCocktails()
                     }).catch(e => {
                         this.$toast.error(e.message);
                     })
@@ -203,6 +204,11 @@ export default {
 
             return micromark(this.ingredient.description)
         },
+        defaultCocktails() {
+            const removeIds = this.extraIfAddedToShelf.map(c => c.id);
+
+            return this.ingredient.cocktails.filter(c => !removeIds.includes(c.id));
+        }
     },
     methods: {
         deleteIngredient() {
@@ -228,6 +234,7 @@ export default {
                     this.isAddedToShelf = false;
                     this.$toast.default(this.$t('ingredient.shelf-remove-success', {name: this.ingredient.name}));
                     this.isLoading = false;
+                    this.refreshExtraCocktails()
                 }).catch(e => {
                     this.$toast.error(e.message)
                     this.isLoading = false;
@@ -237,6 +244,7 @@ export default {
                     this.isAddedToShelf = true;
                     this.$toast.default(this.$t('ingredient.shelf-add-success', {name: this.ingredient.name}));
                     this.isLoading = false;
+                    this.refreshExtraCocktails()
                 }).catch(e => {
                     this.$toast.error(e.message)
                     this.isLoading = false;
@@ -269,6 +277,13 @@ export default {
                     this.isLoading = false;
                 })
             }
+        },
+        refreshExtraCocktails() {
+            ApiRequests.fetchExtraCocktailsWithIngredient(this.ingredient.id).then(data => {
+                this.extraIfAddedToShelf = data;
+            }).catch(e => {
+                this.$toast.error(e.message);
+            })
         }
     }
 }
@@ -372,6 +387,7 @@ export default {
     display: flex;
     flex-wrap: wrap;
     gap: 8px;
+    align-items: center;
 }
 
 .mini-cocktail-container {
@@ -402,6 +418,10 @@ export default {
 .ingredient-chips-list li a:focus {
     box-shadow: 0 2px 0 var(--icl-clr-border-hover);
     background-color: var(--icl-clr-bg-hover);
+}
+
+.ingredient-chips-list__label {
+    font-size: 0.75rem;
 }
 
 .ingredient-details__actions {

@@ -1,9 +1,21 @@
+# v1.19.0
+## New
+- Added share shopping list in markdown format
+- Added share cocktail in markdown format
+- Added Recipe schema.org microdata to public page
+- Added importing cocktails from a collection
+- Added prev and next cocktail buttons
+- Added sorting and filtering cocktails by number of ingredients
+
+## Changes
+- Updated ingredient details page
+
 # v1.18.0
 ## New
 - Added sort ingredients by number of cocktails
 
 ## Changes
-- Ingredients list is now using Bar Assistant API fro filtering and searching
+- Ingredients list is now using Bar Assistant API for filtering and searching
     - This changes follows the changes introduced in last version with cocktails filtering
 
 ## Fixes
