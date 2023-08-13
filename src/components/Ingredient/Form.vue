@@ -12,7 +12,7 @@
             </div>
             <div class="form-group">
                 <label class="form-label form-label--required" for="category">{{ $t('category') }}:</label>
-                <select class="form-select" id="category" v-model="ingredient.ingredient_category_id" required>
+                <select class="form-select" id="category" v-model="ingredient.category.id" required>
                     <option :value="undefined" disabled>{{ $t('select-category') }}</option>
                     <option v-for="cat in categories" :value="cat.id">{{ cat.name }}</option>
                 </select>
@@ -77,6 +77,7 @@ export default {
             ingredients: [],
             ingredient: {
                 color: '#000',
+                category: {},
                 images: []
             },
             categories: []
@@ -132,7 +133,7 @@ export default {
                 color: this.ingredient.color,
                 parent_ingredient_id: this.isParent && this.ingredient.parent_ingredient ? this.ingredient.parent_ingredient.id : null,
                 images: [],
-                ingredient_category_id: this.ingredient.ingredient_category_id,
+                ingredient_category_id: this.ingredient.category.id,
             };
 
             const imageResources = await this.$refs.imagesUpload.uploadPictures().catch(() => {
