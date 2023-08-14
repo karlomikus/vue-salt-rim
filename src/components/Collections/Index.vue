@@ -7,7 +7,7 @@
                     <button type="button" class="button button--dark" @click.prevent="openDialog($t('collections.add'), {})">{{ $t('collections.add') }}</button>
                 </template>
                 <template #dialog>
-                    <CollectionsForm :source-collection="editCollection" :dialog-title="dialogTitle" @collection-dialog-closed="refreshCollections" />
+                    <Form :source-collection="editCollection" :dialog-title="dialogTitle" @collection-dialog-closed="refreshCollections" />
                 </template>
             </Dialog>
         </template>
@@ -41,7 +41,9 @@
                     </tbody>
                 </table>
                 <div v-else class="empty-state">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path d="M12 1L21.5 6.5V17.5L12 23L2.5 17.5V6.5L12 1ZM5.49388 7.0777L13.0001 11.4234V20.11L19.5 16.3469V7.65311L12 3.311L5.49388 7.0777ZM4.5 8.81329V16.3469L11.0001 20.1101V12.5765L4.5 8.81329Z"></path></svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+                        <path d="M12 1L21.5 6.5V17.5L12 23L2.5 17.5V6.5L12 1ZM5.49388 7.0777L13.0001 11.4234V20.11L19.5 16.3469V7.65311L12 3.311L5.49388 7.0777ZM4.5 8.81329V16.3469L11.0001 20.1101V12.5765L4.5 8.81329Z"></path>
+                    </svg>
                     <p>{{ $t('missing-collections') }}</p>
                 </div>
             </div>
@@ -55,7 +57,7 @@ import OverlayLoader from '@/components/OverlayLoader.vue'
 import PageHeader from '@/components/PageHeader.vue'
 import Navigation from '@/components/Settings/Navigation.vue'
 import Dialog from '@/components/Dialog/Dialog.vue'
-import CollectionsForm from './CollectionsForm.vue'
+import Form from './Form.vue'
 
 export default {
     components: {
@@ -63,7 +65,7 @@ export default {
         Navigation,
         PageHeader,
         Dialog,
-        CollectionsForm
+        Form
     },
     data() {
         return {
@@ -96,7 +98,7 @@ export default {
             this.showDialog = true;
         },
         deleteCollection(collection) {
-            this.$confirm(this.$t('collections.confirm-delete', {name: collection.name}), {
+            this.$confirm(this.$t('collections.confirm-delete', { name: collection.name }), {
                 onResolved: (dialog) => {
                     this.isLoading = true
                     dialog.close();

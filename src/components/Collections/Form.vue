@@ -18,15 +18,24 @@
 </template>
 
 <script>
-import ApiRequests from "@/ApiRequests";
-import OverlayLoader from '@/components/OverlayLoader.vue'
+import ApiRequests from "./../../ApiRequests";
+import OverlayLoader from './../OverlayLoader.vue'
 
 export default {
-    props: ['sourceCollection', 'dialogTitle'],
+    props: {
+        dialogTitle: {
+            type: String,
+            default: ''
+        },
+        sourceCollection: {
+            type: Object,
+            default: {}
+        }
+    },
+    emits: ['collectionDialogClosed'],
     data() {
         return {
             isLoading: false,
-            collectionId: null,
             collection: this.sourceCollection,
         };
     },
