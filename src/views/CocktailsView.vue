@@ -1,9 +1,9 @@
 <script setup>
-import CocktailList from '../components/Cocktail/CocktailList.vue'
+import CocktailIndex from '../components/Cocktail/CocktailIndex.vue'
 </script>
 
 <template>
   <main>
-    <CocktailList />
+    <CocktailIndex />
   </main>
 </template>

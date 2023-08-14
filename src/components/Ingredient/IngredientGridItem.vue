@@ -1,5 +1,5 @@
 <template>
-    <div class="block-container block-container--hover ingredient-grid-item" :class="{'ingredient-grid-item--shelf': inShelf}">
+    <div class="block-container block-container--hover ingredient-grid-item" :class="{ 'ingredient-grid-item--shelf': inShelf }">
         <OverlayLoader v-if="isLoading" />
         <div class="ingredient-grid-item__image" :style="{ 'background-color': setupColor(ingredient.color) }">
             <img :src="image" alt="Main image of the ingredient">
@@ -101,7 +101,7 @@ export default {
             if (this.inShelf) {
                 ApiRequests.removeIngredientFromShelf(this.ingredient.id).then(() => {
                     this.isLoading = false;
-                    this.$toast.default(this.$t('ingredient.shelf-remove-success', {name: this.ingredient.name}));
+                    this.$toast.default(this.$t('ingredient.shelf-remove-success', { name: this.ingredient.name }));
                     this.scopedUserIngredients.splice(this.scopedUserIngredients.indexOf(this.ingredient.id), 1)
                 }).catch(e => {
                     this.$toast.error(e.message)
@@ -110,7 +110,7 @@ export default {
             } else {
                 ApiRequests.addIngredientToShelf(this.ingredient.id).then(() => {
                     this.isLoading = false;
-                    this.$toast.default(this.$t('ingredient.shelf-add-success', {name: this.ingredient.name}))
+                    this.$toast.default(this.$t('ingredient.shelf-add-success', { name: this.ingredient.name }))
                     this.scopedUserIngredients.push(this.ingredient.id)
                 }).catch(e => {
                     this.$toast.error(e.message)
@@ -128,7 +128,7 @@ export default {
             if (this.inList) {
                 ApiRequests.removeIngredientsFromShoppingList(postData).then(() => {
                     this.isLoading = false;
-                    this.$toast.default(this.$t('ingredient.list-remove-success', {name: this.ingredient.name}));
+                    this.$toast.default(this.$t('ingredient.list-remove-success', { name: this.ingredient.name }));
                     this.scopedShoppingList.splice(this.scopedShoppingList.indexOf(this.ingredient.id), 1)
                 }).catch(e => {
                     this.$toast.error(e.message)
@@ -137,7 +137,7 @@ export default {
             } else {
                 ApiRequests.addIngredientsToShoppingList(postData).then(() => {
                     this.isLoading = false;
-                    this.$toast.default(this.$t('ingredient.list-add-success', {name: this.ingredient.name}))
+                    this.$toast.default(this.$t('ingredient.list-add-success', { name: this.ingredient.name }))
                     this.scopedShoppingList.push(this.ingredient.id)
                 }).catch(e => {
                     this.$toast.error(e.message)

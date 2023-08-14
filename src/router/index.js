@@ -53,14 +53,9 @@ const router = createRouter({
                     component: () => import('../views/HomeView.vue'),
                 },
                 {
-                    path: '/cocktails-legacy',
-                    name: 'cocktails-legacy',
-                    component: () => import('../views/CocktailsView.vue'),
-                },
-                {
                     path: '/cocktails',
                     name: 'cocktails',
-                    component: () => import('../views/CocktailsServerView.vue'),
+                    component: () => import('../views/CocktailsView.vue'),
                 },
                 {
                     path: '/cocktails/form',
@@ -116,16 +111,6 @@ const router = createRouter({
                     path: '/settings/users',
                     name: 'settings.users',
                     component: () => import('../views/SettingsUsersView.vue'),
-                },
-                {
-                    path: '/shelf/cocktails',
-                    name: 'shelf.cocktails',
-                    component: () => import('../views/ShelfCocktailsView.vue'),
-                },
-                {
-                    path: '/shelf/shopping-list',
-                    name: 'shelf.shopping-list',
-                    component: () => import('../views/ShelfShoppingListView.vue'),
                 },
                 {
                     path: '/settings/tags',

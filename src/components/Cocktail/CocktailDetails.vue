@@ -4,9 +4,9 @@
         <OverlayLoader v-if="isLoading" />
         <div class="cocktail-details__title">
             <h2>{{ cocktail.name }}</h2>
-            <p>Added on {{ createdDate }} by {{ cocktail.user_name || '<unknown>' }}</p>
+            <p>{{ $t('added-on-by', {date: createdDate, name: cocktail.user?.name || '<unknown>'}) }}</p>
         </div>
-        <div class="cocktail-details__graphic" v-if="cocktail.id"  style="margin-bottom: 2rem">
+        <div class="cocktail-details__graphic" v-if="cocktail.id" style="margin-bottom: 2rem">
             <swiper v-if="cocktail.images.length > 0" :modules="sliderModules" navigation :pagination="{ clickable: true }" :follow-finger="false">
                 <swiper-slide v-for="image in sortedImages">
                     <img :src="image.url" :alt="image.copyright" />
@@ -18,55 +18,54 @@
         <div class="cocktail-details__main">
             <div class="cocktail-details__main__content">
                 <div class="details-block-container details-block-container--blue cocktail-details-box" style="margin-top: 0">
-                    <!-- <h3 class="cocktail-title">{{ cocktail.name }}</h3> -->
                     <h3 class="details-block-container__title">{{ $t('description') }}</h3>
-                    <div class="cocktail-details__chips">
-                        <div class="cocktail-details__chips__group" v-if="cocktail.tags.length > 0">
-                            <div class="cocktail-details__chips__group__title">{{ $t('tags') }}:</div>
+                    <div class="item-details__chips">
+                        <div class="item-details__chips__group" v-if="cocktail.tags.length > 0">
+                            <div class="item-details__chips__group__title">{{ $t('tags') }}:</div>
                             <ul class="chips-list">
-                                <li v-for="tag in cocktail.cocktail_tags">
+                                <li v-for="tag in cocktail.tags">
                                     <RouterLink :to="{ name: 'cocktails', query: { 'filter[tag_id]': tag.id } }">{{ tag.name }}</RouterLink>
                                 </li>
                             </ul>
                         </div>
-                        <div class="cocktail-details__chips__group" v-if="cocktail.glass">
-                            <div class="cocktail-details__chips__group__title">{{ $t('glass-type') }}:</div>
+                        <div class="item-details__chips__group" v-if="cocktail.glass">
+                            <div class="item-details__chips__group__title">{{ $t('glass-type') }}:</div>
                             <ul class="chips-list">
                                 <li>
                                     <RouterLink :to="{ name: 'cocktails', query: { 'filter[glass_id]': cocktail.glass.id } }">{{ cocktail.glass.name }}</RouterLink>
                                 </li>
                             </ul>
                         </div>
-                        <div class="cocktail-details__chips__group" v-if="cocktail.method">
-                            <div class="cocktail-details__chips__group__title">{{ $t('method') }}:</div>
+                        <div class="item-details__chips__group" v-if="cocktail.method">
+                            <div class="item-details__chips__group__title">{{ $t('method') }}:</div>
                             <ul class="chips-list">
                                 <li>
                                     <RouterLink :to="{ name: 'cocktails', query: { 'filter[cocktail_method_id]': cocktail.method.id } }">{{ $t('method.' + cocktail.method.name) }}</RouterLink>
                                 </li>
                             </ul>
                         </div>
-                        <div class="cocktail-details__chips__group" v-if="cocktail.abv && cocktail.abv > 0">
-                            <div class="cocktail-details__chips__group__title">{{ $t('ABV') }}:</div>
+                        <div class="item-details__chips__group" v-if="cocktail.abv && cocktail.abv > 0">
+                            <div class="item-details__chips__group__title">{{ $t('ABV') }}:</div>
                             <ul class="chips-list">
                                 <li>
                                     <RouterLink :to="{ name: 'cocktails', query: { 'filter[abv_min]': cocktail.abv } }">{{ cocktail.abv }}%</RouterLink>
                                 </li>
                             </ul>
                         </div>
-                        <div class="cocktail-details__chips__group">
-                            <div class="cocktail-details__chips__group__title">{{ $t('avg-rating') }}:</div>
+                        <div class="item-details__chips__group">
+                            <div class="item-details__chips__group__title">{{ $t('avg-rating') }}:</div>
                             <ul class="chips-list">
                                 <li>
                                     <RouterLink :to="{ name: 'cocktails', query: { 'filter[user_rating_min]': cocktail.average_rating } }">{{ cocktail.average_rating }} ★</RouterLink>
                                 </li>
                             </ul>
                         </div>
-                        <div class="cocktail-details__chips__group">
-                            <div class="cocktail-details__chips__group__title">{{ $t('your-rating') }}:</div>
+                        <div class="item-details__chips__group">
+                            <div class="item-details__chips__group__title">{{ $t('your-rating') }}:</div>
                             <Rating :rating="cocktail.user_rating" type="cocktail" :id="cocktail.id"></Rating>
                         </div>
-                        <div class="cocktail-details__chips__group" v-if="cocktail.has_public_link">
-                            <div class="cocktail-details__chips__group__title">{{ $t('public-link') }}:</div>
+                        <div class="item-details__chips__group" v-if="cocktail.has_public_link">
+                            <div class="item-details__chips__group__title">{{ $t('public-link') }}:</div>
                             <RouterLink :to="{ name: 'e.cocktail', params: { ulid: cocktail.public_id, slug: cocktail.slug } }" target="_blank">{{ $t('click-here') }}</RouterLink>
                         </div>
                     </div>
@@ -135,9 +134,15 @@
                                 </a>
                                 <a class="dropdown-menu__item" href="#copy" @click.prevent="shareFromFormat('json')">
                                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18">
-                                        <path d="M6.9998 6V3C6.9998 2.44772 7.44752 2 7.9998 2H19.9998C20.5521 2 20.9998 2.44772 20.9998 3V17C20.9998 17.5523 20.5521 18 19.9998 18H16.9998V20.9991C16.9998 21.5519 16.5499 22 15.993 22H4.00666C3.45059 22 3 21.5554 3 20.9991L3.0026 7.00087C3.0027 6.44811 3.45264 6 4.00942 6H6.9998ZM5.00242 8L5.00019 20H14.9998V8H5.00242ZM8.9998 6H16.9998V16H18.9998V4H8.9998V6ZM7 11H13V13H7V11ZM7 15H13V17H7V15Z"></path>
+                                        <path d="M4 18V14.3C4 13.4716 3.32843 12.8 2.5 12.8H2V11.2H2.5C3.32843 11.2 4 10.5284 4 9.7V6C4 4.34315 5.34315 3 7 3H8V5H7C6.44772 5 6 5.44772 6 6V10.1C6 10.9858 5.42408 11.7372 4.62623 12C5.42408 12.2628 6 13.0142 6 13.9V18C6 18.5523 6.44772 19 7 19H8V21H7C5.34315 21 4 19.6569 4 18ZM20 14.3V18C20 19.6569 18.6569 21 17 21H16V19H17C17.5523 19 18 18.5523 18 18V13.9C18 13.0142 18.5759 12.2628 19.3738 12C18.5759 11.7372 18 10.9858 18 10.1V6C18 5.44772 17.5523 5 17 5H16V3H17C18.6569 3 20 4.34315 20 6V9.7C20 10.5284 20.6716 11.2 21.5 11.2H22V12.8H21.5C20.6716 12.8 20 13.4716 20 14.3Z"></path>
                                     </svg>
                                     {{ $t('share-copy-json') }}
+                                </a>
+                                <a class="dropdown-menu__item" href="#copy" @click.prevent="shareFromFormat('markdown')">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18">
+                                        <path d="M3 3H21C21.5523 3 22 3.44772 22 4V20C22 20.5523 21.5523 21 21 21H3C2.44772 21 2 20.5523 2 20V4C2 3.44772 2.44772 3 3 3ZM4 5V19H20V5H4ZM7 15.5H5V8.5H7L9 10.5L11 8.5H13V15.5H11V11.5L9 13.5L7 11.5V15.5ZM18 12.5H20L17 15.5L14 12.5H16V8.5H18V12.5Z"></path>
+                                    </svg>
+                                    {{ $t('share-copy-md') }}
                                 </a>
                             </template>
                         </Dropdown>
@@ -255,6 +260,10 @@
                     <h3 class="details-block-container__title">{{ $t('notes') }}</h3>
                     <Note v-for="note in cocktail.notes" :note="note" @noteDeleted="fetchCocktail"></Note>
                 </div>
+                <div class="cocktail-details__navigation">
+                    <RouterLink v-if="cocktail.navigation.prev" :to="{ name: 'cocktails.show', params: { id: cocktail.navigation.prev } }">{{ $t('cocktail-prev') }}</RouterLink>
+                    <RouterLink v-if="cocktail.navigation.next" :to="{ name: 'cocktails.show', params: { id: cocktail.navigation.next } }">{{ $t('cocktail-next') }}</RouterLink>
+                </div>
             </div>
             <div class="cocktail-details__main__aside">
                 <h3 class="page-subtitle" style="margin-top: 0">{{ $t('cocktails-similar') }}</h3>
@@ -273,7 +282,7 @@
 </template>
 
 <script>
-import {micromark} from 'micromark'
+import { micromark } from 'micromark'
 import ApiRequests from '@/ApiRequests';
 import Auth from '@/Auth';
 import OverlayLoader from '@/components/OverlayLoader.vue'
@@ -364,7 +373,7 @@ export default {
                 return parseFloat(ing.amount) + acc
             }, 0) * this.servings;
 
-            return Utils.printIngredientAmount({amount: amount, units: 'ml'}, this.currentUnit, this.servings);
+            return Utils.printIngredientAmount({ amount: amount, units: 'ml' }, this.currentUnit, this.servings);
         }
     },
     created() {
@@ -385,7 +394,7 @@ export default {
             this.userShelfIngredients = Auth.getUser().shelf_ingredients;
             this.userShoppingListIngredients = Auth.getUser().shopping_lists;
 
-            ApiRequests.fetchCocktail(this.$route.params.id).then(data => {
+            ApiRequests.fetchCocktail(this.$route.params.id, { navigation: true }).then(data => {
                 this.isLoading = false;
                 this.cocktail = data
                 this.isFavorited = Auth.getUser().favorite_cocktails.includes(this.cocktail.id);
@@ -498,6 +507,7 @@ export default {
     .cocktail-details__main {
         display: block;
     }
+
     .cocktail-details__main__aside {
         margin-top: 2rem;
     }
@@ -690,23 +700,12 @@ export default {
     margin: 0.75rem 0;
 }
 
-.cocktail-details__chips {
+.cocktail-details__navigation {
     display: flex;
-    flex-wrap: wrap;
-    gap: 1rem;
-    margin-bottom: 1rem;
+    margin-top: 0.5rem;
 }
 
-.cocktail-details__chips__group__title {
-    font-size: 0.7rem;
-    margin-bottom: 0.25rem;
-}
-
-.dark-theme .cocktail-details__chips__group__title {
-    color: rgba(255, 255, 255, .4);
-}
-
-.cocktail-details__chips .rating {
-    line-height: 1;
+.cocktail-details__navigation a:last-child {
+    margin-left: auto;
 }
 </style>

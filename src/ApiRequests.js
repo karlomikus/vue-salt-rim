@@ -97,8 +97,9 @@ class ApiRequests
         return this.parseResponse(jsonResp);
     }
 
-    static async fetchCocktail(id) {
-        let jsonResp = await this.getRequest(`/api/cocktails/${id}`);
+    static async fetchCocktail(id, queryParams = {}) {
+        const q = this.generateBAQueryString(queryParams)
+        let jsonResp = await this.getRequest(`/api/cocktails/${id}${q}`);
 
         return this.parseResponse(jsonResp);
     }
@@ -256,6 +257,12 @@ class ApiRequests
         return await this.deleteRequest(`/api/ingredients/${id}`);
     }
 
+    static async fetchExtraCocktailsWithIngredient(id) {
+        let jsonResp = await this.getRequest(`/api/ingredients/${id}/extra`);
+
+        return this.parseResponse(jsonResp);
+    }
+
     /**
      * =============================
      * Shelf
@@ -330,6 +337,16 @@ class ApiRequests
         let jsonResp = await this.postRequest(`/api/shopping-list/batch-delete`, data);
 
         return this.parseResponse(jsonResp);
+    }
+
+    static async shareShoppingList(query = {}) {
+        const queryString = this.generateBAQueryString(query);
+
+        const f = fetch(`${this.getUrl()}/api/shopping-list/share${queryString}`, {
+            headers: this.getHeaders(),
+        }).then(this.handleResponseErrors)
+
+        return await (await f).text();
     }
 
     /**
@@ -636,6 +653,12 @@ class ApiRequests
 
     static async deleteCollection(collectionId) {
         return await this.deleteRequest(`/api/collections/${collectionId}`);
+    }
+
+    static async shareCollection(id) {
+        let jsonResp = await this.getRequest(`/api/collections/${id}/share`);
+
+        return this.parseResponse(jsonResp);
     }
 }
 

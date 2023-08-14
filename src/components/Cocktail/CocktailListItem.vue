@@ -5,8 +5,8 @@
         </div>
         <div class="cocktail-list-item__content">
             <h4 class="cocktail-list-item__title">{{ cocktail.name }} <MiniRating v-if="cocktail.user_rating > 0" :rating="cocktail.user_rating"></MiniRating></h4>
-            <p v-if="cocktail.short_ingredients">
-                {{ cocktail.short_ingredients.join(', ') }}
+            <p v-if="shortIngredients.length > 0">
+                {{ shortIngredients.join(', ') }}
             </p>
         </div>
     </RouterLink>
@@ -31,6 +31,9 @@ export default {
             }
 
             return ApiRequests.imageThumbUrl(this.cocktail.main_image_id);
+        },
+        shortIngredients() {
+            return this.cocktail.ingredients.map(i => i.name)
         }
     }
 }

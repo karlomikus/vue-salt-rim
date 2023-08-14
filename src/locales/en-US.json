@@ -265,8 +265,8 @@
   "download": "Download",
   "share": "Share",
   "share-copy-json": "Copy as JSON",
-  "share-format-copied": "Cocktail recipe copied",
-  "share-format-copy-failed": "Cocktail recipe copy failed",
+  "share-format-copied": "Text copied",
+  "share-format-copy-failed": "Text copy failed",
   "start-import": "Start import",
   "import-type": "Import format",
   "type": "Type",
@@ -314,5 +314,12 @@
   },
   "results-per-page": "Per page",
   "used-as-main-ingredient": "Used as main ingredient",
-  "total-cocktails": "Total cocktails"
+  "total-cocktails": "Total cocktails",
+  "share-copy-md": "Copy as Markdown",
+  "cocktail-prev": "Previous cocktail",
+  "cocktail-next": "Next cocktail",
+  "total-ingredients": "Number of ingredients",
+  "ingredient-extra-cocktails-info": "Add to shelf and you can make",
+  "ingredient-cocktails-rest": "Rest of the cocktails",
+  "added-on-by": "Added on {date} by {name}"
 }

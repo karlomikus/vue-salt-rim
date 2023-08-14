@@ -26,6 +26,7 @@
                     <Refinement :title="$t('tags')" :refinements="refineTags" id="tag" v-model="activeFilters.tags" @change="updateRouterPath"></Refinement>
                     <Refinement :title="$t('glass-type')" :refinements="refineGlasses" id="glass" v-model="activeFilters.glasses" @change="updateRouterPath"></Refinement>
                     <Refinement :title="$t('your-rating')" :refinements="refineRatings" id="user-rating" v-model="activeFilters.user_rating" type="radio" @change="updateRouterPath"></Refinement>
+                    <Refinement :title="$t('total-ingredients')" :refinements="refineIngredientsCount" id="total-ingredients" v-model="activeFilters.total_ingredients" type="radio" @change="updateRouterPath"></Refinement>
                     <button class="button button--dark sm-show" type="button" @click="showRefinements = false">{{ $t('cancel') }}</button>
                 </div>
             </div>
@@ -43,8 +44,9 @@
                         <option value="name">{{ $t('name') }}</option>
                         <option value="created_at">{{ $t('date-added') }}</option>
                         <option value="favorited_at">{{ $t('date-favorited') }}</option>
-                        <option value="average_rating">{{ $t('average-rating') }}</option>
                         <option value="missing_ingredients">{{ $t('missing-ingredients') }}</option>
+                        <option value="total_ingredients">{{ $t('total-ingredients') }}</option>
+                        <option value="average_rating">{{ $t('average-rating') }}</option>
                         <option value="user_rating">{{ $t('user-rating') }}</option>
                         <option value="abv">{{ $t('ABV') }}</option>
                     </select>
@@ -132,6 +134,11 @@ export default {
                     { name: this.$t('medium'), min: 18, max: 28, id: 'abv_medium' },
                     { name: this.$t('strong'), min: 28, max: null, id: 'abv_strong' },
                 ],
+                total_ingredients: [
+                    { name: '>= 3 ' + this.$t('ingredients'), active: false, id: '3' },
+                    { name: '>= 5 ' + this.$t('ingredients'), active: false, id: '5' },
+                    { name: '>= 7 ' + this.$t('ingredients'), active: false, id: '7' },
+                ],
                 tags: [],
                 glasses: [],
                 methods: [],
@@ -149,7 +156,8 @@ export default {
                 ingredients: [],
                 collections: [],
                 user_rating: null,
-                abv: null
+                abv: null,
+                total_ingredients: null
             }
         }
     },
@@ -259,6 +267,15 @@ export default {
                 }
             })
         },
+        refineIngredientsCount() {
+            return this.availableRefinements.total_ingredients.map(m => {
+                return {
+                    id: m.id,
+                    value: m.id,
+                    name: m.name
+                }
+            })
+        },
         currentCocktailIds() {
             return this.cocktails.map((c) => c.id);
         }
@@ -320,6 +337,7 @@ export default {
             this.activeFilters.on_shelf = state.filter && state.filter.on_shelf ? state.filter.on_shelf : null
             this.activeFilters.favorites = state.filter && state.filter.favorites ? state.filter.favorites : null
             this.activeFilters.is_public = state.filter && state.filter.is_public ? state.filter.is_public : null
+            this.activeFilters.total_ingredients = state.filter && state.filter.total_ingredients ? state.filter.total_ingredients : null
             this.activeFilters.user_id = state.filter && state.filter.user_id ? true : null
             this.activeFilters.user_rating = state.filter && state.filter.user_rating_min ? state.filter.user_rating_min : null
             this.searchQuery = state.filter && state.filter.name ? state.filter.name : null
@@ -353,6 +371,7 @@ export default {
                 is_public: this.activeFilters.is_public,
                 user_id: this.activeFilters.user_id ? Auth.getUser().id : null,
                 user_rating_min: this.activeFilters.user_rating ? this.activeFilters.user_rating : null,
+                total_ingredients: this.activeFilters.total_ingredients ? this.activeFilters.total_ingredients : null,
                 tag_id: this.activeFilters.tags.length > 0 ? this.activeFilters.tags.join(',') : null,
                 glass_id: this.activeFilters.glasses.length > 0 ? this.activeFilters.glasses.join(',') : null,
                 cocktail_method_id: this.activeFilters.methods.length > 0 ? this.activeFilters.methods.join(',') : null,
@@ -396,7 +415,8 @@ export default {
                 ingredients: [],
                 collections: [],
                 user_rating: null,
-                abv: null
+                abv: null,
+                total_ingredients: null
             };
 
             this.updateRouterPath();

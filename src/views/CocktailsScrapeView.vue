@@ -1,9 +1,9 @@
 <script setup>
-import Scraper from '../components/Cocktail/Scraper.vue'
+import Import from '../components/Cocktail/Import.vue'
 </script>
 
 <template>
   <main>
-    <Scraper />
+    <Import />
   </main>
 </template>

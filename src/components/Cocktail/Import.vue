@@ -11,6 +11,7 @@
                 <Radio title="URL" description="Import from a supported website" value="url" v-model="importType"></Radio>
                 <Radio title="JSON" description="Import from JSON format" value="json" v-model="importType"></Radio>
                 <Radio title="YAML" description="Import from YAML format" value="yaml" v-model="importType"></Radio>
+                <Radio title="Collection" description="Import from Bar Assistant JSON collection" value="collection" v-model="importType"></Radio>
             </div>
             <div class="form-group">
                 <label class="form-label form-label--required" for="import-source">{{ $t('source') }}:</label>
@@ -123,18 +124,25 @@ export default {
         Radio
     },
     created() {
-        document.title = `Cocktail Scraping \u22C5 ${this.site_title}`
+        document.title = `${this.$t('cocktails.import')} \u22C5 ${this.site_title}`
     },
     computed: {
         cocktailTags: {
             get() {
-                return this.result.tags.join(',')
+                return this.result.tags.map(i => i.name).join(',')
             },
             set(newVal) {
+                if (Array.isArray(newVal)) {
+                    newVal = newVal.join(',');
+                }
+
                 if (newVal == '' || newVal == null || newVal == undefined) {
                     this.result.tags = []
                 } else {
-                    this.result.tags = newVal.split(',')
+                    this.result.tags = [];
+                    newVal.split(',').forEach(tagName => {
+                        this.result.tags.push({name: tagName})
+                    })
                 }
             }
         },
@@ -144,7 +152,11 @@ export default {
             this.isLoading = true;
             ApiRequests.importCocktail({ source: this.source }, { type: this.importType }).then(data => {
                 this.result = data
+                this.cocktailTags = data.tags
                 this.isLoading = false;
+                if (this.importType == 'collection') {
+                    this.$router.push({ name: 'cocktails', query: { 'filter[collection_id]': this.result.id } })
+                }
             }).catch(e => {
                 this.isLoading = false;
                 this.$toast.error(e.message);

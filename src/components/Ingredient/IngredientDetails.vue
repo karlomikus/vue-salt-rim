@@ -4,29 +4,54 @@
         <div class="details-block-container details-block-container--blue ingredient-details__box" style="margin-top: 100px;">
             <div class="ingredient-details__box__content">
                 <h2 class="ingredient-details__box__title">
-                    <small>{{ ingredient.category.name }}</small>
                     {{ ingredient.name }}
                 </h2>
+                <div class="item-details__chips">
+                    <div class="item-details__chips__group">
+                        <div class="item-details__chips__group__title">{{ $t('category') }}:</div>
+                        <ul class="chips-list">
+                            <li>
+                                <RouterLink :to="{name: 'ingredients', query: {'filter[category_id]': ingredient.category.id}}">{{ ingredient.category.name }}</RouterLink>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="item-details__chips__group">
+                        <div class="item-details__chips__group__title">{{ $t('strength') }}:</div>
+                        <ul class="chips-list" v-if="ingredient.strength > 0">
+                            <li>
+                                <span><abbr :title="$t('ABV.definition')">{{ $t('ABV') }}</abbr>: {{ ingredient.strength + '%' }}</span>
+                            </li>
+                            <li>
+                                <span>{{ $t('alcohol-proof') }}: {{ ingredient.strength * 2 }}</span>
+                            </li>
+                        </ul>
+                        <ul v-else class="chips-list">
+                            <li>
+                                <span>{{ $t('non-alcoholic') }}</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="item-details__chips__group" v-if="ingredient.origin">
+                        <div class="item-details__chips__group__title">{{ $t('origin') }}:</div>
+                        <ul class="chips-list">
+                            <li>
+                                <span>{{ ingredient.origin }}</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="item-details__chips__group" v-if="isAddedToShelf || isAddedToShoppingList">
+                        <div class="item-details__chips__group__title">{{ $t('status') }}:</div>
+                        <ul class="chips-list">
+                            <li v-show="isAddedToShelf">
+                                <span>{{ $t('ingredient.in-shelf') }}</span>
+                            </li>
+                            <li v-show="isAddedToShoppingList">
+                                <span>{{ $t('ingredient.on-shopping-list') }}</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
                 <div v-html="parsedDescription"></div>
-                <hr>
-                <p>
-                    <strong>{{ $t('strength') }}:</strong><br>
-                    <template v-if="ingredient.strength <= 0">
-                        {{ $t('non-alcoholic') }}
-                    </template>
-                    <template v-else>
-                        <abbr :title="$t('ABV.definition')">{{ $t('ABV') }}</abbr>: {{ ingredient.strength + '%' }} &middot; {{ $t('alcohol-proof') }}: {{ ingredient.strength * 2 }}
-                    </template>
-                </p>
-                <hr>
-                <p><strong>{{ $t('origin') }}:</strong> {{ ingredient.origin ?? 'n/a' }}</p>
-                <hr>
-                <p><strong>{{ $t('category') }}:</strong> {{ ingredient.category.description ?? 'n/a' }}</p>
-                <hr>
-                <ul class="flags" style="margin-top: 20px;">
-                    <li v-show="isAddedToShelf">{{ $t('ingredient.in-shelf') }}</li>
-                    <li v-show="isAddedToShoppingList">{{ $t('ingredient.on-shopping-list') }}</li>
-                </ul>
             </div>
             <div class="ingredient-details__box__image-container">
                 <img :src="mainIngredientImageUrl" :alt="ingredient.name" />
@@ -85,7 +110,12 @@
             </div>
             <h2 class="details-block-container__title">{{ $t('ingredient.cocktail-children', {total: ingredient.cocktails.length}) }}</h2>
             <ul class="ingredient-chips-list" v-if="ingredient.cocktails.length > 0">
-                <li v-for="cocktail in ingredient.cocktails">
+                <li class="ingredient-chips-list__label" v-if="extraIfAddedToShelf.length > 0">{{ $t('ingredient-extra-cocktails-info') }}:</li>
+                <li v-for="cocktail in extraIfAddedToShelf">
+                    <RouterLink :to="{name: 'cocktails.show', params: {id: cocktail.slug}}">{{ cocktail.name }}</RouterLink>
+                </li>
+                <li class="ingredient-chips-list__label" v-if="extraIfAddedToShelf.length > 0 && defaultCocktails.length > 0">{{ $t('ingredient-cocktails-rest') }}:</li>
+                <li v-for="cocktail in defaultCocktails">
                     <RouterLink :to="{name: 'cocktails.show', params: {id: cocktail.slug}}">{{ cocktail.name }}</RouterLink>
                 </li>
             </ul>
@@ -117,10 +147,11 @@ export default {
         ingredient: {},
         isAddedToShelf: false,
         isAddedToShoppingList: false,
+        extraIfAddedToShelf: []
     }),
     components: {
         Dropdown,
-        OverlayLoader,
+        OverlayLoader
     },
     watch: {
         ingredient(val) {
@@ -148,6 +179,8 @@ export default {
                                 }
                             })
                         });
+
+                        this.refreshExtraCocktails()
                     }).catch(e => {
                         this.$toast.error(e.message);
                     })
@@ -171,6 +204,11 @@ export default {
 
             return micromark(this.ingredient.description)
         },
+        defaultCocktails() {
+            const removeIds = this.extraIfAddedToShelf.map(c => c.id);
+
+            return this.ingredient.cocktails.filter(c => !removeIds.includes(c.id));
+        }
     },
     methods: {
         deleteIngredient() {
@@ -196,6 +234,7 @@ export default {
                     this.isAddedToShelf = false;
                     this.$toast.default(this.$t('ingredient.shelf-remove-success', {name: this.ingredient.name}));
                     this.isLoading = false;
+                    this.refreshExtraCocktails()
                 }).catch(e => {
                     this.$toast.error(e.message)
                     this.isLoading = false;
@@ -205,6 +244,7 @@ export default {
                     this.isAddedToShelf = true;
                     this.$toast.default(this.$t('ingredient.shelf-add-success', {name: this.ingredient.name}));
                     this.isLoading = false;
+                    this.refreshExtraCocktails()
                 }).catch(e => {
                     this.$toast.error(e.message)
                     this.isLoading = false;
@@ -237,6 +277,13 @@ export default {
                     this.isLoading = false;
                 })
             }
+        },
+        refreshExtraCocktails() {
+            ApiRequests.fetchExtraCocktailsWithIngredient(this.ingredient.id).then(data => {
+                this.extraIfAddedToShelf = data;
+            }).catch(e => {
+                this.$toast.error(e.message);
+            })
         }
     }
 }
@@ -337,10 +384,16 @@ export default {
     --icl-clr-border-hover: var(--clr-red-800);
     list-style: none;
     padding: 0;
-    margin: 30px 0 0 0;
     display: flex;
     flex-wrap: wrap;
     gap: 8px;
+    align-items: center;
+}
+
+.mini-cocktail-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
 }
 
 .dark-theme .ingredient-chips-list {
@@ -365,6 +418,10 @@ export default {
 .ingredient-chips-list li a:focus {
     box-shadow: 0 2px 0 var(--icl-clr-border-hover);
     background-color: var(--icl-clr-bg-hover);
+}
+
+.ingredient-chips-list__label {
+    font-size: 0.75rem;
 }
 
 .ingredient-details__actions {

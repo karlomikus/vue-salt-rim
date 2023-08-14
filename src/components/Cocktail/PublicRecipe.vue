@@ -2,13 +2,13 @@
     <div class="generate-image-header" v-show="!hideHeader">
         <Logo></Logo>
     </div>
-    <div class="public-cocktail-recipe" ref="recipe">
-        <div class="public-cocktail-recipe__image" :style="{'background-image': 'url(' + mainImage.url + ')'}">
+    <div class="public-cocktail-recipe" ref="recipe" itemscope itemtype="http://schema.org/Recipe">
+        <div class="public-cocktail-recipe__image" itemprop="image" :content="mainImage.url" :style="{'background-image': 'url(' + mainImage.url + ')'}">
             <div class="public-cocktail-recipe__image__copyright" v-if="mainImage.copyright">{{ $t('image-copyright-notice', { copyright: mainImage.copyright }) }}</div>
         </div>
         <div class="public-cocktail-recipe__summary">
-            <h2>{{ cocktail.name }}</h2>
-            <div v-show="!!cocktail.description" class="public-cocktail-recipe__content" v-html="parsedDescription"></div>
+            <h2 itemprop="name">{{ cocktail.name }}</h2>
+            <div itemprop="description" v-show="!!cocktail.description" class="public-cocktail-recipe__content" v-html="parsedDescription"></div>
             <div class="public-cocktail-recipe__units" v-show="hideUnits == false">
                 <button type="button" class="button button--public" :class="{'button--active': currentUnit == 'ml'}" @click="currentUnit = 'ml'">ml</button>
                 <button type="button" class="button button--public" :class="{'button--active': currentUnit == 'oz'}" @click="currentUnit = 'oz'">oz</button>
@@ -17,14 +17,14 @@
             <div class="public-cocktail-recipe__summary__section">
                 <h3>{{ $t('ingredients') }}</h3>
                 <ul>
-                    <li v-for="ing in cocktail.ingredients">
+                    <li itemprop="recipeIngredient" :content="ing.name + ' - ' + parseIngredientAmount(ing)" v-for="ing in cocktail.ingredients">
                         <span>{{ ing.name }}</span><span class="spacer"></span><span class="amount-units">{{ parseIngredientAmount(ing) }}</span>
                     </li>
                 </ul>
             </div>
             <div class="public-cocktail-recipe__summary__section">
                 <h3>{{ $t('instructions') }}</h3>
-                <div class="public-cocktail-recipe__content" v-html="parsedInstructions"></div>
+                <div itemprop="recipeInstructions" class="public-cocktail-recipe__content" v-html="parsedInstructions"></div>
             </div>
             <div class="public-cocktail-recipe__summary__section" v-show="!!cocktail.garnish">
                 <h3>{{ $t('garnish') }}</h3>
