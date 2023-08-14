@@ -95,4 +95,8 @@ export default {
     overflow: scroll;
     max-height: 350px;
 }
+
+.image-download-preview img {
+    width: 100%;
+}
 </style>
