@@ -8,10 +8,6 @@
                 <PublicRecipe :cocktail="cocktail" :currentUnit="currentUnit" :hideUnits="true" :hideHeader="features.hideHeader" :hideFooter="features.hideFooter"></PublicRecipe>
             </div>
         </div>
-        <!-- <div style="margin: 1rem 0;">
-            <Checkbox v-model="features.hideHeader" id="id-features-hide-logo">{{ $t('generate-image-dialog.hide-header') }}</Checkbox>
-            <Checkbox v-model="features.hideFooter" id="id-features-hide-logo">{{ $t('generate-image-dialog.hide-footer') }}</Checkbox>
-        </div> -->
         <div class="dialog-actions" style="margin-top: 1rem;">
             <button type="button" class="button button--outline" @click="$emit('publicDialogClosed')">{{ $t('cancel') }}</button>
             <button v-if="shareEnabled" type="button" class="button button--outline" @click="shareAction">{{ $t('share') }}</button>
@@ -45,16 +41,6 @@ export default {
         PublicRecipe,
         Checkbox
     },
-    // watch: {
-    //     features: {
-    //         handler() {
-    //             this.$nextTick(() => {
-    //                 this.generateImage();
-    //             })
-    //         },
-    //         deep: true
-    //     }
-    // },
     computed: {
         fileName() {
             return this.cocktail.slug + '.png';

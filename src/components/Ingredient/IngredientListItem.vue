@@ -5,9 +5,13 @@
             <img :src="mainIngredientImageUrl" :alt="ingredient.name">
         </div>
         <div class="ingredient-list-item__content">
-            <h4 class="ingredient-list-item__title"><RouterLink :to="{ name: 'ingredients.show', params: { id: ingredient.slug } }">{{ ingredient.name }}</RouterLink></h4>
-            <a href="#" @click.prevent="addToShelf">{{ $t('add-to-shelf') }}</a> &middot;
-            <a href="#" @click.prevent="removeFromShoppingList">{{ $t('remove-from-list') }}</a>
+            <h4 class="ingredient-list-item__title">
+                <RouterLink :to="{ name: 'ingredients.show', params: { id: ingredient.slug } }">{{ ingredient.name }}</RouterLink>
+            </h4>
+            <slot name="content">
+                <a href="#" @click.prevent="addToShelf">{{ $t('add-to-shelf') }}</a> &middot;
+                <a href="#" @click.prevent="removeFromShoppingList">{{ $t('remove-from-list') }}</a>
+            </slot>
         </div>
     </div>
 </template>
@@ -61,7 +65,7 @@ export default {
         },
         removeFromShoppingList() {
             this.isLoading = true;
-            ApiRequests.removeIngredientsFromShoppingList({ingredient_ids: [this.ingredient.id]}).then(() => {
+            ApiRequests.removeIngredientsFromShoppingList({ ingredient_ids: [this.ingredient.id] }).then(() => {
                 this.$emit('removedFromShoppingList')
                 this.isLoading = false;
             }).catch(e => {

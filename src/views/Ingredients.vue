@@ -1,9 +1,9 @@
 <script setup>
-import Ingredients from '../components/Ingredient/Ingredients.vue'
+import IngredientIndex from '../components/Ingredient/IngredientIndex.vue'
 </script>
 
 <template>
   <main>
-    <Ingredients />
+    <IngredientIndex />
   </main>
 </template>

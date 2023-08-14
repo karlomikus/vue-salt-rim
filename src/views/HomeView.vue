@@ -1,9 +1,9 @@
 <script setup>
-import Shelf from '../components/Shelf/Shelf.vue'
+import Index from '../components/Shelf/Index.vue'
 </script>
 
 <template>
   <main>
-    <Shelf />
+    <Index />
   </main>
 </template>

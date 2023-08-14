@@ -114,9 +114,9 @@ export default {
         shareCollection(collection) {
             ApiRequests.shareCollection(collection.id).then(data => {
                 navigator.clipboard.writeText(JSON.stringify(data)).then(() => {
-                    this.$toast.default(this.$t('collections.share-format-copied'));
+                    this.$toast.default(this.$t('share-format-copied'));
                 }, () => {
-                    this.$toast.error(this.$t('collections.share-format-copy-failed'));
+                    this.$toast.error(this.$t('share-format-copy-failed'));
                 });
             })
         },

@@ -320,5 +320,6 @@
   "cocktail-next": "Next cocktail",
   "total-ingredients": "Number of ingredients",
   "ingredient-extra-cocktails-info": "Add to shelf and you can make",
-  "ingredient-cocktails-rest": "Rest of the cocktails"
+  "ingredient-cocktails-rest": "Rest of the cocktails",
+  "added-on-by": "Added on {date} by {name}"
 }

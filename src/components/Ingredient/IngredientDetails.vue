@@ -114,7 +114,7 @@
                 <li v-for="cocktail in extraIfAddedToShelf">
                     <RouterLink :to="{name: 'cocktails.show', params: {id: cocktail.slug}}">{{ cocktail.name }}</RouterLink>
                 </li>
-                <li class="ingredient-chips-list__label" v-if="extraIfAddedToShelf.length > 0">{{ $t('ingredient-cocktails-rest') }}:</li>
+                <li class="ingredient-chips-list__label" v-if="extraIfAddedToShelf.length > 0 && defaultCocktails.length > 0">{{ $t('ingredient-cocktails-rest') }}:</li>
                 <li v-for="cocktail in defaultCocktails">
                     <RouterLink :to="{name: 'cocktails.show', params: {id: cocktail.slug}}">{{ cocktail.name }}</RouterLink>
                 </li>

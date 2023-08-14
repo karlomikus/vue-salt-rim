@@ -3,7 +3,6 @@
 @import "./buttons.css";
 @import "./dropdown.css";
 @import "./modal.css";
-@import "./glasses.css";
 @import "./tags.css";
 @import "./table.css";
 @import "./instant-theme.css";
@@ -14,7 +13,6 @@
 @import "./chips.css";
 
 @import "vue-toast-notification/dist/theme-default.css";
-@import "./tom-select.css";
 
 @import "swiper/css";
 @import "swiper/css/navigation";
