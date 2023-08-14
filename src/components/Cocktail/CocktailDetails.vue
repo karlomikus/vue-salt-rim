@@ -274,7 +274,7 @@
                 </template>
                 <template v-if="cocktail.collections.length > 0">
                     <h3 class="page-subtitle">{{ $t('cocktail-collections') }}</h3>
-                    <CocktailCollections :cocktail="cocktail"></CocktailCollections>
+                    <CocktailCollections :cocktail="cocktail" @cocktailRemovedFromCollection="fetchCocktail"></CocktailCollections>
                 </template>
             </div>
         </div>
@@ -298,7 +298,7 @@ import PublicLinkDialog from '@/components/Cocktail/PublicLinkDialog.vue'
 import ImageDialog from './ImageDialog.vue';
 import SimilarCocktails from './SimilarCocktails.vue';
 import IngredientSpotlight from './../Ingredient/IngredientSpotlight.vue';
-import CocktailCollections from './CocktailCollections.vue';
+import CocktailCollections from './../Collections/Widget.vue';
 import CollectionDialog from './CollectionDialog.vue';
 import dayjs from 'dayjs'
 
