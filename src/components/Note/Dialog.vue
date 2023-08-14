@@ -14,8 +14,8 @@
 </template>
 
 <script>
-import ApiRequests from '@/ApiRequests';
-import OverlayLoader from '@/components/OverlayLoader.vue'
+import ApiRequests from './../../ApiRequests.js';
+import OverlayLoader from './../OverlayLoader.vue'
 
 export default {
     props: ['resourceId', 'resource'],

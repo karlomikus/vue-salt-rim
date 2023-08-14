@@ -7,7 +7,7 @@
 
 <script>
 import dayjs from 'dayjs';
-import ApiRequests from '@/ApiRequests';
+import ApiRequests from './../../ApiRequests.js';
 
 export default {
     props: ['note'],

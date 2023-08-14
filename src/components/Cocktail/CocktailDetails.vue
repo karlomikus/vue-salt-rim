@@ -292,8 +292,8 @@ import { Swiper, SwiperSlide } from 'swiper/vue';
 import { Navigation, Pagination } from 'swiper';
 import Utils from '@/Utils';
 import Dialog from '@/components/Dialog/Dialog.vue'
-import Note from '@/components/Note.vue'
-import NoteDialog from '@/components/NoteDialog.vue'
+import Note from './../Note/Details.vue'
+import NoteDialog from './../Note/Dialog.vue'
 import PublicLinkDialog from '@/components/Cocktail/PublicLinkDialog.vue'
 import ImageDialog from './ImageDialog.vue';
 import SimilarCocktails from './SimilarCocktails.vue';
