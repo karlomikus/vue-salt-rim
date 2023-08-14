@@ -9,6 +9,7 @@
 
 ## Changes
 - Updated ingredient details page
+- Moved shopping list share functions to ingredients page
 
 # v1.18.0
 ## New
