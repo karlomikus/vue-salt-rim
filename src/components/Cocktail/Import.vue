@@ -124,7 +124,7 @@ export default {
         Radio
     },
     created() {
-        document.title = `Cocktail Scraping \u22C5 ${this.site_title}`
+        document.title = `${this.$t('cocktails.import')} \u22C5 ${this.site_title}`
     },
     computed: {
         cocktailTags: {
@@ -132,6 +132,10 @@ export default {
                 return this.result.tags.map(i => i.name).join(',')
             },
             set(newVal) {
+                if (Array.isArray(newVal)) {
+                    newVal = newVal.join(',');
+                }
+
                 if (newVal == '' || newVal == null || newVal == undefined) {
                     this.result.tags = []
                 } else {
@@ -148,6 +152,7 @@ export default {
             this.isLoading = true;
             ApiRequests.importCocktail({ source: this.source }, { type: this.importType }).then(data => {
                 this.result = data
+                this.cocktailTags = data.tags
                 this.isLoading = false;
                 if (this.importType == 'collection') {
                     this.$router.push({ name: 'cocktails', query: { 'filter[collection_id]': this.result.id } })
