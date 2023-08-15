@@ -102,7 +102,7 @@
 </template>
 
 <script>
-import ApiRequests from "@/ApiRequests";
+import ApiRequests from "./../../ApiRequests.js";
 import OverlayLoader from '@/components/OverlayLoader.vue'
 import PageHeader from '@/components/PageHeader.vue'
 import Checkbox from '@/components/Checkbox.vue'
@@ -219,6 +219,27 @@ export default {
             delete this.result.glass
             this.result.glass_id = dbGlass.id
         },
+        async matchMethod() {
+            if (!this.result.method) {
+                return;
+            }
+
+            const dbMethods = await ApiRequests.fetchCocktailMethods().catch(() => { return [] })
+            let foundMethodId = null;
+            dbMethods.forEach(m => {
+                if (this.result.method.toLowerCase().includes(m.name.toLowerCase())) {
+                    foundMethodId = m.id
+                }
+            })
+
+            if (!foundMethodId) {
+                return;
+            }
+
+            this.result.method = {
+                id: foundMethodId
+            }
+        },
         removeIngredient(ingredient) {
             this.result.ingredients.splice(
                 this.result.ingredients.findIndex(i => i == ingredient),
@@ -229,6 +250,7 @@ export default {
             this.isLoading = true;
             await this.matchGlass();
             await this.matchIngredients();
+            await this.matchMethod();
             this.isLoading = false;
             localStorage.setItem('scrapeResult', JSON.stringify(this.result))
             this.$router.push({ name: routeName })

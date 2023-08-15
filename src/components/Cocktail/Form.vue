@@ -81,7 +81,7 @@
             <div style="margin-bottom: 2rem;">
                 <label class="form-label">{{ $t('method-and-dilution') }}:</label>
                 <div class="cocktail-methods">
-                    <Radio v-for="method in methods" :value="method.id" :title="method.name" :description="method.dilution_percentage + '%'" v-model="methodId"></Radio>
+                    <Radio v-for="method in methods" :value="method.id" :title="method.name" :description="method.dilution_percentage + '%'" v-model="cocktail.method.id"></Radio>
                 </div>
             </div>
             <div class="form-group">
@@ -128,6 +128,7 @@ export default {
                 ingredients: [],
                 tags: [],
                 glass: null,
+                method: {},
                 images: []
             },
             glasses: [],
@@ -186,22 +187,6 @@ export default {
 
                 this.cocktail.glass.id = newVal
             }
-        },
-        methodId: {
-            get() {
-                if (!this.cocktail.method) {
-                    return undefined;
-                }
-
-                return this.cocktail.method.id
-            },
-            set(newVal) {
-                if (!this.cocktail.method) {
-                    this.cocktail.method = {};
-                }
-
-                this.cocktail.method.id = newVal
-            }
         }
     },
     created() {
@@ -215,6 +200,9 @@ export default {
                 data.description = Utils.decodeHtml(data.description);
                 data.instructions = Utils.decodeHtml(data.instructions);
                 data.garnish = Utils.decodeHtml(data.garnish);
+                if (!data.method) {
+                    data.method = {}
+                }
                 this.cocktail = data;
                 this.isLoading = false;
                 document.title = `${this.$t('cocktail')} \u22C5 ${this.cocktail.name} \u22C5 ${this.site_title}`
@@ -237,27 +225,7 @@ export default {
         })
     },
     mounted() {
-        const scraped = localStorage.getItem('scrapeResult');
-        if (scraped) {
-            localStorage.removeItem('scrapeResult');
-            const parsedScrapeResult = JSON.parse(scraped);
-
-            this.cocktail = parsedScrapeResult
-            if (parsedScrapeResult.glass_id) {
-                this.cocktail.glass = {};
-                this.glassId = parsedScrapeResult.glass_id;
-            }
-
-            if (parsedScrapeResult.images.length > 0) {
-                this.cocktail.images = [
-                    {
-                        copyright: parsedScrapeResult.images[0].copyright,
-                        url: parsedScrapeResult.images[0].url,
-                        file: parsedScrapeResult.images[0].url,
-                    }
-                ]
-            }
-        }
+        this.checkForImportData();
 
         this.sortable = Sortable.create(document.querySelector('.cocktail-form__ingredients'), {
             handle: '.drag-handle',
@@ -266,6 +234,29 @@ export default {
         });
     },
     methods: {
+        checkForImportData() {
+            const scraped = localStorage.getItem('scrapeResult');
+            if (scraped) {
+                localStorage.removeItem('scrapeResult');
+                const parsedScrapeResult = JSON.parse(scraped);
+
+                this.cocktail = parsedScrapeResult
+                if (parsedScrapeResult.glass_id) {
+                    this.cocktail.glass = {};
+                    this.glassId = parsedScrapeResult.glass_id;
+                }
+
+                if (parsedScrapeResult.images.length > 0) {
+                    this.cocktail.images = [
+                        {
+                            copyright: parsedScrapeResult.images[0].copyright,
+                            url: parsedScrapeResult.images[0].url,
+                            file: parsedScrapeResult.images[0].url,
+                        }
+                    ]
+                }
+            }
+        },
         removeIngredient(ing) {
             if (!ing.ingredient_id) {
                 this.cocktail.ingredients.splice(
@@ -387,7 +378,7 @@ export default {
                 history: this.cocktail.history,
                 garnish: this.cocktail.garnish,
                 source: this.cocktail.source,
-                cocktail_method_id: this.methodId,
+                cocktail_method_id: this.cocktail.method.id,
                 images: [],
                 tags: this.cocktail.tags.filter(tag => tag.name != '').map(tag => tag.name),
                 glass_id: this.glassId,
