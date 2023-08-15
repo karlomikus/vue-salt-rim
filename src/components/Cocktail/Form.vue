@@ -228,7 +228,6 @@ export default {
             if (scraped) {
                 localStorage.removeItem('scrapeResult');
                 const parsedScrapeResult = JSON.parse(scraped);
-                console.log(parsedScrapeResult)
 
                 this.cocktail = parsedScrapeResult
 
