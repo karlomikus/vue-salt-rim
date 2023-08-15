@@ -75,7 +75,7 @@
                     <option v-for="glass in glasses" :value="glass.id">{{ glass.name }}</option>
                 </select>
                 <p class="form-input-hint">
-                    <RouterLink :to="{name: 'settings.glasses'}" target="_blank">{{ $t('edit-glasses') }}</RouterLink>
+                    <RouterLink :to="{ name: 'settings.glasses' }" target="_blank">{{ $t('edit-glasses') }}</RouterLink>
                 </p>
             </div>
             <div style="margin-bottom: 2rem;">
@@ -104,7 +104,7 @@
             </div>
         </div>
         <div class="form-actions">
-            <RouterLink class="button button--outline" :to="{ name: 'cocktails.show', params: { id: cocktailId } }" v-if="cocktailId">{{ $t('cancel') }}</RouterLink>
+            <RouterLink class="button button--outline" :to="{ name: 'cocktails.show', params: { id: cocktail.id } }" v-if="cocktail.id">{{ $t('cancel') }}</RouterLink>
             <RouterLink class="button button--outline" :to="{ name: 'cocktails' }" v-else>{{ $t('cancel') }}</RouterLink>
             <button class="button button--dark" type="submit">{{ $t('save') }}</button>
         </div>
@@ -112,15 +112,15 @@
 </template>
 
 <script>
-import Utils from "@/Utils";
+import Utils from "./../../Utils.js";
 import ApiRequests from "./../../ApiRequests.js";
 import Unitz from 'unitz'
-import OverlayLoader from '@/components/OverlayLoader.vue'
-import IngredientModal from '@/components/Cocktail/IngredientModal.vue'
-import ImageUpload from '@/components/ImageUpload.vue'
-import PageHeader from '@/components/PageHeader.vue'
+import OverlayLoader from './../OverlayLoader.vue'
+import IngredientModal from './../Cocktail/IngredientModal.vue'
+import ImageUpload from './../ImageUpload.vue'
+import PageHeader from './../PageHeader.vue'
 import Sortable from 'sortablejs';
-import Dialog from '@/components/Dialog/Dialog.vue';
+import Dialog from './../Dialog/Dialog.vue';
 import Radio from "../Radio.vue";
 
 export default {
@@ -131,6 +131,7 @@ export default {
             cocktailIngredientForEditOriginal: {},
             isLoading: false,
             cocktail: {
+                id: null,
                 ingredients: [],
                 tags: [],
                 glass: {},
@@ -141,7 +142,6 @@ export default {
             glasses: [],
             methods: [],
             tags: [],
-            cocktailId: null,
             sortable: null,
             utensils: [],
         };
@@ -175,20 +175,20 @@ export default {
                 } else {
                     this.cocktail.tags = [];
                     newVal.split(',').forEach(tagName => {
-                        this.cocktail.tags.push({name: tagName})
+                        this.cocktail.tags.push({ name: tagName })
                     })
                 }
             }
         },
     },
-    created() {
+    async created() {
         document.title = `${this.$t('cocktail')} \u22C5 ${this.site_title}`
 
         this.isLoading = true;
-        this.cocktailId = this.$route.query.id || null;
+        const cocktailId = this.$route.query.id || null;
 
-        if (this.cocktailId) {
-            ApiRequests.fetchCocktail(this.cocktailId).then(data => {
+        if (cocktailId) {
+            await ApiRequests.fetchCocktail(cocktailId).then(data => {
                 data.description = Utils.decodeHtml(data.description);
                 data.instructions = Utils.decodeHtml(data.instructions);
                 data.garnish = Utils.decodeHtml(data.garnish);
@@ -199,31 +199,19 @@ export default {
                     data.glass = {}
                 }
                 data.utensils = data.utensils.map(ut => ut.id)
+
                 this.cocktail = data;
-                this.isLoading = false;
+
                 document.title = `${this.$t('cocktail')} \u22C5 ${this.cocktail.name} \u22C5 ${this.site_title}`
             })
         }
 
-        ApiRequests.fetchGlasses().then(data => {
-            this.glasses = data
-            this.isLoading = false;
-        })
+        await ApiRequests.fetchGlasses().then(data => this.glasses = data)
+        await ApiRequests.fetchCocktailMethods().then(data => this.methods = data)
+        await ApiRequests.fetchTags().then(data => this.tags = data)
+        await ApiRequests.fetchUtensils().then(data => this.utensils = data)
 
-        ApiRequests.fetchCocktailMethods().then(data => {
-            this.methods = data
-            this.isLoading = false;
-        })
-
-        ApiRequests.fetchTags().then(data => {
-            this.tags = data
-            this.isLoading = false;
-        })
-
-        ApiRequests.fetchUtensils().then(data => {
-            this.utensils = data
-            this.isLoading = false;
-        })
+        this.isLoading = false;
     },
     mounted() {
         this.checkForImportData();
@@ -264,7 +252,7 @@ export default {
                 return;
             }
 
-            this.$confirm(this.$t('cocktail.ingredient-remove', {name: ing.name}), {
+            this.$confirm(this.$t('cocktail.ingredient-remove', { name: ing.name }), {
                 onResolved: (dialog) => {
                     dialog.close();
                     this.cocktail.ingredients.splice(
@@ -413,8 +401,8 @@ export default {
                 postData.images = imageResources.map(img => img.id);
             }
 
-            if (this.cocktailId) {
-                ApiRequests.updateCocktail(this.cocktailId, postData).then(data => {
+            if (this.cocktail.id) {
+                ApiRequests.updateCocktail(this.cocktail.id, postData).then(data => {
                     this.isLoading = false;
                     this.$toast.default(this.$t('cocktail.update-success'));
                     this.$router.push({ name: 'cocktails.show', params: { id: data.id } })
