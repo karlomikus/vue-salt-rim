@@ -52,17 +52,15 @@
 </template>
 
 <script>
-import ApiRequests from "./../../ApiRequests";
-import OverlayLoader from '@/components/OverlayLoader.vue'
-import PageHeader from '@/components/PageHeader.vue'
-import Navigation from '@/components/Settings/Navigation.vue'
-import Dialog from '@/components/Dialog/Dialog.vue'
+import ApiRequests from "./../../ApiRequests.js";
+import OverlayLoader from './../OverlayLoader.vue'
+import PageHeader from './../PageHeader.vue'
+import Dialog from './../Dialog/Dialog.vue'
 import Form from './Form.vue'
 
 export default {
     components: {
         OverlayLoader,
-        Navigation,
         PageHeader,
         Dialog,
         Form

@@ -62,7 +62,7 @@ export default {
                     dialog.close();
                     ApiRequests.removeCocktailFromCollection(collectionId, this.cocktail.id).then(() => {
                         this.$toast.default(this.$t('collections.cocktail-remove-success'))
-                        this.$emit('cocktailRemovedFromCollection', {id: this.cocktail.id})
+                        this.$emit('cocktailRemovedFromCollection', { id: this.cocktail.id })
                         this.isLoading = false
                     }).catch(e => {
                         this.$toast.error(e.message)
