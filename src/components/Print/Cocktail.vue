@@ -25,6 +25,10 @@
             <div class="print-instructions">
                 <h2>{{ $t('instructions') }}:</h2>
                 <div v-html="parsedInstructions"></div>
+                <template v-if="cocktail.garnish">
+                    <h2>{{ $t('garnish') }}:</h2>
+                    <div v-html="parsedGarnish"></div>
+                </template>
             </div>
         </div>
         <div class="cocktail-print-footer">
@@ -58,6 +62,13 @@ export default {
             }
 
             return micromark(this.cocktail.instructions)
+        },
+        parsedGarnish() {
+            if (!this.cocktail.garnish) {
+                return null;
+            }
+
+            return micromark(this.cocktail.garnish)
         },
     },
     created() {
@@ -93,7 +104,7 @@ export default {
     padding: 10px;
     background-color: #fff;
     margin: 20px auto;
-    max-width: 700px;
+    /* max-width: 500px; */
 }
 
 .print-first-row {
@@ -125,6 +136,9 @@ ul, ol {
     display: grid;
     grid-template-columns: 1fr 1fr;
     column-gap: 30px;
+    border-top: 3px double #333;
+    margin-top: 15px;
+    padding-top: 15px;
 }
 
 .print-ingredients {
@@ -132,17 +146,22 @@ ul, ol {
     padding: 10px;
 }
 
+.cocktail-print-image {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
 .cocktail-print-image img {
     padding: 10px;
-    max-height: 200px;
+    max-height: 300px;
     max-width: 300px;
     display: block;
-    margin: 0 auto;
 }
 
 .cocktail-print-footer {
     text-align: center;
-    font-size: 0.6rem;
+    font-size: 0.45rem;
     margin-top: 10px;
 }
 </style>
