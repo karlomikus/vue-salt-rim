@@ -1,3 +1,12 @@
+# v1.20.0
+## New
+- Added utensils
+- Added more actions to cocktail collections list
+- Added garnish info to cocktail print layout
+
+## Fixes
+- Improved mapping cocktail method when importing cocktails
+
 # v1.19.0
 ## New
 - Added share shopping list in markdown format
