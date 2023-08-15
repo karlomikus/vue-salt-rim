@@ -212,8 +212,9 @@ export default {
                 return;
             }
 
-            delete this.result.glass
-            this.result.glass_id = dbGlass.id
+            this.result.glass = {
+                id: dbGlass.id
+            }
         },
         async matchMethod() {
             if (!this.result.method) {

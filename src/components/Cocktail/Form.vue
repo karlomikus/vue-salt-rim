@@ -70,7 +70,7 @@
             </div>
             <div class="form-group">
                 <label class="form-label" for="glass">{{ $t('glass-type') }}:</label>
-                <select class="form-select" id="glass" v-model="glassId">
+                <select class="form-select" id="glass" v-model="cocktail.glass.id">
                     <option :value="undefined" disabled>Select a glass type...</option>
                     <option v-for="glass in glasses" :value="glass.id">{{ glass.name }}</option>
                 </select>
@@ -133,7 +133,7 @@ export default {
             cocktail: {
                 ingredients: [],
                 tags: [],
-                glass: null,
+                glass: {},
                 method: {},
                 images: [],
                 utensils: []
@@ -180,22 +180,6 @@ export default {
                 }
             }
         },
-        glassId: {
-            get() {
-                if (!this.cocktail.glass) {
-                    return undefined;
-                }
-
-                return this.cocktail.glass.id
-            },
-            set(newVal) {
-                if (!this.cocktail.glass) {
-                    this.cocktail.glass = {};
-                }
-
-                this.cocktail.glass.id = newVal
-            }
-        }
     },
     created() {
         document.title = `${this.$t('cocktail')} \u22C5 ${this.site_title}`
@@ -210,6 +194,9 @@ export default {
                 data.garnish = Utils.decodeHtml(data.garnish);
                 if (!data.method) {
                     data.method = {}
+                }
+                if (!data.glass) {
+                    data.glass = {}
                 }
                 data.utensils = data.utensils.map(ut => ut.id)
                 this.cocktail = data;
@@ -255,10 +242,6 @@ export default {
                 const parsedScrapeResult = JSON.parse(scraped);
 
                 this.cocktail = parsedScrapeResult
-                if (parsedScrapeResult.glass_id) {
-                    this.cocktail.glass = {};
-                    this.glassId = parsedScrapeResult.glass_id;
-                }
 
                 if (parsedScrapeResult.images.length > 0) {
                     this.cocktail.images = [
