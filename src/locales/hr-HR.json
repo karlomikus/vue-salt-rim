@@ -295,7 +295,7 @@
     "delete-success": "Kolekcija uspješno uklonjena",
     "update-success": "Kolekcija uspješno uređena",
     "add-success": "Kolekcija uspješno dodana",
-    "confirm-remove-cocktail": "Ova će akcija trajno ukloniti ovu kolekciju",
+    "confirm-remove-cocktail": "Ova će akcija ukloniti koktel it kolekcije",
     "add-from-query": "Kreiraj kolekciju iz trenutnih filtera",
     "cocktail-remove-success": "Koktel je uspješno uklonjen iz kolekcije"
   },

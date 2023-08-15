@@ -16,7 +16,6 @@
             <div class="form-group">
                 <label class="form-label form-label--required" for="import-source">{{ $t('source') }}:</label>
                 <textarea class="form-input" id="import-source" rows="5" v-model="source" required></textarea>
-                <!-- <p class="form-input-hint">{{ $t('scraper.input-hint') }}</p> -->
             </div>
             <button type="button" class="button button--dark" @click.prevent="importCocktail">{{ $t('start-import') }}</button>
         </div>
@@ -71,8 +70,8 @@
                 </div>
             </div>
             <h3 class="form-section-title">{{ $t('ingredients') }}</h3>
-            <div class="block-container block-container--padded">
-                <div class="scraper-ingredients__ingredient" v-for="(ingredient, idx) in result.ingredients">
+            <div class="block-container block-container--padded scraper-ingredients__ingredient" v-for="(ingredient, idx) in result.ingredients">
+                <div class="scraper-ingredients__ingredient__inputs">
                     <div class="form-group">
                         <label :for="'ingredient_name_' + idx">{{ $t('name') }}</label>
                         <input type="text" class="form-input" :id="'ingredient_name_' + idx" v-model="ingredient.name">
@@ -85,12 +84,9 @@
                         <label :for="'ingredient_units_' + idx">{{ $t('units') }}</label>
                         <input type="text" class="form-input" :id="'ingredient_units_' + idx" v-model="ingredient.units">
                     </div>
-                    <div class="form-group">
-                        <Checkbox v-model="ingredient.optional" :id="'ingredient_optional_' + idx">{{ $t('optional') }}</Checkbox>
-                    </div>
-                    <div class="form-group">
-                        <a href="#" @click.prevent="removeIngredient(ingredient)">{{ $t('remove') }}</a>
-                    </div>
+                </div>
+                <div class="scraper-ingredients__ingredient__actions">
+                    <a href="#" @click.prevent="removeIngredient(ingredient)">{{ $t('remove') }}</a>
                 </div>
             </div>
             <div class="form-actions">
@@ -103,9 +99,9 @@
 
 <script>
 import ApiRequests from "./../../ApiRequests.js";
-import OverlayLoader from '@/components/OverlayLoader.vue'
-import PageHeader from '@/components/PageHeader.vue'
-import Checkbox from '@/components/Checkbox.vue'
+import OverlayLoader from './../OverlayLoader.vue'
+import PageHeader from './../PageHeader.vue'
+import Checkbox from './../Checkbox.vue'
 import Radio from "../Radio.vue";
 
 export default {
@@ -267,23 +263,25 @@ export default {
 }
 
 .scraper-form .form-group label {
-    flex-basis: 300px;
+    flex-basis: 250px;
 }
 .scraper-form .form-group :is(input, select, textarea) {
     flex-grow: 1;
     width: auto;
 }
 
-.form-group-import-input {
-    display: flex;
-    gap: 1rem;
+.scraper-ingredients__ingredient {
+    margin-bottom: 1rem;
 }
 
-.scraper-ingredients__ingredient {
+.scraper-ingredients__ingredient__inputs {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-    margin-bottom: 1rem;
     gap: 0.5rem;
+}
+
+.scraper-ingredients__ingredient .form-group {
+    margin-bottom: 0;
 }
 </style>
