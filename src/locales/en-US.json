@@ -321,5 +321,9 @@
   "total-ingredients": "Number of ingredients",
   "ingredient-extra-cocktails-info": "Add to shelf and you can make",
   "ingredient-cocktails-rest": "Rest of the cocktails",
-  "added-on-by": "Added on {date} by {name}"
+  "added-on-by": "Added on {date} by {name}",
+  "utensils": {
+    "title": "Utensils",
+    "add": "Add utensil"
+  }
 }

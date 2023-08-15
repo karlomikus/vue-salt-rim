@@ -660,6 +660,40 @@ class ApiRequests
 
         return this.parseResponse(jsonResp);
     }
+
+    /**
+     * =============================
+     * Utensils
+     * =============================
+     */
+
+    static async fetchUtensils() {
+        let jsonResp = await this.getRequest(`/api/utensils`);
+
+        return this.parseResponse(jsonResp);
+    }
+
+    static async fetchUtensil(id) {
+        let jsonResp = await this.getRequest(`/api/utensils/${id}`);
+
+        return this.parseResponse(jsonResp);
+    }
+
+    static async saveUtensil(data) {
+        let jsonResp = await this.postRequest(`/api/utensils`, data);
+
+        return this.parseResponse(jsonResp);
+    }
+
+    static async updateUtensil(id, data) {
+        let jsonResp = await this.postRequest(`/api/utensils/${id}`, data, 'PUT');
+
+        return this.parseResponse(jsonResp);
+    }
+
+    static async deleteUtensil(id) {
+        return await this.deleteRequest(`/api/utensils/${id}`);
+    }
 }
 
 export default ApiRequests;
