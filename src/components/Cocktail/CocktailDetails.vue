@@ -123,7 +123,7 @@
                                         </a>
                                     </template>
                                     <template #dialog>
-                                        <ImageDialog :cocktail="cocktail" @publicDialogClosed="showDownloadImageDialog = false" />
+                                        <GenerateImageDialog :cocktail="cocktail" @publicDialogClosed="showDownloadImageDialog = false" />
                                     </template>
                                 </Dialog>
                                 <a class="dropdown-menu__item" href="#copy" @click.prevent="shareFromFormat('text')">
@@ -172,7 +172,7 @@
                                         </a>
                                     </template>
                                     <template #dialog>
-                                        <CollectionDialog :cocktails="[cocktail.id]" :cocktailCollections="cocktail.collections" @collectionDialogClosed="showCollectionDialog = false" @refreshCocktail="fetchCocktail" />
+                                        <CollectionDialog :cocktails="[cocktail.id]" :cocktailCollections="cocktail.collections" @collectionDialogClosed="showCollectionDialog = false; fetchCocktail()" />
                                     </template>
                                 </Dialog>
                                 <Dialog v-model="showNoteDialog">
@@ -295,11 +295,11 @@ import Dialog from '@/components/Dialog/Dialog.vue'
 import Note from './../Note/Details.vue'
 import NoteDialog from './../Note/Dialog.vue'
 import PublicLinkDialog from '@/components/Cocktail/PublicLinkDialog.vue'
-import ImageDialog from './ImageDialog.vue';
+import GenerateImageDialog from './GenerateImageDialog.vue';
 import SimilarCocktails from './SimilarCocktails.vue';
 import IngredientSpotlight from './../Ingredient/IngredientSpotlight.vue';
 import CocktailCollections from './../Collections/Widget.vue';
-import CollectionDialog from './CollectionDialog.vue';
+import CollectionDialog from './../Collections/Dialog.vue';
 import dayjs from 'dayjs'
 
 export default {
@@ -327,7 +327,7 @@ export default {
         PublicLinkDialog,
         Note,
         NoteDialog,
-        ImageDialog,
+        GenerateImageDialog,
         SimilarCocktails,
         CollectionDialog,
         CocktailCollections,

@@ -34,8 +34,8 @@
 </template>
 
 <script>
-import ApiRequests from '@/ApiRequests';
-import OverlayLoader from '@/components/OverlayLoader.vue'
+import ApiRequests from './../../ApiRequests.js';
+import OverlayLoader from './../OverlayLoader.vue'
 
 export default {
     props: {
@@ -52,6 +52,7 @@ export default {
             default: 'collections.add-to'
         }
     },
+    emits: ['collectionDialogClosed'],
     data() {
         return {
             isLoading: false,
@@ -91,7 +92,6 @@ export default {
                     ApiRequests.removeCocktailFromCollection(this.collectionId, this.cocktails[0]).then(data => {
                         this.$toast.default(this.$t('collections.cocktail-remove-success'))
                         this.$emit('collectionDialogClosed')
-                        this.$emit('refreshCocktail', {id: this.cocktails[0]})
                         this.isLoading = false
                     }).catch(e => {
                         this.$toast.error(e.message)
@@ -107,7 +107,6 @@ export default {
                     this.isLoading = false;
                     this.$toast.default(this.$t('collections.cocktail-add-success'))
                     this.$emit('collectionDialogClosed')
-                    this.$emit('refreshCocktail')
                 }).catch(e => {
                     this.$toast.error(e.message)
                     this.isLoading = false
@@ -120,7 +119,6 @@ export default {
                     this.$toast.default(this.$t('collections.cocktail-add-success'))
                     this.collectionId = collectionData.id
                     this.$emit('collectionDialogClosed')
-                    this.$emit('refreshCocktail')
                 }).catch(e => {
                     this.$toast.error(e.message)
                     this.isLoading = false

@@ -103,7 +103,7 @@ import PageHeader from './../PageHeader.vue'
 import Auth from './../../Auth.js';
 import Refinement from './../Search/Refinement.vue';
 import Pagination from './../Search/Pagination.vue';
-import CollectionDialog from './../Cocktail/CollectionDialog.vue';
+import CollectionDialog from './../Collections/Dialog.vue';
 import Dialog from './../Dialog/Dialog.vue'
 import qs from 'qs';
 
