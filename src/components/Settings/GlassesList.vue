@@ -4,7 +4,7 @@
         <template #actions>
             <Dialog v-model="showDialog">
                 <template #trigger>
-                    <button type="button" class="button button--outline" @click.prevent="openDialog($t('glass-type.add'), {})">{{ $t('glass-type.add') }}</button>
+                    <button type="button" class="button button--dark" @click.prevent="openDialog($t('glass-type.add'), {})">{{ $t('glass-type.add') }}</button>
                 </template>
                 <template #dialog>
                     <GlassForm :source-glass="editGlass" :dialog-title="dialogTitle" @glass-dialog-closed="refreshGlasses" />

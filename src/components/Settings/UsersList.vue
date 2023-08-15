@@ -4,7 +4,7 @@
         <template #actions>
             <Dialog v-model="showDialog">
                 <template #trigger>
-                    <button type="button" class="button button--outline" @click.prevent="openDialog($t('users.add'), {})">{{ $t('users.add') }}</button>
+                    <button type="button" class="button button--dark" @click.prevent="openDialog($t('users.add'), {})">{{ $t('users.add') }}</button>
                 </template>
                 <template #dialog>
                     <UserForm :source-user="editUser" :dialog-title="dialogTitle" @user-dialog-closed="refreshUsers" />

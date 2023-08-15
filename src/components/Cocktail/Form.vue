@@ -96,6 +96,12 @@
                 </datalist>
                 <p class="form-input-hint">{{ $t('tags.help-text') }}</p>
             </div>
+            <div class="form-group" v-show="utensils.length > 0">
+                <label class="form-label" for="utensil">{{ $t('utensils.title') }}:</label>
+                <select class="form-select" id="utensil" multiple v-model="cocktail.utensils" style="height: 200px;">
+                    <option v-for="utensil in utensils" :value="utensil.id">{{ utensil.name }}</option>
+                </select>
+            </div>
         </div>
         <div class="form-actions">
             <RouterLink class="button button--outline" :to="{ name: 'cocktails.show', params: { id: cocktailId } }" v-if="cocktailId">{{ $t('cancel') }}</RouterLink>
@@ -107,7 +113,7 @@
 
 <script>
 import Utils from "@/Utils";
-import ApiRequests from "@/ApiRequests";
+import ApiRequests from "./../../ApiRequests.js";
 import Unitz from 'unitz'
 import OverlayLoader from '@/components/OverlayLoader.vue'
 import IngredientModal from '@/components/Cocktail/IngredientModal.vue'
@@ -129,13 +135,15 @@ export default {
                 tags: [],
                 glass: null,
                 method: {},
-                images: []
+                images: [],
+                utensils: []
             },
             glasses: [],
             methods: [],
             tags: [],
             cocktailId: null,
-            sortable: null
+            sortable: null,
+            utensils: [],
         };
     },
     components: {
@@ -203,6 +211,7 @@ export default {
                 if (!data.method) {
                     data.method = {}
                 }
+                data.utensils = data.utensils.map(ut => ut.id)
                 this.cocktail = data;
                 this.isLoading = false;
                 document.title = `${this.$t('cocktail')} \u22C5 ${this.cocktail.name} \u22C5 ${this.site_title}`
@@ -221,6 +230,11 @@ export default {
 
         ApiRequests.fetchTags().then(data => {
             this.tags = data
+            this.isLoading = false;
+        })
+
+        ApiRequests.fetchUtensils().then(data => {
+            this.utensils = data
             this.isLoading = false;
         })
     },
@@ -379,6 +393,7 @@ export default {
                 garnish: this.cocktail.garnish,
                 source: this.cocktail.source,
                 cocktail_method_id: this.cocktail.method.id,
+                utensils: this.cocktail.utensils,
                 images: [],
                 tags: this.cocktail.tags.filter(tag => tag.name != '').map(tag => tag.name),
                 glass_id: this.glassId,

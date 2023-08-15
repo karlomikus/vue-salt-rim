@@ -4,7 +4,7 @@
         <template #actions>
             <Dialog v-model="showDialog">
                 <template #trigger>
-                    <button type="button" class="button button--outline" @click.prevent="openDialog($t('utensils.add'), {})">{{ $t('utensils.add') }}</button>
+                    <button type="button" class="button button--dark" @click.prevent="openDialog($t('utensils.add'), {})">{{ $t('utensils.add') }}</button>
                 </template>
                 <template #dialog>
                     <UtensilForm :sourceData="editUtensil" :dialogTitle="dialogTitle" @utensilDialogClosed="refreshUtensils" />
