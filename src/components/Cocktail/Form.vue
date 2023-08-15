@@ -228,6 +228,7 @@ export default {
             if (scraped) {
                 localStorage.removeItem('scrapeResult');
                 const parsedScrapeResult = JSON.parse(scraped);
+                console.log(parsedScrapeResult)
 
                 this.cocktail = parsedScrapeResult
 
@@ -367,7 +368,7 @@ export default {
                 utensils: this.cocktail.utensils,
                 images: [],
                 tags: this.cocktail.tags.filter(tag => tag.name != '').map(tag => tag.name),
-                glass_id: this.glassId,
+                glass_id: this.cocktail.glass.id,
                 ingredients: this.cocktail.ingredients
                     .filter(i => i.ingredient_id != null)
                     .map((cIngredient) => {
