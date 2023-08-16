@@ -29,18 +29,19 @@
                 <RouterLink :to="{ name: 'cocktails', query: { 'filter[on_shelf]': true } }">{{ $t('shelf.cocktails') }}</RouterLink>
             </p>
         </div>
+        <div class="stats__stat">
+            <h3>{{ stats.total_collections }}</h3>
+            <p>
+                <RouterLink :to="{ name: 'collections.cocktails' }">{{ $t('collections.title') }}</RouterLink>
+            </p>
+        </div>
     </div>
     <div class="list-grid">
         <div class="list-grid__col">
             <h3 class="page-subtitle">{{ $t('cocktails.latest') }}</h3>
             <CocktailListContainer v-if="latestCocktails.length > 0" v-slot="observer">
                 <CocktailListItem v-for="cocktail in latestCocktails" :cocktail="cocktail" :key="cocktail.id" :observer="observer" />
-                <RouterLink class="more-link" :to="{ name: 'cocktails', query: { 'sort': '-created_at' } }">{{ $t('view-all') }} <svg height="21" viewBox="0 0 21 21" width="21" xmlns="http://www.w3.org/2000/svg">
-                        <g fill="none" fill-rule="evenodd" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" transform="translate(4 6)">
-                            <path d="m9.5.497 4 4.002-4 4.001" />
-                            <path d="m.5 4.5h13" />
-                        </g>
-                    </svg></RouterLink>
+                <RouterLink :to="{ name: 'cocktails', query: { 'sort': '-created_at' } }">{{ $t('view-all') }}</RouterLink>
             </CocktailListContainer>
             <div v-else class="empty-state">
                 <OverlayLoader v-if="loaders.cocktails"></OverlayLoader>
@@ -57,12 +58,7 @@
             <h3 class="page-subtitle">{{ $t('recent-favorites') }}</h3>
             <CocktailListContainer v-if="favoriteCocktails.length > 0" v-slot="observer">
                 <CocktailListItem v-for="cocktail in favoriteCocktails" :cocktail="cocktail" :key="cocktail.id" :observer="observer" />
-                <RouterLink class="more-link" :to="{ name: 'cocktails', query: { 'filter[favorites]': true, sort: '-favorited_at' } }">{{ $t('view-all') }} <svg height="21" viewBox="0 0 21 21" width="21" xmlns="http://www.w3.org/2000/svg">
-                        <g fill="none" fill-rule="evenodd" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" transform="translate(4 6)">
-                            <path d="m9.5.497 4 4.002-4 4.001" />
-                            <path d="m.5 4.5h13" />
-                        </g>
-                    </svg></RouterLink>
+                <RouterLink :to="{ name: 'cocktails', query: { 'filter[favorites]': true, sort: '-favorited_at' } }">{{ $t('view-all') }}</RouterLink>
             </CocktailListContainer>
             <div v-else class="empty-state">
                 <OverlayLoader v-if="loaders.favorites"></OverlayLoader>
@@ -79,12 +75,7 @@
             <h3 class="page-subtitle">{{ $t('your-shopping-list') }}</h3>
             <IngredientListContainer v-if="shoppingListIngredients.length > 0">
                 <IngredientListItem v-for="ingredient in shoppingListIngredients" :ingredient="ingredient" :key="ingredient.id" @removedFromShoppingList="removeIngFromList(ingredient)" @addedToShelf="removeIngFromList(ingredient)" />
-                <RouterLink class="more-link" :to="{ name: 'ingredients', query: { 'filter[on_shopping_list]': true } }">{{ $t('view-all') }} <svg height="21" viewBox="0 0 21 21" width="21" xmlns="http://www.w3.org/2000/svg">
-                        <g fill="none" fill-rule="evenodd" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" transform="translate(4 6)">
-                            <path d="m9.5.497 4 4.002-4 4.001" />
-                            <path d="m.5 4.5h13" />
-                        </g>
-                    </svg></RouterLink>
+                <RouterLink :to="{ name: 'ingredients', query: { 'filter[on_shopping_list]': true } }">{{ $t('view-all') }}</RouterLink>
             </IngredientListContainer>
             <div class="empty-state" v-else>
                 <OverlayLoader v-if="loaders.list"></OverlayLoader>
@@ -97,11 +88,31 @@
                 </p>
             </div>
         </div>
+        <!-- <div class="list-grid__col" v-if="favoriteIngredients.length > 0">
+            <h3 class="page-subtitle">{{ $t('your-favorite-ingredients') }}</h3>
+            <IngredientListContainer>
+                <IngredientListItem v-for="ingredient in favoriteIngredients" :ingredient="ingredient" :key="ingredient.id">
+                    <template v-slot:content>
+                        <RouterLink :to="{ name: 'cocktails', query: { 'filter[ingredient_id]': ingredient.id, 'filter[favorites]': true } }">
+                            {{ $t('shelf.used-in-cocktails', {total: ingredient.total}) }}
+                        </RouterLink>
+                    </template>
+                </IngredientListItem>
+                <RouterLink :to="{ name: 'ingredients' }">{{ $t('view-all') }}</RouterLink>
+            </IngredientListContainer>
+        </div>
+        <div class="list-grid__col">
+            <h3 class="page-subtitle">{{ $t('cocktails-top-rated') }}</h3>
+            <CocktailListContainer v-slot="observer">
+                <CocktailListItem v-for="cocktail in topRatedCocktails" :cocktail="cocktail" :key="cocktail.id" :observer="observer" />
+                <RouterLink :to="{ name: 'cocktails', query: { 'sort': '-created_at' } }">{{ $t('view-all') }}</RouterLink>
+            </CocktailListContainer>
+        </div> -->
     </div>
 </template>
 
 <script>
-import ApiRequests from '@/ApiRequests';
+import ApiRequests from './../../ApiRequests.js';
 import Auth from '@/Auth.js';
 import IngredientListItem from '@/components/Ingredient/IngredientListItem.vue'
 import IngredientListContainer from '@/components/Ingredient/IngredientListContainer.vue'
@@ -116,6 +127,8 @@ export default {
         favoriteCocktails: [],
         latestCocktails: [],
         shoppingListIngredients: [],
+        favoriteIngredients: [],
+        topRatedCocktails: [],
         maxItems: 5,
         stats: {},
         loaders: {
@@ -123,6 +136,7 @@ export default {
             cocktails: false,
             list: false,
             stats: false,
+            favorite_ingredients: false,
         }
     }),
     components: {
@@ -161,6 +175,24 @@ export default {
         ApiRequests.fetchStats().then(data => {
             this.loaders.stats = false;
             this.stats = data
+
+            // this.loaders.favorite_ingredients = true;
+            // const ingredientsToFilter = this.stats.your_top_ingredients.map(i => i.ingredient_id).join(',');
+            // ApiRequests.fetchIngredients({ 'filter[id]': ingredientsToFilter, per_page: 5 }).then(favIngredients => {
+            //     this.loaders.favorite_ingredients = false;
+            //     this.stats.your_top_ingredients.forEach(i => {
+            //         this.favoriteIngredients.push(Object.assign({ total: i.cocktails_count }, favIngredients.filter(fav => fav.id == i.ingredient_id)[0]));
+            //     })
+            // });
+
+            // this.loaders.favorite_ingredients = true;
+            // const cocktailsToFilter = this.stats.top_rated_cocktails.map(c => c.cocktail_id).join(',');
+            // ApiRequests.fetchCocktails({ 'filter[id]': cocktailsToFilter, per_page: 5 }).then(topCocktails => {
+            //     this.loaders.favorite_ingredients = false;
+            //     this.stats.top_rated_cocktails.forEach(c => {
+            //         this.topRatedCocktails.push(topCocktails.data.filter(top => top.id == c.cocktail_id)[0]);
+            //     })
+            // });
         }).catch(e => {
             this.loaders.stats = false;
             this.$toast.error(this.$t('shelf.toasts.stats-error'));
@@ -204,10 +236,6 @@ export default {
     }
 }
 
-.list-grid__col {
-    margin-bottom: 20px;
-}
-
 .list-grid h3 {
     padding-bottom: 5px;
     margin-bottom: 10px;
@@ -244,21 +272,5 @@ export default {
 .stats__stat p {
     opacity: .7;
     font-size: .8rem;
-}
-
-.more-link {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.more-link svg {
-    transition: all 0.1s ease-in;
-}
-
-.more-link:hover svg,
-.more-link:focus svg,
-.more-link:active svg {
-    transform: translateX(5px);
 }
 </style>
