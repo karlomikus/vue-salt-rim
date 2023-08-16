@@ -90,12 +90,12 @@ export default {
             this.editUtensil = obj
             this.showDialog = true;
         },
-        deleteUtensil(category) {
-            this.$confirm(this.$t('utensils.confirm-delete', {name: category.name}), {
+        deleteUtensil(utensil) {
+            this.$confirm(this.$t('utensils.confirm-delete', {name: utensil.name}), {
                 onResolved: (dialog) => {
                     this.isLoading = true
                     dialog.close();
-                    ApiRequests.deleteUtensil(category.id).then(() => {
+                    ApiRequests.deleteUtensil(utensil.id).then(() => {
                         this.isLoading = false;
                         this.$toast.default(this.$t('utensils.delete-success'));
                         this.refreshUtensils()

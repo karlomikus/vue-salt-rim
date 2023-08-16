@@ -325,7 +325,11 @@
   "added-on-by": "Added on {date} by {name}",
   "utensils": {
     "title": "Utensils",
-    "add": "Add utensil"
+    "add": "Add utensil",
+    "confirm-delete": "This will permanently delete utensil with name \"{name}\".",
+    "delete-success": "Utensil deleted successfully",
+    "add-success": "Utensil added",
+    "update-success": "Utensil updated"
   },
   "your-favorite-ingredients": "Your favorite ingredients",
   "cocktails-top-rated": "Top rated cocktails"
