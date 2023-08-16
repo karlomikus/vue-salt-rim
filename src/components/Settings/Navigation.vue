@@ -6,6 +6,7 @@
             <RouterLink :to="{name: 'settings.categories'}">{{ $t('ingredient.categories') }}</RouterLink>
             <RouterLink :to="{name: 'settings.glasses'}">{{ $t('glass-types') }}</RouterLink>
             <RouterLink :to="{name: 'settings.tags'}">{{ $t('tags') }}</RouterLink>
+            <RouterLink :to="{name: 'settings.utensils'}">{{ $t('utensils.title') }}</RouterLink>
         </template>
     </nav>
 </template>

@@ -13,7 +13,8 @@
       "stats-error": "An error occured while fetching stats from a server",
       "list-error": "An error occured while fetching ingredients on your shopping list from a server"
     },
-    "cocktails": "Cocktails I can make"
+    "cocktails": "Cocktails I can make",
+    "used-in-cocktails": "Used in your {total} favorite cocktails"
   },
   "cocktails": "Cocktails",
   "ingredients": "Ingredients",
@@ -321,5 +322,15 @@
   "total-ingredients": "Number of ingredients",
   "ingredient-extra-cocktails-info": "Add to shelf and you can make",
   "ingredient-cocktails-rest": "Rest of the cocktails",
-  "added-on-by": "Added on {date} by {name}"
+  "added-on-by": "Added on {date} by {name}",
+  "utensils": {
+    "title": "Utensils",
+    "add": "Add utensil",
+    "confirm-delete": "This will permanently delete utensil with name \"{name}\".",
+    "delete-success": "Utensil deleted successfully",
+    "add-success": "Utensil added",
+    "update-success": "Utensil updated"
+  },
+  "your-favorite-ingredients": "Your favorite ingredients",
+  "cocktails-top-rated": "Top rated cocktails"
 }

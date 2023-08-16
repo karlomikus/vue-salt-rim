@@ -122,6 +122,11 @@ const router = createRouter({
                     name: 'collections.cocktails',
                     component: () => import('../views/CocktailCollections.vue'),
                 },
+                {
+                    path: '/settings/utensils',
+                    name: 'settings.utensils',
+                    component: () => import('../views/SettingsUtensilsView.vue'),
+                },
             ]
         },
         {

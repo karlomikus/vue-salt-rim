@@ -4,7 +4,7 @@
         <template #actions>
             <Dialog v-model="showDialog">
                 <template #trigger>
-                    <button type="button" class="button button--outline" @click.prevent="openDialog($t('category.add'), {})">{{ $t('category.add') }}</button>
+                    <button type="button" class="button button--dark" @click.prevent="openDialog($t('category.add'), {})">{{ $t('category.add') }}</button>
                 </template>
                 <template #dialog>
                     <CategoryForm :source-category="editCategory" :dialog-title="dialogTitle" @category-dialog-closed="refreshCategories" />

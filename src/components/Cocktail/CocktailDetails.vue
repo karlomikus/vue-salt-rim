@@ -123,7 +123,7 @@
                                         </a>
                                     </template>
                                     <template #dialog>
-                                        <ImageDialog :cocktail="cocktail" @publicDialogClosed="showDownloadImageDialog = false" />
+                                        <GenerateImageDialog :cocktail="cocktail" @publicDialogClosed="showDownloadImageDialog = false" />
                                     </template>
                                 </Dialog>
                                 <a class="dropdown-menu__item" href="#copy" @click.prevent="shareFromFormat('text')">
@@ -172,7 +172,7 @@
                                         </a>
                                     </template>
                                     <template #dialog>
-                                        <CollectionDialog :cocktails="[cocktail.id]" :cocktailCollections="cocktail.collections" @collectionDialogClosed="showCollectionDialog = false" @refreshCocktail="fetchCocktail" />
+                                        <CollectionDialog :cocktails="[cocktail.id]" :cocktailCollections="cocktail.collections" @collectionDialogClosed="showCollectionDialog = false; fetchCocktail()" />
                                     </template>
                                 </Dialog>
                                 <Dialog v-model="showNoteDialog">
@@ -251,6 +251,10 @@
                 <div class="details-block-container details-block-container--yellow">
                     <h3 class="details-block-container__title">{{ $t('instructions') }}</h3>
                     <div v-html="parsedInstructions"></div>
+                    <div v-if="cocktail.utensils.length > 0">
+                        <br>
+                        <strong>{{ $t('utensils.title') }}</strong>: {{ cocktail.utensils.map(u => u.name).join(', ') }}
+                    </div>
                 </div>
                 <div class="details-block-container details-block-container--red" v-if="cocktail.garnish">
                     <h3 class="details-block-container__title">{{ $t('garnish') }}</h3>
@@ -274,7 +278,7 @@
                 </template>
                 <template v-if="cocktail.collections.length > 0">
                     <h3 class="page-subtitle">{{ $t('cocktail-collections') }}</h3>
-                    <CocktailCollections :cocktail="cocktail"></CocktailCollections>
+                    <CocktailCollections :cocktail="cocktail" @cocktailRemovedFromCollection="fetchCocktail"></CocktailCollections>
                 </template>
             </div>
         </div>
@@ -292,14 +296,14 @@ import { Swiper, SwiperSlide } from 'swiper/vue';
 import { Navigation, Pagination } from 'swiper';
 import Utils from '@/Utils';
 import Dialog from '@/components/Dialog/Dialog.vue'
-import Note from '@/components/Note.vue'
-import NoteDialog from '@/components/NoteDialog.vue'
+import Note from './../Note/Details.vue'
+import NoteDialog from './../Note/Dialog.vue'
 import PublicLinkDialog from '@/components/Cocktail/PublicLinkDialog.vue'
-import ImageDialog from './ImageDialog.vue';
+import GenerateImageDialog from './GenerateImageDialog.vue';
 import SimilarCocktails from './SimilarCocktails.vue';
 import IngredientSpotlight from './../Ingredient/IngredientSpotlight.vue';
-import CocktailCollections from './CocktailCollections.vue';
-import CollectionDialog from './CollectionDialog.vue';
+import CocktailCollections from './../Collections/Widget.vue';
+import CollectionDialog from './../Collections/Dialog.vue';
 import dayjs from 'dayjs'
 
 export default {
@@ -327,7 +331,7 @@ export default {
         PublicLinkDialog,
         Note,
         NoteDialog,
-        ImageDialog,
+        GenerateImageDialog,
         SimilarCocktails,
         CollectionDialog,
         CocktailCollections,

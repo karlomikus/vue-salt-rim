@@ -1,7 +1,12 @@
 <template>
     <ais-instant-search :search-client="searchClient" :index-name="index" class="ingredient-finder">
         <ais-configure :hitsPerPage="maxHits" />
-        <ais-search-box class="ingredient-finder__search-input" :placeholder="$t('placeholder.search-ingredients')" :class-names="{ 'ais-SearchBox-input': 'form-input' }" v-model="currentQuery" />
+        <!-- <ais-search-box class="ingredient-finder__search-input" :placeholder="$t('placeholder.search-ingredients')" :class-names="{ 'ais-SearchBox-input': 'form-input' }" v-model="currentQuery" /> -->
+        <ais-search-box autofocus>
+            <template v-slot="{ refine }">
+                <input ref="finderSearchInput" class="form-input ingredient-finder__search-input" type="search" :placeholder="$t('placeholder.search-ingredients')" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" maxlength="512" @input="refine($event.currentTarget.value)" v-model="currentQuery">
+            </template>
+        </ais-search-box>
         <ais-hits class="ingredient-finder__hits">
             <template v-slot="{ items }">
                 <div class="ingredient-finder__options">
@@ -86,9 +91,10 @@ export default {
 </script>
 
 <style scoped>
-:deep(.ingredient-finder__search-input .form-input) {
+.ingredient-finder__search-input {
     border-bottom-left-radius: 0;
     border-bottom-right-radius: 0;
+    width: 100%;
 }
 
 .ingredient-finder__options {

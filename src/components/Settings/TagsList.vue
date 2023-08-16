@@ -4,7 +4,7 @@
         <template #actions>
             <Dialog v-model="showDialog">
                 <template #trigger>
-                    <button type="button" class="button button--outline" @click.prevent="openDialog($t('tag.add'), {})">{{ $t('tag.add') }}</button>
+                    <button type="button" class="button button--dark" @click.prevent="openDialog($t('tag.add'), {})">{{ $t('tag.add') }}</button>
                 </template>
                 <template #dialog>
                     <TagForm :source-tag="editTag" :dialog-title="dialogTitle" @tag-dialog-closed="refreshTags" />

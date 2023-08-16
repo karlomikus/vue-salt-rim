@@ -281,7 +281,7 @@
   "average-rating": "Prosječna ocjena",
   "missing-ingredients": "Nedostajali sastojci",
   "user-rating": "Korisnička ocijena",
-  "remove-cocktail-from-collection": "Ukloni koktel iz zbirke",
+  "remove-cocktail-from-collection": "Ukloni koktel iz kolekcije",
   "cocktail-collections": "Kolekcije koktela",
   "cocktails-not-found": "Nisu pronađeni kokteli",
   "collections": {
@@ -295,10 +295,12 @@
     "delete-success": "Kolekcija uspješno uklonjena",
     "update-success": "Kolekcija uspješno uređena",
     "add-success": "Kolekcija uspješno dodana",
-    "confirm-remove-cocktail": "Ova će akcija trajno ukloniti ovu kolekciju",
-    "add-from-query": "Kreiraj kolekciju iz trenutnih filtera"
+    "confirm-remove-cocktail": "Ova će akcija ukloniti koktel it kolekcije",
+    "add-from-query": "Kreiraj kolekciju iz trenutnih filtera",
+    "cocktail-remove-success": "Koktel je uspješno uklonjen iz kolekcije"
   },
   "your-collections": "Vaše zbirke",
   "missing-collections": "Nema pronađenih kolekcija",
-  "results-per-page": "Rezultati po stranici"
+  "results-per-page": "Rezultati po stranici",
+  "view": "Pregledaj"
 }

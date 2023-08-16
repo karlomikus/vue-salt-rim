@@ -20,7 +20,7 @@
                         </div>
                     </Refinement>
                     <Refinement :title="$t('your-collections')" :refinements="refineCollections" id="collection" v-model="activeFilters.collections" v-if="refineCollections.length > 0" @change="updateRouterPath"></Refinement>
-                    <Refinement :title="$t('ingredient.main')" :refinements="refineMainIngredients" id="main-ingredient" v-model="activeFilters.ingredients" @change="updateRouterPath"></Refinement>
+                    <Refinement :title="$t('ingredient.main')" :refinements="refineMainIngredients" id="main-ingredient" v-model="activeFilters.main_ingredients" @change="updateRouterPath"></Refinement>
                     <Refinement :title="$t('method')" :refinements="refineMethods" id="method" v-model="activeFilters.methods" @change="updateRouterPath"></Refinement>
                     <Refinement :title="$t('strength')" :refinements="refineABV" id="abv" v-model="activeFilters.abv" type="radio" @change="updateRouterPath"></Refinement>
                     <Refinement :title="$t('tags')" :refinements="refineTags" id="tag" v-model="activeFilters.tags" @change="updateRouterPath"></Refinement>
@@ -103,7 +103,7 @@ import PageHeader from './../PageHeader.vue'
 import Auth from './../../Auth.js';
 import Refinement from './../Search/Refinement.vue';
 import Pagination from './../Search/Pagination.vue';
-import CollectionDialog from './../Cocktail/CollectionDialog.vue';
+import CollectionDialog from './../Collections/Dialog.vue';
 import Dialog from './../Dialog/Dialog.vue'
 import qs from 'qs';
 
@@ -153,6 +153,7 @@ export default {
                 tags: [],
                 glasses: [],
                 methods: [],
+                main_ingredients: [],
                 ingredients: [],
                 collections: [],
                 user_rating: null,
@@ -332,8 +333,9 @@ export default {
             this.activeFilters.tags = state.filter && state.filter.tag_id ? String(state.filter.tag_id).split(',') : []
             this.activeFilters.methods = state.filter && state.filter.cocktail_method_id ? String(state.filter.cocktail_method_id).split(',') : []
             this.activeFilters.glasses = state.filter && state.filter.glass_id ? String(state.filter.glass_id).split(',') : []
-            this.activeFilters.ingredients = state.filter && state.filter.main_ingredient_id ? String(state.filter.main_ingredient_id).split(',') : []
+            this.activeFilters.main_ingredients = state.filter && state.filter.main_ingredient_id ? String(state.filter.main_ingredient_id).split(',') : []
             this.activeFilters.collections = state.filter && state.filter.collection_id ? String(state.filter.collection_id).split(',') : []
+            this.activeFilters.ingredients = state.filter && state.filter.ingredient_id ? String(state.filter.ingredient_id).split(',') : []
             this.activeFilters.on_shelf = state.filter && state.filter.on_shelf ? state.filter.on_shelf : null
             this.activeFilters.favorites = state.filter && state.filter.favorites ? state.filter.favorites : null
             this.activeFilters.is_public = state.filter && state.filter.is_public ? state.filter.is_public : null
@@ -375,7 +377,8 @@ export default {
                 tag_id: this.activeFilters.tags.length > 0 ? this.activeFilters.tags.join(',') : null,
                 glass_id: this.activeFilters.glasses.length > 0 ? this.activeFilters.glasses.join(',') : null,
                 cocktail_method_id: this.activeFilters.methods.length > 0 ? this.activeFilters.methods.join(',') : null,
-                main_ingredient_id: this.activeFilters.ingredients.length > 0 ? this.activeFilters.ingredients.join(',') : null,
+                main_ingredient_id: this.activeFilters.main_ingredients.length > 0 ? this.activeFilters.main_ingredients.join(',') : null,
+                ingredient_id: this.activeFilters.ingredients.length > 0 ? this.activeFilters.ingredients.join(',') : null,
                 collection_id: this.activeFilters.collections.length > 0 ? this.activeFilters.collections.join(',') : null,
                 abv_min: this.activeFilters.abv ? this.activeFilters.abv.min : null,
                 abv_max: this.activeFilters.abv ? this.activeFilters.abv.max : null,

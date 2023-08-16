@@ -2,17 +2,21 @@
     <form class="site-autocomplete" novalidate @keyup.esc="close">
         <ais-instant-search :search-client="searchClient" index-name="cocktails">
             <ais-configure :hitsPerPage="5" />
-            <ais-search-box autofocus />
+            <ais-search-box autofocus>
+                <template v-slot="{ currentRefinement, refine }">
+                    <input ref="siteSearchInput" class="form-input" type="search" :placeholder="$t('placeholder.site-search')" :value="currentRefinement" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" maxlength="512" @input="refine($event.currentTarget.value)">
+                </template>
+            </ais-search-box>
             <ais-hits>
                 <template v-slot="{ items }">
-                    <h4 class="site-autocomplete__index-name" v-show="items.length > 0">{{ $t('cocktails')}}</h4>
+                    <h4 class="site-autocomplete__index-name" v-show="items.length > 0">{{ $t('cocktails') }}</h4>
                     <ul class="site-autocomplete__results" v-show="items.length > 0">
                         <li v-for="hit in items">
                             <RouterLink :to="{ name: 'cocktails.show', params: { id: hit.slug } }" @click="close">
                                 <div class="site-autocomplete__results__image" :style="{ 'background-image': 'url(' + getImageUrl(hit, 'cocktail') + ')' }"></div>
                                 <div class="site-autocomplete__results__content">
                                     <ais-highlight attribute="name" :hit="hit" />
-                                    <small>{{ $t('cocktail')}}</small>
+                                    <small>{{ hit.short_ingredients.join(', ') }}</small>
                                 </div>
                             </RouterLink>
                         </li>
@@ -22,14 +26,14 @@
             <ais-index index-name="ingredients">
                 <ais-hits>
                     <template v-slot="{ items }">
-                        <h4 class="site-autocomplete__index-name" v-show="items.length > 0">{{ $t('ingredients')}}</h4>
+                        <h4 class="site-autocomplete__index-name" v-show="items.length > 0">{{ $t('ingredients') }}</h4>
                         <ul class="site-autocomplete__results" v-show="items.length > 0">
                             <li v-for="hit in items">
                                 <RouterLink :to="{ name: 'ingredients.show', params: { id: hit.slug } }" @click="close">
                                     <div class="site-autocomplete__results__image" :style="{ 'background-image': 'url(' + getImageUrl(hit, 'ingredient') + ')' }"></div>
                                     <div class="site-autocomplete__results__content">
                                         <ais-highlight attribute="name" :hit="hit" />
-                                        <small>{{ $t('ingredient')}}</small>
+                                        <small>{{ hit.category }}</small>
                                     </div>
                                 </RouterLink>
                             </li>
@@ -72,7 +76,7 @@ export default {
     mounted() {
         this.$nextTick(() => {
             setTimeout(() => {
-                document.querySelector('.site-autocomplete .ais-SearchBox-input').focus();
+                this.$refs.siteSearchInput.focus();
             }, 200)
         })
     },
