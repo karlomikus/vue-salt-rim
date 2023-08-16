@@ -251,6 +251,10 @@
                 <div class="details-block-container details-block-container--yellow">
                     <h3 class="details-block-container__title">{{ $t('instructions') }}</h3>
                     <div v-html="parsedInstructions"></div>
+                    <div v-if="cocktail.utensils.length > 0">
+                        <br>
+                        <strong>{{ $t('utensils.title') }}</strong>: {{ cocktail.utensils.map(u => u.name).join(', ') }}
+                    </div>
                 </div>
                 <div class="details-block-container details-block-container--red" v-if="cocktail.garnish">
                     <h3 class="details-block-container__title">{{ $t('garnish') }}</h3>
