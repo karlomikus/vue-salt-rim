@@ -198,6 +198,7 @@ export default {
         },
         async matchGlass() {
             if (!this.result.glass) {
+                this.result.glass = {}
                 return;
             }
 
@@ -209,6 +210,7 @@ export default {
 
             if (!dbGlass) {
                 this.$toast.error(`Unable to create a glass with name ${this.result.glass}.`);
+                this.result.glass = {}
                 return;
             }
 
@@ -218,6 +220,7 @@ export default {
         },
         async matchMethod() {
             if (!this.result.method) {
+                this.result.method = {};
                 return;
             }
 
@@ -230,6 +233,7 @@ export default {
             })
 
             if (!foundMethodId) {
+                this.result.method = {};
                 return;
             }
 
