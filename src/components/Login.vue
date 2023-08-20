@@ -33,9 +33,10 @@
 
 <script>
 import Auth from '../Auth'
-import ApiRequests from '@/ApiRequests';
+import ApiRequests from './../ApiRequests.js';
 import OverlayLoader from '@/components/OverlayLoader.vue';
 import Logo from '@/components/Logo.vue';
+import AppState from '../AppState';
 
 export default {
     data() {
@@ -73,18 +74,22 @@ export default {
     methods: {
         login() {
             this.isLoading = true
+            const appState = new AppState();
             const redirectPath = this.$route.query.redirect || '/'
 
             ApiRequests.fetchLoginToken(this.email, this.password).then(token => {
-                Auth.rememberToken(token)
-                ApiRequests.fetchUser().then(userData => {
-                    Auth.rememberUser(userData)
-
-                    this.$router.push(redirectPath);
+                appState.setToken(token)
+                ApiRequests.fetchUser().then(user => {
+                    appState.setUser(user);
+                    this.$router.push(redirectPath)
+                }).catch(e => {
+                    appState.forgetUser();
+                    this.isLoading = false
+                    this.$toast.error(e.message);
                 })
             }).catch(e => {
                 this.isLoading = false
-                this.$toast.error(e.message)
+                this.$toast.error(e.message);
             });
         }
     }

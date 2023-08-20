@@ -1,9 +1,20 @@
 import qs from 'qs';
+import AppState from './AppState';
 
 class ApiRequests
 {
     static getUrl() {
         return window.srConfig.API_URL;
+    }
+
+    static getBarId() {
+        const appState = new AppState()
+
+        if (appState.bar.id) {
+            return appState.bar.id;
+        }
+
+        return null;
     }
 
     static getHeaders() {
@@ -12,14 +23,20 @@ class ApiRequests
             'Content-Type': 'application/json',
         };
 
-        if (localStorage.getItem('user_token')) {
-            defaultHeaders['Authorization'] = 'Bearer ' + localStorage.getItem('user_token');
+        const appState = new AppState()
+
+        if (appState.token) {
+            defaultHeaders['Authorization'] = 'Bearer ' + appState.token;
         }
 
         return new Headers(defaultHeaders);
     }
 
-    static generateBAQueryString(queryParams) {
+    static generateBAQueryString(queryParams, includeBar = false) {
+        if (includeBar) {
+            queryParams['bar_id'] = this.getBarId();
+        }
+
         let q = '';
         if (Object.keys(queryParams).length > 0) {
             q = '?' + qs.stringify(queryParams);
@@ -30,7 +47,13 @@ class ApiRequests
 
     static async handleResponseErrors(response) {
         if (!response.ok) {
-            return Promise.reject(await response.json())
+            if (response.status == 401) {
+                const appState = new AppState()
+                appState.forgetUser()
+                window.location.replace("/");
+            } else {
+                return Promise.reject(await response.json())
+            }
         }
 
         return response;
@@ -44,12 +67,8 @@ class ApiRequests
         return resp
     }
 
-    static async getRequest(path, queryParams = {}) {
+    static async getRequest(path) {
         let url = `${this.getUrl()}${path}`
-        const queryString = new URLSearchParams(queryParams).toString()
-        if (queryString != '') {
-            url += `?${queryString}`;
-        }
 
         const f = fetch(url, {
             headers: this.getHeaders(),
@@ -186,7 +205,8 @@ class ApiRequests
      */
 
     static async fetchIngredientCategories() {
-        let jsonResp = await this.getRequest(`/api/ingredient-categories`);
+        const q = this.generateBAQueryString({}, true)
+        const jsonResp = await this.getRequest(`/api/ingredient-categories${q}`);
 
         return this.parseResponse(jsonResp);
     }
@@ -228,6 +248,7 @@ class ApiRequests
     }
 
     static async fetchIngredientsTODO(query = {}) {
+        query = Object.assign({bar_id: this.getBarId()}, query);
         let q = this.generateBAQueryString(query)
 
         let jsonResp = await this.getRequest(`/api/ingredients${q}`);
@@ -242,7 +263,8 @@ class ApiRequests
     }
 
     static async saveIngredient(data) {
-        let jsonResp = await this.postRequest(`/api/ingredients`, data);
+        const q = this.generateBAQueryString({bar_id: this.getBarId()})
+        let jsonResp = await this.postRequest(`/api/ingredients${q}`, data);
 
         return this.parseResponse(jsonResp);
     }
@@ -693,6 +715,23 @@ class ApiRequests
 
     static async deleteUtensil(id) {
         return await this.deleteRequest(`/api/utensils/${id}`);
+    }
+
+    /**
+     * =============================
+     * Bars
+     * =============================
+     */
+    static async fetchBars() {
+        let jsonResp = await this.getRequest(`/api/bars`);
+
+        return this.parseResponse(jsonResp);
+    }
+
+    static async saveBar(data) {
+        let jsonResp = await this.postRequest(`/api/bars`, data);
+
+        return this.parseResponse(jsonResp);
     }
 }
 

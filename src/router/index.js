@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import Auth from '../Auth'
 import qs from 'qs';
+import AppState from './../AppState';
 
 const router = createRouter({
     history: createWebHistory(),
@@ -150,8 +150,9 @@ const router = createRouter({
 
 router.beforeEach(async (to, from) => {
     const requiresAuth = to.meta.requiresAuth ?? true;
+    const appState = new AppState();
 
-    if (requiresAuth && !await Auth.isLoggedIn()) {
+    if (requiresAuth && !appState.hasUserInfo()) {
         return {
             path: '/login',
             query: { redirect: to.fullPath },

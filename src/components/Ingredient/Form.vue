@@ -20,7 +20,7 @@
                     <RouterLink :to="{ name: 'settings.categories' }" target="_blank">{{ $t('edit-categories') }}</RouterLink>
                 </p>
             </div>
-            <div style="margin: 1rem 0;">
+            <!-- <div style="margin: 1rem 0;">
                 <Checkbox v-model="isParent" id="is-variety">{{ $t('ingredient-is-variety') }}</Checkbox>
             </div>
             <div class="form-group" v-show="isParent">
@@ -30,7 +30,7 @@
                     <button type="button" class="button button--outline">{{ ingredient.parent_ingredient.name }}</button>
                     <button type="button" class="button button--dark" @click="ingredient.parent_ingredient = null">{{ $t('remove') }}</button>
                 </div>
-            </div>
+            </div> -->
             <div class="form-group">
                 <label class="form-label form-label--required" for="strength">{{ $t('strength') }} ({{ $t('ABV') }} %):</label>
                 <input class="form-input" type="text" id="strength" v-model="ingredient.strength" required>

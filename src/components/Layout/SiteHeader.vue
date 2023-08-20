@@ -26,6 +26,7 @@
                 <RouterLink :to="{ name: 'collections.cocktails' }" :class="{ 'current-nav': $route.path.startsWith('/collections') }">{{ $t('collections.title') }}</RouterLink>
                 <RouterLink :to="{ name: 'settings' }" :class="{ 'current-nav': $route.path.startsWith('/settings') }">{{ $t('settings') }}</RouterLink>
                 <a v-if="isLoginDisabled !== true" href="#" @click.prevent="logout">{{ $t('logout') }}</a>
+                <BarSelector></BarSelector>
             </nav>
         </div>
     </header>
@@ -37,13 +38,15 @@ import SiteAutocomplete from './../SiteAutocomplete.vue'
 import Dialog from './../Dialog/Dialog.vue'
 import Logo from './../Logo.vue'
 import ThemeToggle from './../ThemeToggle.vue'
+import BarSelector from './../Bar/Selector.vue'
 
 export default {
     components: {
         SiteAutocomplete,
         Dialog,
         Logo,
-        ThemeToggle
+        ThemeToggle,
+        BarSelector
     },
     data() {
         return {

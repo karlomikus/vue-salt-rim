@@ -196,9 +196,11 @@ export default {
             })
         },
         ingredientIdsOnShelf() {
+            return [];
             return this.availableRefinements.userIngredients.map(ui => ui.ingredient_id)
         },
         ingredientIdsOnShoppingList() {
+            return [];
             return Auth.getUser().shopping_lists;
         },
     },

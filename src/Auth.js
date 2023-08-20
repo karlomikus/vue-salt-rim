@@ -1,21 +1,11 @@
 import ApiRequests from "./ApiRequests";
+import AppState from './AppState.js'
 
 class Auth {
-    static rememberUser(user) {
-        localStorage.setItem('user', JSON.stringify(user));
-    }
-
-    static rememberToken(token) {
-        localStorage.setItem('user_token', token);
-    }
-
-    static forgetUser() {
-        localStorage.removeItem('user');
-        localStorage.removeItem('user_token');
-    }
+    static appState = new AppState();
 
     static getUser() {
-        return JSON.parse(localStorage.getItem('user'));
+        return this.appState.user;
     }
 
     static isAdmin() {
@@ -47,26 +37,11 @@ class Auth {
     static async refreshUser() {
         const user = await ApiRequests.fetchUser();
 
-        localStorage.setItem('user', JSON.stringify(user));
+        this.appState.setUser(user);
     }
 
-    static async isLoggedIn() {
-        if (window.srConfig.DISABLE_LOGIN === true) {
-            await this.refreshUser();
-
-            return true;
-        }
-
-        try {
-            const user = await ApiRequests.fetchUser();
-
-            this.rememberUser(user)
-        } catch (e) {
-            this.forgetUser()
-            return false;
-        }
-
-        return true;
+    static isLoggedIn() {
+        return this.getUser().id;
     }
 }
 
