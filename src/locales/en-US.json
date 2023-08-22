@@ -332,5 +332,10 @@
     "update-success": "Utensil updated"
   },
   "your-favorite-ingredients": "Your favorite ingredients",
-  "cocktails-top-rated": "Top rated cocktails"
+  "cocktails-top-rated": "Top rated cocktails",
+  "bars": {
+    "title": "Bars",
+    "join": "Join a bar",
+    "add": "Create bar"
+  }
 }

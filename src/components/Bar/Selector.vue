@@ -1,7 +1,6 @@
 <template>
     <div>
         <button type="button" v-for="bar in bars" @click="selectBar(bar)">{{ bar.name }}</button>
-        <button type="button" @click.prevent="createBar">Create bar</button>
     </div>
 </template>
 <script>
@@ -26,13 +25,6 @@ export default {
         refreshBars() {
             ApiRequests.fetchBars().then(data => {
                 this.bars = data
-            })
-        },
-        createBar() {
-            ApiRequests.saveBar({
-                name: "Test bar"
-            }).then(() => {
-                this.refreshBars()
             })
         },
         selectBar(bar) {

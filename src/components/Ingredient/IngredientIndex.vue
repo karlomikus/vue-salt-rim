@@ -112,6 +112,7 @@ export default {
             currentPage: 1,
             searchQuery: null,
             ingredients: [],
+            shoppingListIngredients: [],
             availableRefinements: {
                 categories: [],
                 userIngredients: [],
@@ -155,6 +156,7 @@ export default {
             () => {
                 this.queryToState();
                 this.refreshIngredients()
+                this.refreshShoppingListIngredients()
             },
             { immediate: true }
         )
@@ -196,12 +198,10 @@ export default {
             })
         },
         ingredientIdsOnShelf() {
-            return [];
             return this.availableRefinements.userIngredients.map(ui => ui.ingredient_id)
         },
         ingredientIdsOnShoppingList() {
-            return [];
-            return Auth.getUser().shopping_lists;
+            return this.shoppingListIngredients.map(i => i.ingredient.id);
         },
     },
     methods: {
@@ -319,6 +319,11 @@ export default {
                 }, () => {
                     this.$toast.error(this.$t('share-format-copy-failed'));
                 });
+            })
+        },
+        refreshShoppingListIngredients() {
+            ApiRequests.fetchShoppingList().then(data => {
+                this.shoppingListIngredients = data
             })
         }
     }

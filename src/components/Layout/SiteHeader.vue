@@ -6,39 +6,40 @@
                 <ThemeToggle></ThemeToggle>
             </div>
             <nav class="header-bar__navigation">
-                <Dialog v-model="showSearchDialog" class="site-autocomplete-dialog">
-                    <template #trigger>
-                        <a href="#" @click.prevent="showSearchDialog = !showSearchDialog">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="14" height="14">
-                                <path fill="none" d="M0 0h24v24H0z" />
-                                <path d="M18.031 16.617l4.283 4.282-1.415 1.415-4.282-4.283A8.96 8.96 0 0 1 11 20c-4.968 0-9-4.032-9-9s4.032-9 9-9 9 4.032 9 9a8.96 8.96 0 0 1-1.969 5.617zm-2.006-.742A6.977 6.977 0 0 0 18 11c0-3.868-3.133-7-7-7-3.868 0-7 3.132-7 7 0 3.867 3.132 7 7 7a6.977 6.977 0 0 0 4.875-1.975l.15-.15z" />
-                            </svg>
-                            {{ $t('search') }}
-                        </a>
-                    </template>
-                    <template #dialog>
-                        <SiteAutocomplete @closeAutocomplete="showSearchDialog = false"></SiteAutocomplete>
-                    </template>
-                </Dialog>
-                <RouterLink :to="{ name: 'home' }" exact-active-class="current-nav">{{ $t('shelf.title') }}</RouterLink>
-                <RouterLink :to="{ name: 'cocktails' }" :class="{ 'current-nav': $route.path.startsWith('/cocktails') }">{{ $t('cocktails') }}</RouterLink>
-                <RouterLink :to="{ name: 'ingredients' }" :class="{ 'current-nav': $route.path.startsWith('/ingredients') }">{{ $t('ingredients') }}</RouterLink>
-                <RouterLink :to="{ name: 'collections.cocktails' }" :class="{ 'current-nav': $route.path.startsWith('/collections') }">{{ $t('collections.title') }}</RouterLink>
+                <template v-if="appState.bar.id">
+                    <Dialog v-model="showSearchDialog" class="site-autocomplete-dialog">
+                        <template #trigger>
+                            <a href="#" @click.prevent="showSearchDialog = !showSearchDialog">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="14" height="14">
+                                    <path fill="none" d="M0 0h24v24H0z" />
+                                    <path d="M18.031 16.617l4.283 4.282-1.415 1.415-4.282-4.283A8.96 8.96 0 0 1 11 20c-4.968 0-9-4.032-9-9s4.032-9 9-9 9 4.032 9 9a8.96 8.96 0 0 1-1.969 5.617zm-2.006-.742A6.977 6.977 0 0 0 18 11c0-3.868-3.133-7-7-7-3.868 0-7 3.132-7 7 0 3.867 3.132 7 7 7a6.977 6.977 0 0 0 4.875-1.975l.15-.15z" />
+                                </svg>
+                                {{ $t('search') }}
+                            </a>
+                        </template>
+                        <template #dialog>
+                            <SiteAutocomplete @closeAutocomplete="showSearchDialog = false"></SiteAutocomplete>
+                        </template>
+                    </Dialog>
+                    <RouterLink :to="{ name: 'home' }" exact-active-class="current-nav">{{ $t('shelf.title') }}</RouterLink>
+                    <RouterLink :to="{ name: 'cocktails' }" :class="{ 'current-nav': $route.path.startsWith('/cocktails') }">{{ $t('cocktails') }}</RouterLink>
+                    <RouterLink :to="{ name: 'ingredients' }" :class="{ 'current-nav': $route.path.startsWith('/ingredients') }">{{ $t('ingredients') }}</RouterLink>
+                    <RouterLink :to="{ name: 'collections.cocktails' }" :class="{ 'current-nav': $route.path.startsWith('/collections') }">{{ $t('collections.title') }}</RouterLink>
+                </template>
                 <RouterLink :to="{ name: 'settings' }" :class="{ 'current-nav': $route.path.startsWith('/settings') }">{{ $t('settings') }}</RouterLink>
+                <RouterLink :to="{ name: 'bars' }" :class="{ 'current-nav': $route.path.startsWith('/bars') }">{{ $t('bars.title') }}</RouterLink>
                 <a v-if="isLoginDisabled !== true" href="#" @click.prevent="logout">{{ $t('logout') }}</a>
-                <BarSelector></BarSelector>
             </nav>
         </div>
     </header>
 </template>
 <script>
 import ApiRequests from './../../ApiRequests';
-import Auth from './../../Auth.js';
 import SiteAutocomplete from './../SiteAutocomplete.vue'
 import Dialog from './../Dialog/Dialog.vue'
 import Logo from './../Logo.vue'
 import ThemeToggle from './../ThemeToggle.vue'
-import BarSelector from './../Bar/Selector.vue'
+import AppState from '../../AppState';
 
 export default {
     components: {
@@ -46,10 +47,10 @@ export default {
         Dialog,
         Logo,
         ThemeToggle,
-        BarSelector
     },
     data() {
         return {
+            appState: new AppState(),
             showSearchDialog: false,
             isLoginDisabled: window.srConfig.DISABLE_LOGIN
         }
@@ -68,7 +69,8 @@ export default {
                 onResolved: (dialog) => {
                     dialog.close();
                     ApiRequests.logout().then(() => {
-                        Auth.forgetUser();
+                        const appState = new AppState();
+                        appState.clear();
                         this.$router.push({ name: 'login' })
                     })
                 }

@@ -11,12 +11,10 @@
     </nav>
 </template>
 <script>
-import Auth from "@/Auth";
-
 export default {
     data() {
         return {
-            isAdmin: Auth.isAdmin()
+            isAdmin: true
         };
     }
 }

@@ -99,7 +99,7 @@ export default {
             this.isLoading = true;
 
             if (this.inShelf) {
-                ApiRequests.removeIngredientFromShelf(this.ingredient.id).then(() => {
+                ApiRequests.removeIngredientFromShelf({ingredient_ids: [this.ingredient.id]}).then(() => {
                     this.isLoading = false;
                     this.$toast.default(this.$t('ingredient.shelf-remove-success', { name: this.ingredient.name }));
                     this.scopedUserIngredients.splice(this.scopedUserIngredients.indexOf(this.ingredient.id), 1)
@@ -108,7 +108,7 @@ export default {
                     this.isLoading = false;
                 })
             } else {
-                ApiRequests.addIngredientToShelf(this.ingredient.id).then(() => {
+                ApiRequests.addIngredientToShelf({ingredient_ids: [this.ingredient.id]}).then(() => {
                     this.isLoading = false;
                     this.$toast.default(this.$t('ingredient.shelf-add-success', { name: this.ingredient.name }))
                     this.scopedUserIngredients.push(this.ingredient.id)

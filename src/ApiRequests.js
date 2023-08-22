@@ -103,7 +103,7 @@ class ApiRequests
      */
 
     static async fetchCocktails(queryParams = {}) {
-        let q = this.generateBAQueryString(queryParams)
+        let q = this.generateBAQueryString(queryParams, true)
 
         let jsonResp = await this.getRequest(`/api/cocktails${q}`);
 
@@ -138,7 +138,8 @@ class ApiRequests
     }
 
     static async favoriteCocktail(id) {
-        let jsonResp = await this.postRequest(`/api/cocktails/${id}/toggle-favorite`);
+        const q = this.generateBAQueryString({}, true);
+        const jsonResp = await this.postRequest(`/api/cocktails/${id}/toggle-favorite${q}`);
 
         return this.parseResponse(jsonResp);
     }
@@ -240,7 +241,7 @@ class ApiRequests
      */
 
     static async fetchIngredients(query = {}) {
-        const queryString = this.generateBAQueryString(query);
+        const queryString = this.generateBAQueryString(query, true);
 
         let jsonResp = await this.getRequest(`/api/ingredients${queryString}`);
 
@@ -292,19 +293,24 @@ class ApiRequests
      */
 
     static async fetchMyShelf() {
-        let jsonResp = await this.getRequest(`/api/shelf/ingredients`);
+        const q = this.generateBAQueryString({}, true);
+        let jsonResp = await this.getRequest(`/api/shelf/ingredients${q}`);
 
         return this.parseResponse(jsonResp);
     }
 
-    static async addIngredientToShelf(id) {
-        let jsonResp = await this.postRequest(`/api/shelf/ingredients/${id}`);
+    static async addIngredientToShelf(data) {
+        const q = this.generateBAQueryString({}, true);
+        const jsonResp = await this.postRequest(`/api/shelf/ingredients/batch-store${q}`, data);
 
         return this.parseResponse(jsonResp);
     }
 
-    static async removeIngredientFromShelf(id) {
-        return await this.deleteRequest(`/api/shelf/ingredients/${id}`);
+    static async removeIngredientFromShelf(data) {
+        const q = this.generateBAQueryString({}, true);
+        const jsonResp = await this.postRequest(`/api/shelf/ingredients/batch-delete${q}`, data);
+
+        return this.parseResponse(jsonResp);
     }
 
     /**
@@ -349,20 +355,29 @@ class ApiRequests
      * =============================
      */
 
+    static async fetchShoppingList() {
+        const q = this.generateBAQueryString({}, true);
+        const jsonResp = await this.getRequest(`/api/shopping-list${q}`);
+
+        return this.parseResponse(jsonResp);
+    }
+
     static async addIngredientsToShoppingList(data) {
-        let jsonResp = await this.postRequest(`/api/shopping-list/batch-store`, data);
+        const q = this.generateBAQueryString({}, true);
+        const jsonResp = await this.postRequest(`/api/shopping-list/batch-store${q}`, data);
 
         return this.parseResponse(jsonResp);
     }
 
     static async removeIngredientsFromShoppingList(data) {
-        let jsonResp = await this.postRequest(`/api/shopping-list/batch-delete`, data);
+        const q = this.generateBAQueryString({}, true);
+        let jsonResp = await this.postRequest(`/api/shopping-list/batch-delete${q}`, data);
 
         return this.parseResponse(jsonResp);
     }
 
     static async shareShoppingList(query = {}) {
-        const queryString = this.generateBAQueryString(query);
+        const queryString = this.generateBAQueryString(query, true);
 
         const f = fetch(`${this.getUrl()}/api/shopping-list/share${queryString}`, {
             headers: this.getHeaders(),
@@ -528,7 +543,8 @@ class ApiRequests
      */
 
     static async fetchStats() {
-        let jsonResp = await this.getRequest(`/api/stats`);
+        const q = this.generateBAQueryString({}, true)
+        const jsonResp = await this.getRequest(`/api/stats${q}`);
 
         return this.parseResponse(jsonResp);
     }
@@ -732,6 +748,10 @@ class ApiRequests
         let jsonResp = await this.postRequest(`/api/bars`, data);
 
         return this.parseResponse(jsonResp);
+    }
+
+    static async deleteBar(id) {
+        return await this.deleteRequest(`/api/bars/${id}`);
     }
 }
 

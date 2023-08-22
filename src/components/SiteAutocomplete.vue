@@ -61,18 +61,23 @@
 
 <script>
 import { instantMeiliSearch } from '@meilisearch/instant-meilisearch';
-import Auth from '@/Auth.js';
+import AppState from './../AppState';
+
+const appState = new AppState();
 
 export default {
     data() {
         return {
-            searchClient: instantMeiliSearch(
-                Auth.getUserSearchSettings().host,
-                Auth.getUserSearchSettings().key,
-            )
+            searchClient: null
         }
     },
     emits: ['closeAutocomplete'],
+    created() {
+        this.searchClient = instantMeiliSearch(
+            appState.bar.search_driver_host,
+            appState.bar.search_driver_api_key,
+        );
+    },
     mounted() {
         this.$nextTick(() => {
             setTimeout(() => {

@@ -50,9 +50,7 @@ export default {
             return '';
         },
         isFavorited() {
-            const user = Auth.getUser();
-
-            return user.favorite_cocktails.includes(this.cocktail.id);
+            return [].includes(this.cocktail.id);
         },
         mainCocktailImageUrl() {
             if (this.cocktail.image_url) {

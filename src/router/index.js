@@ -127,6 +127,11 @@ const router = createRouter({
                     name: 'settings.utensils',
                     component: () => import('../views/SettingsUtensilsView.vue'),
                 },
+                {
+                    path: '/bars',
+                    name: 'bars',
+                    component: () => import('../views/BarsView.vue'),
+                },
             ]
         },
         {

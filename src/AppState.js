@@ -34,8 +34,17 @@ class AppState {
         this.#updateState()
     }
 
+    setDefaultUnit(unit) {
+        this.defaultUnit = unit;
+        this.#updateState()
+    }
+
     hasUserInfo() {
         return this.user.id != null || this.user.id != undefined;
+    }
+
+    clear() {
+        localStorage.removeItem(this.#key);
     }
 
     #updateState() {
