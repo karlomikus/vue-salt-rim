@@ -23,7 +23,7 @@
                     <thead>
                         <tr>
                             <th>{{ $t('user.name') }} / {{ $t('email') }}</th>
-                            <th>{{ $t('admin') }}</th>
+                            <th>{{ $t('roles') }}</th>
                             <th></th>
                         </tr>
                     </thead>
@@ -35,12 +35,7 @@
                                 <small>{{ user.email }}</small>
                             </td>
                             <td>
-                                <template v-if="user.is_admin">
-                                    ✅
-                                </template>
-                                <template v-else>
-                                    ❌
-                                </template>
+                                {{ user.roles.map(r => r.role_name).join(', ') }}
                             </td>
                             <td style="text-align: right;">
                                 <a class="list-group__action" href="#" @click.prevent="deleteUser(user)">{{ $t('remove') }}</a>

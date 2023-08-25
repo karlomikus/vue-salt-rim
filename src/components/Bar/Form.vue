@@ -16,9 +16,9 @@
                 <textarea rows="5" class="form-input" id="description" v-model="bar.description"></textarea>
             </div>
         </div>
-        <div class="dialog-actions">
+        <div class="dialog-actions" style="margin-top: 1rem">
             <button type="button" class="button button--outline" @click="$emit('dialogClosed')">{{ $t('cancel') }}</button>
-            <button type="submit" class="button button--dark">sadas</button>
+            <button type="submit" class="button button--dark">{{ $t('save') }}</button>
         </div>
     </form>
 </template>
@@ -40,10 +40,13 @@ export default {
         submit() {
             this.isLoading = true;
             ApiRequests.saveBar({
-                name: this.bar.name
+                name: this.bar.name,
+                subtitle: this.bar.subtitle,
+                description: this.bar.description,
             }).then(() => {
                 this.isLoading = false;
-                this.$toast.default('Bar created');
+                this.$toast.default(this.$t('bars.add-success', {name: this.bar.name}));
+                this.$emit('dialogClosed')
                 this.$emit('barCreated')
             })
         }

@@ -34,7 +34,7 @@
 
 <script>
 import OverlayLoader from '@/components/OverlayLoader.vue'
-import ApiRequests from "@/ApiRequests";
+import ApiRequests from './../../ApiRequests.js'
 
 export default {
     props: ['ingredient', 'userIngredients', 'shoppingList'],
@@ -99,7 +99,7 @@ export default {
             this.isLoading = true;
 
             if (this.inShelf) {
-                ApiRequests.removeIngredientFromShelf({ingredient_ids: [this.ingredient.id]}).then(() => {
+                ApiRequests.removeIngredientsFromShelf({ingredient_ids: [this.ingredient.id]}).then(() => {
                     this.isLoading = false;
                     this.$toast.default(this.$t('ingredient.shelf-remove-success', { name: this.ingredient.name }));
                     this.scopedUserIngredients.splice(this.scopedUserIngredients.indexOf(this.ingredient.id), 1)
@@ -108,7 +108,7 @@ export default {
                     this.isLoading = false;
                 })
             } else {
-                ApiRequests.addIngredientToShelf({ingredient_ids: [this.ingredient.id]}).then(() => {
+                ApiRequests.addIngredientsToShelf({ingredient_ids: [this.ingredient.id]}).then(() => {
                     this.isLoading = false;
                     this.$toast.default(this.$t('ingredient.shelf-add-success', { name: this.ingredient.name }))
                     this.scopedUserIngredients.push(this.ingredient.id)

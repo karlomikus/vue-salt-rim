@@ -181,8 +181,10 @@ export default {
         this.$watch(
             () => this.$route.query,
             () => {
-                this.queryToState();
-                this.refreshCocktails()
+                if (this.$route.name == 'cocktails') {
+                    this.queryToState();
+                    this.refreshCocktails()
+                }
             },
             { immediate: true }
         )
@@ -295,8 +297,8 @@ export default {
                 this.availableRefinements.methods = data
             })
 
-            ApiRequests.fetchIngredients({'filter[main_ingredients]': true, per_page: 100}).then(data => {
-                this.availableRefinements.main_ingredients = data
+            ApiRequests.fetchIngredients({'filter[main_ingredients]': true, per_page: 100}).then(resp => {
+                this.availableRefinements.main_ingredients = resp.data
             })
 
             ApiRequests.fetchCollections({per_page: 100}).then(data => {

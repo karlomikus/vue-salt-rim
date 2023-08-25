@@ -25,7 +25,6 @@
             <RouterLink class="button button--dark" :to="{ name: 'ingredients.form' }">{{ $t('ingredient.add') }}</RouterLink>
         </template>
     </PageHeader>
-    <p class="page-description" style="margin-bottom: 1rem;">{{ $t('ingredients.page.description') }}</p>
     <div class="resource-search-wrapper">
         <OverlayLoader v-if="isLoading" />
         <div class="resource-search">
@@ -154,9 +153,11 @@ export default {
         this.$watch(
             () => this.$route.query,
             () => {
-                this.queryToState();
-                this.refreshIngredients()
-                this.refreshShoppingListIngredients()
+                if (this.$route.name == 'ingredients') {
+                    this.queryToState();
+                    this.refreshIngredients()
+                    this.refreshShoppingListIngredients()
+                }
             },
             { immediate: true }
         )
@@ -201,7 +202,7 @@ export default {
             return this.availableRefinements.userIngredients.map(ui => ui.ingredient_id)
         },
         ingredientIdsOnShoppingList() {
-            return this.shoppingListIngredients.map(i => i.ingredient.id);
+            return this.shoppingListIngredients.map(i => i.ingredient_id);
         },
     },
     methods: {
@@ -272,7 +273,7 @@ export default {
             const query = this.stateToQuery();
 
             this.isLoading = true;
-            ApiRequests.fetchIngredientsTODO(query).then(resp => {
+            ApiRequests.fetchIngredients(query).then(resp => {
                 this.ingredients = resp.data
                 this.meta = resp.meta
                 this.isLoading = false;

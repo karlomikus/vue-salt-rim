@@ -55,7 +55,7 @@ export default {
         },
         addToShelf() {
             this.isLoading = true;
-            ApiRequests.addIngredientToShelf(this.ingredient.id).then(() => {
+            ApiRequests.addIngredientsToShelf(this.ingredient.id).then(() => {
                 this.$emit('addedToShelf')
                 this.isLoading = false;
             }).catch(e => {

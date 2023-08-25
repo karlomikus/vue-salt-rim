@@ -22,7 +22,10 @@
             <input class="form-input" type="password" id="password" v-model="user.password" :required="!user.id">
         </div>
         <div class="form-group">
-            <Checkbox id="admin" v-model="user.is_admin">{{ $t('is-admin') }}</Checkbox>
+            <label class="form-label">{{ $t('role') }}:</label>
+            <div class="user-roles">
+                <Radio v-for="role in roles" :value="role.id" :title="role.name" v-model="user.role_id"></Radio>
+            </div>
         </div>
         <div class="dialog-actions">
             <button class="button button--outline" @click.prevent="$emit('userDialogClosed')">{{ $t('cancel') }}</button>
@@ -35,6 +38,7 @@
 import ApiRequests from "@/ApiRequests";
 import OverlayLoader from '@/components/OverlayLoader.vue'
 import Checkbox from '@/components/Checkbox.vue'
+import Radio from "./../Radio.vue";
 
 export default {
     props: ['sourceUser', 'dialogTitle'],
@@ -42,11 +46,18 @@ export default {
         return {
             isLoading: false,
             user: this.sourceUser,
+            roles: [
+                {id: 1, name: 'Admin'},
+                {id: 2, name: 'Moderator'},
+                {id: 3, name: 'General'},
+                {id: 4, name: 'Guest'},
+            ]
         };
     },
     components: {
         OverlayLoader,
-        Checkbox
+        Checkbox,
+        Radio
     },
     methods: {
         submit() {
@@ -55,7 +66,7 @@ export default {
             const postData = {
                 name: this.user.name,
                 email: this.user.email,
-                is_admin: this.user.is_admin || false,
+                role_id: this.user.role_id,
             };
 
             if (this.user.id) {

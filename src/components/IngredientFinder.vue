@@ -23,9 +23,11 @@
 
 <script>
 import { instantMeiliSearch } from '@meilisearch/instant-meilisearch';
-import Auth from './../Auth.js';
 import OverlayLoader from './OverlayLoader.vue';
 import ApiRequests from '../ApiRequests';
+import AppState from './../AppState';
+
+const appState = new AppState();
 
 export default {
     props: {
@@ -49,8 +51,8 @@ export default {
             currentQuery: null,
             index: 'ingredients:name:asc',
             searchClient: instantMeiliSearch(
-                Auth.getUserSearchSettings().host,
-                Auth.getUserSearchSettings().key,
+                appState.bar.search_driver_host,
+                appState.bar.search_driver_api_key,
             ),
         }
     },

@@ -201,9 +201,9 @@ export default {
     methods: {
         fetchShoppingList() {
             this.loaders.list = true;
-            ApiRequests.fetchIngredients({ 'filter[on_shopping_list]': true, per_page: this.maxItems }).then(data => {
+            ApiRequests.fetchIngredients({ 'filter[on_shopping_list]': true, per_page: this.maxItems }).then(response => {
                 this.loaders.list = false;
-                this.shoppingListIngredients = data
+                this.shoppingListIngredients = response.data
             }).catch(e => {
                 this.loaders.list = false;
                 this.$toast.error(this.$t('shelf.toasts.list-error'));
