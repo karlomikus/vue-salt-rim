@@ -21,6 +21,7 @@ import OverlayLoader from '@/components/OverlayLoader.vue'
 import PublicRecipe from '@/components/Cocktail/PublicRecipe.vue'
 import Checkbox from '@/components/Checkbox.vue';
 import * as htmlToImage from 'html-to-image';
+import AppState from './../../AppState';
 
 export default {
     props: ['cocktail'],
@@ -47,9 +48,8 @@ export default {
         }
     },
     mounted() {
-        if (localStorage.getItem('defaultUnit')) {
-            this.currentUnit = localStorage.getItem('defaultUnit')
-        }
+        const appState = new AppState();
+        this.currentUnit = appState.defaultUnit
 
         if ("share" in navigator) {
             this.shareEnabled = true;

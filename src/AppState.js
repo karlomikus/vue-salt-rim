@@ -39,6 +39,16 @@ class AppState {
         this.#updateState()
     }
 
+    setTheme(theme) {
+        this.theme = theme
+        this.#updateState()
+    }
+
+    setLanguage(language) {
+        this.language = language
+        this.#updateState()
+    }
+
     hasUserInfo() {
         return this.user.id != null || this.user.id != undefined;
     }

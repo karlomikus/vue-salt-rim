@@ -7,18 +7,21 @@ import router from './router'
 import mitt from 'mitt'
 import dialog from './components/Dialog/plugin';
 import './assets/main.css'
+import AppState from './AppState.js';
 
 import en_US from './locales/en-US';
 import hr_HR from './locales/hr-HR';
 import fr_FR from './locales/fr-FR';
 import de_DE from './locales/de-DE';
 
-let userSelectedLocale = window.localStorage.getItem('ui-language');
+const appState = new AppState()
+
+let userSelectedLocale = appState.language;
 if (!userSelectedLocale) {
     userSelectedLocale = window.srConfig.DEFAULT_LOCALE || 'en-US';
 }
 
-let userSelectedTheme = window.localStorage.getItem('_ba_theme');
+let userSelectedTheme = appState.theme;
 if (userSelectedTheme == 'dark' && !document.body.classList.contains('dark-theme')) {
     document.body.classList.add('dark-theme');
     document.querySelector('meta[name="theme-color"]').setAttribute("content", '#16141A');

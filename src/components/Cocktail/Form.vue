@@ -122,6 +122,7 @@ import PageHeader from './../PageHeader.vue'
 import Sortable from 'sortablejs';
 import Dialog from './../Dialog/Dialog.vue';
 import Radio from "../Radio.vue";
+import AppState from "./../../AppState";
 
 export default {
     data() {
@@ -279,7 +280,8 @@ export default {
             this.showDialog = false;
         },
         addIngredient() {
-            const userUnit = localStorage.getItem('defaultUnit');
+            const appState = new AppState();
+            const userUnit = appState.defaultUnit;
             let defaultAmount = 30;
             let defaultUnits = 'ml';
 
@@ -307,7 +309,8 @@ export default {
             this.editIngredient(placeholderData)
         },
         printIngredientAmount(ing) {
-            const defaultUnit = localStorage.getItem('defaultUnit');
+            const appState = new AppState();
+            const defaultUnit = appState.defaultUnit;
 
             return Utils.printIngredientAmount(ing, defaultUnit)
         },
@@ -317,8 +320,9 @@ export default {
             }
 
             this.cocktailIngredientForEditOriginal = JSON.parse(JSON.stringify(cocktailIngredient));
-
-            const userUnit = localStorage.getItem('defaultUnit');
+            
+            const appState = new AppState();
+            const userUnit = appState.defaultUnit;
             if (userUnit === 'oz') {
                 if (cocktailIngredient.units == 'ml') {
                     cocktailIngredient.units = 'oz';

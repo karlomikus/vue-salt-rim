@@ -40,6 +40,7 @@
 import {micromark} from 'micromark'
 import ApiRequests from '@/ApiRequests';
 import Utils from "@/Utils";
+import AppState from './../../AppState';
 
 export default {
     data() {
@@ -88,7 +89,8 @@ export default {
     },
     methods: {
         ingredientAmount(ing) {
-            const defaultUnit = localStorage.getItem('defaultUnit');
+            const appState = new AppState();
+            const defaultUnit = appState.defaultUnit;
 
             return Utils.printIngredientAmount(ing, defaultUnit)
         }

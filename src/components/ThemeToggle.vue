@@ -10,6 +10,8 @@
 </template>
 
 <script>
+import AppState from './../AppState';
+
 export default {
     data() {
         return {
@@ -42,7 +44,8 @@ export default {
             this.rememberTheme();
         },
         rememberTheme() {
-            localStorage.setItem('_ba_theme', this.current);
+            const appState = new AppState();
+            appState.setTheme(this.current);
         }
     }
 }
