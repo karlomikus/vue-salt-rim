@@ -17,11 +17,13 @@
 </template>
 
 <script>
-import ApiRequests from '../../ApiRequests';
-import OverlayLoader from '@/components/OverlayLoader.vue';
+import ApiRequests from './../../ApiRequests';
+import OverlayLoader from './../OverlayLoader.vue';
 
 export default {
-    props: ['ingredient'],
+    props: {
+        ingredient: Object
+    },
     data() {
         return {
             isLoading: false
@@ -55,7 +57,7 @@ export default {
         },
         addToShelf() {
             this.isLoading = true;
-            ApiRequests.addIngredientsToShelf(this.ingredient.id).then(() => {
+            ApiRequests.addIngredientsToShelf({ ingredient_ids: [this.ingredient.id] }).then(() => {
                 this.$emit('addedToShelf')
                 this.isLoading = false;
             }).catch(e => {
