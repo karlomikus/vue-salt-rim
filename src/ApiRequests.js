@@ -764,6 +764,12 @@ class ApiRequests
     static async deleteBar(id) {
         return await this.deleteRequest(`/api/bars/${id}`);
     }
+
+    static async joinBar(data) {
+        let jsonResp = await this.postRequest(`/api/bars/join`, data);
+
+        return this.parseResponse(jsonResp);
+    }
 }
 
 export default ApiRequests;

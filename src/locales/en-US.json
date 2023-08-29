@@ -337,7 +337,9 @@
     "title": "Bars",
     "join": "Join a bar",
     "add": "Create bar",
-    "add-success": "Bar \"{name}\" succesfully created"
+    "add-success": "Bar \"{name}\" succesfully created",
+    "empty": "You don't have any bars",
+    "invite-code": "Bar invite code"
   },
   "close": "Close"
 }

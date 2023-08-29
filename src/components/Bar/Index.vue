@@ -7,7 +7,7 @@
                     <button type="button" class="button button--outline" @click.prevent="showJoinDialog = !showJoinDialog">{{ $t('bars.join') }}</button>
                 </template>
                 <template #dialog>
-                    <BarForm />
+                    <BarJoinDialog @dialogClosed="showJoinDialog = false" />
                 </template>
             </Dialog>
             <Dialog v-model="showCreateDialog">
@@ -50,6 +50,7 @@ import OverlayLoader from './../OverlayLoader.vue';
 import Dialog from './../Dialog/Dialog.vue';
 import PageHeader from './../PageHeader.vue';
 import BarForm from './Form.vue';
+import BarJoinDialog from './JoinDialog.vue';
 import AppState from './../../AppState.js';
 
 export default {
@@ -66,7 +67,8 @@ export default {
         OverlayLoader,
         PageHeader,
         BarForm,
-        Dialog
+        Dialog,
+        BarJoinDialog
     },
     mounted() {
         this.refreshBars();
