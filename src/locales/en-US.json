@@ -338,5 +338,6 @@
     "join": "Join a bar",
     "add": "Create bar",
     "add-success": "Bar \"{name}\" succesfully created"
-  }
+  },
+  "close": "Close"
 }

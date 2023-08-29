@@ -8,8 +8,8 @@
                 <PublicRecipe :cocktail="cocktail" :currentUnit="currentUnit" :hideUnits="true" :hideHeader="features.hideHeader" :hideFooter="features.hideFooter"></PublicRecipe>
             </div>
         </div>
-        <div class="dialog-actions" style="margin-top: 1rem;">
-            <button type="button" class="button button--outline" @click="$emit('publicDialogClosed')">{{ $t('cancel') }}</button>
+        <div class="dialog-actions">
+            <button type="button" class="button button--outline" @click="$emit('generateImageDialogClosed')">{{ $t('close') }}</button>
             <button v-if="shareEnabled" type="button" class="button button--outline" @click="shareAction">{{ $t('share') }}</button>
             <a v-if="imagePayload" :href="imagePayload" :download="fileName" class="button button--dark">{{ $t('download') }}</a>
         </div>
@@ -17,14 +17,16 @@
 </template>
 
 <script>
-import OverlayLoader from '@/components/OverlayLoader.vue'
-import PublicRecipe from '@/components/Cocktail/PublicRecipe.vue'
-import Checkbox from '@/components/Checkbox.vue';
 import * as htmlToImage from 'html-to-image';
+import OverlayLoader from './../OverlayLoader.vue';
+import PublicRecipe from './PublicRecipe.vue'
 import AppState from './../../AppState';
 
 export default {
-    props: ['cocktail'],
+    props: {
+        cocktail: Object,
+    },
+    emits: ['generateImageDialogClosed'],
     data() {
         return {
             isLoading: false,
@@ -40,7 +42,6 @@ export default {
     components: {
         OverlayLoader,
         PublicRecipe,
-        Checkbox
     },
     computed: {
         fileName() {
@@ -66,9 +67,8 @@ export default {
             }).then((dataUrl) => {
                 this.isLoading = false;
                 this.imagePayload = dataUrl;
-            }).catch((e) => {
+            }).catch(() => {
                 this.isLoading = false;
-                console.error(e)
                 this.$toast.error(this.$t('generate-image-dialog.generation-failed'));
             });
         },
@@ -83,7 +83,6 @@ export default {
                     files: [file]
                 });
             } catch (err) {
-                console.error(err)
             }
         }
     }

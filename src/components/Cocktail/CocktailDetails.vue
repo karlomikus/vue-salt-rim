@@ -4,9 +4,9 @@
         <OverlayLoader v-if="isLoading" />
         <div class="cocktail-details__title">
             <h2>{{ cocktail.name }}</h2>
-            <p>{{ $t('added-on-by', { date: createdDate, name: cocktail.user?.name || '<unknown>' }) }}</p>
+            <p>{{ $t('added-on-by', { date: createdDate, name: cocktail.created_user.name }) }}</p>
         </div>
-        <div class="cocktail-details__graphic" v-if="cocktail.id" style="margin-bottom: 2rem">
+        <div class="cocktail-details__graphic" v-if="cocktail.id">
             <swiper v-if="cocktail.images.length > 0" :modules="sliderModules" navigation :pagination="{ clickable: true }" :follow-finger="false">
                 <swiper-slide v-for="image in sortedImages">
                     <img :src="image.url" :alt="image.copyright" />
@@ -64,7 +64,7 @@
                             <div class="item-details__chips__group__title">{{ $t('your-rating') }}:</div>
                             <Rating :rating="cocktail.user_rating" type="cocktail" :id="cocktail.id"></Rating>
                         </div>
-                        <div class="item-details__chips__group" v-if="cocktail.has_public_link">
+                        <div class="item-details__chips__group" v-if="cocktail.public_id">
                             <div class="item-details__chips__group__title">{{ $t('public-link') }}:</div>
                             <RouterLink :to="{ name: 'e.cocktail', params: { ulid: cocktail.public_id, slug: cocktail.slug } }" target="_blank">{{ $t('click-here') }}</RouterLink>
                         </div>
@@ -72,6 +72,7 @@
                     <div class="cocktail-details-box__description" v-html="parsedDescription"></div>
                     <div class="cocktail-details-box__actions">
                         <button type="button" class="button-circle" @click="favorite">
+                            <OverlayLoader v-if="isLoadingFavorite" />
                             <svg v-if="!isFavorited" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
                                 <path fill="none" d="M0 0H24V24H0z" />
                                 <path d="M20.243 4.757c2.262 2.268 2.34 5.88.236 8.236l-8.48 8.492-8.478-8.492c-2.104-2.356-2.025-5.974.236-8.236 2.265-2.264 5.888-2.34 8.244-.228 2.349-2.109 5.979-2.039 8.242.228zM5.172 6.172c-1.49 1.49-1.565 3.875-.192 5.451L12 18.654l7.02-7.03c1.374-1.577 1.299-3.959-.193-5.454-1.487-1.49-3.881-1.562-5.453-.186l-4.202 4.203-1.415-1.414 2.825-2.827-.082-.069c-1.575-1.265-3.877-1.157-5.328.295z" />
@@ -84,6 +85,7 @@
                         <Dropdown>
                             <template #default="{ toggleDropdown }">
                                 <button type="button" class="button-circle" @click="toggleDropdown">
+                                    <OverlayLoader v-if="isLoadingShare" />
                                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
                                         <path fill="none" d="M0 0h24v24H0z" />
                                         <path d="M13.12 17.023l-4.199-2.29a4 4 0 1 1 0-5.465l4.2-2.29a4 4 0 1 1 .959 1.755l-4.2 2.29a4.008 4.008 0 0 1 0 1.954l4.199 2.29a4 4 0 1 1-.959 1.755zM6 14a2 2 0 1 0 0-4 2 2 0 0 0 0 4zm11-6a2 2 0 1 0 0-4 2 2 0 0 0 0 4zm0 12a2 2 0 1 0 0-4 2 2 0 0 0 0 4z" />
@@ -109,7 +111,7 @@
                                         </a>
                                     </template>
                                     <template #dialog>
-                                        <PublicLinkDialog :cocktail="cocktail" @publicDialogClosed="showPublicDialog = false" />
+                                        <PublicLinkDialog :cocktail="cocktail" @publicDialogClosed="showPublicDialog = false; fetchCocktail()" />
                                     </template>
                                 </Dialog>
                                 <Dialog v-model="showDownloadImageDialog">
@@ -123,7 +125,7 @@
                                         </a>
                                     </template>
                                     <template #dialog>
-                                        <GenerateImageDialog :cocktail="cocktail" @publicDialogClosed="showDownloadImageDialog = false" />
+                                        <GenerateImageDialog :cocktail="cocktail" @generateImageDialogClosed="showDownloadImageDialog = false" />
                                     </template>
                                 </Dialog>
                                 <a class="dropdown-menu__item" href="#copy" @click.prevent="shareFromFormat('text')">
@@ -185,7 +187,7 @@
                                         </a>
                                     </template>
                                     <template #dialog>
-                                        <NoteDialog :resourceId="cocktail.id" resource="cocktail" @noteDialogClosed="handleNoteDialogCloseEvent" />
+                                        <NoteDialog :resourceId="cocktail.id" resource="cocktail" @noteDialogClosed="showNoteDialog = false; refreshNotes()" />
                                     </template>
                                 </Dialog>
                                 <a v-show="cocktail.source" class="dropdown-menu__item" target="_blank" :href="cocktail.source">
@@ -238,8 +240,8 @@
                                         <template v-if="index + 1 !== ing.substitutes.length">, </template>
                                     </template>
                                 </div>
-                                <div class="cocktail-ingredients__flags__flag" v-if="!userShelfIngredients.includes(ing.ingredient_id)">&middot; {{ $t('cocktail.missing-ing') }}</div>
-                                <div class="cocktail-ingredients__flags__flag" v-if="userShoppingListIngredients.includes(ing.ingredient_id)">&middot; {{ $t('ingredient.on-shopping-list') }}</div>
+                                <div class="cocktail-ingredients__flags__flag" v-if="!userShelfIngredients.map(i => i.ingredient_id).includes(ing.ingredient_id)">&middot; {{ $t('cocktail.missing-ing') }}</div>
+                                <div class="cocktail-ingredients__flags__flag" v-if="userShoppingListIngredients.map(i => i.ingredient_id).includes(ing.ingredient_id)">&middot; {{ $t('ingredient.on-shopping-list') }}</div>
                             </div>
                         </li>
                     </ul>
@@ -290,17 +292,16 @@
 import { micromark } from 'micromark'
 import ApiRequests from './../../ApiRequests.js';
 import AppState from './../../AppState';
-import Auth from '@/Auth';
-import OverlayLoader from '@/components/OverlayLoader.vue'
-import Dropdown from '@/components/Dropdown.vue';
-import Rating from '@/components/Rating.vue';
+import OverlayLoader from './../OverlayLoader.vue'
+import Dropdown from './../Dropdown.vue';
+import Rating from './../Rating.vue';
 import { Swiper, SwiperSlide } from 'swiper/vue';
 import { Navigation, Pagination } from 'swiper';
 import Utils from '@/Utils';
-import Dialog from '@/components/Dialog/Dialog.vue'
+import Dialog from './../Dialog/Dialog.vue';
 import Note from './../Note/Details.vue'
 import NoteDialog from './../Note/Dialog.vue'
-import PublicLinkDialog from '@/components/Cocktail/PublicLinkDialog.vue'
+import PublicLinkDialog from './PublicLinkDialog.vue';
 import GenerateImageDialog from './GenerateImageDialog.vue';
 import SimilarCocktails from './SimilarCocktails.vue';
 import IngredientSpotlight from './../Ingredient/IngredientSpotlight.vue';
@@ -314,6 +315,8 @@ export default {
         notes: [],
         isLoading: false,
         isLoadingNotes: false,
+        isLoadingShare: false,
+        isLoadingFavorite: false,
         isFavorited: false,
         servings: 1,
         userShelfIngredients: [],
@@ -365,7 +368,8 @@ export default {
         },
         missingIngredientIds() {
             return this.cocktail.ingredients.filter(userIngredient => {
-                return !this.userShelfIngredients.includes(userIngredient.ingredient_id) && !this.userShoppingListIngredients.includes(userIngredient.ingredient_id)
+                return !this.userShelfIngredients.map(i => i.ingredient_id).includes(userIngredient.ingredient_id)
+                    && !this.userShoppingListIngredients.map(i => i.ingredient_id).includes(userIngredient.ingredient_id)
             }).map(cocktailIngredient => cocktailIngredient.ingredient_id)
         },
         sortedImages() {
@@ -408,7 +412,6 @@ export default {
                 this.isLoading = false;
                 this.cocktail = data
                 this.isFavorited = userFavorites.includes(data.id)
-                this.refreshNotes();
                 document.title = `${this.cocktail.name} \u22C5 ${this.site_title}`
             }).catch(e => {
                 this.isLoading = false;
@@ -422,10 +425,13 @@ export default {
             }
         },
         favorite() {
+            this.isLoadingFavorite = true;
             ApiRequests.favoriteCocktail(this.cocktail.id).then(resp => {
                 this.isFavorited = resp.is_favorited
+                this.isLoadingFavorite = false;
                 this.$toast.default(this.isFavorited ? this.$t('cocktail.favorited', { name: this.cocktail.name }) : this.$t('cocktail.unfavorited', { name: this.cocktail.name }));
             }).catch(e => {
+                this.isLoadingFavorite = false;
                 this.$toast.error(e.message);
             })
         },
@@ -449,13 +455,14 @@ export default {
                 ingredient_ids: this.missingIngredientIds
             };
 
-            ApiRequests.addIngredientsToShoppingList(postData).then(data => {
+            this.isLoading = true;
+            ApiRequests.addIngredientsToShoppingList(postData).then(async data => {
                 this.$toast.default(this.$t('cocktail.ingredients-added-success', { total: data.length }))
-                Auth.refreshUser().then(() => {
-                    this.userShoppingListIngredients = Auth.getUser().shopping_lists;
-                })
+                this.userShoppingListIngredients = await ApiRequests.fetchShoppingList().catch(() => []);
+                this.isLoading = false;
             }).catch(e => {
                 this.$toast.error(e.message);
+                this.isLoading = false;
             })
         },
         parseIngredientAmount(ingredient) {
@@ -466,12 +473,10 @@ export default {
             this.currentUnit = toUnit;
             appState.setDefaultUnit(toUnit);
         },
-        handleNoteDialogCloseEvent() {
-            this.refreshNotes();
-            this.showNoteDialog = false;
-        },
         shareFromFormat(format) {
+            this.isLoadingShare = true;
             ApiRequests.shareCocktail(this.cocktail.slug, { type: format }).then(data => {
+                this.isLoadingShare = false;
                 navigator.clipboard.writeText(data).then(() => {
                     this.$toast.default(this.$t('share-format-copied'));
                 }, () => {
@@ -542,6 +547,7 @@ export default {
     border-radius: 20px;
     overflow: hidden;
     isolation: isolate;
+    margin-bottom: 2rem;
 }
 
 .cocktail-details__graphic img {

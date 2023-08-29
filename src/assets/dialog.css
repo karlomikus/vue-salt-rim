@@ -118,6 +118,7 @@
     justify-content: end;
     flex-wrap: wrap;
     gap: 0.5rem;
+    margin-top: 1.5rem;
 }
 
 .site-autocomplete-dialog .dialog__content {
