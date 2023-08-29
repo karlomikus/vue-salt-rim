@@ -34,6 +34,11 @@ class AppState {
         this.#updateState()
     }
 
+    forgetBar() {
+        this.bar = {}
+        this.#updateState()
+    }
+
     setDefaultUnit(unit) {
         this.defaultUnit = unit;
         this.#updateState()

@@ -147,7 +147,7 @@ class ApiRequests
     }
 
     static async importCocktail(data, query = {}) {
-        const q = this.generateBAQueryString(query);
+        const q = this.generateBAQueryString(query, true);
         const jsonResp = await this.postRequest(`/api/import/cocktail${q}`, data);
 
         return this.parseResponse(jsonResp);
@@ -635,6 +635,13 @@ class ApiRequests
      * Notes
      * =============================
      */
+
+    static async fetchNotes(query = {}) {
+        const queryString = this.generateBAQueryString(query, true);
+        const jsonResp = await this.getRequest(`/api/notes${queryString}`);
+
+        return this.parseResponse(jsonResp);
+    }
 
     static async saveNote(data) {
         let jsonResp = await this.postRequest(`/api/notes`, data);

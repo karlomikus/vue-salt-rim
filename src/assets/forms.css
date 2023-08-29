@@ -1,5 +1,5 @@
 .form-group {
-    margin-bottom: 2rem;
+    margin-bottom: 1rem;
     display: flex;
     flex-direction: column;
     flex-wrap: wrap;
@@ -161,4 +161,14 @@ textarea.form-input,
 .form-input:disabled {
     opacity: .8;
     background: none;
+}
+
+.form-checkbox {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.form-checkbox input {
+    min-width: 18px;
+    min-height: 18px;
 }

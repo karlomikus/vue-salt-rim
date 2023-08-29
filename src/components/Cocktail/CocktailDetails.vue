@@ -4,7 +4,7 @@
         <OverlayLoader v-if="isLoading" />
         <div class="cocktail-details__title">
             <h2>{{ cocktail.name }}</h2>
-            <p>{{ $t('added-on-by', {date: createdDate, name: cocktail.user?.name || '<unknown>'}) }}</p>
+            <p>{{ $t('added-on-by', { date: createdDate, name: cocktail.user?.name || '<unknown>' }) }}</p>
         </div>
         <div class="cocktail-details__graphic" v-if="cocktail.id" style="margin-bottom: 2rem">
             <swiper v-if="cocktail.images.length > 0" :modules="sliderModules" navigation :pagination="{ clickable: true }" :follow-finger="false">
@@ -260,9 +260,10 @@
                     <h3 class="details-block-container__title">{{ $t('garnish') }}</h3>
                     <div v-html="parsedGarnish"></div>
                 </div>
-                <div class="details-block-container details-block-container--purple" v-if="cocktail.notes.length > 0">
+                <div class="details-block-container details-block-container--purple" v-if="notes.length > 0">
+                    <OverlayLoader v-if="isLoadingNotes" />
                     <h3 class="details-block-container__title">{{ $t('notes') }}</h3>
-                    <Note v-for="note in cocktail.notes" :note="note" @noteDeleted="fetchCocktail"></Note>
+                    <Note v-for="note in notes" :note="note" @noteDeleted="refreshNotes"></Note>
                 </div>
                 <div class="cocktail-details__navigation">
                     <RouterLink v-if="cocktail.navigation.prev" :to="{ name: 'cocktails.show', params: { id: cocktail.navigation.prev } }">{{ $t('cocktail-prev') }}</RouterLink>
@@ -310,7 +311,9 @@ import dayjs from 'dayjs'
 export default {
     data: () => ({
         cocktail: {},
+        notes: [],
         isLoading: false,
+        isLoadingNotes: false,
         isFavorited: false,
         servings: 1,
         userShelfIngredients: [],
@@ -405,6 +408,7 @@ export default {
                 this.isLoading = false;
                 this.cocktail = data
                 this.isFavorited = userFavorites.includes(data.id)
+                this.refreshNotes();
                 document.title = `${this.cocktail.name} \u22C5 ${this.site_title}`
             }).catch(e => {
                 this.isLoading = false;
@@ -463,7 +467,7 @@ export default {
             appState.setDefaultUnit(toUnit);
         },
         handleNoteDialogCloseEvent() {
-            this.fetchCocktail();
+            this.refreshNotes();
             this.showNoteDialog = false;
         },
         shareFromFormat(format) {
@@ -473,6 +477,15 @@ export default {
                 }, () => {
                     this.$toast.error(this.$t('share-format-copy-failed'));
                 });
+            })
+        },
+        refreshNotes() {
+            this.isLoadingNotes = true;
+            ApiRequests.fetchNotes({ 'filter[cocktail_id]': this.cocktail.id }).then(data => {
+                this.isLoadingNotes = false;
+                this.notes = data;
+            }).catch(() => {
+                this.isLoadingNotes = false;
             })
         }
     }

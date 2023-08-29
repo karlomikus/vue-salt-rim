@@ -91,6 +91,11 @@ export default {
                     dialog.close();
                     ApiRequests.deleteBar(bar.id).then(() => {
                         this.isLoading = false;
+                        const appState = new AppState();
+                        if (appState.bar.id == bar.id) {
+                            appState.forgetBar();
+                            window.location.reload()
+                        }
                         this.$toast.default(this.$t('bars.delete-success'));
                         this.refreshBars()
                     }).catch(e => {
