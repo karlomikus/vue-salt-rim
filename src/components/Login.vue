@@ -75,13 +75,23 @@ export default {
         login() {
             this.isLoading = true
             const appState = new AppState();
-            const redirectPath = this.$route.query.redirect || '/'
+            let redirectPath = this.$route.query.redirect
 
             ApiRequests.fetchLoginToken(this.email, this.password).then(token => {
                 appState.setToken(token)
                 ApiRequests.fetchUser().then(user => {
                     appState.setUser(user);
-                    this.$router.push(redirectPath)
+
+                    ApiRequests.fetchBars().then(bars => {
+                        if (bars.length == 1) {
+                            appState.setBar(bars[0])
+                            redirectPath = '/'
+                        } else {
+                            redirectPath = '/bars'
+                        }
+
+                        this.$router.push(redirectPath)
+                    })
                 }).catch(e => {
                     appState.forgetUser();
                     this.isLoading = false
