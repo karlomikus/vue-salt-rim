@@ -21,17 +21,21 @@
                             <SiteAutocomplete @close-autocomplete="showSearchDialog = false"></SiteAutocomplete>
                         </template>
                     </SaltRimDialog>
-                    <RouterLink :to="{ name: 'home' }" exact-active-class="current-nav">{{ $t('shelf.title') }}</RouterLink>
-                    <RouterLink :to="{ name: 'cocktails' }" :class="{ 'current-nav': $route.path.startsWith('/cocktails') }">{{ $t('cocktails') }}</RouterLink>
-                    <RouterLink :to="{ name: 'ingredients' }" :class="{ 'current-nav': $route.path.startsWith('/ingredients') }">{{ $t('ingredients') }}</RouterLink>
-                    <RouterLink :to="{ name: 'collections.cocktails' }" :class="{ 'current-nav': $route.path.startsWith('/collections') }">{{ $t('collections.title') }}</RouterLink>
                 </template>
-                <RouterLink :to="{ name: 'settings' }" :class="{ 'current-nav': $route.path.startsWith('/settings') }">{{ $t('settings') }}</RouterLink>
                 <RouterLink :to="{ name: 'bars' }" :class="{ 'current-nav': $route.path.startsWith('/bars') }">{{ $t('bars.title') }}</RouterLink>
-                <a v-if="isLoginDisabled !== true" href="#" @click.prevent="logout">{{ $t('logout') }}</a>
+                <a v-if="isLoginDisabled !== true" href="#" @click.prevent="logout">{{ $t('logout') }} ({{ appState.user.name }})</a>
             </nav>
         </div>
     </header>
+    <nav class="subnavigation-bar" v-if="appState.bar.id">
+        <div class="subnavigation-bar__nav">
+            <RouterLink :to="{ name: 'home' }" exact-active-class="current-nav">{{ $t('shelf.title') }}</RouterLink>
+            <RouterLink :to="{ name: 'cocktails' }" :class="{ 'current-nav': $route.path.startsWith('/cocktails') }">{{ $t('cocktails') }}</RouterLink>
+            <RouterLink :to="{ name: 'ingredients' }" :class="{ 'current-nav': $route.path.startsWith('/ingredients') }">{{ $t('ingredients') }}</RouterLink>
+            <RouterLink :to="{ name: 'collections.cocktails' }" :class="{ 'current-nav': $route.path.startsWith('/collections') }">{{ $t('collections.title') }}</RouterLink>
+            <RouterLink :to="{ name: 'settings' }" :class="{ 'current-nav': $route.path.startsWith('/settings') }">{{ $t('settings') }}</RouterLink>
+        </div>
+    </nav>
 </template>
 <script>
 import ApiRequests from './../../ApiRequests'
@@ -40,6 +44,7 @@ import SaltRimDialog from './../Dialog/SaltRimDialog.vue'
 import SiteLogo from './../Layout/SiteLogo.vue'
 import ThemeToggle from './../ThemeToggle.vue'
 import AppState from '../../AppState'
+import SaltRimDropdown from './../SaltRimDropdown.vue';
 
 export default {
     components: {
@@ -47,6 +52,7 @@ export default {
         SaltRimDialog,
         SiteLogo,
         ThemeToggle,
+        SaltRimDropdown,
     },
     data() {
         return {
@@ -81,7 +87,6 @@ export default {
 </script>
 <style scoped>
 .site-header {
-    margin-bottom: 1rem;
     background-color: var(--color-site-header);
 }
 
@@ -160,5 +165,36 @@ export default {
     .site-header {
         margin-bottom: 20px;
     }
+}
+
+.subnavigation-bar {
+    background-color: #423c62;
+    margin-bottom: 1rem;
+}
+
+.subnavigation-bar__nav {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    max-width: var(--site-width);
+    margin: 0 auto;
+}
+
+.subnavigation-bar__nav > a {
+    display: block;
+    padding: 0.5rem 1.25rem;
+    font-size: 1rem;
+    text-decoration: none;
+    font-weight: 700;
+    color: rgba(255, 255, 255, .7);
+}
+
+.subnavigation-bar__nav > a:hover {
+    color: #fff;
+}
+
+.subnavigation-bar__nav > a.current-nav {
+    color: #fff;
+    background-color: rgba(0, 0, 0, 0.25);
 }
 </style>

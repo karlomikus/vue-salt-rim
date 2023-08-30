@@ -11,13 +11,20 @@
 </template>
 
 <script>
+import AppState from './../../AppState.js';
+
 export default {
+    data() {
+        return {
+            appState: new AppState()
+        }
+    },
     computed: {
         name() {
-            return window.srConfig.BAR_NAME || 'Salt Rim'
+            return this.appState.bar.name || 'Salt Rim'
         },
         description() {
-            return window.srConfig.BAR_DESCRIPTION || 'Your personal bar assistant'
+            return this.appState.bar.subtitle || 'Your personal bar assistant'
         }
     }
 }
