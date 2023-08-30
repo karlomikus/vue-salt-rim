@@ -44,13 +44,12 @@
     </div>
 </template>
 <script>
-import Selector from './Selector.vue';
 import ApiRequests from './../../ApiRequests';
 import OverlayLoader from './../OverlayLoader.vue';
 import Dialog from './../Dialog/Dialog.vue';
 import PageHeader from './../PageHeader.vue';
-import BarForm from './Form.vue';
-import BarJoinDialog from './JoinDialog.vue';
+import BarForm from './BarForm.vue';
+import BarJoinDialog from './BarJoinDialog.vue';
 import AppState from './../../AppState.js';
 
 export default {
@@ -63,7 +62,6 @@ export default {
         }
     },
     components: {
-        Selector,
         OverlayLoader,
         PageHeader,
         BarForm,
