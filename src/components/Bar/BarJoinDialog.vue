@@ -15,8 +15,8 @@
     </form>
 </template>
 <script>
-import ApiRequests from './../../ApiRequests';
-import OverlayLoader from './../OverlayLoader.vue';
+import ApiRequests from './../../ApiRequests'
+import OverlayLoader from './../OverlayLoader.vue'
 
 export default {
     components: {
@@ -31,16 +31,16 @@ export default {
     },
     methods: {
         submit() {
-            this.isLoading = true;
+            this.isLoading = true
             ApiRequests.joinBar({
                 invite_code: this.inviteCode,
             }).then(data => {
-                this.isLoading = false;
-                this.$toast.default(this.$t('bars.join-success', { name: data.name }));
+                this.isLoading = false
+                this.$toast.default(this.$t('bars.join-success', { name: data.name }))
                 this.$emit('dialogClosed')
                 this.$emit('barJoined')
             }).catch(e => {
-                this.$toast.error(e.message);
+                this.$toast.error(e.message)
             })
         }
     }

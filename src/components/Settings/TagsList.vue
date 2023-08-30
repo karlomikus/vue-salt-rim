@@ -45,7 +45,7 @@
 </template>
 
 <script>
-import ApiRequests from "@/ApiRequests";
+import ApiRequests from '@/ApiRequests'
 import OverlayLoader from '@/components/OverlayLoader.vue'
 import PageHeader from '@/components/PageHeader.vue'
 import Navigation from '@/components/Settings/SettingsNavigation.vue'
@@ -77,18 +77,18 @@ export default {
     methods: {
         refreshTags() {
             this.showDialog = false
-            this.isLoading = true;
+            this.isLoading = true
             ApiRequests.fetchTags().then(data => {
-                this.tags = data;
-                this.isLoading = false;
+                this.tags = data
+                this.isLoading = false
             }).catch(e => {
-                this.$toast.error(e.message);
+                this.$toast.error(e.message)
             })
         },
         openDialog(title, obj) {
             this.dialogTitle = title
             this.editTag = obj
-            this.showDialog = true;
+            this.showDialog = true
         },
         deleteTag(tag) {
             this.$confirm(this.$t('tag.confirm-delete', {name: tag.name}), {
@@ -96,15 +96,15 @@ export default {
                     this.isLoading = true
                     dialog.close()
                     ApiRequests.deleteTag(tag.id).then(() => {
-                        this.isLoading = false;
-                        this.$toast.default(this.$t('tag.delete-success'));
+                        this.isLoading = false
+                        this.$toast.default(this.$t('tag.delete-success'))
                         this.refreshTags()
                     }).catch(e => {
-                        this.$toast.error(e.message);
-                        this.isLoading = false;
+                        this.$toast.error(e.message)
+                        this.isLoading = false
                     })
                 }
-            });
+            })
         }
     }
 }

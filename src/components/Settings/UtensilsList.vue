@@ -45,7 +45,7 @@
 </template>
 
 <script>
-import ApiRequests from "./../../ApiRequests.js";
+import ApiRequests from './../../ApiRequests.js'
 import OverlayLoader from './../OverlayLoader.vue'
 import PageHeader from './../PageHeader.vue'
 import Navigation from './../Settings/SettingsNavigation.vue'
@@ -76,42 +76,42 @@ export default {
     },
     methods: {
         refreshUtensils() {
-            this.showDialog = false;
-            this.isLoading = true;
+            this.showDialog = false
+            this.isLoading = true
             ApiRequests.fetchUtensils().then(data => {
-                this.utensils = data;
-                this.isLoading = false;
+                this.utensils = data
+                this.isLoading = false
             }).catch(e => {
-                this.$toast.error(e.message);
+                this.$toast.error(e.message)
             })
         },
         openDialog(title, obj) {
             this.dialogTitle = title
             this.editUtensil = obj
-            this.showDialog = true;
+            this.showDialog = true
         },
         deleteUtensil(utensil) {
             this.$confirm(this.$t('utensils.confirm-delete', {name: utensil.name}), {
                 onResolved: (dialog) => {
                     this.isLoading = true
-                    dialog.close();
+                    dialog.close()
                     ApiRequests.deleteUtensil(utensil.id).then(() => {
-                        this.isLoading = false;
-                        this.$toast.default(this.$t('utensils.delete-success'));
+                        this.isLoading = false
+                        this.$toast.default(this.$t('utensils.delete-success'))
                         this.refreshUtensils()
                     }).catch(e => {
-                        this.$toast.error(e.message);
-                        this.isLoading = false;
+                        this.$toast.error(e.message)
+                        this.isLoading = false
                     })
                 }
-            });
+            })
         },
         overflowText(input, len) {
             if (!input) {
                 return input
             }
 
-            return input.length > len ? `${input.substring(0, len)}...` : input;
+            return input.length > len ? `${input.substring(0, len)}...` : input
         }
     }
 }

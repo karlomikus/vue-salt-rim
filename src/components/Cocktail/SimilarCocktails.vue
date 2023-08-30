@@ -10,7 +10,7 @@
     </div>
 </template>
 <script>
-import ApiRequests from '@/ApiRequests';
+import ApiRequests from '@/ApiRequests'
 import CocktailListItem from '@/components/Cocktail/CocktailListItem.vue'
 import CocktailListContainer from '@/components/Cocktail/CocktailListContainer.vue'
 import OverlayLoader from '@/components/OverlayLoader.vue'
@@ -33,7 +33,7 @@ export default {
         return {
             isLoading: false,
             similarCocktails: []
-        };
+        }
     },
     watch: {
         fromCocktail() {
@@ -41,17 +41,17 @@ export default {
         }
     },
     created() {
-        this.fetchRelated();
+        this.fetchRelated()
     },
     methods: {
         fetchRelated() {
-            this.isLoading = true;
+            this.isLoading = true
             ApiRequests.fetchSimilarCocktails(this.fromCocktail.id).then(data => {
                 this.similarCocktails = data
-                this.isLoading = false;
+                this.isLoading = false
             }).catch(() => {
                 this.similarCocktails = []
-                this.isLoading = false;
+                this.isLoading = false
             })
         },
     }

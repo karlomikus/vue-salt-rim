@@ -10,7 +10,7 @@
 </template>
 
 <script>
-import AppState from './../AppState';
+import AppState from './../AppState'
 
 export default {
     data() {
@@ -24,28 +24,28 @@ export default {
     },
     mounted() {
         if (document.body.classList.contains('dark-theme')) {
-            this.current = 'dark';
+            this.current = 'dark'
         } else {
-            this.current = 'light';
+            this.current = 'light'
         }
     },
     methods: {
         toggleTheme() {
             if (this.current == 'dark') {
-                document.body.classList.remove('dark-theme');
+                document.body.classList.remove('dark-theme')
                 this.current = 'light'
-                document.querySelector('meta[name="theme-color"]').setAttribute("content", this.metaThemeColor.light);
+                document.querySelector('meta[name="theme-color"]').setAttribute('content', this.metaThemeColor.light)
             } else if (this.current == 'light') {
-                document.body.classList.add('dark-theme');
+                document.body.classList.add('dark-theme')
                 this.current = 'dark'
-                document.querySelector('meta[name="theme-color"]').setAttribute("content", this.metaThemeColor.dark);
+                document.querySelector('meta[name="theme-color"]').setAttribute('content', this.metaThemeColor.dark)
             }
 
-            this.rememberTheme();
+            this.rememberTheme()
         },
         rememberTheme() {
-            const appState = new AppState();
-            appState.setTheme(this.current);
+            const appState = new AppState()
+            appState.setTheme(this.current)
         }
     }
 }

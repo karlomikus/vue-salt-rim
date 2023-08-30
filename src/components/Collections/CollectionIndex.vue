@@ -52,7 +52,7 @@
 </template>
 
 <script>
-import ApiRequests from "./../../ApiRequests.js";
+import ApiRequests from './../../ApiRequests.js'
 import OverlayLoader from './../OverlayLoader.vue'
 import PageHeader from './../PageHeader.vue'
 import SaltRimDialog from './../Dialog/SaltRimDialog.vue'
@@ -81,43 +81,43 @@ export default {
     },
     methods: {
         refreshCollections() {
-            this.showDialog = false;
-            this.isLoading = true;
+            this.showDialog = false
+            this.isLoading = true
             ApiRequests.fetchCollections().then(data => {
-                this.collections = data;
-                this.isLoading = false;
+                this.collections = data
+                this.isLoading = false
             }).catch(e => {
-                this.$toast.error(e.message);
+                this.$toast.error(e.message)
             })
         },
         openDialog(title, obj) {
             this.dialogTitle = title
             this.editCollection = obj
-            this.showDialog = true;
+            this.showDialog = true
         },
         deleteCollection(collection) {
             this.$confirm(this.$t('collections.confirm-delete', { name: collection.name }), {
                 onResolved: (dialog) => {
                     this.isLoading = true
-                    dialog.close();
+                    dialog.close()
                     ApiRequests.deleteCollection(collection.id).then(() => {
-                        this.isLoading = false;
-                        this.$toast.default(this.$t('collections.delete-success'));
+                        this.isLoading = false
+                        this.$toast.default(this.$t('collections.delete-success'))
                         this.refreshCollections()
                     }).catch(e => {
-                        this.$toast.error(e.message);
-                        this.isLoading = false;
+                        this.$toast.error(e.message)
+                        this.isLoading = false
                     })
                 }
-            });
+            })
         },
         shareCollection(collection) {
             ApiRequests.shareCollection(collection.id).then(data => {
                 navigator.clipboard.writeText(JSON.stringify(data)).then(() => {
-                    this.$toast.default(this.$t('share-format-copied'));
+                    this.$toast.default(this.$t('share-format-copied'))
                 }, () => {
-                    this.$toast.error(this.$t('share-format-copy-failed'));
-                });
+                    this.$toast.error(this.$t('share-format-copy-failed'))
+                })
             })
         },
         overflowText(input, len) {
@@ -125,7 +125,7 @@ export default {
                 return input
             }
 
-            return input.length > len ? `${input.substring(0, len)}...` : input;
+            return input.length > len ? `${input.substring(0, len)}...` : input
         }
     }
 }

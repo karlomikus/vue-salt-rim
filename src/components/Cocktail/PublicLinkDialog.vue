@@ -14,8 +14,8 @@
 </template>
 
 <script>
-import ApiRequests from './../../ApiRequests.js';
-import OverlayLoader from './../OverlayLoader.vue';
+import ApiRequests from './../../ApiRequests.js'
+import OverlayLoader from './../OverlayLoader.vue'
 import dayjs from 'dayjs'
 
 export default {
@@ -45,19 +45,19 @@ export default {
     computed: {
         publicUrl() {
             if (!this.publicData.public_id) {
-                return this.$t('public-dialog.missing');
+                return this.$t('public-dialog.missing')
             }
 
-            return `${this.protocol}//${this.host}/e/cocktail/${this.publicData.public_id}/${this.cocktail.slug}`;
+            return `${this.protocol}//${this.host}/e/cocktail/${this.publicData.public_id}/${this.cocktail.slug}`
         },
         createdDate() {
             if (!this.publicData.public_at) {
-                return null;
+                return null
             }
 
-            const date = dayjs(this.publicData.public_at).toDate();
+            const date = dayjs(this.publicData.public_at).toDate()
 
-            return this.$d(date, 'long');
+            return this.$d(date, 'long')
         }
     },
     methods: {
@@ -67,7 +67,7 @@ export default {
                 this.publicData = data
                 this.isLoading = false
             }).catch(e => {
-                this.$toast.error(e.message);
+                this.$toast.error(e.message)
                 this.isLoading = false
             })
         },
@@ -77,19 +77,19 @@ export default {
                 this.publicData = data
                 this.isLoading = false
             }).catch(e => {
-                this.$toast.error(e.message);
+                this.$toast.error(e.message)
                 this.isLoading = false
             })
         },
         copyLink() {
             navigator.clipboard.writeText(this.publicUrl).then(() => {
-                this.$toast.default(this.$t('public-dialog.toasts.copy-success'));
+                this.$toast.default(this.$t('public-dialog.toasts.copy-success'))
             }, () => {
-                this.$toast.error(this.$t('public-dialog.toasts.copy-fail'));
-            });
+                this.$toast.error(this.$t('public-dialog.toasts.copy-fail'))
+            })
         }
     }
-};
+}
 </script>
 
 <style scoped>

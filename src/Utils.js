@@ -2,23 +2,23 @@ import Unitz from 'unitz'
 
 class Utils {
     static decodeHtml(string) {
-        var txt = document.createElement("textarea");
-        txt.innerHTML = string;
+        var txt = document.createElement('textarea')
+        txt.innerHTML = string
 
-        return txt.value;
+        return txt.value
     }
 
     static printIngredientAmount(ingredient, convertTo = 'ml', servings = 1) {
         if (!convertTo) {
-            convertTo = 'ml';
+            convertTo = 'ml'
         }
 
-        let orgAmount = ingredient.amount;
-        let orgUnits = ingredient.units.toLowerCase();
+        let orgAmount = ingredient.amount
+        let orgUnits = ingredient.units.toLowerCase()
 
         // Don't convert unconvertable units
         if (orgUnits != 'ml' && orgUnits != 'oz' && orgUnits != 'cl') {
-            return `${orgAmount * servings} ${orgUnits}`;
+            return `${orgAmount * servings} ${orgUnits}`
         }
 
         // Convert to ml if needed as it's our "base"
@@ -28,7 +28,7 @@ class Utils {
             orgAmount = this.cl2ml(orgAmount)
         }
 
-        orgAmount *= servings;
+        orgAmount *= servings
 
         if (convertTo == 'oz') {
             return this.ml2oz(orgAmount) + ' oz'
@@ -42,15 +42,15 @@ class Utils {
             return orgAmount + ' ml'
         }
 
-        return `${orgAmount} ${orgUnits}`;
+        return `${orgAmount} ${orgUnits}`
     }
 
     static cl2ml(amount) {
-        return amount * 10;
+        return amount * 10
     }
 
     static cl2oz(amount) {
-        return this.ml2oz(amount * 10);
+        return this.ml2oz(amount * 10)
     }
 
     static oz2ml(amount) {
@@ -58,7 +58,7 @@ class Utils {
     }
 
     static oz2cl(amount) {
-        return this.oz2ml(amount) / 10;
+        return this.oz2ml(amount) / 10
     }
 
     static ml2oz(amount) {
@@ -66,8 +66,8 @@ class Utils {
     }
 
     static ml2cl(amount) {
-        return amount / 10;
+        return amount / 10
     }
 }
 
-export default Utils;
+export default Utils

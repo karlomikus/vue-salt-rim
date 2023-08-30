@@ -25,7 +25,7 @@ export default {
                     last_page: 1,
                     to: 0,
                     total: 0
-                };
+                }
             }
         },
     },
@@ -44,13 +44,13 @@ export default {
         changePage(dir) {
             if (dir == 'prev') {
                 if (this.currentPage > 1) {
-                    this.currentPage--;
+                    this.currentPage--
                 }
             }
 
             if (dir == 'next') {
                 if (this.currentPage < this.meta.last_page) {
-                    this.currentPage++;
+                    this.currentPage++
                 }
             }
 

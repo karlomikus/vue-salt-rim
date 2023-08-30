@@ -49,7 +49,7 @@
 </template>
 
 <script>
-import ApiRequests from "@/ApiRequests";
+import ApiRequests from '@/ApiRequests'
 import OverlayLoader from '@/components/OverlayLoader.vue'
 import PageHeader from '@/components/PageHeader.vue'
 import Navigation from '@/components/Settings/SettingsNavigation.vue'
@@ -81,18 +81,18 @@ export default {
     methods: {
         refreshUsers() {
             this.showDialog = false
-            this.isLoading = true;
+            this.isLoading = true
             ApiRequests.fetchUsers().then(data => {
-                this.users = data;
-                this.isLoading = false;
+                this.users = data
+                this.isLoading = false
             }).catch(e => {
-                this.$toast.error(e.message);
+                this.$toast.error(e.message)
             })
         },
         openDialog(title, obj) {
             this.dialogTitle = title
             this.editUser = obj
-            this.showDialog = true;
+            this.showDialog = true
         },
         deleteUser(user) {
             this.$confirm(this.$t('users.confirm-delete', {name: user.name}), {
@@ -100,15 +100,15 @@ export default {
                     this.isLoading = true
                     dialog.close()
                     ApiRequests.deleteUser(user.id).then(() => {
-                        this.isLoading = false;
-                        this.$toast.default(this.$t('users.delete-success'));
+                        this.isLoading = false
+                        this.$toast.default(this.$t('users.delete-success'))
                         this.refreshUsers()
                     }).catch(e => {
-                        this.$toast.error(e.message);
-                        this.isLoading = false;
+                        this.$toast.error(e.message)
+                        this.isLoading = false
                     })
                 }
-            });
+            })
         }
     }
 }

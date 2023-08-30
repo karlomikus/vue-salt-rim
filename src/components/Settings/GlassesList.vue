@@ -45,7 +45,7 @@
 </template>
 
 <script>
-import ApiRequests from "@/ApiRequests";
+import ApiRequests from '@/ApiRequests'
 import OverlayLoader from '@/components/OverlayLoader.vue'
 import PageHeader from '@/components/PageHeader.vue'
 import Navigation from '@/components/Settings/SettingsNavigation.vue'
@@ -76,19 +76,19 @@ export default {
     },
     methods: {
         refreshGlasses() {
-            this.showDialog = false;
-            this.isLoading = true;
+            this.showDialog = false
+            this.isLoading = true
             ApiRequests.fetchGlasses().then(data => {
-                this.glasses = data;
-                this.isLoading = false;
+                this.glasses = data
+                this.isLoading = false
             }).catch(e => {
-                this.$toast.error(e.message);
+                this.$toast.error(e.message)
             })
         },
         openDialog(title, obj) {
             this.dialogTitle = title
             this.editGlass = obj
-            this.showDialog = true;
+            this.showDialog = true
         },
         deleteGlass(glass) {
             this.$confirm(this.$t('glass-type.confirm-delete', {name: glass.name}), {
@@ -96,15 +96,15 @@ export default {
                     this.isLoading = true
                     dialog.close()
                     ApiRequests.deleteGlass(glass.id).then(() => {
-                        this.isLoading = false;
-                        this.$toast.default(this.$t('glass-type.delete-success'));
+                        this.isLoading = false
+                        this.$toast.default(this.$t('glass-type.delete-success'))
                         this.refreshGlasses()
                     }).catch(e => {
-                        this.$toast.error(e.message);
-                        this.isLoading = false;
+                        this.$toast.error(e.message)
+                        this.isLoading = false
                     })
                 }
-            });
+            })
         }
     }
 }

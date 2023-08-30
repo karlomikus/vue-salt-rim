@@ -17,10 +17,10 @@
 </template>
 
 <script>
-import * as htmlToImage from 'html-to-image';
-import OverlayLoader from './../OverlayLoader.vue';
+import * as htmlToImage from 'html-to-image'
+import OverlayLoader from './../OverlayLoader.vue'
 import PublicRecipe from './PublicRecipe.vue'
-import AppState from './../../AppState';
+import AppState from './../../AppState'
 
 export default {
     components: {
@@ -50,32 +50,32 @@ export default {
     },
     computed: {
         fileName() {
-            return this.cocktail.slug + '.png';
+            return this.cocktail.slug + '.png'
         }
     },
     mounted() {
-        const appState = new AppState();
+        const appState = new AppState()
         this.currentUnit = appState.defaultUnit
 
-        if ("share" in navigator) {
-            this.shareEnabled = true;
+        if ('share' in navigator) {
+            this.shareEnabled = true
         }
 
-        this.generateImage();
+        this.generateImage()
     },
     methods: {
         generateImage() {
-            this.isLoading = true;
+            this.isLoading = true
             htmlToImage.toPng(this.$refs.exportElement, {
                 pixelRatio: 1,
                 cacheBust: true
             }).then((dataUrl) => {
-                this.isLoading = false;
-                this.imagePayload = dataUrl;
+                this.isLoading = false
+                this.imagePayload = dataUrl
             }).catch(() => {
-                this.isLoading = false;
-                this.$toast.error(this.$t('generate-image-dialog.generation-failed'));
-            });
+                this.isLoading = false
+                this.$toast.error(this.$t('generate-image-dialog.generation-failed'))
+            })
         },
         async shareAction() {
             const blobData = await (await fetch(this.imagePayload)).blob()
@@ -86,13 +86,13 @@ export default {
                     title: this.cocktail.name,
                     text: this.cocktail.description,
                     files: [file]
-                });
+                })
             } catch (err) {
-                this.$toast.error(this.$t('generate-image-dialog.share-failed'));
+                this.$toast.error(this.$t('generate-image-dialog.share-failed'))
             }
         }
     }
-};
+}
 </script>
 
 <style scoped>

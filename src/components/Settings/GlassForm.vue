@@ -18,7 +18,7 @@
 </template>
 
 <script>
-import ApiRequests from "@/ApiRequests";
+import ApiRequests from '@/ApiRequests'
 import OverlayLoader from '@/components/OverlayLoader.vue'
 
 export default {
@@ -42,34 +42,34 @@ export default {
         return {
             isLoading: false,
             glass: this.sourceGlass,
-        };
+        }
     },
     methods: {
         submit() {
-            this.isLoading = true;
+            this.isLoading = true
 
             const postData = {
                 name: this.glass.name,
                 description: this.glass.description,
-            };
+            }
 
             if (this.glass.id) {
                 ApiRequests.updateGlass(this.glass.id, postData).then(() => {
-                    this.isLoading = false;
-                    this.$toast.default(this.$t('glass-type.update-success'));
+                    this.isLoading = false
+                    this.$toast.default(this.$t('glass-type.update-success'))
                     this.$emit('glassDialogClosed')
                 }).catch(e => {
-                    this.$toast.error(e.message);
-                    this.isLoading = false;
+                    this.$toast.error(e.message)
+                    this.isLoading = false
                 })
             } else {
                 ApiRequests.saveGlass(postData).then(() => {
-                    this.isLoading = false;
-                    this.$toast.default(this.$t('glass-type.add-success'));
+                    this.isLoading = false
+                    this.$toast.default(this.$t('glass-type.add-success'))
                     this.$emit('glassDialogClosed')
                 }).catch(e => {
-                    this.$toast.error(e.message);
-                    this.isLoading = false;
+                    this.$toast.error(e.message)
+                    this.isLoading = false
                 })
             }
         }

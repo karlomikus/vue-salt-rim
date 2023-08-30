@@ -31,9 +31,9 @@ export default {
     watch: {
         shown(val) {
             if (val) {
-                document.body.style.overflow = "hidden";
+                document.body.style.overflow = 'hidden'
             } else {
-                document.body.style.overflow = "auto";
+                document.body.style.overflow = 'auto'
             }
         }
     },
@@ -44,7 +44,7 @@ export default {
         show(payload) {
             this.body = payload.body
             this.resolve = payload.onResolved
-            this.shown = true;
+            this.shown = true
         },
         confirm() {
             this.resolve(this)
@@ -53,7 +53,7 @@ export default {
             this.close()
         },
         close() {
-            this.shown = false;
+            this.shown = false
         }
     }
 }

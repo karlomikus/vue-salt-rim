@@ -17,7 +17,7 @@ export default {
         modelValue: {
             type: [Object, Array],
             default() {
-                return null;
+                return null
             }
         },
         title: {
@@ -43,19 +43,19 @@ export default {
     computed: {
         model: {
             get() {
-                return this.modelValue;
+                return this.modelValue
             },
             set(value) {
-                this.$emit("update:modelValue", value);
-                this.$emit("change", value);
+                this.$emit('update:modelValue', value)
+                this.$emit('change', value)
             }
         },
         isClearable() {
             if (this.type == 'radio') {
-                return this.model && this.model != null;
+                return this.model && this.model != null
             }
 
-            return this.model && this.model.length > 0;
+            return this.model && this.model.length > 0
         },
         totalSelected() {
             if (!this.model || this.type == 'radio' || this.model.length == 0) {
@@ -68,12 +68,12 @@ export default {
     methods: {
         clear() {
             if (this.type == 'checkbox') {
-                this.model = [];
+                this.model = []
             } else {
-                this.model = null;
+                this.model = null
             }
 
-            this.$emit("change", this.model);
+            this.$emit('change', this.model)
         }
     }
 }

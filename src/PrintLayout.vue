@@ -13,10 +13,10 @@ import { RouterView } from 'vue-router'
 
 <script>
 export default {
-  methods: {
-    print() {
-      window.print();
+    methods: {
+        print() {
+            window.print()
+        }
     }
-  }
 }
 </script>

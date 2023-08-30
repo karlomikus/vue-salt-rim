@@ -40,11 +40,11 @@
 </template>
 
 <script>
-import ApiRequests from "@/ApiRequests";
+import ApiRequests from '@/ApiRequests'
 import OverlayLoader from '@/components/OverlayLoader.vue'
 import PageHeader from '@/components/PageHeader.vue'
 import Navigation from '@/components/Settings/SettingsNavigation.vue'
-import AppState from "./../../AppState";
+import AppState from './../../AppState'
 
 export default {
     components: {
@@ -57,48 +57,48 @@ export default {
             isLoading: false,
             user: {},
             currentLocale: this.$i18n.locale
-        };
+        }
     },
     created() {
         document.title = `${this.$t('profile')} \u22C5 ${this.site_title}`
 
-        this.isLoading = true;
+        this.isLoading = true
 
         ApiRequests.fetchUser().then(data => {
             this.user = data
-            this.isLoading = false;
+            this.isLoading = false
         }).catch(e => {
-            this.$toast.error(e.message);
-            this.isLoading = false;
+            this.$toast.error(e.message)
+            this.isLoading = false
         })
     },
     methods: {
         submit() {
-            this.isLoading = true;
+            this.isLoading = true
 
             const postData = {
                 email: this.user.email,
                 name: this.user.name,
                 password: this.user.password,
                 password_confirmation: this.user.repeatPassword,
-            };
+            }
 
-            const appState = new AppState();
+            const appState = new AppState()
 
             if (this.currentLocale) {
-                appState.setLanguage(this.currentLocale);
-                this.$i18n.locale = this.currentLocale;
+                appState.setLanguage(this.currentLocale)
+                this.$i18n.locale = this.currentLocale
             }
 
             ApiRequests.updateUser(postData).then(data => {
-                appState.setUser(data);
-                this.isLoading = false;
-                this.$toast.default(this.$t('profile-updated'));
-                this.user.password = null;
-                this.user.repeatPassword = null;
+                appState.setUser(data)
+                this.isLoading = false
+                this.$toast.default(this.$t('profile-updated'))
+                this.user.password = null
+                this.user.repeatPassword = null
             }).catch(e => {
-                this.isLoading = false;
-                this.$toast.error(e.message);
+                this.isLoading = false
+                this.$toast.error(e.message)
             })
         }
     }

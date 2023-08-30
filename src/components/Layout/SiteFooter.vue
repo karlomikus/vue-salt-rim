@@ -29,7 +29,7 @@
 </template>
 
 <script>
-import ApiRequests from './../../ApiRequests';
+import ApiRequests from './../../ApiRequests'
 
 export default {
     data() {
@@ -57,8 +57,8 @@ export default {
             this.versions.api = resp.version
             this.versions.meili = resp.search_version
         }).catch(() => {
-            this.versions.api = 'n/a';
-            this.versions = 'n/a';
+            this.versions.api = 'n/a'
+            this.versions = 'n/a'
         })
     }
 }

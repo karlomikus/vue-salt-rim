@@ -15,12 +15,12 @@ export default {
         this.observer = new IntersectionObserver((entries) => {
             entries.forEach((entry) => {
                 if (entry.isIntersecting) {
-                    const imgElement = entry.target.querySelector('.cocktail-list-item__graphic__image');
+                    const imgElement = entry.target.querySelector('.cocktail-list-item__graphic__image')
                     imgElement.style.backgroundImage = `url('${imgElement.dataset.imgSrc}')`
                     this.observer.unobserve(entry.target)
                 }
-            });
-        });
+            })
+        })
     }
 }
 </script>

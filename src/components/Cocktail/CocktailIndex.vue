@@ -99,11 +99,11 @@ import ApiRequests from './../../ApiRequests.js'
 import CocktailGridItem from './CocktailGridItem.vue'
 import CocktailGridContainer from './CocktailGridContainer.vue'
 import PageHeader from './../PageHeader.vue'
-import Refinement from './../Search/SearchRefinement.vue';
-import Pagination from './../Search/SearchPagination.vue';
-import CollectionDialog from './../Collections/CollectionDialog.vue';
+import Refinement from './../Search/SearchRefinement.vue'
+import Pagination from './../Search/SearchPagination.vue'
+import CollectionDialog from './../Collections/CollectionDialog.vue'
 import SaltRimDialog from './../Dialog/SaltRimDialog.vue'
-import qs from 'qs';
+import qs from 'qs'
 
 export default {
     components: {
@@ -177,15 +177,15 @@ export default {
                     return
                 }
                 if (val.startsWith('-')) {
-                    this.sort_dir = '-';
+                    this.sort_dir = '-'
                     this.sort = val.substring(1)
                 } else {
-                    this.sort_dir = '';
+                    this.sort_dir = ''
                     this.sort = val
                 }
             },
             get() {
-                return (this.sort != null && this.sort != '') ? this.sort_dir + this.sort : null;
+                return (this.sort != null && this.sort != '') ? this.sort_dir + this.sort : null
             }
         },
         refineMethods() {
@@ -261,19 +261,19 @@ export default {
             })
         },
         currentCocktailIds() {
-            return this.cocktails.map((c) => c.id);
+            return this.cocktails.map((c) => c.id)
         }
     },
     created() {
         document.title = `${this.$t('cocktails')} \u22C5 ${this.site_title}`
 
-        this.fetchRefinements();
+        this.fetchRefinements()
 
         this.$watch(
             () => this.$route.query,
             () => {
                 if (this.$route.name == 'cocktails') {
-                    this.queryToState();
+                    this.queryToState()
                     this.refreshCocktails()
                 }
             },
@@ -303,23 +303,23 @@ export default {
             })
         },
         updateRouterPath() {
-            const query = this.stateToQuery();
+            const query = this.stateToQuery()
 
             this.$router.push({
                 query: query
             })
         },
         refreshCocktails() {
-            const query = this.stateToQuery();
+            const query = this.stateToQuery()
 
-            this.isLoading = true;
+            this.isLoading = true
             ApiRequests.fetchCocktails(query).then(resp => {
                 this.cocktails = resp.data
                 this.meta = resp.meta
-                this.isLoading = false;
+                this.isLoading = false
             }).catch(e => {
-                this.$toast.error(e.message);
-                this.isLoading = false;
+                this.$toast.error(e.message)
+                this.isLoading = false
             })
         },
         handlePageChange(toPage) {
@@ -327,7 +327,7 @@ export default {
             this.updateRouterPath()
         },
         queryToState() {
-            const state = qs.parse(this.$route.query);
+            const state = qs.parse(this.$route.query)
 
             this.activeFilters.tags = state.filter && state.filter.tag_id ? String(state.filter.tag_id).split(',') : []
             this.activeFilters.methods = state.filter && state.filter.cocktail_method_id ? String(state.filter.cocktail_method_id).split(',') : []
@@ -363,7 +363,7 @@ export default {
                 per_page: this.per_page,
                 page: this.currentPage,
                 sort: this.sortWithDir
-            };
+            }
 
             const filters = {
                 name: (this.searchQuery != null && this.searchQuery != '') ? this.searchQuery : null,
@@ -381,12 +381,12 @@ export default {
                 collection_id: this.activeFilters.collections.length > 0 ? this.activeFilters.collections.join(',') : null,
                 abv_min: this.activeFilters.abv ? this.activeFilters.abv.min : null,
                 abv_max: this.activeFilters.abv ? this.activeFilters.abv.max : null,
-            };
+            }
 
             // Remove null values
             query.filter = Object.entries(filters).reduce((a,[k,v]) => (v === null || v === false ? a : (a[k]=v, a)), {})
 
-            return query;
+            return query
         },
         handleCollectionsDialogClosed() {
             this.showCreateNewCollectionDialog = false
@@ -419,9 +419,9 @@ export default {
                 user_rating: null,
                 abv: null,
                 total_ingredients: null
-            };
+            }
 
-            this.updateRouterPath();
+            this.updateRouterPath()
         },
         handleClickAway(e) {
             if (e && e.target && e.target.classList.contains('resource-search__refinements')) {

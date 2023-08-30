@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import ApiRequests from '@/ApiRequests';
+import ApiRequests from '@/ApiRequests'
 
 export default {
     props: {
@@ -38,27 +38,27 @@ export default {
     methods: {
         rate(rating) {
             if (this.isLoading) {
-                return;
+                return
             }
 
-            this.isLoading = true;
+            this.isLoading = true
             if (this.currentRating == rating) {
                 ApiRequests.deleteCocktailUserRating(this.id).then(() => {
                     this.currentRating = 0
                     this.$toast.default(this.$t('rating-removed'))
-                    this.isLoading = false;
+                    this.isLoading = false
                 }).catch(e => {
                     this.$toast.error(e.message)
-                    this.isLoading = false;
+                    this.isLoading = false
                 })
             } else {
                 ApiRequests.rateCocktail(this.id, { rating: rating }).then(() => {
                     this.currentRating = rating
                     this.$toast.default(this.$t('rating-rated', {rating: rating}))
-                    this.isLoading = false;
+                    this.isLoading = false
                 }).catch(e => {
                     this.$toast.error(e.message)
-                    this.isLoading = false;
+                    this.isLoading = false
                 })
             }
         }

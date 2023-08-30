@@ -112,14 +112,14 @@
 </template>
 
 <script>
-import ApiRequests from './../../ApiRequests.js';
+import ApiRequests from './../../ApiRequests.js'
 import IngredientListItem from '@/components/Ingredient/IngredientListItem.vue'
 import IngredientListContainer from '@/components/Ingredient/IngredientListContainer.vue'
 import CocktailListItem from '@/components/Cocktail/CocktailListItem.vue'
 import CocktailListContainer from '@/components/Cocktail/CocktailListContainer.vue'
 import OverlayLoader from '@/components/OverlayLoader.vue'
 import PageHeader from '@/components/PageHeader.vue'
-import AppState from './../../AppState';
+import AppState from './../../AppState'
 
 export default {
     components: {
@@ -131,7 +131,7 @@ export default {
         PageHeader,
     },
     data() {
-        const appState = new AppState();
+        const appState = new AppState()
 
         return {
             user: appState.user,
@@ -154,30 +154,30 @@ export default {
     created() {
         document.title = `${this.$t('shelf.title')} \u22C5 ${this.site_title}`
 
-        this.loaders.favorites = true;
-        this.loaders.cocktails = true;
-        this.loaders.stats = true;
+        this.loaders.favorites = true
+        this.loaders.cocktails = true
+        this.loaders.stats = true
 
         ApiRequests.fetchCocktails({ 'filter[favorites]': true, per_page: this.maxItems, sort: '-favorited_at' }).then(resp => {
-            this.loaders.favorites = false;
+            this.loaders.favorites = false
             this.favoriteCocktails = resp.data
         }).catch(() => {
-            this.loaders.favorites = false;
-            this.$toast.error(this.$t('shelf.toasts.favorites-error'));
+            this.loaders.favorites = false
+            this.$toast.error(this.$t('shelf.toasts.favorites-error'))
         })
 
         ApiRequests.fetchCocktails({ per_page: this.maxItems, sort: '-created_at' }).then(resp => {
-            this.loaders.cocktails = false;
+            this.loaders.cocktails = false
             this.latestCocktails = resp.data
         }).catch(() => {
-            this.loaders.cocktails = false;
-            this.$toast.error(this.$t('shelf.toasts.shelf-error'));
+            this.loaders.cocktails = false
+            this.$toast.error(this.$t('shelf.toasts.shelf-error'))
         })
 
-        this.fetchShoppingList();
+        this.fetchShoppingList()
 
         ApiRequests.fetchStats().then(data => {
-            this.loaders.stats = false;
+            this.loaders.stats = false
             this.stats = data
 
             // this.loaders.favorite_ingredients = true;
@@ -198,23 +198,23 @@ export default {
             //     })
             // });
         }).catch(() => {
-            this.loaders.stats = false;
-            this.$toast.error(this.$t('shelf.toasts.stats-error'));
+            this.loaders.stats = false
+            this.$toast.error(this.$t('shelf.toasts.stats-error'))
         })
     },
     methods: {
         fetchShoppingList() {
-            this.loaders.list = true;
+            this.loaders.list = true
             ApiRequests.fetchIngredients({ 'filter[on_shopping_list]': true, per_page: this.maxItems }).then(response => {
-                this.loaders.list = false;
+                this.loaders.list = false
                 this.shoppingListIngredients = response.data
             }).catch(() => {
-                this.loaders.list = false;
-                this.$toast.error(this.$t('shelf.toasts.list-error'));
+                this.loaders.list = false
+                this.$toast.error(this.$t('shelf.toasts.list-error'))
             })
         },
         removeIngFromList() {
-            this.fetchShoppingList();
+            this.fetchShoppingList()
         }
     }
 }

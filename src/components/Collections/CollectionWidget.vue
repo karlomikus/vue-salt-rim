@@ -16,7 +16,7 @@
     </div>
 </template>
 <script>
-import ApiRequests from './../../ApiRequests.js';
+import ApiRequests from './../../ApiRequests.js'
 import OverlayLoader from './../OverlayLoader.vue'
 
 export default {
@@ -36,7 +36,7 @@ export default {
         return {
             isLoading: false,
             collections: []
-        };
+        }
     },
     watch: {
         cocktail() {
@@ -44,24 +44,24 @@ export default {
         }
     },
     created() {
-        this.fetchCocktailCollections();
+        this.fetchCocktailCollections()
     },
     methods: {
         fetchCocktailCollections() {
-            this.isLoading = true;
+            this.isLoading = true
             ApiRequests.fetchCollections({ 'filter[cocktail_id]': this.cocktail.id }).then(data => {
                 this.collections = data
-                this.isLoading = false;
+                this.isLoading = false
             }).catch(() => {
                 this.collections = []
-                this.isLoading = false;
+                this.isLoading = false
             })
         },
         removeCocktailFromCollection(collectionId) {
             this.$confirm(this.$t('collections.confirm-remove-cocktail'), {
                 onResolved: (dialog) => {
-                    this.isLoading = true;
-                    dialog.close();
+                    this.isLoading = true
+                    dialog.close()
                     ApiRequests.removeCocktailFromCollection(collectionId, this.cocktail.id).then(() => {
                         this.$toast.default(this.$t('collections.cocktail-remove-success'))
                         this.$emit('cocktailRemovedFromCollection', { id: this.cocktail.id })
@@ -71,7 +71,7 @@ export default {
                         this.isLoading = false
                     })
                 }
-            });
+            })
         },
     }
 }

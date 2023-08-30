@@ -18,7 +18,7 @@
 </template>
 
 <script>
-import ApiRequests from "./../../ApiRequests.js";
+import ApiRequests from './../../ApiRequests.js'
 import OverlayLoader from './../OverlayLoader.vue'
 
 export default {
@@ -43,34 +43,34 @@ export default {
             isLoading: false,
             categoryId: null,
             utensil: this.sourceData,
-        };
+        }
     },
     methods: {
         submit() {
-            this.isLoading = true;
+            this.isLoading = true
 
             const postData = {
                 name: this.utensil.name,
                 description: this.utensil.description,
-            };
+            }
 
             if (this.utensil.id) {
                 ApiRequests.updateUtensil(this.utensil.id, postData).then(() => {
-                    this.isLoading = false;
-                    this.$toast.default(this.$t('utensils.update-success'));
+                    this.isLoading = false
+                    this.$toast.default(this.$t('utensils.update-success'))
                     this.$emit('utensilDialogClosed')
                 }).catch(e => {
-                    this.$toast.error(e.message);
-                    this.isLoading = false;
+                    this.$toast.error(e.message)
+                    this.isLoading = false
                 })
             } else {
                 ApiRequests.saveUtensil(postData).then(() => {
-                    this.isLoading = false;
-                    this.$toast.default(this.$t('utensils.add-success'));
+                    this.isLoading = false
+                    this.$toast.default(this.$t('utensils.add-success'))
                     this.$emit('utensilDialogClosed')
                 }).catch(e => {
-                    this.$toast.error(e.message);
-                    this.isLoading = false;
+                    this.$toast.error(e.message)
+                    this.isLoading = false
                 })
             }
         }

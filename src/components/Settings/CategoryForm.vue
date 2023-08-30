@@ -18,7 +18,7 @@
 </template>
 
 <script>
-import ApiRequests from "@/ApiRequests";
+import ApiRequests from '@/ApiRequests'
 import OverlayLoader from '@/components/OverlayLoader.vue'
 
 export default {
@@ -43,34 +43,34 @@ export default {
             isLoading: false,
             categoryId: null,
             category: this.sourceCategory,
-        };
+        }
     },
     methods: {
         submit() {
-            this.isLoading = true;
+            this.isLoading = true
 
             const postData = {
                 name: this.category.name,
                 description: this.category.description,
-            };
+            }
 
             if (this.category.id) {
                 ApiRequests.updateIngredientCategory(this.category.id, postData).then(() => {
-                    this.isLoading = false;
-                    this.$toast.default(this.$t('category.update-success'));
+                    this.isLoading = false
+                    this.$toast.default(this.$t('category.update-success'))
                     this.$emit('categoryDialogClosed')
                 }).catch(e => {
-                    this.$toast.error(e.message);
-                    this.isLoading = false;
+                    this.$toast.error(e.message)
+                    this.isLoading = false
                 })
             } else {
                 ApiRequests.saveIngredientCategory(postData).then(() => {
-                    this.isLoading = false;
-                    this.$toast.default(this.$t('category.add-success'));
+                    this.isLoading = false
+                    this.$toast.default(this.$t('category.add-success'))
                     this.$emit('categoryDialogClosed')
                 }).catch(e => {
-                    this.$toast.error(e.message);
-                    this.isLoading = false;
+                    this.$toast.error(e.message)
+                    this.isLoading = false
                 })
             }
         }

@@ -290,23 +290,23 @@
 
 <script>
 import { micromark } from 'micromark'
-import ApiRequests from './../../ApiRequests.js';
-import AppState from './../../AppState';
+import ApiRequests from './../../ApiRequests.js'
+import AppState from './../../AppState'
 import OverlayLoader from './../OverlayLoader.vue'
-import Dropdown from './../SaltRimDropdown.vue';
-import Rating from './../RatingActions.vue';
-import { Swiper, SwiperSlide } from 'swiper/vue';
-import { Navigation, Pagination } from 'swiper';
-import Utils from '@/Utils';
-import SaltRimDialog from './../Dialog/SaltRimDialog.vue';
+import Dropdown from './../SaltRimDropdown.vue'
+import Rating from './../RatingActions.vue'
+import { Swiper, SwiperSlide } from 'swiper/vue'
+import { Navigation, Pagination } from 'swiper'
+import Utils from '@/Utils'
+import SaltRimDialog from './../Dialog/SaltRimDialog.vue'
 import Note from './../Note/NoteDetails.vue'
 import NoteDialog from './../Note/NoteDialog.vue'
-import PublicLinkDialog from './PublicLinkDialog.vue';
-import GenerateImageDialog from './GenerateImageDialog.vue';
-import SimilarCocktails from './SimilarCocktails.vue';
-import IngredientSpotlight from './../Ingredient/IngredientSpotlight.vue';
-import CocktailCollections from './../Collections/CollectionWidget.vue';
-import CollectionDialog from './../Collections/CollectionDialog.vue';
+import PublicLinkDialog from './PublicLinkDialog.vue'
+import GenerateImageDialog from './GenerateImageDialog.vue'
+import SimilarCocktails from './SimilarCocktails.vue'
+import IngredientSpotlight from './../Ingredient/IngredientSpotlight.vue'
+import CocktailCollections from './../Collections/CollectionWidget.vue'
+import CollectionDialog from './../Collections/CollectionDialog.vue'
 import dayjs from 'dayjs'
 
 export default {
@@ -347,21 +347,21 @@ export default {
     computed: {
         parsedInstructions() {
             if (!this.cocktail.instructions) {
-                return null;
+                return null
             }
 
             return micromark(this.cocktail.instructions)
         },
         parsedGarnish() {
             if (!this.cocktail.garnish) {
-                return null;
+                return null
             }
 
             return micromark(this.cocktail.garnish)
         },
         parsedDescription() {
             if (!this.cocktail.description) {
-                return null;
+                return null
             }
 
             return micromark(this.cocktail.description)
@@ -376,16 +376,16 @@ export default {
             return this.cocktail.images.slice(0).sort((a, b) => a.sort - b.sort)
         },
         createdDate() {
-            const date = dayjs(this.cocktail.created_at).toDate();
+            const date = dayjs(this.cocktail.created_at).toDate()
 
-            return this.$d(date, 'long');
+            return this.$d(date, 'long')
         },
         totalLiquid() {
             const amount = this.cocktail.ingredients.filter(ing => ['ml', 'cl', 'oz'].includes(ing.units)).reduce((acc, ing) => {
                 return parseFloat(ing.amount) + acc
-            }, 0) * this.servings;
+            }, 0) * this.servings
 
-            return Utils.printIngredientAmount({ amount: amount, units: 'ml' }, this.currentUnit, this.servings);
+            return Utils.printIngredientAmount({ amount: amount, units: 'ml' }, this.currentUnit, this.servings)
         }
     },
     created() {
@@ -394,7 +394,7 @@ export default {
             () => this.$route.params,
             () => {
                 if (this.$route.name == 'cocktails.show') {
-                    this.fetchCocktail();
+                    this.fetchCocktail()
                 }
             },
             { immediate: true }
@@ -402,37 +402,37 @@ export default {
     },
     methods: {
         async fetchCocktail() {
-            this.isLoading = true;
+            this.isLoading = true
 
-            this.userShelfIngredients = await ApiRequests.fetchMyShelf().catch(() => []);
-            this.userShoppingListIngredients = await ApiRequests.fetchShoppingList().catch(() => []);
-            const userFavorites = await ApiRequests.fetchCocktailFavorites().catch(() => []);
+            this.userShelfIngredients = await ApiRequests.fetchMyShelf().catch(() => [])
+            this.userShoppingListIngredients = await ApiRequests.fetchShoppingList().catch(() => [])
+            const userFavorites = await ApiRequests.fetchCocktailFavorites().catch(() => [])
 
             ApiRequests.fetchCocktail(this.$route.params.id, { navigation: true }).then(data => {
-                this.isLoading = false;
+                this.isLoading = false
                 this.cocktail = data
                 this.isFavorited = userFavorites.includes(data.id)
                 document.title = `${this.cocktail.name} \u22C5 ${this.site_title}`
             }).catch(e => {
-                this.isLoading = false;
-                this.$toast.error(e.message);
+                this.isLoading = false
+                this.$toast.error(e.message)
             })
 
-            const appState = new AppState();
+            const appState = new AppState()
 
             if (appState.defaultUnit) {
                 this.currentUnit = appState.defaultUnit
             }
         },
         favorite() {
-            this.isLoadingFavorite = true;
+            this.isLoadingFavorite = true
             ApiRequests.favoriteCocktail(this.cocktail.id).then(resp => {
                 this.isFavorited = resp.is_favorited
-                this.isLoadingFavorite = false;
-                this.$toast.default(this.isFavorited ? this.$t('cocktail.favorited', { name: this.cocktail.name }) : this.$t('cocktail.unfavorited', { name: this.cocktail.name }));
+                this.isLoadingFavorite = false
+                this.$toast.default(this.isFavorited ? this.$t('cocktail.favorited', { name: this.cocktail.name }) : this.$t('cocktail.unfavorited', { name: this.cocktail.name }))
             }).catch(e => {
-                this.isLoadingFavorite = false;
-                this.$toast.error(e.message);
+                this.isLoadingFavorite = false
+                this.$toast.error(e.message)
             })
         },
         deleteCocktail() {
@@ -440,57 +440,57 @@ export default {
                 onResolved: (dialog) => {
                     dialog.close()
                     ApiRequests.deleteCocktail(this.cocktail.id).then(() => {
-                        this.$toast.default(this.$t('cocktail.delete-success', { name: this.cocktail.name }));
+                        this.$toast.default(this.$t('cocktail.delete-success', { name: this.cocktail.name }))
                         this.$router.push({ name: 'cocktails' })
                         dialog.close()
                     }).catch(e => {
-                        this.$toast.error(e.message);
+                        this.$toast.error(e.message)
                         dialog.close()
                     })
                 }
-            });
+            })
         },
         addMissingIngredients() {
             const postData = {
                 ingredient_ids: this.missingIngredientIds
-            };
+            }
 
-            this.isLoading = true;
+            this.isLoading = true
             ApiRequests.addIngredientsToShoppingList(postData).then(async data => {
                 this.$toast.default(this.$t('cocktail.ingredients-added-success', { total: data.length }))
-                this.userShoppingListIngredients = await ApiRequests.fetchShoppingList().catch(() => []);
-                this.isLoading = false;
+                this.userShoppingListIngredients = await ApiRequests.fetchShoppingList().catch(() => [])
+                this.isLoading = false
             }).catch(e => {
-                this.$toast.error(e.message);
-                this.isLoading = false;
+                this.$toast.error(e.message)
+                this.isLoading = false
             })
         },
         parseIngredientAmount(ingredient) {
-            return Utils.printIngredientAmount(ingredient, this.currentUnit, this.servings);
+            return Utils.printIngredientAmount(ingredient, this.currentUnit, this.servings)
         },
         changeMeasurementUnit(toUnit) {
-            const appState = new AppState();
-            this.currentUnit = toUnit;
-            appState.setDefaultUnit(toUnit);
+            const appState = new AppState()
+            this.currentUnit = toUnit
+            appState.setDefaultUnit(toUnit)
         },
         shareFromFormat(format) {
-            this.isLoadingShare = true;
+            this.isLoadingShare = true
             ApiRequests.shareCocktail(this.cocktail.slug, { type: format }).then(data => {
-                this.isLoadingShare = false;
+                this.isLoadingShare = false
                 navigator.clipboard.writeText(data).then(() => {
-                    this.$toast.default(this.$t('share-format-copied'));
+                    this.$toast.default(this.$t('share-format-copied'))
                 }, () => {
-                    this.$toast.error(this.$t('share-format-copy-failed'));
-                });
+                    this.$toast.error(this.$t('share-format-copy-failed'))
+                })
             })
         },
         refreshNotes() {
-            this.isLoadingNotes = true;
+            this.isLoadingNotes = true
             ApiRequests.fetchNotes({ 'filter[cocktail_id]': this.cocktail.id }).then(data => {
-                this.isLoadingNotes = false;
-                this.notes = data;
+                this.isLoadingNotes = false
+                this.notes = data
             }).catch(() => {
-                this.isLoadingNotes = false;
+                this.isLoadingNotes = false
             })
         }
     }

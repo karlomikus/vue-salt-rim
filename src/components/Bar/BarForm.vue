@@ -33,8 +33,8 @@
     </form>
 </template>
 <script>
-import ApiRequests from './../../ApiRequests';
-import OverlayLoader from './../OverlayLoader.vue';
+import ApiRequests from './../../ApiRequests'
+import OverlayLoader from './../OverlayLoader.vue'
 
 export default {
     components: {
@@ -67,14 +67,14 @@ export default {
     },
     methods: {
         submit() {
-            this.isLoading = true;
+            this.isLoading = true
             ApiRequests.saveBar({
                 name: this.bar.name,
                 subtitle: this.bar.subtitle,
                 description: this.bar.description,
             }).then(() => {
-                this.isLoading = false;
-                this.$toast.default(this.$t('bars.add-success', { name: this.bar.name }));
+                this.isLoading = false
+                this.$toast.default(this.$t('bars.add-success', { name: this.bar.name }))
                 this.$emit('dialogClosed')
                 this.$emit('barCreated')
             })

@@ -14,7 +14,7 @@
 </template>
 
 <script>
-import ApiRequests from "@/ApiRequests";
+import ApiRequests from '@/ApiRequests'
 import OverlayLoader from '@/components/OverlayLoader.vue'
 
 export default {
@@ -38,33 +38,33 @@ export default {
         return {
             isLoading: false,
             tag: this.sourceTag,
-        };
+        }
     },
     methods: {
         submit() {
-            this.isLoading = true;
+            this.isLoading = true
 
             const postData = {
                 name: this.tag.name,
-            };
+            }
 
             if (this.tag.id) {
                 ApiRequests.updateTag(this.tag.id, postData).then(() => {
-                    this.isLoading = false;
-                    this.$toast.default(this.$t('tag.update-success'));
+                    this.isLoading = false
+                    this.$toast.default(this.$t('tag.update-success'))
                     this.$emit('tagDialogClosed')
                 }).catch(e => {
-                    this.$toast.error(e.message);
-                    this.isLoading = false;
+                    this.$toast.error(e.message)
+                    this.isLoading = false
                 })
             } else {
                 ApiRequests.saveTag(postData).then(() => {
-                    this.isLoading = false;
-                    this.$toast.default(this.$t('tag.add-success'));
+                    this.isLoading = false
+                    this.$toast.default(this.$t('tag.add-success'))
                     this.$emit('tagDialogClosed')
                 }).catch(e => {
-                    this.$toast.error(e.message);
-                    this.isLoading = false;
+                    this.$toast.error(e.message)
+                    this.isLoading = false
                 })
             }
         }

@@ -19,7 +19,7 @@
 </template>
 
 <script>
-import ApiRequests from '@/ApiRequests.js';
+import ApiRequests from '@/ApiRequests.js'
 import { thumbHashToDataURL } from 'thumbhash'
 
 export default {
@@ -45,30 +45,30 @@ export default {
             if (this.cocktail.image_hash) {
                 return thumbHashToDataURL(
                     Uint8Array.from(atob(this.cocktail.image_hash), c => c.charCodeAt(0))
-                );
+                )
             }
 
             if (this.cocktail.images && this.cocktail.images.length > 0) {
                 return thumbHashToDataURL(
                     Uint8Array.from(atob(this.cocktail.images.filter((img) => img.id == this.cocktail.main_image_id)[0].placeholder_hash), c => c.charCodeAt(0))
-                );
+                )
             }
 
-            return '';
+            return ''
         },
         isFavorited() {
-            return [].includes(this.cocktail.id);
+            return [].includes(this.cocktail.id)
         },
         mainCocktailImageUrl() {
             if (this.cocktail.image_url) {
-                return ApiRequests.imageThumbUrl(this.cocktail.main_image_id);
+                return ApiRequests.imageThumbUrl(this.cocktail.main_image_id)
             }
 
             if (this.cocktail.images && this.cocktail.images.length > 0) {
-                return ApiRequests.imageThumbUrl(this.cocktail.main_image_id);
+                return ApiRequests.imageThumbUrl(this.cocktail.main_image_id)
             }
 
-            return '/no-cocktail.jpg';
+            return '/no-cocktail.jpg'
         },
         shortIngredients() {
             return this.cocktail.ingredients.map(i => i.name)

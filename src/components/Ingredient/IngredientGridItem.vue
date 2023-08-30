@@ -70,14 +70,14 @@ export default {
     computed: {
         image() {
             if (this.ingredient.image_url) {
-                return this.ingredient.image_url;
+                return this.ingredient.image_url
             }
 
             if (this.ingredient.images && this.ingredient.images.length > 0) {
                 return this.ingredient.images.filter(img => img.id == this.ingredient.main_image_id)[0].url
             }
 
-            return '/no-ingredient.png';
+            return '/no-ingredient.png'
         },
         inShelf() {
             return this.scopedUserIngredients.includes(this.ingredient.id)
@@ -102,65 +102,65 @@ export default {
     },
     methods: {
         setupColor(hex) {
-            var c;
+            var c
             if (/^#([A-Fa-f0-9]{3}){1,2}$/.test(hex)) {
-                c = hex.substring(1).split('');
+                c = hex.substring(1).split('')
                 if (c.length == 3) {
-                    c = [c[0], c[0], c[1], c[1], c[2], c[2]];
+                    c = [c[0], c[0], c[1], c[1], c[2], c[2]]
                 }
-                c = '0x' + c.join('');
-                return 'rgba(' + [(c >> 16) & 255, (c >> 8) & 255, c & 255].join(',') + ',.13)';
+                c = '0x' + c.join('')
+                return 'rgba(' + [(c >> 16) & 255, (c >> 8) & 255, c & 255].join(',') + ',.13)'
             }
 
-            return hex;
+            return hex
         },
         toggleShelf() {
-            this.isLoading = true;
+            this.isLoading = true
 
             if (this.inShelf) {
                 ApiRequests.removeIngredientsFromShelf({ingredient_ids: [this.ingredient.id]}).then(() => {
-                    this.isLoading = false;
-                    this.$toast.default(this.$t('ingredient.shelf-remove-success', { name: this.ingredient.name }));
+                    this.isLoading = false
+                    this.$toast.default(this.$t('ingredient.shelf-remove-success', { name: this.ingredient.name }))
                     this.scopedUserIngredients.splice(this.scopedUserIngredients.indexOf(this.ingredient.id), 1)
                 }).catch(e => {
                     this.$toast.error(e.message)
-                    this.isLoading = false;
+                    this.isLoading = false
                 })
             } else {
                 ApiRequests.addIngredientsToShelf({ingredient_ids: [this.ingredient.id]}).then(() => {
-                    this.isLoading = false;
+                    this.isLoading = false
                     this.$toast.default(this.$t('ingredient.shelf-add-success', { name: this.ingredient.name }))
                     this.scopedUserIngredients.push(this.ingredient.id)
                 }).catch(e => {
                     this.$toast.error(e.message)
-                    this.isLoading = false;
+                    this.isLoading = false
                 })
             }
         },
         toggleList() {
-            this.isLoading = true;
+            this.isLoading = true
 
             const postData = {
                 ingredient_ids: [this.ingredient.id]
-            };
+            }
 
             if (this.inList) {
                 ApiRequests.removeIngredientsFromShoppingList(postData).then(() => {
-                    this.isLoading = false;
-                    this.$toast.default(this.$t('ingredient.list-remove-success', { name: this.ingredient.name }));
+                    this.isLoading = false
+                    this.$toast.default(this.$t('ingredient.list-remove-success', { name: this.ingredient.name }))
                     this.scopedShoppingList.splice(this.scopedShoppingList.indexOf(this.ingredient.id), 1)
                 }).catch(e => {
                     this.$toast.error(e.message)
-                    this.isLoading = false;
+                    this.isLoading = false
                 })
             } else {
                 ApiRequests.addIngredientsToShoppingList(postData).then(() => {
-                    this.isLoading = false;
+                    this.isLoading = false
                     this.$toast.default(this.$t('ingredient.list-add-success', { name: this.ingredient.name }))
                     this.scopedShoppingList.push(this.ingredient.id)
                 }).catch(e => {
                     this.$toast.error(e.message)
-                    this.isLoading = false;
+                    this.isLoading = false
                 })
             }
         }

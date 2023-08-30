@@ -135,8 +135,8 @@
 </template>
 
 <script>
-import ApiRequests from './../../ApiRequests.js';
-import Dropdown from '@/components/SaltRimDropdown.vue';
+import ApiRequests from './../../ApiRequests.js'
+import Dropdown from '@/components/SaltRimDropdown.vue'
 import OverlayLoader from '@/components/OverlayLoader.vue'
 import { micromark } from 'micromark'
 
@@ -155,22 +155,22 @@ export default {
     computed: {
         mainIngredientImageUrl() {
             if (!this.ingredient.main_image_id) {
-                return '/no-ingredient.png';
+                return '/no-ingredient.png'
             }
 
-            return this.ingredient.images.filter((img) => img.id == this.ingredient.main_image_id)[0].url;
+            return this.ingredient.images.filter((img) => img.id == this.ingredient.main_image_id)[0].url
         },
         parsedDescription() {
             if (!this.ingredient.description) {
-                return null;
+                return null
             }
 
             return micromark(this.ingredient.description)
         },
         defaultCocktails() {
-            const removeIds = this.extraIfAddedToShelf.map(c => c.id);
+            const removeIds = this.extraIfAddedToShelf.map(c => c.id)
 
-            return this.ingredient.cocktails.filter(c => !removeIds.includes(c.id));
+            return this.ingredient.cocktails.filter(c => !removeIds.includes(c.id))
         }
     },
     watch: {
@@ -183,7 +183,7 @@ export default {
             () => this.$route.params.id,
             async () => {
                 if (this.$route.name == 'ingredients.show') {
-                    await this.refreshIngredient();
+                    await this.refreshIngredient()
                 }
             },
             { immediate: true }
@@ -191,101 +191,101 @@ export default {
     },
     methods: {
         async refreshIngredient() {
-            this.isLoading = true;
+            this.isLoading = true
 
             this.ingredient = await ApiRequests.fetchIngredient(this.$route.params.id).catch(e => {
-                this.$toast.error(e.message);
+                this.$toast.error(e.message)
 
-                return {};
-            });
+                return {}
+            })
 
-            const shelfIngredients = await ApiRequests.fetchMyShelf().catch(() => []);
-            const shoppingListIngredients = await ApiRequests.fetchShoppingList().catch(() => []);
+            const shelfIngredients = await ApiRequests.fetchMyShelf().catch(() => [])
+            const shoppingListIngredients = await ApiRequests.fetchShoppingList().catch(() => [])
 
-            this.isAddedToShelf = shelfIngredients.filter(i => i.ingredient_id == this.ingredient.id).length > 0;
-            this.isAddedToShoppingList = shoppingListIngredients.filter(i => i.ingredient_id == this.ingredient.id).length > 0;
+            this.isAddedToShelf = shelfIngredients.filter(i => i.ingredient_id == this.ingredient.id).length > 0
+            this.isAddedToShoppingList = shoppingListIngredients.filter(i => i.ingredient_id == this.ingredient.id).length > 0
 
             await this.refreshExtraCocktails()
 
-            this.isLoading = false;
+            this.isLoading = false
         },
         deleteIngredient() {
             this.$confirm(this.$t('ingredient.delete-confirm', { name: this.ingredient.name, total: this.ingredient.cocktails.length }), {
                 onResolved: (dialog) => {
                     dialog.close()
-                    this.isLoading = true;
+                    this.isLoading = true
                     ApiRequests.deleteIngredient(this.ingredient.id).then(() => {
-                        this.$toast.default(`Ingredient "${this.ingredient.name}" successfully removed`);
+                        this.$toast.default(`Ingredient "${this.ingredient.name}" successfully removed`)
                         this.$router.push({ name: 'ingredients' })
-                        this.isLoading = false;
+                        this.isLoading = false
                     }).catch(e => {
                         this.$toast.error(e.message)
-                        this.isLoading = false;
+                        this.isLoading = false
                     })
                 }
-            });
+            })
         },
         toggleShelf() {
-            this.isLoading = true;
+            this.isLoading = true
 
             const postData = {
                 ingredient_ids: [this.ingredient.id]
-            };
+            }
 
             if (this.isAddedToShelf) {
                 ApiRequests.removeIngredientsFromShelf(postData).then(() => {
-                    this.isAddedToShelf = false;
-                    this.$toast.default(this.$t('ingredient.shelf-remove-success', { name: this.ingredient.name }));
-                    this.isLoading = false;
+                    this.isAddedToShelf = false
+                    this.$toast.default(this.$t('ingredient.shelf-remove-success', { name: this.ingredient.name }))
+                    this.isLoading = false
                     this.refreshExtraCocktails()
                 }).catch(e => {
                     this.$toast.error(e.message)
-                    this.isLoading = false;
+                    this.isLoading = false
                 })
             } else {
                 ApiRequests.addIngredientsToShelf(postData).then(() => {
-                    this.isAddedToShelf = true;
-                    this.$toast.default(this.$t('ingredient.shelf-add-success', { name: this.ingredient.name }));
-                    this.isLoading = false;
+                    this.isAddedToShelf = true
+                    this.$toast.default(this.$t('ingredient.shelf-add-success', { name: this.ingredient.name }))
+                    this.isLoading = false
                     this.refreshExtraCocktails()
                 }).catch(e => {
                     this.$toast.error(e.message)
-                    this.isLoading = false;
+                    this.isLoading = false
                 })
             }
         },
         toggleShoppingList() {
-            this.isLoading = true;
+            this.isLoading = true
 
             const postData = {
                 ingredient_ids: [this.ingredient.id]
-            };
+            }
 
             if (this.isAddedToShoppingList) {
                 ApiRequests.removeIngredientsFromShoppingList(postData).then(() => {
-                    this.$toast.default(this.$t('ingredient.list-remove-success', { name: this.ingredient.name }));
-                    this.isAddedToShoppingList = false;
-                    this.isLoading = false;
+                    this.$toast.default(this.$t('ingredient.list-remove-success', { name: this.ingredient.name }))
+                    this.isAddedToShoppingList = false
+                    this.isLoading = false
                 }).catch(e => {
                     this.$toast.error(e.message)
-                    this.isLoading = false;
+                    this.isLoading = false
                 })
             } else {
                 ApiRequests.addIngredientsToShoppingList(postData).then(() => {
                     this.$toast.default(this.$t('ingredient.list-add-success', { name: this.ingredient.name }))
                     this.isAddedToShoppingList = true
-                    this.isLoading = false;
+                    this.isLoading = false
                 }).catch(e => {
                     this.$toast.error(e.message)
-                    this.isLoading = false;
+                    this.isLoading = false
                 })
             }
         },
         async refreshExtraCocktails() {
             return await ApiRequests.fetchExtraCocktailsWithIngredient(this.ingredient.id).then(data => {
-                this.extraIfAddedToShelf = data;
+                this.extraIfAddedToShelf = data
             }).catch(e => {
-                this.$toast.error(e.message);
+                this.$toast.error(e.message)
             })
         }
     }

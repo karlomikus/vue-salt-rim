@@ -31,8 +31,8 @@
 </template>
 
 <script>
-import ApiRequests from "@/ApiRequests";
-import Sortable from 'sortablejs';
+import ApiRequests from '@/ApiRequests'
+import Sortable from 'sortablejs'
 import OverlayLoader from '@/components/OverlayLoader.vue'
 
 export default {
@@ -43,7 +43,7 @@ export default {
         value: {
             type: Array,
             default() {
-                return [];
+                return []
             }
         },
         maxImages: {
@@ -63,7 +63,7 @@ export default {
             return this.images.length >= this.maxImages
         },
         multiple() {
-            return this.maxImages > 1;
+            return this.maxImages > 1
         }
     },
     watch: {
@@ -76,15 +76,15 @@ export default {
             handle: '.drag-handle',
             ghostClass: 'block-container--placeholder',
             animation: 150
-        });
+        })
     },
     methods: {
         fileInputChanged(evt) {
             const readFile = (file) => {
-                const reader = new FileReader();
+                const reader = new FileReader()
                 reader.onload = () => {
                     if (this.hasMaxImages) {
-                        return;
+                        return
                     }
 
                     this.images.push({
@@ -95,28 +95,28 @@ export default {
                         copyright: null,
                         sort: 0,
                     })
-                };
+                }
 
-                reader.readAsDataURL(file);
+                reader.readAsDataURL(file)
             }
             
             for (const file of evt.target.files) {
-                readFile(file);
+                readFile(file)
             }
 
             evt.target.value = ''
         },
         async uploadPictures() {
-            const sortedImageList = this.sortable.toArray();
-            let uploadedImages = [];
+            const sortedImageList = this.sortable.toArray()
+            let uploadedImages = []
 
-            const newImagesFormData = new FormData();
+            const newImagesFormData = new FormData()
             for (let i = 0; i < this.images.length; i++) {
-                const img = this.images[i];
-                const newSort = sortedImageList.findIndex(sortedId => sortedId == img.file_path) + 1;
+                const img = this.images[i]
+                const newSort = sortedImageList.findIndex(sortedId => sortedId == img.file_path) + 1
 
                 if (img.id) {
-                    const updateImageFormData = new FormData();
+                    const updateImageFormData = new FormData()
                     updateImageFormData.append('copyright', img.copyright ? img.copyright : '')
                     updateImageFormData.append('sort', newSort)
                     uploadedImages.push(await ApiRequests.updateSingleImage(img.id, updateImageFormData))
@@ -132,39 +132,39 @@ export default {
             }
 
             if (Array.from(newImagesFormData.values()).length > 0) {
-                const newImages = await ApiRequests.uploadImages(newImagesFormData);
+                const newImages = await ApiRequests.uploadImages(newImagesFormData)
                 uploadedImages = [...uploadedImages, ...newImages]
             }
 
-            return Promise.resolve(uploadedImages);
+            return Promise.resolve(uploadedImages)
         },
         removeImage(img) {
             if (!img.id) {
                 this.images.splice(
                     this.images.findIndex(i => i == img),
                     1
-                );
+                )
 
-                return;
+                return
             }
 
             this.$confirm(this.$t('imageupload.delete-confirm'), {
                 onResolved: (dialog) => {
-                    dialog.close();
-                    this.isLoading = true;
+                    dialog.close()
+                    this.isLoading = true
                     ApiRequests.deleteImage(img.id).then(() => {
-                        this.isLoading = false;
-                        this.$toast.default(this.$t('imageupload.delete-success'));
+                        this.isLoading = false
+                        this.$toast.default(this.$t('imageupload.delete-success'))
                         this.images.splice(
                             this.images.findIndex(i => i == img),
                             1
-                        );
+                        )
                     }).catch(() => {
-                        this.isLoading = false;
-                        this.$toast.default(this.$t('imageupload.delete-fail'));
+                        this.isLoading = false
+                        this.$toast.default(this.$t('imageupload.delete-fail'))
                     })
                 }
-            });
+            })
         }
     }
 }

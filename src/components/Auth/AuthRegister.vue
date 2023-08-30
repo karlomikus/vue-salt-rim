@@ -28,9 +28,9 @@
 </template>
 
 <script>
-import ApiRequests from './../../ApiRequests.js';
-import OverlayLoader from './../OverlayLoader.vue';
-import SiteLogo from './../Layout/SiteLogo.vue';
+import ApiRequests from './../../ApiRequests.js'
+import OverlayLoader from './../OverlayLoader.vue'
+import SiteLogo from './../Layout/SiteLogo.vue'
 
 export default {
     components: {
@@ -49,21 +49,21 @@ export default {
                 'email': this.newUser.email,
                 'password': this.newUser.password,
                 'name': this.newUser.name,
-            };
+            }
 
             if (this.newUser.password != this.newUser.passwordRepeat) {
                 this.$toast.error(this.$t('passwords-not-match'))
-                return;
+                return
             }
 
             this.isLoading = true
             ApiRequests.registerNewUser(postData).then(() => {
                 this.$toast.default(this.$t('register-success'))
-                this.$router.push('/login');
+                this.$router.push('/login')
             }).catch(e => {
                 this.isLoading = false
                 this.$toast.error(e.message)
-            });
+            })
         }
     }
 }

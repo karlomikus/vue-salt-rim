@@ -60,10 +60,10 @@
 </template>
 
 <script>
-import { instantMeiliSearch } from '@meilisearch/instant-meilisearch';
-import AppState from './../AppState';
+import { instantMeiliSearch } from '@meilisearch/instant-meilisearch'
+import AppState from './../AppState'
 
-const appState = new AppState();
+const appState = new AppState()
 
 export default {
     emits: ['closeAutocomplete'],
@@ -76,29 +76,29 @@ export default {
         this.searchClient = instantMeiliSearch(
             appState.bar.search_driver_host,
             appState.bar.search_driver_api_key,
-        );
+        )
     },
     mounted() {
         this.$nextTick(() => {
             setTimeout(() => {
-                this.$refs.siteSearchInput.focus();
+                this.$refs.siteSearchInput.focus()
             }, 200)
         })
     },
     methods: {
         close() {
-            this.$emit('closeAutocomplete');
+            this.$emit('closeAutocomplete')
         },
         getImageUrl(hit, type) {
             if (!hit.image_url) {
                 if (type == 'cocktail') {
-                    return '/no-cocktail.jpg';
+                    return '/no-cocktail.jpg'
                 }
 
-                return '/no-ingredient.png';
+                return '/no-ingredient.png'
             }
 
-            return hit.image_url;
+            return hit.image_url
         }
     }
 }

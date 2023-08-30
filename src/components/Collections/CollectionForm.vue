@@ -18,7 +18,7 @@
 </template>
 
 <script>
-import ApiRequests from "./../../ApiRequests";
+import ApiRequests from './../../ApiRequests'
 import OverlayLoader from './../OverlayLoader.vue'
 
 export default {
@@ -42,34 +42,34 @@ export default {
         return {
             isLoading: false,
             collection: this.sourceCollection,
-        };
+        }
     },
     methods: {
         submit() {
-            this.isLoading = true;
+            this.isLoading = true
 
             const postData = {
                 name: this.collection.name,
                 description: this.collection.description,
-            };
+            }
 
             if (this.collection.id) {
                 ApiRequests.updateCollection(this.collection.id, postData).then(() => {
-                    this.isLoading = false;
-                    this.$toast.default(this.$t('collections.update-success'));
+                    this.isLoading = false
+                    this.$toast.default(this.$t('collections.update-success'))
                     this.$emit('collectionDialogClosed')
                 }).catch(e => {
-                    this.$toast.error(e.message);
-                    this.isLoading = false;
+                    this.$toast.error(e.message)
+                    this.isLoading = false
                 })
             } else {
                 ApiRequests.saveCollection(postData).then(() => {
-                    this.isLoading = false;
-                    this.$toast.default(this.$t('collections.add-success'));
+                    this.isLoading = false
+                    this.$toast.default(this.$t('collections.add-success'))
                     this.$emit('collectionDialogClosed')
                 }).catch(e => {
-                    this.$toast.error(e.message);
-                    this.isLoading = false;
+                    this.$toast.error(e.message)
+                    this.isLoading = false
                 })
             }
         }

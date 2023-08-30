@@ -39,7 +39,7 @@
 
 <script>
 import {micromark} from 'micromark'
-import Utils from '@/Utils';
+import Utils from '@/Utils'
 import SiteLogo from '@/components/Layout/SiteLogo.vue'
 
 export default {
@@ -82,25 +82,25 @@ export default {
                 return this.cocktail.images[0]
             }
 
-            return {};
+            return {}
         },
         parsedDescription() {
             if (!this.cocktail.description) {
-                return null;
+                return null
             }
 
             return micromark(this.cocktail.description)
         },
         parsedInstructions() {
             if (!this.cocktail.instructions) {
-                return null;
+                return null
             }
 
             return micromark(this.cocktail.instructions)
         },
         parsedGarnish() {
             if (!this.cocktail.garnish) {
-                return null;
+                return null
             }
 
             return micromark(this.cocktail.garnish)
@@ -108,7 +108,7 @@ export default {
     },
     methods: {
         parseIngredientAmount(ingredient) {
-            return Utils.printIngredientAmount(ingredient, this.scopedUnit);
+            return Utils.printIngredientAmount(ingredient, this.scopedUnit)
         },
     }
 }

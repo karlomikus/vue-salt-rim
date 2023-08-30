@@ -44,13 +44,13 @@
     </div>
 </template>
 <script>
-import ApiRequests from './../../ApiRequests';
-import OverlayLoader from './../OverlayLoader.vue';
-import SaltRimDialog from './../Dialog/SaltRimDialog.vue';
-import PageHeader from './../PageHeader.vue';
-import BarForm from './BarForm.vue';
-import BarJoinDialog from './BarJoinDialog.vue';
-import AppState from './../../AppState.js';
+import ApiRequests from './../../ApiRequests'
+import OverlayLoader from './../OverlayLoader.vue'
+import SaltRimDialog from './../Dialog/SaltRimDialog.vue'
+import PageHeader from './../PageHeader.vue'
+import BarForm from './BarForm.vue'
+import BarJoinDialog from './BarJoinDialog.vue'
+import AppState from './../../AppState.js'
 
 export default {
     components: {
@@ -69,18 +69,18 @@ export default {
         }
     },
     mounted() {
-        this.refreshBars();
+        this.refreshBars()
     },
     methods: {
         refreshBars() {
             this.isLoading = true
             ApiRequests.fetchBars().then(data => {
-                this.bars = data;
+                this.bars = data
                 this.isLoading = false
             })
         },
         selectBar(bar) {
-            const appState = new AppState();
+            const appState = new AppState()
             appState.setBar(bar)
             window.location.replace('/')
         },
@@ -88,22 +88,22 @@ export default {
             this.$confirm(this.$t('bars.confirm-delete', {name: bar.name}), {
                 onResolved: (dialog) => {
                     this.isLoading = true
-                    dialog.close();
+                    dialog.close()
                     ApiRequests.deleteBar(bar.id).then(() => {
-                        this.isLoading = false;
-                        const appState = new AppState();
+                        this.isLoading = false
+                        const appState = new AppState()
                         if (appState.bar.id == bar.id) {
-                            appState.forgetBar();
+                            appState.forgetBar()
                             window.location.reload()
                         }
-                        this.$toast.default(this.$t('bars.delete-success'));
+                        this.$toast.default(this.$t('bars.delete-success'))
                         this.refreshBars()
                     }).catch(e => {
-                        this.$toast.error(e.message);
-                        this.isLoading = false;
+                        this.$toast.error(e.message)
+                        this.isLoading = false
                     })
                 }
-            });
+            })
         }
     }
 }

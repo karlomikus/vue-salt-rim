@@ -38,9 +38,9 @@
 </template>
 <script>
 import {micromark} from 'micromark'
-import ApiRequests from '@/ApiRequests';
-import Utils from "@/Utils";
-import AppState from './../../AppState';
+import ApiRequests from '@/ApiRequests'
+import Utils from '@/Utils'
+import AppState from './../../AppState'
 
 export default {
     data() {
@@ -52,21 +52,21 @@ export default {
     computed: {
         parsedDescription() {
             if (!this.cocktail.description) {
-                return null;
+                return null
             }
 
             return micromark(this.cocktail.description)
         },
         parsedInstructions() {
             if (!this.cocktail.instructions) {
-                return null;
+                return null
             }
 
             return micromark(this.cocktail.instructions)
         },
         parsedGarnish() {
             if (!this.cocktail.garnish) {
-                return null;
+                return null
             }
 
             return micromark(this.cocktail.garnish)
@@ -74,8 +74,8 @@ export default {
     },
     created() {
         window.addEventListener('afterprint', () => {
-            window.close();
-        });
+            window.close()
+        })
 
         ApiRequests.fetchCocktail(this.$route.params.id).then(data => {
             this.cocktail = data
@@ -84,13 +84,13 @@ export default {
             //     window.print();
             // })
         }).catch(e => {
-            this.$toast.error(e.message);
+            this.$toast.error(e.message)
         })
     },
     methods: {
         ingredientAmount(ing) {
-            const appState = new AppState();
-            const defaultUnit = appState.defaultUnit;
+            const appState = new AppState()
+            const defaultUnit = appState.defaultUnit
 
             return Utils.printIngredientAmount(ing, defaultUnit)
         }

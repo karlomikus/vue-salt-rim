@@ -35,9 +35,9 @@
 </template>
 
 <script>
-import ApiRequests from "@/ApiRequests";
+import ApiRequests from '@/ApiRequests'
 import OverlayLoader from '@/components/OverlayLoader.vue'
-import SaltRimRadio from "./../SaltRimRadio.vue";
+import SaltRimRadio from './../SaltRimRadio.vue'
 
 export default {
     components: {
@@ -67,40 +67,40 @@ export default {
                 {id: 3, name: 'General'},
                 {id: 4, name: 'Guest'},
             ]
-        };
+        }
     },
     methods: {
         submit() {
-            this.isLoading = true;
+            this.isLoading = true
 
             const postData = {
                 name: this.user.name,
                 email: this.user.email,
                 role_id: this.user.role_id,
-            };
+            }
 
             if (this.user.id) {
                 if (this.user.password) {
-                    postData.password = this.user.password;
+                    postData.password = this.user.password
                 }
 
                 ApiRequests.updateUserById(this.user.id, postData).then(() => {
-                    this.isLoading = false;
-                    this.$toast.default(this.$t('user.update-success'));
+                    this.isLoading = false
+                    this.$toast.default(this.$t('user.update-success'))
                     this.$emit('userDialogClosed')
                 }).catch(e => {
-                    this.$toast.error(e.message);
-                    this.isLoading = false;
+                    this.$toast.error(e.message)
+                    this.isLoading = false
                 })
             } else {
-                postData.password = this.user.password;
+                postData.password = this.user.password
                 ApiRequests.saveUser(postData).then(() => {
-                    this.isLoading = false;
-                    this.$toast.default(this.$t('user.add-success'));
+                    this.isLoading = false
+                    this.$toast.default(this.$t('user.add-success'))
                     this.$emit('userDialogClosed')
                 }).catch(e => {
-                    this.$toast.error(e.message);
-                    this.isLoading = false;
+                    this.$toast.error(e.message)
+                    this.isLoading = false
                 })
             }
         }

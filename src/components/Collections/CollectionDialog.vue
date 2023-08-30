@@ -34,7 +34,7 @@
 </template>
 
 <script>
-import ApiRequests from './../../ApiRequests.js';
+import ApiRequests from './../../ApiRequests.js'
 import OverlayLoader from './../OverlayLoader.vue'
 
 export default {
@@ -45,13 +45,13 @@ export default {
         cocktails: {
             type: Array,
             default() {
-                return [];
+                return []
             }
         },
         cocktailCollections: {
             type: Array,
             default() {
-                return [];
+                return []
             }
         },
         title: {
@@ -71,7 +71,7 @@ export default {
     computed: {
         isPartOfCollection() {
             if (!this.collectionId) {
-                return false;
+                return false
             }
 
             return this.cocktailCollections.find((val) => val.id == this.collectionId)
@@ -82,17 +82,17 @@ export default {
     },
     methods: {
         fetchCollections() {
-            this.isLoading = true;
+            this.isLoading = true
             ApiRequests.fetchCollections().then(data => {
-                this.isLoading = false;
+                this.isLoading = false
                 this.collections = data
             })
         },
         removeCocktailFromCollection() {
             this.$confirm(this.$t('collections.confirm-remove-cocktail'), {
                 onResolved: (dialog) => {
-                    this.isLoading = true;
-                    dialog.close();
+                    this.isLoading = true
+                    dialog.close()
                     ApiRequests.removeCocktailFromCollection(this.collectionId, this.cocktails[0]).then(() => {
                         this.$toast.default(this.$t('collections.cocktail-remove-success'))
                         this.$emit('collectionDialogClosed')
@@ -102,13 +102,13 @@ export default {
                         this.isLoading = false
                     })
                 }
-            });
+            })
         },
         saveAndClose() {
             if (this.collectionId) {
-                this.isLoading = true;
+                this.isLoading = true
                 ApiRequests.addCocktailsToCollection(this.collectionId, this.cocktails).then(() => {
-                    this.isLoading = false;
+                    this.isLoading = false
                     this.$toast.default(this.$t('collections.cocktail-add-success'))
                     this.$emit('collectionDialogClosed')
                 }).catch(e => {
@@ -116,10 +116,10 @@ export default {
                     this.isLoading = false
                 })
             } else {
-                this.isLoading = true;
-                this.newCollection.cocktails = this.cocktails;
+                this.isLoading = true
+                this.newCollection.cocktails = this.cocktails
                 ApiRequests.saveCollection(this.newCollection).then(collectionData => {
-                    this.isLoading = false;
+                    this.isLoading = false
                     this.$toast.default(this.$t('collections.cocktail-add-success'))
                     this.collectionId = collectionData.id
                     this.$emit('collectionDialogClosed')
@@ -130,5 +130,5 @@ export default {
             }
         }
     }
-};
+}
 </script>

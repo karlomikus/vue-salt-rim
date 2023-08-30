@@ -15,7 +15,7 @@
     </div>
 </template>
 <script>
-import ApiRequests from './../../ApiRequests.js';
+import ApiRequests from './../../ApiRequests.js'
 
 export default {
     data() {
@@ -26,14 +26,14 @@ export default {
     },
     created() {
         window.addEventListener('afterprint', () => {
-            window.close();
-        });
+            window.close()
+        })
 
         ApiRequests.fetchIngredients({'filter[on_shopping_list]': true, per_page: 500}).then(response => {
             this.list = response.data
             this.printReady = true
         }).catch(e => {
-            this.$toast.error(e.message);
+            this.$toast.error(e.message)
         })
     }
 }

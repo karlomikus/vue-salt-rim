@@ -13,5 +13,9 @@ module.exports = {
     "vue/v-on-event-hyphenation": ['warn', 'always', {
       autofix: true
     }],
+    "indent": ["error", 4],
+    "linebreak-style": ["error", "unix"],
+    "quotes": ["error", "single"],
+    "semi": ["error", "never"],
   }
 }

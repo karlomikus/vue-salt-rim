@@ -34,12 +34,12 @@
     </header>
 </template>
 <script>
-import ApiRequests from './../../ApiRequests';
+import ApiRequests from './../../ApiRequests'
 import SiteAutocomplete from './../SiteAutocomplete.vue'
 import SaltRimDialog from './../Dialog/SaltRimDialog.vue'
 import SiteLogo from './../Layout/SiteLogo.vue'
 import ThemeToggle from './../ThemeToggle.vue'
-import AppState from '../../AppState';
+import AppState from '../../AppState'
 
 export default {
     components: {
@@ -57,9 +57,9 @@ export default {
     },
     created() {
         document.addEventListener('keydown', evt => {
-            if (evt.ctrlKey && evt.key === "k") {
+            if (evt.ctrlKey && evt.key === 'k') {
                 evt.preventDefault()
-                this.showSearchDialog = !this.showSearchDialog;
+                this.showSearchDialog = !this.showSearchDialog
             }
         })
     },
@@ -67,14 +67,14 @@ export default {
         logout() {
             this.$confirm(this.$t('auth.confirm-logout'), {
                 onResolved: (dialog) => {
-                    dialog.close();
+                    dialog.close()
                     ApiRequests.logout().then(() => {
-                        const appState = new AppState();
-                        appState.clear();
+                        const appState = new AppState()
+                        appState.clear()
                         this.$router.push({ name: 'login' })
                     })
                 }
-            });
+            })
         }
     }
 }

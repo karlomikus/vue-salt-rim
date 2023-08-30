@@ -32,10 +32,10 @@
 </template>
 
 <script>
-import ApiRequests from './../../ApiRequests.js';
-import OverlayLoader from './../OverlayLoader.vue';
-import SiteLogo from './../Layout/SiteLogo.vue';
-import AppState from './../../AppState';
+import ApiRequests from './../../ApiRequests.js'
+import OverlayLoader from './../OverlayLoader.vue'
+import SiteLogo from './../Layout/SiteLogo.vue'
+import AppState from './../../AppState'
 
 export default {
     components: {
@@ -53,7 +53,7 @@ export default {
     },
     computed: {
         baServerAvailable() {
-            return this.server.version != null;
+            return this.server.version != null
         },
     },
     created() {
@@ -68,13 +68,13 @@ export default {
     methods: {
         login() {
             this.isLoading = true
-            const appState = new AppState();
+            const appState = new AppState()
             let redirectPath = this.$route.query.redirect
 
             ApiRequests.fetchLoginToken(this.email, this.password).then(token => {
                 appState.setToken(token)
                 ApiRequests.fetchUser().then(user => {
-                    appState.setUser(user);
+                    appState.setUser(user)
 
                     ApiRequests.fetchBars().then(bars => {
                         if (bars.length == 1) {
@@ -87,14 +87,14 @@ export default {
                         this.$router.push(redirectPath)
                     })
                 }).catch(e => {
-                    appState.forgetUser();
+                    appState.forgetUser()
                     this.isLoading = false
-                    this.$toast.error(e.message);
+                    this.$toast.error(e.message)
                 })
             }).catch(e => {
                 this.isLoading = false
-                this.$toast.error(e.message);
-            });
+                this.$toast.error(e.message)
+            })
         }
     }
 }

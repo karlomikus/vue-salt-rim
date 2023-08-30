@@ -99,7 +99,7 @@ export default {
         selectIngredient(item) {
             if (this.isAddingSubstitute) {
                 if (this.cocktailIngredient.substitutes && this.cocktailIngredient.substitutes.some(sub => sub.id == item.id)) {
-                    return;
+                    return
                 }
 
                 this.cocktailIngredient.substitutes.push({
@@ -108,28 +108,28 @@ export default {
                     slug: item.slug,
                 })
             } else {
-                this.cocktailIngredient.ingredient_id = item.id;
-                this.cocktailIngredient.name = item.name;
-                this.cocktailIngredient.ingredient_slug = item.slug;
+                this.cocktailIngredient.ingredient_id = item.id
+                this.cocktailIngredient.name = item.name
+                this.cocktailIngredient.ingredient_slug = item.slug
             }
         },
         save() {
-            this.isAddingSubstitute = false;
-            this.$emit('close', {type: 'save'});
+            this.isAddingSubstitute = false
+            this.$emit('close', {type: 'save'})
         },
         cancel() {
             // this.cocktailIngredient.ingredient_id = null
-            this.isAddingSubstitute = false;
-            this.$emit('close', {type: 'cancel'});
+            this.isAddingSubstitute = false
+            this.$emit('close', {type: 'cancel'})
         },
         removeSubstitute(ing) {
             this.cocktailIngredient.substitutes.splice(
                 this.cocktailIngredient.substitutes.findIndex(i => i == ing),
                 1
-            );
+            )
         }
     },
-};
+}
 </script>
 
 <style scoped>

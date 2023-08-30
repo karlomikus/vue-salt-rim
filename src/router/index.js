@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import qs from 'qs';
-import AppState from './../AppState';
+import qs from 'qs'
+import AppState from './../AppState'
 
 const router = createRouter({
     history: createWebHistory(),
@@ -16,12 +16,12 @@ const router = createRouter({
         }
     },
     parseQuery(query) {
-        return qs.parse(query);
+        return qs.parse(query)
     },
     stringifyQuery(query) {
-        const result = qs.stringify(query);
+        const result = qs.stringify(query)
 
-        return result ? `${result}` : '';
+        return result ? `${result}` : ''
     },
     routes: [
         {
@@ -150,11 +150,11 @@ const router = createRouter({
             ]
         }
     ]
-});
+})
 
 router.beforeEach(async (to) => {
-    const requiresAuth = to.meta.requiresAuth ?? true;
-    const appState = new AppState();
+    const requiresAuth = to.meta.requiresAuth ?? true
+    const appState = new AppState()
 
     if (requiresAuth && !appState.hasUserInfo()) {
         return {

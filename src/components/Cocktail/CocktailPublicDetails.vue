@@ -11,7 +11,7 @@
 </template>
 
 <script>
-import ApiRequests from '@/ApiRequests';
+import ApiRequests from '@/ApiRequests'
 import SiteLogo from '@/components/Layout/SiteLogo.vue'
 import PublicRecipe from '@/components/Cocktail/PublicRecipe.vue'
 
@@ -56,7 +56,7 @@ export default {
                 this.cocktail = data
                 this.isLoading = false
             }).catch(e => {
-                this.$toast.error(e.message);
+                this.$toast.error(e.message)
                 this.isLoading = false
             })
         },

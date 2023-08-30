@@ -98,10 +98,10 @@
 </template>
 
 <script>
-import ApiRequests from "./../../ApiRequests.js";
+import ApiRequests from './../../ApiRequests.js'
 import OverlayLoader from './../OverlayLoader.vue'
 import PageHeader from './../PageHeader.vue'
-import SaltRimRadio from "../SaltRimRadio.vue";
+import SaltRimRadio from '../SaltRimRadio.vue'
 
 export default {
     components: {
@@ -115,7 +115,7 @@ export default {
             importType: 'url',
             source: null,
             result: null,
-        };
+        }
     },
     computed: {
         cocktailTags: {
@@ -124,13 +124,13 @@ export default {
             },
             set(newVal) {
                 if (Array.isArray(newVal)) {
-                    newVal = newVal.join(',');
+                    newVal = newVal.join(',')
                 }
 
                 if (newVal == '' || newVal == null || newVal == undefined) {
                     this.result.tags = []
                 } else {
-                    this.result.tags = [];
+                    this.result.tags = []
                     newVal.split(',').forEach(tagName => {
                         this.result.tags.push({name: tagName})
                     })
@@ -143,32 +143,32 @@ export default {
     },
     methods: {
         importCocktail() {
-            this.isLoading = true;
+            this.isLoading = true
             ApiRequests.importCocktail({ source: this.source }, { type: this.importType }).then(data => {
                 this.result = data
                 this.cocktailTags = data.tags
-                this.isLoading = false;
+                this.isLoading = false
                 if (this.importType == 'collection') {
                     this.$router.push({ name: 'cocktails', query: { 'filter[collection_id]': this.result.id } })
                 }
             }).catch(e => {
-                this.isLoading = false;
-                this.$toast.error(e.message);
+                this.isLoading = false
+                this.$toast.error(e.message)
             })
         },
         async matchIngredients() {
             for (const key in this.result.ingredients) {
                 if (Object.hasOwnProperty.call(this.result.ingredients, key)) {
-                    let scrapedIng = this.result.ingredients[key];
+                    let scrapedIng = this.result.ingredients[key]
 
-                    const dbIngredients = await ApiRequests.fetchIngredients({"filter[name_exact]": scrapedIng.name, "per_page": 1}).catch(() => { return null })
-                    let dbIngredient = null;
+                    const dbIngredients = await ApiRequests.fetchIngredients({'filter[name_exact]': scrapedIng.name, 'per_page': 1}).catch(() => { return null })
+                    let dbIngredient = null
                     if (dbIngredients.length > 0) {
-                        dbIngredient = dbIngredients[0];
+                        dbIngredient = dbIngredients[0]
                     }
 
-                    scrapedIng.substitutes = [];
-                    scrapedIng.sort = 0;
+                    scrapedIng.substitutes = []
+                    scrapedIng.sort = 0
 
                     // Ingredient not found, try to create a new one
                     if (!dbIngredient) {
@@ -184,8 +184,8 @@ export default {
                     }
 
                     if (!dbIngredient) {
-                        this.$toast.error(`Unable to create ingredient with name ${scrapedIng.name}.`);
-                        continue;
+                        this.$toast.error(`Unable to create ingredient with name ${scrapedIng.name}.`)
+                        continue
                     }
 
                     scrapedIng.ingredient_id = dbIngredient.id
@@ -197,7 +197,7 @@ export default {
         async matchGlass() {
             if (!this.result.glass) {
                 this.result.glass = {}
-                return;
+                return
             }
 
             let dbGlass = await ApiRequests.findGlass({name: this.result.glass}).catch(() => { return null })
@@ -207,9 +207,9 @@ export default {
             }
 
             if (!dbGlass) {
-                this.$toast.error(`Unable to create a glass with name ${this.result.glass}.`);
+                this.$toast.error(`Unable to create a glass with name ${this.result.glass}.`)
                 this.result.glass = {}
-                return;
+                return
             }
 
             this.result.glass = {
@@ -218,12 +218,12 @@ export default {
         },
         async matchMethod() {
             if (!this.result.method) {
-                this.result.method = {};
-                return;
+                this.result.method = {}
+                return
             }
 
             const dbMethods = await ApiRequests.fetchCocktailMethods().catch(() => { return [] })
-            let foundMethodId = null;
+            let foundMethodId = null
             dbMethods.forEach(m => {
                 if (this.result.method.toLowerCase().includes(m.name.toLowerCase())) {
                     foundMethodId = m.id
@@ -231,8 +231,8 @@ export default {
             })
 
             if (!foundMethodId) {
-                this.result.method = {};
-                return;
+                this.result.method = {}
+                return
             }
 
             this.result.method = {
@@ -243,14 +243,14 @@ export default {
             this.result.ingredients.splice(
                 this.result.ingredients.findIndex(i => i == ingredient),
                 1
-            );
+            )
         },
         async goTo(routeName) {
-            this.isLoading = true;
-            await this.matchGlass();
-            await this.matchIngredients();
-            await this.matchMethod();
-            this.isLoading = false;
+            this.isLoading = true
+            await this.matchGlass()
+            await this.matchIngredients()
+            await this.matchMethod()
+            this.isLoading = false
             localStorage.setItem('scrapeResult', JSON.stringify(this.result))
             this.$router.push({ name: routeName })
         },

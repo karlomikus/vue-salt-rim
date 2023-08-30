@@ -93,10 +93,10 @@ import ApiRequests from './../../ApiRequests.js'
 import IngredientGridContainer from './../Ingredient/IngredientGridContainer.vue'
 import IngredientGridItem from './../Ingredient/IngredientGridItem.vue'
 import PageHeader from './../PageHeader.vue'
-import Refinement from './../Search/SearchRefinement.vue';
-import Pagination from './../Search/SearchPagination.vue';
-import qs from 'qs';
-import Dropdown from './../SaltRimDropdown.vue';
+import Refinement from './../Search/SearchRefinement.vue'
+import Pagination from './../Search/SearchPagination.vue'
+import qs from 'qs'
+import Dropdown from './../SaltRimDropdown.vue'
 
 export default {
     components: {
@@ -151,15 +151,15 @@ export default {
                     return
                 }
                 if (val.startsWith('-')) {
-                    this.sort_dir = '-';
+                    this.sort_dir = '-'
                     this.sort = val.substring(1)
                 } else {
-                    this.sort_dir = '';
+                    this.sort_dir = ''
                     this.sort = val
                 }
             },
             get() {
-                return (this.sort != null && this.sort != '') ? this.sort_dir + this.sort : null;
+                return (this.sort != null && this.sort != '') ? this.sort_dir + this.sort : null
             }
         },
         refineCategories() {
@@ -184,19 +184,19 @@ export default {
             return this.availableRefinements.userIngredients.map(ui => ui.ingredient_id)
         },
         ingredientIdsOnShoppingList() {
-            return this.shoppingListIngredients.map(i => i.ingredient_id);
+            return this.shoppingListIngredients.map(i => i.ingredient_id)
         },
     },
     created() {
         document.title = `${this.$t('ingredients')} \u22C5 ${this.site_title}`
 
-        this.fetchRefinements();
+        this.fetchRefinements()
 
         this.$watch(
             () => this.$route.query,
             () => {
                 if (this.$route.name == 'ingredients') {
-                    this.queryToState();
+                    this.queryToState()
                     this.refreshIngredients()
                     this.refreshShoppingListIngredients()
                 }
@@ -212,10 +212,10 @@ export default {
 
             ApiRequests.fetchMyShelf().then(data => {
                 this.availableRefinements.userIngredients = data
-            });
+            })
         },
         queryToState() {
-            const state = qs.parse(this.$route.query);
+            const state = qs.parse(this.$route.query)
 
             this.activeFilters.category_id = state.filter && state.filter.category_id ? String(state.filter.category_id).split(',') : []
 
@@ -244,7 +244,7 @@ export default {
                 per_page: this.per_page,
                 page: this.currentPage,
                 sort: this.sortWithDir
-            };
+            }
 
             const filters = {
                 name: (this.searchQuery != null && this.searchQuery != '') ? this.searchQuery : null,
@@ -254,32 +254,32 @@ export default {
                 on_shopping_list: this.activeFilters.on_shopping_list,
                 strength_min: this.activeFilters.strength ? this.activeFilters.strength.min : null,
                 strength_max: this.activeFilters.strength ? this.activeFilters.strength.max : null,
-            };
+            }
 
             // Remove null values
             // query.filter = Object.fromEntries(Object.entries(filters).filter(([_, v]) => v !== null && v !== false));
             query.filter = Object.entries(filters).reduce((a,[k,v]) => (v === null || v === false ? a : (a[k]=v, a)), {})
 
-            return query;
+            return query
         },
         updateRouterPath() {
-            const query = this.stateToQuery();
+            const query = this.stateToQuery()
 
             this.$router.push({
                 query: query
             })
         },
         refreshIngredients() {
-            const query = this.stateToQuery();
+            const query = this.stateToQuery()
 
-            this.isLoading = true;
+            this.isLoading = true
             ApiRequests.fetchIngredients(query).then(resp => {
                 this.ingredients = resp.data
                 this.meta = resp.meta
-                this.isLoading = false;
+                this.isLoading = false
             }).catch(e => {
-                this.$toast.error(e.message);
-                this.isLoading = false;
+                this.$toast.error(e.message)
+                this.isLoading = false
             })
         },
         debounceIngredientSearch() {
@@ -304,9 +304,9 @@ export default {
                 on_shelf: false,
                 main_ingredients: false,
                 on_shopping_list: false,
-            };
+            }
 
-            this.updateRouterPath();
+            this.updateRouterPath()
         },
         handleClickAway(e) {
             if (e && e.target && e.target.classList.contains('resource-search__refinements')) {
@@ -316,10 +316,10 @@ export default {
         shareFromFormat(format) {
             ApiRequests.shareShoppingList({ type: format }).then(data => {
                 navigator.clipboard.writeText(data).then(() => {
-                    this.$toast.default(this.$t('share-format-copied'));
+                    this.$toast.default(this.$t('share-format-copied'))
                 }, () => {
-                    this.$toast.error(this.$t('share-format-copy-failed'));
-                });
+                    this.$toast.error(this.$t('share-format-copy-failed'))
+                })
             })
         },
         refreshShoppingListIngredients() {

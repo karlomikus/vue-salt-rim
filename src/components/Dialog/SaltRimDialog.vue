@@ -39,16 +39,16 @@ export default {
         modelValue(val) {
             if (val) {
                 this.$emit('dialogOpened')
-                document.body.style.overflow = "hidden";
+                document.body.style.overflow = 'hidden'
             } else {
                 this.$emit('dialogClosed')
-                document.body.style.overflow = "auto";
+                document.body.style.overflow = 'auto'
             }
         }
     },
     unmounted() {
         this.$emit('dialogClosed')
-        document.body.style.overflow = "auto";
+        document.body.style.overflow = 'auto'
     },
     methods: {
         toggleDialog() {

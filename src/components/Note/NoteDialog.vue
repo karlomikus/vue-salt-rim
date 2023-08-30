@@ -14,7 +14,7 @@
 </template>
 
 <script>
-import ApiRequests from './../../ApiRequests.js';
+import ApiRequests from './../../ApiRequests.js'
 import OverlayLoader from './../OverlayLoader.vue'
 
 export default {
@@ -46,16 +46,16 @@ export default {
                 resource_id: this.resourceId,
                 resource: this.resource,
             }).then(() => {
-                this.$toast.default(this.$t('note-added'));
+                this.$toast.default(this.$t('note-added'))
                 this.isLoading = false
                 this.$emit('noteDialogClosed')
             }).catch(e => {
-                this.$toast.error(e.message);
+                this.$toast.error(e.message)
                 this.isLoading = false
             })
         },
     }
-};
+}
 </script>
 
 <style scoped>

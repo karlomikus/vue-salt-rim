@@ -45,7 +45,7 @@
 </template>
 
 <script>
-import ApiRequests from "@/ApiRequests";
+import ApiRequests from '@/ApiRequests'
 import OverlayLoader from '@/components/OverlayLoader.vue'
 import PageHeader from '@/components/PageHeader.vue'
 import Navigation from '@/components/Settings/SettingsNavigation.vue'
@@ -76,42 +76,42 @@ export default {
     },
     methods: {
         refreshCategories() {
-            this.showDialog = false;
-            this.isLoading = true;
+            this.showDialog = false
+            this.isLoading = true
             ApiRequests.fetchIngredientCategories().then(data => {
-                this.categories = data;
-                this.isLoading = false;
+                this.categories = data
+                this.isLoading = false
             }).catch(e => {
-                this.$toast.error(e.message);
+                this.$toast.error(e.message)
             })
         },
         openDialog(title, obj) {
             this.dialogTitle = title
             this.editCategory = obj
-            this.showDialog = true;
+            this.showDialog = true
         },
         deleteCategory(category) {
             this.$confirm(this.$t('ingredient-category.confirm-delete', {name: category.name}), {
                 onResolved: (dialog) => {
                     this.isLoading = true
-                    dialog.close();
+                    dialog.close()
                     ApiRequests.deleteIngredientCategory(category.id).then(() => {
-                        this.isLoading = false;
-                        this.$toast.default(this.$t('ingredient-category.delete-success'));
+                        this.isLoading = false
+                        this.$toast.default(this.$t('ingredient-category.delete-success'))
                         this.refreshCategories()
                     }).catch(e => {
-                        this.$toast.error(e.message);
-                        this.isLoading = false;
+                        this.$toast.error(e.message)
+                        this.isLoading = false
                     })
                 }
-            });
+            })
         },
         overflowText(input, len) {
             if (!input) {
                 return input
             }
 
-            return input.length > len ? `${input.substring(0, len)}...` : input;
+            return input.length > len ? `${input.substring(0, len)}...` : input
         }
     }
 }

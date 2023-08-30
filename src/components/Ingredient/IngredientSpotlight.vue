@@ -13,7 +13,7 @@
     </div>
 </template>
 <script>
-import ApiRequests from '@/ApiRequests';
+import ApiRequests from '@/ApiRequests'
 import OverlayLoader from '@/components/OverlayLoader.vue'
 
 export default {
@@ -32,7 +32,7 @@ export default {
             ingredient: {
                 category: {}
             },
-        };
+        }
     },
     computed: {
         truncatedDescription() {
@@ -40,14 +40,14 @@ export default {
                 return this.ingredient.description
             }
 
-            return this.ingredient.description.length > 200 ? `${this.ingredient.description.substring(0, 200)}...` : this.ingredient.description;
+            return this.ingredient.description.length > 200 ? `${this.ingredient.description.substring(0, 200)}...` : this.ingredient.description
         },
         mainIngredientImageUrl() {
             if (!this.ingredient.main_image_id) {
-                return '/no-ingredient.png';
+                return '/no-ingredient.png'
             }
 
-            return this.ingredient.images.filter((img) => img.id == this.ingredient.main_image_id)[0].url;
+            return this.ingredient.images.filter((img) => img.id == this.ingredient.main_image_id)[0].url
         }
     },
     watch: {
@@ -58,19 +58,19 @@ export default {
         }
     },
     created() {
-        this.fetchIngredient();
+        this.fetchIngredient()
     },
     methods: {
         fetchIngredient() {
-            this.isLoading = true;
+            this.isLoading = true
             ApiRequests.fetchIngredient(this.id).then(data => {
                 this.ingredient = data
-                this.isLoading = false;
+                this.isLoading = false
             }).catch(() => {
                 this.ingredient = {
                     category: {}
                 }
-                this.isLoading = false;
+                this.isLoading = false
             })
         },
     }

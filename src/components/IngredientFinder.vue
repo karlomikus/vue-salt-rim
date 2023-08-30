@@ -22,12 +22,12 @@
 </template>
 
 <script>
-import { instantMeiliSearch } from '@meilisearch/instant-meilisearch';
-import OverlayLoader from './OverlayLoader.vue';
-import ApiRequests from '../ApiRequests';
-import AppState from './../AppState';
+import { instantMeiliSearch } from '@meilisearch/instant-meilisearch'
+import OverlayLoader from './OverlayLoader.vue'
+import ApiRequests from '../ApiRequests'
+import AppState from './../AppState'
 
-const appState = new AppState();
+const appState = new AppState()
 
 export default {
     components: {
@@ -47,7 +47,7 @@ export default {
         disabledIngredients: {
             type: Array,
             default() {
-                return [];
+                return []
             }
         }
     },
@@ -66,14 +66,14 @@ export default {
     methods: {
         selectIngredient(ing) {
             if (ing && this.disabledIngredients.includes(ing.id)) {
-                return false;
+                return false
             }
 
             this.$emit('update:modelValue', ing)
             this.$emit('ingredientSelected', ing)
         },
         newIngredient() {
-            this.isLoading = true;
+            this.isLoading = true
             ApiRequests.saveIngredient({
                 name: this.currentQuery,
                 description: null,
@@ -83,16 +83,16 @@ export default {
                 images: [],
                 ingredient_category_id: 1,
             }).then(data => {
-                this.$toast.default(this.$t('ingredient-dialog.new-ingredient-success', { name: data.name }));
+                this.$toast.default(this.$t('ingredient-dialog.new-ingredient-success', { name: data.name }))
                 this.selectIngredient({
                     name: data.name,
                     slug: data.slug,
                     id: data.id
-                });
-                this.isLoading = false;
+                })
+                this.isLoading = false
             }).catch(() => {
-                this.$toast.error(this.$t('ingredient-dialog.new-ingredient-fail'));
-                this.isLoading = false;
+                this.$toast.error(this.$t('ingredient-dialog.new-ingredient-fail'))
+                this.isLoading = false
             })
         },
     }

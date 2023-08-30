@@ -112,17 +112,17 @@
 </template>
 
 <script>
-import Utils from "./../../Utils.js";
-import ApiRequests from "./../../ApiRequests.js";
+import Utils from './../../Utils.js'
+import ApiRequests from './../../ApiRequests.js'
 import Unitz from 'unitz'
 import OverlayLoader from './../OverlayLoader.vue'
 import IngredientModal from './../Cocktail/IngredientModal.vue'
 import ImageUpload from './../ImageUpload.vue'
 import PageHeader from './../PageHeader.vue'
-import Sortable from 'sortablejs';
-import SaltRimDialog from './../Dialog/SaltRimDialog.vue';
-import SaltRimRadio from "../SaltRimRadio.vue";
-import AppState from "./../../AppState";
+import Sortable from 'sortablejs'
+import SaltRimDialog from './../Dialog/SaltRimDialog.vue'
+import SaltRimRadio from '../SaltRimRadio.vue'
+import AppState from './../../AppState'
 
 export default {
     components: {
@@ -153,7 +153,7 @@ export default {
             tags: [],
             sortable: null,
             utensils: [],
-        };
+        }
     },
     computed: {
         cocktailTags: {
@@ -164,7 +164,7 @@ export default {
                 if (newVal == '' || newVal == null || newVal == undefined) {
                     this.cocktail.tags = []
                 } else {
-                    this.cocktail.tags = [];
+                    this.cocktail.tags = []
                     newVal.split(',').forEach(tagName => {
                         this.cocktail.tags.push({ name: tagName })
                     })
@@ -175,9 +175,9 @@ export default {
     watch: {
         showDialog(newVal) {
             if (newVal == false) {
-                const emptyIngredient = this.cocktail.ingredients.findIndex(i => i.ingredient_id == null);
+                const emptyIngredient = this.cocktail.ingredients.findIndex(i => i.ingredient_id == null)
                 if (emptyIngredient != -1) {
-                    this.cocktail.ingredients.splice(emptyIngredient, 1);
+                    this.cocktail.ingredients.splice(emptyIngredient, 1)
                 }
             }
         }
@@ -185,14 +185,14 @@ export default {
     async created() {
         document.title = `${this.$t('cocktail')} \u22C5 ${this.site_title}`
 
-        this.isLoading = true;
-        const cocktailId = this.$route.query.id || null;
+        this.isLoading = true
+        const cocktailId = this.$route.query.id || null
 
         if (cocktailId) {
             await ApiRequests.fetchCocktail(cocktailId).then(data => {
-                data.description = Utils.decodeHtml(data.description);
-                data.instructions = Utils.decodeHtml(data.instructions);
-                data.garnish = Utils.decodeHtml(data.garnish);
+                data.description = Utils.decodeHtml(data.description)
+                data.instructions = Utils.decodeHtml(data.instructions)
+                data.garnish = Utils.decodeHtml(data.garnish)
                 if (!data.method) {
                     data.method = {}
                 }
@@ -201,7 +201,7 @@ export default {
                 }
                 data.utensils = data.utensils.map(ut => ut.id)
 
-                this.cocktail = data;
+                this.cocktail = data
 
                 document.title = `${this.$t('cocktail')} \u22C5 ${this.cocktail.name} \u22C5 ${this.site_title}`
             })
@@ -212,23 +212,23 @@ export default {
         await ApiRequests.fetchTags().then(data => this.tags = data)
         await ApiRequests.fetchUtensils().then(data => this.utensils = data)
 
-        this.isLoading = false;
+        this.isLoading = false
     },
     mounted() {
-        this.checkForImportData();
+        this.checkForImportData()
 
         this.sortable = Sortable.create(document.querySelector('.cocktail-form__ingredients'), {
             handle: '.drag-handle',
             ghostClass: 'block-container--placeholder',
             animation: 150
-        });
+        })
     },
     methods: {
         checkForImportData() {
-            const scraped = localStorage.getItem('scrapeResult');
+            const scraped = localStorage.getItem('scrapeResult')
             if (scraped) {
-                localStorage.removeItem('scrapeResult');
-                const parsedScrapeResult = JSON.parse(scraped);
+                localStorage.removeItem('scrapeResult')
+                const parsedScrapeResult = JSON.parse(scraped)
 
                 this.cocktail = parsedScrapeResult
 
@@ -248,42 +248,42 @@ export default {
                 this.cocktail.ingredients.splice(
                     this.cocktail.ingredients.findIndex(i => i == ing),
                     1
-                );
+                )
 
-                return;
+                return
             }
 
             this.$confirm(this.$t('cocktail.ingredient-remove', { name: ing.name }), {
                 onResolved: (dialog) => {
-                    dialog.close();
+                    dialog.close()
                     this.cocktail.ingredients.splice(
                         this.cocktail.ingredients.findIndex(i => i == ing),
                         1
-                    );
+                    )
                 }
-            });
+            })
         },
         closeModal(eventData) {
             // User canceled ingredient edit
             if (eventData.type == 'cancel') {
-                this.cocktailIngredientForEdit.id = this.cocktailIngredientForEditOriginal.id;
-                this.cocktailIngredientForEdit.name = this.cocktailIngredientForEditOriginal.name;
-                this.cocktailIngredientForEdit.ingredient_id = this.cocktailIngredientForEditOriginal.ingredient_id;
-                this.cocktailIngredientForEdit.ingredient_slug = this.cocktailIngredientForEditOriginal.ingredient_slug;
-                this.cocktailIngredientForEdit.amount = this.cocktailIngredientForEditOriginal.amount;
-                this.cocktailIngredientForEdit.units = this.cocktailIngredientForEditOriginal.units;
-                this.cocktailIngredientForEdit.optional = this.cocktailIngredientForEditOriginal.optional;
-                this.cocktailIngredientForEdit.sort = this.cocktailIngredientForEditOriginal.sort;
-                this.cocktailIngredientForEdit.substitutes = this.cocktailIngredientForEditOriginal.substitutes;
+                this.cocktailIngredientForEdit.id = this.cocktailIngredientForEditOriginal.id
+                this.cocktailIngredientForEdit.name = this.cocktailIngredientForEditOriginal.name
+                this.cocktailIngredientForEdit.ingredient_id = this.cocktailIngredientForEditOriginal.ingredient_id
+                this.cocktailIngredientForEdit.ingredient_slug = this.cocktailIngredientForEditOriginal.ingredient_slug
+                this.cocktailIngredientForEdit.amount = this.cocktailIngredientForEditOriginal.amount
+                this.cocktailIngredientForEdit.units = this.cocktailIngredientForEditOriginal.units
+                this.cocktailIngredientForEdit.optional = this.cocktailIngredientForEditOriginal.optional
+                this.cocktailIngredientForEdit.sort = this.cocktailIngredientForEditOriginal.sort
+                this.cocktailIngredientForEdit.substitutes = this.cocktailIngredientForEditOriginal.substitutes
             }
 
-            this.showDialog = false;
+            this.showDialog = false
         },
         addIngredient() {
-            const appState = new AppState();
-            const userUnit = appState.defaultUnit;
-            let defaultAmount = 30;
-            let defaultUnits = 'ml';
+            const appState = new AppState()
+            const userUnit = appState.defaultUnit
+            let defaultAmount = 30
+            let defaultUnits = 'ml'
 
             if (userUnit == 'oz') {
                 defaultAmount = 1
@@ -301,16 +301,16 @@ export default {
                 units: defaultUnits,
                 name: this.$t('ingredient.name-placeholder'),
                 sort: this.cocktail.ingredients.length + 1
-            };
+            }
 
-            this.cocktail.ingredients.push(placeholderData);
+            this.cocktail.ingredients.push(placeholderData)
 
             // Show modal after adding ingredient
             this.editIngredient(placeholderData)
         },
         printIngredientAmount(ing) {
-            const appState = new AppState();
-            const defaultUnit = appState.defaultUnit;
+            const appState = new AppState()
+            const defaultUnit = appState.defaultUnit
 
             return Utils.printIngredientAmount(ing, defaultUnit)
         },
@@ -319,46 +319,46 @@ export default {
                 cocktailIngredient.substitutes = []
             }
 
-            this.cocktailIngredientForEditOriginal = JSON.parse(JSON.stringify(cocktailIngredient));
+            this.cocktailIngredientForEditOriginal = JSON.parse(JSON.stringify(cocktailIngredient))
             
-            const appState = new AppState();
-            const userUnit = appState.defaultUnit;
+            const appState = new AppState()
+            const userUnit = appState.defaultUnit
             if (userUnit === 'oz') {
                 if (cocktailIngredient.units == 'ml') {
-                    cocktailIngredient.units = 'oz';
-                    cocktailIngredient.amount = Utils.ml2oz(cocktailIngredient.amount);
+                    cocktailIngredient.units = 'oz'
+                    cocktailIngredient.amount = Utils.ml2oz(cocktailIngredient.amount)
                 }
                 if (cocktailIngredient.units == 'cl') {
-                    cocktailIngredient.units = 'oz';
-                    cocktailIngredient.amount = Utils.cl2oz(cocktailIngredient.amount);
+                    cocktailIngredient.units = 'oz'
+                    cocktailIngredient.amount = Utils.cl2oz(cocktailIngredient.amount)
                 }
             } else if (userUnit === 'cl') {
                 if (cocktailIngredient.units == 'ml') {
-                    cocktailIngredient.units = 'cl';
-                    cocktailIngredient.amount = Utils.ml2cl(cocktailIngredient.amount);
+                    cocktailIngredient.units = 'cl'
+                    cocktailIngredient.amount = Utils.ml2cl(cocktailIngredient.amount)
                 }
                 if (cocktailIngredient.units == 'oz') {
-                    cocktailIngredient.units = 'cl';
-                    cocktailIngredient.amount = Utils.oz2cl(cocktailIngredient.amount);
+                    cocktailIngredient.units = 'cl'
+                    cocktailIngredient.amount = Utils.oz2cl(cocktailIngredient.amount)
                 }
             } else if (userUnit === 'ml') {
                 if (cocktailIngredient.units == 'oz') {
-                    cocktailIngredient.units = 'ml';
-                    cocktailIngredient.amount = Utils.oz2ml(cocktailIngredient.amount);
+                    cocktailIngredient.units = 'ml'
+                    cocktailIngredient.amount = Utils.oz2ml(cocktailIngredient.amount)
                 }
                 if (cocktailIngredient.units == 'cl') {
-                    cocktailIngredient.units = 'ml';
-                    cocktailIngredient.amount = Utils.cl2ml(cocktailIngredient.amount);
+                    cocktailIngredient.units = 'ml'
+                    cocktailIngredient.amount = Utils.cl2ml(cocktailIngredient.amount)
                 }
             }
 
-            this.cocktailIngredientForEdit = cocktailIngredient;
-            this.showDialog = true;
+            this.cocktailIngredientForEdit = cocktailIngredient
+            this.showDialog = true
         },
         async submit() {
-            const sortedIngredientList = this.sortable.toArray();
+            const sortedIngredientList = this.sortable.toArray()
 
-            this.isLoading = true;
+            this.isLoading = true
 
             const postData = {
                 name: this.cocktail.name,
@@ -391,39 +391,39 @@ export default {
                             cIngredient.substitutes = cIngredient.substitutes.map(s => s.id)
                         }
 
-                        cIngredient.sort = sortedIngredientList.findIndex(sortedId => sortedId == cIngredient.ingredient_id) + 1;
+                        cIngredient.sort = sortedIngredientList.findIndex(sortedId => sortedId == cIngredient.ingredient_id) + 1
 
-                        return cIngredient;
+                        return cIngredient
                     })
-            };
+            }
 
             const imageResources = await this.$refs.imagesUpload.uploadPictures().catch(() => {
-                this.$toast.error(`${this.$t('image-upload-error')} ${this.$t('image-upload-error.cocktail')}`);
-            }) || [];
+                this.$toast.error(`${this.$t('image-upload-error')} ${this.$t('image-upload-error.cocktail')}`)
+            }) || []
 
             if (imageResources.length > 0) {
-                postData.images = imageResources.map(img => img.id);
+                postData.images = imageResources.map(img => img.id)
             }
 
             if (this.cocktail.id) {
                 ApiRequests.updateCocktail(this.cocktail.id, postData).then(data => {
-                    this.isLoading = false;
-                    this.$toast.default(this.$t('cocktail.update-success'));
+                    this.isLoading = false
+                    this.$toast.default(this.$t('cocktail.update-success'))
                     this.$router.push({ name: 'cocktails.show', params: { id: data.id } })
                 }).catch(e => {
-                    this.$toast.error(e.message);
-                    this.isLoading = false;
+                    this.$toast.error(e.message)
+                    this.isLoading = false
                 })
             } else {
                 ApiRequests.saveCocktail(postData).then(data => {
-                    this.isLoading = false;
+                    this.isLoading = false
                     this.$toast.open({
                         message: this.$t('cocktail.create-success')
-                    });
+                    })
                     this.$router.push({ name: 'cocktails.show', params: { id: data.id } })
                 }).catch(e => {
-                    this.$toast.error(e.message);
-                    this.isLoading = false;
+                    this.$toast.error(e.message)
+                    this.isLoading = false
                 })
             }
         }

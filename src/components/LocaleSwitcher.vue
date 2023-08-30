@@ -12,7 +12,7 @@
 </template>
 
 <script>
-import Dropdown from '@/components/SaltRimDropdown.vue';
+import Dropdown from '@/components/SaltRimDropdown.vue'
 
 export default {
     components: {
