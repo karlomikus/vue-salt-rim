@@ -3,7 +3,7 @@ import Profile from '../components/Profile/Form.vue'
 </script>
 
 <template>
-  <main>
-    <Profile />
-  </main>
+    <main>
+        <Profile />
+    </main>
 </template>

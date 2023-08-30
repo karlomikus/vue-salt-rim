@@ -3,7 +3,7 @@ import IngredientIndex from '../components/Ingredient/IngredientIndex.vue'
 </script>
 
 <template>
-  <main>
-    <IngredientIndex />
-  </main>
+    <main>
+        <IngredientIndex />
+    </main>
 </template>

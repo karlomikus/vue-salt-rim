@@ -4,7 +4,8 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview --port 4173",
-    "lint": "eslint --ext .js,.vue src"
+    "lint": "eslint --ext .js,.vue src",
+    "lint-fix": "eslint --fix --ext .js,.vue src"
   },
   "dependencies": {
     "@meilisearch/instant-meilisearch": "^0.12.0",

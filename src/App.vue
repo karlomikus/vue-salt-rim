@@ -4,6 +4,6 @@ import { RouterView } from 'vue-router'
 </script>
 
 <template>
-  <ConfirmDialog />
-  <RouterView />
+    <ConfirmDialog />
+    <RouterView />
 </template>

@@ -3,7 +3,7 @@ import PrintCocktail from '../components/Print/PrintCocktail.vue'
 </script>
 
 <template>
-  <main>
-    <PrintCocktail />
-  </main>
+    <main>
+        <PrintCocktail />
+    </main>
 </template>

@@ -1,6 +1,4 @@
 class AppState {
-    #key;
-
     constructor() {
         this.theme = 'light';
         this.defaultUnit = 'ml';
@@ -9,49 +7,49 @@ class AppState {
         this.bar = {};
         this.user = {};
 
-        this.#key = '_salt_rim';
-        this.#readStateFromStorage();
+        this._key = '_salt_rim';
+        this._readStateFromStorage();
     }
 
     setToken(token) {
         this.token = token
-        this.#updateState()
+        this._updateState()
     }
 
     setUser(user) {
         this.user = user
-        this.#updateState()
+        this._updateState()
     }
 
     setBar(bar) {
         this.bar = bar
-        this.#updateState()
+        this._updateState()
     }
 
     forgetUser() {
         this.user = {};
         this.token = null;
-        this.#updateState()
+        this._updateState()
     }
 
     forgetBar() {
         this.bar = {}
-        this.#updateState()
+        this._updateState()
     }
 
     setDefaultUnit(unit) {
         this.defaultUnit = unit;
-        this.#updateState()
+        this._updateState()
     }
 
     setTheme(theme) {
         this.theme = theme
-        this.#updateState()
+        this._updateState()
     }
 
     setLanguage(language) {
         this.language = language
-        this.#updateState()
+        this._updateState()
     }
 
     hasUserInfo() {
@@ -59,16 +57,16 @@ class AppState {
     }
 
     clear() {
-        localStorage.removeItem(this.#key);
+        localStorage.removeItem(this._key);
     }
 
-    #updateState() {
-        localStorage.setItem(this.#key, JSON.stringify(this));
+    _updateState() {
+        localStorage.setItem(this._key, JSON.stringify(this));
     }
 
-    #readStateFromStorage() {
-        if (localStorage.getItem(this.#key)) {
-            const newState = JSON.parse(localStorage.getItem(this.#key));
+    _readStateFromStorage() {
+        if (localStorage.getItem(this._key)) {
+            const newState = JSON.parse(localStorage.getItem(this._key));
 
             this.theme = newState.theme;
             this.defaultUnit = newState.defaultUnit;

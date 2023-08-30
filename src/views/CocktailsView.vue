@@ -3,7 +3,7 @@ import CocktailIndex from '../components/Cocktail/CocktailIndex.vue'
 </script>
 
 <template>
-  <main>
-    <CocktailIndex />
-  </main>
+    <main>
+        <CocktailIndex />
+    </main>
 </template>

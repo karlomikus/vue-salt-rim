@@ -3,7 +3,7 @@ import Bars from '../components/Bar/BarIndex.vue'
 </script>
 
 <template>
-  <main>
-    <Bars />
-  </main>
+    <main>
+        <Bars />
+    </main>
 </template>

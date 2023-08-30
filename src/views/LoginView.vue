@@ -3,5 +3,5 @@ import AuthLogin from '../components/Auth/AuthLogin.vue'
 </script>
 
 <template>
-  <AuthLogin />
+    <AuthLogin />
 </template>

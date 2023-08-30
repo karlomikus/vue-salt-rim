@@ -3,7 +3,7 @@ import ProfileForm from '../components/Settings/ProfileForm.vue'
 </script>
 
 <template>
-  <main>
-    <ProfileForm />
-  </main>
+    <main>
+        <ProfileForm />
+    </main>
 </template>
