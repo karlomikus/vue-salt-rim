@@ -8,10 +8,10 @@
         <div class="block-container block-container--padded">
             <div class="form-group">
                 <label class="form-label form-label--required">{{ $t('type') }}:</label>
-                <Radio title="URL" description="Import from a supported website" value="url" v-model="importType"></Radio>
-                <Radio title="JSON" description="Import from JSON format" value="json" v-model="importType"></Radio>
-                <Radio title="YAML" description="Import from YAML format" value="yaml" v-model="importType"></Radio>
-                <Radio title="Collection" description="Import from Bar Assistant JSON collection" value="collection" v-model="importType"></Radio>
+                <SaltRimRadio title="URL" description="Import from a supported website" value="url" v-model="importType"></SaltRimRadio>
+                <SaltRimRadio title="JSON" description="Import from JSON format" value="json" v-model="importType"></SaltRimRadio>
+                <SaltRimRadio title="YAML" description="Import from YAML format" value="yaml" v-model="importType"></SaltRimRadio>
+                <SaltRimRadio title="Collection" description="Import from Bar Assistant JSON collection" value="collection" v-model="importType"></SaltRimRadio>
             </div>
             <div class="form-group">
                 <label class="form-label form-label--required" for="import-source">{{ $t('source') }}:</label>
@@ -101,8 +101,7 @@
 import ApiRequests from "./../../ApiRequests.js";
 import OverlayLoader from './../OverlayLoader.vue'
 import PageHeader from './../PageHeader.vue'
-import Checkbox from './../Checkbox.vue'
-import Radio from "../Radio.vue";
+import SaltRimRadio from "../SaltRimRadio.vue";
 
 export default {
     data() {
@@ -116,8 +115,7 @@ export default {
     components: {
         OverlayLoader,
         PageHeader,
-        Checkbox,
-        Radio
+        SaltRimRadio
     },
     created() {
         document.title = `${this.$t('cocktails.import')} \u22C5 ${this.site_title}`

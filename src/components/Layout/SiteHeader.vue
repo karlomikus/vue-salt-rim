@@ -2,12 +2,12 @@
     <header class="site-header">
         <div class="header-bar">
             <div class="header-bar__left">
-                <Logo></Logo>
+                <SiteLogo></SiteLogo>
                 <ThemeToggle></ThemeToggle>
             </div>
             <nav class="header-bar__navigation">
                 <template v-if="appState.bar.id">
-                    <Dialog v-model="showSearchDialog" class="site-autocomplete-dialog">
+                    <SaltRimDialog v-model="showSearchDialog" class="site-autocomplete-dialog">
                         <template #trigger>
                             <a href="#" @click.prevent="showSearchDialog = !showSearchDialog">
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="14" height="14">
@@ -20,7 +20,7 @@
                         <template #dialog>
                             <SiteAutocomplete @closeAutocomplete="showSearchDialog = false"></SiteAutocomplete>
                         </template>
-                    </Dialog>
+                    </SaltRimDialog>
                     <RouterLink :to="{ name: 'home' }" exact-active-class="current-nav">{{ $t('shelf.title') }}</RouterLink>
                     <RouterLink :to="{ name: 'cocktails' }" :class="{ 'current-nav': $route.path.startsWith('/cocktails') }">{{ $t('cocktails') }}</RouterLink>
                     <RouterLink :to="{ name: 'ingredients' }" :class="{ 'current-nav': $route.path.startsWith('/ingredients') }">{{ $t('ingredients') }}</RouterLink>
@@ -36,16 +36,16 @@
 <script>
 import ApiRequests from './../../ApiRequests';
 import SiteAutocomplete from './../SiteAutocomplete.vue'
-import Dialog from './../Dialog/Dialog.vue'
-import Logo from './../Logo.vue'
+import SaltRimDialog from './../Dialog/SaltRimDialog.vue'
+import SiteLogo from './../Layout/SiteLogo.vue'
 import ThemeToggle from './../ThemeToggle.vue'
 import AppState from '../../AppState';
 
 export default {
     components: {
         SiteAutocomplete,
-        Dialog,
-        Logo,
+        SaltRimDialog,
+        SiteLogo,
         ThemeToggle,
     },
     data() {

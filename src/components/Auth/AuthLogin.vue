@@ -1,6 +1,6 @@
 <template>
     <div class="login-page">
-        <Logo></Logo>
+        <SiteLogo></SiteLogo>
         <form @submit.prevent="login">
             <OverlayLoader v-if="isLoading"></OverlayLoader>
             <div class="form-group">
@@ -32,10 +32,10 @@
 </template>
 
 <script>
-import ApiRequests from './../ApiRequests.js';
-import OverlayLoader from '@/components/OverlayLoader.vue';
-import Logo from '@/components/Logo.vue';
-import AppState from '../AppState';
+import ApiRequests from './../../ApiRequests.js';
+import OverlayLoader from './../OverlayLoader.vue';
+import SiteLogo from './../Layout/SiteLogo.vue';
+import AppState from './../../AppState';
 
 export default {
     data() {
@@ -51,7 +51,7 @@ export default {
     },
     components: {
         OverlayLoader,
-        Logo
+        SiteLogo
     },
     created() {
         this.isLoading = true

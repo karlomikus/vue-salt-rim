@@ -1,6 +1,6 @@
 <template>
     <div class="login-page">
-        <Logo></Logo>
+        <SiteLogo></SiteLogo>
         <form @submit.prevent="register">
             <OverlayLoader v-if="isLoading"></OverlayLoader>
             <div class="form-group">
@@ -28,9 +28,9 @@
 </template>
 
 <script>
-import ApiRequests from '@/ApiRequests';
-import OverlayLoader from '@/components/OverlayLoader.vue';
-import Logo from '@/components/Logo.vue';
+import ApiRequests from './../../ApiRequests.js';
+import OverlayLoader from './../OverlayLoader.vue';
+import SiteLogo from './../Layout/SiteLogo.vue';
 
 export default {
     data() {
@@ -41,7 +41,7 @@ export default {
     },
     components: {
         OverlayLoader,
-        Logo
+        SiteLogo
     },
     methods: {
         register() {

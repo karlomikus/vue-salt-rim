@@ -1,3 +1,7 @@
+# v2.0.0
+## New
+- Added eslint
+
 # v1.20.1
 ## Fixes
 - Fix an issue with cocktail importing when glass or method was empty #108

@@ -2,14 +2,14 @@
     <PageHeader>
         {{ $t('users') }}
         <template #actions>
-            <Dialog v-model="showDialog">
+            <SaltRimDialog v-model="showDialog">
                 <template #trigger>
                     <button type="button" class="button button--dark" @click.prevent="openDialog($t('users.add'), {})">{{ $t('users.add') }}</button>
                 </template>
                 <template #dialog>
                     <UserForm :source-user="editUser" :dialog-title="dialogTitle" @user-dialog-closed="refreshUsers" />
                 </template>
-            </Dialog>
+            </SaltRimDialog>
         </template>
     </PageHeader>
     <div class="settings-page">
@@ -52,8 +52,8 @@
 import ApiRequests from "@/ApiRequests";
 import OverlayLoader from '@/components/OverlayLoader.vue'
 import PageHeader from '@/components/PageHeader.vue'
-import Navigation from '@/components/Settings/Navigation.vue'
-import Dialog from '@/components/Dialog/Dialog.vue'
+import Navigation from '@/components/Settings/SettingsNavigation.vue'
+import SaltRimDialog from '@/components/Dialog/SaltRimDialog.vue'
 import UserForm from '@/components/Settings/UserForm.vue'
 
 export default {
@@ -61,7 +61,7 @@ export default {
         OverlayLoader,
         Navigation,
         PageHeader,
-        Dialog,
+        SaltRimDialog,
         UserForm
     },
     data() {

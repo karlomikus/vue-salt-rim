@@ -2,14 +2,14 @@
     <PageHeader>
         {{ $t('glass-types') }}
         <template #actions>
-            <Dialog v-model="showDialog">
+            <SaltRimDialog v-model="showDialog">
                 <template #trigger>
                     <button type="button" class="button button--dark" @click.prevent="openDialog($t('glass-type.add'), {})">{{ $t('glass-type.add') }}</button>
                 </template>
                 <template #dialog>
                     <GlassForm :source-glass="editGlass" :dialog-title="dialogTitle" @glass-dialog-closed="refreshGlasses" />
                 </template>
-            </Dialog>
+            </SaltRimDialog>
         </template>
     </PageHeader>
     <div class="settings-page">
@@ -48,8 +48,8 @@
 import ApiRequests from "@/ApiRequests";
 import OverlayLoader from '@/components/OverlayLoader.vue'
 import PageHeader from '@/components/PageHeader.vue'
-import Navigation from '@/components/Settings/Navigation.vue'
-import Dialog from '@/components/Dialog/Dialog.vue'
+import Navigation from '@/components/Settings/SettingsNavigation.vue'
+import SaltRimDialog from '@/components/Dialog/SaltRimDialog.vue'
 import GlassForm from '@/components/Settings/GlassForm.vue'
 
 export default {
@@ -58,7 +58,7 @@ export default {
         Navigation,
         PageHeader,
         GlassForm,
-        Dialog
+        SaltRimDialog
     },
     data() {
         return {

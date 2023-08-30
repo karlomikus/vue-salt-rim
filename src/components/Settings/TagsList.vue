@@ -2,14 +2,14 @@
     <PageHeader>
         {{ $t('tags') }}
         <template #actions>
-            <Dialog v-model="showDialog">
+            <SaltRimDialog v-model="showDialog">
                 <template #trigger>
                     <button type="button" class="button button--dark" @click.prevent="openDialog($t('tag.add'), {})">{{ $t('tag.add') }}</button>
                 </template>
                 <template #dialog>
                     <TagForm :source-tag="editTag" :dialog-title="dialogTitle" @tag-dialog-closed="refreshTags" />
                 </template>
-            </Dialog>
+            </SaltRimDialog>
         </template>
     </PageHeader>
     <div class="settings-page">
@@ -48,8 +48,8 @@
 import ApiRequests from "@/ApiRequests";
 import OverlayLoader from '@/components/OverlayLoader.vue'
 import PageHeader from '@/components/PageHeader.vue'
-import Navigation from '@/components/Settings/Navigation.vue'
-import Dialog from '@/components/Dialog/Dialog.vue'
+import Navigation from '@/components/Settings/SettingsNavigation.vue'
+import SaltRimDialog from '@/components/Dialog/SaltRimDialog.vue'
 import TagForm from '@/components/Settings/TagForm.vue'
 
 export default {
@@ -58,7 +58,7 @@ export default {
         Navigation,
         PageHeader,
         TagForm,
-        Dialog
+        SaltRimDialog
     },
     data() {
         return {

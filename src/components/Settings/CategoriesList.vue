@@ -2,14 +2,14 @@
     <PageHeader>
         {{ $t('ingredient.categories') }}
         <template #actions>
-            <Dialog v-model="showDialog">
+            <SaltRimDialog v-model="showDialog">
                 <template #trigger>
                     <button type="button" class="button button--dark" @click.prevent="openDialog($t('category.add'), {})">{{ $t('category.add') }}</button>
                 </template>
                 <template #dialog>
                     <CategoryForm :source-category="editCategory" :dialog-title="dialogTitle" @category-dialog-closed="refreshCategories" />
                 </template>
-            </Dialog>
+            </SaltRimDialog>
         </template>
     </PageHeader>
     <div class="settings-page">
@@ -48,8 +48,8 @@
 import ApiRequests from "@/ApiRequests";
 import OverlayLoader from '@/components/OverlayLoader.vue'
 import PageHeader from '@/components/PageHeader.vue'
-import Navigation from '@/components/Settings/Navigation.vue'
-import Dialog from '@/components/Dialog/Dialog.vue'
+import Navigation from '@/components/Settings/SettingsNavigation.vue'
+import SaltRimDialog from '@/components/Dialog/SaltRimDialog.vue'
 import CategoryForm from '@/components/Settings/CategoryForm.vue'
 
 export default {
@@ -57,7 +57,7 @@ export default {
         OverlayLoader,
         Navigation,
         PageHeader,
-        Dialog,
+        SaltRimDialog,
         CategoryForm
     },
     data() {

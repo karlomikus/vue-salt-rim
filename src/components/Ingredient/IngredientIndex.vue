@@ -93,10 +93,10 @@ import ApiRequests from './../../ApiRequests.js'
 import IngredientGridContainer from './../Ingredient/IngredientGridContainer.vue'
 import IngredientGridItem from './../Ingredient/IngredientGridItem.vue'
 import PageHeader from './../PageHeader.vue'
-import Refinement from './../Search/Refinement.vue';
-import Pagination from './../Search/Pagination.vue';
+import Refinement from './../Search/SearchRefinement.vue';
+import Pagination from './../Search/SearchPagination.vue';
 import qs from 'qs';
-import Dropdown from './../Dropdown.vue';
+import Dropdown from './../SaltRimDropdown.vue';
 
 export default {
     data() {

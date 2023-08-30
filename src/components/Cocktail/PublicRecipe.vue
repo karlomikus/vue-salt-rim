@@ -1,6 +1,6 @@
 <template>
     <div class="generate-image-header" v-show="!hideHeader">
-        <Logo></Logo>
+        <SiteLogo></SiteLogo>
     </div>
     <div class="public-cocktail-recipe" ref="recipe" itemscope itemtype="http://schema.org/Recipe">
         <div class="public-cocktail-recipe__image" itemprop="image" :content="mainImage.url" :style="{'background-image': 'url(' + mainImage.url + ')'}">
@@ -40,7 +40,7 @@
 <script>
 import {micromark} from 'micromark'
 import Utils from '@/Utils';
-import Logo from '@/components/Logo.vue'
+import SiteLogo from '@/components/Layout/SiteLogo.vue'
 
 export default {
     props: {
@@ -66,7 +66,7 @@ export default {
         }
     },
     components: {
-        Logo,
+        SiteLogo,
     },
     data() {
         return {

@@ -1,7 +1,7 @@
 <template>
     <div class="public-page">
         <div class="public-page__header">
-            <Logo></Logo>
+            <SiteLogo></SiteLogo>
         </div>
         <PublicRecipe :cocktail="cocktail"></PublicRecipe>
         <div class="public-footer">
@@ -12,12 +12,12 @@
 
 <script>
 import ApiRequests from '@/ApiRequests';
-import Logo from '@/components/Logo.vue'
+import SiteLogo from '@/components/Layout/SiteLogo.vue'
 import PublicRecipe from '@/components/Cocktail/PublicRecipe.vue'
 
 export default {
     components: {
-        Logo,
+        SiteLogo,
         PublicRecipe
     },
     data() {

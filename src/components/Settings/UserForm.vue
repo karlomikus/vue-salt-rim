@@ -24,7 +24,7 @@
         <div class="form-group">
             <label class="form-label">{{ $t('role') }}:</label>
             <div class="user-roles">
-                <Radio v-for="role in roles" :value="role.id" :title="role.name" v-model="user.role_id"></Radio>
+                <SaltRimRadio v-for="role in roles" :value="role.id" :title="role.name" v-model="user.role_id"></SaltRimRadio>
             </div>
         </div>
         <div class="dialog-actions">
@@ -37,8 +37,7 @@
 <script>
 import ApiRequests from "@/ApiRequests";
 import OverlayLoader from '@/components/OverlayLoader.vue'
-import Checkbox from '@/components/Checkbox.vue'
-import Radio from "./../Radio.vue";
+import SaltRimRadio from "./../SaltRimRadio.vue";
 
 export default {
     props: ['sourceUser', 'dialogTitle'],
@@ -56,8 +55,7 @@ export default {
     },
     components: {
         OverlayLoader,
-        Checkbox,
-        Radio
+        SaltRimRadio
     },
     methods: {
         submit() {

@@ -1,5 +1,5 @@
 <script setup>
-import CollectionsList from '../components/Collections/Index.vue'
+import CollectionsList from '../components/Collections/CollectionIndex.vue'
 </script>
 
 <template>

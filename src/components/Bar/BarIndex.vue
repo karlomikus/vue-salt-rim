@@ -2,22 +2,22 @@
     <PageHeader>
         {{ $t('bars.title') }}
         <template #actions>
-            <Dialog v-model="showJoinDialog">
+            <SaltRimDialog v-model="showJoinDialog">
                 <template #trigger>
                     <button type="button" class="button button--outline" @click.prevent="showJoinDialog = !showJoinDialog">{{ $t('bars.join') }}</button>
                 </template>
                 <template #dialog>
                     <BarJoinDialog @dialogClosed="showJoinDialog = false" />
                 </template>
-            </Dialog>
-            <Dialog v-model="showCreateDialog">
+            </SaltRimDialog>
+            <SaltRimDialog v-model="showCreateDialog">
                 <template #trigger>
                     <button type="button" class="button button--dark" @click.prevent="showCreateDialog = !showCreateDialog">{{ $t('bars.add') }}</button>
                 </template>
                 <template #dialog>
                     <BarForm @barCreated="refreshBars" @dialogClosed="showCreateDialog = false" />
                 </template>
-            </Dialog>
+            </SaltRimDialog>
         </template>
     </PageHeader>
     <div class="bars">
@@ -46,7 +46,7 @@
 <script>
 import ApiRequests from './../../ApiRequests';
 import OverlayLoader from './../OverlayLoader.vue';
-import Dialog from './../Dialog/Dialog.vue';
+import SaltRimDialog from './../Dialog/SaltRimDialog.vue';
 import PageHeader from './../PageHeader.vue';
 import BarForm from './BarForm.vue';
 import BarJoinDialog from './BarJoinDialog.vue';
@@ -65,7 +65,7 @@ export default {
         OverlayLoader,
         PageHeader,
         BarForm,
-        Dialog,
+        SaltRimDialog,
         BarJoinDialog
     },
     mounted() {

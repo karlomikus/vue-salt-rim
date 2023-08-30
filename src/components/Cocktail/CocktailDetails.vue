@@ -100,7 +100,7 @@
                                     </svg>
                                     {{ $t('print-recipe') }}
                                 </RouterLink>
-                                <Dialog v-model="showPublicDialog">
+                                <SaltRimDialog v-model="showPublicDialog">
                                     <template #trigger>
                                         <a class="dropdown-menu__item" href="#makepublic" @click.prevent="showPublicDialog = !showPublicDialog">
                                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18">
@@ -113,8 +113,8 @@
                                     <template #dialog>
                                         <PublicLinkDialog :cocktail="cocktail" @publicDialogClosed="showPublicDialog = false; fetchCocktail()" />
                                     </template>
-                                </Dialog>
-                                <Dialog v-model="showDownloadImageDialog">
+                                </SaltRimDialog>
+                                <SaltRimDialog v-model="showDownloadImageDialog">
                                     <template #trigger>
                                         <a class="dropdown-menu__item" href="#generateimage" @click.prevent="showDownloadImageDialog = !showDownloadImageDialog">
                                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18">
@@ -127,7 +127,7 @@
                                     <template #dialog>
                                         <GenerateImageDialog :cocktail="cocktail" @generateImageDialogClosed="showDownloadImageDialog = false" />
                                     </template>
-                                </Dialog>
+                                </SaltRimDialog>
                                 <a class="dropdown-menu__item" href="#copy" @click.prevent="shareFromFormat('text')">
                                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18">
                                         <path d="M6.9998 6V3C6.9998 2.44772 7.44752 2 7.9998 2H19.9998C20.5521 2 20.9998 2.44772 20.9998 3V17C20.9998 17.5523 20.5521 18 19.9998 18H16.9998V20.9991C16.9998 21.5519 16.5499 22 15.993 22H4.00666C3.45059 22 3 21.5554 3 20.9991L3.0026 7.00087C3.0027 6.44811 3.45264 6 4.00942 6H6.9998ZM5.00242 8L5.00019 20H14.9998V8H5.00242ZM8.9998 6H16.9998V16H18.9998V4H8.9998V6ZM7 11H13V13H7V11ZM7 15H13V17H7V15Z"></path>
@@ -163,7 +163,7 @@
                                     </svg>
                                     {{ $t('edit') }}
                                 </RouterLink>
-                                <Dialog v-model="showCollectionDialog">
+                                <SaltRimDialog v-model="showCollectionDialog">
                                     <template #trigger>
                                         <a class="dropdown-menu__item" href="#" @click.prevent="showCollectionDialog = !showCollectionDialog">
                                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18">
@@ -176,8 +176,8 @@
                                     <template #dialog>
                                         <CollectionDialog :cocktails="[cocktail.id]" :cocktailCollections="cocktail.collections" @collectionDialogClosed="showCollectionDialog = false; fetchCocktail()" />
                                     </template>
-                                </Dialog>
-                                <Dialog v-model="showNoteDialog">
+                                </SaltRimDialog>
+                                <SaltRimDialog v-model="showNoteDialog">
                                     <template #trigger>
                                         <a class="dropdown-menu__item" href="#" @click.prevent="showNoteDialog = !showNoteDialog">
                                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18">
@@ -189,7 +189,7 @@
                                     <template #dialog>
                                         <NoteDialog :resourceId="cocktail.id" resource="cocktail" @noteDialogClosed="showNoteDialog = false; refreshNotes()" />
                                     </template>
-                                </Dialog>
+                                </SaltRimDialog>
                                 <a v-show="cocktail.source" class="dropdown-menu__item" target="_blank" :href="cocktail.source">
                                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18">
                                         <path fill="none" d="M0 0h24v24H0z" />
@@ -293,20 +293,20 @@ import { micromark } from 'micromark'
 import ApiRequests from './../../ApiRequests.js';
 import AppState from './../../AppState';
 import OverlayLoader from './../OverlayLoader.vue'
-import Dropdown from './../Dropdown.vue';
-import Rating from './../Rating.vue';
+import Dropdown from './../SaltRimDropdown.vue';
+import Rating from './../RatingActions.vue';
 import { Swiper, SwiperSlide } from 'swiper/vue';
 import { Navigation, Pagination } from 'swiper';
 import Utils from '@/Utils';
-import Dialog from './../Dialog/Dialog.vue';
-import Note from './../Note/Details.vue'
-import NoteDialog from './../Note/Dialog.vue'
+import SaltRimDialog from './../Dialog/SaltRimDialog.vue';
+import Note from './../Note/NoteDetails.vue'
+import NoteDialog from './../Note/NoteDialog.vue'
 import PublicLinkDialog from './PublicLinkDialog.vue';
 import GenerateImageDialog from './GenerateImageDialog.vue';
 import SimilarCocktails from './SimilarCocktails.vue';
 import IngredientSpotlight from './../Ingredient/IngredientSpotlight.vue';
-import CocktailCollections from './../Collections/Widget.vue';
-import CollectionDialog from './../Collections/Dialog.vue';
+import CocktailCollections from './../Collections/CollectionWidget.vue';
+import CollectionDialog from './../Collections/CollectionDialog.vue';
 import dayjs from 'dayjs'
 
 export default {
@@ -334,7 +334,7 @@ export default {
         Rating,
         Swiper,
         SwiperSlide,
-        Dialog,
+        SaltRimDialog,
         PublicLinkDialog,
         Note,
         NoteDialog,

@@ -2,14 +2,14 @@
     <PageHeader>
         {{ $t('utensils.title') }}
         <template #actions>
-            <Dialog v-model="showDialog">
+            <SaltRimDialog v-model="showDialog">
                 <template #trigger>
                     <button type="button" class="button button--dark" @click.prevent="openDialog($t('utensils.add'), {})">{{ $t('utensils.add') }}</button>
                 </template>
                 <template #dialog>
                     <UtensilForm :sourceData="editUtensil" :dialogTitle="dialogTitle" @utensilDialogClosed="refreshUtensils" />
                 </template>
-            </Dialog>
+            </SaltRimDialog>
         </template>
     </PageHeader>
     <div class="settings-page">
@@ -48,8 +48,8 @@
 import ApiRequests from "./../../ApiRequests.js";
 import OverlayLoader from './../OverlayLoader.vue'
 import PageHeader from './../PageHeader.vue'
-import Navigation from './../Settings/Navigation.vue'
-import Dialog from './../Dialog/Dialog.vue'
+import Navigation from './../Settings/SettingsNavigation.vue'
+import SaltRimDialog from './../Dialog/SaltRimDialog.vue'
 import UtensilForm from './UtensilForm.vue'
 
 export default {
@@ -57,7 +57,7 @@ export default {
         OverlayLoader,
         Navigation,
         PageHeader,
-        Dialog,
+        SaltRimDialog,
         UtensilForm
     },
     data() {

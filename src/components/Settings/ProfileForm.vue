@@ -43,7 +43,7 @@
 import ApiRequests from "@/ApiRequests";
 import OverlayLoader from '@/components/OverlayLoader.vue'
 import PageHeader from '@/components/PageHeader.vue'
-import Navigation from '@/components/Settings/Navigation.vue'
+import Navigation from '@/components/Settings/SettingsNavigation.vue'
 import AppState from "./../../AppState";
 
 export default {

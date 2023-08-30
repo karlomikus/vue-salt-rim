@@ -136,7 +136,7 @@
 
 <script>
 import ApiRequests from './../../ApiRequests.js';
-import Dropdown from '@/components/Dropdown.vue';
+import Dropdown from '@/components/SaltRimDropdown.vue';
 import OverlayLoader from '@/components/OverlayLoader.vue'
 import { micromark } from 'micromark'
 

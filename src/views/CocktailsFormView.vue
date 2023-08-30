@@ -1,9 +1,9 @@
 <script setup>
-import Form from '../components/Cocktail/Form.vue'
+import CocktailForm from '../components/Cocktail/CocktailForm.vue'
 </script>
 
 <template>
   <main>
-    <Form />
+    <CocktailForm />
   </main>
 </template>

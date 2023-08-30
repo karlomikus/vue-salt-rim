@@ -53,14 +53,14 @@
                 </div>
             </li>
         </ul>
-        <Dialog v-model="showDialog">
+        <SaltRimDialog v-model="showDialog">
             <template #trigger>
                 <button class="button button--outline" type="button" @click="addIngredient">{{ $t('ingredient.add') }}</button>
             </template>
             <template #dialog>
                 <IngredientModal :value="cocktailIngredientForEdit" @close="closeModal" />
             </template>
-        </Dialog>
+        </SaltRimDialog>
         <h3 class="form-section-title">{{ $t('additional-information') }}</h3>
         <div class="block-container block-container--padded">
             <div class="form-group">
@@ -81,7 +81,7 @@
             <div style="margin-bottom: 2rem;">
                 <label class="form-label">{{ $t('method-and-dilution') }}:</label>
                 <div class="cocktail-methods">
-                    <Radio v-for="method in methods" :value="method.id" :title="method.name" :description="method.dilution_percentage + '%'" v-model="cocktail.method.id"></Radio>
+                    <SaltRimRadio v-for="method in methods" :value="method.id" :title="method.name" :description="method.dilution_percentage + '%'" v-model="cocktail.method.id"></SaltRimRadio>
                 </div>
             </div>
             <div class="form-group">
@@ -120,8 +120,8 @@ import IngredientModal from './../Cocktail/IngredientModal.vue'
 import ImageUpload from './../ImageUpload.vue'
 import PageHeader from './../PageHeader.vue'
 import Sortable from 'sortablejs';
-import Dialog from './../Dialog/Dialog.vue';
-import Radio from "../Radio.vue";
+import SaltRimDialog from './../Dialog/SaltRimDialog.vue';
+import SaltRimRadio from "../SaltRimRadio.vue";
 import AppState from "./../../AppState";
 
 export default {
@@ -152,8 +152,8 @@ export default {
         IngredientModal,
         ImageUpload,
         PageHeader,
-        Dialog,
-        Radio
+        SaltRimDialog,
+        SaltRimRadio
     },
     watch: {
         showDialog(newVal) {

@@ -119,25 +119,30 @@ import CocktailListItem from '@/components/Cocktail/CocktailListItem.vue'
 import CocktailListContainer from '@/components/Cocktail/CocktailListContainer.vue'
 import OverlayLoader from '@/components/OverlayLoader.vue'
 import PageHeader from '@/components/PageHeader.vue'
+import AppState from './../../AppState';
 
 export default {
-    data: () => ({
-        // user: Auth.getUser(),
-        favoriteCocktails: [],
-        latestCocktails: [],
-        shoppingListIngredients: [],
-        favoriteIngredients: [],
-        topRatedCocktails: [],
-        maxItems: 5,
-        stats: {},
-        loaders: {
-            favorites: false,
-            cocktails: false,
-            list: false,
-            stats: false,
-            favorite_ingredients: false,
+    data() {
+        const appState = new AppState();
+
+        return {
+            user: appState.user,
+            favoriteCocktails: [],
+            latestCocktails: [],
+            shoppingListIngredients: [],
+            favoriteIngredients: [],
+            topRatedCocktails: [],
+            maxItems: 5,
+            stats: {},
+            loaders: {
+                favorites: false,
+                cocktails: false,
+                list: false,
+                stats: false,
+                favorite_ingredients: false,
+            }
         }
-    }),
+    },
     components: {
         IngredientListContainer,
         IngredientListItem,
