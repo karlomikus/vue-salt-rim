@@ -100,7 +100,6 @@ import Checkbox from './../Checkbox.vue'
 import CocktailGridItem from './CocktailGridItem.vue'
 import CocktailGridContainer from './CocktailGridContainer.vue'
 import PageHeader from './../PageHeader.vue'
-import Auth from './../../Auth.js';
 import Refinement from './../Search/Refinement.vue';
 import Pagination from './../Search/Pagination.vue';
 import CollectionDialog from './../Collections/Dialog.vue';
@@ -373,7 +372,7 @@ export default {
                 on_shelf: this.activeFilters.on_shelf,
                 favorites: this.activeFilters.favorites,
                 is_public: this.activeFilters.is_public,
-                user_id: this.activeFilters.user_id ? Auth.getUser().id : null,
+                // user_id: this.activeFilters.user_id ? Auth.getUser().id : null, // TODO
                 user_rating_min: this.activeFilters.user_rating ? this.activeFilters.user_rating : null,
                 total_ingredients: this.activeFilters.total_ingredients ? this.activeFilters.total_ingredients : null,
                 tag_id: this.activeFilters.tags.length > 0 ? this.activeFilters.tags.join(',') : null,

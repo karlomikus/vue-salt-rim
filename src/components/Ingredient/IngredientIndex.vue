@@ -90,7 +90,6 @@
 <script>
 import OverlayLoader from './../OverlayLoader.vue'
 import ApiRequests from './../../ApiRequests.js'
-import Auth from './../../Auth.js'
 import IngredientGridContainer from './../Ingredient/IngredientGridContainer.vue'
 import IngredientGridItem from './../Ingredient/IngredientGridItem.vue'
 import PageHeader from './../PageHeader.vue'

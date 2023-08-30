@@ -19,7 +19,6 @@
 </template>
 
 <script>
-import Auth from '@/Auth.js';
 import ApiRequests from '@/ApiRequests.js';
 import { thumbHashToDataURL } from 'thumbhash'
 

@@ -113,7 +113,6 @@
 
 <script>
 import ApiRequests from './../../ApiRequests.js';
-import Auth from '@/Auth.js';
 import IngredientListItem from '@/components/Ingredient/IngredientListItem.vue'
 import IngredientListContainer from '@/components/Ingredient/IngredientListContainer.vue'
 import CocktailListItem from '@/components/Cocktail/CocktailListItem.vue'
@@ -123,7 +122,7 @@ import PageHeader from '@/components/PageHeader.vue'
 
 export default {
     data: () => ({
-        user: Auth.getUser(),
+        // user: Auth.getUser(),
         favoriteCocktails: [],
         latestCocktails: [],
         shoppingListIngredients: [],
@@ -211,12 +210,6 @@ export default {
         },
         removeIngFromList() {
             this.fetchShoppingList();
-        },
-        logout() {
-            ApiRequests.logout().then(() => {
-                Auth.forgetUser();
-                this.$router.push({ name: 'login' })
-            })
         }
     }
 }

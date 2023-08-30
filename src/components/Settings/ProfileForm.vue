@@ -41,7 +41,6 @@
 
 <script>
 import ApiRequests from "@/ApiRequests";
-import Auth from "@/Auth";
 import OverlayLoader from '@/components/OverlayLoader.vue'
 import PageHeader from '@/components/PageHeader.vue'
 import Navigation from '@/components/Settings/Navigation.vue'
@@ -91,7 +90,7 @@ export default {
             }
 
             ApiRequests.updateUser(postData).then(data => {
-                Auth.rememberUser(data);
+                // Auth.rememberUser(data);
                 this.isLoading = false;
                 this.$toast.default(this.$t('profile-updated'));
                 this.user.password = null;

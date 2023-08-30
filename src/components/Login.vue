@@ -32,7 +32,6 @@
 </template>
 
 <script>
-import Auth from '../Auth'
 import ApiRequests from './../ApiRequests.js';
 import OverlayLoader from '@/components/OverlayLoader.vue';
 import Logo from '@/components/Logo.vue';
