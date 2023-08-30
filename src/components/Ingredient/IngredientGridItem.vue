@@ -37,7 +37,26 @@ import OverlayLoader from '@/components/OverlayLoader.vue'
 import ApiRequests from './../../ApiRequests.js'
 
 export default {
-    props: ['ingredient', 'userIngredients', 'shoppingList'],
+    props: {
+        ingredient: {
+            type: Object,
+            default() {
+                return {}
+            }
+        },
+        userIngredients: {
+            type: Array,
+            default() {
+                return []
+            }
+        },
+        shoppingList: {
+            type: Array,
+            default() {
+                return []
+            }
+        }
+    },
     components: {
         OverlayLoader
     },

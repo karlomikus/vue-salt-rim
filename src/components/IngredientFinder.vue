@@ -1,14 +1,14 @@
 <template>
     <ais-instant-search :search-client="searchClient" :index-name="index" class="ingredient-finder">
-        <ais-configure :hitsPerPage="maxHits" />
+        <ais-configure :hits-per-page="maxHits" />
         <!-- <ais-search-box class="ingredient-finder__search-input" :placeholder="$t('placeholder.search-ingredients')" :class-names="{ 'ais-SearchBox-input': 'form-input' }" v-model="currentQuery" /> -->
         <ais-search-box autofocus>
-            <template v-slot="{ refine }">
+            <template #default="{ refine }">
                 <input ref="finderSearchInput" class="form-input ingredient-finder__search-input" type="search" :placeholder="$t('placeholder.search-ingredients')" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" maxlength="512" @input="refine($event.currentTarget.value)" v-model="currentQuery">
             </template>
         </ais-search-box>
         <ais-hits class="ingredient-finder__hits">
-            <template v-slot="{ items }">
+            <template #default="{ items }">
                 <div class="ingredient-finder__options">
                     <OverlayLoader v-if="isLoading"></OverlayLoader>
                     <a href="#" v-for="item in items" :key="item.id" @click.prevent="selectIngredient(item)">{{ item.name }}</a>
@@ -31,7 +31,12 @@ const appState = new AppState();
 
 export default {
     props: {
-        modelValue: null,
+        modelValue: {
+            type: Object,
+            default() {
+                return {}
+            }
+        },
         maxHits: {
             type: Number,
             default: 15

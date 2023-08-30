@@ -7,7 +7,7 @@
                     <button type="button" class="button button--dark" @click.prevent="openDialog($t('collections.add'), {})">{{ $t('collections.add') }}</button>
                 </template>
                 <template #dialog>
-                    <Form :source-collection="editCollection" :dialog-title="dialogTitle" @collection-dialog-closed="refreshCollections" />
+                    <CollectionForm :source-collection="editCollection" :dialog-title="dialogTitle" @collection-dialog-closed="refreshCollections" />
                 </template>
             </SaltRimDialog>
         </template>
@@ -56,12 +56,14 @@ import ApiRequests from "./../../ApiRequests.js";
 import OverlayLoader from './../OverlayLoader.vue'
 import PageHeader from './../PageHeader.vue'
 import SaltRimDialog from './../Dialog/SaltRimDialog.vue'
+import CollectionForm from './CollectionForm.vue'
 
 export default {
     components: {
         OverlayLoader,
         PageHeader,
         SaltRimDialog,
+        CollectionForm
     },
     data() {
         return {

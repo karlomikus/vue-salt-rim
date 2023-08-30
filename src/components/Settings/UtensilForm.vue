@@ -22,7 +22,19 @@ import ApiRequests from "./../../ApiRequests.js";
 import OverlayLoader from './../OverlayLoader.vue'
 
 export default {
-    props: ['sourceData', 'dialogTitle'],
+    props: {
+        sourceData: {
+            type: Object,
+            default() {
+                return {}
+            }
+        },
+        dialogTitle: {
+            type: String,
+            default: ''
+        },
+    },
+    emits: ['utensilDialogClosed'],
     data() {
         return {
             isLoading: false,

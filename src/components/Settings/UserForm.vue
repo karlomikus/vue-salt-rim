@@ -40,7 +40,19 @@ import OverlayLoader from '@/components/OverlayLoader.vue'
 import SaltRimRadio from "./../SaltRimRadio.vue";
 
 export default {
-    props: ['sourceUser', 'dialogTitle'],
+    props: {
+        sourceUser: {
+            type: Object,
+            default() {
+                return {}
+            }
+        },
+        dialogTitle: {
+            type: String,
+            default: ''
+        },
+    },
+    emits: ['userDialogClosed'],
     data() {
         return {
             isLoading: false,

@@ -19,6 +19,7 @@ import ApiRequests from './../../ApiRequests';
 import OverlayLoader from './../OverlayLoader.vue';
 
 export default {
+    emits: ['dialogClosed', 'barJoined'],
     data() {
         return {
             isLoading: false,

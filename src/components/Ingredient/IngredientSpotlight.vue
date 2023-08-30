@@ -17,7 +17,12 @@ import ApiRequests from '@/ApiRequests';
 import OverlayLoader from '@/components/OverlayLoader.vue'
 
 export default {
-    props: ['id'],
+    props: {
+        id: {
+            type: Number,
+            default: 0
+        }
+    },
     data() {
         return {
             isLoading: false,

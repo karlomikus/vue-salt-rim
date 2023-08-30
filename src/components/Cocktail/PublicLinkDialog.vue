@@ -20,7 +20,12 @@ import dayjs from 'dayjs'
 
 export default {
     props: {
-        cocktail: Object,
+        cocktail: {
+            type: Object,
+            default() {
+                return {}
+            }
+        },
     },
     emits: ['publicDialogClosed'],
     data() {

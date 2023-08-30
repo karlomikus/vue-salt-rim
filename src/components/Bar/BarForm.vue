@@ -37,6 +37,7 @@ import ApiRequests from './../../ApiRequests';
 import OverlayLoader from './../OverlayLoader.vue';
 
 export default {
+    emits: ['dialogClosed', 'barCreated'],
     data() {
         return {
             isLoading: false,

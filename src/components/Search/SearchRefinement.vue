@@ -14,7 +14,12 @@
 <script>
 export default {
     props: {
-        modelValue: null,
+        modelValue: {
+            type: [Object, Array],
+            default() {
+                return null;
+            }
+        },
         title: {
             type: String,
             required: true
@@ -34,7 +39,7 @@ export default {
             default: 'checkbox'
         }
     },
-    emits: ['update:modelValue'],
+    emits: ['update:modelValue', 'change'],
     computed: {
         model: {
             get() {
@@ -42,6 +47,7 @@ export default {
             },
             set(value) {
                 this.$emit("update:modelValue", value);
+                this.$emit("change", value);
             }
         },
         isClearable() {

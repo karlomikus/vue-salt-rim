@@ -21,11 +21,15 @@
                 </p>
             </div>
             <div style="margin: 1rem 0;">
-                <Checkbox v-model="isParent" id="is-variety">{{ $t('ingredient-is-variety') }}</Checkbox>
+                <!-- <Checkbox v-model="isParent" id="is-variety">{{ $t('ingredient-is-variety') }}</Checkbox> -->
+                <label class="form-checkbox">
+                    <input type="checkbox" v-model="isParent">
+                    <span>{{ $t('ingredient-is-variety') }}</span>
+                </label>
             </div>
             <div class="form-group" v-show="isParent">
                 <label class="form-label" for="parent-ingredient">{{ $t('parent-ingredient') }}:</label>
-                <IngredientFinder v-show="ingredient.parent_ingredient == null" v-model="ingredient.parent_ingredient" :disabledIngredients="disabledFinderIngredients"></IngredientFinder>
+                <IngredientFinder v-show="ingredient.parent_ingredient == null" v-model="ingredient.parent_ingredient" :disabled-ingredients="disabledFinderIngredients"></IngredientFinder>
                 <div v-if="ingredient.parent_ingredient" style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
                     <button type="button" class="button button--outline">{{ ingredient.parent_ingredient.name }}</button>
                     <button type="button" class="button button--dark" @click="ingredient.parent_ingredient = null">{{ $t('remove') }}</button>
@@ -65,7 +69,6 @@ import Utils from "./../../Utils.js";
 import ImageUpload from './../ImageUpload.vue'
 import PageHeader from './../PageHeader.vue'
 import OverlayLoader from './../OverlayLoader.vue'
-import Checkbox from './../Checkbox.vue'
 import IngredientFinder from './../IngredientFinder.vue'
 
 export default {
@@ -86,7 +89,6 @@ export default {
         ImageUpload,
         PageHeader,
         OverlayLoader,
-        Checkbox,
         IngredientFinder
     },
     created() {

@@ -111,7 +111,7 @@
                                         </a>
                                     </template>
                                     <template #dialog>
-                                        <PublicLinkDialog :cocktail="cocktail" @publicDialogClosed="showPublicDialog = false; fetchCocktail()" />
+                                        <PublicLinkDialog :cocktail="cocktail" @public-dialog-closed="showPublicDialog = false; fetchCocktail()" />
                                     </template>
                                 </SaltRimDialog>
                                 <SaltRimDialog v-model="showDownloadImageDialog">
@@ -125,7 +125,7 @@
                                         </a>
                                     </template>
                                     <template #dialog>
-                                        <GenerateImageDialog :cocktail="cocktail" @generateImageDialogClosed="showDownloadImageDialog = false" />
+                                        <GenerateImageDialog :cocktail="cocktail" @generate-image-dialog-closed="showDownloadImageDialog = false" />
                                     </template>
                                 </SaltRimDialog>
                                 <a class="dropdown-menu__item" href="#copy" @click.prevent="shareFromFormat('text')">
@@ -149,11 +149,11 @@
                             </template>
                         </Dropdown>
                         <Dropdown>
-                            <template v-slot:default="{ toggleDropdown }">
+                            <template #default="{ toggleDropdown }">
                                 <button type="button" class="button-circle" @click="toggleDropdown"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
-                                        <path fill="none" d="M0 0h24v24H0z" />
-                                        <path d="M12 3c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 14c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0-7c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z" />
-                                    </svg></button>
+                                    <path fill="none" d="M0 0h24v24H0z" />
+                                    <path d="M12 3c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 14c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0-7c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z" />
+                                </svg></button>
                             </template>
                             <template #content>
                                 <RouterLink class="dropdown-menu__item" :to="{ name: 'cocktails.form', query: { id: cocktail.id } }">
@@ -174,7 +174,7 @@
                                         </a>
                                     </template>
                                     <template #dialog>
-                                        <CollectionDialog :cocktails="[cocktail.id]" :cocktailCollections="cocktail.collections" @collectionDialogClosed="showCollectionDialog = false; fetchCocktail()" />
+                                        <CollectionDialog :cocktails="[cocktail.id]" :cocktail-collections="cocktail.collections" @collection-dialog-closed="showCollectionDialog = false; fetchCocktail()" />
                                     </template>
                                 </SaltRimDialog>
                                 <SaltRimDialog v-model="showNoteDialog">
@@ -187,7 +187,7 @@
                                         </a>
                                     </template>
                                     <template #dialog>
-                                        <NoteDialog :resourceId="cocktail.id" resource="cocktail" @noteDialogClosed="showNoteDialog = false; refreshNotes()" />
+                                        <NoteDialog :resource-id="cocktail.id" resource="cocktail" @note-dialog-closed="showNoteDialog = false; refreshNotes()" />
                                     </template>
                                 </SaltRimDialog>
                                 <a v-show="cocktail.source" class="dropdown-menu__item" target="_blank" :href="cocktail.source">
@@ -265,7 +265,7 @@
                 <div class="details-block-container details-block-container--purple" v-if="notes.length > 0">
                     <OverlayLoader v-if="isLoadingNotes" />
                     <h3 class="details-block-container__title">{{ $t('notes') }}</h3>
-                    <Note v-for="note in notes" :key="note.id" :note="note" @noteDeleted="refreshNotes"></Note>
+                    <Note v-for="note in notes" :key="note.id" :note="note" @note-deleted="refreshNotes"></Note>
                 </div>
                 <div class="cocktail-details__navigation">
                     <RouterLink v-if="cocktail.navigation.prev" :to="{ name: 'cocktails.show', params: { id: cocktail.navigation.prev } }">{{ $t('cocktail-prev') }}</RouterLink>
@@ -274,14 +274,14 @@
             </div>
             <div class="cocktail-details__main__aside">
                 <h3 class="page-subtitle" style="margin-top: 0">{{ $t('cocktails-similar') }}</h3>
-                <SimilarCocktails :cocktail="cocktail"></SimilarCocktails>
+                <SimilarCocktails :from-cocktail="cocktail"></SimilarCocktails>
                 <template v-if="cocktail.ingredients.length > 0">
                     <h3 class="page-subtitle">{{ $t('ingredient-spotlight') }}</h3>
                     <IngredientSpotlight :id="cocktail.ingredients[0].ingredient_id"></IngredientSpotlight>
                 </template>
                 <template v-if="cocktail.collections.length > 0">
                     <h3 class="page-subtitle">{{ $t('cocktail-collections') }}</h3>
-                    <CocktailCollections :cocktail="cocktail" @cocktailRemovedFromCollection="fetchCocktail"></CocktailCollections>
+                    <CocktailCollections :cocktail="cocktail" @cocktail-removed-from-collection="fetchCocktail"></CocktailCollections>
                 </template>
             </div>
         </div>

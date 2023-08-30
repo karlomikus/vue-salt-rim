@@ -7,7 +7,7 @@
                     <button type="button" class="button button--outline" @click.prevent="showJoinDialog = !showJoinDialog">{{ $t('bars.join') }}</button>
                 </template>
                 <template #dialog>
-                    <BarJoinDialog @dialogClosed="showJoinDialog = false" />
+                    <BarJoinDialog @dialog-closed="showJoinDialog = false" />
                 </template>
             </SaltRimDialog>
             <SaltRimDialog v-model="showCreateDialog">
@@ -15,7 +15,7 @@
                     <button type="button" class="button button--dark" @click.prevent="showCreateDialog = !showCreateDialog">{{ $t('bars.add') }}</button>
                 </template>
                 <template #dialog>
-                    <BarForm @barCreated="refreshBars" @dialogClosed="showCreateDialog = false" />
+                    <BarForm @bar-created="refreshBars" @dialog-closed="showCreateDialog = false" />
                 </template>
             </SaltRimDialog>
         </template>

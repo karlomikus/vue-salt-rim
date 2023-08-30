@@ -15,9 +15,11 @@ export default {
         },
         id: {
             type: Number,
+            default: 0
         },
         type: {
-            type: String
+            type: String,
+            default: 'cocktail'
         }
     },
     data() {

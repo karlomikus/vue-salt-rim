@@ -17,7 +17,18 @@ import ApiRequests from '@/ApiRequests.js';
 import MiniRating from '@/components/MiniRating.vue'
 
 export default {
-    props: ['cocktail', 'observer'],
+    props: {
+        cocktail: {
+            type: Object,
+            default() {
+                return {}
+            }
+        },
+        observer: {
+            type: IntersectionObserver,
+            default: null
+        }
+    },
     components: {
         MiniRating
     },

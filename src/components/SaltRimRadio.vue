@@ -13,13 +13,21 @@
 <script>
 export default {
     props: {
-        modelValue: null,
-        value: null,
+        modelValue: {
+            type: [Number, String],
+            default: null,
+        },
+        value: {
+            type: [Number, String],
+            default: null,
+        },
         title: {
-            type: String
+            type: String,
+            default: ''
         },
         description: {
-            type: String
+            type: String,
+            default: ''
         }
     },
     emits: ['update:modelValue'],

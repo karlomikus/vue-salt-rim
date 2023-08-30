@@ -3,7 +3,7 @@
         {{ $t('ingredients') }}
         <template #actions>
             <Dropdown>
-                <template v-slot:default="{ toggleDropdown }">
+                <template #default="{ toggleDropdown }">
                     <button type="button" class="button button--outline" @click="toggleDropdown">{{ $t('your-shopping-list') }}</button>
                 </template>
                 <template #content>
@@ -73,7 +73,7 @@
                     </button>
                 </div>
                 <IngredientGridContainer v-if="ingredients.length > 0">
-                    <IngredientGridItem v-for="ingredient in ingredients" :ingredient="ingredient" :userIngredients="ingredientIdsOnShelf" :shoppingList="ingredientIdsOnShoppingList" :key="ingredient.id" />
+                    <IngredientGridItem v-for="ingredient in ingredients" :ingredient="ingredient" :user-ingredients="ingredientIdsOnShelf" :shopping-list="ingredientIdsOnShoppingList" :key="ingredient.id" />
                 </IngredientGridContainer>
                 <div v-else class="empty-state">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
@@ -81,7 +81,7 @@
                     </svg>
                     <p>{{ $t('cocktails-not-found') }}</p>
                 </div>
-                <Pagination :meta="meta" @pageChanged="handlePageChange"></Pagination>
+                <Pagination :meta="meta" @page-changed="handlePageChange"></Pagination>
             </div>
         </div>
     </div>
@@ -257,7 +257,8 @@ export default {
             };
 
             // Remove null values
-            query.filter = Object.fromEntries(Object.entries(filters).filter(([_, v]) => v !== null && v !== false));
+            // query.filter = Object.fromEntries(Object.entries(filters).filter(([_, v]) => v !== null && v !== false));
+            query.filter = Object.entries(filters).reduce((a,[k,v]) => (v === null || v === false ? a : (a[k]=v, a)), {})
 
             return query;
         },

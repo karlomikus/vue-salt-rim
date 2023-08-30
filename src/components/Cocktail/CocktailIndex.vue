@@ -71,7 +71,7 @@
                             </button>
                         </template>
                         <template #dialog>
-                            <CollectionDialog title="collections.add-from-query" :cocktails="currentCocktailIds" @collectionDialogClosed="handleCollectionsDialogClosed" />
+                            <CollectionDialog title="collections.add-from-query" :cocktails="currentCocktailIds" @collection-dialog-closed="handleCollectionsDialogClosed" />
                         </template>
                     </SaltRimDialog>
                     <button type="button" class="button button--outline button--icon" @click.prevent="clearRefinements" :title="$t('clear-filters')">
@@ -87,7 +87,7 @@
                     </svg>
                     <p>{{ $t('cocktails-not-found') }}</p>
                 </div>
-                <Pagination :meta="meta" @pageChanged="handlePageChange"></Pagination>
+                <Pagination :meta="meta" @page-changed="handlePageChange"></Pagination>
             </div>
         </div>
     </div>
@@ -384,7 +384,7 @@ export default {
             };
 
             // Remove null values
-            query.filter = Object.fromEntries(Object.entries(filters).filter(([_, v]) => v !== null && v !== false));
+            query.filter = Object.entries(filters).reduce((a,[k,v]) => (v === null || v === false ? a : (a[k]=v, a)), {})
 
             return query;
         },

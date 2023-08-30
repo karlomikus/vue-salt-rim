@@ -18,7 +18,19 @@ import ApiRequests from "@/ApiRequests";
 import OverlayLoader from '@/components/OverlayLoader.vue'
 
 export default {
-    props: ['sourceTag', 'dialogTitle'],
+    props: {
+        sourceTag: {
+            type: Object,
+            default() {
+                return {}
+            }
+        },
+        dialogTitle: {
+            type: String,
+            default: ''
+        },
+    },
+    emits: ['tagDialogClosed'],
     data() {
         return {
             isLoading: false,

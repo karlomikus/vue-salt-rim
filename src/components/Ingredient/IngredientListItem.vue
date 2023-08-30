@@ -22,8 +22,14 @@ import OverlayLoader from './../OverlayLoader.vue';
 
 export default {
     props: {
-        ingredient: Object
+        ingredient: {
+            type: Object,
+            default() {
+                return {}
+            }
+        }
     },
+    emits: ['addedToShelf', 'removedFromShoppingList'],
     data() {
         return {
             isLoading: false

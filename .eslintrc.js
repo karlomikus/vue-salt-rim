@@ -10,5 +10,8 @@ module.exports = {
     "vue/multiline-html-element-content-newline": ['off'],
     "vue/html-self-closing": ['off'],
     "vue/singleline-html-element-content-newline": ['off'],
+    "vue/v-on-event-hyphenation": ['warn', 'always', {
+      autofix: true
+    }],
   }
 }

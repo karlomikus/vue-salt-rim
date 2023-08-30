@@ -18,7 +18,7 @@
                             </a>
                         </template>
                         <template #dialog>
-                            <SiteAutocomplete @closeAutocomplete="showSearchDialog = false"></SiteAutocomplete>
+                            <SiteAutocomplete @close-autocomplete="showSearchDialog = false"></SiteAutocomplete>
                         </template>
                     </SaltRimDialog>
                     <RouterLink :to="{ name: 'home' }" exact-active-class="current-nav">{{ $t('shelf.title') }}</RouterLink>

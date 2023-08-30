@@ -29,6 +29,7 @@ export default {
             }
         },
     },
+    emits: ['pageChanged'],
     watch: {
         meta(newVal) {
             this.currentPage = newVal.current_page

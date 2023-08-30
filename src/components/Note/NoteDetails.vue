@@ -10,7 +10,15 @@ import dayjs from 'dayjs';
 import ApiRequests from './../../ApiRequests.js';
 
 export default {
-    props: ['note'],
+    props: {
+        note: {
+            type: Object,
+            default() {
+                return {}
+            }
+        }
+    },
+    emits: ['noteDeleted'],
     computed: {
         createdDate() {
             const date = dayjs(this.note.created_at).toDate();

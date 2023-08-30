@@ -1,9 +1,13 @@
 <template>
     <div>
         <OverlayLoader v-if="isLoading" />
-        <IngredientFinder @ingredientSelected="selectIngredient"></IngredientFinder>
+        <IngredientFinder @ingredient-selected="selectIngredient"></IngredientFinder>
         <div style="margin: 1rem 0;">
-            <Checkbox v-model="isAddingSubstitute" id="substitute-adding">{{ $t('ingredient-dialog.select-substitutes') }}</Checkbox>
+            <!-- <Checkbox v-model="isAddingSubstitute" id="substitute-adding">{{ $t('ingredient-dialog.select-substitutes') }}</Checkbox> -->
+            <label class="form-checkbox">
+                <input type="checkbox" v-model="isAddingSubstitute">
+                <span>{{ $t('ingredient-dialog.select-substitutes') }}</span>
+            </label>
         </div>
         <div class="selected-ingredient">
             <small>{{ $t('ingredient-dialog.current') }}:</small>
@@ -38,7 +42,11 @@
             </div>
         </div>
         <div style="margin: 1rem 0;">
-            <Checkbox v-model="cocktailIngredient.optional" id="is-cocktail-ing-optional">{{ $t('ingredient-dialog.optional-checkbox') }}</Checkbox>
+            <!-- <Checkbox v-model="cocktailIngredient.optional" id="is-cocktail-ing-optional">{{ $t('ingredient-dialog.optional-checkbox') }}</Checkbox> -->
+            <label class="form-checkbox">
+                <input type="checkbox" v-model="cocktailIngredient.optional">
+                <span>{{ $t('ingredient-dialog.optional-checkbox') }}</span>
+            </label>
         </div>
         <div class="dialog-actions">
             <button type="button" class="button button--outline" @click="cancel">{{ $t('cancel') }}</button>
@@ -48,12 +56,19 @@
 </template>
 
 <script>
-import Checkbox from './../Checkbox.vue';
 import OverlayLoader from './../OverlayLoader.vue'
 import IngredientFinder from './../IngredientFinder.vue'
 
 export default {
-    props: ['value'],
+    props: {
+        value: {
+            type: Object,
+            default() {
+                return {}
+            }
+        }
+    },
+    emits: ['close'],
     data() {
         return {
             isLoading: false,
@@ -65,7 +80,6 @@ export default {
     components: {
         OverlayLoader,
         IngredientFinder,
-        Checkbox
     },
     computed: {
         normalizedAmount: {

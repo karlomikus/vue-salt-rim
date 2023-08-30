@@ -22,7 +22,19 @@ import ApiRequests from "@/ApiRequests";
 import OverlayLoader from '@/components/OverlayLoader.vue'
 
 export default {
-    props: ['sourceGlass', 'dialogTitle'],
+    props: {
+        sourceGlass: {
+            type: Object,
+            default() {
+                return {}
+            }
+        },
+        dialogTitle: {
+            type: String,
+            default: ''
+        },
+    },
+    emits: ['glassDialogClosed'],
     data() {
         return {
             isLoading: false,

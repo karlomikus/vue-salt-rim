@@ -23,7 +23,18 @@ import ApiRequests from '@/ApiRequests.js';
 import { thumbHashToDataURL } from 'thumbhash'
 
 export default {
-    props: ['cocktail', 'observer', 'isSpan'],
+    props: {
+        cocktail: {
+            type: Object,
+            default() {
+                return {}
+            }
+        },
+        observer: {
+            type: IntersectionObserver,
+            default: null
+        }
+    },
     data() {
         return {
             maxTags: 4

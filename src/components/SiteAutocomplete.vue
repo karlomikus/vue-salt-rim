@@ -1,14 +1,14 @@
 <template>
     <form class="site-autocomplete" novalidate @keyup.esc="close">
         <ais-instant-search :search-client="searchClient" index-name="cocktails">
-            <ais-configure :hitsPerPage="5" />
+            <ais-configure :hits-per-page="5" />
             <ais-search-box autofocus>
-                <template v-slot="{ currentRefinement, refine }">
+                <template #default="{ currentRefinement, refine }">
                     <input ref="siteSearchInput" class="form-input" type="search" :placeholder="$t('placeholder.site-search')" :value="currentRefinement" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" maxlength="512" @input="refine($event.currentTarget.value)">
                 </template>
             </ais-search-box>
             <ais-hits>
-                <template v-slot="{ items }">
+                <template #default="{ items }">
                     <h4 class="site-autocomplete__index-name" v-show="items.length > 0">{{ $t('cocktails') }}</h4>
                     <ul class="site-autocomplete__results" v-show="items.length > 0">
                         <li v-for="hit in items" :key="hit.slug">
@@ -25,7 +25,7 @@
             </ais-hits>
             <ais-index index-name="ingredients">
                 <ais-hits>
-                    <template v-slot="{ items }">
+                    <template #default="{ items }">
                         <h4 class="site-autocomplete__index-name" v-show="items.length > 0">{{ $t('ingredients') }}</h4>
                         <ul class="site-autocomplete__results" v-show="items.length > 0">
                             <li v-for="hit in items" :key="hit.slug">
@@ -42,7 +42,7 @@
                 </ais-hits>
             </ais-index>
             <ais-clear-refinements :included-attributes="['query']">
-                <template v-slot="{ canRefine, refine }">
+                <template #default="{ canRefine, refine }">
                     <button class="site-autocomplete__clear" @click.prevent="refine" v-if="canRefine">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
                             <path fill="none" d="M0 0h24v24H0z" />
@@ -50,7 +50,7 @@
                         </svg>
                     </button>
                 </template>
-                <template v-slot:resetLabel></template>
+                <template #resetLabel></template>
             </ais-clear-refinements>
         </ais-instant-search>
         <footer class="site-autocomplete__footer">

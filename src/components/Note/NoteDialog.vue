@@ -18,7 +18,17 @@ import ApiRequests from './../../ApiRequests.js';
 import OverlayLoader from './../OverlayLoader.vue'
 
 export default {
-    props: ['resourceId', 'resource'],
+    props: {
+        resourceId: {
+            type: Number,
+            default: 0
+        },
+        resource: {
+            type: String,
+            default: ''
+        }
+    },
+    emits: ['noteDialogClosed'],
     data() {
         return {
             isLoading: false,

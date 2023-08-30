@@ -7,7 +7,7 @@
                     <button type="button" class="button button--dark" @click.prevent="openDialog($t('utensils.add'), {})">{{ $t('utensils.add') }}</button>
                 </template>
                 <template #dialog>
-                    <UtensilForm :sourceData="editUtensil" :dialogTitle="dialogTitle" @utensilDialogClosed="refreshUtensils" />
+                    <UtensilForm :source-data="editUtensil" :dialog-title="dialogTitle" @utensil-dialog-closed="refreshUtensils" />
                 </template>
             </SaltRimDialog>
         </template>

@@ -74,7 +74,7 @@
         <div class="list-grid__col">
             <h3 class="page-subtitle">{{ $t('your-shopping-list') }}</h3>
             <IngredientListContainer v-if="shoppingListIngredients.length > 0">
-                <IngredientListItem v-for="ingredient in shoppingListIngredients" :ingredient="ingredient" :key="ingredient.id" @removedFromShoppingList="removeIngFromList(ingredient)" @addedToShelf="removeIngFromList(ingredient)" />
+                <IngredientListItem v-for="ingredient in shoppingListIngredients" :ingredient="ingredient" :key="ingredient.id" @removed-from-shopping-list="removeIngFromList(ingredient)" @added-to-shelf="removeIngFromList(ingredient)" />
                 <RouterLink :to="{ name: 'ingredients', query: { 'filter[on_shopping_list]': true } }">{{ $t('view-all') }}</RouterLink>
             </IngredientListContainer>
             <div class="empty-state" v-else>

@@ -5,7 +5,7 @@
         <div class="image-download-preview">
             <img v-if="imagePayload" :src="imagePayload" alt="">
             <div v-else class="image-export-wrapper" ref="exportElement">
-                <PublicRecipe :cocktail="cocktail" :currentUnit="currentUnit" :hideUnits="true" :hideHeader="features.hideHeader" :hideFooter="features.hideFooter"></PublicRecipe>
+                <PublicRecipe :cocktail="cocktail" :current-unit="currentUnit" :hide-units="true" :hide-header="features.hideHeader" :hide-footer="features.hideFooter"></PublicRecipe>
             </div>
         </div>
         <div class="dialog-actions">
@@ -24,7 +24,12 @@ import AppState from './../../AppState';
 
 export default {
     props: {
-        cocktail: Object,
+        cocktail: {
+            type: Object,
+            default() {
+                return {}
+            }
+        },
     },
     emits: ['generateImageDialogClosed'],
     data() {

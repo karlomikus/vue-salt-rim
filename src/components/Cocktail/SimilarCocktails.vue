@@ -16,7 +16,14 @@ import CocktailListContainer from '@/components/Cocktail/CocktailListContainer.v
 import OverlayLoader from '@/components/OverlayLoader.vue'
 
 export default {
-    props: ['cocktail'],
+    props: {
+        fromCocktail: {
+            type: Object,
+            default() {
+                return {}
+            }
+        }
+    },
     data() {
         return {
             isLoading: false,
@@ -29,7 +36,7 @@ export default {
         OverlayLoader
     },
     watch: {
-        cocktail() {
+        fromCocktail() {
             this.fetchRelated()
         }
     },
@@ -39,7 +46,7 @@ export default {
     methods: {
         fetchRelated() {
             this.isLoading = true;
-            ApiRequests.fetchSimilarCocktails(this.cocktail.id).then(data => {
+            ApiRequests.fetchSimilarCocktails(this.fromCocktail.id).then(data => {
                 this.similarCocktails = data
                 this.isLoading = false;
             }).catch(() => {
