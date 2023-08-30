@@ -1,7 +1,7 @@
 <template>
     <div class="cocktail-collections-wrapper">
         <OverlayLoader v-if="isLoading" />
-        <div class="block-container cocktail-collections__item" v-for="collection in collections">
+        <div class="block-container cocktail-collections__item" v-for="collection in collections" :key="collection.id">
             <h3>{{ collection.name }}</h3>
             <div class="cocktail-collections__item__actions">
                 <RouterLink :to="{ name: 'cocktails', query: { 'filter[collection_id]': collection.id } }">
@@ -23,7 +23,9 @@ export default {
     props: {
         cocktail: {
             type: Object,
-            default: {}
+            default() {
+                return {}
+            }
         }
     },
     emits: ['cocktailRemovedFromCollection'],

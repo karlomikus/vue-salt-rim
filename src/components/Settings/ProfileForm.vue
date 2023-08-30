@@ -28,7 +28,7 @@
                 <div class="form-group">
                     <label class="form-label" for="repeat-new-password">{{ $t('ui-language') }}:</label>
                     <select class="form-select" v-model="currentLocale">
-                        <option :value="locale" v-for="locale in $i18n.availableLocales">{{ $t('locales.' + locale) }}</option>
+                        <option :value="locale" v-for="locale in $i18n.availableLocales" :key="locale">{{ $t('locales.' + locale) }}</option>
                     </select>
                 </div>
                 <div class="form-actions">
@@ -83,14 +83,15 @@ export default {
                 password_confirmation: this.user.repeatPassword,
             };
 
+            const appState = new AppState();
+
             if (this.currentLocale) {
-                const appState = new AppState();
                 appState.setLanguage(this.currentLocale);
                 this.$i18n.locale = this.currentLocale;
             }
 
             ApiRequests.updateUser(postData).then(data => {
-                // Auth.rememberUser(data);
+                appState.setUser(data);
                 this.isLoading = false;
                 this.$toast.default(this.$t('profile-updated'));
                 this.user.password = null;

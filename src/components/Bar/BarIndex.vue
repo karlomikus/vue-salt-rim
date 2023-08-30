@@ -23,7 +23,7 @@
     <div class="bars">
         <OverlayLoader v-if="isLoading"></OverlayLoader>
         <div class="bars__grid" v-if="bars.length > 0">
-            <div class="bar block-container" v-for="bar in bars">
+            <div class="bar block-container" v-for="bar in bars" :key="bar.id">
                 <h4 class="bar__title">{{ bar.name }}</h4>
                 <small class="bar__subtitle">{{ bar.subtitle }}</small>
                 <p class="bar__description">{{ bar.description }}</p>

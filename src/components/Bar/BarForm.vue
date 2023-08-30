@@ -20,7 +20,7 @@
                     <input type="checkbox" id="toggle-invite" :value="true" v-model="bar.enableInvites">
                     <span>Enable invites</span>
                 </label>
-                <label class="form-checkbox" v-for="option in importOptions">
+                <label class="form-checkbox" v-for="option in importOptions" :key="option.value">
                     <input type="checkbox" :value="option.value" v-model="bar.options">
                     <span>{{ option.name }}</span>
                 </label>

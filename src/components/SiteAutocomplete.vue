@@ -11,7 +11,7 @@
                 <template v-slot="{ items }">
                     <h4 class="site-autocomplete__index-name" v-show="items.length > 0">{{ $t('cocktails') }}</h4>
                     <ul class="site-autocomplete__results" v-show="items.length > 0">
-                        <li v-for="hit in items">
+                        <li v-for="hit in items" :key="hit.slug">
                             <RouterLink :to="{ name: 'cocktails.show', params: { id: hit.slug } }" @click="close">
                                 <div class="site-autocomplete__results__image" :style="{ 'background-image': 'url(' + getImageUrl(hit, 'cocktail') + ')' }"></div>
                                 <div class="site-autocomplete__results__content">
@@ -28,7 +28,7 @@
                     <template v-slot="{ items }">
                         <h4 class="site-autocomplete__index-name" v-show="items.length > 0">{{ $t('ingredients') }}</h4>
                         <ul class="site-autocomplete__results" v-show="items.length > 0">
-                            <li v-for="hit in items">
+                            <li v-for="hit in items" :key="hit.slug">
                                 <RouterLink :to="{ name: 'ingredients.show', params: { id: hit.slug } }" @click="close">
                                     <div class="site-autocomplete__results__image" :style="{ 'background-image': 'url(' + getImageUrl(hit, 'ingredient') + ')' }"></div>
                                     <div class="site-autocomplete__results__content">

@@ -1,6 +1,6 @@
 <template>
     <div class="rating">
-        <a v-for="val in max" href="#" @click.prevent="rate(val)" :class="{'is-rated': val <= currentRating}"></a>
+        <a v-for="val in max" :key="val" href="#" @click.prevent="rate(val)" :class="{'is-rated': val <= currentRating}"></a>
     </div>
 </template>
 

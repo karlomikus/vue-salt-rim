@@ -6,7 +6,7 @@ const router = createRouter({
     history: createWebHistory(),
     scrollBehavior(to, from, savedPosition) {
         if (savedPosition) {
-            return new Promise((resolve, reject) => {
+            return new Promise((resolve) => {
                 setTimeout(() => {
                     resolve(savedPosition)
                 }, 300)
@@ -24,7 +24,6 @@ const router = createRouter({
         return result ? `${result}` : '';
     },
     routes: [
-        // { path: '/:pathMatch(.*)*', name: 'NotFound', component: () => import('../views/404.vue') },
         {
             path: '/login',
             name: 'login',
@@ -85,7 +84,7 @@ const router = createRouter({
                 {
                     path: '/ingredients',
                     name: 'ingredients',
-                    component: () => import('../views/Ingredients.vue'),
+                    component: () => import('../views/IngredientsView.vue'),
                 },
                 {
                     path: '/settings',
@@ -153,7 +152,7 @@ const router = createRouter({
     ]
 });
 
-router.beforeEach(async (to, from) => {
+router.beforeEach(async (to) => {
     const requiresAuth = to.meta.requiresAuth ?? true;
     const appState = new AppState();
 

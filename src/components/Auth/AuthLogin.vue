@@ -44,9 +44,7 @@ export default {
             email: null,
             password: null,
             baServer: window.srConfig.API_URL,
-            meiliServer: window.srConfig.MEILISEARCH_URL,
             server: {},
-            meiliServer: {}
         }
     },
     components: {
@@ -66,9 +64,6 @@ export default {
         baServerAvailable() {
             return this.server.version != null;
         },
-        meiliServerAvailable() {
-            return this.meiliServer.status == 'available';
-        }
     },
     methods: {
         login() {

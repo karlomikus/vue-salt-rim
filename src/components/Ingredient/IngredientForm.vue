@@ -14,7 +14,7 @@
                 <label class="form-label form-label--required" for="category">{{ $t('category') }}:</label>
                 <select class="form-select" id="category" v-model="ingredient.category.id" required>
                     <option :value="undefined" disabled>{{ $t('select-category') }}</option>
-                    <option v-for="cat in categories" :value="cat.id">{{ cat.name }}</option>
+                    <option v-for="cat in categories" :key="cat.id" :value="cat.id">{{ cat.name }}</option>
                 </select>
                 <p class="form-input-hint">
                     <RouterLink :to="{ name: 'settings.categories' }" target="_blank">{{ $t('edit-categories') }}</RouterLink>

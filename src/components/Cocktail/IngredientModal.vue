@@ -12,7 +12,9 @@
         <div class="selected-ingredient selected-ingredient--substitutes">
             <small>{{ $t('substitutes') }}:</small>
             <p>
-                <span v-if="cocktailIngredient.substitutes.length > 0" v-for="substitute in cocktailIngredient.substitutes">{{ substitute.name }} &middot; <a href="#" @click.prevent="removeSubstitute(substitute)">{{ $t('remove') }}</a></span>
+                <template v-if="cocktailIngredient.substitutes.length > 0">
+                    <span v-for="substitute in cocktailIngredient.substitutes" :key="substitute.id">{{ substitute.name }} &middot; <a href="#" @click.prevent="removeSubstitute(substitute)">{{ $t('remove') }}</a></span>
+                </template>
                 <span v-else>{{ $t('no-substitutes') }}</span>
             </p>
         </div>

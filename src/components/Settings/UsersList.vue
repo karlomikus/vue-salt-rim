@@ -28,7 +28,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr v-for="user in users">
+                        <tr v-for="user in users" :key="user.id">
                             <td>
                                 <a href="#" @click.prevent="openDialog($t('users.edit'), user)">{{ user.name }}</a>
                                 <br>

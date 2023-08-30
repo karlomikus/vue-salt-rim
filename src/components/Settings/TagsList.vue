@@ -27,7 +27,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr v-for="tag in tags">
+                        <tr v-for="tag in tags" :key="tag.id">
                             <td>
                                 <a href="#" @click.prevent="openDialog($t('tag.edit'), tag)">{{ tag.name }}</a>
                                 <br>

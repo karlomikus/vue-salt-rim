@@ -2,7 +2,7 @@
     <div class="list-print-container">
         <h3>{{ $t('your-shopping-list') }}</h3>
         <ul>
-            <li v-for="ingredient in list">
+            <li v-for="ingredient in list" :key="ingredient.id">
                 <div class="checkbox"></div>
                 <div class="name">
                     {{ ingredient.name }}
@@ -25,7 +25,7 @@ export default {
         }
     },
     created() {
-        window.addEventListener('afterprint', (e) => {
+        window.addEventListener('afterprint', () => {
             window.close();
         });
 

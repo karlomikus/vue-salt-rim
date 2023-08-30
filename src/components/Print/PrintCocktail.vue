@@ -16,7 +16,7 @@
             <div class="print-ingredients">
                 <h2>{{ $t('ingredients') }}:</h2>
                 <ul>
-                    <li v-for="ingredient in cocktail.ingredients">
+                    <li v-for="ingredient in cocktail.ingredients" :key="ingredient.id">
                         {{ ingredientAmount(ingredient) }} &middot; {{ ingredient.name }}
                         <i v-if="ingredient.optional">({{ $t('optional') }})</i>
                     </li>
@@ -73,7 +73,7 @@ export default {
         },
     },
     created() {
-        window.addEventListener('afterprint', (e) => {
+        window.addEventListener('afterprint', () => {
             window.close();
         });
 

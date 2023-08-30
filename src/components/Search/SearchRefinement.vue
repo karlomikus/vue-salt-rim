@@ -3,7 +3,7 @@
         <h4 class="resource-search__refinements__refinement__title">{{ title }} <a href="#" v-show="isClearable" @click.prevent="clear">{{ $t('clear') }} {{ totalSelected }}</a></h4>
         <div class="resource-search__refinements__refinement__body">
             <slot>
-                <div class="resource-search__refinements__refinement__item" v-for="refinement in refinements">
+                <div class="resource-search__refinements__refinement__item" v-for="refinement in refinements" :key="refinement.id">
                     <input :type="type" :id="id + '-' + refinement.id" :value="refinement.value" v-model="model">
                     <label :for="id + '-' + refinement.id">{{ refinement.name }}</label>
                 </div>
@@ -13,7 +13,6 @@
 </template>
 <script>
 export default {
-    props: ['title', 'refinements', 'id', 'modelValue'],
     props: {
         modelValue: null,
         title: {
@@ -22,7 +21,9 @@ export default {
         },
         refinements: {
             type: Array,
-            default: []
+            default() {
+                return []
+            }
         },
         id: {
             type: String,

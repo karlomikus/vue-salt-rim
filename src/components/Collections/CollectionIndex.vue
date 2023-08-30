@@ -24,7 +24,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr v-for="collection in collections">
+                        <tr v-for="collection in collections" :key="collection.id">
                             <td>
                                 <a href="#" @click.prevent="openDialog($t('collections.edit'), collection)">{{ collection.name }}</a>
                                 <br>
@@ -56,14 +56,12 @@ import ApiRequests from "./../../ApiRequests.js";
 import OverlayLoader from './../OverlayLoader.vue'
 import PageHeader from './../PageHeader.vue'
 import SaltRimDialog from './../Dialog/SaltRimDialog.vue'
-import CollectionForm from './CollectionForm.vue'
 
 export default {
     components: {
         OverlayLoader,
         PageHeader,
         SaltRimDialog,
-        CollectionForm
     },
     data() {
         return {
@@ -123,7 +121,7 @@ export default {
         overflowText(input, len) {
             if (!input) {
                 return input
-            };
+            }
 
             return input.length > len ? `${input.substring(0, len)}...` : input;
         }

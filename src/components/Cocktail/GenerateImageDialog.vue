@@ -83,6 +83,7 @@ export default {
                     files: [file]
                 });
             } catch (err) {
+                this.$toast.error(this.$t('generate-image-dialog.share-failed'));
             }
         }
     }

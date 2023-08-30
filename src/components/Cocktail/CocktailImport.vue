@@ -54,7 +54,7 @@
                     <label for="method">{{ $t('method') }}</label>
                     <input type="text" class="form-input" id="method" v-model="result.method">
                 </div>
-                <template v-for="image in result.images">
+                <template v-for="image in result.images" :key="image.url">
                     <div class="form-group">
                         <label for="image_url">{{ $t('image-url') }}</label>
                         <input type="text" class="form-input" id="image_url" v-model="image.url">
@@ -70,7 +70,7 @@
                 </div>
             </div>
             <h3 class="form-section-title">{{ $t('ingredients') }}</h3>
-            <div class="block-container block-container--padded scraper-ingredients__ingredient" v-for="(ingredient, idx) in result.ingredients">
+            <div class="block-container block-container--padded scraper-ingredients__ingredient" v-for="(ingredient, idx) in result.ingredients" :key="idx">
                 <div class="scraper-ingredients__ingredient__inputs">
                     <div class="form-group">
                         <label :for="'ingredient_name_' + idx">{{ $t('name') }}</label>

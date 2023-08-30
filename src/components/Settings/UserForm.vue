@@ -24,7 +24,7 @@
         <div class="form-group">
             <label class="form-label">{{ $t('role') }}:</label>
             <div class="user-roles">
-                <SaltRimRadio v-for="role in roles" :value="role.id" :title="role.name" v-model="user.role_id"></SaltRimRadio>
+                <SaltRimRadio v-for="role in roles" :key="role.id" :value="role.id" :title="role.name" v-model="user.role_id"></SaltRimRadio>
             </div>
         </div>
         <div class="dialog-actions">

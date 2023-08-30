@@ -27,7 +27,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr v-for="utensil in utensils">
+                        <tr v-for="utensil in utensils" :key="utensil.id">
                             <td>
                                 <a href="#" @click.prevent="openDialog($t('category.edit'), utensil)">{{ utensil.name }}</a>
                                 <br>
@@ -109,7 +109,7 @@ export default {
         overflowText(input, len) {
             if (!input) {
                 return input
-            };
+            }
 
             return input.length > len ? `${input.substring(0, len)}...` : input;
         }

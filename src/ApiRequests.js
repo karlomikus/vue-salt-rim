@@ -674,7 +674,6 @@ class ApiRequests
     }
 
     static async updateCollection(id, data) {
-        const q = this.generateBAQueryString({}, true);
         let jsonResp = await this.postRequest(`/api/collections/${id}`, data, 'PUT');
 
         return this.parseResponse(jsonResp);

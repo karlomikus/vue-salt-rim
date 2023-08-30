@@ -5,7 +5,7 @@
         </div>
         <h2 class="cocktail-grid-item__title">{{ cocktail.name }} <span v-if="isFavorited">♡</span></h2>
         <div class="cocktail-grid-item__rating">
-            <span v-for="val in 5">
+            <span v-for="val in 5" :key="val">
                 <template v-if="val > cocktail.average_rating">☆</template>
                 <template v-else>★</template>
             </span>

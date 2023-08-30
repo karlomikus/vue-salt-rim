@@ -15,7 +15,7 @@
             <input class="form-input" type="file" id="images" accept="image/*" :multiple="multiple" @change="fileInputChanged" :disabled="hasMaxImages">
         </div>
         <div class="image-upload__list" ref="imageList">
-            <div class="block-container image-upload__list__item" v-for="(img, idx) in images" :data-id="img.file_path">
+            <div class="block-container image-upload__list__item" v-for="(img, idx) in images" :key="idx" :data-id="img.file_path">
                 <div class="drag-handle"></div>
                 <div class="image-upload__list__item__image">
                     <img :src="img.url" alt="Cocktail image">
@@ -39,7 +39,9 @@ export default {
     props: {
         value: {
             type: Array,
-            default: []
+            default() {
+                return [];
+            }
         },
         maxImages: {
             type: Number,

@@ -161,7 +161,7 @@ export default {
         ApiRequests.fetchCocktails({ 'filter[favorites]': true, per_page: this.maxItems, sort: '-favorited_at' }).then(resp => {
             this.loaders.favorites = false;
             this.favoriteCocktails = resp.data
-        }).catch(e => {
+        }).catch(() => {
             this.loaders.favorites = false;
             this.$toast.error(this.$t('shelf.toasts.favorites-error'));
         })
@@ -169,7 +169,7 @@ export default {
         ApiRequests.fetchCocktails({ per_page: this.maxItems, sort: '-created_at' }).then(resp => {
             this.loaders.cocktails = false;
             this.latestCocktails = resp.data
-        }).catch(e => {
+        }).catch(() => {
             this.loaders.cocktails = false;
             this.$toast.error(this.$t('shelf.toasts.shelf-error'));
         })
@@ -197,7 +197,7 @@ export default {
             //         this.topRatedCocktails.push(topCocktails.data.filter(top => top.id == c.cocktail_id)[0]);
             //     })
             // });
-        }).catch(e => {
+        }).catch(() => {
             this.loaders.stats = false;
             this.$toast.error(this.$t('shelf.toasts.stats-error'));
         })
@@ -208,7 +208,7 @@ export default {
             ApiRequests.fetchIngredients({ 'filter[on_shopping_list]': true, per_page: this.maxItems }).then(response => {
                 this.loaders.list = false;
                 this.shoppingListIngredients = response.data
-            }).catch(e => {
+            }).catch(() => {
                 this.loaders.list = false;
                 this.$toast.error(this.$t('shelf.toasts.list-error'));
             })

@@ -4,7 +4,7 @@
             <a href="#" @click.prevent="toggleDropdown">Change language</a>
         </template>
         <template #content>
-            <a href="#" class="dropdown-menu__item" v-for="locale in locales" @click.prevent="$i18n.locale = locale">
+            <a href="#" class="dropdown-menu__item" v-for="locale in locales" :key="locale" @click.prevent="$i18n.locale = locale">
                 {{ $t('locales.' + locale) }}
             </a>
         </template>

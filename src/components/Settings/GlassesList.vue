@@ -27,7 +27,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr v-for="glass in glasses">
+                        <tr v-for="glass in glasses" :key="glass.id">
                             <td>
                                 <a href="#" @click.prevent="openDialog($t('glass-type.edit'), glass)">{{ glass.name }}</a>
                                 <br>

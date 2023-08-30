@@ -12,7 +12,7 @@ export default {
         }
     },
     created() {
-        this.observer = new IntersectionObserver((entries, observer) => {
+        this.observer = new IntersectionObserver((entries) => {
             entries.forEach((entry) => {
                 if (entry.isIntersecting) {
                     const imgElement = entry.target.querySelector('.cocktail-grid-item__graphic img');

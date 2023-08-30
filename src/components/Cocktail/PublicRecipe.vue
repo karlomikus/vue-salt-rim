@@ -10,14 +10,14 @@
             <h2 itemprop="name">{{ cocktail.name }}</h2>
             <div itemprop="description" v-show="!!cocktail.description" class="public-cocktail-recipe__content" v-html="parsedDescription"></div>
             <div class="public-cocktail-recipe__units" v-show="hideUnits == false">
-                <button type="button" class="button button--public" :class="{'button--active': currentUnit == 'ml'}" @click="currentUnit = 'ml'">ml</button>
-                <button type="button" class="button button--public" :class="{'button--active': currentUnit == 'oz'}" @click="currentUnit = 'oz'">oz</button>
-                <button type="button" class="button button--public" :class="{'button--active': currentUnit == 'cl'}" @click="currentUnit = 'cl'">cl</button>
+                <button type="button" class="button button--public" :class="{'button--active': scopedUnit == 'ml'}" @click="scopedUnit = 'ml'">ml</button>
+                <button type="button" class="button button--public" :class="{'button--active': scopedUnit == 'oz'}" @click="scopedUnit = 'oz'">oz</button>
+                <button type="button" class="button button--public" :class="{'button--active': scopedUnit == 'cl'}" @click="scopedUnit = 'cl'">cl</button>
             </div>
             <div class="public-cocktail-recipe__summary__section">
                 <h3>{{ $t('ingredients') }}</h3>
                 <ul>
-                    <li itemprop="recipeIngredient" :content="ing.name + ' - ' + parseIngredientAmount(ing)" v-for="ing in cocktail.ingredients">
+                    <li itemprop="recipeIngredient" :content="ing.name + ' - ' + parseIngredientAmount(ing)" v-for="ing in cocktail.ingredients" :key="ing.id">
                         <span>{{ ing.name }}</span><span class="spacer"></span><span class="amount-units">{{ parseIngredientAmount(ing) }}</span>
                     </li>
                 </ul>
@@ -46,7 +46,9 @@ export default {
     props: {
         cocktail: {
             type: Object,
-            default: {}
+            default() {
+                return {}
+            }
         },
         currentUnit: {
             type: String,
@@ -70,7 +72,8 @@ export default {
     },
     data() {
         return {
-            isLoading: false
+            isLoading: false,
+            scopedUnit: this.currentUnit
         }
     },
     computed: {
@@ -105,7 +108,7 @@ export default {
     },
     methods: {
         parseIngredientAmount(ingredient) {
-            return Utils.printIngredientAmount(ingredient, this.currentUnit);
+            return Utils.printIngredientAmount(ingredient, this.scopedUnit);
         },
     }
 }

@@ -1,5 +1,6 @@
 <template>
     <div class="block-container ingredient-spotlight-wrapper">
+        <OverlayLoader v-if="isLoading"></OverlayLoader>
         <div class="ingredient-spotlight__image">
             <img :src="mainIngredientImageUrl" :alt="ingredient.name" />
         </div>
@@ -32,7 +33,7 @@ export default {
         truncatedDescription() {
             if (!this.ingredient.description) {
                 return this.ingredient.description
-            };
+            }
 
             return this.ingredient.description.length > 200 ? `${this.ingredient.description.substring(0, 200)}...` : this.ingredient.description;
         },

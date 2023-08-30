@@ -8,7 +8,7 @@
                     <label class="form-label" for="dialog-collection-id">{{ $t('collections.collection') }}:</label>
                     <select class="form-select" id="dialog-collection-id" v-model="collectionId">
                         <option :value="null"> - {{ $t('collections.create') }} - </option>
-                        <option v-for="collection in collections" :value="collection.id">{{ collection.name }}</option>
+                        <option v-for="collection in collections" :key="collection.id" :value="collection.id">{{ collection.name }}</option>
                     </select>
                 </div>
                 <template v-if="!collectionId">
@@ -41,11 +41,15 @@ export default {
     props: {
         cocktails: {
             type: Array,
-            default: []
+            default() {
+                return [];
+            }
         },
         cocktailCollections: {
             type: Array,
-            default: []
+            default() {
+                return [];
+            }
         },
         title: {
             type: String,
@@ -89,7 +93,7 @@ export default {
                 onResolved: (dialog) => {
                     this.isLoading = true;
                     dialog.close();
-                    ApiRequests.removeCocktailFromCollection(this.collectionId, this.cocktails[0]).then(data => {
+                    ApiRequests.removeCocktailFromCollection(this.collectionId, this.cocktails[0]).then(() => {
                         this.$toast.default(this.$t('collections.cocktail-remove-success'))
                         this.$emit('collectionDialogClosed')
                         this.isLoading = false
@@ -103,7 +107,7 @@ export default {
         saveAndClose() {
             if (this.collectionId) {
                 this.isLoading = true;
-                ApiRequests.addCocktailsToCollection(this.collectionId, this.cocktails).then(data => {
+                ApiRequests.addCocktailsToCollection(this.collectionId, this.cocktails).then(() => {
                     this.isLoading = false;
                     this.$toast.default(this.$t('collections.cocktail-add-success'))
                     this.$emit('collectionDialogClosed')

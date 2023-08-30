@@ -19,16 +19,18 @@ export default {
     props: {
         meta: {
             type: Object,
-            default: {
-                current_page: 1,
-                last_page: 1,
-                to: 0,
-                total: 0
+            default() {
+                return {
+                    current_page: 1,
+                    last_page: 1,
+                    to: 0,
+                    total: 0
+                };
             }
         },
     },
     watch: {
-        meta(newVal, oldVal) {
+        meta(newVal) {
             this.currentPage = newVal.current_page
         }
     },

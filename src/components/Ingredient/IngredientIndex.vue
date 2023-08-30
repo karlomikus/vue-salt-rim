@@ -32,7 +32,7 @@
                 <div class="resource-search__refinements__body">
                     <h3 class="page-subtitle" style="margin-top: 0">{{ $t('filters') }}</h3>
                     <Refinement :title="$t('global')" id="global">
-                        <div class="resource-search__refinements__refinement__item" v-for="filter in availableRefinements.global">
+                        <div class="resource-search__refinements__refinement__item" v-for="filter in availableRefinements.global" :key="filter.id">
                             <input type="checkbox" :id="'global-' + filter.id" :value="filter.active" v-model="activeFilters[filter.id]" @change="updateRouterPath">
                             <label :for="'global-' + filter.id">{{ filter.name }}</label>
                         </div>

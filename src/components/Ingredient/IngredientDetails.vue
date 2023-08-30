@@ -111,11 +111,11 @@
             <h2 class="details-block-container__title">{{ $t('ingredient.cocktail-children', { total: ingredient.cocktails.length }) }}</h2>
             <ul class="ingredient-chips-list" v-if="ingredient.cocktails.length > 0">
                 <li class="ingredient-chips-list__label" v-if="extraIfAddedToShelf.length > 0">{{ $t('ingredient-extra-cocktails-info') }}:</li>
-                <li v-for="cocktail in extraIfAddedToShelf">
+                <li v-for="cocktail in extraIfAddedToShelf" :key="cocktail.id">
                     <RouterLink :to="{ name: 'cocktails.show', params: { id: cocktail.slug } }">{{ cocktail.name }}</RouterLink>
                 </li>
                 <li class="ingredient-chips-list__label" v-if="extraIfAddedToShelf.length > 0 && defaultCocktails.length > 0">{{ $t('ingredient-cocktails-rest') }}:</li>
-                <li v-for="cocktail in defaultCocktails">
+                <li v-for="cocktail in defaultCocktails" :key="cocktail.id">
                     <RouterLink :to="{ name: 'cocktails.show', params: { id: cocktail.slug } }">{{ cocktail.name }}</RouterLink>
                 </li>
             </ul>
@@ -126,7 +126,7 @@
         <div class="details-block-container details-block-container--yellow" v-if="ingredient.varieties.length > 0">
             <h2 class="details-block-container__title">{{ $t('see-also') }}</h2>
             <ul class="ingredient-chips-list">
-                <li v-for="variety in ingredient.varieties">
+                <li v-for="variety in ingredient.varieties" :key="variety.slug">
                     <RouterLink :to="{ name: 'ingredients.show', params: { id: variety.slug } }">{{ variety.name }}</RouterLink>
                 </li>
             </ul>
@@ -214,7 +214,7 @@ export default {
                 onResolved: (dialog) => {
                     dialog.close()
                     this.isLoading = true;
-                    ApiRequests.deleteIngredient(this.ingredient.id).then(resp => {
+                    ApiRequests.deleteIngredient(this.ingredient.id).then(() => {
                         this.$toast.default(`Ingredient "${this.ingredient.name}" successfully removed`);
                         this.$router.push({ name: 'ingredients' })
                         this.isLoading = false;

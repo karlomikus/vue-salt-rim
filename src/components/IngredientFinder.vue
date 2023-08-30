@@ -11,7 +11,7 @@
             <template v-slot="{ items }">
                 <div class="ingredient-finder__options">
                     <OverlayLoader v-if="isLoading"></OverlayLoader>
-                    <a href="#" v-for="item in items" @click.prevent="selectIngredient(item)">{{ item.name }}</a>
+                    <a href="#" v-for="item in items" :key="item.id" @click.prevent="selectIngredient(item)">{{ item.name }}</a>
                     <a href="#" class="ingredient-finder__options__create" @click.prevent="newIngredient" v-show="currentQuery">
                         {{ $t('ingredient-dialog.search-not-found') }} {{ $t('ingredient-dialog.create-ingredient', { name: currentQuery }) }}
                     </a>
@@ -38,7 +38,9 @@ export default {
         },
         disabledIngredients: {
             type: Array,
-            default: []
+            default() {
+                return [];
+            }
         }
     },
     emits: ['update:modelValue', 'ingredientSelected'],

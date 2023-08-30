@@ -25,7 +25,7 @@
         <ImageUpload ref="imagesUpload" :value="cocktail.images" />
         <h3 class="form-section-title">{{ $t('ingredients') }}</h3>
         <ul class="cocktail-form__ingredients" style="margin-bottom: 20px;" v-show="cocktail.ingredients.length > 0">
-            <li class="block-container" v-for="ing in cocktail.ingredients" :data-id="ing.ingredient_id">
+            <li class="block-container" v-for="ing in cocktail.ingredients" :data-id="ing.ingredient_id" :key="ing.ingredient_id">
                 <div class="drag-handle"></div>
                 <div class="cocktail-form__ingredients__content">
                     <div class="form-group">
@@ -72,7 +72,7 @@
                 <label class="form-label" for="glass">{{ $t('glass-type') }}:</label>
                 <select class="form-select" id="glass" v-model="cocktail.glass.id">
                     <option :value="undefined" disabled>Select a glass type...</option>
-                    <option v-for="glass in glasses" :value="glass.id">{{ glass.name }}</option>
+                    <option v-for="glass in glasses" :key="glass.id" :value="glass.id">{{ glass.name }}</option>
                 </select>
                 <p class="form-input-hint">
                     <RouterLink :to="{ name: 'settings.glasses' }" target="_blank">{{ $t('edit-glasses') }}</RouterLink>
@@ -81,7 +81,7 @@
             <div style="margin-bottom: 2rem;">
                 <label class="form-label">{{ $t('method-and-dilution') }}:</label>
                 <div class="cocktail-methods">
-                    <SaltRimRadio v-for="method in methods" :value="method.id" :title="method.name" :description="method.dilution_percentage + '%'" v-model="cocktail.method.id"></SaltRimRadio>
+                    <SaltRimRadio v-for="method in methods" :key="method.id" :value="method.id" :title="method.name" :description="method.dilution_percentage + '%'" v-model="cocktail.method.id"></SaltRimRadio>
                 </div>
             </div>
             <div class="form-group">
@@ -92,14 +92,14 @@
                 <label class="form-label" for="tags">{{ $t('tags') }}:</label>
                 <input class="form-input" type="text" id="tags" list="existing-tags" v-model="cocktailTags" :placeholder="$t('placeholder.tags')">
                 <datalist id="existing-tags">
-                    <option v-for="tag in tags" :value="tag.name"></option>
+                    <option v-for="tag in tags" :key="tag.name" :value="tag.name"></option>
                 </datalist>
                 <p class="form-input-hint">{{ $t('tags.help-text') }}</p>
             </div>
             <div class="form-group" v-show="utensils.length > 0">
                 <label class="form-label" for="utensil">{{ $t('utensils.title') }}:</label>
                 <select class="form-select" id="utensil" multiple v-model="cocktail.utensils" style="height: 200px;">
-                    <option v-for="utensil in utensils" :value="utensil.id">{{ utensil.name }}</option>
+                    <option v-for="utensil in utensils" :key="utensil.id" :value="utensil.id">{{ utensil.name }}</option>
                 </select>
             </div>
         </div>

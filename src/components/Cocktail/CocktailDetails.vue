@@ -8,7 +8,7 @@
         </div>
         <div class="cocktail-details__graphic" v-if="cocktail.id">
             <swiper v-if="cocktail.images.length > 0" :modules="sliderModules" navigation :pagination="{ clickable: true }" :follow-finger="false">
-                <swiper-slide v-for="image in sortedImages">
+                <swiper-slide v-for="image in sortedImages" :key="image.sort">
                     <img :src="image.url" :alt="image.copyright" />
                     <div class="cocktail-details__graphic__copyright" v-if="image.copyright">{{ $t('image-copyright-notice', { copyright: image.copyright }) }}</div>
                 </swiper-slide>
@@ -23,7 +23,7 @@
                         <div class="item-details__chips__group" v-if="cocktail.tags.length > 0">
                             <div class="item-details__chips__group__title">{{ $t('tags') }}:</div>
                             <ul class="chips-list">
-                                <li v-for="tag in cocktail.tags">
+                                <li v-for="tag in cocktail.tags" :key="tag.id">
                                     <RouterLink :to="{ name: 'cocktails', query: { 'filter[tag_id]': tag.id } }">{{ tag.name }}</RouterLink>
                                 </li>
                             </ul>
@@ -235,7 +235,7 @@
                             <div class="cocktail-ingredients__flags">
                                 <div class="cocktail-ingredients__flags__flag" v-if="ing.substitutes.length > 0">
                                     &middot; {{ $t('substitutes') }}:
-                                    <template v-for="(sub, index) in ing.substitutes">
+                                    <template v-for="(sub, index) in ing.substitutes" :key="index">
                                         <RouterLink :to="{ name: 'ingredients.show', params: { id: sub.slug } }" data-ingredient="substitute">{{ sub.name }}</RouterLink>
                                         <template v-if="index + 1 !== ing.substitutes.length">, </template>
                                     </template>
@@ -265,7 +265,7 @@
                 <div class="details-block-container details-block-container--purple" v-if="notes.length > 0">
                     <OverlayLoader v-if="isLoadingNotes" />
                     <h3 class="details-block-container__title">{{ $t('notes') }}</h3>
-                    <Note v-for="note in notes" :note="note" @noteDeleted="refreshNotes"></Note>
+                    <Note v-for="note in notes" :key="note.id" :note="note" @noteDeleted="refreshNotes"></Note>
                 </div>
                 <div class="cocktail-details__navigation">
                     <RouterLink v-if="cocktail.navigation.prev" :to="{ name: 'cocktails.show', params: { id: cocktail.navigation.prev } }">{{ $t('cocktail-prev') }}</RouterLink>
@@ -373,7 +373,7 @@ export default {
             }).map(cocktailIngredient => cocktailIngredient.ingredient_id)
         },
         sortedImages() {
-            return this.cocktail.images.sort((a, b) => a.sort - b.sort)
+            return this.cocktail.images.slice(0).sort((a, b) => a.sort - b.sort)
         },
         createdDate() {
             const date = dayjs(this.cocktail.created_at).toDate();

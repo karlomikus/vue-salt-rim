@@ -43,7 +43,7 @@ export default {
             };
 
             if (this.category.id) {
-                ApiRequests.updateIngredientCategory(this.category.id, postData).then(data => {
+                ApiRequests.updateIngredientCategory(this.category.id, postData).then(() => {
                     this.isLoading = false;
                     this.$toast.default(this.$t('category.update-success'));
                     this.$emit('categoryDialogClosed')
@@ -52,7 +52,7 @@ export default {
                     this.isLoading = false;
                 })
             } else {
-                ApiRequests.saveIngredientCategory(postData).then(data => {
+                ApiRequests.saveIngredientCategory(postData).then(() => {
                     this.isLoading = false;
                     this.$toast.default(this.$t('category.add-success'));
                     this.$emit('categoryDialogClosed')
