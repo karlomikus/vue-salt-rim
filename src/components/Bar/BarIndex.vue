@@ -22,8 +22,8 @@
     </PageHeader>
     <div class="bars">
         <OverlayLoader v-if="isLoading"></OverlayLoader>
-        <div class="bars__grid" v-if="bars.length > 0">
-            <div class="bar block-container" v-for="bar in bars" :key="bar.id">
+        <div v-if="bars.length > 0" class="bars__grid">
+            <div v-for="bar in bars" :key="bar.id" class="bar block-container">
                 <h4 class="bar__title">{{ bar.name }}</h4>
                 <small class="bar__subtitle">{{ bar.subtitle }}</small>
                 <p class="bar__description">{{ bar.description }}</p>
@@ -53,6 +53,13 @@ import BarJoinDialog from './BarJoinDialog.vue';
 import AppState from './../../AppState.js';
 
 export default {
+    components: {
+        OverlayLoader,
+        PageHeader,
+        BarForm,
+        SaltRimDialog,
+        BarJoinDialog
+    },
     data() {
         return {
             isLoading: false,
@@ -60,13 +67,6 @@ export default {
             showJoinDialog: false,
             showCreateDialog: false,
         }
-    },
-    components: {
-        OverlayLoader,
-        PageHeader,
-        BarForm,
-        SaltRimDialog,
-        BarJoinDialog
     },
     mounted() {
         this.refreshBars();

@@ -2,7 +2,7 @@
     <div class="similar-cocktails-wrapper">
         <OverlayLoader v-if="isLoading" />
         <CocktailListContainer v-if="similarCocktails.length > 0" v-slot="observer">
-            <CocktailListItem v-for="cocktail in similarCocktails" :cocktail="cocktail" :key="cocktail.id" :observer="observer" />
+            <CocktailListItem v-for="cocktail in similarCocktails" :key="cocktail.id" :cocktail="cocktail" :observer="observer" />
         </CocktailListContainer>
         <div v-else class="empty-state">
             <p>{{ $t('no-cocktails') }}</p>
@@ -16,6 +16,11 @@ import CocktailListContainer from '@/components/Cocktail/CocktailListContainer.v
 import OverlayLoader from '@/components/OverlayLoader.vue'
 
 export default {
+    components: {
+        CocktailListItem,
+        CocktailListContainer,
+        OverlayLoader
+    },
     props: {
         fromCocktail: {
             type: Object,
@@ -29,11 +34,6 @@ export default {
             isLoading: false,
             similarCocktails: []
         };
-    },
-    components: {
-        CocktailListItem,
-        CocktailListContainer,
-        OverlayLoader
     },
     watch: {
         fromCocktail() {

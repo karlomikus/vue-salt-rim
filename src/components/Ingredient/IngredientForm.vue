@@ -8,11 +8,11 @@
         <div class="block-container block-container--padded">
             <div class="form-group">
                 <label class="form-label form-label--required" for="name">{{ $t('name') }}:</label>
-                <input class="form-input" type="text" id="name" v-model="ingredient.name" required>
+                <input id="name" v-model="ingredient.name" class="form-input" type="text" required>
             </div>
             <div class="form-group">
                 <label class="form-label form-label--required" for="category">{{ $t('category') }}:</label>
-                <select class="form-select" id="category" v-model="ingredient.category.id" required>
+                <select id="category" v-model="ingredient.category.id" class="form-select" required>
                     <option :value="undefined" disabled>{{ $t('select-category') }}</option>
                     <option v-for="cat in categories" :key="cat.id" :value="cat.id">{{ cat.name }}</option>
                 </select>
@@ -23,11 +23,11 @@
             <div style="margin: 1rem 0;">
                 <!-- <Checkbox v-model="isParent" id="is-variety">{{ $t('ingredient-is-variety') }}</Checkbox> -->
                 <label class="form-checkbox">
-                    <input type="checkbox" v-model="isParent">
+                    <input v-model="isParent" type="checkbox">
                     <span>{{ $t('ingredient-is-variety') }}</span>
                 </label>
             </div>
-            <div class="form-group" v-show="isParent">
+            <div v-show="isParent" class="form-group">
                 <label class="form-label" for="parent-ingredient">{{ $t('parent-ingredient') }}:</label>
                 <IngredientFinder v-show="ingredient.parent_ingredient == null" v-model="ingredient.parent_ingredient" :disabled-ingredients="disabledFinderIngredients"></IngredientFinder>
                 <div v-if="ingredient.parent_ingredient" style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
@@ -37,20 +37,20 @@
             </div>
             <div class="form-group">
                 <label class="form-label form-label--required" for="strength">{{ $t('strength') }} ({{ $t('ABV') }} %):</label>
-                <input class="form-input" type="text" id="strength" v-model="ingredient.strength" required>
+                <input id="strength" v-model="ingredient.strength" class="form-input" type="text" required>
             </div>
             <div class="form-group">
                 <label class="form-label" for="description">{{ $t('description') }}:</label>
-                <textarea rows="4" class="form-input" id="description" v-model="ingredient.description"></textarea>
+                <textarea id="description" v-model="ingredient.description" rows="4" class="form-input"></textarea>
                 <p class="form-input-hint">{{ $t('md.support') }}</p>
             </div>
             <div class="form-group">
                 <label class="form-label" for="origin">{{ $t('origin') }}:</label>
-                <input class="form-input" type="text" id="origin" v-model="ingredient.origin">
+                <input id="origin" v-model="ingredient.origin" class="form-input" type="text">
             </div>
             <div class="form-group">
                 <label class="form-label" for="color">{{ $t('color') }}:</label>
-                <input class="form-input" type="color" id="color" v-model="ingredient.color" style="width: 100%">
+                <input id="color" v-model="ingredient.color" class="form-input" type="color" style="width: 100%">
             </div>
         </div>
         <h3 class="form-section-title">{{ $t('media') }}</h3>
@@ -72,6 +72,12 @@ import OverlayLoader from './../OverlayLoader.vue'
 import IngredientFinder from './../IngredientFinder.vue'
 
 export default {
+    components: {
+        ImageUpload,
+        PageHeader,
+        OverlayLoader,
+        IngredientFinder
+    },
     data() {
         return {
             isLoading: false,
@@ -85,11 +91,14 @@ export default {
             categories: []
         };
     },
-    components: {
-        ImageUpload,
-        PageHeader,
-        OverlayLoader,
-        IngredientFinder
+    computed: {
+        disabledFinderIngredients() {
+            if (!this.ingredient.id) {
+                return [];
+            }
+
+            return [this.ingredient.id];
+        }
     },
     created() {
         document.title = `${this.$t('ingredient')} \u22C5 ${this.site_title}`
@@ -102,15 +111,6 @@ export default {
         }
 
         this.refreshCategories();
-    },
-    computed: {
-        disabledFinderIngredients() {
-            if (!this.ingredient.id) {
-                return [];
-            }
-
-            return [this.ingredient.id];
-        }
     },
     methods: {
         refreshIngredient() {

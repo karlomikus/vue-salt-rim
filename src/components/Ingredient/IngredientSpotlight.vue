@@ -17,6 +17,9 @@ import ApiRequests from '@/ApiRequests';
 import OverlayLoader from '@/components/OverlayLoader.vue'
 
 export default {
+    components: {
+        OverlayLoader
+    },
     props: {
         id: {
             type: Number,
@@ -30,9 +33,6 @@ export default {
                 category: {}
             },
         };
-    },
-    components: {
-        OverlayLoader
     },
     computed: {
         truncatedDescription() {

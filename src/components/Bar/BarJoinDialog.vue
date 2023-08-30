@@ -5,7 +5,7 @@
         <div class="dialog-content">
             <div class="form-group">
                 <label class="form-label form-label--required" for="bar-invite-code">{{ $t('bars.invite-code') }}:</label>
-                <input class="form-input" type="text" id="bar-invite-code" v-model="inviteCode" required>
+                <input id="bar-invite-code" v-model="inviteCode" class="form-input" type="text" required>
             </div>
         </div>
         <div class="dialog-actions" style="margin-top: 1rem">
@@ -19,15 +19,15 @@ import ApiRequests from './../../ApiRequests';
 import OverlayLoader from './../OverlayLoader.vue';
 
 export default {
+    components: {
+        OverlayLoader
+    },
     emits: ['dialogClosed', 'barJoined'],
     data() {
         return {
             isLoading: false,
             inviteCode: null,
         }
-    },
-    components: {
-        OverlayLoader
     },
     methods: {
         submit() {

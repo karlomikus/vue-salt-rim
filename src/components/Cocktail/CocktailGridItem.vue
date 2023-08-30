@@ -10,10 +10,10 @@
                 <template v-else>★</template>
             </span>
         </div>
-        <p class="cocktail-grid-item__ingredients" v-if="shortIngredients.length > 0">{{ shortIngredients.join(', ') }}</p>
+        <p v-if="shortIngredients.length > 0" class="cocktail-grid-item__ingredients">{{ shortIngredients.join(', ') }}</p>
         <ul class="cocktail-tags">
             <li v-for="tag in cocktail.tags.slice(0, maxTags)" :key="tag.id" class="tag tag--background">{{ tag.name }}</li>
-            <li class="tag tag--background" v-if="cocktail.tags.length - maxTags > 0" style="opacity: 0.6;">+ {{ cocktail.tags.length - maxTags }} more</li>
+            <li v-if="cocktail.tags.length - maxTags > 0" class="tag tag--background" style="opacity: 0.6;">+ {{ cocktail.tags.length - maxTags }} more</li>
         </ul>
     </RouterLink>
 </template>
@@ -39,9 +39,6 @@ export default {
         return {
             maxTags: 4
         }
-    },
-    mounted() {
-        this.observer.observer.observe(this.$el)
     },
     computed: {
         placeholderImage() {
@@ -76,6 +73,9 @@ export default {
         shortIngredients() {
             return this.cocktail.ingredients.map(i => i.name)
         }
+    },
+    mounted() {
+        this.observer.observer.observe(this.$el)
     }
 }
 </script>

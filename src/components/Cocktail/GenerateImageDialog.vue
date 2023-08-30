@@ -4,7 +4,7 @@
         <div class="dialog-title">{{ $t('generate-image-dialog.preview') }}</div>
         <div class="image-download-preview">
             <img v-if="imagePayload" :src="imagePayload" alt="">
-            <div v-else class="image-export-wrapper" ref="exportElement">
+            <div v-else ref="exportElement" class="image-export-wrapper">
                 <PublicRecipe :cocktail="cocktail" :current-unit="currentUnit" :hide-units="true" :hide-header="features.hideHeader" :hide-footer="features.hideFooter"></PublicRecipe>
             </div>
         </div>
@@ -23,6 +23,10 @@ import PublicRecipe from './PublicRecipe.vue'
 import AppState from './../../AppState';
 
 export default {
+    components: {
+        OverlayLoader,
+        PublicRecipe,
+    },
     props: {
         cocktail: {
             type: Object,
@@ -43,10 +47,6 @@ export default {
                 hideFooter: false,
             }
         }
-    },
-    components: {
-        OverlayLoader,
-        PublicRecipe,
     },
     computed: {
         fileName() {

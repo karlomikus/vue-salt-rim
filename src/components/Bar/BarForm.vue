@@ -5,23 +5,23 @@
         <div class="dialog-content">
             <div class="form-group">
                 <label class="form-label form-label--required" for="name">{{ $t('name') }}:</label>
-                <input class="form-input" type="text" id="name" v-model="bar.name" required>
+                <input id="name" v-model="bar.name" class="form-input" type="text" required>
             </div>
             <div class="form-group">
                 <label class="form-label" for="subtitle">{{ $t('subtitle') }}:</label>
-                <input class="form-input" type="text" id="subtitle" v-model="bar.subtitle">
+                <input id="subtitle" v-model="bar.subtitle" class="form-input" type="text">
             </div>
             <div class="form-group">
                 <label class="form-label" for="description">{{ $t('description') }}:</label>
-                <textarea rows="5" class="form-input" id="description" v-model="bar.description"></textarea>
+                <textarea id="description" v-model="bar.description" rows="5" class="form-input"></textarea>
             </div>
             <div class="form-group">
                 <label class="form-checkbox" for="toggle-invite">
-                    <input type="checkbox" id="toggle-invite" :value="true" v-model="bar.enableInvites">
+                    <input id="toggle-invite" v-model="bar.enableInvites" type="checkbox" :value="true">
                     <span>Enable invites</span>
                 </label>
-                <label class="form-checkbox" v-for="option in importOptions" :key="option.value">
-                    <input type="checkbox" :value="option.value" v-model="bar.options">
+                <label v-for="option in importOptions" :key="option.value" class="form-checkbox">
+                    <input v-model="bar.options" type="checkbox" :value="option.value">
                     <span>{{ option.name }}</span>
                 </label>
             </div>
@@ -37,6 +37,9 @@ import ApiRequests from './../../ApiRequests';
 import OverlayLoader from './../OverlayLoader.vue';
 
 export default {
+    components: {
+        OverlayLoader
+    },
     emits: ['dialogClosed', 'barCreated'],
     data() {
         return {
@@ -61,9 +64,6 @@ export default {
                 { name: 'categories', value: 'categories' },
             ]
         }
-    },
-    components: {
-        OverlayLoader
     },
     methods: {
         submit() {

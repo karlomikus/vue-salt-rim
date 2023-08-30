@@ -17,6 +17,9 @@ import ApiRequests from '@/ApiRequests.js';
 import MiniRating from '@/components/MiniRating.vue'
 
 export default {
+    components: {
+        MiniRating
+    },
     props: {
         cocktail: {
             type: Object,
@@ -29,12 +32,6 @@ export default {
             default: null
         }
     },
-    components: {
-        MiniRating
-    },
-    mounted() {
-        this.observer.observer.observe(this.$el)
-    },
     computed: {
         mainCocktailImageUrl() {
             if (this.cocktail.main_image_id == null) {
@@ -46,6 +43,9 @@ export default {
         shortIngredients() {
             return this.cocktail.ingredients.map(i => i.name)
         }
+    },
+    mounted() {
+        this.observer.observer.observe(this.$el)
     }
 }
 </script>

@@ -4,15 +4,15 @@
         <!-- <ais-search-box class="ingredient-finder__search-input" :placeholder="$t('placeholder.search-ingredients')" :class-names="{ 'ais-SearchBox-input': 'form-input' }" v-model="currentQuery" /> -->
         <ais-search-box autofocus>
             <template #default="{ refine }">
-                <input ref="finderSearchInput" class="form-input ingredient-finder__search-input" type="search" :placeholder="$t('placeholder.search-ingredients')" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" maxlength="512" @input="refine($event.currentTarget.value)" v-model="currentQuery">
+                <input ref="finderSearchInput" v-model="currentQuery" class="form-input ingredient-finder__search-input" type="search" :placeholder="$t('placeholder.search-ingredients')" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" maxlength="512" @input="refine($event.currentTarget.value)">
             </template>
         </ais-search-box>
         <ais-hits class="ingredient-finder__hits">
             <template #default="{ items }">
                 <div class="ingredient-finder__options">
                     <OverlayLoader v-if="isLoading"></OverlayLoader>
-                    <a href="#" v-for="item in items" :key="item.id" @click.prevent="selectIngredient(item)">{{ item.name }}</a>
-                    <a href="#" class="ingredient-finder__options__create" @click.prevent="newIngredient" v-show="currentQuery">
+                    <a v-for="item in items" :key="item.id" href="#" @click.prevent="selectIngredient(item)">{{ item.name }}</a>
+                    <a v-show="currentQuery" href="#" class="ingredient-finder__options__create" @click.prevent="newIngredient">
                         {{ $t('ingredient-dialog.search-not-found') }} {{ $t('ingredient-dialog.create-ingredient', { name: currentQuery }) }}
                     </a>
                 </div>
@@ -30,6 +30,9 @@ import AppState from './../AppState';
 const appState = new AppState();
 
 export default {
+    components: {
+        OverlayLoader
+    },
     props: {
         modelValue: {
             type: Object,
@@ -49,9 +52,6 @@ export default {
         }
     },
     emits: ['update:modelValue', 'ingredientSelected'],
-    components: {
-        OverlayLoader
-    },
     data() {
         return {
             isLoading: false,

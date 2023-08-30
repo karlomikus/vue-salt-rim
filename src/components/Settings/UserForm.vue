@@ -4,11 +4,11 @@
         <div class="dialog-title">{{ dialogTitle }}</div>
         <div class="form-group">
             <label class="form-label form-label--required" for="name">{{ $t('user.name') }}:</label>
-            <input class="form-input" type="text" id="name" v-model="user.name" required>
+            <input id="name" v-model="user.name" class="form-input" type="text" required>
         </div>
         <div class="form-group">
             <label class="form-label form-label--required" for="email">{{ $t('email') }}:</label>
-            <input class="form-input" type="email" id="email" v-model="user.email" required>
+            <input id="email" v-model="user.email" class="form-input" type="email" required>
         </div>
         <div class="form-group">
             <label class="form-label" :class="{'form-label--required': !user.id}" for="password">
@@ -19,12 +19,12 @@
                     {{ $t('update-password') }}:
                 </template>
             </label>
-            <input class="form-input" type="password" id="password" v-model="user.password" :required="!user.id">
+            <input id="password" v-model="user.password" class="form-input" type="password" :required="!user.id">
         </div>
         <div class="form-group">
             <label class="form-label">{{ $t('role') }}:</label>
             <div class="user-roles">
-                <SaltRimRadio v-for="role in roles" :key="role.id" :value="role.id" :title="role.name" v-model="user.role_id"></SaltRimRadio>
+                <SaltRimRadio v-for="role in roles" :key="role.id" v-model="user.role_id" :value="role.id" :title="role.name"></SaltRimRadio>
             </div>
         </div>
         <div class="dialog-actions">
@@ -40,6 +40,10 @@ import OverlayLoader from '@/components/OverlayLoader.vue'
 import SaltRimRadio from "./../SaltRimRadio.vue";
 
 export default {
+    components: {
+        OverlayLoader,
+        SaltRimRadio
+    },
     props: {
         sourceUser: {
             type: Object,
@@ -64,10 +68,6 @@ export default {
                 {id: 4, name: 'Guest'},
             ]
         };
-    },
-    components: {
-        OverlayLoader,
-        SaltRimRadio
     },
     methods: {
         submit() {

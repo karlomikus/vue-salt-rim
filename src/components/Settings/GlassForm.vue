@@ -4,11 +4,11 @@
         <div class="dialog-title">{{ dialogTitle }}</div>
         <div class="form-group">
             <label class="form-label form-label--required" for="name">{{ $t('name') }}:</label>
-            <input class="form-input" type="text" id="name" v-model="glass.name" required>
+            <input id="name" v-model="glass.name" class="form-input" type="text" required>
         </div>
         <div class="form-group">
             <label class="form-label" for="description">{{ $t('description') }}:</label>
-            <textarea rows="5" class="form-input" id="description" v-model="glass.description"></textarea>
+            <textarea id="description" v-model="glass.description" rows="5" class="form-input"></textarea>
         </div>
         <div class="dialog-actions">
             <button class="button button--outline" @click.prevent="$emit('glassDialogClosed')">{{ $t('cancel') }}</button>
@@ -22,6 +22,9 @@ import ApiRequests from "@/ApiRequests";
 import OverlayLoader from '@/components/OverlayLoader.vue'
 
 export default {
+    components: {
+        OverlayLoader,
+    },
     props: {
         sourceGlass: {
             type: Object,
@@ -40,9 +43,6 @@ export default {
             isLoading: false,
             glass: this.sourceGlass,
         };
-    },
-    components: {
-        OverlayLoader,
     },
     methods: {
         submit() {

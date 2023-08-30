@@ -8,7 +8,7 @@
             <button type="button" class="button button--outline" @click="$emit('publicDialogClosed')">{{ $t('close') }}</button>
             <button v-if="publicData.public_id" type="button" class="button button--outline" @click="deletePublicLink">{{ $t('public-dialog.action-delete') }}</button>
             <button v-else type="button" class="button button--outline" @click="generatePublicLink">{{ $t('public-dialog.action-generate') }}</button>
-            <button type="button" class="button button--dark" @click="copyLink" :disabled="!publicData.public_at">{{ $t('public-dialog.action-copy') }}</button>
+            <button type="button" class="button button--dark" :disabled="!publicData.public_at" @click="copyLink">{{ $t('public-dialog.action-copy') }}</button>
         </div>
     </div>
 </template>
@@ -19,6 +19,9 @@ import OverlayLoader from './../OverlayLoader.vue';
 import dayjs from 'dayjs'
 
 export default {
+    components: {
+        OverlayLoader,
+    },
     props: {
         cocktail: {
             type: Object,
@@ -38,9 +41,6 @@ export default {
             host: window.location.host,
             protocol: window.location.protocol
         }
-    },
-    components: {
-        OverlayLoader,
     },
     computed: {
         publicUrl() {

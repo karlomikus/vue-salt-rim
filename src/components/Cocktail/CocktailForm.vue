@@ -8,30 +8,30 @@
         <div class="block-container block-container--padded">
             <div class="form-group">
                 <label class="form-label form-label--required" for="name">{{ $t('name') }}:</label>
-                <input class="form-input" type="text" id="name" v-model="cocktail.name" required :placeholder="$t('placeholder.cocktai-name')">
+                <input id="name" v-model="cocktail.name" class="form-input" type="text" required :placeholder="$t('placeholder.cocktai-name')">
             </div>
             <div class="form-group">
                 <label class="form-label form-label--required" for="instructions">{{ $t('instructions') }}:</label>
-                <textarea rows="8" class="form-input" id="instructions" v-model="cocktail.instructions" required :placeholder="$t('placeholder.cocktail-instructions')"></textarea>
+                <textarea id="instructions" v-model="cocktail.instructions" rows="8" class="form-input" required :placeholder="$t('placeholder.cocktail-instructions')"></textarea>
                 <p class="form-input-hint">{{ $t('md.support') }}</p>
             </div>
             <div class="form-group">
                 <label class="form-label" for="garnish">{{ $t('garnish') }}:</label>
-                <textarea rows="3" class="form-input" id="garnish" v-model="cocktail.garnish" :placeholder="$t('placeholder.cocktail-garnish')"></textarea>
+                <textarea id="garnish" v-model="cocktail.garnish" rows="3" class="form-input" :placeholder="$t('placeholder.cocktail-garnish')"></textarea>
                 <p class="form-input-hint">{{ $t('md.support') }}</p>
             </div>
         </div>
         <h3 class="form-section-title">{{ $t('media') }}</h3>
         <ImageUpload ref="imagesUpload" :value="cocktail.images" />
         <h3 class="form-section-title">{{ $t('ingredients') }}</h3>
-        <ul class="cocktail-form__ingredients" style="margin-bottom: 20px;" v-show="cocktail.ingredients.length > 0">
-            <li class="block-container" v-for="ing in cocktail.ingredients" :data-id="ing.ingredient_id" :key="ing.ingredient_id">
+        <ul v-show="cocktail.ingredients.length > 0" class="cocktail-form__ingredients" style="margin-bottom: 20px;">
+            <li v-for="ing in cocktail.ingredients" :key="ing.ingredient_id" class="block-container" :data-id="ing.ingredient_id">
                 <div class="drag-handle"></div>
                 <div class="cocktail-form__ingredients__content">
                     <div class="form-group">
                         <label class="form-label">{{ $t('ingredient') }}:</label>
                         <p>{{ ing.name }} <small v-show="ing.optional">({{ ing.optional ? $t('optional') : '' }})</small></p>
-                        <p class="substitutes" v-if="ing.substitutes && ing.substitutes.length > 0">
+                        <p v-if="ing.substitutes && ing.substitutes.length > 0" class="substitutes">
                             <template v-for="sub in ing.substitutes">
                                 {{ $t('or').toLowerCase() }} {{ sub.name }}&nbsp;
                             </template>
@@ -65,12 +65,12 @@
         <div class="block-container block-container--padded">
             <div class="form-group">
                 <label class="form-label" for="description">{{ $t('description') }}:</label>
-                <textarea rows="5" class="form-input" id="description" v-model="cocktail.description" :placeholder="$t('placeholder.cocktail-description')"></textarea>
+                <textarea id="description" v-model="cocktail.description" rows="5" class="form-input" :placeholder="$t('placeholder.cocktail-description')"></textarea>
                 <p class="form-input-hint">{{ $t('md.support') }}</p>
             </div>
             <div class="form-group">
                 <label class="form-label" for="glass">{{ $t('glass-type') }}:</label>
-                <select class="form-select" id="glass" v-model="cocktail.glass.id">
+                <select id="glass" v-model="cocktail.glass.id" class="form-select">
                     <option :value="undefined" disabled>Select a glass type...</option>
                     <option v-for="glass in glasses" :key="glass.id" :value="glass.id">{{ glass.name }}</option>
                 </select>
@@ -81,31 +81,31 @@
             <div style="margin-bottom: 2rem;">
                 <label class="form-label">{{ $t('method-and-dilution') }}:</label>
                 <div class="cocktail-methods">
-                    <SaltRimRadio v-for="method in methods" :key="method.id" :value="method.id" :title="method.name" :description="method.dilution_percentage + '%'" v-model="cocktail.method.id"></SaltRimRadio>
+                    <SaltRimRadio v-for="method in methods" :key="method.id" v-model="cocktail.method.id" :value="method.id" :title="method.name" :description="method.dilution_percentage + '%'"></SaltRimRadio>
                 </div>
             </div>
             <div class="form-group">
                 <label class="form-label" for="source">{{ $t('source') }}:</label>
-                <input class="form-input" type="text" id="source" v-model="cocktail.source" :placeholder="$t('placeholder.source')">
+                <input id="source" v-model="cocktail.source" class="form-input" type="text" :placeholder="$t('placeholder.source')">
             </div>
             <div class="form-group">
                 <label class="form-label" for="tags">{{ $t('tags') }}:</label>
-                <input class="form-input" type="text" id="tags" list="existing-tags" v-model="cocktailTags" :placeholder="$t('placeholder.tags')">
+                <input id="tags" v-model="cocktailTags" class="form-input" type="text" list="existing-tags" :placeholder="$t('placeholder.tags')">
                 <datalist id="existing-tags">
                     <option v-for="tag in tags" :key="tag.name" :value="tag.name"></option>
                 </datalist>
                 <p class="form-input-hint">{{ $t('tags.help-text') }}</p>
             </div>
-            <div class="form-group" v-show="utensils.length > 0">
+            <div v-show="utensils.length > 0" class="form-group">
                 <label class="form-label" for="utensil">{{ $t('utensils.title') }}:</label>
-                <select class="form-select" id="utensil" multiple v-model="cocktail.utensils" style="height: 200px;">
+                <select id="utensil" v-model="cocktail.utensils" class="form-select" multiple style="height: 200px;">
                     <option v-for="utensil in utensils" :key="utensil.id" :value="utensil.id">{{ utensil.name }}</option>
                 </select>
             </div>
         </div>
         <div class="form-actions">
-            <RouterLink class="button button--outline" :to="{ name: 'cocktails.show', params: { id: cocktail.id } }" v-if="cocktail.id">{{ $t('cancel') }}</RouterLink>
-            <RouterLink class="button button--outline" :to="{ name: 'cocktails' }" v-else>{{ $t('cancel') }}</RouterLink>
+            <RouterLink v-if="cocktail.id" class="button button--outline" :to="{ name: 'cocktails.show', params: { id: cocktail.id } }">{{ $t('cancel') }}</RouterLink>
+            <RouterLink v-else class="button button--outline" :to="{ name: 'cocktails' }">{{ $t('cancel') }}</RouterLink>
             <button class="button button--dark" type="submit">{{ $t('save') }}</button>
         </div>
     </form>
@@ -125,6 +125,14 @@ import SaltRimRadio from "../SaltRimRadio.vue";
 import AppState from "./../../AppState";
 
 export default {
+    components: {
+        OverlayLoader,
+        IngredientModal,
+        ImageUpload,
+        PageHeader,
+        SaltRimDialog,
+        SaltRimRadio
+    },
     data() {
         return {
             showDialog: false,
@@ -147,24 +155,6 @@ export default {
             utensils: [],
         };
     },
-    components: {
-        OverlayLoader,
-        IngredientModal,
-        ImageUpload,
-        PageHeader,
-        SaltRimDialog,
-        SaltRimRadio
-    },
-    watch: {
-        showDialog(newVal) {
-            if (newVal == false) {
-                const emptyIngredient = this.cocktail.ingredients.findIndex(i => i.ingredient_id == null);
-                if (emptyIngredient != -1) {
-                    this.cocktail.ingredients.splice(emptyIngredient, 1);
-                }
-            }
-        }
-    },
     computed: {
         cocktailTags: {
             get() {
@@ -181,6 +171,16 @@ export default {
                 }
             }
         },
+    },
+    watch: {
+        showDialog(newVal) {
+            if (newVal == false) {
+                const emptyIngredient = this.cocktail.ingredients.findIndex(i => i.ingredient_id == null);
+                if (emptyIngredient != -1) {
+                    this.cocktail.ingredients.splice(emptyIngredient, 1);
+                }
+            }
+        }
     },
     async created() {
         document.title = `${this.$t('cocktail')} \u22C5 ${this.site_title}`

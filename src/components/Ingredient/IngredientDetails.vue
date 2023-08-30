@@ -1,5 +1,5 @@
 <template>
-    <div class="ingredient-details" v-if="ingredient.id">
+    <div v-if="ingredient.id" class="ingredient-details">
         <OverlayLoader v-if="isLoading" />
         <div class="details-block-container details-block-container--blue ingredient-details__box" style="margin-top: 100px;">
             <div class="ingredient-details__box__content">
@@ -17,7 +17,7 @@
                     </div>
                     <div class="item-details__chips__group">
                         <div class="item-details__chips__group__title">{{ $t('strength') }}:</div>
-                        <ul class="chips-list" v-if="ingredient.strength > 0">
+                        <ul v-if="ingredient.strength > 0" class="chips-list">
                             <li>
                                 <span><abbr :title="$t('ABV.definition')">{{ $t('ABV') }}</abbr>: {{ ingredient.strength + '%' }}</span>
                             </li>
@@ -31,7 +31,7 @@
                             </li>
                         </ul>
                     </div>
-                    <div class="item-details__chips__group" v-if="ingredient.origin">
+                    <div v-if="ingredient.origin" class="item-details__chips__group">
                         <div class="item-details__chips__group__title">{{ $t('origin') }}:</div>
                         <ul class="chips-list">
                             <li>
@@ -39,7 +39,7 @@
                             </li>
                         </ul>
                     </div>
-                    <div class="item-details__chips__group" v-if="isAddedToShelf || isAddedToShoppingList">
+                    <div v-if="isAddedToShelf || isAddedToShoppingList" class="item-details__chips__group">
                         <div class="item-details__chips__group__title">{{ $t('status') }}:</div>
                         <ul class="chips-list">
                             <li v-show="isAddedToShelf">
@@ -109,12 +109,12 @@
                 </Dropdown>
             </div>
             <h2 class="details-block-container__title">{{ $t('ingredient.cocktail-children', { total: ingredient.cocktails.length }) }}</h2>
-            <ul class="ingredient-chips-list" v-if="ingredient.cocktails.length > 0">
-                <li class="ingredient-chips-list__label" v-if="extraIfAddedToShelf.length > 0">{{ $t('ingredient-extra-cocktails-info') }}:</li>
+            <ul v-if="ingredient.cocktails.length > 0" class="ingredient-chips-list">
+                <li v-if="extraIfAddedToShelf.length > 0" class="ingredient-chips-list__label">{{ $t('ingredient-extra-cocktails-info') }}:</li>
                 <li v-for="cocktail in extraIfAddedToShelf" :key="cocktail.id">
                     <RouterLink :to="{ name: 'cocktails.show', params: { id: cocktail.slug } }">{{ cocktail.name }}</RouterLink>
                 </li>
-                <li class="ingredient-chips-list__label" v-if="extraIfAddedToShelf.length > 0 && defaultCocktails.length > 0">{{ $t('ingredient-cocktails-rest') }}:</li>
+                <li v-if="extraIfAddedToShelf.length > 0 && defaultCocktails.length > 0" class="ingredient-chips-list__label">{{ $t('ingredient-cocktails-rest') }}:</li>
                 <li v-for="cocktail in defaultCocktails" :key="cocktail.id">
                     <RouterLink :to="{ name: 'cocktails.show', params: { id: cocktail.slug } }">{{ cocktail.name }}</RouterLink>
                 </li>
@@ -123,7 +123,7 @@
                 <RouterLink :to="{ name: 'cocktails.form' }">{{ $t('cocktails.add') }}</RouterLink>
             </div>
         </div>
-        <div class="details-block-container details-block-container--yellow" v-if="ingredient.varieties.length > 0">
+        <div v-if="ingredient.varieties.length > 0" class="details-block-container details-block-container--yellow">
             <h2 class="details-block-container__title">{{ $t('see-also') }}</h2>
             <ul class="ingredient-chips-list">
                 <li v-for="variety in ingredient.varieties" :key="variety.slug">
@@ -141,6 +141,10 @@ import OverlayLoader from '@/components/OverlayLoader.vue'
 import { micromark } from 'micromark'
 
 export default {
+    components: {
+        Dropdown,
+        OverlayLoader
+    },
     data: () => ({
         isLoading: false,
         ingredient: {},
@@ -148,26 +152,6 @@ export default {
         isAddedToShoppingList: false,
         extraIfAddedToShelf: []
     }),
-    components: {
-        Dropdown,
-        OverlayLoader
-    },
-    watch: {
-        ingredient(val) {
-            document.title = `${val.name} \u22C5 ${this.site_title}`
-        }
-    },
-    created() {
-        this.$watch(
-            () => this.$route.params.id,
-            async () => {
-                if (this.$route.name == 'ingredients.show') {
-                    await this.refreshIngredient();
-                }
-            },
-            { immediate: true }
-        )
-    },
     computed: {
         mainIngredientImageUrl() {
             if (!this.ingredient.main_image_id) {
@@ -188,6 +172,22 @@ export default {
 
             return this.ingredient.cocktails.filter(c => !removeIds.includes(c.id));
         }
+    },
+    watch: {
+        ingredient(val) {
+            document.title = `${val.name} \u22C5 ${this.site_title}`
+        }
+    },
+    created() {
+        this.$watch(
+            () => this.$route.params.id,
+            async () => {
+                if (this.$route.name == 'ingredients.show') {
+                    await this.refreshIngredient();
+                }
+            },
+            { immediate: true }
+        )
     },
     methods: {
         async refreshIngredient() {

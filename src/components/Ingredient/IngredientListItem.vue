@@ -21,6 +21,9 @@ import ApiRequests from './../../ApiRequests';
 import OverlayLoader from './../OverlayLoader.vue';
 
 export default {
+    components: {
+        OverlayLoader
+    },
     props: {
         ingredient: {
             type: Object,
@@ -34,9 +37,6 @@ export default {
         return {
             isLoading: false
         }
-    },
-    components: {
-        OverlayLoader
     },
     computed: {
         mainIngredientImageUrl() {

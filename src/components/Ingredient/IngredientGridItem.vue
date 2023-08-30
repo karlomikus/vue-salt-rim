@@ -37,6 +37,9 @@ import OverlayLoader from '@/components/OverlayLoader.vue'
 import ApiRequests from './../../ApiRequests.js'
 
 export default {
+    components: {
+        OverlayLoader
+    },
     props: {
         ingredient: {
             type: Object,
@@ -57,28 +60,11 @@ export default {
             }
         }
     },
-    components: {
-        OverlayLoader
-    },
     data() {
         return {
             isLoading: false,
             scopedUserIngredients: [],
             scopedShoppingList: [],
-        }
-    },
-    watch: {
-        userIngredients: {
-            handler(newVal) {
-                this.scopedUserIngredients = newVal
-            },
-            immediate: true
-        },
-        shoppingList: {
-            handler(newVal) {
-                this.scopedShoppingList = newVal
-            },
-            immediate: true
         }
     },
     computed: {
@@ -98,6 +84,20 @@ export default {
         },
         inList() {
             return this.scopedShoppingList.includes(this.ingredient.id)
+        }
+    },
+    watch: {
+        userIngredients: {
+            handler(newVal) {
+                this.scopedUserIngredients = newVal
+            },
+            immediate: true
+        },
+        shoppingList: {
+            handler(newVal) {
+                this.scopedShoppingList = newVal
+            },
+            immediate: true
         }
     },
     methods: {

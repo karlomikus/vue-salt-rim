@@ -6,7 +6,7 @@
             <form action="">
                 <div class="form-group">
                     <label class="form-label" for="dialog-collection-id">{{ $t('collections.collection') }}:</label>
-                    <select class="form-select" id="dialog-collection-id" v-model="collectionId">
+                    <select id="dialog-collection-id" v-model="collectionId" class="form-select">
                         <option :value="null"> - {{ $t('collections.create') }} - </option>
                         <option v-for="collection in collections" :key="collection.id" :value="collection.id">{{ collection.name }}</option>
                     </select>
@@ -14,11 +14,11 @@
                 <template v-if="!collectionId">
                     <div class="form-group">
                         <label class="form-label" for="dialog-collection-name">{{ $t('name') }}:</label>
-                        <input class="form-input" type="text" id="dialog-collection-name" v-model="newCollection.name">
+                        <input id="dialog-collection-name" v-model="newCollection.name" class="form-input" type="text">
                     </div>
                     <div class="form-group">
                         <label class="form-label" for="dialog-collection-description">{{ $t('description') }}:</label>
-                        <textarea rows="5" class="form-input" id="dialog-collection-description" v-model="newCollection.description"></textarea>
+                        <textarea id="dialog-collection-description" v-model="newCollection.description" rows="5" class="form-input"></textarea>
                     </div>
                 </template>
             </form>
@@ -38,6 +38,9 @@ import ApiRequests from './../../ApiRequests.js';
 import OverlayLoader from './../OverlayLoader.vue'
 
 export default {
+    components: {
+        OverlayLoader,
+    },
     props: {
         cocktails: {
             type: Array,
@@ -65,12 +68,6 @@ export default {
             collectionId: null
         }
     },
-    components: {
-        OverlayLoader,
-    },
-    mounted() {
-        this.fetchCollections()
-    },
     computed: {
         isPartOfCollection() {
             if (!this.collectionId) {
@@ -79,6 +76,9 @@ export default {
 
             return this.cocktailCollections.find((val) => val.id == this.collectionId)
         }
+    },
+    mounted() {
+        this.fetchCollections()
     },
     methods: {
         fetchCollections() {

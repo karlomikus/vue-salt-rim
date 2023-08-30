@@ -5,19 +5,19 @@
             <OverlayLoader v-if="isLoading"></OverlayLoader>
             <div class="form-group">
                 <label class="form-label form-label--required" for="email">{{ $t('email') }}:</label>
-                <input class="form-input" type="email" id="email" v-model="newUser.email" required>
+                <input id="email" v-model="newUser.email" class="form-input" type="email" required>
             </div>
             <div class="form-group">
                 <label class="form-label form-label--required" for="password">{{ $t('password') }}:</label>
-                <input class="form-input" type="password" id="password" v-model="newUser.password" required>
+                <input id="password" v-model="newUser.password" class="form-input" type="password" required>
             </div>
             <div class="form-group">
                 <label class="form-label form-label--required" for="password-repeat">{{ $t('repeat-password') }}:</label>
-                <input class="form-input" type="password" id="password-repeat" v-model="newUser.passwordRepeat" required>
+                <input id="password-repeat" v-model="newUser.passwordRepeat" class="form-input" type="password" required>
             </div>
             <div class="form-group">
                 <label class="form-label form-label--required" for="name">{{ $t('user.name') }}:</label>
-                <input class="form-input" type="text" id="name" v-model="newUser.name" required>
+                <input id="name" v-model="newUser.name" class="form-input" type="text" required>
             </div>
             <div style="text-align: right; margin-top: 20px;">
                 <RouterLink class="button button--outline" :to="{ name: 'login' }">{{ $t('cancel') }}</RouterLink>
@@ -33,15 +33,15 @@ import OverlayLoader from './../OverlayLoader.vue';
 import SiteLogo from './../Layout/SiteLogo.vue';
 
 export default {
+    components: {
+        OverlayLoader,
+        SiteLogo
+    },
     data() {
         return {
             isLoading: false,
             newUser: {}
         }
-    },
-    components: {
-        OverlayLoader,
-        SiteLogo
     },
     methods: {
         register() {

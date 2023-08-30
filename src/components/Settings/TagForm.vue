@@ -4,7 +4,7 @@
         <div class="dialog-title">{{ dialogTitle }}</div>
         <div class="form-group">
             <label class="form-label form-label--required" for="name">{{ $t('name') }}:</label>
-            <input class="form-input" type="text" id="name" v-model="tag.name" required>
+            <input id="name" v-model="tag.name" class="form-input" type="text" required>
         </div>
         <div class="dialog-actions">
             <button class="button button--outline" @click.prevent="$emit('tagDialogClosed')">{{ $t('cancel') }}</button>
@@ -18,6 +18,9 @@ import ApiRequests from "@/ApiRequests";
 import OverlayLoader from '@/components/OverlayLoader.vue'
 
 export default {
+    components: {
+        OverlayLoader,
+    },
     props: {
         sourceTag: {
             type: Object,
@@ -36,9 +39,6 @@ export default {
             isLoading: false,
             tag: this.sourceTag,
         };
-    },
-    components: {
-        OverlayLoader,
     },
     methods: {
         submit() {

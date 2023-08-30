@@ -5,7 +5,7 @@
         </slot>
         <Teleport to="body">
             <Transition name="dialog-animation">
-                <div class="dialog" v-if="modelValue" :class="$attrs.class">
+                <div v-if="modelValue" class="dialog" :class="$attrs.class">
                     <div class="dialog__overlay"></div>
                     <div class="dialog__container">
                         <div class="dialog__content">
@@ -23,6 +23,7 @@
 
 <script>
 export default {
+    inheritAttrs: false,
     props: {
         modelValue: {
             type: Boolean,
@@ -34,7 +35,6 @@ export default {
         }
     },
     emits: ['update:modelValue', 'dialogOpened', 'dialogClosed'],
-    inheritAttrs: false,
     watch: {
         modelValue(val) {
             if (val) {

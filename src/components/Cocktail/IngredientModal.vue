@@ -5,7 +5,7 @@
         <div style="margin: 1rem 0;">
             <!-- <Checkbox v-model="isAddingSubstitute" id="substitute-adding">{{ $t('ingredient-dialog.select-substitutes') }}</Checkbox> -->
             <label class="form-checkbox">
-                <input type="checkbox" v-model="isAddingSubstitute">
+                <input v-model="isAddingSubstitute" type="checkbox">
                 <span>{{ $t('ingredient-dialog.select-substitutes') }}</span>
             </label>
         </div>
@@ -25,11 +25,11 @@
         <div class="ingredient-form-group">
             <div class="form-group">
                 <label class="form-label" for="ingredient-amount">{{ $t('amount') }}:</label>
-                <input class="form-input" type="text" id="ingredient-amount" v-model="normalizedAmount">
+                <input id="ingredient-amount" v-model="normalizedAmount" class="form-input" type="text">
             </div>
             <div class="form-group">
                 <label class="form-label" for="ingredient-units">{{ $t('units') }}:</label>
-                <input class="form-input" type="text" id="ingredient-units" list="common-units" v-model="cocktailIngredient.units">
+                <input id="ingredient-units" v-model="cocktailIngredient.units" class="form-input" type="text" list="common-units">
                 <p class="form-input-hint">{{ $t('units-help-text') }}</p>
                 <datalist id="common-units">
                     <option>ml</option>
@@ -44,13 +44,13 @@
         <div style="margin: 1rem 0;">
             <!-- <Checkbox v-model="cocktailIngredient.optional" id="is-cocktail-ing-optional">{{ $t('ingredient-dialog.optional-checkbox') }}</Checkbox> -->
             <label class="form-checkbox">
-                <input type="checkbox" v-model="cocktailIngredient.optional">
+                <input v-model="cocktailIngredient.optional" type="checkbox">
                 <span>{{ $t('ingredient-dialog.optional-checkbox') }}</span>
             </label>
         </div>
         <div class="dialog-actions">
             <button type="button" class="button button--outline" @click="cancel">{{ $t('cancel') }}</button>
-            <button type="button" class="button button--dark" @click="save" :disabled="isLoading">{{ $t('save') }}</button>
+            <button type="button" class="button button--dark" :disabled="isLoading" @click="save">{{ $t('save') }}</button>
         </div>
     </div>
 </template>
@@ -60,6 +60,10 @@ import OverlayLoader from './../OverlayLoader.vue'
 import IngredientFinder from './../IngredientFinder.vue'
 
 export default {
+    components: {
+        OverlayLoader,
+        IngredientFinder,
+    },
     props: {
         value: {
             type: Object,
@@ -76,10 +80,6 @@ export default {
             currentQuery: null,
             isAddingSubstitute: false
         }
-    },
-    components: {
-        OverlayLoader,
-        IngredientFinder,
     },
     computed: {
         normalizedAmount: {

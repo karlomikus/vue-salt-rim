@@ -4,11 +4,11 @@
         <div class="dialog-title">{{ dialogTitle }}</div>
         <div class="form-group">
             <label class="form-label form-label--required" for="name">{{ $t('name') }}:</label>
-            <input class="form-input" type="text" id="name" v-model="utensil.name" required>
+            <input id="name" v-model="utensil.name" class="form-input" type="text" required>
         </div>
         <div class="form-group">
             <label class="form-label" for="description">{{ $t('description') }}:</label>
-            <textarea rows="5" class="form-input" id="description" v-model="utensil.description"></textarea>
+            <textarea id="description" v-model="utensil.description" rows="5" class="form-input"></textarea>
         </div>
         <div class="dialog-actions">
             <button class="button button--outline" @click.prevent="$emit('utensilDialogClosed')">{{ $t('cancel') }}</button>
@@ -22,6 +22,9 @@ import ApiRequests from "./../../ApiRequests.js";
 import OverlayLoader from './../OverlayLoader.vue'
 
 export default {
+    components: {
+        OverlayLoader
+    },
     props: {
         sourceData: {
             type: Object,
@@ -41,9 +44,6 @@ export default {
             categoryId: null,
             utensil: this.sourceData,
         };
-    },
-    components: {
-        OverlayLoader
     },
     methods: {
         submit() {

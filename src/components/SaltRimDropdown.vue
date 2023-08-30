@@ -1,8 +1,8 @@
 <template>
     <div class="dropdown-wrapper">
         <slot :toggle-dropdown="toggleDropdown" />
-        <div class="popper" ref="content">
-            <div class="dropdown-menu" v-show="isShown">
+        <div ref="content" class="popper">
+            <div v-show="isShown" class="dropdown-menu">
                 <slot name="content" />
             </div>
         </div>

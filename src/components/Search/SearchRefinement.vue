@@ -1,10 +1,10 @@
 <template>
     <div class="resource-search__refinements__refinement">
-        <h4 class="resource-search__refinements__refinement__title">{{ title }} <a href="#" v-show="isClearable" @click.prevent="clear">{{ $t('clear') }} {{ totalSelected }}</a></h4>
+        <h4 class="resource-search__refinements__refinement__title">{{ title }} <a v-show="isClearable" href="#" @click.prevent="clear">{{ $t('clear') }} {{ totalSelected }}</a></h4>
         <div class="resource-search__refinements__refinement__body">
             <slot>
-                <div class="resource-search__refinements__refinement__item" v-for="refinement in refinements" :key="refinement.id">
-                    <input :type="type" :id="id + '-' + refinement.id" :value="refinement.value" v-model="model">
+                <div v-for="refinement in refinements" :key="refinement.id" class="resource-search__refinements__refinement__item">
+                    <input :id="id + '-' + refinement.id" v-model="model" :type="type" :value="refinement.value">
                     <label :for="id + '-' + refinement.id">{{ refinement.name }}</label>
                 </div>
             </slot>

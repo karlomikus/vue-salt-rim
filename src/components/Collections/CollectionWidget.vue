@@ -1,7 +1,7 @@
 <template>
     <div class="cocktail-collections-wrapper">
         <OverlayLoader v-if="isLoading" />
-        <div class="block-container cocktail-collections__item" v-for="collection in collections" :key="collection.id">
+        <div v-for="collection in collections" :key="collection.id" class="block-container cocktail-collections__item">
             <h3>{{ collection.name }}</h3>
             <div class="cocktail-collections__item__actions">
                 <RouterLink :to="{ name: 'cocktails', query: { 'filter[collection_id]': collection.id } }">
@@ -20,6 +20,9 @@ import ApiRequests from './../../ApiRequests.js';
 import OverlayLoader from './../OverlayLoader.vue'
 
 export default {
+    components: {
+        OverlayLoader
+    },
     props: {
         cocktail: {
             type: Object,
@@ -34,9 +37,6 @@ export default {
             isLoading: false,
             collections: []
         };
-    },
-    components: {
-        OverlayLoader
     },
     watch: {
         cocktail() {

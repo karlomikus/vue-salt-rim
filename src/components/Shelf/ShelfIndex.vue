@@ -40,7 +40,7 @@
         <div class="list-grid__col">
             <h3 class="page-subtitle">{{ $t('cocktails.latest') }}</h3>
             <CocktailListContainer v-if="latestCocktails.length > 0" v-slot="observer">
-                <CocktailListItem v-for="cocktail in latestCocktails" :cocktail="cocktail" :key="cocktail.id" :observer="observer" />
+                <CocktailListItem v-for="cocktail in latestCocktails" :key="cocktail.id" :cocktail="cocktail" :observer="observer" />
                 <RouterLink :to="{ name: 'cocktails', query: { 'sort': '-created_at' } }">{{ $t('view-all') }}</RouterLink>
             </CocktailListContainer>
             <div v-else class="empty-state">
@@ -57,7 +57,7 @@
         <div class="list-grid__col">
             <h3 class="page-subtitle">{{ $t('recent-favorites') }}</h3>
             <CocktailListContainer v-if="favoriteCocktails.length > 0" v-slot="observer">
-                <CocktailListItem v-for="cocktail in favoriteCocktails" :cocktail="cocktail" :key="cocktail.id" :observer="observer" />
+                <CocktailListItem v-for="cocktail in favoriteCocktails" :key="cocktail.id" :cocktail="cocktail" :observer="observer" />
                 <RouterLink :to="{ name: 'cocktails', query: { 'filter[favorites]': true, sort: '-favorited_at' } }">{{ $t('view-all') }}</RouterLink>
             </CocktailListContainer>
             <div v-else class="empty-state">
@@ -74,10 +74,10 @@
         <div class="list-grid__col">
             <h3 class="page-subtitle">{{ $t('your-shopping-list') }}</h3>
             <IngredientListContainer v-if="shoppingListIngredients.length > 0">
-                <IngredientListItem v-for="ingredient in shoppingListIngredients" :ingredient="ingredient" :key="ingredient.id" @removed-from-shopping-list="removeIngFromList(ingredient)" @added-to-shelf="removeIngFromList(ingredient)" />
+                <IngredientListItem v-for="ingredient in shoppingListIngredients" :key="ingredient.id" :ingredient="ingredient" @removed-from-shopping-list="removeIngFromList(ingredient)" @added-to-shelf="removeIngFromList(ingredient)" />
                 <RouterLink :to="{ name: 'ingredients', query: { 'filter[on_shopping_list]': true } }">{{ $t('view-all') }}</RouterLink>
             </IngredientListContainer>
-            <div class="empty-state" v-else>
+            <div v-else class="empty-state">
                 <OverlayLoader v-if="loaders.list"></OverlayLoader>
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
                     <path fill="none" d="M0 0h24v24H0z" />
@@ -122,6 +122,14 @@ import PageHeader from '@/components/PageHeader.vue'
 import AppState from './../../AppState';
 
 export default {
+    components: {
+        IngredientListContainer,
+        IngredientListItem,
+        CocktailListItem,
+        CocktailListContainer,
+        OverlayLoader,
+        PageHeader,
+    },
     data() {
         const appState = new AppState();
 
@@ -142,14 +150,6 @@ export default {
                 favorite_ingredients: false,
             }
         }
-    },
-    components: {
-        IngredientListContainer,
-        IngredientListItem,
-        CocktailListItem,
-        CocktailListContainer,
-        OverlayLoader,
-        PageHeader,
     },
     created() {
         document.title = `${this.$t('shelf.title')} \u22C5 ${this.site_title}`

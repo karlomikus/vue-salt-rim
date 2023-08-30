@@ -1,7 +1,7 @@
 <template>
     <div class="cocktail-print-container">
         <div class="print-first-row">
-            <div class="cocktail-print-image" v-if="cocktail.main_image_id">
+            <div v-if="cocktail.main_image_id" class="cocktail-print-image">
                 <img :src="cocktail.images[0].url" :alt="cocktail.images[0].copyright">
             </div>
             <div class="cocktail-main-info">

@@ -12,10 +12,10 @@
                     {{ $t('imageupload.status', {current: images.length, max: maxImages}) }}
                 </p>
             </label>
-            <input class="form-input" type="file" id="images" accept="image/*" :multiple="multiple" @change="fileInputChanged" :disabled="hasMaxImages">
+            <input id="images" class="form-input" type="file" accept="image/*" :multiple="multiple" :disabled="hasMaxImages" @change="fileInputChanged">
         </div>
-        <div class="image-upload__list" ref="imageList">
-            <div class="block-container image-upload__list__item" v-for="(img, idx) in images" :key="idx" :data-id="img.file_path">
+        <div ref="imageList" class="image-upload__list">
+            <div v-for="(img, idx) in images" :key="idx" class="block-container image-upload__list__item" :data-id="img.file_path">
                 <div class="drag-handle"></div>
                 <div class="image-upload__list__item__image">
                     <img :src="img.url" alt="Cocktail image">
@@ -23,7 +23,7 @@
                 </div>
                 <div class="image-upload__list__item__actions">
                     <label class="form-label" :for="'copyright-' + idx">{{ $t('image-copyright') }}:</label>
-                    <input class="form-input form-input--small" type="text" :id="'copyright-' + idx" v-model="img.copyright" :placeholder="$t('placeholder.image-copyright')">
+                    <input :id="'copyright-' + idx" v-model="img.copyright" class="form-input form-input--small" type="text" :placeholder="$t('placeholder.image-copyright')">
                 </div>
             </div>
         </div>
@@ -36,6 +36,9 @@ import Sortable from 'sortablejs';
 import OverlayLoader from '@/components/OverlayLoader.vue'
 
 export default {
+    components: {
+        OverlayLoader
+    },
     props: {
         value: {
             type: Array,
@@ -46,14 +49,6 @@ export default {
         maxImages: {
             type: Number,
             default: 10
-        }
-    },
-    components: {
-        OverlayLoader
-    },
-    watch: {
-        value(newVal) {
-            this.images = newVal
         }
     },
     data() {
@@ -69,6 +64,11 @@ export default {
         },
         multiple() {
             return this.maxImages > 1;
+        }
+    },
+    watch: {
+        value(newVal) {
+            this.images = newVal
         }
     },
     mounted() {

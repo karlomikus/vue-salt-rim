@@ -10,23 +10,23 @@
     <div class="resource-search-wrapper">
         <OverlayLoader v-if="isLoading" />
         <div class="resource-search">
-            <div class="resource-search__refinements" v-show="showRefinements" @click="handleClickAway">
+            <div v-show="showRefinements" class="resource-search__refinements" @click="handleClickAway">
                 <div class="resource-search__refinements__body">
                     <h3 class="page-subtitle" style="margin-top: 0">{{ $t('filters') }}</h3>
-                    <Refinement :title="$t('global')" id="global">
-                        <div class="resource-search__refinements__refinement__item" v-for="filter in availableRefinements.global" :key="filter.id">
-                            <input type="checkbox" :id="'global-' + filter.id" :value="filter.active" v-model="activeFilters[filter.id]" @change="updateRouterPath">
+                    <Refinement id="global" :title="$t('global')">
+                        <div v-for="filter in availableRefinements.global" :key="filter.id" class="resource-search__refinements__refinement__item">
+                            <input :id="'global-' + filter.id" v-model="activeFilters[filter.id]" type="checkbox" :value="filter.active" @change="updateRouterPath">
                             <label :for="'global-' + filter.id">{{ filter.name }}</label>
                         </div>
                     </Refinement>
-                    <Refinement :title="$t('your-collections')" :refinements="refineCollections" id="collection" v-model="activeFilters.collections" v-if="refineCollections.length > 0" @change="updateRouterPath"></Refinement>
-                    <Refinement :title="$t('ingredient.main')" :refinements="refineMainIngredients" id="main-ingredient" v-model="activeFilters.main_ingredients" @change="updateRouterPath"></Refinement>
-                    <Refinement :title="$t('method')" :refinements="refineMethods" id="method" v-model="activeFilters.methods" @change="updateRouterPath"></Refinement>
-                    <Refinement :title="$t('strength')" :refinements="refineABV" id="abv" v-model="activeFilters.abv" type="radio" @change="updateRouterPath"></Refinement>
-                    <Refinement :title="$t('tags')" :refinements="refineTags" id="tag" v-model="activeFilters.tags" @change="updateRouterPath"></Refinement>
-                    <Refinement :title="$t('glass-type')" :refinements="refineGlasses" id="glass" v-model="activeFilters.glasses" @change="updateRouterPath"></Refinement>
-                    <Refinement :title="$t('your-rating')" :refinements="refineRatings" id="user-rating" v-model="activeFilters.user_rating" type="radio" @change="updateRouterPath"></Refinement>
-                    <Refinement :title="$t('total-ingredients')" :refinements="refineIngredientsCount" id="total-ingredients" v-model="activeFilters.total_ingredients" type="radio" @change="updateRouterPath"></Refinement>
+                    <Refinement v-if="refineCollections.length > 0" id="collection" v-model="activeFilters.collections" :title="$t('your-collections')" :refinements="refineCollections" @change="updateRouterPath"></Refinement>
+                    <Refinement id="main-ingredient" v-model="activeFilters.main_ingredients" :title="$t('ingredient.main')" :refinements="refineMainIngredients" @change="updateRouterPath"></Refinement>
+                    <Refinement id="method" v-model="activeFilters.methods" :title="$t('method')" :refinements="refineMethods" @change="updateRouterPath"></Refinement>
+                    <Refinement id="abv" v-model="activeFilters.abv" :title="$t('strength')" :refinements="refineABV" type="radio" @change="updateRouterPath"></Refinement>
+                    <Refinement id="tag" v-model="activeFilters.tags" :title="$t('tags')" :refinements="refineTags" @change="updateRouterPath"></Refinement>
+                    <Refinement id="glass" v-model="activeFilters.glasses" :title="$t('glass-type')" :refinements="refineGlasses" @change="updateRouterPath"></Refinement>
+                    <Refinement id="user-rating" v-model="activeFilters.user_rating" :title="$t('your-rating')" :refinements="refineRatings" type="radio" @change="updateRouterPath"></Refinement>
+                    <Refinement id="total-ingredients" v-model="activeFilters.total_ingredients" :title="$t('total-ingredients')" :refinements="refineIngredientsCount" type="radio" @change="updateRouterPath"></Refinement>
                     <button class="button button--dark sm-show" type="button" @click="showRefinements = false">{{ $t('cancel') }}</button>
                 </div>
             </div>
@@ -38,8 +38,8 @@
                             <path d="M6.17 18a3.001 3.001 0 0 1 5.66 0H22v2H11.83a3.001 3.001 0 0 1-5.66 0H2v-2h4.17zm6-7a3.001 3.001 0 0 1 5.66 0H22v2h-4.17a3.001 3.001 0 0 1-5.66 0H2v-2h10.17zm-6-7a3.001 3.001 0 0 1 5.66 0H22v2H11.83a3.001 3.001 0 0 1-5.66 0H2V4h4.17z" />
                         </svg>
                     </button>
-                    <input class="form-input" type="text" :placeholder="$t('placeholder.search-cocktails')" v-model="searchQuery" @input="debounceCocktailNameSearch" @keyup.enter="updateRouterPath">
-                    <select class="form-select" v-model="sort" @change="updateRouterPath">
+                    <input v-model="searchQuery" class="form-input" type="text" :placeholder="$t('placeholder.search-cocktails')" @input="debounceCocktailNameSearch" @keyup.enter="updateRouterPath">
+                    <select v-model="sort" class="form-select" @change="updateRouterPath">
                         <option disabled>{{ $t('sort') }}:</option>
                         <option value="name">{{ $t('name') }}</option>
                         <option value="created_at">{{ $t('date-added') }}</option>
@@ -50,12 +50,12 @@
                         <option value="user_rating">{{ $t('user-rating') }}</option>
                         <option value="abv">{{ $t('ABV') }}</option>
                     </select>
-                    <select class="form-select" v-model="sort_dir" @change="updateRouterPath">
+                    <select v-model="sort_dir" class="form-select" @change="updateRouterPath">
                         <option disabled>{{ $t('sort-direction') }}:</option>
                         <option value="">{{ $t('sort-asc') }}</option>
                         <option value="-">{{ $t('sort-desc') }}</option>
                     </select>
-                    <select class="form-select" v-model="per_page" @change="updateRouterPath">
+                    <select v-model="per_page" class="form-select" @change="updateRouterPath">
                         <option disabled>{{ $t('results-per-page') }}:</option>
                         <option value="25">25</option>
                         <option value="50">50</option>
@@ -63,7 +63,7 @@
                     </select>
                     <SaltRimDialog v-model="showCreateNewCollectionDialog">
                         <template #trigger>
-                            <button type="button" class="button button--outline button--icon" @click.prevent="showCreateNewCollectionDialog = !showCreateNewCollectionDialog" :title="$t('collections.add')">
+                            <button type="button" class="button button--outline button--icon" :title="$t('collections.add')" @click.prevent="showCreateNewCollectionDialog = !showCreateNewCollectionDialog">
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
                                     <path fill="none" d="M0 0h24v24H0z" />
                                     <path d="M12.414 5H21a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h7.414l2 2zM4 5v14h16V7h-8.414l-2-2H4zm7 7V9h2v3h3v2h-3v3h-2v-3H8v-2h3z" />
@@ -74,12 +74,12 @@
                             <CollectionDialog title="collections.add-from-query" :cocktails="currentCocktailIds" @collection-dialog-closed="handleCollectionsDialogClosed" />
                         </template>
                     </SaltRimDialog>
-                    <button type="button" class="button button--outline button--icon" @click.prevent="clearRefinements" :title="$t('clear-filters')">
+                    <button type="button" class="button button--outline button--icon" :title="$t('clear-filters')" @click.prevent="clearRefinements">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path d="M12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22ZM12 20C16.4183 20 20 16.4183 20 12C20 7.58172 16.4183 4 12 4C7.58172 4 4 7.58172 4 12C4 16.4183 7.58172 20 12 20ZM12 10.5858L14.8284 7.75736L16.2426 9.17157L13.4142 12L16.2426 14.8284L14.8284 16.2426L12 13.4142L9.17157 16.2426L7.75736 14.8284L10.5858 12L7.75736 9.17157L9.17157 7.75736L12 10.5858Z"></path></svg>
                     </button>
                 </div>
                 <CocktailGridContainer v-if="cocktails.length > 0" v-slot="observer">
-                    <CocktailGridItem v-for="cocktail in cocktails" :cocktail="cocktail" :key="cocktail.id" :observer="observer" />
+                    <CocktailGridItem v-for="cocktail in cocktails" :key="cocktail.id" :cocktail="cocktail" :observer="observer" />
                 </CocktailGridContainer>
                 <div v-else class="empty-state">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
@@ -106,6 +106,16 @@ import SaltRimDialog from './../Dialog/SaltRimDialog.vue'
 import qs from 'qs';
 
 export default {
+    components: {
+        CocktailGridItem,
+        CocktailGridContainer,
+        PageHeader,
+        OverlayLoader,
+        Refinement,
+        SaltRimDialog,
+        CollectionDialog,
+        Pagination
+    },
     data() {
         return {
             showCreateNewCollectionDialog: false,
@@ -159,32 +169,6 @@ export default {
                 total_ingredients: null
             }
         }
-    },
-    components: {
-        CocktailGridItem,
-        CocktailGridContainer,
-        PageHeader,
-        OverlayLoader,
-        Refinement,
-        SaltRimDialog,
-        CollectionDialog,
-        Pagination
-    },
-    created() {
-        document.title = `${this.$t('cocktails')} \u22C5 ${this.site_title}`
-
-        this.fetchRefinements();
-
-        this.$watch(
-            () => this.$route.query,
-            () => {
-                if (this.$route.name == 'cocktails') {
-                    this.queryToState();
-                    this.refreshCocktails()
-                }
-            },
-            { immediate: true }
-        )
     },
     computed: {
         sortWithDir: {
@@ -279,6 +263,22 @@ export default {
         currentCocktailIds() {
             return this.cocktails.map((c) => c.id);
         }
+    },
+    created() {
+        document.title = `${this.$t('cocktails')} \u22C5 ${this.site_title}`
+
+        this.fetchRefinements();
+
+        this.$watch(
+            () => this.$route.query,
+            () => {
+                if (this.$route.name == 'cocktails') {
+                    this.queryToState();
+                    this.refreshCocktails()
+                }
+            },
+            { immediate: true }
+        )
     },
     methods: {
         fetchRefinements() {

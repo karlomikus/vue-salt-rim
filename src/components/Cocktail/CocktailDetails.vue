@@ -1,16 +1,16 @@
 <template>
     <OverlayLoader v-if="!cocktail.id" />
-    <div class="cocktail-details" v-else>
+    <div v-else class="cocktail-details">
         <OverlayLoader v-if="isLoading" />
         <div class="cocktail-details__title">
             <h2>{{ cocktail.name }}</h2>
             <p>{{ $t('added-on-by', { date: createdDate, name: cocktail.created_user.name }) }}</p>
         </div>
-        <div class="cocktail-details__graphic" v-if="cocktail.id">
+        <div v-if="cocktail.id" class="cocktail-details__graphic">
             <swiper v-if="cocktail.images.length > 0" :modules="sliderModules" navigation :pagination="{ clickable: true }" :follow-finger="false">
                 <swiper-slide v-for="image in sortedImages" :key="image.sort">
                     <img :src="image.url" :alt="image.copyright" />
-                    <div class="cocktail-details__graphic__copyright" v-if="image.copyright">{{ $t('image-copyright-notice', { copyright: image.copyright }) }}</div>
+                    <div v-if="image.copyright" class="cocktail-details__graphic__copyright">{{ $t('image-copyright-notice', { copyright: image.copyright }) }}</div>
                 </swiper-slide>
             </swiper>
             <img v-else src="/no-cocktail.jpg" alt="This cocktail does not have an image." />
@@ -20,7 +20,7 @@
                 <div class="details-block-container details-block-container--blue cocktail-details-box" style="margin-top: 0">
                     <h3 class="details-block-container__title">{{ $t('description') }}</h3>
                     <div class="item-details__chips">
-                        <div class="item-details__chips__group" v-if="cocktail.tags.length > 0">
+                        <div v-if="cocktail.tags.length > 0" class="item-details__chips__group">
                             <div class="item-details__chips__group__title">{{ $t('tags') }}:</div>
                             <ul class="chips-list">
                                 <li v-for="tag in cocktail.tags" :key="tag.id">
@@ -28,7 +28,7 @@
                                 </li>
                             </ul>
                         </div>
-                        <div class="item-details__chips__group" v-if="cocktail.glass">
+                        <div v-if="cocktail.glass" class="item-details__chips__group">
                             <div class="item-details__chips__group__title">{{ $t('glass-type') }}:</div>
                             <ul class="chips-list">
                                 <li>
@@ -36,7 +36,7 @@
                                 </li>
                             </ul>
                         </div>
-                        <div class="item-details__chips__group" v-if="cocktail.method">
+                        <div v-if="cocktail.method" class="item-details__chips__group">
                             <div class="item-details__chips__group__title">{{ $t('method') }}:</div>
                             <ul class="chips-list">
                                 <li>
@@ -44,7 +44,7 @@
                                 </li>
                             </ul>
                         </div>
-                        <div class="item-details__chips__group" v-if="cocktail.abv && cocktail.abv > 0">
+                        <div v-if="cocktail.abv && cocktail.abv > 0" class="item-details__chips__group">
                             <div class="item-details__chips__group__title">{{ $t('ABV') }}:</div>
                             <ul class="chips-list">
                                 <li>
@@ -62,9 +62,9 @@
                         </div>
                         <div class="item-details__chips__group">
                             <div class="item-details__chips__group__title">{{ $t('your-rating') }}:</div>
-                            <Rating :rating="cocktail.user_rating" type="cocktail" :id="cocktail.id"></Rating>
+                            <Rating :id="cocktail.id" :rating="cocktail.user_rating" type="cocktail"></Rating>
                         </div>
-                        <div class="item-details__chips__group" v-if="cocktail.public_id">
+                        <div v-if="cocktail.public_id" class="item-details__chips__group">
                             <div class="item-details__chips__group__title">{{ $t('public-link') }}:</div>
                             <RouterLink :to="{ name: 'e.cocktail', params: { ulid: cocktail.public_id, slug: cocktail.slug } }" target="_blank">{{ $t('click-here') }}</RouterLink>
                         </div>
@@ -208,7 +208,7 @@
                         </Dropdown>
                     </div>
                 </div>
-                <div class="details-block-container details-block-container--green" v-if="cocktail.ingredients.length > 0">
+                <div v-if="cocktail.ingredients.length > 0" class="details-block-container details-block-container--green">
                     <h3 class="details-block-container__title">{{ $t('ingredients') }}</h3>
                     <div style="display: grid; grid-template-columns: 1fr 1fr;">
                         <div class="cocktail-button-group">
@@ -233,15 +233,15 @@
                                 <div class="cocktail-ingredients__ingredient__amount">{{ parseIngredientAmount(ing) }}</div>
                             </div>
                             <div class="cocktail-ingredients__flags">
-                                <div class="cocktail-ingredients__flags__flag" v-if="ing.substitutes.length > 0">
+                                <div v-if="ing.substitutes.length > 0" class="cocktail-ingredients__flags__flag">
                                     &middot; {{ $t('substitutes') }}:
                                     <template v-for="(sub, index) in ing.substitutes" :key="index">
                                         <RouterLink :to="{ name: 'ingredients.show', params: { id: sub.slug } }" data-ingredient="substitute">{{ sub.name }}</RouterLink>
                                         <template v-if="index + 1 !== ing.substitutes.length">, </template>
                                     </template>
                                 </div>
-                                <div class="cocktail-ingredients__flags__flag" v-if="!userShelfIngredients.map(i => i.ingredient_id).includes(ing.ingredient_id)">&middot; {{ $t('cocktail.missing-ing') }}</div>
-                                <div class="cocktail-ingredients__flags__flag" v-if="userShoppingListIngredients.map(i => i.ingredient_id).includes(ing.ingredient_id)">&middot; {{ $t('ingredient.on-shopping-list') }}</div>
+                                <div v-if="!userShelfIngredients.map(i => i.ingredient_id).includes(ing.ingredient_id)" class="cocktail-ingredients__flags__flag">&middot; {{ $t('cocktail.missing-ing') }}</div>
+                                <div v-if="userShoppingListIngredients.map(i => i.ingredient_id).includes(ing.ingredient_id)" class="cocktail-ingredients__flags__flag">&middot; {{ $t('ingredient.on-shopping-list') }}</div>
                             </div>
                         </li>
                     </ul>
@@ -258,11 +258,11 @@
                         <strong>{{ $t('utensils.title') }}</strong>: {{ cocktail.utensils.map(u => u.name).join(', ') }}
                     </div>
                 </div>
-                <div class="details-block-container details-block-container--red" v-if="cocktail.garnish">
+                <div v-if="cocktail.garnish" class="details-block-container details-block-container--red">
                     <h3 class="details-block-container__title">{{ $t('garnish') }}</h3>
                     <div v-html="parsedGarnish"></div>
                 </div>
-                <div class="details-block-container details-block-container--purple" v-if="notes.length > 0">
+                <div v-if="notes.length > 0" class="details-block-container details-block-container--purple">
                     <OverlayLoader v-if="isLoadingNotes" />
                     <h3 class="details-block-container__title">{{ $t('notes') }}</h3>
                     <Note v-for="note in notes" :key="note.id" :note="note" @note-deleted="refreshNotes"></Note>
@@ -310,6 +310,22 @@ import CollectionDialog from './../Collections/CollectionDialog.vue';
 import dayjs from 'dayjs'
 
 export default {
+    components: {
+        OverlayLoader,
+        Dropdown,
+        Rating,
+        Swiper,
+        SwiperSlide,
+        SaltRimDialog,
+        PublicLinkDialog,
+        Note,
+        NoteDialog,
+        GenerateImageDialog,
+        SimilarCocktails,
+        CollectionDialog,
+        CocktailCollections,
+        IngredientSpotlight,
+    },
     data: () => ({
         cocktail: {},
         notes: [],
@@ -328,22 +344,6 @@ export default {
         showDownloadImageDialog: false,
         showCollectionDialog: false,
     }),
-    components: {
-        OverlayLoader,
-        Dropdown,
-        Rating,
-        Swiper,
-        SwiperSlide,
-        SaltRimDialog,
-        PublicLinkDialog,
-        Note,
-        NoteDialog,
-        GenerateImageDialog,
-        SimilarCocktails,
-        CollectionDialog,
-        CocktailCollections,
-        IngredientSpotlight,
-    },
     computed: {
         parsedInstructions() {
             if (!this.cocktail.instructions) {

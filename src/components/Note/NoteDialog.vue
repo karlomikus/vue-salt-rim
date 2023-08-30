@@ -4,7 +4,7 @@
         <div class="dialog-title">{{ $t('note-dialog.title') }}</div>
         <div class="form-group">
             <label class="form-label" for="note">{{ $t('content') }}:</label>
-            <textarea rows="5" class="form-input" id="note" v-model="note.note"></textarea>
+            <textarea id="note" v-model="note.note" rows="5" class="form-input"></textarea>
         </div>
         <div class="dialog-actions">
             <button class="button button--outline" @click.prevent="$emit('noteDialogClosed')">{{ $t('cancel') }}</button>
@@ -18,6 +18,9 @@ import ApiRequests from './../../ApiRequests.js';
 import OverlayLoader from './../OverlayLoader.vue'
 
 export default {
+    components: {
+        OverlayLoader,
+    },
     props: {
         resourceId: {
             type: Number,
@@ -34,9 +37,6 @@ export default {
             isLoading: false,
             note: {},
         }
-    },
-    components: {
-        OverlayLoader,
     },
     methods: {
         submit() {

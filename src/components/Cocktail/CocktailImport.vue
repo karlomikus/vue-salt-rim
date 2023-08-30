@@ -8,18 +8,18 @@
         <div class="block-container block-container--padded">
             <div class="form-group">
                 <label class="form-label form-label--required">{{ $t('type') }}:</label>
-                <SaltRimRadio title="URL" description="Import from a supported website" value="url" v-model="importType"></SaltRimRadio>
-                <SaltRimRadio title="JSON" description="Import from JSON format" value="json" v-model="importType"></SaltRimRadio>
-                <SaltRimRadio title="YAML" description="Import from YAML format" value="yaml" v-model="importType"></SaltRimRadio>
-                <SaltRimRadio title="Collection" description="Import from Bar Assistant JSON collection" value="collection" v-model="importType"></SaltRimRadio>
+                <SaltRimRadio v-model="importType" title="URL" description="Import from a supported website" value="url"></SaltRimRadio>
+                <SaltRimRadio v-model="importType" title="JSON" description="Import from JSON format" value="json"></SaltRimRadio>
+                <SaltRimRadio v-model="importType" title="YAML" description="Import from YAML format" value="yaml"></SaltRimRadio>
+                <SaltRimRadio v-model="importType" title="Collection" description="Import from Bar Assistant JSON collection" value="collection"></SaltRimRadio>
             </div>
             <div class="form-group">
                 <label class="form-label form-label--required" for="import-source">{{ $t('source') }}:</label>
-                <textarea class="form-input" id="import-source" rows="5" v-model="source" required></textarea>
+                <textarea id="import-source" v-model="source" class="form-input" rows="5" required></textarea>
             </div>
             <button type="button" class="button button--dark" @click.prevent="importCocktail">{{ $t('start-import') }}</button>
         </div>
-        <div class="scraper-form" v-if="result">
+        <div v-if="result" class="scraper-form">
             <div class="alert alert--info" style="margin: 1rem 0;">
                 <h3>{{ $t('information') }}</h3>
                 <p>{{ $t('scraper.information') }}</p>
@@ -28,61 +28,61 @@
             <div class="block-container block-container--padded">
                 <div class="form-group">
                     <label for="name">{{ $t('name') }}</label>
-                    <input type="text" class="form-input" id="name" v-model="result.name">
+                    <input id="name" v-model="result.name" type="text" class="form-input">
                 </div>
                 <div class="form-group">
                     <label for="description">{{ $t('description') }}</label>
-                    <textarea class="form-input" rows="4" id="description" v-model="result.description"></textarea>
+                    <textarea id="description" v-model="result.description" class="form-input" rows="4"></textarea>
                 </div>
                 <div class="form-group">
                     <label for="source">{{ $t('source') }}</label>
-                    <input type="text" class="form-input" id="source" v-model="result.source">
+                    <input id="source" v-model="result.source" type="text" class="form-input">
                 </div>
                 <div class="form-group">
                     <label for="glass">{{ $t('glass-type') }}</label>
-                    <input type="text" class="form-input" id="glass" v-model="result.glass">
+                    <input id="glass" v-model="result.glass" type="text" class="form-input">
                 </div>
                 <div class="form-group">
                     <label for="instructions">{{ $t('instructions') }}</label>
-                    <textarea class="form-input" rows="4" id="instructions" v-model="result.instructions"></textarea>
+                    <textarea id="instructions" v-model="result.instructions" class="form-input" rows="4"></textarea>
                 </div>
                 <div class="form-group">
                     <label for="garnish">{{ $t('garnish') }}</label>
-                    <textarea class="form-input" rows="3" id="garnish" v-model="result.garnish"></textarea>
+                    <textarea id="garnish" v-model="result.garnish" class="form-input" rows="3"></textarea>
                 </div>
                 <div class="form-group">
                     <label for="method">{{ $t('method') }}</label>
-                    <input type="text" class="form-input" id="method" v-model="result.method">
+                    <input id="method" v-model="result.method" type="text" class="form-input">
                 </div>
                 <template v-for="image in result.images" :key="image.url">
                     <div class="form-group">
                         <label for="image_url">{{ $t('image-url') }}</label>
-                        <input type="text" class="form-input" id="image_url" v-model="image.url">
+                        <input id="image_url" v-model="image.url" type="text" class="form-input">
                     </div>
                     <div class="form-group">
                         <label for="image_copyrigh">{{ $t('image-copyright') }}</label>
-                        <input type="text" class="form-input" id="image_copyrigh" v-model="image.copyright">
+                        <input id="image_copyrigh" v-model="image.copyright" type="text" class="form-input">
                     </div>
                 </template>
                 <div class="form-group">
                     <label for="tags">{{ $t('tags') }}</label>
-                    <input type="text" class="form-input" id="tags" v-model="cocktailTags">
+                    <input id="tags" v-model="cocktailTags" type="text" class="form-input">
                 </div>
             </div>
             <h3 class="form-section-title">{{ $t('ingredients') }}</h3>
-            <div class="block-container block-container--padded scraper-ingredients__ingredient" v-for="(ingredient, idx) in result.ingredients" :key="idx">
+            <div v-for="(ingredient, idx) in result.ingredients" :key="idx" class="block-container block-container--padded scraper-ingredients__ingredient">
                 <div class="scraper-ingredients__ingredient__inputs">
                     <div class="form-group">
                         <label :for="'ingredient_name_' + idx">{{ $t('name') }}</label>
-                        <input type="text" class="form-input" :id="'ingredient_name_' + idx" v-model="ingredient.name">
+                        <input :id="'ingredient_name_' + idx" v-model="ingredient.name" type="text" class="form-input">
                     </div>
                     <div class="form-group">
                         <label :for="'ingredient_amount_' + idx">{{ $t('amount') }}</label>
-                        <input type="text" class="form-input" :id="'ingredient_amount_' + idx" v-model="ingredient.amount">
+                        <input :id="'ingredient_amount_' + idx" v-model="ingredient.amount" type="text" class="form-input">
                     </div>
                     <div class="form-group">
                         <label :for="'ingredient_units_' + idx">{{ $t('units') }}</label>
-                        <input type="text" class="form-input" :id="'ingredient_units_' + idx" v-model="ingredient.units">
+                        <input :id="'ingredient_units_' + idx" v-model="ingredient.units" type="text" class="form-input">
                     </div>
                 </div>
                 <div class="scraper-ingredients__ingredient__actions">
@@ -104,6 +104,11 @@ import PageHeader from './../PageHeader.vue'
 import SaltRimRadio from "../SaltRimRadio.vue";
 
 export default {
+    components: {
+        OverlayLoader,
+        PageHeader,
+        SaltRimRadio
+    },
     data() {
         return {
             isLoading: false,
@@ -111,14 +116,6 @@ export default {
             source: null,
             result: null,
         };
-    },
-    components: {
-        OverlayLoader,
-        PageHeader,
-        SaltRimRadio
-    },
-    created() {
-        document.title = `${this.$t('cocktails.import')} \u22C5 ${this.site_title}`
     },
     computed: {
         cocktailTags: {
@@ -140,6 +137,9 @@ export default {
                 }
             }
         },
+    },
+    created() {
+        document.title = `${this.$t('cocktails.import')} \u22C5 ${this.site_title}`
     },
     methods: {
         importCocktail() {

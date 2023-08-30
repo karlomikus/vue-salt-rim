@@ -16,7 +16,7 @@
         <div class="settings-page__content">
             <OverlayLoader v-if="isLoading" />
             <div class="block-container block-container--padded">
-                <table class="table" v-if="collections.length > 0">
+                <table v-if="collections.length > 0" class="table">
                     <thead>
                         <tr>
                             <th>{{ $t('name') }} / {{ $t('description') }}</th>

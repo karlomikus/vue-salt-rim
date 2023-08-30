@@ -11,24 +11,24 @@
             <form @submit.prevent="submit">
                 <div class="form-group">
                     <label class="form-label form-label--required" for="name">{{ $t('user.name') }}:</label>
-                    <input class="form-input" type="text" id="name" v-model="user.name" required>
+                    <input id="name" v-model="user.name" class="form-input" type="text" required>
                 </div>
                 <div class="form-group">
                     <label class="form-label form-label--required" for="email">{{ $t('email') }}:</label>
-                    <input class="form-input" type="email" id="email" v-model="user.email" required>
+                    <input id="email" v-model="user.email" class="form-input" type="email" required>
                 </div>
                 <div class="form-group">
                     <label class="form-label" for="new-password">{{ $t('new-password') }}:</label>
-                    <input class="form-input" type="password" id="new-password" v-model="user.password">
+                    <input id="new-password" v-model="user.password" class="form-input" type="password">
                 </div>
                 <div class="form-group">
                     <label class="form-label" for="repeat-new-password">{{ $t('repeat-password') }}:</label>
-                    <input class="form-input" type="password" id="repeat-new-password" v-model="user.repeatPassword">
+                    <input id="repeat-new-password" v-model="user.repeatPassword" class="form-input" type="password">
                 </div>
                 <div class="form-group">
                     <label class="form-label" for="repeat-new-password">{{ $t('ui-language') }}:</label>
-                    <select class="form-select" v-model="currentLocale">
-                        <option :value="locale" v-for="locale in $i18n.availableLocales" :key="locale">{{ $t('locales.' + locale) }}</option>
+                    <select v-model="currentLocale" class="form-select">
+                        <option v-for="locale in $i18n.availableLocales" :key="locale" :value="locale">{{ $t('locales.' + locale) }}</option>
                     </select>
                 </div>
                 <div class="form-actions">
@@ -47,17 +47,17 @@ import Navigation from '@/components/Settings/SettingsNavigation.vue'
 import AppState from "./../../AppState";
 
 export default {
+    components: {
+        OverlayLoader,
+        Navigation,
+        PageHeader
+    },
     data() {
         return {
             isLoading: false,
             user: {},
             currentLocale: this.$i18n.locale
         };
-    },
-    components: {
-        OverlayLoader,
-        Navigation,
-        PageHeader
     },
     created() {
         document.title = `${this.$t('profile')} \u22C5 ${this.site_title}`

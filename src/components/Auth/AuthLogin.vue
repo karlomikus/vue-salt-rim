@@ -5,11 +5,11 @@
             <OverlayLoader v-if="isLoading"></OverlayLoader>
             <div class="form-group">
                 <label class="form-label" for="email">{{ $t('email') }}:</label>
-                <input class="form-input" type="email" id="email" v-model="email" required>
+                <input id="email" v-model="email" class="form-input" type="email" required>
             </div>
             <div class="form-group">
                 <label class="form-label" for="password">{{ $t('password') }}:</label>
-                <input class="form-input" type="password" id="password" v-model="password" required>
+                <input id="password" v-model="password" class="form-input" type="password" required>
             </div>
             <div class="server-status">
                 <div class="server-status__title">Bar Assistant server:</div>
@@ -23,7 +23,7 @@
                     </template>
                 </div>
             </div>
-            <div style="text-align: right; margin-top: 20px;" v-if="baServerAvailable">
+            <div v-if="baServerAvailable" style="text-align: right; margin-top: 20px;">
                 <RouterLink class="button button--outline" :to="{ name: 'register' }">{{ $t('register') }}</RouterLink>
                 <button type="submit" class="button button--dark" style="margin-left: 5px;" :disabled="!baServerAvailable">{{ $t('login') }}</button>
             </div>
@@ -38,6 +38,10 @@ import SiteLogo from './../Layout/SiteLogo.vue';
 import AppState from './../../AppState';
 
 export default {
+    components: {
+        OverlayLoader,
+        SiteLogo
+    },
     data() {
         return {
             isLoading: false,
@@ -47,9 +51,10 @@ export default {
             server: {},
         }
     },
-    components: {
-        OverlayLoader,
-        SiteLogo
+    computed: {
+        baServerAvailable() {
+            return this.server.version != null;
+        },
     },
     created() {
         this.isLoading = true
@@ -59,11 +64,6 @@ export default {
         }).catch(() => {
             this.isLoading = false
         })
-    },
-    computed: {
-        baServerAvailable() {
-            return this.server.version != null;
-        },
     },
     methods: {
         login() {
