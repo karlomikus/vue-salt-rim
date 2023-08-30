@@ -1,7 +1,7 @@
 <template>
     <form class="site-autocomplete" novalidate @keyup.esc="close">
         <ais-instant-search :search-client="searchClient" index-name="cocktails">
-            <ais-configure :hits-per-page="5" />
+            <ais-configure :hits-per-page.camel="5" />
             <ais-search-box autofocus>
                 <template #default="{ currentRefinement, refine }">
                     <input ref="siteSearchInput" class="form-input" type="search" :placeholder="$t('placeholder.site-search')" :value="currentRefinement" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" maxlength="512" @input="refine($event.currentTarget.value)">

@@ -50,7 +50,9 @@ export default {
         cocktail: {
             type: Object,
             default() {
-                return {}
+                return {
+                    images: []
+                }
             }
         },
         currentUnit: {
@@ -78,11 +80,14 @@ export default {
     },
     computed: {
         mainImage() {
-            if (this.cocktail && this.cocktail.images) {
+            if (this.cocktail && this.cocktail.images && this.cocktail.images.length > 0) {
                 return this.cocktail.images[0]
             }
 
-            return {}
+            return {
+                url: '/no-cocktail.jpg',
+                copyright: null
+            }
         },
         parsedDescription() {
             if (!this.cocktail.description) {

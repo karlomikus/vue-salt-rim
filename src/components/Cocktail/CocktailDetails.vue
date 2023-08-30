@@ -412,6 +412,7 @@ export default {
                 this.isLoading = false
                 this.cocktail = data
                 this.isFavorited = userFavorites.includes(data.id)
+                this.refreshNotes()
                 document.title = `${this.cocktail.name} \u22C5 ${this.site_title}`
             }).catch(e => {
                 this.isLoading = false

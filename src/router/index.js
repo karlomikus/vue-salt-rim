@@ -131,6 +131,11 @@ const router = createRouter({
                     name: 'bars',
                     component: () => import('../views/BarsView.vue'),
                 },
+                {
+                    path: '/bars/form',
+                    name: 'bars.form',
+                    component: () => import('../views/BarFormView.vue'),
+                },
             ]
         },
         {

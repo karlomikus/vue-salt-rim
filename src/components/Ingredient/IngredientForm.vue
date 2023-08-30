@@ -155,7 +155,7 @@ export default {
             if (this.ingredient.id) {
                 ApiRequests.updateIngredient(this.ingredient.id, postData).then(data => {
                     this.$toast.default(this.$t('ingredient.update-success'))
-                    this.$router.push({ name: 'ingredients.show', params: { id: data.id } })
+                    this.$router.push({ name: 'ingredients.show', params: { id: data.slug } })
                     this.isLoading = false
                 }).catch(e => {
                     this.$toast.error(e.message)
@@ -165,7 +165,7 @@ export default {
             } else {
                 ApiRequests.saveIngredient(postData).then(data => {
                     this.$toast.default(this.$t('ingredient.create-success'))
-                    this.$router.push({ name: 'ingredients.show', params: { id: data.id } })
+                    this.$router.push({ name: 'ingredients.show', params: { id: data.slug } })
                     this.isLoading = false
                 }).catch(e => {
                     this.$toast.error(e.message)

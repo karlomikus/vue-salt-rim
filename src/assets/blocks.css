@@ -67,20 +67,40 @@
     background-color: var(--clr-accent-blue);
 }
 
+.details-block-container.details-block-container--blue .details-block-container__title {
+    color: color-mix(in oklab, var(--clr-accent-blue) 20%, rgb(11, 14, 54));
+}
+
 .details-block-container.details-block-container--green {
     background-color: var(--clr-accent-green);
+}
+
+.details-block-container.details-block-container--green .details-block-container__title {
+    color: color-mix(in oklab, var(--clr-accent-green) 20%, rgb(14, 49, 27));
 }
 
 .details-block-container.details-block-container--yellow {
     background-color: var(--clr-accent-yellow);
 }
 
+.details-block-container.details-block-container--yellow .details-block-container__title {
+    color: color-mix(in oklab, var(--clr-accent-yellow) 20%, rgb(58, 41, 17));
+}
+
 .details-block-container.details-block-container--red {
     background-color: var(--clr-accent-red);
 }
 
+.details-block-container.details-block-container--red .details-block-container__title {
+    color: color-mix(in oklab, var(--clr-accent-red) 20%, rgb(58, 8, 8));
+}
+
 .details-block-container.details-block-container--purple {
     background-color: var(--clr-accent-purple);
+}
+
+.details-block-container.details-block-container--purple .details-block-container__title {
+    color: color-mix(in oklab, var(--clr-accent-purple) 20%, rgb(23, 9, 29));
 }
 
 .dark-theme .details-block-container {

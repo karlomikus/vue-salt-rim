@@ -754,6 +754,12 @@ class ApiRequests
         return this.parseResponse(jsonResp)
     }
 
+    static async fetchBar(id) {
+        let jsonResp = await this.getRequest(`/api/bars/${id}`)
+
+        return this.parseResponse(jsonResp)
+    }
+
     static async saveBar(data) {
         let jsonResp = await this.postRequest('/api/bars', data)
 

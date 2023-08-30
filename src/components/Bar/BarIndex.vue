@@ -10,14 +10,7 @@
                     <BarJoinDialog @dialog-closed="showJoinDialog = false" />
                 </template>
             </SaltRimDialog>
-            <SaltRimDialog v-model="showCreateDialog">
-                <template #trigger>
-                    <button type="button" class="button button--dark" @click.prevent="showCreateDialog = !showCreateDialog">{{ $t('bars.add') }}</button>
-                </template>
-                <template #dialog>
-                    <BarForm @bar-created="refreshBars" @dialog-closed="showCreateDialog = false" />
-                </template>
-            </SaltRimDialog>
+            <RouterLink class="button button--dark" :to="{ name: 'bars.form' }">{{ $t('bars.add') }}</RouterLink>
         </template>
     </PageHeader>
     <div class="bars">
@@ -28,10 +21,11 @@
                 <small class="bar__subtitle">{{ bar.subtitle }}</small>
                 <p class="bar__description">{{ bar.description }}</p>
                 <p class="bar__invite_code">{{ bar.invite_code }}</p>
+                <p class="bar__owner">Created by {{ bar.created_user.name }} on {{ bar.created_at }}</p>
                 <div class="bar__actions">
                     <a href="#" @click.prevent="deleteBar(bar)">{{ $t('remove') }}</a>
                     &middot;
-                    <a href="#">Edit</a>
+                    <RouterLink :to="{ name: 'bars.form', query: { id: bar.id } }">{{ $t('edit') }}</RouterLink>
                     &middot;
                     <a href="#" @click.prevent="selectBar(bar)">Select bar</a>
                 </div>
@@ -48,7 +42,6 @@ import ApiRequests from './../../ApiRequests'
 import OverlayLoader from './../OverlayLoader.vue'
 import SaltRimDialog from './../Dialog/SaltRimDialog.vue'
 import PageHeader from './../PageHeader.vue'
-import BarForm from './BarForm.vue'
 import BarJoinDialog from './BarJoinDialog.vue'
 import AppState from './../../AppState.js'
 
@@ -56,7 +49,6 @@ export default {
     components: {
         OverlayLoader,
         PageHeader,
-        BarForm,
         SaltRimDialog,
         BarJoinDialog
     },
@@ -111,7 +103,7 @@ export default {
 <style scoped>
 .bars__grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    grid-template-columns: 1fr 1fr 1fr;
     gap: 0.5rem;
 }
 

@@ -409,7 +409,7 @@ export default {
                 ApiRequests.updateCocktail(this.cocktail.id, postData).then(data => {
                     this.isLoading = false
                     this.$toast.default(this.$t('cocktail.update-success'))
-                    this.$router.push({ name: 'cocktails.show', params: { id: data.id } })
+                    this.$router.push({ name: 'cocktails.show', params: { id: data.slug } })
                 }).catch(e => {
                     this.$toast.error(e.message)
                     this.isLoading = false
@@ -420,7 +420,7 @@ export default {
                     this.$toast.open({
                         message: this.$t('cocktail.create-success')
                     })
-                    this.$router.push({ name: 'cocktails.show', params: { id: data.id } })
+                    this.$router.push({ name: 'cocktails.show', params: { id: data.slug } })
                 }).catch(e => {
                     this.$toast.error(e.message)
                     this.isLoading = false
