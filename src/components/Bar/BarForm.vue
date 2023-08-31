@@ -88,6 +88,10 @@ export default {
             }).then(() => {
                 this.isLoading = false
                 this.$toast.default(this.$t('bars.add-success', { name: this.bar.name }))
+                this.$router.push({ name: 'bars' })
+            }).catch(e => {
+                this.isLoading = false
+                this.$toast.error(e.message)
             })
         }
     }

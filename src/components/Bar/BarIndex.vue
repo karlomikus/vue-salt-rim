@@ -18,15 +18,21 @@
         <div v-if="bars.length > 0" class="bars__grid">
             <div v-for="bar in bars" :key="bar.id" class="bar block-container">
                 <h4 class="bar__title">{{ bar.name }}</h4>
-                <small class="bar__subtitle">{{ bar.subtitle }}</small>
+                <p class="bar__owner">Created by {{ bar.created_user.name }} &middot; <DateFormatter :date="bar.created_at" /></p>
+                <label class="form-label">Invite code:</label>
+                <p class="bar__invite_code">
+                    {{ bar.invite_code }}
+                </p>
                 <p class="bar__description">{{ bar.description }}</p>
-                <p class="bar__invite_code">{{ bar.invite_code }}</p>
-                <p class="bar__owner">Created by {{ bar.created_user.name }} on {{ bar.created_at }}</p>
                 <div class="bar__actions">
-                    <a href="#" @click.prevent="deleteBar(bar)">{{ $t('remove') }}</a>
-                    &middot;
-                    <RouterLink :to="{ name: 'bars.form', query: { id: bar.id } }">{{ $t('edit') }}</RouterLink>
-                    &middot;
+                    <template v-if="bar.access.can_delete">
+                        <a href="#" @click.prevent="deleteBar(bar)">{{ $t('remove') }}</a>
+                        &middot;
+                    </template>
+                    <template v-if="bar.access.can_edit">
+                        <RouterLink v-if="bar.access.can_edit" :to="{ name: 'bars.form', query: { id: bar.id } }">{{ $t('edit') }}</RouterLink>
+                        &middot;
+                    </template>
                     <a href="#" @click.prevent="selectBar(bar)">Select bar</a>
                 </div>
             </div>
@@ -44,13 +50,15 @@ import SaltRimDialog from './../Dialog/SaltRimDialog.vue'
 import PageHeader from './../PageHeader.vue'
 import BarJoinDialog from './BarJoinDialog.vue'
 import AppState from './../../AppState.js'
+import DateFormatter from './../DateFormatter.vue'
 
 export default {
     components: {
         OverlayLoader,
         PageHeader,
         SaltRimDialog,
-        BarJoinDialog
+        BarJoinDialog,
+        DateFormatter
     },
     data() {
         return {
@@ -68,6 +76,9 @@ export default {
             this.isLoading = true
             ApiRequests.fetchBars().then(data => {
                 this.bars = data
+                this.isLoading = false
+            }).catch(e => {
+                this.$toast.error(e.message)
                 this.isLoading = false
             })
         },
@@ -115,16 +126,22 @@ export default {
 }
 
 .bar__title {
-    font-size: 1.5rem;
+    color: var(--clr-red-900);
+    font-size: 1.65rem;
     font-family: var(--font-heading);
     font-weight: var(--fw-bold);
-    line-height: 1.3;
+    line-height: 1.1;
+}
+
+.bar__owner {
+    font-size: 0.8rem;
+    margin-bottom: 0.5rem;
 }
 
 .bar__invite_code {
     background: var(--clr-gray-100);
     padding: 0.25rem;
-    font-family: monospace;
+    font-family: var(--font-mono);
     letter-spacing: 1px;
 }
 </style>
