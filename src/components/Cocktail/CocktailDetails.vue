@@ -100,7 +100,7 @@
                                     </svg>
                                     {{ $t('print-recipe') }}
                                 </RouterLink>
-                                <SaltRimDialog v-model="showPublicDialog">
+                                <SaltRimDialog v-model="showPublicDialog" v-if="cocktail.access.can_edit">
                                     <template #trigger>
                                         <a class="dropdown-menu__item" href="#makepublic" @click.prevent="showPublicDialog = !showPublicDialog">
                                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18">
@@ -156,7 +156,7 @@
                                 </svg></button>
                             </template>
                             <template #content>
-                                <RouterLink class="dropdown-menu__item" :to="{ name: 'cocktails.form', query: { id: cocktail.id } }">
+                                <RouterLink class="dropdown-menu__item" :to="{ name: 'cocktails.form', query: { id: cocktail.id } }" v-if="cocktail.access.can_edit">
                                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18">
                                         <path fill="none" d="M0 0h24v24H0z" />
                                         <path d="M6.414 16L16.556 5.858l-1.414-1.414L5 14.586V16h1.414zm.829 2H3v-4.243L14.435 2.322a1 1 0 0 1 1.414 0l2.829 2.829a1 1 0 0 1 0 1.414L7.243 18zM3 20h18v2H3v-2z" />
@@ -177,7 +177,7 @@
                                         <CollectionDialog :cocktails="[cocktail.id]" :cocktail-collections="cocktail.collections" @collection-dialog-closed="showCollectionDialog = false; fetchCocktail()" />
                                     </template>
                                 </SaltRimDialog>
-                                <SaltRimDialog v-model="showNoteDialog">
+                                <SaltRimDialog v-model="showNoteDialog" v-if="cocktail.access.can_add_note">
                                     <template #trigger>
                                         <a class="dropdown-menu__item" href="#" @click.prevent="showNoteDialog = !showNoteDialog">
                                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18">
@@ -197,7 +197,7 @@
                                     </svg>
                                     {{ $t('cocktail-source') }}
                                 </a>
-                                <a class="dropdown-menu__item" href="javascript:;" @click.prevent="deleteCocktail">
+                                <a class="dropdown-menu__item" href="javascript:;" @click.prevent="deleteCocktail" v-if="cocktail.access.can_delete">
                                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18">
                                         <path fill="none" d="M0 0h24v24H0z" />
                                         <path d="M7 4V2h10v2h5v2h-2v15a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V6H2V4h5zM6 6v14h12V6H6zm3 3h2v8H9V9zm4 0h2v8h-2V9z" />
@@ -417,6 +417,7 @@ export default {
             }).catch(e => {
                 this.isLoading = false
                 this.$toast.error(e.message)
+                this.$router.push({ name: 'cocktails' })
             })
 
             const appState = new AppState()

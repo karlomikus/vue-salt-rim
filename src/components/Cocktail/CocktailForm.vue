@@ -74,9 +74,6 @@
                     <option :value="undefined" disabled>Select a glass type...</option>
                     <option v-for="glass in glasses" :key="glass.id" :value="glass.id">{{ glass.name }}</option>
                 </select>
-                <p class="form-input-hint">
-                    <RouterLink :to="{ name: 'settings.glasses' }" target="_blank">{{ $t('edit-glasses') }}</RouterLink>
-                </p>
             </div>
             <div style="margin-bottom: 2rem;">
                 <label class="form-label">{{ $t('method-and-dilution') }}:</label>
