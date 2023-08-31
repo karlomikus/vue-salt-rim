@@ -11,7 +11,7 @@
             <input id="email" v-model="user.email" class="form-input" type="email" required>
         </div>
         <div class="form-group">
-            <label class="form-label" :class="{'form-label--required': !user.id}" for="password">
+            <label class="form-label" :class="{ 'form-label--required': !user.id }" for="password">
                 <template v-if="!user.id">
                     {{ $t('password') }}:
                 </template>
@@ -24,7 +24,7 @@
         <div class="form-group">
             <label class="form-label">{{ $t('role') }}:</label>
             <div class="user-roles">
-                <SaltRimRadio v-for="role in roles" :key="role.id" v-model="user.role_id" :value="role.id" :title="role.name"></SaltRimRadio>
+                <SaltRimRadio v-for="role in roles" :key="role.id" v-model="user.role.role_id" :value="role.id" :title="role.name" :description="role.description"></SaltRimRadio>
             </div>
         </div>
         <div class="dialog-actions">
@@ -35,8 +35,8 @@
 </template>
 
 <script>
-import ApiRequests from '@/ApiRequests'
-import OverlayLoader from '@/components/OverlayLoader.vue'
+import ApiRequests from './../../ApiRequests.js'
+import OverlayLoader from './../OverlayLoader.vue'
 import SaltRimRadio from './../SaltRimRadio.vue'
 
 export default {
@@ -48,7 +48,9 @@ export default {
         sourceUser: {
             type: Object,
             default() {
-                return {}
+                return {
+                    role: {}
+                }
             }
         },
         dialogTitle: {
@@ -62,10 +64,10 @@ export default {
             isLoading: false,
             user: this.sourceUser,
             roles: [
-                {id: 1, name: 'Admin'},
-                {id: 2, name: 'Moderator'},
-                {id: 3, name: 'General'},
-                {id: 4, name: 'Guest'},
+                { id: 1, name: 'Admin', description: 'Lorem ipsum dolor sit amet' },
+                { id: 2, name: 'Moderator', description: 'Lorem ipsum dolor sit amet' },
+                { id: 3, name: 'General', description: 'Lorem ipsum dolor sit amet' },
+                { id: 4, name: 'Guest', description: 'Lorem ipsum dolor sit amet' },
             ]
         }
     },
@@ -76,7 +78,7 @@ export default {
             const postData = {
                 name: this.user.name,
                 email: this.user.email,
-                role_id: this.user.role_id,
+                role_id: this.user.role.role_id,
             }
 
             if (this.user.id) {
@@ -107,3 +109,11 @@ export default {
     }
 }
 </script>
+
+<style scoped>
+.user-roles {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+}
+</style>

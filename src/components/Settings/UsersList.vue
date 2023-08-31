@@ -4,7 +4,7 @@
         <template #actions>
             <SaltRimDialog v-model="showDialog">
                 <template #trigger>
-                    <button type="button" class="button button--dark" @click.prevent="openDialog($t('users.add'), {})">{{ $t('users.add') }}</button>
+                    <button type="button" class="button button--dark" @click.prevent="openDialog($t('users.add'), {role: {}})">{{ $t('users.add') }}</button>
                 </template>
                 <template #dialog>
                     <UserForm :source-user="editUser" :dialog-title="dialogTitle" @user-dialog-closed="refreshUsers" />
@@ -35,7 +35,7 @@
                                 <small>{{ user.email }}</small>
                             </td>
                             <td>
-                                {{ user.roles.map(r => r.role_name).join(', ') }}
+                                {{ user.role.role_name }}
                             </td>
                             <td style="text-align: right;">
                                 <a class="list-group__action" href="#" @click.prevent="deleteUser(user)">{{ $t('remove') }}</a>
@@ -69,7 +69,9 @@ export default {
             isLoading: false,
             showDialog: false,
             dialogTitle: 'User data',
-            editUser: {},
+            editUser: {
+                role: {}
+            },
             users: [],
         }
     },
