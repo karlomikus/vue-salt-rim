@@ -7,7 +7,7 @@
                     <button type="button" class="button button--outline" @click.prevent="showJoinDialog = !showJoinDialog">{{ $t('bars.join') }}</button>
                 </template>
                 <template #dialog>
-                    <BarJoinDialog @dialog-closed="showJoinDialog = false" />
+                    <BarJoinDialog @dialog-closed="showJoinDialog = false" @bar-joined="refreshBars" />
                 </template>
             </SaltRimDialog>
             <RouterLink class="button button--dark" :to="{ name: 'bars.form' }">{{ $t('bars.add') }}</RouterLink>
@@ -17,20 +17,31 @@
         <OverlayLoader v-if="isLoading"></OverlayLoader>
         <div v-if="bars.length > 0" class="bars__grid">
             <div v-for="bar in bars" :key="bar.id" class="bar block-container">
+                <span class="bar__role">{{ getRoleName(bar.access.role_id) }}</span>
                 <h4 class="bar__title">{{ bar.name }}</h4>
                 <p class="bar__owner">Created by {{ bar.created_user.name }} &middot; <DateFormatter :date="bar.created_at" /></p>
-                <label class="form-label">Invite code:</label>
-                <p class="bar__invite_code">
-                    {{ bar.invite_code }}
-                </p>
+                <template v-if="bar.show_invite_code">
+                    <label class="form-label">Invite code:</label>
+                    <p class="bar__invite_code">
+                        {{ bar.invite_code }}
+                    </p>
+                </template>
                 <p class="bar__description">{{ bar.description }}</p>
                 <div class="bar__actions">
                     <template v-if="bar.access.can_delete">
                         <a href="#" @click.prevent="deleteBar(bar)">{{ $t('remove') }}</a>
                         &middot;
                     </template>
+                    <template v-if="!bar.access.can_delete">
+                        <a href="#" @click.prevent="leaveBar(bar)">{{ $t('leave') }}</a>
+                        &middot;
+                    </template>
                     <template v-if="bar.access.can_edit">
                         <RouterLink v-if="bar.access.can_edit" :to="{ name: 'bars.form', query: { id: bar.id } }">{{ $t('edit') }}</RouterLink>
+                        &middot;
+                    </template>
+                    <template v-if="bar.invite_code">
+                        <a href="#" @click.prevent="bar.show_invite_code = !bar.show_invite_code">{{ $t('bars.toggle-invite-code') }}</a>
                         &middot;
                     </template>
                     <a href="#" @click.prevent="selectBar(bar)">Select bar</a>
@@ -51,6 +62,7 @@ import PageHeader from './../PageHeader.vue'
 import BarJoinDialog from './BarJoinDialog.vue'
 import AppState from './../../AppState.js'
 import DateFormatter from './../DateFormatter.vue'
+import Utils from './../../Utils.js'
 
 export default {
     components: {
@@ -75,7 +87,11 @@ export default {
         refreshBars() {
             this.isLoading = true
             ApiRequests.fetchBars().then(data => {
-                this.bars = data
+                this.bars = data.map(bar => {
+                    bar.show_invite_code = false
+
+                    return bar
+                })
                 this.isLoading = false
             }).catch(e => {
                 this.$toast.error(e.message)
@@ -87,8 +103,32 @@ export default {
             appState.setBar(bar)
             window.location.replace('/')
         },
+        getRoleName(roleId) {
+            return Utils.getRoleName(roleId)
+        },
         deleteBar(bar) {
             this.$confirm(this.$t('bars.confirm-delete', {name: bar.name}), {
+                onResolved: (dialog) => {
+                    this.isLoading = true
+                    dialog.close()
+                    ApiRequests.deleteBar(bar.id).then(() => {
+                        this.isLoading = false
+                        const appState = new AppState()
+                        if (appState.bar.id == bar.id) {
+                            appState.forgetBar()
+                            window.location.reload()
+                        }
+                        this.$toast.default(this.$t('bars.delete-success'))
+                        this.refreshBars()
+                    }).catch(e => {
+                        this.$toast.error(e.message)
+                        this.isLoading = false
+                    })
+                }
+            })
+        },
+        leaveBar(bar) {
+            this.$confirm(this.$t('bars.confirm-leave', {name: bar.name}), {
                 onResolved: (dialog) => {
                     this.isLoading = true
                     dialog.close()
@@ -122,11 +162,22 @@ export default {
     padding: 1rem;
     display: flex;
     flex-direction: column;
-    gap: 0.25rem;
+    gap: 0.4rem;
+}
+
+.bar__role {
+    background-color: var(--clr-gray-100);
+    padding: 1px 3px;
+    border-radius: 3px;
+    font-size: 0.6rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
 }
 
 .bar__title {
-    color: var(--clr-red-900);
     font-size: 1.65rem;
     font-family: var(--font-heading);
     font-weight: var(--fw-bold);
@@ -136,6 +187,7 @@ export default {
 .bar__owner {
     font-size: 0.8rem;
     margin-bottom: 0.5rem;
+    color: var(--clr-gray-400);
 }
 
 .bar__invite_code {
