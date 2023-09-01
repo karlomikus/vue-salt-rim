@@ -22,7 +22,7 @@
             <input id="password" v-model="user.password" class="form-input" type="password" :required="!user.id">
         </div>
         <div class="form-group">
-            <label class="form-label">{{ $t('role') }}:</label>
+            <label class="form-label">{{ $t('user.role') }}:</label>
             <div class="user-roles">
                 <SaltRimRadio v-for="role in roles" :key="role.id" v-model="user.role.role_id" :value="role.id" :title="role.name" :description="role.description"></SaltRimRadio>
             </div>
@@ -64,10 +64,10 @@ export default {
             isLoading: false,
             user: this.sourceUser,
             roles: [
-                { id: 1, name: 'Admin', description: 'Lorem ipsum dolor sit amet' },
-                { id: 2, name: 'Moderator', description: 'Lorem ipsum dolor sit amet' },
-                { id: 3, name: 'General', description: 'Lorem ipsum dolor sit amet' },
-                { id: 4, name: 'Guest', description: 'Lorem ipsum dolor sit amet' },
+                { id: 1, name: 'Admin', description: 'Complete bar access' },
+                { id: 2, name: 'Moderator', description: 'Can manage cocktails and ingredients' },
+                { id: 3, name: 'General', description: 'Can view, rate and favorite cocktails' },
+                // { id: 4, name: 'Guest', description: 'Can only view cocktails' },
             ]
         }
     },

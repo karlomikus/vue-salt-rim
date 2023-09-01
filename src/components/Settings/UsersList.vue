@@ -23,7 +23,7 @@
                     <thead>
                         <tr>
                             <th>{{ $t('user.name') }} / {{ $t('email') }}</th>
-                            <th>{{ $t('roles') }}</th>
+                            <th>{{ $t('user.role') }}</th>
                             <th></th>
                         </tr>
                     </thead>

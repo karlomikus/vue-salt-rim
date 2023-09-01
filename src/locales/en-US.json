@@ -196,6 +196,7 @@
   "category.add-success": "Ingredient category added successfully.",
   "user.update-success": "User updated successfully.",
   "user.add-success": "User added successfully.",
+  "user.role": "Bar role",
   "ingredient-category.confirm-delete": "This will permanently category with name \"{name}\".",
   "ingredient-category.delete-success": "Ingredient category deleted successfully",
   "tag.update-success": "Tag updated successfully",
@@ -323,6 +324,7 @@
   "ingredient-extra-cocktails-info": "Add to shelf and you can make",
   "ingredient-cocktails-rest": "Rest of the cocktails",
   "added-on-by": "Added on {date} by {name}",
+  "leave": "Leave",
   "utensils": {
     "title": "Utensils",
     "add": "Add utensil",
@@ -340,7 +342,10 @@
     "add": "Create bar",
     "add-success": "Bar \"{name}\" succesfully created",
     "empty": "You don't have any bars",
-    "invite-code": "Bar invite code"
+    "invite-code": "Bar invite code",
+    "toggle-invite-code": "Toggle invite code",
+    "confirm-delete": "This will permanently delete bar with name \"{name}\".",
+    "confirm-leave": "You will lose all your data in bar (\"{name}\") if you leave it."
   },
   "close": "Close"
 }

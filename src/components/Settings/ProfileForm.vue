@@ -6,9 +6,9 @@
         <div class="settings-page__nav">
             <Navigation />
         </div>
-        <div class="settings-page__content">
+        <form @submit.prevent="submit" class="settings-page__content">
             <OverlayLoader v-if="isLoading" />
-            <form @submit.prevent="submit">
+            <div class="block-container block-container--padded">
                 <div class="form-group">
                     <label class="form-label form-label--required" for="name">{{ $t('user.name') }}:</label>
                     <input id="name" v-model="user.name" class="form-input" type="text" required>
@@ -31,11 +31,11 @@
                         <option v-for="locale in $i18n.availableLocales" :key="locale" :value="locale">{{ $t('locales.' + locale) }}</option>
                     </select>
                 </div>
-                <div class="form-actions">
-                    <button class="button button--dark" type="submit">{{ $t('save') }}</button>
-                </div>
-            </form>
-        </div>
+            </div>
+            <div class="form-actions">
+                <button class="button button--dark" type="submit">{{ $t('save') }}</button>
+            </div>
+        </form>
     </div>
 </template>
 
