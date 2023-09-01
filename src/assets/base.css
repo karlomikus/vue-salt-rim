@@ -39,7 +39,8 @@
     --font-mono: 'Space Mono', monospace;
     --fw-bold: 700;
 
-    --color-site-header: #4f4b75;
+    --color-site-header: #584b75;
+    --color-site-header-subnavigation: #463963;
     --color-btn-default: #454b60;
     --color-btn-default-hover: #2b3042;
     --color-menu-item-hover: #eff7f6;
