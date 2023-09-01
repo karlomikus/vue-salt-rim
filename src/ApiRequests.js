@@ -473,12 +473,6 @@ class ApiRequests
         return await this.deleteRequest(`/api/glasses/${id}`)
     }
 
-    static async findGlass(query) {
-        let jsonResp = await this.getRequest('/api/glasses/find', query)
-
-        return this.parseResponse(jsonResp)
-    }
-
     /**
      * =============================
      * Ratings
