@@ -104,6 +104,7 @@ import Pagination from './../Search/SearchPagination.vue'
 import CollectionDialog from './../Collections/CollectionDialog.vue'
 import SaltRimDialog from './../Dialog/SaltRimDialog.vue'
 import qs from 'qs'
+import AppState from '../../AppState'
 
 export default {
     components: {
@@ -134,7 +135,7 @@ export default {
                     { name: this.$t('shelf.cocktails'), active: false, id: 'on_shelf' },
                     { name: this.$t('my.favorites'), active: false, id: 'favorites' },
                     { name: this.$t('cocktails.shared'), active: false, id: 'is_public' },
-                    { name: this.$t('my.cocktails'), active: false, id: 'user_id' },
+                    { name: this.$t('my.cocktails'), active: false, id: 'created_user_id' },
                 ],
                 abv: [
                     { name: this.$t('non-alcoholic'), min: null, max: 2, id: 'abv_non_alcoholic' },
@@ -157,7 +158,7 @@ export default {
                 on_shelf: false,
                 favorites: false,
                 is_public: false,
-                user_id: false,
+                created_user_id: null,
                 tags: [],
                 glasses: [],
                 methods: [],
@@ -339,7 +340,7 @@ export default {
             this.activeFilters.favorites = state.filter && state.filter.favorites ? state.filter.favorites : null
             this.activeFilters.is_public = state.filter && state.filter.is_public ? state.filter.is_public : null
             this.activeFilters.total_ingredients = state.filter && state.filter.total_ingredients ? state.filter.total_ingredients : null
-            this.activeFilters.user_id = state.filter && state.filter.user_id ? true : null
+            this.activeFilters.created_user_id = state.filter && state.filter.created_user_id ? state.filter.created_user_id : null
             this.activeFilters.user_rating = state.filter && state.filter.user_rating_min ? state.filter.user_rating_min : null
             this.searchQuery = state.filter && state.filter.name ? state.filter.name : null
             if (state.filter && (state.filter.abv_min || state.filter.abv_max)) {
@@ -359,6 +360,7 @@ export default {
             }
         },
         stateToQuery() {
+            const appState = new AppState();
             const query = {
                 per_page: this.per_page,
                 page: this.currentPage,
@@ -370,7 +372,7 @@ export default {
                 on_shelf: this.activeFilters.on_shelf,
                 favorites: this.activeFilters.favorites,
                 is_public: this.activeFilters.is_public,
-                // user_id: this.activeFilters.user_id ? Auth.getUser().id : null, // TODO
+                created_user_id: this.activeFilters.created_user_id ? appState.user.id : null,
                 user_rating_min: this.activeFilters.user_rating ? this.activeFilters.user_rating : null,
                 total_ingredients: this.activeFilters.total_ingredients ? this.activeFilters.total_ingredients : null,
                 tag_id: this.activeFilters.tags.length > 0 ? this.activeFilters.tags.join(',') : null,
