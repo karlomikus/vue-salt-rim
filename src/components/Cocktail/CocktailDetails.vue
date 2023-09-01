@@ -279,10 +279,8 @@
                     <h3 class="page-subtitle">{{ $t('ingredient-spotlight') }}</h3>
                     <IngredientSpotlight :id="cocktail.ingredients[0].ingredient_id"></IngredientSpotlight>
                 </template>
-                <template v-if="cocktail.collections.length > 0">
-                    <h3 class="page-subtitle">{{ $t('cocktail-collections') }}</h3>
-                    <CocktailCollections :cocktail="cocktail" @cocktail-removed-from-collection="fetchCocktail"></CocktailCollections>
-                </template>
+                <h3 class="page-subtitle">{{ $t('cocktail-collections') }}</h3>
+                <CocktailCollections :cocktail="cocktail" @cocktail-removed-from-collection="fetchCocktail"></CocktailCollections>
             </div>
         </div>
     </div>
@@ -501,7 +499,7 @@ export default {
 
 <style scoped>
 .cocktail-details {
-    max-width: 1200px;
+    max-width: 1100px;
     margin: 0 auto;
     --cocktail-graphic-height: 1000px;
     --swiper-theme-color: #fff;
