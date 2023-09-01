@@ -132,7 +132,7 @@ export default {
                 } else {
                     this.result.tags = []
                     newVal.split(',').forEach(tagName => {
-                        this.result.tags.push({name: tagName})
+                        this.result.tags.push({ name: tagName })
                     })
                 }
             }
@@ -159,38 +159,38 @@ export default {
         async matchIngredients() {
             for (const key in this.result.ingredients) {
                 if (Object.hasOwnProperty.call(this.result.ingredients, key)) {
-                    let scrapedIng = this.result.ingredients[key]
+                    const scrapedIngredient = this.result.ingredients[key]
+                    scrapedIngredient.substitutes = []
+                    scrapedIngredient.sort = 1
+                    scrapedIngredient.newIngredient = null;
 
-                    const dbIngredients = await ApiRequests.fetchIngredients({'filter[name_exact]': scrapedIng.name, 'per_page': 1}).catch(() => { return null })
                     let dbIngredient = null
-                    if (dbIngredients.length > 0) {
-                        dbIngredient = dbIngredients[0]
+                    const possibleMatches = await ApiRequests.fetchIngredients({ 'filter[name_exact]': scrapedIngredient.name, 'per_page': 1 }).then(resp => resp.data).catch(() => { return [] })
+                    if (possibleMatches.length > 0) {
+                        dbIngredient = possibleMatches[0]
                     }
-
-                    scrapedIng.substitutes = []
-                    scrapedIng.sort = 0
 
                     // Ingredient not found, try to create a new one
                     if (!dbIngredient) {
                         dbIngredient = await ApiRequests.saveIngredient({
-                            name: scrapedIng.name,
-                            description: null,
-                            strength: 0,
-                            origin: null,
-                            color: null,
+                            name: scrapedIngredient.name,
+                            description: scrapedIngredient.description || null,
+                            strength: scrapedIngredient.strength || 0,
+                            origin: scrapedIngredient.origin || null,
+                            color: scrapedIngredient.color || null,
                             images: [],
                             ingredient_category_id: 1,
                         }).catch(() => { return null })
                     }
 
                     if (!dbIngredient) {
-                        this.$toast.error(`Unable to create ingredient with name ${scrapedIng.name}.`)
+                        this.$toast.error(`Unable to create ingredient with name ${scrapedIngredient.name}.`)
                         continue
                     }
 
-                    scrapedIng.ingredient_id = dbIngredient.id
-                    scrapedIng.ingredient_slug = dbIngredient.slug
-                    scrapedIng.name = dbIngredient.name
+                    scrapedIngredient.ingredient_id = dbIngredient.id
+                    scrapedIngredient.ingredient_slug = dbIngredient.slug
+                    scrapedIngredient.name = dbIngredient.name
                 }
             }
         },
@@ -200,10 +200,16 @@ export default {
                 return
             }
 
-            let dbGlass = await ApiRequests.findGlass({name: this.result.glass}).catch(() => { return null })
+            let dbGlass = await ApiRequests.fetchGlasses({ 'filter[name]': this.result.glass }).then(data => {
+                if (data.length == 0) {
+                    return null;
+                }
+
+                return data[0];
+            }).catch(() => { return null })
 
             if (!dbGlass) {
-                dbGlass = await ApiRequests.saveGlass({name: this.result.glass, description: null}).catch(() => { return null })
+                dbGlass = await ApiRequests.saveGlass({ name: this.result.glass, description: null }).catch(() => { return null })
             }
 
             if (!dbGlass) {
@@ -268,6 +274,7 @@ export default {
 .scraper-form .form-group label {
     flex-basis: 250px;
 }
+
 .scraper-form .form-group :is(input, select, textarea) {
     flex-grow: 1;
     width: auto;
