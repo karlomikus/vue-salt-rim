@@ -1,6 +1,6 @@
 <template>
-    <span class="mini-rating" title="Your rating">
-        {{ rating }} ★
+    <span class="mini-favorite" title="You favorited this resource">
+        ♥
     </span>
 </template>
 
@@ -16,23 +16,18 @@ export default {
 </script>
 
 <style scoped>
-.mini-rating {
+.mini-favorite {
     display: inline;
-    background-color: rgb(252, 242, 215);
+    background-color: rgb(252, 215, 215);
     font-family: var(--font-primary);
-    color: rgb(180, 108, 0);
+    color: rgb(180, 12, 0);
     font-size: 0.85rem;
     padding: 1px 5px;
     border-radius: 4px;
 }
 
-.dark-theme .mini-rating {
+.dark-theme .mini-favorite {
     background-color: rgb(94, 52, 5);
     color: rgb(255, 236, 207);
-}
-
-.mini-rating.mini-rating--user {
-    background-color: rgb(215, 235, 252);
-    color: rgb(0, 99, 180);
 }
 </style>
