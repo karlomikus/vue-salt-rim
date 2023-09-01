@@ -19,7 +19,7 @@ export default {
         }
     },
     mounted() {
-        const btn = this.$el.querySelector('button')
+        const btn = this.$el.firstElementChild
 
         this.popper = createPopper(btn, this.$refs.content, {
             placement: 'bottom-end',
