@@ -123,6 +123,7 @@ export default {
             isLoading: false,
             showRefinements: false,
             cocktails: [],
+            favorites: [],
             searchQuery: null,
             sort: 'name',
             sort_dir: '',
@@ -314,8 +315,14 @@ export default {
             const query = this.stateToQuery()
 
             this.isLoading = true
-            ApiRequests.fetchCocktails(query).then(resp => {
+            ApiRequests.fetchCocktails(query).then(async resp => {
                 this.cocktails = resp.data
+                const favorites = await ApiRequests.fetchCocktailFavorites().catch(() => []);
+                this.cocktails.map(c => {
+                    c.isFavorited = favorites.includes(c.id);
+
+                    return c;
+                })
                 this.meta = resp.meta
                 this.isLoading = false
             }).catch(e => {

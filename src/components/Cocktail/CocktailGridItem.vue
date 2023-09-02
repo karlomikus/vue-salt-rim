@@ -3,12 +3,13 @@
         <div class="cocktail-grid-item__graphic">
             <img :data-img-src="mainCocktailImageUrl" :src="placeholderImage" alt="Main image of the cocktail">
         </div>
-        <h2 class="cocktail-grid-item__title">{{ cocktail.name }} <span v-if="isFavorited">♡</span></h2>
+        <h2 class="cocktail-grid-item__title">{{ cocktail.name }}</h2>
         <div class="cocktail-grid-item__rating">
             <span v-for="val in 5" :key="val">
                 <template v-if="val > cocktail.average_rating">☆</template>
                 <template v-else>★</template>
             </span>
+            <MiniFavorite v-if="cocktail.isFavorited" />
         </div>
         <p v-if="shortIngredients.length > 0" class="cocktail-grid-item__ingredients">{{ shortIngredients.join(', ') }}</p>
         <ul class="cocktail-tags">
@@ -21,8 +22,12 @@
 <script>
 import ApiRequests from '@/ApiRequests.js'
 import { thumbHashToDataURL } from 'thumbhash'
+import MiniFavorite from './../MiniFavorite.vue'
 
 export default {
+    components: {
+        MiniFavorite
+    },
     props: {
         cocktail: {
             type: Object,
@@ -55,9 +60,6 @@ export default {
             }
 
             return ''
-        },
-        isFavorited() {
-            return [].includes(this.cocktail.id)
         },
         mainCocktailImageUrl() {
             if (this.cocktail.image_url) {
