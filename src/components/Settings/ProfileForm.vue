@@ -6,7 +6,7 @@
         <div class="settings-page__nav">
             <Navigation />
         </div>
-        <form @submit.prevent="submit" class="settings-page__content">
+        <form class="settings-page__content" @submit.prevent="submit">
             <OverlayLoader v-if="isLoading" />
             <div class="block-container block-container--padded">
                 <div class="form-group">

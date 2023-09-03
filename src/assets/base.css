@@ -25,6 +25,23 @@
     --clr-gray-800: #2D303E;
     --clr-gray-900: #181921;
 
+    --clr-rating: rgb(235, 133, 0);
+
+    --shadow-color: 324deg 10% 71%;
+    --shadow-elevation-medium:
+      0px 0.4px 0.5px hsl(var(--shadow-color) / 0.25),
+      0px 1.1px 1.2px -0.8px hsl(var(--shadow-color) / 0.25),
+      0px 2.6px 2.9px -1.7px hsl(var(--shadow-color) / 0.25),
+      0px 6.3px 7.1px -2.5px hsl(var(--shadow-color) / 0.25);
+    --shadow-elevation-high:
+      0px 0.4px 0.5px hsl(var(--shadow-color) / 0.26),
+      0px 1.8px 2px -0.4px hsl(var(--shadow-color) / 0.26),
+      0px 3.5px 3.9px -0.8px hsl(var(--shadow-color) / 0.26),
+      0px 6px 6.8px -1.2px hsl(var(--shadow-color) / 0.26),
+      0px 10.1px 11.4px -1.7px hsl(var(--shadow-color) / 0.26),
+      -0.1px 16.5px 18.6px -2.1px hsl(var(--shadow-color) / 0.26),
+      -0.1px 26px 29.3px -2.5px hsl(var(--shadow-color) / 0.26);
+
     /* Base component color scheme */
     --clr-link-color: var(--clr-gray-800);
     --clr-link-color-hover: var(--clr-red-800);

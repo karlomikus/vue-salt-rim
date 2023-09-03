@@ -1,32 +1,38 @@
 <template>
-    <RouterLink class="block-container block-container--hover cocktail-grid-item" :to="{ name: 'cocktails.show', params: { id: cocktail.slug } }">
+    <RouterLink class="cocktail-grid-item" :to="{ name: 'cocktails.show', params: { id: cocktail.slug } }">
         <div class="cocktail-grid-item__graphic">
-            <img :data-img-src="mainCocktailImageUrl" :src="placeholderImage" alt="Main image of the cocktail">
+            <div class="cocktail-grid-item__badges">
+                <div v-if="cocktail.isFavorited" class="cocktail-badge">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                        <path fill="none" d="M0 0H24V24H0z" />
+                        <path d="M20.243 4.757c2.262 2.268 2.34 5.88.236 8.236l-8.48 8.492-8.478-8.492c-2.104-2.356-2.025-5.974.236-8.236C5.515 3 8.093 2.56 10.261 3.44L6.343 7.358l1.414 1.415L12 4.53l-.013-.014.014.013c2.349-2.109 5.979-2.039 8.242.228z" />
+                    </svg>
+                </div>
+            </div>
+            <img class="cocktail-grid-item__graphic__image" :data-img-src="mainCocktailImageUrl" :src="placeholderImage" alt="Main image of the cocktail">
         </div>
-        <h2 class="cocktail-grid-item__title">{{ cocktail.name }}</h2>
-        <div class="cocktail-grid-item__rating">
-            <span v-for="val in 5" :key="val">
-                <template v-if="val > cocktail.average_rating">☆</template>
-                <template v-else>★</template>
-            </span>
-            <MiniFavorite v-if="cocktail.isFavorited" />
+        <div class="block-container cocktail-grid-item__content">
+            <h2 class="cocktail-grid-item__title">{{ cocktail.name }}</h2>
+            <div class="cocktail-grid-item__rating">
+                <CocktailRating :user-rating="cocktail.user_rating" :average-rating="cocktail.average_rating" />
+            </div>
+            <p v-if="shortIngredients.length > 0" class="cocktail-grid-item__ingredients">{{ shortIngredients.join(', ') }}</p>
+            <ul class="cocktail-tags">
+                <li v-for="tag in cocktail.tags.slice(0, maxTags)" :key="tag.id" class="tag tag--background">{{ tag.name }}</li>
+                <li v-if="cocktail.tags.length - maxTags > 0" class="tag tag--background" style="opacity: 0.6;">+ {{ cocktail.tags.length - maxTags }} more</li>
+            </ul>
         </div>
-        <p v-if="shortIngredients.length > 0" class="cocktail-grid-item__ingredients">{{ shortIngredients.join(', ') }}</p>
-        <ul class="cocktail-tags">
-            <li v-for="tag in cocktail.tags.slice(0, maxTags)" :key="tag.id" class="tag tag--background">{{ tag.name }}</li>
-            <li v-if="cocktail.tags.length - maxTags > 0" class="tag tag--background" style="opacity: 0.6;">+ {{ cocktail.tags.length - maxTags }} more</li>
-        </ul>
     </RouterLink>
 </template>
 
 <script>
 import ApiRequests from '@/ApiRequests.js'
 import { thumbHashToDataURL } from 'thumbhash'
-import MiniFavorite from './../MiniFavorite.vue'
+import CocktailRating from './CocktailRating.vue'
 
 export default {
     components: {
-        MiniFavorite
+        CocktailRating
     },
     props: {
         cocktail: {
@@ -83,30 +89,23 @@ export default {
 </script>
 <style scoped>
 .cocktail-grid-item {
-    --image-size: 350px;
-    --image-offset: -3rem;
-    --image-offset-hover: -3.5rem;
-    --content-spacing: 0.325rem;
-    --box-shadow: hsl(0deg 0% 63% / 0.36);
-    --box-shadow-hover: hsl(0deg 0% 63% / 0.6);
-    --clr-content: var(--clr-gray-500);
-
-    display: flex;
-    flex-direction: column;
-    gap: var(--content-spacing);
+    --_image-size: 325px;
+    --_border-radius: 1rem;
+    --_clr-content: var(--clr-gray-500);
     text-align: center;
-    padding: 1.5rem;
-    border-radius: 1rem;
     border-width: 3px;
-    margin-top: calc(var(--image-offset) * -1);
     cursor: pointer;
     text-decoration: none;
+    display: flex;
+    flex-direction: column;
+}
+
+.cocktail-grid-item:hover .block-container {
+    border-color: var(--clr-red-500);
 }
 
 .dark-theme .cocktail-grid-item {
-    --box-shadow: hsl(225deg 40% 5% / 0.36);
-    --box-shadow-hover: hsl(225deg 40% 5% / 0.6);
-    --clr-content: var(--clr-gray-400);
+    --_clr-content: var(--clr-gray-400);
 }
 
 .cocktail-grid-item__title {
@@ -114,11 +113,17 @@ export default {
     font-family: var(--font-heading);
     font-weight: var(--fw-bold);
     line-height: 1.3;
-    margin-top: calc(var(--image-offset) + 1rem);
 }
 
-.cocktail-grid-item:hover .cocktail-grid-item__graphic {
-    transform: translateY(var(--image-offset-hover));
+.cocktail-grid-item__content {
+    padding: 1.5rem;
+    border-radius: var(--_border-radius);
+    margin-top: -2.25rem;
+    background-color: #fdfcfd;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
 }
 
 .cocktail-grid-item:hover .cocktail-grid-item__title {
@@ -130,32 +135,20 @@ export default {
 }
 
 .cocktail-grid-item__ingredients {
-    color: var(--clr-content);
+    color: var(--_clr-content);
+    font-size: 0.85rem;
 }
 
 .cocktail-grid-item__graphic {
-    transform: translateY(var(--image-offset));
-    transition: all ease-in-out .1s;
+    isolation: isolate;
 }
 
 .cocktail-grid-item__graphic img {
     width: 100%;
-    max-width: var(--image-size);
-    height: auto;
-    border-radius: 0.825rem;
+    height: var(--_image-size);
+    border-top-left-radius: var(--_border-radius);
+    border-top-right-radius: var(--_border-radius);
     object-fit: cover;
-    transition: box-shadow ease-in-out .1s;
-    box-shadow: 0px 0.5px 0.6px var(--box-shadow),
-        0px 1.6px 1.8px -0.8px var(--box-shadow),
-        0.1px 4px 4.5px -1.7px var(--box-shadow),
-        0.1px 9.7px 10.9px -2.5px var(--box-shadow);
-}
-
-.cocktail-grid-item:hover .cocktail-grid-item__graphic img {
-    box-shadow: 0px 0.5px 0.6px var(--box-shadow-hover),
-        0px 1.6px 2px -0.8px var(--box-shadow-hover),
-        0.1px 4px 8px -1.7px var(--box-shadow-hover),
-        0.1px 9.7px 16px -2.5px var(--box-shadow-hover);
 }
 
 .cocktail-tags {
@@ -164,18 +157,29 @@ export default {
     justify-content: center;
     list-style: none;
     padding: 0;
-    gap: 5px;
+    gap: 0.25rem;
 }
 
-@media (max-width: 450px) {
-    .cocktail-grid-item {
-        padding: 20px;
-        border-radius: 15px;
-        margin-top: 40px;
-    }
+.cocktail-grid-item__badges {
+    position: absolute;
+    top: 0.5rem;
+    left: 0.5rem;
+    z-index: 1;
 }
 
-.cocktail-grid-item__rating {
-    color: rgb(235, 133, 0);
+.cocktail-badge {
+    background-color: rgba(0, 0, 0, .5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+}
+
+.cocktail-badge svg {
+    fill: rgba(255, 255, 255, .9);
+    width: 12px;
+    height: 12px;
 }
 </style>

@@ -11,7 +11,7 @@
 </template>
 
 <script>
-import AppState from './../../AppState.js';
+import AppState from './../../AppState.js'
 
 export default {
     data() {

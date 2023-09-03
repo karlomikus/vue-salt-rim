@@ -11,7 +11,7 @@
     </nav>
 </template>
 <script>
-import AppState from './../../AppState.js';
+import AppState from './../../AppState.js'
 
 export default {
     data() {
@@ -21,7 +21,7 @@ export default {
     },
     computed: {
         isBarAdmin() {
-            return this.appState.bar.access.role_id == 1;
+            return this.appState.bar.access.role_id == 1
         }
     }
 }

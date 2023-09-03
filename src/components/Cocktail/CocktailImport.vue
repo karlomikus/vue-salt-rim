@@ -162,7 +162,7 @@ export default {
                     const scrapedIngredient = this.result.ingredients[key]
                     scrapedIngredient.substitutes = []
                     scrapedIngredient.sort = 1
-                    scrapedIngredient.newIngredient = null;
+                    scrapedIngredient.newIngredient = null
 
                     let dbIngredient = null
                     const possibleMatches = await ApiRequests.fetchIngredients({ 'filter[name_exact]': scrapedIngredient.name, 'per_page': 1 }).then(resp => resp.data).catch(() => { return [] })
@@ -202,10 +202,10 @@ export default {
 
             let dbGlass = await ApiRequests.fetchGlasses({ 'filter[name]': this.result.glass }).then(data => {
                 if (data.length == 0) {
-                    return null;
+                    return null
                 }
 
-                return data[0];
+                return data[0]
             }).catch(() => { return null })
 
             if (!dbGlass) {

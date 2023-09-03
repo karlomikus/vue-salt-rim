@@ -57,7 +57,7 @@
             </nav>
         </div>
     </header>
-    <nav class="subnavigation-bar" v-if="appState.bar.id">
+    <nav v-if="appState.bar.id" class="subnavigation-bar">
         <div class="subnavigation-bar__nav">
             <RouterLink :to="{ name: 'home' }" exact-active-class="current-nav">{{ $t('shelf.title') }}</RouterLink>
             <RouterLink :to="{ name: 'cocktails' }" :class="{ 'current-nav': $route.path.startsWith('/cocktails') }">{{ $t('cocktails') }}</RouterLink>
@@ -74,7 +74,7 @@ import SaltRimDialog from './../Dialog/SaltRimDialog.vue'
 import SiteLogo from './../Layout/SiteLogo.vue'
 import ThemeToggle from './../ThemeToggle.vue'
 import AppState from '../../AppState'
-import SaltRimDropdown from './../SaltRimDropdown.vue';
+import SaltRimDropdown from './../SaltRimDropdown.vue'
 
 export default {
     components: {

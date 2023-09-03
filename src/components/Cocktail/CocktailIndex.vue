@@ -6,7 +6,6 @@
             <RouterLink class="button button--dark" :to="{ name: 'cocktails.form' }">{{ $t('cocktails.add') }}</RouterLink>
         </template>
     </PageHeader>
-    <p class="page-description" style="margin-bottom: 2rem;">{{ $t('cocktails.page.description') }}</p>
     <div class="resource-search-wrapper">
         <OverlayLoader v-if="isLoading" />
         <div class="resource-search">
@@ -317,11 +316,11 @@ export default {
             this.isLoading = true
             ApiRequests.fetchCocktails(query).then(async resp => {
                 this.cocktails = resp.data
-                const favorites = await ApiRequests.fetchCocktailFavorites().catch(() => []);
+                const favorites = await ApiRequests.fetchCocktailFavorites().catch(() => [])
                 this.cocktails.map(c => {
-                    c.isFavorited = favorites.includes(c.id);
+                    c.isFavorited = favorites.includes(c.id)
 
-                    return c;
+                    return c
                 })
                 this.meta = resp.meta
                 this.isLoading = false
@@ -367,7 +366,7 @@ export default {
             }
         },
         stateToQuery() {
-            const appState = new AppState();
+            const appState = new AppState()
             const query = {
                 per_page: this.per_page,
                 page: this.currentPage,
