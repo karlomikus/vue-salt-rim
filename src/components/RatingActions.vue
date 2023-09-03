@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import ApiRequests from '@/ApiRequests'
+import ApiRequests from './../ApiRequests.js'
 
 export default {
     props: {
@@ -69,16 +69,16 @@ export default {
 <style scoped>
 .rating {
     --color-base: var(--clr-link-color);
-    --color-unrated: var(--clr-gray-800);
-    --color-rated: var(--clr-red-800);
+    --color-unrated: var(--clr-gray-400);
+    --color-rated: var(--clr-rating);
     font-size: 1.5rem;
     display: inline-block;
 }
 
 .dark-theme .rating {
-    --color-base: rgb(218, 139, 21);
-    --color-unrated: rgb(252, 242, 215);
-    --color-rated: rgb(218, 139, 21);
+    --color-base: var(--clr-gray-50);
+    --color-unrated: var(--clr-gray-400);
+    --color-rated: var(--clr-rating);
 }
 
 .rating:hover a {
@@ -106,11 +106,4 @@ export default {
     color: var(--color-rated);
 }
 
-.rating:hover a:focus {
-    color: var(--color-rated);
-}
-
-.rating:not(:hover) a:focus {
-    color: var(--color-unrated);
-}
 </style>
