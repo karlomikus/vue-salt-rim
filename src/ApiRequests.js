@@ -769,6 +769,10 @@ class ApiRequests
 
         return this.parseResponse(jsonResp)
     }
+
+    static async leaveBar(barId) {
+        return await this.deleteRequest(`/api/bars/${barId}/membership`)
+    }
 }
 
 export default ApiRequests

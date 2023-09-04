@@ -132,7 +132,7 @@ export default {
                 onResolved: (dialog) => {
                     this.isLoading = true
                     dialog.close()
-                    ApiRequests.deleteBar(bar.id).then(() => {
+                    ApiRequests.leaveBar(bar.id).then(() => {
                         this.isLoading = false
                         const appState = new AppState()
                         if (appState.bar.id == bar.id) {
