@@ -31,6 +31,13 @@
                         <option v-for="locale in $i18n.availableLocales" :key="locale" :value="locale">{{ $t('locales.' + locale) }}</option>
                     </select>
                 </div>
+                <div class="form-group">
+                    <label class="form-label">{{ $t('my-data') }}:</label>
+                    <div class="account-actions">
+                        <!-- <button class="button button--outline" type="button">{{ $t('download-personal-data') }}</button> -->
+                        <button class="button button--outline button--danger" type="button" @click="deleteAccount">{{ $t('delete-my-account') }}</button>
+                    </div>
+                </div>
             </div>
             <div class="form-actions">
                 <button class="button button--dark" type="submit">{{ $t('save') }}</button>
@@ -40,7 +47,7 @@
 </template>
 
 <script>
-import ApiRequests from '@/ApiRequests'
+import ApiRequests from './../../ApiRequests.js'
 import OverlayLoader from '@/components/OverlayLoader.vue'
 import PageHeader from '@/components/PageHeader.vue'
 import Navigation from '@/components/Settings/SettingsNavigation.vue'
@@ -100,7 +107,31 @@ export default {
                 this.isLoading = false
                 this.$toast.error(e.message)
             })
+        },
+        deleteAccount() {
+            const appState = new AppState()
+
+            this.$confirm(this.$t('users.confirm-delete', {name: this.user.name}), {
+                onResolved: (dialog) => {
+                    dialog.close()
+                    this.isLoading = true
+                    ApiRequests.deleteUser(this.user.id).then(() => {
+                        this.isLoading = false
+                        appState.clear()
+                        this.$router.push({ name: 'login' })
+                    }).catch(e => {
+                        this.isLoading = false
+                        this.$toast.error(e.message)
+                    })
+                }
+            })
         }
     }
 }
 </script>
+<style scoped>
+.account-actions {
+    display: flex;
+    gap: 1rem;
+}
+</style>
