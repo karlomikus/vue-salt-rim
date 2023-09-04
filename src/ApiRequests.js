@@ -771,7 +771,11 @@ class ApiRequests
     }
 
     static async leaveBar(barId) {
-        return await this.deleteRequest(`/api/bars/${barId}/membership`)
+        return await this.deleteRequest(`/api/bars/${barId}/memberships`)
+    }
+
+    static async removeUserFromBar(barId, userId) {
+        return await this.deleteRequest(`/api/bars/${barId}/memberships/${userId}`)
     }
 }
 

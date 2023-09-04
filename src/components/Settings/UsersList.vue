@@ -49,12 +49,13 @@
 </template>
 
 <script>
-import ApiRequests from '@/ApiRequests'
+import ApiRequests from './../../ApiRequests.js'
 import OverlayLoader from '@/components/OverlayLoader.vue'
 import PageHeader from '@/components/PageHeader.vue'
 import Navigation from '@/components/Settings/SettingsNavigation.vue'
 import SaltRimDialog from '@/components/Dialog/SaltRimDialog.vue'
 import UserForm from '@/components/Settings/UserForm.vue'
+import AppState from './../../AppState.js'
 
 export default {
     components: {
@@ -97,11 +98,12 @@ export default {
             this.showDialog = true
         },
         deleteUser(user) {
+            const appState = new AppState()
             this.$confirm(this.$t('users.confirm-delete', {name: user.name}), {
                 onResolved: (dialog) => {
                     this.isLoading = true
                     dialog.close()
-                    ApiRequests.deleteUser(user.id).then(() => {
+                    ApiRequests.removeUserFromBar(appState.bar.id, user.id).then(() => {
                         this.isLoading = false
                         this.$toast.default(this.$t('users.delete-success'))
                         this.refreshUsers()
