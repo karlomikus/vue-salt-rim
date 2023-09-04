@@ -236,3 +236,7 @@
     background-color: var(--clr-gray-200);
     color: var(--clr-gray-800);
 }
+
+.button.button--danger:is(:hover, :active, :focus) {
+    background: rgb(192, 5, 46);
+}

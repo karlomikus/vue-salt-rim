@@ -12,7 +12,7 @@
                 </svg>
             </template>
         </template>
-        <span v-if="userRating" class="resource-rating__alt" title="Your rating">{{ userRating }}</span>
+        <span v-if="userRating" class="resource-rating__alt" :title="$t('your-rating')">{{ userRating }}</span>
     </div>
 </template>
 <script>

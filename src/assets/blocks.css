@@ -1,5 +1,5 @@
 .block-container {
-    --clr-block-bg: rgba(255, 255, 255, .7);
+    --clr-block-bg: rgba(255, 255, 255, .6);
     --clr-block-bg-placeholder: #d9e3f6;
     --clr-block-bg-border: #a7badd;
     --clr-border: var(--clr-red-200);
@@ -7,6 +7,7 @@
     --bc-padding: 2rem;
     background: var(--clr-block-bg);
     border-bottom: 1px solid var(--clr-border);
+    border-top: 1px solid #fff;
     border-radius: 5px;
     transition: border-color ease-in-out 100ms;
     box-shadow: var(--shadow-elevation-medium);
@@ -38,7 +39,7 @@
 }
 
 .block-container.block-container--hover:hover {
-    border-color: var(--clr-border-hover);
+    border-bottom-color: var(--clr-border-hover);
 }
 
 .details-block-container {

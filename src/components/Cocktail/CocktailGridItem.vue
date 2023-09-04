@@ -101,7 +101,7 @@ export default {
 }
 
 .cocktail-grid-item:hover .block-container {
-    border-color: var(--clr-red-500);
+    border-bottom-color: var(--clr-red-500);
 }
 
 .dark-theme .cocktail-grid-item {
