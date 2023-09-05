@@ -119,7 +119,7 @@ export default {
     padding: 1.5rem;
     border-radius: var(--_border-radius);
     margin-top: -2.25rem;
-    background-color: #fdfcfd;
+    background-color: #fcf9fb;
     height: 100%;
     display: flex;
     flex-direction: column;

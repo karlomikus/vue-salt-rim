@@ -26,6 +26,7 @@
                         {{ bar.invite_code }}
                     </p>
                 </template>
+                <p class="bar__subtitle">{{ bar.subtitle }}</p>
                 <p class="bar__description">{{ bar.description }}</p>
                 <div class="bar__actions">
                     <template v-if="bar.access.can_delete">
@@ -154,7 +155,7 @@ export default {
 <style scoped>
 .bars__grid {
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-columns: 1fr 1fr;
     gap: 0.5rem;
 }
 

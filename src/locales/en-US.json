@@ -302,6 +302,10 @@
   "user-rating": "User rating",
   "pagination.results": "Showing {on_page_results}/{total_results} results",
   "page": "Page",
+  "subtitle": "Subtitle",
+  "delete-my-account": "Delete my account and my data",
+  "data": "Data",
+  "profile-information": "Profile information",
   "page-prev": "Prev",
   "page-next": "Next",
   "remove-cocktail-from-collection": "Remove cocktail from collection",
@@ -345,7 +349,10 @@
     "invite-code": "Bar invite code",
     "toggle-invite-code": "Toggle invite code",
     "confirm-delete": "This will permanently delete bar with name \"{name}\".",
-    "confirm-leave": "You will lose all your data in bar (\"{name}\") if you leave it."
+    "confirm-leave": "You will lose all your data in bar (\"{name}\") if you leave it.",
+    "enable-invites": "Enable joining via invite code",
+    "import-base-cocktails": "Open bar with base cocktails",
+    "import-base-ingredients": "Open bar with base ingredients"
   },
   "close": "Close"
 }

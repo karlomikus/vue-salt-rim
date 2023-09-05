@@ -760,6 +760,12 @@ class ApiRequests
         return this.parseResponse(jsonResp)
     }
 
+    static async updateBar(id, data) {
+        const jsonResp = await this.postRequest(`/api/bars/${id}`, data, 'PUT')
+
+        return this.parseResponse(jsonResp)
+    }
+
     static async deleteBar(id) {
         return await this.deleteRequest(`/api/bars/${id}`)
     }

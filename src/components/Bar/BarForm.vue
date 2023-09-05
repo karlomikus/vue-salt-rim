@@ -25,7 +25,7 @@
                 <template v-if="!bar.id">
                     <label v-for="option in importOptions" :key="option.value" class="form-checkbox">
                         <input v-model="bar.options" type="checkbox" :value="option.value">
-                        <span>{{ option.name }}</span>
+                        <span>{{ $t(option.name) }}</span>
                     </label>
                 </template>
             </div>
@@ -37,6 +37,7 @@
     </form>
 </template>
 <script>
+import AppState from '../../AppState'
 import ApiRequests from './../../ApiRequests'
 import OverlayLoader from './../OverlayLoader.vue'
 import PageHeader from './../PageHeader.vue'
@@ -49,16 +50,24 @@ export default {
     data() {
         return {
             isLoading: false,
-            bar: {},
+            bar: {
+                options: [
+                    'cocktails',
+                    'ingredients',
+                ]
+            },
             enableInvites: true,
             importOptions: [
                 { name: 'bars.import-base-cocktails', value: 'cocktails' },
                 { name: 'bars.import-base-ingredients', value: 'ingredients' },
-                { name: 'bars.import-base-glasses', value: 'glasses' },
-                { name: 'bars.import-base-methods', value: 'methods' },
-                { name: 'bars.import-base-utensils', value: 'utensils' },
-                { name: 'bars.import-base-categories', value: 'categories' },
             ]
+        }
+    },
+    watch: {
+        'bar.options': (newVal) => {
+            if (newVal && newVal.includes('cocktails') && !newVal.includes('ingredients')) {
+                newVal.push('ingredients')
+            }
         }
     },
     created() {
@@ -81,18 +90,38 @@ export default {
     methods: {
         submit() {
             this.isLoading = true
-            ApiRequests.saveBar({
-                name: this.bar.name,
-                subtitle: this.bar.subtitle,
-                description: this.bar.description,
-            }).then(() => {
-                this.isLoading = false
-                this.$toast.default(this.$t('bars.add-success', { name: this.bar.name }))
-                this.$router.push({ name: 'bars' })
-            }).catch(e => {
-                this.isLoading = false
-                this.$toast.error(e.message)
-            })
+            if (this.bar.id) {
+                const appState = new AppState()
+                ApiRequests.updateBar(this.bar.id, {
+                    name: this.bar.name,
+                    subtitle: this.bar.subtitle,
+                    description: this.bar.description,
+                    enable_invites: this.enableInvites,
+                }).then(data => {
+                    appState.setBar(data);
+                    this.isLoading = false
+                    this.$toast.default(this.$t('bars.add-success', { name: this.bar.name }))
+                    this.$router.push({ name: 'bars' })
+                }).catch(e => {
+                    this.isLoading = false
+                    this.$toast.error(e.message)
+                })
+            } else {
+                ApiRequests.saveBar({
+                    name: this.bar.name,
+                    subtitle: this.bar.subtitle,
+                    description: this.bar.description,
+                    enable_invites: this.enableInvites,
+                    options: this.bar.options,
+                }).then(() => {
+                    this.isLoading = false
+                    this.$toast.default(this.$t('bars.add-success', { name: this.bar.name }))
+                    this.$router.push({ name: 'bars' })
+                }).catch(e => {
+                    this.isLoading = false
+                    this.$toast.error(e.message)
+                })
+            }
         }
     }
 }
