@@ -64,7 +64,7 @@ export default {
         }
     },
     watch: {
-        'bar.options': (newVal) => {
+        'bar.options': function (newVal) {
             if (newVal && newVal.includes('cocktails') && !newVal.includes('ingredients')) {
                 newVal.push('ingredients')
             }
@@ -98,7 +98,7 @@ export default {
                     description: this.bar.description,
                     enable_invites: this.enableInvites,
                 }).then(data => {
-                    appState.setBar(data);
+                    appState.setBar(data)
                     this.isLoading = false
                     this.$toast.default(this.$t('bars.add-success', { name: this.bar.name }))
                     this.$router.push({ name: 'bars' })

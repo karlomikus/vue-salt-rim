@@ -39,8 +39,9 @@ export default {
                 this.$toast.default(this.$t('bars.join-success', { name: data.name }))
                 this.$emit('dialogClosed')
                 this.$emit('barJoined')
-            }).catch(e => {
-                this.$toast.error(e.message)
+            }).catch(() => {
+                this.isLoading = false
+                this.$toast.error(this.$t('bars.join-error'))
             })
         }
     }

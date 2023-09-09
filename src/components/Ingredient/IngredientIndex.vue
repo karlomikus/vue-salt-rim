@@ -75,12 +75,14 @@
                 <IngredientGridContainer v-if="ingredients.length > 0">
                     <IngredientGridItem v-for="ingredient in ingredients" :key="ingredient.id" :ingredient="ingredient" :user-ingredients="ingredientIdsOnShelf" :shopping-list="ingredientIdsOnShoppingList" />
                 </IngredientGridContainer>
-                <div v-else class="empty-state">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
-                        <path d="M11 2C15.968 2 20 6.032 20 11C20 15.968 15.968 20 11 20C6.032 20 2 15.968 2 11C2 6.032 6.032 2 11 2ZM11 18C14.8675 18 18 14.8675 18 11C18 7.1325 14.8675 4 11 4C7.1325 4 4 7.1325 4 11C4 14.8675 7.1325 18 11 18ZM19.4853 18.0711L22.3137 20.8995L20.8995 22.3137L18.0711 19.4853L19.4853 18.0711Z"></path>
-                    </svg>
-                    <p>{{ $t('cocktails-not-found') }}</p>
-                </div>
+                <EmptyState v-else style="margin-top: 1rem;">
+                    <template #icon>
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="32" height="32">
+                            <path d="M11 2C15.968 2 20 6.032 20 11C20 15.968 15.968 20 11 20C6.032 20 2 15.968 2 11C2 6.032 6.032 2 11 2ZM11 18C14.8675 18 18 14.8675 18 11C18 7.1325 14.8675 4 11 4C7.1325 4 4 7.1325 4 11C4 14.8675 7.1325 18 11 18ZM19.4853 18.0711L22.3137 20.8995L20.8995 22.3137L18.0711 19.4853L19.4853 18.0711Z"></path>
+                        </svg>
+                    </template>
+                    {{ $t('ingredients-not-found') }}
+                </EmptyState>
                 <Pagination :meta="meta" @page-changed="handlePageChange"></Pagination>
             </div>
         </div>
@@ -97,6 +99,7 @@ import Refinement from './../Search/SearchRefinement.vue'
 import Pagination from './../Search/SearchPagination.vue'
 import qs from 'qs'
 import Dropdown from './../SaltRimDropdown.vue'
+import EmptyState from './../EmptyState.vue'
 
 export default {
     components: {
@@ -106,7 +109,8 @@ export default {
         PageHeader,
         Refinement,
         Pagination,
-        Dropdown
+        Dropdown,
+        EmptyState
     },
     data() {
         return {

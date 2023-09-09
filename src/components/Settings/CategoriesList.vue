@@ -23,6 +23,7 @@
                     <thead>
                         <tr>
                             <th>{{ $t('name') }} / {{ $t('description') }}</th>
+                            <th>{{ $t('ingredients') }}</th>
                             <th></th>
                         </tr>
                     </thead>
@@ -33,6 +34,7 @@
                                 <br>
                                 <small>{{ overflowText(category.description, 100) }}</small>
                             </td>
+                            <td>{{ category.ingredients_count }}</td>
                             <td style="text-align: right;">
                                 <a class="list-group__action" href="#" @click.prevent="deleteCategory(category)">{{ $t('remove') }}</a>
                             </td>

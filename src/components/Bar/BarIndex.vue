@@ -16,11 +16,11 @@
     <div class="bars">
         <OverlayLoader v-if="isLoading"></OverlayLoader>
         <div v-if="bars.length > 0" class="bars__grid">
-            <div v-for="bar in bars" :key="bar.id" class="bar block-container">
+            <div v-for="bar in bars" :key="bar.id" class="bar block-container block-container--hover">
                 <span class="bar__role">{{ getRoleName(bar.access.role_id) }}</span>
                 <h4 class="bar__title">{{ bar.name }}</h4>
                 <p class="bar__owner">Created by {{ bar.created_user.name }} &middot; <DateFormatter :date="bar.created_at" /></p>
-                <template v-if="bar.show_invite_code">
+                <template v-if="bar.show_invite_code && bar.access.can_edit">
                     <label class="form-label">Invite code:</label>
                     <p class="bar__invite_code">
                         {{ bar.invite_code }}
@@ -41,7 +41,7 @@
                         <RouterLink v-if="bar.access.can_edit" :to="{ name: 'bars.form', query: { id: bar.id } }">{{ $t('edit') }}</RouterLink>
                         &middot;
                     </template>
-                    <template v-if="bar.invite_code">
+                    <template v-if="bar.invite_code && bar.access.can_edit">
                         <a href="#" @click.prevent="bar.show_invite_code = !bar.show_invite_code">{{ $t('bars.toggle-invite-code') }}</a>
                         &middot;
                     </template>
@@ -49,10 +49,14 @@
                 </div>
             </div>
         </div>
-        <div v-else class="empty-state">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path d="M21 19H23V21H1V19H3V4C3 3.44772 3.44772 3 4 3H14C14.5523 3 15 3.44772 15 4V19H19V11H17V9H20C20.5523 9 21 9.44772 21 10V19ZM5 5V19H13V5H5ZM7 11H11V13H7V11ZM7 7H11V9H7V7Z"></path></svg>
-            <p>{{ $t('bars.empty') }}</p>
-        </div>
+        <EmptyState v-else>
+            <template #icon>
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="32" height="32"><path d="M21 19H23V21H1V19H3V4C3 3.44772 3.44772 3 4 3H14C14.5523 3 15 3.44772 15 4V19H19V11H17V9H20C20.5523 9 21 9.44772 21 10V19ZM5 5V19H13V5H5ZM7 11H11V13H7V11ZM7 7H11V9H7V7Z"></path></svg>
+            </template>
+            <template #default>
+                {{ $t('bars.empty') }}
+            </template>
+        </EmptyState>
     </div>
 </template>
 <script>
@@ -64,6 +68,7 @@ import BarJoinDialog from './BarJoinDialog.vue'
 import AppState from './../../AppState.js'
 import DateFormatter from './../DateFormatter.vue'
 import Utils from './../../Utils.js'
+import EmptyState from './../EmptyState.vue'
 
 export default {
     components: {
@@ -71,7 +76,8 @@ export default {
         PageHeader,
         SaltRimDialog,
         BarJoinDialog,
-        DateFormatter
+        DateFormatter,
+        EmptyState,
     },
     data() {
         return {

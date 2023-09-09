@@ -45,7 +45,7 @@
 
     /* Base component color scheme */
     --clr-link-color: var(--clr-gray-800);
-    --clr-link-color-hover: var(--clr-red-800);
+    --clr-link-color-hover: #972291;
     --clr-body-font: var(--clr-gray-800);
     --clr-body-bg: var(--clr-red-50);
 

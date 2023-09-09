@@ -21,6 +21,10 @@ export default {
     },
     computed: {
         isBarAdmin() {
+            if (Object.keys(this.appState.bar).length == 0) {
+                return false
+            }
+
             return this.appState.bar.access.role_id == 1
         }
     }

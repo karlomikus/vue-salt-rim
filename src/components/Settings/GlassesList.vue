@@ -23,6 +23,7 @@
                     <thead>
                         <tr>
                             <th>{{ $t('name') }} / {{ $t('description') }}</th>
+                            <th>{{ $t('cocktails') }}</th>
                             <th></th>
                         </tr>
                     </thead>
@@ -31,8 +32,9 @@
                             <td>
                                 <a href="#" @click.prevent="openDialog($t('glass-type.edit'), glass)">{{ glass.name }}</a>
                                 <br>
-                                <small>{{ $t('cocktails') }}: {{ glass.cocktails_count }} &middot; {{ glass.description }}</small>
+                                <small>{{ glass.description }}</small>
                             </td>
+                            <td>{{ glass.cocktails_count }}</td>
                             <td style="text-align: right;">
                                 <a class="list-group__action" href="#" @click.prevent="deleteGlass(glass)">{{ $t('remove') }}</a>
                             </td>

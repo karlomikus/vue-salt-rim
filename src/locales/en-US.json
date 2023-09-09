@@ -311,6 +311,8 @@
   "remove-cocktail-from-collection": "Remove cocktail from collection",
   "cocktail-collections": "Cocktail collections",
   "cocktails-not-found": "No cocktails found",
+  "ingredients-not-found": "No ingredients found",
+  "empty-state-default": "No items found",
   "your-collections": "Your collections",
   "view": "View",
   "missing-collections": "You don't have any collections",
@@ -352,7 +354,9 @@
     "confirm-leave": "You will lose all your data in bar (\"{name}\") if you leave it.",
     "enable-invites": "Enable joining via invite code",
     "import-base-cocktails": "Open bar with base cocktails",
-    "import-base-ingredients": "Open bar with base ingredients"
+    "import-base-ingredients": "Open bar with base ingredients",
+    "join-error": "Unable to join bar"
   },
-  "close": "Close"
+  "close": "Close",
+  "cocktail-no-collection": "This cocktail is not in any of your collections"
 }

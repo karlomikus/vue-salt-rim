@@ -18,11 +18,12 @@
         </div>
         <div class="settings-page__content">
             <OverlayLoader v-if="isLoading" />
-            <div class="block-container block-container--padded">
+            <div v-if="tags.length > 0" class="block-container block-container--padded">
                 <table class="table">
                     <thead>
                         <tr>
                             <th>{{ $t('name') }}</th>
+                            <th>{{ $t('cocktails') }}</th>
                             <th></th>
                         </tr>
                     </thead>
@@ -30,9 +31,8 @@
                         <tr v-for="tag in tags" :key="tag.id">
                             <td>
                                 <a href="#" @click.prevent="openDialog($t('tag.edit'), tag)">{{ tag.name }}</a>
-                                <br>
-                                <small>{{ $t('cocktails') }}: {{ tag.cocktails_count }}</small>
                             </td>
+                            <td>{{ tag.cocktails_count }}</td>
                             <td style="text-align: right;">
                                 <a class="list-group__action" href="#" @click.prevent="deleteTag(tag)">{{ $t('remove') }}</a>
                             </td>
@@ -40,6 +40,9 @@
                     </tbody>
                 </table>
             </div>
+            <EmptyState v-else>
+                {{ $t('empty-state-default') }}
+            </EmptyState>
         </div>
     </div>
 </template>
@@ -51,6 +54,7 @@ import PageHeader from '@/components/PageHeader.vue'
 import Navigation from '@/components/Settings/SettingsNavigation.vue'
 import SaltRimDialog from '@/components/Dialog/SaltRimDialog.vue'
 import TagForm from '@/components/Settings/TagForm.vue'
+import EmptyState from './../EmptyState.vue'
 
 export default {
     components: {
@@ -58,7 +62,8 @@ export default {
         Navigation,
         PageHeader,
         TagForm,
-        SaltRimDialog
+        SaltRimDialog,
+        EmptyState
     },
     data() {
         return {

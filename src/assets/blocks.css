@@ -4,7 +4,7 @@
     --clr-block-bg-border: #a7badd;
     --clr-border: var(--clr-red-200);
     --clr-border-hover: var(--clr-red-500);
-    --bc-padding: 2rem;
+    --bc-padding: 1.75rem;
     background: var(--clr-block-bg);
     border-bottom: 1px solid var(--clr-border);
     border-top: 2px solid #fff;
@@ -39,6 +39,7 @@
 }
 
 .block-container.block-container--hover:hover {
+    --clr-block-bg: rgba(255, 255, 255, .8);
     border-bottom-color: var(--clr-border-hover);
 }
 

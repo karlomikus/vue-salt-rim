@@ -8,10 +8,12 @@
         <div class="block-container block-container--padded">
             <div class="form-group">
                 <label class="form-label form-label--required">{{ $t('type') }}:</label>
-                <SaltRimRadio v-model="importType" title="URL" description="Import from a supported website" value="url"></SaltRimRadio>
-                <SaltRimRadio v-model="importType" title="JSON" description="Import from JSON format" value="json"></SaltRimRadio>
-                <SaltRimRadio v-model="importType" title="YAML" description="Import from YAML format" value="yaml"></SaltRimRadio>
-                <SaltRimRadio v-model="importType" title="Collection" description="Import from Bar Assistant JSON collection" value="collection"></SaltRimRadio>
+                <div class="import-types">
+                    <SaltRimRadio v-model="importType" title="URL" description="Import from a supported website" value="url"></SaltRimRadio>
+                    <SaltRimRadio v-model="importType" title="JSON" description="Import from JSON format" value="json"></SaltRimRadio>
+                    <SaltRimRadio v-model="importType" title="YAML" description="Import from YAML format" value="yaml"></SaltRimRadio>
+                    <SaltRimRadio v-model="importType" title="Collection" description="Import from Bar Assistant JSON collection" value="collection"></SaltRimRadio>
+                </div>
             </div>
             <div class="form-group">
                 <label class="form-label form-label--required" for="import-source">{{ $t('source') }}:</label>
@@ -293,5 +295,11 @@ export default {
 
 .scraper-ingredients__ingredient .form-group {
     margin-bottom: 0;
+}
+
+.import-types {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
 }
 </style>

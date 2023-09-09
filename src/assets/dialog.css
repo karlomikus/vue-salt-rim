@@ -1,7 +1,7 @@
 .dialog {
     --dialog-margin: 2rem;
     --dialog-padding: 2rem;
-    --shadow-color: 250deg 70% 10%;
+    --shadow-color: 250deg 20% 10%;
     --shadow-elevation-high:
         0px 1px 1.1px hsl(var(--shadow-color) / 0.1),
         -0.2px 5.8px 6.5px -0.4px hsl(var(--shadow-color) / 0.1),

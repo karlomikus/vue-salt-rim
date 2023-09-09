@@ -10,3 +10,24 @@
         </p>
     </div>
 </template>
+<style>
+.empty-state {
+    text-align: center;
+    padding: 30px;
+    background-color: rgba(255, 255, 255, .5);
+}
+
+.dark-theme .empty-state {
+    background-color: rgba(0, 0, 0, .5);
+}
+
+.empty-state svg {
+    fill: var(--clr-gray-500);
+    /* width: 70px;
+    height: 70px; */
+}
+
+.dark-theme .empty-state svg {
+    fill: var(--clr-gray-600);
+}
+</style>

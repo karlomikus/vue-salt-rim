@@ -209,7 +209,8 @@ class ApiRequests
     }
 
     static async saveIngredientCategory(data) {
-        let jsonResp = await this.postRequest('/api/ingredient-categories', data)
+        const q = this.generateBAQueryString({}, true)
+        const jsonResp = await this.postRequest(`/api/ingredient-categories${q}`, data)
 
         return this.parseResponse(jsonResp)
     }
@@ -458,7 +459,8 @@ class ApiRequests
     }
 
     static async saveGlass(data) {
-        let jsonResp = await this.postRequest('/api/glasses', data)
+        const q = this.generateBAQueryString({}, true)
+        const jsonResp = await this.postRequest(`/api/glasses${q}`, data)
 
         return this.parseResponse(jsonResp)
     }
@@ -562,7 +564,8 @@ class ApiRequests
     }
 
     static async saveTag(data) {
-        let jsonResp = await this.postRequest('/api/tags', data)
+        const q = this.generateBAQueryString({}, true)
+        let jsonResp = await this.postRequest(`/api/tags${q}`, data)
 
         return this.parseResponse(jsonResp)
     }

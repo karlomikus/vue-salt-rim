@@ -127,7 +127,7 @@ export default {
 }
 
 .cocktail-grid-item:hover .cocktail-grid-item__title {
-    color: var(--clr-red-800);
+    color: var(--clr-link-color-hover);
 }
 
 .dark-theme .cocktail-grid-item:hover .cocktail-grid-item__title {
