@@ -283,6 +283,7 @@ export default {
             clearTimeout(this.queryTimer)
 
             this.queryTimer = setTimeout(() => {
+                this.currentPage = 1
                 this.updateRouterPath()
             }, 300)
         },
@@ -301,6 +302,7 @@ export default {
                 on_shelf: false,
                 main_ingredients: false,
                 on_shopping_list: false,
+                strength: null
             };
 
             this.updateRouterPath();

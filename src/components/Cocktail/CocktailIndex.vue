@@ -398,6 +398,7 @@ export default {
             clearTimeout(this.queryTimer)
 
             this.queryTimer = setTimeout(() => {
+                this.currentPage = 1
                 this.updateRouterPath()
             }, 300)
         },
@@ -415,6 +416,7 @@ export default {
                 tags: [],
                 glasses: [],
                 methods: [],
+                main_ingredients: [],
                 ingredients: [],
                 collections: [],
                 user_rating: null,
