@@ -148,6 +148,7 @@ export default {
     background-size: cover;
     background-repeat: no-repeat;
     margin-right: 10px;
+    flex-shrink: 0;
 }
 
 .site-autocomplete__results__content span,
