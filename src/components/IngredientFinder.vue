@@ -1,18 +1,18 @@
 <template>
     <ais-instant-search :search-client="searchClient" :index-name="index" class="ingredient-finder">
-        <ais-configure :hitsPerPage="maxHits" />
+        <ais-configure :hits-per-page="maxHits" />
         <!-- <ais-search-box class="ingredient-finder__search-input" :placeholder="$t('placeholder.search-ingredients')" :class-names="{ 'ais-SearchBox-input': 'form-input' }" v-model="currentQuery" /> -->
         <ais-search-box autofocus>
-            <template v-slot="{ refine }">
-                <input ref="finderSearchInput" class="form-input ingredient-finder__search-input" type="search" :placeholder="$t('placeholder.search-ingredients')" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" maxlength="512" @input="refine($event.currentTarget.value)" v-model="currentQuery">
+            <template #default="{ refine }">
+                <input ref="finderSearchInput" v-model="currentQuery" class="form-input ingredient-finder__search-input" type="search" :placeholder="$t('placeholder.search-ingredients')" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" maxlength="512" @input="refine($event.currentTarget.value)">
             </template>
         </ais-search-box>
         <ais-hits class="ingredient-finder__hits">
-            <template v-slot="{ items }">
+            <template #default="{ items }">
                 <div class="ingredient-finder__options">
                     <OverlayLoader v-if="isLoading"></OverlayLoader>
-                    <a href="#" v-for="item in items" @click.prevent="selectIngredient(item)">{{ item.name }}</a>
-                    <a href="#" class="ingredient-finder__options__create" @click.prevent="newIngredient" v-show="currentQuery">
+                    <a v-for="item in items" :key="item.id" href="#" @click.prevent="selectIngredient(item)">{{ item.name }}</a>
+                    <a v-show="currentQuery" href="#" class="ingredient-finder__options__create" @click.prevent="newIngredient">
                         {{ $t('ingredient-dialog.search-not-found') }} {{ $t('ingredient-dialog.create-ingredient', { name: currentQuery }) }}
                     </a>
                 </div>
@@ -22,49 +22,58 @@
 </template>
 
 <script>
-import { instantMeiliSearch } from '@meilisearch/instant-meilisearch';
-import Auth from './../Auth.js';
-import OverlayLoader from './OverlayLoader.vue';
-import ApiRequests from '../ApiRequests';
+import { instantMeiliSearch } from '@meilisearch/instant-meilisearch'
+import OverlayLoader from './OverlayLoader.vue'
+import ApiRequests from '../ApiRequests'
+import AppState from './../AppState'
+
+const appState = new AppState()
 
 export default {
+    components: {
+        OverlayLoader
+    },
     props: {
-        modelValue: null,
+        modelValue: {
+            type: Object,
+            default() {
+                return {}
+            }
+        },
         maxHits: {
             type: Number,
             default: 15
         },
         disabledIngredients: {
             type: Array,
-            default: []
+            default() {
+                return []
+            }
         }
     },
     emits: ['update:modelValue', 'ingredientSelected'],
-    components: {
-        OverlayLoader
-    },
     data() {
         return {
             isLoading: false,
             currentQuery: null,
             index: 'ingredients:name:asc',
             searchClient: instantMeiliSearch(
-                Auth.getUserSearchSettings().host,
-                Auth.getUserSearchSettings().key,
+                appState.bar.search_driver_host,
+                appState.bar.search_driver_api_key,
             ),
         }
     },
     methods: {
         selectIngredient(ing) {
             if (ing && this.disabledIngredients.includes(ing.id)) {
-                return false;
+                return false
             }
 
             this.$emit('update:modelValue', ing)
             this.$emit('ingredientSelected', ing)
         },
         newIngredient() {
-            this.isLoading = true;
+            this.isLoading = true
             ApiRequests.saveIngredient({
                 name: this.currentQuery,
                 description: null,
@@ -74,16 +83,16 @@ export default {
                 images: [],
                 ingredient_category_id: 1,
             }).then(data => {
-                this.$toast.default(this.$t('ingredient-dialog.new-ingredient-success', { name: data.name }));
+                this.$toast.default(this.$t('ingredient-dialog.new-ingredient-success', { name: data.name }))
                 this.selectIngredient({
                     name: data.name,
                     slug: data.slug,
                     id: data.id
-                });
-                this.isLoading = false;
+                })
+                this.isLoading = false
             }).catch(() => {
-                this.$toast.error(this.$t('ingredient-dialog.new-ingredient-fail'));
-                this.isLoading = false;
+                this.$toast.error(this.$t('ingredient-dialog.new-ingredient-fail'))
+                this.isLoading = false
             })
         },
     }

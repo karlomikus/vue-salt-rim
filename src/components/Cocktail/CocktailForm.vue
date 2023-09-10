@@ -8,30 +8,30 @@
         <div class="block-container block-container--padded">
             <div class="form-group">
                 <label class="form-label form-label--required" for="name">{{ $t('name') }}:</label>
-                <input class="form-input" type="text" id="name" v-model="cocktail.name" required :placeholder="$t('placeholder.cocktai-name')">
+                <input id="name" v-model="cocktail.name" class="form-input" type="text" required :placeholder="$t('placeholder.cocktai-name')">
             </div>
             <div class="form-group">
                 <label class="form-label form-label--required" for="instructions">{{ $t('instructions') }}:</label>
-                <textarea rows="8" class="form-input" id="instructions" v-model="cocktail.instructions" required :placeholder="$t('placeholder.cocktail-instructions')"></textarea>
+                <textarea id="instructions" v-model="cocktail.instructions" rows="8" class="form-input" required :placeholder="$t('placeholder.cocktail-instructions')"></textarea>
                 <p class="form-input-hint">{{ $t('md.support') }}</p>
             </div>
             <div class="form-group">
                 <label class="form-label" for="garnish">{{ $t('garnish') }}:</label>
-                <textarea rows="3" class="form-input" id="garnish" v-model="cocktail.garnish" :placeholder="$t('placeholder.cocktail-garnish')"></textarea>
+                <textarea id="garnish" v-model="cocktail.garnish" rows="3" class="form-input" :placeholder="$t('placeholder.cocktail-garnish')"></textarea>
                 <p class="form-input-hint">{{ $t('md.support') }}</p>
             </div>
         </div>
         <h3 class="form-section-title">{{ $t('media') }}</h3>
         <ImageUpload ref="imagesUpload" :value="cocktail.images" />
         <h3 class="form-section-title">{{ $t('ingredients') }}</h3>
-        <ul class="cocktail-form__ingredients" style="margin-bottom: 20px;" v-show="cocktail.ingredients.length > 0">
-            <li class="block-container" v-for="ing in cocktail.ingredients" :data-id="ing.ingredient_id">
+        <ul v-show="cocktail.ingredients.length > 0" class="cocktail-form__ingredients" style="margin-bottom: 20px;">
+            <li v-for="ing in cocktail.ingredients" :key="ing.ingredient_id" class="block-container" :data-id="ing.ingredient_id">
                 <div class="drag-handle"></div>
                 <div class="cocktail-form__ingredients__content">
                     <div class="form-group">
                         <label class="form-label">{{ $t('ingredient') }}:</label>
                         <p>{{ ing.name }} <small v-show="ing.optional">({{ ing.optional ? $t('optional') : '' }})</small></p>
-                        <p class="substitutes" v-if="ing.substitutes && ing.substitutes.length > 0">
+                        <p v-if="ing.substitutes && ing.substitutes.length > 0" class="substitutes">
                             <template v-for="sub in ing.substitutes">
                                 {{ $t('or').toLowerCase() }} {{ sub.name }}&nbsp;
                             </template>
@@ -53,77 +53,83 @@
                 </div>
             </li>
         </ul>
-        <Dialog v-model="showDialog">
+        <SaltRimDialog v-model="showDialog">
             <template #trigger>
                 <button class="button button--outline" type="button" @click="addIngredient">{{ $t('ingredient.add') }}</button>
             </template>
             <template #dialog>
                 <IngredientModal :value="cocktailIngredientForEdit" @close="closeModal" />
             </template>
-        </Dialog>
+        </SaltRimDialog>
         <h3 class="form-section-title">{{ $t('additional-information') }}</h3>
         <div class="block-container block-container--padded">
             <div class="form-group">
                 <label class="form-label" for="description">{{ $t('description') }}:</label>
-                <textarea rows="5" class="form-input" id="description" v-model="cocktail.description" :placeholder="$t('placeholder.cocktail-description')"></textarea>
+                <textarea id="description" v-model="cocktail.description" rows="5" class="form-input" :placeholder="$t('placeholder.cocktail-description')"></textarea>
                 <p class="form-input-hint">{{ $t('md.support') }}</p>
             </div>
             <div class="form-group">
                 <label class="form-label" for="glass">{{ $t('glass-type') }}:</label>
-                <select class="form-select" id="glass" v-model="cocktail.glass.id">
+                <select id="glass" v-model="cocktail.glass.id" class="form-select">
                     <option :value="undefined" disabled>Select a glass type...</option>
-                    <option v-for="glass in glasses" :value="glass.id">{{ glass.name }}</option>
+                    <option v-for="glass in glasses" :key="glass.id" :value="glass.id">{{ glass.name }}</option>
                 </select>
-                <p class="form-input-hint">
-                    <RouterLink :to="{ name: 'settings.glasses' }" target="_blank">{{ $t('edit-glasses') }}</RouterLink>
-                </p>
             </div>
             <div style="margin-bottom: 2rem;">
                 <label class="form-label">{{ $t('method-and-dilution') }}:</label>
                 <div class="cocktail-methods">
-                    <Radio v-for="method in methods" :value="method.id" :title="method.name" :description="method.dilution_percentage + '%'" v-model="cocktail.method.id"></Radio>
+                    <SaltRimRadio v-for="method in methods" :key="method.id" v-model="cocktail.method.id" :value="method.id" :title="method.name" :description="method.dilution_percentage + '%'"></SaltRimRadio>
                 </div>
             </div>
             <div class="form-group">
                 <label class="form-label" for="source">{{ $t('source') }}:</label>
-                <input class="form-input" type="text" id="source" v-model="cocktail.source" :placeholder="$t('placeholder.source')">
+                <input id="source" v-model="cocktail.source" class="form-input" type="text" :placeholder="$t('placeholder.source')">
             </div>
             <div class="form-group">
                 <label class="form-label" for="tags">{{ $t('tags') }}:</label>
-                <input class="form-input" type="text" id="tags" list="existing-tags" v-model="cocktailTags" :placeholder="$t('placeholder.tags')">
+                <input id="tags" v-model="cocktailTags" class="form-input" type="text" list="existing-tags" :placeholder="$t('placeholder.tags')">
                 <datalist id="existing-tags">
-                    <option v-for="tag in tags" :value="tag.name"></option>
+                    <option v-for="tag in tags" :key="tag.name" :value="tag.name"></option>
                 </datalist>
                 <p class="form-input-hint">{{ $t('tags.help-text') }}</p>
             </div>
-            <div class="form-group" v-show="utensils.length > 0">
+            <div v-show="utensils.length > 0" class="form-group">
                 <label class="form-label" for="utensil">{{ $t('utensils.title') }}:</label>
-                <select class="form-select" id="utensil" multiple v-model="cocktail.utensils" style="height: 200px;">
-                    <option v-for="utensil in utensils" :value="utensil.id">{{ utensil.name }}</option>
+                <select id="utensil" v-model="cocktail.utensils" class="form-select" multiple style="height: 200px;">
+                    <option v-for="utensil in utensils" :key="utensil.id" :value="utensil.id">{{ utensil.name }}</option>
                 </select>
             </div>
         </div>
         <div class="form-actions">
-            <RouterLink class="button button--outline" :to="{ name: 'cocktails.show', params: { id: cocktail.id } }" v-if="cocktail.id">{{ $t('cancel') }}</RouterLink>
-            <RouterLink class="button button--outline" :to="{ name: 'cocktails' }" v-else>{{ $t('cancel') }}</RouterLink>
+            <RouterLink v-if="cocktail.id" class="button button--outline" :to="{ name: 'cocktails.show', params: { id: cocktail.id } }">{{ $t('cancel') }}</RouterLink>
+            <RouterLink v-else class="button button--outline" :to="{ name: 'cocktails' }">{{ $t('cancel') }}</RouterLink>
             <button class="button button--dark" type="submit">{{ $t('save') }}</button>
         </div>
     </form>
 </template>
 
 <script>
-import Utils from "./../../Utils.js";
-import ApiRequests from "./../../ApiRequests.js";
+import Utils from './../../Utils.js'
+import ApiRequests from './../../ApiRequests.js'
 import Unitz from 'unitz'
 import OverlayLoader from './../OverlayLoader.vue'
 import IngredientModal from './../Cocktail/IngredientModal.vue'
 import ImageUpload from './../ImageUpload.vue'
 import PageHeader from './../PageHeader.vue'
-import Sortable from 'sortablejs';
-import Dialog from './../Dialog/Dialog.vue';
-import Radio from "../Radio.vue";
+import Sortable from 'sortablejs'
+import SaltRimDialog from './../Dialog/SaltRimDialog.vue'
+import SaltRimRadio from '../SaltRimRadio.vue'
+import AppState from './../../AppState'
 
 export default {
+    components: {
+        OverlayLoader,
+        IngredientModal,
+        ImageUpload,
+        PageHeader,
+        SaltRimDialog,
+        SaltRimRadio
+    },
     data() {
         return {
             showDialog: false,
@@ -144,24 +150,6 @@ export default {
             tags: [],
             sortable: null,
             utensils: [],
-        };
-    },
-    components: {
-        OverlayLoader,
-        IngredientModal,
-        ImageUpload,
-        PageHeader,
-        Dialog,
-        Radio
-    },
-    watch: {
-        showDialog(newVal) {
-            if (newVal == false) {
-                const emptyIngredient = this.cocktail.ingredients.findIndex(i => i.ingredient_id == null);
-                if (emptyIngredient != -1) {
-                    this.cocktail.ingredients.splice(emptyIngredient, 1);
-                }
-            }
         }
     },
     computed: {
@@ -173,7 +161,7 @@ export default {
                 if (newVal == '' || newVal == null || newVal == undefined) {
                     this.cocktail.tags = []
                 } else {
-                    this.cocktail.tags = [];
+                    this.cocktail.tags = []
                     newVal.split(',').forEach(tagName => {
                         this.cocktail.tags.push({ name: tagName })
                     })
@@ -181,17 +169,27 @@ export default {
             }
         },
     },
+    watch: {
+        showDialog(newVal) {
+            if (newVal == false) {
+                const emptyIngredient = this.cocktail.ingredients.findIndex(i => i.ingredient_id == null)
+                if (emptyIngredient != -1) {
+                    this.cocktail.ingredients.splice(emptyIngredient, 1)
+                }
+            }
+        }
+    },
     async created() {
         document.title = `${this.$t('cocktail')} \u22C5 ${this.site_title}`
 
-        this.isLoading = true;
-        const cocktailId = this.$route.query.id || null;
+        this.isLoading = true
+        const cocktailId = this.$route.query.id || null
 
         if (cocktailId) {
             await ApiRequests.fetchCocktail(cocktailId).then(data => {
-                data.description = Utils.decodeHtml(data.description);
-                data.instructions = Utils.decodeHtml(data.instructions);
-                data.garnish = Utils.decodeHtml(data.garnish);
+                data.description = Utils.decodeHtml(data.description)
+                data.instructions = Utils.decodeHtml(data.instructions)
+                data.garnish = Utils.decodeHtml(data.garnish)
                 if (!data.method) {
                     data.method = {}
                 }
@@ -200,7 +198,7 @@ export default {
                 }
                 data.utensils = data.utensils.map(ut => ut.id)
 
-                this.cocktail = data;
+                this.cocktail = data
 
                 document.title = `${this.$t('cocktail')} \u22C5 ${this.cocktail.name} \u22C5 ${this.site_title}`
             })
@@ -211,23 +209,23 @@ export default {
         await ApiRequests.fetchTags().then(data => this.tags = data)
         await ApiRequests.fetchUtensils().then(data => this.utensils = data)
 
-        this.isLoading = false;
+        this.isLoading = false
     },
     mounted() {
-        this.checkForImportData();
+        this.checkForImportData()
 
         this.sortable = Sortable.create(document.querySelector('.cocktail-form__ingredients'), {
             handle: '.drag-handle',
             ghostClass: 'block-container--placeholder',
             animation: 150
-        });
+        })
     },
     methods: {
         checkForImportData() {
-            const scraped = localStorage.getItem('scrapeResult');
+            const scraped = localStorage.getItem('scrapeResult')
             if (scraped) {
-                localStorage.removeItem('scrapeResult');
-                const parsedScrapeResult = JSON.parse(scraped);
+                localStorage.removeItem('scrapeResult')
+                const parsedScrapeResult = JSON.parse(scraped)
 
                 this.cocktail = parsedScrapeResult
 
@@ -247,41 +245,42 @@ export default {
                 this.cocktail.ingredients.splice(
                     this.cocktail.ingredients.findIndex(i => i == ing),
                     1
-                );
+                )
 
-                return;
+                return
             }
 
             this.$confirm(this.$t('cocktail.ingredient-remove', { name: ing.name }), {
                 onResolved: (dialog) => {
-                    dialog.close();
+                    dialog.close()
                     this.cocktail.ingredients.splice(
                         this.cocktail.ingredients.findIndex(i => i == ing),
                         1
-                    );
+                    )
                 }
-            });
+            })
         },
         closeModal(eventData) {
             // User canceled ingredient edit
             if (eventData.type == 'cancel') {
-                this.cocktailIngredientForEdit.id = this.cocktailIngredientForEditOriginal.id;
-                this.cocktailIngredientForEdit.name = this.cocktailIngredientForEditOriginal.name;
-                this.cocktailIngredientForEdit.ingredient_id = this.cocktailIngredientForEditOriginal.ingredient_id;
-                this.cocktailIngredientForEdit.ingredient_slug = this.cocktailIngredientForEditOriginal.ingredient_slug;
-                this.cocktailIngredientForEdit.amount = this.cocktailIngredientForEditOriginal.amount;
-                this.cocktailIngredientForEdit.units = this.cocktailIngredientForEditOriginal.units;
-                this.cocktailIngredientForEdit.optional = this.cocktailIngredientForEditOriginal.optional;
-                this.cocktailIngredientForEdit.sort = this.cocktailIngredientForEditOriginal.sort;
-                this.cocktailIngredientForEdit.substitutes = this.cocktailIngredientForEditOriginal.substitutes;
+                this.cocktailIngredientForEdit.id = this.cocktailIngredientForEditOriginal.id
+                this.cocktailIngredientForEdit.name = this.cocktailIngredientForEditOriginal.name
+                this.cocktailIngredientForEdit.ingredient_id = this.cocktailIngredientForEditOriginal.ingredient_id
+                this.cocktailIngredientForEdit.ingredient_slug = this.cocktailIngredientForEditOriginal.ingredient_slug
+                this.cocktailIngredientForEdit.amount = this.cocktailIngredientForEditOriginal.amount
+                this.cocktailIngredientForEdit.units = this.cocktailIngredientForEditOriginal.units
+                this.cocktailIngredientForEdit.optional = this.cocktailIngredientForEditOriginal.optional
+                this.cocktailIngredientForEdit.sort = this.cocktailIngredientForEditOriginal.sort
+                this.cocktailIngredientForEdit.substitutes = this.cocktailIngredientForEditOriginal.substitutes
             }
 
-            this.showDialog = false;
+            this.showDialog = false
         },
         addIngredient() {
-            const userUnit = localStorage.getItem('defaultUnit');
-            let defaultAmount = 30;
-            let defaultUnits = 'ml';
+            const appState = new AppState()
+            const userUnit = appState.defaultUnit
+            let defaultAmount = 30
+            let defaultUnits = 'ml'
 
             if (userUnit == 'oz') {
                 defaultAmount = 1
@@ -299,15 +298,16 @@ export default {
                 units: defaultUnits,
                 name: this.$t('ingredient.name-placeholder'),
                 sort: this.cocktail.ingredients.length + 1
-            };
+            }
 
-            this.cocktail.ingredients.push(placeholderData);
+            this.cocktail.ingredients.push(placeholderData)
 
             // Show modal after adding ingredient
             this.editIngredient(placeholderData)
         },
         printIngredientAmount(ing) {
-            const defaultUnit = localStorage.getItem('defaultUnit');
+            const appState = new AppState()
+            const defaultUnit = appState.defaultUnit
 
             return Utils.printIngredientAmount(ing, defaultUnit)
         },
@@ -316,45 +316,46 @@ export default {
                 cocktailIngredient.substitutes = []
             }
 
-            this.cocktailIngredientForEditOriginal = JSON.parse(JSON.stringify(cocktailIngredient));
-
-            const userUnit = localStorage.getItem('defaultUnit');
+            this.cocktailIngredientForEditOriginal = JSON.parse(JSON.stringify(cocktailIngredient))
+            
+            const appState = new AppState()
+            const userUnit = appState.defaultUnit
             if (userUnit === 'oz') {
                 if (cocktailIngredient.units == 'ml') {
-                    cocktailIngredient.units = 'oz';
-                    cocktailIngredient.amount = Utils.ml2oz(cocktailIngredient.amount);
+                    cocktailIngredient.units = 'oz'
+                    cocktailIngredient.amount = Utils.ml2oz(cocktailIngredient.amount)
                 }
                 if (cocktailIngredient.units == 'cl') {
-                    cocktailIngredient.units = 'oz';
-                    cocktailIngredient.amount = Utils.cl2oz(cocktailIngredient.amount);
+                    cocktailIngredient.units = 'oz'
+                    cocktailIngredient.amount = Utils.cl2oz(cocktailIngredient.amount)
                 }
             } else if (userUnit === 'cl') {
                 if (cocktailIngredient.units == 'ml') {
-                    cocktailIngredient.units = 'cl';
-                    cocktailIngredient.amount = Utils.ml2cl(cocktailIngredient.amount);
+                    cocktailIngredient.units = 'cl'
+                    cocktailIngredient.amount = Utils.ml2cl(cocktailIngredient.amount)
                 }
                 if (cocktailIngredient.units == 'oz') {
-                    cocktailIngredient.units = 'cl';
-                    cocktailIngredient.amount = Utils.oz2cl(cocktailIngredient.amount);
+                    cocktailIngredient.units = 'cl'
+                    cocktailIngredient.amount = Utils.oz2cl(cocktailIngredient.amount)
                 }
             } else if (userUnit === 'ml') {
                 if (cocktailIngredient.units == 'oz') {
-                    cocktailIngredient.units = 'ml';
-                    cocktailIngredient.amount = Utils.oz2ml(cocktailIngredient.amount);
+                    cocktailIngredient.units = 'ml'
+                    cocktailIngredient.amount = Utils.oz2ml(cocktailIngredient.amount)
                 }
                 if (cocktailIngredient.units == 'cl') {
-                    cocktailIngredient.units = 'ml';
-                    cocktailIngredient.amount = Utils.cl2ml(cocktailIngredient.amount);
+                    cocktailIngredient.units = 'ml'
+                    cocktailIngredient.amount = Utils.cl2ml(cocktailIngredient.amount)
                 }
             }
 
-            this.cocktailIngredientForEdit = cocktailIngredient;
-            this.showDialog = true;
+            this.cocktailIngredientForEdit = cocktailIngredient
+            this.showDialog = true
         },
         async submit() {
-            const sortedIngredientList = this.sortable.toArray();
+            const sortedIngredientList = this.sortable.toArray()
 
-            this.isLoading = true;
+            this.isLoading = true
 
             const postData = {
                 name: this.cocktail.name,
@@ -387,39 +388,39 @@ export default {
                             cIngredient.substitutes = cIngredient.substitutes.map(s => s.id)
                         }
 
-                        cIngredient.sort = sortedIngredientList.findIndex(sortedId => sortedId == cIngredient.ingredient_id) + 1;
+                        cIngredient.sort = sortedIngredientList.findIndex(sortedId => sortedId == cIngredient.ingredient_id) + 1
 
-                        return cIngredient;
+                        return cIngredient
                     })
-            };
+            }
 
             const imageResources = await this.$refs.imagesUpload.uploadPictures().catch(() => {
-                this.$toast.error(`${this.$t('image-upload-error')} ${this.$t('image-upload-error.cocktail')}`);
-            }) || [];
+                this.$toast.error(`${this.$t('image-upload-error')} ${this.$t('image-upload-error.cocktail')}`)
+            }) || []
 
             if (imageResources.length > 0) {
-                postData.images = imageResources.map(img => img.id);
+                postData.images = imageResources.map(img => img.id)
             }
 
             if (this.cocktail.id) {
                 ApiRequests.updateCocktail(this.cocktail.id, postData).then(data => {
-                    this.isLoading = false;
-                    this.$toast.default(this.$t('cocktail.update-success'));
-                    this.$router.push({ name: 'cocktails.show', params: { id: data.id } })
+                    this.isLoading = false
+                    this.$toast.default(this.$t('cocktail.update-success'))
+                    this.$router.push({ name: 'cocktails.show', params: { id: data.slug } })
                 }).catch(e => {
-                    this.$toast.error(e.message);
-                    this.isLoading = false;
+                    this.$toast.error(e.message)
+                    this.isLoading = false
                 })
             } else {
                 ApiRequests.saveCocktail(postData).then(data => {
-                    this.isLoading = false;
+                    this.isLoading = false
                     this.$toast.open({
                         message: this.$t('cocktail.create-success')
-                    });
-                    this.$router.push({ name: 'cocktails.show', params: { id: data.id } })
+                    })
+                    this.$router.push({ name: 'cocktails.show', params: { id: data.slug } })
                 }).catch(e => {
-                    this.$toast.error(e.message);
-                    this.isLoading = false;
+                    this.$toast.error(e.message)
+                    this.isLoading = false
                 })
             }
         }

@@ -21,7 +21,7 @@ export default {
     background-color: rgb(252, 242, 215);
     font-family: var(--font-primary);
     color: rgb(180, 108, 0);
-    font-size: 0.7rem;
+    font-size: 0.85rem;
     padding: 1px 5px;
     border-radius: 4px;
 }
@@ -29,5 +29,10 @@ export default {
 .dark-theme .mini-rating {
     background-color: rgb(94, 52, 5);
     color: rgb(255, 236, 207);
+}
+
+.mini-rating.mini-rating--user {
+    background-color: rgb(215, 235, 252);
+    color: rgb(0, 99, 180);
 }
 </style>

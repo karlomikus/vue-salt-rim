@@ -4,7 +4,7 @@
         <div class="dialog-title">{{ $t('note-dialog.title') }}</div>
         <div class="form-group">
             <label class="form-label" for="note">{{ $t('content') }}:</label>
-            <textarea rows="5" class="form-input" id="note" v-model="note.note"></textarea>
+            <textarea id="note" v-model="note.note" rows="5" class="form-input"></textarea>
         </div>
         <div class="dialog-actions">
             <button class="button button--outline" @click.prevent="$emit('noteDialogClosed')">{{ $t('cancel') }}</button>
@@ -14,19 +14,29 @@
 </template>
 
 <script>
-import ApiRequests from './../../ApiRequests.js';
+import ApiRequests from './../../ApiRequests.js'
 import OverlayLoader from './../OverlayLoader.vue'
 
 export default {
-    props: ['resourceId', 'resource'],
+    components: {
+        OverlayLoader,
+    },
+    props: {
+        resourceId: {
+            type: Number,
+            default: 0
+        },
+        resource: {
+            type: String,
+            default: ''
+        }
+    },
+    emits: ['noteDialogClosed'],
     data() {
         return {
             isLoading: false,
             note: {},
         }
-    },
-    components: {
-        OverlayLoader,
     },
     methods: {
         submit() {
@@ -36,16 +46,16 @@ export default {
                 resource_id: this.resourceId,
                 resource: this.resource,
             }).then(() => {
-                this.$toast.default(this.$t('note-added'));
+                this.$toast.default(this.$t('note-added'))
                 this.isLoading = false
                 this.$emit('noteDialogClosed')
             }).catch(e => {
-                this.$toast.error(e.message);
+                this.$toast.error(e.message)
                 this.isLoading = false
             })
         },
     }
-};
+}
 </script>
 
 <style scoped>

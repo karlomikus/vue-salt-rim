@@ -83,27 +83,6 @@ h3.form-section-title::before {
     margin-right: 0.25rem;
 }
 
-.empty-state {
-    text-align: center;
-    padding: 30px;
-    border-radius: 1rem;
-    background-color: rgba(255, 255, 255, .5);
-}
-
-.dark-theme .empty-state {
-    background-color: rgba(0, 0, 0, .5);
-}
-
-.empty-state svg {
-    fill: var(--clr-gray-800);
-    width: 70px;
-    height: 70px;
-}
-
-.dark-theme .empty-state svg {
-    fill: var(--clr-gray-600);
-}
-
 .popper {
     z-index: 10;
 }

@@ -1,3 +1,19 @@
+# v2.0.0
+This release marks support for Bar Assistant v3.0
+
+## New
+- Added support for multiple bars
+- Splitted navigation
+- Added an option to delete all users data in profile
+- Added current user role checking for actions
+
+## Changes
+- Removed `BAR_NAME` env variable
+    - Now uses bar name from current selected bar
+- Removed `BAR_DESCRIPTION` env variable
+    - Now uses bar subtitle from current selected bar
+- Small design updates
+
 # v1.20.2
 ## Fixes
 - Fix image size preview in site search

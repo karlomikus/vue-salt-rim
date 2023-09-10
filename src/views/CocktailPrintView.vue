@@ -1,9 +1,9 @@
 <script setup>
-import Cocktail from '../components/Print/Cocktail.vue'
+import PrintCocktail from '../components/Print/PrintCocktail.vue'
 </script>
 
 <template>
-  <main>
-    <Cocktail />
-  </main>
+    <main>
+        <PrintCocktail />
+    </main>
 </template>

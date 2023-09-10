@@ -2,7 +2,7 @@
     <div class="similar-cocktails-wrapper">
         <OverlayLoader v-if="isLoading" />
         <CocktailListContainer v-if="similarCocktails.length > 0" v-slot="observer">
-            <CocktailListItem v-for="cocktail in similarCocktails" :cocktail="cocktail" :key="cocktail.id" :observer="observer" />
+            <CocktailListItem v-for="cocktail in similarCocktails" :key="cocktail.id" :cocktail="cocktail" :observer="observer" />
         </CocktailListContainer>
         <div v-else class="empty-state">
             <p>{{ $t('no-cocktails') }}</p>
@@ -10,41 +10,48 @@
     </div>
 </template>
 <script>
-import ApiRequests from '@/ApiRequests';
+import ApiRequests from '@/ApiRequests'
 import CocktailListItem from '@/components/Cocktail/CocktailListItem.vue'
 import CocktailListContainer from '@/components/Cocktail/CocktailListContainer.vue'
 import OverlayLoader from '@/components/OverlayLoader.vue'
 
 export default {
-    props: ['cocktail'],
-    data() {
-        return {
-            isLoading: false,
-            similarCocktails: []
-        };
-    },
     components: {
         CocktailListItem,
         CocktailListContainer,
         OverlayLoader
     },
+    props: {
+        fromCocktail: {
+            type: Object,
+            default() {
+                return {}
+            }
+        }
+    },
+    data() {
+        return {
+            isLoading: false,
+            similarCocktails: []
+        }
+    },
     watch: {
-        cocktail() {
+        fromCocktail() {
             this.fetchRelated()
         }
     },
     created() {
-        this.fetchRelated();
+        this.fetchRelated()
     },
     methods: {
         fetchRelated() {
-            this.isLoading = true;
-            ApiRequests.fetchSimilarCocktails(this.cocktail.id).then(data => {
+            this.isLoading = true
+            ApiRequests.fetchSimilarCocktails(this.fromCocktail.id).then(data => {
                 this.similarCocktails = data
-                this.isLoading = false;
+                this.isLoading = false
             }).catch(() => {
                 this.similarCocktails = []
-                this.isLoading = false;
+                this.isLoading = false
             })
         },
     }

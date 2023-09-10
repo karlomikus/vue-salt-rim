@@ -1,10 +1,10 @@
 <template>
     <div class="resource-search__refinements__refinement">
-        <h4 class="resource-search__refinements__refinement__title">{{ title }} <a href="#" v-show="isClearable" @click.prevent="clear">{{ $t('clear') }} {{ totalSelected }}</a></h4>
+        <h4 class="resource-search__refinements__refinement__title">{{ title }} <a v-show="isClearable" href="#" @click.prevent="clear">{{ $t('clear') }} {{ totalSelected }}</a></h4>
         <div class="resource-search__refinements__refinement__body">
             <slot>
-                <div class="resource-search__refinements__refinement__item" v-for="refinement in refinements">
-                    <input :type="type" :id="id + '-' + refinement.id" :value="refinement.value" v-model="model">
+                <div v-for="refinement in refinements" :key="refinement.id" class="resource-search__refinements__refinement__item">
+                    <input :id="id + '-' + refinement.id" v-model="model" :type="type" :value="refinement.value">
                     <label :for="id + '-' + refinement.id">{{ refinement.name }}</label>
                 </div>
             </slot>
@@ -13,16 +13,22 @@
 </template>
 <script>
 export default {
-    props: ['title', 'refinements', 'id', 'modelValue'],
     props: {
-        modelValue: null,
+        modelValue: {
+            type: [Object, Array],
+            default() {
+                return null
+            }
+        },
         title: {
             type: String,
             required: true
         },
         refinements: {
             type: Array,
-            default: []
+            default() {
+                return []
+            }
         },
         id: {
             type: String,
@@ -33,22 +39,23 @@ export default {
             default: 'checkbox'
         }
     },
-    emits: ['update:modelValue'],
+    emits: ['update:modelValue', 'change'],
     computed: {
         model: {
             get() {
-                return this.modelValue;
+                return this.modelValue
             },
             set(value) {
-                this.$emit("update:modelValue", value);
+                this.$emit('update:modelValue', value)
+                this.$emit('change', value)
             }
         },
         isClearable() {
             if (this.type == 'radio') {
-                return this.model && this.model != null;
+                return this.model && this.model != null
             }
 
-            return this.model && this.model.length > 0;
+            return this.model && this.model.length > 0
         },
         totalSelected() {
             if (!this.model || this.type == 'radio' || this.model.length == 0) {
@@ -61,12 +68,12 @@ export default {
     methods: {
         clear() {
             if (this.type == 'checkbox') {
-                this.model = [];
+                this.model = []
             } else {
-                this.model = null;
+                this.model = null
             }
 
-            this.$emit("change", this.model);
+            this.$emit('change', this.model)
         }
     }
 }

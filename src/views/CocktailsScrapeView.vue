@@ -1,9 +1,9 @@
 <script setup>
-import Import from '../components/Cocktail/Import.vue'
+import CocktailImport from '../components/Cocktail/CocktailImport.vue'
 </script>
 
 <template>
-  <main>
-    <Import />
-  </main>
+    <main>
+        <CocktailImport />
+    </main>
 </template>

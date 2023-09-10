@@ -8,18 +8,20 @@
         <div class="block-container block-container--padded">
             <div class="form-group">
                 <label class="form-label form-label--required">{{ $t('type') }}:</label>
-                <Radio title="URL" description="Import from a supported website" value="url" v-model="importType"></Radio>
-                <Radio title="JSON" description="Import from JSON format" value="json" v-model="importType"></Radio>
-                <Radio title="YAML" description="Import from YAML format" value="yaml" v-model="importType"></Radio>
-                <Radio title="Collection" description="Import from Bar Assistant JSON collection" value="collection" v-model="importType"></Radio>
+                <div class="import-types">
+                    <SaltRimRadio v-model="importType" title="URL" description="Import from a supported website" value="url"></SaltRimRadio>
+                    <SaltRimRadio v-model="importType" title="JSON" description="Import from JSON format" value="json"></SaltRimRadio>
+                    <SaltRimRadio v-model="importType" title="YAML" description="Import from YAML format" value="yaml"></SaltRimRadio>
+                    <SaltRimRadio v-model="importType" title="Collection" description="Import from Bar Assistant JSON collection" value="collection"></SaltRimRadio>
+                </div>
             </div>
             <div class="form-group">
                 <label class="form-label form-label--required" for="import-source">{{ $t('source') }}:</label>
-                <textarea class="form-input" id="import-source" rows="5" v-model="source" required></textarea>
+                <textarea id="import-source" v-model="source" class="form-input" rows="5" required></textarea>
             </div>
             <button type="button" class="button button--dark" @click.prevent="importCocktail">{{ $t('start-import') }}</button>
         </div>
-        <div class="scraper-form" v-if="result">
+        <div v-if="result" class="scraper-form">
             <div class="alert alert--info" style="margin: 1rem 0;">
                 <h3>{{ $t('information') }}</h3>
                 <p>{{ $t('scraper.information') }}</p>
@@ -28,61 +30,61 @@
             <div class="block-container block-container--padded">
                 <div class="form-group">
                     <label for="name">{{ $t('name') }}</label>
-                    <input type="text" class="form-input" id="name" v-model="result.name">
+                    <input id="name" v-model="result.name" type="text" class="form-input">
                 </div>
                 <div class="form-group">
                     <label for="description">{{ $t('description') }}</label>
-                    <textarea class="form-input" rows="4" id="description" v-model="result.description"></textarea>
+                    <textarea id="description" v-model="result.description" class="form-input" rows="4"></textarea>
                 </div>
                 <div class="form-group">
                     <label for="source">{{ $t('source') }}</label>
-                    <input type="text" class="form-input" id="source" v-model="result.source">
+                    <input id="source" v-model="result.source" type="text" class="form-input">
                 </div>
                 <div class="form-group">
                     <label for="glass">{{ $t('glass-type') }}</label>
-                    <input type="text" class="form-input" id="glass" v-model="result.glass">
+                    <input id="glass" v-model="result.glass" type="text" class="form-input">
                 </div>
                 <div class="form-group">
                     <label for="instructions">{{ $t('instructions') }}</label>
-                    <textarea class="form-input" rows="4" id="instructions" v-model="result.instructions"></textarea>
+                    <textarea id="instructions" v-model="result.instructions" class="form-input" rows="4"></textarea>
                 </div>
                 <div class="form-group">
                     <label for="garnish">{{ $t('garnish') }}</label>
-                    <textarea class="form-input" rows="3" id="garnish" v-model="result.garnish"></textarea>
+                    <textarea id="garnish" v-model="result.garnish" class="form-input" rows="3"></textarea>
                 </div>
                 <div class="form-group">
                     <label for="method">{{ $t('method') }}</label>
-                    <input type="text" class="form-input" id="method" v-model="result.method">
+                    <input id="method" v-model="result.method" type="text" class="form-input">
                 </div>
-                <template v-for="image in result.images">
+                <template v-for="image in result.images" :key="image.url">
                     <div class="form-group">
                         <label for="image_url">{{ $t('image-url') }}</label>
-                        <input type="text" class="form-input" id="image_url" v-model="image.url">
+                        <input id="image_url" v-model="image.url" type="text" class="form-input">
                     </div>
                     <div class="form-group">
                         <label for="image_copyrigh">{{ $t('image-copyright') }}</label>
-                        <input type="text" class="form-input" id="image_copyrigh" v-model="image.copyright">
+                        <input id="image_copyrigh" v-model="image.copyright" type="text" class="form-input">
                     </div>
                 </template>
                 <div class="form-group">
                     <label for="tags">{{ $t('tags') }}</label>
-                    <input type="text" class="form-input" id="tags" v-model="cocktailTags">
+                    <input id="tags" v-model="cocktailTags" type="text" class="form-input">
                 </div>
             </div>
             <h3 class="form-section-title">{{ $t('ingredients') }}</h3>
-            <div class="block-container block-container--padded scraper-ingredients__ingredient" v-for="(ingredient, idx) in result.ingredients">
+            <div v-for="(ingredient, idx) in result.ingredients" :key="idx" class="block-container block-container--padded scraper-ingredients__ingredient">
                 <div class="scraper-ingredients__ingredient__inputs">
                     <div class="form-group">
                         <label :for="'ingredient_name_' + idx">{{ $t('name') }}</label>
-                        <input type="text" class="form-input" :id="'ingredient_name_' + idx" v-model="ingredient.name">
+                        <input :id="'ingredient_name_' + idx" v-model="ingredient.name" type="text" class="form-input">
                     </div>
                     <div class="form-group">
                         <label :for="'ingredient_amount_' + idx">{{ $t('amount') }}</label>
-                        <input type="text" class="form-input" :id="'ingredient_amount_' + idx" v-model="ingredient.amount">
+                        <input :id="'ingredient_amount_' + idx" v-model="ingredient.amount" type="text" class="form-input">
                     </div>
                     <div class="form-group">
                         <label :for="'ingredient_units_' + idx">{{ $t('units') }}</label>
-                        <input type="text" class="form-input" :id="'ingredient_units_' + idx" v-model="ingredient.units">
+                        <input :id="'ingredient_units_' + idx" v-model="ingredient.units" type="text" class="form-input">
                     </div>
                 </div>
                 <div class="scraper-ingredients__ingredient__actions">
@@ -98,29 +100,24 @@
 </template>
 
 <script>
-import ApiRequests from "./../../ApiRequests.js";
+import ApiRequests from './../../ApiRequests.js'
 import OverlayLoader from './../OverlayLoader.vue'
 import PageHeader from './../PageHeader.vue'
-import Checkbox from './../Checkbox.vue'
-import Radio from "../Radio.vue";
+import SaltRimRadio from '../SaltRimRadio.vue'
 
 export default {
+    components: {
+        OverlayLoader,
+        PageHeader,
+        SaltRimRadio
+    },
     data() {
         return {
             isLoading: false,
             importType: 'url',
             source: null,
             result: null,
-        };
-    },
-    components: {
-        OverlayLoader,
-        PageHeader,
-        Checkbox,
-        Radio
-    },
-    created() {
-        document.title = `${this.$t('cocktails.import')} \u22C5 ${this.site_title}`
+        }
     },
     computed: {
         cocktailTags: {
@@ -129,89 +126,98 @@ export default {
             },
             set(newVal) {
                 if (Array.isArray(newVal)) {
-                    newVal = newVal.join(',');
+                    newVal = newVal.join(',')
                 }
 
                 if (newVal == '' || newVal == null || newVal == undefined) {
                     this.result.tags = []
                 } else {
-                    this.result.tags = [];
+                    this.result.tags = []
                     newVal.split(',').forEach(tagName => {
-                        this.result.tags.push({name: tagName})
+                        this.result.tags.push({ name: tagName })
                     })
                 }
             }
         },
     },
+    created() {
+        document.title = `${this.$t('cocktails.import')} \u22C5 ${this.site_title}`
+    },
     methods: {
         importCocktail() {
-            this.isLoading = true;
+            this.isLoading = true
             ApiRequests.importCocktail({ source: this.source }, { type: this.importType }).then(data => {
                 this.result = data
                 this.cocktailTags = data.tags
-                this.isLoading = false;
+                this.isLoading = false
                 if (this.importType == 'collection') {
                     this.$router.push({ name: 'cocktails', query: { 'filter[collection_id]': this.result.id } })
                 }
             }).catch(e => {
-                this.isLoading = false;
-                this.$toast.error(e.message);
+                this.isLoading = false
+                this.$toast.error(e.message)
             })
         },
         async matchIngredients() {
             for (const key in this.result.ingredients) {
                 if (Object.hasOwnProperty.call(this.result.ingredients, key)) {
-                    let scrapedIng = this.result.ingredients[key];
+                    const scrapedIngredient = this.result.ingredients[key]
+                    scrapedIngredient.substitutes = []
+                    scrapedIngredient.sort = 1
+                    scrapedIngredient.newIngredient = null
 
-                    const dbIngredients = await ApiRequests.fetchIngredients({"filter[name_exact]": scrapedIng.name, "per_page": 1}).catch(() => { return null })
-                    let dbIngredient = null;
-                    if (dbIngredients.length > 0) {
-                        dbIngredient = dbIngredients[0];
+                    let dbIngredient = null
+                    const possibleMatches = await ApiRequests.fetchIngredients({ 'filter[name_exact]': scrapedIngredient.name, 'per_page': 1 }).then(resp => resp.data).catch(() => { return [] })
+                    if (possibleMatches.length > 0) {
+                        dbIngredient = possibleMatches[0]
                     }
-
-                    scrapedIng.substitutes = [];
-                    scrapedIng.sort = 0;
 
                     // Ingredient not found, try to create a new one
                     if (!dbIngredient) {
                         dbIngredient = await ApiRequests.saveIngredient({
-                            name: scrapedIng.name,
-                            description: null,
-                            strength: 0,
-                            origin: null,
-                            color: null,
+                            name: scrapedIngredient.name,
+                            description: scrapedIngredient.description || null,
+                            strength: scrapedIngredient.strength || 0,
+                            origin: scrapedIngredient.origin || null,
+                            color: scrapedIngredient.color || null,
                             images: [],
                             ingredient_category_id: 1,
                         }).catch(() => { return null })
                     }
 
                     if (!dbIngredient) {
-                        this.$toast.error(`Unable to create ingredient with name ${scrapedIng.name}.`);
-                        continue;
+                        this.$toast.error(`Unable to create ingredient with name ${scrapedIngredient.name}.`)
+                        continue
                     }
 
-                    scrapedIng.ingredient_id = dbIngredient.id
-                    scrapedIng.ingredient_slug = dbIngredient.slug
-                    scrapedIng.name = dbIngredient.name
+                    scrapedIngredient.ingredient_id = dbIngredient.id
+                    scrapedIngredient.ingredient_slug = dbIngredient.slug
+                    scrapedIngredient.name = dbIngredient.name
                 }
             }
         },
         async matchGlass() {
             if (!this.result.glass) {
                 this.result.glass = {}
-                return;
+                return
             }
 
-            let dbGlass = await ApiRequests.findGlass({name: this.result.glass}).catch(() => { return null })
+            let dbGlass = await ApiRequests.fetchGlasses({ 'filter[name]': this.result.glass }).then(data => {
+                if (data.length == 0) {
+                    return null
+                }
+
+                return data[0]
+            }).catch(() => { return null })
 
             if (!dbGlass) {
-                dbGlass = await ApiRequests.saveGlass({name: this.result.glass, description: null}).catch(() => { return null })
+                dbGlass = await ApiRequests.saveGlass({ name: this.result.glass, description: null }).catch(() => { return null })
             }
 
             if (!dbGlass) {
-                this.$toast.error(`Unable to create a glass with name ${this.result.glass}.`);
+                this.$toast.error(`Unable to create a glass with name ${this.result.glass}.`)
                 this.result.glass = {}
-                return;
+                return
             }
 
             this.result.glass = {
@@ -220,12 +226,12 @@ export default {
         },
         async matchMethod() {
             if (!this.result.method) {
-                this.result.method = {};
-                return;
+                this.result.method = {}
+                return
             }
 
             const dbMethods = await ApiRequests.fetchCocktailMethods().catch(() => { return [] })
-            let foundMethodId = null;
+            let foundMethodId = null
             dbMethods.forEach(m => {
                 if (this.result.method.toLowerCase().includes(m.name.toLowerCase())) {
                     foundMethodId = m.id
@@ -233,8 +239,8 @@ export default {
             })
 
             if (!foundMethodId) {
-                this.result.method = {};
-                return;
+                this.result.method = {}
+                return
             }
 
             this.result.method = {
@@ -245,14 +251,14 @@ export default {
             this.result.ingredients.splice(
                 this.result.ingredients.findIndex(i => i == ingredient),
                 1
-            );
+            )
         },
         async goTo(routeName) {
-            this.isLoading = true;
-            await this.matchGlass();
-            await this.matchIngredients();
-            await this.matchMethod();
-            this.isLoading = false;
+            this.isLoading = true
+            await this.matchGlass()
+            await this.matchIngredients()
+            await this.matchMethod()
+            this.isLoading = false
             localStorage.setItem('scrapeResult', JSON.stringify(this.result))
             this.$router.push({ name: routeName })
         },
@@ -270,6 +276,7 @@ export default {
 .scraper-form .form-group label {
     flex-basis: 250px;
 }
+
 .scraper-form .form-group :is(input, select, textarea) {
     flex-grow: 1;
     width: auto;
@@ -288,5 +295,11 @@ export default {
 
 .scraper-ingredients__ingredient .form-group {
     margin-bottom: 0;
+}
+
+.import-types {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
 }
 </style>

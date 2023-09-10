@@ -1,5 +1,5 @@
 <template>
-    <div class="ingredient-details" v-if="ingredient.id">
+    <div v-if="ingredient.id" class="ingredient-details">
         <OverlayLoader v-if="isLoading" />
         <div class="details-block-container details-block-container--blue ingredient-details__box" style="margin-top: 100px;">
             <div class="ingredient-details__box__content">
@@ -11,13 +11,13 @@
                         <div class="item-details__chips__group__title">{{ $t('category') }}:</div>
                         <ul class="chips-list">
                             <li>
-                                <RouterLink :to="{name: 'ingredients', query: {'filter[category_id]': ingredient.category.id}}">{{ ingredient.category.name }}</RouterLink>
+                                <RouterLink :to="{ name: 'ingredients', query: { 'filter[category_id]': ingredient.category.id } }">{{ ingredient.category.name }}</RouterLink>
                             </li>
                         </ul>
                     </div>
                     <div class="item-details__chips__group">
                         <div class="item-details__chips__group__title">{{ $t('strength') }}:</div>
-                        <ul class="chips-list" v-if="ingredient.strength > 0">
+                        <ul v-if="ingredient.strength > 0" class="chips-list">
                             <li>
                                 <span><abbr :title="$t('ABV.definition')">{{ $t('ABV') }}</abbr>: {{ ingredient.strength + '%' }}</span>
                             </li>
@@ -31,7 +31,7 @@
                             </li>
                         </ul>
                     </div>
-                    <div class="item-details__chips__group" v-if="ingredient.origin">
+                    <div v-if="ingredient.origin" class="item-details__chips__group">
                         <div class="item-details__chips__group__title">{{ $t('origin') }}:</div>
                         <ul class="chips-list">
                             <li>
@@ -39,7 +39,7 @@
                             </li>
                         </ul>
                     </div>
-                    <div class="item-details__chips__group" v-if="isAddedToShelf || isAddedToShoppingList">
+                    <div v-if="isAddedToShelf || isAddedToShoppingList" class="item-details__chips__group">
                         <div class="item-details__chips__group__title">{{ $t('status') }}:</div>
                         <ul class="chips-list">
                             <li v-show="isAddedToShelf">
@@ -70,7 +70,7 @@
                     </svg>
                 </button>
                 <Dropdown>
-                    <template v-slot:default="{toggleDropdown}">
+                    <template #default="{ toggleDropdown }">
                         <button type="button" class="button-circle" @click="toggleDropdown">
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
                                 <path fill="none" d="M0 0h24v24H0z" />
@@ -79,7 +79,7 @@
                         </button>
                     </template>
                     <template #content>
-                        <RouterLink class="dropdown-menu__item" :to="{name: 'ingredients.form', query: {id: ingredient.id}}">
+                        <RouterLink class="dropdown-menu__item" :to="{ name: 'ingredients.form', query: { id: ingredient.id } }">
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
                                 <path fill="none" d="M0 0h24v24H0z" />
                                 <path d="M6.414 16L16.556 5.858l-1.414-1.414L5 14.586V16h1.414zm.829 2H3v-4.243L14.435 2.322a1 1 0 0 1 1.414 0l2.829 2.829a1 1 0 0 1 0 1.414L7.243 18zM3 20h18v2H3v-2z" />
@@ -108,26 +108,26 @@
                     </template>
                 </Dropdown>
             </div>
-            <h2 class="details-block-container__title">{{ $t('ingredient.cocktail-children', {total: ingredient.cocktails.length}) }}</h2>
-            <ul class="ingredient-chips-list" v-if="ingredient.cocktails.length > 0">
-                <li class="ingredient-chips-list__label" v-if="extraIfAddedToShelf.length > 0">{{ $t('ingredient-extra-cocktails-info') }}:</li>
-                <li v-for="cocktail in extraIfAddedToShelf">
-                    <RouterLink :to="{name: 'cocktails.show', params: {id: cocktail.slug}}">{{ cocktail.name }}</RouterLink>
+            <h2 class="details-block-container__title">{{ $t('ingredient.cocktail-children', { total: ingredient.cocktails.length }) }}</h2>
+            <ul v-if="ingredient.cocktails.length > 0" class="ingredient-chips-list">
+                <li v-if="extraIfAddedToShelf.length > 0" class="ingredient-chips-list__label">{{ $t('ingredient-extra-cocktails-info') }}:</li>
+                <li v-for="cocktail in extraIfAddedToShelf" :key="cocktail.id">
+                    <RouterLink :to="{ name: 'cocktails.show', params: { id: cocktail.slug } }">{{ cocktail.name }}</RouterLink>
                 </li>
-                <li class="ingredient-chips-list__label" v-if="extraIfAddedToShelf.length > 0 && defaultCocktails.length > 0">{{ $t('ingredient-cocktails-rest') }}:</li>
-                <li v-for="cocktail in defaultCocktails">
-                    <RouterLink :to="{name: 'cocktails.show', params: {id: cocktail.slug}}">{{ cocktail.name }}</RouterLink>
+                <li v-if="extraIfAddedToShelf.length > 0 && defaultCocktails.length > 0" class="ingredient-chips-list__label">{{ $t('ingredient-cocktails-rest') }}:</li>
+                <li v-for="cocktail in defaultCocktails" :key="cocktail.id">
+                    <RouterLink :to="{ name: 'cocktails.show', params: { id: cocktail.slug } }">{{ cocktail.name }}</RouterLink>
                 </li>
             </ul>
             <div v-else>
-                <RouterLink :to="{name: 'cocktails.form'}">{{ $t('cocktails.add') }}</RouterLink>
+                <RouterLink :to="{ name: 'cocktails.form' }">{{ $t('cocktails.add') }}</RouterLink>
             </div>
         </div>
-        <div class="details-block-container details-block-container--yellow" v-if="ingredient.varieties.length > 0">
+        <div v-if="ingredient.varieties.length > 0" class="details-block-container details-block-container--yellow">
             <h2 class="details-block-container__title">{{ $t('see-also') }}</h2>
             <ul class="ingredient-chips-list">
-                <li v-for="variety in ingredient.varieties">
-                    <RouterLink :to="{name: 'ingredients.show', params: {id: variety.slug}}">{{ variety.name }}</RouterLink>
+                <li v-for="variety in ingredient.varieties" :key="variety.slug">
+                    <RouterLink :to="{ name: 'ingredients.show', params: { id: variety.slug } }">{{ variety.name }}</RouterLink>
                 </li>
             </ul>
         </div>
@@ -135,13 +135,16 @@
 </template>
 
 <script>
-import ApiRequests from '@/ApiRequests';
-import Auth from '@/Auth.js'
-import Dropdown from '@/components/Dropdown.vue';
+import ApiRequests from './../../ApiRequests.js'
+import Dropdown from '@/components/SaltRimDropdown.vue'
 import OverlayLoader from '@/components/OverlayLoader.vue'
-import {micromark} from 'micromark'
+import { micromark } from 'micromark'
 
 export default {
+    components: {
+        Dropdown,
+        OverlayLoader
+    },
     data: () => ({
         isLoading: false,
         ingredient: {},
@@ -149,9 +152,26 @@ export default {
         isAddedToShoppingList: false,
         extraIfAddedToShelf: []
     }),
-    components: {
-        Dropdown,
-        OverlayLoader
+    computed: {
+        mainIngredientImageUrl() {
+            if (!this.ingredient.main_image_id) {
+                return '/no-ingredient.png'
+            }
+
+            return this.ingredient.images.filter((img) => img.id == this.ingredient.main_image_id)[0].url
+        },
+        parsedDescription() {
+            if (!this.ingredient.description) {
+                return null
+            }
+
+            return micromark(this.ingredient.description)
+        },
+        defaultCocktails() {
+            const removeIds = this.extraIfAddedToShelf.map(c => c.id)
+
+            return this.ingredient.cocktails.filter(c => !removeIds.includes(c.id))
+        }
     },
     watch: {
         ingredient(val) {
@@ -161,128 +181,111 @@ export default {
     created() {
         this.$watch(
             () => this.$route.params.id,
-            () => {
+            async () => {
                 if (this.$route.name == 'ingredients.show') {
-                    this.isLoading = true;
-                    this.isAddedToShelf = false;
-                    ApiRequests.fetchIngredient(this.$route.params.id).then(data => {
-                        this.ingredient = data
-                        this.isLoading = false;
-
-                        const currUser = Auth.getUser();
-                        this.isAddedToShoppingList = currUser.shopping_lists.includes(this.ingredient.id)
-
-                        ApiRequests.fetchMyShelf().then(data => {
-                            data.forEach(i => {
-                                if (i.ingredient_id == this.ingredient.id) {
-                                    this.isAddedToShelf = true;
-                                }
-                            })
-                        });
-
-                        this.refreshExtraCocktails()
-                    }).catch(e => {
-                        this.$toast.error(e.message);
-                    })
+                    await this.refreshIngredient()
                 }
             },
             { immediate: true }
         )
     },
-    computed: {
-        mainIngredientImageUrl() {
-            if (!this.ingredient.main_image_id) {
-                return '/no-ingredient.png';
-            }
-
-            return this.ingredient.images.filter((img) => img.id == this.ingredient.main_image_id)[0].url;
-        },
-        parsedDescription() {
-            if (!this.ingredient.description) {
-                return null;
-            }
-
-            return micromark(this.ingredient.description)
-        },
-        defaultCocktails() {
-            const removeIds = this.extraIfAddedToShelf.map(c => c.id);
-
-            return this.ingredient.cocktails.filter(c => !removeIds.includes(c.id));
-        }
-    },
     methods: {
+        async refreshIngredient() {
+            this.isLoading = true
+
+            this.ingredient = await ApiRequests.fetchIngredient(this.$route.params.id).catch(e => {
+                this.$toast.error(e.message)
+
+                return {}
+            })
+
+            const shelfIngredients = await ApiRequests.fetchMyShelf().catch(() => [])
+            const shoppingListIngredients = await ApiRequests.fetchShoppingList().catch(() => [])
+
+            this.isAddedToShelf = shelfIngredients.filter(i => i.ingredient_id == this.ingredient.id).length > 0
+            this.isAddedToShoppingList = shoppingListIngredients.filter(i => i.ingredient_id == this.ingredient.id).length > 0
+
+            await this.refreshExtraCocktails()
+
+            this.isLoading = false
+        },
         deleteIngredient() {
-            this.$confirm(this.$t('ingredient.delete-confirm', {name: this.ingredient.name, total: this.ingredient.cocktails.length}), {
+            this.$confirm(this.$t('ingredient.delete-confirm', { name: this.ingredient.name, total: this.ingredient.cocktails.length }), {
                 onResolved: (dialog) => {
                     dialog.close()
-                    this.isLoading = true;
-                    ApiRequests.deleteIngredient(this.ingredient.id).then(resp => {
-                        this.$toast.default(`Ingredient "${this.ingredient.name}" successfully removed`);
+                    this.isLoading = true
+                    ApiRequests.deleteIngredient(this.ingredient.id).then(() => {
+                        this.$toast.default(`Ingredient "${this.ingredient.name}" successfully removed`)
                         this.$router.push({ name: 'ingredients' })
-                        this.isLoading = false;
+                        this.isLoading = false
                     }).catch(e => {
                         this.$toast.error(e.message)
-                        this.isLoading = false;
+                        this.isLoading = false
                     })
                 }
-            });
+            })
         },
         toggleShelf() {
-            this.isLoading = true;
+            this.isLoading = true
+
+            const postData = {
+                ingredient_ids: [this.ingredient.id]
+            }
+
             if (this.isAddedToShelf) {
-                ApiRequests.removeIngredientFromShelf(this.ingredient.id).then(() => {
-                    this.isAddedToShelf = false;
-                    this.$toast.default(this.$t('ingredient.shelf-remove-success', {name: this.ingredient.name}));
-                    this.isLoading = false;
+                ApiRequests.removeIngredientsFromShelf(postData).then(() => {
+                    this.isAddedToShelf = false
+                    this.$toast.default(this.$t('ingredient.shelf-remove-success', { name: this.ingredient.name }))
+                    this.isLoading = false
                     this.refreshExtraCocktails()
                 }).catch(e => {
                     this.$toast.error(e.message)
-                    this.isLoading = false;
+                    this.isLoading = false
                 })
             } else {
-                ApiRequests.addIngredientToShelf(this.ingredient.id).then(() => {
-                    this.isAddedToShelf = true;
-                    this.$toast.default(this.$t('ingredient.shelf-add-success', {name: this.ingredient.name}));
-                    this.isLoading = false;
+                ApiRequests.addIngredientsToShelf(postData).then(() => {
+                    this.isAddedToShelf = true
+                    this.$toast.default(this.$t('ingredient.shelf-add-success', { name: this.ingredient.name }))
+                    this.isLoading = false
                     this.refreshExtraCocktails()
                 }).catch(e => {
                     this.$toast.error(e.message)
-                    this.isLoading = false;
+                    this.isLoading = false
                 })
             }
         },
         toggleShoppingList() {
-            this.isLoading = true;
+            this.isLoading = true
 
             const postData = {
                 ingredient_ids: [this.ingredient.id]
-            };
+            }
 
             if (this.isAddedToShoppingList) {
                 ApiRequests.removeIngredientsFromShoppingList(postData).then(() => {
-                    this.$toast.default(this.$t('ingredient.list-remove-success', {name: this.ingredient.name}));
-                    this.isAddedToShoppingList = false;
-                    this.isLoading = false;
+                    this.$toast.default(this.$t('ingredient.list-remove-success', { name: this.ingredient.name }))
+                    this.isAddedToShoppingList = false
+                    this.isLoading = false
                 }).catch(e => {
                     this.$toast.error(e.message)
-                    this.isLoading = false;
+                    this.isLoading = false
                 })
             } else {
                 ApiRequests.addIngredientsToShoppingList(postData).then(() => {
-                    this.$toast.default(this.$t('ingredient.list-add-success', {name: this.ingredient.name}))
+                    this.$toast.default(this.$t('ingredient.list-add-success', { name: this.ingredient.name }))
                     this.isAddedToShoppingList = true
-                    this.isLoading = false;
+                    this.isLoading = false
                 }).catch(e => {
                     this.$toast.error(e.message)
-                    this.isLoading = false;
+                    this.isLoading = false
                 })
             }
         },
-        refreshExtraCocktails() {
-            ApiRequests.fetchExtraCocktailsWithIngredient(this.ingredient.id).then(data => {
-                this.extraIfAddedToShelf = data;
+        async refreshExtraCocktails() {
+            return await ApiRequests.fetchExtraCocktailsWithIngredient(this.ingredient.id).then(data => {
+                this.extraIfAddedToShelf = data
             }).catch(e => {
-                this.$toast.error(e.message);
+                this.$toast.error(e.message)
             })
         }
     }

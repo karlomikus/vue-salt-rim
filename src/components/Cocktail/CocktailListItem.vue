@@ -13,28 +13,39 @@
 </template>
 
 <script>
-import ApiRequests from '@/ApiRequests.js';
+import ApiRequests from '@/ApiRequests.js'
 import MiniRating from '@/components/MiniRating.vue'
 
 export default {
-    props: ['cocktail', 'observer'],
     components: {
         MiniRating
     },
-    mounted() {
-        this.observer.observer.observe(this.$el)
+    props: {
+        cocktail: {
+            type: Object,
+            default() {
+                return {}
+            }
+        },
+        observer: {
+            type: IntersectionObserver,
+            default: null
+        }
     },
     computed: {
         mainCocktailImageUrl() {
             if (this.cocktail.main_image_id == null) {
-                return '/no-cocktail.jpg';
+                return '/no-cocktail.jpg'
             }
 
-            return ApiRequests.imageThumbUrl(this.cocktail.main_image_id);
+            return ApiRequests.imageThumbUrl(this.cocktail.main_image_id)
         },
         shortIngredients() {
             return this.cocktail.ingredients.map(i => i.name)
         }
+    },
+    mounted() {
+        this.observer.observer.observe(this.$el)
     }
 }
 </script>

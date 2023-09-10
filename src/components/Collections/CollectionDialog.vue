@@ -6,19 +6,19 @@
             <form action="">
                 <div class="form-group">
                     <label class="form-label" for="dialog-collection-id">{{ $t('collections.collection') }}:</label>
-                    <select class="form-select" id="dialog-collection-id" v-model="collectionId">
+                    <select id="dialog-collection-id" v-model="collectionId" class="form-select">
                         <option :value="null"> - {{ $t('collections.create') }} - </option>
-                        <option v-for="collection in collections" :value="collection.id">{{ collection.name }}</option>
+                        <option v-for="collection in collections" :key="collection.id" :value="collection.id">{{ collection.name }}</option>
                     </select>
                 </div>
                 <template v-if="!collectionId">
                     <div class="form-group">
                         <label class="form-label" for="dialog-collection-name">{{ $t('name') }}:</label>
-                        <input class="form-input" type="text" id="dialog-collection-name" v-model="newCollection.name">
+                        <input id="dialog-collection-name" v-model="newCollection.name" class="form-input" type="text">
                     </div>
                     <div class="form-group">
                         <label class="form-label" for="dialog-collection-description">{{ $t('description') }}:</label>
-                        <textarea rows="5" class="form-input" id="dialog-collection-description" v-model="newCollection.description"></textarea>
+                        <textarea id="dialog-collection-description" v-model="newCollection.description" rows="5" class="form-input"></textarea>
                     </div>
                 </template>
             </form>
@@ -34,18 +34,25 @@
 </template>
 
 <script>
-import ApiRequests from './../../ApiRequests.js';
+import ApiRequests from './../../ApiRequests.js'
 import OverlayLoader from './../OverlayLoader.vue'
 
 export default {
+    components: {
+        OverlayLoader,
+    },
     props: {
         cocktails: {
             type: Array,
-            default: []
+            default() {
+                return []
+            }
         },
         cocktailCollections: {
             type: Array,
-            default: []
+            default() {
+                return []
+            }
         },
         title: {
             type: String,
@@ -61,35 +68,32 @@ export default {
             collectionId: null
         }
     },
-    components: {
-        OverlayLoader,
-    },
-    mounted() {
-        this.fetchCollections()
-    },
     computed: {
         isPartOfCollection() {
             if (!this.collectionId) {
-                return false;
+                return false
             }
 
             return this.cocktailCollections.find((val) => val.id == this.collectionId)
         }
     },
+    mounted() {
+        this.fetchCollections()
+    },
     methods: {
         fetchCollections() {
-            this.isLoading = true;
+            this.isLoading = true
             ApiRequests.fetchCollections().then(data => {
-                this.isLoading = false;
+                this.isLoading = false
                 this.collections = data
             })
         },
         removeCocktailFromCollection() {
             this.$confirm(this.$t('collections.confirm-remove-cocktail'), {
                 onResolved: (dialog) => {
-                    this.isLoading = true;
-                    dialog.close();
-                    ApiRequests.removeCocktailFromCollection(this.collectionId, this.cocktails[0]).then(data => {
+                    this.isLoading = true
+                    dialog.close()
+                    ApiRequests.removeCocktailFromCollection(this.collectionId, this.cocktails[0]).then(() => {
                         this.$toast.default(this.$t('collections.cocktail-remove-success'))
                         this.$emit('collectionDialogClosed')
                         this.isLoading = false
@@ -98,13 +102,13 @@ export default {
                         this.isLoading = false
                     })
                 }
-            });
+            })
         },
         saveAndClose() {
             if (this.collectionId) {
-                this.isLoading = true;
-                ApiRequests.addCocktailsToCollection(this.collectionId, this.cocktails).then(data => {
-                    this.isLoading = false;
+                this.isLoading = true
+                ApiRequests.addCocktailsToCollection(this.collectionId, this.cocktails).then(() => {
+                    this.isLoading = false
                     this.$toast.default(this.$t('collections.cocktail-add-success'))
                     this.$emit('collectionDialogClosed')
                 }).catch(e => {
@@ -112,10 +116,10 @@ export default {
                     this.isLoading = false
                 })
             } else {
-                this.isLoading = true;
-                this.newCollection.cocktails = this.cocktails;
+                this.isLoading = true
+                this.newCollection.cocktails = this.cocktails
                 ApiRequests.saveCollection(this.newCollection).then(collectionData => {
-                    this.isLoading = false;
+                    this.isLoading = false
                     this.$toast.default(this.$t('collections.cocktail-add-success'))
                     this.collectionId = collectionData.id
                     this.$emit('collectionDialogClosed')
@@ -126,5 +130,5 @@ export default {
             }
         }
     }
-};
+}
 </script>

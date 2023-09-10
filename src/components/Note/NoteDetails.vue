@@ -6,31 +6,39 @@
 </template>
 
 <script>
-import dayjs from 'dayjs';
-import ApiRequests from './../../ApiRequests.js';
+import dayjs from 'dayjs'
+import ApiRequests from './../../ApiRequests.js'
 
 export default {
-    props: ['note'],
+    props: {
+        note: {
+            type: Object,
+            default() {
+                return {}
+            }
+        }
+    },
+    emits: ['noteDeleted'],
     computed: {
         createdDate() {
-            const date = dayjs(this.note.created_at).toDate();
+            const date = dayjs(this.note.created_at).toDate()
 
-            return this.$d(date, 'long');
+            return this.$d(date, 'long')
         }
     },
     methods: {
         deleteNote() {
             this.$confirm(this.$t('note.confirm-delete'), {
                 onResolved: (dialog) => {
-                    dialog.close();
+                    dialog.close()
                     ApiRequests.deleteNote(this.note.id).then(() => {
-                        this.$toast.default(this.$t('note.delete-success'));
-                        this.$emit('noteDeleted');
+                        this.$toast.default(this.$t('note.delete-success'))
+                        this.$emit('noteDeleted')
                     }).catch(e => {
-                        this.$toast.error(e.message);
+                        this.$toast.error(e.message)
                     })
                 }
-            });
+            })
         }
     }
 }

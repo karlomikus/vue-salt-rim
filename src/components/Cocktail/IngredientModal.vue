@@ -1,9 +1,13 @@
 <template>
     <div>
         <OverlayLoader v-if="isLoading" />
-        <IngredientFinder @ingredientSelected="selectIngredient"></IngredientFinder>
+        <IngredientFinder @ingredient-selected="selectIngredient"></IngredientFinder>
         <div style="margin: 1rem 0;">
-            <Checkbox v-model="isAddingSubstitute" id="substitute-adding">{{ $t('ingredient-dialog.select-substitutes') }}</Checkbox>
+            <!-- <Checkbox v-model="isAddingSubstitute" id="substitute-adding">{{ $t('ingredient-dialog.select-substitutes') }}</Checkbox> -->
+            <label class="form-checkbox">
+                <input v-model="isAddingSubstitute" type="checkbox">
+                <span>{{ $t('ingredient-dialog.select-substitutes') }}</span>
+            </label>
         </div>
         <div class="selected-ingredient">
             <small>{{ $t('ingredient-dialog.current') }}:</small>
@@ -12,18 +16,20 @@
         <div class="selected-ingredient selected-ingredient--substitutes">
             <small>{{ $t('substitutes') }}:</small>
             <p>
-                <span v-if="cocktailIngredient.substitutes.length > 0" v-for="substitute in cocktailIngredient.substitutes">{{ substitute.name }} &middot; <a href="#" @click.prevent="removeSubstitute(substitute)">{{ $t('remove') }}</a></span>
+                <template v-if="cocktailIngredient.substitutes.length > 0">
+                    <span v-for="substitute in cocktailIngredient.substitutes" :key="substitute.id">{{ substitute.name }} &middot; <a href="#" @click.prevent="removeSubstitute(substitute)">{{ $t('remove') }}</a></span>
+                </template>
                 <span v-else>{{ $t('no-substitutes') }}</span>
             </p>
         </div>
         <div class="ingredient-form-group">
             <div class="form-group">
                 <label class="form-label" for="ingredient-amount">{{ $t('amount') }}:</label>
-                <input class="form-input" type="text" id="ingredient-amount" v-model="normalizedAmount">
+                <input id="ingredient-amount" v-model="normalizedAmount" class="form-input" type="text">
             </div>
             <div class="form-group">
                 <label class="form-label" for="ingredient-units">{{ $t('units') }}:</label>
-                <input class="form-input" type="text" id="ingredient-units" list="common-units" v-model="cocktailIngredient.units">
+                <input id="ingredient-units" v-model="cocktailIngredient.units" class="form-input" type="text" list="common-units">
                 <p class="form-input-hint">{{ $t('units-help-text') }}</p>
                 <datalist id="common-units">
                     <option>ml</option>
@@ -36,22 +42,37 @@
             </div>
         </div>
         <div style="margin: 1rem 0;">
-            <Checkbox v-model="cocktailIngredient.optional" id="is-cocktail-ing-optional">{{ $t('ingredient-dialog.optional-checkbox') }}</Checkbox>
+            <!-- <Checkbox v-model="cocktailIngredient.optional" id="is-cocktail-ing-optional">{{ $t('ingredient-dialog.optional-checkbox') }}</Checkbox> -->
+            <label class="form-checkbox">
+                <input v-model="cocktailIngredient.optional" type="checkbox">
+                <span>{{ $t('ingredient-dialog.optional-checkbox') }}</span>
+            </label>
         </div>
         <div class="dialog-actions">
             <button type="button" class="button button--outline" @click="cancel">{{ $t('cancel') }}</button>
-            <button type="button" class="button button--dark" @click="save" :disabled="isLoading">{{ $t('save') }}</button>
+            <button type="button" class="button button--dark" :disabled="isLoading" @click="save">{{ $t('save') }}</button>
         </div>
     </div>
 </template>
 
 <script>
-import Checkbox from './../Checkbox.vue';
 import OverlayLoader from './../OverlayLoader.vue'
 import IngredientFinder from './../IngredientFinder.vue'
 
 export default {
-    props: ['value'],
+    components: {
+        OverlayLoader,
+        IngredientFinder,
+    },
+    props: {
+        value: {
+            type: Object,
+            default() {
+                return {}
+            }
+        }
+    },
+    emits: ['close'],
     data() {
         return {
             isLoading: false,
@@ -59,11 +80,6 @@ export default {
             currentQuery: null,
             isAddingSubstitute: false
         }
-    },
-    components: {
-        OverlayLoader,
-        IngredientFinder,
-        Checkbox
     },
     computed: {
         normalizedAmount: {
@@ -83,7 +99,7 @@ export default {
         selectIngredient(item) {
             if (this.isAddingSubstitute) {
                 if (this.cocktailIngredient.substitutes && this.cocktailIngredient.substitutes.some(sub => sub.id == item.id)) {
-                    return;
+                    return
                 }
 
                 this.cocktailIngredient.substitutes.push({
@@ -92,28 +108,28 @@ export default {
                     slug: item.slug,
                 })
             } else {
-                this.cocktailIngredient.ingredient_id = item.id;
-                this.cocktailIngredient.name = item.name;
-                this.cocktailIngredient.ingredient_slug = item.slug;
+                this.cocktailIngredient.ingredient_id = item.id
+                this.cocktailIngredient.name = item.name
+                this.cocktailIngredient.ingredient_slug = item.slug
             }
         },
         save() {
-            this.isAddingSubstitute = false;
-            this.$emit('close', {type: 'save'});
+            this.isAddingSubstitute = false
+            this.$emit('close', {type: 'save'})
         },
         cancel() {
             // this.cocktailIngredient.ingredient_id = null
-            this.isAddingSubstitute = false;
-            this.$emit('close', {type: 'cancel'});
+            this.isAddingSubstitute = false
+            this.$emit('close', {type: 'cancel'})
         },
         removeSubstitute(ing) {
             this.cocktailIngredient.substitutes.splice(
                 this.cocktailIngredient.substitutes.findIndex(i => i == ing),
                 1
-            );
+            )
         }
     },
-};
+}
 </script>
 
 <style scoped>

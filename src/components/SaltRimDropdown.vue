@@ -1,15 +1,15 @@
 <template>
     <div class="dropdown-wrapper">
         <slot :toggle-dropdown="toggleDropdown" />
-        <div class="popper" ref="content">
-            <div class="dropdown-menu" v-show="isShown">
+        <div ref="content" class="popper">
+            <div v-show="isShown" class="dropdown-menu">
                 <slot name="content" />
             </div>
         </div>
     </div>
 </template>
 <script>
-import { createPopper } from '@popperjs/core';
+import { createPopper } from '@popperjs/core'
 
 export default {
     data() {
@@ -19,7 +19,7 @@ export default {
         }
     },
     mounted() {
-        const btn = this.$el.querySelector('button');
+        const btn = this.$el.firstElementChild
 
         this.popper = createPopper(btn, this.$refs.content, {
             placement: 'bottom-end',
@@ -34,20 +34,20 @@ export default {
                     offset: [0, 5]
                 }
             }]
-        });
+        })
 
         document.addEventListener('click', e => {
             var dw = btn || null
             if (dw && !dw.contains(e.target)) {
                 this.isShown = false
             }
-        }, false);
+        }, false)
     },
     methods: {
         toggleDropdown() {
             this.isShown = !this.isShown
 
-            this.popper.update();
+            this.popper.update()
         }
     }
 }

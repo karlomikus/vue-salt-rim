@@ -1,14 +1,16 @@
 .block-container {
-    --clr-block-bg: rgba(255, 255, 255, .7);
+    --clr-block-bg: rgba(255, 255, 255, .4);
     --clr-block-bg-placeholder: #d9e3f6;
     --clr-block-bg-border: #a7badd;
     --clr-border: var(--clr-red-200);
     --clr-border-hover: var(--clr-red-500);
-    --bc-padding: 2rem;
+    --bc-padding: 1.75rem;
     background: var(--clr-block-bg);
-    border-bottom: 2px solid var(--clr-border);
+    border-bottom: 1px solid var(--clr-border);
+    border-top: 2px solid #fff;
     border-radius: 5px;
     transition: border-color ease-in-out 100ms;
+    box-shadow: var(--shadow-elevation-medium);
 }
 
 .dark-theme .block-container {
@@ -37,7 +39,8 @@
 }
 
 .block-container.block-container--hover:hover {
-    border-color: var(--clr-border-hover);
+    --clr-block-bg: rgba(255, 255, 255, .8);
+    border-bottom-color: var(--clr-border-hover);
 }
 
 .details-block-container {
@@ -67,20 +70,40 @@
     background-color: var(--clr-accent-blue);
 }
 
+.details-block-container.details-block-container--blue .details-block-container__title {
+    color: color-mix(in oklab, var(--clr-accent-blue) 20%, rgb(11, 14, 54));
+}
+
 .details-block-container.details-block-container--green {
     background-color: var(--clr-accent-green);
+}
+
+.details-block-container.details-block-container--green .details-block-container__title {
+    color: color-mix(in oklab, var(--clr-accent-green) 20%, rgb(14, 49, 27));
 }
 
 .details-block-container.details-block-container--yellow {
     background-color: var(--clr-accent-yellow);
 }
 
+.details-block-container.details-block-container--yellow .details-block-container__title {
+    color: color-mix(in oklab, var(--clr-accent-yellow) 20%, rgb(58, 41, 17));
+}
+
 .details-block-container.details-block-container--red {
     background-color: var(--clr-accent-red);
 }
 
+.details-block-container.details-block-container--red .details-block-container__title {
+    color: color-mix(in oklab, var(--clr-accent-red) 20%, rgb(58, 8, 8));
+}
+
 .details-block-container.details-block-container--purple {
     background-color: var(--clr-accent-purple);
+}
+
+.details-block-container.details-block-container--purple .details-block-container__title {
+    color: color-mix(in oklab, var(--clr-accent-purple) 20%, rgb(23, 9, 29));
 }
 
 .dark-theme .details-block-container {

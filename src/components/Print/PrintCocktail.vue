@@ -1,7 +1,7 @@
 <template>
     <div class="cocktail-print-container">
         <div class="print-first-row">
-            <div class="cocktail-print-image" v-if="cocktail.main_image_id">
+            <div v-if="cocktail.main_image_id" class="cocktail-print-image">
                 <img :src="cocktail.images[0].url" :alt="cocktail.images[0].copyright">
             </div>
             <div class="cocktail-main-info">
@@ -16,7 +16,7 @@
             <div class="print-ingredients">
                 <h2>{{ $t('ingredients') }}:</h2>
                 <ul>
-                    <li v-for="ingredient in cocktail.ingredients">
+                    <li v-for="ingredient in cocktail.ingredients" :key="ingredient.id">
                         {{ ingredientAmount(ingredient) }} &middot; {{ ingredient.name }}
                         <i v-if="ingredient.optional">({{ $t('optional') }})</i>
                     </li>
@@ -38,8 +38,9 @@
 </template>
 <script>
 import {micromark} from 'micromark'
-import ApiRequests from '@/ApiRequests';
-import Utils from "@/Utils";
+import ApiRequests from '@/ApiRequests'
+import Utils from '@/Utils'
+import AppState from './../../AppState'
 
 export default {
     data() {
@@ -51,30 +52,30 @@ export default {
     computed: {
         parsedDescription() {
             if (!this.cocktail.description) {
-                return null;
+                return null
             }
 
             return micromark(this.cocktail.description)
         },
         parsedInstructions() {
             if (!this.cocktail.instructions) {
-                return null;
+                return null
             }
 
             return micromark(this.cocktail.instructions)
         },
         parsedGarnish() {
             if (!this.cocktail.garnish) {
-                return null;
+                return null
             }
 
             return micromark(this.cocktail.garnish)
         },
     },
     created() {
-        window.addEventListener('afterprint', (e) => {
-            window.close();
-        });
+        window.addEventListener('afterprint', () => {
+            window.close()
+        })
 
         ApiRequests.fetchCocktail(this.$route.params.id).then(data => {
             this.cocktail = data
@@ -83,12 +84,13 @@ export default {
             //     window.print();
             // })
         }).catch(e => {
-            this.$toast.error(e.message);
+            this.$toast.error(e.message)
         })
     },
     methods: {
         ingredientAmount(ing) {
-            const defaultUnit = localStorage.getItem('defaultUnit');
+            const appState = new AppState()
+            const defaultUnit = appState.defaultUnit
 
             return Utils.printIngredientAmount(ing, defaultUnit)
         }

@@ -1,9 +1,9 @@
 <script setup>
-import Form from '../components/Ingredient/Form.vue'
+import Form from '../components/Ingredient/IngredientForm.vue'
 </script>
 
 <template>
-  <main>
-    <Form />
-  </main>
+    <main>
+        <Form />
+    </main>
 </template>

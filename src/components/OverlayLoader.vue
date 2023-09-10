@@ -1,10 +1,10 @@
 <script setup>
-import Spinner from './Spinner.vue'
+import SaltRimSpinner from './SaltRimSpinner.vue'
 </script>
 
 <template>
     <div class="overlay-loader">
-        <Spinner :size="50" />
+        <SaltRimSpinner :size="50" />
     </div>
 </template>
 
@@ -18,12 +18,9 @@ import Spinner from './Spinner.vue'
     background: var(--ol-clr-bg);
     width: 100%;
     height: 100%;
-    /* min-height: 200px;
-    min-width: 200px; */
     align-items: center;
     justify-content: center;
     z-index: 10;
-    border-radius: 15px;
 }
 
 .dark-theme .overlay-loader {

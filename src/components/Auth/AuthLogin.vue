@@ -1,15 +1,15 @@
 <template>
     <div class="login-page">
-        <Logo></Logo>
+        <SiteLogo></SiteLogo>
         <form @submit.prevent="login">
             <OverlayLoader v-if="isLoading"></OverlayLoader>
             <div class="form-group">
                 <label class="form-label" for="email">{{ $t('email') }}:</label>
-                <input class="form-input" type="email" id="email" v-model="email" required>
+                <input id="email" v-model="email" class="form-input" type="email" required>
             </div>
             <div class="form-group">
                 <label class="form-label" for="password">{{ $t('password') }}:</label>
-                <input class="form-input" type="password" id="password" v-model="password" required>
+                <input id="password" v-model="password" class="form-input" type="password" required>
             </div>
             <div class="server-status">
                 <div class="server-status__title">Bar Assistant server:</div>
@@ -23,7 +23,7 @@
                     </template>
                 </div>
             </div>
-            <div style="text-align: right; margin-top: 20px;" v-if="baServerAvailable">
+            <div v-if="baServerAvailable" style="text-align: right; margin-top: 20px;">
                 <RouterLink class="button button--outline" :to="{ name: 'register' }">{{ $t('register') }}</RouterLink>
                 <button type="submit" class="button button--dark" style="margin-left: 5px;" :disabled="!baServerAvailable">{{ $t('login') }}</button>
             </div>
@@ -32,26 +32,29 @@
 </template>
 
 <script>
-import Auth from '../Auth'
-import ApiRequests from '@/ApiRequests';
-import OverlayLoader from '@/components/OverlayLoader.vue';
-import Logo from '@/components/Logo.vue';
+import ApiRequests from './../../ApiRequests.js'
+import OverlayLoader from './../OverlayLoader.vue'
+import SiteLogo from './../Layout/SiteLogo.vue'
+import AppState from './../../AppState'
 
 export default {
+    components: {
+        OverlayLoader,
+        SiteLogo
+    },
     data() {
         return {
             isLoading: false,
             email: null,
             password: null,
             baServer: window.srConfig.API_URL,
-            meiliServer: window.srConfig.MEILISEARCH_URL,
             server: {},
-            meiliServer: {}
         }
     },
-    components: {
-        OverlayLoader,
-        Logo
+    computed: {
+        baServerAvailable() {
+            return this.server.version != null
+        },
     },
     created() {
         this.isLoading = true
@@ -62,30 +65,36 @@ export default {
             this.isLoading = false
         })
     },
-    computed: {
-        baServerAvailable() {
-            return this.server.version != null;
-        },
-        meiliServerAvailable() {
-            return this.meiliServer.status == 'available';
-        }
-    },
     methods: {
         login() {
             this.isLoading = true
-            const redirectPath = this.$route.query.redirect || '/'
+            const appState = new AppState()
+            let redirectPath = this.$route.query.redirect
 
             ApiRequests.fetchLoginToken(this.email, this.password).then(token => {
-                Auth.rememberToken(token)
-                ApiRequests.fetchUser().then(userData => {
-                    Auth.rememberUser(userData)
+                appState.setToken(token)
+                ApiRequests.fetchUser().then(user => {
+                    appState.setUser(user)
 
-                    this.$router.push(redirectPath);
+                    ApiRequests.fetchBars().then(bars => {
+                        if (bars.length == 1) {
+                            appState.setBar(bars[0])
+                            redirectPath = '/'
+                        } else {
+                            redirectPath = '/bars'
+                        }
+
+                        this.$router.push(redirectPath)
+                    })
+                }).catch(e => {
+                    appState.forgetUser()
+                    this.isLoading = false
+                    this.$toast.error(e.message)
                 })
             }).catch(e => {
                 this.isLoading = false
                 this.$toast.error(e.message)
-            });
+            })
         }
     }
 }

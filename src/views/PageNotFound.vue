@@ -1,17 +1,22 @@
 <template>
-  <main>
-    <div class="not-found">
-      <div class="not-found__hero">
-        <h1>404</h1>
-        <img src="/404.png" alt="">
-      </div>
-      <p>
-        Page not found!
-        <br>
-        <RouterLink to="/">Go back home</RouterLink>
-      </p>
-    </div>
-  </main>
+    <main>
+        <div class="not-found">
+            <div class="not-found__hero">
+                <h1>404</h1>
+                <img
+                    src="/404.png"
+                    alt=""
+                >
+            </div>
+            <p>
+                Page not found!
+                <br>
+                <RouterLink to="/">
+                    Go back home
+                </RouterLink>
+            </p>
+        </div>
+    </main>
 </template>
 
 <style scoped>

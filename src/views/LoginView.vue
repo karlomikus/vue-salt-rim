@@ -1,7 +1,7 @@
 <script setup>
-import Login from '../components/Login.vue'
+import AuthLogin from '../components/Auth/AuthLogin.vue'
 </script>
 
 <template>
-  <Login />
+    <AuthLogin />
 </template>

@@ -1,25 +1,25 @@
-import messages from './de-DE.json';
+import messages from './de-DE.json'
 
 const datetime = {
-    "short": {
-        "year": "numeric",
-        "month": "short",
-        "day": "numeric"
+    'short': {
+        'year': 'numeric',
+        'month': 'short',
+        'day': 'numeric'
     },
-    "long": {
-        "year": "numeric",
-        "month": "short",
-        "day": "numeric",
-        "weekday": "short",
-        "hour": "numeric",
-        "minute": "numeric"
+    'long': {
+        'year': 'numeric',
+        'month': 'short',
+        'day': 'numeric',
+        'weekday': 'short',
+        'hour': 'numeric',
+        'minute': 'numeric'
     }
-};
+}
 
 const numbers = {
     decimal: {
         style: 'decimal', minimumFractionDigits: 2, maximumFractionDigits: 2
     }
-};
+}
 
 export default { messages, datetime, numbers }
