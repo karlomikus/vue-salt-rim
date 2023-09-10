@@ -23,8 +23,6 @@
                             </template>
                         </SaltRimDialog>
                     </template>
-                    <!-- <RouterLink class="header-bar__navigation__link" :to="{ name: 'bars' }" :class="{ 'current-nav': $route.path.startsWith('/bars') }">{{ $t('bars.title') }}</RouterLink> -->
-                    <!-- <a v-if="isLoginDisabled !== true" href="#" @click.prevent="logout">{{ $t('logout') }} ({{ appState.user.name }})</a> -->
                     <SaltRimDropdown>
                         <template #default="{ toggleDropdown }">
                             <a class="header-bar__navigation__link" href="#" @click.prevent="toggleDropdown">
@@ -90,7 +88,6 @@ export default {
         return {
             appState: new AppState(),
             showSearchDialog: false,
-            isLoginDisabled: window.srConfig.DISABLE_LOGIN
         }
     },
     created() {
