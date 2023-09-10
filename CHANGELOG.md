@@ -2,6 +2,12 @@
 ## New
 - Added eslint
 
+# v1.20.2
+## Fixes
+- Fix image size preview in site search
+- Fix clear refinements not clearing correctly #111
+- Fix searching not resetting pagination #111
+
 # v1.20.1
 ## Fixes
 - Fix an issue with cocktail importing when glass or method was empty #108
