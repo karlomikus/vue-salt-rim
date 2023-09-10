@@ -54,7 +54,7 @@ const i18n = createI18n({
 
 app.config.globalProperties.app_version = '{{VERSION}}'
 app.config.globalProperties.$eventBus = emitter
-app.config.globalProperties.site_title = window.srConfig.BAR_NAME || 'Salt Rim'
+app.config.globalProperties.site_title = 'Salt Rim'
 
 app.use(router)
 app.use(dialog)
