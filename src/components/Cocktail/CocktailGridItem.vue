@@ -42,8 +42,10 @@ export default {
             }
         },
         observer: {
-            type: IntersectionObserver,
-            default: null
+            type: Object,
+            default() {
+                return {}
+            }
         }
     },
     data() {

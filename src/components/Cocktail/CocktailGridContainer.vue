@@ -28,7 +28,8 @@ export default {
 <style scoped>
 .cocktail-grid-container {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(var(--cocktail-grid-card-width), 1fr));
+    /* grid-template-columns: repeat(auto-fit, minmax(var(--cocktail-grid-card-width), 1fr)); */
+    grid-template-columns: repeat(auto-fill, minmax(max(var(--cocktail-grid-card-width), var(--cocktail-grid-card-width)), 1fr));
     gap: 1.5rem;
     margin-top: 2rem;
 }
