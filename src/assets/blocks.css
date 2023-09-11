@@ -31,7 +31,8 @@
 
 .block-container.block-container--placeholder {
     background: var(--clr-block-bg-placeholder);
-    border-color: var(--clr-block-bg-border);
+    border-top-color: #f5f9ff;
+    border-bottom-color: var(--clr-block-bg-border);
 }
 
 .block-container.block-container--padded {

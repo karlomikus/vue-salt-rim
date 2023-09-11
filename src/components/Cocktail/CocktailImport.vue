@@ -15,17 +15,36 @@
                     <SaltRimRadio v-model="importType" title="Collection" description="Import from Bar Assistant JSON collection" value="collection"></SaltRimRadio>
                 </div>
             </div>
-            <div class="form-group">
-                <label class="form-label form-label--required" for="import-source">{{ $t('source') }}:</label>
-                <textarea id="import-source" v-model="source" class="form-input" rows="5" required></textarea>
-            </div>
-            <button type="button" class="button button--dark" @click.prevent="importCocktail">{{ $t('start-import') }}</button>
-        </div>
-        <div v-if="result" class="scraper-form">
             <div class="alert alert--info" style="margin: 1rem 0;">
                 <h3>{{ $t('information') }}</h3>
                 <p>{{ $t('scraper.information') }}</p>
             </div>
+            <div v-if="importType === 'url'" class="form-group">
+                <label class="form-label form-label--required" for="import-source">{{ $t('source') }}:</label>
+                <input id="import-source" v-model="source" type="url" class="form-input" placeholder="https://" required>
+            </div>
+            <div v-else class="form-group">
+                <label class="form-label form-label--required" for="import-source">{{ $t('source') }}:</label>
+                <textarea id="import-source" v-model="source" class="form-input" rows="7" required></textarea>
+            </div>
+            <div v-if="importType === 'collection'" class="form-group">
+                <label class="form-label form-label--required">{{ $t('duplicate.actions') }}:</label>
+                <label class="form-checkbox">
+                    <input v-model="duplicateAction" name="import-duplicate" type="radio" :value="0">
+                    <span>{{ $t('duplicate.none') }}</span>
+                </label>
+                <label class="form-checkbox">
+                    <input v-model="duplicateAction" name="import-duplicate" type="radio" :value="1">
+                    <span>{{ $t('duplicate.skip') }}</span>
+                </label>
+                <label class="form-checkbox">
+                    <input v-model="duplicateAction" name="import-duplicate" type="radio" :value="2">
+                    <span>{{ $t('duplicate.overwrite') }}</span>
+                </label>
+            </div>
+            <button type="button" class="button button--dark" @click.prevent="importCocktail">{{ $t('start-import') }}</button>
+        </div>
+        <div v-if="result" class="scraper-form">
             <h3 class="form-section-title">{{ $t('recipe-information') }}</h3>
             <div class="block-container block-container--padded">
                 <div class="form-group">
@@ -76,7 +95,7 @@
                 <div class="scraper-ingredients__ingredient__inputs">
                     <div class="form-group">
                         <label :for="'ingredient_name_' + idx">{{ $t('name') }}</label>
-                        <input :id="'ingredient_name_' + idx" v-model="ingredient.name" type="text" class="form-input">
+                        <input :id="'ingredient_name_' + idx" v-model="ingredient.name" type="text" class="form-input" :disabled="ingredient.existingIngredient != null">
                     </div>
                     <div class="form-group">
                         <label :for="'ingredient_amount_' + idx">{{ $t('amount') }}</label>
@@ -87,10 +106,18 @@
                         <input :id="'ingredient_units_' + idx" v-model="ingredient.units" type="text" class="form-input">
                     </div>
                 </div>
+                <div v-if="ingredient.existingIngredient" class="scraper-ingredients__ingredient__existing"><span style="letter-spacing: -4px;">&boxur;&rtrif;</span> {{ $t('save-as') }} "{{ ingredient.existingIngredient.name }}" &middot; <a href="#" @click.prevent="resetIngredientMatch(ingredient)">{{ $t('cancel') }}</a></div>
                 <div class="scraper-ingredients__ingredient__actions">
+                    <a href="#" @click.prevent="manuallyMatch(ingredient)">{{ $t('import.manually-match') }}</a>
+                    &middot;
                     <a href="#" @click.prevent="removeIngredient(ingredient)">{{ $t('remove') }}</a>
                 </div>
             </div>
+            <SaltRimDialog v-model="showIngredientDialog">
+                <template #dialog>
+                    <IngredientFinder v-if="ingredientEdit" :initial-query="ingredientEdit.name" @ingredient-selected="handleIngredientEdit"></IngredientFinder>
+                </template>
+            </SaltRimDialog>
             <div class="form-actions">
                 <RouterLink class="button button--outline" :to="{ name: 'cocktails' }">{{ $t('cancel') }}</RouterLink>
                 <button type="button" class="button button--dark" @click="goTo('cocktails.form')">{{ $t('scraper.continue') }}</button>
@@ -104,19 +131,26 @@ import ApiRequests from './../../ApiRequests.js'
 import OverlayLoader from './../OverlayLoader.vue'
 import PageHeader from './../PageHeader.vue'
 import SaltRimRadio from '../SaltRimRadio.vue'
+import IngredientFinder from './../IngredientFinder.vue'
+import SaltRimDialog from '../Dialog/SaltRimDialog.vue'
 
 export default {
     components: {
         OverlayLoader,
         PageHeader,
-        SaltRimRadio
+        SaltRimRadio,
+        IngredientFinder,
+        SaltRimDialog
     },
     data() {
         return {
             isLoading: false,
             importType: 'url',
+            duplicateAction: 0,
             source: null,
             result: null,
+            ingredientEdit: null,
+            showIngredientDialog: false
         }
     },
     computed: {
@@ -148,6 +182,7 @@ export default {
             this.isLoading = true
             ApiRequests.importCocktail({ source: this.source }, { type: this.importType }).then(data => {
                 this.result = data
+                this.result.ingredients.map(i => i.existingIngredient = null)
                 this.cocktailTags = data.tags
                 this.isLoading = false
                 if (this.importType == 'collection') {
@@ -164,7 +199,10 @@ export default {
                     const scrapedIngredient = this.result.ingredients[key]
                     scrapedIngredient.substitutes = []
                     scrapedIngredient.sort = 1
-                    scrapedIngredient.newIngredient = null
+
+                    if (scrapedIngredient.existingIngredient) {
+                        continue
+                    }
 
                     let dbIngredient = null
                     const possibleMatches = await ApiRequests.fetchIngredients({ 'filter[name_exact]': scrapedIngredient.name, 'per_page': 1 }).then(resp => resp.data).catch(() => { return [] })
@@ -181,7 +219,7 @@ export default {
                             origin: scrapedIngredient.origin || null,
                             color: scrapedIngredient.color || null,
                             images: [],
-                            ingredient_category_id: 1,
+                            ingredient_category_id: null,
                         }).catch(() => { return null })
                     }
 
@@ -190,9 +228,11 @@ export default {
                         continue
                     }
 
-                    scrapedIngredient.ingredient_id = dbIngredient.id
-                    scrapedIngredient.ingredient_slug = dbIngredient.slug
-                    scrapedIngredient.name = dbIngredient.name
+                    scrapedIngredient.existingIngredient = {
+                        id: dbIngredient.id,
+                        slug: dbIngredient.slug,
+                        name: dbIngredient.name,
+                    }
                 }
             }
         },
@@ -253,12 +293,36 @@ export default {
                 1
             )
         },
+        manuallyMatch(ingredient) {
+            this.showIngredientDialog = true
+            this.ingredientEdit = ingredient
+        },
+        handleIngredientEdit(selectedIngredient) {
+            this.ingredientEdit.existingIngredient = {
+                id: selectedIngredient.id,
+                slug: selectedIngredient.slug,
+                name: selectedIngredient.name,
+            }
+            this.showIngredientDialog = false
+        },
+        resetIngredientMatch(ingredient) {
+            ingredient.existingIngredient = null
+        },
         async goTo(routeName) {
             this.isLoading = true
             await this.matchGlass()
             await this.matchIngredients()
             await this.matchMethod()
             this.isLoading = false
+
+            this.result.ingredients.map(i => {
+                i.ingredient_id = i.existingIngredient.id
+                i.ingredient_slug = i.existingIngredient.slug
+                i.name = i.existingIngredient.name
+
+                return i
+            })
+            console.log(this.result)
             localStorage.setItem('scrapeResult', JSON.stringify(this.result))
             this.$router.push({ name: routeName })
         },
@@ -295,6 +359,10 @@ export default {
 
 .scraper-ingredients__ingredient .form-group {
     margin-bottom: 0;
+}
+
+.scraper-ingredients__ingredient__existing {
+    font-weight: bold;
 }
 
 .import-types {

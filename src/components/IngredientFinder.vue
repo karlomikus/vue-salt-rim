@@ -1,10 +1,9 @@
 <template>
-    <ais-instant-search :search-client="searchClient" :index-name="index" class="ingredient-finder">
+    <ais-instant-search :search-client="searchClient" :index-name="index" class="ingredient-finder" :initial-ui-state="initialUiState">
         <ais-configure :hits-per-page="maxHits" />
-        <!-- <ais-search-box class="ingredient-finder__search-input" :placeholder="$t('placeholder.search-ingredients')" :class-names="{ 'ais-SearchBox-input': 'form-input' }" v-model="currentQuery" /> -->
         <ais-search-box autofocus>
             <template #default="{ refine }">
-                <input ref="finderSearchInput" v-model="currentQuery" class="form-input ingredient-finder__search-input" type="search" :placeholder="$t('placeholder.search-ingredients')" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" maxlength="512" @input="refine($event.currentTarget.value)">
+                <input v-model="currentQuery" class="form-input ingredient-finder__search-input" type="search" :placeholder="$t('placeholder.search-ingredients')" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" maxlength="512" @input="refine($event.currentTarget.value)">
             </template>
         </ais-search-box>
         <ais-hits class="ingredient-finder__hits">
@@ -40,6 +39,10 @@ export default {
                 return {}
             }
         },
+        initialQuery: {
+            type: String,
+            default: null,
+        },
         maxHits: {
             type: Number,
             default: 15
@@ -55,8 +58,13 @@ export default {
     data() {
         return {
             isLoading: false,
-            currentQuery: null,
+            currentQuery: this.initialQuery,
             index: 'ingredients:name:asc',
+            initialUiState: {
+                'ingredients:name:asc': {
+                    query: this.initialQuery,
+                },
+            },
             searchClient: instantMeiliSearch(
                 appState.bar.search_driver_host,
                 appState.bar.search_driver_api_key,
@@ -81,7 +89,7 @@ export default {
                 origin: null,
                 color: null,
                 images: [],
-                ingredient_category_id: 1,
+                ingredient_category_id: null,
             }).then(data => {
                 this.$toast.default(this.$t('ingredient-dialog.new-ingredient-success', { name: data.name }))
                 this.selectIngredient({

@@ -310,7 +310,7 @@ export default {
                 main_ingredients: false,
                 on_shopping_list: false,
                 strength: null
-            };
+            }
 
             this.updateRouterPath()
         },

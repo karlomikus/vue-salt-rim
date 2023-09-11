@@ -52,7 +52,7 @@ const i18n = createI18n({
     }
 })
 
-app.config.globalProperties.app_version = '{{VERSION}}'
+app.config.globalProperties.app_version = window.srConfig.VERSION || 'local'
 app.config.globalProperties.$eventBus = emitter
 app.config.globalProperties.site_title = 'Salt Rim'
 
