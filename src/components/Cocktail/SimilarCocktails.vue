@@ -4,9 +4,9 @@
         <CocktailListContainer v-if="similarCocktails.length > 0" v-slot="observer">
             <CocktailListItem v-for="cocktail in similarCocktails" :key="cocktail.id" :cocktail="cocktail" :observer="observer" />
         </CocktailListContainer>
-        <div v-else class="empty-state">
-            <p>{{ $t('no-cocktails') }}</p>
-        </div>
+        <EmptyState v-else>
+            {{ $t('no-cocktails') }}
+        </EmptyState>
     </div>
 </template>
 <script>
@@ -14,12 +14,14 @@ import ApiRequests from '@/ApiRequests'
 import CocktailListItem from '@/components/Cocktail/CocktailListItem.vue'
 import CocktailListContainer from '@/components/Cocktail/CocktailListContainer.vue'
 import OverlayLoader from '@/components/OverlayLoader.vue'
+import EmptyState from '../EmptyState.vue'
 
 export default {
     components: {
         CocktailListItem,
         CocktailListContainer,
-        OverlayLoader
+        OverlayLoader,
+        EmptyState
     },
     props: {
         fromCocktail: {

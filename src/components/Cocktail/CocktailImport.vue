@@ -180,18 +180,26 @@ export default {
     methods: {
         importCocktail() {
             this.isLoading = true
-            ApiRequests.importCocktail({ source: this.source }, { type: this.importType }).then(data => {
-                this.result = data
-                this.result.ingredients.map(i => i.existingIngredient = null)
-                this.cocktailTags = data.tags
-                this.isLoading = false
-                if (this.importType == 'collection') {
-                    this.$router.push({ name: 'cocktails', query: { 'filter[collection_id]': this.result.id } })
-                }
-            }).catch(e => {
-                this.isLoading = false
-                this.$toast.error(e.message)
-            })
+            if (this.importType == 'collection') {
+                this.$toast.default(`Started importing collection.`)
+
+                ApiRequests.importCocktail({ source: this.source, duplicate_actions: this.duplicateAction }, { type: 'collection' }).then(data => {
+                    this.$router.push({ name: 'cocktails' })
+                }).catch(e => {
+                    this.isLoading = false
+                    this.$toast.error(e.message)
+                })
+            } else {
+                ApiRequests.importCocktail({ source: this.source, duplicate_actions: this.duplicateAction }, { type: this.importType }).then(data => {
+                    this.result = data
+                    this.result.ingredients.map(i => i.existingIngredient = null)
+                    this.cocktailTags = data.tags
+                    this.isLoading = false
+                }).catch(e => {
+                    this.isLoading = false
+                    this.$toast.error(e.message)
+                })
+            }
         },
         async matchIngredients() {
             for (const key in this.result.ingredients) {
