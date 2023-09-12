@@ -49,7 +49,7 @@ export default {
     margin-bottom: 1rem;
     background-color: rgba(255, 255, 255, .3);
     padding: 1rem;
-    border-radius: 3px;
+    border-radius: var(--radius-1);
 }
 
 .dark-theme .note {

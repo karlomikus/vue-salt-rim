@@ -157,7 +157,7 @@ export default {
 }
 
 .header-bar__navigation__link.current-nav {
-    border-radius: 3px;
+    border-radius: var(--radius-1);
     color: #fff;
     background-color: rgba(0, 0, 0, .3);
 }
@@ -166,7 +166,7 @@ export default {
     font-size: 0.7rem;
     border: 1px solid #fff;
     padding: 1px 3px;
-    border-radius: 2px;
+    border-radius: var(--radius-1);
     opacity: .6;
 }
 

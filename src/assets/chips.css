@@ -54,7 +54,7 @@
     font-size: 0.9rem;
     box-shadow: 0 2px 0 var(--cl-clr-border);
     background-color: var(--cl-clr-bg);
-    border-radius: 0.25rem;
+    border-radius: var(--radius-1);
     text-decoration: none;
 }
 

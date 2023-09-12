@@ -92,7 +92,6 @@ export default {
 <style scoped>
 .cocktail-grid-item {
     --_image-size: 325px;
-    --_border-radius: 1rem;
     --_clr-content: var(--clr-gray-500);
     text-align: center;
     border-width: 3px;
@@ -119,7 +118,7 @@ export default {
 
 .cocktail-grid-item__content {
     padding: 1.5rem;
-    border-radius: var(--_border-radius);
+    border-radius: var(--radius-3);
     margin-top: -2.25rem;
     background-color: #fcf9fb;
     height: 100%;
@@ -148,8 +147,8 @@ export default {
 .cocktail-grid-item__graphic img {
     width: 100%;
     height: var(--_image-size);
-    border-top-left-radius: var(--_border-radius);
-    border-top-right-radius: var(--_border-radius);
+    border-top-left-radius: var(--radius-3);
+    border-top-right-radius: var(--radius-3);
     object-fit: cover;
 }
 
@@ -176,7 +175,7 @@ export default {
     justify-content: center;
     width: 22px;
     height: 22px;
-    border-radius: 50%;
+    border-radius: var(--radius-round);
 }
 
 .cocktail-badge svg {

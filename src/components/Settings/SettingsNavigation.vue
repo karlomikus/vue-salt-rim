@@ -48,7 +48,7 @@ export default {
     padding: 5px 10px;
     background-color: var(--sn-clr-bg);
     text-decoration: none;
-    border-radius: 5px;
+    border-radius: var(--radius-2);
 }
 
 .settings-nav a.router-link-exact-active {

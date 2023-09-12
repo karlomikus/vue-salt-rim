@@ -120,7 +120,7 @@ export default {
     height: 15rem;
     overflow-y: auto;
     padding: 0.5rem;
-    border-radius: 5px;
+    border-radius: var(--radius-2);
     border-top-left-radius: 0;
     border-top-right-radius: 0;
     border: 2px solid var(--clr-gray-100);
@@ -131,7 +131,7 @@ export default {
 .ingredient-finder__options a {
     display: block;
     padding: 0.25rem 0.5rem;
-    border-radius: 4px;
+    border-radius: var(--radius-1);
 }
 
 .ingredient-finder__options a:hover {

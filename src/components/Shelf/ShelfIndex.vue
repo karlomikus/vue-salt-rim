@@ -267,7 +267,7 @@ export default {
 
 .stats__stat {
     background-color: var(--stats-clr-bg);
-    border-radius: 10px;
+    border-radius: var(--radius-3);
     padding: 15px;
 }
 

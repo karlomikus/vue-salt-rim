@@ -544,7 +544,7 @@ export default {
 .cocktail-details__graphic {
     background-color: #fff;
     box-shadow: 0 -3px 15px rgba(0, 0, 0, .03);
-    border-radius: 20px;
+    border-radius: var(--radius-3);
     overflow: hidden;
     isolation: isolate;
     margin-bottom: 2rem;
@@ -598,7 +598,7 @@ export default {
     display: inline-block;
     background-color: rgba(0, 0, 0, .4);
     color: #fff;
-    border-radius: 15px;
+    border-radius: var(--radius-3);
     padding: 2px 7px;
     font-size: 0.7rem;
 }
@@ -630,7 +630,7 @@ export default {
 
 .cocktail-ingredients li {
     background-color: var(--ci-clr-list-bg);
-    border-radius: 4px;
+    border-radius: var(--radius-2);
     margin-bottom: 0.5rem;
     padding: 0.5rem 0.75rem;
 }

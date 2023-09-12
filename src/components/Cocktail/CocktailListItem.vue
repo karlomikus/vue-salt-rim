@@ -73,7 +73,7 @@ export default {
 .cocktail-list-item__graphic__image {
     width: var(--image-size);
     height: var(--image-size);
-    border-radius: 0.325rem;
+    border-radius: var(--radius-1);
     background-color: #fff;
     background-size: cover;
     background-position: center center;

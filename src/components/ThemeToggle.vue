@@ -63,7 +63,7 @@ export default {
     width: 36px;
     height: 36px;
     cursor: pointer;
-    border-radius: 50%;
+    border-radius: var(--radius-round);
     margin-left: 0.25rem;
 }
 

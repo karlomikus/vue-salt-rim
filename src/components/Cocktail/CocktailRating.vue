@@ -48,7 +48,7 @@ export default {
     background-color: rgb(255, 238, 216);
     display: block;
     padding: 0 5px;
-    border-radius: 3px;
+    border-radius: var(--radius-1);
     font-size: 0.7rem;
     font-weight: bold;
 }

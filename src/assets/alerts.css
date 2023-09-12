@@ -5,7 +5,7 @@
     background: var(--_clr-bg);
     border: 2px solid var(--_clr-border);
     padding: 1rem;
-    border-radius: .3rem;
+    border-radius: var(--radius-1);
     color: var(--_clr-text);
 }
 

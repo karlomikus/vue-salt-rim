@@ -6,7 +6,7 @@
       0px 4px 4.5px -2.5px hsl(var(--shadow-color) / 0.1);
     background-color: #fff;
     padding: 8px;
-    border-radius: 12px;
+    border-radius: var(--radius-3);
     display: flex;
     flex-direction: column;
     max-width: 270px;
@@ -20,7 +20,7 @@
     align-items: center;
     color: black;
     font-size: 0.9rem;
-    border-radius: 6px;
+    border-radius: var(--radius-2);
     text-decoration: none;
     white-space: nowrap;
 }

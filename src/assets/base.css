@@ -86,6 +86,13 @@
     --clr-dark-main-800: #2C2734;
     --clr-dark-main-900: #16141A;
     --clr-dark-main-950: #0A090C;
+
+    --radius-1: 3px;
+    --radius-2: 5px;
+    --radius-3: 10px;
+    --radius-4: 15px;
+    --radius-5: 30px;
+    --radius-round: 50%;
 }
 
 .dark-theme {

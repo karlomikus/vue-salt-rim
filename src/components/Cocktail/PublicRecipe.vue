@@ -135,7 +135,7 @@ export default {
     place-content: center;
     margin-inline: auto;
     background: var(--clr-content-bg);
-    border-radius: 1rem;
+    border-radius: var(--radius-3);
     overflow: hidden;
     box-shadow: var(--shadow-elevation-medium);
     align-items: start;
@@ -170,7 +170,7 @@ export default {
     display: inline-block;
     background-color: rgba(0, 0, 0, .4);
     color: #fff;
-    border-radius: 15px;
+    border-radius: var(--radius-3);
     padding: 2px 7px;
     font-size: 0.7rem;
     z-index: 2;

@@ -105,7 +105,7 @@ export default {
     background: #fff;
     margin-bottom: 1rem;
     padding: 0.5rem;
-    border-radius: 0.25rem;
+    border-radius: var(--radius-1);
     border: 2px solid var(--clr-gray-200);
 }
 

@@ -121,7 +121,7 @@ export default {
     list-style: none;
     margin: 0;
     padding: 0.5rem;
-    border-radius: 0.5rem;
+    border-radius: var(--radius-2);
     background: var(--clr-sa-results-bg);
 }
 
@@ -130,7 +130,7 @@ export default {
     align-items: center;
     width: 100%;
     padding: 0.5rem;
-    border-radius: 0.25rem;
+    border-radius: var(--radius-1);
     text-decoration: none;
 }
 
@@ -147,7 +147,7 @@ export default {
 .site-autocomplete__results li a .site-autocomplete__results__image {
     width: 45px;
     height: 45px;
-    border-radius: 5px;
+    border-radius: var(--radius-2);
     background-color: #eae4e9;
     background-position: center center;
     background-size: cover;
@@ -195,7 +195,7 @@ export default {
     --clr-key-border: var(--clr-gray-200);
     background: var(--clr-bg);
     padding: 0.5rem 1rem;
-    border-radius: 0.125rem;
+    border-radius: var(--radius-1);
     font-size: 0.9rem;
     margin-top: 1rem;
 }
@@ -207,7 +207,7 @@ export default {
 }
 
 .site-autocomplete__footer span {
-    border-radius: 3px;
+    border-radius: var(--radius-1);
     font-size: 0.8rem;
     border: 1px solid var(--clr-key-border);
     background-color: var(--clr-key-bg);

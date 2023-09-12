@@ -6,7 +6,7 @@
     padding: var(--button-padding);
     border: 2px solid transparent;
     margin: 0;
-    border-radius: 0.25rem;
+    border-radius: var(--radius-1);
     font-size: 1rem;
     cursor: pointer;
     background: none;
@@ -129,7 +129,7 @@
     height: 3rem;
     background: var(--clr-gray-50);
     overflow: hidden;
-    border-radius: 50%;
+    border-radius: var(--radius-round);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -178,7 +178,7 @@
     border-top-color: transparent;
     border-left-color: transparent;
     border-right-color: transparent;
-    border-radius: 5px;
+    border-radius: var(--radius-2);
     height: 3rem;
 }
 

@@ -189,7 +189,7 @@ export default {
     --iu-clr-bg: rgba(255, 255, 255, .5);
     --iu-clr-border: var(--clr-red-300);
     border: 2px dashed var(--iu-clr-border);
-    border-radius: 4px;
+    border-radius: var(--radius-2);
     display: flex;
     background: var(--iu-clr-bg);
     padding: 1rem;
@@ -216,7 +216,7 @@ export default {
 .image-upload__select__icon {
     width: 60px;
     height: 60px;
-    border-radius: 50%;
+    border-radius: var(--radius-round);
     margin-right: 1rem;
     flex-shrink: 0;
     background: var(--clr-red-100);

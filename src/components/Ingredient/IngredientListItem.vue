@@ -103,7 +103,7 @@ export default {
 .ingredient-list-item__image {
     width: 70px;
     height: 70px;
-    border-radius: 5px;
+    border-radius: var(--radius-2);
     display: flex;
     align-items: center;
     justify-content: center;

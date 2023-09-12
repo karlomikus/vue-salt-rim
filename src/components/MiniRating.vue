@@ -23,7 +23,7 @@ export default {
     color: rgb(180, 108, 0);
     font-size: 0.85rem;
     padding: 1px 5px;
-    border-radius: 4px;
+    border-radius: var(--radius-2);
 }
 
 .dark-theme .mini-rating {

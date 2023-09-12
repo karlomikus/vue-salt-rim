@@ -54,7 +54,7 @@ export default {
     --radio-size: 1.85rem;
     background: var(--clr-bg);
     border: 2px solid var(--clr-border);
-    border-radius: 5px;
+    border-radius: var(--radius-2);
     margin: 0;
     padding: 0.5rem 1.5rem 0.5rem 0.5rem;
     cursor: pointer;

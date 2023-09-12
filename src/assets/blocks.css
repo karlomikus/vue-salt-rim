@@ -8,7 +8,7 @@
     background: var(--clr-block-bg);
     border-bottom: 1px solid var(--clr-border);
     border-top: 2px solid #fff;
-    border-radius: 5px;
+    border-radius: var(--radius-2);
     transition: border-color ease-in-out 100ms;
     box-shadow: var(--shadow-elevation-medium);
 }
@@ -50,7 +50,7 @@
     background-color: #fff;
     padding: var(--details-block-padding) var(--details-block-padding) calc(var(--details-block-padding) * 2) var(--details-block-padding);
     margin-top: calc(var(--details-block-offset) * -1.2);
-    border-radius: var(--details-block-offset);
+    border-radius: var(--radius-3);
     border-bottom-left-radius: 0;
     border-bottom-right-radius: 0;
     box-shadow: 0 -3px 15px rgba(0, 0, 0, .03);

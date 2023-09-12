@@ -175,7 +175,7 @@ export default {
 .bar__role {
     background-color: var(--clr-gray-100);
     padding: 1px 3px;
-    border-radius: 3px;
+    border-radius: var(--radius-1);
     font-size: 0.6rem;
     text-transform: uppercase;
     letter-spacing: 1px;

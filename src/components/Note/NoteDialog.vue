@@ -65,7 +65,7 @@ export default {
     font-weight: var(--fw-bold);
     font-size: 1.25rem;
     font-family: monospace;
-    border-radius: 0.25rem;
+    border-radius: var(--radius-1);
 }
 
 .dark-theme .public-url {

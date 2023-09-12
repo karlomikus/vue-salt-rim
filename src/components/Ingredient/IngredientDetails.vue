@@ -297,7 +297,7 @@ export default {
     flex-shrink: 0;
     padding: 30px;
     background-color: #fff;
-    border-radius: 30px;
+    border-radius: var(--radius-4);
 }
 
 .ingredient-details .ingredient-details__content {
@@ -412,7 +412,7 @@ export default {
     font-size: 0.9rem;
     box-shadow: 0 2px 0 var(--icl-clr-border);
     background-color: var(--icl-clr-bg);
-    border-radius: 3px;
+    border-radius: var(--radius-1);
     text-decoration: none;
 }
 

@@ -191,7 +191,7 @@ export default {
     width: var(--image-size);
     height: var(--image-size);
     text-align: center;
-    border-radius: 0.415rem;
+    border-radius: var(--radius-2);
     display: flex;
     align-items: center;
     justify-content: center;

@@ -16,7 +16,7 @@
 .modal {
     background: var(--clr-red-50);
     box-shadow: 0 10px 20px 1px rgb(71, 71, 71, 0.3);
-    border-radius: 15px;
+    border-radius: var(--radius-3);
     overflow-x: auto;
     display: flex;
     flex-direction: column;
@@ -40,7 +40,7 @@
 
 @media (max-width: 450px) {
     .modal {
-        border-radius: 8px;
+        border-radius: var(--radius-2);
     }
 
     .modal-body {
