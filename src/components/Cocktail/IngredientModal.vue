@@ -133,11 +133,6 @@ export default {
 </script>
 
 <style scoped>
-.modal .ais-SearchBox-reset,
-.modal .ais-SearchBox-submit {
-    display: none;
-}
-
 .selected-ingredient {
     margin: 1rem 0;
     line-height: 1.3;

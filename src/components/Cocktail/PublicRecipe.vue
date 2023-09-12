@@ -124,12 +124,6 @@ export default {
     --clr-content-bg: var(--clr-gray-50);
     --clr-content: var(--clr-gray-600);
     --clr-marker: var(--clr-red-800);
-    --shadow-color: 239deg 26% 22%;
-    --shadow-elevation-medium:
-        0px 0.8px 0.9px hsl(var(--shadow-color) / 0.28),
-        -0.1px 2.6px 3.1px -0.7px hsl(var(--shadow-color) / 0.3),
-        -0.1px 6.3px 7.4px -1.4px hsl(var(--shadow-color) / 0.32),
-        -0.3px 14.9px 17.5px -2.1px hsl(var(--shadow-color) / 0.35);
     display: grid;
     grid-template-columns: 1fr 1fr;
     place-content: center;
@@ -137,7 +131,7 @@ export default {
     background: var(--clr-content-bg);
     border-radius: var(--radius-3);
     overflow: hidden;
-    box-shadow: var(--shadow-elevation-medium);
+    box-shadow: var(--shadow-elevation-medium-dark);
     align-items: start;
 }
 

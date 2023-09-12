@@ -142,7 +142,7 @@
       0px 1.4px 1.6px -0.8px hsl(var(--shadow-color) / 0.11),
       0px 3.4px 3.8px -1.7px hsl(var(--shadow-color) / 0.11),
       0px 8.3px 9.3px -2.5px hsl(var(--shadow-color) / 0.11);
-    box-shadow: var(--shadow-elevation-medium), inset 0 2px 0 rgba(255, 255, 255, .6);
+    box-shadow: var(--shadow-elevation-medium), inset 0 2px 0 rgba(255, 255, 255, .4);
 }
 
 .button-circle svg {
