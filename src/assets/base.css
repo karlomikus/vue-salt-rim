@@ -3,16 +3,16 @@
 
 :root {
     /* Base color scheme */
-    --clr-red-50: #FAF5F8;
-    --clr-red-100: #F5EAF2;
-    --clr-red-200: #ECD5E5;
-    --clr-red-300: #E1BDD5;
-    --clr-red-400: #D29DC1;
-    --clr-red-500: #C178AA;
-    --clr-red-600: #B8659E;
-    --clr-red-700: #AF5091;
-    --clr-red-800: #8F4277;
-    --clr-red-900: #693057;
+    --clr-accent-50: #FAF5F8;
+    --clr-accent-100: #F5EAF2;
+    --clr-accent-200: #ECD5E5;
+    --clr-accent-300: #E1BDD5;
+    --clr-accent-400: #D29DC1;
+    --clr-accent-500: #C178AA;
+    --clr-accent-600: #B8659E;
+    --clr-accent-700: #AF5091;
+    --clr-accent-800: #8F4277;
+    --clr-accent-900: #693057;
 
     --clr-gray-50: #F5F4F5;
     --clr-gray-100: #EBEAEB;
@@ -90,7 +90,7 @@
     --clr-link-color: var(--clr-gray-800);
     --clr-link-color-hover: #972291;
     --clr-body-font: var(--clr-gray-800);
-    --clr-body-bg: var(--clr-red-50);
+    --clr-body-bg: var(--clr-accent-50);
 
     --default-scheme: light;
 
@@ -125,18 +125,6 @@
 }
 
 .dark-theme {
-    --clr-red-50: #F2EAF6;
-    --clr-red-100: #E5D4ED;
-    --clr-red-200: #C9A6D9;
-    --clr-red-300: #B07BC6;
-    --clr-red-400: #9650B4;
-    --clr-red-500: #723B8A;
-    --clr-red-600: #5C2F6F;
-    --clr-red-700: #442352;
-    --clr-red-800: #2C1736;
-    --clr-red-900: #180C1D;
-    --clr-red-950: #0C060E;
-
     --default-scheme: dark;
 
     --clr-link-color: var(--clr-gray-200);
@@ -233,7 +221,7 @@ h6 {
 }
 
 hr {
-    border: 2px solid var(--clr-red-400);
+    border: 2px solid var(--clr-accent-400);
     margin: 1rem 0;
 }
 

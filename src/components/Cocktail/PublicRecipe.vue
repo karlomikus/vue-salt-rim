@@ -123,7 +123,7 @@ export default {
 .public-cocktail-recipe {
     --clr-content-bg: var(--clr-gray-50);
     --clr-content: var(--clr-gray-600);
-    --clr-marker: var(--clr-red-800);
+    --clr-marker: var(--clr-accent-800);
     display: grid;
     grid-template-columns: 1fr 1fr;
     place-content: center;
@@ -139,7 +139,7 @@ export default {
     --clr-content-bg: linear-gradient(160deg, var(--clr-dark-main-900) -15%, var(--clr-dark-main-950) 80%);
     --clr-content: var(--clr-gray-200);
     --shadow-color: 239deg 15% 5%;
-    --clr-marker: var(--clr-red-400);
+    --clr-marker: var(--clr-accent-400);
     border-top: 1px solid var(--clr-dark-main-800);
 }
 

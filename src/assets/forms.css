@@ -88,7 +88,7 @@
 .form-input.form-input--red,
 .form-select.form-select--red {
     --form-clr-bg: rgba(255, 255, 255, .5);
-    --form-clr-border: var(--clr-red-200);
+    --form-clr-border: var(--clr-accent-200);
     border-width: 2px;
     border-top-color: transparent;
     border-left-color: transparent;
@@ -135,7 +135,7 @@ textarea.form-input,
 
 .form-actions {
     text-align: right;
-    border-top: 2px solid var(--clr-red-100);
+    border-top: 2px solid var(--clr-accent-100);
     margin: 20px 0;
     padding: 20px 0;
 }

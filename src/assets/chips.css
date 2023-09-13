@@ -31,7 +31,7 @@
     --cl-clr-bg: rgba(255, 255, 255, .5);
     --cl-clr-bg-hover: #fff;
     --cl-clr-border: rgba(0, 0, 0, .1);
-    --cl-clr-border-hover: var(--clr-red-800);
+    --cl-clr-border-hover: var(--clr-accent-800);
     list-style: none;
     padding: 0;
     margin: 0;

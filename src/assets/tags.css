@@ -23,7 +23,7 @@
 }
 
 .tag.tag--link {
-    border: 1px solid var(--clr-red-300);
+    border: 1px solid var(--clr-accent-300);
 }
 
 .tag.tag--link:hover,

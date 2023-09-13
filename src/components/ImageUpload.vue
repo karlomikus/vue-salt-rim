@@ -187,7 +187,7 @@ export default {
 
 .image-upload__select {
     --iu-clr-bg: rgba(255, 255, 255, .5);
-    --iu-clr-border: var(--clr-red-300);
+    --iu-clr-border: var(--clr-accent-300);
     border: 2px dashed var(--iu-clr-border);
     border-radius: var(--radius-2);
     display: flex;
@@ -209,7 +209,7 @@ export default {
 }
 
 .image-upload__select:is(:hover, :active, :focus) {
-    border-color: var(--clr-red-500);
+    border-color: var(--clr-accent-500);
     background-color: #fff;
 }
 
@@ -219,7 +219,7 @@ export default {
     border-radius: var(--radius-round);
     margin-right: 1rem;
     flex-shrink: 0;
-    background: var(--clr-red-100);
+    background: var(--clr-accent-100);
     display: flex;
     align-items: center;
     justify-content: center;

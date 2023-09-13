@@ -384,7 +384,7 @@ export default {
     --icl-clr-bg: rgba(255, 255, 255, .5);
     --icl-clr-bg-hover: #fff;
     --icl-clr-border: rgba(0, 0, 0, .1);
-    --icl-clr-border-hover: var(--clr-red-800);
+    --icl-clr-border-hover: var(--clr-accent-800);
     list-style: none;
     padding: 0;
     display: flex;

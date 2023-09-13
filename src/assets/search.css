@@ -55,7 +55,7 @@
     }
 
     .resource-search__refinements__body {
-        background: var(--clr-red-50);
+        background: var(--clr-accent-50);
         width: 80%;
         height: 100%;
         padding: 1.5rem;
@@ -70,7 +70,7 @@
 .resource-search__refinements__refinement {
     padding: 1rem 0 0 0;
     margin-bottom: 0.5rem;
-    border-top: 3px double var(--clr-red-300);
+    border-top: 3px double var(--clr-accent-300);
 }
 
 .dark-theme .resource-search__refinements__refinement {

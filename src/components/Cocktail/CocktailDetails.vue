@@ -560,7 +560,7 @@ export default {
 .cocktail-details__title {
     margin-bottom: 1.5rem;
     padding-bottom: 1rem;
-    border-bottom: 2px solid var(--clr-red-200);
+    border-bottom: 2px solid var(--clr-accent-200);
 }
 
 .dark-theme .cocktail-details__title {

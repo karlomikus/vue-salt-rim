@@ -11,7 +11,7 @@
 
 <style scoped>
 .site-page-header {
-    --sph-clr-border: var(--clr-red-200);
+    --sph-clr-border: var(--clr-accent-200);
     display: flex;
     flex-wrap: wrap;
     border-bottom: 2px solid var(--sph-clr-border);

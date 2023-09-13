@@ -71,7 +71,7 @@ h3.form-section-title {
 h3.form-section-title::before {
     counter-increment: section;
     content: counter(section);
-    background: var(--clr-red-800);
+    background: var(--clr-accent-800);
     border-radius: var(--radius-1);
     color: #fff;
     display: flex;

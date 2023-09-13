@@ -1,7 +1,7 @@
 .table {
     --table-border-width: 1px;
-    --table-border-color: var(--clr-red-100);
-    --table-row-hover-clr: var(--clr-red-50);
+    --table-border-color: var(--clr-accent-100);
+    --table-row-hover-clr: var(--clr-accent-50);
     --table-small-clr: var(--clr-gray-500);
     width: 100%;
     caption-side: bottom;

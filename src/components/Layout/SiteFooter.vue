@@ -68,13 +68,13 @@ export default {
 .site-footer-wrapper {
     --clr-footer-bg: #fff;
     --clr-footer-link: var(--clr-gray-500);
-    --clr-footer-link-hover: var(--clr-red-800);
+    --clr-footer-link-hover: var(--clr-accent-800);
 }
 
 .dark-theme .site-footer-wrapper {
     --clr-footer-bg: var(--clr-dark-main-900);
     --clr-footer-link: var(--clr-dark-main-400);
-    --clr-footer-link-hover: var(--clr-red-300);
+    --clr-footer-link-hover: var(--clr-accent-300);
 }
 
 .site-footer-wrapper {

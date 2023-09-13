@@ -102,7 +102,7 @@ export default {
 }
 
 .cocktail-grid-item:hover .block-container {
-    border-bottom-color: var(--clr-red-500);
+    border-bottom-color: var(--clr-accent-500);
 }
 
 .dark-theme .cocktail-grid-item {
