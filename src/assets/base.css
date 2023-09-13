@@ -43,7 +43,7 @@
     --clr-dark-main-700: #282238;
     --clr-dark-main-800: #201a2d;
     --clr-dark-main-900: #191422;
-    --clr-dark-main-950: #191422;
+    --clr-dark-main-950: #120e1a;
 
     --clr-rating: rgb(235, 133, 0);
 
@@ -88,7 +88,7 @@
 
     /* Base component color scheme */
     --clr-link-color: var(--clr-gray-800);
-    --clr-link-color-hover: #972291;
+    --clr-link-color-hover: var(--clr-accent-700);
     --clr-body-font: var(--clr-gray-800);
     --clr-body-bg: var(--clr-accent-50);
 
@@ -105,6 +105,7 @@
     --color-btn-default: #454b60;
     --color-btn-default-hover: #2b3042;
     --color-menu-item-hover: #eff7f6;
+    --clr-site-footer: #fff;
 
     --site-width: 1440px;
     --cocktail-grid-card-width: 250px;
@@ -128,11 +129,13 @@
     --default-scheme: dark;
 
     --clr-link-color: var(--clr-gray-200);
-    --clr-link-color-hover: #d9fffc;
+    --clr-link-color-hover: var(--clr-accent-500);
     --clr-body-font: var(--clr-gray-50);
     --clr-body-bg: var(--clr-dark-main-900);
 
-    --color-site-header: var(--clr-dark-main-900);
+    --clr-site-footer: var(--clr-dark-main-950);
+
+    --color-site-header: var(--clr-dark-main-700);
     --color-site-header-subnavigation: var(--clr-dark-main-800);
 
     --clr-accent-blue: #0d212b;

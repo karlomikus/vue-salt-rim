@@ -25,9 +25,15 @@
 }
 
 .block-container.block-container--placeholder {
-    background: #d9e3f6;;
+    background: #d9e3f6;
     border-top-color: #f5f9ff;
     border-bottom-color: #a7badd;
+}
+
+.dark-theme .block-container.block-container--placeholder {
+    background: #ec8703;
+    border-top-color: #ffcc8a;
+    border-bottom-color: #4b2a00;
 }
 
 .block-container.block-container--hover:hover {

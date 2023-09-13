@@ -247,7 +247,7 @@ export default {
 }
 
 .stats {
-    --stats-clr-bg: #F0EFEB;
+    --_stats-clr-bg: #F0EFEB;
     margin-top: 20px;
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -255,16 +255,11 @@ export default {
 }
 
 .dark-theme .stats {
-    --stats-clr-bg: #0d0f0f;
-}
-
-.dark-theme .stats__stat {
-    background-image: linear-gradient(180deg, var(--stats-clr-bg) 20%, var(--clr-dark-main-950) 110%);
-    border-top: 1px solid #161a1a;
+    --_stats-clr-bg: #182727;
 }
 
 .stats__stat {
-    background-color: var(--stats-clr-bg);
+    background-color: var(--_stats-clr-bg);
     border-radius: var(--radius-3);
     padding: 15px;
 }

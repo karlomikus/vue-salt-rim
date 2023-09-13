@@ -66,19 +66,17 @@ export default {
 
 <style scoped>
 .site-footer-wrapper {
-    --clr-footer-bg: #fff;
     --clr-footer-link: var(--clr-gray-500);
     --clr-footer-link-hover: var(--clr-accent-800);
 }
 
 .dark-theme .site-footer-wrapper {
-    --clr-footer-bg: var(--clr-dark-main-900);
     --clr-footer-link: var(--clr-dark-main-400);
     --clr-footer-link-hover: var(--clr-accent-300);
 }
 
 .site-footer-wrapper {
-    background-color: var(--clr-footer-bg);
+    background-color: var(--clr-site-footer);
     margin-top: 1rem;
 }
 
