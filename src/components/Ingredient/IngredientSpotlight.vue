@@ -5,7 +5,7 @@
             <img :src="mainIngredientImageUrl" :alt="ingredient.name" />
         </div>
         <div class="ingredient-spotlight__content">
-            <small>{{ ingredient.category.name }}</small>
+            <small v-if="ingredient.category">{{ ingredient.category.name }}</small>
             <h4>{{ ingredient.name }}</h4>
             <p>{{ truncatedDescription }}</p>
             <RouterLink :to="{name: 'ingredients.show', params: { id: ingredient.slug }}">{{ $t('show-more') }}</RouterLink>

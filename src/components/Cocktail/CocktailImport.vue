@@ -113,9 +113,14 @@
                     <a href="#" @click.prevent="removeIngredient(ingredient)">{{ $t('remove') }}</a>
                 </div>
             </div>
-            <SaltRimDialog v-model="showIngredientDialog">
+            <SaltRimDialog v-if="ingredientEdit" v-model="showIngredientDialog">
                 <template #dialog>
-                    <IngredientFinder v-if="ingredientEdit" :initial-query="ingredientEdit.name" @ingredient-selected="handleIngredientEdit"></IngredientFinder>
+                    <div class="dialog-title">{{ $t('import.manually-match') }}</div>
+                    <p style="margin-bottom: 1rem;">Select ingredient that best matches "{{ ingredientEdit.name }}", or create a new one.</p>
+                    <IngredientFinder :initial-query="ingredientEdit.name" @ingredient-selected="handleIngredientEdit"></IngredientFinder>
+                    <div class="dialog-actions">
+                        <button type="button" class="button button--outline" @click="showIngredientDialog = false">{{ $t('close') }}</button>
+                    </div>
                 </template>
             </SaltRimDialog>
             <div class="form-actions">

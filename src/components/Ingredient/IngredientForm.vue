@@ -12,8 +12,8 @@
             </div>
             <div class="form-group">
                 <label class="form-label form-label--required" for="category">{{ $t('category') }}:</label>
-                <select id="category" v-model="ingredient.category.id" class="form-select" required>
-                    <option :value="undefined" disabled>{{ $t('select-category') }}</option>
+                <select id="category" v-model="ingredientCategoryId" class="form-select" required>
+                    <option :value="null" disabled>{{ $t('select-category') }}</option>
                     <option v-for="cat in categories" :key="cat.id" :value="cat.id">{{ cat.name }}</option>
                 </select>
                 <p class="form-input-hint">
@@ -82,6 +82,7 @@ export default {
         return {
             isLoading: false,
             isParent: false,
+            ingredientCategoryId: null,
             ingredient: {
                 id: null,
                 color: '#000',
@@ -120,6 +121,9 @@ export default {
 
                 this.ingredient = data
                 this.isParent = this.ingredient.parent_ingredient != null
+                if (data.category) {
+                    this.ingredientCategoryId = data.category.id
+                }
 
                 document.title = `${this.$t('ingredient')} \u22C5 ${this.ingredient.name} \u22C5 ${this.site_title}`
                 this.isLoading = false
@@ -141,7 +145,7 @@ export default {
                 color: this.ingredient.color,
                 parent_ingredient_id: this.isParent && this.ingredient.parent_ingredient ? this.ingredient.parent_ingredient.id : null,
                 images: [],
-                ingredient_category_id: this.ingredient.category.id,
+                ingredient_category_id: this.ingredientCategoryId,
             }
 
             const imageResources = await this.$refs.imagesUpload.uploadPictures().catch(() => {
