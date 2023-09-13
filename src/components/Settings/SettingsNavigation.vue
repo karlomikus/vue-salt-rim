@@ -36,7 +36,7 @@ export default {
     --sn-clr-bg-hover: var(--clr-gray-800);
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: var(--gap-size-2);
 }
 
 .dark-theme .settings-nav {

@@ -59,7 +59,7 @@ export default {
     padding: 0.5rem 1.5rem 0.5rem 0.5rem;
     cursor: pointer;
     display: flex;
-    gap: 0.5rem;
+    gap: var(--gap-size-2);
 }
 
 .sr-radio:hover {

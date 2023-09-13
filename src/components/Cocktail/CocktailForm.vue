@@ -434,7 +434,7 @@ export default {
     margin: 0;
     padding: 0;
     display: grid;
-    row-gap: 1rem;
+    row-gap: var(--gap-size-3)
 }
 
 .cocktail-form__ingredients li {
@@ -468,8 +468,7 @@ export default {
     display: grid;
     grid-template-columns: 2fr 1fr;
     grid-template-rows: auto auto;
-    column-gap: 10px;
-    row-gap: 10px;
+    gap: var(--gap-size-2);
     width: 100%;
     margin-left: 0.5rem;
 }
@@ -477,7 +476,7 @@ export default {
 .cocktail-methods {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-    gap: 1rem;
+    gap: var(--gap-size-3);
     margin-top: 0.5rem;
 }
 </style>

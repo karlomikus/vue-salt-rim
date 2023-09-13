@@ -73,7 +73,7 @@ export default {
 
 .dialog-confirm__actions {
     display: flex;
-    gap: 0.5rem;
+    gap: var(--gap-size-2);
     justify-content: end;
     margin-top: 1rem;
 }

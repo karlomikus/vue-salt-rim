@@ -26,26 +26,45 @@
     --clr-gray-900: #272528;
     --clr-gray-950: #1A181B;
 
+    --clr-accent-blue: #d2e4ee;
+    --clr-accent-yellow: #FFF1E6;
+    --clr-accent-red: #FDE2E4;
+    --clr-accent-green: #d4e9e4;
+    --clr-accent-purple: #eaeaff;
+    --clr-accent-orange: #f1dcca;
+
+    --clr-dark-main-50: #E4E2E9;
+    --clr-dark-main-100: #DAD6E0;
+    --clr-dark-main-200: #BFB9CB;
+    --clr-dark-main-300: #A49CB5;
+    --clr-dark-main-400: #8C82A1;
+    --clr-dark-main-500: #726789;
+    --clr-dark-main-600: #5C536F;
+    --clr-dark-main-700: #282238;
+    --clr-dark-main-800: #201a2d;
+    --clr-dark-main-900: #191422;
+    --clr-dark-main-950: #191422;
+
     --clr-rating: rgb(235, 133, 0);
 
     --shadow-color: 324deg 10% 71%;
     --shadow-elevation-low:
-      0px 1px 1.1px hsl(var(--shadow-color) / 0.1),
-      0px 1.7px 1.9px -1.2px hsl(var(--shadow-color) / 0.1),
-      0px 4px 4.5px -2.5px hsl(var(--shadow-color) / 0.1);
+        0px 1px 1.1px hsl(var(--shadow-color) / 0.1),
+        0px 1.7px 1.9px -1.2px hsl(var(--shadow-color) / 0.1),
+        0px 4px 4.5px -2.5px hsl(var(--shadow-color) / 0.1);
     --shadow-elevation-medium:
-      0px 0.4px 0.5px hsl(var(--shadow-color) / 0.25),
-      0px 1.1px 1.2px -0.8px hsl(var(--shadow-color) / 0.25),
-      0px 2.6px 2.9px -1.7px hsl(var(--shadow-color) / 0.25),
-      0px 6.3px 7.1px -2.5px hsl(var(--shadow-color) / 0.25);
+        0px 0.4px 0.5px hsl(var(--shadow-color) / 0.25),
+        0px 1.1px 1.2px -0.8px hsl(var(--shadow-color) / 0.25),
+        0px 2.6px 2.9px -1.7px hsl(var(--shadow-color) / 0.25),
+        0px 6.3px 7.1px -2.5px hsl(var(--shadow-color) / 0.25);
     --shadow-elevation-high:
-      0px 0.4px 0.5px hsl(var(--shadow-color) / 0.26),
-      0px 1.8px 2px -0.4px hsl(var(--shadow-color) / 0.26),
-      0px 3.5px 3.9px -0.8px hsl(var(--shadow-color) / 0.26),
-      0px 6px 6.8px -1.2px hsl(var(--shadow-color) / 0.26),
-      0px 10.1px 11.4px -1.7px hsl(var(--shadow-color) / 0.26),
-      -0.1px 16.5px 18.6px -2.1px hsl(var(--shadow-color) / 0.26),
-      -0.1px 26px 29.3px -2.5px hsl(var(--shadow-color) / 0.26);
+        0px 0.4px 0.5px hsl(var(--shadow-color) / 0.26),
+        0px 1.8px 2px -0.4px hsl(var(--shadow-color) / 0.26),
+        0px 3.5px 3.9px -0.8px hsl(var(--shadow-color) / 0.26),
+        0px 6px 6.8px -1.2px hsl(var(--shadow-color) / 0.26),
+        0px 10.1px 11.4px -1.7px hsl(var(--shadow-color) / 0.26),
+        -0.1px 16.5px 18.6px -2.1px hsl(var(--shadow-color) / 0.26),
+        -0.1px 26px 29.3px -2.5px hsl(var(--shadow-color) / 0.26);
 
     --shadow-color-dark: 0deg 0% 0%;
     --shadow-elevation-low-dark:
@@ -91,32 +110,18 @@
     --cocktail-grid-card-width: 250px;
     --cocktail-list-card-width: 350px;
 
-    --clr-accent-blue: #d2e4ee;
-    --clr-accent-yellow: #FFF1E6;
-    --clr-accent-red: #FDE2E4;
-    --clr-accent-green: #d4e9e4;
-    --clr-accent-purple: #eaeaff;
-    --clr-accent-orange: #f1dcca;
-
-    /* Dark mode scheme */
-    --clr-dark-main-50: #E4E2E9;
-    --clr-dark-main-100: #DAD6E0;
-    --clr-dark-main-200: #BFB9CB;
-    --clr-dark-main-300: #A49CB5;
-    --clr-dark-main-400: #8C82A1;
-    --clr-dark-main-500: #726789;
-    --clr-dark-main-600: #5C536F;
-    --clr-dark-main-700: #443D52;
-    --clr-dark-main-800: #2C2734;
-    --clr-dark-main-900: #16141A;
-    --clr-dark-main-950: #0A090C;
-
     --radius-1: 3px;
     --radius-2: 5px;
     --radius-3: 10px;
     --radius-4: 15px;
     --radius-5: 30px;
     --radius-round: 50%;
+
+    --gap-size-1: 0.25rem;
+    --gap-size-2: 0.5rem;
+    --gap-size-3: 1rem;
+    --gap-size-4: 1.25rem;
+    --gap-size-5: 1.5rem;
 }
 
 .dark-theme {
@@ -135,9 +140,9 @@
     --default-scheme: dark;
 
     --clr-link-color: var(--clr-gray-200);
-    --clr-link-color-hover: #fff;
+    --clr-link-color-hover: #d9fffc;
     --clr-body-font: var(--clr-gray-50);
-    --clr-body-bg: var(--clr-dark-main-950);
+    --clr-body-bg: var(--clr-dark-main-900);
 
     --color-site-header: var(--clr-dark-main-900);
     --color-site-header-subnavigation: var(--clr-dark-main-800);
@@ -193,6 +198,7 @@ body {
 }
 
 @media print {
+
     .no-print,
     .no-print * {
         display: none !important;

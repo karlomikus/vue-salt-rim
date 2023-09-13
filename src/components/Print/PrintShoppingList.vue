@@ -61,7 +61,7 @@ export default {
 .list-print-container ul li {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: var(--gap-size-2);
     margin-bottom: 10px;
 }
 

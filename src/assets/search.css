@@ -1,6 +1,6 @@
 .resource-search {
     display: flex;
-    gap: 1rem;
+    gap: var(--gap-size-3);
 }
 
 .resource-search__refinements {
@@ -13,7 +13,7 @@
 
 .resource-search__content__filter {
     display: flex;
-    gap: 0.5rem;
+    gap: var(--gap-size-2);
 }
 
 .resource-search__content__filter .form-input {
@@ -40,7 +40,7 @@
     margin-left: auto;
     display: flex;
     align-items: center;
-    gap: 0.5rem;
+    gap: var(--gap-size-2);
 }
 
 @media (max-width: 750px) {

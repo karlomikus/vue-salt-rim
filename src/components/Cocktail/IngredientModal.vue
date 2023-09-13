@@ -155,7 +155,7 @@ export default {
     font-size: 1rem;
     display: flex;
     flex-direction: column;
-    gap: 0.25rem;
+    gap: var(--gap-size-1);
 }
 
 .ingredient-modal__info {
@@ -172,7 +172,7 @@ export default {
 .ingredient-form-group {
     display: flex;
     flex-wrap: wrap;
-    gap: 0.5rem;
+    gap: var(--gap-size-2);
 }
 
 .ingredient-form-group .form-group:first-child {

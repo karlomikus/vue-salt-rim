@@ -177,7 +177,7 @@ export default {
     display: flex;
     width: 100%;
     padding: 1rem;
-    transition: border-color ease-in-out 150ms;
+    /* transition: border-color ease-in-out 150ms; */
 }
 
 .dark-theme .ingredient-grid-item {

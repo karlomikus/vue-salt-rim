@@ -3,13 +3,12 @@
     display: flex;
     flex-direction: column;
     flex-wrap: wrap;
-    gap: 0.5rem;
+    gap: var(--gap-size-2);
 }
 
 @media (max-width: 450px) {
     .form-group {
         margin-bottom: 1.25rem;
-        gap: 0.45rem;
     }
 }
 
@@ -165,7 +164,7 @@ textarea.form-input,
 
 .form-checkbox {
     display: flex;
-    gap: 0.5rem;
+    gap: var(--gap-size-2);
 }
 
 .form-checkbox input {

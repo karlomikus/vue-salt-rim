@@ -1,7 +1,7 @@
 .tag-container {
     display: flex;
     flex-wrap: wrap;
-    gap: 5px;
+    gap: var(--gap-size-1);
 }
 
 .tag {

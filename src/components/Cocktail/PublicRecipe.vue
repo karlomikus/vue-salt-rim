@@ -191,7 +191,7 @@ export default {
     padding: 2rem;
     display: flex;
     flex-direction: column;
-    gap: 1rem;
+    gap: var(--gap-size-3);
 }
 
 .public-cocktail-recipe__summary__section {

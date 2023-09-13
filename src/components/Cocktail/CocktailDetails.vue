@@ -511,7 +511,7 @@ export default {
 
 .cocktail-details__main {
     display: flex;
-    gap: 1rem;
+    gap: var(--gap-size-3);
 }
 
 .cocktail-details__main__content {
@@ -671,7 +671,7 @@ export default {
     top: -25px;
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
-    column-gap: 5px;
+    column-gap: var(--gap-size-1);
 }
 
 .cocktail-button-group {

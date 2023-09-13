@@ -241,13 +241,13 @@ export default {
 
 .image-upload__list {
     display: grid;
-    row-gap: 1rem;
+    row-gap: var(--gap-size-3);
 }
 
 .image-upload__list__item {
     display: flex;
     padding: 1rem;
-    gap: 1rem;
+    gap: var(--gap-size-3);
 }
 
 .image-upload__list__item__image {
@@ -266,7 +266,7 @@ export default {
 .image-upload__list__item__actions {
     display: flex;
     flex-direction: column;
-    gap: 0.25rem;
+    gap: var(--gap-size-1);
 }
 
 .image-upload__list__item__actions .form-input {

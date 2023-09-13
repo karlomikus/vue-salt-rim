@@ -114,6 +114,6 @@ export default {
 .user-roles {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 0.5rem;
+    gap: var(--gap-size-2);
 }
 </style>

@@ -79,12 +79,12 @@
 
 .dialog__close {
     position: absolute;
-    top: -0.5rem;
-    right: -0.5rem;
+    top: 0.5rem;
+    right: 0.5rem;
     width: 1.5rem;
     height: 1.5rem;
     border-radius: var(--radius-round);
-    background: rgb(146, 27, 53);
+    background: none;
     display: flex;
     border: 0;
     padding: 0;
@@ -93,11 +93,11 @@
 
 .dialog__close svg {
     display: block;
-    fill: var(--clr-gray-100);
+    fill: var(--clr-gray-400);
 }
 
 .dialog__close:is(:hover,:focus,:active) {
-    background: var(--clr-gray-300);
+    background: var(--clr-gray-200);
 }
 
 .dialog__close:is(:hover,:focus,:active) svg {
@@ -108,7 +108,7 @@
     display: flex;
     justify-content: end;
     flex-wrap: wrap;
-    gap: 0.5rem;
+    gap: var(--gap-size-2);
     margin-top: 1.5rem;
 }
 

@@ -30,14 +30,7 @@ export default {
     display: grid;
     /* grid-template-columns: repeat(auto-fit, minmax(var(--cocktail-grid-card-width), 1fr)); */
     grid-template-columns: repeat(auto-fill, minmax(max(var(--cocktail-grid-card-width), var(--cocktail-grid-card-width)), 1fr));
-    gap: 1.5rem;
+    gap: var(--gap-size-5);
     margin-top: 2rem;
-}
-
-@media (max-width: 450px) {
-    /* .cocktail-grid-container {
-        column-gap: 5px;
-        row-gap: 5px;
-    } */
 }
 </style>

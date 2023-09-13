@@ -150,22 +150,6 @@ a.site-logo:focus .site-logo__title {
     }
 }
 
-.flags {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    font-style: italic;
-    font-size: 0.8rem;
-    row-gap: 5px;
-    display: grid;
-    color: var(--clr-gray-500);
-}
-
-.flags li {
-    background-color: rgba(0, 0, 0, .03);
-    border-radius: var(--radius-1);
-}
-
 .login-page {
     --clr-lp-bg: var(--color-site-header);
     --clr-lp-form-bg: var(--clr-gray-50);
@@ -197,7 +181,7 @@ a.site-logo:focus .site-logo__title {
 
 .settings-page {
     display: flex;
-    gap: 20px;
+    gap: var(--gap-size-5);
 }
 
 .settings-page__nav {

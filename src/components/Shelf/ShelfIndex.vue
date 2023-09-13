@@ -232,8 +232,7 @@ export default {
 .list-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(var(--cocktail-list-card-width), 1fr));
-    column-gap: 10px;
-    row-gap: 10px;
+    gap: var(--gap-size-2);
 }
 
 @media (max-width: 450px) {
@@ -252,8 +251,7 @@ export default {
     margin-top: 20px;
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    column-gap: 10px;
-    row-gap: 10px;
+    gap: var(--gap-size-2);
 }
 
 .dark-theme .stats {

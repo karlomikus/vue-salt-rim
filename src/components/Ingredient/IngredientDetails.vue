@@ -7,7 +7,7 @@
                     {{ ingredient.name }}
                 </h2>
                 <div class="item-details__chips">
-                    <div class="item-details__chips__group">
+                    <div class="item-details__chips__group" v-if="ingredient.category">
                         <div class="item-details__chips__group__title">{{ $t('category') }}:</div>
                         <ul class="chips-list">
                             <li>
@@ -396,7 +396,7 @@ export default {
 .mini-cocktail-container {
     display: flex;
     flex-wrap: wrap;
-    gap: 0.5rem;
+    gap: var(--gap-size-2);
 }
 
 .dark-theme .ingredient-chips-list {

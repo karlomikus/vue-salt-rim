@@ -162,14 +162,14 @@ export default {
 .bars__grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 0.5rem;
+    gap: var(--gap-size-2);
 }
 
 .bar {
     padding: 1rem;
     display: flex;
     flex-direction: column;
-    gap: 0.4rem;
+    gap: var(--gap-size-2);
 }
 
 .bar__role {

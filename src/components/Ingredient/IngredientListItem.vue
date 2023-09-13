@@ -93,7 +93,7 @@ export default {
     align-items: center;
     padding: 0.825rem;
     text-decoration: none;
-    gap: 10px;
+    gap: var(--gap-size-2);
 }
 
 .dark-theme .ingredient-list-item {

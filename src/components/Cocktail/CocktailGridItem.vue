@@ -120,19 +120,14 @@ export default {
     padding: 1.5rem;
     border-radius: var(--radius-3);
     margin-top: -2.25rem;
-    background-color: #fcf9fb;
     height: 100%;
     display: flex;
     flex-direction: column;
-    gap: 0.75rem;
+    gap: var(--gap-size-2);
 }
 
 .cocktail-grid-item:hover .cocktail-grid-item__title {
     color: var(--clr-link-color-hover);
-}
-
-.dark-theme .cocktail-grid-item:hover .cocktail-grid-item__title {
-    color: #fff;
 }
 
 .cocktail-grid-item__ingredients {
@@ -158,7 +153,7 @@ export default {
     justify-content: center;
     list-style: none;
     padding: 0;
-    gap: 0.25rem;
+    gap: var(--gap-size-1);
 }
 
 .cocktail-grid-item__badges {

@@ -136,6 +136,6 @@ export default {
 <style scoped>
 .account-actions {
     display: flex;
-    gap: 1rem;
+    gap: var(--gap-size-3);
 }
 </style>

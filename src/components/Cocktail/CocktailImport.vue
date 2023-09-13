@@ -362,7 +362,7 @@ export default {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-    gap: 0.5rem;
+    gap: var(--gap-size-2);
 }
 
 .scraper-ingredients__ingredient .form-group {
@@ -376,6 +376,6 @@ export default {
 .import-types {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 0.5rem;
+    gap: var(--gap-size-2);
 }
 </style>
