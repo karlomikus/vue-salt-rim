@@ -7,7 +7,7 @@
                     {{ ingredient.name }}
                 </h2>
                 <div class="item-details__chips">
-                    <div class="item-details__chips__group" v-if="ingredient.category">
+                    <div v-if="ingredient.category" class="item-details__chips__group">
                         <div class="item-details__chips__group__title">{{ $t('category') }}:</div>
                         <ul class="chips-list">
                             <li>

@@ -4,7 +4,7 @@
             <div class="cocktail-list-item__graphic__image" :data-img-src="mainCocktailImageUrl"></div>
         </div>
         <div class="cocktail-list-item__content">
-            <h4 class="cocktail-list-item__title">{{ cocktail.name }} <MiniRating v-if="cocktail.user_rating > 0" :rating="cocktail.user_rating"></MiniRating></h4>
+            <h4 class="cocktail-list-item__title">{{ cocktail.name }} <MiniRating v-if="cocktail.rating.user > 0" :rating="cocktail.rating.user"></MiniRating></h4>
             <p v-if="shortIngredients.length > 0">
                 {{ shortIngredients.join(', ') }}
             </p>

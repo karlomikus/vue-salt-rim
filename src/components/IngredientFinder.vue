@@ -10,7 +10,13 @@
             <template #default="{ items }">
                 <div class="ingredient-finder__options">
                     <OverlayLoader v-if="isLoading"></OverlayLoader>
-                    <a v-for="item in items" :key="item.id" href="#" @click.prevent="selectIngredient(item)">{{ item.name }}</a>
+                    <a v-for="item in items" :key="item.id" href="#" @click.prevent="selectIngredient(item)">
+                        <IngredientImage class="ingredient__image--small" :ingredient="item"></IngredientImage>
+                        <div class="ingredient-finder__options__content">
+                            <span>{{ item.name }}</span>
+                            <small>{{ item.category }}</small>
+                        </div>
+                    </a>
                     <a v-show="currentQuery" href="#" class="ingredient-finder__options__create" @click.prevent="newIngredient">
                         {{ $t('ingredient-dialog.search-not-found') }} {{ $t('ingredient-dialog.create-ingredient', { name: currentQuery }) }}
                     </a>
@@ -25,12 +31,14 @@ import { instantMeiliSearch } from '@meilisearch/instant-meilisearch'
 import OverlayLoader from './OverlayLoader.vue'
 import ApiRequests from '../ApiRequests'
 import AppState from './../AppState'
+import IngredientImage from './Ingredient/IngredientImage.vue'
 
 const appState = new AppState()
 
 export default {
     components: {
-        OverlayLoader
+        OverlayLoader,
+        IngredientImage
     },
     props: {
         modelValue: {
@@ -129,9 +137,11 @@ export default {
 }
 
 .ingredient-finder__options a {
-    display: block;
+    display: flex;
+    gap: var(--gap-size-2);
     padding: 0.25rem 0.5rem;
     border-radius: var(--radius-1);
+    text-decoration: none;
 }
 
 .ingredient-finder__options a:hover {
@@ -140,6 +150,16 @@ export default {
 
 .dark-theme .ingredient-finder__options a:hover {
     background-color: var(--clr-gray-900);
+}
+
+.ingredient-finder__options__content {
+    display: flex;
+    flex-direction: column;
+}
+
+.ingredient-finder__options__content small {
+    font-size: 0.75rem;
+    color: var(--clr-gray-500);
 }
 
 .dark-theme .ingredient-finder__options {

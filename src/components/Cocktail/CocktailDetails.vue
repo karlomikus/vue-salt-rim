@@ -56,13 +56,13 @@
                             <div class="item-details__chips__group__title">{{ $t('avg-rating') }}:</div>
                             <ul class="chips-list">
                                 <li>
-                                    <RouterLink :to="{ name: 'cocktails', query: { 'filter[user_rating_min]': cocktail.average_rating } }">{{ cocktail.average_rating }} ★</RouterLink>
+                                    <RouterLink :to="{ name: 'cocktails', query: { 'filter[user_rating_min]': cocktail.rating.average } }">{{ cocktail.rating.average }} ★</RouterLink>
                                 </li>
                             </ul>
                         </div>
                         <div class="item-details__chips__group">
                             <div class="item-details__chips__group__title">{{ $t('your-rating') }}:</div>
-                            <Rating :id="cocktail.id" :rating="cocktail.user_rating" type="cocktail"></Rating>
+                            <Rating :id="cocktail.id" :rating="cocktail.rating.user" type="cocktail"></Rating>
                         </div>
                         <div v-if="cocktail.public_id" class="item-details__chips__group">
                             <div class="item-details__chips__group__title">{{ $t('public-link') }}:</div>
@@ -236,7 +236,9 @@
                                 <div v-if="ing.substitutes.length > 0" class="cocktail-ingredients__flags__flag">
                                     &middot; {{ $t('substitutes') }}:
                                     <template v-for="(sub, index) in ing.substitutes" :key="index">
-                                        <RouterLink :to="{ name: 'ingredients.show', params: { id: sub.slug } }" data-ingredient="substitute">{{ sub.name }}</RouterLink>
+                                        <RouterLink :to="{ name: 'ingredients.show', params: { id: sub.slug } }" data-ingredient="substitute">
+                                            {{ buildSubstituteString(sub) }}
+                                        </RouterLink>
                                         <template v-if="index + 1 !== ing.substitutes.length">, </template>
                                     </template>
                                 </div>
@@ -492,6 +494,9 @@ export default {
             }).catch(() => {
                 this.isLoadingNotes = false
             })
+        },
+        buildSubstituteString(sub) {
+            return sub.name + ' ' + Utils.printIngredientAmount(sub, this.currentUnit, this.servings)
         }
     }
 }

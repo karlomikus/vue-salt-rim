@@ -100,10 +100,10 @@
   "confirm": "Confirm",
   "optional": "Optional",
   "or": "Or",
-  "ingredient-dialog.select-substitutes": "Select substitute ingredients",
+  "ingredient-dialog.select-substitutes": "Edit substitute ingredients",
   "ingredient-dialog.search-not-found": "Not found what you are looking for?",
   "ingredient-dialog.create-ingredient": "Create ingredient: \"{name}\"",
-  "ingredient-dialog.current": "Current ingredient",
+  "ingredient-dialog.current": "Selected ingredient",
   "substitutes": "Substitutes",
   "no-substitutes": "No substitutes selected.",
   "units-help-text": "Use \"oz\", \"cl\", \"ml\" for common fluid units to enable unit conversion on cocktail page.",
@@ -250,6 +250,7 @@
   "shopping-list-ingredients": "Shopping list ingredients",
   "notes": "Notes",
   "note": {
+    "title": "Note",
     "add": "Add note",
     "confirm-delete": "This will permanently delete selected note.",
     "delete-success": "Note successfully removed"

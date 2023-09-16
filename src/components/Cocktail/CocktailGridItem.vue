@@ -14,7 +14,7 @@
         <div class="block-container cocktail-grid-item__content">
             <h2 class="cocktail-grid-item__title">{{ cocktail.name }}</h2>
             <div class="cocktail-grid-item__rating">
-                <CocktailRating :user-rating="cocktail.user_rating" :average-rating="cocktail.average_rating" />
+                <CocktailRating :user-rating="cocktail.rating.user" :average-rating="cocktail.rating.average" />
             </div>
             <p v-if="shortIngredients.length > 0" class="cocktail-grid-item__ingredients">{{ shortIngredients.join(', ') }}</p>
             <ul class="cocktail-tags">

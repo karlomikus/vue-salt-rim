@@ -30,7 +30,11 @@
                 <div class="cocktail-form__ingredients__content">
                     <div class="form-group">
                         <label class="form-label">{{ $t('ingredient') }}:</label>
-                        <p>{{ ing.name }} <small v-show="ing.optional">({{ ing.optional ? $t('optional') : '' }})</small></p>
+                        <p>
+                            {{ ing.name }}
+                            <span v-if="ing.note">&middot; {{ ing.note }}</span>
+                            <small v-show="ing.optional">({{ ing.optional ? $t('optional') : '' }})</small>
+                        </p>
                         <p v-if="ing.substitutes && ing.substitutes.length > 0" class="substitutes">
                             <template v-for="sub in ing.substitutes">
                                 {{ $t('or').toLowerCase() }} {{ sub.name }}&nbsp;
@@ -46,6 +50,10 @@
                             {{ $t('edit') }}
                         </a>
                         &middot;
+                        <a href="#" @click.prevent="editIngredientSubstitutes(ing)">
+                            {{ $t('ingredient-dialog.select-substitutes') }}
+                        </a>
+                        &middot;
                         <a href="#" @click.prevent="removeIngredient(ing)">
                             {{ $t('remove') }}
                         </a>
@@ -59,6 +67,14 @@
             </template>
             <template #dialog>
                 <IngredientModal :value="cocktailIngredientForEdit" @close="closeModal" />
+            </template>
+        </SaltRimDialog>
+        <SaltRimDialog v-model="showSubstituteDialog">
+            <template #trigger>
+                <span></span>
+            </template>
+            <template #dialog>
+                <SubstituteModal :value="cocktailIngredientForSubstitutes" @close="closeSubstituteModal" />
             </template>
         </SaltRimDialog>
         <h3 class="form-section-title">{{ $t('additional-information') }}</h3>
@@ -120,6 +136,7 @@ import Sortable from 'sortablejs'
 import SaltRimDialog from './../Dialog/SaltRimDialog.vue'
 import SaltRimRadio from '../SaltRimRadio.vue'
 import AppState from './../../AppState'
+import SubstituteModal from './SubstituteModal.vue'
 
 export default {
     components: {
@@ -128,13 +145,16 @@ export default {
         ImageUpload,
         PageHeader,
         SaltRimDialog,
-        SaltRimRadio
+        SaltRimRadio,
+        SubstituteModal
     },
     data() {
         return {
             showDialog: false,
+            showSubstituteDialog: false,
             cocktailIngredientForEdit: {},
             cocktailIngredientForEditOriginal: {},
+            cocktailIngredientForSubstitutes: {},
             isLoading: false,
             cocktail: {
                 id: null,
@@ -268,13 +288,18 @@ export default {
                 this.cocktailIngredientForEdit.ingredient_id = this.cocktailIngredientForEditOriginal.ingredient_id
                 this.cocktailIngredientForEdit.ingredient_slug = this.cocktailIngredientForEditOriginal.ingredient_slug
                 this.cocktailIngredientForEdit.amount = this.cocktailIngredientForEditOriginal.amount
+                this.cocktailIngredientForEdit.amount_max = this.cocktailIngredientForEditOriginal.amount_max
                 this.cocktailIngredientForEdit.units = this.cocktailIngredientForEditOriginal.units
                 this.cocktailIngredientForEdit.optional = this.cocktailIngredientForEditOriginal.optional
                 this.cocktailIngredientForEdit.sort = this.cocktailIngredientForEditOriginal.sort
                 this.cocktailIngredientForEdit.substitutes = this.cocktailIngredientForEditOriginal.substitutes
+                this.cocktailIngredientForEdit.note = this.cocktailIngredientForEditOriginal.note
             }
 
             this.showDialog = false
+        },
+        closeSubstituteModal() {
+            this.showSubstituteDialog = false
         },
         addIngredient() {
             const appState = new AppState()
@@ -295,6 +320,8 @@ export default {
             let placeholderData = {
                 ingredient_id: null,
                 amount: defaultAmount,
+                amount_max: null,
+                note: null,
                 units: defaultUnits,
                 name: this.$t('ingredient.name-placeholder'),
                 sort: this.cocktail.ingredients.length + 1
@@ -317,40 +344,25 @@ export default {
             }
 
             this.cocktailIngredientForEditOriginal = JSON.parse(JSON.stringify(cocktailIngredient))
-            
+
             const appState = new AppState()
             const userUnit = appState.defaultUnit
-            if (userUnit === 'oz') {
-                if (cocktailIngredient.units == 'ml') {
-                    cocktailIngredient.units = 'oz'
-                    cocktailIngredient.amount = Utils.ml2oz(cocktailIngredient.amount)
-                }
-                if (cocktailIngredient.units == 'cl') {
-                    cocktailIngredient.units = 'oz'
-                    cocktailIngredient.amount = Utils.cl2oz(cocktailIngredient.amount)
-                }
-            } else if (userUnit === 'cl') {
-                if (cocktailIngredient.units == 'ml') {
-                    cocktailIngredient.units = 'cl'
-                    cocktailIngredient.amount = Utils.ml2cl(cocktailIngredient.amount)
-                }
-                if (cocktailIngredient.units == 'oz') {
-                    cocktailIngredient.units = 'cl'
-                    cocktailIngredient.amount = Utils.oz2cl(cocktailIngredient.amount)
-                }
-            } else if (userUnit === 'ml') {
-                if (cocktailIngredient.units == 'oz') {
-                    cocktailIngredient.units = 'ml'
-                    cocktailIngredient.amount = Utils.oz2ml(cocktailIngredient.amount)
-                }
-                if (cocktailIngredient.units == 'cl') {
-                    cocktailIngredient.units = 'ml'
-                    cocktailIngredient.amount = Utils.cl2ml(cocktailIngredient.amount)
-                }
+
+            // Update unit view
+            cocktailIngredient.amount = Utils.convertFromTo(cocktailIngredient.units, cocktailIngredient.amount, userUnit)
+            if (cocktailIngredient.amount_max) {
+                cocktailIngredient.amount_max = Utils.convertFromTo(cocktailIngredient.units, cocktailIngredient.amount_max, userUnit)
+            }
+            if (cocktailIngredient.units == 'ml' || cocktailIngredient.units == 'oz' || cocktailIngredient.units == 'cl') {
+                cocktailIngredient.units = userUnit
             }
 
             this.cocktailIngredientForEdit = cocktailIngredient
             this.showDialog = true
+        },
+        editIngredientSubstitutes(ing) {
+            this.cocktailIngredientForSubstitutes = ing
+            this.showSubstituteDialog = true
         },
         async submit() {
             const sortedIngredientList = this.sortable.toArray()
@@ -384,9 +396,9 @@ export default {
                         }
 
                         // Just send substitute ids
-                        if (cIngredient.substitutes) {
-                            cIngredient.substitutes = cIngredient.substitutes.map(s => s.id)
-                        }
+                        // if (cIngredient.substitutes) {
+                        //     cIngredient.substitutes = cIngredient.substitutes.map(s => s.id)
+                        // }
 
                         cIngredient.sort = sortedIngredientList.findIndex(sortedId => sortedId == cIngredient.ingredient_id) + 1
 

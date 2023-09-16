@@ -1,6 +1,6 @@
 .dialog {
     --dialog-margin: 2rem;
-    --dialog-padding: 2rem;
+    --dialog-padding: 1.5rem;
     inset: 0;
     position: fixed;
     transition: opacity 250ms ease, backdrop-filter 250ms ease;

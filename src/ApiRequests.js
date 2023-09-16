@@ -309,13 +309,13 @@ class ApiRequests
      */
 
     static async fetchUser() {
-        let jsonResp = await this.getRequest('/api/user')
+        let jsonResp = await this.getRequest('/api/profile')
 
         return this.parseResponse(jsonResp)
     }
 
     static async updateUser(data) {
-        let jsonResp = await this.postRequest('/api/user', data)
+        let jsonResp = await this.postRequest('/api/profile', data)
 
         return this.parseResponse(jsonResp)
     }

@@ -186,9 +186,9 @@ export default {
         importCocktail() {
             this.isLoading = true
             if (this.importType == 'collection') {
-                this.$toast.default(`Started importing collection.`)
+                this.$toast.default('Started importing collection.')
 
-                ApiRequests.importCocktail({ source: this.source, duplicate_actions: this.duplicateAction }, { type: 'collection' }).then(data => {
+                ApiRequests.importCocktail({ source: this.source, duplicate_actions: this.duplicateAction }, { type: 'collection' }).then(() => {
                     this.$router.push({ name: 'cocktails' })
                 }).catch(e => {
                     this.isLoading = false
