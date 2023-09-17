@@ -44,7 +44,7 @@
 .dark-theme .block-container.block-container--hover:hover {
     background: var(--clr-dark-main-700);
     border-top-color: var(--clr-dark-main-600);
-    border-bottom-color: var(--clr-dark-main-800);
+    /* border-bottom-color: var(--clr-dark-main-800); */
 }
 
 .details-block-container {
@@ -108,10 +108,6 @@
 .details-block-container.details-block-container--purple .details-block-container__title {
     color: color-mix(in oklab, var(--clr-accent-purple) 20%, rgb(23, 9, 29));
 }
-
-/* .dark-theme .details-block-container {
-    border-top: 1px solid rgba(255, 255, 255, .15);
-} */
 
 .dark-theme .details-block-container.details-block-container--blue .details-block-container__title {
     color: color-mix(in oklab, var(--clr-accent-blue) 20%, #dcf3ff);

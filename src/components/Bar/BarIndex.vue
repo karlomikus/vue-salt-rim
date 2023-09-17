@@ -87,6 +87,9 @@ export default {
             showCreateDialog: false,
         }
     },
+    created() {
+        document.title = `${this.$t('bars.title')} \u22C5 ${this.site_title}`
+    },
     mounted() {
         this.refreshBars()
     },

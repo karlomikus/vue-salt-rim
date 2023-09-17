@@ -255,7 +255,7 @@ export default {
 }
 
 .dark-theme .stats {
-    --_stats-clr-bg: #182727;
+    --_stats-clr-bg: #271820;
 }
 
 .stats__stat {

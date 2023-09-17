@@ -128,8 +128,19 @@
 .dark-theme {
     --default-scheme: dark;
 
+    --clr-accent-50: #FFF7E5;
+    --clr-accent-100: #FFEDCC;
+    --clr-accent-200: #FFDA99;
+    --clr-accent-300: #FFC66B;
+    --clr-accent-400: #FFAF37;
+    --clr-accent-500: #FF9F05;
+    --clr-accent-600: #D18400;
+    --clr-accent-700: #996300;
+    --clr-accent-800: #664400;
+    --clr-accent-900: #332300;
+
     --clr-link-color: var(--clr-gray-200);
-    --clr-link-color-hover: var(--clr-accent-500);
+    --clr-link-color-hover: #ffaf37;
     --clr-body-font: var(--clr-gray-50);
     --clr-body-bg: var(--clr-dark-main-900);
 
