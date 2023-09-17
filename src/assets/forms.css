@@ -36,8 +36,9 @@
 
 .form-label--required::after {
     content: '•';
-    font-size: 1.2rem;
-    color: rgb(179, 37, 56);
+    font-size: 1rem;
+    color: rgb(202, 13, 39);
+    text-shadow: 0 0 3px red;
 }
 
 .form-input,

@@ -228,7 +228,7 @@
                         <li v-for="ing in cocktail.ingredients" :key="ing.sort">
                             <div class="cocktail-ingredients__ingredient">
                                 <RouterLink class="cocktail-ingredients__ingredient__name" :to="{ name: 'ingredients.show', params: { id: ing.ingredient_slug } }" data-ingredient="preferred">
-                                    {{ ing.name }} <small v-if="ing.optional">({{ $t('optional') }})</small>
+                                    {{ ing.name }} <span v-if="ing.note" class="cocktail-ingredients__flags__flag">&ndash; {{ ing.note }}</span> <small v-if="ing.optional">({{ $t('optional') }})</small>
                                 </RouterLink>
                                 <div class="cocktail-ingredients__ingredient__amount">{{ parseIngredientAmount(ing) }}</div>
                             </div>
@@ -496,7 +496,7 @@ export default {
             })
         },
         buildSubstituteString(sub) {
-            return sub.name + ' ' + Utils.printIngredientAmount(sub, this.currentUnit, this.servings)
+            return new String(sub.name + ' ' + Utils.printIngredientAmount(sub, this.currentUnit, this.servings)).trim()
         }
     }
 }

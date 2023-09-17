@@ -19,13 +19,13 @@ class Utils {
 
         // Don't convert unconvertable units
         if (orgUnits != 'ml' && orgUnits != 'oz' && orgUnits != 'cl') {
-            return `${orgAmount}${orgAmountMax != 0 ? '-' + orgAmountMax : ''} ${orgUnits}`
+            return `${orgAmount == 0 ? '' : orgAmount}${orgAmountMax != 0 ? '-' + orgAmountMax : ''} ${orgUnits}`
         }
 
         const minAmount = this.convertFromTo(orgUnits, orgAmount, convertTo);
         const maxAmount = this.convertFromTo(orgUnits, orgAmountMax, convertTo);
 
-        return `${minAmount}${maxAmount != 0 ? '-' + maxAmount : ''} ${convertTo}`
+        return `${minAmount == 0 ? '' : minAmount}${maxAmount != 0 ? '-' + maxAmount : ''} ${convertTo}`
     }
 
     static cl2ml(amount) {

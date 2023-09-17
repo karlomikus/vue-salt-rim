@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <form @submit.prevent="save">
         <OverlayLoader v-if="isLoading" />
         <div class="dialog-title">{{ $t('ingredient') }}</div>
         <IngredientFinder @ingredient-selected="selectIngredient"></IngredientFinder>
@@ -37,16 +37,16 @@
                 </datalist>
             </div>
         </div>
-        <p class="form-input-hint">{{ $t('units-help-text') }}</p>
+        <!-- <p class="form-input-hint">{{ $t('units-help-text') }}</p> -->
         <div class="form-group">
             <label class="form-label" for="ingredient-note">{{ $t('note.title') }}:</label>
             <input id="ingredient-note" v-model="cocktailIngredient.note" class="form-input" type="text">
         </div>
         <div class="dialog-actions">
             <button type="button" class="button button--outline" @click="cancel">{{ $t('cancel') }}</button>
-            <button type="button" class="button button--dark" :disabled="isLoading" @click="save">{{ $t('save') }}</button>
+            <button type="submit" class="button button--dark" :disabled="isLoading">{{ $t('save') }}</button>
         </div>
-    </div>
+    </form>
 </template>
 
 <script>
@@ -144,6 +144,7 @@ export default {
 }
 
 .ingredient-form-group {
+    margin-top: 1rem;
     display: flex;
     flex-wrap: wrap;
     gap: var(--gap-size-1);

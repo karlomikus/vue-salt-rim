@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <form @submit.prevent="save">
         <OverlayLoader v-if="isLoading" />
         <div class="dialog-title">{{ $t('ingredient-dialog.select-substitutes') }}</div>
         <p style="margin-bottom: 1rem;">Select substitute ingredients for "{{ cocktailIngredient.name }}".</p>
@@ -44,9 +44,9 @@
             </div>
         </div>
         <div class="dialog-actions">
-            <button type="button" class="button button--dark" :disabled="isLoading" @click="save">{{ $t('save') }}</button>
+            <button type="submit" class="button button--dark" :disabled="isLoading">{{ $t('save') }}</button>
         </div>
-    </div>
+    </form>
 </template>
 
 <script>
