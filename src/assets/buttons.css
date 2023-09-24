@@ -47,7 +47,7 @@
 }
 
 .dark-theme .button.button--dark {
-    background-color: var(--clr-dark-main-200);
+    background-color: var(--clr-accent-500);
     color: var(--clr-dark-main-800);
 }
 

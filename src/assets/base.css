@@ -3,7 +3,8 @@
 
 :root {
     /* Base color scheme */
-    --clr-accent-50: #FAF5F8;
+    /* --clr-accent-50: #FAF5F8; */
+    --clr-accent-50: #f9f3f6;
     --clr-accent-100: #F5EAF2;
     --clr-accent-200: #ECD5E5;
     --clr-accent-300: #E1BDD5;
@@ -13,6 +14,7 @@
     --clr-accent-700: #AF5091;
     --clr-accent-800: #8F4277;
     --clr-accent-900: #693057;
+    --clr-accent-950: #411632;
 
     --clr-gray-50: #F5F4F5;
     --clr-gray-100: #EBEAEB;
@@ -46,6 +48,7 @@
     --clr-dark-main-950: #120e1a;
 
     --clr-rating: rgb(235, 133, 0);
+    --clr-rating-bg: rgb(255, 238, 216);
 
     --shadow-color: 324deg 10% 71%;
     --shadow-elevation-low:

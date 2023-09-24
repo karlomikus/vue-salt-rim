@@ -197,8 +197,8 @@ export default {
 }
 
 .dark-theme .image-upload__select {
-    --iu-clr-bg: linear-gradient(160deg, var(--clr-dark-main-900) 10%, var(--clr-dark-main-950) 110%);
-    --iu-clr-border: var(--clr-dark-main-800);
+    --iu-clr-bg: var(--clr-dark-main-700);
+    --iu-clr-border: var(--clr-dark-main-600);
 }
 
 @media (max-width: 450px) {
@@ -211,6 +211,10 @@ export default {
 .image-upload__select:is(:hover, :active, :focus) {
     border-color: var(--clr-accent-500);
     background-color: #fff;
+}
+
+.dark-theme .image-upload__select:is(:hover, :active, :focus) {
+    background-color: var(--clr-dark-main-700);
 }
 
 .image-upload__select__icon {

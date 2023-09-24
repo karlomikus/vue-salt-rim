@@ -58,7 +58,7 @@ main {
 }
 
 .dark-theme .page-subtitle {
-    --ps-clr-bg: var(--clr-dark-main-900);
+    --ps-clr-bg: rgba(0, 0, 0, .2);
 }
 
 h3.form-section-title {

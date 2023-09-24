@@ -71,7 +71,7 @@
     --form-clr-text: var(--clr-gray-100);
     --form-clr-bg: var(--clr-dark-main-700);
     --form-clr-bg-focus: var(--clr-dark-main-700);
-    --form-clr-border: var(--clr-dark-main-900);
+    --form-clr-border: var(--clr-dark-main-600);
     --form-clr-border-focus: var(--clr-accent-500);
     --form-clr-placeholder: var(--clr-gray-400);
 }

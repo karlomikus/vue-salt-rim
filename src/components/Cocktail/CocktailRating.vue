@@ -45,7 +45,7 @@ export default {
 
 .resource-rating__alt {
     color: var(--clr-rating);
-    background-color: rgb(255, 238, 216);
+    background-color: var(--clr-rating-bg);
     display: block;
     padding: 0 5px;
     border-radius: var(--radius-1);

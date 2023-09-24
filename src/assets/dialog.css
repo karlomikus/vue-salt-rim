@@ -31,7 +31,7 @@
 }
 
 .dialog__overlay {
-    background-color: rgba(21, 13, 34, 0.5);
+    background-color: rgba(21, 13, 34, 0.8);
     position: fixed;
     inset: 0;
     pointer-events: auto;
@@ -54,7 +54,7 @@
 }
 
 .dark-theme .dialog__content {
-    background-color: var(--clr-dark-main-950);
+    background-color: var(--clr-dark-main-800);
     border: 1px solid var(--clr-dark-main-800);
 }
 

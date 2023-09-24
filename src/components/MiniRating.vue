@@ -18,16 +18,16 @@ export default {
 <style scoped>
 .mini-rating {
     display: inline;
-    background-color: rgb(252, 242, 215);
+    background-color: var(--clr-rating-bg);
     font-family: var(--font-primary);
-    color: rgb(180, 108, 0);
-    font-size: 0.85rem;
+    color: var(--clr-rating);
+    font-size: 0.75rem;
     padding: 1px 5px;
     border-radius: var(--radius-2);
 }
 
 .dark-theme .mini-rating {
-    background-color: rgb(94, 52, 5);
+    background-color: rgb(167, 75, 22);
     color: rgb(255, 236, 207);
 }
 
