@@ -52,7 +52,7 @@
 }
 
 .dark-theme .button.button--dark:hover {
-    background-color: var(--clr-dark-main-50);
+    background-color: var(--clr-accent-100);
 }
 
 /* Outline button */
@@ -76,8 +76,8 @@
 }
 
 .dark-theme .button.button--outline:hover {
-    border: 2px solid var(--clr-dark-main-50);
-    background-color: var(--clr-dark-main-50);
+    border: 2px solid var(--clr-accent-100);
+    background-color: var(--clr-accent-100);
     color: var(--clr-dark-main-800);
 }
 

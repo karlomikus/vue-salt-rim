@@ -58,7 +58,7 @@ export default {
 
     display: flex;
     align-items: center;
-    padding: 0.825rem;
+    padding: 0.75rem;
     text-decoration: none;
 }
 
@@ -78,7 +78,7 @@ export default {
     background-size: cover;
     background-position: center center;
     flex-shrink: 0;
-    margin-right: 10px;
+    margin-right: var(--gap-size-2);
 }
 
 .dark-theme .cocktail-list-item__graphic__image {

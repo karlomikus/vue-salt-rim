@@ -46,6 +46,7 @@ export default {
 <style scoped>
 .sr-radio {
     --clr-bg: #fff;
+    --clr-description: var(--clr-gray-500);
     --clr-border: var(--clr-gray-200);
     --clr-border-hover: var(--clr-gray-800);
     --clr-border-selected: var(--clr-gray-50);
@@ -60,6 +61,16 @@ export default {
     cursor: pointer;
     display: flex;
     gap: var(--gap-size-2);
+}
+
+.dark-theme .sr-radio {
+    --clr-bg: var(--clr-dark-main-700);
+    --clr-description: var(--clr-dark-main-400);
+    --clr-border: var(--clr-dark-main-600);
+    --clr-border-hover: var(--clr-gray-100);
+    --clr-border-selected: var(--clr-dark-main-950);
+    --clr-svg: var(--clr-dark-main-600);
+    --clr-svg-selected: var(--clr-accent-200);
 }
 
 .sr-radio:hover {
@@ -89,16 +100,7 @@ export default {
 }
 
 .sr-radio__content p {
-    color: var(--clr-gray-500);
+    color: var(--clr-description);
     font-size: 0.85rem;
-}
-
-.dark-theme .sr-radio {
-    --clr-bg: #0c0b0e;
-    --clr-border: var(--clr-gray-700);
-    --clr-border-hover: var(--clr-gray-200);
-    --clr-border-selected: var(--clr-gray-900);
-    --clr-svg: var(--clr-gray-500);
-    --clr-svg-selected: var(--clr-gray-400);
 }
 </style>

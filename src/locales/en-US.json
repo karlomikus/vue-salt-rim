@@ -172,7 +172,7 @@
   "ingredient.in-shelf": "You have this ingredient",
   "ingredient.cocktail-children": "Used in {total} cocktails",
   "see-also": "See also",
-  "ingredient.delete-confirm": "This will permanently delete ingredient with name \"{name}\". This action will impact {total} cocktails!",
+  "ingredient.delete-confirm": "This will permanently delete ingredient with name \"{name}\". This action will modify {total} cocktail recipes.",
   "ingredient.shelf-remove-success": "Removed \"{name}\" from your shelf",
   "ingredient.shelf-add-success": "Added \"{name}\" to your shelf",
   "ingredient.list-remove-success": "Removed \"{name}\" from your shopping list",

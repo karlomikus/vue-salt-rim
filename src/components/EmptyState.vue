@@ -25,7 +25,7 @@
 }
 
 .dark-theme .empty-state {
-    background-color: rgba(0, 0, 0, .1);
+    background-color: rgba(0, 0, 0, .15);
     border-bottom: 1px solid rgba(255, 255, 255, .1);
     box-shadow:
         inset 0px 0.4px 0.5px hsl(var(--shadow-color-dark) / 0.25),

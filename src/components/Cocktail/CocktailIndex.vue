@@ -1,7 +1,7 @@
 <template>
     <PageHeader>
         {{ $t('cocktails') }}
-        <template #actions>
+        <template #actions v-if="appState.isAdmin() || appState.isModerator() || appState.isGeneral()">
             <RouterLink class="button button--outline" :to="{ name: 'cocktails.scrape' }">{{ $t('cocktails.import') }}</RouterLink>
             <RouterLink class="button button--dark" :to="{ name: 'cocktails.form' }">{{ $t('cocktails.add') }}</RouterLink>
         </template>
@@ -122,6 +122,7 @@ export default {
     },
     data() {
         return {
+            appState: new AppState(),
             showCreateNewCollectionDialog: false,
             isLoading: false,
             showRefinements: false,

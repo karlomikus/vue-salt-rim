@@ -91,7 +91,7 @@ export default {
 
     display: flex;
     align-items: center;
-    padding: 0.825rem;
+    padding: 0.75rem;
     text-decoration: none;
     gap: var(--gap-size-2);
 }

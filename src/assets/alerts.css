@@ -9,13 +9,6 @@
     color: var(--_clr-text);
 }
 
-.dark-theme .alert {
-    --_clr-text: var(--clr-gray-300);
-    --_clr-border: var(--clr-accent-blue);
-    --_clr-bg: linear-gradient(160deg, var(--clr-accent-blue), var(--clr-dark-main-950) 70%);
-    border-width: 1px;
-}
-
 .alert h3 {
     font-weight: var(--fw-bold);
     font-size: 0.7rem;
@@ -29,4 +22,10 @@
     --_clr-border: rgb(64, 75, 112);
     --_clr-bg: rgb(247, 249, 255);
     border-color: var(--_clr-border);
+}
+
+.dark-theme .alert.alert--info {
+    --_clr-text: #a8c6f3;
+    --_clr-border: #2c4b79;
+    --_clr-bg: #0e213d;
 }

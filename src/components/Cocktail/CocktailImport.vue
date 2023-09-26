@@ -114,6 +114,7 @@
                 </div>
             </div>
             <SaltRimDialog v-if="ingredientEdit" v-model="showIngredientDialog">
+                <template #trigger><span></span></template>
                 <template #dialog>
                     <div class="dialog-title">{{ $t('import.manually-match') }}</div>
                     <p style="margin-bottom: 1rem;">Select ingredient that best matches "{{ ingredientEdit.name }}", or create a new one.</p>

@@ -1,7 +1,7 @@
 <template>
     <PageHeader>
         {{ $t('ingredients') }}
-        <template #actions>
+        <template #actions v-if="appState.isAdmin() || appState.isModerator() || appState.isGeneral()">
             <Dropdown>
                 <template #default="{ toggleDropdown }">
                     <button type="button" class="button button--outline" @click="toggleDropdown">{{ $t('your-shopping-list') }}</button>
@@ -100,6 +100,7 @@ import Pagination from './../Search/SearchPagination.vue'
 import qs from 'qs'
 import Dropdown from './../SaltRimDropdown.vue'
 import EmptyState from './../EmptyState.vue'
+import AppState from '../../AppState'
 
 export default {
     components: {
@@ -114,6 +115,7 @@ export default {
     },
     data() {
         return {
+            appState: new AppState(),
             isLoading: false,
             showRefinements: false,
             meta: {},

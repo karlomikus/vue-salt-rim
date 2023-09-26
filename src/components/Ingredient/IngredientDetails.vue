@@ -3,9 +3,10 @@
         <OverlayLoader v-if="isLoading" />
         <div class="details-block-container details-block-container--blue ingredient-details__box" style="margin-top: 100px;">
             <div class="ingredient-details__box__content">
-                <h2 class="ingredient-details__box__title">
-                    {{ ingredient.name }}
-                </h2>
+                <div class="ingredient-details__title">
+                    <h2>{{ ingredient.name }}</h2>
+                    <p>{{ $t('added-on-by', { date: createdDate, name: ingredient.created_user.name }) }}</p>
+                </div>
                 <div class="item-details__chips">
                     <div v-if="ingredient.category" class="item-details__chips__group">
                         <div class="item-details__chips__group__title">{{ $t('category') }}:</div>
@@ -79,7 +80,7 @@
                         </button>
                     </template>
                     <template #content>
-                        <RouterLink class="dropdown-menu__item" :to="{ name: 'ingredients.form', query: { id: ingredient.id } }">
+                        <RouterLink v-if="ingredient.access.can_edit" class="dropdown-menu__item" :to="{ name: 'ingredients.form', query: { id: ingredient.id } }">
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
                                 <path fill="none" d="M0 0h24v24H0z" />
                                 <path d="M6.414 16L16.556 5.858l-1.414-1.414L5 14.586V16h1.414zm.829 2H3v-4.243L14.435 2.322a1 1 0 0 1 1.414 0l2.829 2.829a1 1 0 0 1 0 1.414L7.243 18zM3 20h18v2H3v-2z" />
@@ -98,7 +99,7 @@
                                 {{ $t('ingredient.add-to-list') }}
                             </template>
                         </a>
-                        <a class="dropdown-menu__item" href="#" @click.prevent="deleteIngredient">
+                        <a v-if="ingredient.access.can_delete" class="dropdown-menu__item" href="#" @click.prevent="deleteIngredient">
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
                                 <path fill="none" d="M0 0h24v24H0z" />
                                 <path d="M7 4V2h10v2h5v2h-2v15a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V6H2V4h5zM6 6v14h12V6H6zm3 3h2v8H9V9zm4 0h2v8h-2V9z" />
@@ -139,6 +140,7 @@ import ApiRequests from './../../ApiRequests.js'
 import Dropdown from '@/components/SaltRimDropdown.vue'
 import OverlayLoader from '@/components/OverlayLoader.vue'
 import { micromark } from 'micromark'
+import dayjs from 'dayjs'
 
 export default {
     components: {
@@ -171,6 +173,11 @@ export default {
             const removeIds = this.extraIfAddedToShelf.map(c => c.id)
 
             return this.ingredient.cocktails.filter(c => !removeIds.includes(c.id))
+        },
+        createdDate() {
+            const date = dayjs(this.ingredient.created_at).toDate()
+
+            return this.$d(date, 'long')
         }
     },
     watch: {
@@ -349,24 +356,33 @@ export default {
     width: 100%;
 }
 
-.ingredient-details__box__title {
-    font-weight: 700;
+.ingredient-details__title {
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+}
+
+.dark-theme .ingredient-details__title {
+    border-bottom: 2px solid var(--clr-dark-main-800);
+}
+
+.ingredient-details__title h2 {
     font-family: var(--font-heading);
-    margin: 10px 0;
     font-size: 2rem;
-    line-height: 1.6rem;
-    margin-bottom: 20px;
+    font-weight: 700;
+    margin: 0;
+    line-height: 1.3;
 }
 
-.ingredient-details__box__title small {
-    display: block;
-    font-size: 1rem;
-    font-family: var(--font-primary);
-    color: var(--clr-gray-500);
+.ingredient-details__title p {
+    margin-top: 0;
+    padding-top: 0;
+    font-size: 0.75rem;
+    color: var(--clr-dark-main-800);
+    opacity: .5;
 }
 
-.dark-theme .ingredient-details__box__title small {
-    color: var(--clr-gray-400);
+.dark-theme .ingredient-details__title p {
+    color: var(--clr-gray-300);
 }
 
 .ingredient-details__box hr {
@@ -375,7 +391,7 @@ export default {
     border-top: 2px solid rgba(0, 0, 0, .1);
 }
 
-.ingredient-details__box p {
+.ingredient-details__box > p {
     margin: 5px 0;
     padding: 5px 0;
 }

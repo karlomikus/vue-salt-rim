@@ -60,6 +60,22 @@ class AppState {
         localStorage.removeItem(this._key)
     }
 
+    isAdmin() {
+        return this.bar.access.role_id == 1;
+    }
+
+    isModerator() {
+        return this.bar.access.role_id == 2;
+    }
+
+    isGeneral() {
+        return this.bar.access.role_id == 3;
+    }
+
+    isGuest() {
+        return this.bar.access.role_id == 4;
+    }
+
     _updateState() {
         localStorage.setItem(this._key, JSON.stringify(this))
     }

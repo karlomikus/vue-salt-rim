@@ -12,7 +12,7 @@
 
 .dark-theme .table {
     --table-row-hover-clr: var(--clr-dark-main-900);
-    --table-border-color: var(--clr-dark-main-800);
+    --table-border-color: var(--clr-dark-main-700);
     --table-small-clr: var(--clr-dark-main-400);
 }
 
