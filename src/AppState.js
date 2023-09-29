@@ -22,6 +22,21 @@ class AppState {
     }
 
     setBar(bar) {
+        let searchHost = window.srConfig.MEILISEARCH_URL;
+        if (!searchHost) {
+            searchHost = bar.search_driver_host;
+        }
+
+        if (!(searchHost.startsWith('http://') || searchHost.startsWith('https://'))) {
+            if (!searchHost.startsWith('/')) {
+                searchHost = '/' + searchHost;
+            }
+
+            searchHost = window.location.origin + searchHost;
+        }
+
+        bar.search_driver_host = searchHost
+
         this.bar = bar
         this._updateState()
     }
