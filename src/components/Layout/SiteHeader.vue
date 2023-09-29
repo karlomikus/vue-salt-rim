@@ -190,16 +190,6 @@ export default {
     }
 }
 
-@media (max-width: 450px) {
-    .header-bar {
-        padding: 10px;
-    }
-
-    .site-header {
-        margin-bottom: 20px;
-    }
-}
-
 .subnavigation-bar {
     background-color: var(--color-site-header-subnavigation);
 }
@@ -228,5 +218,19 @@ export default {
 .subnavigation-bar__nav>a.current-nav {
     color: #fff;
     background-color: rgba(0, 0, 0, 0.25);
+}
+
+@media (max-width: 450px) {
+    .header-bar {
+        padding: 10px;
+    }
+
+    .subnavigation-bar__nav {
+        justify-content: center;
+    }
+
+    .subnavigation-bar__nav>a {
+        padding: 0.25rem 0.75rem;
+    }
 }
 </style>

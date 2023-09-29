@@ -17,8 +17,8 @@ export default {
         return {
             current: 'light',
             metaThemeColor: {
-                dark: '#16141A',
-                light: '#4b4c75',
+                dark: '#282238',
+                light: '#584b75',
             }
         }
     },

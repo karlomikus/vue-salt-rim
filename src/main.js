@@ -24,7 +24,7 @@ if (!userSelectedLocale) {
 let userSelectedTheme = appState.theme
 if (userSelectedTheme == 'dark' && !document.body.classList.contains('dark-theme')) {
     document.body.classList.add('dark-theme')
-    document.querySelector('meta[name="theme-color"]').setAttribute('content', '#16141A')
+    document.querySelector('meta[name="theme-color"]').setAttribute('content', '#282238')
 }
 
 const emitter = mitt()
