@@ -384,4 +384,10 @@ export default {
     grid-template-columns: 1fr 1fr;
     gap: var(--gap-size-2);
 }
+
+@media (max-width: 450px) {
+    .import-types {
+        grid-template-columns: 1fr;
+    }
+}
 </style>

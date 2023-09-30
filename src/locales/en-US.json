@@ -370,5 +370,6 @@
   },
   "import": {
     "manually-match": "Match ingredient manually"
-  }
+  },
+  "remove-from-bar": "Remove from bar"
 }

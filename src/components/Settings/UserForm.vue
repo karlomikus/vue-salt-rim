@@ -116,4 +116,10 @@ export default {
     grid-template-columns: 1fr 1fr;
     gap: var(--gap-size-2);
 }
+
+@media (max-width: 450px) {
+    .user-roles {
+        grid-template-columns: 1fr;
+    }
+}
 </style>

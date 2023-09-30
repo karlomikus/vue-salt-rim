@@ -143,10 +143,16 @@ a.site-logo:focus .site-logo__title {
 
     .site-logo__title {
         line-height: 0.9;
+        font-size: 1.35rem;
     }
     
     .site-logo__title span {
         font-size: 0.6rem;
+    }
+
+    .site-logo__image svg {
+        width: 30px;
+        height: 30px;
     }
 }
 

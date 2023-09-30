@@ -168,6 +168,12 @@ export default {
     gap: var(--gap-size-2);
 }
 
+@media (max-width: 450px) {
+    .bars__grid {
+        grid-template-columns: 1fr;
+    }
+}
+
 .bar {
     padding: 1rem;
     display: flex;
@@ -185,6 +191,10 @@ export default {
     position: absolute;
     top: 0.5rem;
     right: 0.5rem;
+}
+
+.dark-theme .bar__role {
+    background-color: var(--clr-accent-700);
 }
 
 .bar__title {
@@ -205,5 +215,9 @@ export default {
     padding: 0.25rem;
     font-family: var(--font-mono);
     letter-spacing: 1px;
+}
+
+.dark-theme .bar__invite_code {
+    background-color: var(--clr-dark-main-950);
 }
 </style>

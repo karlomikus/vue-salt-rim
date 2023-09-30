@@ -38,9 +38,9 @@
             </div>
             <h3 class="form-section-title">{{ $t('data') }}</h3>
             <div class="block-container block-container--padded">
-                <button class="button button--outline" type="button" @click="downloadAccountData">{{ $t('download-account-data') }}</button>
+                <!-- <button class="button button--outline" type="button" @click="downloadAccountData">{{ $t('download-account-data') }}</button>
                 <br>
-                <br>
+                <br> -->
                 <button class="button button--outline button--danger" type="button" @click="deleteAccount">{{ $t('delete-my-account') }}</button>
             </div>
             <div class="form-actions">
