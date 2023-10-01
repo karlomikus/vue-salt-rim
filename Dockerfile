@@ -12,7 +12,7 @@ COPY package*.json .
 RUN npm install
 COPY . .
 
-RUN sed -i "s/{{VERSION}}/$BUILD_VERSION/g" ./src/main.js
+RUN sed -i "s/{{VERSION}}/$BUILD_VERSION/g" ./docker/config.js
 
 RUN npm run build
 
