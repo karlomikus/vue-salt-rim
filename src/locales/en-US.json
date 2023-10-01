@@ -268,6 +268,7 @@
   "download": "Download",
   "share": "Share",
   "share-copy-json": "Copy as JSON",
+  "share-copy-yaml": "Copy as YAML",
   "share-format-copied": "Text copied",
   "share-format-copy-failed": "Text copy failed",
   "start-import": "Start import",

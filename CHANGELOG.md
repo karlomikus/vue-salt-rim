@@ -3,9 +3,12 @@ This release marks support for Bar Assistant v3.0
 
 ## New
 - Added support for multiple bars
-- Splitted navigation
-- Added an option to delete all users data in profile
+- Split navigation
+- Added an option to delete your profile
 - Added current user role checking for actions
+- Ingredient selector now supports variable amounts and notes
+- On cocktail import page you can now manually match ingredients
+- Added "Copy as YAML" to cocktail share
 
 ## Changes
 - Removed `BAR_NAME` env variable
@@ -13,6 +16,8 @@ This release marks support for Bar Assistant v3.0
 - Removed `BAR_DESCRIPTION` env variable
     - Now uses bar subtitle from current selected bar
 - Small design updates
+- Updated import cocktail page
+- Adding substitute ingredients is now a seperate action
 
 # v1.20.2
 ## Fixes
