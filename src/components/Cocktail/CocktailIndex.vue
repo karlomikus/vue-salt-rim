@@ -19,6 +19,7 @@
                         </div>
                     </Refinement>
                     <Refinement v-if="refineCollections.length > 0" id="collection" v-model="activeFilters.collections" :title="$t('your-collections')" :refinements="refineCollections" @change="updateRouterPath"></Refinement>
+                    <Refinement v-if="refineUserShelves.length > 0" id="user_shelves" v-model="activeFilters.user_shelves" :title="$t('public-shelves')" :refinements="refineUserShelves" @change="updateRouterPath"></Refinement>
                     <Refinement id="main-ingredient" v-model="activeFilters.main_ingredients" :title="$t('ingredient.main')" :refinements="refineMainIngredients" @change="updateRouterPath"></Refinement>
                     <Refinement id="method" v-model="activeFilters.methods" :title="$t('method')" :refinements="refineMethods" @change="updateRouterPath"></Refinement>
                     <Refinement id="abv" v-model="activeFilters.abv" :title="$t('strength')" :refinements="refineABV" type="radio" @change="updateRouterPath"></Refinement>
@@ -158,6 +159,7 @@ export default {
                 methods: [],
                 main_ingredients: [],
                 collections: [],
+                user_shelves: [],
             },
             activeFilters: {
                 on_shelf: false,
@@ -172,7 +174,8 @@ export default {
                 collections: [],
                 user_rating: null,
                 abv: null,
-                total_ingredients: null
+                total_ingredients: null,
+                user_shelves: []
             }
         }
     },
@@ -266,6 +269,15 @@ export default {
                 }
             })
         },
+        refineUserShelves() {
+            return this.availableRefinements.user_shelves.filter(us => us.is_shelf_public == true && us.user_id != this.appState.user.id).map(m => {
+                return {
+                    id: m.user_id,
+                    value: m.user_id,
+                    name: m.user_name
+                }
+            })
+        },
         currentCocktailIds() {
             return this.cocktails.map((c) => c.id)
         }
@@ -307,6 +319,10 @@ export default {
             ApiRequests.fetchCollections({per_page: 100}).then(data => {
                 this.availableRefinements.collections = data
             })
+
+            ApiRequests.fetchBarMembers(this.appState.bar.id).then(data => {
+                this.availableRefinements.user_shelves = data
+            })
         },
         updateRouterPath() {
             const query = this.stateToQuery()
@@ -347,11 +363,12 @@ export default {
             this.activeFilters.main_ingredients = state.filter && state.filter.main_ingredient_id ? String(state.filter.main_ingredient_id).split(',') : []
             this.activeFilters.collections = state.filter && state.filter.collection_id ? String(state.filter.collection_id).split(',') : []
             this.activeFilters.ingredients = state.filter && state.filter.ingredient_id ? String(state.filter.ingredient_id).split(',') : []
+            this.activeFilters.user_shelves = state.filter && state.filter.user_shelves ? String(state.filter.user_shelves).split(',') : []
             this.activeFilters.on_shelf = state.filter && state.filter.on_shelf ? state.filter.on_shelf : null
             this.activeFilters.favorites = state.filter && state.filter.favorites ? state.filter.favorites : null
             this.activeFilters.is_public = state.filter && state.filter.is_public ? state.filter.is_public : null
             this.activeFilters.total_ingredients = state.filter && state.filter.total_ingredients ? state.filter.total_ingredients : null
-            this.activeFilters.created_user_id = state.filter && state.filter.created_user_id ? state.filter.created_user_id : null
+            this.activeFilters.created_user_id = state.filter && state.filter.created_user_id ? String(state.filter.created_user_id) : null
             this.activeFilters.user_rating = state.filter && state.filter.user_rating_min ? state.filter.user_rating_min : null
             this.searchQuery = state.filter && state.filter.name ? state.filter.name : null
             if (state.filter && (state.filter.abv_min || state.filter.abv_max)) {
@@ -383,7 +400,7 @@ export default {
                 on_shelf: this.activeFilters.on_shelf,
                 favorites: this.activeFilters.favorites,
                 is_public: this.activeFilters.is_public,
-                created_user_id: this.activeFilters.created_user_id ? appState.user.id : null,
+                created_user_id: this.activeFilters.created_user_id ? String(appState.user.id) : null,
                 user_rating_min: this.activeFilters.user_rating ? this.activeFilters.user_rating : null,
                 total_ingredients: this.activeFilters.total_ingredients ? this.activeFilters.total_ingredients : null,
                 tag_id: this.activeFilters.tags.length > 0 ? this.activeFilters.tags.join(',') : null,
@@ -392,6 +409,7 @@ export default {
                 main_ingredient_id: this.activeFilters.main_ingredients.length > 0 ? this.activeFilters.main_ingredients.join(',') : null,
                 ingredient_id: this.activeFilters.ingredients.length > 0 ? this.activeFilters.ingredients.join(',') : null,
                 collection_id: this.activeFilters.collections.length > 0 ? this.activeFilters.collections.join(',') : null,
+                user_shelves: this.activeFilters.user_shelves.length > 0 ? this.activeFilters.user_shelves.join(',') : null,
                 abv_min: this.activeFilters.abv ? this.activeFilters.abv.min : null,
                 abv_max: this.activeFilters.abv ? this.activeFilters.abv.max : null,
             }

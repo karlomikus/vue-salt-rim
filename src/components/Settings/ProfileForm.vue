@@ -19,8 +19,8 @@
                     <input id="email" v-model="user.email" class="form-input" type="email" required>
                 </div>
                 <div class="form-group">
-                    <label class="form-label" for="repeat-new-password">{{ $t('ui-language') }}:</label>
-                    <select v-model="currentLocale" class="form-select">
+                    <label class="form-label" for="ui-language">{{ $t('ui-language') }}:</label>
+                    <select v-model="currentLocale" class="form-select" id="ui-language">
                         <option v-for="locale in $i18n.availableLocales" :key="locale" :value="locale">{{ $t('locales.' + locale) }}</option>
                     </select>
                 </div>
@@ -36,6 +36,15 @@
                     <input id="repeat-new-password" v-model="user.repeatPassword" class="form-input" type="password">
                 </div>
             </div>
+            <template v-if="appState.bar.id">
+                <h3 class="form-section-title">{{ $t('bars.bar') }}</h3>
+                <div class="block-container block-container--padded">
+                    <label class="form-checkbox">
+                        <input v-model="user.is_shelf_public" :value="true" type="checkbox">
+                        <span>{{ $t('profile-public-shelf') }}</span>
+                    </label>
+                </div>
+            </template>
             <h3 class="form-section-title">{{ $t('data') }}</h3>
             <div class="block-container block-container--padded">
                 <!-- <button class="button button--outline" type="button" @click="downloadAccountData">{{ $t('download-account-data') }}</button>
@@ -65,8 +74,11 @@ export default {
     },
     data() {
         return {
+            appState: new AppState(),
             isLoading: false,
-            user: {},
+            user: {
+                is_shelf_public: false,
+            },
             currentLocale: this.$i18n.locale
         }
     },
@@ -77,6 +89,10 @@ export default {
 
         ApiRequests.fetchUser().then(data => {
             this.user = data
+            if (this.appState.bar.id) {
+                const barMembership = data.memberships.filter(m => m.bar_id == this.appState.bar.id);
+                this.user.is_shelf_public = barMembership.length > 0 ? barMembership[0].is_shelf_public : false
+            }
             this.isLoading = false
         }).catch(e => {
             this.$toast.error(e.message)
@@ -99,6 +115,11 @@ export default {
             if (this.currentLocale) {
                 appState.setLanguage(this.currentLocale)
                 this.$i18n.locale = this.currentLocale
+            }
+
+            if (appState.bar.id) {
+                postData.bar_id = appState.bar.id;
+                postData.is_shelf_public = this.user.is_shelf_public;
             }
 
             ApiRequests.updateUser(postData).then(data => {

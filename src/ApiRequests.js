@@ -786,6 +786,12 @@ class ApiRequests
     static async removeUserFromBar(barId, userId) {
         return await this.deleteRequest(`/api/bars/${barId}/memberships/${userId}`)
     }
+
+    static async fetchBarMembers(id) {
+        let jsonResp = await this.getRequest(`/api/bars/${id}/memberships`)
+
+        return this.parseResponse(jsonResp)
+    }
 }
 
 export default ApiRequests
