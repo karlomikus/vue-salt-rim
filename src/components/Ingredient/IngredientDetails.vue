@@ -1,7 +1,7 @@
 <template>
     <div v-if="ingredient.id" class="ingredient-details">
         <OverlayLoader v-if="isLoading" />
-        <div class="details-block-container details-block-container--blue ingredient-details__box" style="margin-top: 100px;">
+        <div class="block-container block-container--padded ingredient-details__box" style="margin-top: 100px;">
             <div class="ingredient-details__box__content">
                 <div class="ingredient-details__title">
                     <h2>{{ ingredient.name }}</h2>
@@ -12,7 +12,7 @@
                         <div class="item-details__chips__group__title">{{ $t('category') }}:</div>
                         <ul class="chips-list">
                             <li>
-                                <RouterLink :to="{ name: 'ingredients', query: { 'filter[category_id]': ingredient.category.id } }">{{ ingredient.category.name }}</RouterLink>
+                                <RouterLink class="chip" :to="{ name: 'ingredients', query: { 'filter[category_id]': ingredient.category.id } }">{{ ingredient.category.name }}</RouterLink>
                             </li>
                         </ul>
                     </div>
@@ -20,15 +20,15 @@
                         <div class="item-details__chips__group__title">{{ $t('strength') }}:</div>
                         <ul v-if="ingredient.strength > 0" class="chips-list">
                             <li>
-                                <span><abbr :title="$t('ABV.definition')">{{ $t('ABV') }}</abbr>: {{ ingredient.strength + '%' }}</span>
+                                <span class="chip"><abbr :title="$t('ABV.definition')">{{ $t('ABV') }}</abbr>: {{ ingredient.strength + '%' }}</span>
                             </li>
                             <li>
-                                <span>{{ $t('alcohol-proof') }}: {{ ingredient.strength * 2 }}</span>
+                                <span class="chip">{{ $t('alcohol-proof') }}: {{ ingredient.strength * 2 }}</span>
                             </li>
                         </ul>
                         <ul v-else class="chips-list">
                             <li>
-                                <span>{{ $t('non-alcoholic') }}</span>
+                                <span class="chip">{{ $t('non-alcoholic') }}</span>
                             </li>
                         </ul>
                     </div>
@@ -36,7 +36,7 @@
                         <div class="item-details__chips__group__title">{{ $t('origin') }}:</div>
                         <ul class="chips-list">
                             <li>
-                                <span>{{ ingredient.origin }}</span>
+                                <span class="chip">{{ ingredient.origin }}</span>
                             </li>
                         </ul>
                     </div>
@@ -44,10 +44,10 @@
                         <div class="item-details__chips__group__title">{{ $t('status') }}:</div>
                         <ul class="chips-list">
                             <li v-show="isAddedToShelf">
-                                <span>{{ $t('ingredient.in-shelf') }}</span>
+                                <span class="chip">{{ $t('ingredient.in-shelf') }}</span>
                             </li>
                             <li v-show="isAddedToShoppingList">
-                                <span>{{ $t('ingredient.on-shopping-list') }}</span>
+                                <span class="chip">{{ $t('ingredient.on-shopping-list') }}</span>
                             </li>
                         </ul>
                     </div>
@@ -58,7 +58,7 @@
                 <img :src="mainIngredientImageUrl" :alt="ingredient.name" />
             </div>
         </div>
-        <div class="details-block-container details-block-container--green ingredient-details__cocktails">
+        <div class="block-container block-container--padded ingredient-details__cocktails">
             <div class="ingredient-details__actions">
                 <button type="button" class="button-circle" @click="toggleShelf">
                     <svg v-if="!isAddedToShelf" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
@@ -113,22 +113,22 @@
             <ul v-if="ingredient.cocktails.length > 0" class="ingredient-chips-list">
                 <li v-if="extraIfAddedToShelf.length > 0" class="ingredient-chips-list__label">{{ $t('ingredient-extra-cocktails-info') }}:</li>
                 <li v-for="cocktail in extraIfAddedToShelf" :key="cocktail.id">
-                    <RouterLink :to="{ name: 'cocktails.show', params: { id: cocktail.slug } }">{{ cocktail.name }}</RouterLink>
+                    <RouterLink class="chip" :to="{ name: 'cocktails.show', params: { id: cocktail.slug } }">{{ cocktail.name }}</RouterLink>
                 </li>
                 <li v-if="extraIfAddedToShelf.length > 0 && defaultCocktails.length > 0" class="ingredient-chips-list__label">{{ $t('ingredient-cocktails-rest') }}:</li>
                 <li v-for="cocktail in defaultCocktails" :key="cocktail.id">
-                    <RouterLink :to="{ name: 'cocktails.show', params: { id: cocktail.slug } }">{{ cocktail.name }}</RouterLink>
+                    <RouterLink class="chip" :to="{ name: 'cocktails.show', params: { id: cocktail.slug } }">{{ cocktail.name }}</RouterLink>
                 </li>
             </ul>
             <div v-else>
                 <RouterLink :to="{ name: 'cocktails.form' }">{{ $t('cocktails.add') }}</RouterLink>
             </div>
         </div>
-        <div v-if="ingredient.varieties.length > 0" class="details-block-container details-block-container--yellow">
+        <div v-if="ingredient.varieties.length > 0" class="block-container block-container--padded">
             <h2 class="details-block-container__title">{{ $t('see-also') }}</h2>
             <ul class="ingredient-chips-list">
                 <li v-for="variety in ingredient.varieties" :key="variety.slug">
-                    <RouterLink :to="{ name: 'ingredients.show', params: { id: variety.slug } }">{{ variety.name }}</RouterLink>
+                    <RouterLink class="chip" :to="{ name: 'ingredients.show', params: { id: variety.slug } }">{{ variety.name }}</RouterLink>
                 </li>
             </ul>
         </div>
@@ -299,7 +299,7 @@ export default {
 }
 </script>
 
-<style scope>
+<style scoped>
 .ingredient-details .ingredient-details__image {
     flex-shrink: 0;
     padding: 30px;
@@ -413,30 +413,6 @@ export default {
     display: flex;
     flex-wrap: wrap;
     gap: var(--gap-size-2);
-}
-
-.dark-theme .ingredient-chips-list {
-    --icl-clr-bg: rgba(255, 255, 255, .05);
-    --icl-clr-bg-hover: rgba(255, 255, 255, .1);
-    --icl-clr-border: rgba(0, 0, 0, .2);
-    --icl-clr-border-hover: rgba(0, 0, 0, .4);
-}
-
-.ingredient-chips-list li a {
-    display: block;
-    padding: 1px 8px;
-    font-size: 0.9rem;
-    box-shadow: 0 2px 0 var(--icl-clr-border);
-    background-color: var(--icl-clr-bg);
-    border-radius: var(--radius-1);
-    text-decoration: none;
-}
-
-.ingredient-chips-list li a:hover,
-.ingredient-chips-list li a:active,
-.ingredient-chips-list li a:focus {
-    box-shadow: 0 2px 0 var(--icl-clr-border-hover);
-    background-color: var(--icl-clr-bg-hover);
 }
 
 .ingredient-chips-list__label {

@@ -17,14 +17,14 @@
         </div>
         <div class="cocktail-details__main">
             <div class="cocktail-details__main__content">
-                <div class="details-block-container details-block-container--blue cocktail-details-box" style="margin-top: 0">
+                <div class="block-container block-container--padded cocktail-details-box" style="margin-top: 0">
                     <h3 class="details-block-container__title">{{ $t('description') }}</h3>
                     <div class="item-details__chips">
                         <div v-if="cocktail.tags.length > 0" class="item-details__chips__group">
                             <div class="item-details__chips__group__title">{{ $t('tags') }}:</div>
                             <ul class="chips-list">
                                 <li v-for="tag in cocktail.tags" :key="tag.id">
-                                    <RouterLink :to="{ name: 'cocktails', query: { 'filter[tag_id]': tag.id } }">{{ tag.name }}</RouterLink>
+                                    <RouterLink class="chip" :to="{ name: 'cocktails', query: { 'filter[tag_id]': tag.id } }">{{ tag.name }}</RouterLink>
                                 </li>
                             </ul>
                         </div>
@@ -32,7 +32,7 @@
                             <div class="item-details__chips__group__title">{{ $t('glass-type') }}:</div>
                             <ul class="chips-list">
                                 <li>
-                                    <RouterLink :to="{ name: 'cocktails', query: { 'filter[glass_id]': cocktail.glass.id } }">{{ cocktail.glass.name }}</RouterLink>
+                                    <RouterLink class="chip" :to="{ name: 'cocktails', query: { 'filter[glass_id]': cocktail.glass.id } }">{{ cocktail.glass.name }}</RouterLink>
                                 </li>
                             </ul>
                         </div>
@@ -40,7 +40,7 @@
                             <div class="item-details__chips__group__title">{{ $t('method') }}:</div>
                             <ul class="chips-list">
                                 <li>
-                                    <RouterLink :to="{ name: 'cocktails', query: { 'filter[cocktail_method_id]': cocktail.method.id } }">{{ $t('method.' + cocktail.method.name) }}</RouterLink>
+                                    <RouterLink class="chip" :to="{ name: 'cocktails', query: { 'filter[cocktail_method_id]': cocktail.method.id } }">{{ $t('method.' + cocktail.method.name) }}</RouterLink>
                                 </li>
                             </ul>
                         </div>
@@ -48,7 +48,7 @@
                             <div class="item-details__chips__group__title">{{ $t('ABV') }}:</div>
                             <ul class="chips-list">
                                 <li>
-                                    <RouterLink :to="{ name: 'cocktails', query: { 'filter[abv_min]': cocktail.abv } }">{{ cocktail.abv }}%</RouterLink>
+                                    <RouterLink class="chip" :to="{ name: 'cocktails', query: { 'filter[abv_min]': cocktail.abv } }">{{ cocktail.abv }}%</RouterLink>
                                 </li>
                             </ul>
                         </div>
@@ -56,7 +56,7 @@
                             <div class="item-details__chips__group__title">{{ $t('avg-rating') }}:</div>
                             <ul class="chips-list">
                                 <li>
-                                    <RouterLink :to="{ name: 'cocktails', query: { 'filter[user_rating_min]': cocktail.rating.average } }">{{ cocktail.rating.average }} ★</RouterLink>
+                                    <RouterLink class="chip" :to="{ name: 'cocktails', query: { 'filter[user_rating_min]': cocktail.rating.average } }">{{ cocktail.rating.average }} ★</RouterLink>
                                 </li>
                             </ul>
                         </div>
@@ -214,7 +214,7 @@
                         </Dropdown>
                     </div>
                 </div>
-                <div v-if="cocktail.ingredients.length > 0" class="details-block-container details-block-container--green">
+                <div v-if="cocktail.ingredients.length > 0" class="block-container block-container--padded">
                     <h3 class="details-block-container__title">{{ $t('ingredients') }}</h3>
                     <div style="display: grid; grid-template-columns: 1fr 1fr;">
                         <div class="cocktail-button-group">
@@ -258,7 +258,7 @@
                     </div> -->
                     <a v-show="missingIngredientIds.length > 0" href="#" @click.prevent="addMissingIngredients">{{ $t('cocktail.missing-ing-action') }}</a>
                 </div>
-                <div class="details-block-container details-block-container--yellow">
+                <div class="block-container block-container--padded">
                     <h3 class="details-block-container__title">{{ $t('instructions') }}</h3>
                     <div v-html="parsedInstructions"></div>
                     <div v-if="cocktail.utensils.length > 0">
@@ -266,11 +266,11 @@
                         <strong>{{ $t('utensils.title') }}</strong>: {{ cocktail.utensils.map(u => u.name).join(', ') }}
                     </div>
                 </div>
-                <div v-if="cocktail.garnish" class="details-block-container details-block-container--red">
+                <div v-if="cocktail.garnish" class="block-container block-container--padded">
                     <h3 class="details-block-container__title">{{ $t('garnish') }}</h3>
                     <div v-html="parsedGarnish"></div>
                 </div>
-                <div v-if="notes.length > 0" class="details-block-container details-block-container--purple">
+                <div v-if="notes.length > 0" class="block-container block-container--padded">
                     <OverlayLoader v-if="isLoadingNotes" />
                     <h3 class="details-block-container__title">{{ $t('notes') }}</h3>
                     <Note v-for="note in notes" :key="note.id" :note="note" @note-deleted="refreshNotes"></Note>
@@ -623,7 +623,7 @@ export default {
 }
 
 .cocktail-ingredients {
-    --ci-clr-list-bg: rgba(255, 255, 255, .3);
+    --ci-clr-list-bg: #f4f1fa;
     list-style: none;
     padding: 0;
     margin: 0;
@@ -687,9 +687,9 @@ export default {
 
 .cocktail-button-group {
     --cbg-clr-content: var(--clr-gray-800);
-    --cbg-clr-bg: rgba(255, 255, 255, .2);
-    --cbg-clr-bg-hover: rgb(255, 255, 255, .4);
-    --cbg-clr-bg-active: rgb(255, 255, 255, .6);
+    --cbg-clr-bg: var(--clr-gray-100);
+    --cbg-clr-bg-hover: var(--clr-gray-300);
+    --cbg-clr-bg-active: var(--clr-gray-200);
     margin-bottom: 20px;
 }
 

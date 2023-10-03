@@ -18,8 +18,8 @@
             </div>
             <p v-if="shortIngredients.length > 0" class="cocktail-grid-item__ingredients">{{ shortIngredients.join(', ') }}</p>
             <ul class="cocktail-tags">
-                <li v-for="tag in cocktail.tags.slice(0, maxTags)" :key="tag.id" class="tag tag--background">{{ tag.name }}</li>
-                <li v-if="cocktail.tags.length - maxTags > 0" class="tag tag--background" style="opacity: 0.6;">+ {{ cocktail.tags.length - maxTags }} more</li>
+                <li v-for="tag in cocktail.tags.slice(0, maxTags)" :key="tag.id" class="chip">{{ tag.name }}</li>
+                <li v-if="cocktail.tags.length - maxTags > 0" class="chip" style="opacity: 0.6;">+ {{ cocktail.tags.length - maxTags }} more</li>
             </ul>
         </div>
     </RouterLink>
