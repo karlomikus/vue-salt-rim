@@ -451,7 +451,8 @@ export default {
                 collections: [],
                 user_rating: null,
                 abv: null,
-                total_ingredients: null
+                total_ingredients: null,
+                user_shelves: []
             }
 
             this.updateRouterPath()
