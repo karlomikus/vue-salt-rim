@@ -74,13 +74,6 @@ export default {
             hasVariableAmount: this.value.amount_max != null,
         }
     },
-    watch: {
-        hasVariableAmount(newVal) {
-            if (newVal == false) {
-                this.normalizedMaxAmount = null
-            }
-        }
-    },
     computed: {
         normalizedAmount: {
             get() {
@@ -101,7 +94,7 @@ export default {
             set(newValue) {
                 if (!newValue) {
                     this.cocktailIngredient.amount_max = null
-                    return;
+                    return
                 }
 
                 if (newValue.startsWith('.')) {
@@ -109,6 +102,13 @@ export default {
                 } else {
                     this.cocktailIngredient.amount_max = newValue
                 }
+            }
+        }
+    },
+    watch: {
+        hasVariableAmount(newVal) {
+            if (newVal == false) {
+                this.normalizedMaxAmount = null
             }
         }
     },

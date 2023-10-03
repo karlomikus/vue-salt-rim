@@ -31,9 +31,9 @@
                     <td style="text-align: right;">
                         <a class="list-group__action" href="#" @click.prevent="shareCollection(collection)">{{ $t('share') }}</a>
                         &middot;
-                        <a class="list-group__action" href="#" @click.prevent="deleteCollection(collection)">{{ $t('remove') }}</a>
-                        &middot;
                         <RouterLink class="list-group__action" :to="{ name: 'cocktails', query: { 'filter[collection_id]': collection.id } }">{{ $t('view') }}</RouterLink>
+                        &middot;
+                        <a class="list-group__action" href="#" @click.prevent="deleteCollection(collection)">{{ $t('remove') }}</a>
                     </td>
                 </tr>
             </tbody>

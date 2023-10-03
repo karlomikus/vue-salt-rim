@@ -38,7 +38,7 @@
                                 {{ user.role.role_name }}
                             </td>
                             <td style="text-align: right;">
-                                <a class="list-group__action" href="#" @click.prevent="deleteUser(user)" v-if="user.id != appState.user.id">{{ $t('remove-from-bar') }}</a>
+                                <a v-if="user.id != appState.user.id" class="list-group__action" href="#" @click.prevent="deleteUser(user)">{{ $t('remove-from-bar') }}</a>
                             </td>
                         </tr>
                     </tbody>

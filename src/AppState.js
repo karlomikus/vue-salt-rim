@@ -22,17 +22,17 @@ class AppState {
     }
 
     setBar(bar) {
-        let searchHost = window.srConfig.MEILISEARCH_URL;
+        let searchHost = window.srConfig.MEILISEARCH_URL
         if (!searchHost) {
-            searchHost = bar.search_driver_host;
+            searchHost = bar.search_driver_host
         }
 
         if (!(searchHost.startsWith('http://') || searchHost.startsWith('https://'))) {
             if (!searchHost.startsWith('/')) {
-                searchHost = '/' + searchHost;
+                searchHost = '/' + searchHost
             }
 
-            searchHost = window.location.origin + searchHost;
+            searchHost = window.location.origin + searchHost
         }
 
         bar.search_driver_host = searchHost
@@ -76,19 +76,19 @@ class AppState {
     }
 
     isAdmin() {
-        return this.bar.access.role_id == 1;
+        return this.bar.access.role_id == 1
     }
 
     isModerator() {
-        return this.bar.access.role_id == 2;
+        return this.bar.access.role_id == 2
     }
 
     isGeneral() {
-        return this.bar.access.role_id == 3;
+        return this.bar.access.role_id == 3
     }
 
     isGuest() {
-        return this.bar.access.role_id == 4;
+        return this.bar.access.role_id == 4
     }
 
     _updateState() {

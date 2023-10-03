@@ -1,7 +1,7 @@
 <template>
     <PageHeader>
         {{ $t('ingredients') }}
-        <template #actions v-if="appState.isAdmin() || appState.isModerator() || appState.isGeneral()">
+        <template v-if="appState.isAdmin() || appState.isModerator() || appState.isGeneral()" #actions>
             <Dropdown>
                 <template #default="{ toggleDropdown }">
                     <button type="button" class="button button--outline" @click="toggleDropdown">{{ $t('your-shopping-list') }}</button>

@@ -22,8 +22,8 @@ class Utils {
             return `${orgAmount == 0 ? '' : orgAmount}${orgAmountMax != 0 ? '-' + orgAmountMax : ''} ${orgUnits}`
         }
 
-        const minAmount = this.convertFromTo(orgUnits, orgAmount, convertTo);
-        const maxAmount = this.convertFromTo(orgUnits, orgAmountMax, convertTo);
+        const minAmount = this.convertFromTo(orgUnits, orgAmount, convertTo)
+        const maxAmount = this.convertFromTo(orgUnits, orgAmountMax, convertTo)
 
         return `${minAmount == 0 ? '' : minAmount}${maxAmount != 0 ? '-' + maxAmount : ''} ${convertTo}`
     }

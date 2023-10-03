@@ -15,7 +15,7 @@
 
 .dark-theme .block-container {
     background: var(--clr-dark-main-800);
-    border-top: 1px solid var(--clr-dark-main-700);
+    border-top: 1px solid var(--clr-dark-main-650);
     border-bottom: 1px solid var(--clr-dark-main-900);
     box-shadow: var(--shadow-elevation-medium-dark);
 }

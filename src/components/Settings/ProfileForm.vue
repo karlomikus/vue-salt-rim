@@ -20,7 +20,7 @@
                 </div>
                 <div class="form-group">
                     <label class="form-label" for="ui-language">{{ $t('ui-language') }}:</label>
-                    <select v-model="currentLocale" class="form-select" id="ui-language">
+                    <select id="ui-language" v-model="currentLocale" class="form-select">
                         <option v-for="locale in $i18n.availableLocales" :key="locale" :value="locale">{{ $t('locales.' + locale) }}</option>
                     </select>
                 </div>
@@ -90,7 +90,7 @@ export default {
         ApiRequests.fetchUser().then(data => {
             this.user = data
             if (this.appState.bar.id) {
-                const barMembership = data.memberships.filter(m => m.bar_id == this.appState.bar.id);
+                const barMembership = data.memberships.filter(m => m.bar_id == this.appState.bar.id)
                 this.user.is_shelf_public = barMembership.length > 0 ? barMembership[0].is_shelf_public : false
             }
             this.isLoading = false
@@ -118,8 +118,8 @@ export default {
             }
 
             if (appState.bar.id) {
-                postData.bar_id = appState.bar.id;
-                postData.is_shelf_public = this.user.is_shelf_public;
+                postData.bar_id = appState.bar.id
+                postData.is_shelf_public = this.user.is_shelf_public
             }
 
             ApiRequests.updateUser(postData).then(data => {

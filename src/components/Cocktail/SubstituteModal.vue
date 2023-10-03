@@ -6,7 +6,7 @@
         <IngredientFinder @ingredient-selected="selectIngredient"></IngredientFinder>
         <div class="substitutes">
             <h4>{{ $t('substitutes') }}:</h4>
-            <div class="substitutes__substitute" v-for="(substitute, index) in selectedSubstitutes" :key="substitute.id">
+            <div v-for="(substitute, index) in selectedSubstitutes" :key="substitute.id" class="substitutes__substitute">
                 <div class="substitutes__substitute__name">
                     <h5>{{ substitute.name }}</h5>
                     <div class="substitutes__substitute__actions">
@@ -15,7 +15,7 @@
                         <a href="#" @click.prevent="removeIngredient(substitute)">Remove</a>
                     </div>
                 </div>
-                <div class="substitutes__substitute__input" v-show="amountDisplayTracker.includes(substitute.id)">
+                <div v-show="amountDisplayTracker.includes(substitute.id)" class="substitutes__substitute__input">
                     <div class="form-group">
                         <label class="form-label" :for="'sub-ingredient-amount-' + substitute.id">{{ $t('amount') }}:</label>
                         <input :id="'sub-ingredient-amount-' + substitute.id" v-model="substitute.amount" class="form-input" type="text">
@@ -78,7 +78,7 @@ export default {
     methods: {
         selectIngredient(item) {
             if (this.selectedSubstitutes.some(sub => sub.id == item.id) || this.cocktailIngredient.ingredient_id == item.id) {
-                return;
+                return
             }
 
             this.selectedSubstitutes.push({
