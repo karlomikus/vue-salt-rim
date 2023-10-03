@@ -24,6 +24,12 @@
             </p>
         </div>
         <div class="stats__stat">
+            <h3>{{ stats.total_favorited_cocktails }}</h3>
+            <p>
+                <RouterLink :to="{ name: 'cocktails', query: { 'filter[favorites]': true } }">{{ $t('favorited-cocktails') }}</RouterLink>
+            </p>
+        </div>
+        <div class="stats__stat">
             <h3>{{ stats.total_shelf_cocktails }}</h3>
             <p>
                 <RouterLink :to="{ name: 'cocktails', query: { 'filter[on_shelf]': true } }">{{ $t('shelf.cocktails') }}</RouterLink>
@@ -249,8 +255,10 @@ export default {
 .stats {
     --_stats-clr-bg: #F0EFEB;
     margin-top: 20px;
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    display: flex;
+    flex-wrap: wrap;
+    /* display: grid; */
+    /* grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); */
     gap: var(--gap-size-2);
 }
 
@@ -261,11 +269,15 @@ export default {
 .stats__stat {
     background-color: var(--_stats-clr-bg);
     border-radius: var(--radius-3);
-    padding: 15px;
+    padding: 1rem 1.5rem;
+    display: flex;
+    align-items: baseline;
 }
 
 .stats__stat h3 {
-    font-size: 2rem;
+    line-height: 1;
+    font-size: 2.5rem;
+    margin-right: 0.25rem;
 }
 
 .stats__stat p {

@@ -374,5 +374,6 @@
   },
   "remove-from-bar": "Remove from bar",
   "public-shelves": "Public shelves",
-  "profile-public-shelf": "Make cocktails in my shelf public to all bar members"
+  "profile-public-shelf": "Make cocktails in my shelf public to all bar members",
+  "favorited-cocktails": "Favorited cocktails"
 }
