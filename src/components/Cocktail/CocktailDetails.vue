@@ -314,6 +314,7 @@ import IngredientSpotlight from './../Ingredient/IngredientSpotlight.vue'
 import CocktailCollections from './../Collections/CollectionWidget.vue'
 import CollectionDialog from './../Collections/CollectionDialog.vue'
 import dayjs from 'dayjs'
+import UnitHandler from '../../UnitHandler'
 
 export default {
     components: {
@@ -386,13 +387,13 @@ export default {
 
             return this.$d(date, 'long')
         },
-        totalLiquid() {
-            const amount = this.cocktail.ingredients.filter(ing => ['ml', 'cl', 'oz'].includes(ing.units)).reduce((acc, ing) => {
-                return parseFloat(ing.amount) + acc
-            }, 0) * this.servings
+        // totalLiquid() {
+        //     const amount = this.cocktail.ingredients.filter(ing => ['ml', 'cl', 'oz'].includes(ing.units)).reduce((acc, ing) => {
+        //         return parseFloat(ing.amount) + acc
+        //     }, 0) * this.servings
 
-            return Utils.printIngredientAmount({ amount: amount, units: 'ml' }, this.currentUnit, this.servings)
-        }
+        //     return UnitHandler.print({ amount: amount, units: 'ml' }, this.currentUnit, this.servings)
+        // }
     },
     created() {
         document.title = `${this.$t('cocktail')} \u22C5 ${this.site_title}`
@@ -474,7 +475,7 @@ export default {
             })
         },
         parseIngredientAmount(ingredient) {
-            return Utils.printIngredientAmount(ingredient, this.currentUnit, this.servings)
+            return UnitHandler.print(ingredient, this.currentUnit, this.servings)
         },
         changeMeasurementUnit(toUnit) {
             const appState = new AppState()
@@ -502,7 +503,7 @@ export default {
             })
         },
         buildSubstituteString(sub) {
-            return new String(sub.name + ' ' + Utils.printIngredientAmount(sub, this.currentUnit, this.servings)).trim()
+            return new String(sub.name + ' ' + UnitHandler.print(sub, this.currentUnit, this.servings)).trim()
         }
     }
 }

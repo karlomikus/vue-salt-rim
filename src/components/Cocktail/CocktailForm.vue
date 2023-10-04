@@ -126,6 +126,7 @@
 
 <script>
 import Utils from './../../Utils.js'
+import UnitHandler from './../../UnitHandler'
 import ApiRequests from './../../ApiRequests.js'
 import Unitz from 'unitz'
 import OverlayLoader from './../OverlayLoader.vue'
@@ -336,7 +337,7 @@ export default {
             const appState = new AppState()
             const defaultUnit = appState.defaultUnit
 
-            return Utils.printIngredientAmount(ing, defaultUnit)
+            return UnitHandler.print(ing, defaultUnit)
         },
         editIngredient(cocktailIngredient) {
             if (!cocktailIngredient.substitutes) {
@@ -349,9 +350,9 @@ export default {
             const userUnit = appState.defaultUnit
 
             // Update unit view
-            cocktailIngredient.amount = Utils.convertFromTo(cocktailIngredient.units, cocktailIngredient.amount, userUnit)
+            cocktailIngredient.amount = UnitHandler.convertFromTo(cocktailIngredient.units, cocktailIngredient.amount, userUnit)
             if (cocktailIngredient.amount_max) {
-                cocktailIngredient.amount_max = Utils.convertFromTo(cocktailIngredient.units, cocktailIngredient.amount_max, userUnit)
+                cocktailIngredient.amount_max = UnitHandler.convertFromTo(cocktailIngredient.units, cocktailIngredient.amount_max, userUnit)
             }
             if (cocktailIngredient.units == 'ml' || cocktailIngredient.units == 'oz' || cocktailIngredient.units == 'cl') {
                 cocktailIngredient.units = userUnit

@@ -41,6 +41,7 @@
 import {micromark} from 'micromark'
 import Utils from '@/Utils'
 import SiteLogo from '@/components/Layout/SiteLogo.vue'
+import UnitHandler from '../../UnitHandler'
 
 export default {
     components: {
@@ -113,7 +114,7 @@ export default {
     },
     methods: {
         parseIngredientAmount(ingredient) {
-            return Utils.printIngredientAmount(ingredient, this.scopedUnit)
+            return UnitHandler.print(ingredient, this.scopedUnit)
         },
     }
 }
