@@ -250,7 +250,8 @@
   "note": {
     "add": "Dodaj bilješku",
     "confirm-delete": "Ova akcija će trajno ukloniti odabranu bilješku.",
-    "delete-success": "Bilješka je uspješno uklonjena"
+    "delete-success": "Bilješka je uspješno uklonjena",
+    "title": "Bilješka"
   },
   "note-dialog": {
     "title": "Bilješka"
@@ -303,5 +304,25 @@
   "missing-collections": "Nema pronađenih kolekcija",
   "results-per-page": "Rezultati po stranici",
   "view": "Pregledaj",
-  "close": "Zatvori"
+  "close": "Zatvori",
+  "created-by": "Napravio",
+  "bars": {
+    "select-bar": "Odaberite bar",
+    "title": "Barovi",
+    "join": "Pridružite se baru",
+    "add": "Dodaj bar",
+    "toggle-invite-code": "Prikaži pozivni kod",
+    "invite-code": "Pozivni kod",
+    "enable-invites": "Dopusti pridruživanje pomoću pozivnog koda",
+    "import-base-cocktails": "Otvori bar sa postojećim koktelima",
+    "import-base-ingredients": "Otvori bar sa postojećim sastojcima"
+  },
+  "leave": "Napusti bar",
+  "subtitle": "Podnaslov",
+  "ingredient-dialog": {
+    "select-substitutes-for": "Odaberite zamjenske sastojke za \"{name}\"."
+  },
+  "amount-max": "Maks. količina",
+  "edit-amounts": "Uredi količine",
+  "ingredient-has-variable-amount": "Ima varijabilnu količinu"
 }

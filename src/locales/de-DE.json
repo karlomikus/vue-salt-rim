@@ -250,7 +250,8 @@
   "note": {
     "add": "Notiz hinzufügen",
     "confirm-delete": "Notiz löschen.",
-    "delete-success": "Notiz gelscht"
+    "delete-success": "Notiz gelscht",
+    "title": "Notiz"
   },
   "note-dialog": {
     "title": "Notiz"
@@ -291,5 +292,10 @@
   },
   "your-collections": "Ihre Sammlungen",
   "view": "Sicht",
-  "close": "Schließen"
+  "close": "Schließen",
+  "created-by": "Erstellt von",
+  "bars": {
+    "select-bar": "Leiste auswählen"
+  },
+  "leave": "Verlassen"
 }

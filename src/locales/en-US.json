@@ -351,14 +351,15 @@
     "add": "Create bar",
     "add-success": "Bar \"{name}\" succesfully created",
     "empty": "You don't have any bars",
-    "invite-code": "Bar invite code",
+    "invite-code": "Invite code",
     "toggle-invite-code": "Toggle invite code",
     "confirm-delete": "This will permanently delete bar with name \"{name}\".",
     "confirm-leave": "You will lose all your data in bar (\"{name}\") if you leave it.",
     "enable-invites": "Enable joining via invite code",
     "import-base-cocktails": "Open bar with base cocktails",
     "import-base-ingredients": "Open bar with base ingredients",
-    "join-error": "Unable to join bar"
+    "join-error": "Unable to join bar",
+    "select-bar": "Select bar"
   },
   "close": "Close",
   "save-as": "Save as",
@@ -375,5 +376,10 @@
   "remove-from-bar": "Remove from bar",
   "public-shelves": "Public shelves",
   "profile-public-shelf": "Make cocktails in my shelf public to all bar members",
-  "favorited-cocktails": "Favorited cocktails"
+  "favorited-cocktails": "Favorited cocktails",
+  "created-by": "Created by",
+  "ingredient-dialog.select-substitutes-for": "Select substitute ingredients for \"{name}\".",
+  "amount-max": "Amount max",
+  "edit-amounts": "Edit amounts",
+  "ingredient-has-variable-amount": "Has variable amount"
 }

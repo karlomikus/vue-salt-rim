@@ -19,9 +19,9 @@
             <div v-for="bar in bars" :key="bar.id" class="bar block-container block-container--hover">
                 <span class="bar__role">{{ getRoleName(bar.access.role_id) }}</span>
                 <h4 class="bar__title">{{ bar.name }}</h4>
-                <p class="bar__owner">Created by {{ bar.created_user.name }} &middot; <DateFormatter :date="bar.created_at" /></p>
+                <p class="bar__owner">{{ $t('created-by') }} {{ bar.created_user.name }} &middot; <DateFormatter :date="bar.created_at" /></p>
                 <template v-if="bar.show_invite_code && bar.access.can_edit">
-                    <label class="form-label">Invite code:</label>
+                    <label class="form-label">{{ $t('bars.invite-code') }}:</label>
                     <p class="bar__invite_code">
                         {{ bar.invite_code }}
                     </p>
@@ -45,7 +45,7 @@
                         <a href="#" @click.prevent="bar.show_invite_code = !bar.show_invite_code">{{ $t('bars.toggle-invite-code') }}</a>
                         &middot;
                     </template>
-                    <a href="#" @click.prevent="selectBar(bar)">Select bar</a>
+                    <a href="#" @click.prevent="selectBar(bar)">{{ $t('bars.select-bar') }}</a>
                 </div>
             </div>
         </div>

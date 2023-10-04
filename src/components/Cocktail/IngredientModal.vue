@@ -13,7 +13,7 @@
         </label>
         <label class="form-checkbox">
             <input v-model="hasVariableAmount" type="checkbox">
-            <span>Has variable amount</span>
+            <span>{{ $t('ingredient-has-variable-amount') }}</span>
         </label>
         <div class="ingredient-form-group">
             <div class="form-group">

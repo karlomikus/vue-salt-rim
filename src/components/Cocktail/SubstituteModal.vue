@@ -2,7 +2,7 @@
     <form @submit.prevent="save">
         <OverlayLoader v-if="isLoading" />
         <div class="dialog-title">{{ $t('ingredient-dialog.select-substitutes') }}</div>
-        <p style="margin-bottom: 1rem;">Select substitute ingredients for "{{ cocktailIngredient.name }}".</p>
+        <p style="margin-bottom: 1rem;">{{ $t('ingredient-dialog.select-substitutes-for', {name: cocktailIngredient.name}) }}</p>
         <IngredientFinder @ingredient-selected="selectIngredient"></IngredientFinder>
         <div class="substitutes">
             <h4>{{ $t('substitutes') }}:</h4>
@@ -10,9 +10,9 @@
                 <div class="substitutes__substitute__name">
                     <h5>{{ substitute.name }}</h5>
                     <div class="substitutes__substitute__actions">
-                        <a href="#" @click.prevent="toggleAmountDisplay(substitute)">Edit amounts</a>
+                        <a href="#" @click.prevent="toggleAmountDisplay(substitute)">{{ $t('edit-amounts') }}</a>
                         &middot;
-                        <a href="#" @click.prevent="removeIngredient(substitute)">Remove</a>
+                        <a href="#" @click.prevent="removeIngredient(substitute)">{{ $t('remove') }}</a>
                     </div>
                 </div>
                 <div v-show="amountDisplayTracker.includes(substitute.id)" class="substitutes__substitute__input">
@@ -21,7 +21,7 @@
                         <input :id="'sub-ingredient-amount-' + substitute.id" v-model="substitute.amount" class="form-input" type="text">
                     </div>
                     <div class="form-group">
-                        <label class="form-label" :for="'sub-ingredient-amount-max-' + substitute.id">{{ $t('amount') }} max:</label>
+                        <label class="form-label" :for="'sub-ingredient-amount-max-' + substitute.id">{{ $t('amount-max') }}:</label>
                         <input :id="'sub-ingredient-amount-max-' + substitute.id" v-model="substitute.amount_max" class="form-input" type="text">
                     </div>
                     <div class="form-group">
@@ -37,7 +37,7 @@
                         </datalist>
                     </div>
                 </div>
-                <div v-if="index != selectedSubstitutes.length - 1" class="substitutes__substitute__separator">or</div>
+                <div v-if="index != selectedSubstitutes.length - 1" class="substitutes__substitute__separator">{{ $t('or') }}</div>
             </div>
             <div v-if="selectedSubstitutes.length == 0">
                 {{ $t('no-substitutes') }}
