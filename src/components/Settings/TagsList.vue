@@ -1,6 +1,6 @@
 <template>
     <PageHeader>
-        {{ $t('tags') }}
+        {{ $t('tag.tags') }}
         <template #actions>
             <SaltRimDialog v-model="showDialog">
                 <template #trigger>
@@ -75,7 +75,7 @@ export default {
         }
     },
     created() {
-        document.title = `${this.$t('tags')} \u22C5 ${this.site_title}`
+        document.title = `${this.$t('tag.tags')} \u22C5 ${this.site_title}`
 
         this.refreshTags()
     },

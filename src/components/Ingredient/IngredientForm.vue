@@ -42,7 +42,7 @@
             <div class="form-group">
                 <label class="form-label" for="description">{{ $t('description') }}:</label>
                 <textarea id="description" v-model="ingredient.description" rows="4" class="form-input"></textarea>
-                <p class="form-input-hint">{{ $t('md.support') }}</p>
+                <p class="form-input-hint">{{ $t('field-supports-md') }}</p>
             </div>
             <div class="form-group">
                 <label class="form-label" for="origin">{{ $t('origin') }}:</label>

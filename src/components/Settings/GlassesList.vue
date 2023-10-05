@@ -1,6 +1,6 @@
 <template>
     <PageHeader>
-        {{ $t('glass-types') }}
+        {{ $t('glass-type.types') }}
         <template #actions>
             <SaltRimDialog v-model="showDialog">
                 <template #trigger>
@@ -72,7 +72,7 @@ export default {
         }
     },
     created() {
-        document.title = `${this.$t('glass-types')} \u22C5 ${this.site_title}`
+        document.title = `${this.$t('glass-type.types')} \u22C5 ${this.site_title}`
 
         this.refreshGlasses()
     },

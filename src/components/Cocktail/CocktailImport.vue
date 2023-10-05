@@ -4,20 +4,20 @@
         <PageHeader>
             {{ $t('cocktails.import') }}
         </PageHeader>
-        <h3 class="form-section-title">{{ $t('import-type') }}</h3>
+        <h3 class="form-section-title">{{ $t('import.type') }}</h3>
         <div class="block-container block-container--padded">
             <div class="form-group">
                 <label class="form-label form-label--required">{{ $t('type') }}:</label>
                 <div class="import-types">
-                    <SaltRimRadio v-model="importType" title="URL" description="Import from a supported website" value="url"></SaltRimRadio>
-                    <SaltRimRadio v-model="importType" title="JSON" description="Import from JSON format" value="json"></SaltRimRadio>
-                    <SaltRimRadio v-model="importType" title="YAML" description="Import from YAML format" value="yaml"></SaltRimRadio>
-                    <SaltRimRadio v-model="importType" title="Collection" description="Import from Bar Assistant JSON collection" value="collection"></SaltRimRadio>
+                    <SaltRimRadio v-model="importType" :title="$t('import.type-url-title')" :description="$t('import.type-url-description')" value="url"></SaltRimRadio>
+                    <SaltRimRadio v-model="importType" :title="$t('import.type-json-title')" :description="$t('import.type-json-description')" value="json"></SaltRimRadio>
+                    <SaltRimRadio v-model="importType" :title="$t('import.type-yaml-title')" :description="$t('import.type-yaml-description')" value="yaml"></SaltRimRadio>
+                    <SaltRimRadio v-model="importType" :title="$t('import.type-collection-title')" :description="$t('import.type-collection-description')" value="collection"></SaltRimRadio>
                 </div>
             </div>
             <div class="alert alert--info" style="margin: 1rem 0;">
                 <h3>{{ $t('information') }}</h3>
-                <p>{{ $t('scraper.information') }}</p>
+                <p>{{ $t('import.notice') }}</p>
             </div>
             <div v-if="importType === 'url'" class="form-group">
                 <label class="form-label form-label--required" for="import-source">{{ $t('source') }}:</label>
@@ -42,7 +42,7 @@
                     <span>{{ $t('duplicate.overwrite') }}</span>
                 </label>
             </div>
-            <button type="button" class="button button--dark" @click.prevent="importCocktail">{{ $t('start-import') }}</button>
+            <button type="button" class="button button--dark" @click.prevent="importCocktail">{{ $t('import.start') }}</button>
         </div>
         <div v-if="result" class="scraper-form">
             <h3 class="form-section-title">{{ $t('recipe-information') }}</h3>
@@ -60,7 +60,7 @@
                     <input id="source" v-model="result.source" type="text" class="form-input">
                 </div>
                 <div class="form-group">
-                    <label for="glass">{{ $t('glass-type') }}</label>
+                    <label for="glass">{{ $t('glass-type.title') }}</label>
                     <input id="glass" v-model="result.glass" type="text" class="form-input">
                 </div>
                 <div class="form-group">
@@ -86,7 +86,7 @@
                     </div>
                 </template>
                 <div class="form-group">
-                    <label for="tags">{{ $t('tags') }}</label>
+                    <label for="tags">{{ $t('tag.tags') }}</label>
                     <input id="tags" v-model="cocktailTags" type="text" class="form-input">
                 </div>
             </div>
@@ -117,7 +117,7 @@
                 <template #trigger><span></span></template>
                 <template #dialog>
                     <div class="dialog-title">{{ $t('import.manually-match') }}</div>
-                    <p style="margin-bottom: 1rem;">Select ingredient that best matches "{{ ingredientEdit.name }}", or create a new one.</p>
+                    <p style="margin-bottom: 1rem;">{{ $t('import.manual-match-notice', {name: ingredientEdit.name}) }}</p>
                     <IngredientFinder :initial-query="ingredientEdit.name" @ingredient-selected="handleIngredientEdit"></IngredientFinder>
                     <div class="dialog-actions">
                         <button type="button" class="button button--outline" @click="showIngredientDialog = false">{{ $t('close') }}</button>
@@ -126,7 +126,7 @@
             </SaltRimDialog>
             <div class="form-actions">
                 <RouterLink class="button button--outline" :to="{ name: 'cocktails' }">{{ $t('cancel') }}</RouterLink>
-                <button type="button" class="button button--dark" @click="goTo('cocktails.form')">{{ $t('scraper.continue') }}</button>
+                <button type="button" class="button button--dark" @click="goTo('cocktails.form')">{{ $t('import.continue') }}</button>
             </div>
         </div>
     </form>

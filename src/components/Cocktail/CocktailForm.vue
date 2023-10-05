@@ -8,17 +8,17 @@
         <div class="block-container block-container--padded">
             <div class="form-group">
                 <label class="form-label form-label--required" for="name">{{ $t('name') }}:</label>
-                <input id="name" v-model="cocktail.name" class="form-input" type="text" required :placeholder="$t('placeholder.cocktai-name')">
+                <input id="name" v-model="cocktail.name" class="form-input" type="text" required :placeholder="$t('placeholder.cocktail-name')">
             </div>
             <div class="form-group">
                 <label class="form-label form-label--required" for="instructions">{{ $t('instructions') }}:</label>
                 <textarea id="instructions" v-model="cocktail.instructions" rows="8" class="form-input" required :placeholder="$t('placeholder.cocktail-instructions')"></textarea>
-                <p class="form-input-hint">{{ $t('md.support') }}</p>
+                <p class="form-input-hint">{{ $t('field-supports-md') }}</p>
             </div>
             <div class="form-group">
                 <label class="form-label" for="garnish">{{ $t('garnish') }}:</label>
                 <textarea id="garnish" v-model="cocktail.garnish" rows="3" class="form-input" :placeholder="$t('placeholder.cocktail-garnish')"></textarea>
-                <p class="form-input-hint">{{ $t('md.support') }}</p>
+                <p class="form-input-hint">{{ $t('field-supports-md') }}</p>
             </div>
         </div>
         <h3 class="form-section-title">{{ $t('media') }}</h3>
@@ -82,10 +82,10 @@
             <div class="form-group">
                 <label class="form-label" for="description">{{ $t('description') }}:</label>
                 <textarea id="description" v-model="cocktail.description" rows="5" class="form-input" :placeholder="$t('placeholder.cocktail-description')"></textarea>
-                <p class="form-input-hint">{{ $t('md.support') }}</p>
+                <p class="form-input-hint">{{ $t('field-supports-md') }}</p>
             </div>
             <div class="form-group">
-                <label class="form-label" for="glass">{{ $t('glass-type') }}:</label>
+                <label class="form-label" for="glass">{{ $t('glass-type.title') }}:</label>
                 <select id="glass" v-model="cocktail.glass.id" class="form-select">
                     <option :value="undefined" disabled>Select a glass type...</option>
                     <option v-for="glass in glasses" :key="glass.id" :value="glass.id">{{ glass.name }}</option>
@@ -102,12 +102,12 @@
                 <input id="source" v-model="cocktail.source" class="form-input" type="text" :placeholder="$t('placeholder.source')">
             </div>
             <div class="form-group">
-                <label class="form-label" for="tags">{{ $t('tags') }}:</label>
+                <label class="form-label" for="tags">{{ $t('tag.tags') }}:</label>
                 <input id="tags" v-model="cocktailTags" class="form-input" type="text" list="existing-tags" :placeholder="$t('placeholder.tags')">
                 <datalist id="existing-tags">
                     <option v-for="tag in tags" :key="tag.name" :value="tag.name"></option>
                 </datalist>
-                <p class="form-input-hint">{{ $t('tags.help-text') }}</p>
+                <p class="form-input-hint">{{ $t('tag.help-text') }}</p>
             </div>
             <div v-show="utensils.length > 0" class="form-group">
                 <label class="form-label" for="utensil">{{ $t('utensils.title') }}:</label>

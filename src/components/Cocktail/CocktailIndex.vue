@@ -23,8 +23,8 @@
                     <Refinement id="main-ingredient" v-model="activeFilters.main_ingredients" :searchable="true" :title="$t('ingredient.main')" :refinements="refineMainIngredients" @change="updateRouterPath"></Refinement>
                     <Refinement id="method" v-model="activeFilters.methods" :title="$t('method')" :refinements="refineMethods" @change="updateRouterPath"></Refinement>
                     <Refinement id="abv" v-model="activeFilters.abv" :title="$t('strength')" :refinements="refineABV" type="radio" @change="updateRouterPath"></Refinement>
-                    <Refinement id="tag" v-model="activeFilters.tags" :searchable="true" :title="$t('tags')" :refinements="refineTags" @change="updateRouterPath"></Refinement>
-                    <Refinement id="glass" v-model="activeFilters.glasses" :title="$t('glass-type')" :refinements="refineGlasses" @change="updateRouterPath"></Refinement>
+                    <Refinement id="tag" v-model="activeFilters.tags" :searchable="true" :title="$t('tag.tags')" :refinements="refineTags" @change="updateRouterPath"></Refinement>
+                    <Refinement id="glass" v-model="activeFilters.glasses" :title="$t('glass-type.title')" :refinements="refineGlasses" @change="updateRouterPath"></Refinement>
                     <Refinement id="user-rating" v-model="activeFilters.user_rating" :title="$t('your-rating')" :refinements="refineRatings" type="radio" @change="updateRouterPath"></Refinement>
                     <Refinement id="total-ingredients" v-model="activeFilters.total_ingredients" :title="$t('total-ingredients')" :refinements="refineIngredientsCount" type="radio" @change="updateRouterPath"></Refinement>
                     <button class="button button--dark sm-show" type="button" @click="showRefinements = false">{{ $t('cancel') }}</button>

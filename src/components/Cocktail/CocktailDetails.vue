@@ -21,7 +21,7 @@
                     <h3 class="details-block-container__title">{{ $t('description') }}</h3>
                     <div class="item-details__chips">
                         <div v-if="cocktail.tags.length > 0" class="item-details__chips__group">
-                            <div class="item-details__chips__group__title">{{ $t('tags') }}:</div>
+                            <div class="item-details__chips__group__title">{{ $t('tag.tags') }}:</div>
                             <ul class="chips-list">
                                 <li v-for="tag in cocktail.tags" :key="tag.id">
                                     <RouterLink class="chip" :to="{ name: 'cocktails', query: { 'filter[tag_id]': tag.id } }">{{ tag.name }}</RouterLink>
@@ -29,7 +29,7 @@
                             </ul>
                         </div>
                         <div v-if="cocktail.glass" class="item-details__chips__group">
-                            <div class="item-details__chips__group__title">{{ $t('glass-type') }}:</div>
+                            <div class="item-details__chips__group__title">{{ $t('glass-type.title') }}:</div>
                             <ul class="chips-list">
                                 <li>
                                     <RouterLink class="chip" :to="{ name: 'cocktails', query: { 'filter[glass_id]': cocktail.glass.id } }">{{ cocktail.glass.name }}</RouterLink>
