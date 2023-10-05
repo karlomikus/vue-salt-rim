@@ -351,9 +351,16 @@ export default {
 
             // Update unit view
             cocktailIngredient.amount = UnitHandler.convertFromTo(cocktailIngredient.units, cocktailIngredient.amount, userUnit)
+            if (userUnit == 'oz') {
+                cocktailIngredient.amount = UnitHandler.asFraction(cocktailIngredient.amount)
+            }
             if (cocktailIngredient.amount_max) {
                 cocktailIngredient.amount_max = UnitHandler.convertFromTo(cocktailIngredient.units, cocktailIngredient.amount_max, userUnit)
+                if (userUnit == 'oz') {
+                    cocktailIngredient.amount_max = UnitHandler.asFraction(cocktailIngredient.amount_max)
+                }
             }
+
             if (cocktailIngredient.units == 'ml' || cocktailIngredient.units == 'oz' || cocktailIngredient.units == 'cl') {
                 cocktailIngredient.units = userUnit
             }
@@ -395,11 +402,6 @@ export default {
                             cIngredient.amount = cIngredient.amount * 10
                             cIngredient.units = 'ml'
                         }
-
-                        // Just send substitute ids
-                        // if (cIngredient.substitutes) {
-                        //     cIngredient.substitutes = cIngredient.substitutes.map(s => s.id)
-                        // }
 
                         cIngredient.sort = sortedIngredientList.findIndex(sortedId => sortedId == cIngredient.ingredient_id) + 1
 

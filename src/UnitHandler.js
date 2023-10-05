@@ -42,11 +42,19 @@ export default {
         let maxAmount = this.convertFromTo(orgUnits, orgAmountMax, convertTo)
 
         if (convertTo == 'oz') {
-            minAmount = new Unitz.Fraction(minAmount, [2, 3, 4]).string
-            maxAmount = new Unitz.Fraction(maxAmount, [2, 3, 4]).string
+            minAmount = this.asFraction(minAmount)
+            maxAmount = this.asFraction(maxAmount)
         }
 
         return `${minAmount == 0 ? '' : minAmount}${maxAmount != 0 ? '-' + maxAmount : ''} ${convertTo}`
+    },
+
+    /**
+     * @param {number} number
+     * @returns {string}
+     */
+    asFraction(number) {
+        return new Unitz.Fraction(number, [2, 3, 4]).string
     },
 
     /**
