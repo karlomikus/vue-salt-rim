@@ -27,7 +27,7 @@
             <button type="button" class="button button--outline" @click="$emit('collectionDialogClosed')">{{ $t('cancel') }}</button>
             <button v-if="isPartOfCollection" type="button" class="button button--dark" @click="removeCocktailFromCollection">{{ $t('remove-cocktail-from-collection') }}</button>
             <button v-else type="button" class="button button--dark" @click="saveAndClose">
-                {{ $t('collections.add-to') }} <template v-if="cocktails.length > 1">({{ cocktails.length }} {{ $t('cocktails') }})</template>
+                {{ $t('collections.add-to') }} <template v-if="cocktails.length > 1">({{ cocktails.length }} {{ $t('cocktails.title') }})</template>
             </button>
         </div>
     </div>

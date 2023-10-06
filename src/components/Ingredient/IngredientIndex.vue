@@ -1,6 +1,6 @@
 <template>
     <PageHeader>
-        {{ $t('ingredients') }}
+        {{ $t('ingredients.title') }}
         <template v-if="appState.isAdmin() || appState.isModerator() || appState.isGeneral()" #actions>
             <Dropdown>
                 <template #default="{ toggleDropdown }">
@@ -194,7 +194,7 @@ export default {
         },
     },
     created() {
-        document.title = `${this.$t('ingredients')} \u22C5 ${this.site_title}`
+        document.title = `${this.$t('ingredients.title')} \u22C5 ${this.site_title}`
 
         this.fetchRefinements()
 

@@ -62,21 +62,21 @@
     "copy-text": "Copy as plain text",
     "copy-md": "Copy as Markdown"
   },
-  "cocktails": "Cocktails",
-  "ingredients": "Ingredients",
+  "cocktails.title": "Cocktails",
+  "ingredients.title": "Ingredients",
   "settings": "Settings",
   "logout": "Logout",
   "profile": "Profile",
   "users": "Users",
-  "cocktail": "Cocktail",
+  "cocktail.title": "Cocktail",
   "cocktails.import": "Import cocktail",
   "cocktails.add": "Add cocktail",
   "cocktails.page.description": "This is a list of cocktails available in your Bar Assistant server. You can search for a specific cocktails by filtering them with the tags you added or by using a search term.",
   "filters": "Filters",
   "sort": "Sort by",
   "cocktail.filters": "Cocktail filters",
-  "my.cocktails": "My cocktails",
-  "my.favorites": "My favorites",
+  "my-cocktails": "My cocktails",
+  "my-favorites": "My favorites",
   "cocktails.shared": "Public cocktails",
   "method": {
     "title": "Method",
@@ -315,7 +315,9 @@
     "page": "Page",
     "results": "Showing {on_page_results}/{total_results} results",
     "prev": "Prev",
-    "next": "Next"
+    "next": "Next",
+    "cocktail-prev": "Previous cocktail",
+    "cocktail-next": "Next cocktail"
   },
   "search": {
     "title": "Search",
@@ -339,8 +341,6 @@
     "confirm-logout": "Are you sure you want to sign out of your current session?"
   },
   "used-as-main-ingredient": "Used as main ingredient",
-  "cocktail-prev": "Previous cocktail",
-  "cocktail-next": "Next cocktail",
   "added-on-by": "Added on {date} by {name}",
   "leave": "Leave",
   "utensils": {

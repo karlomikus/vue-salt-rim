@@ -2,7 +2,7 @@
     <form @submit.prevent="submit">
         <OverlayLoader v-if="isLoading" />
         <PageHeader>
-            {{ $t('cocktail') }}
+            {{ $t('cocktail.title') }}
         </PageHeader>
         <h3 class="form-section-title">{{ $t('recipe-information') }}</h3>
         <div class="block-container block-container--padded">
@@ -23,7 +23,7 @@
         </div>
         <h3 class="form-section-title">{{ $t('media') }}</h3>
         <ImageUpload ref="imagesUpload" :value="cocktail.images" />
-        <h3 class="form-section-title">{{ $t('ingredients') }}</h3>
+        <h3 class="form-section-title">{{ $t('ingredients.title') }}</h3>
         <ul v-show="cocktail.ingredients.length > 0" class="cocktail-form__ingredients" style="margin-bottom: 20px;">
             <li v-for="ing in cocktail.ingredients" :key="ing.ingredient_id" class="block-container" :data-id="ing.ingredient_id">
                 <div class="drag-handle"></div>
@@ -201,7 +201,7 @@ export default {
         }
     },
     async created() {
-        document.title = `${this.$t('cocktail')} \u22C5 ${this.site_title}`
+        document.title = `${this.$t('cocktail.title')} \u22C5 ${this.site_title}`
 
         this.isLoading = true
         const cocktailId = this.$route.query.id || null
@@ -221,7 +221,7 @@ export default {
 
                 this.cocktail = data
 
-                document.title = `${this.$t('cocktail')} \u22C5 ${this.cocktail.name} \u22C5 ${this.site_title}`
+                document.title = `${this.$t('cocktail.title')} \u22C5 ${this.cocktail.name} \u22C5 ${this.site_title}`
             })
         }
 

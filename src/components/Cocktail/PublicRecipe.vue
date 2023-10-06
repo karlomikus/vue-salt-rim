@@ -15,7 +15,7 @@
                 <button type="button" class="button button--public" :class="{'button--active': scopedUnit == 'cl'}" @click="scopedUnit = 'cl'">cl</button>
             </div>
             <div class="public-cocktail-recipe__summary__section">
-                <h3>{{ $t('ingredients') }}</h3>
+                <h3>{{ $t('ingredients.title') }}</h3>
                 <ul>
                     <li v-for="ing in cocktail.ingredients" :key="ing.id" itemprop="recipeIngredient" :content="ing.name + ' - ' + parseIngredientAmount(ing)">
                         <span>{{ ing.name }}</span><span class="spacer"></span><span class="amount-units">{{ parseIngredientAmount(ing) }}</span>

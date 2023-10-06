@@ -26,7 +26,7 @@
                     <td>
                         <a href="#" @click.prevent="openDialog($t('collections.edit'), collection)">{{ collection.name }}</a>
                         <br>
-                        <small>{{ collection.cocktails.length }} {{ $t('cocktails') }} &middot; {{ collection.description ? overflowText(collection.description, 100) : 'n/a' }}</small>
+                        <small>{{ collection.cocktails.length }} {{ $t('cocktails.title') }} &middot; {{ collection.description ? overflowText(collection.description, 100) : 'n/a' }}</small>
                     </td>
                     <td style="text-align: right;">
                         <a class="list-group__action" href="#" @click.prevent="shareCollection(collection)">{{ $t('share.title') }}</a>

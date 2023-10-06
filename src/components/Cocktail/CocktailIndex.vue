@@ -1,6 +1,6 @@
 <template>
     <PageHeader>
-        {{ $t('cocktails') }}
+        {{ $t('cocktails.title') }}
         <template v-if="appState.isAdmin() || appState.isModerator() || appState.isGeneral()" #actions>
             <RouterLink class="button button--outline" :to="{ name: 'cocktails.scrape' }">{{ $t('cocktails.import') }}</RouterLink>
             <RouterLink class="button button--dark" :to="{ name: 'cocktails.form' }">{{ $t('cocktails.add') }}</RouterLink>
@@ -139,9 +139,9 @@ export default {
             availableRefinements: {
                 global: [
                     { name: this.$t('shelf.cocktails'), active: false, id: 'on_shelf' },
-                    { name: this.$t('my.favorites'), active: false, id: 'favorites' },
+                    { name: this.$t('my-favorites'), active: false, id: 'favorites' },
                     { name: this.$t('cocktails.shared'), active: false, id: 'is_public' },
-                    { name: this.$t('my.cocktails'), active: false, id: 'created_user_id' },
+                    { name: this.$t('my-cocktails'), active: false, id: 'created_user_id' },
                 ],
                 abv: [
                     { name: this.$t('non-alcoholic'), min: null, max: 2, id: 'abv_non_alcoholic' },
@@ -150,9 +150,9 @@ export default {
                     { name: this.$t('strong'), min: 28, max: null, id: 'abv_strong' },
                 ],
                 total_ingredients: [
-                    { name: '>= 3 ' + this.$t('ingredients'), active: false, id: '3' },
-                    { name: '>= 5 ' + this.$t('ingredients'), active: false, id: '5' },
-                    { name: '>= 7 ' + this.$t('ingredients'), active: false, id: '7' },
+                    { name: '>= 3 ' + this.$t('ingredients.title'), active: false, id: '3' },
+                    { name: '>= 5 ' + this.$t('ingredients.title'), active: false, id: '5' },
+                    { name: '>= 7 ' + this.$t('ingredients.title'), active: false, id: '7' },
                 ],
                 tags: [],
                 glasses: [],
@@ -283,7 +283,7 @@ export default {
         }
     },
     created() {
-        document.title = `${this.$t('cocktails')} \u22C5 ${this.site_title}`
+        document.title = `${this.$t('cocktails.title')} \u22C5 ${this.site_title}`
 
         this.fetchRefinements()
 

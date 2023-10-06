@@ -215,7 +215,7 @@
                     </div>
                 </div>
                 <div v-if="cocktail.ingredients.length > 0" class="block-container block-container--padded">
-                    <h3 class="details-block-container__title">{{ $t('ingredients') }}</h3>
+                    <h3 class="details-block-container__title">{{ $t('ingredients.title') }}</h3>
                     <div style="display: grid; grid-template-columns: 1fr 1fr;">
                         <div class="cocktail-button-group">
                             <h4>{{ $t('servings') }}:</h4>
@@ -276,8 +276,8 @@
                     <Note v-for="note in notes" :key="note.id" :note="note" @note-deleted="refreshNotes"></Note>
                 </div>
                 <div class="cocktail-details__navigation">
-                    <RouterLink v-if="cocktail.navigation.prev" :to="{ name: 'cocktails.show', params: { id: cocktail.navigation.prev } }">{{ $t('cocktail-prev') }}</RouterLink>
-                    <RouterLink v-if="cocktail.navigation.next" :to="{ name: 'cocktails.show', params: { id: cocktail.navigation.next } }">{{ $t('cocktail-next') }}</RouterLink>
+                    <RouterLink v-if="cocktail.navigation.prev" :to="{ name: 'cocktails.show', params: { id: cocktail.navigation.prev } }">{{ $t('pagination.cocktail-prev') }}</RouterLink>
+                    <RouterLink v-if="cocktail.navigation.next" :to="{ name: 'cocktails.show', params: { id: cocktail.navigation.next } }">{{ $t('pagination.cocktail-next') }}</RouterLink>
                 </div>
             </div>
             <div class="cocktail-details__main__aside">
@@ -396,7 +396,7 @@ export default {
         // }
     },
     created() {
-        document.title = `${this.$t('cocktail')} \u22C5 ${this.site_title}`
+        document.title = `${this.$t('cocktail.title')} \u22C5 ${this.site_title}`
         this.$watch(
             () => this.$route.params,
             () => {

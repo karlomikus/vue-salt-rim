@@ -14,7 +14,7 @@
         </div>
         <div class="print-second-row">
             <div class="print-ingredients">
-                <h2>{{ $t('ingredients') }}:</h2>
+                <h2>{{ $t('ingredients.title') }}:</h2>
                 <ul>
                     <li v-for="ingredient in cocktail.ingredients" :key="ingredient.id">
                         {{ ingredientAmount(ingredient) }} &middot; {{ ingredient.name }}
