@@ -18,7 +18,7 @@
                         </div>
                     </a>
                     <a v-show="currentQuery" href="#" class="ingredient-finder__options__create" @click.prevent="newIngredient">
-                        {{ $t('ingredient-dialog.search-not-found') }} {{ $t('ingredient-dialog.create-ingredient', { name: currentQuery }) }}
+                        {{ $t('ingredient.dialog.search-not-found') }} {{ $t('ingredient.dialog.create-ingredient', { name: currentQuery }) }}
                     </a>
                 </div>
             </template>
@@ -99,7 +99,7 @@ export default {
                 images: [],
                 ingredient_category_id: null,
             }).then(data => {
-                this.$toast.default(this.$t('ingredient-dialog.new-ingredient-success', { name: data.name }))
+                this.$toast.default(this.$t('ingredient.dialog.new-ingredient-success', { name: data.name }))
                 this.selectIngredient({
                     name: data.name,
                     slug: data.slug,
@@ -107,7 +107,7 @@ export default {
                 })
                 this.isLoading = false
             }).catch(() => {
-                this.$toast.error(this.$t('ingredient-dialog.new-ingredient-fail'))
+                this.$toast.error(this.$t('ingredient.dialog.new-ingredient-fail'))
                 this.isLoading = false
             })
         },

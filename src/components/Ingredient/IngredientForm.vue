@@ -2,9 +2,9 @@
     <form @submit.prevent="submit">
         <OverlayLoader v-if="isLoading" />
         <PageHeader>
-            {{ $t('ingredient') }}
+            {{ $t('ingredient.title') }}
         </PageHeader>
-        <h3 class="form-section-title">{{ $t('ingredient-information') }}</h3>
+        <h3 class="form-section-title">{{ $t('ingredient.information') }}</h3>
         <div class="block-container block-container--padded">
             <div class="form-group">
                 <label class="form-label form-label--required" for="name">{{ $t('name') }}:</label>
@@ -21,10 +21,9 @@
                 </p>
             </div>
             <div style="margin: 1rem 0;">
-                <!-- <Checkbox v-model="isParent" id="is-variety">{{ $t('ingredient-is-variety') }}</Checkbox> -->
                 <label class="form-checkbox">
                     <input v-model="isParent" type="checkbox">
-                    <span>{{ $t('ingredient-is-variety') }}</span>
+                    <span>{{ $t('ingredient.is-variety') }}</span>
                 </label>
             </div>
             <div v-show="isParent" class="form-group">
@@ -102,7 +101,7 @@ export default {
         }
     },
     created() {
-        document.title = `${this.$t('ingredient')} \u22C5 ${this.site_title}`
+        document.title = `${this.$t('ingredient.title')} \u22C5 ${this.site_title}`
 
         const ingredientId = this.$route.query.id || null
 
@@ -125,7 +124,7 @@ export default {
                     this.ingredientCategoryId = data.category.id
                 }
 
-                document.title = `${this.$t('ingredient')} \u22C5 ${this.ingredient.name} \u22C5 ${this.site_title}`
+                document.title = `${this.$t('ingredient.title')} \u22C5 ${this.ingredient.name} \u22C5 ${this.site_title}`
                 this.isLoading = false
             })
         },

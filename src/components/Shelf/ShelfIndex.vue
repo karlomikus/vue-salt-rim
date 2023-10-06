@@ -1,6 +1,6 @@
 <template>
     <PageHeader>
-        {{ $t('welcome.user', { 'name': user.name }) }} 👋
+        {{ $t('welcome-user', { 'name': user.name }) }} 👋
     </PageHeader>
 
     <div class="stats">
@@ -8,13 +8,13 @@
         <div class="stats__stat">
             <h3>{{ stats.total_cocktails }}</h3>
             <p>
-                <RouterLink :to="{ name: 'cocktails' }">{{ $t('cocktails.total') }}</RouterLink>
+                <RouterLink :to="{ name: 'cocktails' }">{{ $t('total.cocktails') }}</RouterLink>
             </p>
         </div>
         <div class="stats__stat">
             <h3>{{ stats.total_ingredients }}</h3>
             <p>
-                <RouterLink :to="{ name: 'ingredients' }">{{ $t('ingredients.total') }}</RouterLink>
+                <RouterLink :to="{ name: 'ingredients' }">{{ $t('total.ingredients') }}</RouterLink>
             </p>
         </div>
         <div class="stats__stat">
@@ -44,7 +44,7 @@
     </div>
     <div class="list-grid">
         <div class="list-grid__col">
-            <h3 class="page-subtitle">{{ $t('cocktails.latest') }}</h3>
+            <h3 class="page-subtitle">{{ $t('latest.cocktails') }}</h3>
             <CocktailListContainer v-if="latestCocktails.length > 0" v-slot="observer">
                 <CocktailListItem v-for="cocktail in latestCocktails" :key="cocktail.id" :cocktail="cocktail" :observer="observer" />
                 <RouterLink :to="{ name: 'cocktails', query: { 'sort': '-created_at' } }">{{ $t('view-all') }}</RouterLink>
@@ -63,7 +63,7 @@
             </EmptyState>
         </div>
         <div class="list-grid__col">
-            <h3 class="page-subtitle">{{ $t('recent-favorites') }}</h3>
+            <h3 class="page-subtitle">{{ $t('latest.favorites') }}</h3>
             <CocktailListContainer v-if="favoriteCocktails.length > 0" v-slot="observer">
                 <CocktailListItem v-for="cocktail in favoriteCocktails" :key="cocktail.id" :cocktail="cocktail" :observer="observer" />
                 <RouterLink :to="{ name: 'cocktails', query: { 'filter[favorites]': true, sort: '-favorited_at' } }">{{ $t('view-all') }}</RouterLink>

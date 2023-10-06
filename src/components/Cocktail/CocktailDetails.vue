@@ -37,7 +37,7 @@
                             </ul>
                         </div>
                         <div v-if="cocktail.method" class="item-details__chips__group">
-                            <div class="item-details__chips__group__title">{{ $t('method') }}:</div>
+                            <div class="item-details__chips__group__title">{{ $t('method.title') }}:</div>
                             <ul class="chips-list">
                                 <li>
                                     <RouterLink class="chip" :to="{ name: 'cocktails', query: { 'filter[cocktail_method_id]': cocktail.method.id } }">{{ $t('method.' + cocktail.method.name) }}</RouterLink>
@@ -132,25 +132,25 @@
                                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18">
                                         <path d="M6.9998 6V3C6.9998 2.44772 7.44752 2 7.9998 2H19.9998C20.5521 2 20.9998 2.44772 20.9998 3V17C20.9998 17.5523 20.5521 18 19.9998 18H16.9998V20.9991C16.9998 21.5519 16.5499 22 15.993 22H4.00666C3.45059 22 3 21.5554 3 20.9991L3.0026 7.00087C3.0027 6.44811 3.45264 6 4.00942 6H6.9998ZM5.00242 8L5.00019 20H14.9998V8H5.00242ZM8.9998 6H16.9998V16H18.9998V4H8.9998V6ZM7 11H13V13H7V11ZM7 15H13V17H7V15Z"></path>
                                     </svg>
-                                    {{ $t('share-copy-text') }}
+                                    {{ $t('share.copy-text') }}
                                 </a>
                                 <a class="dropdown-menu__item" href="#copy" @click.prevent="shareFromFormat('json')">
                                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18">
                                         <path d="M4 18V14.3C4 13.4716 3.32843 12.8 2.5 12.8H2V11.2H2.5C3.32843 11.2 4 10.5284 4 9.7V6C4 4.34315 5.34315 3 7 3H8V5H7C6.44772 5 6 5.44772 6 6V10.1C6 10.9858 5.42408 11.7372 4.62623 12C5.42408 12.2628 6 13.0142 6 13.9V18C6 18.5523 6.44772 19 7 19H8V21H7C5.34315 21 4 19.6569 4 18ZM20 14.3V18C20 19.6569 18.6569 21 17 21H16V19H17C17.5523 19 18 18.5523 18 18V13.9C18 13.0142 18.5759 12.2628 19.3738 12C18.5759 11.7372 18 10.9858 18 10.1V6C18 5.44772 17.5523 5 17 5H16V3H17C18.6569 3 20 4.34315 20 6V9.7C20 10.5284 20.6716 11.2 21.5 11.2H22V12.8H21.5C20.6716 12.8 20 13.4716 20 14.3Z"></path>
                                     </svg>
-                                    {{ $t('share-copy-json') }}
+                                    {{ $t('share.copy-json') }}
                                 </a>
                                 <a class="dropdown-menu__item" href="#copy" @click.prevent="shareFromFormat('yaml')">
                                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18">
                                         <path d="M6.9998 6V3C6.9998 2.44772 7.44752 2 7.9998 2H19.9998C20.5521 2 20.9998 2.44772 20.9998 3V17C20.9998 17.5523 20.5521 18 19.9998 18H16.9998V20.9991C16.9998 21.5519 16.5499 22 15.993 22H4.00666C3.45059 22 3 21.5554 3 20.9991L3.0026 7.00087C3.0027 6.44811 3.45264 6 4.00942 6H6.9998ZM5.00242 8L5.00019 20H14.9998V8H5.00242ZM8.9998 6H16.9998V16H18.9998V4H8.9998V6ZM7 11H13V13H7V11ZM7 15H13V17H7V15Z"></path>
                                     </svg>
-                                    {{ $t('share-copy-yaml') }}
+                                    {{ $t('share.copy-yaml') }}
                                 </a>
                                 <a class="dropdown-menu__item" href="#copy" @click.prevent="shareFromFormat('markdown')">
                                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18">
                                         <path d="M3 3H21C21.5523 3 22 3.44772 22 4V20C22 20.5523 21.5523 21 21 21H3C2.44772 21 2 20.5523 2 20V4C2 3.44772 2.44772 3 3 3ZM4 5V19H20V5H4ZM7 15.5H5V8.5H7L9 10.5L11 8.5H13V15.5H11V11.5L9 13.5L7 11.5V15.5ZM18 12.5H20L17 15.5L14 12.5H16V8.5H18V12.5Z"></path>
                                     </svg>
-                                    {{ $t('share-copy-md') }}
+                                    {{ $t('share.copy-md') }}
                                 </a>
                             </template>
                         </Dropdown>
@@ -284,7 +284,7 @@
                 <h3 class="page-subtitle" style="margin-top: 0">{{ $t('cocktails-similar') }}</h3>
                 <SimilarCocktails :from-cocktail="cocktail"></SimilarCocktails>
                 <template v-if="cocktail.ingredients.length > 0">
-                    <h3 class="page-subtitle">{{ $t('ingredient-spotlight') }}</h3>
+                    <h3 class="page-subtitle">{{ $t('ingredient.spotlight') }}</h3>
                     <IngredientSpotlight :id="cocktail.ingredients[0].ingredient_id"></IngredientSpotlight>
                 </template>
                 <h3 class="page-subtitle">{{ $t('cocktail-collections') }}</h3>
@@ -487,9 +487,9 @@ export default {
             ApiRequests.shareCocktail(this.cocktail.slug, { type: format }).then(data => {
                 this.isLoadingShare = false
                 navigator.clipboard.writeText(data).then(() => {
-                    this.$toast.default(this.$t('share-format-copied'))
+                    this.$toast.default(this.$t('share.format-copied'))
                 }, () => {
-                    this.$toast.error(this.$t('share-format-copy-failed'))
+                    this.$toast.error(this.$t('share.format-copy-failed'))
                 })
             })
         },

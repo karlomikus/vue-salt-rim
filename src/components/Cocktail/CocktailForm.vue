@@ -29,7 +29,7 @@
                 <div class="drag-handle"></div>
                 <div class="cocktail-form__ingredients__content">
                     <div class="form-group">
-                        <label class="form-label">{{ $t('ingredient') }}:</label>
+                        <label class="form-label">{{ $t('ingredient.title') }}:</label>
                         <p>
                             {{ ing.name }}
                             <span v-if="ing.note">&middot; {{ ing.note }}</span>
@@ -51,7 +51,7 @@
                         </a>
                         &middot;
                         <a href="#" @click.prevent="editIngredientSubstitutes(ing)">
-                            {{ $t('ingredient-dialog.select-substitutes') }}
+                            {{ $t('ingredient.dialog.select-substitutes') }}
                         </a>
                         &middot;
                         <a href="#" @click.prevent="removeIngredient(ing)">
@@ -94,7 +94,7 @@
             <div style="margin-bottom: 2rem;">
                 <label class="form-label">{{ $t('method-and-dilution') }}:</label>
                 <div class="cocktail-methods">
-                    <SaltRimRadio v-for="method in methods" :key="method.id" v-model="cocktail.method.id" :value="method.id" :title="method.name" :description="method.dilution_percentage + '%'"></SaltRimRadio>
+                    <SaltRimRadio v-for="method in methods" :key="method.id" v-model="cocktail.method.id" :value="method.id" :title="$t('method.' + method.name)" :description="method.dilution_percentage + '%'"></SaltRimRadio>
                 </div>
             </div>
             <div class="form-group">

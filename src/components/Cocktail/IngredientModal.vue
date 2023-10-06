@@ -1,19 +1,19 @@
 <template>
     <form @submit.prevent="save">
         <OverlayLoader v-if="isLoading" />
-        <div class="dialog-title">{{ $t('ingredient') }}</div>
+        <div class="dialog-title">{{ $t('ingredient.title') }}</div>
         <IngredientFinder @ingredient-selected="selectIngredient"></IngredientFinder>
         <div class="selected-ingredient">
-            <small>{{ $t('ingredient-dialog.current') }}:</small>
+            <small>{{ $t('ingredient.dialog.current') }}:</small>
             <p>{{ cocktailIngredient.name }}</p>
         </div>
         <label class="form-checkbox">
             <input v-model="cocktailIngredient.optional" type="checkbox">
-            <span>{{ $t('ingredient-dialog.optional-checkbox') }}</span>
+            <span>{{ $t('ingredient.dialog.optional-checkbox') }}</span>
         </label>
         <label class="form-checkbox">
             <input v-model="hasVariableAmount" type="checkbox">
-            <span>{{ $t('ingredient-has-variable-amount') }}</span>
+            <span>{{ $t('ingredient.has-variable-amount') }}</span>
         </label>
         <div class="ingredient-form-group">
             <div class="form-group">

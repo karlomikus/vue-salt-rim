@@ -1,8 +1,8 @@
 <template>
     <form @submit.prevent="save">
         <OverlayLoader v-if="isLoading" />
-        <div class="dialog-title">{{ $t('ingredient-dialog.select-substitutes') }}</div>
-        <p style="margin-bottom: 1rem;">{{ $t('ingredient-dialog.select-substitutes-for', {name: cocktailIngredient.name}) }}</p>
+        <div class="dialog-title">{{ $t('ingredient.dialog.select-substitutes') }}</div>
+        <p style="margin-bottom: 1rem;">{{ $t('ingredient.dialog.select-substitutes-for', {name: cocktailIngredient.name}) }}</p>
         <IngredientFinder @ingredient-selected="selectIngredient"></IngredientFinder>
         <div class="substitutes">
             <h4>{{ $t('substitutes') }}:</h4>

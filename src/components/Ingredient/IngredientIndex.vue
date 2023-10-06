@@ -18,7 +18,7 @@
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18">
                             <path d="M3 3H21C21.5523 3 22 3.44772 22 4V20C22 20.5523 21.5523 21 21 21H3C2.44772 21 2 20.5523 2 20V4C2 3.44772 2.44772 3 3 3ZM4 5V19H20V5H4ZM7 15.5H5V8.5H7L9 10.5L11 8.5H13V15.5H11V11.5L9 13.5L7 11.5V15.5ZM18 12.5H20L17 15.5L14 12.5H16V8.5H18V12.5Z"></path>
                         </svg>
-                        {{ $t('share-copy-md') }}
+                        {{ $t('share.copy-md') }}
                     </a>
                 </template>
             </Dropdown>
@@ -55,7 +55,7 @@
                         <option value="name">{{ $t('name') }}</option>
                         <option value="created_at">{{ $t('date-added') }}</option>
                         <option value="strength">{{ $t('strength') }}</option>
-                        <option value="total_cocktails">{{ $t('total-cocktails') }}</option>
+                        <option value="total_cocktails">{{ $t('total.cocktails') }}</option>
                     </select>
                     <select v-model="sort_dir" class="form-select" @change="updateRouterPath">
                         <option disabled>{{ $t('sort-direction') }}:</option>
@@ -63,7 +63,7 @@
                         <option value="-">{{ $t('sort-desc') }}</option>
                     </select>
                     <select v-model="per_page" class="form-select" @change="updateRouterPath">
-                        <option disabled>{{ $t('results-per-page') }}:</option>
+                        <option disabled>{{ $t('search.results-per-page') }}:</option>
                         <option value="25">25</option>
                         <option value="50">50</option>
                         <option value="100">100</option>
@@ -324,9 +324,9 @@ export default {
         shareFromFormat(format) {
             ApiRequests.shareShoppingList({ type: format }).then(data => {
                 navigator.clipboard.writeText(data).then(() => {
-                    this.$toast.default(this.$t('share-format-copied'))
+                    this.$toast.default(this.$t('share.format-copied'))
                 }, () => {
-                    this.$toast.error(this.$t('share-format-copy-failed'))
+                    this.$toast.error(this.$t('share.format-copy-failed'))
                 })
             })
         },

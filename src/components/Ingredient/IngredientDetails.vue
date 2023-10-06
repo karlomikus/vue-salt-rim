@@ -111,11 +111,11 @@
             </div>
             <h2 class="details-block-container__title">{{ $t('ingredient.cocktail-children', { total: ingredient.cocktails.length }) }}</h2>
             <ul v-if="ingredient.cocktails.length > 0" class="ingredient-chips-list">
-                <li v-if="extraIfAddedToShelf.length > 0" class="ingredient-chips-list__label">{{ $t('ingredient-extra-cocktails-info') }}:</li>
+                <li v-if="extraIfAddedToShelf.length > 0" class="ingredient-chips-list__label">{{ $t('ingredient.extra-cocktails') }}:</li>
                 <li v-for="cocktail in extraIfAddedToShelf" :key="cocktail.id">
                     <RouterLink class="chip" :to="{ name: 'cocktails.show', params: { id: cocktail.slug } }">{{ cocktail.name }}</RouterLink>
                 </li>
-                <li v-if="extraIfAddedToShelf.length > 0 && defaultCocktails.length > 0" class="ingredient-chips-list__label">{{ $t('ingredient-cocktails-rest') }}:</li>
+                <li v-if="extraIfAddedToShelf.length > 0 && defaultCocktails.length > 0" class="ingredient-chips-list__label">{{ $t('ingredient.cocktails-rest') }}:</li>
                 <li v-for="cocktail in defaultCocktails" :key="cocktail.id">
                     <RouterLink class="chip" :to="{ name: 'cocktails.show', params: { id: cocktail.slug } }">{{ cocktail.name }}</RouterLink>
                 </li>

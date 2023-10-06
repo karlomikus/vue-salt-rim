@@ -10,7 +10,7 @@
         </div>
         <div class="dialog-actions">
             <button type="button" class="button button--outline" @click="$emit('generateImageDialogClosed')">{{ $t('close') }}</button>
-            <button v-if="shareEnabled" type="button" class="button button--outline" @click="shareAction">{{ $t('share') }}</button>
+            <button v-if="shareEnabled" type="button" class="button button--outline" @click="shareAction">{{ $t('share.title') }}</button>
             <a v-if="imagePayload" :href="imagePayload" :download="fileName" class="button button--dark">{{ $t('download') }}</a>
         </div>
     </div>

@@ -29,7 +29,7 @@
                         <small>{{ collection.cocktails.length }} {{ $t('cocktails') }} &middot; {{ collection.description ? overflowText(collection.description, 100) : 'n/a' }}</small>
                     </td>
                     <td style="text-align: right;">
-                        <a class="list-group__action" href="#" @click.prevent="shareCollection(collection)">{{ $t('share') }}</a>
+                        <a class="list-group__action" href="#" @click.prevent="shareCollection(collection)">{{ $t('share.title') }}</a>
                         &middot;
                         <RouterLink class="list-group__action" :to="{ name: 'cocktails', query: { 'filter[collection_id]': collection.id } }">{{ $t('view') }}</RouterLink>
                         &middot;
@@ -116,9 +116,9 @@ export default {
         shareCollection(collection) {
             ApiRequests.shareCollection(collection.id).then(data => {
                 navigator.clipboard.writeText(JSON.stringify(data)).then(() => {
-                    this.$toast.default(this.$t('share-format-copied'))
+                    this.$toast.default(this.$t('share.format-copied'))
                 }, () => {
-                    this.$toast.error(this.$t('share-format-copy-failed'))
+                    this.$toast.error(this.$t('share.format-copy-failed'))
                 })
             })
         },

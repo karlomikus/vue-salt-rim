@@ -72,7 +72,7 @@
                     <textarea id="garnish" v-model="result.garnish" class="form-input" rows="3"></textarea>
                 </div>
                 <div class="form-group">
-                    <label for="method">{{ $t('method') }}</label>
+                    <label for="method">{{ $t('method.title') }}</label>
                     <input id="method" v-model="result.method" type="text" class="form-input">
                 </div>
                 <template v-for="image in result.images" :key="image.url">

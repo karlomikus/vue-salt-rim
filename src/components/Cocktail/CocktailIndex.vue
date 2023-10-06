@@ -21,12 +21,12 @@
                     <Refinement v-if="refineCollections.length > 0" id="collection" v-model="activeFilters.collections" :title="$t('your-collections')" :refinements="refineCollections" @change="updateRouterPath"></Refinement>
                     <Refinement v-if="refineUserShelves.length > 0" id="user_shelves" v-model="activeFilters.user_shelves" :title="$t('public-shelves')" :refinements="refineUserShelves" @change="updateRouterPath"></Refinement>
                     <Refinement id="main-ingredient" v-model="activeFilters.main_ingredients" :searchable="true" :title="$t('ingredient.main')" :refinements="refineMainIngredients" @change="updateRouterPath"></Refinement>
-                    <Refinement id="method" v-model="activeFilters.methods" :title="$t('method')" :refinements="refineMethods" @change="updateRouterPath"></Refinement>
+                    <Refinement id="method" v-model="activeFilters.methods" :title="$t('method.title')" :refinements="refineMethods" @change="updateRouterPath"></Refinement>
                     <Refinement id="abv" v-model="activeFilters.abv" :title="$t('strength')" :refinements="refineABV" type="radio" @change="updateRouterPath"></Refinement>
                     <Refinement id="tag" v-model="activeFilters.tags" :searchable="true" :title="$t('tag.tags')" :refinements="refineTags" @change="updateRouterPath"></Refinement>
                     <Refinement id="glass" v-model="activeFilters.glasses" :title="$t('glass-type.title')" :refinements="refineGlasses" @change="updateRouterPath"></Refinement>
                     <Refinement id="user-rating" v-model="activeFilters.user_rating" :title="$t('your-rating')" :refinements="refineRatings" type="radio" @change="updateRouterPath"></Refinement>
-                    <Refinement id="total-ingredients" v-model="activeFilters.total_ingredients" :title="$t('total-ingredients')" :refinements="refineIngredientsCount" type="radio" @change="updateRouterPath"></Refinement>
+                    <Refinement id="total-ingredients" v-model="activeFilters.total_ingredients" :title="$t('total.ingredients')" :refinements="refineIngredientsCount" type="radio" @change="updateRouterPath"></Refinement>
                     <button class="button button--dark sm-show" type="button" @click="showRefinements = false">{{ $t('cancel') }}</button>
                 </div>
             </div>
@@ -45,7 +45,7 @@
                         <option value="created_at">{{ $t('date-added') }}</option>
                         <option value="favorited_at">{{ $t('date-favorited') }}</option>
                         <option value="missing_ingredients">{{ $t('missing-ingredients') }}</option>
-                        <option value="total_ingredients">{{ $t('total-ingredients') }}</option>
+                        <option value="total_ingredients">{{ $t('total.ingredients') }}</option>
                         <option value="average_rating">{{ $t('average-rating') }}</option>
                         <option value="user_rating">{{ $t('user-rating') }}</option>
                         <option value="abv">{{ $t('ABV') }}</option>
@@ -56,7 +56,7 @@
                         <option value="-">{{ $t('sort-desc') }}</option>
                     </select>
                     <select v-model="per_page" class="form-select" @change="updateRouterPath">
-                        <option disabled>{{ $t('results-per-page') }}:</option>
+                        <option disabled>{{ $t('search.results-per-page') }}:</option>
                         <option value="25">25</option>
                         <option value="50">50</option>
                         <option value="100">100</option>
