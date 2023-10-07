@@ -20,7 +20,7 @@ FROM nginx as prod
 
 COPY --from=build /app/dist /var/www/html
 
-COPY ./docker/config.js /var/www/config.js
+COPY --from=build /app/docker/config.js /var/www/config.js
 COPY ./docker/nginx.conf /etc/nginx/nginx.conf
 COPY ./docker/entrypoint.sh /usr/local/bin/entrypoint
 
