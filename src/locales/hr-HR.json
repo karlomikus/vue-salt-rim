@@ -345,5 +345,13 @@
     "type-json-description": "Uvoz iz JSON formata",
     "type-url-description": "Uvoz iz URL-a"
   },
-  "save-as": "Spremi kao"
+  "save-as": "Spremi kao",
+  "roles": {
+    "name": {
+      "Admin": "Administrator",
+      "Moderator": "Moderator",
+      "General": "Generalni",
+      "Guest": "Gost"
+    }
+  }
 }

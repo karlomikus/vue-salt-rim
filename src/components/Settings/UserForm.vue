@@ -64,10 +64,10 @@ export default {
             isLoading: false,
             user: this.sourceUser,
             roles: [
-                { id: 1, name: 'Admin', description: 'Complete access to all bar settings' },
-                { id: 2, name: 'Moderator', description: 'Can manage cocktails, ingredients and some bar settings' },
-                { id: 3, name: 'General', description: 'Can create cocktails and ingredients' },
-                { id: 4, name: 'Guest', description: 'Can view, rate and favorite cocktails' },
+                { id: 1, name: this.$t('roles.name.Admin'), description: this.$t('roles.description.Admin') },
+                { id: 2, name: this.$t('roles.name.Moderator'), description: this.$t('roles.description.Moderator') },
+                { id: 3, name: this.$t('roles.name.General'), description: this.$t('roles.description.General') },
+                { id: 4, name: this.$t('roles.name.Guest'), description: this.$t('roles.description.Guest') },
             ]
         }
     },
