@@ -4,7 +4,7 @@
             <div class="cocktail-list-item__graphic__image" :data-img-src="mainCocktailImageUrl"></div>
         </div>
         <div class="cocktail-list-item__content">
-            <h4 class="cocktail-list-item__title">{{ cocktail.name }} <MiniRating v-if="cocktail.user_rating > 0" :rating="cocktail.user_rating"></MiniRating></h4>
+            <h4 class="cocktail-list-item__title">{{ cocktail.name }} <MiniRating v-if="cocktail.rating.user > 0" :rating="cocktail.rating.user"></MiniRating></h4>
             <p v-if="shortIngredients.length > 0">
                 {{ shortIngredients.join(', ') }}
             </p>
@@ -13,28 +13,41 @@
 </template>
 
 <script>
-import ApiRequests from '@/ApiRequests.js';
+import ApiRequests from '@/ApiRequests.js'
 import MiniRating from '@/components/MiniRating.vue'
 
 export default {
-    props: ['cocktail', 'observer'],
     components: {
         MiniRating
     },
-    mounted() {
-        this.observer.observer.observe(this.$el)
+    props: {
+        cocktail: {
+            type: Object,
+            default() {
+                return {}
+            }
+        },
+        observer: {
+            type: Object,
+            default() {
+                return {}
+            }
+        }
     },
     computed: {
         mainCocktailImageUrl() {
             if (this.cocktail.main_image_id == null) {
-                return '/no-cocktail.jpg';
+                return '/no-cocktail.jpg'
             }
 
-            return ApiRequests.imageThumbUrl(this.cocktail.main_image_id);
+            return ApiRequests.imageThumbUrl(this.cocktail.main_image_id)
         },
         shortIngredients() {
             return this.cocktail.ingredients.map(i => i.name)
         }
+    },
+    mounted() {
+        this.observer.observer.observe(this.$el)
     }
 }
 </script>
@@ -45,7 +58,7 @@ export default {
 
     display: flex;
     align-items: center;
-    padding: 0.825rem;
+    padding: 0.75rem;
     text-decoration: none;
 }
 
@@ -60,12 +73,12 @@ export default {
 .cocktail-list-item__graphic__image {
     width: var(--image-size);
     height: var(--image-size);
-    border-radius: 0.325rem;
+    border-radius: var(--radius-1);
     background-color: #fff;
     background-size: cover;
     background-position: center center;
     flex-shrink: 0;
-    margin-right: 10px;
+    margin-right: var(--gap-size-2);
 }
 
 .dark-theme .cocktail-list-item__graphic__image {

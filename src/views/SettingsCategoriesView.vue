@@ -3,7 +3,7 @@ import CategoriesList from '../components/Settings/CategoriesList.vue'
 </script>
 
 <template>
-  <main>
-    <CategoriesList />
-  </main>
+    <main>
+        <CategoriesList />
+    </main>
 </template>

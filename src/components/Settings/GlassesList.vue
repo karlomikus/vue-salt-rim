@@ -1,15 +1,15 @@
 <template>
     <PageHeader>
-        {{ $t('glass-types') }}
+        {{ $t('glass-type.types') }}
         <template #actions>
-            <Dialog v-model="showDialog">
+            <SaltRimDialog v-model="showDialog">
                 <template #trigger>
                     <button type="button" class="button button--dark" @click.prevent="openDialog($t('glass-type.add'), {})">{{ $t('glass-type.add') }}</button>
                 </template>
                 <template #dialog>
                     <GlassForm :source-glass="editGlass" :dialog-title="dialogTitle" @glass-dialog-closed="refreshGlasses" />
                 </template>
-            </Dialog>
+            </SaltRimDialog>
         </template>
     </PageHeader>
     <div class="settings-page">
@@ -23,16 +23,18 @@
                     <thead>
                         <tr>
                             <th>{{ $t('name') }} / {{ $t('description') }}</th>
+                            <th>{{ $t('cocktails.title') }}</th>
                             <th></th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr v-for="glass in glasses">
+                        <tr v-for="glass in glasses" :key="glass.id">
                             <td>
                                 <a href="#" @click.prevent="openDialog($t('glass-type.edit'), glass)">{{ glass.name }}</a>
                                 <br>
-                                <small>{{ $t('cocktails') }}: {{ glass.cocktails_count }} &middot; {{ glass.description }}</small>
+                                <small>{{ glass.description }}</small>
                             </td>
+                            <td>{{ glass.cocktails_count }}</td>
                             <td style="text-align: right;">
                                 <a class="list-group__action" href="#" @click.prevent="deleteGlass(glass)">{{ $t('remove') }}</a>
                             </td>
@@ -45,11 +47,11 @@
 </template>
 
 <script>
-import ApiRequests from "@/ApiRequests";
+import ApiRequests from '@/ApiRequests'
 import OverlayLoader from '@/components/OverlayLoader.vue'
 import PageHeader from '@/components/PageHeader.vue'
-import Navigation from '@/components/Settings/Navigation.vue'
-import Dialog from '@/components/Dialog/Dialog.vue'
+import Navigation from '@/components/Settings/SettingsNavigation.vue'
+import SaltRimDialog from '@/components/Dialog/SaltRimDialog.vue'
 import GlassForm from '@/components/Settings/GlassForm.vue'
 
 export default {
@@ -58,7 +60,7 @@ export default {
         Navigation,
         PageHeader,
         GlassForm,
-        Dialog
+        SaltRimDialog
     },
     data() {
         return {
@@ -70,25 +72,25 @@ export default {
         }
     },
     created() {
-        document.title = `${this.$t('glass-types')} \u22C5 ${this.site_title}`
+        document.title = `${this.$t('glass-type.types')} \u22C5 ${this.site_title}`
 
         this.refreshGlasses()
     },
     methods: {
         refreshGlasses() {
-            this.showDialog = false;
-            this.isLoading = true;
+            this.showDialog = false
+            this.isLoading = true
             ApiRequests.fetchGlasses().then(data => {
-                this.glasses = data;
-                this.isLoading = false;
+                this.glasses = data
+                this.isLoading = false
             }).catch(e => {
-                this.$toast.error(e.message);
+                this.$toast.error(e.message)
             })
         },
         openDialog(title, obj) {
             this.dialogTitle = title
             this.editGlass = obj
-            this.showDialog = true;
+            this.showDialog = true
         },
         deleteGlass(glass) {
             this.$confirm(this.$t('glass-type.confirm-delete', {name: glass.name}), {
@@ -96,15 +98,15 @@ export default {
                     this.isLoading = true
                     dialog.close()
                     ApiRequests.deleteGlass(glass.id).then(() => {
-                        this.isLoading = false;
-                        this.$toast.default(this.$t('glass-type.delete-success'));
+                        this.isLoading = false
+                        this.$toast.default(this.$t('glass-type.delete-success'))
                         this.refreshGlasses()
                     }).catch(e => {
-                        this.$toast.error(e.message);
-                        this.isLoading = false;
+                        this.$toast.error(e.message)
+                        this.isLoading = false
                     })
                 }
-            });
+            })
         }
     }
 }

@@ -1,71 +1,96 @@
-import qs from 'qs';
+import qs from 'qs'
+import AppState from './AppState'
 
 class ApiRequests
 {
     static getUrl() {
-        return window.srConfig.API_URL;
+        return window.srConfig.API_URL
+    }
+
+    static getBarId() {
+        const appState = new AppState()
+
+        if (appState.bar.id) {
+            return appState.bar.id
+        }
+
+        return null
     }
 
     static getHeaders() {
         const defaultHeaders = {
             'Accept': 'application/json',
             'Content-Type': 'application/json',
-        };
-
-        if (localStorage.getItem('user_token')) {
-            defaultHeaders['Authorization'] = 'Bearer ' + localStorage.getItem('user_token');
         }
 
-        return new Headers(defaultHeaders);
+        const appState = new AppState()
+
+        if (appState.token) {
+            defaultHeaders['Authorization'] = 'Bearer ' + appState.token
+        }
+
+        return new Headers(defaultHeaders)
     }
 
-    static generateBAQueryString(queryParams) {
-        let q = '';
-        if (Object.keys(queryParams).length > 0) {
-            q = '?' + qs.stringify(queryParams);
+    static generateBAQueryString(queryParams, includeBar = false) {
+        if (includeBar) {
+            queryParams['bar_id'] = this.getBarId()
         }
 
-        return q;
+        let q = ''
+        if (Object.keys(queryParams).length > 0) {
+            q = '?' + qs.stringify(queryParams)
+        }
+
+        return q
     }
 
     static async handleResponseErrors(response) {
         if (!response.ok) {
-            return Promise.reject(await response.json())
+            if (response.status == 401) {
+                const appState = new AppState()
+                appState.clear()
+                window.location.replace('/')
+            } else {
+                return Promise.reject(await response.json())
+            }
         }
 
-        return response;
+        return response
     }
 
     static parseResponse(resp) {
         if ('data' in resp) {
-            return resp.data;
+            return resp.data
         }
 
         return resp
     }
 
-    static async getRequest(path, queryParams = {}) {
+    static async getRequest(path) {
         let url = `${this.getUrl()}${path}`
-        const queryString = new URLSearchParams(queryParams).toString()
-        if (queryString != '') {
-            url += `?${queryString}`;
-        }
 
         const f = fetch(url, {
             headers: this.getHeaders(),
         }).then(this.handleResponseErrors)
 
-        return await (await f).json();
+        return await (await f).json()
     }
 
     static async postRequest(path, data = {}, type = 'POST') {
         const url = `${this.getUrl()}${path}`
 
-        return await (await fetch(url, {
+        const response = await fetch(url, {
             method: type,
             headers: this.getHeaders(),
             body: JSON.stringify(data)
-        }).then(this.handleResponseErrors)).json();
+        }).then(this.handleResponseErrors)
+
+        if (response.status == 204) {
+            return {}
+        }
+
+        return await response.json()
     }
 
     static async deleteRequest(path) {
@@ -74,7 +99,7 @@ class ApiRequests
         return await (await fetch(url, {
             method: 'DELETE',
             headers: this.getHeaders()
-        }).then(this.handleResponseErrors));
+        }).then(this.handleResponseErrors))
     }
 
     /**
@@ -83,100 +108,85 @@ class ApiRequests
      * =============================
      */
 
-    static async fetchCocktails(queryParams = {}) {
-        let q = this.generateBAQueryString(queryParams)
+    static async fetchCocktails(query = {}) {
+        const q = this.generateBAQueryString(query, true)
+        const jsonResp = await this.getRequest(`/api/cocktails${q}`)
 
-        let jsonResp = await this.getRequest(`/api/cocktails${q}`);
-
-        return jsonResp;
-    }
-
-    static async fetchUserCocktails(userId) {
-        let jsonResp = await this.getRequest(`/api/cocktails?user_id=${userId}`);
-
-        return this.parseResponse(jsonResp);
+        return jsonResp
     }
 
     static async fetchCocktail(id, queryParams = {}) {
         const q = this.generateBAQueryString(queryParams)
-        let jsonResp = await this.getRequest(`/api/cocktails/${id}${q}`);
+        const jsonResp = await this.getRequest(`/api/cocktails/${id}${q}`)
 
-        return this.parseResponse(jsonResp);
+        return this.parseResponse(jsonResp)
     }
 
     static async deleteCocktail(id) {
-        return await this.deleteRequest(`/api/cocktails/${id}`);
-    }
-
-    static async fetchShelfCocktails(queryParams = {}) {
-        const q = this.generateBAQueryString(queryParams);
-
-        const url = `/api/shelf/cocktails${q}`;
-
-        let jsonResp = await this.getRequest(url);
-
-        return this.parseResponse(jsonResp);
+        return await this.deleteRequest(`/api/cocktails/${id}`)
     }
 
     static async favoriteCocktail(id) {
-        let jsonResp = await this.postRequest(`/api/cocktails/${id}/toggle-favorite`);
+        const q = this.generateBAQueryString({})
+        const jsonResp = await this.postRequest(`/api/cocktails/${id}/toggle-favorite${q}`)
 
-        return this.parseResponse(jsonResp);
+        return this.parseResponse(jsonResp)
     }
 
     static async saveCocktail(data) {
-        let jsonResp = await this.postRequest(`/api/cocktails`, data);
+        const q = this.generateBAQueryString({}, true)
+        const jsonResp = await this.postRequest(`/api/cocktails${q}`, data)
 
-        return this.parseResponse(jsonResp);
+        return this.parseResponse(jsonResp)
     }
 
     static async updateCocktail(id, data) {
-        let jsonResp = await this.postRequest(`/api/cocktails/${id}`, data, 'PUT');
+        const jsonResp = await this.postRequest(`/api/cocktails/${id}`, data, 'PUT')
 
-        return this.parseResponse(jsonResp);
+        return this.parseResponse(jsonResp)
     }
 
     static async importCocktail(data, query = {}) {
-        const q = this.generateBAQueryString(query);
-        let jsonResp = await this.postRequest(`/api/import/cocktail${q}`, data);
+        const q = this.generateBAQueryString(query, true)
+        const jsonResp = await this.postRequest(`/api/import/cocktail${q}`, data)
 
-        return this.parseResponse(jsonResp);
+        return this.parseResponse(jsonResp)
     }
 
     static async createPublicLink(id) {
-        let jsonResp = await this.postRequest(`/api/cocktails/${id}/public-link`);
+        const jsonResp = await this.postRequest(`/api/cocktails/${id}/public-link`)
 
-        return this.parseResponse(jsonResp);
+        return this.parseResponse(jsonResp)
     }
 
     static async deletePublicLink(id) {
-        return await this.deleteRequest(`/api/cocktails/${id}/public-link`);
+        return await this.deleteRequest(`/api/cocktails/${id}/public-link`)
     }
 
     static async fetchCocktailByPublicId(ulid) {
-        let jsonResp = await this.getRequest(`/api/explore/cocktails/${ulid}`);
+        const jsonResp = await this.getRequest(`/api/explore/cocktails/${ulid}`)
 
-        return this.parseResponse(jsonResp);
+        return this.parseResponse(jsonResp)
     }
 
     static async shareCocktail(id, queryParams = {}) {
         let url = `${this.getUrl()}/api/cocktails/${id}/share`
         const queryString = new URLSearchParams(queryParams).toString()
         if (queryString != '') {
-            url += `?${queryString}`;
+            url += `?${queryString}`
         }
 
         const f = fetch(url, {
             headers: this.getHeaders(),
         }).then(this.handleResponseErrors)
 
-        return await (await f).text();
+        return await (await f).text()
     }
 
     static async fetchSimilarCocktails(id) {
-        let jsonResp = await this.getRequest(`/api/cocktails/${id}/similar`);
+        let jsonResp = await this.getRequest(`/api/cocktails/${id}/similar`)
 
-        return this.parseResponse(jsonResp);
+        return this.parseResponse(jsonResp)
     }
 
     /**
@@ -186,31 +196,33 @@ class ApiRequests
      */
 
     static async fetchIngredientCategories() {
-        let jsonResp = await this.getRequest(`/api/ingredient-categories`);
+        const q = this.generateBAQueryString({}, true)
+        const jsonResp = await this.getRequest(`/api/ingredient-categories${q}`)
 
-        return this.parseResponse(jsonResp);
+        return this.parseResponse(jsonResp)
     }
 
     static async fetchIngredientCategory(id) {
-        let jsonResp = await this.getRequest(`/api/ingredient-categories/${id}`);
+        let jsonResp = await this.getRequest(`/api/ingredient-categories/${id}`)
 
-        return this.parseResponse(jsonResp);
+        return this.parseResponse(jsonResp)
     }
 
     static async saveIngredientCategory(data) {
-        let jsonResp = await this.postRequest(`/api/ingredient-categories`, data);
+        const q = this.generateBAQueryString({}, true)
+        const jsonResp = await this.postRequest(`/api/ingredient-categories${q}`, data)
 
-        return this.parseResponse(jsonResp);
+        return this.parseResponse(jsonResp)
     }
 
     static async updateIngredientCategory(id, data) {
-        let jsonResp = await this.postRequest(`/api/ingredient-categories/${id}`, data, 'PUT');
+        let jsonResp = await this.postRequest(`/api/ingredient-categories/${id}`, data, 'PUT')
 
-        return this.parseResponse(jsonResp);
+        return this.parseResponse(jsonResp)
     }
 
     static async deleteIngredientCategory(id) {
-        return await this.deleteRequest(`/api/ingredient-categories/${id}`);
+        return await this.deleteRequest(`/api/ingredient-categories/${id}`)
     }
 
     /**
@@ -220,47 +232,40 @@ class ApiRequests
      */
 
     static async fetchIngredients(query = {}) {
-        const queryString = this.generateBAQueryString(query);
+        const q = this.generateBAQueryString(query, true)
+        const jsonResp = await this.getRequest(`/api/ingredients${q}`)
 
-        let jsonResp = await this.getRequest(`/api/ingredients${queryString}`);
-
-        return this.parseResponse(jsonResp);
-    }
-
-    static async fetchIngredientsTODO(query = {}) {
-        let q = this.generateBAQueryString(query)
-
-        let jsonResp = await this.getRequest(`/api/ingredients${q}`);
-
-        return jsonResp;
+        return jsonResp
     }
 
     static async fetchIngredient(id) {
-        let jsonResp = await this.getRequest(`/api/ingredients/${id}`);
+        let jsonResp = await this.getRequest(`/api/ingredients/${id}`)
 
-        return this.parseResponse(jsonResp);
+        return this.parseResponse(jsonResp)
     }
 
     static async saveIngredient(data) {
-        let jsonResp = await this.postRequest(`/api/ingredients`, data);
+        const q = this.generateBAQueryString({}, true)
+        const jsonResp = await this.postRequest(`/api/ingredients${q}`, data)
 
-        return this.parseResponse(jsonResp);
+        return this.parseResponse(jsonResp)
     }
 
     static async updateIngredient(id, data) {
-        let jsonResp = await this.postRequest(`/api/ingredients/${id}`, data, 'PUT');
+        let jsonResp = await this.postRequest(`/api/ingredients/${id}`, data, 'PUT')
 
-        return this.parseResponse(jsonResp);
+        return this.parseResponse(jsonResp)
     }
 
     static async deleteIngredient(id) {
-        return await this.deleteRequest(`/api/ingredients/${id}`);
+        return await this.deleteRequest(`/api/ingredients/${id}`)
     }
 
     static async fetchExtraCocktailsWithIngredient(id) {
-        let jsonResp = await this.getRequest(`/api/ingredients/${id}/extra`);
+        const q = this.generateBAQueryString({}, true)
+        const jsonResp = await this.getRequest(`/api/ingredients/${id}/extra${q}`)
 
-        return this.parseResponse(jsonResp);
+        return this.parseResponse(jsonResp)
     }
 
     /**
@@ -270,19 +275,31 @@ class ApiRequests
      */
 
     static async fetchMyShelf() {
-        let jsonResp = await this.getRequest(`/api/shelf/ingredients`);
+        const q = this.generateBAQueryString({}, true)
+        let jsonResp = await this.getRequest(`/api/shelf/ingredients${q}`)
 
-        return this.parseResponse(jsonResp);
+        return this.parseResponse(jsonResp)
     }
 
-    static async addIngredientToShelf(id) {
-        let jsonResp = await this.postRequest(`/api/shelf/ingredients/${id}`);
+    static async addIngredientsToShelf(data) {
+        const q = this.generateBAQueryString({}, true)
+        const jsonResp = await this.postRequest(`/api/shelf/ingredients/batch-store${q}`, data)
 
-        return this.parseResponse(jsonResp);
+        return this.parseResponse(jsonResp)
     }
 
-    static async removeIngredientFromShelf(id) {
-        return await this.deleteRequest(`/api/shelf/ingredients/${id}`);
+    static async removeIngredientsFromShelf(data) {
+        const q = this.generateBAQueryString({}, true)
+        const jsonResp = await this.postRequest(`/api/shelf/ingredients/batch-delete${q}`, data)
+
+        return this.parseResponse(jsonResp)
+    }
+
+    static async fetchCocktailFavorites() {
+        const q = this.generateBAQueryString({}, true)
+        const jsonResp = await this.getRequest(`/api/shelf/cocktail-favorites${q}`)
+
+        return this.parseResponse(jsonResp)
     }
 
     /**
@@ -292,21 +309,21 @@ class ApiRequests
      */
 
     static async fetchUser() {
-        let jsonResp = await this.getRequest(`/api/user`);
+        let jsonResp = await this.getRequest('/api/profile')
 
-        return this.parseResponse(jsonResp);
+        return this.parseResponse(jsonResp)
     }
 
     static async updateUser(data) {
-        let jsonResp = await this.postRequest(`/api/user`, data);
+        let jsonResp = await this.postRequest('/api/profile', data)
 
-        return this.parseResponse(jsonResp);
+        return this.parseResponse(jsonResp)
     }
 
     static async registerNewUser(data) {
-        let jsonResp = await this.postRequest(`/api/register`, data);
+        let jsonResp = await this.postRequest('/api/register', data)
 
-        return this.parseResponse(jsonResp);
+        return this.parseResponse(jsonResp)
     }
 
     /**
@@ -316,9 +333,9 @@ class ApiRequests
      */
 
     static async fetchApiVersion() {
-        let jsonResp = await this.getRequest(`/api/server/version`);
+        let jsonResp = await this.getRequest('/api/server/version')
 
-        return this.parseResponse(jsonResp);
+        return this.parseResponse(jsonResp)
     }
 
     /**
@@ -327,26 +344,35 @@ class ApiRequests
      * =============================
      */
 
-    static async addIngredientsToShoppingList(data) {
-        let jsonResp = await this.postRequest(`/api/shopping-list/batch-store`, data);
+    static async fetchShoppingList() {
+        const q = this.generateBAQueryString({}, true)
+        const jsonResp = await this.getRequest(`/api/shopping-list${q}`)
 
-        return this.parseResponse(jsonResp);
+        return this.parseResponse(jsonResp)
+    }
+
+    static async addIngredientsToShoppingList(data) {
+        const q = this.generateBAQueryString({}, true)
+        const jsonResp = await this.postRequest(`/api/shopping-list/batch-store${q}`, data)
+
+        return this.parseResponse(jsonResp)
     }
 
     static async removeIngredientsFromShoppingList(data) {
-        let jsonResp = await this.postRequest(`/api/shopping-list/batch-delete`, data);
+        const q = this.generateBAQueryString({}, true)
+        let jsonResp = await this.postRequest(`/api/shopping-list/batch-delete${q}`, data)
 
-        return this.parseResponse(jsonResp);
+        return this.parseResponse(jsonResp)
     }
 
     static async shareShoppingList(query = {}) {
-        const queryString = this.generateBAQueryString(query);
+        const queryString = this.generateBAQueryString(query, true)
 
         const f = fetch(`${this.getUrl()}/api/shopping-list/share${queryString}`, {
             headers: this.getHeaders(),
         }).then(this.handleResponseErrors)
 
-        return await (await f).text();
+        return await (await f).text()
     }
 
     /**
@@ -355,19 +381,19 @@ class ApiRequests
      * =============================
      */
 
-     static async fetchLoginToken(email, password) {
-        const jsonResp = await this.postRequest(`/api/login`, {
+    static async fetchLoginToken(email, password) {
+        const jsonResp = await this.postRequest('/api/login', {
             email: email,
             password: password
-        });
+        })
 
-        return jsonResp.token;
+        return jsonResp.data.token
     }
 
     static async logout() {
-        let jsonResp = await this.postRequest(`/api/logout`);
+        let jsonResp = await this.postRequest('/api/logout')
 
-        return this.parseResponse(jsonResp);
+        return this.parseResponse(jsonResp)
     }
 
     /**
@@ -377,36 +403,40 @@ class ApiRequests
      */
 
     static async deleteImage(id) {
-        return await this.deleteRequest(`/api/images/${id}`);
+        return await this.deleteRequest(`/api/images/${id}`)
     }
 
     static async uploadImages(formData) {
+        const appState = new AppState()
+
         const jsonResp = await (await fetch(`${this.getUrl()}/api/images`, {
             method: 'POST',
             headers: new Headers({
-                'Authorization': 'Bearer ' + localStorage.getItem('user_token'),
+                'Authorization': 'Bearer ' + appState.token,
             }),
             body: formData
-        }).then(this.handleResponseErrors)).json();
+        }).then(this.handleResponseErrors)).json()
 
-        return this.parseResponse(jsonResp);
+        return this.parseResponse(jsonResp)
     }
 
     static async updateSingleImage(id, formData) {
+        const appState = new AppState()
+
         const jsonResp = await (await fetch(`${this.getUrl()}/api/images/${id}`, {
             method: 'POST',
             headers: new Headers({
-                'Authorization': 'Bearer ' + localStorage.getItem('user_token'),
+                'Authorization': 'Bearer ' + appState.token,
                 'Accept': 'application/json',
             }),
             body: formData
-        }).then(this.handleResponseErrors)).json();
+        }).then(this.handleResponseErrors)).json()
 
-        return this.parseResponse(jsonResp);
+        return this.parseResponse(jsonResp)
     }
 
     static imageThumbUrl(id) {
-        return `${this.getUrl()}/api/images/${id}/thumb`;
+        return `${this.getUrl()}/api/images/${id}/thumb`
     }
 
     /**
@@ -416,37 +446,33 @@ class ApiRequests
      */
 
     static async fetchGlasses() {
-        let jsonResp = await this.getRequest(`/api/glasses`);
+        const q = this.generateBAQueryString({}, true)
+        let jsonResp = await this.getRequest(`/api/glasses${q}`)
 
-        return this.parseResponse(jsonResp);
+        return this.parseResponse(jsonResp)
     }
 
     static async fetchGlass(id) {
-        let jsonResp = await this.getRequest(`/api/glasses/${id}`);
+        let jsonResp = await this.getRequest(`/api/glasses/${id}`)
 
-        return this.parseResponse(jsonResp);
+        return this.parseResponse(jsonResp)
     }
 
     static async saveGlass(data) {
-        let jsonResp = await this.postRequest(`/api/glasses`, data);
+        const q = this.generateBAQueryString({}, true)
+        const jsonResp = await this.postRequest(`/api/glasses${q}`, data)
 
-        return this.parseResponse(jsonResp);
+        return this.parseResponse(jsonResp)
     }
 
     static async updateGlass(id, data) {
-        let jsonResp = await this.postRequest(`/api/glasses/${id}`, data, 'PUT');
+        let jsonResp = await this.postRequest(`/api/glasses/${id}`, data, 'PUT')
 
-        return this.parseResponse(jsonResp);
+        return this.parseResponse(jsonResp)
     }
 
     static async deleteGlass(id) {
-        return await this.deleteRequest(`/api/glasses/${id}`);
-    }
-
-    static async findGlass(query) {
-        let jsonResp = await this.getRequest(`/api/glasses/find`, query);
-
-        return this.parseResponse(jsonResp);
+        return await this.deleteRequest(`/api/glasses/${id}`)
     }
 
     /**
@@ -456,13 +482,13 @@ class ApiRequests
      */
 
     static async rateCocktail(id, data) {
-        let jsonResp = await this.postRequest(`/api/ratings/cocktails/${id}`, data);
+        let jsonResp = await this.postRequest(`/api/ratings/cocktails/${id}`, data)
 
-        return this.parseResponse(jsonResp);
+        return this.parseResponse(jsonResp)
     }
 
     static async deleteCocktailUserRating(id) {
-        return await this.deleteRequest(`/api/ratings/cocktails/${id}`);
+        return await this.deleteRequest(`/api/ratings/cocktails/${id}`)
     }
 
     /**
@@ -472,31 +498,37 @@ class ApiRequests
      */
 
     static async fetchUsers() {
-        let jsonResp = await this.getRequest(`/api/users`);
+        const q = this.generateBAQueryString({}, true)
+        const jsonResp = await this.getRequest(`/api/users${q}`)
 
-        return this.parseResponse(jsonResp);
+        return this.parseResponse(jsonResp)
     }
 
     static async fetchUserById(id) {
-        let jsonResp = await this.getRequest(`/api/users/${id}`);
+        const q = this.generateBAQueryString({}, true)
+        let jsonResp = await this.getRequest(`/api/users/${id}${q}`)
 
-        return this.parseResponse(jsonResp);
+        return this.parseResponse(jsonResp)
     }
 
     static async saveUser(data) {
-        let jsonResp = await this.postRequest(`/api/users`, data);
+        const q = this.generateBAQueryString({}, true)
+        let jsonResp = await this.postRequest(`/api/users${q}`, data)
 
-        return this.parseResponse(jsonResp);
+        return this.parseResponse(jsonResp)
     }
 
     static async updateUserById(id, data) {
-        let jsonResp = await this.postRequest(`/api/users/${id}`, data, 'PUT');
+        const q = this.generateBAQueryString({}, true)
+        let jsonResp = await this.postRequest(`/api/users/${id}${q}`, data, 'PUT')
 
-        return this.parseResponse(jsonResp);
+        return this.parseResponse(jsonResp)
     }
 
     static async deleteUser(id) {
-        return await this.deleteRequest(`/api/users/${id}`);
+        const q = this.generateBAQueryString({}, true)
+
+        return await this.deleteRequest(`/api/users/${id}${q}`)
     }
 
     /**
@@ -506,9 +538,10 @@ class ApiRequests
      */
 
     static async fetchStats() {
-        let jsonResp = await this.getRequest(`/api/stats`);
+        const q = this.generateBAQueryString({}, true)
+        const jsonResp = await this.getRequest(`/api/stats${q}`)
 
-        return this.parseResponse(jsonResp);
+        return this.parseResponse(jsonResp)
     }
 
     /**
@@ -518,31 +551,33 @@ class ApiRequests
      */
 
     static async fetchTags() {
-        let jsonResp = await this.getRequest(`/api/tags`);
+        const q = this.generateBAQueryString({}, true)
+        let jsonResp = await this.getRequest(`/api/tags${q}`)
 
-        return this.parseResponse(jsonResp);
+        return this.parseResponse(jsonResp)
     }
 
     static async fetchTag(id) {
-        let jsonResp = await this.getRequest(`/api/tags/${id}`);
+        let jsonResp = await this.getRequest(`/api/tags/${id}`)
 
-        return this.parseResponse(jsonResp);
+        return this.parseResponse(jsonResp)
     }
 
     static async saveTag(data) {
-        let jsonResp = await this.postRequest(`/api/tags`, data);
+        const q = this.generateBAQueryString({}, true)
+        let jsonResp = await this.postRequest(`/api/tags${q}`, data)
 
-        return this.parseResponse(jsonResp);
+        return this.parseResponse(jsonResp)
     }
 
     static async updateTag(id, data) {
-        let jsonResp = await this.postRequest(`/api/tags/${id}`, data, 'PUT');
+        let jsonResp = await this.postRequest(`/api/tags/${id}`, data, 'PUT')
 
-        return this.parseResponse(jsonResp);
+        return this.parseResponse(jsonResp)
     }
 
     static async deleteTag(id) {
-        return await this.deleteRequest(`/api/tags/${id}`);
+        return await this.deleteRequest(`/api/tags/${id}`)
     }
 
     /**
@@ -552,31 +587,32 @@ class ApiRequests
      */
 
     static async fetchCocktailMethods() {
-        let jsonResp = await this.getRequest(`/api/cocktail-methods`);
+        const q = this.generateBAQueryString({}, true)
+        let jsonResp = await this.getRequest(`/api/cocktail-methods${q}`)
 
-        return this.parseResponse(jsonResp);
+        return this.parseResponse(jsonResp)
     }
 
     static async fetchCocktailMethod(id) {
-        let jsonResp = await this.getRequest(`/api/cocktail-methods/${id}`);
+        let jsonResp = await this.getRequest(`/api/cocktail-methods/${id}`)
 
-        return this.parseResponse(jsonResp);
+        return this.parseResponse(jsonResp)
     }
 
     static async saveCocktailMethod(data) {
-        let jsonResp = await this.postRequest(`/api/cocktail-methods`, data);
+        let jsonResp = await this.postRequest('/api/cocktail-methods', data)
 
-        return this.parseResponse(jsonResp);
+        return this.parseResponse(jsonResp)
     }
 
     static async updateCocktailMethod(id, data) {
-        let jsonResp = await this.postRequest(`/api/cocktail-methods/${id}`, data, 'PUT');
+        let jsonResp = await this.postRequest(`/api/cocktail-methods/${id}`, data, 'PUT')
 
-        return this.parseResponse(jsonResp);
+        return this.parseResponse(jsonResp)
     }
 
     static async deleteCocktailMethod(id) {
-        return await this.deleteRequest(`/api/cocktail-methods/${id}`);
+        return await this.deleteRequest(`/api/cocktail-methods/${id}`)
     }
 
     static async checkVersions() {
@@ -588,7 +624,7 @@ class ApiRequests
         const f = fetch(`${meiliHost}/health`, {
         }).then(this.handleResponseErrors)
 
-        return await (await f).json();
+        return await (await f).json()
     }
 
     /**
@@ -597,14 +633,21 @@ class ApiRequests
      * =============================
      */
 
-    static async saveNote(data) {
-        let jsonResp = await this.postRequest(`/api/notes`, data);
+    static async fetchNotes(query = {}) {
+        const queryString = this.generateBAQueryString(query, true)
+        const jsonResp = await this.getRequest(`/api/notes${queryString}`)
 
-        return this.parseResponse(jsonResp);
+        return this.parseResponse(jsonResp)
+    }
+
+    static async saveNote(data) {
+        let jsonResp = await this.postRequest('/api/notes', data)
+
+        return this.parseResponse(jsonResp)
     }
 
     static async deleteNote(id) {
-        return await this.deleteRequest(`/api/notes/${id}`);
+        return await this.deleteRequest(`/api/notes/${id}`)
     }
 
     /**
@@ -614,51 +657,51 @@ class ApiRequests
      */
 
     static async fetchCollections(query = {}) {
-        const queryString = this.generateBAQueryString(query);
+        const queryString = this.generateBAQueryString(query, true)
+        const jsonResp = await this.getRequest(`/api/collections${queryString}`)
 
-        let jsonResp = await this.getRequest(`/api/collections${queryString}`);
-
-        return this.parseResponse(jsonResp);
+        return this.parseResponse(jsonResp)
     }
 
     static async saveCollection(data) {
-        let jsonResp = await this.postRequest(`/api/collections`, data);
+        const q = this.generateBAQueryString({}, true)
+        const jsonResp = await this.postRequest(`/api/collections${q}`, data)
 
-        return this.parseResponse(jsonResp);
+        return this.parseResponse(jsonResp)
     }
 
     static async updateCollection(id, data) {
-        let jsonResp = await this.postRequest(`/api/collections/${id}`, data, 'PUT');
+        let jsonResp = await this.postRequest(`/api/collections/${id}`, data, 'PUT')
 
-        return this.parseResponse(jsonResp);
+        return this.parseResponse(jsonResp)
     }
 
     static async addCocktailsToCollection(collectionId, cocktailIds) {
         let jsonResp = await this.postRequest(`/api/collections/${collectionId}/cocktails`, {
             cocktails: cocktailIds
-        });
+        })
 
-        return this.parseResponse(jsonResp);
+        return this.parseResponse(jsonResp)
     }
 
     static async putCocktailInCollection(collectionId, cocktailId) {
-        let jsonResp = await this.postRequest(`/api/collections/${collectionId}/cocktails/${cocktailId}`, {}, 'PUT');
+        let jsonResp = await this.postRequest(`/api/collections/${collectionId}/cocktails/${cocktailId}`, {}, 'PUT')
 
-        return this.parseResponse(jsonResp);
+        return this.parseResponse(jsonResp)
     }
 
     static async removeCocktailFromCollection(collectionId, cocktailId) {
-        return await this.deleteRequest(`/api/collections/${collectionId}/cocktails/${cocktailId}`);
+        return await this.deleteRequest(`/api/collections/${collectionId}/cocktails/${cocktailId}`)
     }
 
     static async deleteCollection(collectionId) {
-        return await this.deleteRequest(`/api/collections/${collectionId}`);
+        return await this.deleteRequest(`/api/collections/${collectionId}`)
     }
 
     static async shareCollection(id) {
-        let jsonResp = await this.getRequest(`/api/collections/${id}/share`);
+        let jsonResp = await this.getRequest(`/api/collections/${id}/share`)
 
-        return this.parseResponse(jsonResp);
+        return this.parseResponse(jsonResp)
     }
 
     /**
@@ -668,32 +711,87 @@ class ApiRequests
      */
 
     static async fetchUtensils() {
-        let jsonResp = await this.getRequest(`/api/utensils`);
+        const q = this.generateBAQueryString({}, true)
+        let jsonResp = await this.getRequest(`/api/utensils${q}`)
 
-        return this.parseResponse(jsonResp);
+        return this.parseResponse(jsonResp)
     }
 
     static async fetchUtensil(id) {
-        let jsonResp = await this.getRequest(`/api/utensils/${id}`);
+        let jsonResp = await this.getRequest(`/api/utensils/${id}`)
 
-        return this.parseResponse(jsonResp);
+        return this.parseResponse(jsonResp)
     }
 
     static async saveUtensil(data) {
-        let jsonResp = await this.postRequest(`/api/utensils`, data);
+        const q = this.generateBAQueryString({}, true)
+        let jsonResp = await this.postRequest(`/api/utensils${q}`, data)
 
-        return this.parseResponse(jsonResp);
+        return this.parseResponse(jsonResp)
     }
 
     static async updateUtensil(id, data) {
-        let jsonResp = await this.postRequest(`/api/utensils/${id}`, data, 'PUT');
+        let jsonResp = await this.postRequest(`/api/utensils/${id}`, data, 'PUT')
 
-        return this.parseResponse(jsonResp);
+        return this.parseResponse(jsonResp)
     }
 
     static async deleteUtensil(id) {
-        return await this.deleteRequest(`/api/utensils/${id}`);
+        return await this.deleteRequest(`/api/utensils/${id}`)
+    }
+
+    /**
+     * =============================
+     * Bars
+     * =============================
+     */
+    static async fetchBars() {
+        let jsonResp = await this.getRequest('/api/bars')
+
+        return this.parseResponse(jsonResp)
+    }
+
+    static async fetchBar(id) {
+        let jsonResp = await this.getRequest(`/api/bars/${id}`)
+
+        return this.parseResponse(jsonResp)
+    }
+
+    static async saveBar(data) {
+        let jsonResp = await this.postRequest('/api/bars', data)
+
+        return this.parseResponse(jsonResp)
+    }
+
+    static async updateBar(id, data) {
+        const jsonResp = await this.postRequest(`/api/bars/${id}`, data, 'PUT')
+
+        return this.parseResponse(jsonResp)
+    }
+
+    static async deleteBar(id) {
+        return await this.deleteRequest(`/api/bars/${id}`)
+    }
+
+    static async joinBar(data) {
+        let jsonResp = await this.postRequest('/api/bars/join', data)
+
+        return this.parseResponse(jsonResp)
+    }
+
+    static async leaveBar(barId) {
+        return await this.deleteRequest(`/api/bars/${barId}/memberships`)
+    }
+
+    static async removeUserFromBar(barId, userId) {
+        return await this.deleteRequest(`/api/bars/${barId}/memberships/${userId}`)
+    }
+
+    static async fetchBarMembers(id) {
+        let jsonResp = await this.getRequest(`/api/bars/${id}/memberships`)
+
+        return this.parseResponse(jsonResp)
     }
 }
 
-export default ApiRequests;
+export default ApiRequests

@@ -1,27 +1,30 @@
 import { createApp } from 'vue'
 import App from './App.vue'
 import { createI18n } from 'vue-i18n'
-import ToastPlugin from 'vue-toast-notification';
-import InstantSearch from 'vue-instantsearch/vue3/es';
+import ToastPlugin from 'vue-toast-notification'
+import InstantSearch from 'vue-instantsearch/vue3/es'
 import router from './router'
 import mitt from 'mitt'
-import dialog from './components/Dialog/plugin';
+import dialog from './components/Dialog/plugin'
 import './assets/main.css'
+import AppState from './AppState.js'
 
-import en_US from './locales/en-US';
-import hr_HR from './locales/hr-HR';
-import fr_FR from './locales/fr-FR';
-import de_DE from './locales/de-DE';
+import en_US from './locales/en-US'
+import hr_HR from './locales/hr-HR'
+import fr_FR from './locales/fr-FR'
+import de_DE from './locales/de-DE'
 
-let userSelectedLocale = window.localStorage.getItem('ui-language');
+const appState = new AppState()
+
+let userSelectedLocale = appState.language
 if (!userSelectedLocale) {
-    userSelectedLocale = window.srConfig.DEFAULT_LOCALE || 'en-US';
+    userSelectedLocale = window.srConfig.DEFAULT_LOCALE || 'en-US'
 }
 
-let userSelectedTheme = window.localStorage.getItem('_ba_theme');
+let userSelectedTheme = appState.theme
 if (userSelectedTheme == 'dark' && !document.body.classList.contains('dark-theme')) {
-    document.body.classList.add('dark-theme');
-    document.querySelector('meta[name="theme-color"]').setAttribute("content", '#16141A');
+    document.body.classList.add('dark-theme')
+    document.querySelector('meta[name="theme-color"]').setAttribute('content', '#282238')
 }
 
 const emitter = mitt()
@@ -49,9 +52,9 @@ const i18n = createI18n({
     }
 })
 
-app.config.globalProperties.app_version = '{{VERSION}}';
-app.config.globalProperties.$eventBus = emitter;
-app.config.globalProperties.site_title = window.srConfig.BAR_NAME || 'Salt Rim';
+app.config.globalProperties.app_version = window.srConfig.VERSION || 'local'
+app.config.globalProperties.$eventBus = emitter
+app.config.globalProperties.site_title = appState.bar.name || 'Salt Rim'
 
 app.use(router)
 app.use(dialog)
@@ -61,6 +64,6 @@ app.use(ToastPlugin, {
     position: 'top',
     type: 'default',
     duration: 4000,
-});
+})
 
 app.mount('#app')

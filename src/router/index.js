@@ -1,12 +1,12 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import Auth from '../Auth'
-import qs from 'qs';
+import qs from 'qs'
+import AppState from './../AppState'
 
 const router = createRouter({
     history: createWebHistory(),
     scrollBehavior(to, from, savedPosition) {
         if (savedPosition) {
-            return new Promise((resolve, reject) => {
+            return new Promise((resolve) => {
                 setTimeout(() => {
                     resolve(savedPosition)
                 }, 300)
@@ -16,15 +16,14 @@ const router = createRouter({
         }
     },
     parseQuery(query) {
-        return qs.parse(query);
+        return qs.parse(query)
     },
     stringifyQuery(query) {
-        const result = qs.stringify(query);
+        const result = qs.stringify(query)
 
-        return result ? `${result}` : '';
+        return result ? `${result}` : ''
     },
     routes: [
-        // { path: '/:pathMatch(.*)*', name: 'NotFound', component: () => import('../views/404.vue') },
         {
             path: '/login',
             name: 'login',
@@ -51,41 +50,49 @@ const router = createRouter({
                     path: '/',
                     name: 'home',
                     component: () => import('../views/HomeView.vue'),
+                    meta: { requiresBar: true },
                 },
                 {
                     path: '/cocktails',
                     name: 'cocktails',
                     component: () => import('../views/CocktailsView.vue'),
+                    meta: { requiresBar: true },
                 },
                 {
                     path: '/cocktails/form',
                     name: 'cocktails.form',
                     component: () => import('../views/CocktailsFormView.vue'),
+                    meta: { requiresBar: true },
                 },
                 {
                     path: '/cocktails/scrape',
                     name: 'cocktails.scrape',
                     component: () => import('../views/CocktailsScrapeView.vue'),
+                    meta: { requiresBar: true },
                 },
                 {
                     path: '/cocktails/:id',
                     name: 'cocktails.show',
                     component: () => import('../views/CocktailView.vue'),
+                    meta: { requiresBar: true },
                 },
                 {
                     path: '/ingredients/:id',
                     name: 'ingredients.show',
                     component: () => import('../views/IngredientView.vue'),
+                    meta: { requiresBar: true },
                 },
                 {
                     path: '/ingredients/form',
                     name: 'ingredients.form',
                     component: () => import('../views/IngredientFormView.vue'),
+                    meta: { requiresBar: true },
                 },
                 {
                     path: '/ingredients',
                     name: 'ingredients',
-                    component: () => import('../views/Ingredients.vue'),
+                    component: () => import('../views/IngredientsView.vue'),
+                    meta: { requiresBar: true },
                 },
                 {
                     path: '/settings',
@@ -101,31 +108,47 @@ const router = createRouter({
                     path: '/settings/categories',
                     name: 'settings.categories',
                     component: () => import('../views/SettingsCategoriesView.vue'),
+                    meta: { requiresBar: true },
                 },
                 {
                     path: '/settings/glasses',
                     name: 'settings.glasses',
                     component: () => import('../views/SettingsGlassesView.vue'),
+                    meta: { requiresBar: true },
                 },
                 {
                     path: '/settings/users',
                     name: 'settings.users',
                     component: () => import('../views/SettingsUsersView.vue'),
+                    meta: { requiresBar: true },
                 },
                 {
                     path: '/settings/tags',
                     name: 'settings.tags',
                     component: () => import('../views/SettingsTagsView.vue'),
+                    meta: { requiresBar: true },
                 },
                 {
                     path: '/collections/cocktail',
                     name: 'collections.cocktails',
                     component: () => import('../views/CocktailCollections.vue'),
+                    meta: { requiresBar: true },
                 },
                 {
                     path: '/settings/utensils',
                     name: 'settings.utensils',
                     component: () => import('../views/SettingsUtensilsView.vue'),
+                    meta: { requiresBar: true },
+                },
+                {
+                    path: '/bars',
+                    name: 'bars',
+                    component: () => import('../views/BarsView.vue'),
+                },
+                {
+                    path: '/bars/form',
+                    name: 'bars.form',
+                    component: () => import('../views/BarFormView.vue'),
                 },
             ]
         },
@@ -146,12 +169,20 @@ const router = createRouter({
             ]
         }
     ]
-});
+})
 
-router.beforeEach(async (to, from) => {
-    const requiresAuth = to.meta.requiresAuth ?? true;
+router.beforeEach(async (to) => {
+    const requiresAuth = to.meta.requiresAuth ?? true
+    const requiresBar = to.meta.requiresBar ?? false
+    const appState = new AppState()
 
-    if (requiresAuth && !await Auth.isLoggedIn()) {
+    if (requiresBar && !appState.bar.id) {
+        return {
+            name: 'bars',
+        }
+    }
+
+    if (requiresAuth && !appState.hasUserInfo()) {
         return {
             path: '/login',
             query: { redirect: to.fullPath },

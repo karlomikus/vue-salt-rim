@@ -1,30 +1,32 @@
 <template>
-    <div>
+    <form @submit.prevent="save">
         <OverlayLoader v-if="isLoading" />
-        <IngredientFinder @ingredientSelected="selectIngredient"></IngredientFinder>
-        <div style="margin: 1rem 0;">
-            <Checkbox v-model="isAddingSubstitute" id="substitute-adding">{{ $t('ingredient-dialog.select-substitutes') }}</Checkbox>
-        </div>
+        <div class="dialog-title">{{ $t('ingredient.title') }}</div>
+        <IngredientFinder @ingredient-selected="selectIngredient"></IngredientFinder>
         <div class="selected-ingredient">
-            <small>{{ $t('ingredient-dialog.current') }}:</small>
+            <small>{{ $t('ingredient.dialog.current') }}:</small>
             <p>{{ cocktailIngredient.name }}</p>
         </div>
-        <div class="selected-ingredient selected-ingredient--substitutes">
-            <small>{{ $t('substitutes') }}:</small>
-            <p>
-                <span v-if="cocktailIngredient.substitutes.length > 0" v-for="substitute in cocktailIngredient.substitutes">{{ substitute.name }} &middot; <a href="#" @click.prevent="removeSubstitute(substitute)">{{ $t('remove') }}</a></span>
-                <span v-else>{{ $t('no-substitutes') }}</span>
-            </p>
-        </div>
+        <label class="form-checkbox">
+            <input v-model="cocktailIngredient.optional" type="checkbox">
+            <span>{{ $t('ingredient.dialog.optional-checkbox') }}</span>
+        </label>
+        <label class="form-checkbox">
+            <input v-model="hasVariableAmount" type="checkbox">
+            <span>{{ $t('ingredient.has-variable-amount') }}</span>
+        </label>
         <div class="ingredient-form-group">
             <div class="form-group">
-                <label class="form-label" for="ingredient-amount">{{ $t('amount') }}:</label>
-                <input class="form-input" type="text" id="ingredient-amount" v-model="normalizedAmount">
+                <label class="form-label form-label--required" for="ingredient-amount">{{ $t('amount') }}:</label>
+                <input id="ingredient-amount" v-model="normalizedAmount" class="form-input" type="text" required>
+            </div>
+            <div v-if="hasVariableAmount" class="form-group">
+                <label class="form-label" for="ingredient-amount-max">{{ $t('amount') }} max:</label>
+                <input id="ingredient-amount-max" v-model="normalizedMaxAmount" class="form-input" type="text">
             </div>
             <div class="form-group">
-                <label class="form-label" for="ingredient-units">{{ $t('units') }}:</label>
-                <input class="form-input" type="text" id="ingredient-units" list="common-units" v-model="cocktailIngredient.units">
-                <p class="form-input-hint">{{ $t('units-help-text') }}</p>
+                <label class="form-label form-label--required" for="ingredient-units">{{ $t('units') }}:</label>
+                <input id="ingredient-units" v-model="cocktailIngredient.units" class="form-input" type="text" list="common-units" required>
                 <datalist id="common-units">
                     <option>ml</option>
                     <option>oz</option>
@@ -35,35 +37,42 @@
                 </datalist>
             </div>
         </div>
-        <div style="margin: 1rem 0;">
-            <Checkbox v-model="cocktailIngredient.optional" id="is-cocktail-ing-optional">{{ $t('ingredient-dialog.optional-checkbox') }}</Checkbox>
+        <!-- <p class="form-input-hint">{{ $t('units-help-text') }}</p> -->
+        <div class="form-group">
+            <label class="form-label" for="ingredient-note">{{ $t('note.title') }}:</label>
+            <input id="ingredient-note" v-model="cocktailIngredient.note" class="form-input" type="text">
         </div>
         <div class="dialog-actions">
             <button type="button" class="button button--outline" @click="cancel">{{ $t('cancel') }}</button>
-            <button type="button" class="button button--dark" @click="save" :disabled="isLoading">{{ $t('save') }}</button>
+            <button type="submit" class="button button--dark" :disabled="isLoading">{{ $t('save') }}</button>
         </div>
-    </div>
+    </form>
 </template>
 
 <script>
-import Checkbox from './../Checkbox.vue';
 import OverlayLoader from './../OverlayLoader.vue'
 import IngredientFinder from './../IngredientFinder.vue'
 
 export default {
-    props: ['value'],
+    components: {
+        OverlayLoader,
+        IngredientFinder,
+    },
+    props: {
+        value: {
+            type: Object,
+            default() {
+                return {}
+            }
+        }
+    },
+    emits: ['close'],
     data() {
         return {
             isLoading: false,
             cocktailIngredient: this.value,
-            currentQuery: null,
-            isAddingSubstitute: false
+            hasVariableAmount: this.value.amount_max != null,
         }
-    },
-    components: {
-        OverlayLoader,
-        IngredientFinder,
-        Checkbox
     },
     computed: {
         normalizedAmount: {
@@ -77,58 +86,56 @@ export default {
                     this.cocktailIngredient.amount = newValue
                 }
             }
+        },
+        normalizedMaxAmount: {
+            get() {
+                return this.cocktailIngredient.amount_max
+            },
+            set(newValue) {
+                if (!newValue) {
+                    this.cocktailIngredient.amount_max = null
+                    return
+                }
+
+                if (newValue.startsWith('.')) {
+                    this.cocktailIngredient.amount_max = '0' + newValue
+                } else {
+                    this.cocktailIngredient.amount_max = newValue
+                }
+            }
+        }
+    },
+    watch: {
+        hasVariableAmount(newVal) {
+            if (newVal == false) {
+                this.normalizedMaxAmount = null
+            }
         }
     },
     methods: {
         selectIngredient(item) {
-            if (this.isAddingSubstitute) {
-                if (this.cocktailIngredient.substitutes && this.cocktailIngredient.substitutes.some(sub => sub.id == item.id)) {
-                    return;
-                }
-
-                this.cocktailIngredient.substitutes.push({
-                    id: item.id,
-                    name: item.name,
-                    slug: item.slug,
-                })
-            } else {
-                this.cocktailIngredient.ingredient_id = item.id;
-                this.cocktailIngredient.name = item.name;
-                this.cocktailIngredient.ingredient_slug = item.slug;
-            }
+            this.cocktailIngredient.ingredient_id = item.id
+            this.cocktailIngredient.name = item.name
+            this.cocktailIngredient.ingredient_slug = item.slug
         },
         save() {
-            this.isAddingSubstitute = false;
-            this.$emit('close', {type: 'save'});
+            this.$emit('close', {type: 'save'})
         },
         cancel() {
-            // this.cocktailIngredient.ingredient_id = null
-            this.isAddingSubstitute = false;
-            this.$emit('close', {type: 'cancel'});
-        },
-        removeSubstitute(ing) {
-            this.cocktailIngredient.substitutes.splice(
-                this.cocktailIngredient.substitutes.findIndex(i => i == ing),
-                1
-            );
+            this.$emit('close', {type: 'cancel'})
         }
     },
-};
+}
 </script>
 
 <style scoped>
-.modal .ais-SearchBox-reset,
-.modal .ais-SearchBox-submit {
-    display: none;
-}
-
 .selected-ingredient {
     margin: 1rem 0;
     line-height: 1.3;
 }
 
 .selected-ingredient small {
-    color: var(--clr-gray-400);
+    color: var(--clr-gray-500);
 }
 
 .selected-ingredient p {
@@ -136,40 +143,19 @@ export default {
     font-size: 1.5rem;
 }
 
-.selected-ingredient.selected-ingredient--substitutes {
-    margin-bottom: 2rem;
-}
-
-.selected-ingredient.selected-ingredient--substitutes p {
-    font-size: 1rem;
-    display: flex;
-    flex-direction: column;
-    gap: 0.25rem;
-}
-
-.ingredient-modal__info {
-    padding: 0.5rem;
-    margin-top: 1rem;
-}
-
-@media (max-width: 450px) {
-    .ingredient-modal {
-        padding: 5px;
-    }
-}
-
 .ingredient-form-group {
+    margin-top: 1rem;
     display: flex;
     flex-wrap: wrap;
-    gap: 0.5rem;
+    gap: var(--gap-size-1);
 }
 
-.ingredient-form-group .form-group:first-child {
+.ingredient-form-group .form-group {
     flex-basis: 150px;
 }
 
 .ingredient-form-group .form-group:last-child {
-    flex-basis: 200px;
+    flex-basis: 100px;
     flex-grow: 1;
 }
 

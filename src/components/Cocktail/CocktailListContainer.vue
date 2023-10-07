@@ -12,15 +12,15 @@ export default {
         }
     },
     created() {
-        this.observer = new IntersectionObserver((entries, observer) => {
+        this.observer = new IntersectionObserver((entries) => {
             entries.forEach((entry) => {
                 if (entry.isIntersecting) {
-                    const imgElement = entry.target.querySelector('.cocktail-list-item__graphic__image');
+                    const imgElement = entry.target.querySelector('.cocktail-list-item__graphic__image')
                     imgElement.style.backgroundImage = `url('${imgElement.dataset.imgSrc}')`
                     this.observer.unobserve(entry.target)
                 }
-            });
-        });
+            })
+        })
     }
 }
 </script>
@@ -29,7 +29,7 @@ export default {
 .cocktail-list-container {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(var(--cocktail-list-card-width), 1fr));
-    gap: 10px;
+    gap: var(--gap-size-2);
 }
 
 @media (max-width: 450px) {

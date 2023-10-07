@@ -11,7 +11,7 @@
 
 <style scoped>
 .site-page-header {
-    --sph-clr-border: var(--clr-red-200);
+    --sph-clr-border: var(--clr-accent-200);
     display: flex;
     flex-wrap: wrap;
     border-bottom: 2px solid var(--sph-clr-border);
@@ -33,12 +33,12 @@
     margin-left: auto;
     display: flex;
     flex-wrap: wrap;
-    gap: 1rem;
+    gap: var(--gap-size-3);
 }
 
 @media (max-width: 450px) {
     .site-page-header__actions {
-        gap: 0.5rem;
+        gap: var(--gap-size-2);
     }
 }
 </style>

@@ -3,7 +3,7 @@ import IngredientDetails from '../components/Ingredient/IngredientDetails.vue'
 </script>
 
 <template>
-  <main>
-    <IngredientDetails />
-  </main>
+    <main>
+        <IngredientDetails />
+    </main>
 </template>

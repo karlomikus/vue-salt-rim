@@ -1,16 +1,6 @@
 .dialog {
     --dialog-margin: 2rem;
-    --dialog-padding: 2rem;
-    --shadow-color: 250deg 70% 10%;
-    --shadow-elevation-high:
-        0px 1px 1.1px hsl(var(--shadow-color) / 0.1),
-        -0.2px 5.8px 6.5px -0.4px hsl(var(--shadow-color) / 0.1),
-        -0.3px 10.8px 12.2px -0.7px hsl(var(--shadow-color) / 0.1),
-        -0.5px 17.7px 19.9px -1.1px hsl(var(--shadow-color) / 0.1),
-        -0.8px 28.2px 31.7px -1.4px hsl(var(--shadow-color) / 0.1),
-        -1.3px 44.1px 49.6px -1.8px hsl(var(--shadow-color) / 0.1),
-        -2px 67.1px 75.5px -2.1px hsl(var(--shadow-color) / 0.1),
-        -2.9px 98.8px 111.2px -2.5px hsl(var(--shadow-color) / 0.1);
+    --dialog-padding: 1.5rem;
     inset: 0;
     position: fixed;
     transition: opacity 250ms ease, backdrop-filter 250ms ease;
@@ -41,7 +31,7 @@
 }
 
 .dialog__overlay {
-    background-color: rgba(21, 13, 34, 0.5);
+    background-color: rgba(11, 5, 21, 0.8);
     position: fixed;
     inset: 0;
     pointer-events: auto;
@@ -53,17 +43,18 @@
     pointer-events: auto;
     contain: layout;
     background-color: var(--clr-gray-50);
+    border-top: 2px solid #fff;
     padding: var(--dialog-padding);
     margin: auto;
-    border-radius: 0.5rem;
+    border-radius: var(--radius-2);
     transition: all 200ms cubic-bezier(0.16, 1, 0.3, 1);
     max-width: 600px;
     width: 100%;
-    box-shadow: var(--shadow-elevation-high);
+    box-shadow: var(--shadow-elevation-high-dark);
 }
 
 .dark-theme .dialog__content {
-    background-color: var(--clr-dark-main-950);
+    background-color: var(--clr-dark-main-800);
     border: 1px solid var(--clr-dark-main-800);
 }
 
@@ -88,12 +79,12 @@
 
 .dialog__close {
     position: absolute;
-    top: -0.5rem;
-    right: -0.5rem;
+    top: 0.5rem;
+    right: 0.5rem;
     width: 1.5rem;
     height: 1.5rem;
-    border-radius: 50%;
-    background: rgb(146, 27, 53);
+    border-radius: var(--radius-round);
+    background: none;
     display: flex;
     border: 0;
     padding: 0;
@@ -102,11 +93,11 @@
 
 .dialog__close svg {
     display: block;
-    fill: var(--clr-gray-100);
+    fill: var(--clr-gray-400);
 }
 
 .dialog__close:is(:hover,:focus,:active) {
-    background: var(--clr-gray-300);
+    background: var(--clr-gray-200);
 }
 
 .dialog__close:is(:hover,:focus,:active) svg {
@@ -117,7 +108,8 @@
     display: flex;
     justify-content: end;
     flex-wrap: wrap;
-    gap: 0.5rem;
+    gap: var(--gap-size-2);
+    margin-top: 1.5rem;
 }
 
 .site-autocomplete-dialog .dialog__content {

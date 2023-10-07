@@ -3,7 +3,7 @@ import GlassesList from '../components/Settings/GlassesList.vue'
 </script>
 
 <template>
-  <main>
-    <GlassesList />
-  </main>
+    <main>
+        <GlassesList />
+    </main>
 </template>

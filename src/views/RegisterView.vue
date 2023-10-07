@@ -1,7 +1,7 @@
 <script setup>
-import Register from '../components/Register.vue'
+import AuthRegister from '../components/Auth/AuthRegister.vue'
 </script>
 
 <template>
-  <Register />
+    <AuthRegister />
 </template>

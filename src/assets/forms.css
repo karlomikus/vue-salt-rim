@@ -1,15 +1,14 @@
 .form-group {
-    margin-bottom: 2rem;
+    margin-bottom: 1rem;
     display: flex;
     flex-direction: column;
     flex-wrap: wrap;
-    gap: 0.5rem;
+    gap: var(--gap-size-2);
 }
 
 @media (max-width: 450px) {
     .form-group {
         margin-bottom: 1.25rem;
-        gap: 0.45rem;
     }
 }
 
@@ -37,8 +36,9 @@
 
 .form-label--required::after {
     content: '•';
-    font-size: 1.2rem;
-    color: rgb(179, 37, 56);
+    font-size: 1rem;
+    color: rgb(202, 13, 39);
+    text-shadow: 0 0 3px red;
 }
 
 .form-input,
@@ -54,7 +54,7 @@
     appearance: none;
     background: var(--form-clr-bg);
     border: 2px solid var(--form-clr-border);
-    border-radius: 5px;
+    border-radius: var(--radius-2);
     height: 2.85rem;
     font-size: 1.15rem;
     line-height: 1.5rem;
@@ -69,10 +69,10 @@
 .dark-theme .form-input,
 .dark-theme .form-select {
     --form-clr-text: var(--clr-gray-100);
-    --form-clr-bg: #0c0b0e;
-    --form-clr-bg-focus: #0b0a0e;
-    --form-clr-border: var(--clr-gray-700);
-    --form-clr-border-focus: var(--clr-gray-200);
+    --form-clr-bg: var(--clr-dark-main-700);
+    --form-clr-bg-focus: var(--clr-dark-main-700);
+    --form-clr-border: var(--clr-dark-main-600);
+    --form-clr-border-focus: var(--clr-accent-500);
     --form-clr-placeholder: var(--clr-gray-400);
 }
 
@@ -89,7 +89,7 @@
 .form-input.form-input--red,
 .form-select.form-select--red {
     --form-clr-bg: rgba(255, 255, 255, .5);
-    --form-clr-border: var(--clr-red-200);
+    --form-clr-border: var(--clr-accent-200);
     border-width: 2px;
     border-top-color: transparent;
     border-left-color: transparent;
@@ -136,7 +136,7 @@ textarea.form-input,
 
 .form-actions {
     text-align: right;
-    border-top: 2px solid var(--clr-red-100);
+    border-top: 2px solid var(--clr-accent-100);
     margin: 20px 0;
     padding: 20px 0;
 }
@@ -161,4 +161,14 @@ textarea.form-input,
 .form-input:disabled {
     opacity: .8;
     background: none;
+}
+
+.form-checkbox {
+    display: flex;
+    gap: var(--gap-size-2);
+}
+
+.form-checkbox input {
+    min-width: 18px;
+    min-height: 18px;
 }

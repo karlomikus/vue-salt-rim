@@ -18,7 +18,7 @@ export default {
 .ingredient-grid-container {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
-    gap: 10px;
+    gap: var(--gap-size-3);
 }
 
 @media (max-width: 450px) {

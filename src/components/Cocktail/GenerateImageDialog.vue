@@ -4,26 +4,38 @@
         <div class="dialog-title">{{ $t('generate-image-dialog.preview') }}</div>
         <div class="image-download-preview">
             <img v-if="imagePayload" :src="imagePayload" alt="">
-            <div v-else class="image-export-wrapper" ref="exportElement">
-                <PublicRecipe :cocktail="cocktail" :currentUnit="currentUnit" :hideUnits="true" :hideHeader="features.hideHeader" :hideFooter="features.hideFooter"></PublicRecipe>
+            <div v-else ref="exportElement" class="image-export-wrapper">
+                <PublicRecipe :cocktail="cocktail" :current-unit="currentUnit" :hide-units="true" :hide-header="features.hideHeader" :hide-footer="features.hideFooter"></PublicRecipe>
             </div>
         </div>
-        <div class="dialog-actions" style="margin-top: 1rem;">
-            <button type="button" class="button button--outline" @click="$emit('publicDialogClosed')">{{ $t('cancel') }}</button>
-            <button v-if="shareEnabled" type="button" class="button button--outline" @click="shareAction">{{ $t('share') }}</button>
+        <div class="dialog-actions">
+            <button type="button" class="button button--outline" @click="$emit('generateImageDialogClosed')">{{ $t('close') }}</button>
+            <button v-if="shareEnabled" type="button" class="button button--outline" @click="shareAction">{{ $t('share.title') }}</button>
             <a v-if="imagePayload" :href="imagePayload" :download="fileName" class="button button--dark">{{ $t('download') }}</a>
         </div>
     </div>
 </template>
 
 <script>
-import OverlayLoader from '@/components/OverlayLoader.vue'
-import PublicRecipe from '@/components/Cocktail/PublicRecipe.vue'
-import Checkbox from '@/components/Checkbox.vue';
-import * as htmlToImage from 'html-to-image';
+import * as htmlToImage from 'html-to-image'
+import OverlayLoader from './../OverlayLoader.vue'
+import PublicRecipe from './PublicRecipe.vue'
+import AppState from './../../AppState'
 
 export default {
-    props: ['cocktail'],
+    components: {
+        OverlayLoader,
+        PublicRecipe,
+    },
+    props: {
+        cocktail: {
+            type: Object,
+            default() {
+                return {}
+            }
+        },
+    },
+    emits: ['generateImageDialogClosed'],
     data() {
         return {
             isLoading: false,
@@ -36,41 +48,34 @@ export default {
             }
         }
     },
-    components: {
-        OverlayLoader,
-        PublicRecipe,
-        Checkbox
-    },
     computed: {
         fileName() {
-            return this.cocktail.slug + '.png';
+            return this.cocktail.slug + '.png'
         }
     },
     mounted() {
-        if (localStorage.getItem('defaultUnit')) {
-            this.currentUnit = localStorage.getItem('defaultUnit')
+        const appState = new AppState()
+        this.currentUnit = appState.defaultUnit
+
+        if ('share' in navigator) {
+            this.shareEnabled = true
         }
 
-        if ("share" in navigator) {
-            this.shareEnabled = true;
-        }
-
-        this.generateImage();
+        this.generateImage()
     },
     methods: {
         generateImage() {
-            this.isLoading = true;
+            this.isLoading = true
             htmlToImage.toPng(this.$refs.exportElement, {
                 pixelRatio: 1,
                 cacheBust: true
             }).then((dataUrl) => {
-                this.isLoading = false;
-                this.imagePayload = dataUrl;
-            }).catch((e) => {
-                this.isLoading = false;
-                console.error(e)
-                this.$toast.error(this.$t('generate-image-dialog.generation-failed'));
-            });
+                this.isLoading = false
+                this.imagePayload = dataUrl
+            }).catch(() => {
+                this.isLoading = false
+                this.$toast.error(this.$t('generate-image-dialog.generation-failed'))
+            })
         },
         async shareAction() {
             const blobData = await (await fetch(this.imagePayload)).blob()
@@ -81,13 +86,13 @@ export default {
                     title: this.cocktail.name,
                     text: this.cocktail.description,
                     files: [file]
-                });
+                })
             } catch (err) {
-                console.error(err)
+                this.$toast.error(this.$t('generate-image-dialog.share-failed'))
             }
         }
     }
-};
+}
 </script>
 
 <style scoped>

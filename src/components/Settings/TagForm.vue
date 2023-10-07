@@ -4,7 +4,7 @@
         <div class="dialog-title">{{ dialogTitle }}</div>
         <div class="form-group">
             <label class="form-label form-label--required" for="name">{{ $t('name') }}:</label>
-            <input class="form-input" type="text" id="name" v-model="tag.name" required>
+            <input id="name" v-model="tag.name" class="form-input" type="text" required>
         </div>
         <div class="dialog-actions">
             <button class="button button--outline" @click.prevent="$emit('tagDialogClosed')">{{ $t('cancel') }}</button>
@@ -14,45 +14,57 @@
 </template>
 
 <script>
-import ApiRequests from "@/ApiRequests";
+import ApiRequests from '@/ApiRequests'
 import OverlayLoader from '@/components/OverlayLoader.vue'
 
 export default {
-    props: ['sourceTag', 'dialogTitle'],
+    components: {
+        OverlayLoader,
+    },
+    props: {
+        sourceTag: {
+            type: Object,
+            default() {
+                return {}
+            }
+        },
+        dialogTitle: {
+            type: String,
+            default: ''
+        },
+    },
+    emits: ['tagDialogClosed'],
     data() {
         return {
             isLoading: false,
             tag: this.sourceTag,
-        };
-    },
-    components: {
-        OverlayLoader,
+        }
     },
     methods: {
         submit() {
-            this.isLoading = true;
+            this.isLoading = true
 
             const postData = {
                 name: this.tag.name,
-            };
+            }
 
             if (this.tag.id) {
                 ApiRequests.updateTag(this.tag.id, postData).then(() => {
-                    this.isLoading = false;
-                    this.$toast.default(this.$t('tag.update-success'));
+                    this.isLoading = false
+                    this.$toast.default(this.$t('tag.update-success'))
                     this.$emit('tagDialogClosed')
                 }).catch(e => {
-                    this.$toast.error(e.message);
-                    this.isLoading = false;
+                    this.$toast.error(e.message)
+                    this.isLoading = false
                 })
             } else {
                 ApiRequests.saveTag(postData).then(() => {
-                    this.isLoading = false;
-                    this.$toast.default(this.$t('tag.add-success'));
+                    this.isLoading = false
+                    this.$toast.default(this.$t('tag.add-success'))
                     this.$emit('tagDialogClosed')
                 }).catch(e => {
-                    this.$toast.error(e.message);
-                    this.isLoading = false;
+                    this.$toast.error(e.message)
+                    this.isLoading = false
                 })
             }
         }

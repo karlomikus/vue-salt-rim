@@ -1,7 +1,7 @@
 <template>
     <Teleport to="body">
         <Transition name="dialog-animation">
-            <div class="dialog" v-if="shown" style="z-index: 5;">
+            <div v-if="shown" class="dialog" style="z-index: 5;">
                 <div class="dialog__overlay"></div>
                 <div class="dialog__container">
                     <div class="dialog__content">
@@ -31,9 +31,9 @@ export default {
     watch: {
         shown(val) {
             if (val) {
-                document.body.style.overflow = "hidden";
+                document.body.style.overflow = 'hidden'
             } else {
-                document.body.style.overflow = "auto";
+                document.body.style.overflow = 'auto'
             }
         }
     },
@@ -44,7 +44,7 @@ export default {
         show(payload) {
             this.body = payload.body
             this.resolve = payload.onResolved
-            this.shown = true;
+            this.shown = true
         },
         confirm() {
             this.resolve(this)
@@ -53,7 +53,7 @@ export default {
             this.close()
         },
         close() {
-            this.shown = false;
+            this.shown = false
         }
     }
 }
@@ -73,7 +73,7 @@ export default {
 
 .dialog-confirm__actions {
     display: flex;
-    gap: 0.5rem;
+    gap: var(--gap-size-2);
     justify-content: end;
     margin-top: 1rem;
 }

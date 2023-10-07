@@ -3,5 +3,5 @@ import CocktailPublicDetails from '../components/Cocktail/CocktailPublicDetails.
 </script>
 
 <template>
-  <CocktailPublicDetails />
+    <CocktailPublicDetails />
 </template>

@@ -10,6 +10,9 @@
     <a href="https://hub.docker.com/r/barassistant/salt-rim"><img src="https://img.shields.io/docker/v/barassistant/salt-rim?style=for-the-badge&sort=semver" alt="Docker image"></a>
     <img src="https://img.shields.io/github/license/karlomikus/vue-salt-rim?style=for-the-badge" alt="License">
     <img src="https://img.shields.io/github/actions/workflow/status/karlomikus/vue-salt-rim/build-image.yml?style=for-the-badge" alt="Build">
+    <a href="https://hosted.weblate.org/engage/bar-assistant-salt-rim/">
+      <img alt="Weblate entities" src="https://img.shields.io/weblate/progress/bar-assistant-salt-rim?style=for-the-badge">
+    </a>
 </p>
 
 # 🍹 Salt Rim - Bar Assistant Web Client
@@ -111,10 +114,8 @@ window.srConfig = {};
 window.srConfig.API_URL = "$API_URL";
 window.srConfig.MEILISEARCH_URL = "$MEILISEARCH_URL";
 // Optional variables
-window.srConfig.BAR_NAME = "My bar";
-// window.srConfig.BAR_DESCRIPTION = "Your personal bar assistant";
 // Valid locales: en-US, hr-HR, fr-FR
-// window.srConfig.DEFAULT_LOCALE = "en-US";
+window.srConfig.DEFAULT_LOCALE = "en-US";
 ```
 
 4. Run the build commands

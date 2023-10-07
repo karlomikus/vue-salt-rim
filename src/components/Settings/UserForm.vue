@@ -4,14 +4,14 @@
         <div class="dialog-title">{{ dialogTitle }}</div>
         <div class="form-group">
             <label class="form-label form-label--required" for="name">{{ $t('user.name') }}:</label>
-            <input class="form-input" type="text" id="name" v-model="user.name" required>
+            <input id="name" v-model="user.name" class="form-input" type="text" required>
         </div>
         <div class="form-group">
             <label class="form-label form-label--required" for="email">{{ $t('email') }}:</label>
-            <input class="form-input" type="email" id="email" v-model="user.email" required>
+            <input id="email" v-model="user.email" class="form-input" type="email" required>
         </div>
         <div class="form-group">
-            <label class="form-label" :class="{'form-label--required': !user.id}" for="password">
+            <label class="form-label" :class="{ 'form-label--required': !user.id }" for="password">
                 <template v-if="!user.id">
                     {{ $t('password') }}:
                 </template>
@@ -19,10 +19,13 @@
                     {{ $t('update-password') }}:
                 </template>
             </label>
-            <input class="form-input" type="password" id="password" v-model="user.password" :required="!user.id">
+            <input id="password" v-model="user.password" class="form-input" type="password" :required="!user.id">
         </div>
         <div class="form-group">
-            <Checkbox id="admin" v-model="user.is_admin">{{ $t('is-admin') }}</Checkbox>
+            <label class="form-label">{{ $t('user.role') }}:</label>
+            <div class="user-roles">
+                <SaltRimRadio v-for="role in roles" :key="role.id" v-model="user.role.role_id" :value="role.id" :title="role.name" :description="role.description"></SaltRimRadio>
+            </div>
         </div>
         <div class="dialog-actions">
             <button class="button button--outline" @click.prevent="$emit('userDialogClosed')">{{ $t('cancel') }}</button>
@@ -32,57 +35,91 @@
 </template>
 
 <script>
-import ApiRequests from "@/ApiRequests";
-import OverlayLoader from '@/components/OverlayLoader.vue'
-import Checkbox from '@/components/Checkbox.vue'
+import ApiRequests from './../../ApiRequests.js'
+import OverlayLoader from './../OverlayLoader.vue'
+import SaltRimRadio from './../SaltRimRadio.vue'
 
 export default {
-    props: ['sourceUser', 'dialogTitle'],
+    components: {
+        OverlayLoader,
+        SaltRimRadio
+    },
+    props: {
+        sourceUser: {
+            type: Object,
+            default() {
+                return {
+                    role: {}
+                }
+            }
+        },
+        dialogTitle: {
+            type: String,
+            default: ''
+        },
+    },
+    emits: ['userDialogClosed'],
     data() {
         return {
             isLoading: false,
             user: this.sourceUser,
-        };
-    },
-    components: {
-        OverlayLoader,
-        Checkbox
+            roles: [
+                { id: 1, name: this.$t('roles.name.Admin'), description: this.$t('roles.description.Admin') },
+                { id: 2, name: this.$t('roles.name.Moderator'), description: this.$t('roles.description.Moderator') },
+                { id: 3, name: this.$t('roles.name.General'), description: this.$t('roles.description.General') },
+                { id: 4, name: this.$t('roles.name.Guest'), description: this.$t('roles.description.Guest') },
+            ]
+        }
     },
     methods: {
         submit() {
-            this.isLoading = true;
+            this.isLoading = true
 
             const postData = {
                 name: this.user.name,
                 email: this.user.email,
-                is_admin: this.user.is_admin || false,
-            };
+                role_id: this.user.role.role_id,
+            }
 
             if (this.user.id) {
                 if (this.user.password) {
-                    postData.password = this.user.password;
+                    postData.password = this.user.password
                 }
 
                 ApiRequests.updateUserById(this.user.id, postData).then(() => {
-                    this.isLoading = false;
-                    this.$toast.default(this.$t('user.update-success'));
+                    this.isLoading = false
+                    this.$toast.default(this.$t('user.update-success'))
                     this.$emit('userDialogClosed')
                 }).catch(e => {
-                    this.$toast.error(e.message);
-                    this.isLoading = false;
+                    this.$toast.error(e.message)
+                    this.isLoading = false
                 })
             } else {
-                postData.password = this.user.password;
+                postData.password = this.user.password
                 ApiRequests.saveUser(postData).then(() => {
-                    this.isLoading = false;
-                    this.$toast.default(this.$t('user.add-success'));
+                    this.isLoading = false
+                    this.$toast.default(this.$t('user.add-success'))
                     this.$emit('userDialogClosed')
                 }).catch(e => {
-                    this.$toast.error(e.message);
-                    this.isLoading = false;
+                    this.$toast.error(e.message)
+                    this.isLoading = false
                 })
             }
         }
     }
 }
 </script>
+
+<style scoped>
+.user-roles {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--gap-size-2);
+}
+
+@media (max-width: 450px) {
+    .user-roles {
+        grid-template-columns: 1fr;
+    }
+}
+</style>

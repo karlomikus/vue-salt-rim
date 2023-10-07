@@ -1,5 +1,5 @@
 <template>
-    <button type="button" @click="toggleTheme" class="btn-toggle-theme">
+    <button type="button" class="btn-toggle-theme" @click="toggleTheme">
         <svg v-show="current == 'light'" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
             <path d="M12 18C8.68629 18 6 15.3137 6 12C6 8.68629 8.68629 6 12 6C15.3137 6 18 8.68629 18 12C18 15.3137 15.3137 18 12 18ZM12 16C14.2091 16 16 14.2091 16 12C16 9.79086 14.2091 8 12 8C9.79086 8 8 9.79086 8 12C8 14.2091 9.79086 16 12 16ZM11 1H13V4H11V1ZM11 20H13V23H11V20ZM3.51472 4.92893L4.92893 3.51472L7.05025 5.63604L5.63604 7.05025L3.51472 4.92893ZM16.9497 18.364L18.364 16.9497L20.4853 19.0711L19.0711 20.4853L16.9497 18.364ZM19.0711 3.51472L20.4853 4.92893L18.364 7.05025L16.9497 5.63604L19.0711 3.51472ZM5.63604 16.9497L7.05025 18.364L4.92893 20.4853L3.51472 19.0711L5.63604 16.9497ZM23 11V13H20V11H23ZM4 11V13H1V11H4Z"></path>
         </svg>
@@ -10,39 +10,42 @@
 </template>
 
 <script>
+import AppState from './../AppState'
+
 export default {
     data() {
         return {
             current: 'light',
             metaThemeColor: {
-                dark: '#16141A',
-                light: '#4b4c75',
+                dark: '#282238',
+                light: '#584b75',
             }
         }
     },
     mounted() {
         if (document.body.classList.contains('dark-theme')) {
-            this.current = 'dark';
+            this.current = 'dark'
         } else {
-            this.current = 'light';
+            this.current = 'light'
         }
     },
     methods: {
         toggleTheme() {
             if (this.current == 'dark') {
-                document.body.classList.remove('dark-theme');
+                document.body.classList.remove('dark-theme')
                 this.current = 'light'
-                document.querySelector('meta[name="theme-color"]').setAttribute("content", this.metaThemeColor.light);
+                document.querySelector('meta[name="theme-color"]').setAttribute('content', this.metaThemeColor.light)
             } else if (this.current == 'light') {
-                document.body.classList.add('dark-theme');
+                document.body.classList.add('dark-theme')
                 this.current = 'dark'
-                document.querySelector('meta[name="theme-color"]').setAttribute("content", this.metaThemeColor.dark);
+                document.querySelector('meta[name="theme-color"]').setAttribute('content', this.metaThemeColor.dark)
             }
 
-            this.rememberTheme();
+            this.rememberTheme()
         },
         rememberTheme() {
-            localStorage.setItem('_ba_theme', this.current);
+            const appState = new AppState()
+            appState.setTheme(this.current)
         }
     }
 }
@@ -60,7 +63,7 @@ export default {
     width: 36px;
     height: 36px;
     cursor: pointer;
-    border-radius: 50%;
+    border-radius: var(--radius-round);
     margin-left: 0.25rem;
 }
 

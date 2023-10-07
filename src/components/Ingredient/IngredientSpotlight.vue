@@ -1,10 +1,11 @@
 <template>
     <div class="block-container ingredient-spotlight-wrapper">
+        <OverlayLoader v-if="isLoading"></OverlayLoader>
         <div class="ingredient-spotlight__image">
             <img :src="mainIngredientImageUrl" :alt="ingredient.name" />
         </div>
         <div class="ingredient-spotlight__content">
-            <small>{{ ingredient.category.name }}</small>
+            <small v-if="ingredient.category">{{ ingredient.category.name }}</small>
             <h4>{{ ingredient.name }}</h4>
             <p>{{ truncatedDescription }}</p>
             <RouterLink :to="{name: 'ingredients.show', params: { id: ingredient.slug }}">{{ $t('show-more') }}</RouterLink>
@@ -12,36 +13,41 @@
     </div>
 </template>
 <script>
-import ApiRequests from '@/ApiRequests';
+import ApiRequests from '@/ApiRequests'
 import OverlayLoader from '@/components/OverlayLoader.vue'
 
 export default {
-    props: ['id'],
+    components: {
+        OverlayLoader
+    },
+    props: {
+        id: {
+            type: Number,
+            default: 0
+        }
+    },
     data() {
         return {
             isLoading: false,
             ingredient: {
                 category: {}
             },
-        };
-    },
-    components: {
-        OverlayLoader
+        }
     },
     computed: {
         truncatedDescription() {
             if (!this.ingredient.description) {
                 return this.ingredient.description
-            };
+            }
 
-            return this.ingredient.description.length > 200 ? `${this.ingredient.description.substring(0, 200)}...` : this.ingredient.description;
+            return this.ingredient.description.length > 200 ? `${this.ingredient.description.substring(0, 200)}...` : this.ingredient.description
         },
         mainIngredientImageUrl() {
             if (!this.ingredient.main_image_id) {
-                return '/no-ingredient.png';
+                return '/no-ingredient.png'
             }
 
-            return this.ingredient.images.filter((img) => img.id == this.ingredient.main_image_id)[0].url;
+            return this.ingredient.images.filter((img) => img.id == this.ingredient.main_image_id)[0].url
         }
     },
     watch: {
@@ -52,19 +58,19 @@ export default {
         }
     },
     created() {
-        this.fetchIngredient();
+        this.fetchIngredient()
     },
     methods: {
         fetchIngredient() {
-            this.isLoading = true;
+            this.isLoading = true
             ApiRequests.fetchIngredient(this.id).then(data => {
                 this.ingredient = data
-                this.isLoading = false;
+                this.isLoading = false
             }).catch(() => {
                 this.ingredient = {
                     category: {}
                 }
-                this.isLoading = false;
+                this.isLoading = false
             })
         },
     }

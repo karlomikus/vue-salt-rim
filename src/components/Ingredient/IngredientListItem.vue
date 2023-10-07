@@ -17,60 +17,68 @@
 </template>
 
 <script>
-import ApiRequests from '../../ApiRequests';
-import OverlayLoader from '@/components/OverlayLoader.vue';
+import ApiRequests from './../../ApiRequests'
+import OverlayLoader from './../OverlayLoader.vue'
 
 export default {
-    props: ['ingredient'],
+    components: {
+        OverlayLoader
+    },
+    props: {
+        ingredient: {
+            type: Object,
+            default() {
+                return {}
+            }
+        }
+    },
+    emits: ['addedToShelf', 'removedFromShoppingList'],
     data() {
         return {
             isLoading: false
         }
     },
-    components: {
-        OverlayLoader
-    },
     computed: {
         mainIngredientImageUrl() {
             if (!this.ingredient.main_image_id) {
-                return '/no-ingredient.png';
+                return '/no-ingredient.png'
             }
 
-            return this.ingredient.images.filter((img) => img.id == this.ingredient.main_image_id)[0].url;
+            return this.ingredient.images.filter((img) => img.id == this.ingredient.main_image_id)[0].url
         }
     },
     methods: {
         setupColor(hex) {
-            var c;
+            var c
             if (/^#([A-Fa-f0-9]{3}){1,2}$/.test(hex)) {
-                c = hex.substring(1).split('');
+                c = hex.substring(1).split('')
                 if (c.length == 3) {
-                    c = [c[0], c[0], c[1], c[1], c[2], c[2]];
+                    c = [c[0], c[0], c[1], c[1], c[2], c[2]]
                 }
-                c = '0x' + c.join('');
-                return 'rgba(' + [(c >> 16) & 255, (c >> 8) & 255, c & 255].join(',') + ',.13)';
+                c = '0x' + c.join('')
+                return 'rgba(' + [(c >> 16) & 255, (c >> 8) & 255, c & 255].join(',') + ',.13)'
             }
 
-            return hex;
+            return hex
         },
         addToShelf() {
-            this.isLoading = true;
-            ApiRequests.addIngredientToShelf(this.ingredient.id).then(() => {
+            this.isLoading = true
+            ApiRequests.addIngredientsToShelf({ ingredient_ids: [this.ingredient.id] }).then(() => {
                 this.$emit('addedToShelf')
-                this.isLoading = false;
+                this.isLoading = false
             }).catch(e => {
                 this.$toast.error(e.message)
-                this.isLoading = false;
+                this.isLoading = false
             })
         },
         removeFromShoppingList() {
-            this.isLoading = true;
+            this.isLoading = true
             ApiRequests.removeIngredientsFromShoppingList({ ingredient_ids: [this.ingredient.id] }).then(() => {
                 this.$emit('removedFromShoppingList')
-                this.isLoading = false;
+                this.isLoading = false
             }).catch(e => {
                 this.$toast.error(e.message)
-                this.isLoading = false;
+                this.isLoading = false
             })
         }
     }
@@ -83,9 +91,9 @@ export default {
 
     display: flex;
     align-items: center;
-    padding: 0.825rem;
+    padding: 0.75rem;
     text-decoration: none;
-    gap: 10px;
+    gap: var(--gap-size-2);
 }
 
 .dark-theme .ingredient-list-item {
@@ -95,7 +103,7 @@ export default {
 .ingredient-list-item__image {
     width: 70px;
     height: 70px;
-    border-radius: 5px;
+    border-radius: var(--radius-2);
     display: flex;
     align-items: center;
     justify-content: center;

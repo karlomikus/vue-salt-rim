@@ -34,18 +34,56 @@
 
 <script>
 import OverlayLoader from '@/components/OverlayLoader.vue'
-import ApiRequests from "@/ApiRequests";
+import ApiRequests from './../../ApiRequests.js'
 
 export default {
-    props: ['ingredient', 'userIngredients', 'shoppingList'],
     components: {
         OverlayLoader
+    },
+    props: {
+        ingredient: {
+            type: Object,
+            default() {
+                return {}
+            }
+        },
+        userIngredients: {
+            type: Array,
+            default() {
+                return []
+            }
+        },
+        shoppingList: {
+            type: Array,
+            default() {
+                return []
+            }
+        }
     },
     data() {
         return {
             isLoading: false,
             scopedUserIngredients: [],
             scopedShoppingList: [],
+        }
+    },
+    computed: {
+        image() {
+            if (this.ingredient.image_url) {
+                return this.ingredient.image_url
+            }
+
+            if (this.ingredient.images && this.ingredient.images.length > 0) {
+                return this.ingredient.images.filter(img => img.id == this.ingredient.main_image_id)[0].url
+            }
+
+            return '/no-ingredient.png'
+        },
+        inShelf() {
+            return this.scopedUserIngredients.includes(this.ingredient.id)
+        },
+        inList() {
+            return this.scopedShoppingList.includes(this.ingredient.id)
         }
     },
     watch: {
@@ -62,86 +100,67 @@ export default {
             immediate: true
         }
     },
-    computed: {
-        image() {
-            if (this.ingredient.image_url) {
-                return this.ingredient.image_url;
-            }
-
-            if (this.ingredient.images && this.ingredient.images.length > 0) {
-                return this.ingredient.images.filter(img => img.id == this.ingredient.main_image_id)[0].url
-            }
-
-            return '/no-ingredient.png';
-        },
-        inShelf() {
-            return this.scopedUserIngredients.includes(this.ingredient.id)
-        },
-        inList() {
-            return this.scopedShoppingList.includes(this.ingredient.id)
-        }
-    },
     methods: {
         setupColor(hex) {
-            var c;
+            var c
             if (/^#([A-Fa-f0-9]{3}){1,2}$/.test(hex)) {
-                c = hex.substring(1).split('');
+                c = hex.substring(1).split('')
                 if (c.length == 3) {
-                    c = [c[0], c[0], c[1], c[1], c[2], c[2]];
+                    c = [c[0], c[0], c[1], c[1], c[2], c[2]]
                 }
-                c = '0x' + c.join('');
-                return 'rgba(' + [(c >> 16) & 255, (c >> 8) & 255, c & 255].join(',') + ',.13)';
+                c = '0x' + c.join('')
+                return 'rgba(' + [(c >> 16) & 255, (c >> 8) & 255, c & 255].join(',') + ',.13)'
             }
 
-            return hex;
+            return hex
         },
         toggleShelf() {
-            this.isLoading = true;
+            this.isLoading = true
 
             if (this.inShelf) {
-                ApiRequests.removeIngredientFromShelf(this.ingredient.id).then(() => {
-                    this.isLoading = false;
-                    this.$toast.default(this.$t('ingredient.shelf-remove-success', { name: this.ingredient.name }));
+                ApiRequests.removeIngredientsFromShelf({ingredient_ids: [this.ingredient.id]}).then(() => {
+                    this.isLoading = false
+                    this.$toast.default(this.$t('ingredient.shelf-remove-success', { name: this.ingredient.name }))
                     this.scopedUserIngredients.splice(this.scopedUserIngredients.indexOf(this.ingredient.id), 1)
                 }).catch(e => {
                     this.$toast.error(e.message)
-                    this.isLoading = false;
+                    this.isLoading = false
                 })
             } else {
-                ApiRequests.addIngredientToShelf(this.ingredient.id).then(() => {
-                    this.isLoading = false;
+                ApiRequests.addIngredientsToShelf({ingredient_ids: [this.ingredient.id]}).then(() => {
+                    this.isLoading = false
                     this.$toast.default(this.$t('ingredient.shelf-add-success', { name: this.ingredient.name }))
                     this.scopedUserIngredients.push(this.ingredient.id)
                 }).catch(e => {
                     this.$toast.error(e.message)
-                    this.isLoading = false;
+                    this.isLoading = false
                 })
             }
         },
         toggleList() {
-            this.isLoading = true;
+            this.isLoading = true
 
             const postData = {
                 ingredient_ids: [this.ingredient.id]
-            };
+            }
 
             if (this.inList) {
                 ApiRequests.removeIngredientsFromShoppingList(postData).then(() => {
-                    this.isLoading = false;
-                    this.$toast.default(this.$t('ingredient.list-remove-success', { name: this.ingredient.name }));
+                    this.isLoading = false
+                    this.$toast.default(this.$t('ingredient.list-remove-success', { name: this.ingredient.name }))
                     this.scopedShoppingList.splice(this.scopedShoppingList.indexOf(this.ingredient.id), 1)
                 }).catch(e => {
                     this.$toast.error(e.message)
-                    this.isLoading = false;
+                    this.isLoading = false
                 })
             } else {
                 ApiRequests.addIngredientsToShoppingList(postData).then(() => {
-                    this.isLoading = false;
+                    this.isLoading = false
                     this.$toast.default(this.$t('ingredient.list-add-success', { name: this.ingredient.name }))
                     this.scopedShoppingList.push(this.ingredient.id)
                 }).catch(e => {
                     this.$toast.error(e.message)
-                    this.isLoading = false;
+                    this.isLoading = false
                 })
             }
         }
@@ -158,7 +177,7 @@ export default {
     display: flex;
     width: 100%;
     padding: 1rem;
-    transition: border-color ease-in-out 150ms;
+    /* transition: border-color ease-in-out 150ms; */
 }
 
 .dark-theme .ingredient-grid-item {
@@ -172,7 +191,7 @@ export default {
     width: var(--image-size);
     height: var(--image-size);
     text-align: center;
-    border-radius: 0.415rem;
+    border-radius: var(--radius-2);
     display: flex;
     align-items: center;
     justify-content: center;

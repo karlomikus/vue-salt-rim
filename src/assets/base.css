@@ -1,51 +1,32 @@
-@import url('https://fonts.googleapis.com/css2?family=Alice&family=Inter:wght@400;700&display=swap');
-/* @import url('https://fonts.googleapis.com/css2?family=Alice&family=Philosopher:wght@400;700&display=swap'); */
+@import url('https://fonts.googleapis.com/css2?family=Alice&family=Inter:wght@400;700&family=Space+Mono&display=swap');
+/* @import url('https://api.fonts.coollabs.io/css2?family=Alice&family=Inter:wght@400;700&family=Space+Mono&display=swap'); */
 
 :root {
     /* Base color scheme */
-    --clr-red-50: #FAF5F8;
-    --clr-red-100: #F5EAF2;
-    --clr-red-200: #ECD5E5;
-    --clr-red-300: #E1BDD5;
-    --clr-red-400: #D29DC1;
-    --clr-red-500: #C178AA;
-    --clr-red-600: #B8659E;
-    --clr-red-700: #AF5091;
-    --clr-red-800: #8F4277;
-    --clr-red-900: #693057;
+    /* --clr-accent-50: #FAF5F8; */
+    --clr-accent-50: #f9f3f6;
+    --clr-accent-100: #F5EAF2;
+    --clr-accent-200: #ECD5E5;
+    --clr-accent-300: #E1BDD5;
+    --clr-accent-400: #D29DC1;
+    --clr-accent-500: #C178AA;
+    --clr-accent-600: #B8659E;
+    --clr-accent-700: #AF5091;
+    --clr-accent-800: #8F4277;
+    --clr-accent-900: #693057;
+    --clr-accent-950: #411632;
 
-    --clr-gray-50: #F3F4F6;
-    --clr-gray-100: #E7E9EE;
-    --clr-gray-200: #CDD0DB;
-    --clr-gray-300: #ACB1C3;
-    --clr-gray-400: #838AA5;
-    --clr-gray-500: #454A5F;
-    --clr-gray-600: #404559;
-    --clr-gray-700: #333747;
-    --clr-gray-800: #2D303E;
-    --clr-gray-900: #181921;
-
-    /* Base component color scheme */
-    --clr-link-color: var(--clr-gray-800);
-    --clr-link-color-hover: var(--clr-red-800);
-    --clr-body-font: var(--clr-gray-800);
-    --clr-body-bg: var(--clr-red-50);
-
-    --default-scheme: light;
-
-    --font-primary: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
-    --font-accent: 'Bitter', serif;
-    --font-heading: 'Alice', serif;
-    --fw-bold: 700;
-
-    --color-site-header: #4b4c75;
-    --color-btn-default: #454b60;
-    --color-btn-default-hover: #2b3042;
-    --color-menu-item-hover: #eff7f6;
-
-    --site-width: 1440px;
-    --cocktail-grid-card-width: 250px;
-    --cocktail-list-card-width: 350px;
+    --clr-gray-50: #F5F4F5;
+    --clr-gray-100: #EBEAEB;
+    --clr-gray-200: #D4D2D6;
+    --clr-gray-300: #B8B4BB;
+    --clr-gray-400: #96929B;
+    --clr-gray-500: #64616A;
+    --clr-gray-600: #5B5860;
+    --clr-gray-700: #4D4950;
+    --clr-gray-800: #403D43;
+    --clr-gray-900: #272528;
+    --clr-gray-950: #1A181B;
 
     --clr-accent-blue: #d2e4ee;
     --clr-accent-yellow: #FFF1E6;
@@ -54,7 +35,6 @@
     --clr-accent-purple: #eaeaff;
     --clr-accent-orange: #f1dcca;
 
-    /* Dark mode scheme */
     --clr-dark-main-50: #E4E2E9;
     --clr-dark-main-100: #DAD6E0;
     --clr-dark-main-200: #BFB9CB;
@@ -62,33 +42,116 @@
     --clr-dark-main-400: #8C82A1;
     --clr-dark-main-500: #726789;
     --clr-dark-main-600: #5C536F;
-    --clr-dark-main-700: #443D52;
-    --clr-dark-main-800: #2C2734;
-    --clr-dark-main-900: #16141A;
-    --clr-dark-main-950: #0A090C;
+    --clr-dark-main-650: #332c46;
+    --clr-dark-main-700: #282238;
+    --clr-dark-main-800: #201a2d;
+    --clr-dark-main-900: #191422;
+    --clr-dark-main-950: #120e1a;
+
+    --clr-rating: rgb(235, 133, 0);
+    --clr-rating-bg: rgb(255, 238, 216);
+
+    --shadow-color: 324deg 10% 71%;
+    --shadow-elevation-low:
+        0px 1px 1.1px hsl(var(--shadow-color) / 0.1),
+        0px 1.7px 1.9px -1.2px hsl(var(--shadow-color) / 0.1),
+        0px 4px 4.5px -2.5px hsl(var(--shadow-color) / 0.1);
+    --shadow-elevation-medium:
+        0px 0.4px 0.5px hsl(var(--shadow-color) / 0.25),
+        0px 1.1px 1.2px -0.8px hsl(var(--shadow-color) / 0.25),
+        0px 2.6px 2.9px -1.7px hsl(var(--shadow-color) / 0.25),
+        0px 6.3px 7.1px -2.5px hsl(var(--shadow-color) / 0.25);
+    --shadow-elevation-high:
+        0px 0.4px 0.5px hsl(var(--shadow-color) / 0.26),
+        0px 1.8px 2px -0.4px hsl(var(--shadow-color) / 0.26),
+        0px 3.5px 3.9px -0.8px hsl(var(--shadow-color) / 0.26),
+        0px 6px 6.8px -1.2px hsl(var(--shadow-color) / 0.26),
+        0px 10.1px 11.4px -1.7px hsl(var(--shadow-color) / 0.26),
+        -0.1px 16.5px 18.6px -2.1px hsl(var(--shadow-color) / 0.26),
+        -0.1px 26px 29.3px -2.5px hsl(var(--shadow-color) / 0.26);
+
+    --shadow-color-dark: 0deg 0% 0%;
+    --shadow-elevation-low-dark:
+        0px 0.7px 0.8px hsl(var(--shadow-color-dark) / 0.1),
+        0px 1.1px 1.2px -1.2px hsl(var(--shadow-color-dark) / 0.1),
+        0.1px 2.7px 3px -2.5px hsl(var(--shadow-color-dark) / 0.1);
+    --shadow-elevation-medium-dark:
+        0px 0.7px 0.8px hsl(var(--shadow-color-dark) / 0.11),
+        0px 2.2px 2.5px -0.8px hsl(var(--shadow-color-dark) / 0.11),
+        0.1px 5.4px 6.1px -1.7px hsl(var(--shadow-color-dark) / 0.11),
+        0.3px 13.3px 15px -2.5px hsl(var(--shadow-color-dark) / 0.11);
+    --shadow-elevation-high-dark:
+        0px 0.7px 0.8px hsl(var(--shadow-color-dark) / 0.1),
+        0.1px 3.9px 4.4px -0.4px hsl(var(--shadow-color-dark) / 0.1),
+        0.2px 7.2px 8.1px -0.7px hsl(var(--shadow-color-dark) / 0.1),
+        0.3px 11.9px 13.4px -1.1px hsl(var(--shadow-color-dark) / 0.1),
+        0.4px 18.9px 21.3px -1.4px hsl(var(--shadow-color-dark) / 0.1),
+        0.6px 29.6px 33.3px -1.8px hsl(var(--shadow-color-dark) / 0.1),
+        1px 45px 50.6px -2.1px hsl(var(--shadow-color-dark) / 0.1),
+        1.4px 66.3px 74.6px -2.5px hsl(var(--shadow-color-dark) / 0.1);
+
+    /* Base component color scheme */
+    --clr-link-color: var(--clr-gray-800);
+    --clr-link-color-hover: var(--clr-accent-700);
+    --clr-body-font: var(--clr-gray-800);
+    --clr-body-bg: var(--clr-accent-50);
+
+    --default-scheme: light;
+
+    --font-primary: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+    --font-accent: 'Bitter', serif;
+    --font-heading: 'Alice', serif;
+    --font-mono: 'Space Mono', monospace;
+    --fw-bold: 700;
+
+    --color-site-header: #584b75;
+    --color-site-header-subnavigation: #463963;
+    --color-btn-default: #454b60;
+    --color-btn-default-hover: #2b3042;
+    --color-menu-item-hover: #eff7f6;
+    --clr-site-footer: #fff;
+
+    --site-width: 1440px;
+    --cocktail-grid-card-width: 250px;
+    --cocktail-list-card-width: 350px;
+
+    --radius-1: 3px;
+    --radius-2: 5px;
+    --radius-3: 10px;
+    --radius-4: 15px;
+    --radius-5: 30px;
+    --radius-round: 50%;
+
+    --gap-size-1: 0.25rem;
+    --gap-size-2: 0.5rem;
+    --gap-size-3: 1rem;
+    --gap-size-4: 1.25rem;
+    --gap-size-5: 1.5rem;
 }
 
 .dark-theme {
-    --clr-red-50: #F2EAF6;
-    --clr-red-100: #E5D4ED;
-    --clr-red-200: #C9A6D9;
-    --clr-red-300: #B07BC6;
-    --clr-red-400: #9650B4;
-    --clr-red-500: #723B8A;
-    --clr-red-600: #5C2F6F;
-    --clr-red-700: #442352;
-    --clr-red-800: #2C1736;
-    --clr-red-900: #180C1D;
-    --clr-red-950: #0C060E;
-
     --default-scheme: dark;
 
-    --clr-link-color: var(--clr-gray-200);
-    --clr-link-color-hover: #fff;
-    --clr-body-font: var(--clr-gray-50);
-    --clr-body-bg: var(--clr-dark-main-950);
+    --clr-accent-50: #FFF7E5;
+    --clr-accent-100: #FFEDCC;
+    --clr-accent-200: #FFDA99;
+    --clr-accent-300: #FFC66B;
+    --clr-accent-400: #FFAF37;
+    --clr-accent-500: #FF9F05;
+    --clr-accent-600: #D18400;
+    --clr-accent-700: #996300;
+    --clr-accent-800: #664400;
+    --clr-accent-900: #332300;
 
-    --color-site-header: var(--clr-dark-main-900);
+    --clr-link-color: var(--clr-gray-200);
+    --clr-link-color-hover: #ffaf37;
+    --clr-body-font: var(--clr-gray-50);
+    --clr-body-bg: var(--clr-dark-main-900);
+
+    --clr-site-footer: var(--clr-dark-main-950);
+
+    --color-site-header: var(--clr-dark-main-700);
+    --color-site-header-subnavigation: var(--clr-dark-main-800);
 
     --clr-accent-blue: #0d212b;
     --clr-accent-yellow: #26160a;
@@ -141,6 +204,7 @@ body {
 }
 
 @media print {
+
     .no-print,
     .no-print * {
         display: none !important;
@@ -175,7 +239,7 @@ h6 {
 }
 
 hr {
-    border: 2px solid var(--clr-red-400);
+    border: 2px solid var(--clr-accent-400);
     margin: 1rem 0;
 }
 
