@@ -1,3 +1,9 @@
+# v2.0.2
+- Fix missing version info in footer
+
+# v2.0.1
+- Add major version tag to docker tags `v2`
+
 # v2.0.0
 This release marks support for Bar Assistant v3.0. Check Bar Assistant changelog for more info about new features.
 
