@@ -1,8 +1,8 @@
 <template>
     <div class="block-container block-container--hover ingredient-grid-item" :class="{ 'ingredient-grid-item--shelf': inShelf }">
         <OverlayLoader v-if="isLoading" />
-        <div class="ingredient-grid-item__image" :style="{ 'background-color': setupColor(ingredient.color) }">
-            <img :src="image" alt="Main image of the ingredient">
+        <div class="ingredient-grid-item__image">
+            <IngredientImage :ingredient="ingredient"></IngredientImage>
         </div>
         <div class="ingredient-grid-item__content">
             <RouterLink class="ingredient-grid-item__title" :to="{ name: 'ingredients.show', params: { id: ingredient.slug } }">
@@ -33,12 +33,14 @@
 </template>
 
 <script>
-import OverlayLoader from '@/components/OverlayLoader.vue'
+import OverlayLoader from './../OverlayLoader.vue'
+import IngredientImage from './IngredientImage.vue'
 import ApiRequests from './../../ApiRequests.js'
 
 export default {
     components: {
-        OverlayLoader
+        OverlayLoader,
+        IngredientImage
     },
     props: {
         ingredient: {
@@ -68,17 +70,6 @@ export default {
         }
     },
     computed: {
-        image() {
-            if (this.ingredient.image_url) {
-                return this.ingredient.image_url
-            }
-
-            if (this.ingredient.images && this.ingredient.images.length > 0) {
-                return this.ingredient.images.filter(img => img.id == this.ingredient.main_image_id)[0].url
-            }
-
-            return '/no-ingredient.png'
-        },
         inShelf() {
             return this.scopedUserIngredients.includes(this.ingredient.id)
         },
@@ -101,19 +92,6 @@ export default {
         }
     },
     methods: {
-        setupColor(hex) {
-            var c
-            if (/^#([A-Fa-f0-9]{3}){1,2}$/.test(hex)) {
-                c = hex.substring(1).split('')
-                if (c.length == 3) {
-                    c = [c[0], c[0], c[1], c[1], c[2], c[2]]
-                }
-                c = '0x' + c.join('')
-                return 'rgba(' + [(c >> 16) & 255, (c >> 8) & 255, c & 255].join(',') + ',.13)'
-            }
-
-            return hex
-        },
         toggleShelf() {
             this.isLoading = true
 
@@ -170,35 +148,18 @@ export default {
 
 <style scoped>
 .ingredient-grid-item {
-    --image-size: 70px;
-    --content-padding: 0.315rem;
-    --igi-clr-content: var(--clr-gray-500);
-
+    --_clr-content: var(--clr-gray-500);
     display: flex;
     width: 100%;
-    padding: 1rem;
-    /* transition: border-color ease-in-out 150ms; */
+    padding: var(--gap-size-3);
 }
 
 .dark-theme .ingredient-grid-item {
-    --igi-clr-content: var(--clr-gray-400);
+    --_clr-content: var(--clr-gray-400);
 }
 
 .ingredient-grid-item__image {
-    flex-shrink: 0;
-    margin-right: 1rem;
-    align-self: start;
-    width: var(--image-size);
-    height: var(--image-size);
-    text-align: center;
-    border-radius: var(--radius-2);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.ingredient-grid-item__image img {
-    height: var(--image-size);
+    margin-right: var(--gap-size-3);
 }
 
 .ingredient-grid-item__title {
@@ -212,11 +173,11 @@ export default {
 .ingredient-grid-item__content {
     display: flex;
     flex-direction: column;
-    gap: var(--content-padding);
+    gap: var(--gap-size-1);
 }
 
 .ingredient-grid-item__content p {
-    color: var(--igi-clr-content);
+    color: var(--_clr-content);
     overflow: hidden;
     font-size: 0.815rem;
     max-height: calc(3 * 1.3rem);
