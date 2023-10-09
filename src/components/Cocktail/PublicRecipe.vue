@@ -39,7 +39,6 @@
 
 <script>
 import {micromark} from 'micromark'
-import Utils from '@/Utils'
 import SiteLogo from '@/components/Layout/SiteLogo.vue'
 import UnitHandler from '../../UnitHandler'
 
