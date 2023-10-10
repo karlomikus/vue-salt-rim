@@ -385,15 +385,10 @@ export default {
     color: var(--clr-gray-300);
 }
 
-.ingredient-details__box hr {
+:deep(.ingredient-details__box hr) {
     border: 0;
     margin: 0.25rem 0;
     border-top: 2px solid rgba(0, 0, 0, .1);
-}
-
-.ingredient-details__box > p {
-    margin: 5px 0;
-    padding: 5px 0;
 }
 
 .ingredient-chips-list {
@@ -409,25 +404,15 @@ export default {
     align-items: center;
 }
 
-.mini-cocktail-container {
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--gap-size-2);
-}
-
 .ingredient-chips-list__label {
     font-size: 0.75rem;
 }
 
 .ingredient-details__actions {
     position: absolute;
-    /* z-index: 5; */
     top: -25px;
     right: 20px;
     display: flex;
-}
-
-.ingredient-details__actions .button-circle {
-    margin-left: 5px;
+    gap: var(--gap-size-1);
 }
 </style>

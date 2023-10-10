@@ -20,7 +20,7 @@
         <div class="stats__stat">
             <h3>{{ stats.total_shelf_ingredients }}</h3>
             <p>
-                <RouterLink :to="{ name: 'ingredients', query: { shelf: true } }">{{ $t('shelf-ingredients') }}</RouterLink>
+                <RouterLink :to="{ name: 'ingredients', query: { 'filter[on_shelf]': true } }">{{ $t('shelf-ingredients') }}</RouterLink>
             </p>
         </div>
         <div class="stats__stat">

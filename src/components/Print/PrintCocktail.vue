@@ -39,7 +39,6 @@
 <script>
 import {micromark} from 'micromark'
 import ApiRequests from '@/ApiRequests'
-import Utils from '@/Utils'
 import AppState from './../../AppState'
 import UnitHandler from '../../UnitHandler'
 

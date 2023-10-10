@@ -27,6 +27,12 @@ Salt Rim is a web client used for connecting to your [Bar Assistant](https://git
     <strong>Email:</strong> admin@example.com &middot; <strong>Password:</strong> password
 </p>
 
+<p align="center">
+    <picture>
+      <img src="./art/v3-landing.png" alt="Landing image" />
+    </picture>
+</p>
+
 ## Features
 
 - Beautiful UI for your Bar Asistant server
@@ -46,38 +52,6 @@ Salt Rim is a web client used for connecting to your [Bar Assistant](https://git
 ## Documentation
 
 [Official documentation is available here.](https://bar-assistant.github.io/docs/)
-
-## Screenshots
-
-<p align="center">
-    <picture>
-      <img src="./art/db.png" alt="Shelf" />
-    </picture>
-</p>
-
----
-
-<p align="center">
-    <picture>
-      <img src="./art/your-shelf.png" alt="Shelf" />
-    </picture>
-</p>
-
----
-
-<p align="center">
-    <picture>
-      <img src="./art/organize.png" alt="Shelf" />
-    </picture>
-</p>
-
----
-
-<p align="center">
-    <picture>
-      <img src="./art/import.png" alt="Shelf" />
-    </picture>
-</p>
 
 ## Docker installation
 
