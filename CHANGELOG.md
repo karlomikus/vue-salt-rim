@@ -1,3 +1,10 @@
+# v2.0.4
+- Fix substitute units conversion #120
+
+# v2.0.3
+- Fix meta theme color
+- Fix link to shelf ingredients from shelf
+
 # v2.0.2
 - Fix missing version info in footer
 

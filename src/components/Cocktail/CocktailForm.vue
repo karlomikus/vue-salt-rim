@@ -394,16 +394,41 @@ export default {
                     .map((cIngredient) => {
                         // Convert oz to ml
                         if (cIngredient.units == 'oz') {
-                            cIngredient.amount = Unitz.parse(`${cIngredient.amount}${cIngredient.units}`).value * 30
+                            cIngredient.amount = UnitHandler.oz2ml(cIngredient.amount);
+                            if (cIngredient.amount_max) {
+                                cIngredient.amount_max = UnitHandler.oz2ml(cIngredient.amount_max);
+                            }
                             cIngredient.units = 'ml'
                         }
                         // Convert cl to ml
                         if (cIngredient.units == 'cl') {
-                            cIngredient.amount = cIngredient.amount * 10
+                            cIngredient.amount = UnitHandler.cl2ml(cIngredient.amount);
+                            if (cIngredient.amount_max) {
+                                cIngredient.amount_max = UnitHandler.cl2ml(cIngredient.amount_max);
+                            }
                             cIngredient.units = 'ml'
                         }
 
                         cIngredient.sort = sortedIngredientList.findIndex(sortedId => sortedId == cIngredient.ingredient_id) + 1
+
+                        // Handle substitutes
+                        cIngredient.substitutes.filter(sub => sub.units).map(sub => {
+                            if (sub.units == 'oz') {
+                                sub.amount = UnitHandler.oz2ml(sub.amount);
+                                if (sub.amount_max) {
+                                    sub.amount_max = UnitHandler.oz2ml(sub.amount_max);
+                                }
+                                sub.units = 'ml'
+                            }
+
+                            if (sub.units == 'cl') {
+                                sub.amount = UnitHandler.cl2ml(sub.amount);
+                                if (sub.amount_max) {
+                                    sub.amount_max = UnitHandler.cl2ml(sub.amount_max);
+                                }
+                                sub.units = 'ml'
+                            }
+                        })
 
                         return cIngredient
                     })
