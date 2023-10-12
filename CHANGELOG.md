@@ -1,14 +1,25 @@
+# v2.0.5
+## Fixes
+- Fixed missing role string for "Guest"
+
+## Changes
+- Swapped edit and view actions in collections view
+
 # v2.0.4
+## Fixes
 - Fix substitute units conversion #120
 
 # v2.0.3
+## Fixes
 - Fix meta theme color
 - Fix link to shelf ingredients from shelf
 
 # v2.0.2
+## Fixes
 - Fix missing version info in footer
 
 # v2.0.1
+## Fixes
 - Add major version tag to docker tags `v2`
 
 # v2.0.0
