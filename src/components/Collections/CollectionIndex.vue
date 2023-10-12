@@ -24,14 +24,14 @@
             <tbody>
                 <tr v-for="collection in collections" :key="collection.id">
                     <td>
-                        <a href="#" @click.prevent="openDialog($t('collections.edit'), collection)">{{ collection.name }}</a>
+                        <RouterLink :to="{ name: 'cocktails', query: { 'filter[collection_id]': collection.id } }">{{ collection.name }}</RouterLink>
                         <br>
                         <small>{{ collection.cocktails.length }} {{ $t('cocktails.title') }} &middot; {{ collection.description ? overflowText(collection.description, 100) : 'n/a' }}</small>
                     </td>
                     <td style="text-align: right;">
                         <a class="list-group__action" href="#" @click.prevent="shareCollection(collection)">{{ $t('share.title') }}</a>
                         &middot;
-                        <RouterLink class="list-group__action" :to="{ name: 'cocktails', query: { 'filter[collection_id]': collection.id } }">{{ $t('view') }}</RouterLink>
+                        <a class="list-group__action" href="#" @click.prevent="openDialog($t('collections.edit'), collection)">{{ $t('edit') }}</a>
                         &middot;
                         <a class="list-group__action" href="#" @click.prevent="deleteCollection(collection)">{{ $t('remove') }}</a>
                     </td>
