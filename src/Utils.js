@@ -14,6 +14,8 @@ class Utils {
             return 'moderator'
         case 3:
             return 'general'
+        case 4:
+            return 'guest'
         default:
             return null
         }
