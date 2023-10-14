@@ -17,8 +17,12 @@
             <div class="public-cocktail-recipe__summary__section">
                 <h3>{{ $t('ingredients.title') }}</h3>
                 <ul>
-                    <li v-for="ing in cocktail.ingredients" :key="ing.id" itemprop="recipeIngredient" :content="ing.name + ' - ' + parseIngredientAmount(ing)">
-                        <span>{{ ing.name }}</span><span class="spacer"></span><span class="amount-units">{{ parseIngredientAmount(ing) }}</span>
+                    <li v-for="ing in cocktail.ingredients" :key="ing.id" itemprop="recipeIngredient" :content="ing.name + ' - ' + printAmount(ing)">
+                        <div class="cocktail-ingredient">
+                            <span>{{ ing.name }}<template v-if="ing.note"> &middot; {{ ing.note }}</template></span>
+                            <span class="cocktail-ingredient__substitutes" v-if="ing.substitutes.length > 0">{{ $t('substitutes') }}: {{ printSubstitutes(ing.substitutes) }}</span>
+                        </div>
+                        <div class="amount-units">{{ printAmount(ing) }}</div>
                     </li>
                 </ul>
             </div>
@@ -52,6 +56,7 @@ export default {
             type: Object,
             default() {
                 return {
+                    bar: {},
                     images: []
                 }
             }
@@ -113,9 +118,14 @@ export default {
         this.currentUnit = appState.defaultUnit
     },
     methods: {
-        parseIngredientAmount(ingredient) {
+        printAmount(ingredient) {
             return UnitHandler.print(ingredient, this.currentUnit)
         },
+        printSubstitutes(substitutes) {
+            return substitutes.map(sub => {
+                return new String(sub.name + ' ' + UnitHandler.print(sub, this.currentUnit, this.servings)).trim()
+            }).join(', ')
+        }
     }
 }
 </script>
@@ -177,17 +187,6 @@ export default {
     font-family: var(--font-heading);
 }
 
-.public-cocktail-recipe h3 {
-    font-size: 0.75rem;
-    letter-spacing: 1px;
-    font-weight: var(--fw-bold);
-    color: var(--clr-gray-400);
-    text-transform: uppercase;
-    flex-basis: 120px;
-    flex-shrink: 0;
-    line-height: 2;
-}
-
 .public-cocktail-recipe__summary {
     padding: 2rem;
     display: flex;
@@ -195,18 +194,13 @@ export default {
     gap: var(--gap-size-3);
 }
 
-.public-cocktail-recipe__summary__section {
-    display: flex;
-    flex-direction: row;
-}
-
-@media (max-width: 450px) {
-    .public-page .public-cocktail-recipe h3 {
-        flex-basis: 100%;
-    }
-    .public-page .public-cocktail-recipe__summary__section {
-        flex-direction: column;
-    }
+.public-cocktail-recipe__summary h3 {
+    font-size: 0.75rem;
+    letter-spacing: 1px;
+    font-weight: var(--fw-bold);
+    color: var(--clr-accent-600);
+    text-transform: uppercase;
+    margin-bottom: 0.5rem;
 }
 
 .public-cocktail-recipe__content {
@@ -226,22 +220,31 @@ export default {
 .public-cocktail-recipe__summary ul {
     padding: 0;
     width: 100%;
+    list-style: none;
 }
 
 .public-cocktail-recipe__summary ul li {
+    padding: var(--gap-size-1) 0;
+    border-bottom: 1px dotted var(--clr-gray-300);
+    margin-bottom: var(--gap-size-1);
     display: flex;
-    justify-content: space-between;
-    align-items: baseline;
 }
 
-.public-cocktail-recipe__summary ul li .spacer {
-    flex-grow: 1;
-    border-bottom: 1px dotted var(--clr-gray-300);
-    margin: 0 0.5rem;
+.public-cocktail-recipe__summary .cocktail-ingredient {
+    display: flex;
+    flex-direction: column;
+}
+
+.cocktail-ingredient__substitutes {
+    font-size: 0.75rem;
+    color: var(--clr-gray-500);
 }
 
 .public-cocktail-recipe__summary ul li .amount-units {
     font-weight: var(--fw-bold);
+    margin-left: auto;
+    flex-shrink: 0;
+    text-align: right;
 }
 
 .public-cocktail-recipe__units {
