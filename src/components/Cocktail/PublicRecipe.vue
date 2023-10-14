@@ -10,9 +10,9 @@
             <h2 itemprop="name">{{ cocktail.name }}</h2>
             <div v-show="!!cocktail.description" itemprop="description" class="public-cocktail-recipe__content" v-html="parsedDescription"></div>
             <div v-show="hideUnits == false" class="public-cocktail-recipe__units">
-                <button type="button" class="button button--public" :class="{'button--active': scopedUnit == 'ml'}" @click="scopedUnit = 'ml'">ml</button>
-                <button type="button" class="button button--public" :class="{'button--active': scopedUnit == 'oz'}" @click="scopedUnit = 'oz'">oz</button>
-                <button type="button" class="button button--public" :class="{'button--active': scopedUnit == 'cl'}" @click="scopedUnit = 'cl'">cl</button>
+                <button type="button" class="button button--public" :class="{'button--active': currentUnit == 'ml'}" @click="currentUnit = 'ml'">ml</button>
+                <button type="button" class="button button--public" :class="{'button--active': currentUnit == 'oz'}" @click="currentUnit = 'oz'">oz</button>
+                <button type="button" class="button button--public" :class="{'button--active': currentUnit == 'cl'}" @click="currentUnit = 'cl'">cl</button>
             </div>
             <div class="public-cocktail-recipe__summary__section">
                 <h3>{{ $t('ingredients.title') }}</h3>
@@ -41,6 +41,7 @@
 import {micromark} from 'micromark'
 import SiteLogo from '@/components/Layout/SiteLogo.vue'
 import UnitHandler from '../../UnitHandler'
+import AppState from '../../AppState'
 
 export default {
     components: {
@@ -54,10 +55,6 @@ export default {
                     images: []
                 }
             }
-        },
-        currentUnit: {
-            type: String,
-            default: 'ml'
         },
         hideUnits: {
             type: Boolean,
@@ -75,7 +72,7 @@ export default {
     data() {
         return {
             isLoading: false,
-            scopedUnit: this.currentUnit
+            currentUnit: 'ml'
         }
     },
     computed: {
@@ -111,9 +108,13 @@ export default {
             return micromark(this.cocktail.garnish)
         },
     },
+    created() {
+        const appState = new AppState()
+        this.currentUnit = appState.defaultUnit
+    },
     methods: {
         parseIngredientAmount(ingredient) {
-            return UnitHandler.print(ingredient, this.scopedUnit)
+            return UnitHandler.print(ingredient, this.currentUnit)
         },
     }
 }
