@@ -19,12 +19,22 @@ export default {
             appState: new AppState()
         }
     },
+    props: {
+        barName: {
+            type: String,
+            default: 'Salt Rim'
+        },
+        barSubtitle: {
+            type: String,
+            default: 'Your personal bar assistant'
+        }
+    },
     computed: {
         name() {
-            return this.appState.bar.name || 'Salt Rim'
+            return this.appState.bar.name || this.barName
         },
         description() {
-            return this.appState.bar.subtitle || 'Your personal bar assistant'
+            return this.appState.bar.subtitle || this.barSubtitle
         }
     }
 }

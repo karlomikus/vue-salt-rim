@@ -128,7 +128,6 @@
 import Utils from './../../Utils.js'
 import UnitHandler from './../../UnitHandler'
 import ApiRequests from './../../ApiRequests.js'
-import Unitz from 'unitz'
 import OverlayLoader from './../OverlayLoader.vue'
 import IngredientModal from './../Cocktail/IngredientModal.vue'
 import ImageUpload from './../ImageUpload.vue'
@@ -394,17 +393,17 @@ export default {
                     .map((cIngredient) => {
                         // Convert oz to ml
                         if (cIngredient.units == 'oz') {
-                            cIngredient.amount = UnitHandler.oz2ml(cIngredient.amount);
+                            cIngredient.amount = UnitHandler.oz2ml(cIngredient.amount)
                             if (cIngredient.amount_max) {
-                                cIngredient.amount_max = UnitHandler.oz2ml(cIngredient.amount_max);
+                                cIngredient.amount_max = UnitHandler.oz2ml(cIngredient.amount_max)
                             }
                             cIngredient.units = 'ml'
                         }
                         // Convert cl to ml
                         if (cIngredient.units == 'cl') {
-                            cIngredient.amount = UnitHandler.cl2ml(cIngredient.amount);
+                            cIngredient.amount = UnitHandler.cl2ml(cIngredient.amount)
                             if (cIngredient.amount_max) {
-                                cIngredient.amount_max = UnitHandler.cl2ml(cIngredient.amount_max);
+                                cIngredient.amount_max = UnitHandler.cl2ml(cIngredient.amount_max)
                             }
                             cIngredient.units = 'ml'
                         }
@@ -414,17 +413,17 @@ export default {
                         // Handle substitutes
                         cIngredient.substitutes.filter(sub => sub.units).map(sub => {
                             if (sub.units == 'oz') {
-                                sub.amount = UnitHandler.oz2ml(sub.amount);
+                                sub.amount = UnitHandler.oz2ml(sub.amount)
                                 if (sub.amount_max) {
-                                    sub.amount_max = UnitHandler.oz2ml(sub.amount_max);
+                                    sub.amount_max = UnitHandler.oz2ml(sub.amount_max)
                                 }
                                 sub.units = 'ml'
                             }
 
                             if (sub.units == 'cl') {
-                                sub.amount = UnitHandler.cl2ml(sub.amount);
+                                sub.amount = UnitHandler.cl2ml(sub.amount)
                                 if (sub.amount_max) {
-                                    sub.amount_max = UnitHandler.cl2ml(sub.amount_max);
+                                    sub.amount_max = UnitHandler.cl2ml(sub.amount_max)
                                 }
                                 sub.units = 'ml'
                             }

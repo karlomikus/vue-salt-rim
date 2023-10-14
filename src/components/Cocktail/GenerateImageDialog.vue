@@ -5,7 +5,7 @@
         <div class="image-download-preview">
             <img v-if="imagePayload" :src="imagePayload" alt="">
             <div v-else ref="exportElement" class="image-export-wrapper">
-                <PublicRecipe :cocktail="cocktail" :current-unit="currentUnit" :hide-units="true" :hide-header="features.hideHeader" :hide-footer="features.hideFooter"></PublicRecipe>
+                <PublicRecipe :cocktail="cocktail" :hide-units="true" :hide-header="features.hideHeader" :hide-footer="features.hideFooter"></PublicRecipe>
             </div>
         </div>
         <div class="dialog-actions">
@@ -20,7 +20,6 @@
 import * as htmlToImage from 'html-to-image'
 import OverlayLoader from './../OverlayLoader.vue'
 import PublicRecipe from './PublicRecipe.vue'
-import AppState from './../../AppState'
 
 export default {
     components: {
@@ -40,7 +39,6 @@ export default {
         return {
             isLoading: false,
             imagePayload: null,
-            currentUnit: 'ml',
             shareEnabled: false,
             features: {
                 hideHeader: true,
@@ -54,9 +52,6 @@ export default {
         }
     },
     mounted() {
-        const appState = new AppState()
-        this.currentUnit = appState.defaultUnit
-
         if ('share' in navigator) {
             this.shareEnabled = true
         }
