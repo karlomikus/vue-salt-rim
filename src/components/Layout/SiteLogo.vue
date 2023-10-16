@@ -14,11 +14,6 @@
 import AppState from './../../AppState.js'
 
 export default {
-    data() {
-        return {
-            appState: new AppState()
-        }
-    },
     props: {
         barName: {
             type: String,
@@ -27,6 +22,11 @@ export default {
         barSubtitle: {
             type: String,
             default: 'Your personal bar assistant'
+        }
+    },
+    data() {
+        return {
+            appState: new AppState()
         }
     },
     computed: {
