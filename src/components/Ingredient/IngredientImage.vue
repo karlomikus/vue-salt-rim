@@ -4,6 +4,8 @@
     </div>
 </template>
 <script>
+import { thumbHashToDataURL } from 'thumbhash'
+
 export default {
     props: {
         ingredient: {
@@ -14,6 +16,15 @@ export default {
         }
     },
     computed: {
+        placeholderImage() {
+            if (this.ingredient.images.length > 0) {
+                return thumbHashToDataURL(
+                    Uint8Array.from(atob(this.ingredient.images[0].placeholder_hash), c => c.charCodeAt(0))
+                )
+            }
+
+            return ''
+        },
         backgroundColor() {
             const hex = this.ingredient.color || '#51274c'
 
