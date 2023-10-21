@@ -242,9 +242,9 @@ export default {
     },
     methods: {
         checkForImportData() {
-            const scraped = localStorage.getItem('scrapeResult')
+            const scraped = sessionStorage.getItem('scrapeResult')
             if (scraped) {
-                localStorage.removeItem('scrapeResult')
+                sessionStorage.removeItem('scrapeResult')
                 const parsedScrapeResult = JSON.parse(scraped)
 
                 this.cocktail = parsedScrapeResult
