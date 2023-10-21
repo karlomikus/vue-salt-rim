@@ -300,7 +300,8 @@
     "confirm-remove-cocktail": "Are you sure you want to remove cocktail from collection?",
     "add-from-query": "Add to collection from current filters",
     "cocktail-remove-success": "Cocktail removed from collection",
-    "cocktail-add-success": "Cocktail added to collection"
+    "cocktail-add-success": "Cocktail added to collection",
+    "share-in-bar": "Share collection with the bar"
   },
   "no-cocktails": "No cocktails found",
   "global": "Global",

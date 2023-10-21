@@ -704,6 +704,13 @@ class ApiRequests
         return this.parseResponse(jsonResp)
     }
 
+    static async fetchSharedCollections(query = {}) {
+        const queryString = this.generateBAQueryString(query, true)
+        const jsonResp = await this.getRequest(`/api/collections/shared${queryString}`)
+
+        return this.parseResponse(jsonResp)
+    }
+
     /**
      * =============================
      * Utensils

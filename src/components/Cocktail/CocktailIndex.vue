@@ -160,6 +160,7 @@ export default {
                 methods: [],
                 main_ingredients: [],
                 collections: [],
+                shared_collections: [],
                 members: [],
             },
             activeFilters: {
@@ -254,11 +255,16 @@ export default {
             })
         },
         refineCollections() {
-            return this.availableRefinements.collections.map(m => {
+            const combinedCollections = [...new Set([...this.availableRefinements.collections, ...this.availableRefinements.shared_collections])]
+            const uniqueCollections = combinedCollections.filter((v,i,a) => a.findIndex(v2 => (parseInt(v.id) == parseInt(v2.id))) == i)
+
+            return uniqueCollections.map(m => {
+                const author = m.created_user ? ` [${m.created_user.name}]` : '';
+
                 return {
                     id: m.id,
                     value: m.id,
-                    name: m.name
+                    name: `${m.name}${author} (${m.cocktails.length})`
                 }
             })
         },
@@ -333,6 +339,10 @@ export default {
 
             ApiRequests.fetchBarMembers(this.appState.bar.id).then(data => {
                 this.availableRefinements.members = data
+            })
+
+            ApiRequests.fetchSharedCollections().then(data => {
+                this.availableRefinements.shared_collections = data
             })
         },
         updateRouterPath() {

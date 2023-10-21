@@ -20,6 +20,12 @@
                         <label class="form-label" for="dialog-collection-description">{{ $t('description') }}:</label>
                         <textarea id="dialog-collection-description" v-model="newCollection.description" rows="5" class="form-input"></textarea>
                     </div>
+                    <div class="form-group">
+                        <label class="form-checkbox" for="share-in-bar">
+                            <input id="share-in-bar" v-model="newCollection.is_bar_shared" type="checkbox" :value="true">
+                            <span>{{ $t('collections.share-in-bar') }}</span>
+                        </label>
+                    </div>
                 </template>
             </form>
         </div>
