@@ -301,7 +301,7 @@
     "add-from-query": "Add to collection from current filters",
     "cocktail-remove-success": "Cocktail removed from collection",
     "cocktail-add-success": "Cocktail added to collection",
-    "share-in-bar": "Share collection with the bar"
+    "share-in-bar": "Share collection with all bar members"
   },
   "no-cocktails": "No cocktails found",
   "global": "Global",
@@ -416,5 +416,6 @@
       "General": "Can create cocktails and ingredients",
       "Guest": "Can view, rate and favorite cocktails"
     }
-  }
+  },
+  "remember-me": "Remember me"
 }

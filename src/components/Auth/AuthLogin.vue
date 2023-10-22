@@ -11,6 +11,12 @@
                 <label class="form-label" for="password">{{ $t('password') }}:</label>
                 <input id="password" v-model="password" class="form-input" type="password" required>
             </div>
+            <div class="form-group">
+                <label class="form-checkbox" for="share-in-bar">
+                    <input id="share-in-bar" v-model="rememberMe" type="checkbox" :value="true">
+                    <span>{{ $t('remember-me') }}</span>
+                </label>
+            </div>
             <div class="server-status">
                 <div class="server-status__title">Bar Assistant server:</div>
                 <a :href="baServer" target="_blank" class="server-status__url">{{ baServer }}</a>
@@ -47,6 +53,7 @@ export default {
             isLoading: false,
             email: null,
             password: null,
+            rememberMe: localStorage.getItem('sr_remember_login') ?? true,
             baServer: window.srConfig.API_URL,
             server: {},
         }
@@ -55,6 +62,14 @@ export default {
         baServerAvailable() {
             return this.server.version != null
         },
+    },
+    watch: {
+        rememberMe: {
+            handler(newVal) {
+                localStorage.setItem('sr_remember_login', newVal)
+            },
+            immediate: true
+        }
     },
     created() {
         this.isLoading = true

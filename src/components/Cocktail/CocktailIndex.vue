@@ -259,7 +259,7 @@ export default {
             const uniqueCollections = combinedCollections.filter((v,i,a) => a.findIndex(v2 => (parseInt(v.id) == parseInt(v2.id))) == i)
 
             return uniqueCollections.map(m => {
-                const author = m.created_user ? ` [${m.created_user.name}]` : '';
+                const author = m.created_user ? ` [${m.created_user.name}]` : ''
 
                 return {
                     id: m.id,
