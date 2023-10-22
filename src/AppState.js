@@ -72,7 +72,7 @@ class AppState {
     }
 
     clear() {
-        localStorage.removeItem(this._key)
+        this._getStorage().removeItem(this._key)
     }
 
     isAdmin() {
@@ -91,18 +91,30 @@ class AppState {
         return this.bar.access.role_id == 4
     }
 
+    _getStorage() {
+        const val = localStorage.getItem('sr_remember_login')
+        const rememberMe = val === null || val === 'true' ? true : false
+
+        if (rememberMe === false) {
+            return sessionStorage
+        }
+
+        return localStorage
+    }
+
     _updateState() {
-        localStorage.setItem(this._key, JSON.stringify(this))
+        this._getStorage().setItem(this._key, JSON.stringify(this))
     }
 
     _readStateFromStorage() {
-        if (localStorage.getItem(this._key)) {
-            const newState = JSON.parse(localStorage.getItem(this._key))
+        if (this._getStorage().getItem(this._key)) {
+            const newState = JSON.parse(this._getStorage().getItem(this._key))
 
             this.theme = newState.theme
             this.defaultUnit = newState.defaultUnit
             this.language = newState.language
             this.token = newState.token
+            this.rememberMe = newState.rememberMe
             this.bar = newState.bar
             this.user = newState.user
         }

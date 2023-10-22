@@ -85,12 +85,22 @@
 }
 
 .resource-search__refinements__refinement__title {
+    display: flex;
+    align-items: center;
+}
+
+.resource-search__refinements__refinement__title h4 {
     color: var(--clr-header-title);
     font-weight: var(--fw-bold);
     text-transform: uppercase;
-    letter-spacing: 1px;
+    /* letter-spacing: 1px; */
     font-size: 0.715rem;
     margin-bottom: 0.5rem;
+}
+
+.resource-search__refinements__refinement__title__actions {
+    margin-left: auto;
+    flex-shrink: 0;
 }
 
 .resource-search__refinements__refinement__item {

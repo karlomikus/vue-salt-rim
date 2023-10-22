@@ -82,8 +82,8 @@ export default {
                     text: this.cocktail.description,
                     files: [file]
                 })
-            } catch (err) {
-                this.$toast.error(this.$t('generate-image-dialog.share-failed'))
+            } catch {
+                // Do nothing
             }
         }
     }

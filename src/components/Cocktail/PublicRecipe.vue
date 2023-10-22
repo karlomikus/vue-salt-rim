@@ -17,12 +17,8 @@
             <div class="public-cocktail-recipe__summary__section">
                 <h3>{{ $t('ingredients.title') }}</h3>
                 <ul>
-                    <li v-for="ing in cocktail.ingredients" :key="ing.id" itemprop="recipeIngredient" :content="ing.name + ' - ' + printAmount(ing)">
-                        <div class="cocktail-ingredient">
-                            <span>{{ ing.name }}<template v-if="ing.note"> &middot; {{ ing.note }}</template></span>
-                            <span class="cocktail-ingredient__substitutes" v-if="ing.substitutes.length > 0">{{ $t('substitutes') }}: {{ printSubstitutes(ing.substitutes) }}</span>
-                        </div>
-                        <div class="amount-units">{{ printAmount(ing) }}</div>
+                    <li v-for="ing in cocktail.ingredients" :key="ing.id">
+                        <CocktailIngredientShare :cocktail-ingredient="ing" :units="currentUnit"></CocktailIngredientShare>
                     </li>
                 </ul>
             </div>
@@ -43,13 +39,15 @@
 
 <script>
 import {micromark} from 'micromark'
-import SiteLogo from '@/components/Layout/SiteLogo.vue'
+import SiteLogo from '../Layout/SiteLogo.vue'
 import UnitHandler from '../../UnitHandler'
 import AppState from '../../AppState'
+import CocktailIngredientShare from './CocktailIngredientShare.vue'
 
 export default {
     components: {
         SiteLogo,
+        CocktailIngredientShare,
     },
     props: {
         cocktail: {
@@ -76,6 +74,7 @@ export default {
     },
     data() {
         return {
+            appState: new AppState(),
             isLoading: false,
             currentUnit: 'ml'
         }
@@ -221,30 +220,6 @@ export default {
     padding: 0;
     width: 100%;
     list-style: none;
-}
-
-.public-cocktail-recipe__summary ul li {
-    padding: var(--gap-size-1) 0;
-    border-bottom: 1px dotted var(--clr-gray-300);
-    margin-bottom: var(--gap-size-1);
-    display: flex;
-}
-
-.public-cocktail-recipe__summary .cocktail-ingredient {
-    display: flex;
-    flex-direction: column;
-}
-
-.cocktail-ingredient__substitutes {
-    font-size: 0.75rem;
-    color: var(--clr-gray-500);
-}
-
-.public-cocktail-recipe__summary ul li .amount-units {
-    font-weight: var(--fw-bold);
-    margin-left: auto;
-    flex-shrink: 0;
-    text-align: right;
 }
 
 .public-cocktail-recipe__units {

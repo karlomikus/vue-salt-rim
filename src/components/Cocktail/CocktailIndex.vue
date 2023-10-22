@@ -12,15 +12,15 @@
             <div v-show="showRefinements" class="resource-search__refinements" @click="handleClickAway">
                 <div class="resource-search__refinements__body">
                     <h3 class="page-subtitle" style="margin-top: 0">{{ $t('filters') }}</h3>
-                    <Refinement id="global" :title="$t('global')">
+                    <Refinement id="global" :title="$t('global')" :collapsable="false">
                         <div v-for="filter in availableRefinements.global" :key="filter.id" class="resource-search__refinements__refinement__item">
                             <input :id="'global-' + filter.id" v-model="activeFilters[filter.id]" type="checkbox" :value="filter.active" @change="updateRouterPath">
                             <label :for="'global-' + filter.id">{{ filter.name }}</label>
                         </div>
                     </Refinement>
-                    <Refinement v-if="refineCollections.length > 0" id="collection" v-model="activeFilters.collections" :title="$t('your-collections')" :refinements="refineCollections" @change="updateRouterPath"></Refinement>
+                    <Refinement v-if="refineCollections.length > 0" id="collection" v-model="activeFilters.collections" :title="$t('collections.title')" :refinements="refineCollections" @change="updateRouterPath"></Refinement>
                     <Refinement v-if="refineUserShelves.length > 0" id="user_shelves" v-model="activeFilters.user_shelves" :title="$t('public-shelves')" :refinements="refineUserShelves" @change="updateRouterPath"></Refinement>
-                    <Refinement id="users" v-model="activeFilters.users" :searchable="true" :title="$t('users')" :refinements="refineUsers" @change="updateRouterPath"></Refinement>
+                    <Refinement id="users" v-model="activeFilters.users" :searchable="true" :title="$t('user-recipes')" :refinements="refineUsers" @change="updateRouterPath"></Refinement>
                     <Refinement id="main-ingredient" v-model="activeFilters.main_ingredients" :searchable="true" :title="$t('ingredient.main')" :refinements="refineMainIngredients" @change="updateRouterPath"></Refinement>
                     <Refinement id="method" v-model="activeFilters.methods" :title="$t('method.title')" :refinements="refineMethods" @change="updateRouterPath"></Refinement>
                     <Refinement id="abv" v-model="activeFilters.abv" :title="$t('strength')" :refinements="refineABV" type="radio" @change="updateRouterPath"></Refinement>
@@ -160,6 +160,7 @@ export default {
                 methods: [],
                 main_ingredients: [],
                 collections: [],
+                shared_collections: [],
                 members: [],
             },
             activeFilters: {
@@ -254,11 +255,16 @@ export default {
             })
         },
         refineCollections() {
-            return this.availableRefinements.collections.map(m => {
+            const combinedCollections = [...new Set([...this.availableRefinements.collections, ...this.availableRefinements.shared_collections])]
+            const uniqueCollections = combinedCollections.filter((v,i,a) => a.findIndex(v2 => (parseInt(v.id) == parseInt(v2.id))) == i)
+
+            return uniqueCollections.map(m => {
+                const author = m.created_user ? ` [${m.created_user.name}]` : ''
+
                 return {
                     id: m.id,
                     value: m.id,
-                    name: m.name
+                    name: `${m.name}${author} (${m.cocktails.length})`
                 }
             })
         },
@@ -333,6 +339,10 @@ export default {
 
             ApiRequests.fetchBarMembers(this.appState.bar.id).then(data => {
                 this.availableRefinements.members = data
+            })
+
+            ApiRequests.fetchSharedCollections().then(data => {
+                this.availableRefinements.shared_collections = data
             })
         },
         updateRouterPath() {

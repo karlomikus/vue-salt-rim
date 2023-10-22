@@ -4,7 +4,10 @@
         <OverlayLoader v-if="isLoading" />
         <div class="cocktail-details__title">
             <h2>{{ cocktail.name }}</h2>
-            <p>{{ $t('added-on-by', { date: createdDate, name: cocktail.created_user.name }) }}</p>
+            <p>
+                {{ $t('added-on-by', { date: createdDate, name: cocktail.created_user.name }) }}
+                <template v-if="cocktail.updated_user"> &middot; {{ $t('updated-on-by', { date: updatedDate, name: cocktail.updated_user.name }) }}</template>
+            </p>
         </div>
         <div v-if="cocktail.id" class="cocktail-details__graphic">
             <swiper v-if="cocktail.images.length > 0" :modules="sliderModules" navigation :pagination="{ clickable: true }" :follow-finger="false">
@@ -383,6 +386,11 @@ export default {
         },
         createdDate() {
             const date = dayjs(this.cocktail.created_at).toDate()
+
+            return this.$d(date, 'long')
+        },
+        updatedDate() {
+            const date = dayjs(this.cocktail.updated_at).toDate()
 
             return this.$d(date, 'long')
         },

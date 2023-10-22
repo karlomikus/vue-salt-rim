@@ -5,7 +5,10 @@
             <div class="ingredient-details__box__content">
                 <div class="ingredient-details__title">
                     <h2>{{ ingredient.name }}</h2>
-                    <p>{{ $t('added-on-by', { date: createdDate, name: ingredient.created_user.name }) }}</p>
+                    <p>
+                        {{ $t('added-on-by', { date: createdDate, name: ingredient.created_user.name }) }}
+                        <template v-if="ingredient.updated_user"> &middot; {{ $t('updated-on-by', { date: updatedDate, name: ingredient.updated_user.name }) }}</template>
+                    </p>
                 </div>
                 <div class="item-details__chips">
                     <div v-if="ingredient.category" class="item-details__chips__group">
@@ -176,6 +179,11 @@ export default {
         },
         createdDate() {
             const date = dayjs(this.ingredient.created_at).toDate()
+
+            return this.$d(date, 'long')
+        },
+        updatedDate() {
+            const date = dayjs(this.ingredient.updated_at).toDate()
 
             return this.$d(date, 'long')
         }

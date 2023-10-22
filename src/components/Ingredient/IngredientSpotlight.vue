@@ -15,6 +15,7 @@
 <script>
 import ApiRequests from '@/ApiRequests'
 import OverlayLoader from '@/components/OverlayLoader.vue'
+import removeMd from 'remove-markdown'
 
 export default {
     components: {
@@ -40,7 +41,9 @@ export default {
                 return this.ingredient.description
             }
 
-            return this.ingredient.description.length > 200 ? `${this.ingredient.description.substring(0, 200)}...` : this.ingredient.description
+            const description = removeMd(this.ingredient.description)
+
+            return description.length > 200 ? `${description.substring(0, 200)}...` : description
         },
         mainIngredientImageUrl() {
             if (!this.ingredient.main_image_id) {

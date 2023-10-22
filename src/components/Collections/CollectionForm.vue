@@ -10,6 +10,12 @@
             <label class="form-label" for="description">{{ $t('description') }}:</label>
             <textarea id="description" v-model="collection.description" rows="5" class="form-input"></textarea>
         </div>
+        <div class="form-group">
+            <label class="form-checkbox" for="share-in-bar">
+                <input id="share-in-bar" v-model="collection.is_bar_shared" type="checkbox" :value="true">
+                <span>{{ $t('collections.share-in-bar') }}</span>
+            </label>
+        </div>
         <div class="dialog-actions">
             <button class="button button--outline" @click.prevent="$emit('collectionDialogClosed')">{{ $t('cancel') }}</button>
             <button class="button button--dark" type="submit">{{ $t('save') }}</button>
@@ -51,6 +57,7 @@ export default {
             const postData = {
                 name: this.collection.name,
                 description: this.collection.description,
+                is_bar_shared: this.collection.is_bar_shared,
             }
 
             if (this.collection.id) {

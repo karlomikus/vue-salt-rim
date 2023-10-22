@@ -17,8 +17,7 @@
                 <h2>{{ $t('ingredients.title') }}:</h2>
                 <ul>
                     <li v-for="ingredient in cocktail.ingredients" :key="ingredient.id">
-                        {{ ingredientAmount(ingredient) }} &middot; {{ ingredient.name }}
-                        <i v-if="ingredient.optional">({{ $t('optional') }})</i>
+                        <CocktailIngredientShare :cocktail-ingredient="ingredient" :units="appState.defaultUnit"></CocktailIngredientShare>
                     </li>
                 </ul>
             </div>
@@ -41,10 +40,13 @@ import {micromark} from 'micromark'
 import ApiRequests from '@/ApiRequests'
 import AppState from './../../AppState'
 import UnitHandler from '../../UnitHandler'
+import CocktailIngredientShare from '../Cocktail/CocktailIngredientShare.vue'
 
 export default {
+    components: {CocktailIngredientShare},
     data() {
         return {
+            appState: new AppState(),
             cocktail: {},
             printReady: false
         }
@@ -98,7 +100,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style>
 .cocktail-print-container {
     color: #000;
     font-size: 0.7rem;
@@ -146,6 +148,15 @@ ul, ol {
 .print-ingredients {
     border: 1px solid #333;
     padding: 10px;
+}
+
+.print-ingredients ul {
+    list-style: none;
+    padding: 0;
+}
+
+.print-ingredients .cocktail-ingredient-share__ingredient-substitutes {
+    font-size: 0.5rem;
 }
 
 .cocktail-print-image {

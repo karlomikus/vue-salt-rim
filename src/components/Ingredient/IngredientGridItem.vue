@@ -8,7 +8,7 @@
             <RouterLink class="ingredient-grid-item__title" :to="{ name: 'ingredients.show', params: { id: ingredient.slug } }">
                 {{ ingredient.name }}
             </RouterLink>
-            <p>{{ ingredient.description }}</p>
+            <p>{{ cleanDescription }}</p>
             <div class="ingredient-grid-item__actions">
                 <a href="#" @click.prevent="toggleShelf">
                     <template v-if="!inShelf">
@@ -36,6 +36,7 @@
 import OverlayLoader from './../OverlayLoader.vue'
 import IngredientImage from './IngredientImage.vue'
 import ApiRequests from './../../ApiRequests.js'
+import removeMd from 'remove-markdown'
 
 export default {
     components: {
@@ -75,6 +76,9 @@ export default {
         },
         inList() {
             return this.scopedShoppingList.includes(this.ingredient.id)
+        },
+        cleanDescription() {
+            return removeMd(this.ingredient.description)
         }
     },
     watch: {

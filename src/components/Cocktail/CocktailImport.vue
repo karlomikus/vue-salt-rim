@@ -336,8 +336,8 @@ export default {
 
                 return i
             })
-            console.log(this.result)
-            localStorage.setItem('scrapeResult', JSON.stringify(this.result))
+
+            sessionStorage.setItem('scrapeResult', JSON.stringify(this.result))
             this.$router.push({ name: routeName })
         },
     }
