@@ -417,5 +417,6 @@
       "Guest": "Can view, rate and favorite cocktails"
     }
   },
-  "remember-me": "Remember me"
+  "remember-me": "Remember me",
+  "updated-on-by": "Updated on {date} by {name}"
 }

@@ -1,3 +1,14 @@
+# v2.1.0
+## New
+- You can now share specific collections with rest of the bar members
+- You can now filter by user public collections
+- Added number of cocktails to collections
+- Added "Remember me" checkbox to login page
+- Added last updated by information to cocktail and ingredient details
+
+## Changes
+- Markdown tags are now hidden from ingredient description in ingredient spotlight and ingredient list #88
+
 # v2.0.5
 ## Fixes
 - Fixed missing role string for "Guest"
