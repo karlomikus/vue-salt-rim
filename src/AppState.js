@@ -92,7 +92,7 @@ class AppState {
     }
 
     _getStorage() {
-        const val = localStorage.getItem('sr_remember_login');
+        const val = localStorage.getItem('sr_remember_login')
         const rememberMe = val === null || val === 'true' ? true : false
 
         if (rememberMe === false) {
