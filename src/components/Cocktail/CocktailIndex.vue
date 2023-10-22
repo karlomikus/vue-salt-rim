@@ -12,15 +12,15 @@
             <div v-show="showRefinements" class="resource-search__refinements" @click="handleClickAway">
                 <div class="resource-search__refinements__body">
                     <h3 class="page-subtitle" style="margin-top: 0">{{ $t('filters') }}</h3>
-                    <Refinement id="global" :title="$t('global')">
+                    <Refinement id="global" :title="$t('global')" :collapsable="false">
                         <div v-for="filter in availableRefinements.global" :key="filter.id" class="resource-search__refinements__refinement__item">
                             <input :id="'global-' + filter.id" v-model="activeFilters[filter.id]" type="checkbox" :value="filter.active" @change="updateRouterPath">
                             <label :for="'global-' + filter.id">{{ filter.name }}</label>
                         </div>
                     </Refinement>
-                    <Refinement v-if="refineCollections.length > 0" id="collection" v-model="activeFilters.collections" :title="$t('your-collections')" :refinements="refineCollections" @change="updateRouterPath"></Refinement>
+                    <Refinement v-if="refineCollections.length > 0" id="collection" v-model="activeFilters.collections" :title="$t('collections.title')" :refinements="refineCollections" @change="updateRouterPath"></Refinement>
                     <Refinement v-if="refineUserShelves.length > 0" id="user_shelves" v-model="activeFilters.user_shelves" :title="$t('public-shelves')" :refinements="refineUserShelves" @change="updateRouterPath"></Refinement>
-                    <Refinement id="users" v-model="activeFilters.users" :searchable="true" :title="$t('users')" :refinements="refineUsers" @change="updateRouterPath"></Refinement>
+                    <Refinement id="users" v-model="activeFilters.users" :searchable="true" :title="$t('user-recipes')" :refinements="refineUsers" @change="updateRouterPath"></Refinement>
                     <Refinement id="main-ingredient" v-model="activeFilters.main_ingredients" :searchable="true" :title="$t('ingredient.main')" :refinements="refineMainIngredients" @change="updateRouterPath"></Refinement>
                     <Refinement id="method" v-model="activeFilters.methods" :title="$t('method.title')" :refinements="refineMethods" @change="updateRouterPath"></Refinement>
                     <Refinement id="abv" v-model="activeFilters.abv" :title="$t('strength')" :refinements="refineABV" type="radio" @change="updateRouterPath"></Refinement>

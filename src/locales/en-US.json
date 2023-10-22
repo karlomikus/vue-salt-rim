@@ -418,5 +418,6 @@
     }
   },
   "remember-me": "Remember me",
-  "updated-on-by": "Updated on {date} by {name}"
+  "updated-on-by": "Updated on {date} by {name}",
+  "user-recipes": "Recipes by user"
 }

@@ -8,6 +8,7 @@
 
 ## Changes
 - Markdown tags are now hidden from ingredient description in ingredient spotlight and ingredient list #88
+- Refinements are now collapsable
 
 # v2.0.5
 ## Fixes

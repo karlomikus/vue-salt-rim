@@ -31,7 +31,7 @@
             <div v-show="showRefinements" class="resource-search__refinements" @click="handleClickAway">
                 <div class="resource-search__refinements__body">
                     <h3 class="page-subtitle" style="margin-top: 0">{{ $t('filters') }}</h3>
-                    <Refinement id="global" :title="$t('global')">
+                    <Refinement id="global" :title="$t('global')" :collapsable="false">
                         <div v-for="filter in availableRefinements.global" :key="filter.id" class="resource-search__refinements__refinement__item">
                             <input :id="'global-' + filter.id" v-model="activeFilters[filter.id]" type="checkbox" :value="filter.active" @change="updateRouterPath">
                             <label :for="'global-' + filter.id">{{ filter.name }}</label>
