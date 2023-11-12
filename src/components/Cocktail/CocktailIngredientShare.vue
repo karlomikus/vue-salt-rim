@@ -1,7 +1,7 @@
 <template>
     <div class="cocktail-ingredient-share" itemprop="recipeIngredient" :content="name + ' - ' + amount">
         <div class="cocktail-ingredient-share__ingredient-name">
-            <span>{{ name }}</span>
+            <span>{{ name }} <template v-if="cocktailIngredient.optional">({{ $t('optional') }})</template></span>
             <span v-if="cocktailIngredient.substitutes.length > 0" class="cocktail-ingredient-share__ingredient-substitutes">
                 {{ $t('substitutes') }}: {{ substitutes }}
             </span>
