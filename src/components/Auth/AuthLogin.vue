@@ -3,6 +3,9 @@
         <SiteLogo></SiteLogo>
         <form @submit.prevent="login">
             <OverlayLoader v-if="isLoading"></OverlayLoader>
+            <div v-if="isDemo" class="login-page__demo-notice">
+                Welcome to Bar Assistant Demo instance. Use <code>admin@example.com</code> as email, and <code>password</code> as password to login.
+            </div>
             <div class="form-group">
                 <label class="form-label" for="email">{{ $t('email') }}:</label>
                 <input id="email" v-model="email" class="form-input" type="email" required>
@@ -62,6 +65,9 @@ export default {
         baServerAvailable() {
             return this.server.version != null
         },
+        isDemo() {
+            return window.srConfig.ENV === 'demo'
+        }
     },
     watch: {
         rememberMe: {
@@ -76,6 +82,11 @@ export default {
         ApiRequests.fetchApiVersion().then(data => {
             this.server = data
             this.isLoading = false
+
+            if (this.isDemo) {
+                this.email = 'admin@example.com'
+                this.password = 'password'
+            }
         }).catch(() => {
             this.isLoading = false
         })
@@ -140,5 +151,14 @@ export default {
 
 .server-status__status {
     font-size: 0.85rem;
+}
+
+.login-page__demo-notice {
+    font-size: 0.8rem;
+    margin-bottom: 1rem;
+}
+
+.login-page__demo-notice code {
+    color: var(--clr-accent-700);
 }
 </style>
