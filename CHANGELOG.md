@@ -1,3 +1,12 @@
+# v2.1.2
+## Changes
+- Removed unused docker vars
+- Added demo instance notice
+
+# v2.1.1
+## Fixes
+- Added missing ingredient optional mark on shared recipes
+
 # v2.1.0
 ## New
 - You can now share specific collections with rest of the bar members
