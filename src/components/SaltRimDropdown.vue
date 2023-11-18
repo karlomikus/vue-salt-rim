@@ -1,10 +1,10 @@
 <script setup>
-import {ref} from 'vue';
-import {useFloating, offset, flip, shift, autoUpdate} from '@floating-ui/vue';
+import {ref} from 'vue'
+import {useFloating, offset, flip, shift, autoUpdate} from '@floating-ui/vue'
 
-const isShown = ref(false);
-const reference = ref(null);
-const content = ref(null);
+const isShown = ref(false)
+const reference = ref(null)
+const content = ref(null)
 
 const toggleDropdown = function () {
     isShown.value = !isShown.value
@@ -14,7 +14,7 @@ const { floatingStyles } = useFloating(reference, content, {
     placement: 'bottom-end',
     middleware: [offset(5), flip(), shift()],
     whileElementsMounted: autoUpdate,
-});
+})
 
 document.addEventListener('click', e => {
     var dw = reference.value || null

@@ -53,6 +53,7 @@
 
     --shadow-color: 324deg 10% 71%;
     --shadow-elevation-low:
+        0px -1px 4px hsl(var(--shadow-color) / 0.1),
         0px 1px 1.1px hsl(var(--shadow-color) / 0.1),
         0px 1.7px 1.9px -1.2px hsl(var(--shadow-color) / 0.1),
         0px 4px 4.5px -2.5px hsl(var(--shadow-color) / 0.1);
