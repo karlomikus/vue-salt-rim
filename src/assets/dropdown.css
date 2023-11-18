@@ -1,3 +1,11 @@
+.floating-element {
+    width: max-content;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 10;
+}
+
 .dropdown-menu {
     background-color: #fff;
     padding: 8px;
