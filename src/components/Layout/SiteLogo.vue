@@ -17,7 +17,7 @@ export default {
     props: {
         barName: {
             type: String,
-            default: 'Salt Rim'
+            default: 'Bar Assistant'
         },
         barSubtitle: {
             type: String,
