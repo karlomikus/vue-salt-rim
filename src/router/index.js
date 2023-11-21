@@ -37,6 +37,24 @@ const router = createRouter({
             meta: { requiresAuth: false }
         },
         {
+            path: '/forgot-password',
+            name: 'forgot-password',
+            component: () => import('../views/ForgotPasswordView.vue'),
+            meta: { requiresAuth: false }
+        },
+        {
+            path: '/reset-password',
+            name: 'reset-password',
+            component: () => import('../views/ResetPasswordView.vue'),
+            meta: { requiresAuth: false }
+        },
+        {
+            path: '/confirmation/:id/:hash',
+            name: 'confirmation',
+            component: () => import('../views/ConfirmationView.vue'),
+            meta: { requiresAuth: false }
+        },
+        {
             path: '/e/cocktail/:ulid/:slug',
             name: 'e.cocktail',
             component: () => import('../views/PublicCocktailView.vue'),
