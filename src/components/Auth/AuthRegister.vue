@@ -3,7 +3,7 @@
         <SiteLogo></SiteLogo>
         <form @submit.prevent="register">
             <OverlayLoader v-if="isLoading"></OverlayLoader>
-            <h1>Sign up</h1>
+            <h2 style="margin-bottom: 1rem;">{{ $t('register') }}</h2>
             <div class="form-group">
                 <label class="form-label form-label--required" for="email">{{ $t('email') }}:</label>
                 <input id="email" v-model="newUser.email" class="form-input" type="email" required>

@@ -31,10 +31,10 @@ export default {
     },
     computed: {
         name() {
-            return this.appState.bar.name || this.barName
+            return this.appState.bar.name || this.barName || 'Bar Assistant'
         },
         description() {
-            return this.appState.bar.subtitle || this.barSubtitle
+            return this.appState.bar.subtitle || this.barSubtitle || 'Your personal bar assistant'
         }
     }
 }
