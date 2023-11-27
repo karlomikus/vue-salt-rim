@@ -69,7 +69,7 @@ export default {
             return window.srConfig.ENV === 'demo'
         },
         showForgotPassword() {
-            return window.srConfig.MAILS_ENABLED === true;
+            return window.srConfig.MAILS_ENABLED === true
         }
     },
     watch: {

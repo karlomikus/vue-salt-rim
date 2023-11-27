@@ -819,6 +819,24 @@ class ApiRequests
 
         return this.parseResponse(jsonResp)
     }
+
+    /**
+     * =============================
+     * Billing
+     * =============================
+     */
+
+    static async fetchSubscription() {
+        let jsonResp = await this.getRequest('/api/billing/subscription')
+
+        return this.parseResponse(jsonResp)
+    }
+
+    static async updateSubscription(data) {
+        const jsonResp = await this.postRequest('/api/billing/subscription', data)
+
+        return this.parseResponse(jsonResp)
+    }
 }
 
 export default ApiRequests

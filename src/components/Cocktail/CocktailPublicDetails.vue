@@ -27,25 +27,25 @@ export default {
             cocktail: {},
         }
     },
-    watch: {
-        cocktail(val) {
-            document.title = `${val.name} \u22C5 ${this.site_title}`
-        }
-    },
     computed: {
         barName() {
             if (this.cocktail.bar) {
-                return this.cocktail.bar.name;
+                return this.cocktail.bar.name
             }
 
-            return null;
+            return null
         },
         barSubtitle() {
             if (this.cocktail.bar) {
-                return this.cocktail.bar.subtitle;
+                return this.cocktail.bar.subtitle
             }
 
-            return null;
+            return null
+        }
+    },
+    watch: {
+        cocktail(val) {
+            document.title = `${val.name} \u22C5 ${this.site_title}`
         }
     },
     created() {

@@ -429,5 +429,10 @@
   },
   "remember-me": "Remember me",
   "updated-on-by": "Updated on {date} by {name}",
-  "user-recipes": "Recipes by user"
+  "user-recipes": "Recipes by user",
+  "billing": {
+    "title": "Billing",
+    "confirm-sub-update-pause": "This action will pause your subscription which can be resumed at any time. You will have full access to your plan till the end of the current subscription.",
+    "confirm-sub-update-resume": "This action will resume your subscription. You will continue to have access to all features, and will be billed as usual."
+  }
 }
