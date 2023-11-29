@@ -432,7 +432,13 @@
   "user-recipes": "Recipes by user",
   "billing": {
     "title": "Billing",
-    "confirm-sub-update-pause": "This action will pause your subscription which can be resumed at any time. You will have full access to your plan till the end of the current subscription.",
-    "confirm-sub-update-resume": "This action will resume your subscription. You will continue to have access to all features, and will be billed as usual."
+    "inactive-title": "Upgrade to \"{name}\" plan today!",
+    "is_active": "Your subscription for \"{name}\" plan is currently active",
+    "next_bill_at": "Your next payment will be on",
+    "end_at": "You ended your subscription, you will have access to your current plan until",
+    "confirm-sub-update-pause": "This action will pause your subscription which you can resume at any time. You will have full access to your plan until the end of the current subscription.",
+    "confirm-sub-update-resume": "This action will resume your subscription. If your subscription is not active anymore you will be charged as per plan pricing.",
+    "pause": "Pause subscription",
+    "resume": "Resume subscription"
   }
 }
