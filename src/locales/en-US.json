@@ -338,8 +338,18 @@
   "view": "View",
   "missing-collections": "You don't have any collections",
   "sort-direction": "Sort order",
+  "continue": "Continue",
   "auth": {
-    "confirm-logout": "Are you sure you want to sign out of your current session?"
+    "confirm-logout": "Are you sure you want to sign out of your current session?",
+    "password-forgot": "Forgot password",
+    "password-forgot-help-text": "Enter the email address associated with your account and we'll send you a link to reset setup a new password.",
+    "request-password-reset": "Reset password",
+    "reset-email-sent": "If an account is registered with this email, it will receive a message with password reset link.",
+    "reset-password": "Reset password",
+    "reset-password-reset": "Reset",
+    "password-reset-success": "Password successfully reset",
+    "password-reset-error": "Unable to reset your password",
+    "account-confirmed": "Account successfully confirmed"
   },
   "used-as-main-ingredient": "Used as main ingredient",
   "added-on-by": "Added on {date} by {name}",

@@ -11,7 +11,7 @@
                 <input id="email" v-model="email" class="form-input" type="email" required>
             </div>
             <div class="form-group">
-                <label class="form-label" for="password">{{ $t('password') }}:</label>
+                <label class="form-label form-label--forgot-password" for="password">{{ $t('password') }}: <RouterLink v-if="showForgotPassword" :to="{name: 'forgot-password'}">Forgot password?</RouterLink></label>
                 <input id="password" v-model="password" class="form-input" type="password" required>
             </div>
             <div class="form-group">
@@ -67,6 +67,9 @@ export default {
         },
         isDemo() {
             return window.srConfig.ENV === 'demo'
+        },
+        showForgotPassword() {
+            return window.srConfig.MAILS_ENABLED === true;
         }
     },
     watch: {
@@ -160,5 +163,15 @@ export default {
 
 .login-page__demo-notice code {
     color: var(--clr-accent-700);
+}
+
+.form-label--forgot-password {
+    display: flex;
+    flex-direction: wrap;
+}
+
+.form-label--forgot-password a {
+    margin-left: auto;
+    font-size: 0.85rem;
 }
 </style>

@@ -70,11 +70,15 @@ class ApiRequests
     static async getRequest(path) {
         let url = `${this.getUrl()}${path}`
 
-        const f = fetch(url, {
+        const response = await fetch(url, {
             headers: this.getHeaders(),
         }).then(this.handleResponseErrors)
 
-        return await (await f).json()
+        if (response.status == 204) {
+            return {}
+        }
+
+        return await response.json()
     }
 
     static async postRequest(path, data = {}, type = 'POST') {
@@ -324,6 +328,22 @@ class ApiRequests
         let jsonResp = await this.postRequest('/api/register', data)
 
         return this.parseResponse(jsonResp)
+    }
+
+    static async passwordForgot(data) {
+        let jsonResp = await this.postRequest('/api/forgot-password', data)
+
+        return this.parseResponse(jsonResp)
+    }
+
+    static async passwordReset(data) {
+        let jsonResp = await this.postRequest('/api/reset-password', data)
+
+        return this.parseResponse(jsonResp)
+    }
+
+    static async confirmAccount(id, hash) {
+        let jsonResp = await this.getRequest(`/api/verify/${id}/${hash}`)
     }
 
     /**

@@ -1,54 +1,38 @@
+<script setup>
+import {ref} from 'vue'
+import {useFloating, offset, flip, shift, autoUpdate} from '@floating-ui/vue'
+
+const isShown = ref(false)
+const reference = ref(null)
+const content = ref(null)
+
+const toggleDropdown = function () {
+    isShown.value = !isShown.value
+}
+
+const { floatingStyles } = useFloating(reference, content, {
+    placement: 'bottom-end',
+    middleware: [offset(5), flip(), shift()],
+    whileElementsMounted: autoUpdate,
+})
+
+document.addEventListener('click', e => {
+    var dw = reference.value || null
+    if (dw && !dw.contains(e.target)) {
+        isShown.value = false
+    }
+}, false)
+</script>
+
 <template>
     <div class="dropdown-wrapper">
-        <slot :toggle-dropdown="toggleDropdown" />
-        <div ref="content" class="popper">
-            <div v-show="isShown" class="dropdown-menu">
+        <div ref="reference">
+            <slot :toggle-dropdown="toggleDropdown" />
+        </div>
+        <div v-show="isShown" ref="content" class="floating-element" :style="floatingStyles">
+            <div class="dropdown-menu">
                 <slot name="content" />
             </div>
         </div>
     </div>
 </template>
-<script>
-import { createPopper } from '@popperjs/core'
-
-export default {
-    data() {
-        return {
-            isShown: false,
-            popper: null,
-        }
-    },
-    mounted() {
-        const btn = this.$el.firstElementChild
-
-        this.popper = createPopper(btn, this.$refs.content, {
-            placement: 'bottom-end',
-            modifiers: [{
-                name: 'preventOverflow',
-                options: {
-                    boundary: 'clippingParents'
-                }
-            }, {
-                name: 'offset',
-                options: {
-                    offset: [0, 5]
-                }
-            }]
-        })
-
-        document.addEventListener('click', e => {
-            var dw = btn || null
-            if (dw && !dw.contains(e.target)) {
-                this.isShown = false
-            }
-        }, false)
-    },
-    methods: {
-        toggleDropdown() {
-            this.isShown = !this.isShown
-
-            this.popper.update()
-        }
-    }
-}
-</script>

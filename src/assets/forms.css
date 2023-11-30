@@ -124,7 +124,8 @@ textarea.form-input,
 }
 
 .form-input:focus,
-.form-select:focus {
+.form-select:focus,
+.form-input--focus {
     border-color: var(--form-clr-border-focus);
     background: var(--form-clr-bg-focus);
 }

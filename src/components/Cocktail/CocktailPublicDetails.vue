@@ -1,11 +1,12 @@
 <template>
     <div class="public-page">
         <div class="public-page__header">
-            <SiteLogo></SiteLogo>
+            <SiteLogo :bar-name="barName" :bar-subtitle="barSubtitle"></SiteLogo>
         </div>
         <PublicRecipe :cocktail="cocktail"></PublicRecipe>
         <div class="public-footer">
             Powered by <a href="https://github.com/karlomikus/bar-assistant">Bar Assistant</a>
+            <!-- &middot; <a href="#">Add to your bar</a> &middot; <a href="#">Print</a> -->
         </div>
     </div>
 </template>
@@ -29,6 +30,22 @@ export default {
     watch: {
         cocktail(val) {
             document.title = `${val.name} \u22C5 ${this.site_title}`
+        }
+    },
+    computed: {
+        barName() {
+            if (this.cocktail.bar) {
+                return this.cocktail.bar.name;
+            }
+
+            return null;
+        },
+        barSubtitle() {
+            if (this.cocktail.bar) {
+                return this.cocktail.bar.subtitle;
+            }
+
+            return null;
         }
     },
     created() {
