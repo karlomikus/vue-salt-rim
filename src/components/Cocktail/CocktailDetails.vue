@@ -4,9 +4,9 @@
         <OverlayLoader v-if="isLoading" />
         <div class="cocktail-details__title">
             <h2>{{ cocktail.name }}</h2>
-            <p>
-                {{ $t('added-on-by', { date: createdDate, name: cocktail.created_user.name }) }}
-                <template v-if="cocktail.updated_user"> &middot; {{ $t('updated-on-by', { date: updatedDate, name: cocktail.updated_user.name }) }}</template>
+            <p :title="$t('added-on-by', { date: createdDate, name: cocktail.created_user.name })">
+                <template v-if="cocktail.updated_user">{{ $t('updated-on-by', { date: updatedDate, name: cocktail.updated_user.name }) }}</template>
+                <template v-else>{{ $t('added-on-by', { date: createdDate, name: cocktail.created_user.name }) }}</template>
             </p>
         </div>
         <div v-if="cocktail.id" class="cocktail-details__graphic">
@@ -387,12 +387,12 @@ export default {
         createdDate() {
             const date = dayjs(this.cocktail.created_at).toDate()
 
-            return this.$d(date, 'long')
+            return this.$d(date, 'short')
         },
         updatedDate() {
             const date = dayjs(this.cocktail.updated_at).toDate()
 
-            return this.$d(date, 'long')
+            return this.$d(date, 'short')
         },
         // totalLiquid() {
         //     const amount = this.cocktail.ingredients.filter(ing => ['ml', 'cl', 'oz'].includes(ing.units)).reduce((acc, ing) => {
