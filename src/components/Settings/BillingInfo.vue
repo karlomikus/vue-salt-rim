@@ -4,6 +4,15 @@
         <div class="billing__card billing--inactive" v-if="billing.subscription == null">
             <h3>{{ $t('billing.inactive-title', {name: 'Mixologist'}) }}</h3>
             <p>For enthusiasts that want to create a community around their bar</p>
+            <ul>
+                <li>Add up to 10 bars</li>
+                <li>Invite other users to your bar</li>
+                <li>Manage user roles</li>
+                <li>Enable sharing recipes via public links</li>
+                <li>Add more images to recipes</li>
+                <li>Add unlimited cocktail collections</li>
+                <li>Create personal access API tokens</li>
+            </ul>
             <div class="form-group">
                 <div class="billing__price-categories">
                     <SaltRimRadio v-for="price in productPrices" v-model="selectedPriceCategory" :title="price.formattedTotals.total" :description="price.price.description" :value="price.price.id"></SaltRimRadio>
@@ -142,7 +151,18 @@ export default {
 .billing__price-categories {
     display: grid;
     gap: var(--gap-size-3);
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr;
     margin: 1rem 0;
+}
+
+.billing ul {
+    text-align: left;
+    list-style: square;
+    margin: 0;
+    padding: 0 0 0 var(--gap-size-3);
+}
+
+.billing ul li::marker {
+    color: var(--clr-accent-700);
 }
 </style>
