@@ -439,6 +439,12 @@
     "confirm-sub-update-pause": "This action will pause your subscription which you can resume at any time. You will have full access to your plan until the end of the current subscription.",
     "confirm-sub-update-resume": "This action will resume your subscription. If your subscription is not active anymore you will be charged as per plan pricing.",
     "pause": "Pause subscription",
-    "resume": "Resume subscription"
+    "resume": "Resume subscription",
+    "billed_at": "Billed at",
+    "amount": "Amount",
+    "currency": "Currency",
+    "invoice-number": "Invoice number",
+    "transactions": "Transactions",
+    "subscribed-on": "Subscribed on"
   }
 }

@@ -1,6 +1,7 @@
 <template>
     <nav class="settings-nav">
         <RouterLink :to="{name: 'settings.profile'}">{{ $t('profile') }}</RouterLink>
+        <RouterLink :to="{name: 'settings.billing'}">{{ $t('billing.title') }}</RouterLink>
         <template v-if="isBarAdmin">
             <RouterLink :to="{name: 'settings.users'}">{{ $t('users') }}</RouterLink>
             <RouterLink :to="{name: 'settings.categories'}">{{ $t('ingredient.categories') }}</RouterLink>

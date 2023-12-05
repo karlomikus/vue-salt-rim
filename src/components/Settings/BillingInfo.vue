@@ -1,59 +1,112 @@
 <template>
-    <div class="billing">
-        <OverlayLoader v-if="isLoading" />
-        <div class="billing__card billing--inactive" v-if="billing.subscription == null">
-            <h3>{{ $t('billing.inactive-title', {name: 'Mixologist'}) }}</h3>
-            <p>For enthusiasts that want to create a community around their bar</p>
-            <ul>
-                <li>Add up to 10 bars</li>
-                <li>Invite other users to your bar</li>
-                <li>Manage user roles</li>
-                <li>Enable sharing recipes via public links</li>
-                <li>Add more images to recipes</li>
-                <li>Add unlimited cocktail collections</li>
-                <li>Create personal access API tokens</li>
-            </ul>
-            <div class="form-group">
-                <div class="billing__price-categories">
-                    <SaltRimRadio v-for="price in productPrices" v-model="selectedPriceCategory" :title="price.formattedTotals.total" :description="price.price.description" :value="price.price.id"></SaltRimRadio>
+    <PageHeader>
+        {{ $t('ingredient.categories') }}
+        <template #actions>
+            <SaltRimDialog v-model="showDialog">
+                <template #trigger>
+                    <button type="button" class="button button--dark" @click.prevent="openDialog($t('category.add'), {})">{{ $t('category.add') }}</button>
+                </template>
+                <template #dialog>
+                    <CategoryForm :source-category="editCategory" :dialog-title="dialogTitle" @category-dialog-closed="refreshCategories" />
+                </template>
+            </SaltRimDialog>
+        </template>
+    </PageHeader>
+    <div class="settings-page">
+        <div class="settings-page__nav">
+            <Navigation />
+        </div>
+        <div class="settings-page__content">
+            <OverlayLoader v-if="isLoading" />
+            <div class="block-container block-container--padded">
+                <div class="billing">
+                    <div class="billing__card billing--inactive" v-if="billing.subscription == null">
+                        <h3>{{ $t('billing.inactive-title', {name: 'Mixologist'}) }}</h3>
+                        <p>For enthusiasts that want to create a community around their bar</p>
+                        <ul>
+                            <li>Create and manage up to 10 bars</li>
+                            <li>Invite users to your bar</li>
+                            <li>Share your recipes with other users</li>
+                            <li>Manage user roles</li>
+                            <li>Enable sharing recipes via public links</li>
+                            <li>Add more images to recipes</li>
+                            <li>Add unlimited cocktail collections</li>
+                            <li>Create personal access API tokens</li>
+                            <li>Save <span>15%</span> when paying annually</li>
+                        </ul>
+                        <div class="form-group">
+                            <div class="billing__price-categories">
+                                <SaltRimRadio v-for="price in productPrices" v-model="selectedPriceCategory" :title="price.formattedTotals.total" :description="price.price.description" :value="price.price.id"></SaltRimRadio>
+                            </div>
+                        </div>
+                        <button class="button button--dark" @click.prevent="upgradePlan">Upgrade now</button>
+                    </div>
+                    <div v-else class="billing__card billing--active">
+                        <div class="billing__card__icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17.0007 1.20801 18.3195 3.68083 20.7923 4.99968 18.3195 6.31852 17.0007 8.79134 15.6818 6.31852 13.209 4.99968 15.6818 3.68083 17.0007 1.20801ZM10.6673 9.33301 15.6673 11.9997 10.6673 14.6663 8.00065 19.6663 5.33398 14.6663.333984 11.9997 5.33398 9.33301 8.00065 4.33301 10.6673 9.33301ZM11.4173 11.9997 9.18905 10.8113 8.00065 8.58301 6.81224 10.8113 4.58398 11.9997 6.81224 13.1881 8.00065 15.4163 9.18905 13.1881 11.4173 11.9997ZM19.6673 16.333 18.0007 13.208 16.334 16.333 13.209 17.9997 16.334 19.6663 18.0007 22.7913 19.6673 19.6663 22.7923 17.9997 19.6673 16.333Z"></path></svg>
+                        </div>
+                        <h3>{{ $t('billing.is_active', {name: 'Mixologist'}) }}</h3>
+                        <div v-if="billing.subscription.next_billed_at">
+                            {{ $t('billing.subscribed-on') }} <DateFormatter :date="billing.subscription.created_at" /> &middot; {{ billing.customer.paddle_email }}
+                            <br>
+                            {{ $t('billing.next_bill_at') }} <DateFormatter :date="billing.subscription.next_billed_at.date" /> ({{ billing.subscription.next_billed_at.amount }})
+                        </div>
+                        <div v-if="billing.subscription.paused_at">
+                            {{ $t('billing.end_at') }} <DateFormatter :date="billing.subscription.paused_at" />
+                        </div>
+                        <a v-if="billing.subscription.paused_at" href="#" @click.prevent="updateSubscription('resume')">{{ $t('billing.resume') }}</a>
+                        <a v-else href="#" @click.prevent="updateSubscription('pause')">{{ $t('billing.pause') }}</a>
+                    </div>
                 </div>
             </div>
-            <button class="button button--dark" @click.prevent="upgradePlan">Upgrade now</button>
-        </div>
-        <div v-else class="billing__card billing--active">
-            <div class="billing__card__icon">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17.0007 1.20801 18.3195 3.68083 20.7923 4.99968 18.3195 6.31852 17.0007 8.79134 15.6818 6.31852 13.209 4.99968 15.6818 3.68083 17.0007 1.20801ZM10.6673 9.33301 15.6673 11.9997 10.6673 14.6663 8.00065 19.6663 5.33398 14.6663.333984 11.9997 5.33398 9.33301 8.00065 4.33301 10.6673 9.33301ZM11.4173 11.9997 9.18905 10.8113 8.00065 8.58301 6.81224 10.8113 4.58398 11.9997 6.81224 13.1881 8.00065 15.4163 9.18905 13.1881 11.4173 11.9997ZM19.6673 16.333 18.0007 13.208 16.334 16.333 13.209 17.9997 16.334 19.6663 18.0007 22.7913 19.6673 19.6663 22.7923 17.9997 19.6673 16.333Z"></path></svg>
+            <h3 class="form-section-title">{{ $t('billing.transactions') }}</h3>
+            <div class="block-container block-container--padded" v-if="billing.subscription && billing.subscription.transactions.length > 0">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>{{ $t('billing.billed_at') }}</th>
+                            <th>{{ $t('billing.amount') }}</th>
+                            <th>{{ $t('billing.currency') }}</th>
+                            <th>{{ $t('billing.invoice-number') }}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-for="tx in billing.subscription.transactions" :key="tx.invoice_number">
+                            <td><DateFormatter :date="billing.subscription.billed_at" format="long" /></td>
+                            <td>{{ new Intl.NumberFormat(userLocale, { style: "currency", currency: tx.currency }).format(tx.total / 100) }}</td>
+                            <td>{{ tx.currency }}</td>
+                            <td>{{ tx.invoice_number }}</td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
-            <h3>{{ $t('billing.is_active', {name: 'Mixologist'}) }}</h3>
-            <div v-if="billing.subscription.next_billed_at">
-                {{ $t('billing.next_bill_at') }} <DateFormatter :date="billing.subscription.next_billed_at" />
-            </div>
-            <div v-if="billing.subscription.paused_at">
-                {{ $t('billing.end_at') }} <DateFormatter :date="billing.subscription.paused_at" />
-            </div>
-            <a v-if="billing.subscription.paused_at" href="#" @click.prevent="updateSubscription('resume')">{{ $t('billing.resume') }}</a>
-            <a v-else href="#" @click.prevent="updateSubscription('pause')">{{ $t('billing.pause') }}</a>
         </div>
     </div>
 </template>
+
 
 <script>
 import ApiRequests from './../../ApiRequests.js'
 import OverlayLoader from './../OverlayLoader.vue'
 import DateFormatter from './../DateFormatter.vue'
 import SaltRimRadio from './../SaltRimRadio.vue'
+import PageHeader from './../PageHeader.vue'
+import Navigation from './../Settings/SettingsNavigation.vue'
 
 export default {
     components: {
         OverlayLoader,
         DateFormatter,
         SaltRimRadio,
+        PageHeader,
+        Navigation
     },
     data() {
         return {
             isLoading: false,
             productPrices: [],
             selectedPriceCategory: null,
+            userLocale: navigator.languages && navigator.languages.length ? navigator.languages[0] : navigator.language,
             billing: {
                 prices: [],
                 customer: {},
@@ -97,13 +150,19 @@ export default {
             })
         },
         upgradePlan() {
+            let customer = {};
+
+            if (this.billing.customer.paddle_id) {
+                customer.id = this.billing.customer.paddle_id
+            } else {
+                customer.email = this.billing.customer.paddle_email
+            }
+
             Paddle.Checkout.open({
                 items: [
                     {priceId: this.selectedPriceCategory}
                 ],
-                customer: {
-                    id: this.billing.customer.paddle_id,
-                }
+                customer: customer
             })
         },
         fetchProduct() {
@@ -112,9 +171,9 @@ export default {
                     return { priceId: priceId, quantity: 1 }
                 })
             })
-                .then((result) => {
-                    this.productPrices = result.data.details.lineItems
-                })
+            .then((result) => {
+                this.productPrices = result.data.details.lineItems
+            })
         }
     }
 }
@@ -151,7 +210,7 @@ export default {
 .billing__price-categories {
     display: grid;
     gap: var(--gap-size-3);
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr 1fr;
     margin: 1rem 0;
 }
 

@@ -38,7 +38,7 @@
             </div>
             <h3 class="form-section-title">{{ $t('billing.title') }}</h3>
             <div class="block-container block-container--padded">
-                <BillingInfo></BillingInfo>
+                <!-- <BillingInfo></BillingInfo> -->
             </div>
             <template v-if="appState.bar.id">
                 <h3 class="form-section-title">{{ $t('bars.bar') }}</h3>
