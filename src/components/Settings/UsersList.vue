@@ -1,7 +1,7 @@
 <template>
     <PageHeader>
         {{ $t('users') }}
-        <template #actions>
+        <template v-if="appState.isSubscribed()" #actions>
             <SaltRimDialog v-model="showDialog">
                 <template #trigger>
                     <button type="button" class="button button--dark" @click.prevent="openDialog($t('users.add'), {role: {}})">{{ $t('users.add') }}</button>

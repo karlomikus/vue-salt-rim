@@ -4,7 +4,8 @@
         <template #actions>
             <SaltRimDialog v-model="showDialog">
                 <template #trigger>
-                    <button type="button" class="button button--dark" @click.prevent="openDialog($t('collections.add'), {})">{{ $t('collections.add') }}</button>
+                    <button v-if="!appState.isSubscribed() && collections.length < 3" type="button" class="button button--dark" @click.prevent="openDialog($t('collections.add'), {})">{{ $t('collections.add') }}</button>
+                    <div v-else></div>
                 </template>
                 <template #dialog>
                     <CollectionForm :source-collection="editCollection" :dialog-title="dialogTitle" @collection-dialog-closed="refreshCollections" />
@@ -60,6 +61,7 @@ import SaltRimDialog from './../Dialog/SaltRimDialog.vue'
 import CollectionForm from './CollectionForm.vue'
 import EmptyState from './../EmptyState.vue'
 import SubscriptionCheck from '../SubscriptionCheck.vue'
+import AppState from '../../AppState'
 
 export default {
     components: {
@@ -74,6 +76,7 @@ export default {
         return {
             isLoading: false,
             showDialog: false,
+            appState: new AppState(),
             dialogTitle: 'Collection data',
             editCollection: {},
             collections: [],
