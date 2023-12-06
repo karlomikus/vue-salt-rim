@@ -2,6 +2,7 @@
     <div>
         <OverlayLoader v-if="isLoading" />
         <div class="dialog-title">{{ $t('public-dialog.title') }}</div>
+        <SubscriptionCheck>Subscribe to "Mixologist" plan to share your cocktail recipes!</SubscriptionCheck>
         <p class="public-url">{{ publicUrl }}</p>
         <p v-show="publicData.public_at != null">{{ $t('public-dialog.public_at', { date: createdDate }) }}</p>
         <div class="dialog-actions" style="margin-top: 1rem;">
@@ -17,10 +18,12 @@
 import ApiRequests from './../../ApiRequests.js'
 import OverlayLoader from './../OverlayLoader.vue'
 import dayjs from 'dayjs'
+import SubscriptionCheck from '../SubscriptionCheck.vue'
 
 export default {
     components: {
         OverlayLoader,
+        SubscriptionCheck,
     },
     props: {
         cocktail: {

@@ -193,7 +193,7 @@
   "see-also": "See also",
   "users.add": "Add user",
   "users.edit": "Edit user",
-  "user.name": "Name",
+  "user.name": "Display name",
   "email": "Email",
   "admin": "Administrator",
   "password": "Password",

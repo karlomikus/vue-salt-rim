@@ -91,6 +91,14 @@ class AppState {
         return this.bar.access.role_id == 4
     }
 
+    isSubscribed() {
+        if (window.srConfig.BILLING_ENABLED === true) {
+            return this.user.is_subscribed;
+        }
+
+        return true;
+    }
+
     _getStorage() {
         const val = localStorage.getItem('sr_remember_login')
         const rememberMe = val === null || val === 'true' ? true : false

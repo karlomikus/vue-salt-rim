@@ -36,10 +36,6 @@
                     <input id="repeat-new-password" v-model="user.repeatPassword" class="form-input" type="password">
                 </div>
             </div>
-            <h3 class="form-section-title">{{ $t('billing.title') }}</h3>
-            <div class="block-container block-container--padded">
-                <!-- <BillingInfo></BillingInfo> -->
-            </div>
             <template v-if="appState.bar.id">
                 <h3 class="form-section-title">{{ $t('bars.bar') }}</h3>
                 <div class="block-container block-container--padded">
@@ -69,14 +65,12 @@ import OverlayLoader from '@/components/OverlayLoader.vue'
 import PageHeader from '@/components/PageHeader.vue'
 import Navigation from '@/components/Settings/SettingsNavigation.vue'
 import AppState from './../../AppState'
-import BillingInfo from './BillingInfo.vue'
 
 export default {
     components: {
         OverlayLoader,
         Navigation,
-        PageHeader,
-        BillingInfo
+        PageHeader
     },
     data() {
         return {

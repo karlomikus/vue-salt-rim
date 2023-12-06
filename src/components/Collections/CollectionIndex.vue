@@ -14,6 +14,7 @@
     </PageHeader>
     <OverlayLoader v-if="isLoading" />
     <div v-if="collections.length > 0" class="block-container block-container--padded">
+        <SubscriptionCheck v-if="collections.length >= 3">Subscribe to "Mixologist" plan to create unlimited collections!</SubscriptionCheck>
         <table class="table">
             <thead>
                 <tr>
@@ -58,6 +59,7 @@ import PageHeader from './../PageHeader.vue'
 import SaltRimDialog from './../Dialog/SaltRimDialog.vue'
 import CollectionForm from './CollectionForm.vue'
 import EmptyState from './../EmptyState.vue'
+import SubscriptionCheck from '../SubscriptionCheck.vue'
 
 export default {
     components: {
@@ -66,6 +68,7 @@ export default {
         SaltRimDialog,
         CollectionForm,
         EmptyState,
+        SubscriptionCheck,
     },
     data() {
         return {

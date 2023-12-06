@@ -1,16 +1,6 @@
 <template>
     <PageHeader>
-        {{ $t('ingredient.categories') }}
-        <template #actions>
-            <SaltRimDialog v-model="showDialog">
-                <template #trigger>
-                    <button type="button" class="button button--dark" @click.prevent="openDialog($t('category.add'), {})">{{ $t('category.add') }}</button>
-                </template>
-                <template #dialog>
-                    <CategoryForm :source-category="editCategory" :dialog-title="dialogTitle" @category-dialog-closed="refreshCategories" />
-                </template>
-            </SaltRimDialog>
-        </template>
+        {{ $t('billing.title') }}
     </PageHeader>
     <div class="settings-page">
         <div class="settings-page__nav">
@@ -18,7 +8,7 @@
         </div>
         <div class="settings-page__content">
             <OverlayLoader v-if="isLoading" />
-            <div class="block-container block-container--padded">
+            <div class="block-container block-container--padded" v-show="!isLoading">
                 <div class="billing">
                     <div class="billing__card billing--inactive" v-if="billing.subscription == null">
                         <h3>{{ $t('billing.inactive-title', {name: 'Mixologist'}) }}</h3>
@@ -59,27 +49,29 @@
                     </div>
                 </div>
             </div>
-            <h3 class="form-section-title">{{ $t('billing.transactions') }}</h3>
-            <div class="block-container block-container--padded" v-if="billing.subscription && billing.subscription.transactions.length > 0">
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th>{{ $t('billing.billed_at') }}</th>
-                            <th>{{ $t('billing.amount') }}</th>
-                            <th>{{ $t('billing.currency') }}</th>
-                            <th>{{ $t('billing.invoice-number') }}</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr v-for="tx in billing.subscription.transactions" :key="tx.invoice_number">
-                            <td><DateFormatter :date="billing.subscription.billed_at" format="long" /></td>
-                            <td>{{ new Intl.NumberFormat(userLocale, { style: "currency", currency: tx.currency }).format(tx.total / 100) }}</td>
-                            <td>{{ tx.currency }}</td>
-                            <td>{{ tx.invoice_number }}</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
+            <template v-if="billing.subscription && billing.subscription.transactions.length > 0">
+                <h3 class="form-section-title">{{ $t('billing.transactions') }}</h3>
+                <div class="block-container block-container--padded">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>{{ $t('billing.billed_at') }}</th>
+                                <th>{{ $t('billing.amount') }}</th>
+                                <th>{{ $t('billing.currency') }}</th>
+                                <th>{{ $t('billing.invoice-number') }}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for="tx in billing.subscription.transactions" :key="tx.invoice_number">
+                                <td><DateFormatter :date="billing.subscription.billed_at" format="long" /></td>
+                                <td>{{ new Intl.NumberFormat(userLocale, { style: "currency", currency: tx.currency }).format(tx.total / 100) }}</td>
+                                <td>{{ tx.currency }}</td>
+                                <td>{{ tx.invoice_number }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </template>
         </div>
     </div>
 </template>
@@ -118,7 +110,12 @@ export default {
         Paddle.Environment.set('sandbox')
         Paddle.Setup({
             token: window.srConfig.BILLING_TOKEN,
-            eventCallback: function (data) {
+            checkout: {
+                settings: {
+                    theme: document.body.classList.contains('dark-theme') ? 'dark' : 'light'
+                }
+            },
+            eventCallback(data) {
                 if (data.name == 'checkout.completed') {
                     this.fetchBilling()
                 }
@@ -138,13 +135,14 @@ export default {
         },
         updateSubscription(type) {
             this.$confirm(this.$t('billing.confirm-sub-update-' + type), {
-                onResolved: (dialog) => {
+                onResolved(dialog) {
                     dialog.close()
                     this.isLoading = true
                     ApiRequests.updateSubscription({
                         type: type
                     }).then(data => {
                         this.isLoading = false
+                        this.fetchBilling();
                     })
                 }
             })
