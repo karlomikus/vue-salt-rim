@@ -3,6 +3,7 @@
         <OverlayLoader v-if="isLoading" />
         <div class="dialog-title">{{ $t(title) }}</div>
         <div class="dialog-content">
+            <SubscriptionCheck v-if="collections.length >= 3">Subscribe to "Mixologist" plan to create unlimited collections!</SubscriptionCheck>
             <form action="">
                 <div class="form-group">
                     <label class="form-label" for="dialog-collection-id">{{ $t('collections.collection') }}:</label>
@@ -42,10 +43,12 @@
 <script>
 import ApiRequests from './../../ApiRequests.js'
 import OverlayLoader from './../OverlayLoader.vue'
+import SubscriptionCheck from '../SubscriptionCheck.vue'
 
 export default {
     components: {
         OverlayLoader,
+        SubscriptionCheck,
     },
     props: {
         cocktails: {

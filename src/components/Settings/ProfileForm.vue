@@ -136,7 +136,7 @@ export default {
         deleteAccount() {
             const appState = new AppState()
 
-            this.$confirm(this.$t('users.confirm-delete', {name: this.user.name}), {
+            this.$confirm(this.$t('users.confirm-delete', { name: this.user.name }), {
                 onResolved: (dialog) => {
                     dialog.close()
                     this.isLoading = true

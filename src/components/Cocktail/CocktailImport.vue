@@ -6,6 +6,7 @@
         </PageHeader>
         <h3 class="form-section-title">{{ $t('import.type') }}</h3>
         <div class="block-container block-container--padded">
+            <SubscriptionCheck>Subscribe to "Mixologist" plan to remove limit of two import actions per minute!</SubscriptionCheck>
             <div class="form-group">
                 <label class="form-label form-label--required">{{ $t('type') }}:</label>
                 <div class="import-types">
@@ -144,6 +145,7 @@ import PageHeader from './../PageHeader.vue'
 import SaltRimRadio from '../SaltRimRadio.vue'
 import IngredientFinder from './../IngredientFinder.vue'
 import SaltRimDialog from '../Dialog/SaltRimDialog.vue'
+import SubscriptionCheck from '../SubscriptionCheck.vue'
 
 export default {
     components: {
@@ -151,7 +153,8 @@ export default {
         PageHeader,
         SaltRimRadio,
         IngredientFinder,
-        SaltRimDialog
+        SaltRimDialog,
+        SubscriptionCheck
     },
     data() {
         return {

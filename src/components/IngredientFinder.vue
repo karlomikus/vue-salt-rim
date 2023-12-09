@@ -136,6 +136,11 @@ export default {
     background: #fff;
 }
 
+.dark-theme .ingredient-finder__options {
+    border-color: var(--clr-dark-main-600);
+    background-color: var(--clr-dark-main-900);
+}
+
 .ingredient-finder__options a {
     display: flex;
     gap: var(--gap-size-2);
@@ -149,7 +154,7 @@ export default {
 }
 
 .dark-theme .ingredient-finder__options a:hover {
-    background-color: var(--clr-gray-900);
+    background-color: var(--clr-dark-main-700);
 }
 
 .ingredient-finder__options__content {
@@ -162,17 +167,7 @@ export default {
     color: var(--clr-gray-500);
 }
 
-.dark-theme .ingredient-finder__options {
-    background: #1c1b20;
-    border-color: #2c2734;
-}
-
-.ingredient-finder__new_ingredient {
-    padding: 0.25rem 0.5rem;
-    margin-top: 0.5rem;
-}
-
 a.ingredient-finder__options__create {
-    background-color: var(--clr-accent-blue);
+    text-decoration: underline;
 }
 </style>

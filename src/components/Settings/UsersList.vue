@@ -1,7 +1,7 @@
 <template>
     <PageHeader>
         {{ $t('users') }}
-        <template #actions>
+        <template v-if="appState.isSubscribed()" #actions>
             <SaltRimDialog v-model="showDialog">
                 <template #trigger>
                     <button type="button" class="button button--dark" @click.prevent="openDialog($t('users.add'), {role: {}})">{{ $t('users.add') }}</button>
@@ -19,6 +19,7 @@
         <div class="settings-page__content">
             <OverlayLoader v-if="isLoading" />
             <div class="block-container block-container--padded">
+                <SubscriptionCheck>Subscribe to "Mixologist" plan to gain access to user management!</SubscriptionCheck>
                 <table class="table">
                     <thead>
                         <tr>
@@ -56,6 +57,7 @@ import Navigation from '@/components/Settings/SettingsNavigation.vue'
 import SaltRimDialog from '@/components/Dialog/SaltRimDialog.vue'
 import UserForm from '@/components/Settings/UserForm.vue'
 import AppState from './../../AppState.js'
+import SubscriptionCheck from '../SubscriptionCheck.vue'
 
 export default {
     components: {
@@ -63,7 +65,8 @@ export default {
         Navigation,
         PageHeader,
         SaltRimDialog,
-        UserForm
+        UserForm,
+        SubscriptionCheck
     },
     data() {
         return {

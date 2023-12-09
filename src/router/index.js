@@ -123,6 +123,11 @@ const router = createRouter({
                     component: () => import('../views/SettingsProfileView.vue'),
                 },
                 {
+                    path: '/settings/billing',
+                    name: 'settings.billing',
+                    component: () => import('../views/SettingsBillingView.vue'),
+                },
+                {
                     path: '/settings/categories',
                     name: 'settings.categories',
                     component: () => import('../views/SettingsCategoriesView.vue'),

@@ -4,7 +4,8 @@
         <template #actions>
             <SaltRimDialog v-model="showDialog">
                 <template #trigger>
-                    <button type="button" class="button button--dark" @click.prevent="openDialog($t('collections.add'), {})">{{ $t('collections.add') }}</button>
+                    <button v-if="(!appState.isSubscribed() && collections.length >= 3) == false" type="button" class="button button--dark" @click.prevent="openDialog($t('collections.add'), {})">{{ $t('collections.add') }}</button>
+                    <div v-else></div>
                 </template>
                 <template #dialog>
                     <CollectionForm :source-collection="editCollection" :dialog-title="dialogTitle" @collection-dialog-closed="refreshCollections" />
@@ -14,6 +15,7 @@
     </PageHeader>
     <OverlayLoader v-if="isLoading" />
     <div v-if="collections.length > 0" class="block-container block-container--padded">
+        <SubscriptionCheck v-if="collections.length >= 3">Subscribe to "Mixologist" plan to create unlimited collections!</SubscriptionCheck>
         <table class="table">
             <thead>
                 <tr>
@@ -58,6 +60,8 @@ import PageHeader from './../PageHeader.vue'
 import SaltRimDialog from './../Dialog/SaltRimDialog.vue'
 import CollectionForm from './CollectionForm.vue'
 import EmptyState from './../EmptyState.vue'
+import SubscriptionCheck from '../SubscriptionCheck.vue'
+import AppState from '../../AppState'
 
 export default {
     components: {
@@ -66,11 +70,13 @@ export default {
         SaltRimDialog,
         CollectionForm,
         EmptyState,
+        SubscriptionCheck,
     },
     data() {
         return {
             isLoading: false,
             showDialog: false,
+            appState: new AppState(),
             dialogTitle: 'Collection data',
             editCollection: {},
             collections: [],

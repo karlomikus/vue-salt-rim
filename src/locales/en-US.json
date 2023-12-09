@@ -193,7 +193,7 @@
   "see-also": "See also",
   "users.add": "Add user",
   "users.edit": "Edit user",
-  "user.name": "Name",
+  "user.name": "Display name",
   "email": "Email",
   "admin": "Administrator",
   "password": "Password",
@@ -379,7 +379,8 @@
     "import-base-cocktails": "Open bar with base cocktails",
     "import-base-ingredients": "Open bar with base ingredients",
     "join-error": "Unable to join bar",
-    "select-bar": "Select bar"
+    "select-bar": "Select bar",
+    "delete-success": "Bar successfully removed"
   },
   "close": "Close",
   "save-as": "Save as",
@@ -429,5 +430,22 @@
   },
   "remember-me": "Remember me",
   "updated-on-by": "Updated on {date} by {name}",
-  "user-recipes": "Recipes by user"
+  "user-recipes": "Recipes by user",
+  "billing": {
+    "title": "Billing",
+    "inactive-title": "Upgrade to \"{name}\" plan today!",
+    "is_active": "Your subscription for \"{name}\" plan is currently active",
+    "next_bill_at": "Your next payment will be on",
+    "end_at": "You ended your subscription, you will have access to your current plan until",
+    "confirm-sub-update-pause": "This action will pause your subscription which you can resume at any time. You will have full access to your plan until the end of the current subscription.",
+    "confirm-sub-update-resume": "This action will resume your subscription. If your subscription is not active anymore you will be charged as per plan pricing.",
+    "pause": "Pause subscription",
+    "resume": "Resume subscription",
+    "billed_at": "Billed at",
+    "amount": "Amount",
+    "currency": "Currency",
+    "invoice-number": "Invoice number",
+    "transactions": "Transactions",
+    "subscribed-on": "Subscribed on"
+  }
 }
