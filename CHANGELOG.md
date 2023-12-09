@@ -1,3 +1,14 @@
+# v2.2.1
+## Fixes
+- Fixed missing settings for moderators
+
+# v2.2.0
+## New
+- Added new pages: forgot password, reset password, confirm account
+
+## Changes
+- Migrated dependency from popperjs to floatingui
+
 # v2.1.2
 ## Changes
 - Removed unused docker vars
