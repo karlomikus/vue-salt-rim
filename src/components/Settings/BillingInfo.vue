@@ -15,6 +15,7 @@
                         <p>For enthusiasts that want to create a community around their bar</p>
                         <ul>
                             <li>Create and manage up to 10 bars</li>
+                            <li>Add unlimited cocktail recipes</li>
                             <li>Invite users to your bar</li>
                             <li>Share your recipes with other users</li>
                             <li>Manage user roles</li>

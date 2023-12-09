@@ -4,7 +4,7 @@
         <template #actions>
             <SaltRimDialog v-model="showDialog">
                 <template #trigger>
-                    <button v-if="!appState.isSubscribed() && collections.length < 3" type="button" class="button button--dark" @click.prevent="openDialog($t('collections.add'), {})">{{ $t('collections.add') }}</button>
+                    <button v-if="(!appState.isSubscribed() && collections.length >= 3) == false" type="button" class="button button--dark" @click.prevent="openDialog($t('collections.add'), {})">{{ $t('collections.add') }}</button>
                     <div v-else></div>
                 </template>
                 <template #dialog>
