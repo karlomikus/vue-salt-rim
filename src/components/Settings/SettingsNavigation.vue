@@ -1,7 +1,7 @@
 <template>
     <nav class="settings-nav">
         <RouterLink :to="{name: 'settings.profile'}">{{ $t('profile') }}</RouterLink>
-        <template v-if="isBarAdmin">
+        <template v-if="appState.isAdmin() || appState.isModerator()">
             <RouterLink :to="{name: 'settings.users'}">{{ $t('users') }}</RouterLink>
             <RouterLink :to="{name: 'settings.categories'}">{{ $t('ingredient.categories') }}</RouterLink>
             <RouterLink :to="{name: 'settings.glasses'}">{{ $t('glass-type.types') }}</RouterLink>
@@ -17,15 +17,6 @@ export default {
     data() {
         return {
             appState: new AppState()
-        }
-    },
-    computed: {
-        isBarAdmin() {
-            if (Object.keys(this.appState.bar).length == 0) {
-                return false
-            }
-
-            return this.appState.bar.access.role_id == 1
         }
     }
 }
