@@ -379,7 +379,8 @@
     "import-base-cocktails": "Open bar with base cocktails",
     "import-base-ingredients": "Open bar with base ingredients",
     "join-error": "Unable to join bar",
-    "select-bar": "Select bar"
+    "select-bar": "Select bar",
+    "delete-success": "Bar successfully removed"
   },
   "close": "Close",
   "save-as": "Save as",
