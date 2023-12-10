@@ -1,3 +1,15 @@
+# v2.3.0
+## New
+- Importing recipes from URL now shows more data
+    - Show ingredient source string
+    - Now imports ingredient notes
+
+## Changes
+- Dates are now shown in short form
+
+## Fixes
+- Added missing translations
+
 # v2.2.1
 ## Fixes
 - Fixed missing settings for moderators

@@ -15,6 +15,7 @@
     </PageHeader>
     <div class="bars">
         <OverlayLoader v-if="isLoading"></OverlayLoader>
+        <SubscriptionCheck v-if="bars.length >= 1">Subscribe to "Mixologist" plan to create and manage up to 10 bars!</SubscriptionCheck>
         <div v-if="bars.length > 0" class="bars__grid">
             <div v-for="bar in bars" :key="bar.id" class="bar block-container block-container--hover">
                 <span class="bar__role">{{ getRoleName(bar.access.role_id) }}</span>
@@ -69,6 +70,7 @@ import AppState from './../../AppState.js'
 import DateFormatter from './../DateFormatter.vue'
 import Utils from './../../Utils.js'
 import EmptyState from './../EmptyState.vue'
+import SubscriptionCheck from '../SubscriptionCheck.vue'
 
 export default {
     components: {
@@ -78,6 +80,7 @@ export default {
         BarJoinDialog,
         DateFormatter,
         EmptyState,
+        SubscriptionCheck,
     },
     data() {
         return {

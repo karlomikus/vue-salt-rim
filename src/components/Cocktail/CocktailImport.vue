@@ -6,6 +6,7 @@
         </PageHeader>
         <h3 class="form-section-title">{{ $t('import.type') }}</h3>
         <div class="block-container block-container--padded">
+            <SubscriptionCheck>Subscribe to "Mixologist" plan to remove limit of two import actions per minute!</SubscriptionCheck>
             <div class="form-group">
                 <label class="form-label form-label--required">{{ $t('type') }}:</label>
                 <div class="import-types">
@@ -48,62 +49,67 @@
             <h3 class="form-section-title">{{ $t('recipe-information') }}</h3>
             <div class="block-container block-container--padded">
                 <div class="form-group">
-                    <label for="name">{{ $t('name') }}</label>
+                    <label class="form-label" for="name">{{ $t('name') }}</label>
                     <input id="name" v-model="result.name" type="text" class="form-input">
                 </div>
                 <div class="form-group">
-                    <label for="description">{{ $t('description') }}</label>
+                    <label class="form-label" for="description">{{ $t('description') }}</label>
                     <textarea id="description" v-model="result.description" class="form-input" rows="4"></textarea>
                 </div>
                 <div class="form-group">
-                    <label for="source">{{ $t('source') }}</label>
+                    <label class="form-label" for="source">{{ $t('source') }}</label>
                     <input id="source" v-model="result.source" type="text" class="form-input">
                 </div>
                 <div class="form-group">
-                    <label for="glass">{{ $t('glass-type.title') }}</label>
+                    <label class="form-label" for="glass">{{ $t('glass-type.title') }}</label>
                     <input id="glass" v-model="result.glass" type="text" class="form-input">
                 </div>
                 <div class="form-group">
-                    <label for="instructions">{{ $t('instructions') }}</label>
+                    <label class="form-label" for="instructions">{{ $t('instructions') }}</label>
                     <textarea id="instructions" v-model="result.instructions" class="form-input" rows="4"></textarea>
                 </div>
                 <div class="form-group">
-                    <label for="garnish">{{ $t('garnish') }}</label>
+                    <label class="form-label" for="garnish">{{ $t('garnish') }}</label>
                     <textarea id="garnish" v-model="result.garnish" class="form-input" rows="3"></textarea>
                 </div>
                 <div class="form-group">
-                    <label for="method">{{ $t('method.title') }}</label>
+                    <label class="form-label" for="method">{{ $t('method.title') }}</label>
                     <input id="method" v-model="result.method" type="text" class="form-input">
                 </div>
                 <template v-for="image in result.images" :key="image.url">
                     <div class="form-group">
-                        <label for="image_url">{{ $t('image-url') }}</label>
+                        <label class="form-label" for="image_url">{{ $t('image-url') }}</label>
                         <input id="image_url" v-model="image.url" type="text" class="form-input">
                     </div>
                     <div class="form-group">
-                        <label for="image_copyrigh">{{ $t('image-copyright') }}</label>
+                        <label class="form-label" for="image_copyrigh">{{ $t('image-copyright') }}</label>
                         <input id="image_copyrigh" v-model="image.copyright" type="text" class="form-input">
                     </div>
                 </template>
                 <div class="form-group">
-                    <label for="tags">{{ $t('tag.tags') }}</label>
+                    <label class="form-label" for="tags">{{ $t('tag.tags') }}</label>
                     <input id="tags" v-model="cocktailTags" type="text" class="form-input">
                 </div>
             </div>
             <h3 class="form-section-title">{{ $t('ingredients.title') }}</h3>
             <div v-for="(ingredient, idx) in result.ingredients" :key="idx" class="block-container block-container--padded scraper-ingredients__ingredient">
+                <p><strong>{{ $t('source') }}:</strong> {{ ingredient.source }}</p>
                 <div class="scraper-ingredients__ingredient__inputs">
                     <div class="form-group">
-                        <label :for="'ingredient_name_' + idx">{{ $t('name') }}</label>
+                        <label class="form-label" :for="'ingredient_name_' + idx">{{ $t('name') }}</label>
                         <input :id="'ingredient_name_' + idx" v-model="ingredient.name" type="text" class="form-input" :disabled="ingredient.existingIngredient != null">
                     </div>
                     <div class="form-group">
-                        <label :for="'ingredient_amount_' + idx">{{ $t('amount') }}</label>
+                        <label class="form-label" :for="'ingredient_amount_' + idx">{{ $t('amount') }}</label>
                         <input :id="'ingredient_amount_' + idx" v-model="ingredient.amount" type="text" class="form-input">
                     </div>
                     <div class="form-group">
-                        <label :for="'ingredient_units_' + idx">{{ $t('units') }}</label>
+                        <label class="form-label" :for="'ingredient_units_' + idx">{{ $t('units') }}</label>
                         <input :id="'ingredient_units_' + idx" v-model="ingredient.units" type="text" class="form-input">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" :for="'ingredient_note_' + idx">{{ $t('note.title') }}</label>
+                        <input :id="'ingredient_note_' + idx" v-model="ingredient.note" type="text" class="form-input">
                     </div>
                 </div>
                 <div v-if="ingredient.existingIngredient" class="scraper-ingredients__ingredient__existing"><span style="letter-spacing: -4px;">&boxur;&rtrif;</span> {{ $t('save-as') }} "{{ ingredient.existingIngredient.name }}" &middot; <a href="#" @click.prevent="resetIngredientMatch(ingredient)">{{ $t('cancel') }}</a></div>
@@ -139,6 +145,7 @@ import PageHeader from './../PageHeader.vue'
 import SaltRimRadio from '../SaltRimRadio.vue'
 import IngredientFinder from './../IngredientFinder.vue'
 import SaltRimDialog from '../Dialog/SaltRimDialog.vue'
+import SubscriptionCheck from '../SubscriptionCheck.vue'
 
 export default {
     components: {
@@ -146,7 +153,8 @@ export default {
         PageHeader,
         SaltRimRadio,
         IngredientFinder,
-        SaltRimDialog
+        SaltRimDialog,
+        SubscriptionCheck
     },
     data() {
         return {
@@ -364,15 +372,25 @@ export default {
     margin-bottom: 1rem;
 }
 
+.scraper-ingredients__ingredient p {
+    color: var(--clr-accent-800);
+    margin-bottom: var(--gap-size-3);
+}
+
 .scraper-ingredients__ingredient__inputs {
     display: flex;
-    flex-wrap: wrap;
+    /* flex-wrap: wrap; */
     align-items: center;
     gap: var(--gap-size-2);
 }
 
 .scraper-ingredients__ingredient .form-group {
     margin-bottom: 0;
+}
+
+.scraper-ingredients__ingredient .form-group label,
+.scraper-ingredients__ingredient .form-group :is(input, select, textarea) {
+    width: 100%;
 }
 
 .scraper-ingredients__ingredient__existing {
@@ -386,6 +404,9 @@ export default {
 }
 
 @media (max-width: 450px) {
+    .scraper-ingredients__ingredient__inputs {
+        flex-wrap: wrap;
+    }
     .import-types {
         grid-template-columns: 1fr;
     }

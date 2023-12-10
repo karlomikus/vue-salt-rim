@@ -22,7 +22,7 @@
             </div>
         </div>
         <h3 class="form-section-title">{{ $t('media') }}</h3>
-        <ImageUpload ref="imagesUpload" :value="cocktail.images" />
+        <ImageUpload ref="imagesUpload" :value="cocktail.images" :max-images="maxImages" />
         <h3 class="form-section-title">{{ $t('ingredients.title') }}</h3>
         <ul v-show="cocktail.ingredients.length > 0" class="cocktail-form__ingredients" style="margin-bottom: 20px;">
             <li v-for="ing in cocktail.ingredients" :key="ing.ingredient_id" class="block-container" :data-id="ing.ingredient_id">
@@ -155,6 +155,7 @@ export default {
             cocktailIngredientForEdit: {},
             cocktailIngredientForEditOriginal: {},
             cocktailIngredientForSubstitutes: {},
+            maxImages: 10,
             isLoading: false,
             cocktail: {
                 id: null,
@@ -239,6 +240,11 @@ export default {
             ghostClass: 'block-container--placeholder',
             animation: 150
         })
+
+        const state = new AppState();
+        if (!state.isSubscribed()) {
+            this.maxImages = 1;
+        }
     },
     methods: {
         checkForImportData() {
