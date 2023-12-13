@@ -31,7 +31,10 @@
                                 <SaltRimRadio v-for="price in productPrices" v-model="selectedPriceCategory" :title="price.formattedTotals.total" :description="price.price.description" :value="price.price.id"></SaltRimRadio>
                             </div>
                         </div>
-                        <button class="button button--dark" @click.prevent="upgradePlan">Upgrade now</button>
+                        <button class="button button--dark" @click.prevent="upgradePlan" :disabled="selectedPriceCategory == null">Upgrade now</button>
+                        <p>
+                            <a href="https://barassistant.app/terms.html" target="_blank">Terms of service</a>
+                        </p>
                     </div>
                     <div v-else class="billing__card billing--active">
                         <div class="billing__card__icon">
@@ -80,6 +83,7 @@
 
 
 <script>
+import { initializePaddle } from '@paddle/paddle-js';
 import ApiRequests from './../../ApiRequests.js'
 import OverlayLoader from './../OverlayLoader.vue'
 import DateFormatter from './../DateFormatter.vue'
@@ -99,6 +103,7 @@ export default {
         return {
             isLoading: false,
             productPrices: [],
+            paddle: null,
             selectedPriceCategory: null,
             userLocale: navigator.languages && navigator.languages.length ? navigator.languages[0] : navigator.language,
             billing: {
@@ -109,8 +114,8 @@ export default {
         }
     },
     created() {
-        Paddle.Environment.set('sandbox')
-        Paddle.Setup({
+        initializePaddle({
+            environment: window.srConfig.BILLING_ENV,
             token: window.srConfig.BILLING_TOKEN,
             checkout: {
                 settings: {
@@ -122,9 +127,10 @@ export default {
                     this.fetchBilling()
                 }
             }
-        })
-
-        this.fetchBilling()
+        }).then(paddleInstance => {
+            this.paddle = paddleInstance
+            this.fetchBilling()
+        });
     },
     methods: {
         fetchBilling() {
@@ -150,6 +156,10 @@ export default {
             })
         },
         upgradePlan() {
+            if (!this.selectedPriceCategory) {
+                return;
+            }
+
             let customer = {};
 
             if (this.billing.customer.paddle_id) {
@@ -158,7 +168,7 @@ export default {
                 customer.email = this.billing.customer.paddle_email
             }
 
-            Paddle.Checkout.open({
+            this.paddle.Checkout.open({
                 items: [
                     {priceId: this.selectedPriceCategory}
                 ],
@@ -166,7 +176,7 @@ export default {
             })
         },
         fetchProduct() {
-            Paddle.PricePreview({
+            this.paddle.PricePreview({
                 items: this.billing.prices.map(priceId => {
                     return { priceId: priceId, quantity: 1 }
                 })

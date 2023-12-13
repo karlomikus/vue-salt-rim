@@ -1,6 +1,9 @@
 <template>
     <nav class="settings-nav">
         <RouterLink :to="{name: 'settings.profile'}">{{ $t('profile') }}</RouterLink>
+        <template v-if="showBilling === true">
+            <RouterLink :to="{name: 'settings.billing'}">{{ $t('billing.title') }}</RouterLink>
+        </template>
         <template v-if="appState.isAdmin() || appState.isModerator()">
             <RouterLink :to="{name: 'settings.users'}">{{ $t('users') }}</RouterLink>
             <RouterLink :to="{name: 'settings.categories'}">{{ $t('ingredient.categories') }}</RouterLink>
@@ -16,7 +19,8 @@ import AppState from './../../AppState.js'
 export default {
     data() {
         return {
-            appState: new AppState()
+            appState: new AppState(),
+            showBilling: window.srConfig.BILLING_ENABLED
         }
     }
 }
