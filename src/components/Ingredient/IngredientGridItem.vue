@@ -6,6 +6,7 @@
         </div>
         <div class="ingredient-grid-item__content">
             <RouterLink class="ingredient-grid-item__title" :to="{ name: 'ingredients.show', params: { id: ingredient.slug } }">
+                <small v-if="ingredient.category">{{ ingredient.category.name }}</small>
                 {{ ingredient.name }}
             </RouterLink>
             <p>{{ cleanDescription }}</p>
@@ -172,6 +173,13 @@ export default {
     font-size: 1.3rem;
     line-height: 1.3;
     text-decoration: none;
+}
+
+.ingredient-grid-item__title small {
+    display: block;
+    font-size: 0.7rem;
+    color: var(--clr-gray-500);
+    font-family: var(--font-primary);
 }
 
 .ingredient-grid-item__content {
