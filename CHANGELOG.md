@@ -1,3 +1,10 @@
+# v2.4.0
+## New
+- Show ingredient category on ingredients grid
+
+## Fixes
+- Added missing translations
+
 # v2.3.0
 ## New
 - Importing recipes from URL now shows more data
