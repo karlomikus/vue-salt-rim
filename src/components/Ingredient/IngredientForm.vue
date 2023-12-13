@@ -11,7 +11,7 @@
                 <input id="name" v-model="ingredient.name" class="form-input" type="text" required>
             </div>
             <div class="form-group">
-                <label class="form-label form-label--required" for="category">{{ $t('category') }}:</label>
+                <label class="form-label" for="category">{{ $t('category') }}:</label>
                 <select id="category" v-model="ingredientCategoryId" class="form-select" required>
                     <option :value="null" disabled>{{ $t('select-category') }}</option>
                     <option v-for="cat in categories" :key="cat.id" :value="cat.id">{{ cat.name }}</option>
