@@ -22,6 +22,7 @@
             </div>
         </div>
         <h3 class="form-section-title">{{ $t('media') }}</h3>
+        <SubscriptionCheck>Subscribe to "Mixologist" plan to upload more than one cocktail recipe image!</SubscriptionCheck>
         <ImageUpload ref="imagesUpload" :value="cocktail.images" :max-images="maxImages" />
         <h3 class="form-section-title">{{ $t('ingredients.title') }}</h3>
         <ul v-show="cocktail.ingredients.length > 0" class="cocktail-form__ingredients" style="margin-bottom: 20px;">
@@ -137,6 +138,7 @@ import SaltRimDialog from './../Dialog/SaltRimDialog.vue'
 import SaltRimRadio from '../SaltRimRadio.vue'
 import AppState from './../../AppState'
 import SubstituteModal from './SubstituteModal.vue'
+import SubscriptionCheck from '../SubscriptionCheck.vue'
 
 export default {
     components: {
@@ -146,7 +148,8 @@ export default {
         PageHeader,
         SaltRimDialog,
         SaltRimRadio,
-        SubstituteModal
+        SubstituteModal,
+        SubscriptionCheck
     },
     data() {
         return {
