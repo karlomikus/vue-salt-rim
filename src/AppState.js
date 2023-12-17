@@ -76,19 +76,19 @@ class AppState {
     }
 
     isAdmin() {
-        return this.bar.access.role_id == 1
+        return this.bar && this.bar.id && this.bar.access.role_id == 1
     }
 
     isModerator() {
-        return this.bar.access.role_id == 2
+        return this.bar && this.bar.id && this.bar.access.role_id == 2
     }
 
     isGeneral() {
-        return this.bar.access.role_id == 3
+        return this.bar && this.bar.id && this.bar.access.role_id == 3
     }
 
     isGuest() {
-        return this.bar.access.role_id == 4
+        return this.bar && this.bar.id && this.bar.access.role_id == 4
     }
 
     isSubscribed() {

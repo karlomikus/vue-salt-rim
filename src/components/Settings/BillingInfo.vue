@@ -9,10 +9,14 @@
         <div class="settings-page__content">
             <OverlayLoader v-if="isLoading" />
             <div class="block-container block-container--padded" v-show="!isLoading">
+                <div class="alert alert--info" style="margin-bottom: 1rem;" v-if="billing.subscription == null">
+                    <h3>{{ $t('information') }}</h3>
+                    <p>Please note that you need to use the same email address you use to login in Bar Assistant when buying a subscription</p>
+                </div>
                 <div class="billing">
                     <div class="billing__card billing--inactive" v-if="billing.subscription == null">
                         <h3>{{ $t('billing.inactive-title', {name: 'Mixologist'}) }}</h3>
-                        <p>For enthusiasts that want to create a community around their bar</p>
+                        <p style="margin-bottom: 1rem;">For enthusiasts that want to create a community around their bar</p>
                         <ul>
                             <li>Create and manage up to 10 bars</li>
                             <li>Add unlimited cocktail recipes</li>
@@ -71,7 +75,7 @@
                                 <td><DateFormatter :date="billing.subscription.billed_at" format="long" /></td>
                                 <td>{{ new Intl.NumberFormat(userLocale, { style: "currency", currency: tx.currency }).format(tx.total / 100) }}</td>
                                 <td>{{ tx.currency }}</td>
-                                <td>{{ tx.invoice_number }}</td>
+                                <td><a :href="tx.url" target="_blank">{{ tx.invoice_number }}</a></td>
                             </tr>
                         </tbody>
                     </table>
@@ -90,6 +94,7 @@ import DateFormatter from './../DateFormatter.vue'
 import SaltRimRadio from './../SaltRimRadio.vue'
 import PageHeader from './../PageHeader.vue'
 import Navigation from './../Settings/SettingsNavigation.vue'
+import AppState from '../../AppState';
 
 export default {
     components: {
@@ -114,17 +119,22 @@ export default {
         }
     },
     created() {
+        let self = this
+
         initializePaddle({
             environment: window.srConfig.BILLING_ENV,
             token: window.srConfig.BILLING_TOKEN,
             checkout: {
                 settings: {
+                    showAddTaxId: false,
+                    allowLogout: false,
                     theme: document.body.classList.contains('dark-theme') ? 'dark' : 'light'
                 }
             },
             eventCallback(data) {
-                if (data.name == 'checkout.completed') {
-                    this.fetchBilling()
+                if (data.name == 'checkout.completed' || data.name == 'checkout.closed') {
+                    self.fetchBilling()
+                    self.refreshUser()
                 }
             }
         }).then(paddleInstance => {
@@ -183,6 +193,13 @@ export default {
             })
             .then((result) => {
                 this.productPrices = result.data.details.lineItems
+            })
+        },
+        refreshUser() {
+            const appState = new AppState()
+
+            ApiRequests.fetchUser().then(user => {
+                appState.setUser(user)
             })
         }
     }

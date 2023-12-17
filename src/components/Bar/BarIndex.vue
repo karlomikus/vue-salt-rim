@@ -17,7 +17,7 @@
         <OverlayLoader v-if="isLoading"></OverlayLoader>
         <SubscriptionCheck v-if="bars.length >= 1">Subscribe to "Mixologist" plan to create and manage up to 10 bars!</SubscriptionCheck>
         <div v-if="bars.length > 0" class="bars__grid">
-            <div v-for="bar in bars" :key="bar.id" class="bar block-container block-container--hover">
+            <div v-for="bar in bars" :key="bar.id" class="bar block-container block-container--hover" :class="{'bar--inactive': bar.status != 'active'}">
                 <span class="bar__role">{{ getRoleName(bar.access.role_id) }}</span>
                 <h4 class="bar__title">{{ bar.name }}</h4>
                 <p class="bar__owner">{{ $t('created-by') }} {{ bar.created_user.name }} &middot; <DateFormatter :date="bar.created_at" /></p>
@@ -182,6 +182,10 @@ export default {
     display: flex;
     flex-direction: column;
     gap: var(--gap-size-2);
+}
+
+.bar--inactive {
+    opacity: .5;
 }
 
 .bar__role {
