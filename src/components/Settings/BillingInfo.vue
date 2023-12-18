@@ -53,8 +53,17 @@
                         <div v-if="billing.subscription.paused_at">
                             {{ $t('billing.end_at') }} <DateFormatter :date="billing.subscription.paused_at" />
                         </div>
+                        <div v-if="billing.subscription.ends_at">
+                            {{ $t('billing.end_at') }} <DateFormatter :date="billing.subscription.ends_at" />
+                        </div>
                         <a v-if="billing.subscription.paused_at" href="#" @click.prevent="updateSubscription('resume')">{{ $t('billing.resume') }}</a>
-                        <a v-else href="#" @click.prevent="updateSubscription('pause')">{{ $t('billing.pause') }}</a>
+                        <template v-if="billing.subscription.status === 'active' && !(billing.subscription.ends_at != null || billing.subscription.paused_at != null)">
+                            <a :href="billing.subscription.update_payment_url" target="_blank">{{ $t('billing.update-payment-method') }}</a>
+                            &middot;
+                            <a href="#" @click.prevent="updateSubscription('pause')">{{ $t('billing.pause') }}</a>
+                            &middot;
+                            <a :href="billing.subscription.cancel_url" target="_blank">{{ $t('billing.cancel') }}</a>
+                        </template>
                     </div>
                 </div>
             </div>
@@ -75,7 +84,13 @@
                                 <td><DateFormatter :date="billing.subscription.billed_at" format="long" /></td>
                                 <td>{{ new Intl.NumberFormat(userLocale, { style: "currency", currency: tx.currency }).format(tx.total / 100) }}</td>
                                 <td>{{ tx.currency }}</td>
-                                <td><a :href="tx.url" target="_blank">{{ tx.invoice_number }}</a></td>
+                                <td>
+                                    <template v-if="tx.invoice_number">
+                                        <a v-if="tx.url" :href="tx.url" target="_blank">{{ tx.invoice_number }}</a>
+                                        <span v-else>{{ tx.invoice_number }}</span>
+                                    </template>
+                                    <template v-else>&mdash;</template>
+                                </td>
                             </tr>
                         </tbody>
                     </table>
@@ -138,8 +153,8 @@ export default {
                 }
             }
         }).then(paddleInstance => {
-            this.paddle = paddleInstance
-            this.fetchBilling()
+            self.paddle = paddleInstance
+            self.fetchBilling()
         });
     },
     methods: {
@@ -152,15 +167,16 @@ export default {
             })
         },
         updateSubscription(type) {
+            let self = this
             this.$confirm(this.$t('billing.confirm-sub-update-' + type), {
                 onResolved(dialog) {
                     dialog.close()
-                    this.isLoading = true
+                    self.isLoading = true
                     ApiRequests.updateSubscription({
                         type: type
                     }).then(data => {
-                        this.isLoading = false
-                        this.fetchBilling();
+                        self.isLoading = false
+                        self.fetchBilling();
                     })
                 }
             })
