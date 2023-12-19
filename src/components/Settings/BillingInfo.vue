@@ -9,12 +9,8 @@
         <div class="settings-page__content">
             <OverlayLoader v-if="isLoading" />
             <div class="block-container block-container--padded" v-show="!isLoading">
-                <div class="alert alert--info" style="margin-bottom: 1rem;" v-if="billing.subscription == null">
-                    <h3>{{ $t('information') }}</h3>
-                    <p>Please note that you need to use the same email address you use to login in Bar Assistant when buying a subscription</p>
-                </div>
                 <div class="billing">
-                    <div class="billing__card billing--inactive" v-if="billing.subscription == null">
+                    <div class="billing__card billing--inactive" v-if="showBuyingOptions">
                         <h3>{{ $t('billing.inactive-title', {name: 'Mixologist'}) }}</h3>
                         <p style="margin-bottom: 1rem;">For enthusiasts that want to create a community around their bar</p>
                         <ul>
@@ -34,6 +30,9 @@
                             <div class="billing__price-categories">
                                 <SaltRimRadio v-for="price in productPrices" v-model="selectedPriceCategory" :title="price.formattedTotals.total" :description="price.price.description" :value="price.price.id"></SaltRimRadio>
                             </div>
+                        </div>
+                        <div class="alert alert--info" style="margin-bottom: 1rem;" v-if="showBuyingOptions">
+                            <p>Please note that you need to use the same email address you use to sign in Bar Assistant when buying a subscription</p>
                         </div>
                         <button class="button button--dark" @click.prevent="upgradePlan" :disabled="selectedPriceCategory == null">Upgrade now</button>
                         <p>
@@ -133,7 +132,13 @@ export default {
             }
         }
     },
+    computed: {
+        showBuyingOptions() {
+            return this.billing.subscription == null || this.billing.subscription.status == 'canceled';
+        }
+    },
     created() {
+        this.refreshUser();
         let self = this
 
         initializePaddle({
@@ -143,13 +148,18 @@ export default {
                 settings: {
                     showAddTaxId: false,
                     allowLogout: false,
-                    theme: document.body.classList.contains('dark-theme') ? 'dark' : 'light'
+                    successUrl: '/settings/billing',
+                    theme: 'light'
                 }
             },
             eventCallback(data) {
-                if (data.name == 'checkout.completed' || data.name == 'checkout.closed') {
+                if (data.name == 'checkout.completed') {
                     self.fetchBilling()
                     self.refreshUser()
+                }
+
+                if (data.name == 'checkout.closed') {
+                    self.$router.push('/settings/billing');
                 }
             }
         }).then(paddleInstance => {
@@ -202,6 +212,10 @@ export default {
             })
         },
         fetchProduct() {
+            if (!this.showBuyingOptions) {
+                return;
+            }
+
             this.paddle.PricePreview({
                 items: this.billing.prices.map(priceId => {
                     return { priceId: priceId, quantity: 1 }
