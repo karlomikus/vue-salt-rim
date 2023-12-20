@@ -57,8 +57,10 @@
                         </div>
                         <a v-if="billing.subscription.paused_at" href="#" @click.prevent="updateSubscription('resume')">{{ $t('billing.resume') }}</a>
                         <template v-if="billing.subscription.status === 'active' && !(billing.subscription.ends_at != null || billing.subscription.paused_at != null)">
-                            <a :href="billing.subscription.update_payment_url" target="_blank">{{ $t('billing.update-payment-method') }}</a>
-                            &middot;
+                            <template v-if="billing.subscription.update_payment_url">
+                                <a :href="billing.subscription.update_payment_url" target="_blank">{{ $t('billing.update-payment-method') }}</a>
+                                &middot;
+                            </template>
                             <a href="#" @click.prevent="updateSubscription('pause')">{{ $t('billing.pause') }}</a>
                             &middot;
                             <a :href="billing.subscription.cancel_url" target="_blank">{{ $t('billing.cancel') }}</a>

@@ -382,7 +382,13 @@
     "join-error": "Unable to join bar",
     "select-bar": "Select bar",
     "delete-success": "Bar successfully removed",
-    "join-success": "Joined a new bar, cheers!"
+    "join-success": "Joined a new bar, cheers!",
+    "activate": "Activate bar",
+    "status-active": "Active bars",
+    "status-deactivated": "Deactivated bars",
+    "status-provisioning": "Provisioning",
+    "confirm-activation": "Are you sure you want to activate \"{name}\"? On free plan you can have only one bar activated, you will not be able to activate any other bars.",
+    "activation-success": "Bar activated"
   },
   "close": "Close",
   "save-as": "Save as",

@@ -10,49 +10,62 @@
                     <BarJoinDialog @dialog-closed="showJoinDialog = false" @bar-joined="refreshBars" />
                 </template>
             </SaltRimDialog>
-            <RouterLink class="button button--dark" :to="{ name: 'bars.form' }">{{ $t('bars.add') }}</RouterLink>
+            <RouterLink v-if="showCreateAction" class="button button--dark" :to="{ name: 'bars.form' }">{{ $t('bars.add') }}</RouterLink>
         </template>
     </PageHeader>
     <div class="bars">
         <OverlayLoader v-if="isLoading"></OverlayLoader>
         <SubscriptionCheck v-if="bars.length >= 1">Subscribe to "Mixologist" plan to create and manage up to 10 bars!</SubscriptionCheck>
-        <div v-if="bars.length > 0" class="bars__grid">
-            <div v-for="bar in bars" :key="bar.id" class="bar block-container block-container--hover" :class="{'bar--inactive': bar.status != 'active'}">
-                <span class="bar__role">{{ getRoleName(bar.access.role_id) }}</span>
-                <h4 class="bar__title">{{ bar.name }}</h4>
-                <p class="bar__owner">{{ $t('created-by') }} {{ bar.created_user.name }} &middot; <DateFormatter :date="bar.created_at" /></p>
-                <template v-if="bar.show_invite_code && bar.access.can_edit">
-                    <label class="form-label">{{ $t('bars.invite-code') }}:</label>
-                    <p class="bar__invite_code">
-                        {{ bar.invite_code }}
-                    </p>
-                </template>
-                <p class="bar__subtitle">{{ bar.subtitle }}</p>
-                <p class="bar__description">{{ bar.description }}</p>
-                <div class="bar__actions">
-                    <template v-if="bar.access.can_delete">
-                        <a href="#" @click.prevent="deleteBar(bar)">{{ $t('remove') }}</a>
-                        &middot;
-                    </template>
-                    <template v-if="!bar.access.can_delete">
-                        <a href="#" @click.prevent="leaveBar(bar)">{{ $t('leave') }}</a>
-                        &middot;
-                    </template>
-                    <template v-if="bar.access.can_edit">
-                        <RouterLink v-if="bar.access.can_edit" :to="{ name: 'bars.form', query: { id: bar.id } }">{{ $t('edit') }}</RouterLink>
-                        &middot;
-                    </template>
-                    <template v-if="bar.invite_code && bar.access.can_edit">
-                        <a href="#" @click.prevent="bar.show_invite_code = !bar.show_invite_code">{{ $t('bars.toggle-invite-code') }}</a>
-                        &middot;
-                    </template>
-                    <a href="#" @click.prevent="selectBar(bar)">{{ $t('bars.select-bar') }}</a>
+        <div v-if="bars.length > 0">
+            <template v-for="(barsInGroup, group) in groupedBars">
+                <h3 class="page-subtitle" v-if="barsInGroup.length > 0">{{ $t('bars.status-' + group) }}</h3>
+                <div class="bars__grid">
+                    <div v-for="bar in barsInGroup" :key="bar.id" class="bar block-container block-container--hover" :class="{ 'bar--inactive': bar.status != 'active' }">
+                        <span class="bar__role">
+                            {{ getRoleName(bar.access.role_id) }}
+                            <template v-if="bar.created_user.id == appState.user.id">&middot; Owner</template>
+                        </span>
+                        <h4 class="bar__title">{{ bar.name }}</h4>
+                        <p class="bar__owner">{{ $t('created-by') }} {{ bar.created_user.name }} &middot;
+                            <DateFormatter :date="bar.created_at" />
+                        </p>
+                        <template v-if="bar.show_invite_code && bar.access.can_edit">
+                            <label class="form-label">{{ $t('bars.invite-code') }}:</label>
+                            <p class="bar__invite_code">
+                                {{ bar.invite_code }}
+                            </p>
+                        </template>
+                        <p class="bar__subtitle">{{ bar.subtitle }}</p>
+                        <p class="bar__description">{{ bar.description }}</p>
+                        <div class="bar__actions">
+                            <template v-if="bar.access.can_delete">
+                                <a href="#" @click.prevent="deleteBar(bar)">{{ $t('remove') }}</a>
+                                &middot;
+                            </template>
+                            <template v-if="!bar.access.can_delete">
+                                <a href="#" @click.prevent="leaveBar(bar)">{{ $t('leave') }}</a>
+                                &middot;
+                            </template>
+                            <template v-if="bar.access.can_edit">
+                                <RouterLink v-if="bar.access.can_edit" :to="{ name: 'bars.form', query: { id: bar.id } }">{{ $t('edit') }}</RouterLink>
+                                &middot;
+                            </template>
+                            <template v-if="bar.invite_code && bar.access.can_edit">
+                                <a href="#" @click.prevent="bar.show_invite_code = !bar.show_invite_code">{{ $t('bars.toggle-invite-code') }}</a>
+                                &middot;
+                            </template>
+                            <a href="#" @click.prevent="selectBar(bar)" v-if="bar.status == 'active'">{{ $t('bars.select-bar') }}</a>
+                            <a href="#" @click.prevent="activateBar(bar)" v-if="bar.status == 'deactivated' && bar.access.can_activate">{{ $t('bars.activate') }}</a>
+                        </div>
+                    </div>
                 </div>
-            </div>
+            </template>
         </div>
         <EmptyState v-else>
             <template #icon>
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="32" height="32"><path d="M21 19H23V21H1V19H3V4C3 3.44772 3.44772 3 4 3H14C14.5523 3 15 3.44772 15 4V19H19V11H17V9H20C20.5523 9 21 9.44772 21 10V19ZM5 5V19H13V5H5ZM7 11H11V13H7V11ZM7 7H11V9H7V7Z"></path></svg>
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="32" height="32">
+                    <path d="M21 19H23V21H1V19H3V4C3 3.44772 3.44772 3 4 3H14C14.5523 3 15 3.44772 15 4V19H19V11H17V9H20C20.5523 9 21 9.44772 21 10V19ZM5 5V19H13V5H5ZM7 11H11V13H7V11ZM7 7H11V9H7V7Z"></path>
+                </svg>
             </template>
             <template #default>
                 {{ $t('bars.empty') }}
@@ -88,6 +101,34 @@ export default {
             bars: [],
             showJoinDialog: false,
             showCreateDialog: false,
+            appState: new AppState(),
+        }
+    },
+    computed: {
+        groupedBars() {
+            const res = {
+                'active': [],
+                'provisioning': [],
+                'deactivated': [],
+            };
+
+            this.bars.forEach(bar => {
+                res[bar.status].push(bar)
+            })
+
+            return res
+        },
+        ownedBars() {
+            return this.bars.filter(bar => {
+                return bar.created_user.id == this.appState.user.id
+            });
+        },
+        showCreateAction() {
+            if (this.appState.isSubscribed()) {
+                return this.ownedBars.length < 10;
+            }
+
+            return this.ownedBars.length < 1 && !this.appState.isSubscribed()
         }
     },
     created() {
@@ -120,7 +161,7 @@ export default {
             return Utils.getRoleName(roleId)
         },
         deleteBar(bar) {
-            this.$confirm(this.$t('bars.confirm-delete', {name: bar.name}), {
+            this.$confirm(this.$t('bars.confirm-delete', { name: bar.name }), {
                 onResolved: (dialog) => {
                     this.isLoading = true
                     dialog.close()
@@ -141,7 +182,7 @@ export default {
             })
         },
         leaveBar(bar) {
-            this.$confirm(this.$t('bars.confirm-leave', {name: bar.name}), {
+            this.$confirm(this.$t('bars.confirm-leave', { name: bar.name }), {
                 onResolved: (dialog) => {
                     this.isLoading = true
                     dialog.close()
@@ -160,7 +201,23 @@ export default {
                     })
                 }
             })
-        }
+        },
+        activateBar(bar) {
+            this.$confirm(this.$t('bars.confirm-activation', { name: bar.name }), {
+                onResolved: (dialog) => {
+                    this.isLoading = true
+                    dialog.close()
+                    ApiRequests.updateBarStatus(bar.id, 'active').then(() => {
+                        this.isLoading = false
+                        this.$toast.default(this.$t('bars.activation-success'))
+                        this.refreshBars()
+                    }).catch(e => {
+                        this.$toast.error(e.message)
+                        this.isLoading = false
+                    })
+                }
+            })
+        },
     }
 }
 </script>
@@ -185,7 +242,7 @@ export default {
 }
 
 .bar--inactive {
-    opacity: .5;
+    background: none;
 }
 
 .bar__role {
