@@ -382,7 +382,13 @@
     "join-error": "Unable to join bar",
     "select-bar": "Select bar",
     "delete-success": "Bar successfully removed",
-    "join-success": "Joined a new bar, cheers!"
+    "join-success": "Joined a new bar, cheers!",
+    "activate": "Activate bar",
+    "status-active": "Active bars",
+    "status-deactivated": "Deactivated bars",
+    "status-provisioning": "Provisioning",
+    "confirm-activation": "Are you sure you want to activate \"{name}\"? On free plan you can have only one bar activated, you will not be able to activate any other bars.",
+    "activation-success": "Bar activated"
   },
   "close": "Close",
   "save-as": "Save as",
@@ -439,7 +445,7 @@
     "is_active": "Your subscription for \"{name}\" plan is currently active",
     "next_bill_at": "Your next payment will be on",
     "end_at": "You ended your subscription, you will have access to your current plan until",
-    "confirm-sub-update-pause": "This action will pause your subscription which you can resume at any time. You will have full access to your plan until the end of the current subscription.",
+    "confirm-sub-update-pause": "This action will end your subscription which you can resume at any time. You will have full access to your plan until the end of the current subscription.",
     "confirm-sub-update-resume": "This action will resume your subscription. If your subscription is not active anymore you will be charged as per plan pricing.",
     "pause": "Pause subscription",
     "resume": "Resume subscription",
@@ -448,6 +454,8 @@
     "currency": "Currency",
     "invoice-number": "Invoice number",
     "transactions": "Transactions",
-    "subscribed-on": "Subscribed on"
+    "subscribed-on": "Subscribed on",
+    "update-payment-method": "Update payment method",
+    "cancel": "Cancel"
   }
 }

@@ -10,9 +10,9 @@
             <OverlayLoader v-if="isLoading" />
             <div class="block-container block-container--padded" v-show="!isLoading">
                 <div class="billing">
-                    <div class="billing__card billing--inactive" v-if="billing.subscription == null">
+                    <div class="billing__card billing--inactive" v-if="showBuyingOptions">
                         <h3>{{ $t('billing.inactive-title', {name: 'Mixologist'}) }}</h3>
-                        <p>For enthusiasts that want to create a community around their bar</p>
+                        <p style="margin-bottom: 1rem;">For enthusiasts that want to create a community around their bar</p>
                         <ul>
                             <li>Create and manage up to 10 bars</li>
                             <li>Add unlimited cocktail recipes</li>
@@ -30,6 +30,9 @@
                             <div class="billing__price-categories">
                                 <SaltRimRadio v-for="price in productPrices" v-model="selectedPriceCategory" :title="price.formattedTotals.total" :description="price.price.description" :value="price.price.id"></SaltRimRadio>
                             </div>
+                        </div>
+                        <div class="alert alert--info" style="margin-bottom: 1rem;" v-if="showBuyingOptions">
+                            <p>Please note that you need to use the same email address you use to sign in Bar Assistant when buying a subscription</p>
                         </div>
                         <button class="button button--dark" @click.prevent="upgradePlan" :disabled="selectedPriceCategory == null">Upgrade now</button>
                         <p>
@@ -49,8 +52,19 @@
                         <div v-if="billing.subscription.paused_at">
                             {{ $t('billing.end_at') }} <DateFormatter :date="billing.subscription.paused_at" />
                         </div>
+                        <div v-if="billing.subscription.ends_at">
+                            {{ $t('billing.end_at') }} <DateFormatter :date="billing.subscription.ends_at" />
+                        </div>
                         <a v-if="billing.subscription.paused_at" href="#" @click.prevent="updateSubscription('resume')">{{ $t('billing.resume') }}</a>
-                        <a v-else href="#" @click.prevent="updateSubscription('pause')">{{ $t('billing.pause') }}</a>
+                        <template v-if="billing.subscription.status === 'active' && !(billing.subscription.ends_at != null || billing.subscription.paused_at != null)">
+                            <template v-if="billing.subscription.update_payment_url">
+                                <a :href="billing.subscription.update_payment_url" target="_blank">{{ $t('billing.update-payment-method') }}</a>
+                                &middot;
+                            </template>
+                            <a href="#" @click.prevent="updateSubscription('pause')">{{ $t('billing.pause') }}</a>
+                            &middot;
+                            <a :href="billing.subscription.cancel_url" target="_blank">{{ $t('billing.cancel') }}</a>
+                        </template>
                     </div>
                 </div>
             </div>
@@ -71,7 +85,13 @@
                                 <td><DateFormatter :date="billing.subscription.billed_at" format="long" /></td>
                                 <td>{{ new Intl.NumberFormat(userLocale, { style: "currency", currency: tx.currency }).format(tx.total / 100) }}</td>
                                 <td>{{ tx.currency }}</td>
-                                <td>{{ tx.invoice_number }}</td>
+                                <td>
+                                    <template v-if="tx.invoice_number">
+                                        <a v-if="tx.url" :href="tx.url" target="_blank">{{ tx.invoice_number }}</a>
+                                        <span v-else>{{ tx.invoice_number }}</span>
+                                    </template>
+                                    <template v-else>&mdash;</template>
+                                </td>
                             </tr>
                         </tbody>
                     </table>
@@ -90,6 +110,7 @@ import DateFormatter from './../DateFormatter.vue'
 import SaltRimRadio from './../SaltRimRadio.vue'
 import PageHeader from './../PageHeader.vue'
 import Navigation from './../Settings/SettingsNavigation.vue'
+import AppState from '../../AppState';
 
 export default {
     components: {
@@ -113,23 +134,35 @@ export default {
             }
         }
     },
+    computed: {
+        showBuyingOptions() {
+            return this.billing.subscription == null || this.billing.subscription.status == 'canceled';
+        }
+    },
     created() {
+        // Refresh user to fetch and save subscription info in storage
+        this.refreshUser();
+
+        let self = this
+
         initializePaddle({
             environment: window.srConfig.BILLING_ENV,
             token: window.srConfig.BILLING_TOKEN,
             checkout: {
                 settings: {
-                    theme: document.body.classList.contains('dark-theme') ? 'dark' : 'light'
+                    showAddTaxId: false,
+                    allowLogout: false,
+                    theme: 'light'
                 }
             },
             eventCallback(data) {
-                if (data.name == 'checkout.completed') {
-                    this.fetchBilling()
+                if (data.name == 'checkout.closed') {
+                    self.afterCheckoutHook();
                 }
             }
         }).then(paddleInstance => {
-            this.paddle = paddleInstance
-            this.fetchBilling()
+            self.paddle = paddleInstance
+            self.fetchBilling()
         });
     },
     methods: {
@@ -137,20 +170,24 @@ export default {
             this.isLoading = true
             ApiRequests.fetchSubscription().then(data => {
                 this.billing = data
-                this.fetchProduct()
-                this.isLoading = false
+                this.fetchProduct().then(() => {
+                    this.isLoading = false
+                }).catch(() => {
+                    this.isLoading = false
+                })
             })
         },
         updateSubscription(type) {
+            let self = this
             this.$confirm(this.$t('billing.confirm-sub-update-' + type), {
                 onResolved(dialog) {
                     dialog.close()
-                    this.isLoading = true
+                    self.isLoading = true
                     ApiRequests.updateSubscription({
                         type: type
-                    }).then(data => {
-                        this.isLoading = false
-                        this.fetchBilling();
+                    }).then(() => {
+                        self.isLoading = false
+                        self.fetchBilling();
                     })
                 }
             })
@@ -175,15 +212,32 @@ export default {
                 customer: customer
             })
         },
-        fetchProduct() {
-            this.paddle.PricePreview({
+        async fetchProduct() {
+            if (!this.showBuyingOptions) {
+                return;
+            }
+
+            const result = await this.paddle.PricePreview({
                 items: this.billing.prices.map(priceId => {
                     return { priceId: priceId, quantity: 1 }
                 })
             })
-            .then((result) => {
-                this.productPrices = result.data.details.lineItems
+
+            this.productPrices = result.data.details.lineItems
+        },
+        refreshUser() {
+            const appState = new AppState()
+
+            ApiRequests.fetchUser().then(user => {
+                appState.setUser(user)
             })
+        },
+        afterCheckoutHook() {
+            this.isLoading = true;
+            setTimeout(() => {
+                this.isLoading = false;
+                window.location.reload()
+            }, 3000);
         }
     }
 }

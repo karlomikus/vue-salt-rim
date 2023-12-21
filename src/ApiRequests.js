@@ -820,6 +820,12 @@ class ApiRequests
         return this.parseResponse(jsonResp)
     }
 
+    static async updateBarStatus(id, status) {
+        const jsonResp = await this.postRequest(`/api/bars/${id}/status`, {status: status})
+
+        return this.parseResponse(jsonResp)
+    }
+
     /**
      * =============================
      * Billing

@@ -3,9 +3,10 @@
         <OverlayLoader v-if="isLoading"></OverlayLoader>
         <div class="dialog-title">{{ $t('bars.join') }}</div>
         <div class="dialog-content">
-            <p style="margin-bottom: 1rem;">
-                {{ $t('bars.join-notice') }}
-            </p>
+            <div class="alert alert--info" style="margin: 0 0 1rem 0;">
+                <h3>{{ $t('information') }}</h3>
+                <p>{{ $t('bars.join-notice') }}</p>
+            </div>
             <div class="form-group">
                 <label class="form-label form-label--required" for="bar-invite-code">{{ $t('bars.invite-code') }}:</label>
                 <input id="bar-invite-code" v-model="inviteCode" class="form-input" type="text" required>

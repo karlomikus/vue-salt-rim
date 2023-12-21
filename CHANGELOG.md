@@ -1,3 +1,10 @@
+# v2.5.0
+## New
+- Bars are now grouped by status
+
+## Fixes
+- Fixed issues with role check when bar is not selected
+
 # v2.4.0
 ## New
 - Show ingredient category on ingredients grid
