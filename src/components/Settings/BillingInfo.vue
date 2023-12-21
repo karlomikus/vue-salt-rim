@@ -140,7 +140,9 @@ export default {
         }
     },
     created() {
+        // Refresh user to fetch and save subscription info in storage
         this.refreshUser();
+
         let self = this
 
         initializePaddle({
@@ -150,18 +152,12 @@ export default {
                 settings: {
                     showAddTaxId: false,
                     allowLogout: false,
-                    successUrl: '/settings/billing',
                     theme: 'light'
                 }
             },
             eventCallback(data) {
-                if (data.name == 'checkout.completed') {
-                    self.fetchBilling()
-                    self.refreshUser()
-                }
-
                 if (data.name == 'checkout.closed') {
-                    self.$router.push('/settings/billing');
+                    self.afterCheckoutHook();
                 }
             }
         }).then(paddleInstance => {
@@ -174,8 +170,11 @@ export default {
             this.isLoading = true
             ApiRequests.fetchSubscription().then(data => {
                 this.billing = data
-                this.fetchProduct()
-                this.isLoading = false
+                this.fetchProduct().then(() => {
+                    this.isLoading = false
+                }).catch(() => {
+                    this.isLoading = false
+                })
             })
         },
         updateSubscription(type) {
@@ -186,7 +185,7 @@ export default {
                     self.isLoading = true
                     ApiRequests.updateSubscription({
                         type: type
-                    }).then(data => {
+                    }).then(() => {
                         self.isLoading = false
                         self.fetchBilling();
                     })
@@ -213,19 +212,18 @@ export default {
                 customer: customer
             })
         },
-        fetchProduct() {
+        async fetchProduct() {
             if (!this.showBuyingOptions) {
                 return;
             }
 
-            this.paddle.PricePreview({
+            const result = await this.paddle.PricePreview({
                 items: this.billing.prices.map(priceId => {
                     return { priceId: priceId, quantity: 1 }
                 })
             })
-            .then((result) => {
-                this.productPrices = result.data.details.lineItems
-            })
+
+            this.productPrices = result.data.details.lineItems
         },
         refreshUser() {
             const appState = new AppState()
@@ -233,6 +231,13 @@ export default {
             ApiRequests.fetchUser().then(user => {
                 appState.setUser(user)
             })
+        },
+        afterCheckoutHook() {
+            this.isLoading = true;
+            setTimeout(() => {
+                this.isLoading = false;
+                window.location.reload()
+            }, 3000);
         }
     }
 }
