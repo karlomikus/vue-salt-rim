@@ -76,7 +76,7 @@ export default {
         this.searchClient = instantMeiliSearch(
             appState.bar.search_driver_host,
             appState.bar.search_driver_api_key,
-        )
+        ).searchClient
     },
     mounted() {
         this.$nextTick(() => {

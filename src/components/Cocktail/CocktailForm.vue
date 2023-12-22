@@ -244,9 +244,9 @@ export default {
             animation: 150
         })
 
-        const state = new AppState();
+        const state = new AppState()
         if (!state.isSubscribed()) {
-            this.maxImages = 1;
+            this.maxImages = 1
         }
     },
     methods: {

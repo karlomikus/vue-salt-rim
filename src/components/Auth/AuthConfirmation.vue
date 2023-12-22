@@ -3,13 +3,9 @@
 </template>
 
 <script>
-import OverlayLoader from './../OverlayLoader.vue'
 import ApiRequests from './../../ApiRequests.js'
 
 export default {
-    components: {
-        OverlayLoader
-    },
     data() {
         return {
             isLoading: false,

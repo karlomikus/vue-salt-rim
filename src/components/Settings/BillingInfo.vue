@@ -8,9 +8,9 @@
         </div>
         <div class="settings-page__content">
             <OverlayLoader v-if="isLoading" />
-            <div class="block-container block-container--padded" v-show="!isLoading">
+            <div v-show="!isLoading" class="block-container block-container--padded">
                 <div class="billing">
-                    <div class="billing__card billing--inactive" v-if="showBuyingOptions">
+                    <div v-if="showBuyingOptions" class="billing__card billing--inactive">
                         <h3>{{ $t('billing.inactive-title', {name: 'Mixologist'}) }}</h3>
                         <p style="margin-bottom: 1rem;">For enthusiasts that want to create a community around their bar</p>
                         <ul>
@@ -28,13 +28,13 @@
                         </ul>
                         <div class="form-group">
                             <div class="billing__price-categories">
-                                <SaltRimRadio v-for="price in productPrices" v-model="selectedPriceCategory" :title="price.formattedTotals.total" :description="price.price.description" :value="price.price.id"></SaltRimRadio>
+                                <SaltRimRadio v-for="price in productPrices" :key="price.price.id" v-model="selectedPriceCategory" :title="price.formattedTotals.total" :description="price.price.description" :value="price.price.id"></SaltRimRadio>
                             </div>
                         </div>
-                        <div class="alert alert--info" style="margin-bottom: 1rem;" v-if="showBuyingOptions">
+                        <div v-if="showBuyingOptions" class="alert alert--info" style="margin-bottom: 1rem;">
                             <p>Please note that you need to use the same email address you use to sign in Bar Assistant when buying a subscription</p>
                         </div>
-                        <button class="button button--dark" @click.prevent="upgradePlan" :disabled="selectedPriceCategory == null">Upgrade now</button>
+                        <button class="button button--dark" :disabled="selectedPriceCategory == null" @click.prevent="upgradePlan">Upgrade now</button>
                         <p>
                             <a href="https://barassistant.app/terms.html" target="_blank">Terms of service</a>
                         </p>
@@ -103,14 +103,14 @@
 
 
 <script>
-import { initializePaddle } from '@paddle/paddle-js';
+import { initializePaddle } from '@paddle/paddle-js'
 import ApiRequests from './../../ApiRequests.js'
 import OverlayLoader from './../OverlayLoader.vue'
 import DateFormatter from './../DateFormatter.vue'
 import SaltRimRadio from './../SaltRimRadio.vue'
 import PageHeader from './../PageHeader.vue'
 import Navigation from './../Settings/SettingsNavigation.vue'
-import AppState from '../../AppState';
+import AppState from '../../AppState'
 
 export default {
     components: {
@@ -136,12 +136,12 @@ export default {
     },
     computed: {
         showBuyingOptions() {
-            return this.billing.subscription == null || this.billing.subscription.status == 'canceled';
+            return this.billing.subscription == null || this.billing.subscription.status == 'canceled'
         }
     },
     created() {
         // Refresh user to fetch and save subscription info in storage
-        this.refreshUser();
+        this.refreshUser()
 
         let self = this
 
@@ -157,13 +157,13 @@ export default {
             },
             eventCallback(data) {
                 if (data.name == 'checkout.closed') {
-                    self.afterCheckoutHook();
+                    self.afterCheckoutHook()
                 }
             }
         }).then(paddleInstance => {
             self.paddle = paddleInstance
             self.fetchBilling()
-        });
+        })
     },
     methods: {
         fetchBilling() {
@@ -187,17 +187,17 @@ export default {
                         type: type
                     }).then(() => {
                         self.isLoading = false
-                        self.fetchBilling();
+                        self.fetchBilling()
                     })
                 }
             })
         },
         upgradePlan() {
             if (!this.selectedPriceCategory) {
-                return;
+                return
             }
 
-            let customer = {};
+            let customer = {}
 
             if (this.billing.customer.paddle_id) {
                 customer.id = this.billing.customer.paddle_id
@@ -214,7 +214,7 @@ export default {
         },
         async fetchProduct() {
             if (!this.showBuyingOptions) {
-                return;
+                return
             }
 
             const result = await this.paddle.PricePreview({
@@ -233,11 +233,11 @@ export default {
             })
         },
         afterCheckoutHook() {
-            this.isLoading = true;
+            this.isLoading = true
             setTimeout(() => {
-                this.isLoading = false;
+                this.isLoading = false
                 window.location.reload()
-            }, 3000);
+            }, 3000)
         }
     }
 }

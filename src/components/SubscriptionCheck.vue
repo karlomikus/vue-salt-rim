@@ -1,11 +1,11 @@
 <template>
-    <div class="subscription-check" v-if="!appState.isSubscribed()">
+    <div v-if="!appState.isSubscribed()" class="subscription-check">
         📢 <slot></slot> &middot; <RouterLink :to="{name: 'settings.billing'}">Find out more!</RouterLink>
     </div>
 </template>
 
 <script>
-import AppState from '../AppState';
+import AppState from '../AppState'
 
 export default {
     data() {
