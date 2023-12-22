@@ -1,5 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Alice&family=Inter:wght@400;700&family=Space+Mono&display=swap');
-/* @import url('https://api.fonts.coollabs.io/css2?family=Alice&family=Inter:wght@400;700&family=Space+Mono&display=swap'); */
+@import url('https://api.fonts.coollabs.io/css2?family=Inter:wght@400;700&family=Noticia+Text:wght@400;700&family=Space+Mono&display=swap');
 
 :root {
     /* Base color scheme */
@@ -100,8 +99,8 @@
     --default-scheme: light;
 
     --font-primary: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
-    --font-heading: 'Alice', serif;
-    --font-mono: 'Space Mono', monospace;
+    --font-heading: 'Noticia Text', ui-serif, serif;
+    --font-mono: 'Space Mono', Dank Mono, Operator Mono, Inconsolata, Fira Mono, ui-monospace, SF Mono, Monaco, Droid Sans Mono, Source Code Pro, monospace;
     --fw-bold: 700;
 
     --color-site-header: #584b75;
@@ -180,7 +179,7 @@ body {
 }
 
 strong {
-    font-weight: 700;
+    font-weight: var(--fw-bold);
 }
 
 body {

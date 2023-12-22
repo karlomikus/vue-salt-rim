@@ -86,7 +86,7 @@ export default {
 
 .ingredient-spotlight-wrapper h4 {
     font-size: 1.5rem;
-    font-weight: 700;
+    font-weight: var(--fw-bold);
     line-height: 1.2;
     font-family: var(--font-heading);
     margin-bottom: 0.5rem;

@@ -113,6 +113,7 @@
                 </Dropdown>
             </div>
             <h2 class="details-block-container__title">{{ $t('ingredient.cocktail-children', { total: ingredient.cocktails.length }) }}</h2>
+            <RouterLink v-if="ingredient.cocktails.length > 0" :to="{name: 'cocktails', query: {'filter[ingredient_id]': ingredient.id}}" style="display: inline-block; margin-bottom: 1rem;">{{ $t('view-all') }}</RouterLink>
             <ul v-if="ingredient.cocktails.length > 0" class="ingredient-chips-list">
                 <li v-if="extraIfAddedToShelf.length > 0" class="ingredient-chips-list__label">{{ $t('ingredient.extra-cocktails') }}:</li>
                 <li v-for="cocktail in extraIfAddedToShelf" :key="cocktail.id">
@@ -376,7 +377,7 @@ export default {
 .ingredient-details__title h2 {
     font-family: var(--font-heading);
     font-size: 2rem;
-    font-weight: 700;
+    font-weight: var(--fw-bold);
     margin: 0;
     line-height: 1.3;
 }

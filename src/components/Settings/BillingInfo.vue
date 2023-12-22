@@ -23,7 +23,7 @@
                             <li>Add more images to recipes</li>
                             <li>Add unlimited cocktail collections</li>
                             <li>No rate limits for import actions</li>
-                            <li>Create personal access API tokens</li>
+                            <!-- <li>Create personal access API tokens</li> -->
                             <li>Save <span>15%</span> when paying annually</li>
                         </ul>
                         <div class="form-group">
@@ -268,7 +268,7 @@ export default {
 .billing__card h3 {
     font-family: var(--font-heading);
     font-size: 1.5rem;
-    font-weight: bold;
+    font-weight: var(--fw-bold);
 }
 
 .billing__price-categories {

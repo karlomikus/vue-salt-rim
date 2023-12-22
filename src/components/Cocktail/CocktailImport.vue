@@ -394,7 +394,7 @@ export default {
 }
 
 .scraper-ingredients__ingredient__existing {
-    font-weight: bold;
+    font-weight: var(--fw-bold);
 }
 
 .import-types {

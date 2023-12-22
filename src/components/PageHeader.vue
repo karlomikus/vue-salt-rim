@@ -26,7 +26,7 @@
 
 .site-page-header__title h2 {
     /* font-family: var(--font-accent); */
-    font-weight: bold;
+    font-weight: var(--fw-bold);
 }
 
 .site-page-header__actions {

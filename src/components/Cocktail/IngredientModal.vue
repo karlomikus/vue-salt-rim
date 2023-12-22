@@ -139,7 +139,7 @@ export default {
 }
 
 .selected-ingredient p {
-    font-weight: bold;
+    font-weight: var(--fw-bold);
     font-size: 1.5rem;
 }
 

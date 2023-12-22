@@ -218,7 +218,7 @@ export default {
     font-size: 0.7rem;
     letter-spacing: 1px;
     text-transform: uppercase;
-    font-weight: bold;
+    font-weight: var(--fw-bold);
     margin: 0.75rem 0;
 }
 </style>

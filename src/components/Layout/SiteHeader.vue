@@ -146,7 +146,7 @@ export default {
     padding: 5px 10px;
     font-size: 1rem;
     text-decoration: none;
-    font-weight: 700;
+    font-weight: var(--fw-bold);
     color: rgba(255, 255, 255, .8);
 }
 
@@ -207,7 +207,7 @@ export default {
     padding: 0.5rem 1.25rem;
     font-size: 1rem;
     text-decoration: none;
-    font-weight: 700;
+    font-weight: var(--fw-bold);
     color: rgba(255, 255, 255, .7);
 }
 

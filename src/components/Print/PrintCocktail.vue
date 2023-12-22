@@ -125,7 +125,7 @@ h1 {
 
 h2 {
     font-size: 0.8rem;
-    font-weight: bold;
+    font-weight: var(--fw-bold);
 }
 
 ul, ol {

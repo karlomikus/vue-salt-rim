@@ -42,7 +42,7 @@ main {
     border-radius: var(--radius-2);
     margin: 1rem 0;
     font-size: 0.85rem;
-    font-weight: bold;
+    font-weight: var(--fw-bold);
     text-transform: uppercase;
     letter-spacing: 1px;
     display: flex;
@@ -105,7 +105,7 @@ h3.form-section-title::before {
 }
 
 .site-logo__title {
-    font-weight: 700;
+    font-weight: var(--fw-bold);
     margin-left: 10px;
     text-shadow: 3px 2px 0 rgba(0, 0, 0, .2);
     line-height: 0.9;
