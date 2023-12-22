@@ -1,3 +1,9 @@
+# v2.5.0
+## New
+- Update accent font
+- Fonts now use a privacy-friendly drop-in replacement for Google Fonts
+- Ingredient details now have a link to cocktail list with current ingredient filter
+
 # v2.4.0
 ## New
 - Show ingredient category on ingredients grid
