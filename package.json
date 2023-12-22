@@ -9,11 +9,10 @@
   },
   "dependencies": {
     "@floating-ui/vue": "^1.0.2",
-    "@meilisearch/instant-meilisearch": "^0.12.0",
+    "@meilisearch/instant-meilisearch": "^1.0.0",
     "@paddle/paddle-js": "^0.5.2",
     "dayjs": "^1.11.7",
     "html-to-image": "^1.11.11",
-    "lodash": "^4.17.21",
     "micromark": "^3.2.0",
     "mitt": "^3.0.0",
     "plausible-tracker": "^0.3.8",
