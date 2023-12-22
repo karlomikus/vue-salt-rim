@@ -8,11 +8,24 @@ import mitt from 'mitt'
 import dialog from './components/Dialog/plugin'
 import './assets/main.css'
 import AppState from './AppState.js'
+import Plausible from 'plausible-tracker'
+import { registerSW } from 'virtual:pwa-register'
 
 import en_US from './locales/en-US'
 import hr_HR from './locales/hr-HR'
 import fr_FR from './locales/fr-FR'
 import de_DE from './locales/de-DE'
+
+registerSW({ immediate: true })
+
+if (window.srConfig.ANALYTICS_HOST && window.srConfig.ANALYTICS_HOST != '') {
+    const { enableAutoPageviews, enableAutoOutboundTracking } = Plausible({
+        apiHost: window.srConfig.ANALYTICS_HOST
+    })
+
+    enableAutoPageviews()
+    enableAutoOutboundTracking()
+}
 
 const appState = new AppState()
 
