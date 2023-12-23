@@ -1,8 +1,11 @@
 # v2.5.0
 ## New
 - Update accent font
-- Fonts now use a privacy-friendly drop-in replacement for Google Fonts
+- Moved fonts locally
 - Ingredient details now have a link to cocktail list with current ingredient filter
+
+## Fixes
+- Fixed issues with generating recipe images (related to font loading)
 
 # v2.4.0
 ## New
