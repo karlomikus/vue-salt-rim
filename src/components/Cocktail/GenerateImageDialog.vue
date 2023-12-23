@@ -63,7 +63,10 @@ export default {
             this.isLoading = true
             htmlToImage.toPng(this.$refs.exportElement, {
                 pixelRatio: 1,
-                cacheBust: true
+                cacheBust: true,
+                fetchRequestInit: {
+                    cache: 'no-cache',
+                },
             }).then((dataUrl) => {
                 this.isLoading = false
                 this.imagePayload = dataUrl
