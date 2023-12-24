@@ -93,10 +93,10 @@ class AppState {
 
     isSubscribed() {
         if (window.srConfig.BILLING_ENABLED === true) {
-            return this.user.is_subscribed;
+            return this.user.is_subscribed
         }
 
-        return true;
+        return true
     }
 
     _getStorage() {

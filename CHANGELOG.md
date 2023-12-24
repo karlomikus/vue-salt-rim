@@ -1,16 +1,22 @@
 # v2.5.0
 ## New
-- Bars are now grouped by status
+- Update accent font
+- Moved fonts locally
+- Ingredient details now have a link to cocktail list with current ingredient filter
+- Show currently selected ingredient in ingredient finder
 
 ## Fixes
-- Fixed issues with role check when bar is not selected
+- Fixed issues with generating recipe images (related to font loading)
+- Better handling of empty units in cocktail import
 
 # v2.4.0
 ## New
 - Show ingredient category on ingredients grid
+- Bars are now grouped by status
 
 ## Fixes
 - Added missing translations
+- Fixed issues with role check when bar is not selected
 
 # v2.3.0
 ## New

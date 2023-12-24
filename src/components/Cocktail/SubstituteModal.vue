@@ -122,7 +122,7 @@ export default {
 }
 
 .substitutes > h4 {
-    font-weight: bold;
+    font-weight: var(--fw-bold);
 }
 
 .substitutes__substitute__name {
@@ -160,7 +160,7 @@ export default {
     text-align: center;
     text-transform: uppercase;
     font-size: 0.75rem;
-    font-weight: bold;
+    font-weight: var(--fw-bold);
     letter-spacing: 1px;
     margin-bottom: 5px;
     background: var(--clr-gray-100);

@@ -343,7 +343,7 @@ class ApiRequests
     }
 
     static async confirmAccount(id, hash) {
-        let jsonResp = await this.getRequest(`/api/verify/${id}/${hash}`)
+        await this.getRequest(`/api/verify/${id}/${hash}`)
     }
 
     /**

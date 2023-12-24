@@ -38,7 +38,7 @@
 }
 
 .table th {
-    font-weight: bold;
+    font-weight: var(--fw-bold);
     font-size: 0.75rem;
     padding: .5rem;
 }

@@ -8,3 +8,4 @@ window.srConfig.MAILS_ENABLED = "$MAILS_ENABLED" === 'true';
 window.srConfig.BILLING_TOKEN = "$BILLING_TOKEN";
 window.srConfig.BILLING_ENABLED = "$BILLING_ENABLED" === 'true';
 window.srConfig.BILLING_ENV = "$BILLING_ENV";
+window.srConfig.ANALYTICS_HOST = "$ANALYTICS_HOST";

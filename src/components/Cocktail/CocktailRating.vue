@@ -50,6 +50,6 @@ export default {
     padding: 0 5px;
     border-radius: var(--radius-1);
     font-size: 0.7rem;
-    font-weight: bold;
+    font-weight: var(--fw-bold);
 }
 </style>

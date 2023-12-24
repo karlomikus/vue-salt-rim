@@ -146,6 +146,7 @@ import SaltRimRadio from '../SaltRimRadio.vue'
 import IngredientFinder from './../IngredientFinder.vue'
 import SaltRimDialog from '../Dialog/SaltRimDialog.vue'
 import SubscriptionCheck from '../SubscriptionCheck.vue'
+import AppState from '../../AppState'
 
 export default {
     components: {
@@ -164,7 +165,8 @@ export default {
             source: null,
             result: null,
             ingredientEdit: null,
-            showIngredientDialog: false
+            showIngredientDialog: false,
+            appState: new AppState(),
         }
     },
     computed: {
@@ -342,6 +344,10 @@ export default {
                 i.ingredient_slug = i.existingIngredient.slug
                 i.name = i.existingIngredient.name
 
+                if (i.units == null) {
+                    i.units = this.appState.defaultUnit;
+                }
+
                 return i
             })
 
@@ -394,7 +400,7 @@ export default {
 }
 
 .scraper-ingredients__ingredient__existing {
-    font-weight: bold;
+    font-weight: var(--fw-bold);
 }
 
 .import-types {

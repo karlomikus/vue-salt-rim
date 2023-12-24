@@ -34,12 +34,10 @@
 import ApiRequests from '@/ApiRequests'
 import Sortable from 'sortablejs'
 import OverlayLoader from '@/components/OverlayLoader.vue'
-import SubscriptionCheck from './SubscriptionCheck.vue'
 
 export default {
     components: {
         OverlayLoader,
-        SubscriptionCheck
     },
     props: {
         value: {

@@ -55,7 +55,7 @@ export default {
             ApiRequests.passwordReset(postData).then(() => {
                 this.$toast.default(this.$t('auth.password-reset-success'))
                 this.$router.push('/login')
-            }).catch(e => {
+            }).catch(() => {
                 this.isLoading = false
                 this.$toast.error(this.$t('auth.password-reset-error'))
             })

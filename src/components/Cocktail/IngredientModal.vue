@@ -2,7 +2,7 @@
     <form @submit.prevent="save">
         <OverlayLoader v-if="isLoading" />
         <div class="dialog-title">{{ $t('ingredient.title') }}</div>
-        <IngredientFinder @ingredient-selected="selectIngredient"></IngredientFinder>
+        <IngredientFinder @ingredient-selected="selectIngredient" :cocktail-ingredient="cocktailIngredient"></IngredientFinder>
         <div class="selected-ingredient">
             <small>{{ $t('ingredient.dialog.current') }}:</small>
             <p>{{ cocktailIngredient.name }}</p>
@@ -139,7 +139,7 @@ export default {
 }
 
 .selected-ingredient p {
-    font-weight: bold;
+    font-weight: var(--fw-bold);
     font-size: 1.5rem;
 }
 

@@ -169,7 +169,7 @@ export default {
 
 .ingredient-grid-item__title {
     font-family: var(--font-heading);
-    font-weight: bold;
+    font-weight: var(--fw-bold);
     font-size: 1.3rem;
     line-height: 1.3;
     text-decoration: none;

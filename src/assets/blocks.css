@@ -50,7 +50,7 @@
 .details-block-container__title {
     font-family: var(--font-heading);
     font-size: 1.5rem;
-    font-weight: 700;
+    font-weight: var(--fw-bold);
     margin-bottom: 1rem;
     line-height: 1;
     color: var(--clr-accent-800);

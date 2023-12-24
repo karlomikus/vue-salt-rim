@@ -17,8 +17,8 @@
         <OverlayLoader v-if="isLoading"></OverlayLoader>
         <SubscriptionCheck v-if="bars.length >= 1">Subscribe to "Mixologist" plan to create and manage up to 10 bars!</SubscriptionCheck>
         <div v-if="bars.length > 0">
-            <template v-for="(barsInGroup, group) in groupedBars">
-                <h3 class="page-subtitle" v-if="barsInGroup.length > 0">{{ $t('bars.status-' + group) }}</h3>
+            <template v-for="(barsInGroup, group) in groupedBars" :key="group">
+                <h3 v-if="barsInGroup.length > 0" class="page-subtitle">{{ $t('bars.status-' + group) }}</h3>
                 <div class="bars__grid">
                     <div v-for="bar in barsInGroup" :key="bar.id" class="bar block-container block-container--hover" :class="{ 'bar--inactive': bar.status != 'active' }">
                         <span class="bar__role">
@@ -54,8 +54,8 @@
                                 <a href="#" @click.prevent="bar.show_invite_code = !bar.show_invite_code">{{ $t('bars.toggle-invite-code') }}</a>
                                 &middot;
                             </template>
-                            <a href="#" @click.prevent="selectBar(bar)" v-if="bar.status == 'active'">{{ $t('bars.select-bar') }}</a>
-                            <a href="#" @click.prevent="activateBar(bar)" v-if="bar.status == 'deactivated' && bar.access.can_activate">{{ $t('bars.activate') }}</a>
+                            <a v-if="bar.status == 'active'" href="#" @click.prevent="selectBar(bar)">{{ $t('bars.select-bar') }}</a>
+                            <a v-if="bar.status == 'deactivated' && bar.access.can_activate" href="#" @click.prevent="activateBar(bar)">{{ $t('bars.activate') }}</a>
                         </div>
                     </div>
                 </div>
@@ -110,7 +110,7 @@ export default {
                 'active': [],
                 'provisioning': [],
                 'deactivated': [],
-            };
+            }
 
             this.bars.forEach(bar => {
                 res[bar.status].push(bar)
@@ -121,11 +121,11 @@ export default {
         ownedBars() {
             return this.bars.filter(bar => {
                 return bar.created_user.id == this.appState.user.id
-            });
+            })
         },
         showCreateAction() {
             if (this.appState.isSubscribed()) {
-                return this.ownedBars.length < 10;
+                return this.ownedBars.length < 10
             }
 
             return this.ownedBars.length < 1 && !this.appState.isSubscribed()

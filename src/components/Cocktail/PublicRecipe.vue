@@ -182,6 +182,7 @@ export default {
 
 .public-cocktail-recipe h2 {
     font-size: 3rem;
+    font-weight: var(--fw-bold);
     line-height: 1.2;
     font-family: var(--font-heading);
 }

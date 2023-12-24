@@ -589,7 +589,7 @@ export default {
 .cocktail-details__title h2 {
     font-family: var(--font-heading);
     font-size: 2.5rem;
-    font-weight: 700;
+    font-weight: var(--fw-bold);
     margin: 0;
     line-height: 1.3;
 }
@@ -625,7 +625,7 @@ export default {
 .cocktail-title {
     font-family: var(--font-heading);
     font-size: 2rem;
-    font-weight: 700;
+    font-weight: var(--fw-bold);
     margin: 0 0 1.5rem 0;
     line-height: 1.3;
 }
@@ -643,7 +643,7 @@ export default {
 
 .cocktail-ingredients__total-amount {
     text-align: right;
-    font-weight: bold;
+    font-weight: var(--fw-bold);
     font-size: 0.85rem;
 }
 
@@ -663,7 +663,7 @@ export default {
 }
 
 .cocktail-ingredients__ingredient__name {
-    font-weight: 700;
+    font-weight: var(--fw-bold);
 }
 
 .cocktail-ingredients__ingredient__name small {
@@ -671,7 +671,7 @@ export default {
 }
 
 .cocktail-ingredients__ingredient__amount {
-    font-weight: 700;
+    font-weight: var(--fw-bold);
     font-size: 1.2rem;
     margin-left: auto;
     text-align: right;
@@ -716,7 +716,7 @@ export default {
     background: none;
     border: none;
     font-size: 0.85rem;
-    font-weight: bold;
+    font-weight: var(--fw-bold);
     margin: 0;
     padding: 0.15rem 0.5rem;
     text-transform: uppercase;
@@ -740,7 +740,7 @@ export default {
 
 :deep(.details-block-container ol li::marker) {
     font-size: 1rem;
-    font-weight: bold;
+    font-weight: var(--fw-bold);
 }
 
 :deep(.details-block-container hr) {

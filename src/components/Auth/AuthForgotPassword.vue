@@ -43,7 +43,7 @@ export default {
             ApiRequests.passwordForgot(postData).then(() => {
                 this.$toast.default(this.$t('auth.reset-email-sent'))
                 this.$router.push('/login')
-            }).catch(e => {
+            }).catch(() => {
                 this.isLoading = false
                 this.$toast.default(this.$t('auth.reset-email-sent'))
                 this.$router.push('/login')

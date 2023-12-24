@@ -46,7 +46,7 @@ export default {
             maxAmount = this.asFraction(maxAmount)
         }
 
-        return `${minAmount == 0 ? '' : minAmount}${maxAmount != 0 ? '-' + maxAmount : ''} ${convertTo}`
+        return `${minAmount == 0 ? '0' : minAmount}${maxAmount != 0 ? '-' + maxAmount : ''} ${convertTo}`
     },
 
     /**
