@@ -82,7 +82,7 @@
                         </thead>
                         <tbody>
                             <tr v-for="tx in billing.subscription.transactions" :key="tx.invoice_number">
-                                <td><DateFormatter :date="billing.subscription.billed_at" format="long" /></td>
+                                <td><DateFormatter :date="tx.billed_at" format="long" /></td>
                                 <td>{{ new Intl.NumberFormat(userLocale, { style: "currency", currency: tx.currency }).format(tx.total / 100) }}</td>
                                 <td>{{ tx.currency }}</td>
                                 <td>
