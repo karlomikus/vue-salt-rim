@@ -3,9 +3,11 @@
 - Update accent font
 - Moved fonts locally
 - Ingredient details now have a link to cocktail list with current ingredient filter
+- Show currently selected ingredient in ingredient finder
 
 ## Fixes
 - Fixed issues with generating recipe images (related to font loading)
+- Better handling of empty units in cocktail import
 
 # v2.4.0
 ## New
