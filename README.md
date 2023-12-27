@@ -1,9 +1,11 @@
 <p align="center">
+<a href="https://barassistant.app" target="_blank">
   <picture>
       <source media="(prefers-color-scheme: dark)" srcset="art/logo_dark.png">
       <source media="(prefers-color-scheme: light)" srcset="art/logo.png">
       <img src="art/logo.png" alt="Logo" />
   </picture>
+</a>
 </p>
 
 <p align="center">
