@@ -173,3 +173,12 @@ textarea.form-input,
     min-width: 18px;
     min-height: 18px;
 }
+
+.form-actions--timestamps {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.form-actions__buttons {
+    margin-left: auto;
+}
