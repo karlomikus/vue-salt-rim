@@ -2,7 +2,7 @@
     <form @submit.prevent="save">
         <OverlayLoader v-if="isLoading" />
         <div class="dialog-title">{{ $t('ingredient.title') }}</div>
-        <IngredientFinder @ingredient-selected="selectIngredient" :cocktail-ingredient="cocktailIngredient"></IngredientFinder>
+        <IngredientFinder :cocktail-ingredient="cocktailIngredient" @ingredient-selected="selectIngredient"></IngredientFinder>
         <div class="selected-ingredient">
             <small>{{ $t('ingredient.dialog.current') }}:</small>
             <p>{{ cocktailIngredient.name }}</p>

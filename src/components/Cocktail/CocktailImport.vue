@@ -345,7 +345,7 @@ export default {
                 i.name = i.existingIngredient.name
 
                 if (i.units == null) {
-                    i.units = this.appState.defaultUnit;
+                    i.units = this.appState.defaultUnit
                 }
 
                 return i

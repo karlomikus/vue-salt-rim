@@ -97,6 +97,8 @@
   },
   "strength": "Strength",
   "rating": "Rating",
+  "created": "Created",
+  "updated": "Updated",
   "all": "All",
   "non-alcoholic": "Non alcoholic",
   "weak": "Weak",
