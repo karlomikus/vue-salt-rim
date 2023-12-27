@@ -20,6 +20,15 @@
                 <div class="image-upload__list__item__image">
                     <img :src="img.url" alt="Cocktail image">
                     <a href="#" @click.prevent="removeImage(img)">{{ $t('remove') }}</a>
+                    &middot;
+                    <SaltRimDialog v-model="showImageEditDialog">
+                        <template #trigger>
+                            <a href="#" @click.prevent="showImageEditDialog = !showImageEditDialog">{{ $t('image-editor.edit-image') }}</a>
+                        </template>
+                        <template #dialog>
+                            <ImageEditor v-model="images[idx]" @image-dialog-closed="showImageEditDialog = false"></ImageEditor>
+                        </template>
+                    </SaltRimDialog>
                 </div>
                 <div class="image-upload__list__item__actions">
                     <label class="form-label" :for="'copyright-' + idx">{{ $t('image-copyright') }}:</label>
@@ -33,11 +42,15 @@
 <script>
 import ApiRequests from '@/ApiRequests'
 import Sortable from 'sortablejs'
-import OverlayLoader from '@/components/OverlayLoader.vue'
+import OverlayLoader from './OverlayLoader.vue'
+import ImageEditor from './ImageEditor.vue'
+import SaltRimDialog from './Dialog/SaltRimDialog.vue'
 
 export default {
     components: {
         OverlayLoader,
+        ImageEditor,
+        SaltRimDialog,
     },
     props: {
         value: {
@@ -55,7 +68,8 @@ export default {
         return {
             isLoading: false,
             images: this.value,
-            sortable: null
+            sortable: null,
+            showImageEditDialog: false,
         }
     },
     computed: {
@@ -117,11 +131,18 @@ export default {
 
                 if (img.id) {
                     const updateImageFormData = new FormData()
+                    if (img.update_file == true) {
+                        if (img.file instanceof File || img.file instanceof Blob) {
+                            updateImageFormData.append('image', img.file)
+                        } else {
+                            updateImageFormData.append('image_url', img.file)
+                        }
+                    }
                     updateImageFormData.append('copyright', img.copyright ? img.copyright : '')
                     updateImageFormData.append('sort', newSort)
                     uploadedImages.push(await ApiRequests.updateSingleImage(img.id, updateImageFormData))
                 } else {
-                    if (img.file instanceof File) {
+                    if (img.file instanceof File || img.file instanceof Blob) {
                         newImagesFormData.append('images[' + i + '][image]', img.file)
                     } else {
                         newImagesFormData.append('images[' + i + '][image_url]', img.file)
@@ -176,12 +197,12 @@ export default {
 }
 
 .image-upload {
-    --image-upload-img-size: 80px;
+    --image-upload-img-size: 150px;
 }
 
 @media (max-width: 450px) {
     .image-upload {
-        --image-upload-img-size: 60px;
+        --image-upload-img-size: 100px;
     }
 }
 

@@ -11,6 +11,7 @@
     "@floating-ui/vue": "^1.0.2",
     "@meilisearch/instant-meilisearch": "^1.0.0",
     "@paddle/paddle-js": "^0.5.2",
+    "cropperjs": "^1.6.1",
     "dayjs": "^1.11.7",
     "html-to-image": "^1.11.11",
     "micromark": "^3.2.0",

@@ -457,5 +457,13 @@
     "subscribed-on": "Subscribed on",
     "update-payment-method": "Update payment method",
     "cancel": "Cancel"
+  },
+  "image-editor": {
+    "title": "Image editor",
+    "edit-image": "Edit image",
+    "rotate": "Rotate",
+    "flip-h": "Flip horizontal",
+    "flip-v": "Flip vertical",
+    "edit-success": "Image edited successfully"
   }
 }
