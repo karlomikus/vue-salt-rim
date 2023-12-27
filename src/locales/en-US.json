@@ -464,6 +464,8 @@
     "rotate": "Rotate",
     "flip-h": "Flip horizontal",
     "flip-v": "Flip vertical",
-    "edit-success": "Image edited successfully"
+    "edit-success": "Image edited successfully",
+    "move": "Move",
+    "crop": "Crop"
   }
 }

@@ -7,6 +7,10 @@
             <img ref="image" :src="modelValue.url">
         </div>
         <div class="image-editor-actions">
+            <a href="#" @click.prevent="cropper.setDragMode('move')">{{ $t('image-editor.move') }}</a>
+            &middot;
+            <a href="#" @click.prevent="cropper.setDragMode('crop')">{{ $t('image-editor.crop') }}</a>
+            &middot;
             <a href="#" @click.prevent="cropper.rotate(45)">{{ $t('image-editor.rotate') }} 45°</a>
             &middot;
             <a href="#" @click.prevent="cropper.rotate(-45)">{{ $t('image-editor.rotate') }} -45°</a>
@@ -57,7 +61,9 @@ export default {
         }
     },
     mounted() {
-        this.cropper = new Cropper(this.$refs.image)
+        this.cropper = new Cropper(this.$refs.image, {
+            viewMode: 1
+        })
     },
     methods: {
         save() {

@@ -21,12 +21,12 @@
                     <img :src="img.url" alt="Cocktail image">
                     <a href="#" @click.prevent="removeImage(img)">{{ $t('remove') }}</a>
                     &middot;
-                    <SaltRimDialog v-model="showImageEditDialog">
+                    <SaltRimDialog v-model="showImageEditDialogs[idx]">
                         <template #trigger>
-                            <a href="#" @click.prevent="showImageEditDialog = !showImageEditDialog">{{ $t('image-editor.edit-image') }}</a>
+                            <a href="#" @click.prevent="showImageEditDialogs[idx] = !showImageEditDialogs[idx]">{{ $t('image-editor.edit-image') }}</a>
                         </template>
                         <template #dialog>
-                            <ImageEditor v-model="images[idx]" @image-dialog-closed="showImageEditDialog = false"></ImageEditor>
+                            <ImageEditor v-model="images[idx]" @image-dialog-closed="showImageEditDialogs[idx] = false"></ImageEditor>
                         </template>
                     </SaltRimDialog>
                 </div>
@@ -69,7 +69,7 @@ export default {
             isLoading: false,
             images: this.value,
             sortable: null,
-            showImageEditDialog: false,
+            showImageEditDialogs: {},
         }
     },
     computed: {
