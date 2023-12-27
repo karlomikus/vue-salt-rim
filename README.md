@@ -17,9 +17,9 @@
 Salt Rim is a web client used for connecting to your [Bar Assistant](https://github.com/karlomikus/bar-assistant) server. It's made with Vue 3 and it builds to a static webpage that can be easily hosted anywhere.
 
 <p align="center">
-    <a href="https://bar.karlomikus.com" target="_blank">Click here to view frontend demo.</a>
+    <a href="https://demo.barassistant.app" target="_blank">Click here to view frontend demo.</a>
     <br>
-    <a href="https://bar.karlomikus.com/bar/docs" target="_blank">Click here to view API demo.</a>
+    <a href="https://demo.barassistant.app/bar/docs" target="_blank">Click here to view API demo.</a>
     <br>
     <strong>Email:</strong> admin@example.com &middot; <strong>Password:</strong> password
 </p>

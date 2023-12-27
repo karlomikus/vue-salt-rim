@@ -5,7 +5,7 @@
         </div>
         <PublicRecipe :cocktail="cocktail"></PublicRecipe>
         <div class="public-footer">
-            Powered by <a href="https://github.com/karlomikus/bar-assistant">Bar Assistant</a>
+            Powered by <a href="https://barassistant.app">Bar Assistant</a>
             <!-- &middot; <a href="#">Add to your bar</a> &middot; <a href="#">Print</a> -->
         </div>
     </div>
