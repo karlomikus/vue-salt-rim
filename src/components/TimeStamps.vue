@@ -2,7 +2,7 @@
     <div v-if="resource.created_user" class="timestamps">
         {{ $t('created') }}: <DateFormatter :date="resource.created_at" format="long" /> &middot; {{ resource.created_user.name }}
         <br>
-        <span v-if="resource.updated_at">
+        <span v-if="resource.updated_user">
             {{ $t('updated') }}: <DateFormatter :date="resource.updated_at" format="long" /> &middot; {{ resource.updated_user.name }}
         </span>
     </div>

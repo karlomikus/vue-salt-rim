@@ -99,6 +99,10 @@ class AppState {
         return true
     }
 
+    isBillingEnabled() {
+        return window.srConfig.BILLING_ENABLED === true
+    }
+
     _getStorage() {
         const val = localStorage.getItem('sr_remember_login')
         const rememberMe = val === null || val === 'true' ? true : false

@@ -3,25 +3,28 @@
         <div class="site-footer">
             <div class="site-footer__links">
                 <a target="_blank" href="https://barassistant.app">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20"><path fill="none" d="M0 0h24v24H0z" /><path d="M12 2C6.475 2 2 6.475 2 12a9.994 9.994 0 0 0 6.838 9.488c.5.087.687-.213.687-.476 0-.237-.013-1.024-.013-1.862-2.512.463-3.162-.612-3.362-1.175-.113-.288-.6-1.175-1.025-1.413-.35-.187-.85-.65-.013-.662.788-.013 1.35.725 1.538 1.025.9 1.512 2.338 1.087 2.912.825.088-.65.35-1.087.638-1.337-2.225-.25-4.55-1.113-4.55-4.938 0-1.088.387-1.987 1.025-2.688-.1-.25-.45-1.275.1-2.65 0 0 .837-.262 2.75 1.026a9.28 9.28 0 0 1 2.5-.338c.85 0 1.7.112 2.5.337 1.912-1.3 2.75-1.024 2.75-1.024.55 1.375.2 2.4.1 2.65.637.7 1.025 1.587 1.025 2.687 0 3.838-2.337 4.688-4.562 4.938.362.312.675.912.675 1.85 0 1.337-.013 2.412-.013 2.75 0 .262.188.574.688.474A10.016 10.016 0 0 0 22 12c0-5.525-4.475-10-10-10z" /></svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 512 512" width="20" height="20">
+                        <path d="M512 0H0v512h512V0Z" />
+                        <path fill="#fff" d="M420.866 228.925h-117.76l-204.8 143.811h-46.08V49.152h46.08l204.8 143.811h117.76v-89.877h46.08v215.716h-46.08v-89.877Zm-276.48 63.099v-162.16l-46.08-32.359v226.878l46.08-32.359ZM256.003 429.056H44.035v48.128h211.968v-48.128Z" />
+                    </svg>
                     Bar Assistant
                 </a>
-                <a target="_blank" href="https://github.com/karlomikus/vue-salt-rim">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20"><path fill="none" d="M0 0h24v24H0z" /><path d="M12 2C6.475 2 2 6.475 2 12a9.994 9.994 0 0 0 6.838 9.488c.5.087.687-.213.687-.476 0-.237-.013-1.024-.013-1.862-2.512.463-3.162-.612-3.362-1.175-.113-.288-.6-1.175-1.025-1.413-.35-.187-.85-.65-.013-.662.788-.013 1.35.725 1.538 1.025.9 1.512 2.338 1.087 2.912.825.088-.65.35-1.087.638-1.337-2.225-.25-4.55-1.113-4.55-4.938 0-1.088.387-1.987 1.025-2.688-.1-.25-.45-1.275.1-2.65 0 0 .837-.262 2.75 1.026a9.28 9.28 0 0 1 2.5-.338c.85 0 1.7.112 2.5.337 1.912-1.3 2.75-1.024 2.75-1.024.55 1.375.2 2.4.1 2.65.637.7 1.025 1.587 1.025 2.687 0 3.838-2.337 4.688-4.562 4.938.362.312.675.912.675 1.85 0 1.337-.013 2.412-.013 2.75 0 .262.188.574.688.474A10.016 10.016 0 0 0 22 12c0-5.525-4.475-10-10-10z" /></svg>
-                    Salt Rim
-                </a>
-                <a target="_blank" href="https://karlomikus.com">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 29" width="20" height="20" fill="#000">
-                        <path d="m42.335 28.898-8.131-14.033h-.548l-8.131 14.033-8.131-14.033h-.647L8.615 28.898 0 14.033h9.269L17.4 0l8.131 14.033h.306L33.968 0 42.1 14.033h8.85l-8.615 14.865z"></path>
-                    </svg>
-                    Made by KaMi
-                </a>
+                <template v-if="appState.isBillingEnabled()">
+                    &middot;
+                    <a target="_blank" href="https://barassistant.app/terms.html">
+                        Terms
+                    </a>
+                    &middot;
+                    <a target="_blank" href="https://barassistant.app/privacy.html">
+                        Privacy policy
+                    </a>
+                </template>
             </div>
             <div class="site-footer__versions">
                 {{ clientVersion }}
-                <br>
+                &middot;
                 {{ apiVersion }}
-                <br>
+                &middot;
                 {{ meiliVersion }}
             </div>
         </div>
@@ -29,11 +32,13 @@
 </template>
 
 <script>
+import AppState from '../../AppState'
 import ApiRequests from './../../ApiRequests'
 
 export default {
     data() {
         return {
+            appState: new AppState(),
             versions: {
                 api: null,
                 client: this.app_version,
@@ -85,17 +90,18 @@ export default {
     max-width: var(--site-width);
     padding: 1rem;
     display: flex;
+    flex-direction: column;
     font-size: 0.8rem;
 }
 
 .site-footer__links {
     display: flex;
-    flex-direction: column;
+    gap: 0.5rem;
+    flex-direction: row;
 }
 
 .site-footer__links a {
-    display: flex;
-    margin-bottom: 5px;
+    display: inline-flex;
     text-decoration: none;
     color: var(--clr-footer-link);
 }
@@ -114,10 +120,5 @@ export default {
 .site-footer__links a:active,
 .site-footer__links a:focus {
     color: var(--clr-footer-link-hover)
-}
-
-.site-footer__versions {
-    margin-left: auto;
-    text-align: right;
 }
 </style>
