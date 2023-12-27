@@ -1,5 +1,5 @@
 <template>
-    <div @keyup.esc="handleEsc()">
+    <span @keyup.esc="handleEsc()">
         <slot name="trigger" :toggle-dialog="toggleDialog">
             <button type="button" class="button button--outline" @click.prevent="toggleDialog()">Trigger dialog</button>
         </slot>
@@ -18,7 +18,7 @@
                 </div>
             </Transition>
         </Teleport>
-    </div>
+    </span>
 </template>
 
 <script>

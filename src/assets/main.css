@@ -17,6 +17,8 @@
 @import "swiper/css/navigation";
 @import "swiper/css/pagination";
 
+@import "cropperjs/dist/cropper.min.css";
+
 #app {
     font-weight: normal;
     display: flex;
