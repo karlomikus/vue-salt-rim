@@ -1,3 +1,13 @@
+# v2.6.0
+## New
+- Bar Assistant now has a new cloud offering and homepage: [barassistant.app](https://barassistant.app)
+- Added bar members count
+- Added image cropper
+- Detailed info about edit and create timestamps moved to edit forms
+
+## Changes
+- Updated links to point to new homepage
+
 # v2.5.0
 ## New
 - Update accent font

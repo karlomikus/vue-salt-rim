@@ -6,7 +6,7 @@
                 <span>&middot;</span>
                 <a target="_blank" href="https://bar-assistant.github.io/docs/">Docs</a>
                 <span>&middot;</span>
-                <a target="_blank" href="https://github.com/bar-assistant">GitHub</a>
+                <a target="_blank" href="https://github.com/karlomikus/bar-assistant">GitHub</a>
                 <template v-if="appState.isBillingEnabled()">
                     <span>&middot;</span>
                     <a target="_blank" href="https://barassistant.app/terms.html">
