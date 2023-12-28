@@ -41,6 +41,12 @@
                 <RouterLink :to="{ name: 'collections.cocktails' }">{{ $t('collections.title') }}</RouterLink>
             </p>
         </div>
+        <div class="stats__stat">
+            <h3>{{ stats.total_bar_members }}</h3>
+            <p>
+                {{ $t('bars.members') }}
+            </p>
+        </div>
     </div>
     <div class="list-grid">
         <div class="list-grid__col">

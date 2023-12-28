@@ -117,10 +117,13 @@
                 </select>
             </div>
         </div>
-        <div class="form-actions">
-            <RouterLink v-if="cocktail.id" class="button button--outline" :to="{ name: 'cocktails.show', params: { id: cocktail.id } }">{{ $t('cancel') }}</RouterLink>
-            <RouterLink v-else class="button button--outline" :to="{ name: 'cocktails' }">{{ $t('cancel') }}</RouterLink>
-            <button class="button button--dark" type="submit">{{ $t('save') }}</button>
+        <div class="form-actions form-actions--timestamps">
+            <TimeStamps v-if="cocktail.id" :resource="cocktail"></TimeStamps>
+            <div class="form-actions__buttons">
+                <RouterLink v-if="cocktail.id" class="button button--outline" :to="{ name: 'cocktails.show', params: { id: cocktail.id } }">{{ $t('cancel') }}</RouterLink>
+                <RouterLink v-else class="button button--outline" :to="{ name: 'cocktails' }">{{ $t('cancel') }}</RouterLink>
+                <button class="button button--dark" type="submit">{{ $t('save') }}</button>
+            </div>
         </div>
     </form>
 </template>
@@ -139,6 +142,7 @@ import SaltRimRadio from '../SaltRimRadio.vue'
 import AppState from './../../AppState'
 import SubstituteModal from './SubstituteModal.vue'
 import SubscriptionCheck from '../SubscriptionCheck.vue'
+import TimeStamps from '../TimeStamps.vue'
 
 export default {
     components: {
@@ -149,7 +153,8 @@ export default {
         SaltRimDialog,
         SaltRimRadio,
         SubstituteModal,
-        SubscriptionCheck
+        SubscriptionCheck,
+        TimeStamps
     },
     data() {
         return {

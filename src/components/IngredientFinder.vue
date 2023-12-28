@@ -98,7 +98,7 @@ export default {
             this.$emit('ingredientSelected', ing)
         },
         isSelected(ing) {
-            return this.cocktailIngredient.ingredient_id == ing.id;
+            return this.cocktailIngredient.ingredient_id == ing.id
         },
         newIngredient() {
             this.isLoading = true

@@ -1,9 +1,11 @@
 <p align="center">
+<a href="https://barassistant.app" target="_blank">
   <picture>
       <source media="(prefers-color-scheme: dark)" srcset="art/logo_dark.png">
       <source media="(prefers-color-scheme: light)" srcset="art/logo.png">
       <img src="art/logo.png" alt="Logo" />
   </picture>
+</a>
 </p>
 
 <p align="center">
@@ -17,9 +19,9 @@
 Salt Rim is a web client used for connecting to your [Bar Assistant](https://github.com/karlomikus/bar-assistant) server. It's made with Vue 3 and it builds to a static webpage that can be easily hosted anywhere.
 
 <p align="center">
-    <a href="https://bar.karlomikus.com" target="_blank">Click here to view frontend demo.</a>
+    <a href="https://demo.barassistant.app" target="_blank">Click here to view frontend demo.</a>
     <br>
-    <a href="https://bar.karlomikus.com/bar/docs" target="_blank">Click here to view API demo.</a>
+    <a href="https://demo.barassistant.app/bar/docs" target="_blank">Click here to view API demo.</a>
     <br>
     <strong>Email:</strong> admin@example.com &middot; <strong>Password:</strong> password
 </p>
@@ -87,6 +89,7 @@ window.srConfig.MEILISEARCH_URL = "$MEILISEARCH_URL";
 // Optional variables
 // Valid locales: en-US, hr-HR, fr-FR
 window.srConfig.DEFAULT_LOCALE = "en-US";
+window.srConfig.MAILS_ENABLED = false;
 ```
 
 4. Run the build commands

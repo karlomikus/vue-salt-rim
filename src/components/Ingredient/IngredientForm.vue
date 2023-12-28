@@ -54,10 +54,13 @@
         </div>
         <h3 class="form-section-title">{{ $t('media') }}</h3>
         <ImageUpload ref="imagesUpload" :value="ingredient.images" :max-images="1" />
-        <div class="form-actions">
-            <RouterLink v-if="ingredient.id" class="button button--outline" :to="{ name: 'ingredients.show', params: { id: ingredient.id } }">{{ $t('cancel') }}</RouterLink>
-            <RouterLink v-else class="button button--outline" :to="{ name: 'ingredients' }">{{ $t('cancel') }}</RouterLink>
-            <button class="button button--dark" type="submit">{{ $t('save') }}</button>
+        <div class="form-actions form-actions--timestamps">
+            <TimeStamps v-if="ingredient.id" :resource="ingredient"></TimeStamps>
+            <div class="form-actions__buttons">
+                <RouterLink v-if="ingredient.id" class="button button--outline" :to="{ name: 'ingredients.show', params: { id: ingredient.id } }">{{ $t('cancel') }}</RouterLink>
+                <RouterLink v-else class="button button--outline" :to="{ name: 'ingredients' }">{{ $t('cancel') }}</RouterLink>
+                <button class="button button--dark" type="submit">{{ $t('save') }}</button>
+            </div>
         </div>
     </form>
 </template>
@@ -69,13 +72,15 @@ import ImageUpload from './../ImageUpload.vue'
 import PageHeader from './../PageHeader.vue'
 import OverlayLoader from './../OverlayLoader.vue'
 import IngredientFinder from './../IngredientFinder.vue'
+import TimeStamps from '../TimeStamps.vue'
 
 export default {
     components: {
         ImageUpload,
         PageHeader,
         OverlayLoader,
-        IngredientFinder
+        IngredientFinder,
+        TimeStamps
     },
     data() {
         return {

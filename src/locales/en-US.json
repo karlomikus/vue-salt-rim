@@ -97,6 +97,8 @@
   },
   "strength": "Strength",
   "rating": "Rating",
+  "created": "Created",
+  "updated": "Updated",
   "all": "All",
   "non-alcoholic": "Non alcoholic",
   "weak": "Weak",
@@ -388,7 +390,8 @@
     "status-deactivated": "Deactivated bars",
     "status-provisioning": "Provisioning",
     "confirm-activation": "Are you sure you want to activate \"{name}\"? On free plan you can have only one bar activated, you will not be able to activate any other bars.",
-    "activation-success": "Bar activated"
+    "activation-success": "Bar activated",
+    "members": "Bar members"
   },
   "close": "Close",
   "save-as": "Save as",
@@ -457,5 +460,15 @@
     "subscribed-on": "Subscribed on",
     "update-payment-method": "Update payment method",
     "cancel": "Cancel"
+  },
+  "image-editor": {
+    "title": "Image editor",
+    "edit-image": "Edit image",
+    "rotate": "Rotate",
+    "flip-h": "Flip horizontal",
+    "flip-v": "Flip vertical",
+    "edit-success": "Image edited successfully",
+    "move": "Move",
+    "crop": "Crop"
   }
 }
