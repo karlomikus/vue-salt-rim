@@ -89,6 +89,7 @@ window.srConfig.MEILISEARCH_URL = "$MEILISEARCH_URL";
 // Optional variables
 // Valid locales: en-US, hr-HR, fr-FR
 window.srConfig.DEFAULT_LOCALE = "en-US";
+window.srConfig.MAILS_ENABLED = false;
 ```
 
 4. Run the build commands
