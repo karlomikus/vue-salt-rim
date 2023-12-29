@@ -1,12 +1,24 @@
-<script setup>
-import SaltRimSpinner from './SaltRimSpinner.vue'
-</script>
-
 <template>
     <div class="overlay-loader">
-        <SaltRimSpinner :size="50" />
+        <SaltRimSpinner :size="size" />
     </div>
 </template>
+
+<script>
+import SaltRimSpinner from './SaltRimSpinner.vue'
+
+export default {
+    components: {
+        SaltRimSpinner,
+    },
+    props: {
+        size: {
+            type: Number,
+            default: 50
+        }
+    }
+}
+</script>
 
 <style scope>
 .overlay-loader {
