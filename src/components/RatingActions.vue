@@ -1,11 +1,13 @@
 <template>
     <div class="rating">
+        <OverlayLoader v-if="isLoading" :size="25" />
         <a v-for="val in max" :key="val" href="#" :class="{'is-rated': val <= currentRating}" @click.prevent="rate(val)"></a>
     </div>
 </template>
 
 <script>
 import ApiRequests from './../ApiRequests.js'
+import OverlayLoader from './OverlayLoader.vue'
 
 export default {
     props: {
@@ -21,6 +23,9 @@ export default {
             type: String,
             default: 'cocktail'
         }
+    },
+    components: {
+        OverlayLoader,
     },
     data() {
         return {

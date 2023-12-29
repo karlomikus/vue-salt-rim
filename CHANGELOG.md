@@ -1,3 +1,7 @@
+# v2.6.1
+## Fixes
+- Added missing loader on rating
+
 # v2.6.0
 ## New
 - Bar Assistant now has a new cloud offering and homepage: [barassistant.app](https://barassistant.app)
