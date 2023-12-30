@@ -59,7 +59,11 @@ export default {
 
             this.isLoading = true
             ApiRequests.registerNewUser(postData).then(() => {
-                this.$toast.default(this.$t('register-success'))
+                if (window.srConfig.MAILS_ENABLED === true) {
+                    this.$toast.default(this.$t('register-success-email'))
+                } else {
+                    this.$toast.default(this.$t('register-success'))
+                }
                 this.$router.push('/login')
             }).catch(e => {
                 this.isLoading = false
