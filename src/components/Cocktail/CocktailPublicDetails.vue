@@ -6,6 +6,9 @@
         <PublicRecipe :cocktail="cocktail"></PublicRecipe>
         <div class="public-footer">
             Powered by <a href="https://barassistant.app">Bar Assistant</a>
+            <template v-if="cocktail.source">
+                &middot; <SourcePresenter :source="cocktail.source"></SourcePresenter>
+            </template>
             <!-- &middot; <a href="#">Add to your bar</a> &middot; <a href="#">Print</a> -->
         </div>
     </div>
@@ -15,11 +18,13 @@
 import ApiRequests from '@/ApiRequests'
 import SiteLogo from '@/components/Layout/SiteLogo.vue'
 import PublicRecipe from '@/components/Cocktail/PublicRecipe.vue'
+import SourcePresenter from '../SourcePresenter.vue'
 
 export default {
     components: {
         SiteLogo,
-        PublicRecipe
+        PublicRecipe,
+        SourcePresenter
     },
     data() {
         return {
