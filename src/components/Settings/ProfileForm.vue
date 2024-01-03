@@ -43,6 +43,10 @@
                         <input v-model="user.is_shelf_public" :value="true" type="checkbox">
                         <span>{{ $t('profile-public-shelf') }}</span>
                     </label>
+                    <label class="form-checkbox">
+                        <input v-model="user.use_parent_as_substitute" :value="true" type="checkbox">
+                        <span>{{ $t('profile-use-parent-as-substitute') }}</span>
+                    </label>
                 </div>
             </template>
             <h3 class="form-section-title">{{ $t('data') }}</h3>
@@ -78,6 +82,7 @@ export default {
             isLoading: false,
             user: {
                 is_shelf_public: false,
+                use_parent_as_substitute: false,
             },
             currentLocale: this.$i18n.locale
         }
@@ -92,6 +97,7 @@ export default {
             if (this.appState.bar.id) {
                 const barMembership = data.memberships.filter(m => m.bar_id == this.appState.bar.id)
                 this.user.is_shelf_public = barMembership.length > 0 ? barMembership[0].is_shelf_public : false
+                this.user.use_parent_as_substitute = barMembership.length > 0 ? barMembership[0].use_parent_as_substitute : false
             }
             this.isLoading = false
         }).catch(e => {
@@ -120,6 +126,7 @@ export default {
             if (appState.bar.id) {
                 postData.bar_id = appState.bar.id
                 postData.is_shelf_public = this.user.is_shelf_public
+                postData.use_parent_as_substitute = this.user.use_parent_as_substitute
             }
 
             ApiRequests.updateUser(postData).then(data => {
