@@ -27,6 +27,7 @@
                     <Refinement id="tag" v-model="activeFilters.tags" :searchable="true" :title="$t('tag.tags')" :refinements="refineTags" @change="updateRouterPath"></Refinement>
                     <Refinement id="glass" v-model="activeFilters.glasses" :title="$t('glass-type.title')" :refinements="refineGlasses" @change="updateRouterPath"></Refinement>
                     <Refinement id="total-ingredients" v-model="activeFilters.total_ingredients" :title="$t('total.ingredients')" :refinements="refineIngredientsCount" type="radio" @change="updateRouterPath"></Refinement>
+                    <Refinement id="missing-ingredients" v-model="activeFilters.missing_ingredients" :title="$t('missing-ingredients')" :refinements="refineMissingIngredients" type="radio" @change="updateRouterPath"></Refinement>
                     <Refinement id="user-rating" v-model="activeFilters.user_rating" :title="$t('your-rating')" :refinements="refineRatings" type="radio" @change="updateRouterPath"></Refinement>
                     <Refinement id="avg-rating" v-model="activeFilters.average_rating" :title="$t('avg-rating')" :refinements="refineRatings" type="radio" @change="updateRouterPath"></Refinement>
                     <button class="button button--dark sm-show" type="button" @click="showRefinements = false">{{ $t('cancel') }}</button>
@@ -155,6 +156,11 @@ export default {
                     { name: '>= 5 ' + this.$t('ingredients.title'), active: false, id: '5' },
                     { name: '>= 7 ' + this.$t('ingredients.title'), active: false, id: '7' },
                 ],
+                missing_ingredients: [
+                    { name: '1 ' + this.$t('ingredients.title'), active: false, id: '1' },
+                    { name: '2 ' + this.$t('ingredients.title'), active: false, id: '2' },
+                    { name: '>= 3 ' + this.$t('ingredients.title'), active: false, id: '3' },
+                ],
                 tags: [],
                 glasses: [],
                 methods: [],
@@ -177,6 +183,7 @@ export default {
                 average_rating: null,
                 abv: null,
                 total_ingredients: null,
+                missing_ingredients: null,
                 user_shelves: [],
                 users: []
             }
@@ -270,6 +277,15 @@ export default {
         },
         refineIngredientsCount() {
             return this.availableRefinements.total_ingredients.map(m => {
+                return {
+                    id: m.id,
+                    value: m.id,
+                    name: m.name
+                }
+            })
+        },
+        refineMissingIngredients() {
+            return this.availableRefinements.missing_ingredients.map(m => {
                 return {
                     id: m.id,
                     value: m.id,
@@ -390,6 +406,7 @@ export default {
             this.activeFilters.favorites = state.filter && state.filter.favorites ? state.filter.favorites : null
             this.activeFilters.is_public = state.filter && state.filter.is_public ? state.filter.is_public : null
             this.activeFilters.total_ingredients = state.filter && state.filter.total_ingredients ? state.filter.total_ingredients : null
+            this.activeFilters.missing_ingredients = state.filter && state.filter.missing_ingredients ? state.filter.missing_ingredients : null
             this.activeFilters.user_rating = state.filter && state.filter.user_rating_min ? state.filter.user_rating_min : null
             this.activeFilters.average_rating = state.filter && state.filter.average_rating_min ? state.filter.average_rating_min : null
             this.searchQuery = state.filter && state.filter.name ? state.filter.name : null
@@ -424,6 +441,7 @@ export default {
                 user_rating_min: this.activeFilters.user_rating ? this.activeFilters.user_rating : null,
                 average_rating_min: this.activeFilters.average_rating ? this.activeFilters.average_rating : null,
                 total_ingredients: this.activeFilters.total_ingredients ? this.activeFilters.total_ingredients : null,
+                missing_ingredients: this.activeFilters.missing_ingredients ? this.activeFilters.missing_ingredients : null,
                 tag_id: this.activeFilters.tags.length > 0 ? this.activeFilters.tags.join(',') : null,
                 glass_id: this.activeFilters.glasses.length > 0 ? this.activeFilters.glasses.join(',') : null,
                 cocktail_method_id: this.activeFilters.methods.length > 0 ? this.activeFilters.methods.join(',') : null,
