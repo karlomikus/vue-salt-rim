@@ -14,32 +14,31 @@
         </template>
     </PageHeader>
     <OverlayLoader v-if="isLoading" />
-    <div v-if="collections.length > 0" class="block-container block-container--padded">
+    <div v-if="collections.length > 0">
         <SubscriptionCheck v-if="collections.length >= 3">Subscribe to "Mixologist" plan to create unlimited collections!</SubscriptionCheck>
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>{{ $t('name') }} / {{ $t('description') }}</th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr v-for="collection in collections" :key="collection.id">
-                    <td>
-                        <RouterLink :to="{ name: 'cocktails', query: { 'filter[collection_id]': collection.id } }">{{ collection.name }}</RouterLink>
-                        <br>
-                        <small>{{ collection.cocktails.length }} {{ $t('cocktails.title') }} &middot; {{ collection.description ? overflowText(collection.description, 100) : 'n/a' }}</small>
-                    </td>
-                    <td style="text-align: right;">
-                        <a class="list-group__action" href="#" @click.prevent="shareCollection(collection)">{{ $t('share.title') }}</a>
-                        &middot;
-                        <a class="list-group__action" href="#" @click.prevent="openDialog($t('collections.edit'), collection)">{{ $t('edit') }}</a>
-                        &middot;
-                        <a class="list-group__action" href="#" @click.prevent="deleteCollection(collection)">{{ $t('remove') }}</a>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+        <div class="collections">
+            <div class="block-container block-container--padded block-container--hover collections__collection" v-for="collection in collections" :key="collection.id">
+                <RouterLink class="collections__collection__title" :to="{ name: 'cocktails', query: { 'filter[collection_id]': collection.id } }">{{ collection.name }}</RouterLink>
+                <br>
+                <div class="collections__collection__content">
+                    {{ collection.cocktails.length }} {{ $t('cocktails.title') }}
+                    <template v-if="collection.is_bar_shared">
+                        &middot; {{ $t('collection-shared') }}
+                    </template>
+                    <br>
+                    {{ $t('description') }}: {{ collection.description ? overflowText(collection.description, 100) : 'n/a' }}
+                </div>
+                <div class="collections__collection__action">
+                    <a class="list-group__action" href="#" @click.prevent="shareCollection(collection)">{{ $t('share.title') }}</a>
+                    &middot;
+                    <a class="list-group__action" href="#" @click.prevent="download(collection)">{{ $t('download') }} CSV</a>
+                    &middot;
+                    <a class="list-group__action" href="#" @click.prevent="openDialog($t('collections.edit'), collection)">{{ $t('edit') }}</a>
+                    &middot;
+                    <a class="list-group__action" href="#" @click.prevent="deleteCollection(collection)">{{ $t('remove') }}</a>
+                </div>
+            </div>
+        </div>
     </div>
     <EmptyState v-else>
         <template #icon>
@@ -128,6 +127,12 @@ export default {
                 })
             })
         },
+        download(collection) {
+            ApiRequests.downloadCollection(collection.id).then(data => {
+                var file = window.URL.createObjectURL(data);
+                window.location.assign(file);
+            })
+        },
         overflowText(input, len) {
             if (!input) {
                 return input
@@ -138,3 +143,25 @@ export default {
     }
 }
 </script>
+<style scoped>
+.collections {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--gap-size-2);
+}
+
+@media (max-width: 450px) {
+    .collections {
+        grid-template-columns: 1fr;
+    }
+}
+
+.collections__collection__title {
+    font-size: 1.25rem;
+    font-weight: var(--fw-bold);
+}
+
+.collections__collection__action {
+    margin-top: 1rem;
+}
+</style>

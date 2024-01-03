@@ -724,6 +724,16 @@ class ApiRequests
         return this.parseResponse(jsonResp)
     }
 
+    static async downloadCollection(id) {
+        let url = `${this.getUrl()}/api/collections/${id}/share?type=csv`
+
+        const response = await fetch(url, {
+            headers: this.getHeaders(),
+        }).then(this.handleResponseErrors)
+
+        return await response.blob()
+    }
+
     static async fetchSharedCollections(query = {}) {
         const queryString = this.generateBAQueryString(query, true)
         const jsonResp = await this.getRequest(`/api/collections/shared${queryString}`)
