@@ -272,6 +272,13 @@ class ApiRequests
         return this.parseResponse(jsonResp)
     }
 
+    static async fetchRecommendedIngredients(query = {}) {
+        const q = this.generateBAQueryString(query, true)
+        const jsonResp = await this.getRequest(`/api/ingredients/recommend${q}`)
+
+        return jsonResp
+    }
+
     /**
      * =============================
      * Shelf

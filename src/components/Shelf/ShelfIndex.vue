@@ -106,6 +106,17 @@
                 </template>
             </EmptyState>
         </div>
+        <!-- <div class="list-grid__col" v-if="recommendedIngredients.length > 0">
+            <h3 class="page-subtitle">{{ $t('your-favorite-ingredients') }}</h3>
+            <IngredientListContainer>
+                <div v-for="ingredient in recommendedIngredients" :key="ingredient.id">
+                    <RouterLink :to="{ name: 'ingredients' }">
+                        {{ ingredient.name }}
+                    </RouterLink>
+                </div>
+                <RouterLink :to="{ name: 'ingredients' }">{{ $t('view-all') }}</RouterLink>
+            </IngredientListContainer>
+        </div> -->
         <!-- <div class="list-grid__col" v-if="favoriteIngredients.length > 0">
             <h3 class="page-subtitle">{{ $t('your-favorite-ingredients') }}</h3>
             <IngredientListContainer>
@@ -126,6 +137,36 @@
                 <RouterLink :to="{ name: 'cocktails', query: { 'sort': '-created_at' } }">{{ $t('view-all') }}</RouterLink>
             </CocktailListContainer>
         </div> -->
+    </div>
+    <div class="list-grid">
+        <div class="list-grid__col" v-if="stats.top_rated_cocktails.length > 0">
+            <h3 class="page-subtitle">{{ $t('top-rated-cocktails') }}</h3>
+            <div class="list-grid__container">
+                <RouterLink :to="{ name: 'cocktails.show', params: { id: cocktail.cocktail_slug } }" class="shelf-stats-count block-container block-container--hover" v-for="cocktail in stats.top_rated_cocktails" :key="cocktail.id">
+                    <h4>{{ cocktail.name }}</h4>
+                    <small>{{ $t('avg-rating') }}: {{ cocktail.avg_rating }} &middot; {{ $t('votes') }}: {{ cocktail.votes }}</small>
+                </RouterLink>
+            </div>
+        </div>
+        <div class="list-grid__col" v-if="stats.most_popular_ingredients.length > 0">
+            <h3 class="page-subtitle">{{ $t('most-popular-ingredients') }}</h3>
+            <div class="list-grid__container">
+                <RouterLink :to="{ name: 'ingredients.show', params: { id: ingredient.ingredient_slug } }" class="shelf-stats-count block-container block-container--hover" v-for="ingredient in stats.most_popular_ingredients" :key="ingredient.id">
+                    <h4>{{ ingredient.name }}</h4>
+                    <small>{{ ingredient.cocktails_count }} {{ $t('cocktails.title') }}</small>
+                </RouterLink>
+            </div>
+        </div>
+        <div class="list-grid__col" v-if="recommendedIngredients.length > 0">
+            <h3 class="page-subtitle">{{ $t('recommended-ingredients') }}</h3>
+            <div class="block-recommended">
+                You can make <strong>{{ shelfPercent }}</strong> of bar cocktails. Add one of the following ingredients to you shelf to increase your cocktail options:
+                <template v-for="(ing, index) in recommendedIngredients" :key="ing.id">
+                    <RouterLink :to="{ name: 'ingredients.show', params: { id: ing.slug } }">{{ ing.name }}</RouterLink>
+                    <template v-if="index + 1 !== recommendedIngredients.length"> &middot; </template>
+                </template>
+            </div>
+        </div>
     </div>
 </template>
 
@@ -160,14 +201,19 @@ export default {
             shoppingListIngredients: [],
             favoriteIngredients: [],
             topRatedCocktails: [],
+            recommendedIngredients: [],
             maxItems: 5,
-            stats: {},
+            stats: {
+                top_rated_cocktails: [],
+                most_popular_ingredients: [],
+            },
             loaders: {
                 favorites: false,
                 cocktails: false,
                 list: false,
                 stats: false,
                 favorite_ingredients: false,
+                recommended: false,
             }
         }
     },
@@ -177,6 +223,7 @@ export default {
         this.loaders.favorites = true
         this.loaders.cocktails = true
         this.loaders.stats = true
+        this.loaders.recommended = true
 
         ApiRequests.fetchCocktails({ 'filter[favorites]': true, per_page: this.maxItems, sort: '-favorited_at' }).then(resp => {
             this.loaders.favorites = false
@@ -199,28 +246,24 @@ export default {
         ApiRequests.fetchStats().then(data => {
             this.loaders.stats = false
             this.stats = data
-
-            // this.loaders.favorite_ingredients = true;
-            // const ingredientsToFilter = this.stats.your_top_ingredients.map(i => i.ingredient_id).join(',');
-            // ApiRequests.fetchIngredients({ 'filter[id]': ingredientsToFilter, per_page: 5 }).then(favIngredients => {
-            //     this.loaders.favorite_ingredients = false;
-            //     this.stats.your_top_ingredients.forEach(i => {
-            //         this.favoriteIngredients.push(Object.assign({ total: i.cocktails_count }, favIngredients.filter(fav => fav.id == i.ingredient_id)[0]));
-            //     })
-            // });
-
-            // this.loaders.favorite_ingredients = true;
-            // const cocktailsToFilter = this.stats.top_rated_cocktails.map(c => c.cocktail_id).join(',');
-            // ApiRequests.fetchCocktails({ 'filter[id]': cocktailsToFilter, per_page: 5 }).then(topCocktails => {
-            //     this.loaders.favorite_ingredients = false;
-            //     this.stats.top_rated_cocktails.forEach(c => {
-            //         this.topRatedCocktails.push(topCocktails.data.filter(top => top.id == c.cocktail_id)[0]);
-            //     })
-            // });
         }).catch(() => {
             this.loaders.stats = false
             this.$toast.error(this.$t('shelf.toasts.stats-error'))
         })
+
+        this.loaders.recommended = true
+        ApiRequests.fetchRecommendedIngredients().then(resp => {
+            this.loaders.recommended = false
+            this.recommendedIngredients = resp.data
+        }).catch(() => {
+            this.loaders.recommended = false
+            this.$toast.error(this.$t('shelf.toasts.shelf-error'))
+        })
+    },
+    computed: {
+        shelfPercent() {
+            return Number(this.stats.total_shelf_cocktails / this.stats.total_cocktails).toLocaleString(undefined,{style: 'percent', minimumFractionDigits:2});;
+        }
     },
     methods: {
         fetchShoppingList() {
@@ -289,5 +332,29 @@ export default {
 .stats__stat p {
     opacity: .7;
     font-size: .8rem;
+}
+
+.list-grid__container {
+    display: flex;
+    flex-direction: column;
+    gap: var(--gap-size-2);
+}
+
+.shelf-stats-count {
+    padding: var(--gap-size-2);
+    display: flex;
+    flex-direction: column;
+    text-decoration: none;
+}
+
+.shelf-stats-count h4 {
+    font-size: 1.15rem;
+    font-family: var(--font-heading);
+    font-weight: var(--fw-bold);
+}
+
+.block-recommended {
+    background-color: #F0EFEB;
+    padding: var(--gap-size-3);
 }
 </style>

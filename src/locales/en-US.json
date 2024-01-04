@@ -473,5 +473,9 @@
     "edit-success": "Image edited successfully",
     "move": "Move",
     "crop": "Crop"
-  }
+  },
+  "top-rated-cocktails": "Top rated cocktails",
+  "most-popular-ingredients": "Popular ingredients",
+  "votes": "Votes",
+  "recommended-ingredients": "Recommended ingredients"
 }
