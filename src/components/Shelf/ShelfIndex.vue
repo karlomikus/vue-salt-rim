@@ -357,4 +357,8 @@ export default {
     background-color: #F0EFEB;
     padding: var(--gap-size-3);
 }
+
+.dark-theme .block-recommended {
+    background-color: #271820;
+}
 </style>
