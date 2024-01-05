@@ -20,7 +20,7 @@ export default {
 }
 </script>
 
-<style scope>
+<style scoped>
 .overlay-loader {
     --ol-clr-bg: rgba(255, 255, 255, 0.7);
     position: absolute;
