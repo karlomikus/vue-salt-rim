@@ -57,18 +57,3 @@ export default {
     }
 }
 </script>
-
-<style scoped>
-.public-url {
-    background: var(--clr-gray-100);
-    padding: 0.5rem;
-    font-weight: var(--fw-bold);
-    font-size: 1.25rem;
-    font-family: monospace;
-    border-radius: var(--radius-1);
-}
-
-.dark-theme .public-url {
-    background: var(--clr-gray-900);
-}
-</style>
