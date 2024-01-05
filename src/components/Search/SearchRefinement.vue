@@ -102,6 +102,11 @@ export default {
             })
         }
     },
+    created() {
+        if (this.isClearable) {
+            this.collapsed = false
+        }
+    },
     methods: {
         clear() {
             this.searchTerm = null
