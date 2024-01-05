@@ -1,3 +1,9 @@
+# v2.7.0
+## New
+- Shelf has more stats
+- Added "Track parent ingredient" option to profile
+- Updated collections screen
+
 # v2.6.1
 ## Fixes
 - Added missing loader on rating
