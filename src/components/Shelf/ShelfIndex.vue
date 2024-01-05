@@ -106,37 +106,6 @@
                 </template>
             </EmptyState>
         </div>
-        <!-- <div class="list-grid__col" v-if="recommendedIngredients.length > 0">
-            <h3 class="page-subtitle">{{ $t('your-favorite-ingredients') }}</h3>
-            <IngredientListContainer>
-                <div v-for="ingredient in recommendedIngredients" :key="ingredient.id">
-                    <RouterLink :to="{ name: 'ingredients' }">
-                        {{ ingredient.name }}
-                    </RouterLink>
-                </div>
-                <RouterLink :to="{ name: 'ingredients' }">{{ $t('view-all') }}</RouterLink>
-            </IngredientListContainer>
-        </div> -->
-        <!-- <div class="list-grid__col" v-if="favoriteIngredients.length > 0">
-            <h3 class="page-subtitle">{{ $t('your-favorite-ingredients') }}</h3>
-            <IngredientListContainer>
-                <IngredientListItem v-for="ingredient in favoriteIngredients" :ingredient="ingredient" :key="ingredient.id">
-                    <template v-slot:content>
-                        <RouterLink :to="{ name: 'cocktails', query: { 'filter[ingredient_id]': ingredient.id, 'filter[favorites]': true } }">
-                            {{ $t('shelf.used-in-cocktails', {total: ingredient.total}) }}
-                        </RouterLink>
-                    </template>
-                </IngredientListItem>
-                <RouterLink :to="{ name: 'ingredients' }">{{ $t('view-all') }}</RouterLink>
-            </IngredientListContainer>
-        </div>
-        <div class="list-grid__col">
-            <h3 class="page-subtitle">{{ $t('cocktails-top-rated') }}</h3>
-            <CocktailListContainer v-slot="observer">
-                <CocktailListItem v-for="cocktail in topRatedCocktails" :cocktail="cocktail" :key="cocktail.id" :observer="observer" />
-                <RouterLink :to="{ name: 'cocktails', query: { 'sort': '-created_at' } }">{{ $t('view-all') }}</RouterLink>
-            </CocktailListContainer>
-        </div> -->
     </div>
     <div class="list-grid">
         <div class="list-grid__col" v-if="stats.top_rated_cocktails.length > 0">
@@ -341,7 +310,7 @@ export default {
 }
 
 .shelf-stats-count {
-    padding: var(--gap-size-2);
+    padding: var(--gap-size-2) var(--gap-size-3);
     display: flex;
     flex-direction: column;
     text-decoration: none;
@@ -353,12 +322,21 @@ export default {
     font-weight: var(--fw-bold);
 }
 
+.shelf-stats-count small {
+    color: var(--clr-gray-500);
+}
+
 .block-recommended {
     background-color: #F0EFEB;
     padding: var(--gap-size-3);
+    border-radius: var(--radius-3);
 }
 
 .dark-theme .block-recommended {
     background-color: #271820;
+}
+
+.dark-theme .shelf-stats-count small {
+    color: var(--clr-gray-400);
 }
 </style>
