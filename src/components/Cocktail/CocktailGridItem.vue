@@ -178,4 +178,34 @@ export default {
     width: 12px;
     height: 12px;
 }
+
+@media (max-width: 545px) {
+    .cocktail-grid-item {
+        --_image-size: 200px;
+    }
+
+    .cocktail-grid-item__title {
+        font-size: 1.25rem;
+    }
+
+    .cocktail-grid-item__content {
+        padding: var(--gap-size-3);
+        border-radius: var(--radius-2);
+        gap: var(--gap-size-1);
+    }
+
+    .cocktail-grid-item__graphic img {
+        border-top-left-radius: var(--radius-2);
+        border-top-right-radius: var(--radius-2);
+    }
+
+    .cocktail-tags .chip {
+        padding: 1px 5px;
+        font-size: 0.65rem;
+    }
+
+    .cocktail-grid-item__ingredients {
+        font-size: 0.75rem;
+    }
+}
 </style>

@@ -27,10 +27,17 @@ export default {
 
 <style scoped>
 .cocktail-grid-container {
+    --cocktail-grid-card-width: 250px;
     display: grid;
-    /* grid-template-columns: repeat(auto-fit, minmax(var(--cocktail-grid-card-width), 1fr)); */
     grid-template-columns: repeat(auto-fill, minmax(max(var(--cocktail-grid-card-width), var(--cocktail-grid-card-width)), 1fr));
     gap: var(--gap-size-5);
     margin-top: 2rem;
+}
+
+@media (max-width: 545px) {
+    .cocktail-grid-container {
+        --cocktail-grid-card-width: 140px;
+        gap: var(--gap-size-2);
+    }
 }
 </style>
