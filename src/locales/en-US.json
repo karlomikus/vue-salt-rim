@@ -269,6 +269,7 @@
   "shelf-ingredients": "Shelf ingredients",
   "shopping-list-ingredients": "Shopping list ingredients",
   "notes": "Notes",
+  "collection-shared": "Shared with bar",
   "note": {
     "title": "Note",
     "add": "Add note",
@@ -422,6 +423,7 @@
   "remove-from-bar": "Remove from bar",
   "public-shelves": "Public shelves",
   "profile-public-shelf": "Make cocktails in my shelf public to all bar members",
+  "profile-use-parent-as-substitute": "Track parent ingredient as a substitute ingredient in your shelf",
   "favorited-cocktails": "Favorited cocktails",
   "created-by": "Created by",
   "amount-max": "Amount max",
@@ -471,5 +473,9 @@
     "edit-success": "Image edited successfully",
     "move": "Move",
     "crop": "Crop"
-  }
+  },
+  "top-rated-cocktails": "Top rated cocktails",
+  "most-popular-ingredients": "Popular ingredients",
+  "votes": "Votes",
+  "recommended-ingredients": "Recommended ingredients"
 }
