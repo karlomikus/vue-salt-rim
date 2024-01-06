@@ -10,7 +10,7 @@ export default {
     props: {
         color: {
             type: String,
-            default: '#737db7'
+            default: '#AF5091'
         },
         size: {
             type: Number,
@@ -20,10 +20,10 @@ export default {
 }
 </script>
 
-<style scope>
+<style scoped>
 .spinner {
     animation-name: rotation;
-    animation-duration: .6s;
+    animation-duration: .4s;
     animation-iteration-count: infinite;
     transform-origin: 50% 50%;
     animation-timing-function: linear;
