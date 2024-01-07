@@ -10,12 +10,12 @@
             </p>
         </div>
         <div v-if="cocktail.id" class="cocktail-details__graphic">
-            <swiper v-if="cocktail.images.length > 0" :modules="sliderModules" navigation :pagination="{ clickable: true }" :follow-finger="false">
+            <swiper-container v-if="cocktail.images.length > 0" navigation="true" :pagination="{clickable: true}" follow-finger="false">
                 <swiper-slide v-for="image in sortedImages" :key="image.sort">
                     <img :src="image.url" :alt="image.copyright" />
                     <div v-if="image.copyright" class="cocktail-details__graphic__copyright">{{ $t('image-copyright-notice', { copyright: image.copyright }) }}</div>
                 </swiper-slide>
-            </swiper>
+            </swiper-container>
             <img v-else src="/no-cocktail.jpg" alt="This cocktail does not have an image." />
         </div>
         <div class="cocktail-details__main">
@@ -304,8 +304,6 @@ import AppState from './../../AppState'
 import OverlayLoader from './../OverlayLoader.vue'
 import Dropdown from './../SaltRimDropdown.vue'
 import Rating from './../RatingActions.vue'
-import { Swiper, SwiperSlide } from 'swiper/vue'
-import { Navigation, Pagination } from 'swiper'
 import SaltRimDialog from './../Dialog/SaltRimDialog.vue'
 import Note from './../Note/NoteDetails.vue'
 import NoteDialog from './../Note/NoteDialog.vue'
@@ -323,8 +321,6 @@ export default {
         OverlayLoader,
         Dropdown,
         Rating,
-        Swiper,
-        SwiperSlide,
         SaltRimDialog,
         PublicLinkDialog,
         Note,
@@ -347,7 +343,6 @@ export default {
         userShelfIngredients: [],
         userShoppingListIngredients: [],
         currentUnit: 'ml',
-        sliderModules: [Navigation, Pagination],
         showPublicDialog: false,
         showNoteDialog: false,
         showDownloadImageDialog: false,
@@ -521,6 +516,9 @@ export default {
     max-width: 1100px;
     margin: 0 auto;
     --cocktail-graphic-height: 1000px;
+}
+
+swiper-container {
     --swiper-theme-color: #fff;
     --swiper-pagination-bottom: 1.5rem;
     --swiper-pagination-bullet-size: 0.65rem;
