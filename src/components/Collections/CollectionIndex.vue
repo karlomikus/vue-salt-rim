@@ -17,7 +17,7 @@
     <div v-if="collections.length > 0">
         <SubscriptionCheck v-if="collections.length >= 3">Subscribe to "Mixologist" plan to create unlimited collections!</SubscriptionCheck>
         <div class="collections">
-            <div class="block-container block-container--padded block-container--hover collections__collection" v-for="collection in collections" :key="collection.id">
+            <div v-for="collection in collections" :key="collection.id" class="block-container block-container--padded block-container--hover collections__collection">
                 <RouterLink class="collections__collection__title" :to="{ name: 'cocktails', query: { 'filter[collection_id]': collection.id } }">{{ collection.name }}</RouterLink>
                 <br>
                 <div class="collections__collection__content">
@@ -129,8 +129,8 @@ export default {
         },
         download(collection) {
             ApiRequests.downloadCollection(collection.id).then(data => {
-                var file = window.URL.createObjectURL(data);
-                window.location.assign(file);
+                var file = window.URL.createObjectURL(data)
+                window.location.assign(file)
             })
         },
         overflowText(input, len) {

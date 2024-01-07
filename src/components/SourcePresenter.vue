@@ -1,5 +1,5 @@
 <template>
-    <a :href="source" v-if="isLink" target="_blank">{{ $t('source') }}</a>
+    <a v-if="isLink" :href="source" target="_blank">{{ $t('source') }}</a>
     <span v-else>{{ $t('source') }}: {{ source }}</span>
 </template>
 
@@ -13,15 +13,15 @@ export default {
     },
     computed: {
         isLink() {
-            let url;
+            let url
 
             try {
-                url = new URL(this.source);
+                url = new URL(this.source)
             } catch (_) {
-                return false;
+                return false
             }
 
-            return url.protocol === "http:" || url.protocol === "https:";
+            return url.protocol === 'http:' || url.protocol === 'https:'
         }
     }
 }

@@ -1,5 +1,5 @@
 <script setup>
-const props = defineProps({
+defineProps({
     rating: {
         type: Number,
         default: 0

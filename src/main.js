@@ -18,7 +18,7 @@ import fr_FR from './locales/fr-FR'
 import de_DE from './locales/de-DE'
 
 registerSW({ immediate: true })
-registerSwiperElements();
+registerSwiperElements()
 
 if (window.srConfig.ANALYTICS_HOST && window.srConfig.ANALYTICS_HOST != '') {
     const { enableAutoPageviews, enableAutoOutboundTracking } = Plausible({

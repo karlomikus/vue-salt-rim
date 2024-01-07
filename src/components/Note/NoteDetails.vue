@@ -12,6 +12,9 @@ import ApiRequests from './../../ApiRequests.js'
 import DateFormatter from '../DateFormatter.vue'
 
 export default {
+    components: {
+        DateFormatter,
+    },
     props: {
         note: {
             type: Object,
@@ -19,9 +22,6 @@ export default {
                 return {}
             }
         }
-    },
-    components: {
-        DateFormatter,
     },
     emits: ['noteDeleted'],
     methods: {
