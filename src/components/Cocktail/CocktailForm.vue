@@ -30,7 +30,7 @@
                 <div class="drag-handle"></div>
                 <div class="cocktail-form__ingredients__content">
                     <div class="form-group">
-                        <label class="form-label">{{ $t('ingredient.title') }}:</label>
+                        <label class="form-label">{{ $t('ingredient.title') }}<template v-if="ing.sort <= 1"> ({{ $t('ingredient.base') }})</template>:</label>
                         <p>
                             {{ ing.name }}
                             <span v-if="ing.note">&middot; {{ ing.note }}</span>
@@ -246,7 +246,10 @@ export default {
         this.sortable = Sortable.create(document.querySelector('.cocktail-form__ingredients'), {
             handle: '.drag-handle',
             ghostClass: 'block-container--placeholder',
-            animation: 150
+            animation: 150,
+            onEnd: () => {
+                this.updateSortPosition()
+            },
         })
 
         const state = new AppState()
@@ -476,6 +479,15 @@ export default {
                     this.isLoading = false
                 })
             }
+        },
+        updateSortPosition() {
+            const sortedIngredientList = this.sortable.toArray()
+
+            this.cocktail.ingredients.map((cIngredient) => {
+                cIngredient.sort = sortedIngredientList.findIndex(sortedId => sortedId == cIngredient.ingredient_id) + 1
+
+                return cIngredient
+            })
         }
     }
 }
