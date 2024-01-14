@@ -51,7 +51,8 @@
       "new-ingredient-success": "Created uncategorized ingredient \"{name}\".",
       "new-ingredient-fail": "Unable to add ingredient.",
       "select-substitutes-for": "Select substitute ingredients for \"{name}\"."
-    }
+    },
+    "base": "Base"
   },
   "share": {
     "title": "Share",
@@ -88,6 +89,7 @@
     "Layer": "Layer"
   },
   "total": {
+    "title": "Total",
     "cocktails": "Total cocktails",
     "ingredients": "Total ingredients"
   },

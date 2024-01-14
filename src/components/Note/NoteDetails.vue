@@ -1,15 +1,20 @@
 <template>
     <div class="note">
-        <h5 class="note-title">{{ createdDate }} &middot; <a href="#" @click.prevent="deleteNote">{{ $t('remove') }}</a></h5>
+        <h5 class="note-title">
+            <DateFormatter :date="note.created_at" format="long" /> &middot; <a href="#" @click.prevent="deleteNote">{{ $t('remove') }}</a>
+        </h5>
         <div class="note-content">{{ note.note }}</div>
     </div>
 </template>
 
 <script>
-import dayjs from 'dayjs'
 import ApiRequests from './../../ApiRequests.js'
+import DateFormatter from '../DateFormatter.vue'
 
 export default {
+    components: {
+        DateFormatter,
+    },
     props: {
         note: {
             type: Object,
@@ -19,13 +24,6 @@ export default {
         }
     },
     emits: ['noteDeleted'],
-    computed: {
-        createdDate() {
-            const date = dayjs(this.note.created_at).toDate()
-
-            return this.$d(date, 'long')
-        }
-    },
     methods: {
         deleteNote() {
             this.$confirm(this.$t('note.confirm-delete'), {

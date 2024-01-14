@@ -1,19 +1,17 @@
+<script setup>
+defineProps({
+    rating: {
+        type: Number,
+        default: 0
+    }
+})
+</script>
+
 <template>
-    <span class="mini-rating" title="Your rating">
+    <span class="mini-rating" :title="$t('your-rating')">
         {{ rating }} ★
     </span>
 </template>
-
-<script>
-export default {
-    props: {
-        rating: {
-            type: Number,
-            default: 0
-        }
-    }
-}
-</script>
 
 <style scoped>
 .mini-rating {
@@ -29,10 +27,5 @@ export default {
 .dark-theme .mini-rating {
     background-color: rgb(167, 75, 22);
     color: rgb(255, 236, 207);
-}
-
-.mini-rating.mini-rating--user {
-    background-color: rgb(215, 235, 252);
-    color: rgb(0, 99, 180);
 }
 </style>

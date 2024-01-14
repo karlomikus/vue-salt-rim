@@ -16,6 +16,12 @@
     gap: var(--gap-size-2);
 }
 
+@media (max-width: 450px) {
+    .resource-search__content__filter {
+        gap: var(--gap-size-1);
+    }
+}
+
 .resource-search__content__filter .form-input {
     flex-basis: 100%;
 }

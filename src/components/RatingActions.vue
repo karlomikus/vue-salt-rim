@@ -10,6 +10,9 @@ import ApiRequests from './../ApiRequests.js'
 import OverlayLoader from './OverlayLoader.vue'
 
 export default {
+    components: {
+        OverlayLoader,
+    },
     props: {
         rating: {
             type: Number,
@@ -23,9 +26,6 @@ export default {
             type: String,
             default: 'cocktail'
         }
-    },
-    components: {
-        OverlayLoader,
     },
     data() {
         return {

@@ -52,4 +52,16 @@ export default {
     font-size: 0.7rem;
     font-weight: var(--fw-bold);
 }
+
+@media (max-width: 450px) {
+    .resource-rating svg {
+        width: 12px;
+        height: 12px;
+    }
+
+    .resource-rating__alt {
+        padding: 0 4px;
+        font-size: 0.65rem;
+    }
+}
 </style>

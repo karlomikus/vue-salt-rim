@@ -10,6 +10,7 @@ import './assets/main.css'
 import AppState from './AppState.js'
 import Plausible from 'plausible-tracker'
 import { registerSW } from 'virtual:pwa-register'
+import { register as registerSwiperElements } from 'swiper/element/bundle'
 
 import en_US from './locales/en-US'
 import hr_HR from './locales/hr-HR'
@@ -17,6 +18,7 @@ import fr_FR from './locales/fr-FR'
 import de_DE from './locales/de-DE'
 
 registerSW({ immediate: true })
+registerSwiperElements()
 
 if (window.srConfig.ANALYTICS_HOST && window.srConfig.ANALYTICS_HOST != '') {
     const { enableAutoPageviews, enableAutoOutboundTracking } = Plausible({

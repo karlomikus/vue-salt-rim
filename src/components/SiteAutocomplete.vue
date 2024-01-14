@@ -7,22 +7,24 @@
                     <input ref="siteSearchInput" class="form-input" type="search" :placeholder="$t('placeholder.site-search')" :value="currentRefinement" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" maxlength="512" @input="refine($event.currentTarget.value)">
                 </template>
             </ais-search-box>
-            <ais-hits>
-                <template #default="{ items }">
-                    <h4 v-show="items.length > 0" class="site-autocomplete__index-name">{{ $t('cocktails.title') }}</h4>
-                    <ul v-show="items.length > 0" class="site-autocomplete__results">
-                        <li v-for="hit in items" :key="hit.slug">
-                            <RouterLink :to="{ name: 'cocktails.show', params: { id: hit.slug } }" @click="close">
-                                <div class="site-autocomplete__results__image" :style="{ 'background-image': 'url(' + getImageUrl(hit, 'cocktail') + ')' }"></div>
-                                <div class="site-autocomplete__results__content">
-                                    <ais-highlight attribute="name" :hit="hit" />
-                                    <small>{{ hit.short_ingredients.join(', ') }}</small>
-                                </div>
-                            </RouterLink>
-                        </li>
-                    </ul>
-                </template>
-            </ais-hits>
+            <ais-index index-name="cocktails">
+                <ais-hits>
+                    <template #default="{ items }">
+                        <h4 v-show="items.length > 0" class="site-autocomplete__index-name">{{ $t('cocktails.title') }}</h4>
+                        <ul v-show="items.length > 0" class="site-autocomplete__results">
+                            <li v-for="hit in items" :key="hit.slug">
+                                <RouterLink :to="{ name: 'cocktails.show', params: { id: hit.slug } }" @click="close">
+                                    <div class="site-autocomplete__results__image" :style="{ 'background-image': 'url(' + getImageUrl(hit, 'cocktail') + ')' }"></div>
+                                    <div class="site-autocomplete__results__content">
+                                        <ais-highlight attribute="name" :hit="hit" />
+                                        <small>{{ hit.short_ingredients.join(', ') }}</small>
+                                    </div>
+                                </RouterLink>
+                            </li>
+                        </ul>
+                    </template>
+                </ais-hits>
+            </ais-index>
             <ais-index index-name="ingredients">
                 <ais-hits>
                     <template #default="{ items }">
@@ -41,17 +43,6 @@
                     </template>
                 </ais-hits>
             </ais-index>
-            <ais-clear-refinements :included-attributes="['query']">
-                <template #default="{ canRefine, refine }">
-                    <button v-if="canRefine" class="site-autocomplete__clear" @click.prevent="refine">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
-                            <path fill="none" d="M0 0h24v24H0z" />
-                            <path d="M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm0-2a8 8 0 1 0 0-16 8 8 0 0 0 0 16zm0-9.414l2.828-2.829 1.415 1.415L13.414 12l2.829 2.828-1.415 1.415L12 13.414l-2.828 2.829-1.415-1.415L10.586 12 7.757 9.172l1.415-1.415L12 10.586z" />
-                        </svg>
-                    </button>
-                </template>
-                <template #resetLabel></template>
-            </ais-clear-refinements>
         </ais-instant-search>
         <footer class="site-autocomplete__footer">
             <span>Esc</span> to close, <span>CTRL+K</span> to toggle
@@ -127,7 +118,6 @@ export default {
 
 .site-autocomplete__results li a {
     display: flex;
-    align-items: center;
     width: 100%;
     padding: 0.5rem;
     border-radius: var(--radius-1);
@@ -163,30 +153,6 @@ export default {
 
 .site-autocomplete__results__content small {
     display: block;
-}
-
-.site-autocomplete__clear {
-    background: none;
-    border: 0;
-    padding: 0;
-    cursor: pointer;
-}
-
-.site-autocomplete__clear svg {
-    width: 30px;
-    height: 30px;
-    fill: #373f6c;
-}
-
-.site-autocomplete .ais-ClearRefinements-button {
-    display: none;
-}
-
-.site-autocomplete .ais-ClearRefinements {
-    position: absolute;
-    top: 15px;
-    right: 10px;
-    display: none;
 }
 
 .site-autocomplete__footer {

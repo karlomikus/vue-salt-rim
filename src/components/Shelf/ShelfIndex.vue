@@ -108,25 +108,25 @@
         </div>
     </div>
     <div class="list-grid">
-        <div class="list-grid__col" v-if="stats.top_rated_cocktails.length > 0">
+        <div v-if="stats.top_rated_cocktails.length > 0" class="list-grid__col">
             <h3 class="page-subtitle">{{ $t('top-rated-cocktails') }}</h3>
             <div class="list-grid__container">
-                <RouterLink :to="{ name: 'cocktails.show', params: { id: cocktail.cocktail_slug } }" class="shelf-stats-count block-container block-container--hover" v-for="cocktail in stats.top_rated_cocktails" :key="cocktail.id">
+                <RouterLink v-for="cocktail in stats.top_rated_cocktails" :key="cocktail.id" :to="{ name: 'cocktails.show', params: { id: cocktail.cocktail_slug } }" class="shelf-stats-count block-container block-container--hover">
                     <h4>{{ cocktail.name }}</h4>
                     <small>{{ $t('avg-rating') }}: {{ cocktail.avg_rating }} &middot; {{ $t('votes') }}: {{ cocktail.votes }}</small>
                 </RouterLink>
             </div>
         </div>
-        <div class="list-grid__col" v-if="stats.most_popular_ingredients.length > 0">
+        <div v-if="stats.most_popular_ingredients.length > 0" class="list-grid__col">
             <h3 class="page-subtitle">{{ $t('most-popular-ingredients') }}</h3>
             <div class="list-grid__container">
-                <RouterLink :to="{ name: 'ingredients.show', params: { id: ingredient.ingredient_slug } }" class="shelf-stats-count block-container block-container--hover" v-for="ingredient in stats.most_popular_ingredients" :key="ingredient.id">
+                <RouterLink v-for="ingredient in stats.most_popular_ingredients" :key="ingredient.id" :to="{ name: 'ingredients.show', params: { id: ingredient.ingredient_slug } }" class="shelf-stats-count block-container block-container--hover">
                     <h4>{{ ingredient.name }}</h4>
                     <small>{{ ingredient.cocktails_count }} {{ $t('cocktails.title') }}</small>
                 </RouterLink>
             </div>
         </div>
-        <div class="list-grid__col" v-if="recommendedIngredients.length > 0">
+        <div v-if="recommendedIngredients.length > 0" class="list-grid__col">
             <h3 class="page-subtitle">{{ $t('recommended-ingredients') }}</h3>
             <div class="block-recommended">
                 You can make <strong>{{ shelfPercent }}</strong> of bar cocktails. Add one of the following ingredients to you shelf to increase your cocktail options:
@@ -186,6 +186,11 @@ export default {
             }
         }
     },
+    computed: {
+        shelfPercent() {
+            return Number(this.stats.total_shelf_cocktails / this.stats.total_cocktails).toLocaleString(undefined,{style: 'percent', minimumFractionDigits:2})
+        }
+    },
     created() {
         document.title = `${this.$t('shelf.title')} \u22C5 ${this.site_title}`
 
@@ -228,11 +233,6 @@ export default {
             this.loaders.recommended = false
             this.$toast.error(this.$t('shelf.toasts.shelf-error'))
         })
-    },
-    computed: {
-        shelfPercent() {
-            return Number(this.stats.total_shelf_cocktails / this.stats.total_cocktails).toLocaleString(undefined,{style: 'percent', minimumFractionDigits:2});;
-        }
     },
     methods: {
         fetchShoppingList() {
