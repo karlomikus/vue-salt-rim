@@ -173,6 +173,11 @@ const router = createRouter({
                     name: 'bars.form',
                     component: () => import('../views/BarFormView.vue'),
                 },
+                {
+                    path: '/menu',
+                    name: 'menu',
+                    component: () => import('../views/MenuView.vue'),
+                },
             ]
         },
         {

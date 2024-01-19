@@ -479,5 +479,27 @@
   "top-rated-cocktails": "Top rated cocktails",
   "most-popular-ingredients": "Popular ingredients",
   "votes": "Votes",
-  "recommended-ingredients": "Recommended ingredients"
+  "recommended-ingredients": "Recommended ingredients",
+  "menu": {
+    "title": "Menu",
+    "bar-title-menu": "{name} Menu",
+    "is-active": "Enable bar menu",
+    "url": "Menu URL",
+    "add-category": "Add menu category",
+    "category-title": "Menu category title",
+    "remove-category": "Remove menu category",
+    "add-cocktail": "Add cocktail",
+    "price": "Price",
+    "currency": "Currency",
+    "copy-currency": "Copy currency to all cocktails",
+    "cocktail-added": "Cocktail \"{name}\" added to menu",
+    "category-added": "Menu category added",
+    "delete-category-confirm": "This will delete \"{name}\" menu category",
+    "category-removed": "Menu category removed",
+    "saved": "Menu updated",
+    "update-error": "Unable to update bar menu",
+    "cocktail-already-added": "Cocktail \"{name}\" is already in the menu",
+    "delete-cocktail-confirm": "This will remove cocktail \"{name}\" from menu category",
+    "cocktail-removed": "Cocktail removed from menu category"
+  }
 }
