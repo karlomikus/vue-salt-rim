@@ -77,6 +77,16 @@ export default {
     overflow-x: auto;
 }
 
+.dark-theme .cocktail-finder__hits {
+    background-color: rgba(0, 0, 0, .15);
+    border-bottom: 1px solid rgba(255, 255, 255, .1);
+    box-shadow:
+        inset 0px 0.4px 0.5px hsl(var(--shadow-color-dark) / 0.25),
+        inset 0px 1.1px 1.2px -0.8px hsl(var(--shadow-color-dark) / 0.25),
+        inset 0px 2.6px 2.9px -1.7px hsl(var(--shadow-color-dark) / 0.25),
+        inset 0px 6.3px 7.1px -2.5px hsl(var(--shadow-color-dark) / 0.25);
+}
+
 .cocktail-finder__option {
     display: flex;
     flex-direction: row;
@@ -99,5 +109,9 @@ export default {
 .cocktail-finder__option small {
     font-size: 0.85rem;
     color: var(--clr-gray-600);
+}
+
+.dark-theme .cocktail-finder__option small {
+    color: var(--clr-gray-400);
 }
 </style>

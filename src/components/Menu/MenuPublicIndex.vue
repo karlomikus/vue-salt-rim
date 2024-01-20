@@ -185,6 +185,7 @@ export default {
 @media (max-width: 545px) {
     .public-page-menu__cocktail__price {
         margin-top: auto;
+        font-size: 1rem;
         text-align: right;
     }
 }

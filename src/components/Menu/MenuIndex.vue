@@ -40,17 +40,21 @@
                     <div v-for="(cocktail, cidx) in category.cocktails" :key="cocktail.id" class="block-container menu-category__cocktail" :data-id="cocktail.id">
                         <div class="drag-handle"></div>
                         <div class="menu-category__cocktail__content">
-                            <h4>{{ cocktail.name }}</h4>
-                            <small>{{ cocktail.short_ingredients.join(', ') }}</small><br>
-                            <a href="#" @click.prevent="copyCurrency(cocktail.currency)">{{ $t('menu.copy-currency') }}</a> &middot; <a href="#" @click.prevent="removeCocktail(category, cocktail)">{{ $t('remove') }}</a>
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label" :for="'cocktail-category-price-' + idx + '-' + cidx">{{ $t('menu.price') }}:</label>
-                            <input :id="'cocktail-category-price-' + idx + '-' + cidx" class="form-input" type="text" v-model="cocktail.price">
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label" :for="'cocktail-category-currency-' + idx + '-' + cidx">{{ $t('menu.currency') }}:</label>
-                            <input :id="'cocktail-category-currency-' + idx + '-' + cidx" class="form-input" type="text" v-model="cocktail.currency">
+                            <div>
+                                <h4>{{ cocktail.name }}</h4>
+                                <small>{{ cocktail.short_ingredients.join(', ') }}</small><br>
+                                <a href="#" @click.prevent="copyCurrency(cocktail.currency)">{{ $t('menu.copy-currency') }}</a> &middot; <a href="#" @click.prevent="removeCocktail(category, cocktail)">{{ $t('remove') }}</a>
+                            </div>
+                            <div class="menu-category__cocktail__content__price">
+                                <div class="form-group">
+                                    <label class="form-label" :for="'cocktail-category-price-' + idx + '-' + cidx">{{ $t('menu.price') }}:</label>
+                                    <input :id="'cocktail-category-price-' + idx + '-' + cidx" class="form-input" type="text" v-model="cocktail.price">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label" :for="'cocktail-category-currency-' + idx + '-' + cidx">{{ $t('menu.currency') }}:</label>
+                                    <input :id="'cocktail-category-currency-' + idx + '-' + cidx" class="form-input" type="text" v-model="cocktail.currency">
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -300,6 +304,12 @@ export default {
     flex-shrink: 0;
 }
 
+@media (max-width: 450px) {
+    .menu-details {
+        flex-direction: column;
+    }
+}
+
 .menu-categories {
     display: flex;
     flex-direction: column;
@@ -343,7 +353,28 @@ export default {
 }
 
 .menu-category__cocktail__content {
-    margin-right: auto;
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+}
+
+@media (max-width: 450px) {
+    .menu-category__cocktail__content {
+        flex-direction: column;
+    }
+}
+
+.menu-category__cocktail__content__price {
+    display: flex;
+    margin-left: auto;
+    gap: var(--gap-size-2);
+}
+
+@media (max-width: 450px) {
+    .menu-category__cocktail__content__price {
+        margin-top: 0.25rem;
+        margin-left: 0;
+    }
 }
 
 .menu-category__cocktail__content h4 {
@@ -355,6 +386,10 @@ export default {
 .menu-category__cocktail__content small {
     font-size: 0.85rem;
     color: var(--clr-gray-600);
+}
+
+.dark-theme .menu-category__cocktail__content small {
+    color: var(--clr-gray-400);
 }
 
 .menu-category__cocktail__content a {
