@@ -8,7 +8,7 @@
             <div class="block-container block-container--padded" style="width: 100%;">
                 <div class="form-group">
                     <label class="form-label" for="menu-is-active">{{ $t('menu.url') }}:</label>
-                    <p class="menu-url">{{ menu.url }}</p>
+                    <p class="menu-url"><a :href="menu.url">{{ menu.url }}</a></p>
                 </div>
                 <div style="margin: 1rem 0;">
                     <label class="form-checkbox">
@@ -302,6 +302,9 @@ export default {
 
 .menu-qr-code {
     flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 @media (max-width: 450px) {
@@ -325,6 +328,12 @@ export default {
     box-shadow: inset 0px 0.4px 0.5px hsl(var(--shadow-color) / 0.25), inset 0px 1.1px 1.2px -0.8px hsl(var(--shadow-color) / 0.25), inset 0px 2.6px 2.9px -1.7px hsl(var(--shadow-color) / 0.25), inset 0px 6.3px 7.1px -2.5px hsl(var(--shadow-color) / 0.25);
 }
 
+@media (max-width: 450px) {
+    .menu-category {
+        padding: var(--gap-size-2);
+    }
+}
+
 .dark-theme .menu-category {
     background-color: rgba(0, 0, 0, .15);
     border-bottom: 1px solid rgba(255, 255, 255, .1);
@@ -346,6 +355,13 @@ export default {
     display: flex;
     gap: var(--gap-size-3);
     padding: var(--gap-size-3);
+}
+
+@media (max-width: 450px) {
+    .menu-category__cocktail {
+        gap: var(--gap-size-2);
+        padding: var(--gap-size-2);
+    }
 }
 
 .menu-category__cocktail .drag-handle {
@@ -372,7 +388,7 @@ export default {
 
 @media (max-width: 450px) {
     .menu-category__cocktail__content__price {
-        margin-top: 0.25rem;
+        margin-top: 0.5rem;
         margin-left: 0;
     }
 }
@@ -381,6 +397,12 @@ export default {
     font-weight: var(--fw-bold);
     font-family: var(--font-heading);
     font-size: 1.25rem;
+}
+
+@media (max-width: 450px) {
+    .menu-category__cocktail__content h4 {
+        font-size: 1rem;
+    }
 }
 
 .menu-category__cocktail__content small {
@@ -398,6 +420,7 @@ export default {
 
 .menu-category__cocktail .form-group {
     max-width: 100px;
+    margin-bottom: 0;
 }
 
 .menu-category__cocktail .form-group .form-input {
@@ -408,12 +431,15 @@ export default {
     background: var(--clr-gray-100);
     padding: 0.5rem;
     font-weight: var(--fw-bold);
-    font-size: 1.25rem;
-    font-family: monospace;
     border-radius: var(--radius-1);
+    width: 100%;
 }
 
 .dark-theme .menu-url {
     background: var(--clr-gray-900);
+}
+
+.menu-url a {
+    font-weight: var(--fw-bold);
 }
 </style>
