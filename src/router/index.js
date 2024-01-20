@@ -61,6 +61,12 @@ const router = createRouter({
             meta: { requiresAuth: false }
         },
         {
+            path: '/bars/:slug',
+            name: 'bars.menu',
+            component: () => import('../views/MenuPublicView.vue'),
+            meta: { requiresAuth: false }
+        },
+        {
             path: '/',
             component: () => import('../AuthLayout.vue'),
             children: [

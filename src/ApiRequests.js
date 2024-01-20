@@ -880,6 +880,12 @@ class ApiRequests
 
         return this.parseResponse(jsonResp)
     }
+
+    static async fetchPublicMenu(slug) {
+        let jsonResp = await this.getRequest(`/api/explore/menus/${slug}`)
+
+        return this.parseResponse(jsonResp)
+    }
 }
 
 export default ApiRequests

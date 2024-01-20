@@ -216,7 +216,7 @@ export default {
         refreshBar() {
             ApiRequests.fetchBar(this.appState.bar.id).then(data => {
                 this.bar = data
-                this.menu.url = `${window.location.origin}/bar/${this.bar.slug}/menu`
+                this.menu.url = `${window.location.origin}/bars/${this.bar.slug}`
             }).catch(() => {
             })
         },
