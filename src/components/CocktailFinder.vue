@@ -51,6 +51,7 @@ export default {
         doFocus() {
             this.$nextTick(() => {
                 if (this.$refs.search) {
+                    this.$el.scrollIntoView(true)
                     this.$refs.search.focus()
                 }
             })

@@ -48,6 +48,9 @@ export default {
     created() {
         ApiRequests.fetchPublicMenu(this.$route.params.slug).then(data => {
             this.menu = data
+        }).catch(() => {
+            this.$toast.default(this.$t('menu.menu-not-found'))
+            this.$router.push('/')
         })
     },
     mounted() {

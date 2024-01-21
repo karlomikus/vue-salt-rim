@@ -500,6 +500,7 @@
     "update-error": "Unable to update bar menu",
     "cocktail-already-added": "Cocktail \"{name}\" is already in the menu",
     "delete-cocktail-confirm": "This will remove cocktail \"{name}\" from menu category",
-    "cocktail-removed": "Cocktail removed from menu category"
+    "cocktail-removed": "Cocktail removed from menu category",
+    "menu-not-found": "Menu not found"
   }
 }
