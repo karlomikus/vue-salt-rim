@@ -4,6 +4,7 @@
         <PageHeader>
             {{ $t('menu.bar-title-menu', { name: appState.bar.name }) }}
         </PageHeader>
+        <SubscriptionCheck>Subscribe to "Mixologist" plan to manage your bar menu!</SubscriptionCheck>
         <div class="menu-details">
             <div class="block-container block-container--padded" style="width: 100%;">
                 <div class="form-group">
@@ -48,11 +49,11 @@
                             <div class="menu-category__cocktail__content__price">
                                 <div class="form-group">
                                     <label class="form-label" :for="'cocktail-category-price-' + idx + '-' + cidx">{{ $t('menu.price') }}:</label>
-                                    <input :id="'cocktail-category-price-' + idx + '-' + cidx" class="form-input" type="text" v-model="cocktail.price">
+                                    <input :id="'cocktail-category-price-' + idx + '-' + cidx" v-model="cocktail.price" class="form-input" type="text">
                                 </div>
                                 <div class="form-group">
                                     <label class="form-label" :for="'cocktail-category-currency-' + idx + '-' + cidx">{{ $t('menu.currency') }}:</label>
-                                    <input :id="'cocktail-category-currency-' + idx + '-' + cidx" class="form-input" type="text" v-model="cocktail.currency">
+                                    <input :id="'cocktail-category-currency-' + idx + '-' + cidx" v-model="cocktail.currency" class="form-input" type="text">
                                 </div>
                             </div>
                         </div>
@@ -88,6 +89,7 @@ import AppState from '../../AppState'
 import QRCodeVue3 from 'qrcode-vue3'
 import ApiRequests from './../../ApiRequests.js'
 import OverlayLoader from '../OverlayLoader.vue'
+import SubscriptionCheck from '../SubscriptionCheck.vue'
 
 export default {
     components: {
@@ -96,6 +98,7 @@ export default {
         SaltRimDialog,
         QRCodeVue3,
         OverlayLoader,
+        SubscriptionCheck,
     },
     data() {
         return {
@@ -110,42 +113,42 @@ export default {
             sortableInstances: [],
         }
     },
-    created() {
-        this.refreshMenu();
-        this.refreshBar();
-    },
     computed: {
         cocktails() {
-            return this.categories.flatMap(c => c.cocktails).sort((a, b) => { a.sort - b.sort });
+            return this.categories.flatMap(c => c.cocktails).sort((a, b) => { a.sort - b.sort })
         },
         guessCurrency() {
             // Use map() to create a new array with just the currencies
-            let currencyArray = this.cocktails.map(item => item.currency);
+            let currencyArray = this.cocktails.map(item => item.currency)
 
             // Convert it into a Set, which will automatically remove any duplicates
-            let uniqueCurrencySet = new Set(currencyArray);
+            let uniqueCurrencySet = new Set(currencyArray)
 
             // Now convert back into an Array using Array.from()
-            let uniqueCurrencies = Array.from(uniqueCurrencySet);
+            let uniqueCurrencies = Array.from(uniqueCurrencySet)
 
             if (uniqueCurrencies.length == 0) {
                 return null
             }
 
-            return uniqueCurrencies[0];
+            return uniqueCurrencies[0]
         }
+    },
+    created() {
+        this.refreshMenu()
+        this.refreshBar()
     },
     methods: {
         selectCocktail(cocktail, category, finderIdx) {
             if (this.cocktails.findIndex(c => parseInt(c.id) == parseInt(cocktail.id)) >= 0) {
                 this.$toast.default(this.$t('menu.cocktail-already-added', {name: cocktail.name}))
 
-                return;
+                return
             }
 
             this.$toast.default(this.$t('menu.cocktail-added', {name: cocktail.name}))
 
-            this.showCocktailFinder[finderIdx] = false;
+            this.showCocktailFinder[finderIdx] = false
 
             category.cocktails.push({
                 id: cocktail.id,
@@ -174,7 +177,7 @@ export default {
             if (category.cocktails.length > 0) {
                 this.$confirm(this.$t('menu.delete-category-confirm', {name: category.name}), {
                     onResolved: (dialog) => {
-                        dialog.close();
+                        dialog.close()
                         this.$toast.default(this.$t('menu.category-removed'))
                         this.categories.splice(
                             this.categories.findIndex(i => i == category),
@@ -194,7 +197,7 @@ export default {
         removeCocktail(category, cocktail) {
             this.$confirm(this.$t('menu.delete-cocktail-confirm', {name: cocktail.name}), {
                 onResolved: (dialog) => {
-                    dialog.close();
+                    dialog.close()
                     this.$toast.default(this.$t('menu.cocktail-removed'))
                     category.cocktails.splice(
                         category.cocktails.findIndex(i => i == cocktail),
@@ -210,7 +213,7 @@ export default {
                 this.menu.is_enabled = data.is_enabled
                 this.categories = data.categories
                 this.$nextTick(() => {
-                    this.refreshSortable();
+                    this.refreshSortable()
                 })
             }).catch(() => {
                 this.isLoading = false
@@ -225,7 +228,7 @@ export default {
             })
         },
         refreshSortable() {
-            this.sortableInstances = [];
+            this.sortableInstances = []
             const self = this
             document.querySelectorAll('.menu-category-cocktails').forEach(el => {
                 this.sortableInstances.push(Sortable.create(el, {
@@ -236,7 +239,7 @@ export default {
                     fallbackOnBody: true,
                     swapThreshold: 0.65,
                     onAdd: function (evt) {
-                        const sourceCocktail = self.cocktails.find(c => c.id == evt.item.dataset.id);
+                        const sourceCocktail = self.cocktails.find(c => c.id == evt.item.dataset.id)
                         const fromCategory = self.categories[evt.from.dataset.categoryIdx]
                         const targetCategory = self.categories[evt.to.dataset.categoryIdx]
 
@@ -264,7 +267,7 @@ export default {
         saveMenu() {
             this.isLoading = true
 
-            const sortedCocktails = this.sortableInstances.flatMap(sortableInstance => sortableInstance.toArray());
+            const sortedCocktails = this.sortableInstances.flatMap(sortableInstance => sortableInstance.toArray())
             const cocktails = this.categories.flatMap(cat => {
                 return cat.cocktails.map(cocktail => ({
                     cocktail_id: cocktail.id,
@@ -272,17 +275,17 @@ export default {
                     sort: sortedCocktails.findIndex(sortedId => sortedId == cocktail.id) + 1,
                     price: cocktail.price,
                     currency: cocktail.currency,
-                }));
-            });
+                }))
+            })
 
             const postData = {
                 is_enabled: this.menu.is_enabled,
                 cocktails: cocktails
-            };
+            }
 
             ApiRequests.updateMenu(postData).then(() => {
                 this.isLoading = false
-                this.refreshMenu();
+                this.refreshMenu()
                 this.$toast.default(this.$t('menu.saved'))
             }).catch(() => {
                 this.isLoading = false

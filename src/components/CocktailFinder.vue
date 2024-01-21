@@ -11,7 +11,7 @@
             </ais-search-box>
             <ais-hits class="cocktail-finder__hits">
                 <template #default="{ items }">
-                    <a class="cocktail-finder__option block-container block-container--hover" v-for="item in items" :key="item.id" href="#" @click.prevent="$emit('cocktailSelected', item)">
+                    <a v-for="item in items" :key="item.id" class="cocktail-finder__option block-container block-container--hover" href="#" @click.prevent="$emit('cocktailSelected', item)">
                         <CocktailThumb :cocktail="item"></CocktailThumb>
                         <div>
                             <h4><ais-highlight attribute="name" :hit="item" /></h4>
@@ -35,10 +35,10 @@ import CocktailThumb from './Cocktail/CocktailThumb.vue'
 const appState = new AppState()
 
 export default {
-    emits: ['cocktailSelected'],
     components: {
         CocktailThumb,
     },
+    emits: ['cocktailSelected', 'closed'],
     data() {
         return {
             searchClient: instantMeiliSearch(

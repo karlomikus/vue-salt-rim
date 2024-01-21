@@ -1,14 +1,18 @@
 <template>
     <div class="public-page">
         <div class="public-page__header">
-            <SiteLogo :bar-name="menu.bar.name" :bar-description="menu.bar.subtitle"></SiteLogo>
+            <SiteLogo></SiteLogo>
         </div>
         <div class="public-page-menu">
-            <p>{{ menu.bar.description }}</p>
-            <div class="public-page-menu__category" v-for="category in menu.categories" :key="category.name">
+            <div class="public-page-menu__bar">
+                <h2>{{ menu.bar.name }}</h2>
+                <h4 v-show="menu.bar.subtitle">{{ menu.bar.subtitle }}</h4>
+                <p v-show="menu.bar.description">{{ menu.bar.description }}</p>
+            </div>
+            <div v-for="category in menu.categories" :key="category.name" class="public-page-menu__category">
                 <h3>{{ category.name }}</h3>
                 <div class="public-page-menu__category__cocktails">
-                    <div class="public-page-menu__cocktail" v-for="cocktail in category.cocktails" :key="cocktail.sort">
+                    <div v-for="cocktail in category.cocktails" :key="cocktail.sort" class="public-page-menu__cocktail">
                         <div class="public-page-menu__cocktail__image">
                             <img :src="cocktail.image" alt="">
                         </div>
@@ -86,8 +90,13 @@ export default {
     color: var(--clr-gray-200);
 }
 
-.public-page-menu p {
+.public-page-menu__bar {
     color: var(--clr-gray-200);
+}
+
+.public-page-menu__bar h2 {
+    color: var(--clr-gray-100);
+    font-weight: var(--fw-bold);
 }
 
 .public-page-menu__category h3 {
