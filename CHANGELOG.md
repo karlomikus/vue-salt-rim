@@ -1,3 +1,8 @@
+# v2.9.0
+## New
+- Added bar menu managing
+- Added public bar menu page
+
 # v2.8.0
 ## New
 - Added cocktail safety info
