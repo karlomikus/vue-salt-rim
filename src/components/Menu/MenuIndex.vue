@@ -7,6 +7,7 @@
         <SubscriptionCheck>Subscribe to "Mixologist" plan to manage your bar menu!</SubscriptionCheck>
         <div class="menu-details">
             <div class="block-container block-container--padded" style="width: 100%;">
+                <p style="margin-bottom: 1rem;">{{ $t('menu.description') }}</p>
                 <div class="form-group">
                     <label class="form-label" for="menu-is-active">{{ $t('menu.url') }}:</label>
                     <p class="menu-url"><a :href="menu.url">{{ menu.url }}</a></p>
