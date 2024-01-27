@@ -860,6 +860,32 @@ class ApiRequests
 
         return this.parseResponse(jsonResp)
     }
+
+    /**
+     * =============================
+     * Menu
+     * =============================
+     */
+
+    static async fetchMenu() {
+        const q = this.generateBAQueryString({}, true)
+        let jsonResp = await this.getRequest(`/api/menu${q}`)
+
+        return this.parseResponse(jsonResp)
+    }
+
+    static async updateMenu(data) {
+        const q = this.generateBAQueryString({}, true)
+        const jsonResp = await this.postRequest(`/api/menu${q}`, data)
+
+        return this.parseResponse(jsonResp)
+    }
+
+    static async fetchPublicMenu(slug) {
+        let jsonResp = await this.getRequest(`/api/explore/menus/${slug}`)
+
+        return this.parseResponse(jsonResp)
+    }
 }
 
 export default ApiRequests

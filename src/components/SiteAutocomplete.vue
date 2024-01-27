@@ -4,6 +4,7 @@
             <ais-configure :hits-per-page.camel="5" />
             <ais-search-box autofocus>
                 <template #default="{ currentRefinement, refine }">
+                    {{ doFocus() }}
                     <input ref="siteSearchInput" class="form-input" type="search" :placeholder="$t('placeholder.site-search')" :value="currentRefinement" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" maxlength="512" @input="refine($event.currentTarget.value)">
                 </template>
             </ais-search-box>
@@ -69,13 +70,6 @@ export default {
             appState.bar.search_driver_api_key,
         ).searchClient
     },
-    mounted() {
-        this.$nextTick(() => {
-            setTimeout(() => {
-                this.$refs.siteSearchInput.focus()
-            }, 200)
-        })
-    },
     methods: {
         close() {
             this.$emit('closeAutocomplete')
@@ -90,6 +84,13 @@ export default {
             }
 
             return hit.image_url
+        },
+        doFocus() {
+            this.$nextTick(() => {
+                if (this.$refs.siteSearchInput) {
+                    this.$refs.siteSearchInput.focus()
+                }
+            })
         }
     }
 }

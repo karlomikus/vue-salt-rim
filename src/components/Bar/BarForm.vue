@@ -7,11 +7,18 @@
         <div class="block-container block-container--padded">
             <div class="form-group">
                 <label class="form-label form-label--required" for="name">{{ $t('name') }}:</label>
-                <input id="name" v-model="bar.name" class="form-input" type="text" required>
+                <input id="name" v-model="bar.name" class="form-input" type="text" required @input="skipSlugGenerationFromName == false ? updateSlug($event) : true" @blur="skipSlugGenerationFromName = true">
             </div>
             <div class="form-group">
                 <label class="form-label" for="subtitle">{{ $t('subtitle') }}:</label>
                 <input id="subtitle" v-model="bar.subtitle" class="form-input" type="text">
+            </div>
+            <div class="form-group">
+                <label class="form-label" for="slug">{{ $t('bar.url') }}:</label>
+                <input id="slug" v-model="bar.slug" class="form-input" type="text" @blur="updateSlug" :disabled="bar.id != null">
+                <p class="form-input-hint" v-show="urlWithSlug">
+                    {{ $t('bar.url-help', {url: urlWithSlug}) }}
+                </p>
             </div>
             <div class="form-group">
                 <label class="form-label" for="description">{{ $t('description') }}:</label>
@@ -41,6 +48,7 @@ import AppState from '../../AppState'
 import ApiRequests from './../../ApiRequests'
 import OverlayLoader from './../OverlayLoader.vue'
 import PageHeader from './../PageHeader.vue'
+import slug from 'slug'
 
 export default {
     components: {
@@ -50,6 +58,7 @@ export default {
     data() {
         return {
             isLoading: false,
+            skipSlugGenerationFromName: false,
             bar: {
                 options: [
                     'cocktails',
@@ -70,6 +79,15 @@ export default {
             }
         }
     },
+    computed: {
+        urlWithSlug() {
+            if (!this.bar.slug) {
+                return null;
+            }
+
+            return `${window.location.origin}/bars/${slug(this.bar.slug)}`
+        },
+    },
     created() {
         document.title = `${this.$t('bars.bar')} \u22C5 ${this.site_title}`
 
@@ -88,7 +106,19 @@ export default {
         }
     },
     methods: {
+        updateSlug(e) {
+            if (this.bar.id) {
+                return;
+            }
+
+            this.bar.slug = slug(e.target.value)
+        },
         submit() {
+            let postSlug = null;
+            if (this.bar.slug) {
+                postSlug = slug(this.bar.slug)
+            }
+
             this.isLoading = true
             if (this.bar.id) {
                 const appState = new AppState()
@@ -113,6 +143,7 @@ export default {
                     description: this.bar.description,
                     enable_invites: this.enableInvites,
                     options: this.bar.options,
+                    slug: postSlug,
                 }).then(() => {
                     this.isLoading = false
                     this.$toast.default(this.$t('bars.add-success', { name: this.bar.name }))

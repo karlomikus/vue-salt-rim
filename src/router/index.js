@@ -61,6 +61,12 @@ const router = createRouter({
             meta: { requiresAuth: false }
         },
         {
+            path: '/bars/:slug',
+            name: 'bars.menu',
+            component: () => import('../views/MenuPublicView.vue'),
+            meta: { requiresAuth: false }
+        },
+        {
             path: '/',
             component: () => import('../AuthLayout.vue'),
             children: [
@@ -172,6 +178,11 @@ const router = createRouter({
                     path: '/bars/form',
                     name: 'bars.form',
                     component: () => import('../views/BarFormView.vue'),
+                },
+                {
+                    path: '/menu',
+                    name: 'menu',
+                    component: () => import('../views/MenuView.vue'),
                 },
             ]
         },

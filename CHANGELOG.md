@@ -1,3 +1,18 @@
+# v2.9.0
+## New
+- Added bar menu managing
+- Added public bar menu page
+
+# v2.8.0
+## New
+- Added cocktail safety info
+- Active search refinements are now by default expanded
+- Approximate total liquid is now shown in cocktail recipe
+- Show label for base ingredients
+
+## Changes
+- Cocktails list is now in 2 columns (if possible) on mobile
+
 # v2.7.0
 ## New
 - Shelf has more stats

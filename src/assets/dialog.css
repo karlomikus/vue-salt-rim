@@ -89,6 +89,7 @@
     border: 0;
     padding: 0;
     cursor: pointer;
+    z-index: 2;
 }
 
 .dialog__close svg {
