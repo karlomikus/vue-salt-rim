@@ -184,6 +184,11 @@ const router = createRouter({
                     name: 'menu',
                     component: () => import('../views/MenuView.vue'),
                 },
+                {
+                    path: '/assistant',
+                    name: 'assistant',
+                    component: () => import('../views/AssistantView.vue'),
+                },
             ]
         },
         {

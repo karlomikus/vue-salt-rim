@@ -63,6 +63,7 @@
                 <RouterLink :to="{ name: 'ingredients' }" :class="{ 'current-nav': $route.path.startsWith('/ingredients') }">{{ $t('ingredients.title') }}</RouterLink>
                 <RouterLink :to="{ name: 'collections.cocktails' }" :class="{ 'current-nav': $route.path.startsWith('/collections') }">{{ $t('collections.title') }}</RouterLink>
                 <RouterLink v-if="appState.isAdmin() || appState.isModerator()" :to="{ name: 'menu' }" :class="{ 'current-nav': $route.path.startsWith('/menu') }">{{ $t('menu.title') }}</RouterLink>
+                <RouterLink :to="{ name: 'assistant' }" :class="{ 'current-nav': $route.path.startsWith('/assistant') }">{{ $t('assistant') }}</RouterLink>
                 <RouterLink :to="{ name: 'settings' }" :class="{ 'current-nav': $route.path.startsWith('/settings') }">{{ $t('settings') }}</RouterLink>
             </div>
         </nav>

@@ -9,11 +9,16 @@
   },
   "dependencies": {
     "@floating-ui/vue": "^1.0.2",
+    "@huggingface/inference": "^2.6.4",
     "@meilisearch/instant-meilisearch": "^1.0.0",
     "@paddle/paddle-js": "^0.5.2",
+    "@xenova/transformers": "^2.14.1",
+    "chromadb": "^1.8.1",
+    "chromadb-default-embed": "^2.13.2",
     "cropperjs": "^1.6.1",
     "dayjs": "^1.11.7",
     "html-to-image": "^1.11.11",
+    "langchain": "^0.1.9",
     "micromark": "^3.2.0",
     "mitt": "^3.0.0",
     "plausible-tracker": "^0.3.8",
@@ -36,5 +41,8 @@
     "eslint-plugin-vue": "^9.17.0",
     "vite": ">=4.5.2",
     "vite-plugin-pwa": "^0.14.1"
+  },
+  "resolutions": {
+    "@langchain/core": "0.1.18"
   }
 }
