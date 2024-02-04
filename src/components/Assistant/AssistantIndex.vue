@@ -1,8 +1,11 @@
 <template>
+    <PageHeader>
+        {{ $t('ai.assistant') }}
+    </PageHeader>
     <div class="assistant">
         <div class="assistant-settings">
             <AssistantSettings v-model="configuration"></AssistantSettings>
-            <button type="button" class="button button--outline" @click="refresh">Refresh db</button>
+            <button type="button" class="button button--outline" @click="refreshVectorDB">Refresh db</button>
         </div>
         <div class="assistant-chat">
             <p>{{ result }}</p>
@@ -19,19 +22,20 @@
 
 <script>
 import ApiRequests from "../../ApiRequests";
+import PageHeader from "../PageHeader.vue";
 import { RecursiveCharacterTextSplitter } from "langchain/text_splitter";
 import { Chroma } from "@langchain/community/vectorstores/chroma";
 import { RunnableSequence, RunnablePassthrough } from "langchain/schema/runnable";
 import { formatDocumentsAsString } from "langchain/util/document";
-import { OpenAI } from "langchain/llms/openai";
 import { PromptTemplate } from "langchain/prompts";
 import { StringOutputParser } from "langchain/schema/output_parser";
-import { OpenAIEmbeddings } from "@langchain/openai";
+import { OpenAIEmbeddings, ChatOpenAI } from "@langchain/openai";
 import ChatBubble from "./ChatBubble.vue";
 import AssistantSettings from "./AssistantSettings.vue";
 
 export default {
     components: {
+        PageHeader,
         ChatBubble,
         AssistantSettings,
     },
@@ -40,10 +44,11 @@ export default {
             embeddings: null,
             model: null,
             vectorStore: null,
+            memory: null,
             favorites: [],
             result: '',
             userPrompt: '',
-            collectionName: 'bass-6',
+            collectionName: 'bass-7',
             configuration: {
                 openAi: {
                     key: '',
@@ -63,10 +68,11 @@ export default {
             modelName: "text-embedding-3-small",
         });
 
-        this.model = new OpenAI({
+        this.model = new ChatOpenAI({
             modelName: this.configuration.openAi.modelName,
             openAIApiKey: this.configuration.openAi.key,
-            maxTokens: 2048,
+            streaming: true,
+            // maxTokens: 2048,
             // configuration: {
             //     baseURL: this.configuration.openAi.url,
             // },
@@ -88,7 +94,7 @@ export default {
         run() {
             this.messages.push({
                 id: crypto.randomUUID(),
-                name: 'USER',
+                name: 'YOU',
                 content: this.userPrompt,
                 documents: [],
                 isStreaming: false,
@@ -108,28 +114,28 @@ export default {
                 isStreaming: false,
             })
 
-            const template = `You are a bartender working in a cocktail bar called "Sekira". Use the following context as help when answering the question.
-<context>
-Guest's favorite cocktails:
-${this.favoriteCocktailNames}
-Related:
-{filtered_context}
-</context>
-Question: {question}
-Answer:`;
-            const formatted_prompt = new PromptTemplate({
-                inputVariables: ["filtered_context", "question"],
-                template,
-            });
+            const questionPrompt = PromptTemplate.fromTemplate(`You are a bartender working in a cocktail bar called "Sekira" serving guests. Use the following information as help when answering the question.
+----------
+GUEST FAVORITES: ${this.favoriteCocktailNames}
+---------
+CONTEXT: {context}
+----------
+CHAT HISTORY: {chatHistory}
+----------
+QUESTION: {question}
+----------
+Answer:`
+            );
 
             const retriever = this.vectorStore.asRetriever();
 
             const chain = RunnableSequence.from([
                 {
-                    filtered_context: retriever.pipe(formatDocumentsAsString),
+                    context: retriever.pipe(formatDocumentsAsString),
+                    chatHistory: () => this.messages.map(m => `${m.name}: ${m.content}`).join("\n"),
                     question: new RunnablePassthrough(),
                 },
-                formatted_prompt,
+                questionPrompt,
                 this.model,
                 new StringOutputParser(),
             ]);
@@ -141,14 +147,13 @@ Answer:`;
                 this.getMessageById(id).content += chunk
             }
 
-            console.log('Done streaming')
             this.getMessageById(id).isStreaming = false
             this.getMessageById(id).documents = await retriever.getRelevantDocuments(this.getMessageById(id).content)
         },
         getMessageById(id) {
             return this.messages.find(m => m.id == id);
         },
-        async refresh() {
+        async refreshVectorDB() {
             const cocktails = await ApiRequests.fetchCocktails({ 'filter[on_shelf]': true, per_page: 300 });
             const ingredients = await ApiRequests.fetchIngredients({ 'filter[on_shelf]': true, per_page: 500 });
 
@@ -163,9 +168,10 @@ Answer:`;
 
                 documents = documents.concat(await splitter.createDocuments([`Cocktail info:
 Name: ${cocktail.name}
+ABV: ${cocktail.abv}
 Ingredients: ${cocktail.ingredients.map(i => i.name).join(', ')}
 Tags: ${cocktail.tags.map(t => t.name).join(', ')}`], [
-                    {slug: cocktail.slug, type: 'cocktail', name: cocktail.name}
+                    { slug: cocktail.slug, type: 'cocktail', name: cocktail.name }
                 ]))
             }
 
@@ -175,7 +181,7 @@ Tags: ${cocktail.tags.map(t => t.name).join(', ')}`], [
                 documents = documents.concat(await splitter.createDocuments([`Ingredient info:
 Name: ${ingredient.name}
 Description: ${ingredient.description}`], [
-                    {slug: ingredient.slug, type: 'ingredient', name: ingredient.name}
+                    { slug: ingredient.slug, type: 'ingredient', name: ingredient.name }
                 ]))
             }
 
