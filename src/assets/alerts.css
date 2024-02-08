@@ -29,3 +29,10 @@
     --_clr-border: #2c4b79;
     --_clr-bg: #0e213d;
 }
+
+.alert.alert--warning {
+    --_clr-text: rgb(173, 68, 7);
+    --_clr-border: rgb(173, 68, 7);
+    --_clr-bg: rgb(255, 250, 247);
+    border-color: var(--_clr-border);
+}

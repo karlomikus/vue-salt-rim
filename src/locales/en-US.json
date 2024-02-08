@@ -507,5 +507,22 @@
   "bar": {
     "url": "Custom bar URL",
     "url-help": "Your public bar URL will be: {url}"
-  }
+  },
+  "api": {
+    "tokens": "API Tokens",
+    "abilities": "Abilities",
+    "add": "Create new token",
+    "read": "Read",
+    "write": "Write",
+    "key-copied": "API Token copied",
+    "save-token": "Save your token",
+    "add-success": "Token created",
+    "token-notice": "Please save this API token somewhere safe and accessible. For security reasons, you won't be able to view it again. If you lose this API token, you'll need to generate a new one.",
+    "confirm-revoke": "This will revoke token \"{name}\"",
+    "revoke-success": "Token revoked"
+  },
+  "last_used_at": "Last used",
+  "expires_at": "Expires",
+  "revoke": "Revoke",
+  "copy": "Copy"
 }

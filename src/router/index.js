@@ -170,6 +170,11 @@ const router = createRouter({
                     meta: { requiresBar: true },
                 },
                 {
+                    path: '/settings/tokens',
+                    name: 'settings.tokens',
+                    component: () => import('../views/SettingsAPIView.vue'),
+                },
+                {
                     path: '/bars',
                     name: 'bars',
                     component: () => import('../views/BarsView.vue'),
