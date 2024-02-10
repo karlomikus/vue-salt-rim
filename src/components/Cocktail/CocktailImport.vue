@@ -232,11 +232,13 @@ export default {
             }
         },
         async matchIngredients() {
+            let sortIdx = 0;
             for (const key in this.result.ingredients) {
                 if (Object.hasOwnProperty.call(this.result.ingredients, key)) {
+                    sortIdx++
                     const scrapedIngredient = this.result.ingredients[key]
                     scrapedIngredient.substitutes = []
-                    scrapedIngredient.sort = 1
+                    scrapedIngredient.sort = sortIdx
 
                     if (scrapedIngredient.existingIngredient) {
                         continue
