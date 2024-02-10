@@ -103,6 +103,10 @@
                         <label class="form-label" :for="'ingredient_amount_' + idx">{{ $t('amount') }}</label>
                         <input :id="'ingredient_amount_' + idx" v-model="ingredient.amount" type="text" class="form-input">
                     </div>
+                    <div class="form-group" v-if="ingredient.amount_max">
+                        <label class="form-label" :for="'ingredient_amount_max_' + idx">{{ $t('amount-max') }}</label>
+                        <input :id="'ingredient_amount_max_' + idx" v-model="ingredient.amount_max" type="text" class="form-input">
+                    </div>
                     <div class="form-group">
                         <label class="form-label" :for="'ingredient_units_' + idx">{{ $t('units') }}</label>
                         <input :id="'ingredient_units_' + idx" v-model="ingredient.units" type="text" class="form-input">
@@ -147,6 +151,7 @@ import IngredientFinder from './../IngredientFinder.vue'
 import SaltRimDialog from '../Dialog/SaltRimDialog.vue'
 import SubscriptionCheck from '../SubscriptionCheck.vue'
 import AppState from '../../AppState'
+import UnitHandler from '../../UnitHandler'
 
 export default {
     components: {
@@ -209,6 +214,15 @@ export default {
                 ApiRequests.importCocktail({ source: this.source, duplicate_actions: this.duplicateAction }, { type: this.importType }).then(data => {
                     this.result = data
                     this.result.ingredients.map(i => i.existingIngredient = null)
+                    this.result.ingredients.map(i => {
+                        const newAmount = UnitHandler.convertFromTo(i.units, i.amount, this.appState.defaultUnit);
+                        if (i.amount != newAmount) {
+                            i.units = this.appState.defaultUnit
+                        }
+                        i.amount = newAmount;
+
+                        return i
+                    })
                     this.cocktailTags = data.tags
                     this.isLoading = false
                 }).catch(e => {
