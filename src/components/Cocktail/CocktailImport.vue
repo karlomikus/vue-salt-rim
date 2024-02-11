@@ -103,7 +103,7 @@
                         <label class="form-label" :for="'ingredient_amount_' + idx">{{ $t('amount') }}</label>
                         <input :id="'ingredient_amount_' + idx" v-model="ingredient.amount" type="text" class="form-input">
                     </div>
-                    <div class="form-group" v-if="ingredient.amount_max">
+                    <div v-if="ingredient.amount_max" class="form-group">
                         <label class="form-label" :for="'ingredient_amount_max_' + idx">{{ $t('amount-max') }}</label>
                         <input :id="'ingredient_amount_max_' + idx" v-model="ingredient.amount_max" type="text" class="form-input">
                     </div>
@@ -215,11 +215,11 @@ export default {
                     this.result = data
                     this.result.ingredients.map(i => i.existingIngredient = null)
                     this.result.ingredients.map(i => {
-                        const newAmount = UnitHandler.convertFromTo(i.units, i.amount, this.appState.defaultUnit);
+                        const newAmount = UnitHandler.convertFromTo(i.units, i.amount, this.appState.defaultUnit)
                         if (i.amount != newAmount) {
                             i.units = this.appState.defaultUnit
                         }
-                        i.amount = newAmount;
+                        i.amount = newAmount
 
                         return i
                     })
@@ -232,7 +232,7 @@ export default {
             }
         },
         async matchIngredients() {
-            let sortIdx = 0;
+            let sortIdx = 0
             for (const key in this.result.ingredients) {
                 if (Object.hasOwnProperty.call(this.result.ingredients, key)) {
                     sortIdx++
