@@ -130,6 +130,12 @@ export default {
     padding: 2px 7px;
 }
 
+.dark-theme .api-ability__options .form-checkbox {
+    background-color: var(--clr-gray-800);
+    border: 1px solid var(--clr-gray-600);
+    box-shadow: inset 0 1px 0 var(--clr-gray-900);
+}
+
 .api-input {
     margin-top: var(--gap-size-3);
     display: flex;
