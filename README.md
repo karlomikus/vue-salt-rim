@@ -34,19 +34,19 @@ Salt Rim is a web client used for connecting to your [Bar Assistant](https://git
 
 ## Features
 
-- Beautiful UI for your Bar Asistant server
-- Implements all supported features of Bar Assistant
+- Intuitive UI for your Bar Assistant instance
+- Supports all features of Bar Assistant
 - Desktop and mobile support
-- Powerful search and filtering using [Vue Instantsearch](https://www.algolia.com/doc/guides/building-search-ui/what-is-instantsearch/vue/)
+- Powerful search and filtering capabilities using [Vue Instantsearch](https://www.algolia.com/doc/guides/building-search-ui/what-is-instantsearch/vue/)
 - Support for multiple measurement units
-- Manage your personal shopping list
-- Support for markdown in cocktails and ingredients
-- Automatically add missing ingredients to your shopping cart
+- Personal shopping list management and exporting
+- Markdown support for cocktails and ingredients
+- Automatic ingredient suggestions
 - Dark theme support
 - Localizations available: English, German, Croatian, French
-- PWA Support
+- Progressive Web App (PWA) capabilities
 - Organize your personal recipe collections
-- Easily copy and share your recipes
+- Easy recipe copying and sharing
 
 ## Documentation
 

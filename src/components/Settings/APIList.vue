@@ -19,7 +19,7 @@
         <div class="settings-page__content">
             <OverlayLoader v-if="isLoading" />
             <SubscriptionCheck>Subscribe to "Mixologist" plan to gain access to API token management!</SubscriptionCheck>
-            <div class="block-container block-container--padded">
+            <div class="block-container block-container--padded" style="overflow: scroll;">
                 <table class="table">
                     <thead>
                         <tr>
