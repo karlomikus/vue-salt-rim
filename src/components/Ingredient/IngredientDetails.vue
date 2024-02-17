@@ -1,6 +1,6 @@
 <template>
+    <OverlayLoader v-if="isLoadingIngredient" />
     <div v-if="ingredient.id" class="ingredient-details">
-        <OverlayLoader v-if="isLoading" />
         <div class="block-container block-container--padded ingredient-details__box" style="margin-top: 100px;">
             <div class="ingredient-details__box__content">
                 <div class="ingredient-details__title">
@@ -64,6 +64,7 @@
         <div class="block-container block-container--padded ingredient-details__cocktails">
             <div class="ingredient-details__actions">
                 <button type="button" class="button-circle" @click="toggleShelf">
+                    <OverlayLoader v-if="isLoadingShelf" />
                     <svg v-if="!isAddedToShelf" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
                         <path fill="none" d="M0 0h24v24H0z" />
                         <path d="M4 3h16a1 1 0 0 1 1 1v16a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1zm1 2v14h14V5H5z" />
@@ -76,6 +77,7 @@
                 <Dropdown>
                     <template #default="{ toggleDropdown }">
                         <button type="button" class="button-circle" @click="toggleDropdown">
+                            <OverlayLoader v-if="isLoadingShoppingList" />
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
                                 <path fill="none" d="M0 0h24v24H0z" />
                                 <path d="M12 3c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 14c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0-7c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z" />
@@ -114,6 +116,7 @@
             </div>
             <h2 class="details-block-container__title">{{ $t('ingredient.cocktail-children', { total: ingredient.cocktails.length }) }}</h2>
             <RouterLink v-if="ingredient.cocktails.length > 0" :to="{name: 'cocktails', query: {'filter[ingredient_id]': ingredient.id}}" style="display: inline-block; margin-bottom: 1rem;">{{ $t('view-all') }}</RouterLink>
+            <OverlayLoader v-if="isLoadingExtra" />
             <ul v-if="ingredient.cocktails.length > 0" class="ingredient-chips-list">
                 <li v-if="extraIfAddedToShelf.length > 0" class="ingredient-chips-list__label">{{ $t('ingredient.extra-cocktails') }}:</li>
                 <li v-for="cocktail in extraIfAddedToShelf" :key="cocktail.id">
@@ -152,7 +155,10 @@ export default {
         OverlayLoader
     },
     data: () => ({
-        isLoading: false,
+        isLoadingIngredient: false,
+        isLoadingShelf: false,
+        isLoadingShoppingList: false,
+        isLoadingExtra: false,
         ingredient: {},
         isAddedToShelf: false,
         isAddedToShoppingList: false,
@@ -207,42 +213,47 @@ export default {
     },
     methods: {
         async refreshIngredient() {
-            this.isLoading = true
-
+            this.isLoadingIngredient = true
             this.ingredient = await ApiRequests.fetchIngredient(this.$route.params.id).catch(e => {
                 this.$toast.error(e.message)
 
                 return {}
             })
+            this.isLoadingIngredient = false
 
+            this.isLoadingShelf = true
             const shelfIngredients = await ApiRequests.fetchMyShelf().catch(() => [])
+            this.isLoadingShelf = false
+
+            this.isLoadingShoppingList = true
             const shoppingListIngredients = await ApiRequests.fetchShoppingList().catch(() => [])
+            this.isLoadingShoppingList = false
 
             this.isAddedToShelf = shelfIngredients.filter(i => i.ingredient_id == this.ingredient.id).length > 0
             this.isAddedToShoppingList = shoppingListIngredients.filter(i => i.ingredient_id == this.ingredient.id).length > 0
 
+            this.isLoadingExtra = true
             await this.refreshExtraCocktails()
-
-            this.isLoading = false
+            this.isLoadingExtra = false
         },
         deleteIngredient() {
             this.$confirm(this.$t('ingredient.delete-confirm', { name: this.ingredient.name, total: this.ingredient.cocktails.length }), {
                 onResolved: (dialog) => {
                     dialog.close()
-                    this.isLoading = true
+                    this.isLoadingIngredient = true
                     ApiRequests.deleteIngredient(this.ingredient.id).then(() => {
                         this.$toast.default(`Ingredient "${this.ingredient.name}" successfully removed`)
                         this.$router.push({ name: 'ingredients' })
-                        this.isLoading = false
+                        this.isLoadingIngredient = false
                     }).catch(e => {
                         this.$toast.error(e.message)
-                        this.isLoading = false
+                        this.isLoadingIngredient = false
                     })
                 }
             })
         },
         toggleShelf() {
-            this.isLoading = true
+            this.isLoadingShelf = true
 
             const postData = {
                 ingredient_ids: [this.ingredient.id]
@@ -252,26 +263,26 @@ export default {
                 ApiRequests.removeIngredientsFromShelf(postData).then(() => {
                     this.isAddedToShelf = false
                     this.$toast.default(this.$t('ingredient.shelf-remove-success', { name: this.ingredient.name }))
-                    this.isLoading = false
+                    this.isLoadingShelf = false
                     this.refreshExtraCocktails()
                 }).catch(e => {
                     this.$toast.error(e.message)
-                    this.isLoading = false
+                    this.isLoadingShelf = false
                 })
             } else {
                 ApiRequests.addIngredientsToShelf(postData).then(() => {
                     this.isAddedToShelf = true
                     this.$toast.default(this.$t('ingredient.shelf-add-success', { name: this.ingredient.name }))
-                    this.isLoading = false
+                    this.isLoadingShelf = false
                     this.refreshExtraCocktails()
                 }).catch(e => {
                     this.$toast.error(e.message)
-                    this.isLoading = false
+                    this.isLoadingShelf = false
                 })
             }
         },
         toggleShoppingList() {
-            this.isLoading = true
+            this.isLoadingShoppingList = true
 
             const postData = {
                 ingredient_ids: [this.ingredient.id]
@@ -281,19 +292,19 @@ export default {
                 ApiRequests.removeIngredientsFromShoppingList(postData).then(() => {
                     this.$toast.default(this.$t('ingredient.list-remove-success', { name: this.ingredient.name }))
                     this.isAddedToShoppingList = false
-                    this.isLoading = false
+                    this.isLoadingShoppingList = false
                 }).catch(e => {
                     this.$toast.error(e.message)
-                    this.isLoading = false
+                    this.isLoadingShoppingList = false
                 })
             } else {
                 ApiRequests.addIngredientsToShoppingList(postData).then(() => {
                     this.$toast.default(this.$t('ingredient.list-add-success', { name: this.ingredient.name }))
                     this.isAddedToShoppingList = true
-                    this.isLoading = false
+                    this.isLoadingShoppingList = false
                 }).catch(e => {
                     this.$toast.error(e.message)
-                    this.isLoading = false
+                    this.isLoadingShoppingList = false
                 })
             }
         },

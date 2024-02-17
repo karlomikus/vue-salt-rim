@@ -4,7 +4,6 @@
         <PageHeader>
             {{ $t('menu.bar-title-menu', { name: appState.bar.name }) }}
         </PageHeader>
-        <SubscriptionCheck>Subscribe to "Mixologist" plan to manage your bar menu!</SubscriptionCheck>
         <div class="menu-details">
             <div class="block-container block-container--padded" style="width: 100%;">
                 <p style="margin-bottom: 1rem;">{{ $t('menu.description') }}</p>
@@ -90,7 +89,6 @@ import AppState from '../../AppState'
 import QRCodeVue3 from 'qrcode-vue3'
 import ApiRequests from './../../ApiRequests.js'
 import OverlayLoader from '../OverlayLoader.vue'
-import SubscriptionCheck from '../SubscriptionCheck.vue'
 
 export default {
     components: {
@@ -99,7 +97,6 @@ export default {
         SaltRimDialog,
         QRCodeVue3,
         OverlayLoader,
-        SubscriptionCheck,
     },
     data() {
         return {

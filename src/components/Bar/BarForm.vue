@@ -15,8 +15,8 @@
             </div>
             <div class="form-group">
                 <label class="form-label" for="slug">{{ $t('bar.url') }}:</label>
-                <input id="slug" v-model="bar.slug" class="form-input" type="text" @blur="updateSlug" :disabled="bar.id != null">
-                <p class="form-input-hint" v-show="urlWithSlug">
+                <input id="slug" v-model="bar.slug" class="form-input" type="text" :disabled="bar.id != null" @blur="updateSlug">
+                <p v-show="urlWithSlug" class="form-input-hint">
                     {{ $t('bar.url-help', {url: urlWithSlug}) }}
                 </p>
             </div>
@@ -72,21 +72,21 @@ export default {
             ]
         }
     },
+    computed: {
+        urlWithSlug() {
+            if (!this.bar.slug) {
+                return null
+            }
+
+            return `${window.location.origin}/bars/${slug(this.bar.slug)}`
+        },
+    },
     watch: {
         'bar.options': function (newVal) {
             if (newVal && newVal.includes('cocktails') && !newVal.includes('ingredients')) {
                 newVal.push('ingredients')
             }
         }
-    },
-    computed: {
-        urlWithSlug() {
-            if (!this.bar.slug) {
-                return null;
-            }
-
-            return `${window.location.origin}/bars/${slug(this.bar.slug)}`
-        },
     },
     created() {
         document.title = `${this.$t('bars.bar')} \u22C5 ${this.site_title}`
@@ -108,13 +108,13 @@ export default {
     methods: {
         updateSlug(e) {
             if (this.bar.id) {
-                return;
+                return
             }
 
             this.bar.slug = slug(e.target.value)
         },
         submit() {
-            let postSlug = null;
+            let postSlug = null
             if (this.bar.slug) {
                 postSlug = slug(this.bar.slug)
             }

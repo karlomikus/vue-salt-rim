@@ -886,6 +886,28 @@ class ApiRequests
 
         return this.parseResponse(jsonResp)
     }
+
+    /**
+     * =============================
+     * Tokens
+     * =============================
+     */
+
+    static async fetchTokens() {
+        let jsonResp = await this.getRequest('/api/tokens')
+
+        return this.parseResponse(jsonResp)
+    }
+
+    static async saveToken(data) {
+        const jsonResp = await this.postRequest('/api/tokens', data)
+
+        return this.parseResponse(jsonResp)
+    }
+
+    static async removeToken(tokenId) {
+        return await this.deleteRequest(`/api/tokens/${tokenId}`)
+    }
 }
 
 export default ApiRequests

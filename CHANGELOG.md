@@ -1,3 +1,14 @@
+# v2.10.0
+## New
+- Added API tokens page to settings
+
+## Changes
+- Updated loader positions on ingredient page
+
+## Fixes
+- Cocktail import information now uses user defined units
+- Fixed base ingredient tag showing on all ingredients when importing
+
 # v2.9.0
 ## New
 - Added bar menu managing
