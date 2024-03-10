@@ -155,6 +155,10 @@
                                     </svg>
                                     {{ $t('share.copy-md') }}
                                 </a>
+                                <a class="dropdown-menu__item" href="#copy" @click.prevent="shareFromFormat('xml')">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M15 4H5V20H19V8H15V4ZM3 2.9918C3 2.44405 3.44749 2 3.9985 2H16L20.9997 7L21 20.9925C21 21.5489 20.5551 22 20.0066 22H3.9934C3.44476 22 3 21.5447 3 21.0082V2.9918ZM17.6569 12L14.1213 15.5355L12.7071 14.1213L14.8284 12L12.7071 9.87868L14.1213 8.46447L17.6569 12ZM6.34315 12L9.87868 8.46447L11.2929 9.87868L9.17157 12L11.2929 14.1213L9.87868 15.5355L6.34315 12Z"></path></svg>
+                                    {{ $t('share.copy-xml') }}
+                                </a>
                             </template>
                         </Dropdown>
                         <Dropdown>
@@ -172,6 +176,10 @@
                                     </svg>
                                     {{ $t('edit') }}
                                 </RouterLink>
+                                <a class="dropdown-menu__item" target="_blank" href="#" @click.prevent="copy">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18"><path d="M6.9998 6V3C6.9998 2.44772 7.44752 2 7.9998 2H19.9998C20.5521 2 20.9998 2.44772 20.9998 3V17C20.9998 17.5523 20.5521 18 19.9998 18H16.9998V20.9991C16.9998 21.5519 16.5499 22 15.993 22H4.00666C3.45059 22 3 21.5554 3 20.9991L3.0026 7.00087C3.0027 6.44811 3.45264 6 4.00942 6H6.9998ZM5.00242 8L5.00019 20H14.9998V8H5.00242ZM8.9998 6H16.9998V16H18.9998V4H8.9998V6Z"></path></svg>
+                                    {{ $t('cocktail-copy') }}
+                                </a>
                                 <SaltRimDialog v-model="showCollectionDialog">
                                     <template #trigger>
                                         <a class="dropdown-menu__item" href="#" @click.prevent="showCollectionDialog = !showCollectionDialog">
@@ -506,7 +514,19 @@ export default {
         },
         buildSubstituteString(sub) {
             return new String(sub.name + ' ' + UnitHandler.print(sub, this.currentUnit, this.servings)).trim()
-        }
+        },
+        async copy() {
+            this.isLoading = true
+
+            ApiRequests.copyCocktail(this.cocktail.id).then(data => {
+                this.isLoading = false
+                this.$toast.default(this.$t('cocktail-copy-success'))
+                this.$router.push({ name: 'cocktails.form', query: { id: data.id } })
+            }).catch(e => {
+                this.isLoading = false
+                this.$toast.error(e.message)
+            })
+        },
     }
 }
 </script>

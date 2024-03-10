@@ -61,7 +61,8 @@
     "format-copied": "Text copied",
     "format-copy-failed": "Text copy failed",
     "copy-text": "Copy as plain text",
-    "copy-md": "Copy as Markdown"
+    "copy-md": "Copy as Markdown",
+    "copy-xml": "Copy as XML"
   },
   "cocktails.title": "Cocktails",
   "ingredients.title": "Ingredients",
@@ -524,5 +525,7 @@
   "last_used_at": "Last used",
   "expires_at": "Expires",
   "revoke": "Revoke",
-  "copy": "Copy"
+  "copy": "Copy",
+  "cocktail-copy": "Duplicate and edit",
+  "cocktail-copy-success": "Cocktail duplicated"
 }
