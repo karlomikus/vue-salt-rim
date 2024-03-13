@@ -193,6 +193,13 @@ class ApiRequests
         return this.parseResponse(jsonResp)
     }
 
+    static async copyCocktail(id) {
+        const q = this.generateBAQueryString({}, true)
+        const jsonResp = await this.postRequest(`/api/cocktails/${id}/copy${q}`)
+
+        return this.parseResponse(jsonResp)
+    }
+
     /**
      * =============================
      * Ingredient Categories
