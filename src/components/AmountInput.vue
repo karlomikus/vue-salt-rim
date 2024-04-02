@@ -1,0 +1,79 @@
+<script setup>
+import {ref} from 'vue';
+import {useFloating, offset, flip, shift, autoUpdate} from '@floating-ui/vue'
+import AppState from './../AppState'
+import UnitHandler from './../UnitHandler'
+
+const appState = new AppState()
+const reference = ref(null);
+const floating = ref(null);
+const { floatingStyles } = useFloating(reference, floating, {
+    placement: 'bottom-start',
+    middleware: [offset(2), flip(), shift()],
+    whileElementsMounted: autoUpdate,
+})
+const showRecommendedAmounts = ref(false);
+
+const model = defineModel();
+const defaultAmountsInMl = [7.5, 15, 22.5, 30, 45, 60];
+const defaultAmounts = ref(defaultAmountsInMl)
+if (appState.defaultUnit == 'cl') {
+    defaultAmounts.value = defaultAmountsInMl.map(amount => amount / 10)
+}
+if (appState.defaultUnit == 'oz') {
+    defaultAmounts.value = defaultAmountsInMl.map(amount => UnitHandler.asFraction(UnitHandler.ml2oz(amount)))
+}
+
+function selectRecommendedAmount(amount) {
+    model.value = '' + amount
+    showRecommendedAmounts.value = false
+}
+
+document.addEventListener('click', e => {
+    var dw = reference.value || null
+    if (dw && !dw.contains(e.target)) {
+        showRecommendedAmounts.value = false
+    }
+}, false)
+</script>
+
+<template>
+    <input v-bind="$attrs" ref="reference" v-model="model" class="form-input" type="text" @focus="showRecommendedAmounts = true">
+    <div class="recommended-amounts" ref="floating" :style="floatingStyles" v-show="showRecommendedAmounts">
+        <button class="recommended-amounts__amount" type="button" v-for="recommendedAmount in defaultAmounts" @click.prevent="selectRecommendedAmount(recommendedAmount)">{{ recommendedAmount }}</button>
+    </div>
+</template>
+
+<style scoped>
+.form-input {
+    width: 100%;
+}
+
+.recommended-amounts {
+    display: flex;
+    gap: var(--gap-size-1);
+    padding: var(--gap-size-1);
+    background: rgba(0, 0, 0, .7);
+    z-index: 100;
+    border-radius: 5px;
+}
+
+.recommended-amounts__amount {
+    font-feature-settings: "frac";
+    background: var(--clr-gray-200);
+    color: var(--clr-gray-800);
+    border: 0;
+    border-top: 1px solid rgba(255, 255, 255, .5);
+    border-radius: 2px;
+    font-weight: var(--fw-bold);
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: transform 50ms ease-in-out;
+    min-width: 30px;
+}
+
+.recommended-amounts__amount:hover {
+    background: var(--clr-gray-100);
+    transform: translateY(-2px);
+}
+</style>
