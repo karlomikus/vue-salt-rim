@@ -18,11 +18,11 @@
                 <div v-show="amountDisplayTracker.includes(substitute.id)" class="substitutes__substitute__input">
                     <div class="form-group">
                         <label class="form-label" :for="'sub-ingredient-amount-' + substitute.id">{{ $t('amount') }}:</label>
-                        <input :id="'sub-ingredient-amount-' + substitute.id" v-model="substitute.amount" class="form-input" type="text">
+                        <AmountInput :id="'sub-ingredient-amount-' + substitute.id" v-model="substitute.amount"></AmountInput>
                     </div>
                     <div class="form-group">
                         <label class="form-label" :for="'sub-ingredient-amount-max-' + substitute.id">{{ $t('amount-max') }}:</label>
-                        <input :id="'sub-ingredient-amount-max-' + substitute.id" v-model="substitute.amount_max" class="form-input" type="text">
+                        <AmountInput :id="'sub-ingredient-amount-max-' + substitute.id" v-model="substitute.amount_max"></AmountInput>
                     </div>
                     <div class="form-group">
                         <label class="form-label" :for="'sub-ingredient-units-' + substitute.id">{{ $t('units') }}:</label>
@@ -52,11 +52,13 @@
 <script>
 import OverlayLoader from './../OverlayLoader.vue'
 import IngredientFinder from './../IngredientFinder.vue'
+import AmountInput from './../AmountInput.vue'
 
 export default {
     components: {
         OverlayLoader,
         IngredientFinder,
+        AmountInput,
     },
     props: {
         value: {
