@@ -2,6 +2,7 @@
     <nav class="settings-nav">
         <RouterLink :to="{name: 'settings.profile'}">{{ $t('profile') }}</RouterLink>
         <RouterLink :to="{name: 'settings.tokens'}">{{ $t('api.tokens') }}</RouterLink>
+        <RouterLink :to="{name: 'settings.exports'}">{{ $t('exports.title') }}</RouterLink>
         <template v-if="showBilling === true">
             <RouterLink :to="{name: 'settings.billing'}">{{ $t('billing.title') }}</RouterLink>
         </template>

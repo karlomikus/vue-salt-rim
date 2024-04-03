@@ -520,12 +520,27 @@
     "add-success": "Token created",
     "token-notice": "Please save this API token somewhere safe and accessible. For security reasons, you won't be able to view it again. If you lose this API token, you'll need to generate a new one.",
     "confirm-revoke": "This will revoke token \"{name}\"",
-    "revoke-success": "Token revoked"
+    "revoke-success": "Token revoked",
+    "exports": "Exports"
   },
   "last_used_at": "Last used",
   "expires_at": "Expires",
   "revoke": "Revoke",
   "copy": "Copy",
   "cocktail-copy": "Duplicate and edit",
-  "cocktail-copy-success": "Cocktail duplicated"
+  "cocktail-copy-success": "Cocktail duplicated",
+  "exports": {
+    "finished": "Finished",
+    "processing": "Processing",
+    "title": "Exports",
+    "start": "Start export",
+    "bar-select": "Select your bar",
+    "dialog-title": "Export recipes from a bar",
+    "empty": "You don't have any available exports",
+    "export-notice": "Please keep in mind that depending on server configuration and selected bar size, generating export can take several minutes.",
+    "start-success": "Started bar export",
+    "confirm-delete": "This will delete the selected export file",
+    "delete-success": "Export removed"
+  },
+  "start": "Start"
 }

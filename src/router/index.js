@@ -175,6 +175,11 @@ const router = createRouter({
                     component: () => import('../views/SettingsAPIView.vue'),
                 },
                 {
+                    path: '/settings/exports',
+                    name: 'settings.exports',
+                    component: () => import('../views/SettingsExportsView.vue'),
+                },
+                {
                     path: '/bars',
                     name: 'bars',
                     component: () => import('../views/BarsView.vue'),

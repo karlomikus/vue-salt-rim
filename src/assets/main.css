@@ -195,7 +195,7 @@ a.site-logo:focus .site-logo__title {
 
 .settings-page__nav {
     flex-basis: 200px;
-    flex: 1;
+    flex: 0.6;
 }
 
 .settings-page__content {
