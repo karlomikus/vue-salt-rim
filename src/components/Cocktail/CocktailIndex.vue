@@ -209,6 +209,7 @@ export default {
                 users: [],
                 ignore_ingredients: [],
                 specific_ingredients: [],
+                ingredient_id: [],
             }
         }
     },
@@ -432,6 +433,7 @@ export default {
             this.activeFilters.missing_ingredients = state.filter && state.filter.missing_ingredients ? state.filter.missing_ingredients : null
             this.activeFilters.ignore_ingredients = state.filter && state.filter.ignore_ingredients ? String(state.filter.ignore_ingredients).split(',') : []
             this.activeFilters.specific_ingredients = state.filter && state.filter.specific_ingredients ? String(state.filter.specific_ingredients).split(',') : []
+            this.activeFilters.ingredient_id = state.filter && state.filter.ingredient_id ? String(state.filter.ingredient_id).split(',') : []
             this.activeFilters.user_rating = state.filter && state.filter.user_rating_min ? state.filter.user_rating_min : null
             this.activeFilters.average_rating = state.filter && state.filter.average_rating_min ? state.filter.average_rating_min : null
             this.searchQuery = state.filter && state.filter.name ? state.filter.name : null
@@ -473,6 +475,7 @@ export default {
                 cocktail_method_id: this.activeFilters.methods.length > 0 ? this.activeFilters.methods.join(',') : null,
                 main_ingredient_id: this.activeFilters.main_ingredients.length > 0 ? this.activeFilters.main_ingredients.join(',') : null,
                 specific_ingredients: this.activeFilters.specific_ingredients.length > 0 ? this.activeFilters.specific_ingredients.join(',') : null,
+                ingredient_id: this.activeFilters.ingredient_id.length > 0 ? this.activeFilters.ingredient_id.join(',') : null,
                 collection_id: this.activeFilters.collections.length > 0 ? this.activeFilters.collections.join(',') : null,
                 user_shelves: this.activeFilters.user_shelves.length > 0 ? this.activeFilters.user_shelves.join(',') : null,
                 created_user_id: this.activeFilters.users.length > 0 ? this.activeFilters.users.join(',') : null,
@@ -532,6 +535,7 @@ export default {
                 users: [],
                 ignore_ingredients: [],
                 specific_ingredients: [],
+                ingredient_id: [],
             }
 
             this.updateRouterPath()
