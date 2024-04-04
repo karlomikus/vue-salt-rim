@@ -17,6 +17,14 @@
                             <input :id="'global-' + filter.id" v-model="activeFilters[filter.id]" type="checkbox" :value="filter.active" @change="updateRouterPath">
                             <label :for="'global-' + filter.id">{{ filter.name }}</label>
                         </div>
+                        <SaltRimDialog v-model="showIgnoreIngredientsModal">
+                            <template #trigger>
+                                <button class="button button--outline button--small" type="button" @click="showIgnoreIngredientsModal = true">{{ $t('search.ignore-ingredients') }} ({{ activeFilters.ignore_ingredients.length }})</button>
+                            </template>
+                            <template #dialog>
+                                <IgnoreIngredientsModal :value="activeFilters.ignore_ingredients" @close="updateIgnoredIngredients"></IgnoreIngredientsModal>
+                            </template>
+                        </SaltRimDialog>
                     </Refinement>
                     <Refinement v-if="refineCollections.length > 0" id="collection" v-model="activeFilters.collections" :title="$t('collections.title')" :refinements="refineCollections" @change="updateRouterPath"></Refinement>
                     <Refinement v-if="refineUserShelves.length > 0" id="user_shelves" v-model="activeFilters.user_shelves" :title="$t('public-shelves')" :refinements="refineUserShelves" @change="updateRouterPath"></Refinement>
@@ -111,6 +119,7 @@ import SaltRimDialog from './../Dialog/SaltRimDialog.vue'
 import qs from 'qs'
 import AppState from '../../AppState'
 import EmptyState from './../EmptyState.vue'
+import IgnoreIngredientsModal from '../Search/IgnoreIngredientsModal.vue'
 
 export default {
     components: {
@@ -122,7 +131,8 @@ export default {
         SaltRimDialog,
         CollectionDialog,
         Pagination,
-        EmptyState
+        EmptyState,
+        IgnoreIngredientsModal,
     },
     data() {
         return {
@@ -130,6 +140,7 @@ export default {
             showCreateNewCollectionDialog: false,
             isLoading: false,
             showRefinements: false,
+            showIgnoreIngredientsModal: false,
             cocktails: [],
             favorites: [],
             searchQuery: null,
@@ -185,7 +196,8 @@ export default {
                 total_ingredients: null,
                 missing_ingredients: null,
                 user_shelves: [],
-                users: []
+                users: [],
+                ignore_ingredients: [],
             }
         }
     },
@@ -407,6 +419,7 @@ export default {
             this.activeFilters.is_public = state.filter && state.filter.is_public ? state.filter.is_public : null
             this.activeFilters.total_ingredients = state.filter && state.filter.total_ingredients ? state.filter.total_ingredients : null
             this.activeFilters.missing_ingredients = state.filter && state.filter.missing_ingredients ? state.filter.missing_ingredients : null
+            this.activeFilters.ignore_ingredients = state.filter && state.filter.ignore_ingredients ? String(state.filter.ignore_ingredients).split(',') : []
             this.activeFilters.user_rating = state.filter && state.filter.user_rating_min ? state.filter.user_rating_min : null
             this.activeFilters.average_rating = state.filter && state.filter.average_rating_min ? state.filter.average_rating_min : null
             this.searchQuery = state.filter && state.filter.name ? state.filter.name : null
@@ -442,6 +455,7 @@ export default {
                 average_rating_min: this.activeFilters.average_rating ? this.activeFilters.average_rating : null,
                 total_ingredients: this.activeFilters.total_ingredients ? this.activeFilters.total_ingredients : null,
                 missing_ingredients: this.activeFilters.missing_ingredients ? this.activeFilters.missing_ingredients : null,
+                ignore_ingredients: this.activeFilters.ignore_ingredients.length > 0 ? this.activeFilters.ignore_ingredients.join(',') : null,
                 tag_id: this.activeFilters.tags.length > 0 ? this.activeFilters.tags.join(',') : null,
                 glass_id: this.activeFilters.glasses.length > 0 ? this.activeFilters.glasses.join(',') : null,
                 cocktail_method_id: this.activeFilters.methods.length > 0 ? this.activeFilters.methods.join(',') : null,
@@ -458,6 +472,12 @@ export default {
             query.filter = Object.entries(filters).reduce((a,[k,v]) => (v === null || v === false ? a : (a[k]=v, a)), {})
 
             return query
+        },
+        updateIgnoredIngredients(e) {
+            console.log(e)
+            this.activeFilters.ignore_ingredients = e.newFilters
+            this.showIgnoreIngredientsModal = false
+            this.updateRouterPath()
         },
         handleCollectionsDialogClosed() {
             this.showCreateNewCollectionDialog = false
@@ -493,7 +513,8 @@ export default {
                 abv: null,
                 total_ingredients: null,
                 user_shelves: [],
-                users: []
+                users: [],
+                ignore_ingredients: [],
             }
 
             this.updateRouterPath()
