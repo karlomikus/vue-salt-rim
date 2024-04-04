@@ -17,9 +17,18 @@
                             <input :id="'global-' + filter.id" v-model="activeFilters[filter.id]" type="checkbox" :value="filter.active" @change="updateRouterPath">
                             <label :for="'global-' + filter.id">{{ filter.name }}</label>
                         </div>
+                        <SaltRimDialog v-model="showSpecificIngredientsModal">
+                            <template #trigger>
+                                <a href="#" @click.prevent="showSpecificIngredientsModal = true">{{ $t('search.ingredients') }} ({{ activeFilters.specific_ingredients.length }})</a>
+                            </template>
+                            <template #dialog>
+                                <IgnoreIngredientsModal :value="activeFilters.specific_ingredients" @close="updateSpecificIngredients"></IgnoreIngredientsModal>
+                            </template>
+                        </SaltRimDialog>
+                        <br>
                         <SaltRimDialog v-model="showIgnoreIngredientsModal">
                             <template #trigger>
-                                <button class="button button--outline button--small" type="button" @click="showIgnoreIngredientsModal = true">{{ $t('search.ignore-ingredients') }} ({{ activeFilters.ignore_ingredients.length }})</button>
+                                <a href="#" @click.prevent="showIgnoreIngredientsModal = true">{{ $t('search.ignore-ingredients') }} ({{ activeFilters.ignore_ingredients.length }})</a>
                             </template>
                             <template #dialog>
                                 <IgnoreIngredientsModal :value="activeFilters.ignore_ingredients" @close="updateIgnoredIngredients"></IgnoreIngredientsModal>
@@ -141,6 +150,7 @@ export default {
             isLoading: false,
             showRefinements: false,
             showIgnoreIngredientsModal: false,
+            showSpecificIngredientsModal: false,
             cocktails: [],
             favorites: [],
             searchQuery: null,
@@ -198,6 +208,7 @@ export default {
                 user_shelves: [],
                 users: [],
                 ignore_ingredients: [],
+                specific_ingredients: [],
             }
         }
     },
@@ -420,6 +431,7 @@ export default {
             this.activeFilters.total_ingredients = state.filter && state.filter.total_ingredients ? state.filter.total_ingredients : null
             this.activeFilters.missing_ingredients = state.filter && state.filter.missing_ingredients ? state.filter.missing_ingredients : null
             this.activeFilters.ignore_ingredients = state.filter && state.filter.ignore_ingredients ? String(state.filter.ignore_ingredients).split(',') : []
+            this.activeFilters.specific_ingredients = state.filter && state.filter.specific_ingredients ? String(state.filter.specific_ingredients).split(',') : []
             this.activeFilters.user_rating = state.filter && state.filter.user_rating_min ? state.filter.user_rating_min : null
             this.activeFilters.average_rating = state.filter && state.filter.average_rating_min ? state.filter.average_rating_min : null
             this.searchQuery = state.filter && state.filter.name ? state.filter.name : null
@@ -460,7 +472,7 @@ export default {
                 glass_id: this.activeFilters.glasses.length > 0 ? this.activeFilters.glasses.join(',') : null,
                 cocktail_method_id: this.activeFilters.methods.length > 0 ? this.activeFilters.methods.join(',') : null,
                 main_ingredient_id: this.activeFilters.main_ingredients.length > 0 ? this.activeFilters.main_ingredients.join(',') : null,
-                ingredient_id: this.activeFilters.ingredients.length > 0 ? this.activeFilters.ingredients.join(',') : null,
+                specific_ingredients: this.activeFilters.specific_ingredients.length > 0 ? this.activeFilters.specific_ingredients.join(',') : null,
                 collection_id: this.activeFilters.collections.length > 0 ? this.activeFilters.collections.join(',') : null,
                 user_shelves: this.activeFilters.user_shelves.length > 0 ? this.activeFilters.user_shelves.join(',') : null,
                 created_user_id: this.activeFilters.users.length > 0 ? this.activeFilters.users.join(',') : null,
@@ -474,9 +486,13 @@ export default {
             return query
         },
         updateIgnoredIngredients(e) {
-            console.log(e)
             this.activeFilters.ignore_ingredients = e.newFilters
             this.showIgnoreIngredientsModal = false
+            this.updateRouterPath()
+        },
+        updateSpecificIngredients(e) {
+            this.activeFilters.specific_ingredients = e.newFilters
+            this.showSpecificIngredientsModal = false
             this.updateRouterPath()
         },
         handleCollectionsDialogClosed() {
@@ -515,6 +531,7 @@ export default {
                 user_shelves: [],
                 users: [],
                 ignore_ingredients: [],
+                specific_ingredients: [],
             }
 
             this.updateRouterPath()

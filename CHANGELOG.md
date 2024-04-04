@@ -1,6 +1,7 @@
 # v2.12.0
 ## New
 - You can now filter by ignored ingredients
+- You can now filter by specific ingredients
 - Common ingredient amounts are now recommended as input shortcut
 - Added "Exports" page to settings
 
