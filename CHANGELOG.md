@@ -1,3 +1,14 @@
+# v2.12.0
+## New
+- You can now filter by ignored ingredients
+- Common ingredient amounts are now recommended as input shortcut
+- Added "Exports" page to settings
+
+# v2.11.0
+## New
+- Add "Copy XML" share action
+- Add duplicate cocktail action
+
 # v2.10.0
 ## New
 - Added API tokens page to settings
