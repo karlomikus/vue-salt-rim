@@ -18,7 +18,7 @@
         </div>
         <div class="settings-page__content">
             <OverlayLoader v-if="isLoading" />
-            <div class="block-container block-container--padded" style="overflow: scroll;" v-if="barExports.length > 0">
+            <div v-if="barExports.length > 0" class="block-container block-container--padded" style="overflow: scroll;">
                 <table class="table">
                     <thead>
                         <tr>
@@ -67,7 +67,6 @@ import SettingsNavigation from './SettingsNavigation.vue'
 import SaltRimDialog from '../Dialog/SaltRimDialog.vue'
 import DateFormatter from '../DateFormatter.vue'
 import ExportForm from './ExportForm.vue'
-import SubscriptionCheck from '../SubscriptionCheck.vue'
 import EmptyState from '../EmptyState.vue'
 
 export default {
@@ -78,7 +77,6 @@ export default {
         SaltRimDialog,
         DateFormatter,
         ExportForm,
-        SubscriptionCheck,
         EmptyState,
     },
     data() {
@@ -122,15 +120,15 @@ export default {
             })
         },
         downloadExport(ex) {
-            this.isLoading = true;
+            this.isLoading = true
             ApiRequests.downloadExport(ex.id).then(resp => {
                 const url = window.URL.createObjectURL(resp)
-                const link = window.document.createElement('a');
-                link.href = url;
-                link.download = ex.filename;
-                link.click();
-                window.URL.revokeObjectURL(url);
-                this.isLoading = false;
+                const link = window.document.createElement('a')
+                link.href = url
+                link.download = ex.filename
+                link.click()
+                window.URL.revokeObjectURL(url)
+                this.isLoading = false
             }).catch(e => {
                 this.$toast.error(e.message)
                 this.isLoading = false

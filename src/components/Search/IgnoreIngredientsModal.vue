@@ -4,7 +4,7 @@
         <div class="dialog-title">{{ $t('search.select-ingredients-to-ignore') }}</div>
         <IngredientFinder @ingredient-selected="selectIngredient"></IngredientFinder>
         <div class="ignore-modal-selected-ingredients">
-            <div class="ignore-modal-selected-ingredients__ingredient" v-for="ing in selectedIngredients" :key="ing.id">
+            <div v-for="ing in selectedIngredients" :key="ing.id" class="ignore-modal-selected-ingredients__ingredient">
                 {{ ing.name }} <button type="button" @click.prevent="removeIngredient(ing)"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="12" height="12" fill="currentcolor"><path fill="none" d="M0 0h24v24H0z" /><path d="M12 10.586l4.95-4.95 1.414 1.414-4.95 4.95 4.95 4.95-1.414 1.414-4.95-4.95-4.95 4.95-1.414-1.414 4.95-4.95-4.95-4.95L7.05 5.636z" /></svg></button>
             </div>
         </div>
@@ -40,18 +40,18 @@ export default {
         }
     },
     created() {
-        this.matchIngredients();
+        this.matchIngredients()
     },
     methods: {
         matchIngredients() {
             if (this.value.length > 0) {
-                this.isLoading = true;
+                this.isLoading = true
                 ApiRequests.fetchIngredients({'filter[id]': this.value.join(',')}).then(data => {
                     this.selectedIngredients = data.data
                     this.isLoading = false
                 }).catch(() => {
                     this.isLoading = false
-                });
+                })
             }
         },
         selectIngredient(item) {

@@ -949,7 +949,7 @@ class ApiRequests
             return {}
         }
 
-        return response.blob();
+        return response.blob()
     }
 }
 

@@ -1,21 +1,21 @@
 <script setup>
-import {ref} from 'vue';
+import {ref} from 'vue'
 import {useFloating, offset, flip, shift, autoUpdate} from '@floating-ui/vue'
 import AppState from './../AppState'
 import UnitHandler from './../UnitHandler'
 
 const appState = new AppState()
-const reference = ref(null);
-const floating = ref(null);
+const reference = ref(null)
+const floating = ref(null)
 const { floatingStyles } = useFloating(reference, floating, {
     placement: 'bottom-start',
     middleware: [offset(2), flip(), shift()],
     whileElementsMounted: autoUpdate,
 })
-const showRecommendedAmounts = ref(false);
+const showRecommendedAmounts = ref(false)
 
-const model = defineModel();
-const defaultAmountsInMl = [7.5, 15, 22.5, 30, 45, 60];
+const model = defineModel({ type: null, required: true })
+const defaultAmountsInMl = [7.5, 15, 22.5, 30, 45, 60]
 const defaultAmounts = ref(defaultAmountsInMl)
 if (appState.defaultUnit == 'cl') {
     defaultAmounts.value = defaultAmountsInMl.map(amount => amount / 10)
@@ -39,8 +39,8 @@ document.addEventListener('click', e => {
 
 <template>
     <input v-bind="$attrs" ref="reference" v-model="model" class="form-input" type="text" @focus="showRecommendedAmounts = true">
-    <div class="recommended-amounts" ref="floating" :style="floatingStyles" v-show="showRecommendedAmounts">
-        <button class="recommended-amounts__amount" type="button" v-for="recommendedAmount in defaultAmounts" @click.prevent="selectRecommendedAmount(recommendedAmount)">{{ recommendedAmount }}</button>
+    <div v-show="showRecommendedAmounts" ref="floating" class="recommended-amounts" :style="floatingStyles">
+        <button v-for="recommendedAmount in defaultAmounts" :key="recommendedAmount" class="recommended-amounts__amount" type="button" @click.prevent="selectRecommendedAmount(recommendedAmount)">{{ recommendedAmount }}</button>
     </div>
 </template>
 

@@ -33,7 +33,7 @@ export default {
         }
     },
     created() {
-        this.refreshBars();
+        this.refreshBars()
     },
     methods: {
         refreshBars() {

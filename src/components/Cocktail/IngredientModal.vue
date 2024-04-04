@@ -18,11 +18,11 @@
         <div class="ingredient-form-group">
             <div class="form-group">
                 <label class="form-label form-label--required" for="ingredient-amount">{{ $t('amount') }}:</label>
-                <AmountInput v-model="normalizedAmount" id="ingredient-amount" required></AmountInput>
+                <AmountInput id="ingredient-amount" v-model="normalizedAmount" required></AmountInput>
             </div>
             <div v-if="hasVariableAmount" class="form-group">
                 <label class="form-label" for="ingredient-amount-max">{{ $t('amount') }} max:</label>
-                <AmountInput v-model="normalizedMaxAmount" id="ingredient-amount-max"></AmountInput>
+                <AmountInput id="ingredient-amount-max" v-model="normalizedMaxAmount"></AmountInput>
             </div>
             <div class="form-group">
                 <label class="form-label form-label--required" for="ingredient-units">{{ $t('units') }}:</label>
