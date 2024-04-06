@@ -22,7 +22,7 @@
                                 <a href="#" @click.prevent="showSpecificIngredientsModal = true">{{ $t('search.ingredients') }} ({{ activeFilters.specific_ingredients.length }})</a>
                             </template>
                             <template #dialog>
-                                <IgnoreIngredientsModal :value="activeFilters.specific_ingredients" @close="updateSpecificIngredients"></IgnoreIngredientsModal>
+                                <FilterIngredientsModal :title="$t('search.select-specific-ingredients')" :value="activeFilters.specific_ingredients" @close="updateSpecificIngredients"></FilterIngredientsModal>
                             </template>
                         </SaltRimDialog>
                         <br>
@@ -31,7 +31,7 @@
                                 <a href="#" @click.prevent="showIgnoreIngredientsModal = true">{{ $t('search.ignore-ingredients') }} ({{ activeFilters.ignore_ingredients.length }})</a>
                             </template>
                             <template #dialog>
-                                <IgnoreIngredientsModal :value="activeFilters.ignore_ingredients" @close="updateIgnoredIngredients"></IgnoreIngredientsModal>
+                                <FilterIngredientsModal :title="$t('search.select-ingredients-to-ignore')" :value="activeFilters.ignore_ingredients" @close="updateIgnoredIngredients"></FilterIngredientsModal>
                             </template>
                         </SaltRimDialog>
                     </Refinement>
@@ -128,7 +128,7 @@ import SaltRimDialog from './../Dialog/SaltRimDialog.vue'
 import qs from 'qs'
 import AppState from '../../AppState'
 import EmptyState from './../EmptyState.vue'
-import IgnoreIngredientsModal from '../Search/IgnoreIngredientsModal.vue'
+import FilterIngredientsModal from '../Search/FilterIngredientsModal.vue'
 
 export default {
     components: {
@@ -141,7 +141,7 @@ export default {
         CollectionDialog,
         Pagination,
         EmptyState,
-        IgnoreIngredientsModal,
+        FilterIngredientsModal,
     },
     data() {
         return {

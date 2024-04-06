@@ -54,7 +54,7 @@ document.addEventListener('click', e => {
     gap: var(--gap-size-1);
     padding: var(--gap-size-1);
     background: rgba(0, 0, 0, .7);
-    z-index: 100;
+    z-index: var(--z-dropdown);
     border-radius: 5px;
 }
 

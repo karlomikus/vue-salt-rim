@@ -1,10 +1,10 @@
 <template>
     <form @submit.prevent="filter">
         <OverlayLoader v-if="isLoading" />
-        <div class="dialog-title">{{ $t('search.select-ingredients-to-ignore') }}</div>
+        <div class="dialog-title">{{ title }}</div>
         <IngredientFinder @ingredient-selected="selectIngredient"></IngredientFinder>
-        <div class="ignore-modal-selected-ingredients">
-            <div v-for="ing in selectedIngredients" :key="ing.id" class="ignore-modal-selected-ingredients__ingredient">
+        <div class="search-ingredients-modal-ingredients">
+            <div v-for="ing in selectedIngredients" :key="ing.id" class="search-ingredients-modal-ingredients__ingredient">
                 {{ ing.name }} <button type="button" @click.prevent="removeIngredient(ing)"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="12" height="12" fill="currentcolor"><path fill="none" d="M0 0h24v24H0z" /><path d="M12 10.586l4.95-4.95 1.414 1.414-4.95 4.95 4.95 4.95-1.414 1.414-4.95-4.95-4.95 4.95-1.414-1.414 4.95-4.95-4.95-4.95L7.05 5.636z" /></svg></button>
             </div>
         </div>
@@ -25,6 +25,10 @@ export default {
         IngredientFinder,
     },
     props: {
+        title: {
+            type: String,
+            default: ''
+        },
         value: {
             type: Array,
             default() {
@@ -75,14 +79,14 @@ export default {
 </script>
 
 <style scoped>
-.ignore-modal-selected-ingredients {
+.search-ingredients-modal-ingredients {
     display: flex;
     flex-wrap: wrap;
     gap: var(--gap-size-1);
     margin-top: var(--gap-size-3);
 }
 
-.ignore-modal-selected-ingredients__ingredient {
+.search-ingredients-modal-ingredients__ingredient {
     background-color: var(--clr-gray-800);
     color: var(--clr-gray-100);
     padding: 3px 8px;
@@ -92,7 +96,7 @@ export default {
     align-items: center;
 }
 
-.ignore-modal-selected-ingredients__ingredient button {
+.search-ingredients-modal-ingredients__ingredient button {
     color: var(--clr-gray-100);
     padding: 0;
     margin: 0;
@@ -107,7 +111,7 @@ export default {
     justify-content: center;
 }
 
-.ignore-modal-selected-ingredients__ingredient button:hover {
+.search-ingredients-modal-ingredients__ingredient button:hover {
     background-color: rgb(168, 20, 9);
 }
 </style>

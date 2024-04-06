@@ -85,10 +85,6 @@ h3.form-section-title::before {
     margin-right: 0.25rem;
 }
 
-.popper {
-    z-index: 10;
-}
-
 .site-logo {
     display: flex;
     color: #fff;

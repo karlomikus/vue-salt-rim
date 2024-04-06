@@ -32,7 +32,7 @@ export default {
     height: 100%;
     align-items: center;
     justify-content: center;
-    z-index: 10;
+    z-index: var(--z-overlay-loader);
 }
 
 .dark-theme .overlay-loader {

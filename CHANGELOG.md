@@ -1,8 +1,8 @@
 # v2.12.0
 ## New
-- You can now filter by ignored ingredients
-- You can now filter by specific ingredients
-- Common ingredient amounts are now recommended as input shortcut
+- You can now filter cocktails by ignored ingredients
+- You can now filter cocktails by specific ingredients
+- Common ingredient amounts are now recommended on amount inputs
 - Added "Exports" page to settings
 
 # v2.11.0
