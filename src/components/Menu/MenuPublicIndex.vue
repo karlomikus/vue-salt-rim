@@ -18,7 +18,10 @@
                         </div>
                         <div class="public-page-menu__cocktail__info">
                             <h4>{{ cocktail.name }}</h4>
-                            <p>{{ cocktail.short_ingredients.join(', ') }}</p>
+                            <p>
+                                {{ cocktail.short_ingredients.join(', ') }}
+                            </p>
+                            <a v-if="cocktail.public_id" :href="publicUrl(cocktail)">View recipe</a>
                         </div>
                         <div class="public-page-menu__cocktail__price">
                             {{ cocktail.price.formatted }}{{ cocktail.currency }}
@@ -43,6 +46,8 @@ export default {
     data() {
         return {
             isLoading: false,
+            host: window.location.host,
+            protocol: window.location.protocol,
             menu: {
                 bar: {},
                 categories: []
@@ -63,6 +68,11 @@ export default {
     unmounted() {
         document.body.classList.remove('public-body')
     },
+    methods: {
+        publicUrl(cocktail) {
+            return `${this.protocol}//${this.host}/e/cocktail/${cocktail.public_id}/${cocktail.slug}`
+        },
+    }
 }
 </script>
 <style scoped>
