@@ -18,11 +18,11 @@
         <div class="ingredient-form-group">
             <div class="form-group">
                 <label class="form-label form-label--required" for="ingredient-amount">{{ $t('amount') }}:</label>
-                <input id="ingredient-amount" v-model="normalizedAmount" class="form-input" type="text" required>
+                <AmountInput id="ingredient-amount" v-model="normalizedAmount" required></AmountInput>
             </div>
             <div v-if="hasVariableAmount" class="form-group">
                 <label class="form-label" for="ingredient-amount-max">{{ $t('amount') }} max:</label>
-                <input id="ingredient-amount-max" v-model="normalizedMaxAmount" class="form-input" type="text">
+                <AmountInput id="ingredient-amount-max" v-model="normalizedMaxAmount"></AmountInput>
             </div>
             <div class="form-group">
                 <label class="form-label form-label--required" for="ingredient-units">{{ $t('units') }}:</label>
@@ -52,11 +52,13 @@
 <script>
 import OverlayLoader from './../OverlayLoader.vue'
 import IngredientFinder from './../IngredientFinder.vue'
+import AmountInput from './../AmountInput.vue'
 
 export default {
     components: {
         OverlayLoader,
         IngredientFinder,
+        AmountInput,
     },
     props: {
         value: {

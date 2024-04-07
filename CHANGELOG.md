@@ -1,3 +1,15 @@
+# v2.12.0
+## New
+- You can now filter cocktails by ignored ingredients
+- You can now filter cocktails by specific ingredients
+- Common ingredient amounts are now recommended on amount inputs
+- Added "Exports" page to settings
+
+# v2.11.0
+## New
+- Add "Copy XML" share action
+- Add duplicate cocktail action
+
 # v2.10.0
 ## New
 - Added API tokens page to settings

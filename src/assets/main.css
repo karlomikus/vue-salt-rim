@@ -85,10 +85,6 @@ h3.form-section-title::before {
     margin-right: 0.25rem;
 }
 
-.popper {
-    z-index: 10;
-}
-
 .site-logo {
     display: flex;
     color: #fff;
@@ -195,7 +191,7 @@ a.site-logo:focus .site-logo__title {
 
 .settings-page__nav {
     flex-basis: 200px;
-    flex: 1;
+    flex: 0.6;
 }
 
 .settings-page__content {

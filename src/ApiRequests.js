@@ -915,6 +915,42 @@ class ApiRequests
     static async removeToken(tokenId) {
         return await this.deleteRequest(`/api/tokens/${tokenId}`)
     }
+
+    /**
+     * =============================
+     * Exports
+     * =============================
+     */
+
+    static async fetchExports() {
+        let jsonResp = await this.getRequest('/api/exports')
+
+        return this.parseResponse(jsonResp)
+    }
+
+    static async saveExport(data) {
+        const jsonResp = await this.postRequest('/api/exports', data)
+
+        return this.parseResponse(jsonResp)
+    }
+
+    static async removeExport(exportId) {
+        return await this.deleteRequest(`/api/exports/${exportId}`)
+    }
+
+    static async downloadExport(exportId) {
+        let url = `${this.getUrl()}/api/exports/${exportId}/download`
+
+        const response = await fetch(url, {
+            headers: this.getHeaders(),
+        }).then(this.handleResponseErrors)
+
+        if (response.status == 204) {
+            return {}
+        }
+
+        return response.blob()
+    }
 }
 
 export default ApiRequests

@@ -123,6 +123,11 @@
     --gap-size-3: 1rem;
     --gap-size-4: 1.25rem;
     --gap-size-5: 1.5rem;
+
+    --z-dialog: 5;
+    --z-mobile-search-refinements: 1;
+    --z-dropdown: 10;
+    --z-overlay-loader: 10;
 }
 
 .dark-theme {

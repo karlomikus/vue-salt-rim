@@ -56,7 +56,7 @@
         left: 0;
         background-color: rgba(21, 13, 34, 0.5);
         width: 100%;
-        z-index: 99;
+        z-index: var(--z-mobile-search-refinements);
         height: 100%;
     }
 

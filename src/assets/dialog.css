@@ -4,6 +4,7 @@
     inset: 0;
     position: fixed;
     transition: opacity 250ms ease, backdrop-filter 250ms ease;
+    z-index: var(--z-dialog);
 }
 
 @media (max-width: 450px) {
