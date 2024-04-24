@@ -264,8 +264,8 @@
                             </div>
                         </li>
                     </ul>
-                    <div class="cocktail-ingredients__total-amount">
-                        {{ $t('total.title') }}: ~{{ totalLiquid }}
+                    <div class="cocktail-ingredients__total-amount" v-if="cocktail.volume_ml">
+                        Approx: {{ totalLiquid }} &middot; {{ cocktail.calories }} kcal &middot; {{ cocktail.alcohol_units }} units
                     </div>
                     <a v-show="missingIngredientIds.length > 0" href="#" @click.prevent="addMissingIngredients">{{ $t('cocktail.missing-ing-action') }}</a>
                 </div>
@@ -398,9 +398,7 @@ export default {
             return this.$d(date, 'short')
         },
         totalLiquid() {
-            const amount = this.cocktail.ingredients.filter(ing => ['ml', 'cl', 'oz'].includes(ing.units)).reduce((acc, ing) => {
-                return parseFloat(ing.amount) + acc
-            }, 0) * this.servings
+            const amount = parseFloat(this.cocktail.volume_ml) * this.servings
 
             return UnitHandler.print({ amount: amount, units: 'ml' }, this.currentUnit, this.servings)
         }

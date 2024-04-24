@@ -4,6 +4,7 @@
 - You can now filter cocktails by specific ingredients
 - Common ingredient amounts are now recommended on amount inputs
 - Added "Exports" page to settings
+- Added public recipe link to menu if available
 
 # v2.11.0
 ## New

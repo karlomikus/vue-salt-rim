@@ -42,6 +42,14 @@ export default {
         let maxAmount = this.convertFromTo(orgUnits, orgAmountMax, convertTo)
 
         if (convertTo == 'oz') {
+            if ((minAmount % 1) > 0) {
+                minAmount = minAmount.toFixed(2)
+            }
+
+            if ((maxAmount % 1) > 0) {
+                maxAmount = maxAmount.toFixed(2)
+            }
+
             minAmount = this.asFraction(minAmount)
             maxAmount = this.asFraction(maxAmount)
         }
