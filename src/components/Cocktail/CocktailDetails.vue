@@ -265,7 +265,7 @@
                         </li>
                     </ul>
                     <div class="cocktail-ingredients__total-amount" v-if="cocktail.volume_ml">
-                        Approx: {{ totalLiquid }} &middot; {{ cocktail.calories }} kcal &middot; {{ cocktail.alcohol_units }} units
+                        Approx: {{ totalLiquid }} <span v-show="cocktail.calories > 0">&middot; {{ cocktailCalories }} kcal</span> <span v-show="cocktail.alcohol_units > 0">&middot; {{ alcoholUnits }} units</span>
                     </div>
                     <a v-show="missingIngredientIds.length > 0" href="#" @click.prevent="addMissingIngredients">{{ $t('cocktail.missing-ing-action') }}</a>
                 </div>
@@ -401,7 +401,13 @@ export default {
             const amount = parseFloat(this.cocktail.volume_ml) * this.servings
 
             return UnitHandler.print({ amount: amount, units: 'ml' }, this.currentUnit, this.servings)
-        }
+        },
+        cocktailCalories() {
+            return parseFloat(this.cocktail.calories * this.servings).toFixed(0)
+        },
+        alcoholUnits() {
+            return parseFloat(this.cocktail.alcohol_units * this.servings).toFixed(2)
+        },
     },
     created() {
         document.title = `${this.$t('cocktail.title')} \u22C5 ${this.site_title}`
@@ -657,7 +663,8 @@ swiper-container {
     --ci-clr-list-bg: rgba(0, 0, 0, .4);
 }
 
-.cocktail-ingredients__total-amount {
+.cocktail-ingredients__total-amount,
+.cocktail-ingredients__total-amount span {
     text-align: right;
     font-weight: var(--fw-bold);
     font-size: 0.85rem;
