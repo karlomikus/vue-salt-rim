@@ -547,5 +547,6 @@
     "delete-success": "Export removed"
   },
   "start": "Start",
-  "filter": "Filter"
+  "filter": "Filter",
+  "default-units": "Default units"
 }
