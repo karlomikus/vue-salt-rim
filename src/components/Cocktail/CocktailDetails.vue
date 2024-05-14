@@ -494,7 +494,7 @@ export default {
         changeMeasurementUnit(toUnit) {
             const appState = new AppState()
             this.currentUnit = toUnit
-            appState.setDefaultUnit(toUnit)
+            appState.setDefaultUnits(toUnit)
         },
         shareFromFormat(format) {
             this.isLoadingShare = true

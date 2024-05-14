@@ -52,7 +52,7 @@ class AppState {
         this._updateState()
     }
 
-    setDefaultUnit(unit) {
+    setDefaultUnits(unit) {
         this.defaultUnit = unit
         this._updateState()
     }

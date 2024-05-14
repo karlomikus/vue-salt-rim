@@ -156,7 +156,7 @@ export default {
             const appState = new AppState()
             appState.setBar(bar)
             if (bar.settings.default_units) {
-                appState.setDefaultUnit(bar.settings.default_units)
+                appState.setDefaultUnits(bar.settings.default_units)
             }
             window.location.replace('/')
         },
