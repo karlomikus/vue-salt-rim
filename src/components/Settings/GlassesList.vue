@@ -24,6 +24,7 @@
                         <tr>
                             <th>{{ $t('name') }} / {{ $t('description') }}</th>
                             <th>{{ $t('cocktails.title') }}</th>
+                            <th>{{ $t('glass-type.volume') }}</th>
                             <th></th>
                         </tr>
                     </thead>
@@ -35,6 +36,8 @@
                                 <small>{{ glass.description }}</small>
                             </td>
                             <td>{{ glass.cocktails_count }}</td>
+                            <td v-if="glass.volume > 0">{{ glass.volume }} {{ glass.volume_units }}</td>
+                            <td v-else>n/a</td>
                             <td style="text-align: right;">
                                 <a class="list-group__action" href="#" @click.prevent="deleteGlass(glass)">{{ $t('remove') }}</a>
                             </td>
