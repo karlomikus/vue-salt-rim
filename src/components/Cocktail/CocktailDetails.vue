@@ -498,7 +498,7 @@ export default {
         },
         shareFromFormat(format) {
             this.isLoadingShare = true
-            ApiRequests.shareCocktail(this.cocktail.slug, { type: format }).then(data => {
+            ApiRequests.shareCocktail(this.cocktail.slug, { type: format, units: this.currentUnit }).then(data => {
                 this.isLoadingShare = false
                 navigator.clipboard.writeText(data).then(() => {
                     this.$toast.default(this.$t('share.format-copied'))

@@ -155,9 +155,6 @@ export default {
         selectBar(bar) {
             const appState = new AppState()
             appState.setBar(bar)
-            if (bar.settings.default_units) {
-                appState.setDefaultUnits(bar.settings.default_units)
-            }
             window.location.replace('/')
         },
         getRoleName(roleId) {
