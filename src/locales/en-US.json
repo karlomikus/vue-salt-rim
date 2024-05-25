@@ -550,5 +550,11 @@
   "start": "Start",
   "filter": "Filter",
   "default-units": "Default units",
-  "volume": "Volume"
+  "volume": "Volume",
+  "unit": {
+    "ml-full": "Mililiters (ml)",
+    "oz-full": "Fluid ounces (oz)",
+    "cl-full": "Centiliters (cl)"
+  },
+  "no-default-units": "No default units"
 }

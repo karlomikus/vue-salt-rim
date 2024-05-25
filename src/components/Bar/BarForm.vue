@@ -16,7 +16,7 @@
             <div class="form-group">
                 <label class="form-label" for="description">{{ $t('default-units') }}:</label>
                 <select id="bar-units" class="form-select" required v-model="bar.settings.default_units">
-                    <option :value="undefined">No default units</option>
+                    <option :value="undefined">{{ $t('no-default-units') }}</option>
                     <option v-for="unit in availableUnits" :value="unit.value" :key="unit.value">{{ unit.text }}</option>
                 </select>
             </div>
@@ -77,9 +77,9 @@ export default {
             },
             enableInvites: true,
             availableUnits: [
-                { value: 'ml', text: 'Mililiters (ml)' },
-                { value: 'oz', text: 'Fluid ounces (oz)' },
-                { value: 'cl', text: 'Centiliters (cl)' },
+                { value: 'ml', text: this.$t('unit.ml-full') },
+                { value: 'oz', text: this.$t('unit.oz-full') },
+                { value: 'cl', text: this.$t('unit.cl-full') },
             ],
             importOptions: [
                 { name: 'bars.import-base-cocktails', value: 'cocktails' },
