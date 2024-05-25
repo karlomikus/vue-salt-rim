@@ -57,6 +57,7 @@
                             <path fill="none" d="M0 0h24v24H0z" />
                             <path d="M6.17 18a3.001 3.001 0 0 1 5.66 0H22v2H11.83a3.001 3.001 0 0 1-5.66 0H2v-2h4.17zm6-7a3.001 3.001 0 0 1 5.66 0H22v2h-4.17a3.001 3.001 0 0 1-5.66 0H2v-2h10.17zm-6-7a3.001 3.001 0 0 1 5.66 0H22v2H11.83a3.001 3.001 0 0 1-5.66 0H2V4h4.17z" />
                         </svg>
+                        <div class="resource-search__content__filter__count" v-show="totalActiveRefinements > 0">{{ totalActiveRefinements }}</div>
                     </button>
                     <input v-model="searchQuery" class="form-input" type="text" :placeholder="$t('placeholder.search-cocktails')" @input="debounceCocktailNameSearch" @keyup.enter="updateRouterPath">
                     <select v-model="sort" class="form-select" @change="updateRouterPath">
@@ -337,7 +338,26 @@ export default {
         },
         currentCocktailIds() {
             return this.cocktails.map((c) => c.id)
-        }
+        },
+        totalActiveRefinements() {
+            let total = 0;
+
+            Object.values(this.activeFilters).forEach(element => {
+                if (Array.isArray(element) && element.length > 0) {
+                    return total++;
+                }
+
+                if (typeof element == "boolean" && element == true) {
+                    return total++;
+                }
+
+                if (element !== null && !Array.isArray(element) && element !== false) {
+                    return total++;
+                }
+            });
+
+            return total;
+        },
     },
     created() {
         document.title = `${this.$t('cocktails.title')} \u22C5 ${this.site_title}`

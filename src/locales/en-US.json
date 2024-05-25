@@ -236,7 +236,8 @@
     "confirm-delete": "This will permanently glass type with name \"{name}\".",
     "delete-success": "Glass type deleted successfully",
     "update-success": "Glass type updated successfully",
-    "add-success": "Glass type added successfully"
+    "add-success": "Glass type added successfully",
+    "volume": "Volume"
   },
   "information": "Information",
   "image-url": "Image URL",
@@ -547,5 +548,13 @@
     "delete-success": "Export removed"
   },
   "start": "Start",
-  "filter": "Filter"
+  "filter": "Filter",
+  "default-units": "Default units",
+  "volume": "Volume",
+  "unit": {
+    "ml-full": "Mililiters (ml)",
+    "oz-full": "Fluid ounces (oz)",
+    "cl-full": "Centiliters (cl)"
+  },
+  "no-default-units": "No default units"
 }

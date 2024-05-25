@@ -1,9 +1,17 @@
+# v2.13.0
+## New
+- Show total number of active filters on cocktails and ingredients page
+- Added approximate volume, calories and alcohol units to cocktail details
+- You can now save default bar units, user settings will still overwrite this
+- Added support for glass type volume
+
 # v2.12.0
 ## New
 - You can now filter cocktails by ignored ingredients
 - You can now filter cocktails by specific ingredients
 - Common ingredient amounts are now recommended on amount inputs
 - Added "Exports" page to settings
+- Added public recipe link to menu if available
 
 # v2.11.0
 ## New

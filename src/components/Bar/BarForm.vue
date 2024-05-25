@@ -14,6 +14,13 @@
                 <input id="subtitle" v-model="bar.subtitle" class="form-input" type="text">
             </div>
             <div class="form-group">
+                <label class="form-label" for="description">{{ $t('default-units') }}:</label>
+                <select id="bar-units" class="form-select" required v-model="bar.settings.default_units">
+                    <option :value="undefined">{{ $t('no-default-units') }}</option>
+                    <option v-for="unit in availableUnits" :value="unit.value" :key="unit.value">{{ unit.text }}</option>
+                </select>
+            </div>
+            <div class="form-group">
                 <label class="form-label" for="slug">{{ $t('bar.url') }}:</label>
                 <input id="slug" v-model="bar.slug" class="form-input" type="text" :disabled="bar.id != null" @blur="updateSlug">
                 <p v-show="urlWithSlug" class="form-input-hint">
@@ -60,12 +67,20 @@ export default {
             isLoading: false,
             skipSlugGenerationFromName: false,
             bar: {
+                settings: {
+                    default_units: 'ml',
+                },
                 options: [
                     'cocktails',
                     'ingredients',
                 ]
             },
             enableInvites: true,
+            availableUnits: [
+                { value: 'ml', text: this.$t('unit.ml-full') },
+                { value: 'oz', text: this.$t('unit.oz-full') },
+                { value: 'cl', text: this.$t('unit.cl-full') },
+            ],
             importOptions: [
                 { name: 'bars.import-base-cocktails', value: 'cocktails' },
                 { name: 'bars.import-base-ingredients', value: 'ingredients' },
@@ -127,6 +142,7 @@ export default {
                     subtitle: this.bar.subtitle,
                     description: this.bar.description,
                     enable_invites: this.enableInvites,
+                    default_units: this.bar.settings.default_units,
                 }).then(data => {
                     appState.setBar(data)
                     this.isLoading = false
@@ -144,6 +160,7 @@ export default {
                     enable_invites: this.enableInvites,
                     options: this.bar.options,
                     slug: postSlug,
+                    default_units: this.bar.settings.default_units,
                 }).then(() => {
                     this.isLoading = false
                     this.$toast.default(this.$t('bars.add-success', { name: this.bar.name }))

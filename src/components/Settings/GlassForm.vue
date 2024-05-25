@@ -10,6 +10,16 @@
             <label class="form-label" for="description">{{ $t('description') }}:</label>
             <textarea id="description" v-model="glass.description" rows="5" class="form-input"></textarea>
         </div>
+        <div style="display: flex; gap: 0.5rem;">
+            <div class="form-group" style="flex-basis: 300px;">
+                <label class="form-label" for="volume">{{ $t('volume') }}:</label>
+                <input id="volume" v-model="glass.volume" class="form-input" type="text" style="width: 100%;">
+            </div>
+            <div class="form-group" style="flex-basis: 100%;">
+                <label class="form-label" for="volume_units">{{ $t('units') }}:</label>
+                <input id="volume_units" v-model="glass.volume_units" class="form-input" type="text" style="width: 100%;">
+            </div>
+        </div>
         <div class="dialog-actions">
             <button class="button button--outline" @click.prevent="$emit('glassDialogClosed')">{{ $t('cancel') }}</button>
             <button class="button button--dark" type="submit">{{ $t('save') }}</button>
@@ -51,6 +61,8 @@ export default {
             const postData = {
                 name: this.glass.name,
                 description: this.glass.description,
+                volume: this.glass.volume,
+                volume_units: this.glass.volume_units,
             }
 
             if (this.glass.id) {

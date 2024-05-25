@@ -264,8 +264,8 @@
                             </div>
                         </li>
                     </ul>
-                    <div class="cocktail-ingredients__total-amount">
-                        {{ $t('total.title') }}: ~{{ totalLiquid }}
+                    <div class="cocktail-ingredients__total-amount" v-if="cocktail.volume_ml">
+                        Approx: {{ totalLiquid }} <span v-show="cocktail.calories > 0">&middot; {{ cocktailCalories }} kcal</span> <span v-show="cocktail.alcohol_units > 0">&middot; {{ alcoholUnits }} units</span>
                     </div>
                     <a v-show="missingIngredientIds.length > 0" href="#" @click.prevent="addMissingIngredients">{{ $t('cocktail.missing-ing-action') }}</a>
                 </div>
@@ -398,12 +398,16 @@ export default {
             return this.$d(date, 'short')
         },
         totalLiquid() {
-            const amount = this.cocktail.ingredients.filter(ing => ['ml', 'cl', 'oz'].includes(ing.units)).reduce((acc, ing) => {
-                return parseFloat(ing.amount) + acc
-            }, 0) * this.servings
+            const amount = parseFloat(this.cocktail.volume_ml) * this.servings
 
             return UnitHandler.print({ amount: amount, units: 'ml' }, this.currentUnit, this.servings)
-        }
+        },
+        cocktailCalories() {
+            return parseFloat(this.cocktail.calories * this.servings).toFixed(0)
+        },
+        alcoholUnits() {
+            return parseFloat(this.cocktail.alcohol_units * this.servings).toFixed(2)
+        },
     },
     created() {
         document.title = `${this.$t('cocktail.title')} \u22C5 ${this.site_title}`
@@ -490,11 +494,11 @@ export default {
         changeMeasurementUnit(toUnit) {
             const appState = new AppState()
             this.currentUnit = toUnit
-            appState.setDefaultUnit(toUnit)
+            appState.setDefaultUnits(toUnit)
         },
         shareFromFormat(format) {
             this.isLoadingShare = true
-            ApiRequests.shareCocktail(this.cocktail.slug, { type: format }).then(data => {
+            ApiRequests.shareCocktail(this.cocktail.slug, { type: format, units: this.currentUnit }).then(data => {
                 this.isLoadingShare = false
                 navigator.clipboard.writeText(data).then(() => {
                     this.$toast.default(this.$t('share.format-copied'))
@@ -659,7 +663,8 @@ swiper-container {
     --ci-clr-list-bg: rgba(0, 0, 0, .4);
 }
 
-.cocktail-ingredients__total-amount {
+.cocktail-ingredients__total-amount,
+.cocktail-ingredients__total-amount span {
     text-align: right;
     font-weight: var(--fw-bold);
     font-size: 0.85rem;

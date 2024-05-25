@@ -38,6 +38,9 @@ class AppState {
         bar.search_driver_host = searchHost
 
         this.bar = bar
+        if (bar.settings && bar.settings.default_units) {
+            this.setDefaultUnits(bar.settings.default_units)
+        }
         this._updateState()
     }
 
@@ -52,7 +55,7 @@ class AppState {
         this._updateState()
     }
 
-    setDefaultUnit(unit) {
+    setDefaultUnits(unit) {
         this.defaultUnit = unit
         this._updateState()
     }

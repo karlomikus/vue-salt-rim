@@ -14,6 +14,24 @@
 .resource-search__content__filter {
     display: flex;
     gap: var(--gap-size-2);
+    position: relative;
+}
+
+.resource-search__content__filter__count {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    font-weight: bold;
+    font-size: 0.825rem;
+    background-color: var(--clr-gray-800);
+    color: var(--clr-gray-200);
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
 }
 
 @media (max-width: 450px) {
