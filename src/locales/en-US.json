@@ -556,5 +556,6 @@
     "oz-full": "Fluid ounces (oz)",
     "cl-full": "Centiliters (cl)"
   },
-  "no-default-units": "No default units"
+  "no-default-units": "No default units",
+  "wakelock-toggle": "Prevent screen locking"
 }

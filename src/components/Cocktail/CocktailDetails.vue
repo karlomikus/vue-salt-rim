@@ -271,6 +271,7 @@
                 </div>
                 <div class="block-container block-container--padded">
                     <h3 class="details-block-container__title">{{ $t('instructions') }}</h3>
+                    <WakeLockToggle></WakeLockToggle>
                     <div v-html="parsedInstructions"></div>
                     <div v-if="cocktail.utensils.length > 0">
                         <br>
@@ -323,6 +324,7 @@ import CocktailCollections from './../Collections/CollectionWidget.vue'
 import CollectionDialog from './../Collections/CollectionDialog.vue'
 import dayjs from 'dayjs'
 import UnitHandler from '../../UnitHandler'
+import WakeLockToggle from '../WakeLockToggle.vue'
 
 export default {
     components: {
@@ -338,6 +340,7 @@ export default {
         CollectionDialog,
         CocktailCollections,
         IngredientSpotlight,
+        WakeLockToggle,
     },
     data: () => ({
         cocktail: {},
