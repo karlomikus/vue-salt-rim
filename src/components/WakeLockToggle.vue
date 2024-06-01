@@ -23,6 +23,10 @@ export default {
             }
         }
     },
+    onBeforeUnmount() {
+        this.wakeLock.release()
+        this.isActive = false
+    },
     methods: {
         async initWakeLock() {
             try {

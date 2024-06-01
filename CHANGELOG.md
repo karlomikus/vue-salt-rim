@@ -1,3 +1,7 @@
+# v2.14.0
+## New
+- You can now prevent mobile screen from dimming/locking when viewing a recipe
+
 # v2.13.0
 ## New
 - Show total number of active filters on cocktails and ingredients page
