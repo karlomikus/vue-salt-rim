@@ -264,7 +264,7 @@
                             </div>
                         </li>
                     </ul>
-                    <div class="cocktail-ingredients__total-amount" v-if="cocktail.volume_ml">
+                    <div v-if="cocktail.volume_ml" class="cocktail-ingredients__total-amount">
                         Approx: {{ totalLiquid }} <span v-show="cocktail.calories > 0">&middot; {{ cocktailCalories }} kcal</span> <span v-show="cocktail.alcohol_units > 0">&middot; {{ alcoholUnits }} units</span>
                     </div>
                     <a v-show="missingIngredientIds.length > 0" href="#" @click.prevent="addMissingIngredients">{{ $t('cocktail.missing-ing-action') }}</a>
