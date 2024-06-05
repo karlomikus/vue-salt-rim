@@ -199,7 +199,6 @@ export default {
                 glasses: [],
                 methods: [],
                 main_ingredients: [],
-                ingredients: [],
                 collections: [],
                 user_rating: null,
                 average_rating: null,
@@ -443,7 +442,6 @@ export default {
             this.activeFilters.glasses = state.filter && state.filter.glass_id ? String(state.filter.glass_id).split(',') : []
             this.activeFilters.main_ingredients = state.filter && state.filter.main_ingredient_id ? String(state.filter.main_ingredient_id).split(',') : []
             this.activeFilters.collections = state.filter && state.filter.collection_id ? String(state.filter.collection_id).split(',') : []
-            this.activeFilters.ingredients = state.filter && state.filter.ingredient_id ? String(state.filter.ingredient_id).split(',') : []
             this.activeFilters.user_shelves = state.filter && state.filter.user_shelves ? String(state.filter.user_shelves).split(',') : []
             this.activeFilters.users = state.filter && state.filter.created_user_id ? String(state.filter.created_user_id).split(',') : []
             this.activeFilters.on_shelf = state.filter && state.filter.on_shelf ? state.filter.on_shelf : null
