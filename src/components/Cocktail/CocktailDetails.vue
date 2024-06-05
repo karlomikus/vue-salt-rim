@@ -74,7 +74,7 @@
                     </div>
                     <div class="cocktail-details-box__description" v-html="parsedDescription"></div>
                     <div class="cocktail-details-box__actions">
-                        <button type="button" class="button-circle" @click="favorite">
+                        <button type="button" class="button button-circle" @click="favorite">
                             <OverlayLoader v-if="isLoadingFavorite" />
                             <svg v-if="!isFavorited" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
                                 <path fill="none" d="M0 0H24V24H0z" />
@@ -87,7 +87,7 @@
                         </button>
                         <Dropdown>
                             <template #default="{ toggleDropdown }">
-                                <button type="button" class="button-circle" @click="toggleDropdown">
+                                <button type="button" class="button button-circle" @click="toggleDropdown">
                                     <OverlayLoader v-if="isLoadingShare" />
                                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
                                         <path fill="none" d="M0 0h24v24H0z" />
@@ -163,7 +163,7 @@
                         </Dropdown>
                         <Dropdown>
                             <template #default="{ toggleDropdown }">
-                                <button type="button" class="button-circle" @click="toggleDropdown"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+                                <button type="button" class="button button-circle" @click="toggleDropdown"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
                                     <path fill="none" d="M0 0h24v24H0z" />
                                     <path d="M12 3c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 14c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0-7c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z" />
                                 </svg></button>
@@ -241,6 +241,8 @@
                             <button type="button" :class="{ 'active-serving': currentUnit == 'cl' }" @click="changeMeasurementUnit('cl')">cl</button>
                         </div>
                     </div>
+                    <button class="button-v2 button--dark">A test button</button>
+                    <button class="button-v2 button--outline">A test button</button>
                     <ul class="cocktail-ingredients">
                         <li v-for="ing in cocktail.ingredients" :key="ing.sort">
                             <div class="cocktail-ingredients__ingredient">
