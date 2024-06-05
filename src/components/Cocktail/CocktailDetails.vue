@@ -241,8 +241,6 @@
                             <button type="button" :class="{ 'active-serving': currentUnit == 'cl' }" @click="changeMeasurementUnit('cl')">cl</button>
                         </div>
                     </div>
-                    <button class="button-v2 button--dark">A test button</button>
-                    <button class="button-v2 button--outline">A test button</button>
                     <ul class="cocktail-ingredients">
                         <li v-for="ing in cocktail.ingredients" :key="ing.sort">
                             <div class="cocktail-ingredients__ingredient">
