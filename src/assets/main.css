@@ -245,3 +245,9 @@ a.site-logo:focus .site-logo__title {
     content: "\25D0";
     font-size: 12px;
 }
+
+.ingredient-shelf-status.ingredient-shelf-status--complex:after {
+    color: rgb(46, 145, 238);
+    content: "\25C6";
+    font-size: 12px;
+}
