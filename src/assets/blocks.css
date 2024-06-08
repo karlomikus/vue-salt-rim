@@ -59,3 +59,24 @@
 .dark-theme .details-block-container__title {
     color: var(--clr-accent-200);
 }
+
+.block-container--inset {
+    background-color: #f4edf2;
+    border-bottom: 1px solid #fff;
+    border-radius: var(--radius-2);
+    box-shadow:
+        inset 0px 0.4px 0.5px hsl(var(--shadow-color) / 0.25),
+        inset 0px 1.1px 1.2px -0.8px hsl(var(--shadow-color) / 0.25),
+        inset 0px 2.6px 2.9px -1.7px hsl(var(--shadow-color) / 0.25),
+        inset 0px 6.3px 7.1px -2.5px hsl(var(--shadow-color) / 0.25);
+}
+
+.dark-theme .block-container--inset {
+    background-color: rgba(0, 0, 0, .15);
+    border-bottom: 1px solid rgba(255, 255, 255, .1);
+    box-shadow:
+        inset 0px 0.4px 0.5px hsl(var(--shadow-color-dark) / 0.25),
+        inset 0px 1.1px 1.2px -0.8px hsl(var(--shadow-color-dark) / 0.25),
+        inset 0px 2.6px 2.9px -1.7px hsl(var(--shadow-color-dark) / 0.25),
+        inset 0px 6.3px 7.1px -2.5px hsl(var(--shadow-color-dark) / 0.25);
+}
