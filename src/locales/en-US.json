@@ -52,7 +52,10 @@
       "new-ingredient-fail": "Unable to add ingredient.",
       "select-substitutes-for": "Select substitute ingredients for \"{name}\"."
     },
-    "base": "Base"
+    "base": "Base",
+    "is-complex": "Ingredient contains other ingredients",
+    "complex-title": "Include ingredients",
+    "complex-note": "If you have all of following ingredients, this ingredient will be automatically matched in your shelf."
   },
   "share": {
     "title": "Share",
@@ -557,5 +560,10 @@
     "cl-full": "Centiliters (cl)"
   },
   "no-default-units": "No default units",
-  "wakelock-toggle": "Prevent screen locking"
+  "wakelock-toggle": "Prevent screen locking",
+  "ingredients-not-selected": "No ingredients selected",
+  "ingredients": {
+    "select": "Select ingredients"
+  },
+  "cocktail.missing-ing-sub-available": "Missing, but you have substitutes available"
 }

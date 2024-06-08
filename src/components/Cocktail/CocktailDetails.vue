@@ -244,6 +244,7 @@
                     <ul class="cocktail-ingredients">
                         <li v-for="ing in cocktail.ingredients" :key="ing.sort">
                             <div class="cocktail-ingredients__ingredient">
+                                <span class="ingredient-shelf-status" :class="{'ingredient-shelf-status--in-shelf': ing.in_shelf, 'ingredient-shelf-status--missing': !ing.in_shelf, 'ingredient-shelf-status--substitute': !ing.in_shelf && ing.in_shelf_as_substitute}"></span>
                                 <RouterLink class="cocktail-ingredients__ingredient__name" :to="{ name: 'ingredients.show', params: { id: ing.ingredient_slug } }" data-ingredient="preferred">
                                     {{ ing.name }} <span v-if="ing.note" class="cocktail-ingredients__flags__flag">&ndash; {{ ing.note }}</span> <small v-if="ing.optional">({{ $t('optional') }})</small>
                                 </RouterLink>
@@ -251,15 +252,16 @@
                             </div>
                             <div class="cocktail-ingredients__flags">
                                 <div v-if="ing.substitutes.length > 0" class="cocktail-ingredients__flags__flag">
+                                    <div v-if="!ing.in_shelf && ing.in_shelf_as_substitute" class="cocktail-ingredients__flags__flag">&middot; {{ $t('cocktail.missing-ing-sub-available') }}</div>
                                     &middot; {{ $t('substitutes') }}:
                                     <template v-for="(sub, index) in ing.substitutes" :key="index">
-                                        <RouterLink :to="{ name: 'ingredients.show', params: { id: sub.slug } }" data-ingredient="substitute">
+                                        <RouterLink :style="{'font-weight': sub.in_shelf ? 'bold' : 'normal'}" :to="{ name: 'ingredients.show', params: { id: sub.slug } }" data-ingredient="substitute">
                                             {{ buildSubstituteString(sub) }}
                                         </RouterLink>
                                         <template v-if="index + 1 !== ing.substitutes.length">, </template>
                                     </template>
                                 </div>
-                                <div v-if="!userShelfIngredients.map(i => i.ingredient_id).includes(ing.ingredient_id)" class="cocktail-ingredients__flags__flag">&middot; {{ $t('cocktail.missing-ing') }}</div>
+                                <div v-if="!ing.in_shelf && !ing.in_shelf_as_substitute" class="cocktail-ingredients__flags__flag">&middot; {{ $t('cocktail.missing-ing') }}</div>
                                 <div v-if="userShoppingListIngredients.map(i => i.ingredient_id).includes(ing.ingredient_id)" class="cocktail-ingredients__flags__flag">&middot; {{ $t('ingredient.on-shopping-list') }}</div>
                             </div>
                         </li>
