@@ -41,4 +41,9 @@
         gap: var(--gap-size-2);
     }
 }
+
+.site-page-header :deep(p) {
+    font-size: 1rem;
+    color: var(--clr-dark-main-500);
+}
 </style>

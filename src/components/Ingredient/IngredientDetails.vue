@@ -15,16 +15,6 @@
                 <RouterLink v-if="ingredient.access.can_edit" class="button button--dark" :to="{ name: 'ingredients.form', query: { id: ingredient.id } }">{{ $t('edit') }}</RouterLink>
             </template>
         </PageHeader>
-        <!-- <div class="cocktail-details__title">
-            <h2>{{ ingredient.name }}</h2>
-            <p :title="$t('added-on-by', { date: createdDate, name: ingredient.created_user.name })">
-                <template v-if="ingredient.category">
-                    <RouterLink :to="{ name: 'ingredients', query: { 'filter[category_id]': ingredient.category.id } }">{{ ingredient.category.name }}</RouterLink> &middot;
-                </template>
-                <template v-if="ingredient.updated_user">{{ $t('updated-on-by', { date: updatedDate, name: ingredient.updated_user.name }) }}</template>
-                <template v-else>{{ $t('added-on-by', { date: createdDate, name: ingredient.created_user.name }) }}</template>
-            </p>
-        </div> -->
         <div class="block-container block-container--padded ingredient-details__box">
             <div class="ingredient-details__box__image-container">
                 <img :src="mainIngredientImageUrl" :alt="ingredient.name" />
@@ -67,9 +57,6 @@
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22ZM12 20C16.4183 20 20 16.4183 20 12C20 7.58172 16.4183 4 12 4C7.58172 4 4 7.58172 4 12C4 16.4183 7.58172 20 12 20Z"></path></svg> {{ $t('ingredient.add-to-shelf') }}
                             </template>
                         </a>
-                        <template v-if="extraIfAddedToShelf.length > 0">
-                            &middot; {{ $t('ingredient.extra-cocktails') }}: <a href="#">{{ extraIfAddedToShelf.length }} {{ $t('cocktails.title') }}</a>
-                        </template>
                     </li>
                     <li>
                         <a href="#" @click.prevent="toggleShoppingList">
@@ -88,9 +75,12 @@
                         </template>
                     </li>
                     <li><RouterLink :to="{name: 'cocktails', query: {'filter[ingredient_id]': ingredient.id}}">Used in {{ ingredient.cocktails.length }} cocktail recipes</RouterLink></li>
+                    <li v-if="extraIfAddedToShelf.length > 0">{{ $t('ingredient.extra-cocktails') }}: <RouterLink :to="{name: 'cocktails', query: {'filter[id]': extraCocktailsIds}}">{{ extraIfAddedToShelf.length }} {{ $t('cocktails.title') }}</RouterLink></li>
                 </ul>
-                <h2 class="details-block-container__title">{{ $t('description') }}</h2>
-                <div v-html="parsedDescription"></div>
+                <div v-if="ingredient.description">
+                    <h2 class="details-block-container__title">{{ $t('description') }}</h2>
+                    <div v-html="parsedDescription"></div>
+                </div>
             </div>
         </div>
         <div v-if="ingredient.varieties.length > 0" class="block-container block-container--padded">
@@ -150,6 +140,9 @@ export default {
             const date = dayjs(this.ingredient.updated_at).toDate()
 
             return this.$d(date, 'short')
+        },
+        extraCocktailsIds() {
+            return this.extraIfAddedToShelf.map(c => c.id).join(',')
         }
     },
     watch: {
@@ -297,7 +290,7 @@ export default {
 
 @media (max-width: 450px) {
     .ingredient-details__box {
-        flex-direction: column-reverse;
+        flex-direction: column;
     }
 }
 
@@ -319,7 +312,6 @@ export default {
 
 @media (max-width: 450px) {
     .ingredient-details__box__image-container {
-        margin-left: 0;
         max-height: none;
     }
 
@@ -401,6 +393,10 @@ export default {
     padding: 0.5rem 0.75rem;
     margin: 0 0 1rem 0;
     list-style-type: none;
+}
+
+.dark-theme .ingredient-details__more {
+    background-color: rgba(0, 0, 0, .4);
 }
 
 .ingredient-details__more svg {
