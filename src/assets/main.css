@@ -230,24 +230,26 @@ a.site-logo:focus .site-logo__title {
 }
 
 .ingredient-shelf-status.ingredient-shelf-status--in-shelf:after {
-    color: rgb(17, 116, 74);
-    content: "\25CF"
+    /* color: rgb(17, 116, 74); */
+    content: "\25CF";
+    font-size: 18px;
+    line-height: 1;
 }
 
 .ingredient-shelf-status.ingredient-shelf-status--missing:after {
     color: rgb(182, 13, 13);
     content: "\25CB";
-    font-size: 12px;
+    font-size: 14px;
 }
 
 .ingredient-shelf-status.ingredient-shelf-status--substitute:after {
     color: rgb(255, 125, 39);
     content: "\25D0";
-    font-size: 12px;
+    font-size: 14px;
 }
 
 .ingredient-shelf-status.ingredient-shelf-status--complex:after {
-    color: rgb(46, 145, 238);
+    color: rgb(23, 132, 233);
     content: "\25C6";
-    font-size: 12px;
+    font-size: 14px;
 }

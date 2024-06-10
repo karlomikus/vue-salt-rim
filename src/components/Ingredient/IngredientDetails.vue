@@ -1,24 +1,36 @@
 <template>
     <OverlayLoader v-if="isLoadingIngredient" />
     <div v-if="ingredient.id" class="ingredient-details">
-        <div class="block-container block-container--padded ingredient-details__box" style="margin-top: 100px;">
+        <PageHeader>
+            {{ ingredient.name }}
+            <p :title="$t('added-on-by', { date: createdDate, name: ingredient.created_user.name })">
+                <template v-if="ingredient.category">
+                    <RouterLink :to="{ name: 'ingredients', query: { 'filter[category_id]': ingredient.category.id } }">{{ ingredient.category.name }}</RouterLink> &middot;
+                </template>
+                <template v-if="ingredient.updated_user">{{ $t('updated-on-by', { date: updatedDate, name: ingredient.updated_user.name }) }}</template>
+                <template v-else>{{ $t('added-on-by', { date: createdDate, name: ingredient.created_user.name }) }}</template>
+            </p>
+            <template #actions>
+                <button v-if="ingredient.access.can_delete" type="button" class="button button--outline" @click="deleteIngredient">{{ $t('remove') }}</button>
+                <RouterLink v-if="ingredient.access.can_edit" class="button button--dark" :to="{ name: 'ingredients.form', query: { id: ingredient.id } }">{{ $t('edit') }}</RouterLink>
+            </template>
+        </PageHeader>
+        <!-- <div class="cocktail-details__title">
+            <h2>{{ ingredient.name }}</h2>
+            <p :title="$t('added-on-by', { date: createdDate, name: ingredient.created_user.name })">
+                <template v-if="ingredient.category">
+                    <RouterLink :to="{ name: 'ingredients', query: { 'filter[category_id]': ingredient.category.id } }">{{ ingredient.category.name }}</RouterLink> &middot;
+                </template>
+                <template v-if="ingredient.updated_user">{{ $t('updated-on-by', { date: updatedDate, name: ingredient.updated_user.name }) }}</template>
+                <template v-else>{{ $t('added-on-by', { date: createdDate, name: ingredient.created_user.name }) }}</template>
+            </p>
+        </div> -->
+        <div class="block-container block-container--padded ingredient-details__box">
+            <div class="ingredient-details__box__image-container">
+                <img :src="mainIngredientImageUrl" :alt="ingredient.name" />
+            </div>
             <div class="ingredient-details__box__content">
-                <div class="ingredient-details__title">
-                    <h2>{{ ingredient.name }}</h2>
-                    <p :title="$t('added-on-by', { date: createdDate, name: ingredient.created_user.name })">
-                        <template v-if="ingredient.updated_user">{{ $t('updated-on-by', { date: updatedDate, name: ingredient.updated_user.name }) }}</template>
-                        <template v-else>{{ $t('added-on-by', { date: createdDate, name: ingredient.created_user.name }) }}</template>
-                    </p>
-                </div>
                 <div class="item-details__chips">
-                    <div v-if="ingredient.category" class="item-details__chips__group">
-                        <div class="item-details__chips__group__title">{{ $t('category') }}:</div>
-                        <ul class="chips-list">
-                            <li>
-                                <RouterLink class="chip" :to="{ name: 'ingredients', query: { 'filter[category_id]': ingredient.category.id } }">{{ ingredient.category.name }}</RouterLink>
-                            </li>
-                        </ul>
-                    </div>
                     <div class="item-details__chips__group">
                         <div class="item-details__chips__group__title">{{ $t('strength') }}:</div>
                         <ul v-if="ingredient.strength > 0" class="chips-list">
@@ -43,92 +55,42 @@
                             </li>
                         </ul>
                     </div>
-                    <div v-if="isAddedToShelf || isAddedToShoppingList" class="item-details__chips__group">
-                        <div class="item-details__chips__group__title">{{ $t('status') }}:</div>
-                        <ul class="chips-list">
-                            <li v-show="isAddedToShelf">
-                                <span class="chip">{{ $t('ingredient.in-shelf') }}</span>
-                            </li>
-                            <li v-show="isAddedToShoppingList">
-                                <span class="chip">{{ $t('ingredient.on-shopping-list') }}</span>
-                            </li>
-                        </ul>
-                    </div>
                 </div>
-                <div v-html="parsedDescription"></div>
-            </div>
-            <div class="ingredient-details__box__image-container">
-                <img :src="mainIngredientImageUrl" :alt="ingredient.name" />
-            </div>
-        </div>
-        <div class="block-container block-container--padded ingredient-details__cocktails">
-            <div class="ingredient-details__actions">
-                <button type="button" class="button-circle" @click="toggleShelf">
-                    <OverlayLoader v-if="isLoadingShelf" />
-                    <svg v-if="!isAddedToShelf" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
-                        <path fill="none" d="M0 0h24v24H0z" />
-                        <path d="M4 3h16a1 1 0 0 1 1 1v16a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1zm1 2v14h14V5H5z" />
-                    </svg>
-                    <svg v-else xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
-                        <path fill="none" d="M0 0h24v24H0z" />
-                        <path d="M4 3h16a1 1 0 0 1 1 1v16a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1zm7.003 13l7.07-7.071-1.414-1.414-5.656 5.657-2.829-2.829-1.414 1.414L11.003 16z" />
-                    </svg>
-                </button>
-                <Dropdown>
-                    <template #default="{ toggleDropdown }">
-                        <button type="button" class="button-circle" @click="toggleDropdown">
-                            <OverlayLoader v-if="isLoadingShoppingList" />
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
-                                <path fill="none" d="M0 0h24v24H0z" />
-                                <path d="M12 3c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 14c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0-7c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z" />
-                            </svg>
-                        </button>
-                    </template>
-                    <template #content>
-                        <RouterLink v-if="ingredient.access.can_edit" class="dropdown-menu__item" :to="{ name: 'ingredients.form', query: { id: ingredient.id } }">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
-                                <path fill="none" d="M0 0h24v24H0z" />
-                                <path d="M6.414 16L16.556 5.858l-1.414-1.414L5 14.586V16h1.414zm.829 2H3v-4.243L14.435 2.322a1 1 0 0 1 1.414 0l2.829 2.829a1 1 0 0 1 0 1.414L7.243 18zM3 20h18v2H3v-2z" />
-                            </svg>
-                            {{ $t('edit') }}
-                        </RouterLink>
-                        <a class="dropdown-menu__item" href="#" @click.prevent="toggleShoppingList">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
-                                <path fill="none" d="M0 0h24v24H0z" />
-                                <path d="M15.366 3.438L18.577 9H22v2h-1.167l-.757 9.083a1 1 0 0 1-.996.917H4.92a1 1 0 0 1-.996-.917L3.166 11H2V9h3.422l3.212-5.562 1.732 1L7.732 9h8.535l-2.633-4.562 1.732-1zM18.826 11H5.173l.667 8h12.319l.667-8zM13 13v4h-2v-4h2zm-4 0v4H7v-4h2zm8 0v4h-2v-4h2z" />
-                            </svg>
-                            <template v-if="isAddedToShoppingList">
-                                {{ $t('ingredient.remove-from-list') }}
+                <ul class="ingredient-details__more">
+                    <OverlayLoader v-if="isLoadingExtra || isLoadingShelf || isLoadingShoppingList" />
+                    <li>
+                        <a href="#" @click.prevent="toggleShelf">
+                            <template v-if="isAddedToShelf">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22ZM11.0026 16L18.0737 8.92893L16.6595 7.51472L11.0026 13.1716L8.17421 10.3431L6.75999 11.7574L11.0026 16Z"></path></svg> {{ $t('ingredient.remove-from-shelf') }}
                             </template>
                             <template v-else>
-                                {{ $t('ingredient.add-to-list') }}
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22ZM12 20C16.4183 20 20 16.4183 20 12C20 7.58172 16.4183 4 12 4C7.58172 4 4 7.58172 4 12C4 16.4183 7.58172 20 12 20Z"></path></svg> {{ $t('ingredient.add-to-shelf') }}
                             </template>
                         </a>
-                        <a v-if="ingredient.access.can_delete" class="dropdown-menu__item" href="#" @click.prevent="deleteIngredient">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
-                                <path fill="none" d="M0 0h24v24H0z" />
-                                <path d="M7 4V2h10v2h5v2h-2v15a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V6H2V4h5zM6 6v14h12V6H6zm3 3h2v8H9V9zm4 0h2v8h-2V9z" />
-                            </svg>
-                            {{ $t('remove') }}
+                        <template v-if="extraIfAddedToShelf.length > 0">
+                            &middot; {{ $t('ingredient.extra-cocktails') }}: <a href="#">{{ extraIfAddedToShelf.length }} {{ $t('cocktails.title') }}</a>
+                        </template>
+                    </li>
+                    <li>
+                        <a href="#" @click.prevent="toggleShoppingList">
+                            <template v-if="isAddedToShoppingList">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M4.00436 6.41686L0.761719 3.17422L2.17593 1.76001L5.41857 5.00265H20.6603C21.2126 5.00265 21.6603 5.45037 21.6603 6.00265C21.6603 6.09997 21.6461 6.19678 21.6182 6.29L19.2182 14.29C19.0913 14.713 18.7019 15.0027 18.2603 15.0027H6.00436V17.0027H17.0044V19.0027H5.00436C4.45207 19.0027 4.00436 18.5549 4.00436 18.0027V6.41686ZM5.50436 23.0027C4.67593 23.0027 4.00436 22.3311 4.00436 21.5027C4.00436 20.6742 4.67593 20.0027 5.50436 20.0027C6.33279 20.0027 7.00436 20.6742 7.00436 21.5027C7.00436 22.3311 6.33279 23.0027 5.50436 23.0027ZM17.5044 23.0027C16.6759 23.0027 16.0044 22.3311 16.0044 21.5027C16.0044 20.6742 16.6759 20.0027 17.5044 20.0027C18.3328 20.0027 19.0044 20.6742 19.0044 21.5027C19.0044 22.3311 18.3328 23.0027 17.5044 23.0027Z"></path></svg> {{ $t('ingredient.remove-from-list') }}
+                            </template>
+                            <template v-else>
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M4.00436 6.41686L0.761719 3.17422L2.17593 1.76001L5.41857 5.00265H20.6603C21.2126 5.00265 21.6603 5.45037 21.6603 6.00265C21.6603 6.09997 21.6461 6.19678 21.6182 6.29L19.2182 14.29C19.0913 14.713 18.7019 15.0027 18.2603 15.0027H6.00436V17.0027H17.0044V19.0027H5.00436C4.45207 19.0027 4.00436 18.5549 4.00436 18.0027V6.41686ZM6.00436 7.00265V13.0027H17.5163L19.3163 7.00265H6.00436ZM5.50436 23.0027C4.67593 23.0027 4.00436 22.3311 4.00436 21.5027C4.00436 20.6742 4.67593 20.0027 5.50436 20.0027C6.33279 20.0027 7.00436 20.6742 7.00436 21.5027C7.00436 22.3311 6.33279 23.0027 5.50436 23.0027ZM17.5044 23.0027C16.6759 23.0027 16.0044 22.3311 16.0044 21.5027C16.0044 20.6742 16.6759 20.0027 17.5044 20.0027C18.3328 20.0027 19.0044 20.6742 19.0044 21.5027C19.0044 22.3311 18.3328 23.0027 17.5044 23.0027Z"></path></svg> {{ $t('ingredient.add-to-list') }}
+                            </template>
                         </a>
-                    </template>
-                </Dropdown>
-            </div>
-            <h2 class="details-block-container__title">{{ $t('ingredient.cocktail-children', { total: ingredient.cocktails.length }) }}</h2>
-            <RouterLink v-if="ingredient.cocktails.length > 0" :to="{name: 'cocktails', query: {'filter[ingredient_id]': ingredient.id}}" style="display: inline-block; margin-bottom: 1rem;">{{ $t('view-all') }}</RouterLink>
-            <OverlayLoader v-if="isLoadingExtra" />
-            <ul v-if="ingredient.cocktails.length > 0" class="ingredient-chips-list">
-                <li v-if="extraIfAddedToShelf.length > 0" class="ingredient-chips-list__label">{{ $t('ingredient.extra-cocktails') }}:</li>
-                <li v-for="cocktail in extraIfAddedToShelf" :key="cocktail.id">
-                    <RouterLink class="chip" :to="{ name: 'cocktails.show', params: { id: cocktail.slug } }">{{ cocktail.name }}</RouterLink>
-                </li>
-                <li v-if="extraIfAddedToShelf.length > 0 && defaultCocktails.length > 0" class="ingredient-chips-list__label">{{ $t('ingredient.cocktails-rest') }}:</li>
-                <li v-for="cocktail in defaultCocktails" :key="cocktail.id">
-                    <RouterLink class="chip" :to="{ name: 'cocktails.show', params: { id: cocktail.slug } }">{{ cocktail.name }}</RouterLink>
-                </li>
-            </ul>
-            <div v-else>
-                <RouterLink :to="{ name: 'cocktails.form' }">{{ $t('cocktails.add') }}</RouterLink>
+                    </li>
+                    <li v-if="ingredient.ingredient_parts.length">
+                        {{ $t('contains-ingredients') }}:
+                        <template v-for="(part, index) in ingredient.ingredient_parts" :key="part.id">
+                            <RouterLink :to="{name: 'ingredients.show', params: {id: part.slug}}">{{ part.name }}</RouterLink><template v-if="index + 1 !== ingredient.ingredient_parts.length">, </template>
+                        </template>
+                    </li>
+                    <li><RouterLink :to="{name: 'cocktails', query: {'filter[ingredient_id]': ingredient.id}}">Used in {{ ingredient.cocktails.length }} cocktail recipes</RouterLink></li>
+                </ul>
+                <h2 class="details-block-container__title">{{ $t('description') }}</h2>
+                <div v-html="parsedDescription"></div>
             </div>
         </div>
         <div v-if="ingredient.varieties.length > 0" class="block-container block-container--padded">
@@ -144,15 +106,15 @@
 
 <script>
 import ApiRequests from './../../ApiRequests.js'
-import Dropdown from '@/components/SaltRimDropdown.vue'
 import OverlayLoader from '@/components/OverlayLoader.vue'
 import { micromark } from 'micromark'
 import dayjs from 'dayjs'
+import PageHeader from '../PageHeader.vue'
 
 export default {
     components: {
-        Dropdown,
-        OverlayLoader
+        OverlayLoader,
+        PageHeader,
     },
     data: () => ({
         isLoadingIngredient: false,
@@ -178,11 +140,6 @@ export default {
             }
 
             return micromark(this.ingredient.description)
-        },
-        defaultCocktails() {
-            const removeIds = this.extraIfAddedToShelf.map(c => c.id)
-
-            return this.ingredient.cocktails.filter(c => !removeIds.includes(c.id))
         },
         createdDate() {
             const date = dayjs(this.ingredient.created_at).toDate()
@@ -335,6 +292,7 @@ export default {
 
 .ingredient-details__box {
     display: flex;
+    gap: 1rem;
 }
 
 @media (max-width: 450px) {
@@ -346,8 +304,6 @@ export default {
 .ingredient-details__box__image-container {
     max-width: 350px;
     max-height: 400px;
-    margin-top: -100px;
-    margin-left: 20px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -434,5 +390,21 @@ export default {
     right: 20px;
     display: flex;
     gap: var(--gap-size-1);
+}
+
+.ingredient-details__more {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    background-color: #f4f1fa;
+    border-radius: var(--radius-2);
+    padding: 0.5rem 0.75rem;
+    margin: 0 0 1rem 0;
+    list-style-type: none;
+}
+
+.ingredient-details__more svg {
+    width: 16px;
+    height: 16px;
 }
 </style>

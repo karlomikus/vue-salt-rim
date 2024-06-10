@@ -61,8 +61,8 @@ export default {
 
 <style scoped>
 .dialog-confirm__title {
-    font-size: 1.15rem;
-    margin-bottom: 0.25rem;
+    font-size: 1.5rem;
+    margin-bottom: 0.3rem;
     font-weight: var(--fw-bold);
 }
 
