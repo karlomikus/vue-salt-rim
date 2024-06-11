@@ -210,6 +210,7 @@ export default {
                 ignore_ingredients: [],
                 specific_ingredients: [],
                 ingredient_id: [],
+                id: [],
             }
         }
     },
@@ -451,6 +452,7 @@ export default {
             this.activeFilters.missing_ingredients = state.filter && state.filter.missing_ingredients ? state.filter.missing_ingredients : null
             this.activeFilters.ignore_ingredients = state.filter && state.filter.ignore_ingredients ? String(state.filter.ignore_ingredients).split(',') : []
             this.activeFilters.specific_ingredients = state.filter && state.filter.specific_ingredients ? String(state.filter.specific_ingredients).split(',') : []
+            this.activeFilters.id = state.filter && state.filter.id ? String(state.filter.id).split(',') : []
             this.activeFilters.ingredient_id = state.filter && state.filter.ingredient_id ? String(state.filter.ingredient_id).split(',') : []
             this.activeFilters.user_rating = state.filter && state.filter.user_rating_min ? state.filter.user_rating_min : null
             this.activeFilters.average_rating = state.filter && state.filter.average_rating_min ? state.filter.average_rating_min : null
@@ -496,6 +498,7 @@ export default {
                 ingredient_id: this.activeFilters.ingredient_id.length > 0 ? this.activeFilters.ingredient_id.join(',') : null,
                 collection_id: this.activeFilters.collections.length > 0 ? this.activeFilters.collections.join(',') : null,
                 user_shelves: this.activeFilters.user_shelves.length > 0 ? this.activeFilters.user_shelves.join(',') : null,
+                id: this.activeFilters.id.length > 0 ? this.activeFilters.id.join(',') : null,
                 created_user_id: this.activeFilters.users.length > 0 ? this.activeFilters.users.join(',') : null,
                 abv_min: this.activeFilters.abv ? this.activeFilters.abv.min : null,
                 abv_max: this.activeFilters.abv ? this.activeFilters.abv.max : null,
@@ -554,6 +557,7 @@ export default {
                 ignore_ingredients: [],
                 specific_ingredients: [],
                 ingredient_id: [],
+                id: [],
             }
 
             this.updateRouterPath()
