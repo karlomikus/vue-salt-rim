@@ -230,7 +230,6 @@ a.site-logo:focus .site-logo__title {
 }
 
 .ingredient-shelf-status.ingredient-shelf-status--in-shelf:after {
-    /* color: rgb(17, 116, 74); */
     content: "\25CF";
     font-size: 18px;
     line-height: 1;

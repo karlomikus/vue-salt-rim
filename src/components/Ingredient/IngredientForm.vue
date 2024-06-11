@@ -238,6 +238,12 @@ export default {
     gap: var(--gap-size-3);
 }
 
+@media (max-width: 550px) {
+    .ingredient-form__complex-ingredients {
+        grid-template-columns: 1fr;
+    }
+}
+
 .ingredient-form__complex-ingredients__list {
     list-style: none;
     margin: 1rem 0 0 0;
