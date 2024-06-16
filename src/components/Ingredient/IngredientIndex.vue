@@ -48,7 +48,7 @@
                             <path fill="none" d="M0 0h24v24H0z" />
                             <path d="M6.17 18a3.001 3.001 0 0 1 5.66 0H22v2H11.83a3.001 3.001 0 0 1-5.66 0H2v-2h4.17zm6-7a3.001 3.001 0 0 1 5.66 0H22v2h-4.17a3.001 3.001 0 0 1-5.66 0H2v-2h10.17zm-6-7a3.001 3.001 0 0 1 5.66 0H22v2H11.83a3.001 3.001 0 0 1-5.66 0H2V4h4.17z" />
                         </svg>
-                        <div class="resource-search__content__filter__count" v-show="totalActiveRefinements > 0">{{ totalActiveRefinements }}</div>
+                        <div v-show="totalActiveRefinements > 0" class="resource-search__content__filter__count">{{ totalActiveRefinements }}</div>
                     </button>
                     <input v-model="searchQuery" class="form-input" type="text" :placeholder="$t('placeholder.search-ingredients')" @input="debounceIngredientSearch" @keyup.enter="updateRouterPath">
                     <select v-model="sort" class="form-select" @change="updateRouterPath">
@@ -134,6 +134,7 @@ export default {
                     { name: this.$t('shelf-ingredients'), active: false, id: 'on_shelf' },
                     { name: this.$t('shopping-list-ingredients'), active: false, id: 'on_shopping_list' },
                     { name: this.$t('used-as-main-ingredient'), active: false, id: 'main_ingredients' },
+                    { name: this.$t('ingredient.complex'), active: false, id: 'complex' },
                 ],
                 strength: [
                     { name: this.$t('non-alcoholic'), min: 0, max: 0, id: 'strength_non_alcoholic' },
@@ -147,6 +148,7 @@ export default {
                 on_shelf: false,
                 main_ingredients: false,
                 on_shopping_list: false,
+                complex: false,
                 strength: null
             }
         }
@@ -194,23 +196,23 @@ export default {
             return this.shoppingListIngredients.map(i => i.ingredient_id)
         },
         totalActiveRefinements() {
-            let total = 0;
+            let total = 0
 
             Object.values(this.activeFilters).forEach(element => {
                 if (Array.isArray(element) && element.length > 0) {
-                    return total++;
+                    return total++
                 }
 
-                if (typeof element == "boolean" && element == true) {
-                    return total++;
+                if (typeof element == 'boolean' && element == true) {
+                    return total++
                 }
 
                 if (element !== null && !Array.isArray(element) && element !== false) {
-                    return total++;
+                    return total++
                 }
-            });
+            })
 
-            return total;
+            return total
         },
     },
     created() {
@@ -248,6 +250,7 @@ export default {
             this.activeFilters.on_shelf = state.filter && state.filter.on_shelf ? state.filter.on_shelf : null
             this.activeFilters.main_ingredients = state.filter && state.filter.main_ingredients ? state.filter.main_ingredients : null
             this.activeFilters.on_shopping_list = state.filter && state.filter.on_shopping_list ? state.filter.on_shopping_list : null
+            this.activeFilters.complex = state.filter && state.filter.complex ? state.filter.complex : null
             this.searchQuery = state.filter && state.filter.name ? state.filter.name : null
             if (state.filter && (state.filter.strength_min || state.filter.strength_max)) {
                 this.activeFilters.strength = { min: state.filter.strength_min ? state.filter.strength_min : null, max: state.filter.strength_max ? state.filter.strength_max : null }
@@ -276,6 +279,7 @@ export default {
                 name: (this.searchQuery != null && this.searchQuery != '') ? this.searchQuery : null,
                 category_id: this.activeFilters.category_id.length > 0 ? this.activeFilters.category_id.join(',') : null,
                 on_shelf: this.activeFilters.on_shelf,
+                complex: this.activeFilters.complex,
                 main_ingredients: this.activeFilters.main_ingredients,
                 on_shopping_list: this.activeFilters.on_shopping_list,
                 strength_min: this.activeFilters.strength ? this.activeFilters.strength.min : null,
@@ -331,6 +335,7 @@ export default {
                 on_shelf: false,
                 main_ingredients: false,
                 on_shopping_list: false,
+                complex: false,
                 strength: null
             }
 

@@ -74,7 +74,7 @@
                     </div>
                     <div class="cocktail-details-box__description" v-html="parsedDescription"></div>
                     <div class="cocktail-details-box__actions">
-                        <button type="button" class="button-circle" @click="favorite">
+                        <button type="button" class="button button-circle" @click="favorite">
                             <OverlayLoader v-if="isLoadingFavorite" />
                             <svg v-if="!isFavorited" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
                                 <path fill="none" d="M0 0H24V24H0z" />
@@ -87,7 +87,7 @@
                         </button>
                         <Dropdown>
                             <template #default="{ toggleDropdown }">
-                                <button type="button" class="button-circle" @click="toggleDropdown">
+                                <button type="button" class="button button-circle" @click="toggleDropdown">
                                     <OverlayLoader v-if="isLoadingShare" />
                                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
                                         <path fill="none" d="M0 0h24v24H0z" />
@@ -163,7 +163,7 @@
                         </Dropdown>
                         <Dropdown>
                             <template #default="{ toggleDropdown }">
-                                <button type="button" class="button-circle" @click="toggleDropdown"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+                                <button type="button" class="button button-circle" @click="toggleDropdown"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
                                     <path fill="none" d="M0 0h24v24H0z" />
                                     <path d="M12 3c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 14c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0-7c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z" />
                                 </svg></button>
@@ -244,6 +244,7 @@
                     <ul class="cocktail-ingredients">
                         <li v-for="ing in cocktail.ingredients" :key="ing.sort">
                             <div class="cocktail-ingredients__ingredient">
+                                <span class="ingredient-shelf-status" :class="{'ingredient-shelf-status--in-shelf': ing.in_shelf, 'ingredient-shelf-status--missing': !ing.in_shelf, 'ingredient-shelf-status--substitute': !ing.in_shelf && ing.in_shelf_as_substitute, 'ingredient-shelf-status--complex': !ing.in_shelf && ing.in_shelf_as_complex_ingredient}"></span>
                                 <RouterLink class="cocktail-ingredients__ingredient__name" :to="{ name: 'ingredients.show', params: { id: ing.ingredient_slug } }" data-ingredient="preferred">
                                     {{ ing.name }} <span v-if="ing.note" class="cocktail-ingredients__flags__flag">&ndash; {{ ing.note }}</span> <small v-if="ing.optional">({{ $t('optional') }})</small>
                                 </RouterLink>
@@ -251,26 +252,29 @@
                             </div>
                             <div class="cocktail-ingredients__flags">
                                 <div v-if="ing.substitutes.length > 0" class="cocktail-ingredients__flags__flag">
+                                    <div v-if="!ing.in_shelf && ing.in_shelf_as_substitute" class="cocktail-ingredients__flags__flag">&middot; {{ $t('cocktail.missing-ing-sub-available') }}</div>
                                     &middot; {{ $t('substitutes') }}:
                                     <template v-for="(sub, index) in ing.substitutes" :key="index">
-                                        <RouterLink :to="{ name: 'ingredients.show', params: { id: sub.slug } }" data-ingredient="substitute">
+                                        <RouterLink :style="{'font-weight': sub.in_shelf ? 'bold' : 'normal'}" :to="{ name: 'ingredients.show', params: { id: sub.slug } }" data-ingredient="substitute">
                                             {{ buildSubstituteString(sub) }}
                                         </RouterLink>
                                         <template v-if="index + 1 !== ing.substitutes.length">, </template>
                                     </template>
                                 </div>
-                                <div v-if="!userShelfIngredients.map(i => i.ingredient_id).includes(ing.ingredient_id)" class="cocktail-ingredients__flags__flag">&middot; {{ $t('cocktail.missing-ing') }}</div>
+                                <div v-if="!ing.in_shelf && !ing.in_shelf_as_substitute && !ing.in_shelf_as_complex_ingredient" class="cocktail-ingredients__flags__flag">&middot; {{ $t('cocktail.missing-ing') }}</div>
+                                <div v-if="!ing.in_shelf && ing.in_shelf_as_complex_ingredient" class="cocktail-ingredients__flags__flag">&middot; {{ $t('cocktail.missing-ing-complex') }}</div>
                                 <div v-if="userShoppingListIngredients.map(i => i.ingredient_id).includes(ing.ingredient_id)" class="cocktail-ingredients__flags__flag">&middot; {{ $t('ingredient.on-shopping-list') }}</div>
                             </div>
                         </li>
                     </ul>
-                    <div class="cocktail-ingredients__total-amount" v-if="cocktail.volume_ml">
+                    <div v-if="cocktail.volume_ml" class="cocktail-ingredients__total-amount">
                         Approx: {{ totalLiquid }} <span v-show="cocktail.calories > 0">&middot; {{ cocktailCalories }} kcal</span> <span v-show="cocktail.alcohol_units > 0">&middot; {{ alcoholUnits }} units</span>
                     </div>
                     <a v-show="missingIngredientIds.length > 0" href="#" @click.prevent="addMissingIngredients">{{ $t('cocktail.missing-ing-action') }}</a>
                 </div>
                 <div class="block-container block-container--padded">
                     <h3 class="details-block-container__title">{{ $t('instructions') }}</h3>
+                    <WakeLockToggle></WakeLockToggle>
                     <div v-html="parsedInstructions"></div>
                     <div v-if="cocktail.utensils.length > 0">
                         <br>
@@ -323,6 +327,7 @@ import CocktailCollections from './../Collections/CollectionWidget.vue'
 import CollectionDialog from './../Collections/CollectionDialog.vue'
 import dayjs from 'dayjs'
 import UnitHandler from '../../UnitHandler'
+import WakeLockToggle from '../WakeLockToggle.vue'
 
 export default {
     components: {
@@ -338,6 +343,7 @@ export default {
         CollectionDialog,
         CocktailCollections,
         IngredientSpotlight,
+        WakeLockToggle,
     },
     data: () => ({
         cocktail: {},

@@ -15,9 +15,9 @@
             </div>
             <div class="form-group">
                 <label class="form-label" for="description">{{ $t('default-units') }}:</label>
-                <select id="bar-units" class="form-select" required v-model="bar.settings.default_units">
+                <select id="bar-units" v-model="bar.settings.default_units" class="form-select" required>
                     <option :value="undefined">{{ $t('no-default-units') }}</option>
-                    <option v-for="unit in availableUnits" :value="unit.value" :key="unit.value">{{ unit.text }}</option>
+                    <option v-for="unit in availableUnits" :key="unit.value" :value="unit.value">{{ unit.text }}</option>
                 </select>
             </div>
             <div class="form-group">

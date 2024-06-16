@@ -57,7 +57,7 @@
                             <path fill="none" d="M0 0h24v24H0z" />
                             <path d="M6.17 18a3.001 3.001 0 0 1 5.66 0H22v2H11.83a3.001 3.001 0 0 1-5.66 0H2v-2h4.17zm6-7a3.001 3.001 0 0 1 5.66 0H22v2h-4.17a3.001 3.001 0 0 1-5.66 0H2v-2h10.17zm-6-7a3.001 3.001 0 0 1 5.66 0H22v2H11.83a3.001 3.001 0 0 1-5.66 0H2V4h4.17z" />
                         </svg>
-                        <div class="resource-search__content__filter__count" v-show="totalActiveRefinements > 0">{{ totalActiveRefinements }}</div>
+                        <div v-show="totalActiveRefinements > 0" class="resource-search__content__filter__count">{{ totalActiveRefinements }}</div>
                     </button>
                     <input v-model="searchQuery" class="form-input" type="text" :placeholder="$t('placeholder.search-cocktails')" @input="debounceCocktailNameSearch" @keyup.enter="updateRouterPath">
                     <select v-model="sort" class="form-select" @change="updateRouterPath">
@@ -199,7 +199,6 @@ export default {
                 glasses: [],
                 methods: [],
                 main_ingredients: [],
-                ingredients: [],
                 collections: [],
                 user_rating: null,
                 average_rating: null,
@@ -211,6 +210,7 @@ export default {
                 ignore_ingredients: [],
                 specific_ingredients: [],
                 ingredient_id: [],
+                id: [],
             }
         }
     },
@@ -340,23 +340,23 @@ export default {
             return this.cocktails.map((c) => c.id)
         },
         totalActiveRefinements() {
-            let total = 0;
+            let total = 0
 
             Object.values(this.activeFilters).forEach(element => {
                 if (Array.isArray(element) && element.length > 0) {
-                    return total++;
+                    return total++
                 }
 
-                if (typeof element == "boolean" && element == true) {
-                    return total++;
+                if (typeof element == 'boolean' && element == true) {
+                    return total++
                 }
 
                 if (element !== null && !Array.isArray(element) && element !== false) {
-                    return total++;
+                    return total++
                 }
-            });
+            })
 
-            return total;
+            return total
         },
     },
     created() {
@@ -443,7 +443,6 @@ export default {
             this.activeFilters.glasses = state.filter && state.filter.glass_id ? String(state.filter.glass_id).split(',') : []
             this.activeFilters.main_ingredients = state.filter && state.filter.main_ingredient_id ? String(state.filter.main_ingredient_id).split(',') : []
             this.activeFilters.collections = state.filter && state.filter.collection_id ? String(state.filter.collection_id).split(',') : []
-            this.activeFilters.ingredients = state.filter && state.filter.ingredient_id ? String(state.filter.ingredient_id).split(',') : []
             this.activeFilters.user_shelves = state.filter && state.filter.user_shelves ? String(state.filter.user_shelves).split(',') : []
             this.activeFilters.users = state.filter && state.filter.created_user_id ? String(state.filter.created_user_id).split(',') : []
             this.activeFilters.on_shelf = state.filter && state.filter.on_shelf ? state.filter.on_shelf : null
@@ -453,6 +452,7 @@ export default {
             this.activeFilters.missing_ingredients = state.filter && state.filter.missing_ingredients ? state.filter.missing_ingredients : null
             this.activeFilters.ignore_ingredients = state.filter && state.filter.ignore_ingredients ? String(state.filter.ignore_ingredients).split(',') : []
             this.activeFilters.specific_ingredients = state.filter && state.filter.specific_ingredients ? String(state.filter.specific_ingredients).split(',') : []
+            this.activeFilters.id = state.filter && state.filter.id ? String(state.filter.id).split(',') : []
             this.activeFilters.ingredient_id = state.filter && state.filter.ingredient_id ? String(state.filter.ingredient_id).split(',') : []
             this.activeFilters.user_rating = state.filter && state.filter.user_rating_min ? state.filter.user_rating_min : null
             this.activeFilters.average_rating = state.filter && state.filter.average_rating_min ? state.filter.average_rating_min : null
@@ -498,6 +498,7 @@ export default {
                 ingredient_id: this.activeFilters.ingredient_id.length > 0 ? this.activeFilters.ingredient_id.join(',') : null,
                 collection_id: this.activeFilters.collections.length > 0 ? this.activeFilters.collections.join(',') : null,
                 user_shelves: this.activeFilters.user_shelves.length > 0 ? this.activeFilters.user_shelves.join(',') : null,
+                id: this.activeFilters.id.length > 0 ? this.activeFilters.id.join(',') : null,
                 created_user_id: this.activeFilters.users.length > 0 ? this.activeFilters.users.join(',') : null,
                 abv_min: this.activeFilters.abv ? this.activeFilters.abv.min : null,
                 abv_max: this.activeFilters.abv ? this.activeFilters.abv.max : null,
@@ -556,6 +557,7 @@ export default {
                 ignore_ingredients: [],
                 specific_ingredients: [],
                 ingredient_id: [],
+                id: [],
             }
 
             this.updateRouterPath()

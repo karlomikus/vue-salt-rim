@@ -1,3 +1,16 @@
+# v2.14.0
+## New
+- You can now prevent mobile screen from dimming/locking when viewing a recipe
+- Added support for complex ingredients
+
+## Changes
+- Updated button styling
+- Updated ingredient details page
+
+## Fixes
+- Fixed wrong filter count
+- Fixed not being able to filter by cocktail id
+
 # v2.13.0
 ## New
 - Show total number of active filters on cocktails and ingredients page

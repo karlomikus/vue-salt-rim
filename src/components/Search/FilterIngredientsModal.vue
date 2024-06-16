@@ -9,6 +9,7 @@
             </div>
         </div>
         <div class="dialog-actions">
+            <button type="button" class="button button--outline" @click="filter">{{ $t('cancel') }}</button>
             <button type="submit" class="button button--dark" :disabled="isLoading">{{ $t('filter') }}</button>
         </div>
     </form>

@@ -12,6 +12,7 @@
     <a href="https://hub.docker.com/r/barassistant/salt-rim"><img src="https://img.shields.io/docker/v/barassistant/salt-rim?style=for-the-badge&sort=semver" alt="Docker image"></a>
     <img src="https://img.shields.io/github/license/karlomikus/vue-salt-rim?style=for-the-badge" alt="License">
     <img src="https://img.shields.io/github/actions/workflow/status/karlomikus/vue-salt-rim/build-image.yml?style=for-the-badge" alt="Build">
+    <img src="https://img.shields.io/docker/pulls/barassistant/salt-rim?style=for-the-badge" alt="Pulls">
 </p>
 
 # 🍹 Salt Rim - Bar Assistant Web Client

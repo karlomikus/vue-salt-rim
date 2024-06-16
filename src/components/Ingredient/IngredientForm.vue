@@ -51,6 +51,28 @@
                 <label class="form-label" for="color">{{ $t('color') }}:</label>
                 <input id="color" v-model="ingredient.color" class="form-input" type="color" style="width: 100%">
             </div>
+            <div style="margin-top: 1rem;">
+                <label class="form-checkbox">
+                    <input v-model="isComplex" type="checkbox">
+                    <span>{{ $t('ingredient.is-complex') }}</span>
+                </label>
+            </div>
+        </div>
+        <div v-show="isComplex">
+            <h3 class="form-section-title">{{ $t('ingredient.complex-title') }}</h3>
+            <div class="ingredient-form__complex-ingredients">
+                <div class="block-container block-container--padded">
+                    <label class="form-label" style="margin-bottom: 1rem; display: block;">{{ $t('ingredients.select') }}:</label>
+                    <IngredientFinder @ingredient-selected="selectIngredientPart"></IngredientFinder>
+                </div>
+                <div class="block-container block-container--padded">
+                    <label class="form-label">{{ $t('ingredient.complex-note') }}</label>
+                    <ul v-if="ingredient.ingredient_parts.length > 0" class="block-container--inset ingredient-form__complex-ingredients__list">
+                        <li v-for="part in ingredient.ingredient_parts" :key="part.id">{{ part.name }} &middot; <a href="#" @click.prevent="removeIngredientPart(part)">{{ $t('remove') }}</a></li>
+                    </ul>
+                    <EmptyState v-else style="margin-top: 1rem;">{{ $t('ingredients-not-selected') }}</EmptyState>
+                </div>
+            </div>
         </div>
         <h3 class="form-section-title">{{ $t('media') }}</h3>
         <ImageUpload ref="imagesUpload" :value="ingredient.images" :max-images="1" />
@@ -73,6 +95,7 @@ import PageHeader from './../PageHeader.vue'
 import OverlayLoader from './../OverlayLoader.vue'
 import IngredientFinder from './../IngredientFinder.vue'
 import TimeStamps from '../TimeStamps.vue'
+import EmptyState from '../EmptyState.vue'
 
 export default {
     components: {
@@ -80,18 +103,21 @@ export default {
         PageHeader,
         OverlayLoader,
         IngredientFinder,
-        TimeStamps
+        TimeStamps,
+        EmptyState,
     },
     data() {
         return {
             isLoading: false,
             isParent: false,
+            isComplex: false,
             ingredientCategoryId: null,
             ingredient: {
                 id: null,
                 color: '#000',
                 category: {},
-                images: []
+                images: [],
+                ingredient_parts: []
             },
             categories: []
         }
@@ -125,6 +151,7 @@ export default {
 
                 this.ingredient = data
                 this.isParent = this.ingredient.parent_ingredient != null
+                this.isComplex = this.ingredient.ingredient_parts.length > 0
                 if (data.category) {
                     this.ingredientCategoryId = data.category.id
                 }
@@ -138,8 +165,25 @@ export default {
                 this.categories = data
             })
         },
+        selectIngredientPart(ingredient) {
+            if (this.ingredient.ingredient_parts.some(ing => ing.id == ingredient.id)) {
+                return
+            }
+
+            this.ingredient.ingredient_parts.push(ingredient)
+        },
+        removeIngredientPart(ingredient) {
+            this.ingredient.ingredient_parts.splice(
+                this.ingredient.ingredient_parts.findIndex(i => i == ingredient),
+                1
+            )
+        },
         async submit() {
             this.isLoading = true
+
+            if (!this.isComplex) {
+                this.ingredient.ingredient_parts = []
+            }
 
             const postData = {
                 name: this.ingredient.name,
@@ -150,6 +194,7 @@ export default {
                 parent_ingredient_id: this.isParent && this.ingredient.parent_ingredient ? this.ingredient.parent_ingredient.id : null,
                 images: [],
                 ingredient_category_id: this.ingredientCategoryId,
+                complex_ingredient_part_ids: [...new Set(this.ingredient.ingredient_parts.map(i => i.id))],
             }
 
             const imageResources = await this.$refs.imagesUpload.uploadPictures().catch(() => {
@@ -185,3 +230,25 @@ export default {
     }
 }
 </script>
+
+<style scoped>
+.ingredient-form__complex-ingredients {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--gap-size-3);
+}
+
+@media (max-width: 550px) {
+    .ingredient-form__complex-ingredients {
+        grid-template-columns: 1fr;
+    }
+}
+
+.ingredient-form__complex-ingredients__list {
+    list-style: none;
+    margin: 1rem 0 0 0;
+    overflow-y: auto;
+    max-height: 14rem;
+    padding: 0.5rem;
+}
+</style>

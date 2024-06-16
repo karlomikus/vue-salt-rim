@@ -45,6 +45,7 @@ if (userSelectedTheme == 'dark' && !document.body.classList.contains('dark-theme
 const emitter = mitt()
 const app = createApp(App)
 const i18n = createI18n({
+    legacy: false,
     locale: userSelectedLocale,
     fallbackLocale: 'en-US',
     numberFormats: {
