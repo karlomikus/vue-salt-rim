@@ -74,7 +74,7 @@
                             <RouterLink :to="{name: 'ingredients.show', params: {id: part.slug}}">{{ part.name }}</RouterLink><template v-if="index + 1 !== ingredient.ingredient_parts.length">, </template>
                         </template>
                     </li>
-                    <li><RouterLink :to="{name: 'cocktails', query: {'filter[ingredient_id]': ingredient.id}}">Used in {{ ingredient.cocktails.length }} cocktail recipes</RouterLink></li>
+                    <li><RouterLink :to="{name: 'cocktails', query: {'filter[ingredient_id]': ingredient.id}}">Used in <strong>{{ ingredient.cocktails.length }}</strong> cocktail recipes</RouterLink></li>
                     <li v-if="extraIfAddedToShelf.length > 0">{{ $t('ingredient.extra-cocktails') }}: <RouterLink :to="{name: 'cocktails', query: {'filter[id]': extraCocktailsIds}}">{{ extraIfAddedToShelf.length }} {{ $t('cocktails.title') }}</RouterLink></li>
                 </ul>
                 <div v-if="ingredient.description">
