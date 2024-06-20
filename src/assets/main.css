@@ -38,6 +38,12 @@ main {
     flex: 1;
 }
 
+mark {
+    background-color: rgb(255, 190, 136);
+    /* display: inline-block; */
+    padding: 0 2px;
+}
+
 .page-subtitle {
     --ps-clr-bg: #eeeaf7;
     --ps-clr-text: #6c6380;

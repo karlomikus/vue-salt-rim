@@ -1,7 +1,7 @@
 <template>
     <form class="site-autocomplete" novalidate @keyup.esc="close">
         <ais-instant-search :search-client="searchClient" index-name="cocktails">
-            <ais-configure :hits-per-page.camel="5" />
+            <ais-configure :hits-per-page.camel="5" :restrict-searchable-attributes.camel="['name']" />
             <ais-search-box autofocus>
                 <template #default="{ currentRefinement, refine }">
                     {{ doFocus() }}
@@ -11,7 +11,7 @@
             <ais-index index-name="cocktails">
                 <ais-hits>
                     <template #default="{ items }">
-                        <h4 v-show="items.length > 0" class="site-autocomplete__index-name">{{ $t('cocktails.title') }}</h4>
+                        <h4 v-show="items.length > 0" class="site-autocomplete__index-name">&mdash; {{ $t('cocktails.title') }} ({{ items.length }})</h4>
                         <ul v-show="items.length > 0" class="site-autocomplete__results">
                             <li v-for="hit in items" :key="hit.slug">
                                 <RouterLink :to="{ name: 'cocktails.show', params: { id: hit.slug } }" @click="close">
@@ -29,7 +29,7 @@
             <ais-index index-name="ingredients">
                 <ais-hits>
                     <template #default="{ items }">
-                        <h4 v-show="items.length > 0" class="site-autocomplete__index-name">{{ $t('ingredients.title') }}</h4>
+                        <h4 v-show="items.length > 0" class="site-autocomplete__index-name">&mdash; {{ $t('ingredients.title') }} ({{ items.length }})</h4>
                         <ul v-show="items.length > 0" class="site-autocomplete__results">
                             <li v-for="hit in items" :key="hit.slug">
                                 <RouterLink :to="{ name: 'ingredients.show', params: { id: hit.slug } }" @click="close">
@@ -112,9 +112,10 @@ export default {
 .site-autocomplete__results {
     list-style: none;
     margin: 0;
-    padding: 0.5rem;
-    border-radius: var(--radius-2);
-    background: var(--clr-sa-results-bg);
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
 }
 
 .site-autocomplete__results li a {
@@ -123,6 +124,7 @@ export default {
     padding: 0.5rem;
     border-radius: var(--radius-1);
     text-decoration: none;
+    background: var(--clr-sa-results-bg);
 }
 
 .site-autocomplete__results li a:hover {
@@ -136,14 +138,14 @@ export default {
 }
 
 .site-autocomplete__results li a .site-autocomplete__results__image {
-    width: 45px;
-    height: 45px;
+    width: 30px;
+    height: 30px;
     border-radius: var(--radius-2);
     background-color: #eae4e9;
     background-position: center center;
     background-size: cover;
     background-repeat: no-repeat;
-    margin-right: 10px;
+    margin-right: 0.5rem;
     flex-shrink: 0;
 }
 
@@ -186,6 +188,7 @@ export default {
     letter-spacing: 1px;
     text-transform: uppercase;
     font-weight: var(--fw-bold);
-    margin: 0.75rem 0;
+    color: var(--clr-gray-500);
+    margin: 0.5rem 0;
 }
 </style>
