@@ -43,7 +43,7 @@
         <h3 class="form-section-title">{{ $t('recipe-matching') }}</h3>
         <div class="block-container block-container--padded">
             <div class="form-group">
-                <SaltRimCheckbox id="parent-ingredient-checkbox" :label="$t('ingredient.is-variety')" :description="$t('ingredient.variety-note')" v-model="isParent"></SaltRimCheckbox>
+                <SaltRimCheckbox id="parent-ingredient-checkbox" v-model="isParent" :label="$t('ingredient.is-variety')" :description="$t('ingredient.variety-note')"></SaltRimCheckbox>
             </div>
             <div v-show="isParent" class="form-group">
                 <IngredientFinder v-show="ingredient.parent_ingredient == null" v-model="ingredient.parent_ingredient" :disabled-ingredients="disabledFinderIngredients"></IngredientFinder>
@@ -53,9 +53,9 @@
                 </div>
             </div>
             <div class="form-group">
-                <SaltRimCheckbox id="complex-ingredient-checkbox" :label="$t('ingredient.is-complex')" :description="$t('ingredient.complex-note')" v-model="isComplex"></SaltRimCheckbox>
+                <SaltRimCheckbox id="complex-ingredient-checkbox" v-model="isComplex" :label="$t('ingredient.is-complex')" :description="$t('ingredient.complex-note')"></SaltRimCheckbox>
             </div>
-            <div class="ingredient-form__complex-ingredients" v-show="isComplex">
+            <div v-show="isComplex" class="ingredient-form__complex-ingredients">
                 <div>
                     <IngredientFinder @ingredient-selected="selectIngredientPart"></IngredientFinder>
                 </div>
