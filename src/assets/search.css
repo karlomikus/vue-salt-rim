@@ -42,6 +42,11 @@
 
 .resource-search__content__filter .form-input {
     flex-basis: 100%;
+    width: auto;
+}
+
+.resource-search__content__filter .form-select {
+    width: auto;
 }
 
 @media (max-width: 850px) {

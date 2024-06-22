@@ -29,7 +29,7 @@ Salt Rim is a web client used for connecting to your [Bar Assistant](https://git
 
 <p align="center">
     <picture>
-      <img src="./art/v3-landing.png" alt="Landing image" />
+      <img src="./art/landing2.png" alt="Landing image" />
     </picture>
 </p>
 
