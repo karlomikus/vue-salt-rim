@@ -55,8 +55,9 @@
     "base": "Base",
     "is-complex": "Ingredient contains other ingredients",
     "complex-title": "Include ingredients",
-    "complex-note": "If you have all of following ingredients, this ingredient will be automatically matched in your shelf.",
-    "complex": "Complex ingredient"
+    "complex-note": "If you have all of the listed ingredients, automatically match recipes with this ingredient",
+    "complex": "Complex ingredient",
+    "variety-note": "Recipe matching will include the parent ingredient as a substitute (depending on user settings)"
   },
   "share": {
     "title": "Share",
@@ -568,5 +569,6 @@
   },
   "cocktail.missing-ing-sub-available": "Missing, but you have substitutes available",
   "cocktail.missing-ing-complex": "Missing, but you can make it with ingredients in your shelf",
-  "contains-ingredients": "Contains ingredients"
+  "contains-ingredients": "Contains ingredients",
+  "recipe-matching": "Recipe matching"
 }

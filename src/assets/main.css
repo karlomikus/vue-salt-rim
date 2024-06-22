@@ -10,6 +10,7 @@
 @import "./blocks.css";
 @import "./dialog.css";
 @import "./chips.css";
+@import "./grid.css";
 
 @import "vue-toast-notification/dist/theme-default.css";
 

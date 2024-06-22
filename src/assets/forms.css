@@ -64,6 +64,7 @@
     color: var(--form-clr-text);
     font-family: var(--font-primary);
     transition: all ease-in-out .1s;
+    width: 100%;
 }
 
 .dark-theme .form-input,

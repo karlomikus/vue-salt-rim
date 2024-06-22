@@ -1,3 +1,8 @@
+# v2.15.0
+## Changes
+- Ingredient strength no longer required field
+- Updated ingredient form layout
+
 # v2.14.0
 ## New
 - You can now prevent mobile screen from dimming/locking when viewing a recipe

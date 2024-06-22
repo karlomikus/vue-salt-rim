@@ -20,14 +20,32 @@
                     <RouterLink :to="{ name: 'settings.categories' }" target="_blank">{{ $t('edit-categories') }}</RouterLink>
                 </p>
             </div>
-            <div style="margin: 1rem 0;">
-                <label class="form-checkbox">
-                    <input v-model="isParent" type="checkbox">
-                    <span>{{ $t('ingredient.is-variety') }}</span>
-                </label>
+            <div class="form-group">
+                <label class="form-label" for="description">{{ $t('description') }}:</label>
+                <textarea id="description" v-model="ingredient.description" rows="4" class="form-input"></textarea>
+                <p class="form-input-hint">{{ $t('field-supports-md') }}</p>
+            </div>
+            <div class="form-group">
+                <label class="form-label" for="strength">{{ $t('strength') }} ({{ $t('ABV') }} %):</label>
+                <input id="strength" v-model="ingredient.strength" class="form-input" type="text">
+            </div>
+            <div class="sr-grid sr-grid--2-col">
+                <div class="form-group">
+                    <label class="form-label" for="origin">{{ $t('origin') }}:</label>
+                    <input id="origin" v-model="ingredient.origin" class="form-input" type="text">
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="color">{{ $t('color') }}:</label>
+                    <input id="color" v-model="ingredient.color" class="form-input" type="color" style="width: 100%">
+                </div>
+            </div>
+        </div>
+        <h3 class="form-section-title">{{ $t('recipe-matching') }}</h3>
+        <div class="block-container block-container--padded">
+            <div class="form-group">
+                <SaltRimCheckbox id="parent-ingredient-checkbox" :label="$t('ingredient.is-variety')" :description="$t('ingredient.variety-note')" v-model="isParent"></SaltRimCheckbox>
             </div>
             <div v-show="isParent" class="form-group">
-                <label class="form-label" for="parent-ingredient">{{ $t('parent-ingredient') }}:</label>
                 <IngredientFinder v-show="ingredient.parent_ingredient == null" v-model="ingredient.parent_ingredient" :disabled-ingredients="disabledFinderIngredients"></IngredientFinder>
                 <div v-if="ingredient.parent_ingredient" style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
                     <button type="button" class="button button--outline">{{ ingredient.parent_ingredient.name }}</button>
@@ -35,42 +53,17 @@
                 </div>
             </div>
             <div class="form-group">
-                <label class="form-label form-label--required" for="strength">{{ $t('strength') }} ({{ $t('ABV') }} %):</label>
-                <input id="strength" v-model="ingredient.strength" class="form-input" type="text" required>
+                <SaltRimCheckbox id="complex-ingredient-checkbox" :label="$t('ingredient.is-complex')" :description="$t('ingredient.complex-note')" v-model="isComplex"></SaltRimCheckbox>
             </div>
-            <div class="form-group">
-                <label class="form-label" for="description">{{ $t('description') }}:</label>
-                <textarea id="description" v-model="ingredient.description" rows="4" class="form-input"></textarea>
-                <p class="form-input-hint">{{ $t('field-supports-md') }}</p>
-            </div>
-            <div class="form-group">
-                <label class="form-label" for="origin">{{ $t('origin') }}:</label>
-                <input id="origin" v-model="ingredient.origin" class="form-input" type="text">
-            </div>
-            <div class="form-group">
-                <label class="form-label" for="color">{{ $t('color') }}:</label>
-                <input id="color" v-model="ingredient.color" class="form-input" type="color" style="width: 100%">
-            </div>
-            <div style="margin-top: 1rem;">
-                <label class="form-checkbox">
-                    <input v-model="isComplex" type="checkbox">
-                    <span>{{ $t('ingredient.is-complex') }}</span>
-                </label>
-            </div>
-        </div>
-        <div v-show="isComplex">
-            <h3 class="form-section-title">{{ $t('ingredient.complex-title') }}</h3>
-            <div class="ingredient-form__complex-ingredients">
-                <div class="block-container block-container--padded">
-                    <label class="form-label" style="margin-bottom: 1rem; display: block;">{{ $t('ingredients.select') }}:</label>
+            <div class="ingredient-form__complex-ingredients" v-show="isComplex">
+                <div>
                     <IngredientFinder @ingredient-selected="selectIngredientPart"></IngredientFinder>
                 </div>
-                <div class="block-container block-container--padded">
-                    <label class="form-label">{{ $t('ingredient.complex-note') }}</label>
+                <div>
                     <ul v-if="ingredient.ingredient_parts.length > 0" class="block-container--inset ingredient-form__complex-ingredients__list">
                         <li v-for="part in ingredient.ingredient_parts" :key="part.id">{{ part.name }} &middot; <a href="#" @click.prevent="removeIngredientPart(part)">{{ $t('remove') }}</a></li>
                     </ul>
-                    <EmptyState v-else style="margin-top: 1rem;">{{ $t('ingredients-not-selected') }}</EmptyState>
+                    <EmptyState v-else>{{ $t('ingredients-not-selected') }}</EmptyState>
                 </div>
             </div>
         </div>
@@ -96,6 +89,7 @@ import OverlayLoader from './../OverlayLoader.vue'
 import IngredientFinder from './../IngredientFinder.vue'
 import TimeStamps from '../TimeStamps.vue'
 import EmptyState from '../EmptyState.vue'
+import SaltRimCheckbox from '../SaltRimCheckbox.vue'
 
 export default {
     components: {
@@ -105,6 +99,7 @@ export default {
         IngredientFinder,
         TimeStamps,
         EmptyState,
+        SaltRimCheckbox,
     },
     data() {
         return {
@@ -183,6 +178,10 @@ export default {
 
             if (!this.isComplex) {
                 this.ingredient.ingredient_parts = []
+            }
+
+            if (!this.ingredient.strength) {
+                this.ingredient.strength = 0
             }
 
             const postData = {
