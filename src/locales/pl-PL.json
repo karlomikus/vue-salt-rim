@@ -1,10 +1,10 @@
 {
   "locales": {
-    "en-US": "English",
-    "fr-FR": "French",
-    "hr-HR": "Croatian",
-    "de-DE": "German",
-    "pl-PL": "Polish"
+    "en-US": "Angielski",
+    "fr-FR": "Francuski",
+    "hr-HR": "Chorwacki",
+    "de-DE": "Niemiecki",
+    "pl-PL": "Polski"
   },
   "shelf": {
     "title": "Półka",
