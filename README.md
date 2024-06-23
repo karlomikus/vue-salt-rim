@@ -3,7 +3,7 @@
   <picture>
       <source media="(prefers-color-scheme: dark)" srcset="art/logo_dark.png">
       <source media="(prefers-color-scheme: light)" srcset="art/logo.png">
-      <img src="art/logo.png" style="max-width: 450px;" alt="Logo" />
+      <img src="art/logo.png" width="450" alt="Logo" />
   </picture>
 </a>
 </p>
