@@ -33,6 +33,9 @@ const model = defineModel({ required: true, type: null })
 .sr-checkbox {
     display: flex;
 }
+.sr-checkbox__input {
+    line-height: 2;
+}
 .sr-checkbox__input input {
     min-width: 20px;
     min-height: 20px;
