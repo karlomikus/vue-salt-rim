@@ -311,5 +311,6 @@
     "continue": "Mit Bearbeitung fortfahren",
     "notice": "Vorhandene Bestandteile und Trinkgläser werden anhand ihres Namens abgeglichen (Groß- und Kleinschreibung wird nicht berücksichtigt). Wenn ein Bestandteil bzw. ein Glas nicht vorhanden ist, wird es neu erstellt. Übliche Einheiten werden automatisch umgewandelt in \"ml\"."
   },
-  "remember-me": "Erinnere dich an mich"
+  "remember-me": "Erinnere dich an mich",
+  "suggestions": "Vorschläge"
 }

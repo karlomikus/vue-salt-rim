@@ -308,5 +308,6 @@
     "continue": "Continuer l’édition",
     "notice": "Les ingrédients existants et le verre seront assortis par leur nom (insensible à la casse). Si l’ingrédient ou le verre n’existe pas, il sera créé. Les unités communes sont automatiquement converties en \"ml\"."
   },
-  "remember-me": "Souviens-toi de moi"
+  "remember-me": "Souviens-toi de moi",
+  "suggestions": "Suggestions"
 }

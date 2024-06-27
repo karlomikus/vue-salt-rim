@@ -1,5 +1,5 @@
 <script setup>
-import { ref, computed, watch } from 'vue'
+import { ref, computed } from 'vue'
 import { useFloating, offset, flip, shift, autoUpdate } from '@floating-ui/vue'
 
 defineOptions({
@@ -17,6 +17,10 @@ const props = defineProps({
     labelKey: {
         type: String,
         required: true
+    },
+    maxShownOptions: {
+        type: Number,
+        default: 7
     }
 })
 
@@ -39,17 +43,11 @@ const filteredOptions = computed(() => {
     }
 
     return props.options.filter(option => {
+        return !model.value.includes(option.name)
+    }).filter(option => {
         return option.name.toLowerCase().includes(currentOption.value.toLowerCase())
-    }).slice(0, 7)
+    }).slice(0, props.maxShownOptions)
 })
-
-// watch(isFocused, async (newState) => {
-//     if (newState == false) {
-//         setTimeout(() => {
-//             currentOption.value = null
-//         }, 50)
-//     }
-// })
 
 function focusInput() {
     showDropdown.value = true
@@ -150,18 +148,21 @@ function handleBlur(e) {
                     :id="$attrs.id"
                     ref="reference"
                     v-model="currentOption"
+                    :placeholder="$attrs.placeholder"
                     type="text"
+                    class="form-input"
                     @focus="handleFocus"
                     @blur.prevent.stop="handleBlur"
                     @input="checkDelimiter"
                     @keydown.tab.prevent="addSelectedOption"
+                    @keydown.enter.prevent="addSelectedOption"
                     @keydown.down.prevent="navigateOptions('down')"
                     @keydown.up.prevent="navigateOptions('up')"
                     @keydown.delete="checkLastOptionRemoval"
                 >
                 <div v-show="filteredOptions.length > 0 && showDropdown" ref="content" class="floating-element" :style="floatingStyles">
                     <div class="dropdown-menu dropdown-menu--tags">
-                        <span class="dropdown-menu__title">Tag suggestions:</span>
+                        <span class="dropdown-menu__title">{{ $t('suggestions') }}:</span>
                         <a v-for="option in filteredOptions" :key="option.name" class="dropdown-menu__item" :class="{'dropdown-menu__item--focused': currentFocusedDropdownOption == option}" href="#" @click.prevent="selectOption(option[props.labelKey])" @mouseover="currentFocusedDropdownOption = option">
                             {{ option.name }}
                         </a>
@@ -181,6 +182,8 @@ function handleBlur(e) {
 
 .form-multiselect__options {
     display: flex;
+    flex-basis: 100%;
+    flex-grow: 1;
     flex-wrap: wrap;
     gap: var(--gap-size-2);
 }
@@ -196,10 +199,20 @@ function handleBlur(e) {
     justify-content: center;
 }
 
-.form-multiselect__input input {
+.form-multiselect__input {
+    width: 0;
+    max-width: 100%;
+    flex-grow: 1;
+}
+
+.form-multiselect__input .form-input {
     background: none;
     border: 0;
+    padding: 0;
+    margin: 0;
+    height: auto;
     position: relative;
+    width: 100%;
 }
 
 .form-multiselect__input input:focus {

@@ -104,11 +104,7 @@
             </div>
             <div class="form-group">
                 <label class="form-label" for="cocktail-tags">{{ $t('tag.tags') }}:</label>
-                <TagSelector id="cocktail-tags" :options="tags" labelKey="name" v-model="cocktail.tags"></TagSelector>
-                <!-- <input id="tags" v-model="cocktailTags" class="form-input" type="text" list="existing-tags" :placeholder="$t('placeholder.tags')"> -->
-                <!-- <datalist id="existing-tags">
-                    <option v-for="tag in tags" :key="tag.name" :value="tag.name"></option>
-                </datalist> -->
+                <TagSelector id="cocktail-tags" v-model="cocktail.tags" :options="tags" label-key="name" :placeholder="$t('placeholder.tags')"></TagSelector>
                 <p class="form-input-hint">{{ $t('tag.help-text') }}</p>
             </div>
             <div v-show="utensils.length > 0" class="form-group">
