@@ -103,11 +103,12 @@
                 <input id="source" v-model="cocktail.source" class="form-input" type="text" :placeholder="$t('placeholder.source')">
             </div>
             <div class="form-group">
-                <label class="form-label" for="tags">{{ $t('tag.tags') }}:</label>
-                <input id="tags" v-model="cocktailTags" class="form-input" type="text" list="existing-tags" :placeholder="$t('placeholder.tags')">
-                <datalist id="existing-tags">
+                <label class="form-label" for="cocktail-tags">{{ $t('tag.tags') }}:</label>
+                <TagSelector id="cocktail-tags" :options="tags" labelKey="name" v-model="cocktail.tags"></TagSelector>
+                <!-- <input id="tags" v-model="cocktailTags" class="form-input" type="text" list="existing-tags" :placeholder="$t('placeholder.tags')"> -->
+                <!-- <datalist id="existing-tags">
                     <option v-for="tag in tags" :key="tag.name" :value="tag.name"></option>
-                </datalist>
+                </datalist> -->
                 <p class="form-input-hint">{{ $t('tag.help-text') }}</p>
             </div>
             <div v-show="utensils.length > 0" class="form-group">
@@ -143,6 +144,7 @@ import AppState from './../../AppState'
 import SubstituteModal from './SubstituteModal.vue'
 import SubscriptionCheck from '../SubscriptionCheck.vue'
 import TimeStamps from '../TimeStamps.vue'
+import TagSelector from '../TagSelector.vue'
 
 export default {
     components: {
@@ -154,7 +156,8 @@ export default {
         SaltRimRadio,
         SubstituteModal,
         SubscriptionCheck,
-        TimeStamps
+        TimeStamps,
+        TagSelector
     },
     data() {
         return {
@@ -182,21 +185,21 @@ export default {
         }
     },
     computed: {
-        cocktailTags: {
-            get() {
-                return this.cocktail.tags.map(i => i.name).join(',')
-            },
-            set(newVal) {
-                if (newVal == '' || newVal == null || newVal == undefined) {
-                    this.cocktail.tags = []
-                } else {
-                    this.cocktail.tags = []
-                    newVal.split(',').forEach(tagName => {
-                        this.cocktail.tags.push({ name: tagName })
-                    })
-                }
-            }
-        },
+        // cocktailTags: {
+        //     get() {
+        //         return this.cocktail.tags.map(i => i.name).join(',')
+        //     },
+        //     set(newVal) {
+        //         if (newVal == '' || newVal == null || newVal == undefined) {
+        //             this.cocktail.tags = []
+        //         } else {
+        //             this.cocktail.tags = []
+        //             newVal.split(',').forEach(tagName => {
+        //                 this.cocktail.tags.push({ name: tagName })
+        //             })
+        //         }
+        //     }
+        // },
     },
     watch: {
         showDialog(newVal) {
@@ -226,6 +229,7 @@ export default {
                     data.glass = {}
                 }
                 data.utensils = data.utensils.map(ut => ut.id)
+                data.tags = data.tags.map(i => i.name)
 
                 this.cocktail = data
 
@@ -403,7 +407,7 @@ export default {
                 cocktail_method_id: this.cocktail.method.id,
                 utensils: this.cocktail.utensils,
                 images: [],
-                tags: this.cocktail.tags.filter(tag => tag.name != '').map(tag => tag.name),
+                tags: this.cocktail.tags,
                 glass_id: this.cocktail.glass.id,
                 ingredients: this.cocktail.ingredients
                     .filter(i => i.ingredient_id != null)

@@ -1,115 +1,176 @@
+<script setup>
+import { ref, computed, watch } from 'vue'
+import { useFloating, offset, flip, shift, autoUpdate } from '@floating-ui/vue'
+
+defineOptions({
+    inheritAttrs: false
+})
+
+const props = defineProps({
+    options: {
+        type: Array,
+        default() {
+            return []
+        },
+        required: true
+    },
+    labelKey: {
+        type: String,
+        required: true
+    }
+})
+
+const reference = ref(null)
+const content = ref(null)
+const currentOption = ref('')
+const showDropdown = ref(false)
+const currentFocusedDropdownOption = ref(null)
+const currentFocusedDeleteOption = ref(null)
+const model = defineModel({ required: true, type: Array })
+const { floatingStyles } = useFloating(reference, content, {
+    placement: 'bottom-start',
+    middleware: [offset(5), flip(), shift()],
+    whileElementsMounted: autoUpdate,
+})
+const isFocused = ref(false)
+const filteredOptions = computed(() => {
+    if (!currentOption.value) {
+        return []
+    }
+
+    return props.options.filter(option => {
+        return option.name.toLowerCase().includes(currentOption.value.toLowerCase())
+    }).slice(0, 7)
+})
+
+// watch(isFocused, async (newState) => {
+//     if (newState == false) {
+//         setTimeout(() => {
+//             currentOption.value = null
+//         }, 50)
+//     }
+// })
+
+function focusInput() {
+    showDropdown.value = true
+    reference.value.focus()
+}
+
+function selectOption(option) {
+    if (model.value.includes(option)) {
+        return
+    }
+
+    model.value.push(option)
+    currentOption.value = null
+}
+
+function removeSelectedOption(option) {
+    model.value.splice(
+        model.value.findIndex(i => i == option),
+        1
+    )
+}
+
+function checkLastOptionRemoval() {
+    if (!currentFocusedDeleteOption.value && (currentOption.value == '' || !currentOption.value)) {
+        currentFocusedDeleteOption.value = model.value[model.value.length - 1]
+        return
+    }
+
+    if (currentFocusedDeleteOption.value) {
+        removeSelectedOption(currentFocusedDeleteOption.value)
+        currentFocusedDeleteOption.value = null
+    }
+}
+
+function checkDelimiter(e) {
+    currentFocusedDeleteOption.value = null
+    currentFocusedDropdownOption.value = null
+    if (e.target.value && e.target.value.endsWith(',')) {
+        selectOption(e.target.value.slice(0, -1).trim())
+        currentOption.value = null
+    }
+}
+
+function addSelectedOption() {
+    if (filteredOptions.value.length == 0) {
+        return
+    }
+
+    if (currentFocusedDropdownOption.value) {
+        selectOption(currentFocusedDropdownOption.value.name)
+    } else {
+        selectOption(filteredOptions.value[0].name)
+    }
+}
+
+function navigateOptions(dir) {
+    if (filteredOptions.value.length == 0) {
+        return
+    }
+
+    if (!currentFocusedDropdownOption.value) {
+        currentFocusedDropdownOption.value = filteredOptions.value[0]
+        return
+    }
+
+    if (dir === 'down') {
+        currentFocusedDropdownOption.value = filteredOptions.value[filteredOptions.value.indexOf(currentFocusedDropdownOption.value) + 1]
+    } else {
+        currentFocusedDropdownOption.value = filteredOptions.value[filteredOptions.value.indexOf(currentFocusedDropdownOption.value) - 1]
+    }
+}
+
+function handleFocus() {
+    isFocused.value = true
+}
+
+function handleBlur(e) {
+    const relatedTarget = e.relatedTarget
+    if (showDropdown.value) {
+        if (relatedTarget === null || !content.value.contains(relatedTarget)) {
+            showDropdown.value = false
+        }
+        currentFocusedDeleteOption.value = null
+    }
+
+    isFocused.value = false
+}
+</script>
+
 <template>
     <div class="form-input form-multiselect" :class="{'form-input--focus': isFocused}" @click="focusInput">
         <div class="form-multiselect__options">
-            <div v-for="selectedTag in selectedTags" :key="selectedTag" class="form-multiselect__selected-option">
-                {{ selectedTag }} <button type="button" class="selected-option__close" @click="removeSelection(selectedTag)"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="14" height="14"><path d="M12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22ZM12 10.5858L9.17157 7.75736L7.75736 9.17157L10.5858 12L7.75736 14.8284L9.17157 16.2426L12 13.4142L14.8284 16.2426L16.2426 14.8284L13.4142 12L16.2426 9.17157L14.8284 7.75736L12 10.5858Z"></path></svg></button>
+            <div v-for="option in model" :key="option" class="form-multiselect__selected-option">
+                {{ option }} <button type="button" class="button selected-option__close" :class="{'selected-option__close--focused': currentFocusedDeleteOption == option}" @click="removeSelectedOption(option)"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="14" height="14"><path d="M12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22ZM12 10.5858L9.17157 7.75736L7.75736 9.17157L10.5858 12L7.75736 14.8284L9.17157 16.2426L12 13.4142L14.8284 16.2426L16.2426 14.8284L13.4142 12L16.2426 9.17157L14.8284 7.75736L12 10.5858Z"></path></svg></button>
             </div>
             <div class="form-multiselect__input">
                 <input
-                    ref="mainInput"
-                    v-model="tag"
+                    :id="$attrs.id"
+                    ref="reference"
+                    v-model="currentOption"
                     type="text"
-                    @focus="isFocused = true"
-                    @blur="isFocused = false"
+                    @focus="handleFocus"
+                    @blur.prevent.stop="handleBlur"
                     @input="checkDelimiter"
-                    @keydown.tab.prevent="finishInput"
+                    @keydown.tab.prevent="addSelectedOption"
+                    @keydown.down.prevent="navigateOptions('down')"
+                    @keydown.up.prevent="navigateOptions('up')"
+                    @keydown.delete="checkLastOptionRemoval"
                 >
-                <div v-show="showDropdown" ref="options" class="floating-element">
-                    <div v-if="filteredTags.length > 0" class="dropdown-menu">
-                        <a v-for="tagOption in filteredTags" :key="tagOption.name" class="dropdown-menu__item" href="#" @click.prevent="addTag(tagOption.name)">{{ tagOption.name }}</a>
+                <div v-show="filteredOptions.length > 0 && showDropdown" ref="content" class="floating-element" :style="floatingStyles">
+                    <div class="dropdown-menu dropdown-menu--tags">
+                        <span class="dropdown-menu__title">Tag suggestions:</span>
+                        <a v-for="option in filteredOptions" :key="option.name" class="dropdown-menu__item" :class="{'dropdown-menu__item--focused': currentFocusedDropdownOption == option}" href="#" @click.prevent="selectOption(option[props.labelKey])" @mouseover="currentFocusedDropdownOption = option">
+                            {{ option.name }}
+                        </a>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </template>
-
-<script>
-import { computePosition } from '@floating-ui/dom'
-
-export default {
-    props: {
-        tags: {
-            type: Array,
-            default() {
-                return []
-            }
-        },
-        modelValue: {
-            type: [Number, String],
-            default: null,
-        }
-    },
-    data() {
-        return {
-            selectedTags: [],
-            tag: null,
-            showDropdown: false,
-            isFocused: false,
-            selectableOptionIndex: null,
-        }
-    },
-    computed: {
-        filteredTags() {
-            if (!this.tag) {
-                return []
-            }
-
-            return this.tags.filter(tag => {
-                return tag.name.toLowerCase().includes(this.tag.toLowerCase())
-            }).slice(0, 5)
-        }
-    },
-    watch: {
-        isFocused() {
-            this.showDropdown = this.isFocused
-        },
-        showDropdown() {
-            if (this.showDropdown) {
-                computePosition(this.$refs.mainInput, this.$refs.options, {
-                    placement: 'bottom-start',
-                }).then(({x, y}) => {
-                    Object.assign(this.$refs.options.style, {
-                        left: `${x}px`,
-                        top: `${y}px`,
-                    })
-                })
-            }
-        }
-    },
-    methods: {
-        focusInput() {
-            this.$refs.mainInput.focus()
-        },
-        checkDelimiter() {
-            if (this.tag && this.tag.endsWith(',')) {
-                this.addTag(this.tag.slice(0, -1).trim())
-            }
-        },
-        finishInput() {
-            if (this.filteredTags.length == 0) {
-                return
-            }
-
-            this.addTag(this.filteredTags[0].name)
-        },
-        addTag(tagName) {
-            if (tagName == '' || tagName == ' ' || this.selectedTags.includes(tagName)) {
-                return
-            }
-
-            this.selectedTags.push(tagName)
-            this.tag = null
-        },
-        removeSelection(tagName) {
-            this.selectedTags.splice(
-                this.selectedTags.findIndex(i => i == tagName),
-                1
-            )
-        }
-    }
-}
-</script>
 
 <style scoped>
 .form-multiselect {
@@ -141,15 +202,33 @@ export default {
     position: relative;
 }
 
+.form-multiselect__input input:focus {
+    outline: 0;
+}
+
 .selected-option__close {
     padding: 0;
     margin: 0;
     border: 0;
     background: none;
-    cursor: pointer;
+    color: var(--clr-gray-100);
+}
+
+.selected-option__close:hover,
+.selected-option__close:focus,
+.selected-option__close--focused {
+    color: rgb(255, 88, 88);
 }
 
 .selected-option__close svg {
-    fill: var(--clr-gray-100);
+    fill: currentColor;
+}
+
+.dropdown-menu--tags {
+    min-width: 300px;
+}
+
+.dropdown-menu .dropdown-menu__item--focused {
+    box-shadow: inset 0 0 0 3px var(--clr-gray-800);
 }
 </style>
