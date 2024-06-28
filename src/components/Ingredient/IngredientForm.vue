@@ -69,7 +69,7 @@
                     <IngredientFinder @ingredient-selected="selectIngredientPart"></IngredientFinder>
                 </div>
                 <div>
-                    <ul v-if="ingredient.ingredient_parts.length > 0" class="block-container--inset ingredient-form__complex-ingredients__list">
+                    <ul v-if="ingredient.ingredient_parts.length > 0" class="block-container block-container--inset ingredient-form__complex-ingredients__list">
                         <li v-for="part in ingredient.ingredient_parts" :key="part.id">{{ part.name }} &middot; <a href="#" @click.prevent="removeIngredientPart(part)">{{ $t('remove') }}</a></li>
                     </ul>
                     <EmptyState v-else>{{ $t('ingredients-not-selected') }}</EmptyState>
@@ -266,7 +266,7 @@ export default {
 
 .ingredient-form__complex-ingredients__list {
     list-style: none;
-    margin: 1rem 0 0 0;
+    margin: 0;
     overflow-y: auto;
     max-height: 14rem;
     padding: 0.5rem;
