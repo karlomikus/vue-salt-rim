@@ -180,23 +180,6 @@ export default {
             utensils: [],
         }
     },
-    computed: {
-        // cocktailTags: {
-        //     get() {
-        //         return this.cocktail.tags.map(i => i.name).join(',')
-        //     },
-        //     set(newVal) {
-        //         if (newVal == '' || newVal == null || newVal == undefined) {
-        //             this.cocktail.tags = []
-        //         } else {
-        //             this.cocktail.tags = []
-        //             newVal.split(',').forEach(tagName => {
-        //                 this.cocktail.tags.push({ name: tagName })
-        //             })
-        //         }
-        //     }
-        // },
-    },
     watch: {
         showDialog(newVal) {
             if (newVal == false) {
