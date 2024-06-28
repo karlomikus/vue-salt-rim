@@ -189,8 +189,8 @@ function handleBlur(e) {
 }
 
 .form-multiselect__selected-option {
-    background-color: var(--clr-gray-600);
-    color: var(--clr-gray-100);
+    background-color: var(--clr-gray-100);
+    color: var(--clr-gray-800);
     border-radius: var(--radius-1);
     padding: 0 0.5rem;
     gap: 0.5rem;
@@ -224,13 +224,13 @@ function handleBlur(e) {
     margin: 0;
     border: 0;
     background: none;
-    color: var(--clr-gray-100);
+    color: var(--clr-gray-800);
 }
 
 .selected-option__close:hover,
 .selected-option__close:focus,
 .selected-option__close--focused {
-    color: rgb(255, 88, 88);
+    color: var(--clr-red);
 }
 
 .selected-option__close svg {

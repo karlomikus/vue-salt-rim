@@ -185,11 +185,11 @@
 }
 
 .button.button--danger {
-    border-color: rgb(153, 10, 41);
-    color: rgb(153, 10, 41);
+    border-color: var(--clr-red);
+    color: var(--clr-red);
 }
 .button.button--danger:is(:hover, :active, :focus) {
-    border-color: rgb(153, 10, 41);
-    background-color: rgb(153, 10, 41);
+    border-color: var(--clr-red);
+    background-color: var(--clr-red);
     color: #fff;
 }
