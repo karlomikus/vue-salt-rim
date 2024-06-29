@@ -3,7 +3,7 @@
   <picture>
       <source media="(prefers-color-scheme: dark)" srcset="art/logo_dark.png">
       <source media="(prefers-color-scheme: light)" srcset="art/logo.png">
-      <img src="art/logo.png" alt="Logo" />
+      <img src="art/logo.png" width="450" alt="Logo" />
   </picture>
 </a>
 </p>
@@ -29,7 +29,7 @@ Salt Rim is a web client used for connecting to your [Bar Assistant](https://git
 
 <p align="center">
     <picture>
-      <img src="./art/v3-landing.png" alt="Landing image" />
+      <img src="./art/landing2.png" alt="Landing image" />
     </picture>
 </p>
 

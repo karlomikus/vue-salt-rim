@@ -25,51 +25,53 @@
         <SubscriptionCheck>Subscribe to "Mixologist" plan to upload more than one cocktail recipe image!</SubscriptionCheck>
         <ImageUpload ref="imagesUpload" :value="cocktail.images" :max-images="maxImages" />
         <h3 class="form-section-title">{{ $t('ingredients.title') }}</h3>
-        <ul v-show="cocktail.ingredients.length > 0" class="cocktail-form__ingredients" style="margin-bottom: 20px;">
-            <li v-for="ing in cocktail.ingredients" :key="ing.ingredient_id" class="block-container" :data-id="ing.ingredient_id">
-                <div class="drag-handle"></div>
-                <div class="cocktail-form__ingredients__content">
-                    <div class="form-group">
-                        <label class="form-label">{{ $t('ingredient.title') }}<template v-if="ing.sort <= 1"> ({{ $t('ingredient.base') }})</template>:</label>
-                        <p>
-                            {{ ing.name }}
-                            <span v-if="ing.note">&middot; {{ ing.note }}</span>
-                            <small v-show="ing.optional">({{ ing.optional ? $t('optional') : '' }})</small>
-                        </p>
-                        <p v-if="ing.substitutes && ing.substitutes.length > 0" class="substitutes">
-                            <template v-for="sub in ing.substitutes">
-                                {{ $t('or').toLowerCase() }} {{ sub.name }}&nbsp;
-                            </template>
-                        </p>
+        <div class="block-container block-container--padded block-container--inset">
+            <ul v-show="cocktail.ingredients.length > 0" class="cocktail-form__ingredients" style="margin-bottom: 20px;">
+                <li v-for="ing in cocktail.ingredients" :key="ing.ingredient_id" class="block-container" :data-id="ing.ingredient_id">
+                    <div class="drag-handle"></div>
+                    <div class="cocktail-form__ingredients__content">
+                        <div class="form-group">
+                            <label class="form-label">{{ $t('ingredient.title') }}<template v-if="ing.sort <= 1"> ({{ $t('ingredient.base') }})</template>:</label>
+                            <p>
+                                {{ ing.name }}
+                                <span v-if="ing.note">&middot; {{ ing.note }}</span>
+                                <small v-show="ing.optional">({{ ing.optional ? $t('optional') : '' }})</small>
+                            </p>
+                            <p v-if="ing.substitutes && ing.substitutes.length > 0" class="substitutes">
+                                <template v-for="sub in ing.substitutes">
+                                    {{ $t('or').toLowerCase() }} {{ sub.name }}&nbsp;
+                                </template>
+                            </p>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">{{ $t('amount') }}:</label>
+                            <p :title="ing.amount + ' ' + ing.units">{{ printIngredientAmount(ing) }}</p>
+                        </div>
+                        <div class="cocktail-form__ingredients__actions">
+                            <a href="#" @click.prevent="editIngredient(ing)">
+                                {{ $t('edit') }}
+                            </a>
+                            &middot;
+                            <a href="#" @click.prevent="editIngredientSubstitutes(ing)">
+                                {{ $t('ingredient.dialog.select-substitutes') }}
+                            </a>
+                            &middot;
+                            <a href="#" @click.prevent="removeIngredient(ing)">
+                                {{ $t('remove') }}
+                            </a>
+                        </div>
                     </div>
-                    <div class="form-group">
-                        <label class="form-label">{{ $t('amount') }}:</label>
-                        <p :title="ing.amount + ' ' + ing.units">{{ printIngredientAmount(ing) }}</p>
-                    </div>
-                    <div class="cocktail-form__ingredients__actions">
-                        <a href="#" @click.prevent="editIngredient(ing)">
-                            {{ $t('edit') }}
-                        </a>
-                        &middot;
-                        <a href="#" @click.prevent="editIngredientSubstitutes(ing)">
-                            {{ $t('ingredient.dialog.select-substitutes') }}
-                        </a>
-                        &middot;
-                        <a href="#" @click.prevent="removeIngredient(ing)">
-                            {{ $t('remove') }}
-                        </a>
-                    </div>
-                </div>
-            </li>
-        </ul>
-        <SaltRimDialog v-model="showDialog">
-            <template #trigger>
-                <button class="button button--outline" type="button" @click="addIngredient">{{ $t('ingredient.add') }}</button>
-            </template>
-            <template #dialog>
-                <IngredientModal :value="cocktailIngredientForEdit" @close="closeModal" />
-            </template>
-        </SaltRimDialog>
+                </li>
+            </ul>
+            <SaltRimDialog v-model="showDialog">
+                <template #trigger>
+                    <button class="button button--dark" type="button" @click="addIngredient">{{ $t('ingredient.add') }}</button>
+                </template>
+                <template #dialog>
+                    <IngredientModal :value="cocktailIngredientForEdit" @close="closeModal" />
+                </template>
+            </SaltRimDialog>
+        </div>
         <SaltRimDialog v-model="showSubstituteDialog">
             <template #trigger>
                 <span></span>
@@ -103,11 +105,8 @@
                 <input id="source" v-model="cocktail.source" class="form-input" type="text" :placeholder="$t('placeholder.source')">
             </div>
             <div class="form-group">
-                <label class="form-label" for="tags">{{ $t('tag.tags') }}:</label>
-                <input id="tags" v-model="cocktailTags" class="form-input" type="text" list="existing-tags" :placeholder="$t('placeholder.tags')">
-                <datalist id="existing-tags">
-                    <option v-for="tag in tags" :key="tag.name" :value="tag.name"></option>
-                </datalist>
+                <label class="form-label" for="cocktail-tags">{{ $t('tag.tags') }}:</label>
+                <TagSelector id="cocktail-tags" v-model="cocktail.tags" :options="tags" label-key="name" :placeholder="$t('placeholder.tags')"></TagSelector>
                 <p class="form-input-hint">{{ $t('tag.help-text') }}</p>
             </div>
             <div v-show="utensils.length > 0" class="form-group">
@@ -143,6 +142,7 @@ import AppState from './../../AppState'
 import SubstituteModal from './SubstituteModal.vue'
 import SubscriptionCheck from '../SubscriptionCheck.vue'
 import TimeStamps from '../TimeStamps.vue'
+import TagSelector from '../TagSelector.vue'
 
 export default {
     components: {
@@ -154,7 +154,8 @@ export default {
         SaltRimRadio,
         SubstituteModal,
         SubscriptionCheck,
-        TimeStamps
+        TimeStamps,
+        TagSelector
     },
     data() {
         return {
@@ -180,23 +181,6 @@ export default {
             sortable: null,
             utensils: [],
         }
-    },
-    computed: {
-        cocktailTags: {
-            get() {
-                return this.cocktail.tags.map(i => i.name).join(',')
-            },
-            set(newVal) {
-                if (newVal == '' || newVal == null || newVal == undefined) {
-                    this.cocktail.tags = []
-                } else {
-                    this.cocktail.tags = []
-                    newVal.split(',').forEach(tagName => {
-                        this.cocktail.tags.push({ name: tagName })
-                    })
-                }
-            }
-        },
     },
     watch: {
         showDialog(newVal) {
@@ -226,6 +210,7 @@ export default {
                     data.glass = {}
                 }
                 data.utensils = data.utensils.map(ut => ut.id)
+                data.tags = data.tags.map(i => i.name)
 
                 this.cocktail = data
 
@@ -403,7 +388,7 @@ export default {
                 cocktail_method_id: this.cocktail.method.id,
                 utensils: this.cocktail.utensils,
                 images: [],
-                tags: this.cocktail.tags.filter(tag => tag.name != '').map(tag => tag.name),
+                tags: this.cocktail.tags,
                 glass_id: this.cocktail.glass.id,
                 ingredients: this.cocktail.ingredients
                     .filter(i => i.ingredient_id != null)

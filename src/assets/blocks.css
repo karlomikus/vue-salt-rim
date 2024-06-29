@@ -60,7 +60,8 @@
     color: var(--clr-accent-200);
 }
 
-.block-container--inset {
+.block-container.block-container--inset {
+    border: 0;
     background-color: #f4edf2;
     border-bottom: 1px solid #fff;
     border-radius: var(--radius-2);
@@ -71,7 +72,11 @@
         inset 0px 6.3px 7.1px -2.5px hsl(var(--shadow-color) / 0.25);
 }
 
-.dark-theme .block-container--inset {
+.block-container.block-container--inset.block-container--padded {
+    padding: var(--gap-size-3);
+}
+
+.dark-theme .block-container.block-container--inset {
     background-color: rgba(0, 0, 0, .15);
     border-bottom: 1px solid rgba(255, 255, 255, .1);
     box-shadow:

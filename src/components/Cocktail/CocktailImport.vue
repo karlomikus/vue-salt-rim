@@ -177,7 +177,7 @@ export default {
     computed: {
         cocktailTags: {
             get() {
-                return this.result.tags.map(i => i.name).join(',')
+                return this.result.tags.join(',')
             },
             set(newVal) {
                 if (Array.isArray(newVal)) {
@@ -187,10 +187,7 @@ export default {
                 if (newVal == '' || newVal == null || newVal == undefined) {
                     this.result.tags = []
                 } else {
-                    this.result.tags = []
-                    newVal.split(',').forEach(tagName => {
-                        this.result.tags.push({ name: tagName })
-                    })
+                    this.result.tags = Array.from(new Set(newVal.split(',').filter(t => t != '')))
                 }
             }
         },

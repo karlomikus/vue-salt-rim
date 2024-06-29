@@ -1,3 +1,12 @@
+# v2.15.0
+## New
+- Updated cocktail tag input, you now get existing tag suggestions
+
+## Changes
+- Ingredient strength no longer required field
+- Updated ingredient form layout
+- Updated search modal styling
+
 # v2.14.0
 ## New
 - You can now prevent mobile screen from dimming/locking when viewing a recipe

@@ -39,21 +39,16 @@
             <template v-if="appState.bar.id">
                 <h3 class="form-section-title">{{ $t('bars.bar') }}</h3>
                 <div class="block-container block-container--padded">
-                    <label class="form-checkbox">
-                        <input v-model="user.is_shelf_public" :value="true" type="checkbox">
-                        <span>{{ $t('profile-public-shelf') }}</span>
-                    </label>
-                    <label class="form-checkbox">
-                        <input v-model="user.use_parent_as_substitute" :value="true" type="checkbox">
-                        <span>{{ $t('profile-use-parent-as-substitute') }}</span>
-                    </label>
+                    <div class="form-group">
+                        <SaltRimCheckbox id="parent-ingredient-checkbox" v-model="user.is_shelf_public" :label="$t('profile-public-shelf')" description="Other bar members will be able to filter by cocktails you have in your shelf"></SaltRimCheckbox>
+                    </div>
+                    <div class="form-group">
+                        <SaltRimCheckbox id="profile-use-parent-as-substitute" v-model="user.use_parent_as_substitute" :label="$t('profile-use-parent-as-substitute')" description="Match cocktail recipe ingredients with parent ingredients as possible substitutes"></SaltRimCheckbox>
+                    </div>
                 </div>
             </template>
             <h3 class="form-section-title">{{ $t('data') }}</h3>
             <div class="block-container block-container--padded">
-                <!-- <button class="button button--outline" type="button" @click="downloadAccountData">{{ $t('download-account-data') }}</button>
-                <br>
-                <br> -->
                 <button class="button button--outline button--danger" type="button" @click="deleteAccount">{{ $t('delete-my-account') }}</button>
             </div>
             <div class="form-actions">
@@ -69,12 +64,14 @@ import OverlayLoader from '@/components/OverlayLoader.vue'
 import PageHeader from '@/components/PageHeader.vue'
 import Navigation from '@/components/Settings/SettingsNavigation.vue'
 import AppState from './../../AppState'
+import SaltRimCheckbox from '../SaltRimCheckbox.vue'
 
 export default {
     components: {
         OverlayLoader,
         Navigation,
-        PageHeader
+        PageHeader,
+        SaltRimCheckbox
     },
     data() {
         return {

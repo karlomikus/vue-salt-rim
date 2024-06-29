@@ -117,3 +117,13 @@
 .site-autocomplete-dialog .dialog__content {
     margin-top: 3rem;
 }
+
+.site-autocomplete-dialog .dialog__close {
+    background-color: var(--clr-gray-100);
+}
+
+@media (max-width: 450px) {
+    .site-autocomplete-dialog .dialog__content {
+        margin-top: 0;
+    }
+}

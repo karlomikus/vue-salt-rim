@@ -10,6 +10,7 @@
 @import "./blocks.css";
 @import "./dialog.css";
 @import "./chips.css";
+@import "./grid.css";
 
 @import "vue-toast-notification/dist/theme-default.css";
 
@@ -36,6 +37,12 @@ main {
     padding: 0 10px;
     width: 100%;
     flex: 1;
+}
+
+mark {
+    background-color: rgb(255, 190, 136);
+    /* display: inline-block; */
+    padding: 0 2px;
 }
 
 .page-subtitle {
