@@ -33,19 +33,19 @@ function submit() {
     }
 
     if (category.value.id) {
-        ApiRequests.updateIngredientCategory(category.value.id, postData).then(() => {
+        ApiRequests.updateIngredientCategory(category.value.id, postData).then(resp => {
             isLoading.value = false
             toast.default(t('category.update-success'))
-            emit('categoryDialogClosed')
+            emit('categoryDialogClosed', resp)
         }).catch(e => {
             toast.error(e.message)
             isLoading.value = false
         })
     } else {
-        ApiRequests.saveIngredientCategory(postData).then(() => {
+        ApiRequests.saveIngredientCategory(postData).then(resp => {
             isLoading.value = false
             toast.default(t('category.add-success'))
-            emit('categoryDialogClosed')
+            emit('categoryDialogClosed', resp)
         }).catch(e => {
             toast.error(e.message)
             isLoading.value = false

@@ -43,6 +43,13 @@
     fill: #fff;
 }
 
+.dropdown-menu .dropdown-menu__title {
+    font-size: 0.8rem;
+    padding: 3px 16px 3px 12px;
+    font-weight: bold;
+    color: var(--clr-gray-400);
+}
+
 @keyframes slide-in-top {
     0% {
         top: -10px;

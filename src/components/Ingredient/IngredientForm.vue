@@ -17,7 +17,16 @@
                     <option v-for="cat in categories" :key="cat.id" :value="cat.id">{{ cat.name }}</option>
                 </select>
                 <p class="form-input-hint">
-                    <RouterLink :to="{ name: 'settings.categories' }" target="_blank">{{ $t('edit-categories') }}</RouterLink>
+                    <!-- <RouterLink :to="{ name: 'settings.categories' }" target="_blank">{{ $t('edit-categories') }}</RouterLink> -->
+                    <SaltRimDialog v-model="showCategoryDialog">
+                        <template #trigger>
+                            <!-- <button type="button" class="button button--dark" @click.prevent="showCategoryDialog = true">{{ $t('category.add') }}</button> -->
+                            <a href="#" @click.prevent="showCategoryDialog = true">{{ $t('category.add') }}</a>
+                        </template>
+                        <template #dialog>
+                            <CategoryForm :dialog-title="$t('category.add')" @category-dialog-closed="handleCategoryDialogClosed" />
+                        </template>
+                    </SaltRimDialog>
                 </p>
             </div>
             <div class="form-group">
@@ -60,7 +69,7 @@
                     <IngredientFinder @ingredient-selected="selectIngredientPart"></IngredientFinder>
                 </div>
                 <div>
-                    <ul v-if="ingredient.ingredient_parts.length > 0" class="block-container--inset ingredient-form__complex-ingredients__list">
+                    <ul v-if="ingredient.ingredient_parts.length > 0" class="block-container block-container--inset ingredient-form__complex-ingredients__list">
                         <li v-for="part in ingredient.ingredient_parts" :key="part.id">{{ part.name }} &middot; <a href="#" @click.prevent="removeIngredientPart(part)">{{ $t('remove') }}</a></li>
                     </ul>
                     <EmptyState v-else>{{ $t('ingredients-not-selected') }}</EmptyState>
@@ -90,6 +99,8 @@ import IngredientFinder from './../IngredientFinder.vue'
 import TimeStamps from '../TimeStamps.vue'
 import EmptyState from '../EmptyState.vue'
 import SaltRimCheckbox from '../SaltRimCheckbox.vue'
+import SaltRimDialog from '../Dialog/SaltRimDialog.vue'
+import CategoryForm from '../Settings/CategoryForm.vue'
 
 export default {
     components: {
@@ -100,12 +111,15 @@ export default {
         TimeStamps,
         EmptyState,
         SaltRimCheckbox,
+        SaltRimDialog,
+        CategoryForm
     },
     data() {
         return {
             isLoading: false,
             isParent: false,
             isComplex: false,
+            showCategoryDialog: false,
             ingredientCategoryId: null,
             ingredient: {
                 id: null,
@@ -172,6 +186,13 @@ export default {
                 this.ingredient.ingredient_parts.findIndex(i => i == ingredient),
                 1
             )
+        },
+        handleCategoryDialogClosed(eventPayload) {
+            this.showCategoryDialog = false
+            if (eventPayload) {
+                this.ingredientCategoryId = eventPayload.id
+                this.refreshCategories()
+            }
         },
         async submit() {
             this.isLoading = true
@@ -245,7 +266,7 @@ export default {
 
 .ingredient-form__complex-ingredients__list {
     list-style: none;
-    margin: 1rem 0 0 0;
+    margin: 0;
     overflow-y: auto;
     max-height: 14rem;
     padding: 0.5rem;

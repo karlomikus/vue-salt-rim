@@ -571,5 +571,6 @@
   "cocktail.missing-ing-sub-available": "Missing, but you have substitutes available",
   "cocktail.missing-ing-complex": "Missing, but you can make it with ingredients in your shelf",
   "contains-ingredients": "Contains ingredients",
-  "recipe-matching": "Recipe matching"
+  "recipe-matching": "Recipe matching",
+  "suggestions": "Suggestions"
 }
