@@ -1,6 +1,7 @@
 # v2.15.0
 ## New
 - Updated cocktail tag input, you now get existing tag suggestions
+- Added Polish language
 
 ## Changes
 - Ingredient strength no longer required field

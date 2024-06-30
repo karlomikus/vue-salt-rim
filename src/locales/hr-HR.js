@@ -1,4 +1,4 @@
-import messages from './hr-HR.json'
+import messages from './messages/hr-HR.json'
 
 const datetime = {
     'short': {

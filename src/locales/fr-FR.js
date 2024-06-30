@@ -1,4 +1,4 @@
-import messages from './fr-FR.json'
+import messages from './messages/fr-FR.json'
 
 const datetime = {
     'short': {
