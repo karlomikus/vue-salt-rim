@@ -42,7 +42,7 @@
     "information": "Informacje o składniku",
     "extra-cocktails": "Add to shelf and you can make",
     "cocktails-rest": "Reszta koktajli",
-    "has-variable-amount": "Has variable amount",
+    "has-variable-amount": "Ma zmienną kwotę",
     "dialog": {
       "select-substitutes": "Edytuj składniki zastępcze",
       "search-not-found": "Nie znaleziono tego, czego szukasz?",
@@ -188,7 +188,7 @@
   "ingredients.page.description": "To jest lista składników dostępnych na Twoim serwerze Bar Assistant. Możesz dodać określone składniki do swojej półki, co zaktualizuje listę koktajli, które możesz przygotować. Możesz także dodać składnik do swojej listy zakupów.",
   "ABV": "ABV",
   "date-modified": "Data modyfikacji",
-  "color": "Color",
+  "color": "Kolor",
   "edit-categories": "Edytuj kategorie",
   "parent-ingredient": "Składnik macierzysty",
   "select-category": "Wybierz kategorię...",
@@ -303,7 +303,7 @@
     "add-cocktail": "Add cocktail to collection",
     "collection": "Collection",
     "create": "Create a new collection",
-    "title": "Collections",
+    "title": "Kolekcje",
     "add": "Create collection",
     "edit": "Edit collection",
     "confirm-delete": "This will permanently delete collection with name \"{name}\".",
@@ -384,7 +384,7 @@
   "bars": {
     "title": "Bars",
     "bar": "Bar",
-    "join": "Join a bar",
+    "join": "Dołącz do baru",
     "add": "Create bar",
     "add-success": "Bar \"{name}\" succesfully created",
     "empty": "You don't have any bars. To start adding recipes and ingredients you need to create or join at least one bar.",
@@ -437,7 +437,7 @@
   "public-shelves": "Public shelves",
   "profile-public-shelf": "Make cocktails in my shelf public to all bar members",
   "profile-use-parent-as-substitute": "Track parent ingredient as a substitute ingredient in your shelf",
-  "favorited-cocktails": "Favorited cocktails",
+  "favorited-cocktails": "Ulubione koktajle",
   "created-by": "Created by",
   "amount-max": "Amount max",
   "edit-amounts": "Edit amounts",
@@ -488,9 +488,9 @@
     "crop": "Crop"
   },
   "top-rated-cocktails": "Top rated cocktails",
-  "most-popular-ingredients": "Popular ingredients",
+  "most-popular-ingredients": "Popularne składniki",
   "votes": "Votes",
-  "recommended-ingredients": "Recommended ingredients",
+  "recommended-ingredients": "Polecane składniki",
   "menu": {
     "title": "Menu",
     "bar-title-menu": "{name} Menu",
@@ -563,7 +563,7 @@
   },
   "no-default-units": "No default units",
   "wakelock-toggle": "Prevent screen locking",
-  "ingredients-not-selected": "No ingredients selected",
+  "ingredients-not-selected": "Nie wybrano żadnych składników",
   "ingredients": {
     "select": "Select ingredients"
   },
