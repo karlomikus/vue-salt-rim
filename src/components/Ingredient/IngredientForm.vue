@@ -17,10 +17,8 @@
                     <option v-for="cat in categories" :key="cat.id" :value="cat.id">{{ cat.name }}</option>
                 </select>
                 <p class="form-input-hint">
-                    <!-- <RouterLink :to="{ name: 'settings.categories' }" target="_blank">{{ $t('edit-categories') }}</RouterLink> -->
                     <SaltRimDialog v-model="showCategoryDialog">
                         <template #trigger>
-                            <!-- <button type="button" class="button button--dark" @click.prevent="showCategoryDialog = true">{{ $t('category.add') }}</button> -->
                             <a href="#" @click.prevent="showCategoryDialog = true">{{ $t('category.add') }}</a>
                         </template>
                         <template #dialog>

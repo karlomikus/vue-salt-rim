@@ -3,7 +3,8 @@
     "en-US": "Englisch",
     "fr-FR": "Französich",
     "hr-HR": "Kroatisch",
-    "de-DE": "Deutsch"
+    "de-DE": "Deutsch",
+    "pl-PL": "Polnische"
   },
   "shelf": {
     "title": "Regal",
@@ -46,7 +47,9 @@
       "optional-checkbox": "Optionaler Bestandteil",
       "new-ingredient-success": "Nicht kategorisierte Bestandteile erstellen \"{name}\".",
       "new-ingredient-fail": "Bestandteil kann nicht hinzugefügt werden."
-    }
+    },
+    "is-complex": "Zutat enthält andere Zutaten",
+    "has-variable-amount": "Hat einen variablen Betrag"
   },
   "share": {
     "title": "Aktie",
@@ -302,7 +305,11 @@
   "close": "Schließen",
   "created-by": "Erstellt von",
   "bars": {
-    "select-bar": "Leiste auswählen"
+    "select-bar": "Leiste auswählen",
+    "members": "Anwaltsmitglieder",
+    "join": "Treten Sie einer Bar bei",
+    "add": "Bar erstellen",
+    "title": "Riegel"
   },
   "leave": "Verlassen",
   "import": {
@@ -312,5 +319,9 @@
     "notice": "Vorhandene Bestandteile und Trinkgläser werden anhand ihres Namens abgeglichen (Groß- und Kleinschreibung wird nicht berücksichtigt). Wenn ein Bestandteil bzw. ein Glas nicht vorhanden ist, wird es neu erstellt. Übliche Einheiten werden automatisch umgewandelt in \"ml\"."
   },
   "remember-me": "Erinnere dich an mich",
-  "suggestions": "Vorschläge"
+  "suggestions": "Vorschläge",
+  "ingredients-not-selected": "Keine Zutaten ausgewählt",
+  "favorited-cocktails": "Lieblingscocktails",
+  "most-popular-ingredients": "Beliebte Zutaten",
+  "recommended-ingredients": "Empfohlene Zutaten"
 }

@@ -3,7 +3,8 @@
     "en-US": "Anglais",
     "fr-FR": "Francais",
     "hr-HR": "Croate",
-    "de-DE": "Allemand"
+    "de-DE": "Allemand",
+    "pl-PL": "Polonais"
   },
   "shelf": {
     "title": "Étagère",
@@ -46,7 +47,9 @@
       "optional-checkbox": "Rendre cet ingrédient facultatif.",
       "new-ingredient-success": "Ingrédient non classifié(e) créé \"{name}\".",
       "new-ingredient-fail": "Impossible d’ajouter l’ingrédient."
-    }
+    },
+    "is-complex": "L'ingrédient contient d'autres ingrédients",
+    "has-variable-amount": "A un montant variable"
   },
   "share": {
     "title": "Partager",
@@ -299,7 +302,11 @@
   "close": "Fermer",
   "created-by": "Créé par",
   "bars": {
-    "select-bar": "Sélectionnez la barre"
+    "select-bar": "Sélectionnez la barre",
+    "members": "Membres du barreau",
+    "join": "Rejoindre un bar",
+    "add": "Créer une barre",
+    "title": "Bars"
   },
   "leave": "Partir",
   "import": {
@@ -309,5 +316,9 @@
     "notice": "Les ingrédients existants et le verre seront assortis par leur nom (insensible à la casse). Si l’ingrédient ou le verre n’existe pas, il sera créé. Les unités communes sont automatiquement converties en \"ml\"."
   },
   "remember-me": "Souviens-toi de moi",
-  "suggestions": "Suggestions"
+  "suggestions": "Suggestions",
+  "ingredients-not-selected": "Aucun ingrédient sélectionné",
+  "favorited-cocktails": "Cocktails préférés",
+  "most-popular-ingredients": "Ingrédients populaires",
+  "recommended-ingredients": "Ingrédients recommandés"
 }

@@ -44,7 +44,7 @@ Salt Rim is a web client used for connecting to your [Bar Assistant](https://git
 - Markdown support for cocktails and ingredients
 - Automatic ingredient suggestions
 - Dark theme support
-- Localizations available: English, German, Croatian, French
+- Localizations available: English, German, Croatian, French, Polish
 - Progressive Web App (PWA) capabilities
 - Organize your personal recipe collections
 - Easy recipe copying and sharing

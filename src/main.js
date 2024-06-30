@@ -16,6 +16,7 @@ import en_US from './locales/en-US'
 import hr_HR from './locales/hr-HR'
 import fr_FR from './locales/fr-FR'
 import de_DE from './locales/de-DE'
+import pl_PL from './locales/pl-PL'
 
 registerSW({ immediate: true })
 registerSwiperElements()
@@ -53,18 +54,21 @@ const i18n = createI18n({
         'hr-HR': hr_HR.numbers,
         'fr-FR': fr_FR.numbers,
         'de-DE': de_DE.numbers,
+        'pl-PL': pl_PL.numbers,
     },
     datetimeFormats: {
         'en-US': en_US.datetime,
         'hr-HR': hr_HR.datetime,
         'fr-FR': fr_FR.datetime,
         'de-DE': de_DE.datetime,
+        'pl-PL': pl_PL.datetime,
     },
     messages: {
         'en-US': en_US.messages,
         'hr-HR': hr_HR.messages,
         'fr-FR': fr_FR.messages,
         'de-DE': de_DE.messages,
+        'pl-PL': pl_PL.messages,
     }
 })
 
