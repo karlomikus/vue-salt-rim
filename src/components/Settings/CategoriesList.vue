@@ -99,7 +99,8 @@ export default {
                     dialog.close()
                     ApiRequests.deleteIngredientCategory(category.id).then(() => {
                         this.isLoading = false
-                        this.$toast.default(this.$t('ingredient-category.delete-success                 this.refreshCategories()
+                        this.$toast.default(this.$t('ingredient-category.delete-success'))
+                        this.refreshCategories()
                     }).catch(e => {
                         this.$toast.error(e.message)
                         this.isLoading = false
