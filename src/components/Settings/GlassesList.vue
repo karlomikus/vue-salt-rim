@@ -23,7 +23,7 @@
                     <thead>
                         <tr>
                             <th>{{ $t('name') }} / {{ $t('description') }}</th>
-                            <th>{{ $t('cocktails.title') }}</th>
+                            <th>{{ $t('cocktail.cocktails') }}</th>
                             <th>{{ $t('glass-type.volume') }}</th>
                             <th></th>
                         </tr>

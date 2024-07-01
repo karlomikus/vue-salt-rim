@@ -13,7 +13,7 @@
             </div>
             <label class="form-label form-label--required">{{ $t('api.abilities') }}:</label>
             <div class="api-ability">
-                <h4>{{ $t('cocktails.title') }}</h4>
+                <h4>{{ $t('cocktail.cocktails') }}</h4>
                 <div class="api-ability__options">
                     <label class="form-checkbox">
                         <input v-model="apiKey.abilities" type="checkbox" value="cocktails.read">

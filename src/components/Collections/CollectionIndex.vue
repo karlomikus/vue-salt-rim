@@ -21,7 +21,7 @@
                 <RouterLink class="collections__collection__title" :to="{ name: 'cocktails', query: { 'filter[collection_id]': collection.id } }">{{ collection.name }}</RouterLink>
                 <br>
                 <div class="collections__collection__content">
-                    {{ collection.cocktails.length }} {{ $t('cocktails.title') }}
+                    {{ collection.cocktails.length }} {{ $t('cocktail.cocktails') }}
                     <template v-if="collection.is_bar_shared">
                         &middot; {{ $t('collection-shared') }}
                     </template>
