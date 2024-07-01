@@ -76,7 +76,11 @@
     "add": "Benutzer erstellen",
     "confirm-delete": "Dies wird den Benutzer \"{name}\" löschen.",
     "delete-success": "Benutzer gelöscht",
-    "edit": "Benutzer bearbeiten"
+    "edit": "Benutzer bearbeiten",
+    "update-success": "Benutzer wurde aktuallisiert.",
+    "role": "Bar role",
+    "display-name": "Name",
+    "add-success": "Benutzer wurde hinzugefügt."
   },
   "filters": "Filter",
   "sort": "Sortieren",
@@ -191,16 +195,12 @@
   "select-category": "Wähle eine Kategorie...",
   "alcohol-proof": "Proof",
   "see-also": "siehe auch",
-  "user.name": "Name",
   "email": "Email",
   "password": "Passwort",
   "update-password": "Passwort ändern",
   "new-password": "Neues Passwort",
   "repeat-password": "Passwort wiederholen",
   "profile-updated": "Dein Profil wurde aktuallisiert",
-  "user.update-success": "Benutzer wurde aktuallisiert.",
-  "user.add-success": "Benutzer wurde hinzugefügt.",
-  "user.role": "Bar role",
   "tag": {
     "tags": "Tags",
     "help-text": "Mehrere Tags durch ein Komma trennen (\",\").",
@@ -505,7 +505,6 @@
     "confirm-revoke": "This will revoke token \"{name}\"",
     "revoke-success": "Token revoked"
   },
-  "last_used_at": "Last used",
   "expires_at": "Expires",
   "revoke": "Revoke",
   "copy": "Copy",
@@ -561,5 +560,7 @@
     "source": "Cocktail Herkunft"
   },
   "ABV-definition": "Volumenprozent Alkohol",
-  "ingredient-category": {}
+  "ingredient-category": {},
+  "last-used-at": "Last used",
+  "user": {}
 }

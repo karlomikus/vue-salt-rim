@@ -17,7 +17,7 @@
                 <input id="password-repeat" v-model="newUser.passwordRepeat" class="form-input" type="password" required>
             </div>
             <div class="form-group">
-                <label class="form-label form-label--required" for="name">{{ $t('user.name') }}:</label>
+                <label class="form-label form-label--required" for="name">{{ $t('users.display-name') }}:</label>
                 <input id="name" v-model="newUser.name" class="form-input" type="text" required>
             </div>
             <div style="text-align: right; margin-top: 20px;">

@@ -11,7 +11,7 @@
             <h3 style="margin-top: 0;" class="form-section-title">{{ $t('profile-information') }}</h3>
             <div class="block-container block-container--padded">
                 <div class="form-group">
-                    <label class="form-label form-label--required" for="name">{{ $t('user.name') }}:</label>
+                    <label class="form-label form-label--required" for="name">{{ $t('users.display-name') }}:</label>
                     <input id="name" v-model="user.name" class="form-input" type="text" required>
                 </div>
                 <div class="form-group">

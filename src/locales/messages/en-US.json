@@ -76,7 +76,11 @@
     "add": "Add user",
     "confirm-delete": "This will permanently delete user with name \"{name}\".",
     "delete-success": "User deleted successfully",
-    "edit": "Edit user"
+    "edit": "Edit user",
+    "update-success": "User updated successfully.",
+    "role": "Bar role",
+    "display-name": "Display name",
+    "add-success": "User added successfully."
   },
   "filters": "Filters",
   "sort": "Sort by",
@@ -191,16 +195,12 @@
   "select-category": "Select a category...",
   "alcohol-proof": "Proof",
   "see-also": "See also",
-  "user.name": "Display name",
   "email": "Email",
   "password": "Password",
   "update-password": "Update password",
   "new-password": "New password",
   "repeat-password": "Repeat password",
   "profile-updated": "Your profile is updated",
-  "user.update-success": "User updated successfully.",
-  "user.add-success": "User added successfully.",
-  "user.role": "Bar role",
   "tag": {
     "tags": "Tags",
     "help-text": "Separate multiple tags with a comma (\",\").",
@@ -505,7 +505,6 @@
     "confirm-revoke": "This will revoke token \"{name}\"",
     "revoke-success": "Token revoked"
   },
-  "last_used_at": "Last used",
   "expires_at": "Expires",
   "revoke": "Revoke",
   "copy": "Copy",
@@ -561,5 +560,7 @@
     "source": "Cocktail source"
   },
   "ABV-definition": "Alcohol by volume",
-  "ingredient-category": {}
+  "ingredient-category": {},
+  "last-used-at": "Last used",
+  "user": {}
 }

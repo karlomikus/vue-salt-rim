@@ -76,7 +76,11 @@
     "add": "Dodaj użytkownika",
     "confirm-delete": "Spowoduje to trwałe usunięcie użytkownika o nazwie \"{name}\".",
     "delete-success": "Pomyślnie usunięto użytkownika",
-    "edit": "Edytuj użytkownika"
+    "edit": "Edytuj użytkownika",
+    "update-success": "Użytkownik został pomyślnie zaktualizowany.",
+    "role": "Rola",
+    "display-name": "Wyświetlana nazwa",
+    "add-success": "Użytkownik został dodany pomyślnie."
   },
   "filters": "Filtry",
   "sort": "Sortuj według",
@@ -191,16 +195,12 @@
   "select-category": "Wybierz kategorię...",
   "alcohol-proof": "Proof",
   "see-also": "Zobacz także",
-  "user.name": "Wyświetlana nazwa",
   "email": "Email",
   "password": "Hasło",
   "update-password": "Aktualizować hasło",
   "new-password": "Nowe hasło",
   "repeat-password": "Powtórz hasło",
   "profile-updated": "Twój profil został zaktualizowany",
-  "user.update-success": "Użytkownik został pomyślnie zaktualizowany.",
-  "user.add-success": "Użytkownik został dodany pomyślnie.",
-  "user.role": "Rola",
   "tag": {
     "tags": "Tagi",
     "help-text": "Oddziel poszczególne tagi przecinkiem (\",\").",
@@ -505,7 +505,6 @@
     "confirm-revoke": "This will revoke token \"{name}\"",
     "revoke-success": "Token revoked"
   },
-  "last_used_at": "Last used",
   "expires_at": "Expires",
   "revoke": "Revoke",
   "copy": "Copy",
@@ -561,5 +560,7 @@
     "source": "Cocktail source"
   },
   "ABV-definition": "Alkohol objętościowo",
-  "ingredient-category": {}
+  "ingredient-category": {},
+  "last-used-at": "Last used",
+  "user": {}
 }
