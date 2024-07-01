@@ -15,7 +15,7 @@
       "list-error": "Greška prilikom dohvaćanja popisa za kupovinu sa servera"
     },
     "cocktails": "Kokteli koje mogu napraviti",
-    "used-in-cocktails": "Used in your {total} favorite cocktails"
+    "used-in-cocktails": "Koristi se u {total} omiljenih koktela"
   },
   "ingredient": {
     "title": "Sastojak",
@@ -41,7 +41,7 @@
     "is-variety": "Sastojak je podvrsta postojećeg sastojka",
     "information": "Podaci o sastojku",
     "extra-cocktails": "Dodaj u policu da bi mogli napraviti",
-    "cocktails-rest": "Rest of the cocktails",
+    "cocktails-rest": "Ostali kokteli",
     "has-variable-amount": "Ima varijabilnu količinu",
     "dialog": {
       "select-substitutes": "Odaberite zamjenske sastojke",
@@ -53,11 +53,11 @@
       "new-ingredient-fail": "Greška kod kreiranja sastojka.",
       "select-substitutes-for": "Odaberite zamjenske sastojke za \"{name}\"."
     },
-    "base": "Base",
+    "base": "Baza",
     "is-complex": "Sastojak sadrži druge sastojke",
-    "complex-title": "Include ingredients",
-    "complex-note": "If you have all of the listed ingredients, automatically match recipes with this ingredient",
-    "complex": "Complex ingredient",
+    "complex-title": "Uključi sastojke",
+    "complex-note": "Ako imate sve uključene sastojke, recepti s ovim sastojkom će automatski biti prikazani",
+    "complex": "Kompleksan sastojak",
     "variety-note": "Recipe matching will include the parent ingredient as a substitute (depending on user settings)"
   },
   "share": {
@@ -68,7 +68,7 @@
     "format-copy-failed": "Kopiranje teksta nije uspjelo",
     "copy-text": "Kopiraj kao običan tekst",
     "copy-md": "Kopiraj u Markdown formatu",
-    "copy-xml": "Copy as XML"
+    "copy-xml": "Kopiraj kao XML"
   },
   "cocktails.title": "Kokteli",
   "ingredients.title": "Sastojci",
@@ -96,7 +96,7 @@
     "Layer": "Slojevi"
   },
   "total": {
-    "title": "Total",
+    "title": "Ukupno",
     "cocktails": "Ukupno koktela",
     "ingredients": "Ukupno sastojaka"
   },
@@ -129,7 +129,7 @@
   "edit": "Uredi",
   "remove": "Ukloni",
   "description": "Opis",
-  "media": "Media",
+  "media": "Medijske datoteke",
   "field-supports-md": "Ovo polje podržava markdown format.",
   "cancel": "Odustani",
   "save": "Spremi",
@@ -205,7 +205,7 @@
   "users.add": "Dodaj korisnika",
   "users.edit": "Uredi korisnika",
   "user.name": "Ime",
-  "email": "Email",
+  "email": "E-mail",
   "admin": "Administrator",
   "password": "Lozinka",
   "update-password": "Uredi lozinku",
@@ -221,7 +221,7 @@
   "category.add-success": "Nova kategorija sastojaka je dodana",
   "user.update-success": "Korisnik je uređen",
   "user.add-success": "Novi korisnik je dodan",
-  "user.role": "Bar role",
+  "user.role": "Uloga u baru",
   "ingredient-category.confirm-delete": "Ova akcija će trajno ukloniti kategoriju \"{name}\".",
   "ingredient-category.delete-success": "Kategorija uspješno uklonjena",
   "tag": {
@@ -243,7 +243,7 @@
     "delete-success": "Čaša uspješno uklonjena",
     "update-success": "Čaša uspješno uređena",
     "add-success": "Nova čaša je dodana",
-    "volume": "Volume"
+    "volume": "Volumen"
   },
   "information": "Informacija",
   "image-url": "URL slike",
@@ -279,7 +279,7 @@
   "shelf-ingredients": "Sastojci u polici",
   "shopping-list-ingredients": "Sastojci na popisu za kupovinu",
   "notes": "Bilješke",
-  "collection-shared": "Shared with bar",
+  "collection-shared": "Podijeljeno s barom",
   "note": {
     "title": "Bilješka",
     "add": "Dodaj bilješku",
@@ -301,35 +301,35 @@
   "cocktails-similar": "Slični kokteli",
   "collections": {
     "add-to": "Dodaj u kolekciju",
-    "add-cocktail": "Add cocktail to collection",
+    "add-cocktail": "Dodaj koktel u kolekciju",
     "collection": "Kolekcija",
     "create": "Napravite novu kolekciju",
     "title": "Kolekcije",
     "add": "Nova kolekcija",
     "edit": "Uredi kolekciju",
-    "confirm-delete": "This will permanently delete collection with name \"{name}\".",
+    "confirm-delete": "Ova akcija će trajno ukloniti kolekciju \"{name}\".",
     "delete-success": "Kolekcija uspješno uklonjena",
     "update-success": "Kolekcija uspješno uređena",
     "add-success": "Kolekcija uspješno dodana",
     "confirm-remove-cocktail": "Ova će akcija ukloniti koktel it kolekcije",
     "add-from-query": "Kreiraj kolekciju iz trenutnih filtera",
     "cocktail-remove-success": "Koktel je uspješno uklonjen iz kolekcije",
-    "cocktail-add-success": "Cocktail added to collection",
-    "share-in-bar": "Share collection with all bar members"
+    "cocktail-add-success": "Koktel dodan u kolekciju",
+    "share-in-bar": "Podijeli kolekciju sa svim članovima bara"
   },
   "no-cocktails": "Nisu pronađeni kokteli",
   "global": "Globalno",
   "none": "Nijedan",
-  "clear": "Clear",
+  "clear": "Očisti",
   "date-added": "Datum uređivanja",
   "date-favorited": "Datum favoriziranja",
   "average-rating": "Prosječna ocjena",
   "missing-ingredients": "Nedostajali sastojci",
   "user-rating": "Korisnička ocijena",
   "pagination": {
-    "page": "Page",
-    "results": "Showing {on_page_results}/{total_results} results",
-    "prev": "Prev",
+    "page": "Stranica",
+    "results": "Prikazuje se {on_page_results}/{total_results} rezultata",
+    "prev": "Prethodno",
     "next": "Sljedeće",
     "cocktail-prev": "Previous cocktail",
     "cocktail-next": "Next cocktail"
