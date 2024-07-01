@@ -82,7 +82,7 @@
                         <input id="image_url" v-model="image.url" type="text" class="form-input">
                     </div>
                     <div class="form-group">
-                        <label class="form-label" for="image_copyrigh">{{ $t('image-copyright') }}</label>
+                        <label class="form-label" for="image_copyrigh">{{ $t('imageupload.copyright') }}</label>
                         <input id="image_copyrigh" v-model="image.copyright" type="text" class="form-input">
                     </div>
                 </template>

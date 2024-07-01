@@ -13,7 +13,7 @@
             <swiper-container v-if="cocktail.images.length > 0" navigation="true" :pagination="{clickable: true}" follow-finger="false">
                 <swiper-slide v-for="image in sortedImages" :key="image.sort">
                     <img :src="image.url" :alt="image.copyright" />
-                    <div v-if="image.copyright" class="cocktail-details__graphic__copyright">{{ $t('image-copyright-notice', { copyright: image.copyright }) }}</div>
+                    <div v-if="image.copyright" class="cocktail-details__graphic__copyright">{{ $t('imageupload.copyright-notice', { copyright: image.copyright }) }}</div>
                 </swiper-slide>
             </swiper-container>
             <img v-else src="/no-cocktail.jpg" alt="This cocktail does not have an image." />
@@ -178,7 +178,7 @@
                                 </RouterLink>
                                 <a class="dropdown-menu__item" target="_blank" href="#" @click.prevent="copy">
                                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18"><path d="M6.9998 6V3C6.9998 2.44772 7.44752 2 7.9998 2H19.9998C20.5521 2 20.9998 2.44772 20.9998 3V17C20.9998 17.5523 20.5521 18 19.9998 18H16.9998V20.9991C16.9998 21.5519 16.5499 22 15.993 22H4.00666C3.45059 22 3 21.5554 3 20.9991L3.0026 7.00087C3.0027 6.44811 3.45264 6 4.00942 6H6.9998ZM5.00242 8L5.00019 20H14.9998V8H5.00242ZM8.9998 6H16.9998V16H18.9998V4H8.9998V6Z"></path></svg>
-                                    {{ $t('cocktail-copy') }}
+                                    {{ $t('cocktail.copy-action') }}
                                 </a>
                                 <SaltRimDialog v-model="showCollectionDialog">
                                     <template #trigger>
@@ -212,7 +212,7 @@
                                         <path fill="none" d="M0 0h24v24H0z" />
                                         <path d="M10 6v2H5v11h11v-5h2v6a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h6zm11-3v8h-2V6.413l-7.793 7.794-1.414-1.414L17.585 5H13V3h8z" />
                                     </svg>
-                                    {{ $t('cocktail-source') }}
+                                    {{ $t('cocktail.source') }}
                                 </a>
                                 <a v-if="cocktail.access.can_delete" class="dropdown-menu__item" href="javascript:;" @click.prevent="deleteCocktail">
                                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18">
@@ -530,7 +530,7 @@ export default {
 
             ApiRequests.copyCocktail(this.cocktail.id).then(data => {
                 this.isLoading = false
-                this.$toast.default(this.$t('cocktail-copy-success'))
+                this.$toast.default(this.$t('cocktail.copy-success'))
                 this.$router.push({ name: 'cocktails.form', query: { id: data.id } })
             }).catch(e => {
                 this.isLoading = false

@@ -139,14 +139,18 @@
   },
   "amount": "Ilość",
   "units": "Jednostki",
-  "image-copyright": "Prawa autorskie do obrazu",
   "imageupload": {
     "browse": "Kliknij tutaj, aby przeglądać obrazy.",
     "validation": "PNG, JPG, WEBP or GIF · Max 100MB",
     "status": "Dodaj {current}/{max} obrazów.",
     "delete-confirm": "Spowoduje to trwałe usunięcie obrazu.",
     "delete-success": "Obraz został pomyślnie usunięty.",
-    "delete-fail": "Nie można usunąć obrazu."
+    "delete-fail": "Nie można usunąć obrazu.",
+    "copyright": "Prawa autorskie do obrazu",
+    "error": "Wystąpił błąd podczas przesyłania obrazów.",
+    "copyright-notice": "Image © {copyright}",
+    "error-cocktail": "Twój koktajl jest nadal zapisany.",
+    "error-ingredient": "Twój składnik jest nadal zapisany."
   },
   "confirm-dialog.title": "Jesteś pewny?",
   "confirm": "Potwierdz",
@@ -156,12 +160,10 @@
   "no-substitutes": "Nie wybrano zamienników.",
   "units-help-text": "Use \"oz\", \"cl\", \"ml\" for common fluid units to enable unit conversion on cocktail page.",
   "servings": "Servings",
-  "cocktail-source": "Cocktail source",
   "print-recipe": "Wydrukuj przepis",
   "create-public-link": "Utwórz link publiczny",
   "avg-rating": "Średnia ocena",
   "your-rating": "Twoja ocena",
-  "image-copyright-notice": "Image © {copyright}",
   "category": "Kategoria",
   "origin": "Pochodzenie",
   "sort-asc": "Asc",
@@ -173,9 +175,6 @@
   "edit-categories": "Edytuj kategorie",
   "parent-ingredient": "Składnik macierzysty",
   "select-category": "Wybierz kategorię...",
-  "image-upload-error": "Wystąpił błąd podczas przesyłania obrazów.",
-  "image-upload-error.cocktail": "Twój koktajl jest nadal zapisany.",
-  "image-upload-error.ingredient": "Twój składnik jest nadal zapisany.",
   "ABV.definition": "Alkohol objętościowo",
   "alcohol-proof": "Proof",
   "see-also": "Zobacz także",
@@ -507,8 +506,6 @@
   "expires_at": "Expires",
   "revoke": "Revoke",
   "copy": "Copy",
-  "cocktail-copy": "Duplicate and edit",
-  "cocktail-copy-success": "Cocktail duplicated",
   "exports": {
     "finished": "Finished",
     "processing": "Processing",
@@ -555,7 +552,9 @@
     "shared": "Publiczne koktajle",
     "unfavorited": "Usunięto \"{name}\" z ulubionych",
     "update-success": "Koktajl został pomyślnie zaktualizowany",
-    "add": "Dodaj koktajl"
-  },
-  "ingredients": {}
+    "add": "Dodaj koktajl",
+    "copy-action": "Duplicate and edit",
+    "copy-success": "Cocktail duplicated",
+    "source": "Cocktail source"
+  }
 }

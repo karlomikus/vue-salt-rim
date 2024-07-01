@@ -139,14 +139,18 @@
   },
   "amount": "Količina",
   "units": "Jedinica",
-  "image-copyright": "Izvor slike",
   "imageupload": {
     "browse": "Kliknite ovdje da bi ste odabrali sliku.",
     "validation": "PNG, JPG, WEBP ili GIF format · Maks. 100MB",
     "status": "Dodano {current}/{max} slika.",
     "delete-confirm": "Ova akcija će trajno ukloniti sliku.",
     "delete-success": "Slika uspješno uklonjena.",
-    "delete-fail": "Greška kod uklanjanja slike."
+    "delete-fail": "Greška kod uklanjanja slike.",
+    "copyright": "Izvor slike",
+    "error": "Dogodila se greška kod prijenosa slika.",
+    "copyright-notice": "Slika © {copyright}",
+    "error-cocktail": "Vaš koktel je sačuvan.",
+    "error-ingredient": "Vaš sastojak je sačuvan."
   },
   "confirm-dialog.title": "Jeste li sigurni?",
   "confirm": "Potvrdi",
@@ -156,12 +160,10 @@
   "no-substitutes": "Nema odabranih zamjena.",
   "units-help-text": "Koristite \"oz\", \"cl\", \"ml\" za jedinice za tekućinu kako bi ste omogućili konverziju.",
   "servings": "Porcije",
-  "cocktail-source": "Izvor koktela",
   "print-recipe": "Ispiši recept",
   "create-public-link": "Kreiraj javnu poveznicu",
   "avg-rating": "Pro. ocjena",
   "your-rating": "Tvoja ocjena",
-  "image-copyright-notice": "Slika © {copyright}",
   "category": "Kategorija",
   "origin": "Podrijetlo",
   "sort-asc": "Uzlazno",
@@ -173,9 +175,6 @@
   "edit-categories": "Uredi kategorije",
   "parent-ingredient": "Nadređeni sastojak",
   "select-category": "Odaberi kategoriju...",
-  "image-upload-error": "Dogodila se greška kod prijenosa slika.",
-  "image-upload-error.cocktail": "Vaš koktel je sačuvan.",
-  "image-upload-error.ingredient": "Vaš sastojak je sačuvan.",
   "ABV.definition": "Postotak alkohola",
   "alcohol-proof": "Stepen jačine",
   "see-also": "Povezani sastojci",
@@ -507,8 +506,6 @@
   "expires_at": "Expires",
   "revoke": "Revoke",
   "copy": "Copy",
-  "cocktail-copy": "Duplicate and edit",
-  "cocktail-copy-success": "Cocktail duplicated",
   "exports": {
     "finished": "Finished",
     "processing": "Processing",
@@ -555,7 +552,9 @@
     "shared": "Javni kokteli",
     "unfavorited": "Koktel \"{name}\" uklonjen iz favorita",
     "update-success": "Koktel uspješno uređen",
-    "add": "Dodaj koktel"
-  },
-  "ingredients": {}
+    "add": "Dodaj koktel",
+    "copy-action": "Duplicate and edit",
+    "copy-success": "Cocktail duplicated",
+    "source": "Izvor koktela"
+  }
 }

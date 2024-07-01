@@ -139,14 +139,18 @@
   },
   "amount": "Amount",
   "units": "Units",
-  "image-copyright": "Image copyright",
   "imageupload": {
     "browse": "Click here to browse for images.",
     "validation": "PNG, JPG, WEBP or GIF · Max 100MB",
     "status": "Added {current}/{max} images.",
     "delete-confirm": "This will permanently remove the image.",
     "delete-success": "Image removed successfully.",
-    "delete-fail": "Unable to remove the image."
+    "delete-fail": "Unable to remove the image.",
+    "copyright": "Image copyright",
+    "error": "An error occured while uploading images.",
+    "copyright-notice": "Image © {copyright}",
+    "error-cocktail": "Your cocktail is still saved.",
+    "error-ingredient": "Your ingredient is still saved."
   },
   "confirm-dialog.title": "Are you sure?",
   "confirm": "Confirm",
@@ -156,12 +160,10 @@
   "no-substitutes": "No substitutes selected.",
   "units-help-text": "Use \"oz\", \"cl\", \"ml\" for common fluid units to enable unit conversion on cocktail page.",
   "servings": "Servings",
-  "cocktail-source": "Cocktail source",
   "print-recipe": "Print recipe",
   "create-public-link": "Create public link",
   "avg-rating": "Avg. rating",
   "your-rating": "Your rating",
-  "image-copyright-notice": "Image © {copyright}",
   "category": "Category",
   "origin": "Origin",
   "sort-asc": "Asc",
@@ -173,9 +175,6 @@
   "edit-categories": "Edit categories",
   "parent-ingredient": "Parent ingredient",
   "select-category": "Select a category...",
-  "image-upload-error": "An error occured while uploading images.",
-  "image-upload-error.cocktail": "Your cocktail is still saved.",
-  "image-upload-error.ingredient": "Your ingredient is still saved.",
   "ABV.definition": "Alcohol by volume",
   "alcohol-proof": "Proof",
   "see-also": "See also",
@@ -507,8 +506,6 @@
   "expires_at": "Expires",
   "revoke": "Revoke",
   "copy": "Copy",
-  "cocktail-copy": "Duplicate and edit",
-  "cocktail-copy-success": "Cocktail duplicated",
   "exports": {
     "finished": "Finished",
     "processing": "Processing",
@@ -555,7 +552,9 @@
     "shared": "Public cocktails",
     "unfavorited": "Removed \"{name}\" from favorites",
     "update-success": "Cocktail updated successfully",
-    "add": "Add cocktail"
-  },
-  "ingredients": {}
+    "add": "Add cocktail",
+    "copy-action": "Duplicate and edit",
+    "copy-success": "Cocktail duplicated",
+    "source": "Cocktail source"
+  }
 }

@@ -4,7 +4,7 @@
     </div>
     <div ref="recipe" class="public-cocktail-recipe" itemscope itemtype="http://schema.org/Recipe">
         <div class="public-cocktail-recipe__image" itemprop="image" :content="mainImage.url" :style="{'background-image': 'url(' + mainImage.url + ')'}">
-            <div v-if="mainImage.copyright" class="public-cocktail-recipe__image__copyright">{{ $t('image-copyright-notice', { copyright: mainImage.copyright }) }}</div>
+            <div v-if="mainImage.copyright" class="public-cocktail-recipe__image__copyright">{{ $t('imageupload.copyright-notice', { copyright: mainImage.copyright }) }}</div>
         </div>
         <div class="public-cocktail-recipe__summary">
             <h2 itemprop="name">{{ cocktail.name }}</h2>
