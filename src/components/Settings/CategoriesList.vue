@@ -93,14 +93,13 @@ export default {
             this.showDialog = true
         },
         deleteCategory(category) {
-            this.$confirm(this.$t('ingredient-category.confirm-delete', {name: category.name}), {
+            this.$confirm(this.$t('category.confirm-delete', {name: category.name}), {
                 onResolved: (dialog) => {
                     this.isLoading = true
                     dialog.close()
                     ApiRequests.deleteIngredientCategory(category.id).then(() => {
                         this.isLoading = false
-                        this.$toast.default(this.$t('ingredient-category.delete-success'))
-                        this.refreshCategories()
+                        this.$toast.default(this.$t('ingredient-category.delete-success                 this.refreshCategories()
                     }).catch(e => {
                         this.$toast.error(e.message)
                         this.isLoading = false

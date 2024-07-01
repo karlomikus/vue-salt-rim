@@ -37,7 +37,7 @@
                             <label :for="'global-' + filter.id">{{ filter.name }}</label>
                         </div>
                     </Refinement>
-                    <Refinement id="ingredient-category" v-model="activeFilters.category_id" :title="$t('category')" :refinements="refineCategories" @change="updateRouterPath"></Refinement>
+                    <Refinement id="ingredient-category" v-model="activeFilters.category_id" :title="$t('category.title')" :refinements="refineCategories" @change="updateRouterPath"></Refinement>
                     <Refinement id="strength" v-model="activeFilters.strength" :title="$t('strength')" :refinements="refineStrength" type="radio" @change="updateRouterPath"></Refinement>
                 </div>
             </div>

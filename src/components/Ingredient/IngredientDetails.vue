@@ -25,7 +25,7 @@
                         <div class="item-details__chips__group__title">{{ $t('strength') }}:</div>
                         <ul v-if="ingredient.strength > 0" class="chips-list">
                             <li>
-                                <span class="chip"><abbr :title="$t('ABV.definition')">{{ $t('ABV') }}</abbr>: {{ ingredient.strength + '%' }}</span>
+                                <span class="chip"><abbr :title="$t('ABV-definition')">{{ $t('ABV') }}</abbr>: {{ ingredient.strength + '%' }}</span>
                             </li>
                             <li>
                                 <span class="chip">{{ $t('alcohol-proof') }}: {{ ingredient.strength * 2 }}</span>
