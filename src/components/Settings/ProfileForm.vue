@@ -23,7 +23,7 @@
                     <select id="ui-language" v-model="currentLocale" class="form-select">
                         <option v-for="locale in $i18n.availableLocales" :key="locale" :value="locale">{{ $t('locales.' + locale) }}</option>
                     </select>
-                    <p class="form-input-hint"><a href="https://crowdin.com/project/bar-assistant" target="_blank">Help with translations</a></p>
+                    <p class="form-input-hint"><a href="https://crowdin.com/project/bar-assistant" target="_blank">{{ $t('locales.help') }}</a></p>
                 </div>
             </div>
             <h3 class="form-section-title">{{ $t('password') }}</h3>
