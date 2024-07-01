@@ -4,7 +4,8 @@
     "fr-FR": "Francuski",
     "hr-HR": "Chorwacki",
     "de-DE": "Niemiecki",
-    "pl-PL": "Polski"
+    "pl-PL": "Polski",
+    "help": "Pomoc w tłumaczeniach"
   },
   "shelf": {
     "title": "Półka",
@@ -71,7 +72,17 @@
   "settings": "Ustawienia",
   "logout": "Wyloguj",
   "profile": "Profil",
-  "users": "Użytkownicy",
+  "users": {
+    "title": "Użytkownicy",
+    "add": "Dodaj użytkownika",
+    "confirm-delete": "Spowoduje to trwałe usunięcie użytkownika o nazwie \"{name}\".",
+    "delete-success": "Pomyślnie usunięto użytkownika",
+    "edit": "Edytuj użytkownika",
+    "update-success": "Użytkownik został pomyślnie zaktualizowany.",
+    "role": "Rola",
+    "display-name": "Wyświetlana nazwa",
+    "add-success": "Użytkownik został dodany pomyślnie."
+  },
   "filters": "Filtry",
   "sort": "Sortuj według",
   "my-favorites": "Moje ulubione",
@@ -164,7 +175,15 @@
   "create-public-link": "Utwórz link publiczny",
   "avg-rating": "Średnia ocena",
   "your-rating": "Twoja ocena",
-  "category": "Kategoria",
+  "category": {
+    "title": "Kategoria",
+    "add": "Dodaj kategorię",
+    "add-success": "Kategoria składników została pomyślnie dodana.",
+    "edit": "Edytuj kategorię",
+    "update-success": "Kategoria składnika została pomyślnie zaktualizowana.",
+    "confirm-delete": "This will permanently category with name \"{name}\".",
+    "delete-success": "Kategoria składnika została pomyślnie usunięta"
+  },
   "origin": "Pochodzenie",
   "sort-asc": "Asc",
   "sort-desc": "Desc",
@@ -175,29 +194,14 @@
   "edit-categories": "Edytuj kategorie",
   "parent-ingredient": "Składnik macierzysty",
   "select-category": "Wybierz kategorię...",
-  "ABV.definition": "Alkohol objętościowo",
   "alcohol-proof": "Proof",
   "see-also": "Zobacz także",
-  "users.add": "Dodaj użytkownika",
-  "users.edit": "Edytuj użytkownika",
-  "user.name": "Wyświetlana nazwa",
   "email": "Email",
   "password": "Hasło",
   "update-password": "Aktualizować hasło",
-  "users.confirm-delete": "Spowoduje to trwałe usunięcie użytkownika o nazwie \"{name}\".",
-  "users.delete-success": "Pomyślnie usunięto użytkownika",
-  "category.add": "Dodaj kategorię",
-  "category.edit": "Edytuj kategorię",
   "new-password": "Nowe hasło",
   "repeat-password": "Powtórz hasło",
   "profile-updated": "Twój profil został zaktualizowany",
-  "category.update-success": "Kategoria składnika została pomyślnie zaktualizowana.",
-  "category.add-success": "Kategoria składników została pomyślnie dodana.",
-  "user.update-success": "Użytkownik został pomyślnie zaktualizowany.",
-  "user.add-success": "Użytkownik został dodany pomyślnie.",
-  "user.role": "Rola",
-  "ingredient-category.confirm-delete": "This will permanently category with name \"{name}\".",
-  "ingredient-category.delete-success": "Kategoria składnika została pomyślnie usunięta",
   "tag": {
     "tags": "Tagi",
     "help-text": "Oddziel poszczególne tagi przecinkiem (\",\").",
@@ -502,7 +506,6 @@
     "confirm-revoke": "This will revoke token \"{name}\"",
     "revoke-success": "Token revoked"
   },
-  "last_used_at": "Last used",
   "expires_at": "Expires",
   "revoke": "Revoke",
   "copy": "Copy",
@@ -556,5 +559,9 @@
     "copy-action": "Duplicate and edit",
     "copy-success": "Cocktail duplicated",
     "source": "Cocktail source"
-  }
+  },
+  "ABV-definition": "Alkohol objętościowo",
+  "ingredient-category": {},
+  "last-used-at": "Last used",
+  "user": {}
 }
