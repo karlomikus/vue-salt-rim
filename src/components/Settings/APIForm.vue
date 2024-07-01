@@ -26,7 +26,7 @@
                 </div>
             </div>
             <div class="api-ability">
-                <h4>{{ $t('ingredients.title') }}</h4>
+                <h4>{{ $t('ingredient.ingredients') }}</h4>
                 <div class="api-ability__options">
                     <label class="form-checkbox">
                         <input v-model="apiKey.abilities" type="checkbox" value="ingredients.read">

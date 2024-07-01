@@ -91,7 +91,7 @@
                     <input id="tags" v-model="cocktailTags" type="text" class="form-input">
                 </div>
             </div>
-            <h3 class="form-section-title">{{ $t('ingredients.title') }}</h3>
+            <h3 class="form-section-title">{{ $t('ingredient.ingredients') }}</h3>
             <div v-for="(ingredient, idx) in result.ingredients" :key="idx" class="block-container block-container--padded scraper-ingredients__ingredient">
                 <p><strong>{{ $t('source') }}:</strong> {{ ingredient.source }}</p>
                 <div class="scraper-ingredients__ingredient__inputs">

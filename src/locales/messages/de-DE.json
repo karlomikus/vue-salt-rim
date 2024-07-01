@@ -55,7 +55,8 @@
     "is-complex": "Zutat enthält andere Zutaten",
     "complex-note": "If you have all of the listed ingredients, automatically match recipes with this ingredient",
     "complex": "Complex ingredient",
-    "variety-note": "Recipe matching will include the parent ingredient as a substitute (depending on user settings)"
+    "variety-note": "Recipe matching will include the parent ingredient as a substitute (depending on user settings)",
+    "ingredients": "Zutaten"
   },
   "share": {
     "title": "Aktie",
@@ -67,7 +68,6 @@
     "copy-md": "Copy as Markdown",
     "copy-xml": "Copy as XML"
   },
-  "ingredients.title": "Zutaten",
   "settings": "Einstellungen",
   "logout": "Logout",
   "profile": "Profil",
@@ -556,5 +556,6 @@
     "unfavorited": "\"{name}\" aus den Favoriten entfernt",
     "update-success": "Cocktail aktuallisiert",
     "add": "Neuer Cocktail"
-  }
+  },
+  "ingredients": {}
 }

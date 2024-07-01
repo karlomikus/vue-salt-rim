@@ -55,7 +55,8 @@
     "is-complex": "L'ingrédient contient d'autres ingrédients",
     "complex-note": "If you have all of the listed ingredients, automatically match recipes with this ingredient",
     "complex": "Complex ingredient",
-    "variety-note": "Recipe matching will include the parent ingredient as a substitute (depending on user settings)"
+    "variety-note": "Recipe matching will include the parent ingredient as a substitute (depending on user settings)",
+    "ingredients": "Ingrédients"
   },
   "share": {
     "title": "Partager",
@@ -67,7 +68,6 @@
     "copy-md": "Copy as Markdown",
     "copy-xml": "Copy as XML"
   },
-  "ingredients.title": "Ingrédients",
   "settings": "Paramètres",
   "logout": "Déconnexion",
   "profile": "Profil",
@@ -556,5 +556,6 @@
     "unfavorited": "Suppression de \"{name}\" des favoris",
     "update-success": "Cocktail mis à jour avec succès",
     "add": "Ajouter un cocktail"
-  }
+  },
+  "ingredients": {}
 }

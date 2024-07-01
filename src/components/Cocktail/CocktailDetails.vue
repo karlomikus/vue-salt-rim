@@ -226,7 +226,7 @@
                     </div>
                 </div>
                 <div v-if="cocktail.ingredients.length > 0" class="block-container block-container--padded">
-                    <h3 class="details-block-container__title">{{ $t('ingredients.title') }}</h3>
+                    <h3 class="details-block-container__title">{{ $t('ingredient.ingredients') }}</h3>
                     <div style="display: grid; grid-template-columns: 1fr 1fr;">
                         <div class="cocktail-button-group">
                             <h4>{{ $t('servings') }}:</h4>

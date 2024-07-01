@@ -55,7 +55,8 @@
     "is-complex": "Składnik zawiera inne składniki",
     "complex-note": "Jeśli posiadasz wszystkie poniższe składniki, ten składnik zostanie automatycznie dodany do Twojej półki.",
     "complex": "Złożony składnik",
-    "variety-note": "Recipe matching will include the parent ingredient as a substitute (depending on user settings)"
+    "variety-note": "Recipe matching will include the parent ingredient as a substitute (depending on user settings)",
+    "ingredients": "Składniki"
   },
   "share": {
     "title": "Share",
@@ -67,7 +68,6 @@
     "copy-md": "Kopiuj jako Markdown",
     "copy-xml": "Kopiuj jako XML"
   },
-  "ingredients.title": "Składniki",
   "settings": "Ustawienia",
   "logout": "Wyloguj",
   "profile": "Profil",
@@ -556,5 +556,6 @@
     "unfavorited": "Usunięto \"{name}\" z ulubionych",
     "update-success": "Koktajl został pomyślnie zaktualizowany",
     "add": "Dodaj koktajl"
-  }
+  },
+  "ingredients": {}
 }
