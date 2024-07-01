@@ -14,8 +14,7 @@
       "stats-error": "An error occured while fetching stats from a server",
       "list-error": "An error occured while fetching ingredients on your shopping list from a server"
     },
-    "cocktails": "Cocktails I can make",
-    "used-in-cocktails": "Used in your {total} favorite cocktails"
+    "cocktails": "Cocktails I can make"
   },
   "ingredient": {
     "title": "Ingredient",
@@ -41,7 +40,6 @@
     "is-variety": "Ingredient is variety of another ingredient",
     "information": "Ingredient information",
     "extra-cocktails": "Add to shelf and you can make",
-    "cocktails-rest": "Rest of the cocktails",
     "has-variable-amount": "Has variable amount",
     "dialog": {
       "select-substitutes": "Edit substitute ingredients",
@@ -55,7 +53,6 @@
     },
     "base": "Base",
     "is-complex": "Ingredient contains other ingredients",
-    "complex-title": "Include ingredients",
     "complex-note": "If you have all of the listed ingredients, automatically match recipes with this ingredient",
     "complex": "Complex ingredient",
     "variety-note": "Recipe matching will include the parent ingredient as a substitute (depending on user settings)"
@@ -83,7 +80,6 @@
   "filters": "Filters",
   "sort": "Sort by",
   "cocktail.filters": "Cocktail filters",
-  "my-cocktails": "My cocktails",
   "my-favorites": "My favorites",
   "cocktails.shared": "Public cocktails",
   "method": {
@@ -108,7 +104,6 @@
   "rating": "Rating",
   "created": "Created",
   "updated": "Updated",
-  "all": "All",
   "non-alcoholic": "Non alcoholic",
   "weak": "Weak",
   "medium": "Medium",
@@ -206,10 +201,8 @@
   "users.edit": "Edit user",
   "user.name": "Display name",
   "email": "Email",
-  "admin": "Administrator",
   "password": "Password",
   "update-password": "Update password",
-  "is-admin": "Is administrator",
   "users.confirm-delete": "This will permanently delete user with name \"{name}\".",
   "users.delete-success": "User deleted successfully",
   "category.add": "Add category",
@@ -301,7 +294,6 @@
   "cocktails-similar": "Similar cocktails",
   "collections": {
     "add-to": "Add to collection",
-    "add-cocktail": "Add cocktail to collection",
     "collection": "Collection",
     "create": "Create a new collection",
     "title": "Collections",
@@ -329,8 +321,6 @@
   "pagination": {
     "page": "Page",
     "results": "Showing {on_page_results}/{total_results} results",
-    "prev": "Prev",
-    "next": "Next",
     "cocktail-prev": "Previous cocktail",
     "cocktail-next": "Next cocktail"
   },
@@ -352,7 +342,6 @@
   "cocktails-not-found": "No cocktails found",
   "ingredients-not-found": "No ingredients found",
   "empty-state-default": "No items found",
-  "your-collections": "Your collections",
   "view": "View",
   "missing-collections": "You don't have any collections",
   "sort-direction": "Sort order",
@@ -361,7 +350,6 @@
     "confirm-logout": "Are you sure you want to sign out of your current session?",
     "password-forgot": "Forgot password",
     "password-forgot-help-text": "Enter the email address associated with your account and we'll send you a link to reset setup a new password.",
-    "request-password-reset": "Reset password",
     "reset-email-sent": "If an account is registered with this email, it will receive a message with password reset link.",
     "reset-password": "Reset password",
     "reset-password-reset": "Reset",
@@ -531,8 +519,7 @@
     "add-success": "Token created",
     "token-notice": "Please save this API token somewhere safe and accessible. For security reasons, you won't be able to view it again. If you lose this API token, you'll need to generate a new one.",
     "confirm-revoke": "This will revoke token \"{name}\"",
-    "revoke-success": "Token revoked",
-    "exports": "Exports"
+    "revoke-success": "Token revoked"
   },
   "last_used_at": "Last used",
   "expires_at": "Expires",
@@ -566,7 +553,7 @@
   "wakelock-toggle": "Prevent screen locking",
   "ingredients-not-selected": "No ingredients selected",
   "ingredients": {
-    "select": "Select ingredients"
+    "page": {}
   },
   "cocktail.missing-ing-sub-available": "Missing, but you have substitutes available",
   "cocktail.missing-ing-complex": "Missing, but you can make it with ingredients in your shelf",

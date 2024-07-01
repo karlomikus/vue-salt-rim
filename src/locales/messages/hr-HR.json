@@ -14,8 +14,7 @@
       "stats-error": "Greška prilikom dohvaćanja statistika sa servera",
       "list-error": "Greška prilikom dohvaćanja popisa za kupovinu sa servera"
     },
-    "cocktails": "Kokteli koje mogu napraviti",
-    "used-in-cocktails": "Koristi se u {total} omiljenih koktela"
+    "cocktails": "Kokteli koje mogu napraviti"
   },
   "ingredient": {
     "title": "Sastojak",
@@ -41,7 +40,6 @@
     "is-variety": "Sastojak je podvrsta postojećeg sastojka",
     "information": "Podaci o sastojku",
     "extra-cocktails": "Dodaj u policu da bi mogli napraviti",
-    "cocktails-rest": "Ostali kokteli",
     "has-variable-amount": "Ima varijabilnu količinu",
     "dialog": {
       "select-substitutes": "Odaberite zamjenske sastojke",
@@ -55,7 +53,6 @@
     },
     "base": "Baza",
     "is-complex": "Sastojak sadrži druge sastojke",
-    "complex-title": "Uključi sastojke",
     "complex-note": "Ako imate sve uključene sastojke, recepti s ovim sastojkom će automatski biti prikazani",
     "complex": "Kompleksan sastojak",
     "variety-note": "Recipe matching will include the parent ingredient as a substitute (depending on user settings)"
@@ -83,7 +80,6 @@
   "filters": "Filteri",
   "sort": "Sortiranje",
   "cocktail.filters": "Filteri koktela",
-  "my-cocktails": "Moji kokteli",
   "my-favorites": "Moji favoriti",
   "cocktails.shared": "Javni kokteli",
   "method": {
@@ -108,7 +104,6 @@
   "rating": "Ocjena",
   "created": "Created",
   "updated": "Updated",
-  "all": "Svi",
   "non-alcoholic": "Bez alkohola",
   "weak": "Slabi",
   "medium": "Srednji",
@@ -206,10 +201,8 @@
   "users.edit": "Uredi korisnika",
   "user.name": "Ime",
   "email": "E-mail",
-  "admin": "Administrator",
   "password": "Lozinka",
   "update-password": "Uredi lozinku",
-  "is-admin": "Administrator",
   "users.confirm-delete": "Ova akcija će trajno ukloniti korisnika \"{name}\".",
   "users.delete-success": "Korisnik uspješno uklonjen",
   "category.add": "Dodaj kategoriju",
@@ -301,7 +294,6 @@
   "cocktails-similar": "Slični kokteli",
   "collections": {
     "add-to": "Dodaj u kolekciju",
-    "add-cocktail": "Dodaj koktel u kolekciju",
     "collection": "Kolekcija",
     "create": "Napravite novu kolekciju",
     "title": "Kolekcije",
@@ -329,8 +321,6 @@
   "pagination": {
     "page": "Stranica",
     "results": "Prikazuje se {on_page_results}/{total_results} rezultata",
-    "prev": "Prethodno",
-    "next": "Sljedeće",
     "cocktail-prev": "Previous cocktail",
     "cocktail-next": "Next cocktail"
   },
@@ -352,7 +342,6 @@
   "cocktails-not-found": "Nisu pronađeni kokteli",
   "ingredients-not-found": "No ingredients found",
   "empty-state-default": "No items found",
-  "your-collections": "Vaše zbirke",
   "view": "Pregledaj",
   "missing-collections": "Nema pronađenih kolekcija",
   "sort-direction": "Sort order",
@@ -361,7 +350,6 @@
     "confirm-logout": "Are you sure you want to sign out of your current session?",
     "password-forgot": "Forgot password",
     "password-forgot-help-text": "Enter the email address associated with your account and we'll send you a link to reset setup a new password.",
-    "request-password-reset": "Reset password",
     "reset-email-sent": "If an account is registered with this email, it will receive a message with password reset link.",
     "reset-password": "Reset password",
     "reset-password-reset": "Reset",
@@ -531,8 +519,7 @@
     "add-success": "Token created",
     "token-notice": "Please save this API token somewhere safe and accessible. For security reasons, you won't be able to view it again. If you lose this API token, you'll need to generate a new one.",
     "confirm-revoke": "This will revoke token \"{name}\"",
-    "revoke-success": "Token revoked",
-    "exports": "Exports"
+    "revoke-success": "Token revoked"
   },
   "last_used_at": "Last used",
   "expires_at": "Expires",
@@ -566,7 +553,7 @@
   "wakelock-toggle": "Prevent screen locking",
   "ingredients-not-selected": "Nema odabranih sastojaka",
   "ingredients": {
-    "select": "Select ingredients"
+    "page": {}
   },
   "cocktail.missing-ing-sub-available": "Missing, but you have substitutes available",
   "cocktail.missing-ing-complex": "Missing, but you can make it with ingredients in your shelf",

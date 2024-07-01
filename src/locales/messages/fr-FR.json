@@ -14,8 +14,7 @@
       "stats-error": "Une erreur s’est produite lors de la récupération des statistiques d’un serveur",
       "list-error": "Une erreur s’est produite lors de la récupération des ingrédients de votre liste de courses à partir d’un serveur"
     },
-    "cocktails": "Des cocktails que je peux faire",
-    "used-in-cocktails": "Used in your {total} favorite cocktails"
+    "cocktails": "Des cocktails que je peux faire"
   },
   "ingredient": {
     "title": "Ingrédient",
@@ -41,7 +40,6 @@
     "is-variety": "L’ingrédient est la variété d’un autre ingrédient",
     "information": "Informations sur les ingrédients",
     "extra-cocktails": "Add to shelf and you can make",
-    "cocktails-rest": "Rest of the cocktails",
     "has-variable-amount": "A un montant variable",
     "dialog": {
       "select-substitutes": "Sélectionner des ingrédients de substitution",
@@ -55,7 +53,6 @@
     },
     "base": "Base",
     "is-complex": "L'ingrédient contient d'autres ingrédients",
-    "complex-title": "Include ingredients",
     "complex-note": "If you have all of the listed ingredients, automatically match recipes with this ingredient",
     "complex": "Complex ingredient",
     "variety-note": "Recipe matching will include the parent ingredient as a substitute (depending on user settings)"
@@ -83,7 +80,6 @@
   "filters": "Filtres",
   "sort": "Trier",
   "cocktail.filters": "Filtres cocktail",
-  "my-cocktails": "Mes cocktails",
   "my-favorites": "Mes coups de cœur",
   "cocktails.shared": "Cocktails publics",
   "method": {
@@ -108,7 +104,6 @@
   "rating": "Évaluation",
   "created": "Created",
   "updated": "Updated",
-  "all": "Tous",
   "non-alcoholic": "Non alcoolisé",
   "weak": "Faible",
   "medium": "Moyen",
@@ -206,10 +201,8 @@
   "users.edit": "Modifier l’utilisateur",
   "user.name": "Nom",
   "email": "Email",
-  "admin": "Administrateur",
   "password": "Mot de passe",
   "update-password": "Mettre à jour le mot de passe",
-  "is-admin": "Est administrateur",
   "users.confirm-delete": "Cela supprimera définitivement l’utilisateur avec le nom \"{name}\".",
   "users.delete-success": "Utilisateur supprimé avec succès",
   "category.add": "Ajouter une catégorie",
@@ -301,7 +294,6 @@
   "cocktails-similar": "Cocktails similaires",
   "collections": {
     "add-to": "Add to collection",
-    "add-cocktail": "Add cocktail to collection",
     "collection": "Collection",
     "create": "Créer une nouvelle collection",
     "title": "Collections",
@@ -329,8 +321,6 @@
   "pagination": {
     "page": "Page",
     "results": "Showing {on_page_results}/{total_results} results",
-    "prev": "Prev",
-    "next": "Next",
     "cocktail-prev": "Previous cocktail",
     "cocktail-next": "Next cocktail"
   },
@@ -352,7 +342,6 @@
   "cocktails-not-found": "Aucun cocktail trouvé",
   "ingredients-not-found": "No ingredients found",
   "empty-state-default": "No items found",
-  "your-collections": "Vos collections",
   "view": "Voir",
   "missing-collections": "You don't have any collections",
   "sort-direction": "Sort order",
@@ -361,7 +350,6 @@
     "confirm-logout": "Are you sure you want to sign out of your current session?",
     "password-forgot": "Forgot password",
     "password-forgot-help-text": "Enter the email address associated with your account and we'll send you a link to reset setup a new password.",
-    "request-password-reset": "Reset password",
     "reset-email-sent": "If an account is registered with this email, it will receive a message with password reset link.",
     "reset-password": "Reset password",
     "reset-password-reset": "Reset",
@@ -531,8 +519,7 @@
     "add-success": "Token created",
     "token-notice": "Please save this API token somewhere safe and accessible. For security reasons, you won't be able to view it again. If you lose this API token, you'll need to generate a new one.",
     "confirm-revoke": "This will revoke token \"{name}\"",
-    "revoke-success": "Token revoked",
-    "exports": "Exports"
+    "revoke-success": "Token revoked"
   },
   "last_used_at": "Last used",
   "expires_at": "Expires",
@@ -566,7 +553,7 @@
   "wakelock-toggle": "Prevent screen locking",
   "ingredients-not-selected": "Aucun ingrédient sélectionné",
   "ingredients": {
-    "select": "Select ingredients"
+    "page": {}
   },
   "cocktail.missing-ing-sub-available": "Missing, but you have substitutes available",
   "cocktail.missing-ing-complex": "Missing, but you can make it with ingredients in your shelf",

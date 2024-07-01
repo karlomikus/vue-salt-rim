@@ -14,8 +14,7 @@
       "stats-error": "Beim Abrufen von Statistiken von einem Server ist ein Fehler aufgetreten.",
       "list-error": "Beim Abrufen Ihrer Einkaufsliste von einem Server ist ein Fehler aufgetreten."
     },
-    "cocktails": "Cocktails, die ich mixen kann",
-    "used-in-cocktails": "Used in your {total} favorite cocktails"
+    "cocktails": "Cocktails, die ich mixen kann"
   },
   "ingredient": {
     "title": "Besandteil",
@@ -41,7 +40,6 @@
     "is-variety": "Bestandteil ist eine Variation von einem Bestandteil",
     "information": "Bestandteil Informationen",
     "extra-cocktails": "Add to shelf and you can make",
-    "cocktails-rest": "Rest of the cocktails",
     "has-variable-amount": "Hat einen variablen Betrag",
     "dialog": {
       "select-substitutes": "Ersatz wählen",
@@ -55,7 +53,6 @@
     },
     "base": "Base",
     "is-complex": "Zutat enthält andere Zutaten",
-    "complex-title": "Include ingredients",
     "complex-note": "If you have all of the listed ingredients, automatically match recipes with this ingredient",
     "complex": "Complex ingredient",
     "variety-note": "Recipe matching will include the parent ingredient as a substitute (depending on user settings)"
@@ -83,7 +80,6 @@
   "filters": "Filter",
   "sort": "Sortieren",
   "cocktail.filters": "Cocktail Filter",
-  "my-cocktails": "Meine Cocktails",
   "my-favorites": "Meine Favoriten",
   "cocktails.shared": "Geteilte Cocktails",
   "method": {
@@ -108,7 +104,6 @@
   "rating": "Bewertung",
   "created": "Created",
   "updated": "Updated",
-  "all": "Alle",
   "non-alcoholic": "Alkoholfrei",
   "weak": "Schwach",
   "medium": "Mittel",
@@ -206,10 +201,8 @@
   "users.edit": "Benutzer bearbeiten",
   "user.name": "Name",
   "email": "Email",
-  "admin": "Administrator",
   "password": "Passwort",
   "update-password": "Passwort ändern",
-  "is-admin": "Ist ein administrator",
   "users.confirm-delete": "Dies wird den Benutzer \"{name}\" löschen.",
   "users.delete-success": "Benutzer gelöscht",
   "category.add": "Kategorie hinzufügen",
@@ -301,7 +294,6 @@
   "cocktails-similar": "Ähnliche Cocktails",
   "collections": {
     "add-to": "Add to collection",
-    "add-cocktail": "Add cocktail to collection",
     "collection": "Collection",
     "create": "Erstellen Sie eine neue Sammlung",
     "title": "Sammlungen",
@@ -329,8 +321,6 @@
   "pagination": {
     "page": "Page",
     "results": "Showing {on_page_results}/{total_results} results",
-    "prev": "Prev",
-    "next": "Next",
     "cocktail-prev": "Previous cocktail",
     "cocktail-next": "Next cocktail"
   },
@@ -352,7 +342,6 @@
   "cocktails-not-found": "Keine Cocktails gefunden",
   "ingredients-not-found": "No ingredients found",
   "empty-state-default": "No items found",
-  "your-collections": "Ihre Sammlungen",
   "view": "Sicht",
   "missing-collections": "You don't have any collections",
   "sort-direction": "Sort order",
@@ -361,7 +350,6 @@
     "confirm-logout": "Are you sure you want to sign out of your current session?",
     "password-forgot": "Forgot password",
     "password-forgot-help-text": "Enter the email address associated with your account and we'll send you a link to reset setup a new password.",
-    "request-password-reset": "Reset password",
     "reset-email-sent": "If an account is registered with this email, it will receive a message with password reset link.",
     "reset-password": "Reset password",
     "reset-password-reset": "Reset",
@@ -531,8 +519,7 @@
     "add-success": "Token created",
     "token-notice": "Please save this API token somewhere safe and accessible. For security reasons, you won't be able to view it again. If you lose this API token, you'll need to generate a new one.",
     "confirm-revoke": "This will revoke token \"{name}\"",
-    "revoke-success": "Token revoked",
-    "exports": "Exports"
+    "revoke-success": "Token revoked"
   },
   "last_used_at": "Last used",
   "expires_at": "Expires",
@@ -566,7 +553,7 @@
   "wakelock-toggle": "Prevent screen locking",
   "ingredients-not-selected": "Keine Zutaten ausgewählt",
   "ingredients": {
-    "select": "Select ingredients"
+    "page": {}
   },
   "cocktail.missing-ing-sub-available": "Missing, but you have substitutes available",
   "cocktail.missing-ing-complex": "Missing, but you can make it with ingredients in your shelf",
