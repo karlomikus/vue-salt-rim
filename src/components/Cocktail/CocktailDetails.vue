@@ -704,7 +704,7 @@ swiper-container {
     font-size: 1.2rem;
     margin-left: auto;
     text-align: right;
-    font-feature-settings: "frac";
+    /* font-feature-settings: "frac"; */
 }
 
 @media (max-width: 450px) {

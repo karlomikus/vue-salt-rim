@@ -13,6 +13,10 @@ const cocktails = ref([])
 const isLoading = ref(false)
 
 watch(() => route.params.id, refreshCollection, { immediate: true })
+watch(cocktails, () => {
+    saveState()
+}, { deep: true })
+
 
 const totalCocktailCount = computed(() => {
     return cocktails.value.reduce((acc, obj) => acc + obj.count, 0)
@@ -29,11 +33,11 @@ const uniqueCollectionIngredients = computed(() => {
 
     const amountsByIngredients = ingredientsWithCalculatedAmounts.reduce((acc, ingredient) => {
         const id = ingredient.ingredient_id
-        const units = ingredient.units
         if (!acc[id]) {
             acc[id] = { ...ingredient, by_amounts: {}, total_cocktails: 0 }
         }
 
+        const units = ingredient.units.toLowerCase()
         if (!acc[id].by_amounts[units]) {
             acc[id].by_amounts[units] = { units: units, calculated_amount: 0 }
         }
@@ -47,12 +51,35 @@ const uniqueCollectionIngredients = computed(() => {
     return Object.values(amountsByIngredients)
 })
 
+const state = computed(() => {
+    return cocktails.value.map(c => {
+        return { i: c.id, c: c.count }
+    })
+})
+
 async function refreshCollection(id) {
     isLoading.value = true
     collection.value = await ApiRequests.fetchCollection(id)
+    const existingState = localStorage.getItem('collection_' + collection.value.id)
     cocktails.value = (await ApiRequests.fetchCocktails({ 'filter[id]': collection.value.cocktails.join(',') })).data
-    cocktails.value.map(c => c.count = 0)
+    cocktails.value.map(c => {
+        if (existingState) {
+            const stateObj = JSON.parse(existingState)
+            const existingCocktailState = stateObj.find(o => o.i == c.id)
+            if (existingCocktailState) {
+                c.count = existingCocktailState.c
+            } else {
+                c.count = 0
+            }
+        } else {
+            c.count = 0
+        }
+    })
     isLoading.value = false
+}
+
+function saveState() {
+    localStorage.setItem('collection_' + collection.value.id, JSON.stringify(state.value))
 }
 </script>
 
@@ -62,6 +89,7 @@ async function refreshCollection(id) {
     </PageHeader>
     <div>
         <OverlayLoader v-if="isLoading" />
+        <h3 class="form-section-title">{{ $t('collections.cocktail-quantities') }}</h3>
         <div class="block-container block-container--padded cocktail-quantity-grid">
             <div v-for="cocktail in cocktails" :key="cocktail.id" class="cocktail-quantity">
                 <div class="form-group">
