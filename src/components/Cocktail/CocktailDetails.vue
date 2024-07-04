@@ -303,7 +303,7 @@
                     <IngredientSpotlight :id="cocktail.ingredients[0].ingredient_id"></IngredientSpotlight>
                 </template>
                 <h3 class="page-subtitle">{{ $t('cocktail-collections') }}</h3>
-                <CocktailCollections :cocktail="cocktail" @cocktail-removed-from-collection="fetchCocktail"></CocktailCollections>
+                <CocktailCollections :cocktail="cocktail" @cocktail-removed-from-collection="fetchCocktail" @add-to-collection="showCollectionDialog = !showCollectionDialog"></CocktailCollections>
             </div>
         </div>
     </div>
