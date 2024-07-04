@@ -87,8 +87,6 @@ Create a new config file in `public/config.js`, with the following content
 window.srConfig = {};
 window.srConfig.API_URL = "$API_URL";
 window.srConfig.MEILISEARCH_URL = "$MEILISEARCH_URL";
-// Optional variables
-// Valid locales: en-US, hr-HR, fr-FR
 window.srConfig.DEFAULT_LOCALE = "en-US";
 window.srConfig.MAILS_ENABLED = false;
 ```
@@ -112,6 +110,8 @@ $ npm run dev
 Fork the respository, follow manual installation steps and make your changes. Issues and PR's are appreciated.
 
 ### Internationalization
+
+You can use Crowdin Bar Assistant project, and this will automaticall pull new languages.
 
 <a title="Crowdin" target="_blank" href="https://crowdin.com/project/bar-assistant"><img src="https://badges.crowdin.net/bar-assistant/localized.svg"></a>
 

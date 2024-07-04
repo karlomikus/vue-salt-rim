@@ -164,6 +164,12 @@ const router = createRouter({
                     meta: { requiresBar: true },
                 },
                 {
+                    path: '/collections/:id/quantity-calculator',
+                    name: 'collections.quantity-calculator',
+                    component: () => import('../views/QuantityCalcView.vue'),
+                    meta: { requiresBar: true },
+                },
+                {
                     path: '/settings/utensils',
                     name: 'settings.utensils',
                     component: () => import('../views/SettingsUtensilsView.vue'),

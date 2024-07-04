@@ -697,6 +697,12 @@ class ApiRequests
         return this.parseResponse(jsonResp)
     }
 
+    static async fetchCollection(id) {
+        let jsonResp = await this.getRequest(`/api/collections/${id}`)
+
+        return this.parseResponse(jsonResp)
+    }
+
     static async saveCollection(data) {
         const q = this.generateBAQueryString({}, true)
         const jsonResp = await this.postRequest(`/api/collections${q}`, data)
