@@ -292,7 +292,9 @@
     "add-from-query": "Add to collection from current filters",
     "cocktail-remove-success": "Cocktail removed from collection",
     "cocktail-add-success": "Cocktail added to collection",
-    "share-in-bar": "Share collection with all bar members"
+    "share-in-bar": "Share collection with all bar members",
+    "quantitiy-calculator": "Quantity calculator",
+    "cocktail-quantities": "Cocktail quantities"
   },
   "no-cocktails": "No cocktails found",
   "global": "Global",
