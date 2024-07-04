@@ -4,6 +4,8 @@ import { useRoute } from 'vue-router'
 import ApiRequests from './../../ApiRequests.js'
 import PageHeader from './../PageHeader.vue'
 import OverlayLoader from './../OverlayLoader.vue'
+import UnitConverter from '../Units/UnitConverter.vue'
+import UnitPicker from '../Units/UnitPicker.vue'
 
 const route = useRoute()
 const collection = ref({})
@@ -72,35 +74,38 @@ async function refreshCollection(id) {
             </div>
         </div>
         <h3 class="form-section-title">{{ $t('ingredient.ingredients') }}</h3>
-        <div class="block-container block-container--padded">
-            <p>
-                Ingredient breakdown for {{ totalCocktailCount }} cocktails
-            </p>
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>{{ $t('name') }}</th>
-                        <th>{{ $t('cocktail.cocktails') }}</th>
-                        <th>{{ $t('amount') }}</th>
-                        <th></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr v-for="ingredient in uniqueCollectionIngredients" :key="ingredient.ingredient_id">
-                        <td><RouterLink :to="{ name: 'ingredients.show', params: { id: ingredient.ingredient_slug } }">{{ ingredient.name }}</RouterLink></td>
-                        <td>{{ ingredient.total_cocktails }}</td>
-                        <td>
-                            <template v-for="amount in ingredient.by_amounts" :key="amount.units">
-                                {{ amount.calculated_amount }} {{ amount.units }}<br>
-                            </template>
-                        </td>
-                        <td style="text-align: right;">
-                            <a href="#">{{ $t('ingredient.add-to-list') }}</a>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
+        <UnitConverter v-slot="units">
+            <div class="block-container block-container--padded">
+                <p>
+                    Ingredient breakdown for {{ totalCocktailCount }} cocktails
+                </p>
+                <UnitPicker></UnitPicker>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>{{ $t('name') }}</th>
+                            <th>{{ $t('cocktail.cocktails') }}</th>
+                            <th>{{ $t('amount') }}</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-for="ingredient in uniqueCollectionIngredients" :key="ingredient.ingredient_id">
+                            <td><RouterLink :to="{ name: 'ingredients.show', params: { id: ingredient.ingredient_slug } }">{{ ingredient.name }}</RouterLink></td>
+                            <td>{{ ingredient.total_cocktails }}</td>
+                            <td>
+                                <template v-for="amount in ingredient.by_amounts" :key="amount.units">
+                                    {{ units.printIngredient({amount: amount.calculated_amount, units: amount.units}) }}<br>
+                                </template>
+                            </td>
+                            <td style="text-align: right;">
+                                <a href="#">{{ $t('ingredient.add-to-list') }}</a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </UnitConverter>
     </div>
 </template>
 
