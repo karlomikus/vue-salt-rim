@@ -292,7 +292,8 @@
     "add-from-query": "Kreiraj kolekciju iz trenutnih filtera",
     "cocktail-remove-success": "Koktel je uspješno uklonjen iz kolekcije",
     "cocktail-add-success": "Koktel dodan u kolekciju",
-    "share-in-bar": "Podijeli kolekciju sa svim članovima bara"
+    "share-in-bar": "Podijeli kolekciju sa svim članovima bara",
+    "ingredient-breakdown": "Popis sastojaka za {total} koktela"
   },
   "no-cocktails": "Nisu pronađeni kokteli",
   "global": "Globalno",

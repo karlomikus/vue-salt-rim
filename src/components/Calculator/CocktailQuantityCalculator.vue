@@ -6,10 +6,12 @@ import PageHeader from './../PageHeader.vue'
 import OverlayLoader from './../OverlayLoader.vue'
 import UnitConverter from '../Units/UnitConverter.vue'
 import UnitPicker from '../Units/UnitPicker.vue'
+import ToggleIngredientShoppingCart from '../ToggleIngredientShoppingCart.vue'
 
 const route = useRoute()
 const collection = ref({})
 const cocktails = ref([])
+const shoppingList = ref([])
 const isLoading = ref(false)
 
 watch(() => route.params.id, refreshCollection, { immediate: true })
@@ -61,7 +63,8 @@ async function refreshCollection(id) {
     isLoading.value = true
     collection.value = await ApiRequests.fetchCollection(id)
     const existingState = localStorage.getItem('collection_' + collection.value.id)
-    cocktails.value = (await ApiRequests.fetchCocktails({ 'filter[id]': collection.value.cocktails.join(',') })).data
+    cocktails.value = (await ApiRequests.fetchCocktails({ 'filter[id]': collection.value.cocktails.join(',') })).data ?? []
+    shoppingList.value = (await ApiRequests.fetchShoppingList()) ?? []
     cocktails.value.map(c => {
         if (existingState) {
             const stateObj = JSON.parse(existingState)
@@ -80,6 +83,14 @@ async function refreshCollection(id) {
 
 function saveState() {
     localStorage.setItem('collection_' + collection.value.id, JSON.stringify(state.value))
+}
+
+function handleShoppingListUpdate(e) {
+    if (e.on_list === false) {
+        shoppingList.value.splice(shoppingList.value.map(s => s.ingredient_id).indexOf(e.ingredient.id), 1)
+    } else {
+        shoppingList.value.push({ingredient_id: e.ingredient.id})
+    }
 }
 </script>
 
@@ -104,10 +115,10 @@ function saveState() {
         <h3 class="form-section-title">{{ $t('ingredient.ingredients') }}</h3>
         <UnitConverter v-slot="units">
             <div class="block-container block-container--padded">
-                <p>
-                    Ingredient breakdown for {{ totalCocktailCount }} cocktails
-                </p>
-                <UnitPicker></UnitPicker>
+                <div class="cocktail-quantity__header">
+                    <div>{{ $t('collections.ingredient-breakdown', {total: totalCocktailCount}) }}.</div>
+                    <UnitPicker></UnitPicker>
+                </div>
                 <table class="table">
                     <thead>
                         <tr>
@@ -127,7 +138,7 @@ function saveState() {
                                 </template>
                             </td>
                             <td style="text-align: right;">
-                                <a href="#">{{ $t('ingredient.add-to-list') }}</a>
+                                <ToggleIngredientShoppingCart :ingredient="{id: ingredient.ingredient_id, name: ingredient.name}" :shopping-list="shoppingList.map(l => l.ingredient_id)" @list-updated="handleShoppingListUpdate"></ToggleIngredientShoppingCart>
                             </td>
                         </tr>
                     </tbody>
@@ -162,5 +173,10 @@ function saveState() {
 
 .cocktail-quantity__cocktail span {
     font-size: 0.85rem;
+}
+
+.cocktail-quantity__header {
+    display: flex;
+    justify-content: space-between;
 }
 </style>
