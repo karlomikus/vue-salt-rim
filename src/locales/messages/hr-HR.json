@@ -294,7 +294,8 @@
     "cocktail-add-success": "Koktel dodan u kolekciju",
     "share-in-bar": "Podijeli kolekciju sa svim članovima bara",
     "quantitiy-calculator": "Quantity calculator",
-    "cocktail-quantities": "Cocktail quantities"
+    "cocktail-quantities": "Cocktail quantities",
+    "ingredient-breakdown": "Popis sastojaka za {total} koktela"
   },
   "no-cocktails": "Nisu pronađeni kokteli",
   "global": "Globalno",
