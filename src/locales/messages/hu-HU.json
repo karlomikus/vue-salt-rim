@@ -294,7 +294,8 @@
     "cocktail-add-success": "Cocktail added to collection",
     "share-in-bar": "Share collection with all bar members",
     "quantitiy-calculator": "Quantity calculator",
-    "cocktail-quantities": "Cocktail quantities"
+    "cocktail-quantities": "Cocktail quantities",
+    "ingredient-breakdown": "Ingredient breakdown for {total} cocktails"
   },
   "no-cocktails": "No cocktails found",
   "global": "Global",
