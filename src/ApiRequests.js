@@ -957,6 +957,42 @@ class ApiRequests
 
         return response.blob()
     }
+
+    /**
+     * =============================
+     * Price categories
+     * =============================
+     */
+
+    static async fetchPriceCategories() {
+        const q = this.generateBAQueryString({}, true)
+        let jsonResp = await this.getRequest(`/api/price-categories${q}`)
+
+        return this.parseResponse(jsonResp)
+    }
+
+    static async fetchPriceCategory(id) {
+        let jsonResp = await this.getRequest(`/api/price-categories/${id}`)
+
+        return this.parseResponse(jsonResp)
+    }
+
+    static async savePriceCategory(data) {
+        const q = this.generateBAQueryString({}, true)
+        const jsonResp = await this.postRequest(`/api/price-categories${q}`, data)
+
+        return this.parseResponse(jsonResp)
+    }
+
+    static async updatePriceCategory(id, data) {
+        let jsonResp = await this.postRequest(`/api/price-categories/${id}`, data, 'PUT')
+
+        return this.parseResponse(jsonResp)
+    }
+
+    static async deletePriceCategory(id) {
+        return await this.deleteRequest(`/api/price-categories/${id}`)
+    }
 }
 
 export default ApiRequests

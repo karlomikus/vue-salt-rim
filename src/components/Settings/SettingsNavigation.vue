@@ -12,6 +12,7 @@
             <RouterLink :to="{name: 'settings.glasses'}">{{ $t('glass-type.types') }}</RouterLink>
             <RouterLink :to="{name: 'settings.tags'}">{{ $t('tag.tags') }}</RouterLink>
             <RouterLink :to="{name: 'settings.utensils'}">{{ $t('utensils.title') }}</RouterLink>
+            <RouterLink :to="{name: 'settings.price-categories'}">{{ $t('prices.price-categories') }}</RouterLink>
         </template>
     </nav>
 </template>
