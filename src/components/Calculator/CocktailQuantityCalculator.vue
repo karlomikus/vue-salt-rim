@@ -7,10 +7,12 @@ import OverlayLoader from './../OverlayLoader.vue'
 import UnitConverter from '../Units/UnitConverter.vue'
 import UnitPicker from '../Units/UnitPicker.vue'
 import ToggleIngredientShoppingCart from '../ToggleIngredientShoppingCart.vue'
+import UnitHandler from '../../UnitHandler.js'
 
 const route = useRoute()
 const collection = ref({})
 const cocktails = ref([])
+const ingredients = ref([])
 const shoppingList = ref([])
 const isLoading = ref(false)
 
@@ -21,7 +23,7 @@ watch(cocktails, () => {
 
 
 const totalCocktailCount = computed(() => {
-    return cocktails.value.reduce((acc, obj) => acc + obj.count, 0)
+    return cocktails.value.reduce((acc, obj) => parseInt(acc + obj.count), 0)
 })
 
 const uniqueCollectionIngredients = computed(() => {
@@ -59,6 +61,35 @@ const state = computed(() => {
     })
 })
 
+const finalIngredients = computed(() => {
+    return ingredients.value.map(i => {
+        const collectionIngredientData = uniqueCollectionIngredients.value.find(c => c.ingredient_id == i.id)
+
+        return {
+            id: i.id,
+            ingredient_slug: i.slug,
+            name: i.name,
+            by_amounts: collectionIngredientData.by_amounts,
+            total_cocktails: collectionIngredientData.total_cocktails,
+            prices: i.prices.map(p => {
+                let bestUnitForPrice = 0
+                if (collectionIngredientData.by_amounts[p.units]) {
+                    bestUnitForPrice = collectionIngredientData.by_amounts[p.units]
+                }
+
+                const needed_quantity = Math.ceil(bestUnitForPrice.calculated_amount / p.amount)
+
+                return {
+                    ...p,
+                    has_unit_price: bestUnitForPrice != 0,
+                    needed_quantity: needed_quantity,
+                    needed_quantity_price: needed_quantity * p.price
+                }
+            })
+        }
+    })
+})
+
 async function refreshCollection(id) {
     isLoading.value = true
     collection.value = await ApiRequests.fetchCollection(id)
@@ -70,7 +101,7 @@ async function refreshCollection(id) {
             const stateObj = JSON.parse(existingState)
             const existingCocktailState = stateObj.find(o => o.i == c.id)
             if (existingCocktailState) {
-                c.count = existingCocktailState.c
+                c.count = existingCocktailState.c ?? 0
             } else {
                 c.count = 0
             }
@@ -78,7 +109,28 @@ async function refreshCollection(id) {
             c.count = 0
         }
     })
+
+    ingredients.value = (await ApiRequests.fetchIngredients({ 'filter[id]': uniqueCollectionIngredients.value.map(i => i.ingredient_id).join(','), 'include': 'prices', 'per_page': uniqueCollectionIngredients.value.length })).data ?? []
+
     isLoading.value = false
+}
+
+/**
+ * Calculate price per unit, with unit conversion
+ * @param {{price: number, units: string, amount: number}} price
+ * @param {string} newUnits
+ * @return {number}
+ */
+function calculatePricePerUnits(price, newUnits) {
+    const result = price.price / UnitHandler.convertFromTo(price.units, price.amount, newUnits)
+    const curr = price.price_category.currency
+    const unit = !UnitHandler.isUnitConvertable(price.units) ? price.units : newUnits
+
+    if (result < 0.01) {
+        return `${UnitHandler.formatPrice(0.01, curr)}/${unit}`
+    }
+
+    return `${UnitHandler.formatPrice(result, curr)}/${unit}`
 }
 
 function saveState() {
@@ -124,18 +176,37 @@ function handleShoppingListUpdate(e) {
                         <tr>
                             <th>{{ $t('name') }}</th>
                             <th>{{ $t('cocktail.cocktails') }}</th>
+                            <th>{{ $t('price.prices') }}</th>
                             <th>{{ $t('amount') }}</th>
+                            <th>{{ $t('totals') }}</th>
                             <th></th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr v-for="ingredient in uniqueCollectionIngredients" :key="ingredient.ingredient_id">
+                        <tr v-for="ingredient in finalIngredients" :key="ingredient.id">
                             <td><RouterLink :to="{ name: 'ingredients.show', params: { id: ingredient.ingredient_slug } }">{{ ingredient.name }}</RouterLink></td>
                             <td>{{ ingredient.total_cocktails }}</td>
+                            <td>
+                                <div v-for="(price, idx) in ingredient.prices" :key="idx" class="price_per_units">
+                                    <small>{{ price.price_category.name }}:</small>
+                                    <p>{{ calculatePricePerUnits(price, units.currentUnit) }}</p>
+                                </div>
+                            </td>
                             <td>
                                 <template v-for="amount in ingredient.by_amounts" :key="amount.units">
                                     {{ units.printIngredient({amount: amount.calculated_amount, units: amount.units}) }}<br>
                                 </template>
+                            </td>
+                            <td>
+                                <div v-for="(price, idx) in ingredient.prices" :key="idx" class="price_per_units">
+                                    <template v-if="price.has_unit_price">
+                                        <small>{{ price.price_category.name }}:</small>
+                                        <p>x{{ price.needed_quantity }} ({{ price.amount }}{{ price.units }}) &middot; {{ UnitHandler.formatPrice(price.needed_quantity_price, price.price_category.currency) }}</p>
+                                    </template>
+                                    <template v-else>
+                                        No valid price units found
+                                    </template>
+                                </div>
                             </td>
                             <td style="text-align: right;">
                                 <ToggleIngredientShoppingCart :ingredient="{id: ingredient.ingredient_id, name: ingredient.name}" :shopping-list="shoppingList.map(l => l.ingredient_id)" @list-updated="handleShoppingListUpdate"></ToggleIngredientShoppingCart>
@@ -178,5 +249,17 @@ function handleShoppingListUpdate(e) {
 .cocktail-quantity__header {
     display: flex;
     justify-content: space-between;
+}
+
+.price_per_units {
+    line-height: 1.2;
+}
+
+.price_per_units small {
+    font-size: 0.75rem;
+}
+
+.price_per_units.price_per_units--best p {
+    font-weight: var(--fw-bold);
 }
 </style>
