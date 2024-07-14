@@ -573,7 +573,8 @@
     "price": "Price",
     "currency": "Currency",
     "currency-format-notice": "Currency must be in ISO 4271 (Alpha3) format",
-    "price-categories-empty": "There is no price categories"
+    "price-categories-empty": "There is no price categories",
+    "no-matching-units": "No matching unit pricing found"
   },
   "prices": {
     "add": "Add price",

@@ -90,6 +90,37 @@ const finalIngredients = computed(() => {
     })
 })
 
+const totalsPerCurrency = computed(() => {
+    const result = {}
+
+    finalIngredients.value.forEach(ingredient => {
+        const pricesByCurrency = ingredient.prices.reduce((acc, price) => {
+            const currency = price.price_category.currency
+            if (!acc[currency]) acc[currency] = []
+            if (price.needed_quantity_price !== null && !Number.isNaN(price.needed_quantity_price)) {
+                acc[currency].push(price.needed_quantity_price)
+            }
+            return acc
+        }, {})
+
+        for (const currency in pricesByCurrency) {
+            if (pricesByCurrency[currency].length === 0) continue
+
+            const minPrice = Math.min(...pricesByCurrency[currency])
+            const maxPrice = Math.max(...pricesByCurrency[currency])
+
+            if (!result[currency]) {
+                result[currency] = { min_total: 0, max_total: 0 }
+            }
+
+            result[currency].min_total += minPrice
+            result[currency].max_total += maxPrice
+        }
+    })
+
+    return result
+})
+
 async function refreshCollection(id) {
     isLoading.value = true
     collection.value = await ApiRequests.fetchCollection(id)
@@ -203,14 +234,22 @@ function handleShoppingListUpdate(e) {
                                         <small>{{ price.price_category.name }}:</small>
                                         <p>x{{ price.needed_quantity }} ({{ price.amount }}{{ price.units }}) &middot; {{ UnitHandler.formatPrice(price.needed_quantity_price, price.price_category.currency) }}</p>
                                     </template>
-                                    <template v-else>
-                                        No valid price units found
-                                    </template>
+                                    <span v-else class="price_per_units__no-units">
+                                        {{ $t('price.no-matching-units') }}
+                                    </span>
                                 </div>
                             </td>
                             <td style="text-align: right;">
                                 <ToggleIngredientShoppingCart :ingredient="{id: ingredient.ingredient_id, name: ingredient.name}" :shopping-list="shoppingList.map(l => l.ingredient_id)" @list-updated="handleShoppingListUpdate"></ToggleIngredientShoppingCart>
                             </td>
+                        </tr>
+                        <tr>
+                            <td colspan="5" style="text-align: right;">
+                                <template v-for="(total, curr) in totalsPerCurrency" :key="curr">
+                                    Approx: {{ UnitHandler.formatPrice(total.min_total, curr) }} - {{ UnitHandler.formatPrice(total.max_total, curr) }}<br>
+                                </template>
+                            </td>
+                            <td></td>
                         </tr>
                     </tbody>
                 </table>
@@ -261,5 +300,11 @@ function handleShoppingListUpdate(e) {
 
 .price_per_units.price_per_units--best p {
     font-weight: var(--fw-bold);
+}
+
+.price_per_units__no-units {
+    font-size: 0.85rem;
+    font-style: italic;
+    color: var(--clr-gray-400);
 }
 </style>
