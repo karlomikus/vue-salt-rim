@@ -566,5 +566,19 @@
   "ABV-definition": "Alcohol by volume",
   "ingredient-category": {},
   "last-used-at": "Last used",
-  "user": {}
+  "user": {},
+  "price": {
+    "category": "Price category",
+    "prices": "Prices",
+    "price": "Price",
+    "currency": "Currency",
+    "currency-format-notice": "Currency must be in ISO 4271 (Alpha3) format",
+    "price-categories-empty": "There is no price categories",
+    "no-matching-units": "No matching unit pricing found"
+  },
+  "prices": {
+    "add": "Add price",
+    "price-categories": "Price categories",
+    "add-price-category": "Add price category"
+  }
 }
