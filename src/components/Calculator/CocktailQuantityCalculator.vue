@@ -21,6 +21,7 @@ watch(cocktails, () => {
     saveState()
 }, { deep: true })
 
+// document.title = 'TODO'
 
 const totalCocktailCount = computed(() => {
     return cocktails.value.reduce((acc, obj) => parseInt(acc + obj.count), 0)
@@ -190,7 +191,7 @@ function handleShoppingListUpdate(e) {
                     <input v-model="cocktail.count" type="number" class="form-input">
                 </div>
                 <div class="cocktail-quantity__cocktail">
-                    <h5>{{ cocktail.name }}</h5>
+                    <RouterLink :to="{name: 'cocktails.show', params: {id: cocktail.slug}}">{{ cocktail.name }}</RouterLink>
                     <span>{{ cocktail.ingredients.map(i => i.name).join(', ') }}</span>
                 </div>
             </div>
@@ -275,7 +276,8 @@ function handleShoppingListUpdate(e) {
     margin: 0;
 }
 
-.cocktail-quantity__cocktail h5 {
+.cocktail-quantity__cocktail a {
+    display: block;
     font-size: 1rem;
     font-weight: var(--fw-bold);
     line-height: 1.2;
@@ -283,6 +285,7 @@ function handleShoppingListUpdate(e) {
 
 .cocktail-quantity__cocktail span {
     font-size: 0.85rem;
+    color: var(--clr-gray-600);
 }
 
 .cocktail-quantity__header {
