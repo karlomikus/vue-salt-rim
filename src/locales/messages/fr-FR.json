@@ -1,7 +1,7 @@
 {
   "locales": {
     "en-US": "Anglais",
-    "fr-FR": "Francais",
+    "fr-FR": "Français",
     "hr-HR": "Croate",
     "de-DE": "Allemand",
     "pl-PL": "Polonais",
@@ -32,7 +32,7 @@
     "name-placeholder": "<Non sélectionné>",
     "in-shelf": "Vous avez cet ingrédient",
     "cocktail-children": "Utilisé dans {total} cocktails",
-    "delete-confirm": "Cela supprimera définitivement l’ingrédient avec le nom \"{name}\". Cette action aura un impact sur {total} cocktails!",
+    "delete-confirm": "Cela supprimera définitivement l’ingrédient avec le nom \"{name}\". Cette action aura un impact sur {total} cocktails.",
     "shelf-remove-success": "Retiré \"{name}\" de votre étagère",
     "shelf-add-success": "Ajouté \"{name}\" à votre étagère",
     "list-remove-success": "Supprimé \"{name}\" de votre liste de courses",
@@ -45,7 +45,7 @@
     "dialog": {
       "select-substitutes": "Sélectionner des ingrédients de substitution",
       "search-not-found": "Vous n’avez pas trouvé ce que vous cherchez?",
-      "create-ingredient": "Créer un ingrédient",
+      "create-ingredient": "Créer un ingrédient :\"{name}\"",
       "current": "Ingrédient actuel",
       "optional-checkbox": "Rendre cet ingrédient facultatif.",
       "new-ingredient-success": "Ingrédient non classifié(e) créé \"{name}\".",
@@ -73,7 +73,7 @@
   "logout": "Déconnexion",
   "profile": "Profil",
   "users": {
-    "title": " Utilisateurs",
+    "title": "Utilisateurs",
     "add": "Ajouter un utilisateur",
     "confirm-delete": "Cela supprimera définitivement l’utilisateur avec le nom \"{name}\".",
     "delete-success": "Utilisateur supprimé avec succès",
@@ -89,7 +89,7 @@
   "method": {
     "title": "Méthode",
     "Shake": "Secouer",
-    "Stir": "remuer",
+    "Stir": "Remuer",
     "Build": "Construire",
     "Blend": "Mélange",
     "Muddle": "Confusion",
@@ -135,7 +135,7 @@
   "recipe-information": "Informations sur la recette",
   "additional-information": "Informations complémentaires",
   "source": "Source",
-  "method-and-dilution": "Méthode & dilution",
+  "method-and-dilution": "Méthode et dilution",
   "placeholder": {
     "source": "URL ou livre...",
     "tags": "Des tags pour vous aider à trouver le cocktail...",
@@ -163,7 +163,7 @@
     "error-cocktail": "Votre cocktail est toujours conservé.",
     "error-ingredient": "Votre ingrédient est toujours conservé."
   },
-  "confirm-dialog.title": "Êtes-vous sûr?",
+  "confirm-dialog.title": "Êtes-vous sûr ?",
   "confirm": "Confirmer",
   "optional": "Facultatif",
   "or": "Ou",
@@ -227,7 +227,7 @@
   "image-url": "URL de l’image",
   "public-dialog": {
     "title": "Lien public cocktail",
-    "public_at": " Rendu public le: {date} ",
+    "public_at": "Rendu public le : {date} ",
     "missing": "Pas de lien public disponible",
     "action-copy": "Copier le lien",
     "action-delete": "Supprimer le lien",
