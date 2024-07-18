@@ -31,37 +31,41 @@ const totalCocktailCount = computed(() => {
 })
 
 const ingredientsWithCalculatedAmounts = computed(() => {
-    return cocktails.value.flatMap((c) => {
-        return c.ingredients.map(i => {
-            const convertedAmount = UnitHandler.convertFromTo(i.units, i.amount, selectedUnit.value)
-            const totalAmount = convertedAmount * c.count
+    return cocktails.value.flatMap(cocktail =>
+        cocktail.ingredients.map(ingredient => {
+            const convertedAmount = UnitHandler.convertFromTo(ingredient.units, ingredient.amount, selectedUnit.value)
+            const totalAmount = convertedAmount * cocktail.count
+            const units = UnitHandler.isUnitConvertable(ingredient.units) ? selectedUnit.value : ingredient.units
 
-            let units = i.units
-            if (UnitHandler.isUnitConvertable(i.units)) {
-                units = selectedUnit.value
+            return {
+                id: ingredient.ingredient_id,
+                slug: ingredient.ingredient_slug,
+                name: ingredient.name,
+                units: units,
+                total_amount: totalAmount,
+                amount: convertedAmount
             }
-
-            return {id: i.ingredient_id, slug: i.ingredient_slug, name: i.name, units: units, total_amount: totalAmount, amount: convertedAmount}
         })
-    })
+    )
 })
 
-const uniqueCollectionIngredients = computed(() => {
-    const amountsByIngredients = ingredientsWithCalculatedAmounts.value.reduce((acc, ingredient) => {
-        const id = ingredient.id
-        if (!acc[id]) {
-            acc[id] = { ...ingredient, by_amounts: {}, total_cocktails: 0 }
+const uniqueIngredients = computed(() => {
+    const amountsByIngredients = ingredientsWithCalculatedAmounts.value.reduce((accumulator, ingredient) => {
+        const ingredientId = ingredient.id
+        const unitType = ingredient.units.toLowerCase()
+
+        if (!accumulator[ingredientId]) {
+            accumulator[ingredientId] = { ...ingredient, by_amounts: {}, total_cocktails: 0 }
         }
 
-        const units = ingredient.units.toLowerCase()
-        if (!acc[id].by_amounts[units]) {
-            acc[id].by_amounts[units] = { units: units, total_amount: 0 }
+        if (!accumulator[ingredientId].by_amounts[unitType]) {
+            accumulator[ingredientId].by_amounts[unitType] = { units: unitType, total_amount: 0 }
         }
 
-        acc[id].total_cocktails++
-        acc[id].by_amounts[units].total_amount += ingredient.total_amount
+        accumulator[ingredientId].total_cocktails++
+        accumulator[ingredientId].by_amounts[unitType].total_amount += ingredient.total_amount
 
-        return acc
+        return accumulator
     }, {})
 
     return Object.values(amountsByIngredients)
@@ -75,7 +79,7 @@ const state = computed(() => {
 
 const finalIngredients = computed(() => {
     return ingredients.value.map(i => {
-        const collectionIngredientData = uniqueCollectionIngredients.value.find(val => val.id == i.id)
+        const collectionIngredientData = uniqueIngredients.value.find(val => val.id == i.id)
 
         return {
             id: i.id,
@@ -157,7 +161,7 @@ async function refreshCollection(id) {
         }
     })
 
-    ingredients.value = (await ApiRequests.fetchIngredients({ 'filter[id]': uniqueCollectionIngredients.value.map(i => i.id).join(','), 'include': 'prices', 'per_page': uniqueCollectionIngredients.value.length })).data ?? []
+    ingredients.value = (await ApiRequests.fetchIngredients({ 'filter[id]': uniqueIngredients.value.map(i => i.id).join(','), 'include': 'prices', 'per_page': uniqueIngredients.value.length })).data ?? []
 
     isLoading.value = false
 }
@@ -224,9 +228,6 @@ function handleShoppingListUpdate(e) {
                     <div>{{ $t('collections.ingredient-breakdown', {total: totalCocktailCount}) }}.</div>
                     <UnitPicker></UnitPicker>
                 </div>
-                <!-- <pre>
-                    {{ uniqueCollectionIngredients }}
-                </pre> -->
                 <table class="table">
                     <thead>
                         <tr>
@@ -258,13 +259,18 @@ function handleShoppingListUpdate(e) {
                                 <ToggleIngredientShoppingCart :ingredient="{id: ingredient.ingredient_id, name: ingredient.name}" :shopping-list="shoppingList.map(l => l.ingredient_id)" @list-updated="handleShoppingListUpdate"></ToggleIngredientShoppingCart>
                             </td>
                         </tr>
-                        <tr>
-                            <td colspan="4" style="text-align: right;">
+                        <tr style="border-top-width: 3px;">
+                            <td colspan="3"></td>
+                            <td colspan="2">
                                 <template v-for="(total, curr) in totalsPerCurrency" :key="curr">
-                                    Approx: {{ UnitHandler.formatPrice(total.min_total, curr) }} - {{ UnitHandler.formatPrice(total.max_total, curr) }}<br>
+                                    <template v-if="total.min_total == total.max_total">
+                                        {{ UnitHandler.formatPrice(total.min_total, curr) }}<br>
+                                    </template>
+                                    <template v-else>
+                                        {{ UnitHandler.formatPrice(total.min_total, curr) }} - {{ UnitHandler.formatPrice(total.max_total, curr) }}<br>
+                                    </template>
                                 </template>
                             </td>
-                            <td></td>
                         </tr>
                     </tbody>
                 </table>
