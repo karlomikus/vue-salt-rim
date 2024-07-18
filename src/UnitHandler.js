@@ -94,7 +94,7 @@ export default {
             if (toUnits == 'ml') {
                 return this.cl2ml(amount)
             }
-            if (toUnits == 'cl') {
+            if (toUnits == 'oz') {
                 return this.cl2oz(amount)
             }
         }
