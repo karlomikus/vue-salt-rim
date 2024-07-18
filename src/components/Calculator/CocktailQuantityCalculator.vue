@@ -1,6 +1,7 @@
 <script setup>
 import { ref, watch, computed } from 'vue'
 import { useRoute } from 'vue-router'
+// import { useI18n } from 'vue-i18n'
 import ApiRequests from './../../ApiRequests.js'
 import PageHeader from './../PageHeader.vue'
 import OverlayLoader from './../OverlayLoader.vue'
@@ -9,12 +10,14 @@ import UnitPicker from '../Units/UnitPicker.vue'
 import ToggleIngredientShoppingCart from '../ToggleIngredientShoppingCart.vue'
 import UnitHandler from '../../UnitHandler.js'
 
+// const { t } = useI18n()
 const route = useRoute()
 const collection = ref({})
 const cocktails = ref([])
 const ingredients = ref([])
 const shoppingList = ref([])
 const isLoading = ref(false)
+const selectedUnit = ref('ml')
 
 watch(() => route.params.id, refreshCollection, { immediate: true })
 watch(cocktails, () => {
@@ -27,28 +30,36 @@ const totalCocktailCount = computed(() => {
     return cocktails.value.reduce((acc, obj) => parseInt(acc + obj.count), 0)
 })
 
-const uniqueCollectionIngredients = computed(() => {
-    const ingredientsWithCalculatedAmounts = cocktails.value.flatMap((c) => {
+const ingredientsWithCalculatedAmounts = computed(() => {
+    return cocktails.value.flatMap((c) => {
         return c.ingredients.map(i => {
-            i.calculated_amount = i.amount * c.count
+            const convertedAmount = UnitHandler.convertFromTo(i.units, i.amount, selectedUnit.value)
+            const totalAmount = convertedAmount * c.count
 
-            return i
+            let units = i.units
+            if (UnitHandler.isUnitConvertable(i.units)) {
+                units = selectedUnit.value
+            }
+
+            return {id: i.ingredient_id, slug: i.ingredient_slug, name: i.name, units: units, total_amount: totalAmount, amount: convertedAmount}
         })
     })
+})
 
-    const amountsByIngredients = ingredientsWithCalculatedAmounts.reduce((acc, ingredient) => {
-        const id = ingredient.ingredient_id
+const uniqueCollectionIngredients = computed(() => {
+    const amountsByIngredients = ingredientsWithCalculatedAmounts.value.reduce((acc, ingredient) => {
+        const id = ingredient.id
         if (!acc[id]) {
             acc[id] = { ...ingredient, by_amounts: {}, total_cocktails: 0 }
         }
 
         const units = ingredient.units.toLowerCase()
         if (!acc[id].by_amounts[units]) {
-            acc[id].by_amounts[units] = { units: units, calculated_amount: 0 }
+            acc[id].by_amounts[units] = { units: units, total_amount: 0 }
         }
 
         acc[id].total_cocktails++
-        acc[id].by_amounts[units].calculated_amount += ingredient.calculated_amount
+        acc[id].by_amounts[units].total_amount += ingredient.total_amount
 
         return acc
     }, {})
@@ -64,7 +75,7 @@ const state = computed(() => {
 
 const finalIngredients = computed(() => {
     return ingredients.value.map(i => {
-        const collectionIngredientData = uniqueCollectionIngredients.value.find(c => c.ingredient_id == i.id)
+        const collectionIngredientData = uniqueCollectionIngredients.value.find(val => val.id == i.id)
 
         return {
             id: i.id,
@@ -73,16 +84,20 @@ const finalIngredients = computed(() => {
             by_amounts: collectionIngredientData.by_amounts,
             total_cocktails: collectionIngredientData.total_cocktails,
             prices: i.prices.map(p => {
-                let bestUnitForPrice = 0
+                const units = !UnitHandler.isUnitConvertable(p.units) ? p.units : selectedUnit.value
+
+                return {...p, amount: UnitHandler.convertFromTo(p.units, p.amount, selectedUnit.value).toFixed(2), units: units}
+            }).map(p => {
+                let bestUnitForPrice = {}
                 if (collectionIngredientData.by_amounts[p.units]) {
                     bestUnitForPrice = collectionIngredientData.by_amounts[p.units]
                 }
 
-                const needed_quantity = Math.ceil(bestUnitForPrice.calculated_amount / p.amount)
+                const needed_quantity = Math.ceil(bestUnitForPrice.total_amount / p.amount)
 
                 return {
                     ...p,
-                    has_unit_price: bestUnitForPrice != 0,
+                    has_unit_price: Object.keys(bestUnitForPrice).length > 0,
                     needed_quantity: needed_quantity,
                     needed_quantity_price: needed_quantity * p.price
                 }
@@ -142,7 +157,7 @@ async function refreshCollection(id) {
         }
     })
 
-    ingredients.value = (await ApiRequests.fetchIngredients({ 'filter[id]': uniqueCollectionIngredients.value.map(i => i.ingredient_id).join(','), 'include': 'prices', 'per_page': uniqueCollectionIngredients.value.length })).data ?? []
+    ingredients.value = (await ApiRequests.fetchIngredients({ 'filter[id]': uniqueCollectionIngredients.value.map(i => i.id).join(','), 'include': 'prices', 'per_page': uniqueCollectionIngredients.value.length })).data ?? []
 
     isLoading.value = false
 }
@@ -157,12 +172,18 @@ function calculatePricePerUnits(price, newUnits) {
     const result = price.price / UnitHandler.convertFromTo(price.units, price.amount, newUnits)
     const curr = price.price_category.currency
     const unit = !UnitHandler.isUnitConvertable(price.units) ? price.units : newUnits
+    let pricePerUnit = `${UnitHandler.formatPrice(result, curr)}/${unit}`
 
     if (result < 0.01) {
-        return `${UnitHandler.formatPrice(0.01, curr)}/${unit}`
+        pricePerUnit = `${UnitHandler.formatPrice(0.01, curr)}/${unit}`
     }
 
-    return `${UnitHandler.formatPrice(result, curr)}/${unit}`
+    if (price.has_unit_price) {
+        return `${pricePerUnit} - x${price.needed_quantity} (${price.amount}${price.units}) · ${UnitHandler.formatPrice(price.needed_quantity_price, price.price_category.currency)}`
+    }
+
+    // return `${pricePerUnit} - ${t('price.no-matching-units')}`
+    return `${pricePerUnit}`
 }
 
 function saveState() {
@@ -197,20 +218,22 @@ function handleShoppingListUpdate(e) {
             </div>
         </div>
         <h3 class="form-section-title">{{ $t('ingredient.ingredients') }}</h3>
-        <UnitConverter v-slot="units">
+        <UnitConverter v-slot="units" @unit-changed="(u) => selectedUnit = u">
             <div class="block-container block-container--padded">
                 <div class="cocktail-quantity__header">
                     <div>{{ $t('collections.ingredient-breakdown', {total: totalCocktailCount}) }}.</div>
                     <UnitPicker></UnitPicker>
                 </div>
+                <!-- <pre>
+                    {{ uniqueCollectionIngredients }}
+                </pre> -->
                 <table class="table">
                     <thead>
                         <tr>
                             <th>{{ $t('name') }}</th>
                             <th>{{ $t('cocktail.cocktails') }}</th>
-                            <th>{{ $t('price.prices') }}</th>
                             <th>{{ $t('amount') }}</th>
-                            <th>{{ $t('totals') }}</th>
+                            <th>{{ $t('price.prices') }}</th>
                             <th></th>
                         </tr>
                     </thead>
@@ -219,25 +242,16 @@ function handleShoppingListUpdate(e) {
                             <td><RouterLink :to="{ name: 'ingredients.show', params: { id: ingredient.ingredient_slug } }">{{ ingredient.name }}</RouterLink></td>
                             <td>{{ ingredient.total_cocktails }}</td>
                             <td>
-                                <div v-for="(price, idx) in ingredient.prices" :key="idx" class="price_per_units">
-                                    <small>{{ price.price_category.name }}:</small>
-                                    <p>{{ calculatePricePerUnits(price, units.currentUnit) }}</p>
-                                </div>
-                            </td>
-                            <td>
                                 <template v-for="amount in ingredient.by_amounts" :key="amount.units">
-                                    {{ units.printIngredient({amount: amount.calculated_amount, units: amount.units}) }}<br>
+                                    {{ units.printIngredient({amount: amount.total_amount, units: amount.units}) }}<br>
                                 </template>
                             </td>
                             <td>
                                 <div v-for="(price, idx) in ingredient.prices" :key="idx" class="price_per_units">
-                                    <template v-if="price.has_unit_price">
-                                        <small>{{ price.price_category.name }}:</small>
-                                        <p>x{{ price.needed_quantity }} ({{ price.amount }}{{ price.units }}) &middot; {{ UnitHandler.formatPrice(price.needed_quantity_price, price.price_category.currency) }}</p>
-                                    </template>
-                                    <span v-else class="price_per_units__no-units">
-                                        {{ $t('price.no-matching-units') }}
-                                    </span>
+                                    <small>{{ price.price_category.name }}:</small>
+                                    <p>
+                                        {{ calculatePricePerUnits(price, units.currentUnit) }}
+                                    </p>
                                 </div>
                             </td>
                             <td style="text-align: right;">
@@ -245,7 +259,7 @@ function handleShoppingListUpdate(e) {
                             </td>
                         </tr>
                         <tr>
-                            <td colspan="5" style="text-align: right;">
+                            <td colspan="4" style="text-align: right;">
                                 <template v-for="(total, curr) in totalsPerCurrency" :key="curr">
                                     Approx: {{ UnitHandler.formatPrice(total.min_total, curr) }} - {{ UnitHandler.formatPrice(total.max_total, curr) }}<br>
                                 </template>
