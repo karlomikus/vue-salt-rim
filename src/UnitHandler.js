@@ -102,6 +102,12 @@ export default {
         return amount
     },
 
+    toFixedWithTruncate(num, fixed) {
+        var re = new RegExp('^-?\\d+(?:.\\d{0,' + (fixed || -1) + '})?')
+
+        return num.toString().match(re)[0]
+    },
+
     /**
      * @param {number} amount
      * @returns {number}

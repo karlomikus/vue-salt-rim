@@ -86,7 +86,7 @@ const finalIngredients = computed(() => {
             prices: i.prices.map(p => {
                 const units = !UnitHandler.isUnitConvertable(p.units) ? p.units : selectedUnit.value
 
-                return {...p, amount: UnitHandler.convertFromTo(p.units, p.amount, selectedUnit.value).toFixed(2), units: units}
+                return {...p, amount: UnitHandler.toFixedWithTruncate(UnitHandler.convertFromTo(p.units, p.amount, selectedUnit.value), 2), units: units}
             }).map(p => {
                 let bestUnitForPrice = {}
                 if (collectionIngredientData.by_amounts[p.units]) {
