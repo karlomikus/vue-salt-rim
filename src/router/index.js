@@ -176,6 +176,12 @@ const router = createRouter({
                     meta: { requiresBar: true },
                 },
                 {
+                    path: '/settings/price-categories',
+                    name: 'settings.price-categories',
+                    component: () => import('../views/SettingsPriceCategoriesView.vue'),
+                    meta: { requiresBar: true },
+                },
+                {
                     path: '/settings/tokens',
                     name: 'settings.tokens',
                     component: () => import('../views/SettingsAPIView.vue'),

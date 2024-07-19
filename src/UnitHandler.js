@@ -94,12 +94,18 @@ export default {
             if (toUnits == 'ml') {
                 return this.cl2ml(amount)
             }
-            if (toUnits == 'cl') {
+            if (toUnits == 'oz') {
                 return this.cl2oz(amount)
             }
         }
 
         return amount
+    },
+
+    toFixedWithTruncate(num, fixed) {
+        var re = new RegExp('^-?\\d+(?:.\\d{0,' + (fixed || -1) + '})?')
+
+        return num.toString().match(re)[0]
     },
 
     /**
@@ -148,5 +154,22 @@ export default {
      */
     ml2cl(amount) {
         return amount / 10
+    },
+
+    /**
+     * @param {number} price 
+     * @param {string} currency 
+     * @returns {string}
+     */
+    formatPrice(price, currency) {
+        return new Intl.NumberFormat('en-US', { style: 'currency', currency: currency }).format(price)
+    },
+
+    /**
+     * @param {string} unit
+     * @returns {boolean}
+     */
+    isUnitConvertable(unit) {
+        return (unit.toLowerCase() == 'ml' || unit.toLowerCase() == 'oz' || unit.toLowerCase() == 'cl')
     },
 }

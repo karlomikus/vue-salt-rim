@@ -3,6 +3,7 @@ import { ref, provide } from 'vue'
 import UnitHandler from '../../UnitHandler'
 import AppState from '../../AppState'
 
+const emit = defineEmits(['unitChanged'])
 const appState = new AppState()
 const currentUnit = ref('ml')
 if (appState.defaultUnit) {
@@ -11,6 +12,7 @@ if (appState.defaultUnit) {
 
 function updateCurrentUnit(unit) {
     currentUnit.value = unit
+    emit('unitChanged', currentUnit.value)
 }
 
 function printIngredient(ingredient) {

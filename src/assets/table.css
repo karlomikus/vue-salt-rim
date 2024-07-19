@@ -39,8 +39,9 @@
 
 .table th {
     font-weight: var(--fw-bold);
-    font-size: 0.75rem;
+    font-size: 0.85rem;
     padding: .5rem;
+    border-bottom: 2px solid var(--clr-accent-200);
 }
 
 .table tr:hover td {

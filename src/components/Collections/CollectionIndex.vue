@@ -34,7 +34,7 @@
                     <a class="list-group__action" href="#" @click.prevent="download(collection)">{{ $t('download') }} CSV</a>
                     &middot;
                     <RouterLink :to="{name: 'collections.quantity-calculator', params: {id: collection.id}}">{{ $t('collections.quantitiy-calculator') }}</RouterLink>
-                    &middot;
+                    <br>
                     <a class="list-group__action" href="#" @click.prevent="openDialog($t('collections.edit'), collection)">{{ $t('edit') }}</a>
                     &middot;
                     <a class="list-group__action" href="#" @click.prevent="deleteCollection(collection)">{{ $t('remove') }}</a>
@@ -111,6 +111,7 @@ export default {
                     dialog.close()
                     ApiRequests.deleteCollection(collection.id).then(() => {
                         this.isLoading = false
+                        localStorage.removeItem('collection_' + collection.id)
                         this.$toast.default(this.$t('collections.delete-success'))
                         this.refreshCollections()
                     }).catch(e => {
