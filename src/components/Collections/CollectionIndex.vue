@@ -111,6 +111,7 @@ export default {
                     dialog.close()
                     ApiRequests.deleteCollection(collection.id).then(() => {
                         this.isLoading = false
+                        localStorage.removeItem('collection_' + collection.id)
                         this.$toast.default(this.$t('collections.delete-success'))
                         this.refreshCollections()
                     }).catch(e => {
