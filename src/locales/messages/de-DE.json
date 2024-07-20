@@ -292,7 +292,10 @@
     "add-from-query": "Add to collection from current filters",
     "cocktail-remove-success": "Cocktail removed from collection",
     "cocktail-add-success": "Cocktail added to collection",
-    "share-in-bar": "Share collection with all bar members"
+    "share-in-bar": "Share collection with all bar members",
+    "quantitiy-calculator": "Quantity calculator",
+    "cocktail-quantities": "Cocktail quantities",
+    "ingredient-breakdown": "Ingredient breakdown for {total} cocktails"
   },
   "no-cocktails": "Keine Cocktails gefunden",
   "global": "Global",
@@ -563,5 +566,19 @@
   "ABV-definition": "Volumenprozent Alkohol",
   "ingredient-category": {},
   "last-used-at": "Last used",
-  "user": {}
+  "user": {},
+  "price": {
+    "category": "Price category",
+    "prices": "Prices",
+    "price": "Price",
+    "currency": "Currency",
+    "currency-format-notice": "Currency must be in ISO 4271 (Alpha3) format",
+    "price-categories-empty": "There is no price categories",
+    "no-matching-units": "No matching unit pricing found"
+  },
+  "prices": {
+    "add": "Add price",
+    "price-categories": "Price categories",
+    "add-price-category": "Add price category"
+  }
 }
