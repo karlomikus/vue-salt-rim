@@ -293,6 +293,8 @@
     "cocktail-remove-success": "Koktel je uspješno uklonjen iz kolekcije",
     "cocktail-add-success": "Koktel dodan u kolekciju",
     "share-in-bar": "Podijeli kolekciju sa svim članovima bara",
+    "quantitiy-calculator": "Quantity calculator",
+    "cocktail-quantities": "Cocktail quantities",
     "ingredient-breakdown": "Popis sastojaka za {total} koktela"
   },
   "no-cocktails": "Nisu pronađeni kokteli",
@@ -564,5 +566,19 @@
   "ABV-definition": "Postotak alkohola",
   "ingredient-category": {},
   "last-used-at": "Last used",
-  "user": {}
+  "user": {},
+  "price": {
+    "category": "Price category",
+    "prices": "Prices",
+    "price": "Price",
+    "currency": "Currency",
+    "currency-format-notice": "Currency must be in ISO 4271 (Alpha3) format",
+    "price-categories-empty": "There is no price categories",
+    "no-matching-units": "No matching unit pricing found"
+  },
+  "prices": {
+    "add": "Add price",
+    "price-categories": "Price categories",
+    "add-price-category": "Add price category"
+  }
 }
