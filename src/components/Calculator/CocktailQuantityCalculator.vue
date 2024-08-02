@@ -260,7 +260,9 @@ function handleShoppingListUpdate(e) {
                             </td>
                         </tr>
                         <tr style="border-top-width: 3px;">
-                            <td colspan="3"></td>
+                            <td colspan="3" style="text-align: right; vertical-align: top;">
+                                <strong>{{ $t('total.approx') }}:</strong>
+                            </td>
                             <td colspan="2">
                                 <template v-for="(total, curr) in totalsPerCurrency" :key="curr">
                                     <template v-if="total.min_total == total.max_total">
