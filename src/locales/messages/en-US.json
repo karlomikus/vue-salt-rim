@@ -67,7 +67,8 @@
     "format-copy-failed": "Text copy failed",
     "copy-text": "Copy as plain text",
     "copy-md": "Copy as Markdown",
-    "copy-xml": "Copy as XML"
+    "copy-xml": "Copy as XML",
+    "copy-json-ld": "Copy JSON+LD schema"
   },
   "settings": "Settings",
   "logout": "Logout",
