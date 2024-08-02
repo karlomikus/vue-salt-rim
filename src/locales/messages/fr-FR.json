@@ -67,7 +67,8 @@
     "format-copy-failed": "La copie du texte a échoué",
     "copy-text": "Copier en texte brut",
     "copy-md": "Copy as Markdown",
-    "copy-xml": "Copy as XML"
+    "copy-xml": "Copy as XML",
+    "copy-json-ld": "Copy JSON+LD schema"
   },
   "settings": "Paramètres",
   "logout": "Déconnexion",
