@@ -228,54 +228,58 @@ function handleShoppingListUpdate(e) {
                     <div>{{ $t('collections.ingredient-breakdown', {total: totalCocktailCount}) }}.</div>
                     <UnitPicker></UnitPicker>
                 </div>
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th>{{ $t('name') }}</th>
-                            <th>{{ $t('cocktail.cocktails') }}</th>
-                            <th>{{ $t('amount') }}</th>
-                            <th>{{ $t('price.prices') }}</th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr v-for="ingredient in finalIngredients" :key="ingredient.id">
-                            <td><RouterLink :to="{ name: 'ingredients.show', params: { id: ingredient.ingredient_slug } }">{{ ingredient.name }}</RouterLink></td>
-                            <td>{{ ingredient.total_cocktails }}</td>
-                            <td>
-                                <template v-for="amount in ingredient.by_amounts" :key="amount.units">
-                                    {{ units.printIngredient({amount: amount.total_amount, units: amount.units}) }}<br>
-                                </template>
-                            </td>
-                            <td>
-                                <div v-for="(price, idx) in ingredient.prices" :key="idx" class="price_per_units">
-                                    <small>{{ price.price_category.name }}:</small>
-                                    <p>
-                                        {{ calculatePricePerUnits(price, units.currentUnit) }}
-                                    </p>
-                                </div>
-                            </td>
-                            <td style="text-align: right;">
-                                <ToggleIngredientShoppingCart :ingredient="{id: ingredient.id, name: ingredient.name}" :shopping-list="shoppingList.map(l => l.ingredient_id)" @list-updated="handleShoppingListUpdate"></ToggleIngredientShoppingCart>
-                            </td>
-                        </tr>
-                        <tr style="border-top-width: 3px;">
-                            <td colspan="3" style="text-align: right; vertical-align: top;">
-                                <strong>{{ $t('total.approx') }}:</strong>
-                            </td>
-                            <td colspan="2">
-                                <template v-for="(total, curr) in totalsPerCurrency" :key="curr">
-                                    <template v-if="total.min_total == total.max_total">
-                                        {{ UnitHandler.formatPrice(total.min_total, curr) }}<br>
+                <div class="responsive-table">
+                    <table class="table table--compact">
+                        <thead>
+                            <tr>
+                                <th>{{ $t('name') }}</th>
+                                <th>{{ $t('amount') }}</th>
+                                <th>{{ $t('price.prices') }}</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for="ingredient in finalIngredients" :key="ingredient.id">
+                                <td>
+                                    <RouterLink :to="{ name: 'ingredients.show', params: { id: ingredient.ingredient_slug } }">{{ ingredient.name }}</RouterLink>
+                                    <br>
+                                    <small>{{ $t('cocktail.cocktails') }}: {{ ingredient.total_cocktails }}</small>
+                                </td>
+                                <td>
+                                    <template v-for="amount in ingredient.by_amounts" :key="amount.units">
+                                        {{ units.printIngredient({amount: amount.total_amount, units: amount.units}) }}<br>
                                     </template>
-                                    <template v-else>
-                                        {{ UnitHandler.formatPrice(total.min_total, curr) }} - {{ UnitHandler.formatPrice(total.max_total, curr) }}<br>
+                                </td>
+                                <td>
+                                    <div v-for="(price, idx) in ingredient.prices" :key="idx" class="price_per_units">
+                                        <small>{{ price.price_category.name }}:</small>
+                                        <p>
+                                            {{ calculatePricePerUnits(price, units.currentUnit) }}
+                                        </p>
+                                    </div>
+                                </td>
+                                <td style="text-align: right;">
+                                    <ToggleIngredientShoppingCart :ingredient="{id: ingredient.id, name: ingredient.name}" :shopping-list="shoppingList.map(l => l.ingredient_id)" @list-updated="handleShoppingListUpdate"></ToggleIngredientShoppingCart>
+                                </td>
+                            </tr>
+                            <tr style="border-top-width: 3px;">
+                                <td colspan="2" style="text-align: right; vertical-align: top;">
+                                    <strong>{{ $t('total.approx') }}:</strong>
+                                </td>
+                                <td colspan="2">
+                                    <template v-for="(total, curr) in totalsPerCurrency" :key="curr">
+                                        <template v-if="total.min_total == total.max_total">
+                                            {{ UnitHandler.formatPrice(total.min_total, curr) }}<br>
+                                        </template>
+                                        <template v-else>
+                                            {{ UnitHandler.formatPrice(total.min_total, curr) }} - {{ UnitHandler.formatPrice(total.max_total, curr) }}<br>
+                                        </template>
                                     </template>
-                                </template>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </UnitConverter>
     </div>
@@ -331,5 +335,27 @@ function handleShoppingListUpdate(e) {
     font-size: 0.85rem;
     font-style: italic;
     color: var(--clr-gray-400);
+}
+
+@media (max-width: 450px) {
+    .cocktail-quantity-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .cocktail-quantity .form-group {
+        max-width: 90px;
+    }
+
+    .cocktail-quantity__header {
+        flex-direction: column;
+    }
+
+    .responsive-table {
+        overflow-y: scroll;
+    }
+
+    .table--compact td {
+        padding: var(--gap-size-1);
+    }
 }
 </style>
