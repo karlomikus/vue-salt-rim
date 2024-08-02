@@ -97,6 +97,7 @@
     "Layer": "Schichten"
   },
   "total": {
+    "approx": "Approx. total",
     "title": "Total",
     "cocktails": "Alle Cocktails",
     "ingredients": "Alle Zutaten"
