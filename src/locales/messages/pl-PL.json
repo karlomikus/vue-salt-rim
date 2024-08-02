@@ -97,6 +97,7 @@
     "Layer": "Layer"
   },
   "total": {
+    "approx": "Approx. total",
     "title": "Ogółem",
     "cocktails": "Ogółem koktajli",
     "ingredients": "Ogółem składników"
