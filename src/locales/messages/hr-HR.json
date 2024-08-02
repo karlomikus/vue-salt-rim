@@ -97,6 +97,7 @@
     "Layer": "Slojevi"
   },
   "total": {
+    "approx": "Approx. total",
     "title": "Ukupno",
     "cocktails": "Ukupno koktela",
     "ingredients": "Ukupno sastojaka"
