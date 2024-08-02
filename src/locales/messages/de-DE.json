@@ -67,7 +67,8 @@
     "format-copy-failed": "Das Kopieren des Textes ist fehlgeschlagen",
     "copy-text": "Als Klartext kopieren",
     "copy-md": "Copy as Markdown",
-    "copy-xml": "Copy as XML"
+    "copy-xml": "Copy as XML",
+    "copy-json-ld": "Copy JSON+LD schema"
   },
   "settings": "Einstellungen",
   "logout": "Logout",
@@ -96,6 +97,7 @@
     "Layer": "Schichten"
   },
   "total": {
+    "approx": "Approx. total",
     "title": "Total",
     "cocktails": "Alle Cocktails",
     "ingredients": "Alle Zutaten"

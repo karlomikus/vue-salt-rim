@@ -67,7 +67,8 @@
     "format-copy-failed": "Kopiranje teksta nije uspjelo",
     "copy-text": "Kopiraj kao običan tekst",
     "copy-md": "Kopiraj u Markdown formatu",
-    "copy-xml": "Kopiraj kao XML"
+    "copy-xml": "Kopiraj kao XML",
+    "copy-json-ld": "Copy JSON+LD schema"
   },
   "settings": "Postavke",
   "logout": "Odjava",
@@ -96,6 +97,7 @@
     "Layer": "Slojevi"
   },
   "total": {
+    "approx": "Approx. total",
     "title": "Ukupno",
     "cocktails": "Ukupno koktela",
     "ingredients": "Ukupno sastojaka"
