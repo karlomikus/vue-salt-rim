@@ -256,7 +256,7 @@ function handleShoppingListUpdate(e) {
                                 </div>
                             </td>
                             <td style="text-align: right;">
-                                <ToggleIngredientShoppingCart :ingredient="{id: ingredient.ingredient_id, name: ingredient.name}" :shopping-list="shoppingList.map(l => l.ingredient_id)" @list-updated="handleShoppingListUpdate"></ToggleIngredientShoppingCart>
+                                <ToggleIngredientShoppingCart :ingredient="{id: ingredient.id, name: ingredient.name}" :shopping-list="shoppingList.map(l => l.ingredient_id)" @list-updated="handleShoppingListUpdate"></ToggleIngredientShoppingCart>
                             </td>
                         </tr>
                         <tr style="border-top-width: 3px;">
