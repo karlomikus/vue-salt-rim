@@ -97,6 +97,7 @@
     "Layer": "Calque"
   },
   "total": {
+    "approx": "Approx. total",
     "title": "Total",
     "cocktails": "Total cocktails",
     "ingredients": "Total des ingrédients"
