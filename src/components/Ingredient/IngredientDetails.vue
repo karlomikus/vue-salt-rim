@@ -1,3 +1,6 @@
+<script setup>
+import UnitHandler from '../../UnitHandler.js'
+</script>
 <template>
     <OverlayLoader v-if="isLoadingIngredient" />
     <div v-if="ingredient.id" class="ingredient-details">
@@ -25,7 +28,7 @@
                         <div class="item-details__chips__group__title">{{ $t('strength') }}:</div>
                         <ul v-if="ingredient.strength > 0" class="chips-list">
                             <li>
-                                <span class="chip"><abbr :title="$t('ABV.definition')">{{ $t('ABV') }}</abbr>: {{ ingredient.strength + '%' }}</span>
+                                <span class="chip"><abbr :title="$t('ABV-definition')">{{ $t('ABV') }}</abbr>: {{ ingredient.strength + '%' }}</span>
                             </li>
                             <li>
                                 <span class="chip">{{ $t('alcohol-proof') }}: {{ ingredient.strength * 2 }}</span>
@@ -75,11 +78,22 @@
                         </template>
                     </li>
                     <li><RouterLink :to="{name: 'cocktails', query: {'filter[ingredient_id]': ingredient.id}}">Used in <strong>{{ ingredient.cocktails.length }}</strong> cocktail recipes</RouterLink></li>
-                    <li v-if="extraIfAddedToShelf.length > 0">{{ $t('ingredient.extra-cocktails') }}: <RouterLink :to="{name: 'cocktails', query: {'filter[id]': extraCocktailsIds}}">{{ extraIfAddedToShelf.length }} {{ $t('cocktails.title') }}</RouterLink></li>
+                    <li v-if="extraIfAddedToShelf.length > 0">{{ $t('ingredient.extra-cocktails') }}: <RouterLink :to="{name: 'cocktails', query: {'filter[id]': extraCocktailsIds}}">{{ extraIfAddedToShelf.length }} {{ $t('cocktail.cocktails') }}</RouterLink></li>
                 </ul>
                 <div v-if="ingredient.description">
                     <h2 class="details-block-container__title">{{ $t('description') }}</h2>
                     <div v-html="parsedDescription"></div>
+                </div>
+                <div v-if="ingredient.prices.length > 0" class="ingredient-details__prices">
+                    <h2 class="details-block-container__title">{{ $t('price.prices') }}</h2>
+                    <div class="ingredient-details__prices__list">
+                        <div v-for="price in ingredient.prices" :key="price.id" class="ingredient-details__prices__list__item">
+                            <h5>{{ price.price_category.name }} ({{ price.price_category.currency }})</h5>
+                            <p>
+                                {{ UnitHandler.formatPrice(price.price, price.price_category.currency) }} &middot; {{ price.amount }}{{ price.units }} <template v-if="price.description">&middot; {{ price.description }}</template>
+                            </p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -143,6 +157,9 @@ export default {
         },
         extraCocktailsIds() {
             return this.extraIfAddedToShelf.map(c => c.id).join(',')
+        },
+        pricesByCurrency() {
+            return Object.groupBy(this.ingredient.prices, p => p.price_category.currency)
         }
     },
     watch: {
@@ -402,5 +419,25 @@ export default {
 .ingredient-details__more svg {
     width: 16px;
     height: 16px;
+}
+
+.ingredient-details__prices {
+    margin-top: 1rem;
+}
+
+.ingredient-details__prices__list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--gap-size-1);
+}
+
+.ingredient-details__prices__list__item {
+    /* background-color: var(--clr-gray-100); */
+    /* padding: var(--gap-size-2); */
+    border-radius: var(--radius-2);
+}
+
+.ingredient-details__prices__list__item h5 {
+    font-size: 12px;
 }
 </style>

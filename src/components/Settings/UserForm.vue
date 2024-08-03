@@ -3,7 +3,7 @@
         <OverlayLoader v-if="isLoading" />
         <div class="dialog-title">{{ dialogTitle }}</div>
         <div class="form-group">
-            <label class="form-label form-label--required" for="name">{{ $t('user.name') }}:</label>
+            <label class="form-label form-label--required" for="name">{{ $t('users.display-name') }}:</label>
             <input id="name" v-model="user.name" class="form-input" type="text" required>
         </div>
         <div class="form-group">
@@ -22,7 +22,7 @@
             <input id="password" v-model="user.password" class="form-input" type="password" :required="!user.id">
         </div>
         <div class="form-group">
-            <label class="form-label">{{ $t('user.role') }}:</label>
+            <label class="form-label">{{ $t('users.role') }}:</label>
             <div class="user-roles">
                 <SaltRimRadio v-for="role in roles" :key="role.id" v-model="user.role.role_id" :value="role.id" :title="role.name" :description="role.description"></SaltRimRadio>
             </div>
@@ -88,7 +88,7 @@ export default {
 
                 ApiRequests.updateUserById(this.user.id, postData).then(() => {
                     this.isLoading = false
-                    this.$toast.default(this.$t('user.update-success'))
+                    this.$toast.default(this.$t('users.update-success'))
                     this.$emit('userDialogClosed')
                 }).catch(e => {
                     this.$toast.error(e.message)
@@ -98,7 +98,7 @@ export default {
                 postData.password = this.user.password
                 ApiRequests.saveUser(postData).then(() => {
                     this.isLoading = false
-                    this.$toast.default(this.$t('user.add-success'))
+                    this.$toast.default(this.$t('users.add-success'))
                     this.$emit('userDialogClosed')
                 }).catch(e => {
                     this.$toast.error(e.message)

@@ -24,7 +24,7 @@
         <h3 class="form-section-title">{{ $t('media') }}</h3>
         <SubscriptionCheck>Subscribe to "Mixologist" plan to upload more than one cocktail recipe image!</SubscriptionCheck>
         <ImageUpload ref="imagesUpload" :value="cocktail.images" :max-images="maxImages" />
-        <h3 class="form-section-title">{{ $t('ingredients.title') }}</h3>
+        <h3 class="form-section-title">{{ $t('ingredient.ingredients') }}</h3>
         <div class="block-container block-container--padded block-container--inset">
             <ul v-show="cocktail.ingredients.length > 0" class="cocktail-form__ingredients" style="margin-bottom: 20px;">
                 <li v-for="ing in cocktail.ingredients" :key="ing.ingredient_id" class="block-container" :data-id="ing.ingredient_id">
@@ -436,7 +436,7 @@ export default {
             }
 
             const imageResources = await this.$refs.imagesUpload.uploadPictures().catch(() => {
-                this.$toast.error(`${this.$t('image-upload-error')} ${this.$t('image-upload-error.cocktail')}`)
+                this.$toast.error(`${this.$t('imageupload.error')} ${this.$t('imageupload.error-cocktail')}`)
             }) || []
 
             if (imageResources.length > 0) {

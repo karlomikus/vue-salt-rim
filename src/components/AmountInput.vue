@@ -59,7 +59,7 @@ document.addEventListener('click', e => {
 }
 
 .recommended-amounts__amount {
-    font-feature-settings: "frac";
+    /* font-feature-settings: "frac"; */
     background: var(--clr-gray-200);
     color: var(--clr-gray-800);
     border: 0;

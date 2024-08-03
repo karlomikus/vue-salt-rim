@@ -11,7 +11,7 @@
                 <input id="name" v-model="ingredient.name" class="form-input" type="text" required>
             </div>
             <div class="form-group">
-                <label class="form-label" for="category">{{ $t('category') }}:</label>
+                <label class="form-label" for="category">{{ $t('category.title') }}:</label>
                 <select id="category" v-model="ingredientCategoryId" class="form-select" required>
                     <option :value="null" disabled>{{ $t('select-category') }}</option>
                     <option v-for="cat in categories" :key="cat.id" :value="cat.id">{{ cat.name }}</option>
@@ -76,6 +76,48 @@
         </div>
         <h3 class="form-section-title">{{ $t('media') }}</h3>
         <ImageUpload ref="imagesUpload" :value="ingredient.images" :max-images="1" />
+        <h3 class="form-section-title">{{ $t('price.prices') }}</h3>
+        <div class="block-container block-container--padded block-container--inset ingredient-prices">
+            <template v-if="priceCategories.length > 0">
+                <div v-for="(price, idx) in ingredient.prices" :key="idx" class="block-container ingredient-prices__price">
+                    <button class="dialog__close" type="button" @click.prevent="removeIngredientPrice(price)">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path fill="none" d="M0 0h24v24H0z" /><path d="M12 10.586l4.95-4.95 1.414 1.414-4.95 4.95 4.95 4.95-1.414 1.414-4.95-4.95-4.95 4.95-1.414-1.414 4.95-4.95-4.95-4.95L7.05 5.636z" /></svg>
+                    </button>
+                    <div class="form-group" style="width: 100%; max-width: 300px;">
+                        <label class="form-label form-label--required" :for="'ingredient-price-category-' + idx">{{ $t('price.category') }}</label>
+                        <select :id="'ingredient-price-category-' + idx" v-model="price.price_category.id" class="form-select" required>
+                            <option :value="null" disabled>Select price category</option>
+                            <hr>
+                            <optgroup v-for="(priceCategoriesPerCurrency, currency) in groupedPriceCategories" :key="currency" :label="currency">
+                                <option v-for="pc in priceCategoriesPerCurrency" :key="pc.id" :value="pc.id">{{ pc.name }}</option>
+                            </optgroup>
+                        </select>
+                    </div>
+                    <div class="form-group" style="max-width: 150px;">
+                        <label class="form-label form-label--required" :for="'ingredient-price-price-' + idx">{{ $t('price.price') }} <template v-if="price.price_category.id">({{ priceCategories.find(p => p.id == price.price_category.id).currency }})</template></label>
+                        <input :id="'ingredient-price-price-' + idx" v-model="price.price" type="text" class="form-input" required>
+                    </div>
+                    <div class="form-group" style="max-width: 150px;">
+                        <label class="form-label form-label--required" :for="'ingredient-price-vol-' + idx">{{ $t('amount') }}</label>
+                        <input :id="'ingredient-price-vol-' + idx" v-model="price.amount" type="text" class="form-input" required>
+                    </div>
+                    <div class="form-group" style="max-width: 100px;">
+                        <label class="form-label form-label--required" :for="'ingredient-price-units-' + idx">{{ $t('units') }}</label>
+                        <input :id="'ingredient-price-units-' + idx" v-model="price.units" type="text" class="form-input" required>
+                    </div>
+                    <div class="form-group" style="max-width: 300px;">
+                        <label class="form-label" :for="'ingredient-price-description-' + idx">{{ $t('description') }}</label>
+                        <input :id="'ingredient-price-description-' + idx" v-model="price.description" type="text" class="form-input">
+                    </div>
+                </div>
+                <div>
+                    <button class="button button--dark" type="button" @click="addIngredientPrice">{{ $t('prices.add') }}</button>
+                </div>
+            </template>
+            <div v-else>
+                To add ingredient prices, you need to define bar <RouterLink :to="{name: 'settings.price-categories'}">price categories</RouterLink> first.
+            </div>
+        </div>
         <div class="form-actions form-actions--timestamps">
             <TimeStamps v-if="ingredient.id" :resource="ingredient"></TimeStamps>
             <div class="form-actions__buttons">
@@ -124,9 +166,11 @@ export default {
                 color: '#000',
                 category: {},
                 images: [],
-                ingredient_parts: []
+                ingredient_parts: [],
+                prices: [],
             },
-            categories: []
+            categories: [],
+            priceCategories: [],
         }
     },
     computed: {
@@ -136,6 +180,17 @@ export default {
             }
 
             return [this.ingredient.id]
+        },
+        groupedPriceCategories() {
+            return this.priceCategories.reduce((acc, obj) => {
+                const keyValue = obj['currency']
+                if (!acc[keyValue]) {
+                    acc[keyValue] = []
+                }
+                acc[keyValue].push(obj)
+
+                return acc
+            }, {})
         }
     },
     created() {
@@ -149,6 +204,7 @@ export default {
         }
 
         this.refreshCategories()
+        this.refreshPriceCategories()
     },
     methods: {
         refreshIngredient() {
@@ -172,6 +228,11 @@ export default {
                 this.categories = data
             })
         },
+        refreshPriceCategories() {
+            ApiRequests.fetchPriceCategories().then(data => {
+                this.priceCategories = data
+            })
+        },
         selectIngredientPart(ingredient) {
             if (this.ingredient.ingredient_parts.some(ing => ing.id == ingredient.id)) {
                 return
@@ -191,6 +252,12 @@ export default {
                 this.ingredientCategoryId = eventPayload.id
                 this.refreshCategories()
             }
+        },
+        addIngredientPrice() {
+            this.ingredient.prices.push({price_category: {id: null}})
+        },
+        removeIngredientPrice(price) {
+            this.ingredient.prices.splice(this.ingredient.prices.indexOf(price), 1)
         },
         async submit() {
             this.isLoading = true
@@ -213,10 +280,17 @@ export default {
                 images: [],
                 ingredient_category_id: this.ingredientCategoryId,
                 complex_ingredient_part_ids: [...new Set(this.ingredient.ingredient_parts.map(i => i.id))],
+                prices: this.ingredient.prices.filter(p => p.price_category.id != null).map(p => ({
+                    price_category_id: p.price_category.id,
+                    price: p.price,
+                    amount: p.amount,
+                    units: p.units,
+                    description: p.description,
+                }))
             }
 
             const imageResources = await this.$refs.imagesUpload.uploadPictures().catch(() => {
-                this.$toast.error(`${this.$t('image-upload-error')} ${this.$t('image-upload-error.ingredient')}`)
+                this.$toast.error(`${this.$t('imageupload.error')} ${this.$t('imageupload.error-ingredient')}`)
             }) || []
 
             if (imageResources.length > 0) {
@@ -268,5 +342,23 @@ export default {
     overflow-y: auto;
     max-height: 14rem;
     padding: 0.5rem;
+}
+
+.ingredient-prices {
+    display: flex;
+    flex-direction: column;
+    gap: var(--gap-size-3);
+}
+
+.ingredient-prices__price {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--gap-size-3);
+    flex-direction: row;
+    padding: var(--gap-size-3);
+}
+
+.ingredient-prices__price .form-group {
+    margin: 0;
 }
 </style>

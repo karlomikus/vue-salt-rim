@@ -2,7 +2,7 @@
     <form @submit.prevent="submit">
         <OverlayLoader v-if="isLoading" />
         <PageHeader>
-            {{ $t('cocktails.import') }}
+            {{ $t('cocktail.import') }}
         </PageHeader>
         <h3 class="form-section-title">{{ $t('import.type') }}</h3>
         <div class="block-container block-container--padded">
@@ -82,7 +82,7 @@
                         <input id="image_url" v-model="image.url" type="text" class="form-input">
                     </div>
                     <div class="form-group">
-                        <label class="form-label" for="image_copyrigh">{{ $t('image-copyright') }}</label>
+                        <label class="form-label" for="image_copyrigh">{{ $t('imageupload.copyright') }}</label>
                         <input id="image_copyrigh" v-model="image.copyright" type="text" class="form-input">
                     </div>
                 </template>
@@ -91,7 +91,7 @@
                     <input id="tags" v-model="cocktailTags" type="text" class="form-input">
                 </div>
             </div>
-            <h3 class="form-section-title">{{ $t('ingredients.title') }}</h3>
+            <h3 class="form-section-title">{{ $t('ingredient.ingredients') }}</h3>
             <div v-for="(ingredient, idx) in result.ingredients" :key="idx" class="block-container block-container--padded scraper-ingredients__ingredient">
                 <p><strong>{{ $t('source') }}:</strong> {{ ingredient.source }}</p>
                 <div class="scraper-ingredients__ingredient__inputs">
@@ -193,7 +193,7 @@ export default {
         },
     },
     created() {
-        document.title = `${this.$t('cocktails.import')} \u22C5 ${this.site_title}`
+        document.title = `${this.$t('cocktail.import')} \u22C5 ${this.site_title}`
     },
     methods: {
         importCocktail() {

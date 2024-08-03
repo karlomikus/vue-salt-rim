@@ -25,7 +25,7 @@
                         <tr>
                             <th>{{ $t('name') }} / {{ $t('created') }}</th>
                             <th>{{ $t('api.abilities') }}</th>
-                            <th>{{ $t('last_used_at') }}</th>
+                            <th>{{ $t('last-used-at') }}</th>
                             <th>{{ $t('expires_at') }}</th>
                             <th></th>
                         </tr>

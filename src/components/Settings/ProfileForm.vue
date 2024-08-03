@@ -11,7 +11,7 @@
             <h3 style="margin-top: 0;" class="form-section-title">{{ $t('profile-information') }}</h3>
             <div class="block-container block-container--padded">
                 <div class="form-group">
-                    <label class="form-label form-label--required" for="name">{{ $t('user.name') }}:</label>
+                    <label class="form-label form-label--required" for="name">{{ $t('users.display-name') }}:</label>
                     <input id="name" v-model="user.name" class="form-input" type="text" required>
                 </div>
                 <div class="form-group">
@@ -23,6 +23,7 @@
                     <select id="ui-language" v-model="currentLocale" class="form-select">
                         <option v-for="locale in $i18n.availableLocales" :key="locale" :value="locale">{{ $t('locales.' + locale) }}</option>
                     </select>
+                    <p class="form-input-hint"><a href="https://crowdin.com/project/bar-assistant" target="_blank">{{ $t('locales.help') }}</a></p>
                 </div>
             </div>
             <h3 class="form-section-title">{{ $t('password') }}</h3>

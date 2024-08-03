@@ -1,6 +1,21 @@
+# v2.16.0
+## New
+- Added ingredient prices
+- Added quantity calculator to collections
+    - Calculate how many bottles you need
+    - Calculate approx. price totals
+    - Calculations are saved per-client
+- Added JSON+LD share action
+- Added Crowdin support
+
+## Fixes
+- Fixed HTML entity parsing #191
+- Fixed cl to oz conversion
+
 # v2.15.0
 ## New
 - Updated cocktail tag input, you now get existing tag suggestions
+- Added Polish language
 
 ## Changes
 - Ingredient strength no longer required field

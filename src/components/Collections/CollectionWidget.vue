@@ -8,6 +8,8 @@
                 </svg>
             </template>
             {{ $t('cocktail-no-collection') }}
+            <br>
+            <a href="#" @click.prevent="$emit('addToCollection')">{{ $t('collections.add-to') }}</a>
         </EmptyState>
         <div v-for="collection in collections" :key="collection.id" class="block-container cocktail-collections__item">
             <h3>{{ collection.name }}</h3>
@@ -41,7 +43,7 @@ export default {
             }
         }
     },
-    emits: ['cocktailRemovedFromCollection'],
+    emits: ['cocktailRemovedFromCollection', 'addToCollection'],
     data() {
         return {
             isLoading: false,

@@ -9,7 +9,7 @@
                 <small v-if="ingredient.category">{{ ingredient.category.name }}</small>
                 {{ ingredient.name }}
             </RouterLink>
-            <p>{{ cleanDescription }}</p>
+            <p v-html="cleanDescription"></p>
             <div class="ingredient-grid-item__actions">
                 <a href="#" @click.prevent="toggleShelf">
                     <template v-if="!inShelf">

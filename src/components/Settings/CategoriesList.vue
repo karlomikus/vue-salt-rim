@@ -23,7 +23,7 @@
                     <thead>
                         <tr>
                             <th>{{ $t('name') }} / {{ $t('description') }}</th>
-                            <th>{{ $t('ingredients.title') }}</th>
+                            <th>{{ $t('ingredient.ingredients') }}</th>
                             <th></th>
                         </tr>
                     </thead>
@@ -93,7 +93,7 @@ export default {
             this.showDialog = true
         },
         deleteCategory(category) {
-            this.$confirm(this.$t('ingredient-category.confirm-delete', {name: category.name}), {
+            this.$confirm(this.$t('category.confirm-delete', {name: category.name}), {
                 onResolved: (dialog) => {
                     this.isLoading = true
                     dialog.close()

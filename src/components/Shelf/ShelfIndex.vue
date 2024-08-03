@@ -64,7 +64,7 @@
                 </template>
                 <template #default>
                     {{ $t('missing-cocktails') }}<br>
-                    <RouterLink :to="{ name: 'cocktails.form' }">{{ $t('cocktails.add') }}</RouterLink>
+                    <RouterLink :to="{ name: 'cocktails.form' }">{{ $t('cocktail.add') }}</RouterLink>
                 </template>
             </EmptyState>
         </div>
@@ -122,7 +122,7 @@
             <div class="list-grid__container">
                 <RouterLink v-for="ingredient in stats.most_popular_ingredients" :key="ingredient.id" :to="{ name: 'ingredients.show', params: { id: ingredient.ingredient_slug } }" class="shelf-stats-count block-container block-container--hover">
                     <h4>{{ ingredient.name }}</h4>
-                    <small>{{ ingredient.cocktails_count }} {{ $t('cocktails.title') }}</small>
+                    <small>{{ ingredient.cocktails_count }} {{ $t('cocktail.cocktails') }}</small>
                 </RouterLink>
             </div>
         </div>

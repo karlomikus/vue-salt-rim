@@ -31,7 +31,7 @@
                     </SaltRimDialog>
                 </div>
                 <div class="image-upload__list__item__actions">
-                    <label class="form-label" :for="'copyright-' + idx">{{ $t('image-copyright') }}:</label>
+                    <label class="form-label" :for="'copyright-' + idx">{{ $t('imageupload.copyright') }}:</label>
                     <input :id="'copyright-' + idx" v-model="img.copyright" class="form-input form-input--small" type="text" :placeholder="$t('placeholder.image-copyright')">
                 </div>
             </div>

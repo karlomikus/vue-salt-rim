@@ -1,6 +1,6 @@
 <template>
     <PageHeader>
-        {{ $t('ingredients.title') }}
+        {{ $t('ingredient.ingredients') }}
         <template v-if="appState.isAdmin() || appState.isModerator() || appState.isGeneral()" #actions>
             <Dropdown>
                 <template #default="{ toggleDropdown }">
@@ -37,7 +37,7 @@
                             <label :for="'global-' + filter.id">{{ filter.name }}</label>
                         </div>
                     </Refinement>
-                    <Refinement id="ingredient-category" v-model="activeFilters.category_id" :title="$t('category')" :refinements="refineCategories" @change="updateRouterPath"></Refinement>
+                    <Refinement id="ingredient-category" v-model="activeFilters.category_id" :title="$t('category.title')" :refinements="refineCategories" @change="updateRouterPath"></Refinement>
                     <Refinement id="strength" v-model="activeFilters.strength" :title="$t('strength')" :refinements="refineStrength" type="radio" @change="updateRouterPath"></Refinement>
                 </div>
             </div>
@@ -216,7 +216,7 @@ export default {
         },
     },
     created() {
-        document.title = `${this.$t('ingredients.title')} \u22C5 ${this.site_title}`
+        document.title = `${this.$t('ingredient.ingredients')} \u22C5 ${this.site_title}`
 
         this.fetchRefinements()
 

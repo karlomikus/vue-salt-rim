@@ -11,7 +11,7 @@
             <ais-index index-name="cocktails">
                 <ais-hits>
                     <template #default="{ items }">
-                        <h4 v-show="items.length > 0" class="site-autocomplete__index-name">&mdash; {{ $t('cocktails.title') }} ({{ items.length }})</h4>
+                        <h4 v-show="items.length > 0" class="site-autocomplete__index-name">&mdash; {{ $t('cocktail.cocktails') }} ({{ items.length }})</h4>
                         <ul v-show="items.length > 0" class="site-autocomplete__results">
                             <li v-for="hit in items" :key="hit.slug">
                                 <RouterLink :to="{ name: 'cocktails.show', params: { id: hit.slug } }" @click="close">
@@ -29,7 +29,7 @@
             <ais-index index-name="ingredients">
                 <ais-hits>
                     <template #default="{ items }">
-                        <h4 v-show="items.length > 0" class="site-autocomplete__index-name">&mdash; {{ $t('ingredients.title') }} ({{ items.length }})</h4>
+                        <h4 v-show="items.length > 0" class="site-autocomplete__index-name">&mdash; {{ $t('ingredient.ingredients') }} ({{ items.length }})</h4>
                         <ul v-show="items.length > 0" class="site-autocomplete__results">
                             <li v-for="hit in items" :key="hit.slug">
                                 <RouterLink :to="{ name: 'ingredients.show', params: { id: hit.slug } }" @click="close">

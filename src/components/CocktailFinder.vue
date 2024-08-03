@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div class="dialog-title">{{ $t('cocktails.title') }}</div>
+        <div class="dialog-title">{{ $t('cocktail.cocktails') }}</div>
         <ais-instant-search :search-client="searchClient" index-name="cocktails" class="cocktail-finder">
             <ais-configure :hits-per-page.camel="8" />
             <ais-search-box>

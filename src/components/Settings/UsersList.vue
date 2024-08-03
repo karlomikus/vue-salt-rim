@@ -1,6 +1,6 @@
 <template>
     <PageHeader>
-        {{ $t('users') }}
+        {{ $t('users.title') }}
         <template v-if="appState.isSubscribed()" #actions>
             <SaltRimDialog v-model="showDialog">
                 <template #trigger>
@@ -23,8 +23,8 @@
                 <table class="table">
                     <thead>
                         <tr>
-                            <th>{{ $t('user.name') }} / {{ $t('email') }}</th>
-                            <th>{{ $t('user.role') }}</th>
+                            <th>{{ $t('users.display-name') }} / {{ $t('email') }}</th>
+                            <th>{{ $t('users.role') }}</th>
                             <th></th>
                         </tr>
                     </thead>
@@ -81,7 +81,7 @@ export default {
         }
     },
     created() {
-        document.title = `${this.$t('users')} \u22C5 ${this.site_title}`
+        document.title = `${this.$t('users.title')} \u22C5 ${this.site_title}`
 
         this.refreshUsers()
     },

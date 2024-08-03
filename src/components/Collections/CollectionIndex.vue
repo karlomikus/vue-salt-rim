@@ -21,7 +21,7 @@
                 <RouterLink class="collections__collection__title" :to="{ name: 'cocktails', query: { 'filter[collection_id]': collection.id } }">{{ collection.name }}</RouterLink>
                 <br>
                 <div class="collections__collection__content">
-                    {{ collection.cocktails.length }} {{ $t('cocktails.title') }}
+                    {{ collection.cocktails.length }} {{ $t('cocktail.cocktails') }}
                     <template v-if="collection.is_bar_shared">
                         &middot; {{ $t('collection-shared') }}
                     </template>
@@ -33,6 +33,8 @@
                     &middot;
                     <a class="list-group__action" href="#" @click.prevent="download(collection)">{{ $t('download') }} CSV</a>
                     &middot;
+                    <RouterLink :to="{name: 'collections.quantity-calculator', params: {id: collection.id}}">{{ $t('collections.quantitiy-calculator') }}</RouterLink>
+                    <br>
                     <a class="list-group__action" href="#" @click.prevent="openDialog($t('collections.edit'), collection)">{{ $t('edit') }}</a>
                     &middot;
                     <a class="list-group__action" href="#" @click.prevent="deleteCollection(collection)">{{ $t('remove') }}</a>
@@ -109,6 +111,7 @@ export default {
                     dialog.close()
                     ApiRequests.deleteCollection(collection.id).then(() => {
                         this.isLoading = false
+                        localStorage.removeItem('collection_' + collection.id)
                         this.$toast.default(this.$t('collections.delete-success'))
                         this.refreshCollections()
                     }).catch(e => {
