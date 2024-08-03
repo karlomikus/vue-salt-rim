@@ -80,9 +80,7 @@
         <div class="block-container block-container--padded block-container--inset ingredient-prices">
             <template v-if="priceCategories.length > 0">
                 <div v-for="(price, idx) in ingredient.prices" :key="idx" class="block-container ingredient-prices__price">
-                    <button class="dialog__close" type="button" @click.prevent="removeIngredientPrice(price)">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path fill="none" d="M0 0h24v24H0z" /><path d="M12 10.586l4.95-4.95 1.414 1.414-4.95 4.95 4.95 4.95-1.414 1.414-4.95-4.95-4.95 4.95-1.414-1.414 4.95-4.95-4.95-4.95L7.05 5.636z" /></svg>
-                    </button>
+                    <CloseButton @closed="removeIngredientPrice(price)"></CloseButton>
                     <div class="form-group" style="width: 100%; max-width: 300px;">
                         <label class="form-label form-label--required" :for="'ingredient-price-category-' + idx">{{ $t('price.category') }}</label>
                         <select :id="'ingredient-price-category-' + idx" v-model="price.price_category.id" class="form-select" required>
@@ -141,6 +139,7 @@ import EmptyState from '../EmptyState.vue'
 import SaltRimCheckbox from '../SaltRimCheckbox.vue'
 import SaltRimDialog from '../Dialog/SaltRimDialog.vue'
 import CategoryForm from '../Settings/CategoryForm.vue'
+import CloseButton from '../CloseButton.vue'
 
 export default {
     components: {
@@ -152,7 +151,8 @@ export default {
         EmptyState,
         SaltRimCheckbox,
         SaltRimDialog,
-        CategoryForm
+        CategoryForm,
+        CloseButton
     },
     data() {
         return {

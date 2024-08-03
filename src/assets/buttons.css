@@ -193,3 +193,32 @@
     background-color: var(--clr-red);
     color: #fff;
 }
+
+.close-button-container {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+    z-index: 2;
+}
+
+.button--close {
+    width: 1.5rem;
+    height: 1.5rem;
+    background: none;
+    display: flex;
+    border: 0;
+    padding: 0;
+    cursor: pointer;
+    border-radius: var(--radius-round);
+    color: var(--clr-gray-400);
+}
+
+.button--close svg {
+    display: block;
+    fill: currentColor;
+}
+
+.button--close:is(:hover,:focus,:active) {
+    background: var(--clr-gray-200);
+    color: var(--clr-gray-500);
+}
