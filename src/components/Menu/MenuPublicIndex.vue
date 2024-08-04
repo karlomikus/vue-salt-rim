@@ -1,7 +1,7 @@
 <template>
     <div class="public-page">
         <div class="public-page__header">
-            <SiteLogo></SiteLogo>
+            <SiteLogo :no-link="true"></SiteLogo>
         </div>
         <div class="public-page-menu">
             <div class="public-page-menu__bar">
