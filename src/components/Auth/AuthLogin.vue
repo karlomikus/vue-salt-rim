@@ -33,7 +33,7 @@
                 </div>
             </div>
             <div v-if="baServerAvailable" style="text-align: right; margin-top: 20px;">
-                <RouterLink class="button button--outline" :to="{ name: 'register' }">{{ $t('register') }}</RouterLink>
+                <RouterLink v-if="registrationAllowed" class="button button--outline" :to="{ name: 'register' }">{{ $t('register') }}</RouterLink>
                 <button type="submit" class="button button--dark" style="margin-left: 5px;" :disabled="!baServerAvailable">{{ $t('login') }}</button>
             </div>
         </form>
@@ -58,6 +58,7 @@ export default {
             password: null,
             rememberMe: localStorage.getItem('sr_remember_login') ?? true,
             baServer: window.srConfig.API_URL,
+            registrationAllowed: window.srConfig.ALLOW_REGISTRATION && window.srConfig.ALLOW_REGISTRATION === 'false' ? false : true,
             server: {},
         }
     },
