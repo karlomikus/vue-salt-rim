@@ -23,7 +23,7 @@
                             </p>
                             <a v-if="cocktail.public_id" :href="publicUrl(cocktail)">View recipe</a>
                         </div>
-                        <div class="public-page-menu__cocktail__price">
+                        <div v-if="cocktail.price.full > 0" class="public-page-menu__cocktail__price">
                             {{ cocktail.price.formatted }}{{ cocktail.currency }}
                         </div>
                     </div>
