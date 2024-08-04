@@ -66,6 +66,22 @@ export default {
     },
 
     /**
+     * Converts fractions and forces number return type
+     *
+     * @param {string} fraction 
+     * @returns {number}
+     */
+    asDecimal(fraction) {
+        const val = Unitz.parse(fraction).value
+
+        if (val === false) {
+            return 0
+        }
+
+        return val
+    },
+
+    /**
      * @param {string} fromUnits
      * @param {number} amount
      * @param {string} toUnits
