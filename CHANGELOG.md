@@ -1,3 +1,14 @@
+# v2.17.0
+## New
+- Added ALLOW_REGISTRATION env variable
+    - If set to `false` then registration components actions are disabled
+
+## Changes
+- Menu prices are now hidden if they are set to zero
+- Removed logo link from menus
+- Ingredient amounts are now converted to number before saving
+- Ingredient units are not forced to ml before saving anymore
+
 # v2.16.0
 ## New
 - Added ingredient prices

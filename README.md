@@ -85,10 +85,11 @@ Create a new config file in `public/config.js`, with the following content
 
 ``` js
 window.srConfig = {};
-window.srConfig.API_URL = "$API_URL";
-window.srConfig.MEILISEARCH_URL = "$MEILISEARCH_URL";
+window.srConfig.API_URL = "$API_URL"; // Your API URL: https://api.example.com/
+window.srConfig.MEILISEARCH_URL = "$MEILISEARCH_URL"; // Your search engine URL: https://search.example.com/
 window.srConfig.DEFAULT_LOCALE = "en-US";
 window.srConfig.MAILS_ENABLED = false;
+window.srConfig.ALLOW_REGISTRATION = true;
 ```
 
 4. Run the build commands

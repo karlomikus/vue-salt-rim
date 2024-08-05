@@ -78,34 +78,6 @@
     }
 }
 
-.dialog__close {
-    position: absolute;
-    top: 0.5rem;
-    right: 0.5rem;
-    width: 1.5rem;
-    height: 1.5rem;
-    border-radius: var(--radius-round);
-    background: none;
-    display: flex;
-    border: 0;
-    padding: 0;
-    cursor: pointer;
-    z-index: 2;
-}
-
-.dialog__close svg {
-    display: block;
-    fill: var(--clr-gray-400);
-}
-
-.dialog__close:is(:hover,:focus,:active) {
-    background: var(--clr-gray-200);
-}
-
-.dialog__close:is(:hover,:focus,:active) svg {
-    fill: var(--clr-gray-500);
-}
-
 .dialog-actions {
     display: flex;
     justify-content: end;
@@ -116,10 +88,6 @@
 
 .site-autocomplete-dialog .dialog__content {
     margin-top: 3rem;
-}
-
-.site-autocomplete-dialog .dialog__close {
-    background-color: var(--clr-gray-100);
 }
 
 @media (max-width: 450px) {

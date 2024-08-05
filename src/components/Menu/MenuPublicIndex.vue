@@ -1,7 +1,7 @@
 <template>
     <div class="public-page">
         <div class="public-page__header">
-            <SiteLogo></SiteLogo>
+            <SiteLogo :no-link="true"></SiteLogo>
         </div>
         <div class="public-page-menu">
             <div class="public-page-menu__bar">
@@ -23,7 +23,7 @@
                             </p>
                             <a v-if="cocktail.public_id" :href="publicUrl(cocktail)">View recipe</a>
                         </div>
-                        <div class="public-page-menu__cocktail__price">
+                        <div v-if="cocktail.price.full > 0" class="public-page-menu__cocktail__price">
                             {{ cocktail.price.formatted }}{{ cocktail.currency }}
                         </div>
                     </div>

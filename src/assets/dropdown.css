@@ -50,6 +50,13 @@
     color: var(--clr-gray-400);
 }
 
+.dropdown-menu__separator {
+    border: 0;
+    height: 1px;
+    background-color: var(--clr-gray-200);
+    margin: 0.5rem;
+}
+
 @keyframes slide-in-top {
     0% {
         top: -10px;

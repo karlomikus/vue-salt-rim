@@ -231,6 +231,13 @@ router.beforeEach(async (to) => {
     const requiresAuth = to.meta.requiresAuth ?? true
     const requiresBar = to.meta.requiresBar ?? false
     const appState = new AppState()
+    const registrationAllowed = window.srConfig.ALLOW_REGISTRATION && window.srConfig.ALLOW_REGISTRATION === 'false' ? false : true
+
+    if (!registrationAllowed && to.name == 'register') {
+        return {
+            path: '/login'
+        }
+    }
 
     if (requiresBar && !appState.bar.id) {
         return {

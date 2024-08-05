@@ -393,41 +393,19 @@ export default {
                 ingredients: this.cocktail.ingredients
                     .filter(i => i.ingredient_id != null)
                     .map((cIngredient) => {
-                        // Convert oz to ml
-                        if (cIngredient.units == 'oz') {
-                            cIngredient.amount = UnitHandler.oz2ml(cIngredient.amount)
-                            if (cIngredient.amount_max) {
-                                cIngredient.amount_max = UnitHandler.oz2ml(cIngredient.amount_max)
-                            }
-                            cIngredient.units = 'ml'
+                        cIngredient.amount = UnitHandler.asDecimal(cIngredient.amount)
+                        if (cIngredient.amount_max) {
+                            cIngredient.amount_max = UnitHandler.asDecimal(cIngredient.amount_max)
                         }
-                        // Convert cl to ml
-                        if (cIngredient.units == 'cl') {
-                            cIngredient.amount = UnitHandler.cl2ml(cIngredient.amount)
-                            if (cIngredient.amount_max) {
-                                cIngredient.amount_max = UnitHandler.cl2ml(cIngredient.amount_max)
-                            }
-                            cIngredient.units = 'ml'
-                        }
-
                         cIngredient.sort = sortedIngredientList.findIndex(sortedId => sortedId == cIngredient.ingredient_id) + 1
 
                         // Handle substitutes
                         cIngredient.substitutes.filter(sub => sub.units).map(sub => {
-                            if (sub.units == 'oz') {
-                                sub.amount = UnitHandler.oz2ml(sub.amount)
-                                if (sub.amount_max) {
-                                    sub.amount_max = UnitHandler.oz2ml(sub.amount_max)
-                                }
-                                sub.units = 'ml'
+                            if (sub.amount) {
+                                sub.amount = UnitHandler.asDecimal(sub.amount)
                             }
-
-                            if (sub.units == 'cl') {
-                                sub.amount = UnitHandler.cl2ml(sub.amount)
-                                if (sub.amount_max) {
-                                    sub.amount_max = UnitHandler.cl2ml(sub.amount_max)
-                                }
-                                sub.units = 'ml'
+                            if (sub.amount_max) {
+                                sub.amount_max = UnitHandler.asDecimal(sub.amount_max)
                             }
                         })
 
