@@ -14,19 +14,8 @@ export default {
      * @returns {string}
      */
     print(ingredient, convertTo = 'ml', servings = 1) {
-        if (!convertTo) {
-            convertTo = 'ml'
-        }
-
-        let orgAmount = ingredient.amount
-        if (String(orgAmount).includes('/')) {
-            orgAmount = Unitz.parse(`${orgAmount} fl-oz`).value
-        }
-
-        let orgAmountMax = (ingredient.amount_max || 0)
-        if (String(orgAmountMax).includes('/')) {
-            orgAmountMax = Unitz.parse(`${orgAmountMax} fl-oz`).value
-        }
+        let orgAmount = Unitz.parse(`${ingredient.amount}`).value
+        let orgAmountMax = Unitz.parse(`${(ingredient.amount_max || 0)}`).value
 
         orgAmount *= servings
         orgAmountMax *= servings
@@ -41,15 +30,10 @@ export default {
         let minAmount = this.convertFromTo(orgUnits, orgAmount, convertTo)
         let maxAmount = this.convertFromTo(orgUnits, orgAmountMax, convertTo)
 
+        minAmount = this.toFixedWithTruncate(minAmount, 3)
+        maxAmount = this.toFixedWithTruncate(maxAmount, 3)
+
         if (convertTo == 'oz') {
-            if ((minAmount % 1) > 0) {
-                minAmount = minAmount.toFixed(2)
-            }
-
-            if ((maxAmount % 1) > 0) {
-                maxAmount = maxAmount.toFixed(2)
-            }
-
             minAmount = this.asFraction(minAmount)
             maxAmount = this.asFraction(maxAmount)
         }
@@ -119,6 +103,10 @@ export default {
     },
 
     toFixedWithTruncate(num, fixed) {
+        if (num == null || isNaN(num)) {
+            return ''
+        }
+
         var re = new RegExp('^-?\\d+(?:.\\d{0,' + (fixed || -1) + '})?')
 
         return num.toString().match(re)[0]
