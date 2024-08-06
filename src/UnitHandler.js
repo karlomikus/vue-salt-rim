@@ -30,8 +30,8 @@ export default {
         let minAmount = this.convertFromTo(orgUnits, orgAmount, convertTo)
         let maxAmount = this.convertFromTo(orgUnits, orgAmountMax, convertTo)
 
-        minAmount = this.toFixedWithTruncate(minAmount, 2)
-        maxAmount = this.toFixedWithTruncate(maxAmount, 2)
+        minAmount = this.toFixedWithTruncate(minAmount, 3)
+        maxAmount = this.toFixedWithTruncate(maxAmount, 3)
 
         if (convertTo == 'oz') {
             minAmount = this.asFraction(minAmount)
@@ -103,6 +103,10 @@ export default {
     },
 
     toFixedWithTruncate(num, fixed) {
+        if (num == null || isNaN(num)) {
+            return ''
+        }
+
         var re = new RegExp('^-?\\d+(?:.\\d{0,' + (fixed || -1) + '})?')
 
         return num.toString().match(re)[0]
