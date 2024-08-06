@@ -70,6 +70,7 @@ document.addEventListener('click', e => {
     cursor: pointer;
     transition: transform 50ms ease-in-out;
     min-width: 30px;
+    white-space: nowrap;
 }
 
 .recommended-amounts__amount:hover {

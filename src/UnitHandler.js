@@ -14,19 +14,8 @@ export default {
      * @returns {string}
      */
     print(ingredient, convertTo = 'ml', servings = 1) {
-        if (!convertTo) {
-            convertTo = 'ml'
-        }
-
-        let orgAmount = ingredient.amount
-        if (String(orgAmount).includes('/')) {
-            orgAmount = Unitz.parse(`${orgAmount} fl-oz`).value
-        }
-
-        let orgAmountMax = (ingredient.amount_max || 0)
-        if (String(orgAmountMax).includes('/')) {
-            orgAmountMax = Unitz.parse(`${orgAmountMax} fl-oz`).value
-        }
+        let orgAmount = Unitz.parse(`${ingredient.amount}`).value
+        let orgAmountMax = Unitz.parse(`${(ingredient.amount_max || 0)}`).value
 
         orgAmount *= servings
         orgAmountMax *= servings
@@ -41,15 +30,10 @@ export default {
         let minAmount = this.convertFromTo(orgUnits, orgAmount, convertTo)
         let maxAmount = this.convertFromTo(orgUnits, orgAmountMax, convertTo)
 
+        minAmount = this.toFixedWithTruncate(minAmount, 2)
+        maxAmount = this.toFixedWithTruncate(maxAmount, 2)
+
         if (convertTo == 'oz') {
-            if ((minAmount % 1) > 0) {
-                minAmount = minAmount.toFixed(2)
-            }
-
-            if ((maxAmount % 1) > 0) {
-                maxAmount = maxAmount.toFixed(2)
-            }
-
             minAmount = this.asFraction(minAmount)
             maxAmount = this.asFraction(maxAmount)
         }
