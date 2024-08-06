@@ -1,3 +1,7 @@
+# v2.17.1
+## Fixes
+- Correctly show fraction amount for all units
+
 # v2.17.0
 ## New
 - Added ALLOW_REGISTRATION env variable
