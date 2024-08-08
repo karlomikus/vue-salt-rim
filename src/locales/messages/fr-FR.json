@@ -10,12 +10,12 @@
   "shelf": {
     "title": "Étagère",
     "toasts": {
-      "favorites-error": "Une erreur s’est produite lors de la récupération de vos cocktails préférés sur un serveur",
-      "shelf-error": "Une erreur s’est produite lors de la récupération de cocktails que vous pouvez faire à partir d’un serveur",
-      "stats-error": "Une erreur s’est produite lors de la récupération des statistiques d’un serveur",
-      "list-error": "Une erreur s’est produite lors de la récupération des ingrédients de votre liste de courses à partir d’un serveur"
+      "favorites-error": "Une erreur s’est produite lors de la récupération de vos cocktails préférés depuis le serveur",
+      "shelf-error": "Une erreur s’est produite lors de la récupération de cocktails que vous pouvez faire à partir du serveur",
+      "stats-error": "Une erreur s’est produite lors de la récupération des statistiques du serveur",
+      "list-error": "Une erreur s’est produite lors de la récupération des ingrédients de votre liste de courses à partir du serveur"
     },
-    "cocktails": "Des cocktails que je peux faire"
+    "cocktails": "Cocktails que je peux faire"
   },
   "ingredient": {
     "title": "Ingrédient",
@@ -40,7 +40,7 @@
     "spotlight": "Ingrédient principal",
     "is-variety": "L’ingrédient est la variété d’un autre ingrédient",
     "information": "Informations sur les ingrédients",
-    "extra-cocktails": "Add to shelf and you can make",
+    "extra-cocktails": "Ajouter à l'étagère et vous pouvez faire",
     "has-variable-amount": "A un montant variable",
     "dialog": {
       "select-substitutes": "Sélectionner des ingrédients de substitution",
@@ -50,7 +50,7 @@
       "optional-checkbox": "Rendre cet ingrédient facultatif.",
       "new-ingredient-success": "Ingrédient non classifié(e) créé \"{name}\".",
       "new-ingredient-fail": "Impossible d’ajouter l’ingrédient.",
-      "select-substitutes-for": "Select substitute ingredients for \"{name}\"."
+      "select-substitutes-for": "Sélectionnez des ingrédients pour remplacer \"{name}\"."
     },
     "base": "Base",
     "is-complex": "L'ingrédient contient d'autres ingrédients",
@@ -62,13 +62,13 @@
   "share": {
     "title": "Partager",
     "copy-json": "Copie au format JSON",
-    "copy-yaml": "Copy as YAML",
+    "copy-yaml": "Copier au format YAML",
     "format-copied": "Texte copié",
     "format-copy-failed": "La copie du texte a échoué",
     "copy-text": "Copier en texte brut",
-    "copy-md": "Copy as Markdown",
-    "copy-xml": "Copy as XML",
-    "copy-json-ld": "Copy JSON+LD schema"
+    "copy-md": "Copier au format Markdown",
+    "copy-xml": "Copier au format XML",
+    "copy-json-ld": "Copier au format JSON+LD"
   },
   "settings": "Paramètres",
   "logout": "Déconnexion",
@@ -108,8 +108,8 @@
   },
   "strength": "Force",
   "rating": "Évaluation",
-  "created": "Created",
-  "updated": "Updated",
+  "created": "Créé",
+  "updated": "Mis à jour",
   "non-alcoholic": "Non alcoolisé",
   "weak": "Faible",
   "medium": "Moyen",
@@ -190,7 +190,7 @@
   "sort-asc": "Asc",
   "sort-desc": "Desc",
   "show-more": "Afficher plus",
-  "ABV": "ABV",
+  "ABV": "% vol",
   "date-modified": "Date de modification",
   "color": "Couleur",
   "edit-categories": "Modifier les catégories",
@@ -287,9 +287,9 @@
     "add": "Créer une collection",
     "edit": "Modifier la collection",
     "confirm-delete": "This will permanently delete collection with name \"{name}\".",
-    "delete-success": "Collection successfully removed",
-    "update-success": "Collection updated successfully",
-    "add-success": "Collection added successfully",
+    "delete-success": "Collection supprimée avec succès",
+    "update-success": "La collection a été mise à jour avec succès",
+    "add-success": "La connexion a été ajoutée avec succès",
     "confirm-remove-cocktail": "Are you sure you want to remove cocktail from collection?",
     "add-from-query": "Add to collection from current filters",
     "cocktail-remove-success": "Cocktail removed from collection",
@@ -310,13 +310,13 @@
   "user-rating": "Note de l'utilisateur",
   "pagination": {
     "page": "Page",
-    "results": "Showing {on_page_results}/{total_results} results",
-    "cocktail-prev": "Previous cocktail",
-    "cocktail-next": "Next cocktail"
+    "results": "Affichage de {on_page_results}/{total_results} résultats",
+    "cocktail-prev": "Cocktail précédent",
+    "cocktail-next": "Cocktail suivant"
   },
   "search": {
     "title": "Rechercher",
-    "results-per-page": "Per page",
+    "results-per-page": "Par page",
     "empty": "Aucun résultat trouvé pour le terme \"{term}\".",
     "ignore-ingredients": "Ignore ingredients",
     "select-ingredients-to-ignore": "Select ingredients to ignore",
@@ -324,7 +324,7 @@
     "select-specific-ingredients": "Select specific ingredients"
   },
   "subtitle": "Subtitle",
-  "delete-my-account": "Delete my account and my data",
+  "delete-my-account": "Supprimer mon compte et mes données",
   "data": "Data",
   "profile-information": "Profile information",
   "remove-cocktail-from-collection": "Retirer le cocktail de la collection",
@@ -338,7 +338,7 @@
   "continue": "Continue",
   "auth": {
     "confirm-logout": "Are you sure you want to sign out of your current session?",
-    "password-forgot": "Forgot password",
+    "password-forgot": "Mot de passe oublié",
     "password-forgot-help-text": "Enter the email address associated with your account and we'll send you a link to reset setup a new password.",
     "reset-email-sent": "If an account is registered with this email, it will receive a message with password reset link.",
     "reset-password": "Reset password",
@@ -347,7 +347,7 @@
     "password-reset-error": "Unable to reset your password",
     "account-confirmed": "Account successfully confirmed"
   },
-  "used-as-main-ingredient": "Used as main ingredient",
+  "used-as-main-ingredient": "Utilisé comme ingrédient principal",
   "added-on-by": "Added on {date} by {name}",
   "leave": "Partir",
   "utensils": {
@@ -412,7 +412,7 @@
     "type-collection-description": "Import from Bar Assistant JSON collection",
     "notice": "Les ingrédients existants et le verre seront assortis par leur nom (insensible à la casse). Si l’ingrédient ou le verre n’existe pas, il sera créé. Les unités communes sont automatiquement converties en \"ml\"."
   },
-  "remove-from-bar": "Remove from bar",
+  "remove-from-bar": "Supprimer du bar",
   "public-shelves": "Public shelves",
   "profile-public-shelf": "Make cocktails in my shelf public to all bar members",
   "profile-use-parent-as-substitute": "Track parent ingredients as a substitutes",
