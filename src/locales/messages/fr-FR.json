@@ -492,7 +492,8 @@
     "delete-cocktail-confirm": "This will remove cocktail \"{name}\" from menu category",
     "cocktail-removed": "Cocktail removed from menu category",
     "menu-not-found": "Menu not found",
-    "description": "Here you can set up a simple web menu for your bar. You can update your bar link when adding or editing a bar. Use the URL or QR code to share your bar menu with the guests."
+    "description": "Here you can set up a simple web menu for your bar. You can update your bar link when adding or editing a bar. Use the URL or QR code to share your bar menu with the guests.",
+    "no-cocktails-added": "Menu needs to have at least one cocktail"
   },
   "bar": {
     "url": "Custom bar URL",
