@@ -54,9 +54,9 @@
     },
     "base": "Base",
     "is-complex": "L'ingrédient contient d'autres ingrédients",
-    "complex-note": "If you have all of the listed ingredients, automatically match recipes with this ingredient",
+    "complex-note": "Si vous avez tous les ingrédients listés, associez automatiquement les recettes avec cet ingrédient",
     "complex": "Complex ingredient",
-    "variety-note": "Recipe matching will include the parent ingredient as a substitute (depending on user settings)",
+    "variety-note": "La correspondance des recettes inclura l'ingrédient parent comme substitut (selon les paramètres de l'utilisateur)",
     "ingredients": "Ingrédients"
   },
   "share": {
@@ -97,7 +97,7 @@
     "Layer": "Calque"
   },
   "total": {
-    "approx": "Approx. total",
+    "approx": "Total approximatif",
     "title": "Total",
     "cocktails": "Total cocktails",
     "ingredients": "Total des ingrédients"
@@ -187,8 +187,8 @@
     "delete-success": "Catégorie d’ingrédients supprimée avec succès"
   },
   "origin": "Origine",
-  "sort-asc": "Asc",
-  "sort-desc": "Desc",
+  "sort-asc": "Ascendant",
+  "sort-desc": "Descendant",
   "show-more": "Afficher plus",
   "ABV": "% vol",
   "date-modified": "Date de modification",
