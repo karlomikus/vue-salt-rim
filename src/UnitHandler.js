@@ -14,8 +14,15 @@ export default {
      * @returns {string}
      */
     print(ingredient, convertTo = 'ml', servings = 1) {
-        let orgAmount = Unitz.parse(`${ingredient.amount}`).value
-        let orgAmountMax = Unitz.parse(`${(ingredient.amount_max || 0)}`).value
+        let orgAmount = 0
+        if (ingredient.amount !== null && ingredient.amount !== undefined) {
+            orgAmount = Unitz.parse(`${ingredient.amount}`).value
+        }
+
+        let orgAmountMax = 0
+        if (ingredient.amount_max !== null && ingredient.amount_max !== undefined) {
+            orgAmountMax = Unitz.parse(`${(ingredient.amount_max || 0)}`).value
+        }
 
         orgAmount *= servings
         orgAmountMax *= servings

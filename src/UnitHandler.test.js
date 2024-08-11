@@ -21,6 +21,8 @@ test('ingredients are pretty printed', () => {
     expect(UnitHandler.print({ amount: '1/8', units: 'teaspoon' })).toBe('0.125 teaspoon')
     expect(UnitHandler.print({ amount: '500', units: 'unconvertable' }, 'cl')).toBe('500 unconvertable')
     expect(UnitHandler.print({ amount: 60, units: 'ml' }, 'ml', 3)).toBe('180 ml')
+    expect(UnitHandler.print({ amount: null, units: 'ml' }, 'ml')).toBe('0 ml')
+    expect(UnitHandler.print({ amount: null, amount_max: null, units: 'ml' }, 'ml')).toBe('0 ml')
 })
 
 test('numbers are fixed and truncated', () => {
