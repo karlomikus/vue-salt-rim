@@ -276,6 +276,13 @@ export default {
                 }))
             })
 
+            if (cocktails.length == 0) {
+                this.$toast.error(this.$t('menu.no-cocktails-added'))
+                this.isLoading = false
+
+                return
+            }
+
             const postData = {
                 is_enabled: this.menu.is_enabled,
                 cocktails: cocktails

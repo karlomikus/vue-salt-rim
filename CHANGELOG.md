@@ -1,3 +1,7 @@
+# v2.17.2
+## Fixes
+- Fix substitute ingredient showing null amounts as `1`
+
 # v2.17.1
 ## Fixes
 - Correctly show fraction amount for all units
