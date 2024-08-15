@@ -36,14 +36,14 @@ export default {
     },
     computed: {
         mainCocktailImageUrl() {
-            if (this.cocktail.main_image_id == null) {
+            if (!this.cocktail.images || this.cocktail.images.length == 0) {
                 return '/no-cocktail.jpg'
             }
 
-            return ApiRequests.imageThumbUrl(this.cocktail.main_image_id)
+            return ApiRequests.imageThumbUrl(this.cocktail.images.find(i => i.sort <= 1).id)
         },
         shortIngredients() {
-            return this.cocktail.ingredients.map(i => i.name)
+            return this.cocktail.ingredients.map(i => i.ingredient.name)
         }
     },
     mounted() {

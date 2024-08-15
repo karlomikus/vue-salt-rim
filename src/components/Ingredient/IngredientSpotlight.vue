@@ -46,11 +46,11 @@ export default {
             return description.length > 200 ? `${description.substring(0, 200)}...` : description
         },
         mainIngredientImageUrl() {
-            if (!this.ingredient.main_image_id) {
+            if (!this.ingredient.images || this.ingredient.images.length == 0) {
                 return '/no-ingredient.png'
             }
 
-            return this.ingredient.images.filter((img) => img.id == this.ingredient.main_image_id)[0].url
+            return this.ingredient.images.find(i => i.sort <= 1).url
         }
     },
     watch: {

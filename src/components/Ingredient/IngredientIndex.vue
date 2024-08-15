@@ -301,6 +301,7 @@ export default {
         },
         refreshIngredients() {
             const query = this.stateToQuery()
+            query.include = 'images,category'
 
             this.isLoading = true
             ApiRequests.fetchIngredients(query).then(resp => {

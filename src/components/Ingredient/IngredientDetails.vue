@@ -77,7 +77,7 @@ import UnitHandler from '../../UnitHandler.js'
                             <RouterLink :to="{name: 'ingredients.show', params: {id: part.slug}}">{{ part.name }}</RouterLink><template v-if="index + 1 !== ingredient.ingredient_parts.length">, </template>
                         </template>
                     </li>
-                    <li><RouterLink :to="{name: 'cocktails', query: {'filter[ingredient_id]': ingredient.id}}">Used in <strong>{{ ingredient.cocktails.length }}</strong> cocktail recipes</RouterLink></li>
+                    <li><RouterLink :to="{name: 'cocktails', query: {'filter[ingredient_id]': ingredient.id}}">Used in <strong>{{ ingredient.cocktails_count }}</strong> cocktail recipes</RouterLink></li>
                     <li v-if="extraIfAddedToShelf.length > 0">{{ $t('ingredient.extra-cocktails') }}: <RouterLink :to="{name: 'cocktails', query: {'filter[id]': extraCocktailsIds}}">{{ extraIfAddedToShelf.length }} {{ $t('cocktail.cocktails') }}</RouterLink></li>
                 </ul>
                 <div v-if="ingredient.description">
@@ -204,7 +204,7 @@ export default {
             this.isLoadingExtra = false
         },
         deleteIngredient() {
-            this.$confirm(this.$t('ingredient.delete-confirm', { name: this.ingredient.name, total: this.ingredient.cocktails.length }), {
+            this.$confirm(this.$t('ingredient.delete-confirm', { name: this.ingredient.name, total: this.ingredient.cocktails_count }), {
                 onResolved: (dialog) => {
                     dialog.close()
                     this.isLoadingIngredient = true

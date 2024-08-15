@@ -54,6 +54,11 @@ export default {
         }
     },
     computed: {
+        mainImage() {
+            const images = this.cocktail.images
+
+            return images.sort((a, b) => a.sort - b.sort)[0]
+        },
         placeholderImage() {
             if (this.cocktail.image_hash) {
                 return thumbHashToDataURL(
@@ -63,7 +68,7 @@ export default {
 
             if (this.cocktail.images && this.cocktail.images.length > 0) {
                 return thumbHashToDataURL(
-                    Uint8Array.from(atob(this.cocktail.images.filter((img) => img.id == this.cocktail.main_image_id)[0].placeholder_hash), c => c.charCodeAt(0))
+                    Uint8Array.from(atob(this.mainImage.placeholder_hash), c => c.charCodeAt(0))
                 )
             }
 
@@ -75,13 +80,13 @@ export default {
             }
 
             if (this.cocktail.images && this.cocktail.images.length > 0) {
-                return ApiRequests.imageThumbUrl(this.cocktail.main_image_id)
+                return ApiRequests.imageThumbUrl(this.mainImage.id)
             }
 
             return '/no-cocktail.jpg'
         },
         shortIngredients() {
-            return this.cocktail.ingredients.map(i => i.name)
+            return this.cocktail.ingredients.map(i => i.ingredient.name)
         }
     },
     mounted() {

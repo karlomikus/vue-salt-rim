@@ -1,78 +1,245 @@
+<script setup lang="ts">
+import { ref, computed, watch } from 'vue'
+import { micromark } from 'micromark'
+import { useRoute, useRouter } from 'vue-router'
+import { useI18n } from 'vue-i18n'
+import { useSaltRimToast } from '@/composables/toast.js'
+import { useConfirm } from '@/composables/confirm.js'
+import BarAssistantClient from '@/api/BarAssistantClient';
+import PageHeader from '@/components/PageHeader.vue'
+import SimilarCocktails from '@/components/Cocktail/SimilarCocktails.vue'
+import IngredientSpotlight from '@/components/Ingredient/IngredientSpotlight.vue'
+import OverlayLoader from '@/components/OverlayLoader.vue'
+import UnitHandler from '@/UnitHandler'
+import NoteDetails from '@/components/Note/NoteDetails.vue'
+import NoteDialog from '@/components/Note/NoteDialog.vue'
+import SaltRimDialog from '@/components/Dialog/SaltRimDialog.vue'
+import CollectionDialog from '@/components/Collections/CollectionDialog.vue'
+import CocktailCollections from '@/components/Collections/CollectionWidget.vue'
+import PublicLinkDialog from '@/components/Cocktail/PublicLinkDialog.vue'
+import GenerateImageDialog from '@/components/Cocktail/GenerateImageDialog.vue'
+import Dropdown from '@/components/SaltRimDropdown.vue'
+import type { components } from '@/api/api'
+import Rating from '@/components/RatingActions.vue'
+import DateFormatter from '@/components/DateFormatter.vue'
+import AppState from '@/AppState'
+
+type Cocktail = components["schemas"]["Cocktail"]
+type Note = components["schemas"]["Note"]
+type ShoppingList = components["schemas"]["ShoppingList"]
+type CocktailBasic = components["schemas"]["CocktailBasic"]
+type IngredientBasic = components["schemas"]["IngredientBasic"]
+
+const { t, d } = useI18n()
+const appState = new AppState()
+const route = useRoute()
+const router = useRouter()
+const toast = useSaltRimToast()
+const confirm = useConfirm()
+const isLoading = ref(false)
+const isLoadingNotes = ref(false)
+const isLoadingShoppingList = ref(false)
+const isLoadingShare = ref(false)
+const isLoadingFavorite = ref(false)
+const isFavorited = ref(false)
+const showNoteDialog = ref(false)
+const showCollectionDialog = ref(false)
+const showPublicDialog = ref(false)
+const showDownloadImageDialog = ref(false)
+const cocktail = ref({} as Cocktail)
+const userNotes = ref([] as Note[])
+const userShelfIngredients = ref([] as IngredientBasic[])
+const userShoppingListIngredients = ref([] as ShoppingList[])
+const servings = ref(1)
+const currentUnit = ref('ml')
+
+watch(() => route.params.id as string, fetchCocktail, { immediate: true })
+
+const sortedImages = computed(() => {
+    if (!cocktail.value.images) {
+        return []
+    }
+
+    return cocktail.value.images.slice(0).sort((a, b) => (a?.sort ?? 0) - (b?.sort ?? 0))
+})
+
+const parsedInstructions = computed(() => {
+    if (!cocktail.value.instructions) {
+        return null
+    }
+
+    return micromark(cocktail.value.instructions)
+})
+
+const parsedDescription = computed(() => {
+    if (!cocktail.value.description) {
+        return null
+    }
+
+    return micromark(cocktail.value.description)
+})
+
+const parsedGarnish = computed(() => {
+    if (!cocktail.value.garnish) {
+        return null
+    }
+
+    return micromark(cocktail.value.garnish)
+})
+
+const totalLiquid = computed(() => {
+    const amount = parseFloat(cocktail.value?.volume_ml?.toString() ?? '') * servings.value
+
+    return UnitHandler.print({ amount: amount, units: 'ml' }, currentUnit.value, servings.value) 
+})
+
+const missingIngredientIds = computed(() => {
+    return cocktail.value?.ingredients?.filter(cocktailIngredient => {
+        return !userShelfIngredients.value.map(i => i.id).includes(cocktailIngredient.ingredient.id)
+            && !userShoppingListIngredients.value.map(i => i.ingredient.id).includes(cocktailIngredient.ingredient.id)
+    }).map(cocktailIngredient => cocktailIngredient.ingredient.id) ?? []
+})
+
+async function fetchCocktail(idOrSlug: string) {
+    isLoading.value = true
+    cocktail.value = (await BarAssistantClient.getCocktail(idOrSlug))?.data ?? {} as Cocktail
+    isLoading.value = false
+
+    await fetchCocktailUserNotes()
+    fetchFavorites()
+}
+
+async function deleteCocktail() {
+    confirm.show(t('cocktail.confirm-delete', { name: cocktail.value.name }), {
+        onResolved: (dialog: any) => {
+            dialog.close()
+            BarAssistantClient.deleteCocktail(cocktail.value.id).then(() => {
+                toast.default(t('cocktail.delete-success', { name: cocktail.value.name }))
+                router.push({ name: 'cocktails' })
+                dialog.close()
+            }).catch(e => {
+                toast.error(e.message)
+                dialog.close()
+            })
+        }
+    })
+}
+
+async function fetchCocktailUserNotes() {
+    isLoadingNotes.value = true
+    userNotes.value = (await BarAssistantClient.getNotes({ 'filter[cocktail_id]': cocktail.value.id }))?.data ?? [] as Note[]
+    isLoadingNotes.value = false
+}
+
+async function fetchShoppingList() {
+    isLoadingShoppingList.value = true
+    userShoppingListIngredients.value = (await BarAssistantClient.fetchShoppingList(appState.user.id))?.data ?? [] as ShoppingList[]
+    isLoadingShoppingList.value = false
+}
+
+async function fetchFavorites() {
+    isLoadingFavorite.value = true
+    const favorites = (await BarAssistantClient.getUserCocktailFavorites(appState.user.id))?.data ?? [] as CocktailBasic[]
+    isFavorited.value = favorites.map(f => f.id).includes(cocktail.value.id)
+    isLoadingFavorite.value = false
+}
+
+async function copy() {
+    isLoading.value = true
+    BarAssistantClient.copyCocktail(cocktail.value.slug).then(resp => {
+        isLoading.value = false
+        toast.default(t('cocktail.copy-success'))
+        router.push({ name: 'cocktails.form', query: { id: resp?.data?.id } })
+    }).catch(e => {
+        isLoading.value = false
+        toast.error(e.message)
+    })
+}
+
+function buildSubstituteString(sub: components["schemas"]["CocktailIngredientSubstitute"]) {
+    return new String(sub.name + ' ' + UnitHandler.print(sub, currentUnit.value, servings.value)).trim()
+}
+
+function changeMeasurementUnit(toUnit: string) {
+    currentUnit.value = toUnit
+    appState.setDefaultUnits(toUnit)
+}
+
+function shareFromFormat(format: string) {
+    isLoadingShare.value = true
+    BarAssistantClient.shareCocktail(cocktail.value.slug, { type: format, units: currentUnit.value }).then(resp => {
+        isLoadingShare.value = false
+        navigator.clipboard.writeText(resp?.data?.content ?? '').then(() => {
+            toast.default(t('share.format-copied'))
+        }, () => {
+            toast.error(t('share.format-copy-failed'))
+        })
+    })
+}
+
+function favorite() {
+    isLoadingFavorite.value = true
+    BarAssistantClient.favoriteCocktail(cocktail.value.id).then(resp => {
+        isFavorited.value = resp?.data?.is_favorited ?? false
+        isLoadingFavorite.value = false
+        toast.default(isFavorited.value ? t('cocktail.favorited', { name: cocktail.value.name }) : t('cocktail.unfavorited', { name: cocktail.value.name }))
+    }).catch(e => {
+        isLoadingFavorite.value = false
+        toast.error(e.message)
+    })
+}
+
+async function addMissingIngredients() {
+    const postData = {
+        ingredients: missingIngredientIds.value.map(id => ({ id: id, quantity: 1 }))
+    }
+
+    isLoading.value = true
+    BarAssistantClient.addToShoppingList(appState.user.id, postData).then(async () => {
+        toast.default(t('cocktail.ingredients-added-success', { total: missingIngredientIds.value.length }))
+        await fetchShoppingList()
+        isLoading.value = false
+    }).catch(e => {
+        toast.error(e.message)
+        isLoading.value = false
+    })
+}
+
+fetchShoppingList()
+</script>
+
 <template>
     <OverlayLoader v-if="!cocktail.id" />
-    <div v-else class="cocktail-details">
+    <div v-else>
         <OverlayLoader v-if="isLoading" />
-        <div class="cocktail-details__title">
-            <h2>{{ cocktail.name }}</h2>
-            <p :title="$t('added-on-by', { date: createdDate, name: cocktail.created_user.name })">
-                <template v-if="cocktail.updated_user">{{ $t('updated-on-by', { date: updatedDate, name: cocktail.updated_user.name }) }}</template>
-                <template v-else>{{ $t('added-on-by', { date: createdDate, name: cocktail.created_user.name }) }}</template>
+        <PageHeader>
+            {{ $t(cocktail.name) }}
+            <p>
+                <DateFormatter :date="cocktail.created_at" format="short" /> <template v-if="cocktail?.updated_user">&middot; {{ cocktail.updated_user.name }}</template>
             </p>
-        </div>
-        <div v-if="cocktail.id" class="cocktail-details__graphic">
-            <swiper-container v-if="cocktail.images.length > 0" navigation="true" :pagination="{clickable: true}" follow-finger="false">
-                <swiper-slide v-for="image in sortedImages" :key="image.sort">
-                    <img :src="image.url" :alt="image.copyright" />
-                    <div v-if="image.copyright" class="cocktail-details__graphic__copyright">{{ $t('imageupload.copyright-notice', { copyright: image.copyright }) }}</div>
-                </swiper-slide>
-            </swiper-container>
-            <img v-else src="/no-cocktail.jpg" alt="This cocktail does not have an image." />
-        </div>
-        <div class="cocktail-details__main">
-            <div class="cocktail-details__main__content">
-                <div class="block-container block-container--padded cocktail-details-box" style="margin-top: 0">
-                    <h3 class="details-block-container__title">{{ $t('description') }}</h3>
-                    <div class="item-details__chips">
-                        <div v-if="cocktail.tags.length > 0" class="item-details__chips__group">
-                            <div class="item-details__chips__group__title">{{ $t('tag.tags') }}:</div>
-                            <ul class="chips-list">
-                                <li v-for="tag in cocktail.tags" :key="tag.id">
-                                    <RouterLink class="chip" :to="{ name: 'cocktails', query: { 'filter[tag_id]': tag.id } }">{{ tag.name }}</RouterLink>
-                                </li>
-                            </ul>
-                        </div>
-                        <div v-if="cocktail.glass" class="item-details__chips__group">
-                            <div class="item-details__chips__group__title">{{ $t('glass-type.title') }}:</div>
-                            <ul class="chips-list">
-                                <li>
-                                    <RouterLink class="chip" :to="{ name: 'cocktails', query: { 'filter[glass_id]': cocktail.glass.id } }">{{ cocktail.glass.name }}</RouterLink>
-                                </li>
-                            </ul>
-                        </div>
-                        <div v-if="cocktail.method" class="item-details__chips__group">
-                            <div class="item-details__chips__group__title">{{ $t('method.title') }}:</div>
-                            <ul class="chips-list">
-                                <li>
-                                    <RouterLink class="chip" :to="{ name: 'cocktails', query: { 'filter[cocktail_method_id]': cocktail.method.id } }">{{ $t('method.' + cocktail.method.name) }}</RouterLink>
-                                </li>
-                            </ul>
-                        </div>
-                        <div v-if="cocktail.abv && cocktail.abv > 0" class="item-details__chips__group">
-                            <div class="item-details__chips__group__title">{{ $t('ABV') }}:</div>
-                            <ul class="chips-list">
-                                <li>
-                                    <RouterLink class="chip" :to="{ name: 'cocktails', query: { 'filter[abv_min]': cocktail.abv } }">{{ cocktail.abv }}%</RouterLink>
-                                </li>
-                            </ul>
-                        </div>
-                        <div class="item-details__chips__group">
-                            <div class="item-details__chips__group__title">{{ $t('avg-rating') }}:</div>
-                            <ul class="chips-list">
-                                <li>
-                                    <RouterLink class="chip" :to="{ name: 'cocktails', query: { 'filter[user_rating_min]': cocktail.rating.average } }">{{ cocktail.rating.average }} ★</RouterLink>
-                                </li>
-                            </ul>
-                        </div>
-                        <div class="item-details__chips__group">
-                            <div class="item-details__chips__group__title">{{ $t('your-rating') }}:</div>
-                            <Rating :id="cocktail.id" :rating="cocktail.rating.user" type="cocktail"></Rating>
-                        </div>
-                        <div v-if="cocktail.public_id" class="item-details__chips__group">
-                            <div class="item-details__chips__group__title">{{ $t('public-link') }}:</div>
-                            <RouterLink :to="{ name: 'e.cocktail', params: { ulid: cocktail.public_id, slug: cocktail.slug } }" target="_blank">{{ $t('click-here') }}</RouterLink>
-                        </div>
-                    </div>
-                    <div class="cocktail-details-box__description" v-html="parsedDescription"></div>
+        </PageHeader>
+        <article class="cocktail-details">
+            <div class="cocktail-details__column-left">
+                <div class="cocktail-details__graphic">
+                    <swiper-container v-if="cocktail.images && cocktail.images.length > 0" navigation="true" :pagination="{clickable: true}" follow-finger="false">
+                        <swiper-slide v-for="image in sortedImages" :key="image.sort">
+                            <img :src="image.url" :alt="image.copyright ?? ''" />
+                            <div v-if="image.copyright" class="cocktail-details__graphic__copyright">{{ $t('imageupload.copyright-notice', { copyright: image.copyright }) }}</div>
+                        </swiper-slide>
+                    </swiper-container>
+                    <img v-else src="/no-cocktail.jpg" alt="This cocktail does not have an image." />
+                </div>
+                <h3 class="page-subtitle">{{ $t('cocktail-collections') }}</h3>
+                <CocktailCollections :cocktail="cocktail" @cocktail-removed-from-collection="fetchCocktail" @add-to-collection="showCollectionDialog = !showCollectionDialog"></CocktailCollections>
+                <template v-if="cocktail.ingredients && cocktail.ingredients.length > 0">
+                    <h3 class="page-subtitle">{{ $t('ingredient.spotlight') }}</h3>
+                    <IngredientSpotlight :id="cocktail.ingredients[0].ingredient.id"></IngredientSpotlight>
+                </template>
+                <h3 class="page-subtitle">{{ $t('cocktails-similar') }}</h3>
+                <SimilarCocktails :from-cocktail="cocktail"></SimilarCocktails>
+            </div>
+            <div class="cocktail-details__column-right">
+                <div class="cocktail-details__main">
                     <div class="cocktail-details-box__actions">
                         <button type="button" class="button button-circle" @click="favorite">
                             <OverlayLoader v-if="isLoadingFavorite" />
@@ -103,7 +270,7 @@
                                     </svg>
                                     {{ $t('print-recipe') }}
                                 </RouterLink>
-                                <SaltRimDialog v-if="cocktail.access.can_edit" v-model="showPublicDialog">
+                                <SaltRimDialog v-if="cocktail.access && cocktail.access.can_edit" v-model="showPublicDialog">
                                     <template #trigger>
                                         <a class="dropdown-menu__item" href="#makepublic" @click.prevent="showPublicDialog = !showPublicDialog">
                                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18">
@@ -114,7 +281,7 @@
                                         </a>
                                     </template>
                                     <template #dialog>
-                                        <PublicLinkDialog :cocktail="cocktail" @public-dialog-closed="showPublicDialog = false; fetchCocktail()" />
+                                        <PublicLinkDialog :cocktail="cocktail" @public-dialog-closed="showPublicDialog = false; fetchCocktail(cocktail.slug)" />
                                     </template>
                                 </SaltRimDialog>
                                 <SaltRimDialog v-model="showDownloadImageDialog">
@@ -176,7 +343,7 @@
                                 </svg></button>
                             </template>
                             <template #content>
-                                <RouterLink v-if="cocktail.access.can_edit" class="dropdown-menu__item" :to="{ name: 'cocktails.form', query: { id: cocktail.id } }">
+                                <RouterLink v-if="cocktail.access && cocktail.access.can_edit" class="dropdown-menu__item" :to="{ name: 'cocktails.form', query: { id: cocktail.id } }">
                                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18">
                                         <path fill="none" d="M0 0h24v24H0z" />
                                         <path d="M6.414 16L16.556 5.858l-1.414-1.414L5 14.586V16h1.414zm.829 2H3v-4.243L14.435 2.322a1 1 0 0 1 1.414 0l2.829 2.829a1 1 0 0 1 0 1.414L7.243 18zM3 20h18v2H3v-2z" />
@@ -198,10 +365,10 @@
                                         </a>
                                     </template>
                                     <template #dialog>
-                                        <CollectionDialog :cocktails="[cocktail.id]" :cocktail-collections="cocktail.collections" @collection-dialog-closed="showCollectionDialog = false; fetchCocktail()" />
+                                        <CollectionDialog :cocktails="[cocktail.id]" :cocktail-collections="[]" @collection-dialog-closed="showCollectionDialog = false; fetchCocktail(cocktail.slug)" />
                                     </template>
                                 </SaltRimDialog>
-                                <SaltRimDialog v-if="cocktail.access.can_add_note" v-model="showNoteDialog">
+                                <SaltRimDialog v-if="cocktail.access && cocktail.access.can_add_note" v-model="showNoteDialog">
                                     <template #trigger>
                                         <a class="dropdown-menu__item" href="#" @click.prevent="showNoteDialog = !showNoteDialog">
                                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18">
@@ -211,18 +378,18 @@
                                         </a>
                                     </template>
                                     <template #dialog>
-                                        <NoteDialog :resource-id="cocktail.id" resource="cocktail" @note-dialog-closed="showNoteDialog = false; refreshNotes()" />
+                                        <NoteDialog :resource-id="cocktail.id" resource="cocktail" @note-dialog-closed="showNoteDialog = false; fetchCocktailUserNotes()" />
                                     </template>
                                 </SaltRimDialog>
-                                <a v-show="cocktail.source" class="dropdown-menu__item" target="_blank" :href="cocktail.source">
+                                <a v-if="cocktail.source" class="dropdown-menu__item" target="_blank" :href="cocktail.source">
                                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18">
                                         <path fill="none" d="M0 0h24v24H0z" />
                                         <path d="M10 6v2H5v11h11v-5h2v6a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h6zm11-3v8h-2V6.413l-7.793 7.794-1.414-1.414L17.585 5H13V3h8z" />
                                     </svg>
                                     {{ $t('cocktail.source') }}
                                 </a>
-                                <hr v-if="cocktail.access.can_delete" class="dropdown-menu__separator">
-                                <a v-if="cocktail.access.can_delete" class="dropdown-menu__item" href="javascript:;" @click.prevent="deleteCocktail">
+                                <hr v-if="cocktail.access && cocktail.access.can_delete" class="dropdown-menu__separator">
+                                <a v-if="cocktail.access && cocktail.access.can_delete" class="dropdown-menu__item" href="javascript:;" @click.prevent="deleteCocktail">
                                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18">
                                         <path fill="none" d="M0 0h24v24H0z" />
                                         <path d="M7 4V2h10v2h5v2h-2v15a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V6H2V4h5zM6 6v14h12V6H6zm3 3h2v8H9V9zm4 0h2v8h-2V9z" />
@@ -232,330 +399,135 @@
                             </template>
                         </Dropdown>
                     </div>
-                </div>
-                <div v-if="cocktail.ingredients.length > 0" class="block-container block-container--padded">
-                    <h3 class="details-block-container__title">{{ $t('ingredient.ingredients') }}</h3>
-                    <div style="display: grid; grid-template-columns: 1fr 1fr;">
-                        <div class="cocktail-button-group">
-                            <h4>{{ $t('servings') }}:</h4>
-                            <button @click="servings <= 1 ? servings = 1 : servings--">-</button>
-                            <button class="active-serving">{{ servings }}</button>
-                            <button @click="servings++">+</button>
-                        </div>
-                        <div class="cocktail-button-group" style="text-align:right">
-                            <h4>{{ $t('units') }}:</h4>
-                            <button type="button" :class="{ 'active-serving': currentUnit == 'ml' }" @click="changeMeasurementUnit('ml')">ml</button>
-                            <button type="button" :class="{ 'active-serving': currentUnit == 'oz' }" @click="changeMeasurementUnit('oz')">oz</button>
-                            <button type="button" :class="{ 'active-serving': currentUnit == 'cl' }" @click="changeMeasurementUnit('cl')">cl</button>
-                        </div>
-                    </div>
-                    <ul class="cocktail-ingredients">
-                        <li v-for="ing in cocktail.ingredients" :key="ing.sort">
-                            <div class="cocktail-ingredients__ingredient">
-                                <span class="ingredient-shelf-status" :class="{'ingredient-shelf-status--in-shelf': ing.in_shelf, 'ingredient-shelf-status--missing': !ing.in_shelf, 'ingredient-shelf-status--substitute': !ing.in_shelf && ing.in_shelf_as_substitute, 'ingredient-shelf-status--complex': !ing.in_shelf && ing.in_shelf_as_complex_ingredient}"></span>
-                                <RouterLink class="cocktail-ingredients__ingredient__name" :to="{ name: 'ingredients.show', params: { id: ing.ingredient_slug } }" data-ingredient="preferred">
-                                    {{ ing.name }} <span v-if="ing.note" class="cocktail-ingredients__flags__flag">&ndash; {{ ing.note }}</span> <small v-if="ing.optional">({{ $t('optional') }})</small>
-                                </RouterLink>
-                                <div class="cocktail-ingredients__ingredient__amount">{{ parseIngredientAmount(ing) }}</div>
+                    <div class="block-container block-container--padded">
+                        <h3 class="details-block-container__title">{{ $t('description') }}</h3>
+                        <div class="item-details__chips">
+                            <div v-if="cocktail.tags && cocktail.tags.length > 0" class="item-details__chips__group">
+                                <div class="item-details__chips__group__title">{{ $t('tag.tags') }}:</div>
+                                <ul class="chips-list">
+                                    <li v-for="tag in cocktail.tags" :key="tag.id">
+                                        <RouterLink class="chip" :to="{ name: 'cocktails', query: { 'filter[tag_id]': tag.id } }">{{ tag.name }}</RouterLink>
+                                    </li>
+                                </ul>
                             </div>
-                            <div class="cocktail-ingredients__flags">
-                                <div v-if="ing.substitutes.length > 0" class="cocktail-ingredients__flags__flag">
-                                    <div v-if="!ing.in_shelf && ing.in_shelf_as_substitute" class="cocktail-ingredients__flags__flag">&middot; {{ $t('cocktail.missing-ing-sub-available') }}</div>
-                                    &middot; {{ $t('substitutes') }}:
-                                    <template v-for="(sub, index) in ing.substitutes" :key="index">
-                                        <RouterLink :style="{'font-weight': sub.in_shelf ? 'bold' : 'normal'}" :to="{ name: 'ingredients.show', params: { id: sub.slug } }" data-ingredient="substitute">
-                                            {{ buildSubstituteString(sub) }}
-                                        </RouterLink>
-                                        <template v-if="index + 1 !== ing.substitutes.length">, </template>
-                                    </template>
+                            <div v-if="cocktail.glass" class="item-details__chips__group">
+                                <div class="item-details__chips__group__title">{{ $t('glass-type.title') }}:</div>
+                                <ul class="chips-list">
+                                    <li>
+                                        <RouterLink class="chip" :to="{ name: 'cocktails', query: { 'filter[glass_id]': cocktail.glass.id } }">{{ cocktail.glass.name }}</RouterLink>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div v-if="cocktail.method" class="item-details__chips__group">
+                                <div class="item-details__chips__group__title">{{ $t('method.title') }}:</div>
+                                <ul class="chips-list">
+                                    <li>
+                                        <RouterLink class="chip" :to="{ name: 'cocktails', query: { 'filter[cocktail_method_id]': cocktail.method.id } }">{{ $t('method.' + cocktail.method.name) }}</RouterLink>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div v-if="cocktail.abv && cocktail.abv > 0" class="item-details__chips__group">
+                                <div class="item-details__chips__group__title">{{ $t('ABV') }}:</div>
+                                <ul class="chips-list">
+                                    <li>
+                                        <RouterLink class="chip" :to="{ name: 'cocktails', query: { 'filter[abv_min]': cocktail.abv } }">{{ cocktail.abv }}%</RouterLink>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div v-if="cocktail.rating" class="item-details__chips__group">
+                                <div class="item-details__chips__group__title">{{ $t('avg-rating') }}:</div>
+                                <ul class="chips-list">
+                                    <li>
+                                        <RouterLink class="chip" :to="{ name: 'cocktails', query: { 'filter[user_rating_min]': cocktail.rating.average } }">{{ cocktail.rating.average }} ★</RouterLink>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="item-details__chips__group">
+                                <div class="item-details__chips__group__title">{{ $t('your-rating') }}:</div>
+                                <Rating :id="cocktail.id" :rating="(cocktail.rating && cocktail.rating.user) ?? 0" type="cocktail"></Rating>
+                            </div>
+                            <div v-if="cocktail.public_id" class="item-details__chips__group">
+                                <div class="item-details__chips__group__title">{{ $t('public-link') }}:</div>
+                                <RouterLink :to="{ name: 'e.cocktail', params: { ulid: cocktail.public_id, slug: cocktail.slug } }" target="_blank">{{ $t('click-here') }}</RouterLink>
+                            </div>
+                        </div>
+                        <div class="cocktail-details-box__description" v-html="parsedDescription"></div>
+                    </div>
+                    <div v-if="cocktail.ingredients && cocktail.ingredients.length > 0" class="block-container block-container--padded">
+                        <h3 class="details-block-container__title">{{ $t('ingredient.ingredients') }}</h3>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr;">
+                            <div class="cocktail-button-group">
+                                <h4>{{ $t('servings') }}:</h4>
+                                <button @click="servings <= 1 ? servings = 1 : servings--">-</button>
+                                <button class="active-serving">{{ servings }}</button>
+                                <button @click="servings++">+</button>
+                            </div>
+                            <div class="cocktail-button-group" style="text-align:right">
+                                <h4>{{ $t('units') }}:</h4>
+                                <button type="button" :class="{ 'active-serving': currentUnit == 'ml' }" @click="changeMeasurementUnit('ml')">ml</button>
+                                <button type="button" :class="{ 'active-serving': currentUnit == 'oz' }" @click="changeMeasurementUnit('oz')">oz</button>
+                                <button type="button" :class="{ 'active-serving': currentUnit == 'cl' }" @click="changeMeasurementUnit('cl')">cl</button>
+                            </div>
+                        </div>
+                        <ul class="cocktail-ingredients">
+                            <li v-for="ing in cocktail.ingredients" :key="ing.sort">
+                                <div class="cocktail-ingredients__ingredient">
+                                    <span class="ingredient-shelf-status" :class="{'ingredient-shelf-status--in-shelf': ing.in_shelf, 'ingredient-shelf-status--missing': !ing.in_shelf, 'ingredient-shelf-status--substitute': !ing.in_shelf && ing.in_shelf_as_substitute, 'ingredient-shelf-status--complex': !ing.in_shelf && ing.in_shelf_as_complex_ingredient}"></span>
+                                    <RouterLink class="cocktail-ingredients__ingredient__name" :to="{ name: 'ingredients.show', params: { id: ing.ingredient.slug } }" data-ingredient="preferred">
+                                        {{ ing.ingredient.name }} <span v-if="ing.note" class="cocktail-ingredients__flags__flag">&ndash; {{ ing.note }}</span> <small v-if="ing.optional">({{ $t('optional') }})</small>
+                                    </RouterLink>
+                                    <div class="cocktail-ingredients__ingredient__amount">{{ UnitHandler.print(ing, currentUnit, servings) }}</div>
                                 </div>
-                                <div v-if="!ing.in_shelf && !ing.in_shelf_as_substitute && !ing.in_shelf_as_complex_ingredient" class="cocktail-ingredients__flags__flag">&middot; {{ $t('cocktail.missing-ing') }}</div>
-                                <div v-if="!ing.in_shelf && ing.in_shelf_as_complex_ingredient" class="cocktail-ingredients__flags__flag">&middot; {{ $t('cocktail.missing-ing-complex') }}</div>
-                                <div v-if="userShoppingListIngredients.map(i => i.ingredient_id).includes(ing.ingredient_id)" class="cocktail-ingredients__flags__flag">&middot; {{ $t('ingredient.on-shopping-list') }}</div>
-                            </div>
-                        </li>
-                    </ul>
-                    <div v-if="cocktail.volume_ml" class="cocktail-ingredients__total-amount">
-                        Approx: {{ totalLiquid }} <span v-show="cocktail.calories > 0">&middot; {{ cocktailCalories }} kcal</span> <span v-show="cocktail.alcohol_units > 0">&middot; {{ alcoholUnits }} units</span>
+                                <div class="cocktail-ingredients__flags">
+                                    <div v-if="ing.substitutes && ing.substitutes.length > 0" class="cocktail-ingredients__flags__flag">
+                                        <div v-if="!ing.in_shelf && ing.in_shelf_as_substitute" class="cocktail-ingredients__flags__flag">&middot; {{ $t('cocktail.missing-ing-sub-available') }}</div>
+                                        &middot; {{ $t('substitutes') }}:
+                                        <template v-for="(sub, index) in ing.substitutes" :key="index">
+                                            <RouterLink :style="{'font-weight': sub.in_shelf ? 'bold' : 'normal'}" :to="{ name: 'ingredients.show', params: { id: sub.slug } }" data-ingredient="substitute">
+                                                {{ buildSubstituteString(sub) }}
+                                            </RouterLink>
+                                            <template v-if="index + 1 !== ing.substitutes.length">, </template>
+                                        </template>
+                                    </div>
+                                    <div v-if="!ing.in_shelf && !ing.in_shelf_as_substitute && !ing.in_shelf_as_complex_ingredient" class="cocktail-ingredients__flags__flag">&middot; {{ $t('cocktail.missing-ing') }}</div>
+                                    <div v-if="!ing.in_shelf && ing.in_shelf_as_complex_ingredient" class="cocktail-ingredients__flags__flag">&middot; {{ $t('cocktail.missing-ing-complex') }}</div>
+                                    <div v-if="userShoppingListIngredients.map(i => i.ingredient.id).includes(ing.ingredient.id)" class="cocktail-ingredients__flags__flag">&middot; {{ $t('ingredient.on-shopping-list') }}</div>
+                                </div>
+                            </li>
+                        </ul>
+                        <div v-if="cocktail.volume_ml" class="cocktail-ingredients__total-amount">
+                            Approx: {{ totalLiquid }} <span v-show="(cocktail?.calories ?? 0) > 0">&middot; {{ cocktail.calories?.toFixed(0) }} kcal</span> <span v-show="(cocktail?.alcohol_units ?? 0) > 0">&middot; {{ cocktail.alcohol_units?.toFixed(2) }} units</span>
+                        </div>
+                        <a v-show="missingIngredientIds.length > 0" href="#" @click.prevent="addMissingIngredients">{{ $t('cocktail.missing-ing-action') }}</a>
                     </div>
-                    <a v-show="missingIngredientIds.length > 0" href="#" @click.prevent="addMissingIngredients">{{ $t('cocktail.missing-ing-action') }}</a>
-                </div>
-                <div class="block-container block-container--padded">
-                    <h3 class="details-block-container__title">{{ $t('instructions') }}</h3>
-                    <WakeLockToggle></WakeLockToggle>
-                    <div v-html="parsedInstructions"></div>
-                    <div v-if="cocktail.utensils.length > 0">
-                        <br>
-                        <strong>{{ $t('utensils.title') }}</strong>: {{ cocktail.utensils.map(u => u.name).join(', ') }}
+                    <div class="block-container block-container--padded">
+                        <h3 class="details-block-container__title">{{ $t('instructions') }}</h3>
+                        <div v-html="parsedInstructions"></div>
+                        <div v-if="cocktail.utensils && cocktail.utensils.length > 0">
+                            <br>
+                            <strong>{{ $t('utensils.title') }}</strong>: {{ cocktail.utensils.map(u => u.name).join(', ') }}
+                        </div>
                     </div>
-                </div>
-                <div v-if="cocktail.garnish" class="block-container block-container--padded">
-                    <h3 class="details-block-container__title">{{ $t('garnish') }}</h3>
-                    <div v-html="parsedGarnish"></div>
-                </div>
-                <div v-if="notes.length > 0" class="block-container block-container--padded">
-                    <OverlayLoader v-if="isLoadingNotes" />
-                    <h3 class="details-block-container__title">{{ $t('notes') }}</h3>
-                    <Note v-for="note in notes" :key="note.id" :note="note" @note-deleted="refreshNotes"></Note>
-                </div>
-                <div class="cocktail-details__navigation">
-                    <RouterLink v-if="cocktail.navigation.prev" :to="{ name: 'cocktails.show', params: { id: cocktail.navigation.prev } }">{{ $t('pagination.cocktail-prev') }}</RouterLink>
-                    <RouterLink v-if="cocktail.navigation.next" :to="{ name: 'cocktails.show', params: { id: cocktail.navigation.next } }">{{ $t('pagination.cocktail-next') }}</RouterLink>
+                    <div v-if="cocktail.garnish" class="block-container block-container--padded">
+                        <h3 class="details-block-container__title">{{ $t('garnish') }}</h3>
+                        <div v-html="parsedGarnish"></div>
+                    </div>
+                    <div v-if="userNotes.length > 0" class="block-container block-container--padded">
+                        <OverlayLoader v-if="isLoadingNotes" />
+                        <h3 class="details-block-container__title">{{ $t('notes') }}</h3>
+                        <NoteDetails v-for="note in userNotes" :key="note.id" :note="note" @note-deleted="fetchCocktailUserNotes"></NoteDetails>
+                    </div>
+                    <!-- <div class="cocktail-details__navigation">
+                        <RouterLink v-if="cocktail.navigation.prev" :to="{ name: 'cocktails.show', params: { id: cocktail.navigation.prev } }">{{ $t('pagination.cocktail-prev') }}</RouterLink>
+                        <RouterLink v-if="cocktail.navigation.next" :to="{ name: 'cocktails.show', params: { id: cocktail.navigation.next } }">{{ $t('pagination.cocktail-next') }}</RouterLink>
+                    </div> -->
                 </div>
             </div>
-            <div class="cocktail-details__main__aside">
-                <h3 class="page-subtitle" style="margin-top: 0">{{ $t('cocktails-similar') }}</h3>
-                <SimilarCocktails :from-cocktail="cocktail"></SimilarCocktails>
-                <template v-if="cocktail.ingredients.length > 0">
-                    <h3 class="page-subtitle">{{ $t('ingredient.spotlight') }}</h3>
-                    <IngredientSpotlight :id="cocktail.ingredients[0].ingredient_id"></IngredientSpotlight>
-                </template>
-                <h3 class="page-subtitle">{{ $t('cocktail-collections') }}</h3>
-                <CocktailCollections :cocktail="cocktail" @cocktail-removed-from-collection="fetchCocktail" @add-to-collection="showCollectionDialog = !showCollectionDialog"></CocktailCollections>
-            </div>
-        </div>
+        </article>
     </div>
 </template>
 
-<script>
-import { micromark } from 'micromark'
-import ApiRequests from './../../ApiRequests.js'
-import AppState from './../../AppState'
-import OverlayLoader from './../OverlayLoader.vue'
-import Dropdown from './../SaltRimDropdown.vue'
-import Rating from './../RatingActions.vue'
-import SaltRimDialog from './../Dialog/SaltRimDialog.vue'
-import Note from './../Note/NoteDetails.vue'
-import NoteDialog from './../Note/NoteDialog.vue'
-import PublicLinkDialog from './PublicLinkDialog.vue'
-import GenerateImageDialog from './GenerateImageDialog.vue'
-import SimilarCocktails from './SimilarCocktails.vue'
-import IngredientSpotlight from './../Ingredient/IngredientSpotlight.vue'
-import CocktailCollections from './../Collections/CollectionWidget.vue'
-import CollectionDialog from './../Collections/CollectionDialog.vue'
-import dayjs from 'dayjs'
-import UnitHandler from '../../UnitHandler'
-import WakeLockToggle from '../WakeLockToggle.vue'
-
-export default {
-    components: {
-        OverlayLoader,
-        Dropdown,
-        Rating,
-        SaltRimDialog,
-        PublicLinkDialog,
-        Note,
-        NoteDialog,
-        GenerateImageDialog,
-        SimilarCocktails,
-        CollectionDialog,
-        CocktailCollections,
-        IngredientSpotlight,
-        WakeLockToggle,
-    },
-    data: () => ({
-        cocktail: {},
-        notes: [],
-        isLoading: false,
-        isLoadingNotes: false,
-        isLoadingShare: false,
-        isLoadingFavorite: false,
-        isFavorited: false,
-        servings: 1,
-        userShelfIngredients: [],
-        userShoppingListIngredients: [],
-        currentUnit: 'ml',
-        showPublicDialog: false,
-        showNoteDialog: false,
-        showDownloadImageDialog: false,
-        showCollectionDialog: false,
-    }),
-    computed: {
-        parsedInstructions() {
-            if (!this.cocktail.instructions) {
-                return null
-            }
-
-            return micromark(this.cocktail.instructions)
-        },
-        parsedGarnish() {
-            if (!this.cocktail.garnish) {
-                return null
-            }
-
-            return micromark(this.cocktail.garnish)
-        },
-        parsedDescription() {
-            if (!this.cocktail.description) {
-                return null
-            }
-
-            return micromark(this.cocktail.description)
-        },
-        missingIngredientIds() {
-            return this.cocktail.ingredients.filter(userIngredient => {
-                return !this.userShelfIngredients.map(i => i.ingredient_id).includes(userIngredient.ingredient_id)
-                    && !this.userShoppingListIngredients.map(i => i.ingredient_id).includes(userIngredient.ingredient_id)
-            }).map(cocktailIngredient => cocktailIngredient.ingredient_id)
-        },
-        sortedImages() {
-            return this.cocktail.images.slice(0).sort((a, b) => a.sort - b.sort)
-        },
-        createdDate() {
-            const date = dayjs(this.cocktail.created_at).toDate()
-
-            return this.$d(date, 'short')
-        },
-        updatedDate() {
-            const date = dayjs(this.cocktail.updated_at).toDate()
-
-            return this.$d(date, 'short')
-        },
-        totalLiquid() {
-            const amount = parseFloat(this.cocktail.volume_ml) * this.servings
-
-            return UnitHandler.print({ amount: amount, units: 'ml' }, this.currentUnit, this.servings)
-        },
-        cocktailCalories() {
-            return parseFloat(this.cocktail.calories * this.servings).toFixed(0)
-        },
-        alcoholUnits() {
-            return parseFloat(this.cocktail.alcohol_units * this.servings).toFixed(2)
-        },
-    },
-    created() {
-        document.title = `${this.$t('cocktail.title')} \u22C5 ${this.site_title}`
-        this.$watch(
-            () => this.$route.params,
-            () => {
-                if (this.$route.name == 'cocktails.show') {
-                    this.fetchCocktail()
-                }
-            },
-            { immediate: true }
-        )
-    },
-    methods: {
-        async fetchCocktail() {
-            this.isLoading = true
-
-            this.userShelfIngredients = await ApiRequests.fetchMyShelf().catch(() => [])
-            this.userShoppingListIngredients = await ApiRequests.fetchShoppingList().catch(() => [])
-            const userFavorites = await ApiRequests.fetchCocktailFavorites().catch(() => [])
-
-            ApiRequests.fetchCocktail(this.$route.params.id, { navigation: true }).then(data => {
-                this.isLoading = false
-                this.cocktail = data
-                this.isFavorited = userFavorites.includes(data.id)
-                this.refreshNotes()
-                document.title = `${this.cocktail.name} \u22C5 ${this.site_title}`
-            }).catch(e => {
-                this.isLoading = false
-                this.$toast.error(e.message)
-                this.$router.push({ name: 'cocktails' })
-            })
-
-            const appState = new AppState()
-
-            if (appState.defaultUnit) {
-                this.currentUnit = appState.defaultUnit
-            }
-        },
-        favorite() {
-            this.isLoadingFavorite = true
-            ApiRequests.favoriteCocktail(this.cocktail.id).then(resp => {
-                this.isFavorited = resp.is_favorited
-                this.isLoadingFavorite = false
-                this.$toast.default(this.isFavorited ? this.$t('cocktail.favorited', { name: this.cocktail.name }) : this.$t('cocktail.unfavorited', { name: this.cocktail.name }))
-            }).catch(e => {
-                this.isLoadingFavorite = false
-                this.$toast.error(e.message)
-            })
-        },
-        deleteCocktail() {
-            this.$confirm(this.$t('cocktail.confirm-delete', { name: this.cocktail.name }), {
-                onResolved: (dialog) => {
-                    dialog.close()
-                    ApiRequests.deleteCocktail(this.cocktail.id).then(() => {
-                        this.$toast.default(this.$t('cocktail.delete-success', { name: this.cocktail.name }))
-                        this.$router.push({ name: 'cocktails' })
-                        dialog.close()
-                    }).catch(e => {
-                        this.$toast.error(e.message)
-                        dialog.close()
-                    })
-                }
-            })
-        },
-        addMissingIngredients() {
-            const postData = {
-                ingredient_ids: this.missingIngredientIds
-            }
-
-            this.isLoading = true
-            ApiRequests.addIngredientsToShoppingList(postData).then(async data => {
-                this.$toast.default(this.$t('cocktail.ingredients-added-success', { total: data.length }))
-                this.userShoppingListIngredients = await ApiRequests.fetchShoppingList().catch(() => [])
-                this.isLoading = false
-            }).catch(e => {
-                this.$toast.error(e.message)
-                this.isLoading = false
-            })
-        },
-        parseIngredientAmount(ingredient) {
-            return UnitHandler.print(ingredient, this.currentUnit, this.servings)
-        },
-        changeMeasurementUnit(toUnit) {
-            const appState = new AppState()
-            this.currentUnit = toUnit
-            appState.setDefaultUnits(toUnit)
-        },
-        shareFromFormat(format) {
-            this.isLoadingShare = true
-            ApiRequests.shareCocktail(this.cocktail.slug, { type: format, units: this.currentUnit }).then(data => {
-                this.isLoadingShare = false
-                navigator.clipboard.writeText(data).then(() => {
-                    this.$toast.default(this.$t('share.format-copied'))
-                }, () => {
-                    this.$toast.error(this.$t('share.format-copy-failed'))
-                })
-            })
-        },
-        refreshNotes() {
-            this.isLoadingNotes = true
-            ApiRequests.fetchNotes({ 'filter[cocktail_id]': this.cocktail.id }).then(data => {
-                this.isLoadingNotes = false
-                this.notes = data
-            }).catch(() => {
-                this.isLoadingNotes = false
-            })
-        },
-        buildSubstituteString(sub) {
-            return new String(sub.name + ' ' + UnitHandler.print(sub, this.currentUnit, this.servings)).trim()
-        },
-        async copy() {
-            this.isLoading = true
-
-            ApiRequests.copyCocktail(this.cocktail.id).then(data => {
-                this.isLoading = false
-                this.$toast.default(this.$t('cocktail.copy-success'))
-                this.$router.push({ name: 'cocktails.form', query: { id: data.id } })
-            }).catch(e => {
-                this.isLoading = false
-                this.$toast.error(e.message)
-            })
-        },
-    }
-}
-</script>
-
 <style scoped>
-.cocktail-details {
-    max-width: 1100px;
-    margin: 0 auto;
-    --cocktail-graphic-height: 1000px;
-}
-
 swiper-container {
     --swiper-theme-color: #fff;
     --swiper-pagination-bottom: 1.5rem;
@@ -564,36 +536,10 @@ swiper-container {
     --swiper-pagination-bullet-inactive-color: #fff;
 }
 
-.cocktail-details__main {
-    display: flex;
+.cocktail-details {
+    display: grid;
     gap: var(--gap-size-3);
-}
-
-.cocktail-details__main__content {
-    flex-basis: 100%;
-    isolation: isolate;
-}
-
-.cocktail-details__main__aside {
-    flex-basis: 300px;
-}
-
-@media (max-width: 450px) {
-    .cocktail-details {
-        --cocktail-graphic-height: 500px;
-        --swiper-navigation-size: 1.5rem;
-        --swiper-pagination-bullet-size: 0.45rem;
-    }
-}
-
-@media (max-width: 800px) {
-    .cocktail-details__main {
-        display: block;
-    }
-
-    .cocktail-details__main__aside {
-        margin-top: 2rem;
-    }
+    grid-template-columns: 500px minmax(0, 1fr);
 }
 
 .cocktail-details__graphic {
@@ -607,43 +553,9 @@ swiper-container {
 
 .cocktail-details__graphic img {
     width: 100%;
-    height: var(--cocktail-graphic-height);
+    height: 700px;
     object-fit: cover;
     display: block;
-}
-
-.cocktail-details__title {
-    margin-bottom: 1.5rem;
-    padding-bottom: 1rem;
-    border-bottom: 2px solid var(--clr-accent-200);
-}
-
-.dark-theme .cocktail-details__title {
-    border-bottom: 2px solid var(--clr-dark-main-800);
-}
-
-.cocktail-details__title h2 {
-    font-family: var(--font-heading);
-    font-size: 2.5rem;
-    font-weight: var(--fw-bold);
-    margin: 0;
-    line-height: 1.3;
-}
-
-.cocktail-details__title p {
-    font-size: 0.85rem;
-    color: var(--clr-dark-main-800);
-    opacity: .5;
-}
-
-.dark-theme .cocktail-details__title p {
-    color: var(--clr-gray-300);
-}
-
-@media (max-width: 450px) {
-    .cocktail-details__title h2 {
-        font-size: 2rem;
-    }
 }
 
 .cocktail-details__graphic__copyright {
@@ -656,14 +568,6 @@ swiper-container {
     border-radius: var(--radius-3);
     padding: 2px 7px;
     font-size: 0.7rem;
-}
-
-.cocktail-title {
-    font-family: var(--font-heading);
-    font-size: 2rem;
-    font-weight: var(--fw-bold);
-    margin: 0 0 1.5rem 0;
-    line-height: 1.3;
 }
 
 .cocktail-ingredients {
@@ -712,7 +616,6 @@ swiper-container {
     font-size: 1.2rem;
     margin-left: auto;
     text-align: right;
-    /* font-feature-settings: "frac"; */
 }
 
 @media (max-width: 450px) {
@@ -728,6 +631,7 @@ swiper-container {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
     column-gap: var(--gap-size-1);
+    z-index: 1;
 }
 
 .cocktail-button-group {
@@ -783,14 +687,5 @@ swiper-container {
 :deep(.details-block-container hr) {
     border: 1px solid rgba(0, 0, 0, .15);
     margin: 0.75rem 0;
-}
-
-.cocktail-details__navigation {
-    display: flex;
-    margin-top: 0.5rem;
-}
-
-.cocktail-details__navigation a:last-child {
-    margin-left: auto;
 }
 </style>

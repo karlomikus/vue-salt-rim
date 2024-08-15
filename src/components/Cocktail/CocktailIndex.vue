@@ -414,6 +414,7 @@ export default {
         },
         refreshCocktails() {
             const query = this.stateToQuery()
+            query.include = 'ratings,ingredients.ingredient,tags,images'
 
             this.isLoading = true
             ApiRequests.fetchCocktails(query).then(async resp => {
