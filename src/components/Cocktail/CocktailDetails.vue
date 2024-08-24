@@ -51,7 +51,7 @@ const userNotes = ref([] as Note[])
 const userShelfIngredients = ref([] as IngredientBasic[])
 const userShoppingListIngredients = ref([] as ShoppingList[])
 const servings = ref(1)
-const currentUnit = ref('ml')
+const currentUnit = ref(appState.defaultUnit)
 
 watch(() => route.params.id as string, fetchCocktail, { immediate: true })
 
@@ -157,7 +157,7 @@ async function copy() {
 }
 
 function buildSubstituteString(sub: components["schemas"]["CocktailIngredientSubstitute"]) {
-    return new String(sub.name + ' ' + UnitHandler.print(sub, currentUnit.value, servings.value)).trim()
+    return new String(sub.ingredient.name + ' ' + UnitHandler.print(sub, currentUnit.value, servings.value)).trim()
 }
 
 function changeMeasurementUnit(toUnit: string) {
@@ -311,7 +311,7 @@ fetchShoppingList()
                                     </svg>
                                     {{ $t('share.copy-json') }}
                                 </a>
-                                <a class="dropdown-menu__item" href="#copy" @click.prevent="shareFromFormat('json+ld')">
+                                <a class="dropdown-menu__item" href="#copy" @click.prevent="shareFromFormat('json-ld')">
                                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18">
                                         <path d="M4 18V14.3C4 13.4716 3.32843 12.8 2.5 12.8H2V11.2H2.5C3.32843 11.2 4 10.5284 4 9.7V6C4 4.34315 5.34315 3 7 3H8V5H7C6.44772 5 6 5.44772 6 6V10.1C6 10.9858 5.42408 11.7372 4.62623 12C5.42408 12.2628 6 13.0142 6 13.9V18C6 18.5523 6.44772 19 7 19H8V21H7C5.34315 21 4 19.6569 4 18ZM20 14.3V18C20 19.6569 18.6569 21 17 21H16V19H17C17.5523 19 18 18.5523 18 18V13.9C18 13.0142 18.5759 12.2628 19.3738 12C18.5759 11.7372 18 10.9858 18 10.1V6C18 5.44772 17.5523 5 17 5H16V3H17C18.6569 3 20 4.34315 20 6V9.7C20 10.5284 20.6716 11.2 21.5 11.2H22V12.8H21.5C20.6716 12.8 20 13.4716 20 14.3Z"></path>
                                     </svg>
@@ -365,7 +365,7 @@ fetchShoppingList()
                                         </a>
                                     </template>
                                     <template #dialog>
-                                        <CollectionDialog :cocktails="[cocktail.id]" :cocktail-collections="[]" @collection-dialog-closed="showCollectionDialog = false; fetchCocktail(cocktail.slug)" />
+                                        <CollectionDialog :cocktails="[cocktail.id]" @collection-dialog-closed="showCollectionDialog = false; fetchCocktail(cocktail.slug)" />
                                     </template>
                                 </SaltRimDialog>
                                 <SaltRimDialog v-if="cocktail.access && cocktail.access.can_add_note" v-model="showNoteDialog">
@@ -483,7 +483,7 @@ fetchShoppingList()
                                         <div v-if="!ing.in_shelf && ing.in_shelf_as_substitute" class="cocktail-ingredients__flags__flag">&middot; {{ $t('cocktail.missing-ing-sub-available') }}</div>
                                         &middot; {{ $t('substitutes') }}:
                                         <template v-for="(sub, index) in ing.substitutes" :key="index">
-                                            <RouterLink :style="{'font-weight': sub.in_shelf ? 'bold' : 'normal'}" :to="{ name: 'ingredients.show', params: { id: sub.slug } }" data-ingredient="substitute">
+                                            <RouterLink :style="{'font-weight': sub.in_shelf ? 'bold' : 'normal'}" :to="{ name: 'ingredients.show', params: { id: sub.ingredient.slug } }" data-ingredient="substitute">
                                                 {{ buildSubstituteString(sub) }}
                                             </RouterLink>
                                             <template v-if="index + 1 !== ing.substitutes.length">, </template>

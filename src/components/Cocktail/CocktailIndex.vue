@@ -393,7 +393,7 @@ export default {
                 this.availableRefinements.main_ingredients = resp.data
             })
 
-            ApiRequests.fetchCollections({per_page: 100}).then(data => {
+            ApiRequests.fetchCollections({per_page: 100, include: 'cocktails'}).then(data => {
                 this.availableRefinements.collections = data
             })
 
@@ -401,7 +401,7 @@ export default {
                 this.availableRefinements.members = data
             })
 
-            ApiRequests.fetchSharedCollections().then(data => {
+            ApiRequests.fetchSharedCollections(this.appState.bar.id).then(data => {
                 this.availableRefinements.shared_collections = data
             })
         },

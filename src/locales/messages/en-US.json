@@ -521,12 +521,13 @@
     "title": "Exports",
     "start": "Start export",
     "bar-select": "Select your bar",
-    "dialog-title": "Export recipes from a bar",
+    "dialog-title": "Export data from a bar",
     "empty": "You don't have any available exports",
     "export-notice": "Please keep in mind that depending on server configuration and selected bar size, generating export can take several minutes.",
     "start-success": "Started bar export",
     "confirm-delete": "This will delete the selected export file",
-    "delete-success": "Export removed"
+    "delete-success": "Export removed",
+    "types-hint": "Click here to learn more about export types"
   },
   "start": "Start",
   "filter": "Filter",

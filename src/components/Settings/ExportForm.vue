@@ -9,6 +9,13 @@
                 <option v-for="bar in bars" :key="bar.id" :value="bar.id">{{ bar.name }}</option>
             </select>
         </div>
+        <div class="form-group">
+            <label class="form-label form-label--required" for="name">{{ $t('type') }}:</label>
+            <select id="glass" v-model="exportModel.type" class="form-select">
+                <option v-for="type in types" :key="type.id" :value="type.id">{{ type.name }}</option>
+            </select>
+            <p class="form-input-hint"><a href="#">{{ $t('exports.types-hint') }}</a></p>
+        </div>
         <div class="alert alert--warning">{{ $t('exports.export-notice') }}</div>
         <div class="dialog-actions">
             <button class="button button--outline" @click.prevent="$emit('exportDialogClosed')">{{ $t('cancel') }}</button>
@@ -29,7 +36,25 @@ export default {
     data() {
         return {
             isLoading: false,
-            exportModel: {},
+            exportModel: {
+                type: 'schema',
+            },
+            types: [{
+                id: 'datapack',
+                name: 'Bar Assistant Datapack',
+            }, {
+                id: 'schema',
+                name: 'JSON (Schema draft 2)',
+            }, {
+                id: 'xml',
+                name: 'XML',
+            }, {
+                id: 'md',
+                name: 'Markdown',
+            }, {
+                id: 'json-ld',
+                name: 'Schema.org Recipe (JSON-LD)',
+            }],
         }
     },
     created() {
@@ -54,6 +79,7 @@ export default {
 
             const postData = {
                 bar_id: this.exportModel.bar_id,
+                type: this.exportModel.type,
             }
 
             ApiRequests.saveExport(postData).then(() => {

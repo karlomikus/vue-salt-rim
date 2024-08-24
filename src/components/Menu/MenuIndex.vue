@@ -49,11 +49,11 @@
                             <div class="menu-category__cocktail__content__price">
                                 <div class="form-group">
                                     <label class="form-label" :for="'cocktail-category-price-' + idx + '-' + cidx">{{ $t('menu.price') }}:</label>
-                                    <input :id="'cocktail-category-price-' + idx + '-' + cidx" v-model="cocktail.price" class="form-input" type="text">
+                                    <input :id="'cocktail-category-price-' + idx + '-' + cidx" v-model="cocktail.price.price" class="form-input" type="text">
                                 </div>
                                 <div class="form-group">
                                     <label class="form-label" :for="'cocktail-category-currency-' + idx + '-' + cidx">{{ $t('menu.currency') }}:</label>
-                                    <input :id="'cocktail-category-currency-' + idx + '-' + cidx" v-model="cocktail.currency" class="form-input" type="text">
+                                    <input :id="'cocktail-category-currency-' + idx + '-' + cidx" v-model="cocktail.price.currency" class="form-input" type="text">
                                 </div>
                             </div>
                         </div>
@@ -271,8 +271,8 @@ export default {
                     cocktail_id: cocktail.id,
                     category_name: cat.name,
                     sort: sortedCocktails.findIndex(sortedId => sortedId == cocktail.id) + 1,
-                    price: cocktail.price,
-                    currency: cocktail.currency,
+                    price: cocktail.price.price,
+                    currency: cocktail.price.currency,
                 }))
             })
 
@@ -292,9 +292,9 @@ export default {
                 this.isLoading = false
                 this.refreshMenu()
                 this.$toast.default(this.$t('menu.saved'))
-            }).catch(() => {
+            }).catch(e => {
                 this.isLoading = false
-                this.$toast.error(this.$t('menu.update-error'))
+                this.$toast.error(this.$t('menu.update-error') + ': ' + e.message)
             })
         },
     }

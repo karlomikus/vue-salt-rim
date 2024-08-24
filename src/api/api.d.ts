@@ -449,7 +449,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/explore/cocktails/{ulid}": {
+    "/explore/cocktails/{public_id}": {
         parameters: {
             query?: never;
             header?: never;
@@ -457,7 +457,7 @@ export interface paths {
             cookie?: never;
         };
         /** Show a public cocktail */
-        get: operations["98ae5704f462b0b0647c27532813284b"];
+        get: operations["83841be3da52f7694d8382c5f5b13d8e"];
         put?: never;
         post?: never;
         delete?: never;
@@ -1287,28 +1287,30 @@ export interface components {
         };
         Bar: {
             /** @example 1 */
-            id?: number;
+            id: number;
             /** @example bar-name-1 */
-            slug?: string;
+            slug: string;
             /** @example Bar name */
-            name?: string;
+            name: string;
             /** @example A short subtitle of a bar */
-            subtitle?: string | null;
+            subtitle: string | null;
             /** @example Bar description */
-            description?: string | null;
+            description: string | null;
             /** @example 01H8S3VH2HTEB3D893AW8NTBBC */
-            invite_code?: string | null;
-            status?: components["schemas"]["BarStatusEnum"];
-            settings?: string[];
-            search_host?: string | null;
-            search_token?: string | null;
+            invite_code: string | null;
+            status: components["schemas"]["BarStatusEnum"];
+            settings: {
+                [key: string]: unknown;
+            }[];
+            search_host: string | null;
+            search_token: string | null;
             /** Format: date-time */
-            created_at?: string;
+            created_at: string;
             /** Format: date-time */
-            updated_at?: string | null;
+            updated_at: string | null;
             created_user?: components["schemas"]["UserBasic"];
             updated_user?: components["schemas"]["UserBasic"] | null;
-            access?: {
+            access: {
                 /** @example 1 */
                 role_id?: number;
                 /** @example true */
@@ -1320,6 +1322,16 @@ export interface components {
                 /** @example true */
                 can_deactivate?: boolean;
             }[];
+        };
+        BarBasic: {
+            /** @example 1 */
+            id: number;
+            /** @example bar-name-1 */
+            slug: string;
+            /** @example Bar name */
+            name: string;
+            /** @example Bar subtitle */
+            subtitle: string;
         };
         BarMembership: {
             /** @example 1 */
@@ -1446,19 +1458,14 @@ export interface components {
         /** @description Minimal cocktail information */
         CocktailBasic: {
             /** @example 1 */
-            id?: number;
+            id: number;
             /** @example old-fashioned-1 */
-            slug?: string;
+            slug: string;
             /** @example Old fashioned */
-            name?: string;
+            name: string;
         };
         CocktailExplore: {
-            bar?: {
-                /** @example Bar name */
-                name?: string;
-                /** @example Bar subtitle */
-                subtitle?: string;
-            };
+            bar?: components["schemas"]["BarBasic"];
             /** @example Cocktail name */
             name?: string;
             /** @example Step by step instructions */
@@ -1595,26 +1602,21 @@ export interface components {
             in_shelf_as_complex_ingredient?: boolean;
         };
         CocktailIngredientSubstitute: {
-            /** @example 1 */
-            id?: number;
-            /** @example vodka */
-            slug?: string;
-            /** @example Vodka */
-            name?: string;
+            ingredient: components["schemas"]["IngredientBasic"];
             /**
              * Format: float
              * @example 30
              */
-            amount?: number | null;
+            amount: number | null;
             /**
              * Format: float
              * @example 60
              */
-            amount_max?: number | null;
+            amount_max: number | null;
             /** @example ml */
-            units?: string | null;
+            units: string | null;
             /** @example true */
-            in_shelf?: boolean;
+            in_shelf: boolean;
         };
         CocktailMethod: {
             /** @example 1 */
@@ -1888,12 +1890,7 @@ export interface components {
         };
         IngredientPrice: {
             price_category?: components["schemas"]["PriceCategory"];
-            /** @example EUR 30.00 */
-            price?: string;
-            /** @example 3000 */
-            price_minor?: number;
-            /** @example €30.00 */
-            price_formatted?: string;
+            price?: components["schemas"]["Price"];
             /**
              * Format: float
              * @example 30
@@ -1977,8 +1974,7 @@ export interface components {
                     slug?: string;
                     /** @example 1 */
                     sort?: number;
-                    /** @example EUR 23.85 */
-                    price?: string;
+                    price?: components["schemas"]["Price"];
                     /** @example EUR */
                     currency?: string;
                     /** @example Cocktail name */
@@ -2002,12 +1998,7 @@ export interface components {
                 cocktails?: {
                     /** @example 1 */
                     sort?: number;
-                    price?: {
-                        /** @example 2385 */
-                        full?: number;
-                        /** @example EUR 23.85 */
-                        formatted?: string;
-                    };
+                    price?: components["schemas"]["Price"];
                     /** @example 01ARZ3NDEKTSV4RRFFQ69G5FAV */
                     public_id?: string;
                     /** @example cocktail-name-1 */
@@ -2089,6 +2080,19 @@ export interface components {
             abilities: components["schemas"]["AbilityEnum"][];
             /** @example 2023-05-14T21:23:40.000000Z */
             expires_at?: string | null;
+        };
+        Price: {
+            /**
+             * Format: float
+             * @example 13.39
+             */
+            price: number;
+            /** @example 1339 */
+            price_minor: number;
+            /** @example EUR 13.39 */
+            formatted_price: string;
+            /** @example EUR */
+            currency: string;
         };
         PriceCategory: {
             /** @example 1 */
@@ -2235,6 +2239,13 @@ export interface components {
             name: string;
             /** @example Used to shake ingredients */
             description?: string | null;
+        };
+        ValidationError: {
+            /** @example The cocktail name must be a string. (and 2 more errors) */
+            message: string;
+            errors: {
+                [key: string]: string[];
+            };
         };
         /**
          * Cocktail recipe - Draft 02
@@ -2597,6 +2608,15 @@ export interface operations {
                     };
                 };
             };
+            /** @description Request validation failed. */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ValidationError"];
+                };
+            };
         };
     };
     "6e92536f11339d30675019e6e93f9ce4": {
@@ -2693,6 +2713,15 @@ export interface operations {
                     "application/json": {
                         data?: components["schemas"]["APIError"];
                     };
+                };
+            };
+            /** @description Request validation failed. */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ValidationError"];
                 };
             };
         };
@@ -3020,7 +3049,7 @@ export interface operations {
     "4400982243630124406e8675b4632a32": {
         parameters: {
             query?: {
-                /** @description Database id of a bar. Required if you are not using headers. */
+                /** @description Database id of a bar. Required if you are not using `Bar-Assistant-Bar-Id` header. */
                 bar_id?: number;
                 /** @description Set current page number */
                 page?: number;
@@ -3058,7 +3087,10 @@ export interface operations {
                 /** @description Include additional relationships. Available relations: `glass`, `method`, `user`, `navigation`, `utensils`, `createdUser`, `updatedUser`, `images`, `tags`, `ingredients.ingredient`, `ratings`. */
                 include?: string;
             };
-            header?: never;
+            header?: {
+                /** @description Database id of a bar. Required if you are not using `bar_id` query string. */
+                "Bar-Assistant-Bar-Id"?: number;
+            };
             path?: never;
             cookie?: never;
         };
@@ -3111,10 +3143,13 @@ export interface operations {
     cbc4c3f93b89c16a916c7cc574ca118e: {
         parameters: {
             query?: {
-                /** @description Database id of a bar. Required if you are not using headers. */
+                /** @description Database id of a bar. Required if you are not using `Bar-Assistant-Bar-Id` header. */
                 bar_id?: number;
             };
-            header?: never;
+            header?: {
+                /** @description Database id of a bar. Required if you are not using `bar_id` query string. */
+                "Bar-Assistant-Bar-Id"?: number;
+            };
             path?: never;
             cookie?: never;
         };
@@ -3146,6 +3181,15 @@ export interface operations {
                     "application/json": {
                         data?: components["schemas"]["APIError"];
                     };
+                };
+            };
+            /** @description Request validation failed. */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ValidationError"];
                 };
             };
         };
@@ -3244,6 +3288,15 @@ export interface operations {
                     "application/json": {
                         data?: components["schemas"]["APIError"];
                     };
+                };
+            };
+            /** @description Request validation failed. */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ValidationError"];
                 };
             };
         };
@@ -3531,10 +3584,13 @@ export interface operations {
     "14008654b6c5780b9e826e4e2fcf237a": {
         parameters: {
             query?: {
-                /** @description Database id of a bar. Required if you are not using headers. */
+                /** @description Database id of a bar. Required if you are not using `Bar-Assistant-Bar-Id` header. */
                 bar_id?: number;
             };
-            header?: never;
+            header?: {
+                /** @description Database id of a bar. Required if you are not using `bar_id` query string. */
+                "Bar-Assistant-Bar-Id"?: number;
+            };
             path?: never;
             cookie?: never;
         };
@@ -3556,10 +3612,13 @@ export interface operations {
     "4b70b5048cbee429f002bf3f270c8a94": {
         parameters: {
             query?: {
-                /** @description Database id of a bar. Required if you are not using headers. */
+                /** @description Database id of a bar. Required if you are not using `Bar-Assistant-Bar-Id` header. */
                 bar_id?: number;
             };
-            header?: never;
+            header?: {
+                /** @description Database id of a bar. Required if you are not using `bar_id` query string. */
+                "Bar-Assistant-Bar-Id"?: number;
+            };
             path?: never;
             cookie?: never;
         };
@@ -3739,7 +3798,7 @@ export interface operations {
     "308d0156539f4be8f650f7ed64ed3d7f": {
         parameters: {
             query?: {
-                /** @description Database id of a bar. Required if you are not using headers. */
+                /** @description Database id of a bar. Required if you are not using `Bar-Assistant-Bar-Id` header. */
                 bar_id?: number;
                 /** @description Filter by attributes */
                 filter?: {
@@ -3750,7 +3809,10 @@ export interface operations {
                 /** @description Sort by attributes. Available attributes: `name`, `created_at`. */
                 sort?: string;
             };
-            header?: never;
+            header?: {
+                /** @description Database id of a bar. Required if you are not using `bar_id` query string. */
+                "Bar-Assistant-Bar-Id"?: number;
+            };
             path?: never;
             cookie?: never;
         };
@@ -3772,10 +3834,13 @@ export interface operations {
     a2c6fd135d182cbeeadbc042b35b0a80: {
         parameters: {
             query?: {
-                /** @description Database id of a bar. Required if you are not using headers. */
+                /** @description Database id of a bar. Required if you are not using `Bar-Assistant-Bar-Id` header. */
                 bar_id?: number;
             };
-            header?: never;
+            header?: {
+                /** @description Database id of a bar. Required if you are not using `bar_id` query string. */
+                "Bar-Assistant-Bar-Id"?: number;
+            };
             path?: never;
             cookie?: never;
         };
@@ -4041,13 +4106,13 @@ export interface operations {
             };
         };
     };
-    "98ae5704f462b0b0647c27532813284b": {
+    "83841be3da52f7694d8382c5f5b13d8e": {
         parameters: {
             query?: never;
             header?: never;
             path: {
-                /** @description Public cocktail ULID */
-                ulid: string;
+                /** @description Public cocktail id */
+                public_id: string;
             };
             cookie?: never;
         };
@@ -4272,7 +4337,7 @@ export interface operations {
     aa68a5da541be756aa65f07353e63cdf: {
         parameters: {
             query?: {
-                /** @description Database id of a bar. Required if you are not using headers. */
+                /** @description Database id of a bar. Required if you are not using `Bar-Assistant-Bar-Id` header. */
                 bar_id?: number;
                 /** @description Filter by attributes */
                 filter?: {
@@ -4281,7 +4346,10 @@ export interface operations {
                 /** @description Sort by attributes. Available attributes: `name`, `created_at`. */
                 sort?: string;
             };
-            header?: never;
+            header?: {
+                /** @description Database id of a bar. Required if you are not using `bar_id` query string. */
+                "Bar-Assistant-Bar-Id"?: number;
+            };
             path?: never;
             cookie?: never;
         };
@@ -4303,10 +4371,13 @@ export interface operations {
     b81ce1bc5d5988d9221774a715a90950: {
         parameters: {
             query?: {
-                /** @description Database id of a bar. Required if you are not using headers. */
+                /** @description Database id of a bar. Required if you are not using `Bar-Assistant-Bar-Id` header. */
                 bar_id?: number;
             };
-            header?: never;
+            header?: {
+                /** @description Database id of a bar. Required if you are not using `bar_id` query string. */
+                "Bar-Assistant-Bar-Id"?: number;
+            };
             path?: never;
             cookie?: never;
         };
@@ -4747,10 +4818,13 @@ export interface operations {
     f46bb44c14109f5d529b854e81d57150: {
         parameters: {
             query?: {
-                /** @description Database id of a bar. Required if you are not using headers. */
+                /** @description Database id of a bar. Required if you are not using `Bar-Assistant-Bar-Id` header. */
                 bar_id?: number;
             };
-            header?: never;
+            header?: {
+                /** @description Database id of a bar. Required if you are not using `bar_id` query string. */
+                "Bar-Assistant-Bar-Id"?: number;
+            };
             path?: never;
             cookie?: never;
         };
@@ -4791,10 +4865,13 @@ export interface operations {
     "33b756be1976d85e9b0e8e734beed74f": {
         parameters: {
             query?: {
-                /** @description Database id of a bar. Required if you are not using headers. */
+                /** @description Database id of a bar. Required if you are not using `Bar-Assistant-Bar-Id` header. */
                 bar_id?: number;
             };
-            header?: never;
+            header?: {
+                /** @description Database id of a bar. Required if you are not using `bar_id` query string. */
+                "Bar-Assistant-Bar-Id"?: number;
+            };
             path?: never;
             cookie?: never;
         };
@@ -4879,10 +4956,13 @@ export interface operations {
     "9c5a332d2fd9a695a6805451249a0c28": {
         parameters: {
             query?: {
-                /** @description Database id of a bar. Required if you are not using headers. */
+                /** @description Database id of a bar. Required if you are not using `Bar-Assistant-Bar-Id` header. */
                 bar_id?: number;
             };
-            header?: never;
+            header?: {
+                /** @description Database id of a bar. Required if you are not using `bar_id` query string. */
+                "Bar-Assistant-Bar-Id"?: number;
+            };
             path?: never;
             cookie?: never;
         };
@@ -4904,10 +4984,13 @@ export interface operations {
     beef561152a333f7c81fec58a7590f37: {
         parameters: {
             query?: {
-                /** @description Database id of a bar. Required if you are not using headers. */
+                /** @description Database id of a bar. Required if you are not using `Bar-Assistant-Bar-Id` header. */
                 bar_id?: number;
             };
-            header?: never;
+            header?: {
+                /** @description Database id of a bar. Required if you are not using `bar_id` query string. */
+                "Bar-Assistant-Bar-Id"?: number;
+            };
             path?: never;
             cookie?: never;
         };
@@ -5087,7 +5170,7 @@ export interface operations {
     "1638cf5bb5113e3ca4793347b9ca84ed": {
         parameters: {
             query?: {
-                /** @description Database id of a bar. Required if you are not using headers. */
+                /** @description Database id of a bar. Required if you are not using `Bar-Assistant-Bar-Id` header. */
                 bar_id?: number;
                 /** @description Set current page number */
                 page?: number;
@@ -5115,7 +5198,10 @@ export interface operations {
                 /** @description Include additional relationships. Available relations: `parentIngredient`, `varieties`, `prices`, `ingredientParts`, `category`, `images`. */
                 include?: string;
             };
-            header?: never;
+            header?: {
+                /** @description Database id of a bar. Required if you are not using `bar_id` query string. */
+                "Bar-Assistant-Bar-Id"?: number;
+            };
             path?: never;
             cookie?: never;
         };
@@ -5168,10 +5254,13 @@ export interface operations {
     efa43043e488624a2f3d8e8123a2d9be: {
         parameters: {
             query?: {
-                /** @description Database id of a bar. Required if you are not using headers. */
+                /** @description Database id of a bar. Required if you are not using `Bar-Assistant-Bar-Id` header. */
                 bar_id?: number;
             };
-            header?: never;
+            header?: {
+                /** @description Database id of a bar. Required if you are not using `bar_id` query string. */
+                "Bar-Assistant-Bar-Id"?: number;
+            };
             path?: never;
             cookie?: never;
         };
@@ -5542,10 +5631,13 @@ export interface operations {
     "15005db445c5ccad445e198729cc4e22": {
         parameters: {
             query?: {
-                /** @description Database id of a bar. Required if you are not using headers. */
+                /** @description Database id of a bar. Required if you are not using `Bar-Assistant-Bar-Id` header. */
                 bar_id?: number;
             };
-            header?: never;
+            header?: {
+                /** @description Database id of a bar. Required if you are not using `bar_id` query string. */
+                "Bar-Assistant-Bar-Id"?: number;
+            };
             path?: never;
             cookie?: never;
         };
@@ -5578,10 +5670,13 @@ export interface operations {
     "9ac6e03b541a1351a5d691b2aa232283": {
         parameters: {
             query?: {
-                /** @description Database id of a bar. Required if you are not using headers. */
+                /** @description Database id of a bar. Required if you are not using `Bar-Assistant-Bar-Id` header. */
                 bar_id?: number;
             };
-            header?: never;
+            header?: {
+                /** @description Database id of a bar. Required if you are not using `bar_id` query string. */
+                "Bar-Assistant-Bar-Id"?: number;
+            };
             path?: never;
             cookie?: never;
         };
@@ -5943,10 +6038,13 @@ export interface operations {
     "8ffdcf8e07576f57714428563d35c0ff": {
         parameters: {
             query?: {
-                /** @description Database id of a bar. Required if you are not using headers. */
+                /** @description Database id of a bar. Required if you are not using `Bar-Assistant-Bar-Id` header. */
                 bar_id?: number;
             };
-            header?: never;
+            header?: {
+                /** @description Database id of a bar. Required if you are not using `bar_id` query string. */
+                "Bar-Assistant-Bar-Id"?: number;
+            };
             path?: never;
             cookie?: never;
         };
@@ -5968,10 +6066,13 @@ export interface operations {
     "000ce8107dfa5fe811876785a0f24308": {
         parameters: {
             query?: {
-                /** @description Database id of a bar. Required if you are not using headers. */
+                /** @description Database id of a bar. Required if you are not using `Bar-Assistant-Bar-Id` header. */
                 bar_id?: number;
             };
-            header?: never;
+            header?: {
+                /** @description Database id of a bar. Required if you are not using `bar_id` query string. */
+                "Bar-Assistant-Bar-Id"?: number;
+            };
             path?: never;
             cookie?: never;
         };
@@ -6313,14 +6414,17 @@ export interface operations {
     b34236369b075eabaacef013be799024: {
         parameters: {
             query?: {
-                /** @description Database id of a bar. Required if you are not using headers. */
+                /** @description Database id of a bar. Required if you are not using `Bar-Assistant-Bar-Id` header. */
                 bar_id?: number;
                 /** @description Set current page number */
                 page?: number;
                 /** @description Set number of results per page */
                 per_page?: number;
             };
-            header?: never;
+            header?: {
+                /** @description Database id of a bar. Required if you are not using `bar_id` query string. */
+                "Bar-Assistant-Bar-Id"?: number;
+            };
             path: {
                 /** @description Database id of a resource */
                 id: number;
@@ -6365,14 +6469,17 @@ export interface operations {
     "5a48f072f2ca1f25807838c8ae331db5": {
         parameters: {
             query?: {
-                /** @description Database id of a bar. Required if you are not using headers. */
+                /** @description Database id of a bar. Required if you are not using `Bar-Assistant-Bar-Id` header. */
                 bar_id?: number;
                 /** @description Set current page number */
                 page?: number;
                 /** @description Set number of results per page */
                 per_page?: number;
             };
-            header?: never;
+            header?: {
+                /** @description Database id of a bar. Required if you are not using `bar_id` query string. */
+                "Bar-Assistant-Bar-Id"?: number;
+            };
             path: {
                 /** @description Database id of a resource */
                 id: number;
@@ -6417,14 +6524,17 @@ export interface operations {
     "0038cb5730a723a0c58e5605fecb0ccb": {
         parameters: {
             query?: {
-                /** @description Database id of a bar. Required if you are not using headers. */
+                /** @description Database id of a bar. Required if you are not using `Bar-Assistant-Bar-Id` header. */
                 bar_id?: number;
                 /** @description Set current page number */
                 page?: number;
                 /** @description Set number of results per page */
                 per_page?: number;
             };
-            header?: never;
+            header?: {
+                /** @description Database id of a bar. Required if you are not using `bar_id` query string. */
+                "Bar-Assistant-Bar-Id"?: number;
+            };
             path: {
                 /** @description Database id of a resource */
                 id: number;
@@ -6469,10 +6579,13 @@ export interface operations {
     "28c0db334504ef005e3704dcc80154b1": {
         parameters: {
             query?: {
-                /** @description Database id of a bar. Required if you are not using headers. */
+                /** @description Database id of a bar. Required if you are not using `Bar-Assistant-Bar-Id` header. */
                 bar_id?: number;
             };
-            header?: never;
+            header?: {
+                /** @description Database id of a bar. Required if you are not using `bar_id` query string. */
+                "Bar-Assistant-Bar-Id"?: number;
+            };
             path: {
                 /** @description Database id of a resource */
                 id: number;
@@ -6521,10 +6634,13 @@ export interface operations {
     "8effce422c8cbe13a9b273a71f9d8afc": {
         parameters: {
             query?: {
-                /** @description Database id of a bar. Required if you are not using headers. */
+                /** @description Database id of a bar. Required if you are not using `Bar-Assistant-Bar-Id` header. */
                 bar_id?: number;
             };
-            header?: never;
+            header?: {
+                /** @description Database id of a bar. Required if you are not using `bar_id` query string. */
+                "Bar-Assistant-Bar-Id"?: number;
+            };
             path: {
                 /** @description Database id of a resource */
                 id: number;
@@ -6573,10 +6689,13 @@ export interface operations {
     f5e680e7f9f44a047888ad4bc8a22ba8: {
         parameters: {
             query?: {
-                /** @description Database id of a bar. Required if you are not using headers. */
+                /** @description Database id of a bar. Required if you are not using `Bar-Assistant-Bar-Id` header. */
                 bar_id?: number;
             };
-            header?: never;
+            header?: {
+                /** @description Database id of a bar. Required if you are not using `bar_id` query string. */
+                "Bar-Assistant-Bar-Id"?: number;
+            };
             path: {
                 /** @description Database id of a resource */
                 id: number;
@@ -6623,10 +6742,13 @@ export interface operations {
     ea114c1013eabd71064b7b33513d13cd: {
         parameters: {
             query?: {
-                /** @description Database id of a bar. Required if you are not using headers. */
+                /** @description Database id of a bar. Required if you are not using `Bar-Assistant-Bar-Id` header. */
                 bar_id?: number;
             };
-            header?: never;
+            header?: {
+                /** @description Database id of a bar. Required if you are not using `bar_id` query string. */
+                "Bar-Assistant-Bar-Id"?: number;
+            };
             path: {
                 /** @description Database id of a resource */
                 id: number;
@@ -6662,10 +6784,13 @@ export interface operations {
     c9dbd5fceec4406656e93b94646ea5f6: {
         parameters: {
             query?: {
-                /** @description Database id of a bar. Required if you are not using headers. */
+                /** @description Database id of a bar. Required if you are not using `Bar-Assistant-Bar-Id` header. */
                 bar_id?: number;
             };
-            header?: never;
+            header?: {
+                /** @description Database id of a bar. Required if you are not using `bar_id` query string. */
+                "Bar-Assistant-Bar-Id"?: number;
+            };
             path: {
                 /** @description Database id of a resource */
                 id: number;
@@ -6712,10 +6837,13 @@ export interface operations {
     cec5d8ca07890aaad3cd264ba62a88bb: {
         parameters: {
             query?: {
-                /** @description Database id of a bar. Required if you are not using headers. */
+                /** @description Database id of a bar. Required if you are not using `Bar-Assistant-Bar-Id` header. */
                 bar_id?: number;
             };
-            header?: never;
+            header?: {
+                /** @description Database id of a bar. Required if you are not using `bar_id` query string. */
+                "Bar-Assistant-Bar-Id"?: number;
+            };
             path: {
                 /** @description Database id of a resource */
                 id: number;
@@ -6764,12 +6892,15 @@ export interface operations {
     "1d4aaec85e00ac2c559f362058f02056": {
         parameters: {
             query?: {
-                /** @description Database id of a bar. Required if you are not using headers. */
+                /** @description Database id of a bar. Required if you are not using `Bar-Assistant-Bar-Id` header. */
                 bar_id?: number;
                 /** @description Type of share. Available types: `markdown`. */
                 type?: string;
             };
-            header?: never;
+            header?: {
+                /** @description Database id of a bar. Required if you are not using `bar_id` query string. */
+                "Bar-Assistant-Bar-Id"?: number;
+            };
             path: {
                 /** @description Database id of a resource */
                 id: number;
@@ -6803,10 +6934,13 @@ export interface operations {
     e5e1e0ec136ce6b73c6636ef9635a596: {
         parameters: {
             query?: {
-                /** @description Database id of a bar. Required if you are not using headers. */
+                /** @description Database id of a bar. Required if you are not using `Bar-Assistant-Bar-Id` header. */
                 bar_id?: number;
             };
-            header?: never;
+            header?: {
+                /** @description Database id of a bar. Required if you are not using `bar_id` query string. */
+                "Bar-Assistant-Bar-Id"?: number;
+            };
             path?: never;
             cookie?: never;
         };
@@ -6828,10 +6962,13 @@ export interface operations {
     "436ed7a7115fce5026326a5d67a016ac": {
         parameters: {
             query?: {
-                /** @description Database id of a bar. Required if you are not using headers. */
+                /** @description Database id of a bar. Required if you are not using `Bar-Assistant-Bar-Id` header. */
                 bar_id?: number;
             };
-            header?: never;
+            header?: {
+                /** @description Database id of a bar. Required if you are not using `bar_id` query string. */
+                "Bar-Assistant-Bar-Id"?: number;
+            };
             path?: never;
             cookie?: never;
         };
@@ -7011,10 +7148,13 @@ export interface operations {
     "0d0cb04fffa73faf3be78b1a0b658561": {
         parameters: {
             query?: {
-                /** @description Database id of a bar. Required if you are not using headers. */
+                /** @description Database id of a bar. Required if you are not using `Bar-Assistant-Bar-Id` header. */
                 bar_id?: number;
             };
-            header?: never;
+            header?: {
+                /** @description Database id of a bar. Required if you are not using `bar_id` query string. */
+                "Bar-Assistant-Bar-Id"?: number;
+            };
             path?: never;
             cookie?: never;
         };
@@ -7036,10 +7176,13 @@ export interface operations {
     a53b4f22b9e0de280870f1e187f6bee3: {
         parameters: {
             query?: {
-                /** @description Database id of a bar. Required if you are not using headers. */
+                /** @description Database id of a bar. Required if you are not using `Bar-Assistant-Bar-Id` header. */
                 bar_id?: number;
             };
-            header?: never;
+            header?: {
+                /** @description Database id of a bar. Required if you are not using `bar_id` query string. */
+                "Bar-Assistant-Bar-Id"?: number;
+            };
             path?: never;
             cookie?: never;
         };
@@ -7078,10 +7221,13 @@ export interface operations {
     "89cd377bbebe14aaf4174e3916502852": {
         parameters: {
             query?: {
-                /** @description Database id of a bar. Required if you are not using headers. */
+                /** @description Database id of a bar. Required if you are not using `Bar-Assistant-Bar-Id` header. */
                 bar_id?: number;
             };
-            header?: never;
+            header?: {
+                /** @description Database id of a bar. Required if you are not using `bar_id` query string. */
+                "Bar-Assistant-Bar-Id"?: number;
+            };
             path: {
                 /** @description Database id of a resource */
                 id: number;
@@ -7128,10 +7274,13 @@ export interface operations {
     "6972a68618aa96af50377dcc8fe79aef": {
         parameters: {
             query?: {
-                /** @description Database id of a bar. Required if you are not using headers. */
+                /** @description Database id of a bar. Required if you are not using `Bar-Assistant-Bar-Id` header. */
                 bar_id?: number;
             };
-            header?: never;
+            header?: {
+                /** @description Database id of a bar. Required if you are not using `bar_id` query string. */
+                "Bar-Assistant-Bar-Id"?: number;
+            };
             path: {
                 /** @description Database id of a resource */
                 id: number;
@@ -7225,10 +7374,13 @@ export interface operations {
     "613e6e2fed96a23278a5036159e9087d": {
         parameters: {
             query?: {
-                /** @description Database id of a bar. Required if you are not using headers. */
+                /** @description Database id of a bar. Required if you are not using `Bar-Assistant-Bar-Id` header. */
                 bar_id?: number;
             };
-            header?: never;
+            header?: {
+                /** @description Database id of a bar. Required if you are not using `bar_id` query string. */
+                "Bar-Assistant-Bar-Id"?: number;
+            };
             path?: never;
             cookie?: never;
         };
@@ -7250,10 +7402,13 @@ export interface operations {
     eef2f70636f45820b56cc0025448f847: {
         parameters: {
             query?: {
-                /** @description Database id of a bar. Required if you are not using headers. */
+                /** @description Database id of a bar. Required if you are not using `Bar-Assistant-Bar-Id` header. */
                 bar_id?: number;
             };
-            header?: never;
+            header?: {
+                /** @description Database id of a bar. Required if you are not using `bar_id` query string. */
+                "Bar-Assistant-Bar-Id"?: number;
+            };
             path?: never;
             cookie?: never;
         };

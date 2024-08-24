@@ -11,18 +11,23 @@
             <br>
             <a href="#" @click.prevent="$emit('addToCollection')">{{ $t('collections.add-to') }}</a>
         </EmptyState>
-        <div v-for="collection in collections" :key="collection.id" class="block-container cocktail-collections__item">
-            <h3>{{ collection.name }}</h3>
-            <div class="cocktail-collections__item__actions">
-                <RouterLink :to="{ name: 'cocktails', query: { 'filter[collection_id]': collection.id } }">
-                    {{ $t('view') }}
-                </RouterLink>
-                &middot;
-                <a href="#" @click.prevent="removeCocktailFromCollection(collection.id)">
-                    {{ $t('remove-cocktail-from-collection') }}
-                </a>
+        <template v-else>
+            <div class="block-container block-container--inset" style="padding: 0.5rem">
+                <div v-for="collection in collections" :key="collection.id" class="block-container cocktail-collections__item">
+                    <h3>{{ collection.name }}</h3>
+                    <div class="cocktail-collections__item__actions">
+                        <RouterLink :to="{ name: 'cocktails', query: { 'filter[collection_id]': collection.id } }">
+                            {{ $t('view') }}
+                        </RouterLink>
+                        &middot;
+                        <a href="#" @click.prevent="removeCocktailFromCollection(collection.id)">
+                            {{ $t('remove-cocktail-from-collection') }}
+                        </a>
+                    </div>
+                </div>
+                <a href="#" @click.prevent="$emit('addToCollection')">{{ $t('collections.add-to') }}</a>
             </div>
-        </div>
+        </template>
     </div>
 </template>
 <script>

@@ -1,14 +1,55 @@
+<script setup lang="ts">
+import OverlayLoader from './../OverlayLoader.vue'
+import IngredientFinder from './../IngredientFinder.vue'
+import AmountInput from './../AmountInput.vue'
+import { ref } from 'vue'
+import type { components } from '@/api/api'
+
+type CocktailIngredient = components["schemas"]["CocktailIngredient"]
+interface FinderIngredient {
+    id: number,
+    slug: string,
+    name: string,
+}
+
+const emit = defineEmits(['close', 'ingredient-changed'])
+const props = defineProps<{
+    cocktailIngredient: CocktailIngredient,
+}>()
+
+const originalCocktailingredient = JSON.parse(JSON.stringify(props.cocktailIngredient)) as CocktailIngredient
+const localCocktailingredient = ref(props.cocktailIngredient)
+const isLoading = ref(false)
+const hasVariableAmount = ref(props.cocktailIngredient.amount_max != null)
+
+function save(): void {
+    emit('close')
+}
+
+function cancel(): void {
+    localCocktailingredient.value = Object.assign(localCocktailingredient.value, originalCocktailingredient)
+    emit('close')
+}
+
+function selectIngredient(item: FinderIngredient): void {
+    localCocktailingredient.value.ingredient = {
+        id: item.id,
+        slug: item.slug,
+        name: item.name,
+    }
+}
+</script>
 <template>
     <form @submit.prevent="save">
         <OverlayLoader v-if="isLoading" />
         <div class="dialog-title">{{ $t('ingredient.title') }}</div>
-        <IngredientFinder :cocktail-ingredient="cocktailIngredient" @ingredient-selected="selectIngredient"></IngredientFinder>
+        <IngredientFinder :cocktail-ingredient="localCocktailingredient" @ingredient-selected="selectIngredient"></IngredientFinder>
         <div class="selected-ingredient">
             <small>{{ $t('ingredient.dialog.current') }}:</small>
-            <p>{{ cocktailIngredient.name }}</p>
+            <p>{{ localCocktailingredient.ingredient.name }}</p>
         </div>
         <label class="form-checkbox">
-            <input v-model="cocktailIngredient.optional" type="checkbox">
+            <input v-model="localCocktailingredient.optional" type="checkbox">
             <span>{{ $t('ingredient.dialog.optional-checkbox') }}</span>
         </label>
         <label class="form-checkbox">
@@ -18,15 +59,15 @@
         <div class="ingredient-form-group">
             <div class="form-group">
                 <label class="form-label form-label--required" for="ingredient-amount">{{ $t('amount') }}:</label>
-                <AmountInput id="ingredient-amount" v-model="normalizedAmount" required></AmountInput>
+                <AmountInput id="ingredient-amount" v-model="localCocktailingredient.amount" required></AmountInput>
             </div>
             <div v-if="hasVariableAmount" class="form-group">
                 <label class="form-label" for="ingredient-amount-max">{{ $t('amount') }} max:</label>
-                <AmountInput id="ingredient-amount-max" v-model="normalizedMaxAmount"></AmountInput>
+                <AmountInput id="ingredient-amount-max" v-model="localCocktailingredient.amount_max"></AmountInput>
             </div>
             <div class="form-group">
                 <label class="form-label form-label--required" for="ingredient-units">{{ $t('units') }}:</label>
-                <input id="ingredient-units" v-model="cocktailIngredient.units" class="form-input" type="text" list="common-units" required>
+                <input id="ingredient-units" v-model="localCocktailingredient.units" class="form-input" type="text" list="common-units" required>
                 <datalist id="common-units">
                     <option>ml</option>
                     <option>oz</option>
@@ -37,10 +78,9 @@
                 </datalist>
             </div>
         </div>
-        <!-- <p class="form-input-hint">{{ $t('units-help-text') }}</p> -->
         <div class="form-group">
             <label class="form-label" for="ingredient-note">{{ $t('note.title') }}:</label>
-            <input id="ingredient-note" v-model="cocktailIngredient.note" class="form-input" type="text">
+            <input id="ingredient-note" v-model="localCocktailingredient.note" class="form-input" type="text">
         </div>
         <div class="dialog-actions">
             <button type="button" class="button button--outline" @click="cancel">{{ $t('cancel') }}</button>
@@ -48,87 +88,6 @@
         </div>
     </form>
 </template>
-
-<script>
-import OverlayLoader from './../OverlayLoader.vue'
-import IngredientFinder from './../IngredientFinder.vue'
-import AmountInput from './../AmountInput.vue'
-
-export default {
-    components: {
-        OverlayLoader,
-        IngredientFinder,
-        AmountInput,
-    },
-    props: {
-        value: {
-            type: Object,
-            default() {
-                return {}
-            }
-        }
-    },
-    emits: ['close'],
-    data() {
-        return {
-            isLoading: false,
-            cocktailIngredient: this.value,
-            hasVariableAmount: this.value.amount_max != null,
-        }
-    },
-    computed: {
-        normalizedAmount: {
-            get() {
-                return this.cocktailIngredient.amount
-            },
-            set(newValue) {
-                if (newValue.startsWith('.')) {
-                    this.cocktailIngredient.amount = '0' + newValue
-                } else {
-                    this.cocktailIngredient.amount = newValue
-                }
-            }
-        },
-        normalizedMaxAmount: {
-            get() {
-                return this.cocktailIngredient.amount_max
-            },
-            set(newValue) {
-                if (!newValue) {
-                    this.cocktailIngredient.amount_max = null
-                    return
-                }
-
-                if (newValue.startsWith('.')) {
-                    this.cocktailIngredient.amount_max = '0' + newValue
-                } else {
-                    this.cocktailIngredient.amount_max = newValue
-                }
-            }
-        }
-    },
-    watch: {
-        hasVariableAmount(newVal) {
-            if (newVal == false) {
-                this.normalizedMaxAmount = null
-            }
-        }
-    },
-    methods: {
-        selectIngredient(item) {
-            this.cocktailIngredient.ingredient_id = item.id
-            this.cocktailIngredient.name = item.name
-            this.cocktailIngredient.ingredient_slug = item.slug
-        },
-        save() {
-            this.$emit('close', {type: 'save'})
-        },
-        cancel() {
-            this.$emit('close', {type: 'cancel'})
-        }
-    },
-}
-</script>
 
 <style scoped>
 .selected-ingredient {

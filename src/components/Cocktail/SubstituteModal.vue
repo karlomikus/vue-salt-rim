@@ -6,27 +6,27 @@
         <IngredientFinder @ingredient-selected="selectIngredient"></IngredientFinder>
         <div class="substitutes">
             <h4>{{ $t('substitutes') }}:</h4>
-            <div v-for="(substitute, index) in selectedSubstitutes" :key="substitute.id" class="substitutes__substitute">
+            <div v-for="(substitute, index) in selectedSubstitutes" :key="substitute.ingredient.id" class="substitutes__substitute">
                 <div class="substitutes__substitute__name">
-                    <h5>{{ substitute.name }}</h5>
+                    <h5>{{ substitute.ingredient.name }}</h5>
                     <div class="substitutes__substitute__actions">
                         <a href="#" @click.prevent="toggleAmountDisplay(substitute)">{{ $t('edit-amounts') }}</a>
                         &middot;
                         <a href="#" @click.prevent="removeIngredient(substitute)">{{ $t('remove') }}</a>
                     </div>
                 </div>
-                <div v-show="amountDisplayTracker.includes(substitute.id)" class="substitutes__substitute__input">
+                <div v-show="amountDisplayTracker.includes(substitute.ingredient.id)" class="substitutes__substitute__input">
                     <div class="form-group">
-                        <label class="form-label" :for="'sub-ingredient-amount-' + substitute.id">{{ $t('amount') }}:</label>
-                        <AmountInput :id="'sub-ingredient-amount-' + substitute.id" v-model="substitute.amount"></AmountInput>
+                        <label class="form-label" :for="'sub-ingredient-amount-' + substitute.ingredient.id">{{ $t('amount') }}:</label>
+                        <AmountInput :id="'sub-ingredient-amount-' + substitute.ingredient.id" v-model="substitute.amount"></AmountInput>
                     </div>
                     <div class="form-group">
-                        <label class="form-label" :for="'sub-ingredient-amount-max-' + substitute.id">{{ $t('amount-max') }}:</label>
-                        <AmountInput :id="'sub-ingredient-amount-max-' + substitute.id" v-model="substitute.amount_max"></AmountInput>
+                        <label class="form-label" :for="'sub-ingredient-amount-max-' + substitute.ingredient.id">{{ $t('amount-max') }}:</label>
+                        <AmountInput :id="'sub-ingredient-amount-max-' + substitute.ingredient.id" v-model="substitute.amount_max"></AmountInput>
                     </div>
                     <div class="form-group">
-                        <label class="form-label" :for="'sub-ingredient-units-' + substitute.id">{{ $t('units') }}:</label>
-                        <input :id="'sub-ingredient-units-' + substitute.id" v-model="substitute.units" class="form-input" type="text" list="common-units">
+                        <label class="form-label" :for="'sub-ingredient-units-' + substitute.ingredient.id">{{ $t('units') }}:</label>
+                        <input :id="'sub-ingredient-units-' + substitute.ingredient.id" v-model="substitute.units" class="form-input" type="text" list="common-units">
                         <datalist id="common-units">
                             <option>ml</option>
                             <option>oz</option>
@@ -79,14 +79,16 @@ export default {
     },
     methods: {
         selectIngredient(item) {
-            if (this.selectedSubstitutes.some(sub => sub.id == item.id) || this.cocktailIngredient.ingredient_id == item.id) {
+            if (this.selectedSubstitutes.some(sub => sub.ingredient.id == item.id) || this.cocktailIngredient.ingredient.id == item.id) {
                 return
             }
 
             this.selectedSubstitutes.push({
-                name: item.name,
-                id: item.id,
-                slug: item.slug,
+                ingredient: {
+                    name: item.name,
+                    id: item.id,
+                    slug: item.slug,
+                },
                 amount: null,
                 amount_max: null,
                 units: null,
@@ -99,13 +101,13 @@ export default {
             )
         },
         toggleAmountDisplay(sub) {
-            if (this.amountDisplayTracker.includes(sub.id)) {
+            if (this.amountDisplayTracker.includes(sub.ingredient.id)) {
                 this.amountDisplayTracker.splice(
-                    this.amountDisplayTracker.findIndex(i => i == sub.id),
+                    this.amountDisplayTracker.findIndex(i => i == sub.ingredient.id),
                     1
                 )
             } else {
-                this.amountDisplayTracker.push(sub.id)
+                this.amountDisplayTracker.push(sub.ingredient.id)
             }
         },
         save() {

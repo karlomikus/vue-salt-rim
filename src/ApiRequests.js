@@ -339,25 +339,25 @@ class ApiRequests
     }
 
     static async registerNewUser(data) {
-        let jsonResp = await this.postRequest('/api/register', data)
+        let jsonResp = await this.postRequest('/api/auth/register', data)
 
         return this.parseResponse(jsonResp)
     }
 
     static async passwordForgot(data) {
-        let jsonResp = await this.postRequest('/api/forgot-password', data)
+        let jsonResp = await this.postRequest('/api/auth/forgot-password', data)
 
         return this.parseResponse(jsonResp)
     }
 
     static async passwordReset(data) {
-        let jsonResp = await this.postRequest('/api/reset-password', data)
+        let jsonResp = await this.postRequest('/api/auth/reset-password', data)
 
         return this.parseResponse(jsonResp)
     }
 
     static async confirmAccount(id, hash) {
-        await this.getRequest(`/api/verify/${id}/${hash}`)
+        await this.getRequest(`/api/auth/verify/${id}/${hash}`)
     }
 
     /**
@@ -416,7 +416,7 @@ class ApiRequests
      */
 
     static async fetchLoginToken(email, password) {
-        const jsonResp = await this.postRequest('/api/login', {
+        const jsonResp = await this.postRequest('/api/auth/login', {
             email: email,
             password: password
         })
@@ -425,7 +425,7 @@ class ApiRequests
     }
 
     static async logout() {
-        let jsonResp = await this.postRequest('/api/logout')
+        let jsonResp = await this.postRequest('/api/auth/logout')
 
         return this.parseResponse(jsonResp)
     }
@@ -719,7 +719,7 @@ class ApiRequests
     static async addCocktailsToCollection(collectionId, cocktailIds) {
         let jsonResp = await this.postRequest(`/api/collections/${collectionId}/cocktails`, {
             cocktails: cocktailIds
-        })
+        }, 'PUT')
 
         return this.parseResponse(jsonResp)
     }
@@ -754,9 +754,8 @@ class ApiRequests
         return await response.blob()
     }
 
-    static async fetchSharedCollections(query = {}) {
-        const queryString = this.generateBAQueryString(query, true)
-        const jsonResp = await this.getRequest(`/api/collections/shared${queryString}`)
+    static async fetchSharedCollections(barId) {
+        const jsonResp = await this.getRequest(`/api/bars/${barId}/collections`)
 
         return this.parseResponse(jsonResp)
     }

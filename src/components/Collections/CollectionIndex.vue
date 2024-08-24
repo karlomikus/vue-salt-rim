@@ -92,7 +92,7 @@ export default {
         refreshCollections() {
             this.showDialog = false
             this.isLoading = true
-            ApiRequests.fetchCollections().then(data => {
+            ApiRequests.fetchCollections({include: 'cocktails'}).then(data => {
                 this.collections = data
                 this.isLoading = false
             }).catch(e => {

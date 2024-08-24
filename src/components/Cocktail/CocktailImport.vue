@@ -12,8 +12,8 @@
                 <div class="import-types">
                     <SaltRimRadio v-model="importType" :title="$t('import.type-url-title')" :description="$t('import.type-url-description')" value="url"></SaltRimRadio>
                     <SaltRimRadio v-model="importType" :title="$t('import.type-json-title')" :description="$t('import.type-json-description')" value="json"></SaltRimRadio>
-                    <SaltRimRadio v-model="importType" :title="$t('import.type-yaml-title')" :description="$t('import.type-yaml-description')" value="yaml"></SaltRimRadio>
-                    <SaltRimRadio v-model="importType" :title="$t('import.type-collection-title')" :description="$t('import.type-collection-description')" value="collection"></SaltRimRadio>
+                    <!-- <SaltRimRadio v-model="importType" :title="$t('import.type-yaml-title')" :description="$t('import.type-yaml-description')" value="yaml"></SaltRimRadio>
+                    <SaltRimRadio v-model="importType" :title="$t('import.type-collection-title')" :description="$t('import.type-collection-description')" value="collection"></SaltRimRadio> -->
                 </div>
             </div>
             <div class="alert alert--info" style="margin: 1rem 0;">

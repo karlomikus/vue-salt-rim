@@ -27,19 +27,19 @@
         <h3 class="form-section-title">{{ $t('ingredient.ingredients') }}</h3>
         <div class="block-container block-container--padded block-container--inset">
             <ul v-show="cocktail.ingredients.length > 0" class="cocktail-form__ingredients" style="margin-bottom: 20px;">
-                <li v-for="ing in cocktail.ingredients" :key="ing.ingredient_id" class="block-container" :data-id="ing.ingredient_id">
+                <li v-for="ing in cocktail.ingredients" :key="ing.ingredient.id" class="block-container" :data-id="ing.ingredient.id">
                     <div class="drag-handle"></div>
                     <div class="cocktail-form__ingredients__content">
                         <div class="form-group">
                             <label class="form-label">{{ $t('ingredient.title') }}<template v-if="ing.sort <= 1"> ({{ $t('ingredient.base') }})</template>:</label>
                             <p>
-                                {{ ing.name }}
+                                {{ ing.ingredient.name }}
                                 <span v-if="ing.note">&middot; {{ ing.note }}</span>
                                 <small v-show="ing.optional">({{ ing.optional ? $t('optional') : '' }})</small>
                             </p>
                             <p v-if="ing.substitutes && ing.substitutes.length > 0" class="substitutes">
                                 <template v-for="sub in ing.substitutes">
-                                    {{ $t('or').toLowerCase() }} {{ sub.name }}&nbsp;
+                                    {{ $t('or').toLowerCase() }} {{ sub.ingredient.name }}&nbsp;
                                 </template>
                             </p>
                         </div>
@@ -48,7 +48,7 @@
                             <p :title="ing.amount + ' ' + ing.units">{{ printIngredientAmount(ing) }}</p>
                         </div>
                         <div class="cocktail-form__ingredients__actions">
-                            <a href="#" @click.prevent="editIngredient(ing)">
+                            <a href="#" @click.prevent="cocktailIngredientForEdit = ing; showDialog = true">
                                 {{ $t('edit') }}
                             </a>
                             &middot;
@@ -68,7 +68,7 @@
                     <button class="button button--dark" type="button" @click="addIngredient">{{ $t('ingredient.add') }}</button>
                 </template>
                 <template #dialog>
-                    <IngredientModal :value="cocktailIngredientForEdit" @close="closeModal" />
+                    <IngredientModal :cocktail-ingredient="cocktailIngredientForEdit" @close="showDialog = false" />
                 </template>
             </SaltRimDialog>
         </div>
@@ -77,7 +77,7 @@
                 <span></span>
             </template>
             <template #dialog>
-                <SubstituteModal :value="cocktailIngredientForSubstitutes" @close="closeSubstituteModal" />
+                <SubstituteModal :value="cocktailIngredientForSubstitutes" @close="showSubstituteDialog = false" />
             </template>
         </SaltRimDialog>
         <h3 class="form-section-title">{{ $t('additional-information') }}</h3>
@@ -185,7 +185,7 @@ export default {
     watch: {
         showDialog(newVal) {
             if (newVal == false) {
-                const emptyIngredient = this.cocktail.ingredients.findIndex(i => i.ingredient_id == null)
+                const emptyIngredient = this.cocktail.ingredients.findIndex(i => i.ingredient.id == null)
                 if (emptyIngredient != -1) {
                     this.cocktail.ingredients.splice(emptyIngredient, 1)
                 }
@@ -263,7 +263,7 @@ export default {
             }
         },
         removeIngredient(ing) {
-            if (!ing.ingredient_id) {
+            if (!ing.ingredient.id) {
                 this.cocktail.ingredients.splice(
                     this.cocktail.ingredients.findIndex(i => i == ing),
                     1
@@ -272,7 +272,7 @@ export default {
                 return
             }
 
-            this.$confirm(this.$t('cocktail.ingredient-remove', { name: ing.name }), {
+            this.$confirm(this.$t('cocktail.ingredient-remove', { name: ing.ingredient.name }), {
                 onResolved: (dialog) => {
                     dialog.close()
                     this.cocktail.ingredients.splice(
@@ -281,27 +281,6 @@ export default {
                     )
                 }
             })
-        },
-        closeModal(eventData) {
-            // User canceled ingredient edit
-            if (eventData.type == 'cancel') {
-                this.cocktailIngredientForEdit.id = this.cocktailIngredientForEditOriginal.id
-                this.cocktailIngredientForEdit.name = this.cocktailIngredientForEditOriginal.name
-                this.cocktailIngredientForEdit.ingredient_id = this.cocktailIngredientForEditOriginal.ingredient_id
-                this.cocktailIngredientForEdit.ingredient_slug = this.cocktailIngredientForEditOriginal.ingredient_slug
-                this.cocktailIngredientForEdit.amount = this.cocktailIngredientForEditOriginal.amount
-                this.cocktailIngredientForEdit.amount_max = this.cocktailIngredientForEditOriginal.amount_max
-                this.cocktailIngredientForEdit.units = this.cocktailIngredientForEditOriginal.units
-                this.cocktailIngredientForEdit.optional = this.cocktailIngredientForEditOriginal.optional
-                this.cocktailIngredientForEdit.sort = this.cocktailIngredientForEditOriginal.sort
-                this.cocktailIngredientForEdit.substitutes = this.cocktailIngredientForEditOriginal.substitutes
-                this.cocktailIngredientForEdit.note = this.cocktailIngredientForEditOriginal.note
-            }
-
-            this.showDialog = false
-        },
-        closeSubstituteModal() {
-            this.showSubstituteDialog = false
         },
         addIngredient() {
             const appState = new AppState()
@@ -319,55 +298,29 @@ export default {
                 defaultUnits = 'cl'
             }
 
-            let placeholderData = {
-                ingredient_id: null,
+            const placeholderData = {
                 amount: defaultAmount,
                 amount_max: null,
                 note: null,
                 units: defaultUnits,
-                name: this.$t('ingredient.name-placeholder'),
-                sort: this.cocktail.ingredients.length + 1
+                sort: this.cocktail.ingredients.length + 1,
+                substitutes: [],
+                ingredient: {
+                    id: null,
+                    slug: null,
+                    name: this.$t('ingredient.name-placeholder'),
+                }
             }
 
             this.cocktail.ingredients.push(placeholderData)
-
-            // Show modal after adding ingredient
-            this.editIngredient(placeholderData)
+            this.cocktailIngredientForEdit = placeholderData;
+            this.showDialog = true
         },
         printIngredientAmount(ing) {
             const appState = new AppState()
             const defaultUnit = appState.defaultUnit
 
             return UnitHandler.print(ing, defaultUnit)
-        },
-        editIngredient(cocktailIngredient) {
-            if (!cocktailIngredient.substitutes) {
-                cocktailIngredient.substitutes = []
-            }
-
-            this.cocktailIngredientForEditOriginal = JSON.parse(JSON.stringify(cocktailIngredient))
-
-            const appState = new AppState()
-            const userUnit = appState.defaultUnit
-
-            // Update unit view
-            cocktailIngredient.amount = UnitHandler.convertFromTo(cocktailIngredient.units, cocktailIngredient.amount, userUnit)
-            if (userUnit == 'oz') {
-                cocktailIngredient.amount = UnitHandler.asFraction(cocktailIngredient.amount)
-            }
-            if (cocktailIngredient.amount_max) {
-                cocktailIngredient.amount_max = UnitHandler.convertFromTo(cocktailIngredient.units, cocktailIngredient.amount_max, userUnit)
-                if (userUnit == 'oz') {
-                    cocktailIngredient.amount_max = UnitHandler.asFraction(cocktailIngredient.amount_max)
-                }
-            }
-
-            if (cocktailIngredient.units == 'ml' || cocktailIngredient.units == 'oz' || cocktailIngredient.units == 'cl') {
-                cocktailIngredient.units = userUnit
-            }
-
-            this.cocktailIngredientForEdit = cocktailIngredient
-            this.showDialog = true
         },
         editIngredientSubstitutes(ing) {
             this.cocktailIngredientForSubstitutes = ing
@@ -391,13 +344,13 @@ export default {
                 tags: this.cocktail.tags,
                 glass_id: this.cocktail.glass.id,
                 ingredients: this.cocktail.ingredients
-                    .filter(i => i.ingredient_id != null)
+                    .filter(i => i.ingredient.id != null)
                     .map((cIngredient) => {
                         cIngredient.amount = UnitHandler.asDecimal(cIngredient.amount)
                         if (cIngredient.amount_max) {
                             cIngredient.amount_max = UnitHandler.asDecimal(cIngredient.amount_max)
                         }
-                        cIngredient.sort = sortedIngredientList.findIndex(sortedId => sortedId == cIngredient.ingredient_id) + 1
+                        cIngredient.sort = sortedIngredientList.findIndex(sortedId => sortedId == cIngredient.ingredient.id) + 1
 
                         // Handle substitutes
                         cIngredient.substitutes.filter(sub => sub.units).map(sub => {
@@ -447,7 +400,7 @@ export default {
             const sortedIngredientList = this.sortable.toArray()
 
             this.cocktail.ingredients.map((cIngredient) => {
-                cIngredient.sort = sortedIngredientList.findIndex(sortedId => sortedId == cIngredient.ingredient_id) + 1
+                cIngredient.sort = sortedIngredientList.findIndex(sortedId => sortedId == cIngredient.ingredient.id) + 1
 
                 return cIngredient
             })
