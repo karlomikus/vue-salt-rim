@@ -20,14 +20,7 @@
                     </template>
                 </a>
                 &middot;
-                <a href="#" @click.prevent="toggleList">
-                    <template v-if="!inList">
-                        {{ $t('ingredient.add-to-list') }}
-                    </template>
-                    <template v-else>
-                        {{ $t('ingredient.remove-from-list') }}
-                    </template>
-                </a>
+                <ToggleIngredientShoppingCart :ingredient="ingredient" :status="inList"></ToggleIngredientShoppingCart>
             </div>
         </div>
     </div>
@@ -38,11 +31,13 @@ import OverlayLoader from './../OverlayLoader.vue'
 import IngredientImage from './IngredientImage.vue'
 import ApiRequests from './../../ApiRequests.js'
 import removeMd from 'remove-markdown'
+import ToggleIngredientShoppingCart from '@/components/ToggleIngredientShoppingCart.vue'
 
 export default {
     components: {
         OverlayLoader,
-        IngredientImage
+        IngredientImage,
+        ToggleIngredientShoppingCart
     },
     props: {
         ingredient: {
@@ -76,7 +71,7 @@ export default {
             return this.scopedUserIngredients.includes(this.ingredient.id)
         },
         inList() {
-            return this.scopedShoppingList.includes(this.ingredient.id)
+            return this.shoppingList.map(i => i.ingredient.id).includes(this.ingredient.id)
         },
         cleanDescription() {
             return removeMd(this.ingredient.description)
@@ -120,33 +115,6 @@ export default {
                 })
             }
         },
-        toggleList() {
-            this.isLoading = true
-
-            const postData = {
-                ingredient_ids: [this.ingredient.id]
-            }
-
-            if (this.inList) {
-                ApiRequests.removeIngredientsFromShoppingList(postData).then(() => {
-                    this.isLoading = false
-                    this.$toast.default(this.$t('ingredient.list-remove-success', { name: this.ingredient.name }))
-                    this.scopedShoppingList.splice(this.scopedShoppingList.indexOf(this.ingredient.id), 1)
-                }).catch(e => {
-                    this.$toast.error(e.message)
-                    this.isLoading = false
-                })
-            } else {
-                ApiRequests.addIngredientsToShoppingList(postData).then(() => {
-                    this.isLoading = false
-                    this.$toast.default(this.$t('ingredient.list-add-success', { name: this.ingredient.name }))
-                    this.scopedShoppingList.push(this.ingredient.id)
-                }).catch(e => {
-                    this.$toast.error(e.message)
-                    this.isLoading = false
-                })
-            }
-        }
     }
 }
 </script>

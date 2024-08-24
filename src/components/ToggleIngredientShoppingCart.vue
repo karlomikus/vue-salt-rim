@@ -1,48 +1,46 @@
-<script setup>
-import { computed, ref } from 'vue'
+<script setup lang="ts">
+import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
-import ApiRequests from '../ApiRequests'
 import { useSaltRimToast } from './../composables/toast'
 import OverlayLoader from './OverlayLoader.vue'
+import BarAssistantClient from '@/api/BarAssistantClient'
+import AppState from '@/AppState'
+import type { components } from '@/api/api'
 
+type IngredientBasic = components["schemas"]["IngredientBasic"]
+
+const appState = new AppState();
 const isLoading = ref(false)
 const emit = defineEmits(['listUpdated'])
 const { t } = useI18n()
 const toast = useSaltRimToast()
-const props = defineProps({
-    ingredient: {
-        type: Object,
-        required: true
-    },
-    shoppingList: {
-        type: Array,
-        required: true
-    }
-})
-
-const isInShoppingList = computed(() => {
-    return props.shoppingList.includes(props.ingredient.id)
-})
+const props = defineProps<{
+    ingredient: IngredientBasic
+    status: boolean
+}>()
+const isInShoppingList = ref(props.status)
 
 function toggle() {
     isLoading.value = true
     const postData = {
-        ingredient_ids: [props.ingredient.id]
+        ingredients: [{id: props.ingredient.id, qunatity: 1}]
     }
 
     if (isInShoppingList.value) {
-        ApiRequests.removeIngredientsFromShoppingList(postData).then(() => {
+        BarAssistantClient.removeFromShoppingList(appState.user.id, postData).then(() => {
             toast.default(t('ingredient.list-remove-success', { name: props.ingredient.name }))
             emit('listUpdated', {on_list: false, ingredient: props.ingredient})
+            isInShoppingList.value = false
             isLoading.value = false
         }).catch(e => {
             toast.error(e.message)
             isLoading.value = false
         })
     } else {
-        ApiRequests.addIngredientsToShoppingList(postData).then(() => {
+        BarAssistantClient.addToShoppingList(appState.user.id, postData).then(() => {
             toast.default(t('ingredient.list-add-success', { name: props.ingredient.name }))
             emit('listUpdated', {on_list: true, ingredient: props.ingredient})
+            isInShoppingList.value = true
             isLoading.value = false
         }).catch(e => {
             toast.error(e.message)

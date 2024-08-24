@@ -74,7 +74,7 @@
                     </button>
                 </div>
                 <IngredientGridContainer v-if="ingredients.length > 0">
-                    <IngredientGridItem v-for="ingredient in ingredients" :key="ingredient.id" :ingredient="ingredient" :user-ingredients="ingredientIdsOnShelf" :shopping-list="ingredientIdsOnShoppingList" />
+                    <IngredientGridItem v-for="ingredient in ingredients" :key="ingredient.id" :ingredient="ingredient" :user-ingredients="ingredientIdsOnShelf" :shopping-list="shoppingListIngredients" />
                 </IngredientGridContainer>
                 <EmptyState v-else style="margin-top: 1rem;">
                     <template #icon>
@@ -102,6 +102,7 @@ import qs from 'qs'
 import Dropdown from './../SaltRimDropdown.vue'
 import EmptyState from './../EmptyState.vue'
 import AppState from '../../AppState'
+import BarAssistantClient from '@/api/BarAssistantClient'
 
 export default {
     components: {
@@ -191,9 +192,6 @@ export default {
         },
         ingredientIdsOnShelf() {
             return this.availableRefinements.userIngredients.map(ui => ui.ingredient_id)
-        },
-        ingredientIdsOnShoppingList() {
-            return this.shoppingListIngredients.map(i => i.ingredient_id)
         },
         totalActiveRefinements() {
             let total = 0
@@ -357,8 +355,8 @@ export default {
             })
         },
         refreshShoppingListIngredients() {
-            ApiRequests.fetchShoppingList().then(data => {
-                this.shoppingListIngredients = data
+            BarAssistantClient.getShoppingList(this.appState.user.id).then(resp => {
+                this.shoppingListIngredients = resp.data
             })
         }
     }
