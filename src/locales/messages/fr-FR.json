@@ -351,7 +351,7 @@
   "added-on-by": "Ajouté le {date} par {name}",
   "leave": "Partir",
   "utensils": {
-    "title": "Utensils",
+    "title": "Ustensiles",
     "add": "Ajouter un ustensile",
     "confirm-delete": "Cela supprimera définitivement l'ustensile avec le nom \"{name}\".",
     "delete-success": "Ustensile supprimé avec succès",
@@ -380,12 +380,12 @@
     "delete-success": "Bar successfully removed",
     "join-success": "Joined a new bar, cheers!",
     "activate": "Activate bar",
-    "status-active": "Active bars",
+    "status-active": "Bars actifs",
     "status-deactivated": "Deactivated bars",
     "status-provisioning": "Provisioning",
     "confirm-activation": "Are you sure you want to activate \"{name}\"? On free plan you can have only one bar activated, you will not be able to activate any other bars.",
     "activation-success": "Bar activated",
-    "members": "Membres du barreau"
+    "members": "Membres du bar"
   },
   "close": "Fermer",
   "save-as": "Save as",
@@ -413,7 +413,7 @@
     "notice": "Les ingrédients existants et le verre seront assortis par leur nom (insensible à la casse). Si l’ingrédient ou le verre n’existe pas, il sera créé. Les unités communes sont automatiquement converties en \"ml\"."
   },
   "remove-from-bar": "Supprimer du bar",
-  "public-shelves": "Public shelves",
+  "public-shelves": "Étagères publiques",
   "profile-public-shelf": "Make cocktails in my shelf public to all bar members",
   "profile-use-parent-as-substitute": "Track parent ingredients as a substitutes",
   "favorited-cocktails": "Cocktails préférés",
@@ -466,14 +466,14 @@
     "move": "Move",
     "crop": "Crop"
   },
-  "top-rated-cocktails": "Top rated cocktails",
+  "top-rated-cocktails": "Cocktails les mieux notés",
   "most-popular-ingredients": "Ingrédients populaires",
   "votes": "Votes",
   "recommended-ingredients": "Ingrédients recommandés",
   "menu": {
     "title": "Menu",
     "bar-title-menu": "Menu de {name}",
-    "is-active": "Enable bar menu",
+    "is-active": "Activer le menu du bar",
     "url": "URL du menu",
     "add-category": "Add menu category",
     "category-title": "Menu category title",
@@ -500,15 +500,15 @@
     "url-help": "Your public bar URL will be: {url}"
   },
   "api": {
-    "tokens": "API Tokens",
-    "abilities": "Abilities",
-    "add": "Create new token",
-    "read": "Read",
-    "write": "Write",
-    "key-copied": "API Token copied",
+    "tokens": "Jetons d'API",
+    "abilities": "Capacités",
+    "add": "Ajouter une clé d'API",
+    "read": "Lecture",
+    "write": "Écriture",
+    "key-copied": "Jeton d'API copiée",
     "save-token": "Enregistrez votre jeton",
     "add-success": "Jeton créé",
-    "token-notice": "Veuillez enregistrer ce jeton API dans un endroit sûr et accessible. Pour des raisons de sécurité, vous ne pourrez plus le voir. Si vous perdez ce jeton d'API, vous devrez en générer un nouveau.",
+    "token-notice": "Veuillez enregistrer ce jeton d'API dans un endroit sûr et accessible. Pour des raisons de sécurité, vous ne pourrez plus le voir. Si vous perdez ce jeton d'API, vous devrez en générer un nouveau.",
     "confirm-revoke": "Ceci révoquera le jeton \"{name}\"",
     "revoke-success": "Jeton révoqué"
   },
@@ -568,7 +568,7 @@
   },
   "ABV-definition": "Alcool par volume",
   "ingredient-category": {},
-  "last-used-at": "Last used",
+  "last-used-at": "Dernière utilisation",
   "user": {},
   "price": {
     "category": "Catégorie de prix",
