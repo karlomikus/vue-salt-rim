@@ -135,7 +135,7 @@ export default class BarAssistantClient {
     return (await client.DELETE('/cocktail-methods/{id}', { params: { path: { id: id } } })).data
   }
 
-  static async fetchShoppingList(id: number) {
+  static async getShoppingList(id: number) {
     return (await client.GET('/users/{id}/shopping-list', { params: { path: { id: id } } })).data
   }
 
@@ -145,5 +145,13 @@ export default class BarAssistantClient {
 
   static async generateExportDownloadURL(id: number) {
     return (await client.POST('/exports/{id}/download', { params: { path: { id: id } } })).data
+  }
+
+  static async getRecommendedIngredients(id: number) {
+    return (await client.GET('/users/{id}/ingredients/recommend', { params: { path: { id: id } } })).data
+  }
+
+  static async getBarStats(id: number) {
+    return (await client.GET('/bars/{id}/stats', { params: { path: { id: id } } })).data
   }
 }

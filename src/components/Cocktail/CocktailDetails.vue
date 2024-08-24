@@ -133,7 +133,7 @@ async function fetchCocktailUserNotes() {
 
 async function fetchShoppingList() {
     isLoadingShoppingList.value = true
-    userShoppingListIngredients.value = (await BarAssistantClient.fetchShoppingList(appState.user.id))?.data ?? [] as ShoppingList[]
+    userShoppingListIngredients.value = (await BarAssistantClient.getShoppingList(appState.user.id))?.data ?? [] as ShoppingList[]
     isLoadingShoppingList.value = false
 }
 

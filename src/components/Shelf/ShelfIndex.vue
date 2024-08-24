@@ -1,6 +1,6 @@
 <template>
     <PageHeader>
-        {{ $t('welcome-user', { 'name': user.name }) }} 👋
+        {{ $t('welcome-user', { 'name': appState.user.name }) }} 👋
     </PageHeader>
 
     <div class="stats">
@@ -111,7 +111,7 @@
         <div v-if="stats.top_rated_cocktails.length > 0" class="list-grid__col">
             <h3 class="page-subtitle">{{ $t('top-rated-cocktails') }}</h3>
             <div class="list-grid__container">
-                <RouterLink v-for="cocktail in stats.top_rated_cocktails" :key="cocktail.id" :to="{ name: 'cocktails.show', params: { id: cocktail.cocktail_slug } }" class="shelf-stats-count block-container block-container--hover">
+                <RouterLink v-for="cocktail in stats.top_rated_cocktails" :key="cocktail.id" :to="{ name: 'cocktails.show', params: { id: cocktail.slug } }" class="shelf-stats-count block-container block-container--hover">
                     <h4>{{ cocktail.name }}</h4>
                     <small>{{ $t('avg-rating') }}: {{ cocktail.avg_rating }} &middot; {{ $t('votes') }}: {{ cocktail.votes }}</small>
                 </RouterLink>
@@ -120,7 +120,7 @@
         <div v-if="stats.most_popular_ingredients.length > 0" class="list-grid__col">
             <h3 class="page-subtitle">{{ $t('most-popular-ingredients') }}</h3>
             <div class="list-grid__container">
-                <RouterLink v-for="ingredient in stats.most_popular_ingredients" :key="ingredient.id" :to="{ name: 'ingredients.show', params: { id: ingredient.ingredient_slug } }" class="shelf-stats-count block-container block-container--hover">
+                <RouterLink v-for="ingredient in stats.most_popular_ingredients" :key="ingredient.id" :to="{ name: 'ingredients.show', params: { id: ingredient.slug } }" class="shelf-stats-count block-container block-container--hover">
                     <h4>{{ ingredient.name }}</h4>
                     <small>{{ ingredient.cocktails_count }} {{ $t('cocktail.cocktails') }}</small>
                 </RouterLink>
@@ -149,6 +149,7 @@ import OverlayLoader from '@/components/OverlayLoader.vue'
 import PageHeader from '@/components/PageHeader.vue'
 import AppState from './../../AppState'
 import EmptyState from './../EmptyState.vue'
+import BarAssistantClient from '@/api/BarAssistantClient'
 
 export default {
     components: {
@@ -161,10 +162,8 @@ export default {
         EmptyState
     },
     data() {
-        const appState = new AppState()
-
         return {
-            user: appState.user,
+            appState: new AppState(),
             favoriteCocktails: [],
             latestCocktails: [],
             shoppingListIngredients: [],
@@ -199,7 +198,7 @@ export default {
         this.loaders.stats = true
         this.loaders.recommended = true
 
-        ApiRequests.fetchCocktails({ 'filter[favorites]': true, per_page: this.maxItems, sort: '-favorited_at' }).then(resp => {
+        ApiRequests.fetchCocktails({ 'filter[favorites]': true, per_page: this.maxItems, sort: '-favorited_at', include: 'ratings,ingredients.ingredient' }).then(resp => {
             this.loaders.favorites = false
             this.favoriteCocktails = resp.data
         }).catch(() => {
@@ -207,7 +206,7 @@ export default {
             this.$toast.error(this.$t('shelf.toasts.favorites-error'))
         })
 
-        ApiRequests.fetchCocktails({ per_page: this.maxItems, sort: '-created_at' }).then(resp => {
+        ApiRequests.fetchCocktails({ per_page: this.maxItems, sort: '-created_at', include: 'ratings,ingredients.ingredient' }).then(resp => {
             this.loaders.cocktails = false
             this.latestCocktails = resp.data
         }).catch(() => {
@@ -217,16 +216,16 @@ export default {
 
         this.fetchShoppingList()
 
-        ApiRequests.fetchStats().then(data => {
+        BarAssistantClient.getBarStats(this.appState.bar.id).then(resp => {
             this.loaders.stats = false
-            this.stats = data
+            this.stats = resp.data
         }).catch(() => {
             this.loaders.stats = false
             this.$toast.error(this.$t('shelf.toasts.stats-error'))
         })
 
         this.loaders.recommended = true
-        ApiRequests.fetchRecommendedIngredients().then(resp => {
+        BarAssistantClient.getRecommendedIngredients(this.appState.user.id).then(resp => {
             this.loaders.recommended = false
             this.recommendedIngredients = resp.data
         }).catch(() => {

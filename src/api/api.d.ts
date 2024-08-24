@@ -656,7 +656,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/import/datapack": {
+    "/import/file": {
         parameters: {
             query?: never;
             header?: never;
@@ -665,8 +665,8 @@ export interface paths {
         };
         get?: never;
         put?: never;
-        /** Import from datapack */
-        post: operations["21099c1e89b22f8b85568fa26df220e8"];
+        /** Import from zip file */
+        post: operations["42c4c4c1eae2d17b7e6681af1f5a6c21"];
         delete?: never;
         options?: never;
         head?: never;
@@ -980,6 +980,23 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/server/version": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Show server information */
+        get: operations["25784e4e494f0fd4dbbdb7b92c301b26"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/users/{id}/ingredients": {
         parameters: {
             query?: never;
@@ -1156,6 +1173,23 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/bars/{id}/stats": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Show bar stats */
+        get: operations["d62319d3bf13005383b7d8027e9056ec"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/tags": {
         parameters: {
             query?: never;
@@ -1272,7 +1306,7 @@ export type webhooks = Record<string, never>;
 export interface components {
     schemas: {
         /** @enum {string} */
-        ExportTypeEnum: "datapack" | "schema" | "md" | "json+ld" | "xml";
+        ExportTypeEnum: "datapack" | "schema" | "md" | "json-ld" | "xml";
         /** @enum {string} */
         DuplicateActionsEnum: "none" | "skip" | "overwrite";
         /** @enum {string} */
@@ -1369,6 +1403,62 @@ export interface components {
             enable_invites?: boolean;
             /** @description List of data that the bar will start with. Possible values: `ingredients`, `cocktails`. Cocktails cannot be imported without ingredients. */
             options?: string[];
+        };
+        BarStats: {
+            /** @example 1 */
+            total_cocktails?: number;
+            /** @example 1 */
+            total_ingredients?: number;
+            /** @example 1 */
+            total_favorited_cocktails?: number;
+            /** @example 1 */
+            total_shelf_cocktails?: number;
+            /** @example 1 */
+            total_shelf_ingredients?: number;
+            /** @example 1 */
+            total_bar_members?: number;
+            /** @example 1 */
+            total_collections?: number;
+            favorite_tags?: {
+                /** @example 31 */
+                id?: number;
+                /** @example Tag name */
+                name?: string;
+                /** @example 12 */
+                cocktails_count?: number;
+            }[];
+            your_top_ingredients?: {
+                /** @example 1 */
+                id?: number;
+                /** @example gin */
+                slug?: string;
+                /** @example Gin */
+                name?: string;
+                /** @example 1 */
+                cocktails_count?: number;
+            }[];
+            most_popular_ingredients?: {
+                /** @example 1 */
+                id?: number;
+                /** @example gin */
+                slug?: string;
+                /** @example Gin */
+                name?: string;
+                /** @example 1 */
+                cocktails_count?: number;
+            }[];
+            top_rated_cocktails?: {
+                /** @example 1 */
+                id?: number;
+                /** @example old-fashioned */
+                slug?: string;
+                /** @example Old Fashioned */
+                name?: string;
+                /** @example 3 */
+                avg_rating?: number;
+                /** @example 42 */
+                votes?: number;
+            }[];
         };
         Cocktail: {
             /** @example 1 */
@@ -2162,6 +2252,16 @@ export interface components {
              * @example password
              */
             password: string;
+        };
+        ServerVersion: {
+            /** @example 1.0.0 */
+            version: string;
+            /** @example production */
+            type: string;
+            /** @example https://search.example.com */
+            search_host: string;
+            /** @example 1.2.0 */
+            search_version: string;
         };
         ShoppingList: {
             ingredient: components["schemas"]["IngredientBasic"];
@@ -3415,7 +3515,7 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        data?: components["schemas"]["CocktailPublic"];
+                        data?: components["schemas"]["Cocktail"];
                     };
                 };
             };
@@ -3490,7 +3590,7 @@ export interface operations {
         parameters: {
             query?: {
                 /** @description Share format */
-                type?: "json" | "json+ld" | "yaml" | "yml" | "xml" | "text" | "markdown" | "md";
+                type?: "json" | "json-ld" | "yaml" | "yml" | "xml" | "text" | "markdown" | "md";
                 /** @description Units of measurement */
                 units?: string;
             };
@@ -3806,6 +3906,8 @@ export interface operations {
                     name?: string;
                     cocktail_id?: string;
                 };
+                /** @description Include additional relationships. Available relations: `cocktails`. */
+                include?: string;
                 /** @description Sort by attributes. Available attributes: `name`, `created_at`. */
                 sort?: string;
             };
@@ -4831,7 +4933,7 @@ export interface operations {
         requestBody: {
             content: {
                 "application/json": {
-                    schema?: components["schemas"]["cocktail-02.schema"];
+                    source?: string;
                     /** @description How to handle duplicates. Cocktails are matched by lowercase name. */
                     duplicate_actions?: components["schemas"]["DuplicateActionsEnum"];
                 };
@@ -4913,7 +5015,7 @@ export interface operations {
             };
         };
     };
-    "21099c1e89b22f8b85568fa26df220e8": {
+    "42c4c4c1eae2d17b7e6681af1f5a6c21": {
         parameters: {
             query?: never;
             header?: never;
@@ -4923,7 +5025,10 @@ export interface operations {
         requestBody: {
             content: {
                 "multipart/form-data": {
-                    /** Format: binary */
+                    /**
+                     * Format: binary
+                     * @description The zip file containing the data. Max 1GB.
+                     */
                     file: string;
                     /** @example 1 */
                     bar_id?: number;
@@ -6411,6 +6516,28 @@ export interface operations {
             };
         };
     };
+    "25784e4e494f0fd4dbbdb7b92c301b26": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data?: components["schemas"]["ServerVersion"];
+                    };
+                };
+            };
+        };
+    };
     b34236369b075eabaacef013be799024: {
         parameters: {
             query?: {
@@ -6853,7 +6980,9 @@ export interface operations {
         requestBody: {
             content: {
                 "application/json": {
-                    ingredient_ids?: number[];
+                    ingredients?: {
+                        id?: number;
+                    }[];
                 };
             };
         };
@@ -6920,6 +7049,53 @@ export interface operations {
             };
             /** @description You are not authorized for this action. */
             403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data?: components["schemas"]["APIError"];
+                    };
+                };
+            };
+        };
+    };
+    d62319d3bf13005383b7d8027e9056ec: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Database id of a resource */
+                id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data?: components["schemas"]["BarStats"];
+                    };
+                };
+            };
+            /** @description You are not authorized for this action. */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data?: components["schemas"]["APIError"];
+                    };
+                };
+            };
+            /** @description Resource record not found. */
+            404: {
                 headers: {
                     [name: string]: unknown;
                 };
