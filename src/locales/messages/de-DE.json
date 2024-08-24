@@ -18,7 +18,7 @@
     "cocktails": "Cocktails, die ich mixen kann"
   },
   "ingredient": {
-    "title": "Besandteil",
+    "title": "Bestandteil",
     "categories": "Zutaten Kategorien",
     "main": "Hauptzutaten",
     "add": "Zutat hinzufügen",
@@ -325,8 +325,8 @@
   },
   "subtitle": "Untertitel",
   "delete-my-account": "Mein Konto und alle meine Daten löschen",
-  "data": "Data",
-  "profile-information": "Profile information",
+  "data": "Daten",
+  "profile-information": "Profilinformationen",
   "remove-cocktail-from-collection": "Cocktail aus der Sammlung entfernen",
   "cocktail-collections": "Cocktailsammlungen",
   "cocktails-not-found": "Keine Cocktails gefunden",
@@ -562,8 +562,8 @@
     "unfavorited": "\"{name}\" aus den Favoriten entfernt",
     "update-success": "Cocktail aktuallisiert",
     "add": "Neuer Cocktail",
-    "copy-action": "Duplicate and edit",
-    "copy-success": "Cocktail duplicated",
+    "copy-action": "Kopieren und bearbeiten",
+    "copy-success": "Cocktail kopiert",
     "source": "Cocktail Herkunft"
   },
   "ABV-definition": "Volumenprozent Alkohol",
