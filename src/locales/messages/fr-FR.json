@@ -302,7 +302,7 @@
   "no-cocktails": "Aucun cocktail trouvé",
   "global": "Mondial",
   "none": "Aucun",
-  "clear": "Clear",
+  "clear": "Nettoyer",
   "date-added": "Date ajoutée",
   "date-favorited": "Date favorite",
   "average-rating": "Note moyenne",
@@ -366,8 +366,8 @@
     "join": "Rejoindre un bar",
     "add": "Créer une barre",
     "add-success": "Bar \"{name}\" créé avec succès",
-    "empty": "You don't have any bars. To start adding recipes and ingredients you need to create or join at least one bar.",
-    "join-notice": "To join existing bar you need an invite code. Ask the bar owner to send you one and paste it in the input below.",
+    "empty": "Vous n'avez pas de bar. Pour commencer à ajouter des recettes et des ingrédients, vous devez créer ou rejoindre au moins un bar.",
+    "join-notice": "Pour rejoindre un bar existant, vous avez besoin d'un code d'invitation. Demandez au propriétaire du bar de vous en envoyer un et collez-le dans le champ ci-dessous.",
     "invite-code": "Code d'invitation",
     "toggle-invite-code": "Afficher le code d'invitation",
     "confirm-delete": "Cela supprimera définitivement le bar \"{name}\".",
@@ -382,23 +382,23 @@
     "activate": "Activer le bar",
     "status-active": "Bars actifs",
     "status-deactivated": "Bars désactivés",
-    "status-provisioning": "Provisioning",
-    "confirm-activation": "Are you sure you want to activate \"{name}\"? On free plan you can have only one bar activated, you will not be able to activate any other bars.",
-    "activation-success": "Bar activated",
+    "status-provisioning": "Provisionnement",
+    "confirm-activation": "Êtes-vous sûr de vouloir activer « {name} » ? Avec la formule gratuite, vous ne pouvez avoir qu'un seul bar actif, vous ne pourrez pas activer d'autres bars.",
+    "activation-success": "Bar activé",
     "members": "Membres du bar"
   },
   "close": "Fermer",
-  "save-as": "Save as",
-  "cocktail-no-collection": "This cocktail is not in any of your collections",
+  "save-as": "Enregistrer sous",
+  "cocktail-no-collection": "Ce cocktail ne figure dans aucune de vos collections",
   "duplicate": {
-    "actions": "What to do with duplicates",
+    "actions": "Que faire des doublons",
     "none": "Ne rien faire",
     "skip": "Ignorer les doublons",
     "overwrite": "Remplacer les doublons"
   },
   "import": {
-    "manually-match": "Match ingredient manually",
-    "manual-match-notice": "Select ingredient that best matches \"{ name }\", or create a new one.",
+    "manually-match": "Faire correspondre manuellement les ingrédients",
+    "manual-match-notice": "Sélectionnez l'ingrédient qui correspond le mieux à « { name } », ou créez-en un nouveau.",
     "start": "Démarrer l'importation",
     "type": "Format d'importation",
     "continue": "Continuer l’édition",
@@ -414,8 +414,8 @@
   },
   "remove-from-bar": "Supprimer du bar",
   "public-shelves": "Étagères publiques",
-  "profile-public-shelf": "Make cocktails in my shelf public to all bar members",
-  "profile-use-parent-as-substitute": "Track parent ingredients as a substitutes",
+  "profile-public-shelf": "Rendre les cocktails de mon étagère accessibles à tous les membres du bar",
+  "profile-use-parent-as-substitute": "Utiliser les ingrédients des parents comme substituts",
   "favorited-cocktails": "Cocktails préférés",
   "created-by": "Créé par",
   "amount-max": "Quantité max",
@@ -496,7 +496,7 @@
     "no-cocktails-added": "La carte doit avoir au moins un cocktail"
   },
   "bar": {
-    "url": "Custom bar URL",
+    "url": "URL personnalisée du bar",
     "url-help": "L'URL publique de votre bar sera : {url}"
   },
   "api": {
@@ -529,7 +529,7 @@
     "delete-success": "Export supprimé"
   },
   "start": "Démarrer",
-  "filter": "Filter",
+  "filter": "Filtrer",
   "default-units": "Unités par défaut",
   "volume": "Volume",
   "unit": {
@@ -540,8 +540,8 @@
   "no-default-units": "Aucune unité par défaut",
   "wakelock-toggle": "Empêcher le verrouillage de l'écran",
   "ingredients-not-selected": "Aucun ingrédient sélectionné",
-  "contains-ingredients": "Contains ingredients",
-  "recipe-matching": "Recipe matching",
+  "contains-ingredients": "Contient les ingrédients",
+  "recipe-matching": "Correspondance des recettes",
   "suggestions": "Suggestions",
   "cocktail": {
     "title": "Cocktail",
@@ -577,7 +577,7 @@
     "currency": "Devise",
     "currency-format-notice": "La devise doit être au format ISO 4271 (Alpha3)",
     "price-categories-empty": "Il n'y a pas de catégories de prix",
-    "no-matching-units": "No matching unit pricing found"
+    "no-matching-units": "Aucun prix unitaire correspondant n'a été trouvé"
   },
   "prices": {
     "add": "Ajouter un prix",
