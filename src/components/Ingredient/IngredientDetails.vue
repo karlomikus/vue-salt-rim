@@ -13,10 +13,6 @@ import UnitHandler from '../../UnitHandler.js'
                 <template v-if="ingredient.updated_user">{{ $t('updated-on-by', { date: updatedDate, name: ingredient.updated_user.name }) }}</template>
                 <template v-else>{{ $t('added-on-by', { date: createdDate, name: ingredient.created_user.name }) }}</template>
             </p>
-            <template #actions>
-                <button v-if="ingredient.access.can_delete" type="button" class="button button--outline" @click="deleteIngredient">{{ $t('remove') }}</button>
-                <RouterLink v-if="ingredient.access.can_edit" class="button button--dark" :to="{ name: 'ingredients.form', query: { id: ingredient.id } }">{{ $t('edit') }}</RouterLink>
-            </template>
         </PageHeader>
         <div class="ingredient-details__box">
             <div class="ingredient-details__box__left">
@@ -35,6 +31,33 @@ import UnitHandler from '../../UnitHandler.js'
                 </div>
             </div>
             <div class="ingredient-details__box__right">
+                <div class="ingredient-details-box__actions">
+                    <Dropdown>
+                        <template #default="{ toggleDropdown }">
+                            <button type="button" class="button button-circle" @click="toggleDropdown"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+                                <path fill="none" d="M0 0h24v24H0z" />
+                                <path d="M12 3c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 14c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0-7c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z" />
+                            </svg></button>
+                        </template>
+                        <template #content>
+                            <RouterLink v-if="ingredient.access && ingredient.access.can_edit" class="dropdown-menu__item" :to="{ name: 'ingredients.form', query: { id: ingredient.id } }">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18">
+                                    <path fill="none" d="M0 0h24v24H0z" />
+                                    <path d="M6.414 16L16.556 5.858l-1.414-1.414L5 14.586V16h1.414zm.829 2H3v-4.243L14.435 2.322a1 1 0 0 1 1.414 0l2.829 2.829a1 1 0 0 1 0 1.414L7.243 18zM3 20h18v2H3v-2z" />
+                                </svg>
+                                {{ $t('edit') }}
+                            </RouterLink>
+                            <hr v-if="ingredient.access && ingredient.access.can_delete" class="dropdown-menu__separator">
+                            <a v-if="ingredient.access && ingredient.access.can_delete" class="dropdown-menu__item" href="javascript:;" @click.prevent="deleteIngredient">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18">
+                                    <path fill="none" d="M0 0h24v24H0z" />
+                                    <path d="M7 4V2h10v2h5v2h-2v15a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V6H2V4h5zM6 6v14h12V6H6zm3 3h2v8H9V9zm4 0h2v8h-2V9z" />
+                                </svg>
+                                {{ $t('remove') }}
+                            </a>
+                        </template>
+                    </Dropdown>
+                </div>
                 <div class="block-container block-container--padded">
                     <div class="ingredient-details__box__content">
                         <div v-if="ingredient.description">
@@ -112,6 +135,7 @@ import BarAssistantClient from '@/api/BarAssistantClient'
 import AppState from '@/AppState.js'
 import ToggleIngredientShoppingCart from '@/components/ToggleIngredientShoppingCart.vue'
 import ToggleIngredientShelf from '@/components/ToggleIngredientShelf.vue'
+import Dropdown from '@/components/SaltRimDropdown.vue'
 
 export default {
     components: {
@@ -119,6 +143,7 @@ export default {
         PageHeader,
         ToggleIngredientShelf,
         ToggleIngredientShoppingCart,
+        Dropdown,
     },
     data: () => ({
         appState: new AppState(),
@@ -249,6 +274,16 @@ export default {
     }
 }
 
+.ingredient-details-box__actions {
+    position: absolute;
+    right: 20px;
+    top: -25px;
+    display: grid;
+    grid-template-columns: 1fr;
+    column-gap: var(--gap-size-1);
+    z-index: 1;
+}
+
 .ingredient-details__box__image-container {
     width: auto;
     height: 100%;
@@ -317,11 +352,11 @@ export default {
     color: var(--clr-gray-300);
 }
 
-:deep(.ingredient-details__box hr) {
+/* :deep(.ingredient-details__box hr) {
     border: 0;
     margin: 0.25rem 0;
     border-top: 2px solid rgba(0, 0, 0, .1);
-}
+} */
 
 .ingredient-chips-list {
     --icl-clr-bg: rgba(255, 255, 255, .5);

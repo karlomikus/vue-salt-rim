@@ -93,7 +93,7 @@
                     </div>
                     <div class="form-group" style="max-width: 150px;">
                         <label class="form-label form-label--required" :for="'ingredient-price-price-' + idx">{{ $t('price.price') }} <template v-if="price.price_category.id">({{ priceCategories.find(p => p.id == price.price_category.id).currency }})</template></label>
-                        <input :id="'ingredient-price-price-' + idx" v-model="price.price" type="text" class="form-input" required>
+                        <input :id="'ingredient-price-price-' + idx" v-model="price.price.price" type="text" class="form-input" required>
                     </div>
                     <div class="form-group" style="max-width: 150px;">
                         <label class="form-label form-label--required" :for="'ingredient-price-vol-' + idx">{{ $t('amount') }}</label>
@@ -254,7 +254,7 @@ export default {
             }
         },
         addIngredientPrice() {
-            this.ingredient.prices.push({price_category: {id: null}})
+            this.ingredient.prices.push({price_category: {id: null}, price: {}})
         },
         removeIngredientPrice(price) {
             this.ingredient.prices.splice(this.ingredient.prices.indexOf(price), 1)
@@ -282,7 +282,7 @@ export default {
                 complex_ingredient_part_ids: [...new Set(this.ingredient.ingredient_parts.map(i => i.id))],
                 prices: this.ingredient.prices.filter(p => p.price_category.id != null).map(p => ({
                     price_category_id: p.price_category.id,
-                    price: p.price,
+                    price: p.price.price,
                     amount: p.amount,
                     units: p.units,
                     description: p.description,
