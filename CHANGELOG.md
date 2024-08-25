@@ -1,3 +1,10 @@
+# v2.18.0
+## New
+- Enabled Italian language
+
+## Changes
+- Updated base docker image to alpine 3.20
+
 # v2.17.2
 ## Fixes
 - Fix substitute ingredient showing null amounts as `1`
