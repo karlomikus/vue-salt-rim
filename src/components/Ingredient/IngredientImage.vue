@@ -5,6 +5,7 @@
 </template>
 <script>
 import { thumbHashToDataURL } from 'thumbhash'
+import ApiRequests from './../../ApiRequests.js'
 
 export default {
     props: {
@@ -41,15 +42,15 @@ export default {
             return hex
         },
         mainIngredientImageUrl() {
-            if (!this.ingredient.main_image_id && !this.ingredient.image_url) {
-                return '/no-ingredient.png'
-            }
-
             if (this.ingredient.image_url) {
                 return this.ingredient.image_url
             }
 
-            return this.ingredient.images.filter((img) => img.id == this.ingredient.main_image_id)[0].url
+            if (this.ingredient.images && this.ingredient.images.length > 0) {
+                return ApiRequests.imageThumbUrl(this.ingredient.images[0].id)
+            }
+
+            return '/no-ingredient.png'
         }
     }
 }

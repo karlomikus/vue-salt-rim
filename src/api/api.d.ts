@@ -6722,7 +6722,7 @@ export interface operations {
         requestBody: {
             content: {
                 "application/json": {
-                    ingredient_ids?: number[];
+                    ingredients?: number[];
                 };
             };
         };

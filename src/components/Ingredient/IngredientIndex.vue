@@ -74,7 +74,7 @@
                     </button>
                 </div>
                 <IngredientGridContainer v-if="ingredients.length > 0">
-                    <IngredientGridItem v-for="ingredient in ingredients" :key="ingredient.id" :ingredient="ingredient" :user-ingredients="ingredientIdsOnShelf" :shopping-list="shoppingListIngredients" />
+                    <IngredientGridItem v-for="ingredient in ingredients" :key="ingredient.id" :ingredient="ingredient" :user-ingredients="userIngredients" :shopping-list="shoppingListIngredients" />
                 </IngredientGridContainer>
                 <EmptyState v-else style="margin-top: 1rem;">
                     <template #icon>
@@ -128,9 +128,9 @@ export default {
             searchQuery: null,
             ingredients: [],
             shoppingListIngredients: [],
+            userIngredients: [],
             availableRefinements: {
                 categories: [],
-                userIngredients: [],
                 global: [
                     { name: this.$t('shelf-ingredients'), active: false, id: 'on_shelf' },
                     { name: this.$t('shopping-list-ingredients'), active: false, id: 'on_shopping_list' },
@@ -190,9 +190,6 @@ export default {
                 }
             })
         },
-        ingredientIdsOnShelf() {
-            return this.availableRefinements.userIngredients.map(ui => ui.ingredient_id)
-        },
         totalActiveRefinements() {
             let total = 0
 
@@ -225,6 +222,7 @@ export default {
                     this.queryToState()
                     this.refreshIngredients()
                     this.refreshShoppingListIngredients()
+                    this.refreshShelfIngredients()
                 }
             },
             { immediate: true }
@@ -234,10 +232,6 @@ export default {
         fetchRefinements() {
             ApiRequests.fetchIngredientCategories().then(data => {
                 this.availableRefinements.categories = data
-            })
-
-            ApiRequests.fetchMyShelf().then(data => {
-                this.availableRefinements.userIngredients = data
             })
         },
         queryToState() {
@@ -358,7 +352,12 @@ export default {
             BarAssistantClient.getShoppingList(this.appState.user.id).then(resp => {
                 this.shoppingListIngredients = resp.data
             })
-        }
+        },
+        refreshShelfIngredients() {
+            BarAssistantClient.getUserIngredientShelf(this.appState.user.id).then(resp => {
+                this.userIngredients = resp.data
+            })
+        },
     }
 }
 </script>

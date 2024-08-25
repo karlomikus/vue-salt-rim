@@ -10,7 +10,6 @@ type IngredientBasic = components["schemas"]["IngredientBasic"]
 
 const appState = new AppState();
 const isLoading = ref(false)
-const emit = defineEmits(['listUpdated'])
 const { t } = useI18n()
 const toast = useSaltRimToast()
 const props = defineProps<{
@@ -26,13 +25,12 @@ watch(() => props.status, (newVal) => {
 function toggle() {
     isLoading.value = true
     const postData = {
-        ingredients: [{id: props.ingredient.id, qunatity: 1}]
+        ingredients: [props.ingredient.id]
     }
 
     if (inList.value) {
-        BarAssistantClient.removeFromShoppingList(appState.user.id, postData).then(() => {
-            toast.default(t('ingredient.list-remove-success', { name: props.ingredient.name }))
-            emit('listUpdated', {on_list: false, ingredient: props.ingredient})
+        BarAssistantClient.removeFromUserShelf(appState.user.id, postData).then(() => {
+            toast.default(t('ingredient.shelf-remove-success', { name: props.ingredient.name }))
             inList.value = false
             isLoading.value = false
         }).catch(e => {
@@ -40,9 +38,8 @@ function toggle() {
             isLoading.value = false
         })
     } else {
-        BarAssistantClient.addToShoppingList(appState.user.id, postData).then(() => {
-            toast.default(t('ingredient.list-add-success', { name: props.ingredient.name }))
-            emit('listUpdated', {on_list: true, ingredient: props.ingredient})
+        BarAssistantClient.addToUserShelf(appState.user.id, postData).then(() => {
+            toast.default(t('ingredient.shelf-add-success', { name: props.ingredient.name }))
             inList.value = true
             isLoading.value = false
         }).catch(e => {
@@ -54,8 +51,8 @@ function toggle() {
 </script>
 <template>
     <template v-if="!isLoading">
-        <a v-if="!inList" href="#" @click.prevent="toggle">{{ $t('ingredient.add-to-list') }}</a>
-        <a v-else href="#" @click.prevent="toggle">{{ $t('ingredient.remove-from-list') }}</a>
+        <a v-if="!inList" href="#" @click.prevent="toggle">{{ $t('ingredient.add-to-shelf') }}</a>
+        <a v-else href="#" @click.prevent="toggle">{{ $t('ingredient.remove-from-shelf') }}</a>
     </template>
     <span v-else>Loading...</span>
 </template>

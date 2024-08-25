@@ -158,4 +158,16 @@ export default class BarAssistantClient {
   static async getBarStats(id: number) {
     return (await client.GET('/bars/{id}/stats', { params: { path: { id: id } } })).data
   }
+
+  static async getUserIngredientShelf(id: number) {
+    return (await client.GET('/users/{id}/ingredients', { params: { path: { id: id } } })).data
+  }
+
+  static async addToUserShelf(id: number, data: {}) {
+    return (await client.POST('/users/{id}/ingredients/batch-store', { params: { path: { id: id } }, body: data })).data
+  }
+
+  static async removeFromUserShelf(id: number, data: {}) {
+    return (await client.POST('/users/{id}/ingredients/batch-delete', { params: { path: { id: id } }, body: data })).data
+  }
 }
