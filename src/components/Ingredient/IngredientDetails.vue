@@ -89,10 +89,10 @@ import UnitHandler from '../../UnitHandler.js'
                 <div v-if="ingredient.prices.length > 0" class="block-container block-container--padded ingredient-details__prices">
                     <h2 class="details-block-container__title">{{ $t('price.prices') }}</h2>
                     <div class="ingredient-details__prices__list">
-                        <div v-for="price in ingredient.prices" :key="price.id" class="ingredient-details__prices__list__item">
-                            <h5>{{ price.price_category.name }} ({{ price.price_category.currency }})</h5>
+                        <div v-for="ingredientPrice in ingredient.prices" :key="ingredientPrice.id" class="ingredient-details__prices__list__item">
+                            <h5>{{ ingredientPrice.price_category.name }} ({{ ingredientPrice.price_category.currency }})</h5>
                             <p>
-                                {{ UnitHandler.formatPrice(price.price, price.price_category.currency) }} &middot; {{ price.amount }}{{ price.units }} <template v-if="price.description">&middot; {{ price.description }}</template>
+                                {{ UnitHandler.formatPrice(ingredientPrice.price.price, ingredientPrice.price_category.currency) }} &middot; {{ ingredientPrice.amount }}{{ ingredientPrice.units }} <template v-if="ingredientPrice.description">&middot; {{ ingredientPrice.description }}</template>
                             </p>
                         </div>
                     </div>
