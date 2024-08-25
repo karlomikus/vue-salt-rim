@@ -18,73 +18,75 @@ import UnitHandler from '../../UnitHandler.js'
                 <RouterLink v-if="ingredient.access.can_edit" class="button button--dark" :to="{ name: 'ingredients.form', query: { id: ingredient.id } }">{{ $t('edit') }}</RouterLink>
             </template>
         </PageHeader>
-        <div class="block-container block-container--padded ingredient-details__box">
-            <div class="ingredient-details__box__image-container">
-                <img :src="mainIngredientImageUrl" :alt="ingredient.name" />
+        <div class="ingredient-details__box">
+            <div class="ingredient-details__box__left">
+                <div class="ingredient-details__box__image-container" :style="{ 'background-color': backgroundColor }">
+                    <img :src="mainIngredientImageUrl" :alt="ingredient.name" />
+                </div>
+                <div v-if="ingredient.varieties.length > 0">
+                    <h3 class="page-subtitle">{{ $t('see-also') }}</h3>
+                    <div class="block-container block-container--padded">
+                        <ul class="ingredient-chips-list">
+                            <li v-for="variety in ingredient.varieties" :key="variety.slug">
+                                <RouterLink class="chip" :to="{ name: 'ingredients.show', params: { id: variety.slug } }">{{ variety.name }}</RouterLink>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
             </div>
-            <div class="ingredient-details__box__content">
-                <div class="item-details__chips">
-                    <div class="item-details__chips__group">
-                        <div class="item-details__chips__group__title">{{ $t('strength') }}:</div>
-                        <ul v-if="ingredient.strength > 0" class="chips-list">
-                            <li>
-                                <span class="chip"><abbr :title="$t('ABV-definition')">{{ $t('ABV') }}</abbr>: {{ ingredient.strength + '%' }}</span>
-                            </li>
-                            <li>
-                                <span class="chip">{{ $t('alcohol-proof') }}: {{ ingredient.strength * 2 }}</span>
-                            </li>
-                        </ul>
-                        <ul v-else class="chips-list">
-                            <li>
-                                <span class="chip">{{ $t('non-alcoholic') }}</span>
-                            </li>
-                        </ul>
-                    </div>
-                    <div v-if="ingredient.origin" class="item-details__chips__group">
-                        <div class="item-details__chips__group__title">{{ $t('origin') }}:</div>
-                        <ul class="chips-list">
-                            <li>
-                                <span class="chip">{{ ingredient.origin }}</span>
-                            </li>
-                        </ul>
+            <div class="ingredient-details__box__right">
+                <div class="block-container block-container--padded">
+                    <div class="ingredient-details__box__content">
+                        <div v-if="ingredient.description">
+                            <h2 class="details-block-container__title">{{ $t('description') }}</h2>
+                            <div class="item-details__chips">
+                                <div class="item-details__chips__group">
+                                    <div class="item-details__chips__group__title">{{ $t('strength') }}:</div>
+                                    <ul v-if="ingredient.strength > 0" class="chips-list">
+                                        <li>
+                                            <span class="chip"><abbr :title="$t('ABV-definition')">{{ $t('ABV') }}</abbr>: {{ ingredient.strength + '%' }}</span>
+                                        </li>
+                                        <li>
+                                            <span class="chip">{{ $t('alcohol-proof') }}: {{ ingredient.strength * 2 }}</span>
+                                        </li>
+                                    </ul>
+                                    <ul v-else class="chips-list">
+                                        <li>
+                                            <span class="chip">{{ $t('non-alcoholic') }}</span>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div v-if="ingredient.origin" class="item-details__chips__group">
+                                    <div class="item-details__chips__group__title">{{ $t('origin') }}:</div>
+                                    <ul class="chips-list">
+                                        <li>
+                                            <span class="chip">{{ ingredient.origin }}</span>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <ul class="ingredient-details__more">
+                                <OverlayLoader v-if="isLoadingExtra" />
+                                <li>
+                                    <ToggleIngredientShelf :ingredient="ingredient" :status="ingredient.in_shelf"></ToggleIngredientShelf>
+                                </li>
+                                <li>
+                                    <ToggleIngredientShoppingCart :ingredient="ingredient" :status="ingredient.in_shopping_list"></ToggleIngredientShoppingCart>
+                                </li>
+                                <li v-if="ingredient.ingredient_parts.length">
+                                    {{ $t('contains-ingredients') }}:
+                                    <template v-for="(part, index) in ingredient.ingredient_parts" :key="part.id">
+                                        <RouterLink :to="{name: 'ingredients.show', params: {id: part.slug}}">{{ part.name }}</RouterLink><template v-if="index + 1 !== ingredient.ingredient_parts.length">, </template>
+                                    </template>
+                                </li>
+                                <li><RouterLink :to="{name: 'cocktails', query: {'filter[ingredient_id]': ingredient.id}}">Used in <strong>{{ ingredient.cocktails_count }}</strong> cocktail recipes</RouterLink></li>
+                                <li v-if="extraIfAddedToShelf.length > 0">{{ $t('ingredient.extra-cocktails') }}: <RouterLink :to="{name: 'cocktails', query: {'filter[id]': extraCocktailsIds}}">{{ extraIfAddedToShelf.length }} {{ $t('cocktail.cocktails') }}</RouterLink></li>
+                            </ul>
+                            <div v-html="parsedDescription"></div>
+                        </div>
                     </div>
                 </div>
-                <ul class="ingredient-details__more">
-                    <OverlayLoader v-if="isLoadingExtra || isLoadingShelf || isLoadingShoppingList" />
-                    <li>
-                        <a href="#" @click.prevent="toggleShelf">
-                            <template v-if="isAddedToShelf">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22ZM11.0026 16L18.0737 8.92893L16.6595 7.51472L11.0026 13.1716L8.17421 10.3431L6.75999 11.7574L11.0026 16Z"></path></svg> {{ $t('ingredient.remove-from-shelf') }}
-                            </template>
-                            <template v-else>
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22ZM12 20C16.4183 20 20 16.4183 20 12C20 7.58172 16.4183 4 12 4C7.58172 4 4 7.58172 4 12C4 16.4183 7.58172 20 12 20Z"></path></svg> {{ $t('ingredient.add-to-shelf') }}
-                            </template>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#" @click.prevent="toggleShoppingList">
-                            <template v-if="isAddedToShoppingList">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M4.00436 6.41686L0.761719 3.17422L2.17593 1.76001L5.41857 5.00265H20.6603C21.2126 5.00265 21.6603 5.45037 21.6603 6.00265C21.6603 6.09997 21.6461 6.19678 21.6182 6.29L19.2182 14.29C19.0913 14.713 18.7019 15.0027 18.2603 15.0027H6.00436V17.0027H17.0044V19.0027H5.00436C4.45207 19.0027 4.00436 18.5549 4.00436 18.0027V6.41686ZM5.50436 23.0027C4.67593 23.0027 4.00436 22.3311 4.00436 21.5027C4.00436 20.6742 4.67593 20.0027 5.50436 20.0027C6.33279 20.0027 7.00436 20.6742 7.00436 21.5027C7.00436 22.3311 6.33279 23.0027 5.50436 23.0027ZM17.5044 23.0027C16.6759 23.0027 16.0044 22.3311 16.0044 21.5027C16.0044 20.6742 16.6759 20.0027 17.5044 20.0027C18.3328 20.0027 19.0044 20.6742 19.0044 21.5027C19.0044 22.3311 18.3328 23.0027 17.5044 23.0027Z"></path></svg> {{ $t('ingredient.remove-from-list') }}
-                            </template>
-                            <template v-else>
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M4.00436 6.41686L0.761719 3.17422L2.17593 1.76001L5.41857 5.00265H20.6603C21.2126 5.00265 21.6603 5.45037 21.6603 6.00265C21.6603 6.09997 21.6461 6.19678 21.6182 6.29L19.2182 14.29C19.0913 14.713 18.7019 15.0027 18.2603 15.0027H6.00436V17.0027H17.0044V19.0027H5.00436C4.45207 19.0027 4.00436 18.5549 4.00436 18.0027V6.41686ZM6.00436 7.00265V13.0027H17.5163L19.3163 7.00265H6.00436ZM5.50436 23.0027C4.67593 23.0027 4.00436 22.3311 4.00436 21.5027C4.00436 20.6742 4.67593 20.0027 5.50436 20.0027C6.33279 20.0027 7.00436 20.6742 7.00436 21.5027C7.00436 22.3311 6.33279 23.0027 5.50436 23.0027ZM17.5044 23.0027C16.6759 23.0027 16.0044 22.3311 16.0044 21.5027C16.0044 20.6742 16.6759 20.0027 17.5044 20.0027C18.3328 20.0027 19.0044 20.6742 19.0044 21.5027C19.0044 22.3311 18.3328 23.0027 17.5044 23.0027Z"></path></svg> {{ $t('ingredient.add-to-list') }}
-                            </template>
-                        </a>
-                    </li>
-                    <li v-if="ingredient.ingredient_parts.length">
-                        {{ $t('contains-ingredients') }}:
-                        <template v-for="(part, index) in ingredient.ingredient_parts" :key="part.id">
-                            <RouterLink :to="{name: 'ingredients.show', params: {id: part.slug}}">{{ part.name }}</RouterLink><template v-if="index + 1 !== ingredient.ingredient_parts.length">, </template>
-                        </template>
-                    </li>
-                    <li><RouterLink :to="{name: 'cocktails', query: {'filter[ingredient_id]': ingredient.id}}">Used in <strong>{{ ingredient.cocktails_count }}</strong> cocktail recipes</RouterLink></li>
-                    <li v-if="extraIfAddedToShelf.length > 0">{{ $t('ingredient.extra-cocktails') }}: <RouterLink :to="{name: 'cocktails', query: {'filter[id]': extraCocktailsIds}}">{{ extraIfAddedToShelf.length }} {{ $t('cocktail.cocktails') }}</RouterLink></li>
-                </ul>
-                <div v-if="ingredient.description">
-                    <h2 class="details-block-container__title">{{ $t('description') }}</h2>
-                    <div v-html="parsedDescription"></div>
-                </div>
-                <div v-if="ingredient.prices.length > 0" class="ingredient-details__prices">
+                <div v-if="ingredient.prices.length > 0" class="block-container block-container--padded ingredient-details__prices">
                     <h2 class="details-block-container__title">{{ $t('price.prices') }}</h2>
                     <div class="ingredient-details__prices__list">
                         <div v-for="price in ingredient.prices" :key="price.id" class="ingredient-details__prices__list__item">
@@ -97,14 +99,6 @@ import UnitHandler from '../../UnitHandler.js'
                 </div>
             </div>
         </div>
-        <div v-if="ingredient.varieties.length > 0" class="block-container block-container--padded">
-            <h2 class="details-block-container__title">{{ $t('see-also') }}</h2>
-            <ul class="ingredient-chips-list">
-                <li v-for="variety in ingredient.varieties" :key="variety.slug">
-                    <RouterLink class="chip" :to="{ name: 'ingredients.show', params: { id: variety.slug } }">{{ variety.name }}</RouterLink>
-                </li>
-            </ul>
-        </div>
     </div>
 </template>
 
@@ -114,29 +108,32 @@ import OverlayLoader from '@/components/OverlayLoader.vue'
 import { micromark } from 'micromark'
 import dayjs from 'dayjs'
 import PageHeader from '../PageHeader.vue'
+import BarAssistantClient from '@/api/BarAssistantClient'
+import AppState from '@/AppState.js'
+import ToggleIngredientShoppingCart from '@/components/ToggleIngredientShoppingCart.vue'
+import ToggleIngredientShelf from '@/components/ToggleIngredientShelf.vue'
 
 export default {
     components: {
         OverlayLoader,
         PageHeader,
+        ToggleIngredientShelf,
+        ToggleIngredientShoppingCart,
     },
     data: () => ({
+        appState: new AppState(),
         isLoadingIngredient: false,
-        isLoadingShelf: false,
-        isLoadingShoppingList: false,
         isLoadingExtra: false,
         ingredient: {},
-        isAddedToShelf: false,
-        isAddedToShoppingList: false,
         extraIfAddedToShelf: []
     }),
     computed: {
         mainIngredientImageUrl() {
-            if (!this.ingredient.main_image_id) {
+            if (this.ingredient.images.length <= 0) {
                 return '/no-ingredient.png'
             }
 
-            return this.ingredient.images.filter((img) => img.id == this.ingredient.main_image_id)[0].url
+            return this.ingredient.images[0].url
         },
         parsedDescription() {
             if (!this.ingredient.description) {
@@ -158,9 +155,21 @@ export default {
         extraCocktailsIds() {
             return this.extraIfAddedToShelf.map(c => c.id).join(',')
         },
-        pricesByCurrency() {
-            return Object.groupBy(this.ingredient.prices, p => p.price_category.currency)
-        }
+        backgroundColor() {
+            const hex = this.ingredient.color || '#51274c'
+
+            let c
+            if (/^#([A-Fa-f0-9]{3}){1,2}$/.test(hex)) {
+                c = hex.substring(1).split('')
+                if (c.length == 3) {
+                    c = [c[0], c[0], c[1], c[1], c[2], c[2]]
+                }
+                c = '0x' + c.join('')
+                return 'rgba(' + [(c >> 16) & 255, (c >> 8) & 255, c & 255].join(',') + ',.13)'
+            }
+
+            return hex
+        },
     },
     watch: {
         ingredient(val) {
@@ -181,26 +190,11 @@ export default {
     methods: {
         async refreshIngredient() {
             this.isLoadingIngredient = true
-            this.ingredient = await ApiRequests.fetchIngredient(this.$route.params.id).catch(e => {
-                this.$toast.error(e.message)
-
-                return {}
-            })
+            this.ingredient = (await BarAssistantClient.getIngredient(this.$route.params.id)).data
             this.isLoadingIngredient = false
 
-            this.isLoadingShelf = true
-            const shelfIngredients = await ApiRequests.fetchMyShelf().catch(() => [])
-            this.isLoadingShelf = false
-
-            this.isLoadingShoppingList = true
-            const shoppingListIngredients = await ApiRequests.fetchShoppingList().catch(() => [])
-            this.isLoadingShoppingList = false
-
-            this.isAddedToShelf = shelfIngredients.filter(i => i.ingredient_id == this.ingredient.id).length > 0
-            this.isAddedToShoppingList = shoppingListIngredients.filter(i => i.ingredient_id == this.ingredient.id).length > 0
-
             this.isLoadingExtra = true
-            await this.refreshExtraCocktails()
+            this.extraIfAddedToShelf = (await BarAssistantClient.getExtraCocktailsWithIngredient(this.ingredient.id)).data
             this.isLoadingExtra = false
         },
         deleteIngredient() {
@@ -219,69 +213,6 @@ export default {
                 }
             })
         },
-        toggleShelf() {
-            this.isLoadingShelf = true
-
-            const postData = {
-                ingredient_ids: [this.ingredient.id]
-            }
-
-            if (this.isAddedToShelf) {
-                ApiRequests.removeIngredientsFromShelf(postData).then(() => {
-                    this.isAddedToShelf = false
-                    this.$toast.default(this.$t('ingredient.shelf-remove-success', { name: this.ingredient.name }))
-                    this.isLoadingShelf = false
-                    this.refreshExtraCocktails()
-                }).catch(e => {
-                    this.$toast.error(e.message)
-                    this.isLoadingShelf = false
-                })
-            } else {
-                ApiRequests.addIngredientsToShelf(postData).then(() => {
-                    this.isAddedToShelf = true
-                    this.$toast.default(this.$t('ingredient.shelf-add-success', { name: this.ingredient.name }))
-                    this.isLoadingShelf = false
-                    this.refreshExtraCocktails()
-                }).catch(e => {
-                    this.$toast.error(e.message)
-                    this.isLoadingShelf = false
-                })
-            }
-        },
-        toggleShoppingList() {
-            this.isLoadingShoppingList = true
-
-            const postData = {
-                ingredient_ids: [this.ingredient.id]
-            }
-
-            if (this.isAddedToShoppingList) {
-                ApiRequests.removeIngredientsFromShoppingList(postData).then(() => {
-                    this.$toast.default(this.$t('ingredient.list-remove-success', { name: this.ingredient.name }))
-                    this.isAddedToShoppingList = false
-                    this.isLoadingShoppingList = false
-                }).catch(e => {
-                    this.$toast.error(e.message)
-                    this.isLoadingShoppingList = false
-                })
-            } else {
-                ApiRequests.addIngredientsToShoppingList(postData).then(() => {
-                    this.$toast.default(this.$t('ingredient.list-add-success', { name: this.ingredient.name }))
-                    this.isAddedToShoppingList = true
-                    this.isLoadingShoppingList = false
-                }).catch(e => {
-                    this.$toast.error(e.message)
-                    this.isLoadingShoppingList = false
-                })
-            }
-        },
-        async refreshExtraCocktails() {
-            return await ApiRequests.fetchExtraCocktailsWithIngredient(this.ingredient.id).then(data => {
-                this.extraIfAddedToShelf = data
-            }).catch(e => {
-                this.$toast.error(e.message)
-            })
-        }
     }
 }
 </script>
@@ -301,8 +232,15 @@ export default {
 }
 
 .ingredient-details__box {
+    display: grid;
+    gap: var(--gap-size-3);
+    grid-template-columns: 300px minmax(0, 1fr);
+}
+
+.ingredient-details__box__left {
     display: flex;
-    gap: 1rem;
+    gap: var(--gap-size-3);
+    flex-direction: column;
 }
 
 @media (max-width: 450px) {
@@ -312,11 +250,20 @@ export default {
 }
 
 .ingredient-details__box__image-container {
-    max-width: 350px;
+    width: auto;
+    height: 100%;
     max-height: 400px;
     display: flex;
     justify-content: center;
     align-items: center;
+    padding: var(--gap-size-3);
+    border-radius: var(--radius-3);
+    border-bottom: 1px solid #fff;
+    box-shadow:
+        inset 0px 0.4px 0.5px rgba(0, 0, 0, .04),
+        inset 0px 1.1px 1.2px -0.8px rgba(0, 0, 0, .04),
+        inset 0px 2.6px 2.9px -1.7px rgba(0, 0, 0, .04),
+        inset 0px 6.3px 7.1px -2.5px rgba(0, 0, 0, .04);
 }
 
 .ingredient-details__box img {

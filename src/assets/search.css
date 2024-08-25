@@ -99,6 +99,7 @@
 .resource-search__refinements__refinement {
     padding: 0.5rem;
     margin-bottom: 0.5rem;
+    border-radius: var(--radius-2);
     border-top: 3px double var(--clr-accent-300);
     background-color: #f4edf2;
 }

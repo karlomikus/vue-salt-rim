@@ -170,4 +170,12 @@ export default class BarAssistantClient {
   static async removeFromUserShelf(id: number, data: {}) {
     return (await client.POST('/users/{id}/ingredients/batch-delete', { params: { path: { id: id } }, body: data })).data
   }
+
+  static async getIngredient(id: string) {
+    return (await client.GET('/ingredients/{id}', { params: { path: { id: id } } })).data 
+  }
+
+  static async getExtraCocktailsWithIngredient(id: number) {
+    return (await client.GET('/ingredients/{id}/extra', { params: { path: { id: id } } })).data 
+  }
 }
