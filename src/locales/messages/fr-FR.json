@@ -5,6 +5,7 @@
     "hr-HR": "Croate",
     "de-DE": "Allemand",
     "pl-PL": "Polonais",
+    "it-IT": "Italian",
     "help": "Aide aux traductions"
   },
   "shelf": {
@@ -45,10 +46,10 @@
     "dialog": {
       "select-substitutes": "Sélectionner des ingrédients de substitution",
       "search-not-found": "Vous n’avez pas trouvé ce que vous cherchez?",
-      "create-ingredient": "Créer un ingrédient :\"{name}\"",
+      "create-ingredient": "Créer un ingrédient : \"{name}\"",
       "current": "Ingrédient actuel",
       "optional-checkbox": "Rendre cet ingrédient facultatif.",
-      "new-ingredient-success": "Ingrédient non classifié(e) créé \"{name}\".",
+      "new-ingredient-success": "Ingrédient non classifié \"{name}\" créé.",
       "new-ingredient-fail": "Impossible d’ajouter l’ingrédient.",
       "select-substitutes-for": "Sélectionnez des ingrédients pour remplacer \"{name}\"."
     },
@@ -383,7 +384,7 @@
     "status-active": "Bars actifs",
     "status-deactivated": "Bars désactivés",
     "status-provisioning": "Provisionnement",
-    "confirm-activation": "Êtes-vous sûr de vouloir activer « {name} » ? Avec la formule gratuite, vous ne pouvez avoir qu'un seul bar actif, vous ne pourrez pas activer d'autres bars.",
+    "confirm-activation": "Êtes-vous sûr de vouloir activer \"{name}\" ? Avec la formule gratuite, vous ne pouvez avoir qu'un seul bar actif, vous ne pourrez pas activer d'autres bars.",
     "activation-success": "Bar activé",
     "members": "Membres du bar"
   },
@@ -439,8 +440,8 @@
   "user-recipes": "Recettes par utilisateur",
   "billing": {
     "title": "Facturation",
-    "inactive-title": "Passez à la formule « {name} » dès aujourd'hui !",
-    "is_active": "Votre abonnement à la formule « {name} » est actuellement actif",
+    "inactive-title": "Passez à la formule \"{name}\" dès aujourd'hui !",
+    "is_active": "Votre abonnement à la formule \"{name}\" est actuellement actif",
     "next_bill_at": "Votre prochain paiement aura lieu le",
     "end_at": "Vous avez mis fin à votre abonnement, vous aurez accès à votre formule actuelle jusqu'au",
     "confirm-sub-update-pause": "Cette action mettra fin à votre abonnement que vous pourrez reprendre à tout moment. Vous aurez un accès complet à votre formule jusqu'à la fin de l'abonnement en cours.",
