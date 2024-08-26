@@ -30,7 +30,6 @@ export default {
 </script>
 <style scoped>
 .settings-nav {
-    --sn-clr-bg: rgba(255, 255, 255, .5);
     --sn-clr-bg-hover: var(--clr-gray-800);
     display: flex;
     flex-direction: column;
@@ -38,13 +37,11 @@ export default {
 }
 
 .dark-theme .settings-nav {
-    --sn-clr-bg: rgba(0, 0, 0, .5);
     --sn-clr-bg-hover: var(--clr-dark-main-800);
 }
 
 .settings-nav a {
     padding: 5px 10px;
-    background-color: var(--sn-clr-bg);
     text-decoration: none;
     border-radius: var(--radius-2);
 }

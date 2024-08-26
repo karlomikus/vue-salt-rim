@@ -21,20 +21,18 @@
                 <RouterLink class="collections__collection__title" :to="{ name: 'cocktails', query: { 'filter[collection_id]': collection.id } }">{{ collection.name }}</RouterLink>
                 <br>
                 <div class="collections__collection__content">
-                    {{ collection.cocktails.length }} {{ $t('cocktail.cocktails') }}
-                    <template v-if="collection.is_bar_shared">
-                        &middot; {{ $t('collection-shared') }}
-                    </template>
+                    <small>
+                        {{ collection.cocktails.length }} {{ $t('cocktail.cocktails') }}
+                        <template v-if="collection.is_bar_shared">
+                            &middot; {{ $t('collection-shared') }}
+                        </template>
+                    </small>
                     <br>
-                    {{ $t('description') }}: {{ collection.description ? overflowText(collection.description, 100) : 'n/a' }}
+                    {{ $t('description') }}: {{ collection.description ? collection.description : 'n/a' }}
                 </div>
                 <div class="collections__collection__action">
-                    <a class="list-group__action" href="#" @click.prevent="shareCollection(collection)">{{ $t('share.title') }}</a>
-                    &middot;
-                    <a class="list-group__action" href="#" @click.prevent="download(collection)">{{ $t('download') }} CSV</a>
-                    &middot;
                     <RouterLink :to="{name: 'collections.quantity-calculator', params: {id: collection.id}}">{{ $t('collections.quantitiy-calculator') }}</RouterLink>
-                    <br>
+                    &middot;
                     <a class="list-group__action" href="#" @click.prevent="openDialog($t('collections.edit'), collection)">{{ $t('edit') }}</a>
                     &middot;
                     <a class="list-group__action" href="#" @click.prevent="deleteCollection(collection)">{{ $t('remove') }}</a>
@@ -149,7 +147,7 @@ export default {
 <style scoped>
 .collections {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr;
     gap: var(--gap-size-2);
 }
 
@@ -166,5 +164,9 @@ export default {
 
 .collections__collection__action {
     margin-top: 1rem;
+}
+
+.collections__collection__content small {
+    color: var(--clr-gray-500);
 }
 </style>

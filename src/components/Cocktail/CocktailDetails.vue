@@ -219,7 +219,7 @@ fetchShoppingList()
             </p>
         </PageHeader>
         <article class="cocktail-details">
-            <div class="cocktail-details__column-left">
+            <div class="cocktail-details__column-left" style="grid-area: ar1;">
                 <div class="cocktail-details__graphic">
                     <swiper-container v-if="cocktail.images && cocktail.images.length > 0" navigation="true" :pagination="{clickable: true}" follow-finger="false">
                         <swiper-slide v-for="image in sortedImages" :key="image.sort">
@@ -229,6 +229,8 @@ fetchShoppingList()
                     </swiper-container>
                     <img v-else src="/no-cocktail.jpg" alt="This cocktail does not have an image." />
                 </div>
+            </div>
+            <div class="cocktail-details__column-left-row-2" style="grid-area: ar3;">
                 <h3 class="page-subtitle">{{ $t('cocktail-collections') }}</h3>
                 <CocktailCollections :cocktail="cocktail" @cocktail-removed-from-collection="fetchCocktail" @add-to-collection="showCollectionDialog = !showCollectionDialog"></CocktailCollections>
                 <template v-if="cocktail.ingredients && cocktail.ingredients.length > 0">
@@ -238,7 +240,7 @@ fetchShoppingList()
                 <h3 class="page-subtitle">{{ $t('cocktails-similar') }}</h3>
                 <SimilarCocktails :from-cocktail="cocktail"></SimilarCocktails>
             </div>
-            <div class="cocktail-details__column-right">
+            <div class="cocktail-details__column-right" style="grid-area: ar2;">
                 <div class="cocktail-details__main">
                     <div class="cocktail-details-box__actions">
                         <button type="button" class="button button-circle" @click="favorite">
@@ -540,6 +542,26 @@ swiper-container {
     display: grid;
     gap: var(--gap-size-3);
     grid-template-columns: 500px minmax(0, 1fr);
+    grid-template-rows: 1fr;
+    grid-template-areas:
+        "ar1 ar2"
+        "ar3 ar2";
+}
+
+@media (max-width: 1000px) {
+    .cocktail-details {
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    }
+}
+
+@media (max-width: 800px) {
+    .cocktail-details {
+        grid-template-columns: minmax(0, 1fr);
+        grid-template-areas:
+            "ar1"
+            "ar2"
+            "ar3";
+    }
 }
 
 .cocktail-details__graphic {
@@ -548,7 +570,6 @@ swiper-container {
     border-radius: var(--radius-3);
     overflow: hidden;
     isolation: isolate;
-    margin-bottom: 2rem;
 }
 
 .cocktail-details__graphic img {
