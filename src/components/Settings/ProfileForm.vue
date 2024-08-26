@@ -44,7 +44,7 @@
                         <SaltRimCheckbox id="parent-ingredient-checkbox" v-model="user.is_shelf_public" :label="$t('profile-public-shelf')" description="Other bar members will be able to filter by cocktails you have in your shelf"></SaltRimCheckbox>
                     </div>
                     <div class="form-group">
-                        <SaltRimCheckbox id="profile-use-parent-as-substitute" v-model="user.use_parent_as_substitute" :label="$t('profile-use-parent-as-substitute')" description="Match cocktail recipe ingredients with parent ingredients as possible substitutes"></SaltRimCheckbox>
+                        <SaltRimCheckbox id="profile-use-parent-as-substitute" v-model="user.use_parent_as_substitute" :label="'[BETA] ' + $t('profile-use-parent-as-substitute')" description="Match cocktail recipe ingredients with parent ingredients as possible substitutes"></SaltRimCheckbox>
                     </div>
                 </div>
             </template>
