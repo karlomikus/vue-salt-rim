@@ -1,15 +1,15 @@
 {
   "locales": {
-    "en-US": "English",
-    "fr-FR": "French",
-    "hr-HR": "Croatian",
-    "de-DE": "German",
-    "pl-PL": "Polish",
-    "it-IT": "Italian",
-    "help": "Help with translations"
+    "en-US": "Engelska",
+    "fr-FR": "Franksa",
+    "hr-HR": "Kroatien",
+    "de-DE": "Tyska",
+    "pl-PL": "Polska",
+    "it-IT": "Italienska",
+    "help": "Hjälp att översätta"
   },
   "shelf": {
-    "title": "Shelf",
+    "title": "Hylla",
     "toasts": {
       "favorites-error": "An error occured while fetching your favorite cocktails from a server",
       "shelf-error": "An error occured while fetching cocktails you can make from a server",
