@@ -9,8 +9,11 @@ import UnitConverter from '../Units/UnitConverter.vue'
 import UnitPicker from '../Units/UnitPicker.vue'
 import ToggleIngredientShoppingCart from '../ToggleIngredientShoppingCart.vue'
 import UnitHandler from '../../UnitHandler.js'
+import BarAssistantClient from '@/api/BarAssistantClient'
+import AppState from '@/AppState.js'
 
 // const { t } = useI18n()
+const appState = new AppState()
 const route = useRoute()
 const collection = ref({})
 const cocktails = ref([])
@@ -38,9 +41,9 @@ const ingredientsWithCalculatedAmounts = computed(() => {
             const units = UnitHandler.isUnitConvertable(ingredient.units) ? selectedUnit.value : ingredient.units
 
             return {
-                id: ingredient.ingredient_id,
-                slug: ingredient.ingredient_slug,
-                name: ingredient.name,
+                id: ingredient.ingredient.id,
+                slug: ingredient.ingredient.slug,
+                name: ingredient.ingredient.name,
                 units: units,
                 total_amount: totalAmount,
                 amount: convertedAmount
@@ -145,8 +148,8 @@ async function refreshCollection(id) {
     isLoading.value = true
     collection.value = await ApiRequests.fetchCollection(id)
     const existingState = localStorage.getItem('collection_' + collection.value.id)
-    cocktails.value = (await ApiRequests.fetchCocktails({ 'filter[id]': collection.value.cocktails.join(',') })).data ?? []
-    shoppingList.value = (await ApiRequests.fetchShoppingList()) ?? []
+    cocktails.value = (await ApiRequests.fetchCocktails({ 'filter[id]': collection.value.cocktails.map(c => c.id).join(','), include: 'ingredients.ingredient' })).data ?? []
+    shoppingList.value = (await BarAssistantClient.getShoppingList(appState.user.id)).data
     cocktails.value.map(c => {
         if (existingState) {
             const stateObj = JSON.parse(existingState)
@@ -217,7 +220,7 @@ function handleShoppingListUpdate(e) {
                 </div>
                 <div class="cocktail-quantity__cocktail">
                     <RouterLink :to="{name: 'cocktails.show', params: {id: cocktail.slug}}">{{ cocktail.name }}</RouterLink>
-                    <span>{{ cocktail.ingredients.map(i => i.name).join(', ') }}</span>
+                    <span>{{ cocktail.ingredients.map(i => i.ingredient.name).join(', ') }}</span>
                 </div>
             </div>
         </div>
