@@ -1979,21 +1979,21 @@ export interface components {
             description?: string | null;
         };
         IngredientPrice: {
-            price_category?: components["schemas"]["PriceCategory"];
-            price?: components["schemas"]["Price"];
+            price_category: components["schemas"]["PriceCategory"];
+            price: components["schemas"]["Price"];
             /**
              * Format: float
              * @example 30
              */
-            amount?: number;
+            amount: number;
             /** @example ml */
-            units?: string;
+            units: string;
             /** @example Updated price */
-            description?: string | null;
+            description: string | null;
             /** Format: date-time */
-            created_at?: string;
+            created_at: string;
             /** Format: date-time */
-            updated_at?: string | null;
+            updated_at: string | null;
         };
         /** @description Ingredient recommendation with number of potential cocktails */
         IngredientRecommend: components["schemas"]["IngredientBasic"] & {
@@ -6777,7 +6777,7 @@ export interface operations {
         requestBody: {
             content: {
                 "application/json": {
-                    ingredient_ids?: number[];
+                    ingredients?: number[];
                 };
             };
         };
