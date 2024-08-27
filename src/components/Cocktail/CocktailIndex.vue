@@ -119,6 +119,7 @@
 <script>
 import OverlayLoader from './../OverlayLoader.vue'
 import ApiRequests from './../../ApiRequests.js'
+import BarAssistantClient from '@/api/BarAssistantClient'
 import CocktailGridItem from './CocktailGridItem.vue'
 import CocktailGridContainer from './CocktailGridContainer.vue'
 import PageHeader from './../PageHeader.vue'
@@ -419,7 +420,7 @@ export default {
             this.isLoading = true
             ApiRequests.fetchCocktails(query).then(async resp => {
                 this.cocktails = resp.data
-                const favorites = await ApiRequests.fetchCocktailFavorites().catch(() => [])
+                const favorites = (await BarAssistantClient.getUserCocktailFavorites(this.appState.user.id)).data
                 this.cocktails.map(c => {
                     c.isFavorited = favorites.includes(c.id)
 
