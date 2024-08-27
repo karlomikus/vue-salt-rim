@@ -1,7 +1,6 @@
 <template>
     <div class="block-container block-container--hover ingredient-list-item">
-        <OverlayLoader v-if="isLoading" />
-        <div class="ingredient-list-item__image" :style="{ 'background-color': setupColor(ingredient.color) }">
+        <div v-if="showImage" class="ingredient-list-item__image" :style="{ 'background-color': setupColor(ingredient.color) }">
             <img :src="mainIngredientImageUrl" :alt="ingredient.name">
         </div>
         <div class="ingredient-list-item__content">
@@ -9,8 +8,9 @@
                 <RouterLink :to="{ name: 'ingredients.show', params: { id: ingredient.slug } }">{{ ingredient.name }}</RouterLink>
             </h4>
             <slot name="content">
-                <a href="#" @click.prevent="addToShelf">{{ $t('add-to-shelf') }}</a> &middot;
-                <a href="#" @click.prevent="removeFromShoppingList">{{ $t('remove-from-list') }}</a>
+                <ToggleIngredientShelf :ingredient="ingredient" :status="ingredient.in_shelf"></ToggleIngredientShelf>
+                &middot;
+                <ToggleIngredientShoppingCart :ingredient="ingredient" :status="ingredient.in_shopping_list"></ToggleIngredientShoppingCart>
             </slot>
         </div>
     </div>
@@ -18,11 +18,13 @@
 
 <script>
 import ApiRequests from './../../ApiRequests'
-import OverlayLoader from './../OverlayLoader.vue'
+import ToggleIngredientShoppingCart from '@/components/ToggleIngredientShoppingCart.vue'
+import ToggleIngredientShelf from '@/components/ToggleIngredientShelf.vue'
 
 export default {
     components: {
-        OverlayLoader
+        ToggleIngredientShoppingCart,
+        ToggleIngredientShelf,
     },
     props: {
         ingredient: {
@@ -30,21 +32,19 @@ export default {
             default() {
                 return {}
             }
-        }
-    },
-    emits: ['addedToShelf', 'removedFromShoppingList'],
-    data() {
-        return {
-            isLoading: false
+        },
+        showImage: {
+            type: Boolean,
+            default: true
         }
     },
     computed: {
         mainIngredientImageUrl() {
-            if (!this.ingredient.main_image_id) {
+            if (!this.ingredient.images || this.ingredient.images.length == 0) {
                 return '/no-ingredient.png'
             }
 
-            return this.ingredient.images.filter((img) => img.id == this.ingredient.main_image_id)[0].url
+            return ApiRequests.imageThumbUrl(this.ingredient.images.find(i => i.sort <= 1).id)
         }
     },
     methods: {
@@ -61,26 +61,6 @@ export default {
 
             return hex
         },
-        addToShelf() {
-            this.isLoading = true
-            ApiRequests.addIngredientsToShelf({ ingredient_ids: [this.ingredient.id] }).then(() => {
-                this.$emit('addedToShelf')
-                this.isLoading = false
-            }).catch(e => {
-                this.$toast.error(e.message)
-                this.isLoading = false
-            })
-        },
-        removeFromShoppingList() {
-            this.isLoading = true
-            ApiRequests.removeIngredientsFromShoppingList({ ingredient_ids: [this.ingredient.id] }).then(() => {
-                this.$emit('removedFromShoppingList')
-                this.isLoading = false
-            }).catch(e => {
-                this.$toast.error(e.message)
-                this.isLoading = false
-            })
-        }
     }
 }
 </script>

@@ -80,7 +80,7 @@ export default class BarAssistantClient {
   }
 
   static async getUserCocktailFavorites(id: number) {
-    return (await client.GET('/users/{id}/cocktails/favorites', { params: { path: { id: id } } })).data
+    return (await client.GET('/users/{id}/cocktails/favorites', { params: { path: { id: id }, query: { per_page: 500 } } })).data
   }
 
   static async getNotes(query = {}) {

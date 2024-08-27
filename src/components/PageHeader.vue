@@ -25,10 +25,17 @@
 }
 
 .site-page-header__title h2 {
-    /* font-family: var(--font-accent); */
     font-family: var(--font-heading);
     font-weight: var(--fw-bold);
-    font-size: 1.75em;
+    font-size: 2em;
+    line-height: 1.4;
+}
+
+:deep(.site-page-header__title small) {
+    font-family: var(--font-primary);
+    font-size: 0.4em;
+    color: var(--clr-gray-500);
+    display: block;
 }
 
 .site-page-header__actions {

@@ -211,6 +211,7 @@ export default {
                 ignore_ingredients: [],
                 specific_ingredients: [],
                 ingredient_id: [],
+                ingredient_substitute_id: [],
                 id: [],
             }
         }
@@ -456,6 +457,7 @@ export default {
             this.activeFilters.specific_ingredients = state.filter && state.filter.specific_ingredients ? String(state.filter.specific_ingredients).split(',') : []
             this.activeFilters.id = state.filter && state.filter.id ? String(state.filter.id).split(',') : []
             this.activeFilters.ingredient_id = state.filter && state.filter.ingredient_id ? String(state.filter.ingredient_id).split(',') : []
+            this.activeFilters.ingredient_substitute_id = state.filter && state.filter.ingredient_substitute_id ? String(state.filter.ingredient_substitute_id).split(',') : []
             this.activeFilters.user_rating = state.filter && state.filter.user_rating_min ? state.filter.user_rating_min : null
             this.activeFilters.average_rating = state.filter && state.filter.average_rating_min ? state.filter.average_rating_min : null
             this.searchQuery = state.filter && state.filter.name ? state.filter.name : null
@@ -498,6 +500,7 @@ export default {
                 main_ingredient_id: this.activeFilters.main_ingredients.length > 0 ? this.activeFilters.main_ingredients.join(',') : null,
                 specific_ingredients: this.activeFilters.specific_ingredients.length > 0 ? this.activeFilters.specific_ingredients.join(',') : null,
                 ingredient_id: this.activeFilters.ingredient_id.length > 0 ? this.activeFilters.ingredient_id.join(',') : null,
+                ingredient_substitute_id: this.activeFilters.ingredient_substitute_id.length > 0 ? this.activeFilters.ingredient_substitute_id.join(',') : null,
                 collection_id: this.activeFilters.collections.length > 0 ? this.activeFilters.collections.join(',') : null,
                 user_shelves: this.activeFilters.user_shelves.length > 0 ? this.activeFilters.user_shelves.join(',') : null,
                 id: this.activeFilters.id.length > 0 ? this.activeFilters.id.join(',') : null,
@@ -559,6 +562,7 @@ export default {
                 ignore_ingredients: [],
                 specific_ingredients: [],
                 ingredient_id: [],
+                ingredient_substitute_id: [],
                 id: [],
             }
 

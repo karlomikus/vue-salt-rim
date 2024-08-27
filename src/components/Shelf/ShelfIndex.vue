@@ -198,7 +198,7 @@ export default {
         this.loaders.stats = true
         this.loaders.recommended = true
 
-        ApiRequests.fetchCocktails({ 'filter[favorites]': true, per_page: this.maxItems, sort: '-favorited_at', include: 'ratings,ingredients.ingredient' }).then(resp => {
+        ApiRequests.fetchCocktails({ 'filter[favorites]': true, per_page: this.maxItems, sort: '-favorited_at', include: 'ratings,ingredients.ingredient,images' }).then(resp => {
             this.loaders.favorites = false
             this.favoriteCocktails = resp.data
         }).catch(() => {
@@ -206,7 +206,7 @@ export default {
             this.$toast.error(this.$t('shelf.toasts.favorites-error'))
         })
 
-        ApiRequests.fetchCocktails({ per_page: this.maxItems, sort: '-created_at', include: 'ratings,ingredients.ingredient' }).then(resp => {
+        ApiRequests.fetchCocktails({ per_page: this.maxItems, sort: '-created_at', include: 'ratings,ingredients.ingredient,images' }).then(resp => {
             this.loaders.cocktails = false
             this.latestCocktails = resp.data
         }).catch(() => {
@@ -236,7 +236,7 @@ export default {
     methods: {
         fetchShoppingList() {
             this.loaders.list = true
-            ApiRequests.fetchIngredients({ 'filter[on_shopping_list]': true, per_page: this.maxItems }).then(response => {
+            ApiRequests.fetchIngredients({ 'filter[on_shopping_list]': true, per_page: this.maxItems, include: 'images' }).then(response => {
                 this.loaders.list = false
                 this.shoppingListIngredients = response.data
             }).catch(() => {
