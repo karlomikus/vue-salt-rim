@@ -17,7 +17,8 @@ import UnitHandler from '../../UnitHandler.js'
         <div class="ingredient-details">
             <div class="ingredient-details__column-image">
                 <div class="ingredient-details__graphic" :style="{ 'background-color': backgroundColor }">
-                    <img :src="mainIngredientImageUrl" :alt="ingredient.name" />
+                    <div v-if="mainIngredientImage.copyright" class="ingredient-details__graphic__copyright">{{ $t('imageupload.copyright-notice', { copyright: mainIngredientImage.copyright }) }}</div>
+                    <img :src="mainIngredientImage.url" :alt="ingredient.name" />
                 </div>
             </div>
             <div class="ingredient-details__column-sidebar">
@@ -80,57 +81,55 @@ import UnitHandler from '../../UnitHandler.js'
                     </Dropdown>
                 </div>
                 <div class="block-container block-container--padded">
-                    <div v-if="ingredient.description">
-                        <h2 class="details-block-container__title">{{ $t('description') }}</h2>
-                        <div class="item-details__chips">
-                            <div class="item-details__chips__group">
-                                <div class="item-details__chips__group__title">{{ $t('strength') }}:</div>
-                                <ul v-if="ingredient.strength > 0" class="chips-list">
-                                    <li>
-                                        <span class="chip"><abbr :title="$t('ABV-definition')">{{ $t('ABV') }}</abbr>: {{ ingredient.strength + '%' }}</span>
-                                    </li>
-                                    <li>
-                                        <span class="chip">{{ $t('alcohol-proof') }}: {{ ingredient.strength * 2 }}</span>
-                                    </li>
-                                </ul>
-                                <ul v-else class="chips-list">
-                                    <li>
-                                        <span class="chip">{{ $t('non-alcoholic') }}</span>
-                                    </li>
-                                </ul>
-                            </div>
-                            <div v-if="ingredient.origin" class="item-details__chips__group">
-                                <div class="item-details__chips__group__title">{{ $t('origin') }}:</div>
-                                <ul class="chips-list">
-                                    <li>
-                                        <span class="chip">{{ ingredient.origin }}</span>
-                                    </li>
-                                </ul>
-                            </div>
+                    <h2 class="details-block-container__title">{{ $t('description') }}</h2>
+                    <div class="item-details__chips">
+                        <div class="item-details__chips__group">
+                            <div class="item-details__chips__group__title">{{ $t('strength') }}:</div>
+                            <ul v-if="ingredient.strength > 0" class="chips-list">
+                                <li>
+                                    <span class="chip"><abbr :title="$t('ABV-definition')">{{ $t('ABV') }}</abbr>: {{ ingredient.strength + '%' }}</span>
+                                </li>
+                                <li>
+                                    <span class="chip">{{ $t('alcohol-proof') }}: {{ ingredient.strength * 2 }}</span>
+                                </li>
+                            </ul>
+                            <ul v-else class="chips-list">
+                                <li>
+                                    <span class="chip">{{ $t('non-alcoholic') }}</span>
+                                </li>
+                            </ul>
                         </div>
-                        <ul class="ingredient-details__more">
-                            <OverlayLoader v-if="isLoadingExtra" />
-                            <li>
-                                <ToggleIngredientShelf :ingredient="ingredient" :status="ingredient.in_shelf"></ToggleIngredientShelf>
-                            </li>
-                            <li>
-                                <ToggleIngredientShoppingCart :ingredient="ingredient" :status="ingredient.in_shopping_list"></ToggleIngredientShoppingCart>
-                            </li>
-                            <li v-if="ingredient.ingredient_parts.length">
-                                {{ $t('contains-ingredients') }}:
-                                <template v-for="(part, index) in ingredient.ingredient_parts" :key="part.id">
-                                    <RouterLink :to="{name: 'ingredients.show', params: {id: part.slug}}">{{ part.name }}</RouterLink><template v-if="index + 1 !== ingredient.ingredient_parts.length">, </template>
-                                </template>
-                            </li>
-                            <li>
-                                <RouterLink :to="{name: 'cocktails', query: {'filter[ingredient_id]': ingredient.id}}">
-                                    Used in <strong>{{ ingredient.cocktails_count }} <template v-if="ingredient.cocktails_as_substitute_count && ingredient.cocktails_as_substitute_count > 0">(+{{ ingredient.cocktails_as_substitute_count }} as substitute)</template></strong> cocktail recipes
-                                </RouterLink>
-                            </li>
-                            <li v-if="extraIfAddedToShelf.length > 0">{{ $t('ingredient.extra-cocktails') }}: <RouterLink :to="{name: 'cocktails', query: {'filter[id]': extraCocktailsIds}}">{{ extraIfAddedToShelf.length }} {{ $t('cocktail.cocktails') }}</RouterLink></li>
-                        </ul>
-                        <div v-html="parsedDescription" class="has-markdown"></div>
+                        <div v-if="ingredient.origin" class="item-details__chips__group">
+                            <div class="item-details__chips__group__title">{{ $t('origin') }}:</div>
+                            <ul class="chips-list">
+                                <li>
+                                    <span class="chip">{{ ingredient.origin }}</span>
+                                </li>
+                            </ul>
+                        </div>
                     </div>
+                    <ul class="ingredient-details__more">
+                        <OverlayLoader v-if="isLoadingExtra" />
+                        <li>
+                            <ToggleIngredientShelf :ingredient="ingredient" :status="ingredient.in_shelf"></ToggleIngredientShelf>
+                        </li>
+                        <li>
+                            <ToggleIngredientShoppingCart :ingredient="ingredient" :status="ingredient.in_shopping_list"></ToggleIngredientShoppingCart>
+                        </li>
+                        <li v-if="ingredient.ingredient_parts.length">
+                            {{ $t('contains-ingredients') }}:
+                            <template v-for="(part, index) in ingredient.ingredient_parts" :key="part.id">
+                                <RouterLink :to="{name: 'ingredients.show', params: {id: part.slug}}">{{ part.name }}</RouterLink><template v-if="index + 1 !== ingredient.ingredient_parts.length">, </template>
+                            </template>
+                        </li>
+                        <li>
+                            <RouterLink :to="{name: 'cocktails', query: {'filter[ingredient_id]': ingredient.id}}">
+                                Used in <strong>{{ ingredient.cocktails_count }} <template v-if="ingredient.cocktails_as_substitute_count && ingredient.cocktails_as_substitute_count > 0">(+{{ ingredient.cocktails_as_substitute_count }} as substitute)</template></strong> cocktail recipes
+                            </RouterLink>
+                        </li>
+                        <li v-if="extraIfAddedToShelf.length > 0">{{ $t('ingredient.extra-cocktails') }}: <RouterLink :to="{name: 'cocktails', query: {'filter[id]': extraCocktailsIds}}">{{ extraIfAddedToShelf.length }} {{ $t('cocktail.cocktails') }}</RouterLink></li>
+                    </ul>
+                    <div v-html="parsedDescription" class="has-markdown"></div>
                 </div>
                 <div v-if="ingredient.prices.length > 0" class="block-container block-container--padded ingredient-details__prices">
                     <h2 class="details-block-container__title">{{ $t('price.prices') }}</h2>
@@ -176,12 +175,12 @@ export default {
         extraIfAddedToShelf: []
     }),
     computed: {
-        mainIngredientImageUrl() {
+        mainIngredientImage() {
             if (this.ingredient.images.length <= 0) {
-                return '/no-ingredient.png'
+                return { url: '/no-ingredient.png', copyright: null }
             }
 
-            return this.ingredient.images[0].url
+            return this.ingredient.images[0]
         },
         parsedDescription() {
             if (!this.ingredient.description) {
@@ -353,6 +352,20 @@ export default {
     .ingredient-details__graphic img {
         max-height: 300px;
     }
+}
+
+.ingredient-details__graphic__copyright {
+    position: absolute;
+    bottom: 1rem;
+    left: 1rem;
+    display: inline-block;
+    background-color: rgba(0, 0, 0, .5);
+    color: #fff;
+    border-radius: var(--radius-3);
+    padding: 2px 7px;
+    font-size: 0.7rem;
+    z-index: 1;
+    text-shadow: 1px 1px 0 rgba(0, 0, 0, .8);
 }
 
 .ingredient-chips-list {

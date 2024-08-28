@@ -32,7 +32,7 @@ export default {
     },
     computed: {
         name() {
-            let name = this.cocktailIngredient.name
+            let name = this.cocktailIngredient.ingredient.name
             if (this.cocktailIngredient.note) {
                 name += ` · ${this.cocktailIngredient.note}`
             }
@@ -44,7 +44,7 @@ export default {
         },
         substitutes() {
             return this.cocktailIngredient.substitutes.map(sub => {
-                return new String(sub.name + ' ' + UnitHandler.print(sub, this.units, this.servings)).trim()
+                return new String(sub.ingredient.name + ' ' + UnitHandler.print(sub, this.units, this.servings)).trim()
             }).join(', ')
         }
     }
