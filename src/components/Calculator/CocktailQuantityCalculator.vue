@@ -11,6 +11,7 @@ import ToggleIngredientShoppingCart from '../ToggleIngredientShoppingCart.vue'
 import UnitHandler from '../../UnitHandler.js'
 import BarAssistantClient from '@/api/BarAssistantClient'
 import AppState from '@/AppState.js'
+import CollectionDetailsWidget from '../Collections/CollectionDetailsWidget.vue'
 import type { components } from '@/api/api'
 
 type ShoppingList = components["schemas"]["ShoppingList"]
@@ -150,7 +151,7 @@ const finalIngredients = computed((): FinalIngredientObject[] => {
         const collectionIngredientData = uniqueIngredients.value.find(val => val.id == i.id)
 
         if (!collectionIngredientData) {
-            return {} as FinalIngredientObject
+            return null
         }
 
         return {
@@ -179,7 +180,7 @@ const finalIngredients = computed((): FinalIngredientObject[] => {
                 }
             })
         } as FinalIngredientObject
-    })
+    }).filter(i => i !== null)
 })
 
 const totalsPerCurrency = computed((): TotalsPerCurrency => {
@@ -215,9 +216,13 @@ const totalsPerCurrency = computed((): TotalsPerCurrency => {
 
 async function refreshCollection(id: number) {
     isLoading.value = true
-    collection.value = await ApiRequests.fetchCollection(id)
+    collection.value = (await BarAssistantClient.getCollection(id))?.data ?? {} as Collection
     const existingState = localStorage.getItem('collection_' + collection.value.id)
-    cocktails.value = (await ApiRequests.fetchCocktails({ 'filter[id]': collection.value?.cocktails?.map(c => c.id).join(','), include: 'ingredients.ingredient' })).data ?? []
+    if (collection.value.cocktails?.length ?? 0 > 0) {
+        cocktails.value = (await ApiRequests.fetchCocktails({ 'filter[id]': collection.value?.cocktails?.map(c => c.id).join(','), include: 'ingredients.ingredient' })).data ?? []
+    } else {
+        cocktails.value = []
+    }
     shoppingList.value = (await BarAssistantClient.getShoppingList(appState.user.id))?.data ?? []
     cocktails.value.map(c => {
         if (existingState) {
@@ -262,14 +267,6 @@ function calculatePricePerUnits(price: IngredientPriceWithQuantity, newUnits: st
 function saveState() {
     localStorage.setItem('collection_' + collection.value.id, JSON.stringify(state.value))
 }
-
-// function handleShoppingListUpdate(e) {
-//     if (e.on_list === false) {
-//         shoppingList.value.splice(shoppingList.value.map(s => s.ingredient.id).indexOf(e.ingredient.id), 1)
-//     } else {
-//         shoppingList.value.push({ingredient_id: e.ingredient.id})
-//     }
-// }
 </script>
 
 <template>
@@ -278,6 +275,7 @@ function saveState() {
     </PageHeader>
     <div>
         <OverlayLoader v-if="isLoading" />
+        <CollectionDetailsWidget :collection="collection"></CollectionDetailsWidget>
         <h3 class="form-section-title">{{ $t('collections.cocktail-quantities') }}</h3>
         <div class="block-container block-container--padded cocktail-quantity-grid">
             <div v-for="cocktail in cocktails" :key="cocktail.id" class="cocktail-quantity">

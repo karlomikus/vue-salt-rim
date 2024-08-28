@@ -79,33 +79,22 @@ export default {
      * @returns {number}
      */
     convertFromTo(fromUnits, amount, toUnits) {
-        if (fromUnits == 'ml') {
-            if (toUnits == 'oz') {
-                return this.ml2oz(amount)
-            }
-            if (toUnits == 'cl') {
-                return this.ml2cl(amount)
-            }
+        const conversionMap = {
+            'ml->oz': this.ml2oz,
+            'ml->cl': this.ml2cl,
+            'oz->ml': this.oz2ml,
+            'oz->cl': this.oz2cl,
+            'cl->ml': this.cl2ml,
+            'cl->oz': this.cl2oz,
         }
 
-        if (fromUnits == 'oz') {
-            if (toUnits == 'ml') {
-                return this.oz2ml(amount)
-            }
-            if (toUnits == 'cl') {
-                return this.oz2cl(amount)
-            }
-        }
+        const conversionKey = `${fromUnits}->${toUnits}`
+        const conversionFunction = conversionMap[conversionKey]
 
-        if (fromUnits == 'cl') {
-            if (toUnits == 'ml') {
-                return this.cl2ml(amount)
-            }
-            if (toUnits == 'oz') {
-                return this.cl2oz(amount)
-            }
+        if (conversionFunction) {
+            return conversionFunction(amount)
         }
-
+    
         return amount
     },
 

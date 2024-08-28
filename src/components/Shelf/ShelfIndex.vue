@@ -270,21 +270,14 @@ export default {
 }
 
 .stats {
-    --_stats-clr-bg: #F0EFEB;
     margin-top: 20px;
     display: flex;
     flex-wrap: wrap;
-    /* display: grid; */
-    /* grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); */
     gap: var(--gap-size-2);
 }
 
-.dark-theme .stats {
-    --_stats-clr-bg: #271820;
-}
-
 .stats__stat {
-    background-color: var(--_stats-clr-bg);
+    background-color: var(--clr-accent-green);
     border-radius: var(--radius-3);
     padding: 1rem 1.5rem;
     display: flex;
@@ -326,13 +319,9 @@ export default {
 }
 
 .block-recommended {
-    background-color: #F0EFEB;
+    background-color: var(--clr-accent-green);
     padding: var(--gap-size-3);
     border-radius: var(--radius-3);
-}
-
-.dark-theme .block-recommended {
-    background-color: #271820;
 }
 
 .dark-theme .shelf-stats-count small {

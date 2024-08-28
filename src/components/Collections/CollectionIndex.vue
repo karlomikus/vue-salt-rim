@@ -31,8 +31,10 @@
                     {{ $t('description') }}: {{ collection.description ? collection.description : 'n/a' }}
                 </div>
                 <div class="collections__collection__action">
-                    <RouterLink :to="{name: 'collections.quantity-calculator', params: {id: collection.id}}">{{ $t('collections.quantitiy-calculator') }}</RouterLink>
-                    &middot;
+                    <template v-if="collection.cocktails.length > 0">
+                        <RouterLink :to="{name: 'collections.quantity-calculator', params: {id: collection.id}}">{{ $t('collections.quantitiy-calculator') }}</RouterLink>
+                        &middot;
+                    </template>
                     <a class="list-group__action" href="#" @click.prevent="openDialog($t('collections.edit'), collection)">{{ $t('edit') }}</a>
                     &middot;
                     <a class="list-group__action" href="#" @click.prevent="deleteCollection(collection)">{{ $t('remove') }}</a>

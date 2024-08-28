@@ -1369,15 +1369,15 @@ export interface components {
         };
         BarMembership: {
             /** @example 1 */
-            user_id?: number;
+            user_id: number;
             /** @example Bartender */
-            user_name?: string;
+            user_name: string;
             /** @example 1 */
-            bar_id?: number;
+            bar_id: number;
             /** @example true */
-            is_shelf_public?: boolean;
+            is_shelf_public: boolean;
             /** @example true */
-            use_parent_as_substitute?: boolean;
+            use_parent_as_substitute: boolean;
         };
         BarRequest: {
             /** @example Bar name */
@@ -1406,58 +1406,58 @@ export interface components {
         };
         BarStats: {
             /** @example 1 */
-            total_cocktails?: number;
+            total_cocktails: number;
             /** @example 1 */
-            total_ingredients?: number;
+            total_ingredients: number;
             /** @example 1 */
-            total_favorited_cocktails?: number;
+            total_favorited_cocktails: number;
             /** @example 1 */
-            total_shelf_cocktails?: number;
+            total_shelf_cocktails: number;
             /** @example 1 */
-            total_shelf_ingredients?: number;
+            total_shelf_ingredients: number;
             /** @example 1 */
-            total_bar_members?: number;
+            total_bar_members: number;
             /** @example 1 */
-            total_collections?: number;
-            favorite_tags?: {
+            total_collections: number;
+            favorite_tags: {
                 /** @example 31 */
-                id?: number;
+                id: number;
                 /** @example Tag name */
-                name?: string;
+                name: string;
                 /** @example 12 */
-                cocktails_count?: number;
+                cocktails_count: number;
             }[];
-            your_top_ingredients?: {
+            your_top_ingredients: {
                 /** @example 1 */
-                id?: number;
+                id: number;
                 /** @example gin */
-                slug?: string;
+                slug: string;
                 /** @example Gin */
-                name?: string;
+                name: string;
                 /** @example 1 */
-                cocktails_count?: number;
+                cocktails_count: number;
             }[];
-            most_popular_ingredients?: {
+            most_popular_ingredients: {
                 /** @example 1 */
-                id?: number;
+                id: number;
                 /** @example gin */
-                slug?: string;
+                slug: string;
                 /** @example Gin */
-                name?: string;
+                name: string;
                 /** @example 1 */
-                cocktails_count?: number;
+                cocktails_count: number;
             }[];
-            top_rated_cocktails?: {
+            top_rated_cocktails: {
                 /** @example 1 */
-                id?: number;
+                id: number;
                 /** @example old-fashioned */
-                slug?: string;
+                slug: string;
                 /** @example Old Fashioned */
-                name?: string;
+                name: string;
                 /** @example 3 */
-                avg_rating?: number;
+                avg_rating: number;
                 /** @example 42 */
-                votes?: number;
+                votes: number;
             }[];
         };
         Cocktail: {
@@ -1724,20 +1724,6 @@ export interface components {
             /** @example 20 */
             dilution_percentage: number;
         };
-        CocktailPublic: {
-            /** @example 01ARZ3NDEKTSV4RRFFQ69G5FAV */
-            public_id?: string;
-            /**
-             * Format: datetime
-             * @example 2023-05-14T21:23:40.000000Z
-             */
-            public_at?: string;
-            /**
-             * Format: datetime
-             * @example 2023-05-14T21:23:40.000000Z
-             */
-            public_expires_at?: string;
-        };
         CocktailRequest: {
             /** @example Cocktail name */
             name: string;
@@ -1797,17 +1783,17 @@ export interface components {
         };
         Collection: {
             /** @example 1 */
-            id?: number;
+            id: number;
             /** @example Collection name */
-            name?: string;
+            name: string;
             /** @example Collection description */
-            description?: string | null;
-            is_bar_shared?: boolean;
+            description: string | null;
+            is_bar_shared: boolean;
             /**
              * Format: date-time
              * @example 2023-05-14T21:23:40.000000Z
              */
-            created_at?: string;
+            created_at: string;
             created_user?: components["schemas"]["UserBasic"];
             cocktails?: components["schemas"]["CocktailBasic"][];
         };
@@ -2466,7 +2452,7 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        data?: components["schemas"]["Token"];
+                        data: components["schemas"]["Token"];
                     };
                 };
             };
@@ -2517,7 +2503,7 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        data?: components["schemas"]["Profile"];
+                        data: components["schemas"]["Profile"];
                     };
                 };
             };
@@ -2693,7 +2679,7 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        data?: components["schemas"]["Bar"];
+                        data: components["schemas"]["Bar"];
                     };
                 };
             };
@@ -2738,7 +2724,7 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        data?: components["schemas"]["Bar"];
+                        data: components["schemas"]["Bar"];
                     };
                 };
             };
@@ -2789,7 +2775,7 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        data?: components["schemas"]["Bar"];
+                        data: components["schemas"]["Bar"];
                     };
                 };
             };
@@ -2892,7 +2878,7 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        data?: components["schemas"]["Bar"];
+                        data: components["schemas"]["Bar"];
                     };
                 };
             };
@@ -2939,7 +2925,7 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        data?: components["schemas"]["BarMembership"];
+                        data: components["schemas"]["BarMembership"];
                     };
                 };
             };
@@ -3268,7 +3254,7 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        data?: components["schemas"]["Cocktail"];
+                        data: components["schemas"]["Cocktail"];
                     };
                 };
             };
@@ -3313,7 +3299,7 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        data?: components["schemas"]["Cocktail"];
+                        data: components["schemas"]["Cocktail"];
                     };
                 };
             };
@@ -3364,7 +3350,7 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        data?: components["schemas"]["Cocktail"];
+                        data: components["schemas"]["Cocktail"];
                     };
                 };
             };
@@ -3515,7 +3501,7 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        data?: components["schemas"]["Cocktail"];
+                        data: components["schemas"]["Cocktail"];
                     };
                 };
             };
@@ -3664,7 +3650,7 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        data?: components["schemas"]["Cocktail"];
+                        data: components["schemas"]["Cocktail"];
                     };
                 };
             };
@@ -3737,7 +3723,7 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        data?: components["schemas"]["CocktailMethod"];
+                        data: components["schemas"]["CocktailMethod"];
                     };
                 };
             };
@@ -3773,7 +3759,7 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        data?: components["schemas"]["CocktailMethod"];
+                        data: components["schemas"]["CocktailMethod"];
                     };
                 };
             };
@@ -3824,7 +3810,7 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        data?: components["schemas"]["CocktailMethod"];
+                        data: components["schemas"]["CocktailMethod"];
                     };
                 };
             };
@@ -3961,7 +3947,7 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        data?: components["schemas"]["Collection"];
+                        data: components["schemas"]["Collection"];
                     };
                 };
             };
@@ -4031,7 +4017,7 @@ export interface operations {
             header?: never;
             path: {
                 /** @description Database id or slug of a resource */
-                id: string;
+                id: number;
             };
             cookie?: never;
         };
@@ -4044,7 +4030,7 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        data?: components["schemas"]["Collection"];
+                        data: components["schemas"]["Collection"];
                     };
                 };
             };
@@ -4095,7 +4081,7 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        data?: components["schemas"]["Collection"];
+                        data: components["schemas"]["Collection"];
                     };
                 };
             };
@@ -4191,7 +4177,7 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        data?: components["schemas"]["Collection"];
+                        data: components["schemas"]["Collection"];
                     };
                 };
             };
@@ -4227,7 +4213,7 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        data?: components["schemas"]["CocktailExplore"];
+                        data: components["schemas"]["CocktailExplore"];
                     };
                 };
             };
@@ -4290,7 +4276,7 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        data?: components["schemas"]["Export"];
+                        data: components["schemas"]["Export"];
                     };
                 };
             };
@@ -4408,7 +4394,7 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        data?: components["schemas"]["FileDownloadLink"];
+                        data: components["schemas"]["FileDownloadLink"];
                     };
                 };
             };
@@ -4498,7 +4484,7 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        data?: components["schemas"]["Glass"];
+                        data: components["schemas"]["Glass"];
                     };
                 };
             };
@@ -4534,7 +4520,7 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        data?: components["schemas"]["Glass"];
+                        data: components["schemas"]["Glass"];
                     };
                 };
             };
@@ -4585,7 +4571,7 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        data?: components["schemas"]["Glass"];
+                        data: components["schemas"]["Glass"];
                     };
                 };
             };
@@ -4772,7 +4758,7 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        data?: components["schemas"]["Image"];
+                        data: components["schemas"]["Image"];
                     };
                 };
             };
@@ -4823,7 +4809,7 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        data?: components["schemas"]["Image"];
+                        data: components["schemas"]["Image"];
                     };
                 };
             };
@@ -4947,7 +4933,7 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        data?: components["schemas"]["Cocktail"];
+                        data: components["schemas"]["Cocktail"];
                     };
                 };
             };
@@ -5114,7 +5100,7 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        data?: components["schemas"]["IngredientCategory"];
+                        data: components["schemas"]["IngredientCategory"];
                     };
                 };
             };
@@ -5150,7 +5136,7 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        data?: components["schemas"]["IngredientCategory"];
+                        data: components["schemas"]["IngredientCategory"];
                     };
                 };
             };
@@ -5201,7 +5187,7 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        data?: components["schemas"]["IngredientCategory"];
+                        data: components["schemas"]["IngredientCategory"];
                     };
                 };
             };
@@ -5384,7 +5370,7 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        data?: components["schemas"]["Ingredient"];
+                        data: components["schemas"]["Ingredient"];
                     };
                 };
             };
@@ -5420,7 +5406,7 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        data?: components["schemas"]["Ingredient"];
+                        data: components["schemas"]["Ingredient"];
                     };
                 };
             };
@@ -5471,7 +5457,7 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        data?: components["schemas"]["Ingredient"];
+                        data: components["schemas"]["Ingredient"];
                     };
                 };
             };
@@ -5755,7 +5741,7 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        data?: components["schemas"]["Menu"];
+                        data: components["schemas"]["Menu"];
                     };
                 };
             };
@@ -5798,7 +5784,7 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        data?: components["schemas"]["Menu"];
+                        data: components["schemas"]["Menu"];
                     };
                 };
             };
@@ -5834,7 +5820,7 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        data?: components["schemas"]["MenuExplore"];
+                        data: components["schemas"]["MenuExplore"];
                     };
                 };
             };
@@ -5920,7 +5906,7 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        data?: components["schemas"]["Note"];
+                        data: components["schemas"]["Note"];
                     };
                 };
             };
@@ -5967,7 +5953,7 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        data?: components["schemas"]["Note"];
+                        data: components["schemas"]["Note"];
                     };
                 };
             };
@@ -6080,7 +6066,7 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        data?: components["schemas"]["Token"];
+                        data: components["schemas"]["Token"];
                     };
                 };
             };
@@ -6196,7 +6182,7 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        data?: components["schemas"]["PriceCategory"];
+                        data: components["schemas"]["PriceCategory"];
                     };
                 };
             };
@@ -6232,7 +6218,7 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        data?: components["schemas"]["PriceCategory"];
+                        data: components["schemas"]["PriceCategory"];
                     };
                 };
             };
@@ -6283,7 +6269,7 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        data?: components["schemas"]["PriceCategory"];
+                        data: components["schemas"]["PriceCategory"];
                     };
                 };
             };
@@ -6370,7 +6356,7 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        data?: components["schemas"]["Profile"];
+                        data: components["schemas"]["Profile"];
                     };
                 };
             };
@@ -6407,7 +6393,7 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        data?: components["schemas"]["Profile"];
+                        data: components["schemas"]["Profile"];
                     };
                 };
             };
@@ -6532,7 +6518,7 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        data?: components["schemas"]["ServerVersion"];
+                        data: components["schemas"]["ServerVersion"];
                     };
                 };
             };
@@ -7079,7 +7065,7 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        data?: components["schemas"]["BarStats"];
+                        data: components["schemas"]["BarStats"];
                     };
                 };
             };
@@ -7163,7 +7149,7 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        data?: components["schemas"]["Tag"];
+                        data: components["schemas"]["Tag"];
                     };
                 };
             };
@@ -7199,7 +7185,7 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        data?: components["schemas"]["Tag"];
+                        data: components["schemas"]["Tag"];
                     };
                 };
             };
@@ -7250,7 +7236,7 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        data?: components["schemas"]["Tag"];
+                        data: components["schemas"]["Tag"];
                     };
                 };
             };
@@ -7377,7 +7363,7 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        data?: components["schemas"]["User"];
+                        data: components["schemas"]["User"];
                     };
                 };
             };
@@ -7419,7 +7405,7 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        data?: components["schemas"]["User"];
+                        data: components["schemas"]["User"];
                     };
                 };
             };
@@ -7476,7 +7462,7 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        data?: components["schemas"]["User"];
+                        data: components["schemas"]["User"];
                     };
                 };
             };
@@ -7603,7 +7589,7 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        data?: components["schemas"]["Utensil"];
+                        data: components["schemas"]["Utensil"];
                     };
                 };
             };
@@ -7639,7 +7625,7 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        data?: components["schemas"]["Utensil"];
+                        data: components["schemas"]["Utensil"];
                     };
                 };
             };
@@ -7690,7 +7676,7 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        data?: components["schemas"]["Utensil"];
+                        data: components["schemas"]["Utensil"];
                     };
                 };
             };

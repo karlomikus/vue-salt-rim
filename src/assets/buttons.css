@@ -222,3 +222,43 @@
     background: var(--clr-gray-200);
     color: var(--clr-gray-500);
 }
+
+.button-group {
+    --cbg-clr-content: var(--clr-gray-800);
+    --cbg-clr-bg: var(--clr-gray-100);
+    --cbg-clr-bg-hover: var(--clr-gray-300);
+    --cbg-clr-bg-active: var(--clr-gray-200);
+}
+
+.dark-theme .button-group {
+    --cbg-clr-content: var(--clr-gray-200);
+    --cbg-clr-bg: rgba(0, 0, 0, .2);
+    --cbg-clr-bg-hover: rgb(0, 0, 0, .4);
+    --cbg-clr-bg-active: rgb(0, 0, 0, .6);
+}
+
+.button-group h4 {
+    font-size: 0.7rem;
+}
+
+.button-group button {
+    background: none;
+    border: none;
+    font-size: 0.85rem;
+    font-weight: var(--fw-bold);
+    margin: 0;
+    padding: 0.15rem 0.5rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    cursor: pointer;
+    color: var(--cbg-clr-content);
+    background-color: var(--cbg-clr-bg);
+}
+
+.button-group button.is-active {
+    background-color: var(--cbg-clr-bg-active);
+}
+
+.button-group button:hover {
+    background-color: var(--cbg-clr-bg-hover);
+}

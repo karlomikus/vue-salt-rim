@@ -172,10 +172,62 @@ export default class BarAssistantClient {
   }
 
   static async getIngredient(id: string) {
-    return (await client.GET('/ingredients/{id}', { params: { path: { id: id } } })).data 
+    return (await client.GET('/ingredients/{id}', { params: { path: { id: id } } })).data
   }
 
   static async getExtraCocktailsWithIngredient(id: number) {
-    return (await client.GET('/ingredients/{id}/extra', { params: { path: { id: id } } })).data 
+    return (await client.GET('/ingredients/{id}/extra', { params: { path: { id: id } } })).data
+  }
+
+  static async getUtensils() {
+    return (await client.GET('/utensils')).data
+  }
+
+  static async getUtensil(id: number) {
+    return (await client.GET('/utensils/{id}', { params: { path: { id: id } } })).data
+  }
+
+  static async saveUtensil(data: components["schemas"]["UtensilRequest"]) {
+    return (await client.POST('/utensils', { body: data })).data
+  }
+
+  static async updateUtensil(id: number, data: components["schemas"]["UtensilRequest"]) {
+    return (await client.PUT('/utensils/{id}', { params: { path: { id: id } }, body: data })).data
+  }
+
+  static async deleteUtensil(id: number) {
+    return (await client.DELETE('/utensils/{id}', { params: { path: { id: id } } })).data
+  }
+
+  static async getUsers() {
+    return (await client.GET('/users')).data
+  }
+
+  static async getUser(id: number) {
+    return (await client.GET('/users/{id}', { params: { path: { id: id } } })).data
+  }
+
+  static async saveUser(data: components["schemas"]["UserRequest"]) {
+    return (await client.POST('/users', { body: data })).data
+  }
+
+  static async updateUser(id: number, data: components["schemas"]["UserRequest"]) {
+    return (await client.PUT('/users/{id}', { params: { path: { id: id } }, body: data })).data
+  }
+
+  static async deleteUser(id: number) {
+    return (await client.DELETE('/users/{id}', { params: { path: { id: id } } })).data
+  }
+
+  static async removeUserFromBar(barId: number, userId: number) {
+    return (await client.DELETE('/bars/{id}/memberships/{userId}', { params: { path: { id: barId, userId: userId } } })).data
+  }
+
+  static async getCollections() {
+    return (await client.GET('/collections')).data
+  }
+
+  static async getCollection(id: number) {
+    return (await client.GET('/collections/{id}', { params: { path: { id: id } } })).data
   }
 }

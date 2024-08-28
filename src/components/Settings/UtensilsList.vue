@@ -45,7 +45,7 @@
 </template>
 
 <script>
-import ApiRequests from './../../ApiRequests.js'
+import BarAssistantClient from '@/api/BarAssistantClient'
 import OverlayLoader from './../OverlayLoader.vue'
 import PageHeader from './../PageHeader.vue'
 import Navigation from './../Settings/SettingsNavigation.vue'
@@ -78,8 +78,8 @@ export default {
         refreshUtensils() {
             this.showDialog = false
             this.isLoading = true
-            ApiRequests.fetchUtensils().then(data => {
-                this.utensils = data
+            BarAssistantClient.getUtensils().then(resp => {
+                this.utensils = resp.data
                 this.isLoading = false
             }).catch(e => {
                 this.$toast.error(e.message)
@@ -95,7 +95,7 @@ export default {
                 onResolved: (dialog) => {
                     this.isLoading = true
                     dialog.close()
-                    ApiRequests.deleteUtensil(utensil.id).then(() => {
+                    BarAssistantClient.deleteUtensil(utensil.id).then(() => {
                         this.isLoading = false
                         this.$toast.default(this.$t('utensils.delete-success'))
                         this.refreshUtensils()

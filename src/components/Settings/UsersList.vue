@@ -50,7 +50,7 @@
 </template>
 
 <script>
-import ApiRequests from './../../ApiRequests.js'
+import BarAssistantClient from '@/api/BarAssistantClient'
 import OverlayLoader from '@/components/OverlayLoader.vue'
 import PageHeader from '@/components/PageHeader.vue'
 import Navigation from '@/components/Settings/SettingsNavigation.vue'
@@ -89,8 +89,8 @@ export default {
         refreshUsers() {
             this.showDialog = false
             this.isLoading = true
-            ApiRequests.fetchUsers().then(data => {
-                this.users = data
+            BarAssistantClient.getUsers().then(resp => {
+                this.users = resp.data
                 this.isLoading = false
             }).catch(e => {
                 this.$toast.error(e.message)
@@ -107,7 +107,7 @@ export default {
                 onResolved: (dialog) => {
                     this.isLoading = true
                     dialog.close()
-                    ApiRequests.removeUserFromBar(appState.bar.id, user.id).then(() => {
+                    BarAssistantClient.removeUserFromBar(appState.bar.id, user.id).then(() => {
                         this.isLoading = false
                         this.$toast.default(this.$t('users.delete-success'))
                         this.refreshUsers()

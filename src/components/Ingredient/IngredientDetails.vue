@@ -124,7 +124,7 @@ import UnitHandler from '../../UnitHandler.js'
                             </li>
                             <li>
                                 <RouterLink :to="{name: 'cocktails', query: {'filter[ingredient_id]': ingredient.id}}">
-                                    Used in <strong>{{ ingredient.cocktails_count }} <template v-if="ingredient.cocktails_as_substitute_count && ingredient.cocktails_as_substitute_count > 0">({{ ingredient.cocktails_as_substitute_count }} as substitute)</template></strong> cocktail recipes
+                                    Used in <strong>{{ ingredient.cocktails_count }} <template v-if="ingredient.cocktails_as_substitute_count && ingredient.cocktails_as_substitute_count > 0">(+{{ ingredient.cocktails_as_substitute_count }} as substitute)</template></strong> cocktail recipes
                                 </RouterLink>
                             </li>
                             <li v-if="extraIfAddedToShelf.length > 0">{{ $t('ingredient.extra-cocktails') }}: <RouterLink :to="{name: 'cocktails', query: {'filter[id]': extraCocktailsIds}}">{{ extraIfAddedToShelf.length }} {{ $t('cocktail.cocktails') }}</RouterLink></li>

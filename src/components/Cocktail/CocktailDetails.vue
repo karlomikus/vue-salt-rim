@@ -23,6 +23,8 @@ import type { components } from '@/api/api'
 import Rating from '@/components/RatingActions.vue'
 import DateFormatter from '@/components/DateFormatter.vue'
 import AppState from '@/AppState'
+import UnitConverter from '@/components/Units/UnitConverter.vue'
+import UnitPicker from '@/components/Units/UnitPicker.vue'
 
 type Cocktail = components["schemas"]["Cocktail"]
 type Note = components["schemas"]["Note"]
@@ -158,11 +160,6 @@ async function copy() {
 
 function buildSubstituteString(sub: components["schemas"]["CocktailIngredientSubstitute"]) {
     return new String(sub.ingredient.name + ' ' + UnitHandler.print(sub, currentUnit.value, servings.value)).trim()
-}
-
-function changeMeasurementUnit(toUnit: string) {
-    currentUnit.value = toUnit
-    appState.setDefaultUnits(toUnit)
 }
 
 function shareFromFormat(format: string) {
@@ -454,53 +451,50 @@ fetchShoppingList()
                     </div>
                     <div class="has-markdown" v-html="parsedDescription"></div>
                 </div>
-                <div v-if="cocktail.ingredients && cocktail.ingredients.length > 0" class="block-container block-container--padded">
-                    <h3 class="details-block-container__title">{{ $t('ingredient.ingredients') }}</h3>
-                    <div style="display: grid; grid-template-columns: 1fr 1fr;">
-                        <div class="cocktail-button-group">
-                            <h4>{{ $t('servings') }}:</h4>
-                            <button @click="servings <= 1 ? servings = 1 : servings--">-</button>
-                            <button class="active-serving">{{ servings }}</button>
-                            <button @click="servings++">+</button>
-                        </div>
-                        <div class="cocktail-button-group" style="text-align:right">
-                            <h4>{{ $t('units') }}:</h4>
-                            <button type="button" :class="{ 'active-serving': currentUnit == 'ml' }" @click="changeMeasurementUnit('ml')">ml</button>
-                            <button type="button" :class="{ 'active-serving': currentUnit == 'oz' }" @click="changeMeasurementUnit('oz')">oz</button>
-                            <button type="button" :class="{ 'active-serving': currentUnit == 'cl' }" @click="changeMeasurementUnit('cl')">cl</button>
-                        </div>
-                    </div>
-                    <ul class="cocktail-ingredients">
-                        <li v-for="ing in cocktail.ingredients" :key="ing.sort">
-                            <div class="cocktail-ingredients__ingredient">
-                                <span class="ingredient-shelf-status" :class="{'ingredient-shelf-status--in-shelf': ing.in_shelf, 'ingredient-shelf-status--missing': !ing.in_shelf, 'ingredient-shelf-status--substitute': !ing.in_shelf && ing.in_shelf_as_substitute, 'ingredient-shelf-status--complex': !ing.in_shelf && ing.in_shelf_as_complex_ingredient}"></span>
-                                <RouterLink class="cocktail-ingredients__ingredient__name" :to="{ name: 'ingredients.show', params: { id: ing.ingredient.slug } }" data-ingredient="preferred">
-                                    {{ ing.ingredient.name }} <span v-if="ing.note" class="cocktail-ingredients__flags__flag">&ndash; {{ ing.note }}</span> <small v-if="ing.optional">({{ $t('optional') }})</small>
-                                </RouterLink>
-                                <div class="cocktail-ingredients__ingredient__amount">{{ UnitHandler.print(ing, currentUnit, servings) }}</div>
+                <UnitConverter @unit-changed="(u: string) => currentUnit = u">
+                    <div v-if="cocktail.ingredients && cocktail.ingredients.length > 0" class="block-container block-container--padded">
+                        <h3 class="details-block-container__title">{{ $t('ingredient.ingredients') }}</h3>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; margin-bottom: 1rem;">
+                            <div class="button-group">
+                                <h4>{{ $t('servings') }}:</h4>
+                                <button @click="servings <= 1 ? servings = 1 : servings--">-</button>
+                                <button class="is-active">{{ servings }}</button>
+                                <button @click="servings++">+</button>
                             </div>
-                            <div class="cocktail-ingredients__flags">
-                                <div v-if="ing.substitutes && ing.substitutes.length > 0" class="cocktail-ingredients__flags__flag">
-                                    <div v-if="!ing.in_shelf && ing.in_shelf_as_substitute" class="cocktail-ingredients__flags__flag">&middot; {{ $t('cocktail.missing-ing-sub-available') }}</div>
-                                    &middot; {{ $t('substitutes') }}:
-                                    <template v-for="(sub, index) in ing.substitutes" :key="index">
-                                        <RouterLink :style="{'font-weight': sub.in_shelf ? 'bold' : 'normal'}" :to="{ name: 'ingredients.show', params: { id: sub.ingredient.slug } }" data-ingredient="substitute">
-                                            {{ buildSubstituteString(sub) }}
-                                        </RouterLink>
-                                        <template v-if="index + 1 !== ing.substitutes.length">, </template>
-                                    </template>
+                            <UnitPicker></UnitPicker>
+                        </div>
+                        <ul class="cocktail-ingredients">
+                            <li v-for="ing in cocktail.ingredients" :key="ing.sort">
+                                <div class="cocktail-ingredients__ingredient">
+                                    <span class="ingredient-shelf-status" :class="{'ingredient-shelf-status--in-shelf': ing.in_shelf, 'ingredient-shelf-status--missing': !ing.in_shelf, 'ingredient-shelf-status--substitute': !ing.in_shelf && ing.in_shelf_as_substitute, 'ingredient-shelf-status--complex': !ing.in_shelf && ing.in_shelf_as_complex_ingredient}"></span>
+                                    <RouterLink class="cocktail-ingredients__ingredient__name" :to="{ name: 'ingredients.show', params: { id: ing.ingredient.slug } }" data-ingredient="preferred">
+                                        {{ ing.ingredient.name }} <span v-if="ing.note" class="cocktail-ingredients__flags__flag">&ndash; {{ ing.note }}</span> <small v-if="ing.optional">({{ $t('optional') }})</small>
+                                    </RouterLink>
+                                    <div class="cocktail-ingredients__ingredient__amount">{{ UnitHandler.print(ing, currentUnit, servings) }}</div>
                                 </div>
-                                <div v-if="!ing.in_shelf && !ing.in_shelf_as_substitute && !ing.in_shelf_as_complex_ingredient" class="cocktail-ingredients__flags__flag">&middot; {{ $t('cocktail.missing-ing') }}</div>
-                                <div v-if="!ing.in_shelf && ing.in_shelf_as_complex_ingredient" class="cocktail-ingredients__flags__flag">&middot; {{ $t('cocktail.missing-ing-complex') }}</div>
-                                <div v-if="userShoppingListIngredients.map(i => i.ingredient.id).includes(ing.ingredient.id)" class="cocktail-ingredients__flags__flag">&middot; {{ $t('ingredient.on-shopping-list') }}</div>
-                            </div>
-                        </li>
-                    </ul>
-                    <div v-if="cocktail.volume_ml" class="cocktail-ingredients__total-amount">
-                        Approx: {{ totalLiquid }} <span v-show="(cocktail?.calories ?? 0) > 0">&middot; {{ cocktail.calories?.toFixed(0) }} kcal</span> <span v-show="(cocktail?.alcohol_units ?? 0) > 0">&middot; {{ cocktail.alcohol_units?.toFixed(2) }} units</span>
+                                <div class="cocktail-ingredients__flags">
+                                    <div v-if="ing.substitutes && ing.substitutes.length > 0" class="cocktail-ingredients__flags__flag">
+                                        <div v-if="!ing.in_shelf && ing.in_shelf_as_substitute" class="cocktail-ingredients__flags__flag">&middot; {{ $t('cocktail.missing-ing-sub-available') }}</div>
+                                        &middot; {{ $t('substitutes') }}:
+                                        <template v-for="(sub, index) in ing.substitutes" :key="index">
+                                            <RouterLink :style="{'font-weight': sub.in_shelf ? 'bold' : 'normal'}" :to="{ name: 'ingredients.show', params: { id: sub.ingredient.slug } }" data-ingredient="substitute">
+                                                {{ buildSubstituteString(sub) }}
+                                            </RouterLink>
+                                            <template v-if="index + 1 !== ing.substitutes.length">, </template>
+                                        </template>
+                                    </div>
+                                    <div v-if="!ing.in_shelf && !ing.in_shelf_as_substitute && !ing.in_shelf_as_complex_ingredient" class="cocktail-ingredients__flags__flag">&middot; {{ $t('cocktail.missing-ing') }}</div>
+                                    <div v-if="!ing.in_shelf && ing.in_shelf_as_complex_ingredient" class="cocktail-ingredients__flags__flag">&middot; {{ $t('cocktail.missing-ing-complex') }}</div>
+                                    <div v-if="userShoppingListIngredients.map(i => i.ingredient.id).includes(ing.ingredient.id)" class="cocktail-ingredients__flags__flag">&middot; {{ $t('ingredient.on-shopping-list') }}</div>
+                                </div>
+                            </li>
+                        </ul>
+                        <div v-if="cocktail.volume_ml" class="cocktail-ingredients__total-amount">
+                            Approx: {{ totalLiquid }} <span v-show="(cocktail?.calories ?? 0) > 0">&middot; {{ cocktail.calories?.toFixed(0) }} kcal</span> <span v-show="(cocktail?.alcohol_units ?? 0) > 0">&middot; {{ cocktail.alcohol_units?.toFixed(2) }} units</span>
+                        </div>
+                        <a v-show="missingIngredientIds.length > 0" href="#" @click.prevent="addMissingIngredients">{{ $t('cocktail.missing-ing-action') }}</a>
                     </div>
-                    <a v-show="missingIngredientIds.length > 0" href="#" @click.prevent="addMissingIngredients">{{ $t('cocktail.missing-ing-action') }}</a>
-                </div>
+                </UnitConverter>
                 <div class="block-container block-container--padded has-markdown">
                     <h3 class="details-block-container__title">{{ $t('instructions') }}</h3>
                     <div v-html="parsedInstructions"></div>
@@ -663,46 +657,5 @@ swiper-container {
     grid-template-columns: 1fr 1fr 1fr;
     column-gap: var(--gap-size-1);
     z-index: 1;
-}
-
-.cocktail-button-group {
-    --cbg-clr-content: var(--clr-gray-800);
-    --cbg-clr-bg: var(--clr-gray-100);
-    --cbg-clr-bg-hover: var(--clr-gray-300);
-    --cbg-clr-bg-active: var(--clr-gray-200);
-    margin-bottom: 20px;
-}
-
-.dark-theme .cocktail-button-group {
-    --cbg-clr-content: var(--clr-gray-200);
-    --cbg-clr-bg: rgba(0, 0, 0, .2);
-    --cbg-clr-bg-hover: rgb(0, 0, 0, .4);
-    --cbg-clr-bg-active: rgb(0, 0, 0, .6);
-}
-
-.cocktail-button-group h4 {
-    font-size: 0.7rem;
-}
-
-.cocktail-button-group button {
-    background: none;
-    border: none;
-    font-size: 0.85rem;
-    font-weight: var(--fw-bold);
-    margin: 0;
-    padding: 0.15rem 0.5rem;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    cursor: pointer;
-    color: var(--cbg-clr-content);
-    background-color: var(--cbg-clr-bg);
-}
-
-.cocktail-button-group button.active-serving {
-    background-color: var(--cbg-clr-bg-active);
-}
-
-.cocktail-button-group button:hover {
-    background-color: var(--cbg-clr-bg-hover);
 }
 </style>
