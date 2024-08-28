@@ -140,9 +140,8 @@ export default {
 }
 
 .dark-theme .server-status {
-    background-image: linear-gradient(160deg, var(--clr-accent-purple), var(--clr-dark-main-950) 70%);
+    background-image: var(--clr-dark-main-950);
     border: 0;
-    border-top: 1px solid var(--clr-accent-purple);
 }
 
 .server-status__title {

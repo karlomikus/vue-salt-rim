@@ -436,15 +436,11 @@ export default {
 }
 
 .menu-url {
-    background: var(--clr-gray-100);
+    background: var(--clr-accent-purple);
     padding: 0.5rem;
     font-weight: var(--fw-bold);
     border-radius: var(--radius-1);
     width: 100%;
-}
-
-.dark-theme .menu-url {
-    background: var(--clr-gray-900);
 }
 
 .menu-url a {

@@ -41,13 +41,10 @@ main {
 
 mark {
     background-color: rgb(255, 190, 136);
-    /* display: inline-block; */
     padding: 0 2px;
 }
 
 .page-subtitle {
-    --ps-clr-bg: #eeeaf7;
-    --ps-clr-text: #6c6380;
     padding: 0.5rem 1rem;
     border-radius: var(--radius-2);
     margin: 1rem 0;
@@ -56,8 +53,8 @@ mark {
     text-transform: uppercase;
     letter-spacing: 1px;
     display: flex;
-    background: var(--ps-clr-bg);
-    color: var(--ps-clr-text);
+    background: var(--clr-accent-purple);
+    color: #6c6380;
 }
 
 .page-subtitle a {
@@ -65,10 +62,6 @@ mark {
     font-size: 1rem;
     font-family: var(--font-primary);
     text-decoration: none;
-}
-
-.dark-theme .page-subtitle {
-    --ps-clr-bg: rgba(0, 0, 0, .2);
 }
 
 h3.form-section-title {

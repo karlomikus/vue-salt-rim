@@ -401,7 +401,7 @@ export default {
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
-    background-color: #f4f1fa;
+    background-color: var(--clr-accent-purple);
     border-radius: var(--radius-2);
     padding: 0.5rem 0.75rem;
     margin: 0 0 1rem 0;

@@ -596,15 +596,15 @@ swiper-container {
 }
 
 .cocktail-ingredients {
-    --ci-clr-list-bg: #f4f1fa;
+    --ci-clr-list-bg: var(--clr-accent-purple);
     list-style: none;
     padding: 0;
     margin: 0;
 }
 
-.dark-theme .cocktail-ingredients {
+/* .dark-theme .cocktail-ingredients {
     --ci-clr-list-bg: rgba(0, 0, 0, .4);
-}
+} */
 
 .cocktail-ingredients__total-amount,
 .cocktail-ingredients__total-amount span {
