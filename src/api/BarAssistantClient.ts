@@ -50,6 +50,10 @@ client.use(barIdMiddleware);
 client.use(rejectOnError);
 
 export default class BarAssistantClient {
+  static async getIngredients(query = {}) {
+    return (await client.GET('/ingredients', { params: { query: query } })).data
+  }
+
   static async getCocktail(id: string) {
     return (await client.GET('/cocktails/{id}', { params: { path: { id: id } } })).data
   }
@@ -115,8 +119,8 @@ export default class BarAssistantClient {
     return (await client.PUT('/tags/{id}', { params: { path: { id: id } }, body: data })).data
   }
 
-  static async getCocktailMethods() {
-    return (await client.GET('/cocktail-methods')).data
+  static async getCocktailMethods(query = {}) {
+    return (await client.GET('/cocktail-methods', { params: { query: query } })).data
   }
 
   static async getCocktailMethod(id: number) {
@@ -229,5 +233,29 @@ export default class BarAssistantClient {
 
   static async getCollection(id: number) {
     return (await client.GET('/collections/{id}', { params: { path: { id: id } } })).data
+  }
+
+  static async scrapeCocktail(url: string) {
+    return (await client.POST('/import/scrape', { body: { source: url } })).data
+  }
+
+  static async getGlasses(query = {}) {
+    return (await client.GET('/glasses', { params: { query: query } })).data
+  }
+
+  static async getGlass(id: number) {
+    return (await client.GET('/glasses/{id}', { params: { path: { id: id } } })).data
+  }
+
+  static async saveGlass(data: components["schemas"]["GlassRequest"]) {
+    return (await client.POST('/glasses', { body: data })).data
+  }
+
+  static async updateGlass(id: number, data: components["schemas"]["GlassRequest"]) {
+    return (await client.PUT('/glasses/{id}', { params: { path: { id: id } }, body: data })).data
+  }
+
+  static async deleteGlass(id: number) {
+    return (await client.DELETE('/glasses/{id}', { params: { path: { id: id } } })).data
   }
 }

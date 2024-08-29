@@ -588,11 +588,12 @@ swiper-container {
     top: 1rem;
     left: 1rem;
     display: inline-block;
-    background-color: rgba(0, 0, 0, .4);
+    background-color: rgba(0, 0, 0, .5);
     color: #fff;
     border-radius: var(--radius-3);
     padding: 2px 7px;
     font-size: 0.7rem;
+    text-shadow: 1px 1px 0 rgba(0, 0, 0, .8);
 }
 
 .cocktail-ingredients {
@@ -615,6 +616,7 @@ swiper-container {
 
 .cocktail-ingredients li {
     background-color: var(--ci-clr-list-bg);
+    color: var(--clr-accent-purple-dark);
     border-radius: var(--radius-2);
     margin-bottom: 0.5rem;
     padding: 0.5rem 0.75rem;

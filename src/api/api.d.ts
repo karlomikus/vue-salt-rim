@@ -4979,11 +4979,14 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        /** @example draft2 */
-                        schema_version?: string;
-                        schema?: components["schemas"]["cocktail-02.schema"];
-                        scraper_meta?: {
-                            [key: string]: unknown;
+                        data: {
+                            /** @example draft2 */
+                            schema_version: string;
+                            schema: components["schemas"]["cocktail-02.schema"];
+                            scraper_meta: {
+                                _id: string;
+                                source: string;
+                            }[];
                         };
                     };
                 };
