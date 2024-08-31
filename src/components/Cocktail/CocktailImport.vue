@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import BarAssistantClient from '@/api/BarAssistantClient'
 import OverlayLoader from './../OverlayLoader.vue'
 import PageHeader from './../PageHeader.vue'
@@ -96,6 +96,22 @@ const importType = ref('url')
 const duplicateAction = ref('none')
 const source = ref<null | string>(null)
 const result = ref<LocalSchema>({} as LocalSchema)
+const cocktailTags = computed({
+    get() {
+        return result.value.recipe?.tags?.join(',')
+    },
+    set(newVal) {
+        if (Array.isArray(newVal)) {
+            newVal = newVal.join(',')
+        }
+
+        if (newVal == '' || newVal == null || newVal == undefined) {
+            result.value.recipe.tags = []
+        } else {
+            result.value.recipe.tags = Array.from(new Set(newVal.split(',').filter(t => t != '')))
+        }
+    }
+})
 
 function submit() {
 }
@@ -316,6 +332,7 @@ async function getOrCreateIngredient(ingredient: SchemaIngredient): Promise<Full
 }
 
 async function finishImporting() {
+    isLoading.value = true
     if (result.value.recipe.glass) {
         result.value.recipe.matchedGlassId = (await getGlass(result.value.recipe.glass))?.id ?? null
     }
@@ -363,6 +380,7 @@ async function finishImporting() {
         method: {id: result.value.recipe.matchedMethodId},
         glass: {id: result.value.recipe.matchedGlassId},
         images: result.value.recipe.images?.map(img => ({file: img.uri, url: img.uri, copyright: img.copyright})) ?? [],
+        tags: result.value.recipe.tags,
         ingredients: result.value.recipe.ingredients.map(i => {
             const ing = i as CocktailIngredient
 
@@ -386,7 +404,6 @@ async function finishImporting() {
                 ingredient: ing.matchedIngredient,
             }
         }),
-        tags: [],
         utensils: [],
     }
 
@@ -483,7 +500,7 @@ async function finishImporting() {
                 </template>
                 <div class="form-group">
                     <label class="form-label" for="tags">{{ $t('tag.tags') }}</label>
-                    <input id="tags" v-model="result.recipe.tags" type="text" class="form-input">
+                    <input id="tags" v-model="cocktailTags" type="text" class="form-input">
                 </div>
             </div>
             <h3 class="form-section-title">{{ $t('ingredient.ingredients') }}</h3>
