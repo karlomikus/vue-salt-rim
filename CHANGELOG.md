@@ -1,8 +1,13 @@
 # v3.0.0
 ## New
 - Importing now supports substitute ingredients
+- Added shopping list page
 
 ## Changes
+- Removed importing from collection
+- Removed importing from yaml
+- Updated cocktail details layout
+- Updated ingredient details layout
 - Importing no longer automatically converts units
 
 # v2.17.2
