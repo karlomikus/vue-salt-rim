@@ -250,16 +250,6 @@ export default {
                 const parsedScrapeResult = JSON.parse(scraped)
 
                 this.cocktail = parsedScrapeResult
-
-                if (parsedScrapeResult.images.length > 0) {
-                    this.cocktail.images = [
-                        {
-                            copyright: parsedScrapeResult.images[0].copyright,
-                            url: parsedScrapeResult.images[0].url,
-                            file: parsedScrapeResult.images[0].url,
-                        }
-                    ]
-                }
             }
         },
         removeIngredient(ing) {
@@ -335,7 +325,6 @@ export default {
                 name: this.cocktail.name,
                 description: this.cocktail.description,
                 instructions: this.cocktail.instructions,
-                history: this.cocktail.history,
                 garnish: this.cocktail.garnish,
                 source: this.cocktail.source,
                 cocktail_method_id: this.cocktail.method.id,

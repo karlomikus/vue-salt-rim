@@ -54,6 +54,10 @@ export default class BarAssistantClient {
     return (await client.GET('/ingredients', { params: { query: query } })).data
   }
 
+  static async saveIngredient(data: components["schemas"]["IngredientRequest"]) {
+    return (await client.POST('/ingredients', { body: data })).data
+  }
+
   static async getCocktail(id: string) {
     return (await client.GET('/cocktails/{id}', { params: { path: { id: id } } })).data
   }
@@ -79,7 +83,6 @@ export default class BarAssistantClient {
   }
 
   static async deleteCocktailRating(id: number) {
-    console.log('del')
     return (await client.DELETE('/cocktails/{id}/ratings', { params: { path: { id: id } } })).data
   }
 

@@ -1,3 +1,10 @@
+# v3.0.0
+## New
+- Importing now supports substitute ingredients
+
+## Changes
+- Importing no longer automatically converts units
+
 # v2.17.2
 ## Fixes
 - Fix substitute ingredient showing null amounts as `1`
