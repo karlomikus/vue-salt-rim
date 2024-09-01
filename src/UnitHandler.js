@@ -1,4 +1,5 @@
-import Unitz from 'unitz'
+import { numericQuantity } from 'numeric-quantity';
+import { formatQuantity } from 'format-quantity';
 
 const handler = {
     /**
@@ -16,12 +17,12 @@ const handler = {
     print(ingredient, convertTo = 'ml', servings = 1) {
         let orgAmount = 0
         if (ingredient.amount !== null && ingredient.amount !== undefined) {
-            orgAmount = Unitz.parse(`${ingredient.amount}`).value
+            orgAmount = numericQuantity(`${ingredient.amount}`)
         }
 
         let orgAmountMax = 0
         if (ingredient.amount_max !== null && ingredient.amount_max !== undefined) {
-            orgAmountMax = Unitz.parse(`${(ingredient.amount_max || 0)}`).value
+            orgAmountMax = numericQuantity(`${(ingredient.amount_max || 0)}`)
         }
 
         orgAmount *= servings
@@ -53,7 +54,7 @@ const handler = {
      * @returns {string}
      */
     asFraction(number) {
-        return new Unitz.Fraction(number, [2, 3, 4]).string
+        return formatQuantity(number)
     },
 
     /**
@@ -63,7 +64,7 @@ const handler = {
      * @returns {number}
      */
     asDecimal(fraction) {
-        const val = Unitz.parse(fraction).value
+        const val = numericQuantity(fraction)
 
         if (val === false) {
             return 0
@@ -129,7 +130,7 @@ const handler = {
      * @returns {number}
      */
     oz2ml(amount) {
-        return Unitz.parse(`${amount} fl-oz`).value * 30
+        return numericQuantity(`${amount}`) * 30
     },
 
     /**
