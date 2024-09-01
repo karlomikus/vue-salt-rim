@@ -87,7 +87,7 @@ async function shareFromFormat(format: string) {
         <template #actions>
             <Dropdown>
                 <template #default="{ toggleDropdown }">
-                    <button type="button" class="button button--outline" @click="toggleDropdown">{{ $t('share') }}</button>
+                    <button type="button" class="button button--outline" @click="toggleDropdown">{{ $t('share.title') }}</button>
                 </template>
                 <template #content>
                     <RouterLink class="dropdown-menu__item" target="_blank" :to="{ name: 'print.shopping-list' }">
@@ -141,6 +141,7 @@ async function shareFromFormat(format: string) {
 .shopping-list__item {
     display: flex;
     flex-wrap: wrap;
+    padding: 1rem;
 }
 
 .shopping-list__item a {

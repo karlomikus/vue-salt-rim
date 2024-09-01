@@ -72,7 +72,6 @@ const i18n = createI18n({
     }
 })
 
-app.config.globalProperties.app_version = window.srConfig.VERSION || 'local'
 app.config.globalProperties.$eventBus = emitter
 app.config.globalProperties.site_title = appState.bar.name || 'Bar Assistant'
 

@@ -41,7 +41,7 @@ export default {
             appState: new AppState(),
             versions: {
                 api: null,
-                client: this.app_version,
+                client: window.srConfig.VERSION || 'local',
                 meili: null
             }
         }
