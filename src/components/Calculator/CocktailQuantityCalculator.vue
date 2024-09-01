@@ -272,12 +272,12 @@ function saveState() {
 
 <template>
     <PageHeader>
-        {{ $t('collections.quantitiy-calculator') }}
+        {{ t('collections.quantitiy-calculator') }}
     </PageHeader>
     <div>
         <OverlayLoader v-if="isLoading" />
         <CollectionDetailsWidget :collection="collection"></CollectionDetailsWidget>
-        <h3 class="form-section-title">{{ $t('collections.cocktail-quantities') }}</h3>
+        <h3 class="form-section-title">{{ t('collections.cocktail-quantities') }}</h3>
         <div class="block-container block-container--padded cocktail-quantity-grid">
             <div v-for="cocktail in cocktails" :key="cocktail.id" class="cocktail-quantity">
                 <div class="form-group">
@@ -289,20 +289,20 @@ function saveState() {
                 </div>
             </div>
         </div>
-        <h3 class="form-section-title">{{ $t('ingredient.ingredients') }}</h3>
+        <h3 class="form-section-title">{{ t('ingredient.ingredients') }}</h3>
         <UnitConverter v-slot="units" @unit-changed="(u) => selectedUnit = u">
             <div class="block-container block-container--padded">
                 <div class="cocktail-quantity__header">
-                    <div>{{ $t('collections.ingredient-breakdown', { total: totalCocktailCount }) }}.</div>
+                    <div>{{ t('collections.ingredient-breakdown', { total: totalCocktailCount }) }}.</div>
                     <UnitPicker></UnitPicker>
                 </div>
                 <div class="responsive-table">
                     <table class="table table--compact">
                         <thead>
                             <tr>
-                                <th>{{ $t('name') }}</th>
-                                <th>{{ $t('amount') }}</th>
-                                <th>{{ $t('price.prices') }}</th>
+                                <th>{{ t('name') }}</th>
+                                <th>{{ t('amount') }}</th>
+                                <th>{{ t('price.prices') }}</th>
                                 <th></th>
                             </tr>
                         </thead>
@@ -311,7 +311,7 @@ function saveState() {
                                 <td>
                                     <RouterLink :to="{ name: 'ingredients.show', params: { id: ingredient.slug } }">{{ ingredient.name }}</RouterLink>
                                     <br>
-                                    <small>{{ $t('cocktail.cocktails') }}: {{ ingredient.total_cocktails }}</small>
+                                    <small>{{ t('cocktail.cocktails') }}: {{ ingredient.total_cocktails }}</small>
                                 </td>
                                 <td>
                                     <template v-for="amount in ingredient.by_amounts" :key="amount.units">
@@ -332,7 +332,7 @@ function saveState() {
                             </tr>
                             <tr style="border-top-width: 3px;">
                                 <td colspan="2" style="text-align: right; vertical-align: top;">
-                                    <strong>{{ $t('total.approx') }}:</strong>
+                                    <strong>{{ t('total.approx') }}:</strong>
                                 </td>
                                 <td colspan="2">
                                     <template v-for="(total, curr) in totalsPerCurrency" :key="curr">
