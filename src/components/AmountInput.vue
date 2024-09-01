@@ -1,8 +1,9 @@
-<script setup>
+<script setup lang="ts">
 import {ref, computed} from 'vue'
 import {useFloating, offset, flip, shift, autoUpdate} from '@floating-ui/vue'
 import AppState from './../AppState'
 import UnitHandler from './../UnitHandler'
+import { onClickOutside } from '@vueuse/core'
 
 const appState = new AppState()
 const reference = ref(null)
@@ -24,7 +25,7 @@ if (appState.defaultUnit == 'oz') {
     defaultAmounts.value = defaultAmountsInMl.map(amount => UnitHandler.asFraction(UnitHandler.ml2oz(parseFloat(amount))))
 }
 
-function selectRecommendedAmount(amount) {
+function selectRecommendedAmount(amount: string) {
     model.value = amount
     showRecommendedAmounts.value = false
 }
@@ -47,12 +48,9 @@ const normalizedModel = computed({
     }
 })
 
-document.addEventListener('click', e => {
-    var dw = reference.value || null
-    if (dw && !dw.contains(e.target)) {
-        showRecommendedAmounts.value = false
-    }
-}, false)
+onClickOutside(reference, () => {
+    showRecommendedAmounts.value = false
+})
 </script>
 
 <template>

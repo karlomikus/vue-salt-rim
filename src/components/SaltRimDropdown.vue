@@ -1,5 +1,6 @@
-<script setup>
+<script setup lang="ts">
 import {ref} from 'vue'
+import { onClickOutside } from '@vueuse/core'
 import {useFloating, offset, flip, shift, autoUpdate} from '@floating-ui/vue'
 
 const isShown = ref(false)
@@ -16,12 +17,9 @@ const { floatingStyles } = useFloating(reference, content, {
     whileElementsMounted: autoUpdate,
 })
 
-document.addEventListener('click', e => {
-    var dw = reference.value || null
-    if (dw && !dw.contains(e.target)) {
-        isShown.value = false
-    }
-}, false)
+onClickOutside(reference, () => {
+    isShown.value = false
+})
 </script>
 
 <template>
