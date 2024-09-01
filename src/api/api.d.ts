@@ -7033,7 +7033,14 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "text/markdown": string;
+                    "application/json": {
+                        data: {
+                            /** @example markdown */
+                            type: string;
+                            /** @example <content in requested format> */
+                            content: string;
+                        };
+                    };
                 };
             };
             /** @description You are not authorized for this action. */

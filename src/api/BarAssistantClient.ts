@@ -154,6 +154,10 @@ export default class BarAssistantClient {
     return (await client.POST('/users/{id}/shopping-list/batch-delete', { params: { path: { id: id } }, body: data })).data
   }
 
+  static async shareShoppingList(id: number) {
+    return (await client.GET('/users/{id}/shopping-list/share', { params: { path: { id: id } } })).data
+  }
+
   static async generateExportDownloadURL(id: number) {
     return (await client.POST('/exports/{id}/download', { params: { path: { id: id } } })).data
   }

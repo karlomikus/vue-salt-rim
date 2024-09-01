@@ -1,24 +1,41 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
+import { useThrottleFn } from '@vueuse/core'
+import { useSaltRimToast } from '@/composables/toast.js'
+import { useI18n } from 'vue-i18n'
 import BarAssistantClient from '@/api/BarAssistantClient';
 import PageHeader from '@/components/PageHeader.vue'
 import UnitHandler from '@/UnitHandler';
 import Dropdown from '../SaltRimDropdown.vue';
+import ToggleIngredientShoppingCart from '../ToggleIngredientShoppingCart.vue';
 
 import type { components } from '@/api/api'
 import AppState from '@/AppState';
 type ShoppingList = components["schemas"]["ShoppingList"]
+type ShoppingListRequest = components["schemas"]["ShoppingListRequest"]
 type Ingredient = components["schemas"]["Ingredient"]
 interface ShoppingListItemWithFullIngredient extends ShoppingList {
     ingredientRef: Ingredient
 }
 
+const { t } = useI18n()
+const toast = useSaltRimToast()
 const appState = new AppState()
 const shoppingList = ref([] as ShoppingList[])
 const ingredients = ref([] as Ingredient[])
 const list = ref([] as ShoppingListItemWithFullIngredient[])
 
 refreshShoppingList()
+
+watch(list, () => {
+    throttleShoppingListUpdate()
+}, {
+    deep: true,
+})
+
+const throttleShoppingListUpdate = useThrottleFn(() => {
+    updateShoppingList()
+}, 700, true)
 
 async function refreshShoppingList() {
     shoppingList.value = (await BarAssistantClient.getShoppingList(appState.user.id))?.data ?? []
@@ -28,6 +45,38 @@ async function refreshShoppingList() {
     }))?.data ?? []
     list.value = shoppingList.value.map(sl => {
         return {...sl, ingredientRef: ingredients.value.find(i => i.id === sl.ingredient.id)} as ShoppingListItemWithFullIngredient
+    })
+}
+
+async function updateShoppingList() {
+    const postData = {
+        ingredients: list.value.map(l => {
+            return {
+                id: l.ingredient.id,
+                quantity: l.quantity,
+            }
+        })
+    } as ShoppingListRequest
+
+    (await BarAssistantClient.addToShoppingList(appState.user.id, postData))
+}
+
+function updateQuantity(shoppingListItem: ShoppingListItemWithFullIngredient, delta: number) {
+    if (isNaN(shoppingListItem.quantity) || shoppingListItem.quantity <= 0) {
+        shoppingListItem.quantity = 1
+        return
+    }
+
+    shoppingListItem.quantity = parseInt(shoppingListItem.quantity.toString()) + delta
+}
+
+async function shareFromFormat(format: string) {
+    BarAssistantClient.shareShoppingList(appState.user.id).then(resp => {
+        navigator.clipboard.writeText(resp?.data.content ?? '').then(() => {
+            toast.default(t('share.format-copied'))
+        }, () => {
+            toast.error(t('share.format-copy-failed'))
+        })
     })
 }
 </script>
@@ -64,6 +113,8 @@ async function refreshShoppingList() {
                 <RouterLink :to="{ name: 'ingredients.show', params: { id: shoppingListItem.ingredientRef.slug }}">{{ shoppingListItem.ingredientRef.name }}</RouterLink>
                 <br>
                 <small>{{ shoppingListItem.ingredientRef.category?.name }} &middot; Qty: {{ shoppingListItem.quantity }}</small>
+                &middot;
+                <ToggleIngredientShoppingCart :ingredient="shoppingListItem.ingredientRef" :status="true"></ToggleIngredientShoppingCart>
                 <ul class="shopping-list__item__prices">
                     <li v-for="ingredientPrice in shoppingListItem.ingredientRef.prices">
                         {{ ingredientPrice.price_category.name }}: <strong>{{ UnitHandler.formatPrice(ingredientPrice.price.price, ingredientPrice.price_category.currency) }}</strong> &middot; {{ ingredientPrice.amount }}{{ ingredientPrice.units }}
@@ -71,9 +122,9 @@ async function refreshShoppingList() {
                 </ul>
             </div>
             <div class="shopping-list__quantity-actions">
-                <button type="button" class="button button--outline button--icon" @click="shoppingListItem.quantity--"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M5 11V13H19V11H5Z"></path></svg></button>
+                <button type="button" class="button button--outline button--icon" @click="updateQuantity(shoppingListItem, -1)"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M5 11V13H19V11H5Z"></path></svg></button>
                 <input type="text" v-model="shoppingListItem.quantity" class="form-input">
-                <button type="button" class="button button--outline button--icon" @click="shoppingListItem.quantity++"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M11 11V5H13V11H19V13H13V19H11V13H5V11H11Z"></path></svg></button>
+                <button type="button" class="button button--outline button--icon" @click="updateQuantity(shoppingListItem, +1)"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M11 11V5H13V11H19V13H13V19H11V13H5V11H11Z"></path></svg></button>
             </div>
         </div>
     </div>

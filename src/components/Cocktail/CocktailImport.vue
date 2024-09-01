@@ -317,7 +317,7 @@ async function getMethod(methodName: string): Promise<CocktailMethod | null> {
 
 async function getOrCreateIngredient(ingredient: SchemaIngredient): Promise<FullIngredient | null> {
     try {
-        const response = await BarAssistantClient.getIngredients({ 'filter[name]': ingredient.name.toLowerCase() })
+        const response = await BarAssistantClient.getIngredients({ 'filter[name_exact]': ingredient.name.toLowerCase(), per_page: 1 })
         const dbIngredient = response?.data?.[0] ?? null
 
         if (dbIngredient) {

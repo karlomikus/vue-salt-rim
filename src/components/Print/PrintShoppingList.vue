@@ -5,7 +5,7 @@
             <li v-for="ingredient in list" :key="ingredient.id">
                 <div class="checkbox"></div>
                 <div class="name">
-                    {{ ingredient.name }}
+                    {{ ingredient.ingredient.name }} x{{ ingredient.quantity }}
                 </div>
             </li>
         </ul>
@@ -15,23 +15,31 @@
     </div>
 </template>
 <script>
-import ApiRequests from './../../ApiRequests.js'
+import AppState from '@/AppState.js';
+import BarAssistantClient from '@/api/BarAssistantClient';
 
 export default {
     data() {
         return {
+            appState: new AppState(),
             list: {},
             printReady: false
         }
     },
     created() {
-        window.addEventListener('afterprint', () => {
-            window.close()
-        })
-
-        ApiRequests.fetchIngredients({'filter[on_shopping_list]': true, per_page: 500}).then(response => {
+        BarAssistantClient.getShoppingList(this.appState.user.id).then(response => {
             this.list = response.data
             this.printReady = true
+
+            this.$nextTick(() => {
+                window.print();
+            })
+
+            window.addEventListener('afterprint', () => {
+                this.$nextTick(() => {
+                    window.close();
+                })
+            })
         }).catch(e => {
             this.$toast.error(e.message)
         })
