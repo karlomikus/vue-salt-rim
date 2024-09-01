@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { ref, watch, computed } from 'vue'
 import { useRoute } from 'vue-router'
-// import { useI18n } from 'vue-i18n'
+import { useTitle } from '@/composables/title'
+import { useI18n } from 'vue-i18n'
 import ApiRequests from './../../ApiRequests.js'
 import PageHeader from './../PageHeader.vue'
 import OverlayLoader from './../OverlayLoader.vue'
@@ -78,7 +79,7 @@ interface TotalsPerCurrency {
     }
 }
 
-// const { t } = useI18n()
+const { t } = useI18n()
 const appState = new AppState()
 const route = useRoute()
 const collection = ref({} as Collection)
@@ -93,7 +94,7 @@ watch(cocktails, () => {
     saveState()
 }, { deep: true })
 
-// document.title = 'TODO'
+useTitle(t('collections.quantitiy-calculator'))
 
 const totalCocktailCount = computed(() => {
     return cocktails.value.reduce((acc, obj) => acc + obj.count, 0)

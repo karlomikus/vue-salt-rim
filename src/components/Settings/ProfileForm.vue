@@ -66,6 +66,7 @@ import PageHeader from '@/components/PageHeader.vue'
 import Navigation from '@/components/Settings/SettingsNavigation.vue'
 import AppState from './../../AppState'
 import SaltRimCheckbox from '../SaltRimCheckbox.vue'
+import { useTitle } from '@/composables/title'
 
 export default {
     components: {
@@ -86,7 +87,7 @@ export default {
         }
     },
     created() {
-        document.title = `${this.$t('profile')} \u22C5 ${this.site_title}`
+        useTitle(this.$t('profile'))
 
         this.isLoading = true
 

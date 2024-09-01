@@ -69,6 +69,7 @@ import DateFormatter from '../DateFormatter.vue'
 import ExportForm from './ExportForm.vue'
 import EmptyState from '../EmptyState.vue'
 import BarAssistantClient from '@/api/BarAssistantClient'
+import { useTitle } from '@/composables/title'
 
 export default {
     components: {
@@ -88,7 +89,7 @@ export default {
         }
     },
     created() {
-        document.title = `${this.$t('exports.title')} \u22C5 ${this.site_title}`
+        useTitle(this.$t('exports.title'))
 
         this.refreshExports()
     },

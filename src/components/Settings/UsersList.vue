@@ -58,6 +58,7 @@ import SaltRimDialog from '@/components/Dialog/SaltRimDialog.vue'
 import UserForm from '@/components/Settings/UserForm.vue'
 import AppState from './../../AppState.js'
 import SubscriptionCheck from '../SubscriptionCheck.vue'
+import { useTitle } from '@/composables/title'
 
 export default {
     components: {
@@ -81,7 +82,7 @@ export default {
         }
     },
     created() {
-        document.title = `${this.$t('users.title')} \u22C5 ${this.site_title}`
+        useTitle(this.$t('users.title'))
 
         this.refreshUsers()
     },

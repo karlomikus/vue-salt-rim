@@ -64,6 +64,7 @@ import SaltRimDialog from '../Dialog/SaltRimDialog.vue'
 import DateFormatter from '../DateFormatter.vue'
 import APIForm from './APIForm.vue'
 import SubscriptionCheck from '../SubscriptionCheck.vue'
+import { useTitle } from '@/composables/title'
 
 export default {
     components: {
@@ -83,7 +84,7 @@ export default {
         }
     },
     created() {
-        document.title = `${this.$t('api.tokens')} \u22C5 ${this.site_title}`
+        useTitle(this.$t('api.tokens'))
 
         this.refreshTokens()
     },

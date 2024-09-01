@@ -5,7 +5,7 @@ class AppState {
         this.language = 'en-US'
         this.token = null
         /**
-         * @type {{id: number, name string, search_host: string}}
+         * @type {{id: number, name: string, search_host: string}}
          */
         this.bar = {}
         /**

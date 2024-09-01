@@ -158,6 +158,7 @@ import AppState from '@/AppState.js'
 import ToggleIngredientShoppingCart from '@/components/ToggleIngredientShoppingCart.vue'
 import ToggleIngredientShelf from '@/components/ToggleIngredientShelf.vue'
 import Dropdown from '@/components/SaltRimDropdown.vue'
+import { useTitle } from '@/composables/title'
 
 export default {
     components: {
@@ -220,7 +221,7 @@ export default {
     },
     watch: {
         ingredient(val) {
-            document.title = `${val.name} \u22C5 ${this.site_title}`
+            useTitle(val.name)
         }
     },
     created() {

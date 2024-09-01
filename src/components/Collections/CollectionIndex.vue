@@ -63,6 +63,7 @@ import CollectionForm from './CollectionForm.vue'
 import EmptyState from './../EmptyState.vue'
 import SubscriptionCheck from '../SubscriptionCheck.vue'
 import AppState from '../../AppState'
+import { useTitle } from '@/composables/title'
 
 export default {
     components: {
@@ -84,7 +85,7 @@ export default {
         }
     },
     created() {
-        document.title = `${this.$t('collections.title')} \u22C5 ${this.site_title}`
+        useTitle(this.$t('collections.title'))
 
         this.refreshCollections()
     },

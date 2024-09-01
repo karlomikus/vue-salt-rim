@@ -51,6 +51,7 @@ import PageHeader from './../PageHeader.vue'
 import Navigation from './../Settings/SettingsNavigation.vue'
 import SaltRimDialog from './../Dialog/SaltRimDialog.vue'
 import UtensilForm from './UtensilForm.vue'
+import { useTitle } from '@/composables/title'
 
 export default {
     components: {
@@ -70,7 +71,7 @@ export default {
         }
     },
     created() {
-        document.title = `${this.$t('utensils.title')} \u22C5 ${this.site_title}`
+        useTitle(this.$t('utensils.title'))
 
         this.refreshUtensils()
     },

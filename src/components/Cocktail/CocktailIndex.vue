@@ -131,6 +131,7 @@ import qs from 'qs'
 import AppState from '../../AppState'
 import EmptyState from './../EmptyState.vue'
 import FilterIngredientsModal from '../Search/FilterIngredientsModal.vue'
+import { useTitle } from '@/composables/title'
 
 export default {
     components: {
@@ -362,7 +363,7 @@ export default {
         },
     },
     created() {
-        document.title = `${this.$t('cocktail.cocktails')} \u22C5 ${this.site_title}`
+        useTitle(this.$t('cocktail.cocktails'))
 
         this.fetchRefinements()
 

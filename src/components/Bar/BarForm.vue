@@ -51,6 +51,7 @@
     </form>
 </template>
 <script>
+import { useTitle } from '@/composables/title'
 import AppState from '../../AppState'
 import ApiRequests from './../../ApiRequests'
 import OverlayLoader from './../OverlayLoader.vue'
@@ -104,7 +105,7 @@ export default {
         }
     },
     created() {
-        document.title = `${this.$t('bars.bar')} \u22C5 ${this.site_title}`
+        useTitle(this.$t('bars.bar'))
 
         const barId = this.$route.query.id || null
 

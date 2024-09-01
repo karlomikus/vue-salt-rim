@@ -86,6 +86,7 @@ import Dropdown from './../SaltRimDropdown.vue'
 import EmptyState from './../EmptyState.vue'
 import AppState from '../../AppState'
 import BarAssistantClient from '@/api/BarAssistantClient'
+import { useTitle } from '@/composables/title'
 
 export default {
     components: {
@@ -194,7 +195,7 @@ export default {
         },
     },
     created() {
-        document.title = `${this.$t('ingredient.ingredients')} \u22C5 ${this.site_title}`
+        useTitle(this.$t('ingredient.ingredients'))
 
         this.fetchRefinements()
 

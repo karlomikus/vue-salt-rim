@@ -140,6 +140,7 @@ import SaltRimCheckbox from '../SaltRimCheckbox.vue'
 import SaltRimDialog from '../Dialog/SaltRimDialog.vue'
 import CategoryForm from '../Settings/CategoryForm.vue'
 import CloseButton from '../CloseButton.vue'
+import { useTitle } from '@/composables/title'
 
 export default {
     components: {
@@ -194,7 +195,7 @@ export default {
         }
     },
     created() {
-        document.title = `${this.$t('ingredient.title')} \u22C5 ${this.site_title}`
+        useTitle(this.$t('ingredient.title'))
 
         const ingredientId = this.$route.query.id || null
 
@@ -219,7 +220,7 @@ export default {
                     this.ingredientCategoryId = data.category.id
                 }
 
-                document.title = `${this.$t('ingredient.title')} \u22C5 ${this.ingredient.name} \u22C5 ${this.site_title}`
+                useTitle(`${this.$t('ingredient.title')} \u22C5 ${this.ingredient.name}`)
                 this.isLoading = false
             })
         },

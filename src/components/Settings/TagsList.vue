@@ -55,6 +55,7 @@ import SaltRimDialog from './../Dialog/SaltRimDialog.vue'
 import TagForm from './../Settings/TagForm.vue'
 import EmptyState from './../EmptyState.vue'
 import BarAssistantClient from './../../api/BarAssistantClient'
+import { useTitle } from '@/composables/title'
 
 export default {
     components: {
@@ -75,7 +76,7 @@ export default {
         }
     },
     created() {
-        document.title = `${this.$t('tag.tags')} \u22C5 ${this.site_title}`
+        useTitle(this.$t('tag.tags'))
 
         this.refreshTags()
     },

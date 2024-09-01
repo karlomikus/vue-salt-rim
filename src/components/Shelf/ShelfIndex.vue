@@ -150,6 +150,7 @@ import PageHeader from '@/components/PageHeader.vue'
 import AppState from './../../AppState'
 import EmptyState from './../EmptyState.vue'
 import BarAssistantClient from '@/api/BarAssistantClient'
+import { useTitle } from '@/composables/title'
 
 export default {
     components: {
@@ -191,7 +192,7 @@ export default {
         }
     },
     created() {
-        document.title = `${this.$t('shelf.title')} \u22C5 ${this.site_title}`
+        useTitle(this.$t('shelf.title'))
 
         this.loaders.favorites = true
         this.loaders.cocktails = true

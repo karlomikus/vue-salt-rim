@@ -19,6 +19,7 @@ import ApiRequests from '@/ApiRequests'
 import SiteLogo from '@/components/Layout/SiteLogo.vue'
 import PublicRecipe from '@/components/Cocktail/PublicRecipe.vue'
 import SourcePresenter from '../SourcePresenter.vue'
+import { useTitle } from '@/composables/title';
 
 export default {
     components: {
@@ -50,11 +51,11 @@ export default {
     },
     watch: {
         cocktail(val) {
-            document.title = `${val.name} \u22C5 ${this.site_title}`
+            useTitle(val.name)
         }
     },
     created() {
-        document.title = `Cocktail \u22C5 ${this.site_title}`
+        useTitle('Cocktail')
         this.$watch(
             () => this.$route.params,
             () => {

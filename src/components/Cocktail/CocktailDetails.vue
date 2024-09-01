@@ -3,6 +3,7 @@ import { ref, computed, watch } from 'vue'
 import { micromark } from 'micromark'
 import { useRoute, useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
+import { useTitle } from '@/composables/title'
 import { useSaltRimToast } from '@/composables/toast.js'
 import { useConfirm } from '@/composables/confirm.js'
 import BarAssistantClient from '@/api/BarAssistantClient';
@@ -105,6 +106,7 @@ const missingIngredientIds = computed(() => {
 async function fetchCocktail(idOrSlug: string) {
     isLoading.value = true
     cocktail.value = (await BarAssistantClient.getCocktail(idOrSlug))?.data ?? {} as Cocktail
+    useTitle(cocktail.value.name)
     isLoading.value = false
 
     await fetchCocktailUserNotes()

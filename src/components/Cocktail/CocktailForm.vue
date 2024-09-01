@@ -128,6 +128,7 @@
 </template>
 
 <script>
+import { useTitle } from '@/composables/title'
 import Utils from './../../Utils.js'
 import UnitHandler from './../../UnitHandler'
 import ApiRequests from './../../ApiRequests.js'
@@ -193,7 +194,7 @@ export default {
         }
     },
     async created() {
-        document.title = `${this.$t('cocktail.title')} \u22C5 ${this.site_title}`
+        useTitle(this.$t('cocktail.title'))
 
         this.isLoading = true
         const cocktailId = this.$route.query.id || null
@@ -214,7 +215,7 @@ export default {
 
                 this.cocktail = data
 
-                document.title = `${this.$t('cocktail.title')} \u22C5 ${this.cocktail.name} \u22C5 ${this.site_title}`
+                useTitle(`${this.$t('cocktail.title')} \u22C5 ${this.cocktail.name}`)
             })
         }
 

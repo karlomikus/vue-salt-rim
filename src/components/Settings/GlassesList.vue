@@ -56,6 +56,7 @@ import PageHeader from '@/components/PageHeader.vue'
 import Navigation from '@/components/Settings/SettingsNavigation.vue'
 import SaltRimDialog from '@/components/Dialog/SaltRimDialog.vue'
 import GlassForm from '@/components/Settings/GlassForm.vue'
+import { useTitle } from '@/composables/title'
 
 export default {
     components: {
@@ -75,7 +76,7 @@ export default {
         }
     },
     created() {
-        document.title = `${this.$t('glass-type.types')} \u22C5 ${this.site_title}`
+        useTitle(this.$t('glass-type.types'))
 
         this.refreshGlasses()
     },
