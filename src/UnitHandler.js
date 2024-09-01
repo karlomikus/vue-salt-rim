@@ -1,6 +1,6 @@
 import Unitz from 'unitz'
 
-export default {
+const handler = {
     /**
      * Pretty print ingredient amount with units.
      * Handles min and max amounts.
@@ -121,7 +121,7 @@ export default {
      * @returns {number}
      */
     cl2oz(amount) {
-        return this.ml2oz(amount * 10)
+        return handler.ml2oz(amount * 10)
     },
 
     /**
@@ -137,7 +137,7 @@ export default {
      * @returns {number}
      */
     oz2cl(amount) {
-        return this.oz2ml(amount) / 10
+        return handler.oz2ml(amount) / 10
     },
 
     /**
@@ -173,3 +173,5 @@ export default {
         return (unit.toLowerCase() == 'ml' || unit.toLowerCase() == 'oz' || unit.toLowerCase() == 'cl')
     },
 }
+
+export default handler
