@@ -1,11 +1,9 @@
-import { inject } from 'vue'
+import { dialogBus } from './eventBus'
 
 export function useConfirm() {
-    const bus = inject('srEventBus')
-
     return {
         show(message, dialogOptions) {
-            bus.emit('requestConfirm', { body: message, ...dialogOptions })
+            dialogBus.emit('requestConfirm', { body: message, ...dialogOptions })
         }
     }
 }

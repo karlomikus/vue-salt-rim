@@ -21,6 +21,8 @@
 </template>
 
 <script>
+import { dialogBus } from '@/composables/eventBus'
+
 export default {
     data() {
         return {
@@ -38,7 +40,11 @@ export default {
         }
     },
     mounted() {
-        this.$eventBus.on('requestConfirm', (payload) => this.show(payload))
+        dialogBus.on((e, payload) => {
+            if (e === 'requestConfirm') {
+                this.show(payload)
+            }
+        })
     },
     methods: {
         show(payload) {

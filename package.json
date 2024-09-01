@@ -18,7 +18,6 @@
     "dayjs": "^1.11.7",
     "html-to-image": "^1.11.11",
     "micromark": "^3.2.0",
-    "mitt": "^3.0.0",
     "openapi-fetch": "^0.11.1",
     "plausible-tracker": "^0.3.8",
     "qrcode-vue3": "^1.6.8",
