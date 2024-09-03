@@ -265,4 +265,34 @@ export default class BarAssistantClient {
   static async deleteGlass(id: number) {
     return (await client.DELETE('/glasses/{id}', { params: { path: { id: id } } })).data
   }
+
+  static async uploadImages(images: components["schemas"]["ImageRequest"][]) {
+    return (await client.POST('/images',
+      {
+        body: { images: images }, bodySerializer(body) {
+          const fd = new FormData();
+          let i = 1
+          for (const image of body.images) {
+            if (image.id && image.id) {
+              fd.append('images[' + i + '][id]', image.id?.toString() ?? '')
+            }
+            if (image.image_url && image.image_url) {
+              fd.append('images[' + i + '][image_url]', image.image_url ?? '')
+            }
+            if (image.image && image.image) {
+              fd.append('images[' + i + '][image]', image.image ?? '')
+            }
+            fd.append('images[' + i + '][copyright]', image.copyright ?? '')
+            fd.append('images[' + i + '][sort]', image.sort?.toString() ?? '1')
+            i++
+          }
+          return fd;
+        }
+      }
+    )).data
+  }
+
+  static async deleteImage(id: number) {
+    return (await client.DELETE('/images/{id}', { params: { path: { id: id } } })).data
+  }
 }

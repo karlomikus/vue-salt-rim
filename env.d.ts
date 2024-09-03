@@ -1,5 +1,7 @@
 /// <reference types="vite/client" />
 
+declare module 'sortablejs'
+
 interface Window {
     srConfig: {
         VERSION: string,

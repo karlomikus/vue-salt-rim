@@ -23,7 +23,7 @@
         </div>
         <h3 class="form-section-title">{{ $t('media') }}</h3>
         <SubscriptionCheck>Subscribe to "Mixologist" plan to upload more than one cocktail recipe image!</SubscriptionCheck>
-        <ImageUpload ref="imagesUpload" :value="cocktail.images" :max-images="maxImages" />
+        <ImageUpload ref="imagesUpload" :images="cocktail.images" />
         <h3 class="form-section-title">{{ $t('ingredient.ingredients') }}</h3>
         <div class="block-container block-container--padded block-container--inset">
             <ul v-show="cocktail.ingredients.length > 0" class="cocktail-form__ingredients" style="margin-bottom: 20px;">
@@ -156,7 +156,7 @@ export default {
         SubstituteModal,
         SubscriptionCheck,
         TimeStamps,
-        TagSelector
+        TagSelector,
     },
     data() {
         return {
@@ -356,9 +356,11 @@ export default {
                     })
             }
 
-            const imageResources = await this.$refs.imagesUpload.uploadPictures().catch(() => {
+            const imageResources = await this.$refs.imagesUpload.save().catch(() => {
                 this.$toast.error(`${this.$t('imageupload.error')} ${this.$t('imageupload.error-cocktail')}`)
-            }) || []
+
+                return []
+            })
 
             if (imageResources.length > 0) {
                 postData.images = imageResources.map(img => img.id)

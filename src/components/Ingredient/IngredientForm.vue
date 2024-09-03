@@ -75,7 +75,7 @@
             </div>
         </div>
         <h3 class="form-section-title">{{ $t('media') }}</h3>
-        <ImageUpload ref="imagesUpload" :value="ingredient.images" :max-images="1" />
+        <ImageUpload ref="imagesUpload" :images="ingredient.images" :max-images="1" />
         <h3 class="form-section-title">{{ $t('price.prices') }}</h3>
         <div class="block-container block-container--padded block-container--inset ingredient-prices">
             <template v-if="priceCategories.length > 0">
@@ -290,7 +290,7 @@ export default {
                 }))
             }
 
-            const imageResources = await this.$refs.imagesUpload.uploadPictures().catch(() => {
+            const imageResources = await this.$refs.imagesUpload.save().catch(() => {
                 this.$toast.error(`${this.$t('imageupload.error')} ${this.$t('imageupload.error-ingredient')}`)
             }) || []
 

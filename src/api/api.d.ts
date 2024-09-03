@@ -1864,19 +1864,21 @@ export interface components {
         /** @description Image attached to a specific resource */
         Image: {
             /** @example 1 */
-            id?: number;
+            id: number;
             /** @example cocktails/1/image.jpg */
-            file_path?: string;
+            file_path: string;
             /** @example http://example.com/uploads/cocktails/1/image.jpg */
-            url?: string;
+            url: string;
             /** @example Image copyright */
-            copyright?: string | null;
+            copyright: string | null;
             /** @example 1 */
-            sort?: number;
+            sort: number;
             /** @example 1QcSHQRnh493V4dIh4eXh1h4kJUI */
-            placeholder_hash?: string | null;
+            placeholder_hash: string | null;
         };
         ImageRequest: {
+            /** @description Existing image id, used to update an existing image */
+            id?: number | null;
             /**
              * Format: binary
              * @description Image file. Required if `image_url` is not set.

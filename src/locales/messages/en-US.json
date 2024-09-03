@@ -75,6 +75,7 @@
   "settings": "Settings",
   "logout": "Logout",
   "profile": "Profile",
+  "filename": "File name",
   "users": {
     "title": "Users",
     "add": "Add user",
@@ -155,8 +156,8 @@
   "amount": "Amount",
   "units": "Units",
   "imageupload": {
-    "browse": "Click here to browse for images.",
-    "validation": "PNG, JPG, WEBP or GIF · Max 100MB",
+    "browse": "Click here to browse for images",
+    "validation": "Max file size: {max}",
     "status": "Added {current}/{max} images.",
     "delete-confirm": "This will permanently remove the image.",
     "delete-success": "Image removed successfully.",
