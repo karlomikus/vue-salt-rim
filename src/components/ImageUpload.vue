@@ -83,10 +83,12 @@ onChange((files) => {
             return
         }
 
+        const previewUrl = URL.createObjectURL(file)
+
         images.value.push({
             id: null,
             file: file,
-            preview: URL.createObjectURL(file),
+            preview: previewUrl,
             fileName: file.name,
             copyright: null,
             sort: 1,
@@ -151,6 +153,7 @@ async function save() {
         }
 
         request.push(imageRequest)
+        URL.revokeObjectURL(img.preview)
     }
 
     return (await BarAssistantClient.uploadImages(request))?.data
@@ -171,7 +174,7 @@ async function save() {
                     <img :src="img.preview" alt="Cocktail image">
                 </div>
                 <div class="image-upload__images__item__actions">
-                    <label class="form-label" :for="'copyright-' + idx">{{ t('filename') }}:</label>
+                    <label class="form-label" :for="'filename-' + idx">{{ t('filename') }}:</label>
                     <p>{{ img.fileName }}</p>
                     <label class="form-label" :for="'copyright-' + idx">{{ t('imageupload.copyright') }}:</label>
                     <input :id="'copyright-' + idx" v-model="img.copyright" class="form-input form-input--small" type="text" :placeholder="t('placeholder.image-copyright')">

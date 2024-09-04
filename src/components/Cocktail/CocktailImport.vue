@@ -384,7 +384,7 @@ async function finishImporting() {
         images: result.value.recipe.images?.map(img => ({
             url: img.uri,
             file: img.uri,
-            file_path: 'Created from data URL',
+            file_path: 'Image from: ' + result.value.recipe.source,
             copyright: img.copyright,
             sort: img.sort,
         })) ?? [],
@@ -462,8 +462,10 @@ async function finishImporting() {
                     <span>{{ t('duplicate.overwrite') }}</span>
                 </label>
             </div> -->
-            <button type="button" class="button button--outline" @click.prevent="clearImport">{{ t('clear') }}</button>
-            <button type="button" class="button button--dark" @click.prevent="importCocktail">{{ t('import.start') }}</button>
+            <div style="display: flex; gap: var(--gap-size-2);">
+                <button type="button" class="button button--outline" @click.prevent="clearImport">{{ t('clear') }}</button>
+                <button type="button" class="button button--dark" @click.prevent="importCocktail">{{ t('import.start') }}</button>
+            </div>
         </div>
         <div v-if="result.recipe" class="scraper-form">
             <h3 class="form-section-title">{{ t('recipe-information') }}</h3>
