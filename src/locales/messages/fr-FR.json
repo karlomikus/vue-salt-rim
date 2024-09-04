@@ -5,7 +5,7 @@
     "hr-HR": "Croate",
     "de-DE": "Allemand",
     "pl-PL": "Polonais",
-    "it-IT": "Italian",
+    "it-IT": "Italien",
     "help": "Aide aux traductions"
   },
   "shelf": {
@@ -184,7 +184,7 @@
     "add-success": "Catégorie d’ingrédients ajoutée avec succès.",
     "edit": "Modifier la catégorie",
     "update-success": "Catégorie d’ingrédients mise à jour avec succès.",
-    "confirm-delete": "Cette catégorie sera permanente avec le nom \"{name}\".",
+    "confirm-delete": "Cela supprimera définitivement la catégorie avec le nom \"{name}\".",
     "delete-success": "Catégorie d’ingrédients supprimée avec succès"
   },
   "origin": "Origine",
@@ -220,7 +220,7 @@
     "title": "Type de verre",
     "add": "Ajouter un type de verre",
     "edit": "Modifier le type de verre",
-    "confirm-delete": "Ce type de verre sera permanent avec le nom \"{name}\".",
+    "confirm-delete": "Cela supprimera définitivement le type de verre avec le nom \"{name}\".",
     "delete-success": "Type de verre supprimé avec succès",
     "update-success": "Type de verre mis à jour avec succès",
     "add-success": "Type de verre ajouté avec succès",
@@ -264,7 +264,7 @@
   "note": {
     "title": "Note",
     "add": "Ajouter une note",
-    "confirm-delete": "Ceci supprimera définitivement la note sélectionnée.",
+    "confirm-delete": "Cela supprimera définitivement la note sélectionnée.",
     "delete-success": "Note supprimée avec succès"
   },
   "note-dialog": {
@@ -287,7 +287,7 @@
     "title": "Collections",
     "add": "Créer une collection",
     "edit": "Modifier la collection",
-    "confirm-delete": "Ceci supprimera définitivement la collection avec le nom \"{name}\".",
+    "confirm-delete": "Cela supprimera définitivement la collection avec le nom \"{name}\".",
     "delete-success": "Collection supprimée avec succès",
     "update-success": "La collection a été mise à jour avec succès",
     "add-success": "La connexion a été ajoutée avec succès",
