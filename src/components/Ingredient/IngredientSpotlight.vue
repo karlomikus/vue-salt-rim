@@ -41,7 +41,8 @@ export default {
                 return this.ingredient.description
             }
 
-            const description = removeMd(this.ingredient.description)
+            const doc = new DOMParser().parseFromString(this.ingredient.description, "text/html");
+            const description = removeMd(doc.documentElement.textContent)
 
             return description.length > 200 ? `${description.substring(0, 200)}...` : description
         },
@@ -106,10 +107,11 @@ export default {
 }
 
 .ingredient-spotlight__content small {
-    font-size: 0.7rem;
+    font-size: 0.75rem;
 }
 
 .ingredient-spotlight__content p {
-    font-size: 0.8rem;
+    font-size: 1rem;
+    line-height: 1.4;
 }
 </style>

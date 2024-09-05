@@ -89,6 +89,7 @@ import AppState from '../../AppState'
 import QRCodeVue3 from 'qrcode-vue3'
 import ApiRequests from './../../ApiRequests.js'
 import OverlayLoader from '../OverlayLoader.vue'
+import { useTitle } from '@/composables/title'
 
 export default {
     components: {
@@ -133,6 +134,7 @@ export default {
         }
     },
     created() {
+        useTitle(this.$t('menu.title'))
         this.refreshMenu()
         this.refreshBar()
     },

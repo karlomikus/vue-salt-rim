@@ -194,7 +194,7 @@ export default {
         }
     },
     async created() {
-        useTitle(this.$t('cocktail.title'))
+        useTitle(this.$t('cocktail.add'))
 
         this.isLoading = true
         const cocktailId = this.$route.query.id || null

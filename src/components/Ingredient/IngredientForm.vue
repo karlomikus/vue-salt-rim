@@ -195,7 +195,7 @@ export default {
         }
     },
     created() {
-        useTitle(this.$t('ingredient.title'))
+        useTitle(this.$t('ingredient.add'))
 
         const ingredientId = this.$route.query.id || null
 

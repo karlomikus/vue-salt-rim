@@ -12,6 +12,7 @@ import { useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 
 import type { components } from '@/api/api'
+import { useTitle } from '@/composables/title'
 interface Ingredient {
     id: string,
     name: string,
@@ -115,10 +116,12 @@ const cocktailTags = computed({
     }
 })
 
-function submit() {
-}
+useTitle(t('cocktail.import'))
 
 function clearImport() {
+    source.value = null
+    ingredientEdit.value = null
+    result.value = {} as LocalSchema
 }
 
 function importCocktail() {
