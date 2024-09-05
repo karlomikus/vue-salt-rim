@@ -16,12 +16,12 @@
             </select>
             <p class="form-input-hint"><a href="#">{{ $t('exports.types-hint') }}</a></p>
         </div>
-        <div class="form-group">
+        <!-- <div class="form-group">
             <label class="form-label form-label--required" for="force-units">{{ $t('exports.force-units') }}:</label>
             <select id="force-units" v-model="exportModel.units" class="form-select">
                 <option v-for="unit in units" :key="unit.id" :value="unit.id">{{ unit.name }}</option>
             </select>
-        </div>
+        </div> -->
         <div class="alert alert--warning">{{ $t('exports.export-notice') }}</div>
         <div class="dialog-actions">
             <button class="button button--outline" @click.prevent="$emit('exportDialogClosed')">{{ $t('cancel') }}</button>
@@ -103,6 +103,7 @@ export default {
             const postData = {
                 bar_id: this.exportModel.bar_id,
                 type: this.exportModel.type,
+                units: this.exportModel.units,
             }
 
             ApiRequests.saveExport(postData).then(() => {
