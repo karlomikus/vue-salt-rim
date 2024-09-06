@@ -1,5 +1,5 @@
 <template>
-    <div class="resource-search__refinements__refinement">
+    <div class="resource-search__refinements__refinement block-container block-container--inset">
         <div class="resource-search__refinements__refinement__title">
             <h4>{{ title }} {{ totalSelected }}</h4>
             <div class="resource-search__refinements__refinement__title__actions">
