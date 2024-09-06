@@ -90,7 +90,13 @@
         <div class="list-grid__col">
             <h3 class="page-subtitle">{{ $t('your-shopping-list') }}</h3>
             <IngredientListContainer v-if="shoppingListIngredients.length > 0">
-                <IngredientListItem v-for="ingredient in shoppingListIngredients" :key="ingredient.id" :ingredient="ingredient" @removed-from-shopping-list="removeIngFromList(ingredient)" @added-to-shelf="removeIngFromList(ingredient)" />
+                <IngredientTile v-for="ingredient in shoppingListIngredients" :key="ingredient.id" :ingredient="ingredient" :images="ingredient.images">
+                    <template #content>
+                        <ToggleIngredientShelf :ingredient="ingredient" :status="ingredient.in_shelf"></ToggleIngredientShelf>
+                        &middot;
+                        <ToggleIngredientShoppingCart :ingredient="ingredient" :status="ingredient.in_shopping_list"></ToggleIngredientShoppingCart>
+                    </template>
+                </IngredientTile>
                 <RouterLink :to="{ name: 'ingredients', query: { 'filter[on_shopping_list]': true } }">{{ $t('view-all') }}</RouterLink>
             </IngredientListContainer>
             <EmptyState v-else>
@@ -120,10 +126,11 @@
         <div v-if="stats.most_popular_ingredients.length > 0" class="list-grid__col">
             <h3 class="page-subtitle">{{ $t('most-popular-ingredients') }}</h3>
             <div class="list-grid__container">
-                <RouterLink v-for="ingredient in stats.most_popular_ingredients" :key="ingredient.id" :to="{ name: 'ingredients.show', params: { id: ingredient.slug } }" class="shelf-stats-count block-container block-container--hover">
-                    <h4>{{ ingredient.name }}</h4>
-                    <small>{{ ingredient.cocktails_count }} {{ $t('cocktail.cocktails') }}</small>
-                </RouterLink>
+                <IngredientTile v-for="ingredient in stats.most_popular_ingredients" :key="ingredient.id" :ingredient="ingredient">
+                    <template #content>
+                        {{ ingredient.cocktails_count }} {{ $t('cocktail.cocktails') }}
+                    </template>
+                </IngredientTile>
             </div>
         </div>
         <div v-if="recommendedIngredients.length > 0" class="list-grid__col">
@@ -141,7 +148,6 @@
 
 <script>
 import ApiRequests from './../../ApiRequests.js'
-import IngredientListItem from '@/components/Ingredient/IngredientListItem.vue'
 import IngredientListContainer from '@/components/Ingredient/IngredientListContainer.vue'
 import CocktailListItem from '@/components/Cocktail/CocktailListItem.vue'
 import CocktailListContainer from '@/components/Cocktail/CocktailListContainer.vue'
@@ -151,16 +157,21 @@ import AppState from './../../AppState'
 import EmptyState from './../EmptyState.vue'
 import BarAssistantClient from '@/api/BarAssistantClient'
 import { useTitle } from '@/composables/title'
+import IngredientTile from '../Tiles/IngredientTile.vue'
+import ToggleIngredientShoppingCart from '../ToggleIngredientShoppingCart.vue'
+import ToggleIngredientShelf from '../ToggleIngredientShelf.vue'
 
 export default {
     components: {
         IngredientListContainer,
-        IngredientListItem,
         CocktailListItem,
         CocktailListContainer,
         OverlayLoader,
         PageHeader,
-        EmptyState
+        EmptyState,
+        IngredientTile,
+        ToggleIngredientShoppingCart,
+        ToggleIngredientShelf,
     },
     data() {
         return {
