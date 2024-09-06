@@ -1,5 +1,6 @@
 <template>
     <form class="site-autocomplete" novalidate @keyup.esc="close">
+        <div class="dialog-title">{{ $t('search.title') }}</div>
         <ais-instant-search :search-client="searchClient" index-name="cocktails">
             <ais-configure :hits-per-page.camel="5" :restrict-searchable-attributes.camel="['name']" />
             <ais-search-box autofocus>

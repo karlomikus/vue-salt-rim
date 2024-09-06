@@ -163,32 +163,34 @@ async function save() {
     <div class="block-container block-container--padded block-container--inset image-upload">
         <OverlayLoader v-if="isLoading" />
         <div class="image-upload__actions">
-            <button type="button" @click="open()" class="button button--dark">{{ t('imageupload.browse') }}</button>
+            <button :disabled="hasMaxImages" type="button" @click="open()" class="button button--dark">{{ t('imageupload.browse') }}</button>
             <br>
             {{ t('imageupload.validation', {max: '50MB'}) }} &middot; {{ t('imageupload.status', {current: images.length, max: maxImages}) }}
         </div>
         <div class="image-upload__images" ref="imageList">
             <div class="block-container block-container--padded image-upload__images__item" v-for="(img, idx) in images" :key="idx" :data-id="img.fileName">
                 <div class="drag-handle"></div>
-                <div class="image-upload__images__item__image">
-                    <img :src="img.preview" alt="Cocktail image">
-                </div>
-                <div class="image-upload__images__item__actions">
-                    <label class="form-label" :for="'filename-' + idx">{{ t('filename') }}:</label>
-                    <p>{{ img.fileName }}</p>
-                    <label class="form-label" :for="'copyright-' + idx">{{ t('imageupload.copyright') }}:</label>
-                    <input :id="'copyright-' + idx" v-model="img.copyright" class="form-input form-input--small" type="text" :placeholder="t('placeholder.image-copyright')">
-                    <div>
-                        <a href="#" @click.prevent="removeImage(img)">{{ t('remove') }}</a>
-                        &middot;
-                        <SaltRimDialog v-model="imageDialogs[idx]">
-                            <template #trigger>
-                                <a href="#" @click.prevent="imageDialogs[idx] = !imageDialogs[idx]">{{ t('image-editor.edit-image') }}</a>
-                            </template>
-                            <template #dialog>
-                                <ImageEditor v-model="images[idx]" @image-dialog-closed="imageDialogs[idx] = false"></ImageEditor>
-                            </template>
-                        </SaltRimDialog>
+                <div class="image-upload__images__item__container">
+                    <div class="image-upload__images__item__image">
+                        <img :src="img.preview" alt="Cocktail image">
+                    </div>
+                    <div class="image-upload__images__item__actions">
+                        <label class="form-label" :for="'filename-' + idx">{{ t('filename') }}:</label>
+                        <p>{{ img.fileName }}</p>
+                        <label class="form-label" :for="'copyright-' + idx">{{ t('imageupload.copyright') }}:</label>
+                        <input :id="'copyright-' + idx" v-model="img.copyright" class="form-input form-input--small" type="text" :placeholder="t('placeholder.image-copyright')">
+                        <div>
+                            <a href="#" @click.prevent="removeImage(img)">{{ t('remove') }}</a>
+                            &middot;
+                            <SaltRimDialog v-model="imageDialogs[idx]">
+                                <template #trigger>
+                                    <a href="#" @click.prevent="imageDialogs[idx] = !imageDialogs[idx]">{{ t('image-editor.edit-image') }}</a>
+                                </template>
+                                <template #dialog>
+                                    <ImageEditor v-model="images[idx]" @image-dialog-closed="imageDialogs[idx] = false"></ImageEditor>
+                                </template>
+                            </SaltRimDialog>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -214,5 +216,18 @@ async function save() {
 
 .image-upload__images__item img {
     width: 100px;
+}
+
+.image-upload__images__item__container {
+    display: flex;
+    gap: var(--gap-size-3);
+    flex-direction: row;
+}
+
+@media (max-width: 450px) {
+    .image-upload__images__item__container {
+        flex-direction: column;
+        gap: var(--gap-size-2);
+    }
 }
 </style>

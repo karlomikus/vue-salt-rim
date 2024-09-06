@@ -577,6 +577,12 @@ swiper-container {
     display: block;
 }
 
+@media (max-width: 450px) {
+    .cocktail-details__graphic img {
+        height: 400px;
+    }
+}
+
 .cocktail-details__graphic__copyright {
     position: absolute;
     top: 1rem;
