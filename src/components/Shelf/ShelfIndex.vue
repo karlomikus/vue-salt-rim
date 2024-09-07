@@ -133,15 +133,9 @@
                 </IngredientTile>
             </div>
         </div>
-        <div v-if="recommendedIngredients.length > 0" class="list-grid__col">
+        <div class="list-grid__col">
             <h3 class="page-subtitle">{{ $t('recommended-ingredients') }}</h3>
-            <div class="block-recommended">
-                You can make <strong>{{ shelfPercent }}</strong> of bar cocktails. Add one of the following ingredients to you shelf to increase your cocktail options:
-                <template v-for="(ing, index) in recommendedIngredients" :key="ing.id">
-                    <RouterLink :to="{ name: 'ingredients.show', params: { id: ing.slug } }">{{ ing.name }}</RouterLink>
-                    <template v-if="index + 1 !== recommendedIngredients.length"> &middot; </template>
-                </template>
-            </div>
+            <RecommendedIngredients :stats="stats"></RecommendedIngredients>
         </div>
     </div>
 </template>
@@ -160,6 +154,7 @@ import { useTitle } from '@/composables/title'
 import IngredientTile from '../Tiles/IngredientTile.vue'
 import ToggleIngredientShoppingCart from '../ToggleIngredientShoppingCart.vue'
 import ToggleIngredientShelf from '../ToggleIngredientShelf.vue'
+import RecommendedIngredients from '../Ingredient/RecommendedIngredients.vue'
 
 export default {
     components: {
@@ -172,6 +167,7 @@ export default {
         IngredientTile,
         ToggleIngredientShoppingCart,
         ToggleIngredientShelf,
+        RecommendedIngredients,
     },
     data() {
         return {
