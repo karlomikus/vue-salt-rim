@@ -74,6 +74,7 @@
     </div>
 </template>
 <script>
+import { useTitle } from '@/composables/title'
 import ApiRequests from './../../ApiRequests'
 import OverlayLoader from './../OverlayLoader.vue'
 import SaltRimDialog from './../Dialog/SaltRimDialog.vue'
@@ -132,7 +133,7 @@ export default {
         }
     },
     created() {
-        document.title = `${this.$t('bars.title')} \u22C5 ${this.site_title}`
+        useTitle(this.$t('bars.title'))
     },
     mounted() {
         this.refreshBars()

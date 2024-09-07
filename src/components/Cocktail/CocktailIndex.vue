@@ -119,6 +119,7 @@
 <script>
 import OverlayLoader from './../OverlayLoader.vue'
 import ApiRequests from './../../ApiRequests.js'
+import BarAssistantClient from '@/api/BarAssistantClient'
 import CocktailGridItem from './CocktailGridItem.vue'
 import CocktailGridContainer from './CocktailGridContainer.vue'
 import PageHeader from './../PageHeader.vue'
@@ -130,6 +131,7 @@ import qs from 'qs'
 import AppState from '../../AppState'
 import EmptyState from './../EmptyState.vue'
 import FilterIngredientsModal from '../Search/FilterIngredientsModal.vue'
+import { useTitle } from '@/composables/title'
 
 export default {
     components: {
@@ -210,6 +212,7 @@ export default {
                 ignore_ingredients: [],
                 specific_ingredients: [],
                 ingredient_id: [],
+                ingredient_substitute_id: [],
                 id: [],
             }
         }
@@ -360,7 +363,7 @@ export default {
         },
     },
     created() {
-        document.title = `${this.$t('cocktail.cocktails')} \u22C5 ${this.site_title}`
+        useTitle(this.$t('cocktail.cocktails'))
 
         this.fetchRefinements()
 
@@ -393,7 +396,7 @@ export default {
                 this.availableRefinements.main_ingredients = resp.data
             })
 
-            ApiRequests.fetchCollections({per_page: 100}).then(data => {
+            ApiRequests.fetchCollections({per_page: 100, include: 'cocktails'}).then(data => {
                 this.availableRefinements.collections = data
             })
 
@@ -401,7 +404,7 @@ export default {
                 this.availableRefinements.members = data
             })
 
-            ApiRequests.fetchSharedCollections().then(data => {
+            ApiRequests.fetchSharedCollections(this.appState.bar.id).then(data => {
                 this.availableRefinements.shared_collections = data
             })
         },
@@ -414,11 +417,12 @@ export default {
         },
         refreshCocktails() {
             const query = this.stateToQuery()
+            query.include = 'ratings,ingredients.ingredient,tags,images'
 
             this.isLoading = true
             ApiRequests.fetchCocktails(query).then(async resp => {
                 this.cocktails = resp.data
-                const favorites = await ApiRequests.fetchCocktailFavorites().catch(() => [])
+                const favorites = (await BarAssistantClient.getUserCocktailFavorites(this.appState.user.id)).data
                 this.cocktails.map(c => {
                     c.isFavorited = favorites.includes(c.id)
 
@@ -454,6 +458,7 @@ export default {
             this.activeFilters.specific_ingredients = state.filter && state.filter.specific_ingredients ? String(state.filter.specific_ingredients).split(',') : []
             this.activeFilters.id = state.filter && state.filter.id ? String(state.filter.id).split(',') : []
             this.activeFilters.ingredient_id = state.filter && state.filter.ingredient_id ? String(state.filter.ingredient_id).split(',') : []
+            this.activeFilters.ingredient_substitute_id = state.filter && state.filter.ingredient_substitute_id ? String(state.filter.ingredient_substitute_id).split(',') : []
             this.activeFilters.user_rating = state.filter && state.filter.user_rating_min ? state.filter.user_rating_min : null
             this.activeFilters.average_rating = state.filter && state.filter.average_rating_min ? state.filter.average_rating_min : null
             this.searchQuery = state.filter && state.filter.name ? state.filter.name : null
@@ -496,6 +501,7 @@ export default {
                 main_ingredient_id: this.activeFilters.main_ingredients.length > 0 ? this.activeFilters.main_ingredients.join(',') : null,
                 specific_ingredients: this.activeFilters.specific_ingredients.length > 0 ? this.activeFilters.specific_ingredients.join(',') : null,
                 ingredient_id: this.activeFilters.ingredient_id.length > 0 ? this.activeFilters.ingredient_id.join(',') : null,
+                ingredient_substitute_id: this.activeFilters.ingredient_substitute_id.length > 0 ? this.activeFilters.ingredient_substitute_id.join(',') : null,
                 collection_id: this.activeFilters.collections.length > 0 ? this.activeFilters.collections.join(',') : null,
                 user_shelves: this.activeFilters.user_shelves.length > 0 ? this.activeFilters.user_shelves.join(',') : null,
                 id: this.activeFilters.id.length > 0 ? this.activeFilters.id.join(',') : null,
@@ -557,6 +563,7 @@ export default {
                 ignore_ingredients: [],
                 specific_ingredients: [],
                 ingredient_id: [],
+                ingredient_substitute_id: [],
                 id: [],
             }
 

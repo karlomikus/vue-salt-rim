@@ -6,7 +6,7 @@
 </template>
 
 <script>
-import ApiRequests from './../ApiRequests.js'
+import BarAssistantClient from '@/api/BarAssistantClient';
 import OverlayLoader from './OverlayLoader.vue'
 
 export default {
@@ -48,7 +48,7 @@ export default {
 
             this.isLoading = true
             if (this.currentRating == rating) {
-                ApiRequests.deleteCocktailUserRating(this.id).then(() => {
+                BarAssistantClient.deleteCocktailRating(this.id).then(() => {
                     this.currentRating = 0
                     this.$toast.default(this.$t('rating-removed'))
                     this.isLoading = false
@@ -57,7 +57,7 @@ export default {
                     this.isLoading = false
                 })
             } else {
-                ApiRequests.rateCocktail(this.id, { rating: rating }).then(() => {
+                BarAssistantClient.rateCocktail(this.id, { rating: rating }).then(() => {
                     this.currentRating = rating
                     this.$toast.default(this.$t('rating-rated', {rating: rating}))
                     this.isLoading = false

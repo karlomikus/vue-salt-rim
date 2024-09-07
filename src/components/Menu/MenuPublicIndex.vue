@@ -1,3 +1,7 @@
+<script setup>
+import UnitHandler from '../../UnitHandler.js'
+</script>
+
 <template>
     <div class="public-page">
         <div class="public-page__header">
@@ -23,8 +27,8 @@
                             </p>
                             <a v-if="cocktail.public_id" :href="publicUrl(cocktail)">View recipe</a>
                         </div>
-                        <div v-if="cocktail.price.full > 0" class="public-page-menu__cocktail__price">
-                            {{ cocktail.price.formatted }}{{ cocktail.currency }}
+                        <div v-if="cocktail.price.price > 0" class="public-page-menu__cocktail__price">
+                            {{ UnitHandler.formatPrice(cocktail.price.price, cocktail.price.currency) }}
                         </div>
                     </div>
                 </div>

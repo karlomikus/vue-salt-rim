@@ -41,16 +41,17 @@ export default {
                 return this.ingredient.description
             }
 
-            const description = removeMd(this.ingredient.description)
+            const doc = new DOMParser().parseFromString(this.ingredient.description, "text/html");
+            const description = removeMd(doc.documentElement.textContent)
 
             return description.length > 200 ? `${description.substring(0, 200)}...` : description
         },
         mainIngredientImageUrl() {
-            if (!this.ingredient.main_image_id) {
+            if (!this.ingredient.images || this.ingredient.images.length == 0) {
                 return '/no-ingredient.png'
             }
 
-            return this.ingredient.images.filter((img) => img.id == this.ingredient.main_image_id)[0].url
+            return this.ingredient.images.find(i => i.sort <= 1).url
         }
     },
     watch: {
@@ -106,10 +107,11 @@ export default {
 }
 
 .ingredient-spotlight__content small {
-    font-size: 0.7rem;
+    font-size: 0.75rem;
 }
 
 .ingredient-spotlight__content p {
-    font-size: 0.8rem;
+    font-size: 1rem;
+    line-height: 1.4;
 }
 </style>

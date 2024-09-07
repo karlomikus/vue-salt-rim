@@ -14,8 +14,8 @@
 </template>
 
 <script>
-import ApiRequests from '@/ApiRequests'
 import OverlayLoader from '@/components/OverlayLoader.vue'
+import BarAssistantClient from '@/api/BarAssistantClient'
 
 export default {
     components: {
@@ -45,11 +45,11 @@ export default {
             this.isLoading = true
 
             const postData = {
-                name: this.tag.name,
+                name: this.tag.name
             }
 
             if (this.tag.id) {
-                ApiRequests.updateTag(this.tag.id, postData).then(() => {
+                BarAssistantClient.updateTag(this.tag.id, postData).then(() => {
                     this.isLoading = false
                     this.$toast.default(this.$t('tag.update-success'))
                     this.$emit('tagDialogClosed')
@@ -58,7 +58,7 @@ export default {
                     this.isLoading = false
                 })
             } else {
-                ApiRequests.saveTag(postData).then(() => {
+                BarAssistantClient.saveTag(postData).then(() => {
                     this.isLoading = false
                     this.$toast.default(this.$t('tag.add-success'))
                     this.$emit('tagDialogClosed')

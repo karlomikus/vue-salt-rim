@@ -13,45 +13,47 @@
             </SaltRimDialog>
         </template>
     </PageHeader>
-    <OverlayLoader v-if="isLoading" />
-    <div v-if="collections.length > 0">
-        <SubscriptionCheck v-if="collections.length >= 3">Subscribe to "Mixologist" plan to create unlimited collections!</SubscriptionCheck>
-        <div class="collections">
-            <div v-for="collection in collections" :key="collection.id" class="block-container block-container--padded block-container--hover collections__collection">
-                <RouterLink class="collections__collection__title" :to="{ name: 'cocktails', query: { 'filter[collection_id]': collection.id } }">{{ collection.name }}</RouterLink>
-                <br>
-                <div class="collections__collection__content">
-                    {{ collection.cocktails.length }} {{ $t('cocktail.cocktails') }}
-                    <template v-if="collection.is_bar_shared">
-                        &middot; {{ $t('collection-shared') }}
-                    </template>
+    <div>
+        <OverlayLoader v-if="isLoading" />
+        <div v-if="collections.length > 0">
+            <SubscriptionCheck v-if="collections.length >= 3">Subscribe to "Mixologist" plan to create unlimited collections!</SubscriptionCheck>
+            <div class="collections">
+                <div v-for="collection in collections" :key="collection.id" class="block-container block-container--padded block-container--hover collections__collection">
+                    <RouterLink class="collections__collection__title" :to="{ name: 'cocktails', query: { 'filter[collection_id]': collection.id } }">{{ collection.name }}</RouterLink>
                     <br>
-                    {{ $t('description') }}: {{ collection.description ? overflowText(collection.description, 100) : 'n/a' }}
-                </div>
-                <div class="collections__collection__action">
-                    <a class="list-group__action" href="#" @click.prevent="shareCollection(collection)">{{ $t('share.title') }}</a>
-                    &middot;
-                    <a class="list-group__action" href="#" @click.prevent="download(collection)">{{ $t('download') }} CSV</a>
-                    &middot;
-                    <RouterLink :to="{name: 'collections.quantity-calculator', params: {id: collection.id}}">{{ $t('collections.quantitiy-calculator') }}</RouterLink>
-                    <br>
-                    <a class="list-group__action" href="#" @click.prevent="openDialog($t('collections.edit'), collection)">{{ $t('edit') }}</a>
-                    &middot;
-                    <a class="list-group__action" href="#" @click.prevent="deleteCollection(collection)">{{ $t('remove') }}</a>
+                    <div class="collections__collection__content">
+                        <small>
+                            {{ collection.cocktails.length }} {{ $t('cocktail.cocktails') }}
+                            <template v-if="collection.is_bar_shared">
+                                &middot; {{ $t('collection-shared') }}
+                            </template>
+                        </small>
+                        <br>
+                        {{ $t('description') }}: {{ collection.description ? collection.description : 'n/a' }}
+                    </div>
+                    <div class="collections__collection__action">
+                        <template v-if="collection.cocktails.length > 0">
+                            <RouterLink :to="{name: 'collections.quantity-calculator', params: {id: collection.id}}">{{ $t('collections.quantitiy-calculator') }}</RouterLink>
+                            &middot;
+                        </template>
+                        <a class="list-group__action" href="#" @click.prevent="openDialog($t('collections.edit'), collection)">{{ $t('edit') }}</a>
+                        &middot;
+                        <a class="list-group__action" href="#" @click.prevent="deleteCollection(collection)">{{ $t('remove') }}</a>
+                    </div>
                 </div>
             </div>
         </div>
+        <EmptyState v-else>
+            <template #icon>
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="32" height="32">
+                    <path d="M12 1L21.5 6.5V17.5L12 23L2.5 17.5V6.5L12 1ZM5.49388 7.0777L13.0001 11.4234V20.11L19.5 16.3469V7.65311L12 3.311L5.49388 7.0777ZM4.5 8.81329V16.3469L11.0001 20.1101V12.5765L4.5 8.81329Z"></path>
+                </svg>
+            </template>
+            <template #default>
+                {{ $t('missing-collections') }}
+            </template>
+        </EmptyState>
     </div>
-    <EmptyState v-else>
-        <template #icon>
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="32" height="32">
-                <path d="M12 1L21.5 6.5V17.5L12 23L2.5 17.5V6.5L12 1ZM5.49388 7.0777L13.0001 11.4234V20.11L19.5 16.3469V7.65311L12 3.311L5.49388 7.0777ZM4.5 8.81329V16.3469L11.0001 20.1101V12.5765L4.5 8.81329Z"></path>
-            </svg>
-        </template>
-        <template #default>
-            {{ $t('missing-collections') }}
-        </template>
-    </EmptyState>
 </template>
 
 <script>
@@ -63,6 +65,7 @@ import CollectionForm from './CollectionForm.vue'
 import EmptyState from './../EmptyState.vue'
 import SubscriptionCheck from '../SubscriptionCheck.vue'
 import AppState from '../../AppState'
+import { useTitle } from '@/composables/title'
 
 export default {
     components: {
@@ -84,7 +87,7 @@ export default {
         }
     },
     created() {
-        document.title = `${this.$t('collections.title')} \u22C5 ${this.site_title}`
+        useTitle(this.$t('collections.title'))
 
         this.refreshCollections()
     },
@@ -92,7 +95,7 @@ export default {
         refreshCollections() {
             this.showDialog = false
             this.isLoading = true
-            ApiRequests.fetchCollections().then(data => {
+            ApiRequests.fetchCollections({include: 'cocktails'}).then(data => {
                 this.collections = data
                 this.isLoading = false
             }).catch(e => {
@@ -149,7 +152,7 @@ export default {
 <style scoped>
 .collections {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr;
     gap: var(--gap-size-2);
 }
 
@@ -166,5 +169,9 @@ export default {
 
 .collections__collection__action {
     margin-top: 1rem;
+}
+
+.collections__collection__content small {
+    color: var(--clr-gray-500);
 }
 </style>

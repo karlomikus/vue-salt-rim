@@ -1,6 +1,7 @@
-import Unitz from 'unitz'
+import { numericQuantity } from 'numeric-quantity';
+import { formatQuantity } from 'format-quantity';
 
-export default {
+const handler = {
     /**
      * Pretty print ingredient amount with units.
      * Handles min and max amounts.
@@ -16,12 +17,12 @@ export default {
     print(ingredient, convertTo = 'ml', servings = 1) {
         let orgAmount = 0
         if (ingredient.amount !== null && ingredient.amount !== undefined) {
-            orgAmount = Unitz.parse(`${ingredient.amount}`).value
+            orgAmount = numericQuantity(`${ingredient.amount}`)
         }
 
         let orgAmountMax = 0
         if (ingredient.amount_max !== null && ingredient.amount_max !== undefined) {
-            orgAmountMax = Unitz.parse(`${(ingredient.amount_max || 0)}`).value
+            orgAmountMax = numericQuantity(`${(ingredient.amount_max || 0)}`)
         }
 
         orgAmount *= servings
@@ -53,7 +54,7 @@ export default {
      * @returns {string}
      */
     asFraction(number) {
-        return new Unitz.Fraction(number, [2, 3, 4]).string
+        return formatQuantity(number)
     },
 
     /**
@@ -63,7 +64,7 @@ export default {
      * @returns {number}
      */
     asDecimal(fraction) {
-        const val = Unitz.parse(fraction).value
+        const val = numericQuantity(fraction)
 
         if (val === false) {
             return 0
@@ -79,33 +80,22 @@ export default {
      * @returns {number}
      */
     convertFromTo(fromUnits, amount, toUnits) {
-        if (fromUnits == 'ml') {
-            if (toUnits == 'oz') {
-                return this.ml2oz(amount)
-            }
-            if (toUnits == 'cl') {
-                return this.ml2cl(amount)
-            }
+        const conversionMap = {
+            'ml->oz': this.ml2oz,
+            'ml->cl': this.ml2cl,
+            'oz->ml': this.oz2ml,
+            'oz->cl': this.oz2cl,
+            'cl->ml': this.cl2ml,
+            'cl->oz': this.cl2oz,
         }
 
-        if (fromUnits == 'oz') {
-            if (toUnits == 'ml') {
-                return this.oz2ml(amount)
-            }
-            if (toUnits == 'cl') {
-                return this.oz2cl(amount)
-            }
-        }
+        const conversionKey = `${fromUnits}->${toUnits}`
+        const conversionFunction = conversionMap[conversionKey]
 
-        if (fromUnits == 'cl') {
-            if (toUnits == 'ml') {
-                return this.cl2ml(amount)
-            }
-            if (toUnits == 'oz') {
-                return this.cl2oz(amount)
-            }
+        if (conversionFunction) {
+            return conversionFunction(amount)
         }
-
+    
         return amount
     },
 
@@ -132,7 +122,7 @@ export default {
      * @returns {number}
      */
     cl2oz(amount) {
-        return this.ml2oz(amount * 10)
+        return handler.ml2oz(amount * 10)
     },
 
     /**
@@ -140,7 +130,7 @@ export default {
      * @returns {number}
      */
     oz2ml(amount) {
-        return Unitz.parse(`${amount} fl-oz`).value * 30
+        return numericQuantity(`${amount}`) * 30
     },
 
     /**
@@ -148,7 +138,7 @@ export default {
      * @returns {number}
      */
     oz2cl(amount) {
-        return this.oz2ml(amount) / 10
+        return handler.oz2ml(amount) / 10
     },
 
     /**
@@ -184,3 +174,5 @@ export default {
         return (unit.toLowerCase() == 'ml' || unit.toLowerCase() == 'oz' || unit.toLowerCase() == 'cl')
     },
 }
+
+export default handler

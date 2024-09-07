@@ -14,7 +14,7 @@
     --sph-clr-border: var(--clr-accent-200);
     display: flex;
     flex-wrap: wrap;
-    border-bottom: 2px solid var(--sph-clr-border);
+    border-bottom: 3px double var(--sph-clr-border);
     padding-bottom: 1rem;
     margin-bottom: 1rem;
     align-items: center;
@@ -25,8 +25,17 @@
 }
 
 .site-page-header__title h2 {
-    /* font-family: var(--font-accent); */
+    font-family: var(--font-heading);
     font-weight: var(--fw-bold);
+    font-size: 2em;
+    line-height: 1.4;
+}
+
+:deep(.site-page-header__title small) {
+    font-family: var(--font-primary);
+    font-size: 0.4em;
+    color: var(--clr-gray-500);
+    display: block;
 }
 
 .site-page-header__actions {

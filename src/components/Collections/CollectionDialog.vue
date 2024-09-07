@@ -57,12 +57,6 @@ export default {
                 return []
             }
         },
-        cocktailCollections: {
-            type: Array,
-            default() {
-                return []
-            }
-        },
         title: {
             type: String,
             default: 'collections.add-to'
@@ -84,6 +78,9 @@ export default {
             }
 
             return this.cocktailCollections.find((val) => val.id == this.collectionId)
+        },
+        cocktailCollections() {
+            return this.collections.filter(collection => collection.cocktails.some(cocktail => cocktail.id == this.cocktails[0]))
         }
     },
     mounted() {
@@ -92,7 +89,7 @@ export default {
     methods: {
         fetchCollections() {
             this.isLoading = true
-            ApiRequests.fetchCollections().then(data => {
+            ApiRequests.fetchCollections({include: 'cocktails'}).then(data => {
                 this.isLoading = false
                 this.collections = data
             })

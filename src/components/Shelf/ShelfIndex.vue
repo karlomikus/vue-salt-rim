@@ -1,6 +1,6 @@
 <template>
     <PageHeader>
-        {{ $t('welcome-user', { 'name': user.name }) }} 👋
+        {{ $t('welcome-user', { 'name': appState.user.name }) }} 👋
     </PageHeader>
 
     <div class="stats">
@@ -90,7 +90,13 @@
         <div class="list-grid__col">
             <h3 class="page-subtitle">{{ $t('your-shopping-list') }}</h3>
             <IngredientListContainer v-if="shoppingListIngredients.length > 0">
-                <IngredientListItem v-for="ingredient in shoppingListIngredients" :key="ingredient.id" :ingredient="ingredient" @removed-from-shopping-list="removeIngFromList(ingredient)" @added-to-shelf="removeIngFromList(ingredient)" />
+                <IngredientTile v-for="ingredient in shoppingListIngredients" :key="ingredient.id" :ingredient="ingredient" :images="ingredient.images">
+                    <template #content>
+                        <ToggleIngredientShelf :ingredient="ingredient" :status="ingredient.in_shelf"></ToggleIngredientShelf>
+                        &middot;
+                        <ToggleIngredientShoppingCart :ingredient="ingredient" :status="ingredient.in_shopping_list"></ToggleIngredientShoppingCart>
+                    </template>
+                </IngredientTile>
                 <RouterLink :to="{ name: 'ingredients', query: { 'filter[on_shopping_list]': true } }">{{ $t('view-all') }}</RouterLink>
             </IngredientListContainer>
             <EmptyState v-else>
@@ -111,7 +117,7 @@
         <div v-if="stats.top_rated_cocktails.length > 0" class="list-grid__col">
             <h3 class="page-subtitle">{{ $t('top-rated-cocktails') }}</h3>
             <div class="list-grid__container">
-                <RouterLink v-for="cocktail in stats.top_rated_cocktails" :key="cocktail.id" :to="{ name: 'cocktails.show', params: { id: cocktail.cocktail_slug } }" class="shelf-stats-count block-container block-container--hover">
+                <RouterLink v-for="cocktail in stats.top_rated_cocktails" :key="cocktail.id" :to="{ name: 'cocktails.show', params: { id: cocktail.slug } }" class="shelf-stats-count block-container block-container--hover">
                     <h4>{{ cocktail.name }}</h4>
                     <small>{{ $t('avg-rating') }}: {{ cocktail.avg_rating }} &middot; {{ $t('votes') }}: {{ cocktail.votes }}</small>
                 </RouterLink>
@@ -120,28 +126,22 @@
         <div v-if="stats.most_popular_ingredients.length > 0" class="list-grid__col">
             <h3 class="page-subtitle">{{ $t('most-popular-ingredients') }}</h3>
             <div class="list-grid__container">
-                <RouterLink v-for="ingredient in stats.most_popular_ingredients" :key="ingredient.id" :to="{ name: 'ingredients.show', params: { id: ingredient.ingredient_slug } }" class="shelf-stats-count block-container block-container--hover">
-                    <h4>{{ ingredient.name }}</h4>
-                    <small>{{ ingredient.cocktails_count }} {{ $t('cocktail.cocktails') }}</small>
-                </RouterLink>
+                <IngredientTile v-for="ingredient in stats.most_popular_ingredients" :key="ingredient.id" :ingredient="ingredient">
+                    <template #content>
+                        {{ ingredient.cocktails_count }} {{ $t('cocktail.cocktails') }}
+                    </template>
+                </IngredientTile>
             </div>
         </div>
-        <div v-if="recommendedIngredients.length > 0" class="list-grid__col">
+        <div class="list-grid__col">
             <h3 class="page-subtitle">{{ $t('recommended-ingredients') }}</h3>
-            <div class="block-recommended">
-                You can make <strong>{{ shelfPercent }}</strong> of bar cocktails. Add one of the following ingredients to you shelf to increase your cocktail options:
-                <template v-for="(ing, index) in recommendedIngredients" :key="ing.id">
-                    <RouterLink :to="{ name: 'ingredients.show', params: { id: ing.slug } }">{{ ing.name }}</RouterLink>
-                    <template v-if="index + 1 !== recommendedIngredients.length"> &middot; </template>
-                </template>
-            </div>
+            <RecommendedIngredients :stats="stats"></RecommendedIngredients>
         </div>
     </div>
 </template>
 
 <script>
 import ApiRequests from './../../ApiRequests.js'
-import IngredientListItem from '@/components/Ingredient/IngredientListItem.vue'
 import IngredientListContainer from '@/components/Ingredient/IngredientListContainer.vue'
 import CocktailListItem from '@/components/Cocktail/CocktailListItem.vue'
 import CocktailListContainer from '@/components/Cocktail/CocktailListContainer.vue'
@@ -149,22 +149,29 @@ import OverlayLoader from '@/components/OverlayLoader.vue'
 import PageHeader from '@/components/PageHeader.vue'
 import AppState from './../../AppState'
 import EmptyState from './../EmptyState.vue'
+import BarAssistantClient from '@/api/BarAssistantClient'
+import { useTitle } from '@/composables/title'
+import IngredientTile from '../Tiles/IngredientTile.vue'
+import ToggleIngredientShoppingCart from '../ToggleIngredientShoppingCart.vue'
+import ToggleIngredientShelf from '../ToggleIngredientShelf.vue'
+import RecommendedIngredients from '../Ingredient/RecommendedIngredients.vue'
 
 export default {
     components: {
         IngredientListContainer,
-        IngredientListItem,
         CocktailListItem,
         CocktailListContainer,
         OverlayLoader,
         PageHeader,
-        EmptyState
+        EmptyState,
+        IngredientTile,
+        ToggleIngredientShoppingCart,
+        ToggleIngredientShelf,
+        RecommendedIngredients,
     },
     data() {
-        const appState = new AppState()
-
         return {
-            user: appState.user,
+            appState: new AppState(),
             favoriteCocktails: [],
             latestCocktails: [],
             shoppingListIngredients: [],
@@ -192,14 +199,14 @@ export default {
         }
     },
     created() {
-        document.title = `${this.$t('shelf.title')} \u22C5 ${this.site_title}`
+        useTitle(this.$t('shelf.title'))
 
         this.loaders.favorites = true
         this.loaders.cocktails = true
         this.loaders.stats = true
         this.loaders.recommended = true
 
-        ApiRequests.fetchCocktails({ 'filter[favorites]': true, per_page: this.maxItems, sort: '-favorited_at' }).then(resp => {
+        ApiRequests.fetchCocktails({ 'filter[favorites]': true, per_page: this.maxItems, sort: '-favorited_at', include: 'ratings,ingredients.ingredient,images' }).then(resp => {
             this.loaders.favorites = false
             this.favoriteCocktails = resp.data
         }).catch(() => {
@@ -207,7 +214,7 @@ export default {
             this.$toast.error(this.$t('shelf.toasts.favorites-error'))
         })
 
-        ApiRequests.fetchCocktails({ per_page: this.maxItems, sort: '-created_at' }).then(resp => {
+        ApiRequests.fetchCocktails({ per_page: this.maxItems, sort: '-created_at', include: 'ratings,ingredients.ingredient,images' }).then(resp => {
             this.loaders.cocktails = false
             this.latestCocktails = resp.data
         }).catch(() => {
@@ -217,16 +224,16 @@ export default {
 
         this.fetchShoppingList()
 
-        ApiRequests.fetchStats().then(data => {
+        BarAssistantClient.getBarStats(this.appState.bar.id).then(resp => {
             this.loaders.stats = false
-            this.stats = data
+            this.stats = resp.data
         }).catch(() => {
             this.loaders.stats = false
             this.$toast.error(this.$t('shelf.toasts.stats-error'))
         })
 
         this.loaders.recommended = true
-        ApiRequests.fetchRecommendedIngredients().then(resp => {
+        BarAssistantClient.getRecommendedIngredients(this.appState.user.id).then(resp => {
             this.loaders.recommended = false
             this.recommendedIngredients = resp.data
         }).catch(() => {
@@ -237,7 +244,7 @@ export default {
     methods: {
         fetchShoppingList() {
             this.loaders.list = true
-            ApiRequests.fetchIngredients({ 'filter[on_shopping_list]': true, per_page: this.maxItems }).then(response => {
+            ApiRequests.fetchIngredients({ 'filter[on_shopping_list]': true, per_page: this.maxItems, include: 'images' }).then(response => {
                 this.loaders.list = false
                 this.shoppingListIngredients = response.data
             }).catch(() => {
@@ -271,21 +278,14 @@ export default {
 }
 
 .stats {
-    --_stats-clr-bg: #F0EFEB;
     margin-top: 20px;
     display: flex;
     flex-wrap: wrap;
-    /* display: grid; */
-    /* grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); */
     gap: var(--gap-size-2);
 }
 
-.dark-theme .stats {
-    --_stats-clr-bg: #271820;
-}
-
 .stats__stat {
-    background-color: var(--_stats-clr-bg);
+    background-color: var(--clr-accent-green);
     border-radius: var(--radius-3);
     padding: 1rem 1.5rem;
     display: flex;
@@ -327,13 +327,9 @@ export default {
 }
 
 .block-recommended {
-    background-color: #F0EFEB;
+    background-color: var(--clr-accent-green);
     padding: var(--gap-size-3);
     border-radius: var(--radius-3);
-}
-
-.dark-theme .block-recommended {
-    background-color: #271820;
 }
 
 .dark-theme .shelf-stats-count small {

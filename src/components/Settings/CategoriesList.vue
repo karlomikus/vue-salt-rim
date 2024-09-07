@@ -53,6 +53,7 @@ import PageHeader from '@/components/PageHeader.vue'
 import Navigation from '@/components/Settings/SettingsNavigation.vue'
 import SaltRimDialog from '@/components/Dialog/SaltRimDialog.vue'
 import CategoryForm from '@/components/Settings/CategoryForm.vue'
+import { useTitle } from '@/composables/title'
 
 export default {
     components: {
@@ -72,7 +73,7 @@ export default {
         }
     },
     created() {
-        document.title = `${this.$t('ingredient.categories')} \u22C5 ${this.site_title}`
+        useTitle(this.$t('ingredient.categories'))
 
         this.refreshCategories()
     },

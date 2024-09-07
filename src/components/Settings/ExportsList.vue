@@ -68,6 +68,8 @@ import SaltRimDialog from '../Dialog/SaltRimDialog.vue'
 import DateFormatter from '../DateFormatter.vue'
 import ExportForm from './ExportForm.vue'
 import EmptyState from '../EmptyState.vue'
+import BarAssistantClient from '@/api/BarAssistantClient'
+import { useTitle } from '@/composables/title'
 
 export default {
     components: {
@@ -87,7 +89,7 @@ export default {
         }
     },
     created() {
-        document.title = `${this.$t('exports.title')} \u22C5 ${this.site_title}`
+        useTitle(this.$t('exports.title'))
 
         this.refreshExports()
     },
@@ -121,14 +123,9 @@ export default {
         },
         downloadExport(ex) {
             this.isLoading = true
-            ApiRequests.downloadExport(ex.id).then(resp => {
-                const url = window.URL.createObjectURL(resp)
-                const link = window.document.createElement('a')
-                link.href = url
-                link.download = ex.filename
-                link.click()
-                window.URL.revokeObjectURL(url)
+            BarAssistantClient.generateExportDownloadURL(ex.id).then(resp => {
                 this.isLoading = false
+                window.open(resp.data.url, '_blank').focus();
             }).catch(e => {
                 this.$toast.error(e.message)
                 this.isLoading = false

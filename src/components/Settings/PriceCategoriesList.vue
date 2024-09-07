@@ -62,6 +62,7 @@ import Navigation from '@/components/Settings/SettingsNavigation.vue'
 import SaltRimDialog from '@/components/Dialog/SaltRimDialog.vue'
 import PriceCategoryForm from '@/components/Settings/PriceCategoryForm.vue'
 import EmptyState from '../EmptyState.vue'
+import { useTitle } from '@/composables/title'
 
 export default {
     components: {
@@ -82,7 +83,7 @@ export default {
         }
     },
     created() {
-        document.title = `${this.$t('prices.price-categories')} \u22C5 ${this.site_title}`
+        useTitle(this.$t('prices.price-categories'))
 
         this.refreshCategories()
     },

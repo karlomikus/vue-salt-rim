@@ -4,7 +4,6 @@ import { createI18n } from 'vue-i18n'
 import ToastPlugin from 'vue-toast-notification'
 import InstantSearch from 'vue-instantsearch/vue3/es'
 import router from './router'
-import mitt from 'mitt'
 import dialog from './components/Dialog/plugin'
 import './assets/main.css'
 import AppState from './AppState.js'
@@ -44,7 +43,6 @@ if (userSelectedTheme == 'dark' && !document.body.classList.contains('dark-theme
     document.querySelector('meta[name="theme-color"]').setAttribute('content', '#282238')
 }
 
-const emitter = mitt()
 const app = createApp(App)
 const i18n = createI18n({
     legacy: false,
@@ -75,10 +73,6 @@ const i18n = createI18n({
         'it-IT': it_IT.messages,
     }
 })
-
-app.config.globalProperties.app_version = window.srConfig.VERSION || 'local'
-app.config.globalProperties.$eventBus = emitter
-app.config.globalProperties.site_title = appState.bar.name || 'Bar Assistant'
 
 app.use(router)
 app.use(dialog)

@@ -44,7 +44,7 @@
                         <SaltRimCheckbox id="parent-ingredient-checkbox" v-model="user.is_shelf_public" :label="$t('profile-public-shelf')" description="Other bar members will be able to filter by cocktails you have in your shelf"></SaltRimCheckbox>
                     </div>
                     <div class="form-group">
-                        <SaltRimCheckbox id="profile-use-parent-as-substitute" v-model="user.use_parent_as_substitute" :label="'[BETA] ' + $t('profile-use-parent-as-substitute')" description="Match cocktail recipe ingredients with parent ingredients as possible substitutes"></SaltRimCheckbox>
+                        <SaltRimCheckbox id="profile-use-parent-as-substitute" v-model="user.use_parent_as_substitute" :label="$t('profile-use-parent-as-substitute')" description="[EXPERIMENTAL] Match cocktail recipe ingredients with parent ingredients as possible substitutes"></SaltRimCheckbox>
                     </div>
                 </div>
             </template>
@@ -66,6 +66,7 @@ import PageHeader from '@/components/PageHeader.vue'
 import Navigation from '@/components/Settings/SettingsNavigation.vue'
 import AppState from './../../AppState'
 import SaltRimCheckbox from '../SaltRimCheckbox.vue'
+import { useTitle } from '@/composables/title'
 
 export default {
     components: {
@@ -86,7 +87,7 @@ export default {
         }
     },
     created() {
-        document.title = `${this.$t('profile')} \u22C5 ${this.site_title}`
+        useTitle(this.$t('profile'))
 
         this.isLoading = true
 

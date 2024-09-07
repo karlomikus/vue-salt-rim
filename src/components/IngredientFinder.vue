@@ -83,8 +83,8 @@ export default {
                 },
             },
             searchClient: instantMeiliSearch(
-                appState.bar.search_driver_host,
-                appState.bar.search_driver_api_key,
+                appState.bar.search_host,
+                appState.bar.search_token,
             ).searchClient,
         }
     },

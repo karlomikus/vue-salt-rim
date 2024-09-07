@@ -58,7 +58,9 @@
     "complex-note": "If you have all of the listed ingredients, automatically match recipes with this ingredient",
     "complex": "Complex ingredient",
     "variety-note": "Recipe matching will include the parent ingredient as a substitute (depending on user settings)",
-    "ingredients": "Ingredients"
+    "ingredients": "Ingredients",
+    "used_as_substitute_for": "Used as a substitute for",
+    "can_be_substituted_with": "Can be substituted with"
   },
   "share": {
     "title": "Share",
@@ -74,6 +76,7 @@
   "settings": "Settings",
   "logout": "Logout",
   "profile": "Profile",
+  "filename": "File name",
   "users": {
     "title": "Users",
     "add": "Add user",
@@ -154,8 +157,8 @@
   "amount": "Amount",
   "units": "Units",
   "imageupload": {
-    "browse": "Click here to browse for images.",
-    "validation": "PNG, JPG, WEBP or GIF · Max 100MB",
+    "browse": "Click here to browse for images",
+    "validation": "Max file size: {max}",
     "status": "Added {current}/{max} images.",
     "delete-confirm": "This will permanently remove the image.",
     "delete-success": "Image removed successfully.",
@@ -411,7 +414,7 @@
     "type-json-description": "Import from JSON format",
     "type-yaml-description": "Import from YAML format",
     "type-collection-description": "Import from Bar Assistant JSON collection",
-    "notice": "Existing ingredients, methods and glassware will be matched by their name (case insensitive). If ingredient does not exist, it will be created. Common units are automatically converted to \"ml\". Depending on collection size, importing can take a few minutes."
+    "notice": "Existing ingredients, methods and glassware will be matched by their name (case insensitive). If ingredient does not exist, it will be created, you can also manually match ingredients."
   },
   "remove-from-bar": "Remove from bar",
   "public-shelves": "Public shelves",
@@ -522,12 +525,14 @@
     "title": "Exports",
     "start": "Start export",
     "bar-select": "Select your bar",
-    "dialog-title": "Export recipes from a bar",
+    "dialog-title": "Export data from a bar",
     "empty": "You don't have any available exports",
     "export-notice": "Please keep in mind that depending on server configuration and selected bar size, generating export can take several minutes.",
     "start-success": "Started bar export",
     "confirm-delete": "This will delete the selected export file",
-    "delete-success": "Export removed"
+    "delete-success": "Export removed",
+    "types-hint": "Click here to learn more about export types",
+    "force-units": "Convert units"
   },
   "start": "Start",
   "filter": "Filter",
@@ -536,7 +541,8 @@
   "unit": {
     "ml-full": "Mililiters (ml)",
     "oz-full": "Fluid ounces (oz)",
-    "cl-full": "Centiliters (cl)"
+    "cl-full": "Centiliters (cl)",
+    "original": "Keep original units"
   },
   "no-default-units": "No default units",
   "wakelock-toggle": "Prevent screen locking",
@@ -584,5 +590,6 @@
     "add": "Add price",
     "price-categories": "Price categories",
     "add-price-category": "Add price category"
-  }
+  },
+  "shopping-list-empty": "Your shopping list is empty"
 }

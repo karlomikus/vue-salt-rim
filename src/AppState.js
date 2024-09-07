@@ -4,7 +4,13 @@ class AppState {
         this.defaultUnit = 'ml'
         this.language = 'en-US'
         this.token = null
+        /**
+         * @type {{id: number, name: string, search_host: string}}
+         */
         this.bar = {}
+        /**
+         * @type {{id: number}}
+         */
         this.user = {}
 
         this._key = '_salt_rim'
@@ -24,7 +30,7 @@ class AppState {
     setBar(bar) {
         let searchHost = window.srConfig.MEILISEARCH_URL
         if (!searchHost) {
-            searchHost = bar.search_driver_host
+            searchHost = bar.search_host
         }
 
         if (!(searchHost.startsWith('http://') || searchHost.startsWith('https://'))) {
@@ -35,7 +41,7 @@ class AppState {
             searchHost = window.location.origin + searchHost
         }
 
-        bar.search_driver_host = searchHost
+        bar.search_host = searchHost
 
         this.bar = bar
         if (bar.settings && bar.settings.default_units) {

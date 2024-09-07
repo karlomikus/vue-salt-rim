@@ -48,13 +48,14 @@
 </template>
 
 <script>
-import ApiRequests from '@/ApiRequests'
-import OverlayLoader from '@/components/OverlayLoader.vue'
-import PageHeader from '@/components/PageHeader.vue'
-import Navigation from '@/components/Settings/SettingsNavigation.vue'
-import SaltRimDialog from '@/components/Dialog/SaltRimDialog.vue'
-import TagForm from '@/components/Settings/TagForm.vue'
+import OverlayLoader from './../OverlayLoader.vue'
+import PageHeader from './../PageHeader.vue'
+import Navigation from './../Settings/SettingsNavigation.vue'
+import SaltRimDialog from './../Dialog/SaltRimDialog.vue'
+import TagForm from './../Settings/TagForm.vue'
 import EmptyState from './../EmptyState.vue'
+import BarAssistantClient from './../../api/BarAssistantClient'
+import { useTitle } from '@/composables/title'
 
 export default {
     components: {
@@ -75,19 +76,20 @@ export default {
         }
     },
     created() {
-        document.title = `${this.$t('tag.tags')} \u22C5 ${this.site_title}`
+        useTitle(this.$t('tag.tags'))
 
         this.refreshTags()
     },
     methods: {
-        refreshTags() {
+        async refreshTags() {
             this.showDialog = false
             this.isLoading = true
-            ApiRequests.fetchTags().then(data => {
-                this.tags = data
+            BarAssistantClient.getTags().then(resp => {
+                this.tags = resp?.data
                 this.isLoading = false
             }).catch(e => {
                 this.$toast.error(e.message)
+                this.isLoading = false
             })
         },
         openDialog(title, obj) {
@@ -100,7 +102,7 @@ export default {
                 onResolved: (dialog) => {
                     this.isLoading = true
                     dialog.close()
-                    ApiRequests.deleteTag(tag.id).then(() => {
+                    BarAssistantClient.deleteTag(tag.id).then(() => {
                         this.isLoading = false
                         this.$toast.default(this.$t('tag.delete-success'))
                         this.refreshTags()
