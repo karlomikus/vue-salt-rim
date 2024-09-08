@@ -6,6 +6,7 @@ interface Window {
     srConfig: {
         VERSION: string,
         API_URL: string,
+        MEILISEARCH_URL: string,
         DEFAULT_LOCALE: string,
         ENV: string,
         MAILS_ENABLED: boolean,
