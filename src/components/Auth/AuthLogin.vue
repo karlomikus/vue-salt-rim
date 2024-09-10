@@ -20,7 +20,7 @@
                     <span>{{ $t('remember-me') }}</span>
                 </label>
             </div>
-            <div class="server-status">
+            <!-- <div class="server-status">
                 <div class="server-status__title">Bar Assistant server:</div>
                 <a :href="baServer" target="_blank" class="server-status__url">{{ baServer }}</a>
                 <div class="server-status__status">
@@ -31,7 +31,7 @@
                         {{ $t('status') }}: {{ $t('status-not-available') }}
                     </template>
                 </div>
-            </div>
+            </div> -->
             <div v-if="baServerAvailable" style="text-align: right; margin-top: 20px;">
                 <RouterLink v-if="registrationAllowed" class="button button--outline" :to="{ name: 'register' }">{{ $t('register') }}</RouterLink>
                 <button type="submit" class="button button--dark" style="margin-left: 5px;" :disabled="!baServerAvailable">{{ $t('login') }}</button>

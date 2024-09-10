@@ -109,9 +109,4 @@ export default {
 .ingredient-spotlight__content small {
     font-size: 0.75rem;
 }
-
-.ingredient-spotlight__content p {
-    font-size: 1rem;
-    line-height: 1.4;
-}
 </style>

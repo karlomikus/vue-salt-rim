@@ -100,7 +100,7 @@ export default {
     background: var(--clr-gray-100);
     padding: 0.5rem;
     font-weight: var(--fw-bold);
-    font-size: 1.25rem;
+    /* font-size: 1.25rem; */
     font-family: monospace;
     border-radius: var(--radius-1);
 }

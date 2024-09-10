@@ -91,7 +91,7 @@ const parsedGarnish = computed(() => {
 })
 
 const totalLiquid = computed(() => {
-    const amount = parseFloat(cocktail.value?.volume_ml?.toString() ?? '') * servings.value
+    const amount = parseFloat(cocktail.value?.volume_ml?.toString() ?? '')
 
     return UnitHandler.print({ amount: amount, units: 'ml' }, currentUnit.value, servings.value) 
 })
@@ -564,7 +564,6 @@ swiper-container {
 
 .cocktail-details__graphic {
     background-color: #fff;
-    box-shadow: 0 -3px 15px rgba(0, 0, 0, .03);
     border-radius: var(--radius-3);
     overflow: hidden;
     isolation: isolate;
@@ -622,6 +621,10 @@ swiper-container {
     padding: 0.5rem 0.75rem;
 }
 
+.dark-theme .cocktail-ingredients li {
+    color: var(--clr-gray-300);
+}
+
 .cocktail-ingredients__ingredient {
     display: flex;
 }
@@ -659,5 +662,12 @@ swiper-container {
     grid-template-columns: 1fr 1fr 1fr;
     column-gap: var(--gap-size-1);
     z-index: 1;
+}
+
+@media (max-width: 450px) {
+    .cocktail-details__actions {
+        right: 10px;
+        top: -20px;
+    }
 }
 </style>

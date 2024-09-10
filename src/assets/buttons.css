@@ -103,7 +103,7 @@
 
 .dark-theme .button.button--icon {
     background-color: var(--clr-dark-main-700);
-    border-color: var(--clr-gray-700);
+    border-color: var(--clr-dark-main-600);
 }
 
 .button-circle {
