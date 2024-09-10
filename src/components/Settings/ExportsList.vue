@@ -125,7 +125,7 @@ export default {
             this.isLoading = true
             BarAssistantClient.generateExportDownloadURL(ex.id).then(resp => {
                 this.isLoading = false
-                window.open(resp.data.url, '_blank').focus();
+                window.open(window.srConfig.API_URL + resp.data.url, '_blank').focus();
             }).catch(e => {
                 this.$toast.error(e.message)
                 this.isLoading = false
