@@ -17,6 +17,10 @@ const recommendedIngredients = ref<IngredientRecommend[]>([])
 fetchRecommendedIngredients()
 
 const shelfPercent = computed(() => {
+    if (!props.stats.total_cocktails) {
+        return Number(0).toLocaleString(undefined, {style: 'percent', minimumFractionDigits:2})
+    }
+
     return Number(props.stats.total_shelf_cocktails / props.stats.total_cocktails).toLocaleString(undefined, {style: 'percent', minimumFractionDigits:2})
 })
 
@@ -30,10 +34,12 @@ async function fetchRecommendedIngredients() {
 <template>
     <div class="block-recommended">
         <OverlayLoader v-if="isLoading"></OverlayLoader>
-        You can make <strong>{{ shelfPercent }}</strong> of bar cocktails. Add one of the following ingredients to you shelf to increase your cocktail options:
-        <template v-for="(ing, index) in recommendedIngredients" :key="ing.id">
-            <RouterLink :to="{ name: 'ingredients.show', params: { id: ing.slug } }">{{ ing.name }}</RouterLink>
-            <template v-if="index + 1 !== recommendedIngredients.length"> &middot; </template>
+        <template v-if="stats.total_cocktails > 0">
+            You can make <strong>{{ shelfPercent }}</strong> of bar cocktails. Add one of the following ingredients to you shelf to increase your cocktail options:
+            <template v-for="(ing, index) in recommendedIngredients" :key="ing.id">
+                <RouterLink :to="{ name: 'ingredients.show', params: { id: ing.slug } }">{{ ing.name }}</RouterLink>
+                <template v-if="index + 1 !== recommendedIngredients.length"> &middot; </template>
+            </template>
         </template>
     </div>
 </template>

@@ -22,7 +22,7 @@
             </div>
             <div class="form-group">
                 <label class="form-label" for="slug">{{ $t('bar.url') }}:</label>
-                <input id="slug" v-model="bar.slug" class="form-input" type="text" :disabled="bar.id != null" @blur="updateSlug">
+                <input id="slug" v-model="bar.slug" class="form-input" type="text" @blur="updateSlug">
                 <p v-show="urlWithSlug" class="form-input-hint">
                     {{ $t('bar.url-help', {url: urlWithSlug}) }}
                 </p>
@@ -143,6 +143,7 @@ export default {
                     subtitle: this.bar.subtitle,
                     description: this.bar.description,
                     enable_invites: this.enableInvites,
+                    slug: postSlug,
                     default_units: this.bar.settings.default_units,
                 }).then(data => {
                     appState.setBar(data)

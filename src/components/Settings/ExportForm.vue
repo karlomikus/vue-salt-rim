@@ -4,21 +4,21 @@
         <div class="dialog-title">{{ $t('exports.dialog-title') }}</div>
         <div class="form-group">
             <label class="form-label form-label--required" for="bar-name">{{ $t('bars.bar') }}:</label>
-            <select id="bar-name" v-model="exportModel.bar_id" class="form-select">
+            <select id="bar-name" v-model="exportModel.bar_id" class="form-select" required>
                 <option :value="undefined" disabled>{{ $t('exports.bar-select') }}...</option>
                 <option v-for="bar in bars" :key="bar.id" :value="bar.id">{{ bar.name }}</option>
             </select>
         </div>
         <div class="form-group">
             <label class="form-label form-label--required" for="export-type">{{ $t('type') }}:</label>
-            <select id="export-type" v-model="exportModel.type" class="form-select">
+            <select id="export-type" v-model="exportModel.type" class="form-select" required>
                 <option v-for="type in types" :key="type.id" :value="type.id">{{ type.name }}</option>
             </select>
             <p class="form-input-hint"><a href="#">{{ $t('exports.types-hint') }}</a></p>
         </div>
         <div class="form-group">
             <label class="form-label form-label--required" for="force-units">{{ $t('exports.force-units') }}:</label>
-            <select id="force-units" v-model="exportModel.units" class="form-select">
+            <select id="force-units" v-model="exportModel.units" class="form-select" required>
                 <option v-for="unit in units" :key="unit.id" :value="unit.id">{{ unit.name }}</option>
             </select>
         </div>
