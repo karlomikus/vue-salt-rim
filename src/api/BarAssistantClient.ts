@@ -6,6 +6,15 @@ let accessToken: string | undefined = undefined;
 
 const appState = new AppState()
 
+const checkService: Middleware = {
+  async onResponse({ response }) {
+    if (response.status == 503) {
+      window.location.replace('/service-down')
+    }
+    return undefined;
+  },
+};
+
 const checkToken: Middleware = {
   async onResponse({ response }) {
     if (response.status == 401) {
@@ -44,10 +53,11 @@ const rejectOnError: Middleware = {
 };
 
 const client = createClient<paths>({ baseUrl: window.srConfig.API_URL + '/api' });
-client.use(checkToken);
 client.use(authMiddleware);
 client.use(barIdMiddleware);
 client.use(rejectOnError);
+client.use(checkToken);
+client.use(checkService);
 
 export default class BarAssistantClient {
   static async getIngredients(query = {}) {
