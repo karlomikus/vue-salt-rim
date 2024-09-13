@@ -162,11 +162,6 @@ async function save() {
 <template>
     <div class="block-container block-container--padded block-container--inset image-upload">
         <OverlayLoader v-if="isLoading" />
-        <div class="image-upload__actions">
-            <button :disabled="hasMaxImages" type="button" @click="open()" class="button button--dark">{{ t('imageupload.browse') }}</button>
-            <br>
-            {{ t('imageupload.validation', {max: '50MB'}) }} &middot; {{ t('imageupload.status', {current: images.length, max: maxImages}) }}
-        </div>
         <div class="image-upload__images" ref="imageList">
             <div class="block-container block-container--padded image-upload__images__item" v-for="(img, idx) in images" :key="idx" :data-id="img.fileName">
                 <div class="drag-handle"></div>
@@ -195,17 +190,19 @@ async function save() {
                 </div>
             </div>
         </div>
+        <div class="image-upload__actions">
+            <button :disabled="hasMaxImages" type="button" @click="open()" class="button button--dark">{{ t('imageupload.browse') }}</button>
+            <br>
+            {{ t('imageupload.validation', {max: '50MB'}) }} &middot; {{ t('imageupload.status', {current: images.length, max: maxImages}) }}
+        </div>
     </div>
 </template>
 
 <style scoped>
-.image-upload__actions {
-    margin-bottom: var(--gap-size-3);
-}
-
 .image-upload__images {
+    margin-bottom: var(--gap-size-3);
     display: grid;
-    row-gap: var(--gap-size-3);
+    row-gap: var(--gap-size-1);
 }
 
 .image-upload__images__item {

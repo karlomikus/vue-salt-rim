@@ -117,6 +117,9 @@ h3.form-section-title::before {
     font-size: 0.8rem;
     text-shadow: none;
     opacity: .7;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 a.site-logo:hover,
@@ -135,6 +138,12 @@ a.site-logo:focus .site-logo__title {
     text-shadow: 3px 2px 0 rgba(0, 0, 0, .4);
 }
 
+@media (max-width: 650px) {
+    .site-logo__title span {
+        width: 300px;
+    }
+}
+
 @media (max-width: 450px) {
     .site-logo {
         justify-content: center;
@@ -147,6 +156,7 @@ a.site-logo:focus .site-logo__title {
     
     .site-logo__title span {
         font-size: 0.6rem;
+        width: 120px;
     }
 
     .site-logo__image svg {

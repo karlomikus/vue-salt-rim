@@ -133,7 +133,7 @@
                 </IngredientTile>
             </div>
         </div>
-        <div class="list-grid__col">
+        <div class="list-grid__col" v-if="stats.total_cocktails > 0">
             <h3 class="page-subtitle">{{ $t('recommended-ingredients') }}</h3>
             <RecommendedIngredients :stats="stats"></RecommendedIngredients>
         </div>

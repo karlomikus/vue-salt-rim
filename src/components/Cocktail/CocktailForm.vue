@@ -160,6 +160,7 @@ export default {
     },
     data() {
         return {
+            appState: new AppState(),
             showDialog: false,
             showSubstituteDialog: false,
             cocktailIngredientForEdit: {},
@@ -238,8 +239,7 @@ export default {
             },
         })
 
-        const state = new AppState()
-        if (!state.isSubscribed()) {
+        if (!this.appState.isSubscribed()) {
             this.maxImages = 1
         }
     },
@@ -274,8 +274,7 @@ export default {
             })
         },
         addIngredient() {
-            const appState = new AppState()
-            const userUnit = appState.defaultUnit
+            const userUnit = this.appState.defaultUnit
             let defaultAmount = 30
             let defaultUnits = 'ml'
 
@@ -308,8 +307,7 @@ export default {
             this.showDialog = true
         },
         printIngredientAmount(ing) {
-            const appState = new AppState()
-            const defaultUnit = appState.defaultUnit
+            const defaultUnit = this.appState.defaultUnit
 
             return UnitHandler.print(ing, defaultUnit)
         },
@@ -407,7 +405,7 @@ export default {
     margin: 0;
     padding: 0;
     display: grid;
-    row-gap: var(--gap-size-3)
+    row-gap: var(--gap-size-1)
 }
 
 .cocktail-form__ingredients li {

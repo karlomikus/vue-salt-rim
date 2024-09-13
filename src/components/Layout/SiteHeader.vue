@@ -4,18 +4,16 @@
             <div class="header-bar">
                 <div class="header-bar__left">
                     <SiteLogo></SiteLogo>
-                    <ThemeToggle></ThemeToggle>
                 </div>
                 <nav class="header-bar__navigation">
                     <template v-if="appState.bar.id">
                         <SaltRimDialog v-model="showSearchDialog" class="site-autocomplete-dialog">
                             <template #trigger>
                                 <a class="header-bar__navigation__link" href="#" @click.prevent="showSearchDialog = !showSearchDialog">
-                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="14" height="14">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                                         <path fill="none" d="M0 0h24v24H0z" />
                                         <path d="M18.031 16.617l4.283 4.282-1.415 1.415-4.282-4.283A8.96 8.96 0 0 1 11 20c-4.968 0-9-4.032-9-9s4.032-9 9-9 9 4.032 9 9a8.96 8.96 0 0 1-1.969 5.617zm-2.006-.742A6.977 6.977 0 0 0 18 11c0-3.868-3.133-7-7-7-3.868 0-7 3.132-7 7 0 3.867 3.132 7 7 7a6.977 6.977 0 0 0 4.875-1.975l.15-.15z" />
                                     </svg>
-                                    {{ $t('search.title') }}
                                 </a>
                             </template>
                             <template #dialog>
@@ -23,13 +21,13 @@
                             </template>
                         </SaltRimDialog>
                     </template>
+                    <ThemeToggle></ThemeToggle>
                     <SaltRimDropdown>
                         <template #default="{ toggleDropdown }">
                             <a class="header-bar__navigation__link" href="#" @click.prevent="toggleDropdown">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="14" height="14">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                                     <path d="M20 22H18V20C18 18.3431 16.6569 17 15 17H9C7.34315 17 6 18.3431 6 20V22H4V20C4 17.2386 6.23858 15 9 15H15C17.7614 15 20 17.2386 20 20V22ZM12 13C8.68629 13 6 10.3137 6 7C6 3.68629 8.68629 1 12 1C15.3137 1 18 3.68629 18 7C18 10.3137 15.3137 13 12 13ZM12 11C14.2091 11 16 9.20914 16 7C16 4.79086 14.2091 3 12 3C9.79086 3 8 4.79086 8 7C8 9.20914 9.79086 11 12 11Z"></path>
                                 </svg>
-                                {{ appState.user.name }}
                             </a>
                         </template>
                         <template #content>
@@ -37,7 +35,7 @@
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18">
                                     <path d="M20 22H18V20C18 18.3431 16.6569 17 15 17H9C7.34315 17 6 18.3431 6 20V22H4V20C4 17.2386 6.23858 15 9 15H15C17.7614 15 20 17.2386 20 20V22ZM12 13C8.68629 13 6 10.3137 6 7C6 3.68629 8.68629 1 12 1C15.3137 1 18 3.68629 18 7C18 10.3137 15.3137 13 12 13ZM12 11C14.2091 11 16 9.20914 16 7C16 4.79086 14.2091 3 12 3C9.79086 3 8 4.79086 8 7C8 9.20914 9.79086 11 12 11Z"></path>
                                 </svg>
-                                {{ $t('profile') }}
+                                {{ appState.user.name }}
                             </RouterLink>
                             <RouterLink class="dropdown-menu__item" :to="{ name: 'bars' }">
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18">
@@ -143,18 +141,29 @@ export default {
 }
 
 .header-bar__navigation__link {
-    display: block;
-    padding: 5px 10px;
-    font-size: 1rem;
-    text-decoration: none;
-    font-weight: var(--fw-bold);
-    color: rgba(255, 255, 255, .8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    color: rgba(255, 255, 255, .7);
+    background: none;
+    border: 0;
+    cursor: pointer;
+}
+
+:deep(.header-bar__navigation__link svg) {
+    fill: currentColor;
+    width: 20px;
+    height: 20px;
 }
 
 .header-bar__navigation__link:hover,
 .header-bar__navigation__link:focus,
 .header-bar__navigation__link:active {
     color: #fff;
+    background-color: rgba(255, 255, 255, .1);
 }
 
 .header-bar__navigation__link.current-nav {
@@ -163,31 +172,9 @@ export default {
     background-color: rgba(0, 0, 0, .3);
 }
 
-.header-bar__navigation__link span {
-    font-size: 0.7rem;
-    border: 1px solid #fff;
-    padding: 1px 3px;
-    border-radius: var(--radius-1);
-    opacity: .6;
-}
-
-.header-bar__navigation__link svg {
-    fill: #fff;
-}
-
 @media (max-width: 750px) {
     .header-bar {
-        flex-direction: column;
-    }
-
-    .header-bar__left {
-        margin: 0 auto;
-    }
-
-    .header-bar__navigation {
-        /* display: none; */
-        margin: 10px 0 0 0;
-        justify-content: center;
+        justify-content: space-between;
     }
 }
 
@@ -224,6 +211,7 @@ export default {
 @media (max-width: 450px) {
     .header-bar {
         padding: 10px;
+        flex-wrap: wrap;
     }
 
     .subnavigation-bar__nav {

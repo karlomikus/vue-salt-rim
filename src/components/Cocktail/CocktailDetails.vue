@@ -26,6 +26,7 @@ import DateFormatter from '@/components/DateFormatter.vue'
 import AppState from '@/AppState'
 import UnitConverter from '@/components/Units/UnitConverter.vue'
 import UnitPicker from '@/components/Units/UnitPicker.vue'
+import WakeLockToggle from '../WakeLockToggle.vue'
 
 type Cocktail = components["schemas"]["Cocktail"]
 type Note = components["schemas"]["Note"]
@@ -491,6 +492,7 @@ fetchShoppingList()
                 </UnitConverter>
                 <div class="block-container block-container--padded has-markdown">
                     <h3 class="details-block-container__title">{{ t('instructions') }}</h3>
+                    <WakeLockToggle></WakeLockToggle>
                     <div v-html="parsedInstructions"></div>
                     <div v-if="cocktail.utensils && cocktail.utensils.length > 0">
                         <br>

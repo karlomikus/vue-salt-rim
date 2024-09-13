@@ -4,7 +4,12 @@ import IngredientFinder from './../IngredientFinder.vue'
 import AmountInput from './../AmountInput.vue'
 import { ref } from 'vue'
 import type { components } from '@/api/api'
+import { useI18n } from 'vue-i18n'
+import AppState from '@/AppState'
+import UnitHandler from '@/UnitHandler'
 
+const appState = new AppState()
+const { t } = useI18n()
 type CocktailIngredient = components["schemas"]["CocktailIngredient"]
 interface FinderIngredient {
     id: number,
@@ -21,6 +26,15 @@ const originalCocktailingredient = JSON.parse(JSON.stringify(props.cocktailIngre
 const localCocktailingredient = ref(props.cocktailIngredient)
 const isLoading = ref(false)
 const hasVariableAmount = ref(props.cocktailIngredient.amount_max != null)
+
+localCocktailingredient.value.amount = UnitHandler.convertFromTo(localCocktailingredient.value.units, localCocktailingredient.value.amount, appState.defaultUnit)
+if (localCocktailingredient.value.amount_max) {
+    localCocktailingredient.value.amount_max = UnitHandler.convertFromTo(localCocktailingredient.value.units, localCocktailingredient.value.amount_max, appState.defaultUnit)
+}
+
+if (UnitHandler.isUnitConvertable(localCocktailingredient.value.units)) {
+    localCocktailingredient.value.units = appState.defaultUnit
+}
 
 function save(): void {
     emit('close')
@@ -42,31 +56,31 @@ function selectIngredient(item: FinderIngredient): void {
 <template>
     <form @submit.prevent="save">
         <OverlayLoader v-if="isLoading" />
-        <div class="dialog-title">{{ $t('ingredient.title') }}</div>
+        <div class="dialog-title">{{ t('ingredient.title') }}</div>
         <IngredientFinder :cocktail-ingredient="localCocktailingredient" @ingredient-selected="selectIngredient"></IngredientFinder>
         <div class="selected-ingredient">
-            <small>{{ $t('ingredient.dialog.current') }}:</small>
+            <small>{{ t('ingredient.dialog.current') }}:</small>
             <p>{{ localCocktailingredient.ingredient.name }}</p>
         </div>
         <label class="form-checkbox">
             <input v-model="localCocktailingredient.optional" type="checkbox">
-            <span>{{ $t('ingredient.dialog.optional-checkbox') }}</span>
+            <span>{{ t('ingredient.dialog.optional-checkbox') }}</span>
         </label>
         <label class="form-checkbox">
             <input v-model="hasVariableAmount" type="checkbox">
-            <span>{{ $t('ingredient.has-variable-amount') }}</span>
+            <span>{{ t('ingredient.has-variable-amount') }}</span>
         </label>
         <div class="ingredient-form-group">
             <div class="form-group">
-                <label class="form-label form-label--required" for="ingredient-amount">{{ $t('amount') }}:</label>
+                <label class="form-label form-label--required" for="ingredient-amount">{{ t('amount') }}:</label>
                 <AmountInput id="ingredient-amount" v-model="localCocktailingredient.amount" required></AmountInput>
             </div>
             <div v-if="hasVariableAmount" class="form-group">
-                <label class="form-label" for="ingredient-amount-max">{{ $t('amount') }} max:</label>
+                <label class="form-label" for="ingredient-amount-max">{{ t('amount') }} max:</label>
                 <AmountInput id="ingredient-amount-max" v-model="localCocktailingredient.amount_max"></AmountInput>
             </div>
             <div class="form-group">
-                <label class="form-label form-label--required" for="ingredient-units">{{ $t('units') }}:</label>
+                <label class="form-label form-label--required" for="ingredient-units">{{ t('units') }}:</label>
                 <input id="ingredient-units" v-model="localCocktailingredient.units" class="form-input" type="text" list="common-units" required>
                 <datalist id="common-units">
                     <option>ml</option>
@@ -79,12 +93,12 @@ function selectIngredient(item: FinderIngredient): void {
             </div>
         </div>
         <div class="form-group">
-            <label class="form-label" for="ingredient-note">{{ $t('note.title') }}:</label>
+            <label class="form-label" for="ingredient-note">{{ t('note.title') }}:</label>
             <input id="ingredient-note" v-model="localCocktailingredient.note" class="form-input" type="text">
         </div>
         <div class="dialog-actions">
-            <button type="button" class="button button--outline" @click="cancel">{{ $t('cancel') }}</button>
-            <button type="submit" class="button button--dark" :disabled="isLoading">{{ $t('save') }}</button>
+            <button type="button" class="button button--outline" @click="cancel">{{ t('cancel') }}</button>
+            <button type="submit" class="button button--dark" :disabled="isLoading">{{ t('save') }}</button>
         </div>
     </form>
 </template>
