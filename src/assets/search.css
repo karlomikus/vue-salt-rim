@@ -122,7 +122,7 @@
     text-transform: uppercase;
     /* letter-spacing: 1px; */
     font-size: 0.715rem;
-    margin-bottom: 0.5rem;
+    /* margin-bottom: 0.5rem; */
 }
 
 .resource-search__refinements__refinement__title__actions {
