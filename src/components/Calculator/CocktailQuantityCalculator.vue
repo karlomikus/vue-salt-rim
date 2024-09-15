@@ -3,7 +3,6 @@ import { ref, watch, computed } from 'vue'
 import { useRoute } from 'vue-router'
 import { useTitle } from '@/composables/title'
 import { useI18n } from 'vue-i18n'
-import ApiRequests from './../../ApiRequests.js'
 import PageHeader from './../PageHeader.vue'
 import OverlayLoader from './../OverlayLoader.vue'
 import UnitConverter from '../Units/UnitConverter.vue'
@@ -220,7 +219,7 @@ async function refreshCollection(id: number) {
     collection.value = (await BarAssistantClient.getCollection(id))?.data ?? {} as Collection
     const existingState = localStorage.getItem('collection_' + collection.value.id)
     if (collection.value.cocktails?.length ?? 0 > 0) {
-        cocktails.value = (await ApiRequests.fetchCocktails({ 'filter[id]': collection.value?.cocktails?.map(c => c.id).join(','), include: 'ingredients.ingredient' })).data ?? []
+        cocktails.value = (await BarAssistantClient.getCocktails({ 'filter[id]': collection.value?.cocktails?.map(c => c.id).join(','), include: 'ingredients.ingredient' }))?.data as CocktailWithCount[] ?? []
     } else {
         cocktails.value = []
     }
@@ -239,7 +238,7 @@ async function refreshCollection(id: number) {
         }
     })
 
-    ingredients.value = (await ApiRequests.fetchIngredients({ 'filter[id]': uniqueIngredients.value.map(i => i.id).join(','), 'include': 'prices', 'per_page': uniqueIngredients.value.length })).data ?? []
+    ingredients.value = (await BarAssistantClient.getIngredients({ 'filter[id]': uniqueIngredients.value.map(i => i.id).join(','), 'include': 'prices', 'per_page': uniqueIngredients.value.length }))?.data ?? []
 
     isLoading.value = false
 }

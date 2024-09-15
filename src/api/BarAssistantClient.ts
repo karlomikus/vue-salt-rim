@@ -36,7 +36,9 @@ const authMiddleware: Middleware = {
 
 const barIdMiddleware: Middleware = {
   async onRequest({ request }) {
-    request.headers.set("Bar-Assistant-Bar-Id", appState.bar.id.toString());
+    if (appState.bar && appState.bar.id) {
+      request.headers.set("Bar-Assistant-Bar-Id", appState.bar.id.toString());
+    }
     return request;
   },
 };
@@ -66,6 +68,10 @@ export default class BarAssistantClient {
 
   static async saveIngredient(data: components["schemas"]["IngredientRequest"]) {
     return (await client.POST('/ingredients', { body: data })).data
+  }
+
+  static async getCocktails(query = {}) {
+    return (await client.GET('/cocktails', { params: { query: query } })).data
   }
 
   static async getCocktail(id: string) {
@@ -174,6 +180,38 @@ export default class BarAssistantClient {
 
   static async getRecommendedIngredients(id: number) {
     return (await client.GET('/users/{id}/ingredients/recommend', { params: { path: { id: id } } })).data
+  }
+
+  static async getBars() {
+    return (await client.GET('/bars')).data
+  }
+
+  static async getBar(id: number) {
+    return (await client.GET('/bars/{id}', { params: { path: { id: id } } })).data
+  }
+
+  static async updateBar(id: number, data: components["schemas"]["BarRequest"]) {
+    return (await client.PUT('/bars/{id}', { params: { path: { id: id } }, body: data })).data
+  }
+
+  static async saveBar(data: components["schemas"]["BarRequest"]) {
+    return (await client.POST('/bars', { body: data })).data
+  }
+
+  static async deleteBar(id: number) {
+    return (await client.DELETE('/bars/{id}', { params: { path: { id: id } } })).data
+  }
+
+  static async joinBar(inviteCode: string) {
+    return (await client.POST('/bars/join', { body: { invite_code: inviteCode } })).data
+  }
+
+  static async leaveBar(id: number) {
+    return (await client.DELETE('/bars/{id}/memberships', { params: { path: { id: id } } })).data
+  }
+
+  static async updateBarStatus(id:number, status: components["schemas"]["BarStatusEnum"]) {
+    return (await client.POST('/bars/{id}/status', { params: { path: { id: id } }, body: { status: status} })).data
   }
 
   static async getBarStats(id: number) {
@@ -285,9 +323,6 @@ export default class BarAssistantClient {
           for (const image of body.images) {
             if (image.id && image.id) {
               fd.append('images[' + i + '][id]', image.id?.toString() ?? '')
-            }
-            if (image.image_url && image.image_url) {
-              fd.append('images[' + i + '][image_url]', image.image_url ?? '')
             }
             if (image.image && image.image) {
               fd.append('images[' + i + '][image]', image.image ?? '')

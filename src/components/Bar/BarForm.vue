@@ -53,10 +53,10 @@
 <script>
 import { useTitle } from '@/composables/title'
 import AppState from '../../AppState'
-import ApiRequests from './../../ApiRequests'
 import OverlayLoader from './../OverlayLoader.vue'
 import PageHeader from './../PageHeader.vue'
 import slug from 'slug'
+import BarAssistantClient from '@/api/BarAssistantClient'
 
 export default {
     components: {
@@ -111,10 +111,10 @@ export default {
 
         if (barId) {
             this.isLoading = true
-            ApiRequests.fetchBar(barId).then(data => {
+            BarAssistantClient.getBar(barId).then(resp => {
                 this.isLoading = false
-                this.bar = data
-                this.enableInvites = data.invite_code != null
+                this.bar = resp.data
+                this.enableInvites = resp.data.invite_code != null
             }).catch(e => {
                 this.isLoading = false
                 this.$toast.error(e.message)
@@ -138,15 +138,15 @@ export default {
             this.isLoading = true
             if (this.bar.id) {
                 const appState = new AppState()
-                ApiRequests.updateBar(this.bar.id, {
+                BarAssistantClient.updateBar(this.bar.id, {
                     name: this.bar.name,
                     subtitle: this.bar.subtitle,
                     description: this.bar.description,
                     enable_invites: this.enableInvites,
                     slug: postSlug,
                     default_units: this.bar.settings.default_units,
-                }).then(data => {
-                    appState.setBar(data)
+                }).then(resp => {
+                    appState.setBar(resp.data)
                     this.isLoading = false
                     this.$toast.default(this.$t('bars.add-success', { name: this.bar.name }))
                     this.$router.push({ name: 'bars' })
@@ -155,7 +155,7 @@ export default {
                     this.$toast.error(e.message)
                 })
             } else {
-                ApiRequests.saveBar({
+                BarAssistantClient.saveBar({
                     name: this.bar.name,
                     subtitle: this.bar.subtitle,
                     description: this.bar.description,

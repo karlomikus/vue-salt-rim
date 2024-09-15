@@ -19,8 +19,8 @@
     </form>
 </template>
 <script>
-import ApiRequests from './../../ApiRequests'
 import OverlayLoader from './../OverlayLoader.vue'
+import BarAssistantClient from '@/api/BarAssistantClient';
 
 export default {
     components: {
@@ -36,11 +36,9 @@ export default {
     methods: {
         submit() {
             this.isLoading = true
-            ApiRequests.joinBar({
-                invite_code: this.inviteCode,
-            }).then(data => {
+            BarAssistantClient.joinBar(this.inviteCode).then(resp => {
                 this.isLoading = false
-                this.$toast.default(this.$t('bars.join-success', { name: data.name }))
+                this.$toast.default(this.$t('bars.join-success', { name: resp.data.name }))
                 this.$emit('dialogClosed')
                 this.$emit('barJoined')
             }).catch(() => {

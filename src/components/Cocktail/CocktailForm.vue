@@ -341,14 +341,22 @@ export default {
                         cIngredient.sort = sortedIngredientList.findIndex(sortedId => sortedId == cIngredient.ingredient.id) + 1
 
                         // Handle substitutes
-                        cIngredient.substitutes.filter(sub => sub.units).map(sub => {
+                        cIngredient.substitutes.map(sub => {
+                            sub.ingredient_id = sub.ingredient.id
+
+                            return sub
+                        }).filter(sub => sub.units).map(sub => {
                             if (sub.amount) {
                                 sub.amount = UnitHandler.asDecimal(sub.amount)
                             }
                             if (sub.amount_max) {
                                 sub.amount_max = UnitHandler.asDecimal(sub.amount_max)
                             }
+
+                            return sub
                         })
+
+                        cIngredient.ingredient_id = cIngredient.ingredient.id
 
                         return cIngredient
                     })

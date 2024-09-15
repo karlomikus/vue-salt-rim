@@ -32,9 +32,9 @@
 <script>
 import { instantMeiliSearch } from '@meilisearch/instant-meilisearch'
 import OverlayLoader from './OverlayLoader.vue'
-import ApiRequests from '../ApiRequests'
 import AppState from './../AppState'
 import IngredientImage from './Ingredient/IngredientImage.vue'
+import BarAssistantClient from '@/api/BarAssistantClient'
 
 const appState = new AppState()
 
@@ -102,7 +102,7 @@ export default {
         },
         newIngredient() {
             this.isLoading = true
-            ApiRequests.saveIngredient({
+            BarAssistantClient.saveIngredient({
                 name: this.currentQuery,
                 description: null,
                 strength: 0,
@@ -110,12 +110,12 @@ export default {
                 color: null,
                 images: [],
                 ingredient_category_id: null,
-            }).then(data => {
-                this.$toast.default(this.$t('ingredient.dialog.new-ingredient-success', { name: data.name }))
+            }).then(resp => {
+                this.$toast.default(this.$t('ingredient.dialog.new-ingredient-success', { name: resp.data.name }))
                 this.selectIngredient({
-                    name: data.name,
-                    slug: data.slug,
-                    id: data.id
+                    name: resp.data.name,
+                    slug: resp.data.slug,
+                    id: resp.data.id
                 })
                 this.isLoading = false
             }).catch(() => {

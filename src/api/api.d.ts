@@ -656,23 +656,6 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/import/file": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /** Import from zip file */
-        post: operations["42c4c4c1eae2d17b7e6681af1f5a6c21"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
     "/ingredient-categories": {
         parameters: {
             query?: never;
@@ -1306,7 +1289,11 @@ export type webhooks = Record<string, never>;
 export interface components {
     schemas: {
         /** @enum {string} */
-        ExportTypeEnum: "datapack" | "schema" | "md" | "json-ld" | "xml";
+        BarOptionsEnum: "ingredients" | "cocktails";
+        /** @enum {string} */
+        ExportTypeEnum: "datapack" | "schema" | "md" | "json-ld" | "xml" | "yaml";
+        /** @enum {string} */
+        ForceUnitConvertEnum: "none" | "ml" | "oz" | "cl";
         /** @enum {string} */
         DuplicateActionsEnum: "none" | "skip" | "overwrite";
         /** @enum {string} */
@@ -1401,8 +1388,8 @@ export interface components {
             default_lang?: string | null;
             /** @description Enable users with invite code to join this bar. Default `false`. */
             enable_invites?: boolean;
-            /** @description List of data that the bar will start with. Possible values: `ingredients`, `cocktails`. Cocktails cannot be imported without ingredients. */
-            options?: string[];
+            /** @description List of data that the bar will start with. Cocktails cannot be imported without ingredients. */
+            options?: ("ingredients" | "cocktails")[];
         };
         BarStats: {
             /** @example 1 */
@@ -1691,6 +1678,26 @@ export interface components {
             /** @example true */
             in_shelf_as_complex_ingredient?: boolean;
         };
+        CocktailIngredientRequest: {
+            ingredient_id: number;
+            name?: string | null;
+            /**
+             * Format: float
+             * @example 30
+             */
+            amount: number;
+            /** @example ml */
+            units: string;
+            sort?: number;
+            optional?: boolean;
+            substitutes?: components["schemas"]["CocktailIngredientSubstituteRequest"][];
+            /**
+             * Format: float
+             * @example 60
+             */
+            amount_max?: number | null;
+            note?: string | null;
+        };
         CocktailIngredientSubstitute: {
             ingredient: components["schemas"]["IngredientBasic"];
             /**
@@ -1707,6 +1714,21 @@ export interface components {
             units: string | null;
             /** @example true */
             in_shelf: boolean;
+        };
+        CocktailIngredientSubstituteRequest: {
+            ingredient_id: number;
+            /**
+             * Format: float
+             * @example 30
+             */
+            amount?: number | null;
+            /**
+             * Format: float
+             * @example 60
+             */
+            amount_max?: number | null;
+            /** @example ml */
+            units?: string | null;
         };
         CocktailMethod: {
             /** @example 1 */
@@ -1740,42 +1762,7 @@ export interface components {
             /** @example 1 */
             method_id?: number | null;
             tags?: string[];
-            ingredients?: {
-                /** @example 1 */
-                ingredient_id: number;
-                /**
-                 * Format: float
-                 * @example 30
-                 */
-                amount: number;
-                /**
-                 * Format: float
-                 * @example 60
-                 */
-                amount_max?: number | null;
-                /** @example ml */
-                units: string;
-                /** @example false */
-                optional?: boolean;
-                /** @example Ingredient note */
-                note?: string | null;
-                substitutes?: {
-                    /** @example 1 */
-                    id?: number;
-                    /**
-                     * Format: float
-                     * @example 30
-                     */
-                    amount?: number | null;
-                    /**
-                     * Format: float
-                     * @example 60
-                     */
-                    amount_max?: number | null;
-                    /** @example ml */
-                    units?: string | null;
-                }[];
-            }[];
+            ingredients?: components["schemas"]["CocktailIngredientRequest"][];
             /** @description List of existing image ids */
             images?: number[];
             /** @description List of existing utensil ids */
@@ -1877,20 +1864,15 @@ export interface components {
             placeholder_hash: string | null;
         };
         ImageRequest: {
-            /** @description Existing image id, used to update an existing image */
-            id?: number | null;
             /**
              * Format: binary
-             * @description Image file. Required if `image_url` is not set.
+             * @description Image file. Base64 encoded images also supported. Max 50MB
              */
-            image?: string;
-            /**
-             * @description Image URL. Required if `image` is not set.
-             * @example http://example.com/cocktail_image.jpg
-             */
-            image_url?: string | null;
+            image: string | null;
+            /** @description Existing image id, used to update an existing image */
+            id?: number | null;
             /** @example 1 */
-            sort?: number;
+            sort: number;
             /** @example Image copyright */
             copyright?: string | null;
         };
@@ -1983,6 +1965,14 @@ export interface components {
             /** Format: date-time */
             updated_at: string | null;
         };
+        IngredientPriceRequest: {
+            price_category_id: number;
+            price: number;
+            /** Format: float */
+            amount: number;
+            units: string;
+            description?: string | null;
+        };
         /** @description Ingredient recommendation with number of potential cocktails */
         IngredientRecommend: components["schemas"]["IngredientBasic"] & {
             /** @example 10 */
@@ -1997,7 +1987,7 @@ export interface components {
              * Format: float
              * @example 40
              */
-            strength?: number | null;
+            strength?: number;
             /** @example Gin is a type of alcoholic spirit */
             description?: string | null;
             /** @example Worldwide */
@@ -2005,23 +1995,12 @@ export interface components {
             /** @example #ffffff */
             color?: string | null;
             /** @example 1 */
-            parent_ingredient_id?: number;
+            parent_ingredient_id?: number | null;
             /** @description Existing image ids */
             images?: number[];
             /** @description Existing ingredient ids */
             complex_ingredient_part_ids?: number[];
-            prices?: {
-                /** @example 1 */
-                price_category_id?: number;
-                /** @example 2500 */
-                price?: number;
-                /** @example 750 */
-                amount?: number;
-                /** @example ml */
-                units?: string;
-                /** @example Updated price */
-                description?: string | null;
-            }[];
+            prices?: components["schemas"]["IngredientPriceRequest"][];
         };
         LoginRequest: {
             /** @example admin@example.com */
@@ -2244,6 +2223,13 @@ export interface components {
         ServerVersion: {
             /** @example 1.0.0 */
             version: string;
+            /**
+             * @description Latest version available on GitHub
+             * @example 3.1.0
+             */
+            latest_version?: string;
+            /** @example true */
+            is_latest?: boolean;
             /** @example production */
             type: string;
             /** @example https://search.example.com */
@@ -4992,49 +4978,6 @@ export interface operations {
                         };
                     };
                 };
-            };
-            /** @description You are not authorized for this action. */
-            403: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": {
-                        data?: components["schemas"]["APIError"];
-                    };
-                };
-            };
-        };
-    };
-    "42c4c4c1eae2d17b7e6681af1f5a6c21": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "multipart/form-data": {
-                    /**
-                     * Format: binary
-                     * @description The zip file containing the data. Max 1GB.
-                     */
-                    file: string;
-                    /** @example 1 */
-                    bar_id?: number;
-                    /** @description How to handle duplicates. Cocktails are matched by lowercase name. */
-                    duplicate_actions?: components["schemas"]["DuplicateActionsEnum"];
-                };
-            };
-        };
-        responses: {
-            /** @description Successful response */
-            204: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
             };
             /** @description You are not authorized for this action. */
             403: {
