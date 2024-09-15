@@ -27,7 +27,7 @@
     </div>
 </template>
 <script>
-import ApiRequests from './../../ApiRequests.js'
+import BarAssistantClient from '@/api/BarAssistantClient';
 import OverlayLoader from './../OverlayLoader.vue'
 import EmptyState from '../EmptyState.vue'
 
@@ -62,8 +62,8 @@ export default {
     methods: {
         fetchCocktailCollections() {
             this.isLoading = true
-            ApiRequests.fetchCollections({ 'filter[cocktail_id]': this.cocktail.id }).then(data => {
-                this.collections = data
+            BarAssistantClient.getCollections({ 'filter[cocktail_id]': this.cocktail.id, include: 'cocktails' }).then(resp => {
+                this.collections = resp.data
                 this.isLoading = false
             }).catch(() => {
                 this.collections = []
@@ -75,9 +75,11 @@ export default {
                 onResolved: (dialog) => {
                     this.isLoading = true
                     dialog.close()
-                    ApiRequests.removeCocktailFromCollection(collectionId, this.cocktail.id).then(() => {
+                    const existingCollectionCocktailIds = this.collections.find(c => c.id == collectionId).cocktails.map(c => c.id)
+                    existingCollectionCocktailIds.splice(existingCollectionCocktailIds.indexOf(this.cocktail.id), 1)
+                    BarAssistantClient.syncCollectionCocktails(collectionId, existingCollectionCocktailIds).then(() => {
                         this.$toast.default(this.$t('collections.cocktail-remove-success'))
-                        this.$emit('cocktailRemovedFromCollection', { id: this.cocktail.id })
+                        this.$emit('cocktailRemovedFromCollection', this.cocktail.slug)
                         this.isLoading = false
                     }).catch(e => {
                         this.$toast.error(e.message)

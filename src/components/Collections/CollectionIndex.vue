@@ -57,7 +57,7 @@
 </template>
 
 <script>
-import ApiRequests from './../../ApiRequests.js'
+import BarAssistantClient from '@/api/BarAssistantClient';
 import OverlayLoader from './../OverlayLoader.vue'
 import PageHeader from './../PageHeader.vue'
 import SaltRimDialog from './../Dialog/SaltRimDialog.vue'
@@ -95,8 +95,8 @@ export default {
         refreshCollections() {
             this.showDialog = false
             this.isLoading = true
-            ApiRequests.fetchCollections({include: 'cocktails'}).then(data => {
-                this.collections = data
+            BarAssistantClient.getCollections({include: 'cocktails'}).then(resp => {
+                this.collections = resp.data
                 this.isLoading = false
             }).catch(e => {
                 this.$toast.error(e.message)
@@ -112,7 +112,7 @@ export default {
                 onResolved: (dialog) => {
                     this.isLoading = true
                     dialog.close()
-                    ApiRequests.deleteCollection(collection.id).then(() => {
+                    BarAssistantClient.deleteCollection(collection.id).then(() => {
                         this.isLoading = false
                         localStorage.removeItem('collection_' + collection.id)
                         this.$toast.default(this.$t('collections.delete-success'))
@@ -122,21 +122,6 @@ export default {
                         this.isLoading = false
                     })
                 }
-            })
-        },
-        shareCollection(collection) {
-            ApiRequests.shareCollection(collection.id).then(data => {
-                navigator.clipboard.writeText(JSON.stringify(data)).then(() => {
-                    this.$toast.default(this.$t('share.format-copied'))
-                }, () => {
-                    this.$toast.error(this.$t('share.format-copy-failed'))
-                })
-            })
-        },
-        download(collection) {
-            ApiRequests.downloadCollection(collection.id).then(data => {
-                var file = window.URL.createObjectURL(data)
-                window.location.assign(file)
             })
         },
         overflowText(input, len) {
