@@ -307,6 +307,14 @@ export default class BarAssistantClient {
     return (await client.GET('/collections/{id}', { params: { path: { id: id } } })).data
   }
 
+  static async syncCollectionCocktails(id: number, cocktails: number[]) {
+    return (await client.PUT('/collections/{id}/cocktails', { params: { path: { id: id } }, body: { cocktails: cocktails } })).data
+  }
+
+  static async saveCollection(data: components["schemas"]["CollectionRequest"]) {
+    return (await client.POST('/collections', { body: data })).data
+  }
+
   static async scrapeCocktail(url: string) {
     return (await client.POST('/import/scrape', { body: { source: url } })).data
   }
