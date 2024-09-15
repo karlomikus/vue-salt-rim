@@ -54,7 +54,8 @@ const rejectOnError: Middleware = {
   },
 };
 
-const client = createClient<paths>({ baseUrl: window.srConfig.API_URL + '/api' });
+const apiBaseUrl = window.srConfig.API_URL + '/api'
+const client = createClient<paths>({ baseUrl: apiBaseUrl });
 client.use(authMiddleware);
 client.use(barIdMiddleware);
 client.use(rejectOnError);
@@ -76,6 +77,14 @@ export default class BarAssistantClient {
 
   static async getCocktail(id: string) {
     return (await client.GET('/cocktails/{id}', { params: { path: { id: id } } })).data
+  }
+
+  static async saveCocktail(body: components["schemas"]["CocktailRequest"]) {
+    return (await client.POST('/cocktails', { body: body })).data
+  }
+
+  static async updateCocktail(id: number, body: components["schemas"]["CocktailRequest"]) {
+    return (await client.PUT('/cocktails/{id}', { params: { path: { id: id } }, body: body })).data
   }
 
   static async shareCocktail(id: string, query = {}) {
@@ -210,6 +219,14 @@ export default class BarAssistantClient {
     return (await client.DELETE('/bars/{id}/memberships', { params: { path: { id: id } } })).data
   }
 
+  static async getBarMembers(id: number) {
+    return (await client.GET('/bars/{id}/memberships', { params: { path: { id: id } } })).data
+  }
+
+  static async getSharedCollections(id: number) {
+    return (await client.GET('/bars/{id}/collections', { params: { path: { id: id } } })).data
+  }
+
   static async updateBarStatus(id:number, status: components["schemas"]["BarStatusEnum"]) {
     return (await client.POST('/bars/{id}/status', { params: { path: { id: id } }, body: { status: status} })).data
   }
@@ -282,8 +299,8 @@ export default class BarAssistantClient {
     return (await client.DELETE('/bars/{id}/memberships/{userId}', { params: { path: { id: barId, userId: userId } } })).data
   }
 
-  static async getCollections() {
-    return (await client.GET('/collections')).data
+  static async getCollections(query = {}) {
+    return (await client.GET('/collections', { params: { query: query } })).data
   }
 
   static async getCollection(id: number) {
@@ -312,6 +329,10 @@ export default class BarAssistantClient {
 
   static async deleteGlass(id: number) {
     return (await client.DELETE('/glasses/{id}', { params: { path: { id: id } } })).data
+  }
+
+  static getImageThumbUrl(imageId: number) {
+    return `${apiBaseUrl}/images/${imageId}/thumb`
   }
 
   static async uploadImages(images: components["schemas"]["ImageRequest"][]) {

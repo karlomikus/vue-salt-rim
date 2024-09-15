@@ -131,7 +131,7 @@
 import { useTitle } from '@/composables/title'
 import Utils from './../../Utils.js'
 import UnitHandler from './../../UnitHandler'
-import ApiRequests from './../../ApiRequests.js'
+import BarAssistantClient from '@/api/BarAssistantClient';
 import OverlayLoader from './../OverlayLoader.vue'
 import IngredientModal from './../Cocktail/IngredientModal.vue'
 import ImageUpload from './../ImageUpload.vue'
@@ -201,29 +201,29 @@ export default {
         const cocktailId = this.$route.query.id || null
 
         if (cocktailId) {
-            await ApiRequests.fetchCocktail(cocktailId).then(data => {
-                data.description = Utils.decodeHtml(data.description)
-                data.instructions = Utils.decodeHtml(data.instructions)
-                data.garnish = Utils.decodeHtml(data.garnish)
-                if (!data.method) {
-                    data.method = {}
+            await BarAssistantClient.getCocktail(cocktailId).then(resp => {
+                resp.data.description = Utils.decodeHtml(resp.data.description)
+                resp.data.instructions = Utils.decodeHtml(resp.data.instructions)
+                resp.data.garnish = Utils.decodeHtml(resp.data.garnish)
+                if (!resp.data.method) {
+                    resp.data.method = {}
                 }
-                if (!data.glass) {
-                    data.glass = {}
+                if (!resp.data.glass) {
+                    resp.data.glass = {}
                 }
-                data.utensils = data.utensils.map(ut => ut.id)
-                data.tags = data.tags.map(i => i.name)
+                resp.data.utensils = resp.data.utensils.map(ut => ut.id)
+                resp.data.tags = resp.data.tags.map(i => i.name)
 
-                this.cocktail = data
+                this.cocktail = resp.data
 
                 useTitle(`${this.$t('cocktail.title')} \u22C5 ${this.cocktail.name}`)
             })
         }
 
-        await ApiRequests.fetchGlasses().then(data => this.glasses = data)
-        await ApiRequests.fetchCocktailMethods().then(data => this.methods = data)
-        await ApiRequests.fetchTags().then(data => this.tags = data)
-        await ApiRequests.fetchUtensils().then(data => this.utensils = data)
+        this.glasses = (await BarAssistantClient.getGlasses())?.data ?? []
+        this.methods = (await BarAssistantClient.getCocktailMethods())?.data ?? []
+        this.tags = (await BarAssistantClient.getTags())?.data ?? []
+        this.utensils = (await BarAssistantClient.getUtensils())?.data ?? []
 
         this.isLoading = false
     },
@@ -373,21 +373,21 @@ export default {
             }
 
             if (this.cocktail.id) {
-                ApiRequests.updateCocktail(this.cocktail.id, postData).then(data => {
+                BarAssistantClient.updateCocktail(this.cocktail.id, postData).then(resp => {
                     this.isLoading = false
                     this.$toast.default(this.$t('cocktail.update-success'))
-                    this.$router.push({ name: 'cocktails.show', params: { id: data.slug } })
+                    this.$router.push({ name: 'cocktails.show', params: { id: resp.data.slug } })
                 }).catch(e => {
                     this.$toast.error(e.message)
                     this.isLoading = false
                 })
             } else {
-                ApiRequests.saveCocktail(postData).then(data => {
+                BarAssistantClient.saveCocktail(postData).then(resp => {
                     this.isLoading = false
                     this.$toast.open({
                         message: this.$t('cocktail.create-success')
                     })
-                    this.$router.push({ name: 'cocktails.show', params: { id: data.slug } })
+                    this.$router.push({ name: 'cocktails.show', params: { id: resp.data.slug } })
                 }).catch(e => {
                     this.$toast.error(e.message)
                     this.isLoading = false

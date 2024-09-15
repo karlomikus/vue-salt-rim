@@ -118,7 +118,6 @@
 
 <script>
 import OverlayLoader from './../OverlayLoader.vue'
-import ApiRequests from './../../ApiRequests.js'
 import BarAssistantClient from '@/api/BarAssistantClient'
 import CocktailGridItem from './CocktailGridItem.vue'
 import CocktailGridContainer from './CocktailGridContainer.vue'
@@ -380,32 +379,32 @@ export default {
     },
     methods: {
         fetchRefinements() {
-            ApiRequests.fetchTags().then(data => {
-                this.availableRefinements.tags = data
+            BarAssistantClient.getTags().then(resp => {
+                this.availableRefinements.tags = resp.data
             })
 
-            ApiRequests.fetchGlasses().then(data => {
-                this.availableRefinements.glasses = data
+            BarAssistantClient.getGlasses().then(resp => {
+                this.availableRefinements.glasses = resp.data
             })
 
-            ApiRequests.fetchCocktailMethods().then(data => {
-                this.availableRefinements.methods = data
+            BarAssistantClient.getCocktailMethods().then(resp => {
+                this.availableRefinements.methods = resp.data
             })
 
-            ApiRequests.fetchIngredients({'filter[main_ingredients]': true, per_page: 100}).then(resp => {
+            BarAssistantClient.getIngredients({'filter[main_ingredients]': true, per_page: 100}).then(resp => {
                 this.availableRefinements.main_ingredients = resp.data
             })
 
-            ApiRequests.fetchCollections({per_page: 100, include: 'cocktails'}).then(data => {
-                this.availableRefinements.collections = data
+            BarAssistantClient.getCollections({per_page: 100, include: 'cocktails'}).then(resp => {
+                this.availableRefinements.collections = resp.data
             })
 
-            ApiRequests.fetchBarMembers(this.appState.bar.id).then(data => {
-                this.availableRefinements.members = data
+            BarAssistantClient.getBarMembers(this.appState.bar.id).then(resp => {
+                this.availableRefinements.members = resp.data
             })
 
-            ApiRequests.fetchSharedCollections(this.appState.bar.id).then(data => {
-                this.availableRefinements.shared_collections = data
+            BarAssistantClient.getSharedCollections(this.appState.bar.id).then(resp => {
+                this.availableRefinements.shared_collections = resp.data
             })
         },
         updateRouterPath() {
@@ -420,7 +419,7 @@ export default {
             query.include = 'ratings,ingredients.ingredient,tags,images'
 
             this.isLoading = true
-            ApiRequests.fetchCocktails(query).then(async resp => {
+            BarAssistantClient.getCocktails(query).then(async resp => {
                 this.cocktails = resp.data
                 const favorites = (await BarAssistantClient.getUserCocktailFavorites(this.appState.user.id)).data
                 this.cocktails.map(c => {

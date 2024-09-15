@@ -5,7 +5,7 @@
 </template>
 <script>
 import { thumbHashToDataURL } from 'thumbhash'
-import ApiRequests from './../../ApiRequests.js'
+import BarAssistantClient from '@/api/BarAssistantClient';
 
 export default {
     props: {
@@ -47,7 +47,7 @@ export default {
             }
 
             if (this.ingredient.images && this.ingredient.images.length > 0) {
-                return ApiRequests.imageThumbUrl(this.ingredient.images[0].id)
+                return BarAssistantClient.getImageThumbUrl(this.ingredient.images[0].id)
             }
 
             return '/no-ingredient.png'

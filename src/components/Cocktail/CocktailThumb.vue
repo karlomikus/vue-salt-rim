@@ -4,7 +4,7 @@
     </div>
 </template>
 <script>
-import ApiRequests from '../../ApiRequests'
+import BarAssistantClient from '@/api/BarAssistantClient';
 
 export default {
     props: {
@@ -25,7 +25,7 @@ export default {
                 return this.cocktail.image_url
             }
 
-            return ApiRequests.imageThumbUrl(this.cocktail.main_image_id)
+            return BarAssistantClient.getImageThumbUrl(this.cocktail.main_image_id)
         },
     }
 }

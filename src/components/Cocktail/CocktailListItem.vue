@@ -13,7 +13,7 @@
 </template>
 
 <script>
-import ApiRequests from '@/ApiRequests.js'
+import BarAssistantClient from '@/api/BarAssistantClient';
 import MiniRating from '@/components/MiniRating.vue'
 
 export default {
@@ -40,7 +40,7 @@ export default {
                 return '/no-cocktail.jpg'
             }
 
-            return ApiRequests.imageThumbUrl(this.cocktail.images.find(i => i.sort <= 1).id)
+            return BarAssistantClient.getImageThumbUrl(this.cocktail.images.find(i => i.sort <= 1).id)
         },
         shortIngredients() {
             return this.cocktail.ingredients.map(i => i.ingredient.name)

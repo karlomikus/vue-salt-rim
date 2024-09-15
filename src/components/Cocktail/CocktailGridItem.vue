@@ -26,7 +26,7 @@
 </template>
 
 <script>
-import ApiRequests from '@/ApiRequests.js'
+import BarAssistantClient from '@/api/BarAssistantClient';
 import { thumbHashToDataURL } from 'thumbhash'
 import CocktailRating from './CocktailRating.vue'
 
@@ -76,11 +76,11 @@ export default {
         },
         mainCocktailImageUrl() {
             if (this.cocktail.image_url) {
-                return ApiRequests.imageThumbUrl(this.cocktail.main_image_id)
+                return BarAssistantClient.getImageThumbUrl(this.cocktail.main_image_id)
             }
 
             if (this.cocktail.images && this.cocktail.images.length > 0) {
-                return ApiRequests.imageThumbUrl(this.mainImage.id)
+                return BarAssistantClient.getImageThumbUrl(this.mainImage.id)
             }
 
             return '/no-cocktail.jpg'

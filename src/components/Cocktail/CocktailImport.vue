@@ -329,7 +329,7 @@ async function getOrCreateIngredient(ingredient: SchemaIngredient): Promise<Full
             return dbIngredient
         }
 
-        const newIngredient = await BarAssistantClient.saveIngredient({name: ingredient.name, description: ingredient.description, origin: ingredient.origin, strength: ingredient.strength})
+        const newIngredient = await BarAssistantClient.saveIngredient({name: ingredient.name, description: ingredient.description, origin: ingredient.origin, strength: ingredient.strength ?? 0.0})
         return newIngredient?.data ?? null
     } catch (error) {
         return null;
