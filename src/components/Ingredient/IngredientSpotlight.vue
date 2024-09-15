@@ -13,7 +13,7 @@
     </div>
 </template>
 <script>
-import ApiRequests from '@/ApiRequests'
+import BarAssistantClient from '@/api/BarAssistantClient';
 import OverlayLoader from '@/components/OverlayLoader.vue'
 import removeMd from 'remove-markdown'
 
@@ -67,8 +67,8 @@ export default {
     methods: {
         fetchIngredient() {
             this.isLoading = true
-            ApiRequests.fetchIngredient(this.id).then(data => {
-                this.ingredient = data
+            BarAssistantClient.getIngredient(this.id).then(resp => {
+                this.ingredient = resp.data
                 this.isLoading = false
             }).catch(() => {
                 this.ingredient = {

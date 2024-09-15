@@ -87,9 +87,9 @@ import SaltRimDialog from './../Dialog/SaltRimDialog.vue'
 import CocktailFinder from './../CocktailFinder.vue'
 import AppState from '../../AppState'
 import QRCodeVue3 from 'qrcode-vue3'
-import ApiRequests from './../../ApiRequests.js'
 import OverlayLoader from '../OverlayLoader.vue'
 import { useTitle } from '@/composables/title'
+import BarAssistantClient from '@/api/BarAssistantClient'
 
 export default {
     components: {
@@ -208,10 +208,10 @@ export default {
         },
         refreshMenu() {
             this.isLoading = true
-            ApiRequests.fetchMenu().then(data => {
+            BarAssistantClient.getMenu().then(resp => {
                 this.isLoading = false
-                this.menu.is_enabled = data.is_enabled
-                this.categories = data.categories
+                this.menu.is_enabled = resp.data.is_enabled
+                this.categories = resp.data.categories
                 this.$nextTick(() => {
                     this.refreshSortable()
                 })
@@ -221,8 +221,8 @@ export default {
             })
         },
         refreshBar() {
-            ApiRequests.fetchBar(this.appState.bar.id).then(data => {
-                this.bar = data
+            BarAssistantClient.getBar(this.appState.bar.id).then(resp => {
+                this.bar = resp.data
                 this.menu.url = `${window.location.origin}/bars/${this.bar.slug}`
             }).catch(() => {
             })
@@ -290,7 +290,7 @@ export default {
                 cocktails: cocktails
             }
 
-            ApiRequests.updateMenu(postData).then(() => {
+            BarAssistantClient.updateMenu(postData).then(() => {
                 this.isLoading = false
                 this.refreshMenu()
                 this.$toast.default(this.$t('menu.saved'))

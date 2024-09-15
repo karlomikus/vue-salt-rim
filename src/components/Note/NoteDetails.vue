@@ -8,7 +8,7 @@
 </template>
 
 <script>
-import ApiRequests from './../../ApiRequests.js'
+import BarAssistantClient from '@/api/BarAssistantClient'
 import DateFormatter from '../DateFormatter.vue'
 
 export default {
@@ -29,7 +29,7 @@ export default {
             this.$confirm(this.$t('note.confirm-delete'), {
                 onResolved: (dialog) => {
                     dialog.close()
-                    ApiRequests.deleteNote(this.note.id).then(() => {
+                    BarAssistantClient.deleteNote(this.note.id).then(() => {
                         this.$toast.default(this.$t('note.delete-success'))
                         this.$emit('noteDeleted')
                     }).catch(e => {

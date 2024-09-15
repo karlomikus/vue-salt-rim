@@ -1807,6 +1807,11 @@ export interface components {
             /** @example true */
             is_done?: boolean;
         };
+        ExportRequest: {
+            type?: components["schemas"]["ExportTypeEnum"];
+            units?: components["schemas"]["ForceUnitConvertEnum"];
+            bar_id?: number;
+        };
         FileDownloadLink: {
             /**
              * @description Absolute URL to download the export
@@ -4249,11 +4254,7 @@ export interface operations {
         };
         requestBody: {
             content: {
-                "application/json": {
-                    type?: components["schemas"]["ExportTypeEnum"];
-                    /** @example 1 */
-                    bar_id?: number;
-                };
+                "application/json": components["schemas"]["ExportRequest"];
             };
         };
         responses: {

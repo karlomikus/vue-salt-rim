@@ -141,7 +141,6 @@
 </template>
 
 <script>
-import ApiRequests from './../../ApiRequests.js'
 import IngredientListContainer from '@/components/Ingredient/IngredientListContainer.vue'
 import CocktailListItem from '@/components/Cocktail/CocktailListItem.vue'
 import CocktailListContainer from '@/components/Cocktail/CocktailListContainer.vue'
@@ -206,7 +205,7 @@ export default {
         this.loaders.stats = true
         this.loaders.recommended = true
 
-        ApiRequests.fetchCocktails({ 'filter[favorites]': true, per_page: this.maxItems, sort: '-favorited_at', include: 'ratings,ingredients.ingredient,images' }).then(resp => {
+        BarAssistantClient.getCocktails({ 'filter[favorites]': true, per_page: this.maxItems, sort: '-favorited_at', include: 'ratings,ingredients.ingredient,images' }).then(resp => {
             this.loaders.favorites = false
             this.favoriteCocktails = resp.data
         }).catch(() => {
@@ -214,7 +213,7 @@ export default {
             this.$toast.error(this.$t('shelf.toasts.favorites-error'))
         })
 
-        ApiRequests.fetchCocktails({ per_page: this.maxItems, sort: '-created_at', include: 'ratings,ingredients.ingredient,images' }).then(resp => {
+        BarAssistantClient.getCocktails({ per_page: this.maxItems, sort: '-created_at', include: 'ratings,ingredients.ingredient,images' }).then(resp => {
             this.loaders.cocktails = false
             this.latestCocktails = resp.data
         }).catch(() => {
@@ -244,7 +243,7 @@ export default {
     methods: {
         fetchShoppingList() {
             this.loaders.list = true
-            ApiRequests.fetchIngredients({ 'filter[on_shopping_list]': true, per_page: this.maxItems, include: 'images' }).then(response => {
+            BarAssistantClient.getIngredients({ 'filter[on_shopping_list]': true, per_page: this.maxItems, include: 'images' }).then(response => {
                 this.loaders.list = false
                 this.shoppingListIngredients = response.data
             }).catch(() => {

@@ -40,8 +40,8 @@ import UnitHandler from '../../UnitHandler.js'
     </div>
 </template>
 <script>
+import BarAssistantClient from '@/api/BarAssistantClient'
 import SiteLogo from '../Layout/SiteLogo.vue'
-import ApiRequests from './../../ApiRequests.js'
 
 export default {
     components: {
@@ -59,8 +59,8 @@ export default {
         }
     },
     created() {
-        ApiRequests.fetchPublicMenu(this.$route.params.slug).then(data => {
-            this.menu = data
+        BarAssistantClient.getPublicMenu(this.$route.params.slug).then(resp => {
+            this.menu = resp.data
         }).catch(() => {
             this.$toast.default(this.$t('menu.menu-not-found'))
             this.$router.push('/')

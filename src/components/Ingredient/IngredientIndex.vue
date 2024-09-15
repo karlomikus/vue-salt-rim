@@ -75,7 +75,6 @@
 
 <script>
 import OverlayLoader from './../OverlayLoader.vue'
-import ApiRequests from './../../ApiRequests.js'
 import IngredientGridContainer from './../Ingredient/IngredientGridContainer.vue'
 import IngredientGridItem from './../Ingredient/IngredientGridItem.vue'
 import PageHeader from './../PageHeader.vue'
@@ -214,8 +213,8 @@ export default {
     },
     methods: {
         fetchRefinements() {
-            ApiRequests.fetchIngredientCategories().then(data => {
-                this.availableRefinements.categories = data
+            BarAssistantClient.getIngredientCategories().then(resp => {
+                this.availableRefinements.categories = resp.data
             })
         },
         queryToState() {
@@ -280,7 +279,7 @@ export default {
             query.include = 'images,category'
 
             this.isLoading = true
-            ApiRequests.fetchIngredients(query).then(resp => {
+            BarAssistantClient.getIngredients(query).then(resp => {
                 this.ingredients = resp.data
                 this.meta = resp.meta
                 this.isLoading = false
@@ -322,15 +321,6 @@ export default {
             if (e && e.target && e.target.classList.contains('resource-search__refinements')) {
                 this.showRefinements = !this.showRefinements
             }
-        },
-        shareFromFormat(format) {
-            ApiRequests.shareShoppingList({ type: format }).then(data => {
-                navigator.clipboard.writeText(data).then(() => {
-                    this.$toast.default(this.$t('share.format-copied'))
-                }, () => {
-                    this.$toast.error(this.$t('share.format-copy-failed'))
-                })
-            })
         },
         refreshShoppingListIngredients() {
             BarAssistantClient.getShoppingList(this.appState.user.id).then(resp => {

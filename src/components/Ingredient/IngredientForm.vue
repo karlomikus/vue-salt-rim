@@ -128,7 +128,7 @@
 </template>
 
 <script>
-import ApiRequests from './../../ApiRequests.js'
+import BarAssistantClient from '@/api/BarAssistantClient'
 import Utils from './../../Utils.js'
 import ImageUpload from './../ImageUpload.vue'
 import PageHeader from './../PageHeader.vue'
@@ -210,14 +210,14 @@ export default {
     methods: {
         refreshIngredient() {
             this.isLoading = true
-            ApiRequests.fetchIngredient(this.ingredient.id).then(data => {
-                data.description = Utils.decodeHtml(data.description)
+            BarAssistantClient.getIngredient(this.ingredient.id).then(resp => {
+                resp.data.description = Utils.decodeHtml(resp.data.description)
 
                 this.ingredient = data
                 this.isParent = this.ingredient.parent_ingredient != null
                 this.isComplex = this.ingredient.ingredient_parts.length > 0
-                if (data.category) {
-                    this.ingredientCategoryId = data.category.id
+                if (resp.data.category) {
+                    this.ingredientCategoryId = resp.data.category.id
                 }
 
                 useTitle(`${this.$t('ingredient.title')} \u22C5 ${this.ingredient.name}`)
@@ -225,12 +225,12 @@ export default {
             })
         },
         refreshCategories() {
-            ApiRequests.fetchIngredientCategories().then(data => {
-                this.categories = data
+            BarAssistantClient.getIngredientCategories().then(resp => {
+                this.categories = resp.data
             })
         },
         refreshPriceCategories() {
-            ApiRequests.fetchPriceCategories().then(data => {
+            BarAssistantClient.getPriceCategories().then(data => {
                 this.priceCategories = data
             })
         },
@@ -299,7 +299,7 @@ export default {
             }
 
             if (this.ingredient.id) {
-                ApiRequests.updateIngredient(this.ingredient.id, postData).then(data => {
+                BarAssistantClient.updateIngredient(this.ingredient.id, postData).then(data => {
                     this.$toast.default(this.$t('ingredient.update-success'))
                     this.$router.push({ name: 'ingredients.show', params: { id: data.slug } })
                     this.isLoading = false
@@ -309,7 +309,7 @@ export default {
                     this.isLoading = false
                 })
             } else {
-                ApiRequests.saveIngredient(postData).then(data => {
+                BarAssistantClient.saveIngredient(postData).then(data => {
                     this.$toast.default(this.$t('ingredient.create-success'))
                     this.$router.push({ name: 'ingredients.show', params: { id: data.slug } })
                     this.isLoading = false

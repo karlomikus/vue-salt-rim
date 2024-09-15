@@ -148,7 +148,6 @@ import UnitHandler from '../../UnitHandler.js'
 </template>
 
 <script>
-import ApiRequests from './../../ApiRequests.js'
 import OverlayLoader from '@/components/OverlayLoader.vue'
 import { micromark } from 'micromark'
 import dayjs from 'dayjs'
@@ -250,7 +249,7 @@ export default {
                 onResolved: (dialog) => {
                     dialog.close()
                     this.isLoadingIngredient = true
-                    ApiRequests.deleteIngredient(this.ingredient.id).then(() => {
+                    BarAssistantClient.deleteIngredient(this.ingredient.id).then(() => {
                         this.$toast.default(`Ingredient "${this.ingredient.name}" successfully removed`)
                         this.$router.push({ name: 'ingredients' })
                         this.isLoadingIngredient = false

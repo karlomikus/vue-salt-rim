@@ -38,7 +38,7 @@
 
 <script>
 import AppState from '../../AppState'
-import ApiRequests from './../../ApiRequests'
+import BarAssistantClient from '@/api/BarAssistantClient';
 
 export default {
     data() {
@@ -64,10 +64,10 @@ export default {
         }
     },
     created() {
-        ApiRequests.fetchApiVersion().then(resp => {
-            this.versions.api = resp.version
-            this.versions.meili = resp.search_version
-            this.versions.isLatest = resp.is_latest
+        BarAssistantClient.getServerVersion().then(resp => {
+            this.versions.api = resp.data.version
+            this.versions.meili = resp.data.search_version
+            this.versions.isLatest = resp.data.is_latest
         }).catch(() => {
             this.versions.api = 'n/a'
             this.versions = 'n/a'

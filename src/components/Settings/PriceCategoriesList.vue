@@ -55,7 +55,7 @@
 </template>
 
 <script>
-import ApiRequests from '@/ApiRequests'
+import BarAssistantClient from '@/api/BarAssistantClient'
 import OverlayLoader from '@/components/OverlayLoader.vue'
 import PageHeader from '@/components/PageHeader.vue'
 import Navigation from '@/components/Settings/SettingsNavigation.vue'
@@ -91,8 +91,8 @@ export default {
         refreshCategories() {
             this.showDialog = false
             this.isLoading = true
-            ApiRequests.fetchPriceCategories().then(data => {
-                this.categories = data
+            BarAssistantClient.getPriceCategories().then(resp => {
+                this.categories = resp.data
                 this.isLoading = false
             }).catch(e => {
                 this.$toast.error(e.message)
@@ -108,7 +108,7 @@ export default {
                 onResolved: (dialog) => {
                     this.isLoading = true
                     dialog.close()
-                    ApiRequests.deletePriceCategory(category.id).then(() => {
+                    BarAssistantClient.deletePriceCategory(category.id).then(() => {
                         this.isLoading = false
                         this.$toast.default(this.$t('price.category-delete-success'))
                         this.refreshCategories()

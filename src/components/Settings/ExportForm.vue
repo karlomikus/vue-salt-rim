@@ -31,7 +31,7 @@
 </template>
 
 <script>
-import ApiRequests from '@/ApiRequests'
+import BarAssistantClient from '@/api/BarAssistantClient'
 import OverlayLoader from '@/components/OverlayLoader.vue'
 
 export default {
@@ -86,8 +86,8 @@ export default {
     methods: {
         refreshBars() {
             this.isLoading = true
-            ApiRequests.fetchBars().then(data => {
-                this.bars = data.filter(bar => {
+            BarAssistantClient.getBars().then(resp => {
+                this.bars = resp.data.filter(bar => {
                     // Show only owned bars
                     return bar.access.can_delete
                 })
@@ -106,7 +106,7 @@ export default {
                 units: this.exportModel.units,
             }
 
-            ApiRequests.saveExport(postData).then(() => {
+            BarAssistantClient.saveExport(postData).then(() => {
                 this.isLoading = false
                 this.$toast.default(this.$t('exports.start-success'))
                 this.$emit('exportDialogClosed')

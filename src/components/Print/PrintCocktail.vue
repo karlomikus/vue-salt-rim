@@ -38,7 +38,7 @@
 </template>
 <script>
 import {micromark} from 'micromark'
-import ApiRequests from '@/ApiRequests'
+import BarAssistantClient from '@/api/BarAssistantClient'
 import AppState from './../../AppState'
 import UnitHandler from '../../UnitHandler'
 import CocktailIngredientShare from '../Cocktail/CocktailIngredientShare.vue'
@@ -76,8 +76,8 @@ export default {
         },
     },
     created() {
-        ApiRequests.fetchCocktail(this.$route.params.id).then(data => {
-            this.cocktail = data
+        BarAssistantClient.getCocktail(this.$route.params.id).then(resp => {
+            this.cocktail = resp.data
             this.printReady = true
             this.$nextTick(() => {
                 window.print();

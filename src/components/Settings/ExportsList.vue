@@ -60,7 +60,7 @@
 </template>
 
 <script>
-import ApiRequests from '../../ApiRequests'
+import BarAssistantClient from '@/api/BarAssistantClient'
 import OverlayLoader from '../OverlayLoader.vue'
 import PageHeader from '../PageHeader.vue'
 import SettingsNavigation from './SettingsNavigation.vue'
@@ -68,7 +68,6 @@ import SaltRimDialog from '../Dialog/SaltRimDialog.vue'
 import DateFormatter from '../DateFormatter.vue'
 import ExportForm from './ExportForm.vue'
 import EmptyState from '../EmptyState.vue'
-import BarAssistantClient from '@/api/BarAssistantClient'
 import { useTitle } from '@/composables/title'
 
 export default {
@@ -98,8 +97,8 @@ export default {
             this.showDialog = false
 
             this.isLoading = true
-            ApiRequests.fetchExports().then(data => {
-                this.barExports = data
+            BarAssistantClient.getExports().then(resp => {
+                this.barExports = resp.data
                 this.isLoading = false
             }).catch(e => {
                 this.$toast.error(e.message)
@@ -110,7 +109,7 @@ export default {
                 onResolved: (dialog) => {
                     this.isLoading = true
                     dialog.close()
-                    ApiRequests.removeExport(ex.id).then(() => {
+                    BarAssistantClient.deleteExport(ex.id).then(() => {
                         this.isLoading = false
                         this.$toast.default(this.$t('exports.delete-success'))
                         this.refreshExports()
