@@ -2,7 +2,6 @@
     <div class="login-page">
         <SiteLogo></SiteLogo>
         <form @submit.prevent="login">
-            <OverlayLoader v-if="isLoading"></OverlayLoader>
             <div v-if="isDemo" class="login-page__demo-notice">
                 Welcome to Bar Assistant Demo instance. Use <code>admin@example.com</code> as email, and <code>password</code> as password to login.
             </div>
@@ -20,18 +19,11 @@
                     <span>{{ $t('remember-me') }}</span>
                 </label>
             </div>
-            <!-- <div class="server-status">
-                <div class="server-status__title">Bar Assistant server:</div>
-                <a :href="baServer" target="_blank" class="server-status__url">{{ baServer }}</a>
+            <div class="server-status" v-if="!baServerAvailable">
                 <div class="server-status__status">
-                    <template v-if="baServerAvailable">
-                        {{ $t('status') }}: {{ $t('status-available') }} &middot; {{ server.version }}
-                    </template>
-                    <template v-else>
-                        {{ $t('status') }}: {{ $t('status-not-available') }}
-                    </template>
+                    Unable to connect to "{{ baServer }}" API server. <a href="https://docs.barassistant.app/faq/" target="_blank">Learn more</a>.
                 </div>
-            </div> -->
+            </div>
             <div v-if="baServerAvailable" style="text-align: right; margin-top: 20px;">
                 <RouterLink v-if="registrationAllowed" class="button button--outline" :to="{ name: 'register' }">{{ $t('register') }}</RouterLink>
                 <button type="submit" class="button button--dark" style="margin-left: 5px;" :disabled="!baServerAvailable">{{ $t('login') }}</button>
@@ -136,7 +128,7 @@ export default {
     margin-bottom: 1rem;
     padding: 0.5rem;
     border-radius: var(--radius-1);
-    border: 2px solid var(--clr-gray-200);
+    box-shadow: var(--shadow-elevation-medium);
 }
 
 .dark-theme .server-status {
