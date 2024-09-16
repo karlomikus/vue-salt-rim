@@ -58,7 +58,9 @@
     "complex-note": "Si vous avez tous les ingrédients listés, associez automatiquement les recettes avec cet ingrédient",
     "complex": "Ingrédient complexe",
     "variety-note": "La correspondance des recettes inclura l'ingrédient parent comme substitut (selon les paramètres de l'utilisateur)",
-    "ingredients": "Ingrédients"
+    "ingredients": "Ingrédients",
+    "used_as_substitute_for": "Used as a substitute for",
+    "can_be_substituted_with": "Can be substituted with"
   },
   "share": {
     "title": "Partager",
@@ -74,6 +76,7 @@
   "settings": "Paramètres",
   "logout": "Déconnexion",
   "profile": "Profil",
+  "filename": "File name",
   "users": {
     "title": "Utilisateurs",
     "add": "Ajouter un utilisateur",
@@ -527,7 +530,9 @@
     "export-notice": "Veuillez garder à l'esprit qu'en fonction de la configuration du serveur et de la taille du bar sélectionné, la génération de l'export peut prendre plusieurs minutes.",
     "start-success": "Export du bar démarré",
     "confirm-delete": "Cela supprimera le fichier d'exportation sélectionné",
-    "delete-success": "Export supprimé"
+    "delete-success": "Export supprimé",
+    "types-hint": "Click here to learn more about export types",
+    "force-units": "Convert units"
   },
   "start": "Démarrer",
   "filter": "Filtrer",
@@ -536,7 +541,8 @@
   "unit": {
     "ml-full": "Mililitres (ml)",
     "oz-full": "Onces (oz)",
-    "cl-full": "Centilitres (cl)"
+    "cl-full": "Centilitres (cl)",
+    "original": "Keep original units"
   },
   "no-default-units": "Aucune unité par défaut",
   "wakelock-toggle": "Empêcher le verrouillage de l'écran",
@@ -584,5 +590,6 @@
     "add": "Ajouter un prix",
     "price-categories": "Catégories de prix",
     "add-price-category": "Ajouter une catégorie de prix"
-  }
+  },
+  "shopping-list-empty": "Your shopping list is empty"
 }

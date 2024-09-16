@@ -58,7 +58,9 @@
     "complex-note": "Matcha automatiskt recept med denna ingrediens om du har alla angivna ingredienser",
     "complex": "Svår ingrediens",
     "variety-note": "Recept matchning kommer innehålla föräldraingrediensen som ett substitut (beroende på användarinställningar)",
-    "ingredients": "Ingredienser"
+    "ingredients": "Ingredienser",
+    "used_as_substitute_for": "Used as a substitute for",
+    "can_be_substituted_with": "Can be substituted with"
   },
   "share": {
     "title": "Dela",
@@ -66,59 +68,60 @@
     "copy-yaml": "Kopiera som YAML",
     "format-copied": "Text kopierad",
     "format-copy-failed": "Kunde inte kopiera",
-    "copy-text": "Copy as plain text",
-    "copy-md": "Copy as Markdown",
-    "copy-xml": "Copy as XML",
-    "copy-json-ld": "Copy JSON+LD schema"
+    "copy-text": "Kopiera som text",
+    "copy-md": "Kopiera som Markdown",
+    "copy-xml": "Kopiera som XML",
+    "copy-json-ld": "Kopiera JSON+LD schema"
   },
-  "settings": "Settings",
-  "logout": "Logout",
-  "profile": "Profile",
+  "settings": "Inställningar",
+  "logout": "Logga ut",
+  "profile": "Profil",
+  "filename": "Filnamn",
   "users": {
-    "title": "Users",
-    "add": "Add user",
-    "confirm-delete": "This will permanently delete user with name \"{name}\".",
-    "delete-success": "User deleted successfully",
-    "edit": "Edit user",
+    "title": "Användare",
+    "add": "Lägg till användare",
+    "confirm-delete": "Det här kommer att ta bort användaren \"{name}\".",
+    "delete-success": "Användaren togs bort",
+    "edit": "Redigera användare",
     "update-success": "User updated successfully.",
-    "role": "Bar role",
-    "display-name": "Display name",
+    "role": "Bar roll",
+    "display-name": "Visningsnamn",
     "add-success": "User added successfully."
   },
-  "filters": "Filters",
-  "sort": "Sort by",
-  "my-favorites": "My favorites",
+  "filters": "Filter",
+  "sort": "Sortera som",
+  "my-favorites": "Mina favoriter",
   "method": {
-    "title": "Method",
-    "Shake": "Shake",
+    "title": "Metod",
+    "Shake": "Skaka",
     "Stir": "Stir",
-    "Build": "Build",
-    "Blend": "Blend",
+    "Build": "Bygg",
+    "Blend": "Blanda",
     "Muddle": "Muddle",
-    "Layer": "Layer"
+    "Layer": "Lagra"
   },
   "total": {
     "approx": "Approx. total",
-    "title": "Total",
-    "cocktails": "Total cocktails",
-    "ingredients": "Total ingredients"
+    "title": "Totalt",
+    "cocktails": "Totala cocktails",
+    "ingredients": "Totala ingredienser"
   },
   "latest": {
-    "cocktails": "Latest cocktails",
-    "favorites": "Your recent favorites"
+    "cocktails": "Senaste cocktails",
+    "favorites": "Dina senaste favoriter"
   },
-  "strength": "Strength",
+  "strength": "Styrka",
   "rating": "Rating",
-  "created": "Created",
-  "updated": "Updated",
-  "non-alcoholic": "Non alcoholic",
-  "weak": "Weak",
-  "medium": "Medium",
-  "strong": "Strong",
-  "welcome-user": "Welcome {name}",
-  "your-shopping-list": "Your shopping list",
-  "view-all": "View all",
-  "add-to-shelf": "Add to my shelf",
+  "created": "Skapad",
+  "updated": "Uppdaterad",
+  "non-alcoholic": "Alkoholfri",
+  "weak": "Svag",
+  "medium": "Mellan",
+  "strong": "Stark",
+  "welcome-user": "Välkommen {name}",
+  "your-shopping-list": "Din inköpslista",
+  "view-all": "Visa alla",
+  "add-to-shelf": "Lägg till på min hylla",
   "remove-from-list": "Remove from list",
   "missing.ingredients": "Ingredients you are missing will be shown here.",
   "all-ingredients": "All ingredients",
@@ -527,7 +530,9 @@
     "export-notice": "Please keep in mind that depending on server configuration and selected bar size, generating export can take several minutes.",
     "start-success": "Started bar export",
     "confirm-delete": "This will delete the selected export file",
-    "delete-success": "Export removed"
+    "delete-success": "Export removed",
+    "types-hint": "Click here to learn more about export types",
+    "force-units": "Convert units"
   },
   "start": "Start",
   "filter": "Filter",
@@ -536,7 +541,8 @@
   "unit": {
     "ml-full": "Mililiters (ml)",
     "oz-full": "Fluid ounces (oz)",
-    "cl-full": "Centiliters (cl)"
+    "cl-full": "Centiliters (cl)",
+    "original": "Keep original units"
   },
   "no-default-units": "No default units",
   "wakelock-toggle": "Prevent screen locking",
@@ -584,5 +590,6 @@
     "add": "Add price",
     "price-categories": "Price categories",
     "add-price-category": "Add price category"
-  }
+  },
+  "shopping-list-empty": "Your shopping list is empty"
 }
