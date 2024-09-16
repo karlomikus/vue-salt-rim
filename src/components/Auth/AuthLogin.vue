@@ -41,7 +41,7 @@
 </template>
 
 <script>
-import ApiRequests from './../../ApiRequests.js'
+import BarAssistantClient from '@/api/BarAssistantClient'
 import OverlayLoader from './../OverlayLoader.vue'
 import SiteLogo from './../Layout/SiteLogo.vue'
 import AppState from './../../AppState'
@@ -83,8 +83,8 @@ export default {
     },
     created() {
         this.isLoading = true
-        ApiRequests.fetchApiVersion().then(data => {
-            this.server = data
+        BarAssistantClient.getServerVersion().then(resp => {
+            this.server = resp.data
             this.isLoading = false
 
             if (this.isDemo) {
@@ -101,14 +101,14 @@ export default {
             const appState = new AppState()
             let redirectPath = this.$route.query.redirect
 
-            ApiRequests.fetchLoginToken(this.email, this.password).then(token => {
-                appState.setToken(token)
-                ApiRequests.fetchUser().then(user => {
-                    appState.setUser(user)
+            BarAssistantClient.getLoginToken(this.email, this.password).then(resp => {
+                appState.setToken(resp.data.token)
+                BarAssistantClient.getProfile().then(profileResp => {
+                    appState.setUser(profileResp.data)
 
-                    ApiRequests.fetchBars().then(bars => {
-                        if (bars.length == 1) {
-                            appState.setBar(bars[0])
+                    BarAssistantClient.getBars().then(barsResp => {
+                        if (barsResp.data.length == 1) {
+                            appState.setBar(barsResp.data[0])
                             redirectPath = '/'
                         } else {
                             redirectPath = '/bars'

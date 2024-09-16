@@ -104,7 +104,7 @@
 
 <script>
 import { initializePaddle } from '@paddle/paddle-js'
-import ApiRequests from './../../ApiRequests.js'
+import BarAssistantClient from '@/api/BarAssistantClient'
 import OverlayLoader from './../OverlayLoader.vue'
 import DateFormatter from './../DateFormatter.vue'
 import SaltRimRadio from './../SaltRimRadio.vue'
@@ -168,8 +168,8 @@ export default {
     methods: {
         fetchBilling() {
             this.isLoading = true
-            ApiRequests.fetchSubscription().then(data => {
-                this.billing = data
+            BarAssistantClient.getSubscriptionStatus().then(resp => {
+                this.billing = resp.data
                 this.fetchProduct().then(() => {
                     this.isLoading = false
                 }).catch(() => {
@@ -183,9 +183,7 @@ export default {
                 onResolved(dialog) {
                     dialog.close()
                     self.isLoading = true
-                    ApiRequests.updateSubscription({
-                        type: type
-                    }).then(() => {
+                    BarAssistantClient.updateSubscriptionStatus(type).then(() => {
                         self.isLoading = false
                         self.fetchBilling()
                     })
@@ -228,7 +226,7 @@ export default {
         refreshUser() {
             const appState = new AppState()
 
-            ApiRequests.fetchUser().then(user => {
+            BarAssistantClient.getProfile().then(user => {
                 appState.setUser(user)
             })
         },

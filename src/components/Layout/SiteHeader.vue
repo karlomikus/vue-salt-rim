@@ -67,7 +67,7 @@
     </div>
 </template>
 <script>
-import ApiRequests from './../../ApiRequests'
+import BarAssistantClient from '@/api/BarAssistantClient'
 import SiteAutocomplete from './../SiteAutocomplete.vue'
 import SaltRimDialog from './../Dialog/SaltRimDialog.vue'
 import SiteLogo from './../Layout/SiteLogo.vue'
@@ -102,7 +102,7 @@ export default {
             this.$confirm(this.$t('auth.confirm-logout'), {
                 onResolved: (dialog) => {
                     dialog.close()
-                    ApiRequests.logout().then(() => {
+                    BarAssistantClient.logout().then(() => {
                         const appState = new AppState()
                         appState.clear()
                         this.$router.push({ name: 'login' })

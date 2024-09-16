@@ -321,6 +321,23 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/cocktails/{id}/similar": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Show similar cocktails */
+        get: operations["3e08ff7e8e549570aadbaf5b727eaa2a"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/cocktails/{id}/copy": {
         parameters: {
             query?: never;
@@ -1167,6 +1184,24 @@ export interface paths {
         get: operations["d62319d3bf13005383b7d8027e9056ec"];
         put?: never;
         post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/billing/subscriptions": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get subscription status */
+        get: operations["5e298d4bebc46cd05931c3a15c92f248"];
+        put?: never;
+        /** Update subscription */
+        post: operations["6b69b6aa21e0e7174a5601c02a19161e"];
         delete?: never;
         options?: never;
         head?: never;
@@ -2253,6 +2288,32 @@ export interface components {
                 quantity?: number;
             }[];
         };
+        Subscription: {
+            type?: string;
+            paddle_id?: string;
+            status?: string;
+            /** Format: date-time */
+            created_at?: string;
+            /** Format: date-time */
+            updated_at?: string | null;
+            /** Format: date-time */
+            paused_at?: string | null;
+            /** Format: date-time */
+            ends_at?: string | null;
+            past_due?: boolean;
+            is_recurring?: boolean;
+            next_billed_at?: {
+                currency?: string;
+                amount?: string;
+                /** Format: date-time */
+                date?: string;
+            }[];
+            /** Format: uri */
+            update_payment_url?: string;
+            /** Format: uri */
+            cancel_url?: string;
+            transactions?: components["schemas"]["Transaction"][];
+        };
         Tag: {
             /** @example 1 */
             id: number;
@@ -2268,6 +2329,21 @@ export interface components {
         Token: {
             /** @example 1|dvWHLWuZbmWWFbjaUDla393Q9jK5Ou9ujWYPcvII */
             token?: string;
+        };
+        Transaction: {
+            total?: string;
+            tax?: string;
+            currency?: string;
+            status?: string;
+            invoice_number?: string;
+            /** Format: uri */
+            url?: string;
+            /** Format: date-time */
+            billed_at?: string;
+            /** Format: date-time */
+            created_at?: string;
+            /** Format: date-time */
+            updated_at?: string | null;
         };
         User: {
             /** @example 1 */
@@ -2304,6 +2380,15 @@ export interface components {
              * @example password
              */
             password: string;
+        };
+        UserSubscription: {
+            prices: string;
+            customer: {
+                paddle_id: string;
+                paddle_email: string;
+                paddle_name: string;
+            }[];
+            subscription: components["schemas"]["Subscription"] | null;
         };
         Utensil: {
             /** @example 1 */
@@ -3595,6 +3680,53 @@ export interface operations {
                             /** @example <content in requested format> */
                             content: string;
                         };
+                    };
+                };
+            };
+            /** @description You are not authorized for this action. */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data?: components["schemas"]["APIError"];
+                    };
+                };
+            };
+            /** @description Resource record not found. */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data?: components["schemas"]["APIError"];
+                    };
+                };
+            };
+        };
+    };
+    "3e08ff7e8e549570aadbaf5b727eaa2a": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Database id of a resource */
+                id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data: components["schemas"]["Cocktail"][];
                     };
                 };
             };
@@ -7024,6 +7156,85 @@ export interface operations {
                         data: components["schemas"]["BarStats"];
                     };
                 };
+            };
+            /** @description You are not authorized for this action. */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data?: components["schemas"]["APIError"];
+                    };
+                };
+            };
+            /** @description Resource record not found. */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data?: components["schemas"]["APIError"];
+                    };
+                };
+            };
+        };
+    };
+    "5e298d4bebc46cd05931c3a15c92f248": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data: components["schemas"]["UserSubscription"];
+                    };
+                };
+            };
+            /** @description Resource record not found. */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data?: components["schemas"]["APIError"];
+                    };
+                };
+            };
+        };
+    };
+    "6b69b6aa21e0e7174a5601c02a19161e": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": {
+                    type: string;
+                };
+            };
+        };
+        responses: {
+            /** @description Successful response */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
             };
             /** @description You are not authorized for this action. */
             403: {

@@ -15,7 +15,7 @@
 </template>
 
 <script>
-import ApiRequests from '@/ApiRequests'
+import BarAssistantClient from '@/api/BarAssistantClient'
 import SiteLogo from '@/components/Layout/SiteLogo.vue'
 import PublicRecipe from '@/components/Cocktail/PublicRecipe.vue'
 import SourcePresenter from '../SourcePresenter.vue'
@@ -75,8 +75,8 @@ export default {
     methods: {
         getCocktail(ulid) {
             this.isLoading = true
-            ApiRequests.fetchCocktailByPublicId(ulid).then(data => {
-                this.cocktail = data
+            BarAssistantClient.getPublicCocktail(ulid).then(resp => {
+                this.cocktail = resp.data
                 this.isLoading = false
             }).catch(e => {
                 this.$toast.error(e.message)
@@ -89,7 +89,16 @@ export default {
 
 <style scoped>
 .public-page__header {
-    padding: 2rem 0;
+    padding: var(--gap-size-3);
+    margin: var(--gap-size-3) 0;
+    background-color: #332d46;
+    border-bottom: 1px solid #6b6188;
+    box-shadow:
+        inset 0px 0.4px 0.5px hsl(var(--shadow-color-dark) / 0.25),
+        inset 0px 1.1px 1.2px -0.8px hsl(var(--shadow-color-dark) / 0.25),
+        inset 0px 2.6px 2.9px -1.7px hsl(var(--shadow-color-dark) / 0.25),
+        inset 0px 6.3px 7.1px -2.5px hsl(var(--shadow-color-dark) / 0.25);
+    border-radius: var(--radius-3);
 }
 
 .public-page {

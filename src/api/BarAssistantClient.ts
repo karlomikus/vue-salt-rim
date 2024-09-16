@@ -4,8 +4,6 @@ import AppState from '@/AppState'
 
 let accessToken: string | undefined = undefined;
 
-const appState = new AppState()
-
 const checkService: Middleware = {
   async onResponse({ response }) {
     if (response.status == 503) {
@@ -18,6 +16,7 @@ const checkService: Middleware = {
 const checkToken: Middleware = {
   async onResponse({ response }) {
     if (response.status == 401) {
+      const appState = new AppState()
       appState.clear()
       window.location.replace('/')
     }
@@ -27,7 +26,8 @@ const checkToken: Middleware = {
 
 const authMiddleware: Middleware = {
   async onRequest({ request }) {
-    accessToken = appState.token
+    const scopedState = new AppState()
+    accessToken = scopedState.token
     request.headers.set("Authorization", `Bearer ${accessToken}`);
     request.headers.set("Accept", "application/json");
     return request;
@@ -36,6 +36,7 @@ const authMiddleware: Middleware = {
 
 const barIdMiddleware: Middleware = {
   async onRequest({ request }) {
+    const appState = new AppState()
     if (appState.bar && appState.bar.id) {
       request.headers.set("Bar-Assistant-Bar-Id", appState.bar.id.toString());
     }
@@ -63,6 +64,38 @@ client.use(checkToken);
 client.use(checkService);
 
 export default class BarAssistantClient {
+  static async getLoginToken(email: string, password: string) {
+    return (await client.POST('/auth/login', { body: { email: email, password: password } })).data
+  }
+
+  static async logout() {
+    return (await client.POST('/auth/logout')).data
+  }
+
+  static async getProfile() {
+    return (await client.GET('/profile')).data
+  }
+
+  static async updateProfile(body: components["schemas"]["ProfileRequest"]) {
+    return (await client.POST('/profile', { body: body })).data
+  }
+
+  static async requestPasswordResetEmail(email: string) {
+    return (await client.POST('/auth/forgot-password', { body: { email: email } })).data
+  }
+
+  static async register(body: components["schemas"]["RegisterRequest"]) {
+    return (await client.POST('/auth/register', { body: body })).data
+  }
+
+  static async resetPassword(requestBody: object) {
+    return (await client.POST('/auth/reset-password', { body: requestBody })).data
+  }
+
+  static async confirmAccount(id: number, hash: string) {
+    return (await client.POST('/auth/verify/{id}/{hash}', { params: { path: { id: id, hash: hash } } })).data
+  }
+
   static async getIngredients(query = {}) {
     return (await client.GET('/ingredients', { params: { query: query } })).data
   }
@@ -85,6 +118,22 @@ export default class BarAssistantClient {
 
   static async getCocktail(id: string) {
     return (await client.GET('/cocktails/{id}', { params: { path: { id: id } } })).data
+  }
+
+  static async getSimilarCocktail(id: number) {
+    return (await client.GET('/cocktails/{id}/similar', { params: { path: { id: id } } })).data
+  }
+
+  static async getPublicCocktail(id: string) {
+    return (await client.GET('/explore/cocktails/{public_id}', { params: { path: { public_id: id } } })).data
+  }
+
+  static async savePublicCocktailLink(id: number) {
+    return (await client.POST('/cocktails/{id}/public-link', { params: { path: { id: id } } })).data
+  }
+
+  static async deletePublicCocktailLink(id: number) {
+    return (await client.DELETE('/cocktails/{id}/public-link', { params: { path: { id: id } } })).data
   }
 
   static async saveCocktail(body: components["schemas"]["CocktailRequest"]) {
@@ -460,5 +509,13 @@ export default class BarAssistantClient {
 
   static async deleteExport(id: number) {
     return (await client.DELETE('/exports/{id}', { params: { path: { id: id } } })).data
+  }
+
+  static async getSubscriptionStatus() {
+    return (await client.GET('/billing/subscriptions')).data
+  }
+
+  static async updateSubscriptionStatus(status: string) {
+    return (await client.POST('/billing/subscriptions', { body: { type: status } })).data
   }
 }

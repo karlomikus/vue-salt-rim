@@ -10,7 +10,7 @@
     </div>
 </template>
 <script>
-import ApiRequests from '@/ApiRequests'
+import BarAssistantClient from '@/api/BarAssistantClient'
 import CocktailListItem from '@/components/Cocktail/CocktailListItem.vue'
 import CocktailListContainer from '@/components/Cocktail/CocktailListContainer.vue'
 import OverlayLoader from '@/components/OverlayLoader.vue'
@@ -48,8 +48,8 @@ export default {
     methods: {
         fetchRelated() {
             this.isLoading = true
-            ApiRequests.fetchSimilarCocktails(this.fromCocktail.id).then(data => {
-                this.similarCocktails = data
+            BarAssistantClient.getSimilarCocktail(this.fromCocktail.id).then(resp => {
+                this.similarCocktails = resp.data
                 this.isLoading = false
             }).catch(() => {
                 this.similarCocktails = []

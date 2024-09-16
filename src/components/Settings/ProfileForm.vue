@@ -60,7 +60,7 @@
 </template>
 
 <script>
-import ApiRequests from './../../ApiRequests.js'
+import BarAssistantClient from '@/api/BarAssistantClient'
 import OverlayLoader from '@/components/OverlayLoader.vue'
 import PageHeader from '@/components/PageHeader.vue'
 import Navigation from '@/components/Settings/SettingsNavigation.vue'
@@ -91,10 +91,10 @@ export default {
 
         this.isLoading = true
 
-        ApiRequests.fetchUser().then(data => {
-            this.user = data
+        BarAssistantClient.getProfile().then(resp => {
+            this.user = resp.data
             if (this.appState.bar.id) {
-                const barMembership = data.memberships.filter(m => m.bar_id == this.appState.bar.id)
+                const barMembership = resp.data.memberships.filter(m => m.bar_id == this.appState.bar.id)
                 this.user.is_shelf_public = barMembership.length > 0 ? barMembership[0].is_shelf_public : false
                 this.user.use_parent_as_substitute = barMembership.length > 0 ? barMembership[0].use_parent_as_substitute : false
             }
@@ -128,8 +128,8 @@ export default {
                 postData.use_parent_as_substitute = this.user.use_parent_as_substitute
             }
 
-            ApiRequests.updateUser(postData).then(data => {
-                appState.setUser(data)
+            BarAssistantClient.updateProfile(postData).then(resp => {
+                appState.setUser(resp.data)
                 this.isLoading = false
                 this.$toast.default(this.$t('profile-updated'))
                 this.user.password = null
@@ -146,7 +146,7 @@ export default {
                 onResolved: (dialog) => {
                     dialog.close()
                     this.isLoading = true
-                    ApiRequests.deleteUser(this.user.id).then(() => {
+                    BarAssistantClient.deleteUser(this.user.id).then(() => {
                         this.isLoading = false
                         appState.clear()
                         this.$router.push({ name: 'login' })

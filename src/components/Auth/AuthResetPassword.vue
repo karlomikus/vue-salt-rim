@@ -25,7 +25,7 @@
 </template>
 
 <script>
-import ApiRequests from './../../ApiRequests.js'
+import BarAssistantClient from '@/api/BarAssistantClient';
 import OverlayLoader from './../OverlayLoader.vue'
 import SiteLogo from './../Layout/SiteLogo.vue'
 
@@ -52,7 +52,7 @@ export default {
             }
 
             this.isLoading = true
-            ApiRequests.passwordReset(postData).then(() => {
+            BarAssistantClient.resetPassword(postData).then(() => {
                 this.$toast.default(this.$t('auth.password-reset-success'))
                 this.$router.push('/login')
             }).catch(() => {
