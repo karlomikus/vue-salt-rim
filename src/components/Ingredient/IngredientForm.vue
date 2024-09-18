@@ -213,7 +213,7 @@ export default {
             BarAssistantClient.getIngredient(this.ingredient.id).then(resp => {
                 resp.data.description = Utils.decodeHtml(resp.data.description)
 
-                this.ingredient = data
+                this.ingredient = resp.data
                 this.isParent = this.ingredient.parent_ingredient != null
                 this.isComplex = this.ingredient.ingredient_parts.length > 0
                 if (resp.data.category) {
