@@ -215,7 +215,9 @@ export default {
     }
 
     .subnavigation-bar__nav {
-        justify-content: center;
+        /* justify-content: center; */
+        flex-wrap: nowrap;
+        overflow: auto;
     }
 
     .subnavigation-bar__nav>a {

@@ -154,10 +154,10 @@ a.site-logo:focus .site-logo__title {
         line-height: 0.9;
         font-size: 1.35rem;
     }
-    
+
     .site-logo__title span {
         font-size: 0.6rem;
-        width: 130px;
+        width: 150px;
     }
 
     .site-logo__image svg {
