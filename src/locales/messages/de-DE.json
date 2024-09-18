@@ -58,7 +58,9 @@
     "complex-note": "If you have all of the listed ingredients, automatically match recipes with this ingredient",
     "complex": "Complex ingredient",
     "variety-note": "Recipe matching will include the parent ingredient as a substitute (depending on user settings)",
-    "ingredients": "Zutaten"
+    "ingredients": "Zutaten",
+    "used_as_substitute_for": "Used as a substitute for",
+    "can_be_substituted_with": "Can be substituted with"
   },
   "share": {
     "title": "Aktie",
@@ -74,6 +76,7 @@
   "settings": "Einstellungen",
   "logout": "Abmelden",
   "profile": "Profil",
+  "filename": "File name",
   "users": {
     "title": "Benutzer",
     "add": "Benutzer erstellen",
@@ -527,7 +530,9 @@
     "export-notice": "Please keep in mind that depending on server configuration and selected bar size, generating export can take several minutes.",
     "start-success": "Started bar export",
     "confirm-delete": "This will delete the selected export file",
-    "delete-success": "Export removed"
+    "delete-success": "Export removed",
+    "types-hint": "Click here to learn more about export types",
+    "force-units": "Convert units"
   },
   "start": "Start",
   "filter": "Filter",
@@ -536,7 +541,8 @@
   "unit": {
     "ml-full": "Mililiters (ml)",
     "oz-full": "Fluid ounces (oz)",
-    "cl-full": "Centiliters (cl)"
+    "cl-full": "Centiliters (cl)",
+    "original": "Keep original units"
   },
   "no-default-units": "Keine Standard-Einheit",
   "wakelock-toggle": "Prevent screen locking",
@@ -584,5 +590,6 @@
     "add": "Preis hinzufügen",
     "price-categories": "Preiskategorien",
     "add-price-category": "Preiskategorie hinzufügen"
-  }
+  },
+  "shopping-list-empty": "Your shopping list is empty"
 }
