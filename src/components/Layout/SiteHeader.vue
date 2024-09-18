@@ -221,7 +221,7 @@ export default {
     }
 
     .subnavigation-bar__nav>a {
-        padding: 0.25rem 0.75rem;
+        padding: 0.5rem 1rem;
     }
 }
 </style>

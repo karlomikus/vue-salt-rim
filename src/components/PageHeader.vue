@@ -33,7 +33,7 @@
 
 :deep(.site-page-header__title small) {
     font-family: var(--font-primary);
-    font-size: 0.4em;
+    font-size: 0.5em;
     color: var(--clr-gray-500);
     display: block;
 }
@@ -46,8 +46,18 @@
 }
 
 @media (max-width: 450px) {
-    .site-page-header__actions {
+    .site-page-header {
+        flex-direction: column;
         gap: var(--gap-size-2);
+    }
+
+    .site-page-header__actions {
+        margin-left: 0;
+        gap: var(--gap-size-2);
+    }
+
+    .site-page-header__title h2 {
+        font-size: 1.5em;
     }
 }
 
