@@ -1,5 +1,6 @@
 {
   "name": "vue-salt-rim",
+  "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
@@ -36,14 +37,14 @@
     "vue-toast-notification": "^3.0.4"
   },
   "devDependencies": {
-    "@vitejs/plugin-vue": "^4.0.0",
+    "@vitejs/plugin-vue": "^5.1.4",
     "@vue/tsconfig": "^0.5.1",
     "eslint": "^8.48.0",
     "eslint-plugin-vue": "^9.17.0",
     "openapi-typescript": "^7.3.0",
     "typescript": "^5.5.4",
-    "vite": ">=4.5.2",
-    "vite-plugin-pwa": "^0.14.1",
+    "vite": ">=5.4.6",
+    "vite-plugin-pwa": "^0.17.4",
     "vitest": "^2.0.5"
   }
 }
