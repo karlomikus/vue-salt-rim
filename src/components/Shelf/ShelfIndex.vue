@@ -288,10 +288,18 @@ export default {
     border-radius: var(--radius-3);
     padding: 1rem 1.5rem;
     display: flex;
+    flex-direction: column;
     align-items: baseline;
 }
 
+@media (max-width: 450px) {
+    .stats__stat {
+        padding: 0.75rem 1rem;
+    }
+}
+
 .stats__stat h3 {
+    font-family: var(--font-heading);
     line-height: 1;
     font-size: 2.5rem;
     margin-right: 0.25rem;

@@ -3,7 +3,7 @@
         <div class="site-page-header__title">
             <h2><slot /></h2>
         </div>
-        <div class="site-page-header__actions">
+        <div v-if="$slots.actions" class="site-page-header__actions">
             <slot name="actions" />
         </div>
     </header>
@@ -57,7 +57,8 @@
     }
 
     .site-page-header__title h2 {
-        font-size: 1.5em;
+        font-size: 1.75em;
+        text-align: center;
     }
 }
 
