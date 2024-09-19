@@ -10,7 +10,7 @@
             <template #default="{ items }">
                 <div class="ingredient-finder__options">
                     <OverlayLoader v-if="isLoading"></OverlayLoader>
-                    <a v-for="item in items" :key="item.id" href="#" @click.prevent="selectIngredient(item)">
+                    <a v-for="item in items" :key="item.id" href="#" @click.prevent="selectIngredient(item)" :class="{ 'ingredient-finder__options--disabled': disabledIngredients.includes(item.id) }">
                         <IngredientImage class="ingredient__image--small" :ingredient="item"></IngredientImage>
                         <div class="ingredient-finder__options__content">
                             <span>{{ item.name }}</span>
@@ -168,6 +168,10 @@ export default {
 
 .dark-theme .ingredient-finder__options a:hover {
     background-color: var(--clr-dark-main-700);
+}
+
+.ingredient-finder__options a.ingredient-finder__options--disabled {
+    opacity: .3;
 }
 
 .ingredient-finder__options a svg {

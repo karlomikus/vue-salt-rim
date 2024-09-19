@@ -64,7 +64,7 @@
             </div>
             <div v-show="isComplex" class="ingredient-form__complex-ingredients">
                 <div>
-                    <IngredientFinder @ingredient-selected="selectIngredientPart"></IngredientFinder>
+                    <IngredientFinder @ingredient-selected="selectIngredientPart" :disabled-ingredients="disabledFinderIngredients"></IngredientFinder>
                 </div>
                 <div>
                     <ul v-if="ingredient.ingredient_parts.length > 0" class="block-container block-container--inset ingredient-form__complex-ingredients__list">
