@@ -336,6 +336,15 @@ export default {
         inset 0px 6.3px 7.1px -2.5px rgba(0, 0, 0, .04);
 }
 
+.dark-theme .ingredient-details__graphic {
+    border-bottom: 1px solid rgba(255, 255, 255, .15);
+    box-shadow:
+        inset 0px 0.4px 0.5px rgba(0, 0, 0, .1),
+        inset 0px 1.1px 1.2px -0.8px rgba(0, 0, 0, .1),
+        inset 0px 2.6px 2.9px -1.7px rgba(0, 0, 0, .1),
+        inset 0px 6.3px 7.1px -2.5px rgba(0, 0, 0, .1);
+}
+
 .ingredient-details__graphic img {
     display: block;
     width: auto;
@@ -379,14 +388,6 @@ export default {
 
 .ingredient-chips-list .chip {
     font-size: 1rem;
-    background-color: var(--clr-gray-100);
-    color: var(--clr-gray-800);
-}
-
-.ingredient-chips-list .chip:hover,
-.ingredient-chips-list .chip:active,
-.ingredient-chips-list .chip:focus {
-    background-color: var(--clr-gray-200);
 }
 
 .ingredient-details__actions {

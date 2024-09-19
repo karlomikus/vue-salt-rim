@@ -163,6 +163,9 @@ async function save() {
     <div class="block-container block-container--padded block-container--inset image-upload">
         <OverlayLoader v-if="isLoading" />
         <div class="image-upload__images" ref="imageList">
+            <div v-if="images.length == 0">
+                No images attached.
+            </div>
             <div class="block-container block-container--padded image-upload__images__item" v-for="(img, idx) in images" :key="idx" :data-id="img.fileName">
                 <div class="drag-handle"></div>
                 <div class="image-upload__images__item__container">
