@@ -3,10 +3,23 @@
         <OverlayLoader v-if="isLoading" />
         <div class="dialog-title">{{ $t('exports.dialog-title') }}</div>
         <div class="form-group">
-            <label class="form-label form-label--required" for="name">{{ $t('bars.bar') }}:</label>
-            <select id="glass" v-model="exportModel.bar_id" class="form-select">
+            <label class="form-label form-label--required" for="bar-name">{{ $t('bars.bar') }}:</label>
+            <select id="bar-name" v-model="exportModel.bar_id" class="form-select" required>
                 <option :value="undefined" disabled>{{ $t('exports.bar-select') }}...</option>
                 <option v-for="bar in bars" :key="bar.id" :value="bar.id">{{ bar.name }}</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label class="form-label form-label--required" for="export-type">{{ $t('type') }}:</label>
+            <select id="export-type" v-model="exportModel.type" class="form-select" required>
+                <option v-for="type in types" :key="type.id" :value="type.id">{{ type.name }}</option>
+            </select>
+            <p class="form-input-hint"><a href="https://docs.barassistant.app/data">{{ $t('exports.types-hint') }}</a></p>
+        </div>
+        <div class="form-group">
+            <label class="form-label form-label--required" for="force-units">{{ $t('exports.force-units') }}:</label>
+            <select id="force-units" v-model="exportModel.units" class="form-select" required>
+                <option v-for="unit in units" :key="unit.id" :value="unit.id">{{ unit.name }}</option>
             </select>
         </div>
         <div class="alert alert--warning">{{ $t('exports.export-notice') }}</div>
@@ -18,7 +31,7 @@
 </template>
 
 <script>
-import ApiRequests from '@/ApiRequests'
+import BarAssistantClient from '@/api/BarAssistantClient'
 import OverlayLoader from '@/components/OverlayLoader.vue'
 
 export default {
@@ -29,7 +42,42 @@ export default {
     data() {
         return {
             isLoading: false,
-            exportModel: {},
+            exportModel: {
+                type: 'schema',
+                units: 'none',
+            },
+            types: [{
+                id: 'datapack',
+                name: 'Bar Assistant Datapack',
+            }, {
+                id: 'schema',
+                name: 'JSON (Schema draft 2)',
+            }, {
+                id: 'xml',
+                name: 'XML',
+            }, {
+                id: 'md',
+                name: 'Markdown',
+            }, {
+                id: 'json-ld',
+                name: 'Schema.org Recipe (JSON-LD)',
+            }, {
+                id: 'yaml',
+                name: 'YAML',
+            }],
+            units: [{
+                id: 'none',
+                name: this.$t('unit.original'),
+            }, {
+                id: 'ml',
+                name: this.$t('unit.ml-full'),
+            }, {
+                id: 'oz',
+                name: this.$t('unit.oz-full'),
+            }, {
+                id: 'cl',
+                name: this.$t('unit.cl-full'),
+            }],
         }
     },
     created() {
@@ -38,8 +86,8 @@ export default {
     methods: {
         refreshBars() {
             this.isLoading = true
-            ApiRequests.fetchBars().then(data => {
-                this.bars = data.filter(bar => {
+            BarAssistantClient.getBars().then(resp => {
+                this.bars = resp.data.filter(bar => {
                     // Show only owned bars
                     return bar.access.can_delete
                 })
@@ -54,9 +102,11 @@ export default {
 
             const postData = {
                 bar_id: this.exportModel.bar_id,
+                type: this.exportModel.type,
+                units: this.exportModel.units,
             }
 
-            ApiRequests.saveExport(postData).then(() => {
+            BarAssistantClient.saveExport(postData).then(() => {
                 this.isLoading = false
                 this.$toast.default(this.$t('exports.start-success'))
                 this.$emit('exportDialogClosed')

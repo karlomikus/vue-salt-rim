@@ -28,7 +28,7 @@
 </template>
 
 <script>
-import ApiRequests from '@/ApiRequests'
+import BarAssistantClient from '@/api/BarAssistantClient'
 import OverlayLoader from '@/components/OverlayLoader.vue'
 
 export default {
@@ -66,7 +66,7 @@ export default {
             }
 
             if (this.glass.id) {
-                ApiRequests.updateGlass(this.glass.id, postData).then(() => {
+                BarAssistantClient.updateGlass(this.glass.id, postData).then(() => {
                     this.isLoading = false
                     this.$toast.default(this.$t('glass-type.update-success'))
                     this.$emit('glassDialogClosed')
@@ -75,7 +75,7 @@ export default {
                     this.isLoading = false
                 })
             } else {
-                ApiRequests.saveGlass(postData).then(() => {
+                BarAssistantClient.saveGlass(postData).then(() => {
                     this.isLoading = false
                     this.$toast.default(this.$t('glass-type.add-success'))
                     this.$emit('glassDialogClosed')

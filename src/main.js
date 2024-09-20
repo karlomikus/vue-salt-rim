@@ -4,7 +4,6 @@ import { createI18n } from 'vue-i18n'
 import ToastPlugin from 'vue-toast-notification'
 import InstantSearch from 'vue-instantsearch/vue3/es'
 import router from './router'
-import mitt from 'mitt'
 import dialog from './components/Dialog/plugin'
 import './assets/main.css'
 import AppState from './AppState.js'
@@ -18,6 +17,7 @@ import fr_FR from './locales/fr-FR'
 import de_DE from './locales/de-DE'
 import pl_PL from './locales/pl-PL'
 import it_IT from './locales/it-IT'
+import sv_SE from './locales/sv-SE'
 
 registerSW({ immediate: true })
 registerSwiperElements()
@@ -44,7 +44,6 @@ if (userSelectedTheme == 'dark' && !document.body.classList.contains('dark-theme
     document.querySelector('meta[name="theme-color"]').setAttribute('content', '#282238')
 }
 
-const emitter = mitt()
 const app = createApp(App)
 const i18n = createI18n({
     legacy: false,
@@ -57,6 +56,7 @@ const i18n = createI18n({
         'de-DE': de_DE.numbers,
         'pl-PL': pl_PL.numbers,
         'it-IT': it_IT.numbers,
+        'sv-SE': sv_SE.numbers,
     },
     datetimeFormats: {
         'en-US': en_US.datetime,
@@ -65,6 +65,7 @@ const i18n = createI18n({
         'de-DE': de_DE.datetime,
         'pl-PL': pl_PL.datetime,
         'it-IT': it_IT.datetime,
+        'sv-SE': sv_SE.datetime,
     },
     messages: {
         'en-US': en_US.messages,
@@ -73,12 +74,9 @@ const i18n = createI18n({
         'de-DE': de_DE.messages,
         'pl-PL': pl_PL.messages,
         'it-IT': it_IT.messages,
+        'sv-SE': sv_SE.messages,
     }
 })
-
-app.config.globalProperties.app_version = window.srConfig.VERSION || 'local'
-app.config.globalProperties.$eventBus = emitter
-app.config.globalProperties.site_title = appState.bar.name || 'Bar Assistant'
 
 app.use(router)
 app.use(dialog)

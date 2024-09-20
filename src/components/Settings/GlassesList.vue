@@ -50,12 +50,13 @@
 </template>
 
 <script>
-import ApiRequests from '@/ApiRequests'
+import BarAssistantClient from '@/api/BarAssistantClient'
 import OverlayLoader from '@/components/OverlayLoader.vue'
 import PageHeader from '@/components/PageHeader.vue'
 import Navigation from '@/components/Settings/SettingsNavigation.vue'
 import SaltRimDialog from '@/components/Dialog/SaltRimDialog.vue'
 import GlassForm from '@/components/Settings/GlassForm.vue'
+import { useTitle } from '@/composables/title'
 
 export default {
     components: {
@@ -75,7 +76,7 @@ export default {
         }
     },
     created() {
-        document.title = `${this.$t('glass-type.types')} \u22C5 ${this.site_title}`
+        useTitle(this.$t('glass-type.types'))
 
         this.refreshGlasses()
     },
@@ -83,8 +84,8 @@ export default {
         refreshGlasses() {
             this.showDialog = false
             this.isLoading = true
-            ApiRequests.fetchGlasses().then(data => {
-                this.glasses = data
+            BarAssistantClient.getGlasses().then(resp => {
+                this.glasses = resp.data
                 this.isLoading = false
             }).catch(e => {
                 this.$toast.error(e.message)
@@ -100,7 +101,7 @@ export default {
                 onResolved: (dialog) => {
                     this.isLoading = true
                     dialog.close()
-                    ApiRequests.deleteGlass(glass.id).then(() => {
+                    BarAssistantClient.deleteGlass(glass.id).then(() => {
                         this.isLoading = false
                         this.$toast.default(this.$t('glass-type.delete-success'))
                         this.refreshGlasses()

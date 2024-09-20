@@ -60,7 +60,7 @@
 </template>
 
 <script>
-import ApiRequests from '../../ApiRequests'
+import BarAssistantClient from '@/api/BarAssistantClient'
 import OverlayLoader from '../OverlayLoader.vue'
 import PageHeader from '../PageHeader.vue'
 import SettingsNavigation from './SettingsNavigation.vue'
@@ -68,6 +68,7 @@ import SaltRimDialog from '../Dialog/SaltRimDialog.vue'
 import DateFormatter from '../DateFormatter.vue'
 import ExportForm from './ExportForm.vue'
 import EmptyState from '../EmptyState.vue'
+import { useTitle } from '@/composables/title'
 
 export default {
     components: {
@@ -87,7 +88,7 @@ export default {
         }
     },
     created() {
-        document.title = `${this.$t('exports.title')} \u22C5 ${this.site_title}`
+        useTitle(this.$t('exports.title'))
 
         this.refreshExports()
     },
@@ -96,8 +97,8 @@ export default {
             this.showDialog = false
 
             this.isLoading = true
-            ApiRequests.fetchExports().then(data => {
-                this.barExports = data
+            BarAssistantClient.getExports().then(resp => {
+                this.barExports = resp.data
                 this.isLoading = false
             }).catch(e => {
                 this.$toast.error(e.message)
@@ -108,7 +109,7 @@ export default {
                 onResolved: (dialog) => {
                     this.isLoading = true
                     dialog.close()
-                    ApiRequests.removeExport(ex.id).then(() => {
+                    BarAssistantClient.deleteExport(ex.id).then(() => {
                         this.isLoading = false
                         this.$toast.default(this.$t('exports.delete-success'))
                         this.refreshExports()
@@ -121,14 +122,9 @@ export default {
         },
         downloadExport(ex) {
             this.isLoading = true
-            ApiRequests.downloadExport(ex.id).then(resp => {
-                const url = window.URL.createObjectURL(resp)
-                const link = window.document.createElement('a')
-                link.href = url
-                link.download = ex.filename
-                link.click()
-                window.URL.revokeObjectURL(url)
+            BarAssistantClient.generateExportDownloadURL(ex.id).then(resp => {
                 this.isLoading = false
+                window.open(window.srConfig.API_URL + resp.data.url, '_blank').focus();
             }).catch(e => {
                 this.$toast.error(e.message)
                 this.isLoading = false

@@ -6,6 +6,8 @@ README.md
 public/config.js
 /dist
 /.github
+/.vscode
+/.git
 
 Dockerfile
 .dockerignore

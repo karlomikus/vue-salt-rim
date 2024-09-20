@@ -56,7 +56,7 @@
 </template>
 
 <script>
-import ApiRequests from '../../ApiRequests'
+import BarAssistantClient from '@/api/BarAssistantClient'
 import OverlayLoader from '../OverlayLoader.vue'
 import PageHeader from '../PageHeader.vue'
 import SettingsNavigation from './SettingsNavigation.vue'
@@ -64,6 +64,7 @@ import SaltRimDialog from '../Dialog/SaltRimDialog.vue'
 import DateFormatter from '../DateFormatter.vue'
 import APIForm from './APIForm.vue'
 import SubscriptionCheck from '../SubscriptionCheck.vue'
+import { useTitle } from '@/composables/title'
 
 export default {
     components: {
@@ -83,7 +84,7 @@ export default {
         }
     },
     created() {
-        document.title = `${this.$t('api.tokens')} \u22C5 ${this.site_title}`
+        useTitle(this.$t('api.tokens'))
 
         this.refreshTokens()
     },
@@ -92,8 +93,8 @@ export default {
             this.showDialog = false
 
             this.isLoading = true
-            ApiRequests.fetchTokens().then(data => {
-                this.tokens = data
+            BarAssistantClient.getTokens().then(resp => {
+                this.tokens = resp.data
                 this.isLoading = false
             }).catch(e => {
                 this.$toast.error(e.message)
@@ -104,7 +105,7 @@ export default {
                 onResolved: (dialog) => {
                     this.isLoading = true
                     dialog.close()
-                    ApiRequests.removeToken(token.id).then(() => {
+                    BarAssistantClient.deleteToken(token.id).then(() => {
                         this.isLoading = false
                         this.$toast.default(this.$t('api.revoke-success'))
                         this.refreshTokens()

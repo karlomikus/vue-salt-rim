@@ -5,7 +5,8 @@
     "hr-HR": "Croate",
     "de-DE": "Allemand",
     "pl-PL": "Polonais",
-    "it-IT": "Italian",
+    "it-IT": "Italien",
+    "sv-SE": "Swedish",
     "help": "Aide aux traductions"
   },
   "shelf": {
@@ -58,7 +59,9 @@
     "complex-note": "Si vous avez tous les ingrédients listés, associez automatiquement les recettes avec cet ingrédient",
     "complex": "Ingrédient complexe",
     "variety-note": "La correspondance des recettes inclura l'ingrédient parent comme substitut (selon les paramètres de l'utilisateur)",
-    "ingredients": "Ingrédients"
+    "ingredients": "Ingrédients",
+    "used_as_substitute_for": "Used as a substitute for",
+    "can_be_substituted_with": "Can be substituted with"
   },
   "share": {
     "title": "Partager",
@@ -74,6 +77,7 @@
   "settings": "Paramètres",
   "logout": "Déconnexion",
   "profile": "Profil",
+  "filename": "File name",
   "users": {
     "title": "Utilisateurs",
     "add": "Ajouter un utilisateur",
@@ -184,7 +188,7 @@
     "add-success": "Catégorie d’ingrédients ajoutée avec succès.",
     "edit": "Modifier la catégorie",
     "update-success": "Catégorie d’ingrédients mise à jour avec succès.",
-    "confirm-delete": "Cette catégorie sera permanente avec le nom \"{name}\".",
+    "confirm-delete": "Cela supprimera définitivement la catégorie avec le nom \"{name}\".",
     "delete-success": "Catégorie d’ingrédients supprimée avec succès"
   },
   "origin": "Origine",
@@ -220,7 +224,7 @@
     "title": "Type de verre",
     "add": "Ajouter un type de verre",
     "edit": "Modifier le type de verre",
-    "confirm-delete": "Ce type de verre sera permanent avec le nom \"{name}\".",
+    "confirm-delete": "Cela supprimera définitivement le type de verre avec le nom \"{name}\".",
     "delete-success": "Type de verre supprimé avec succès",
     "update-success": "Type de verre mis à jour avec succès",
     "add-success": "Type de verre ajouté avec succès",
@@ -264,7 +268,7 @@
   "note": {
     "title": "Note",
     "add": "Ajouter une note",
-    "confirm-delete": "Ceci supprimera définitivement la note sélectionnée.",
+    "confirm-delete": "Cela supprimera définitivement la note sélectionnée.",
     "delete-success": "Note supprimée avec succès"
   },
   "note-dialog": {
@@ -287,7 +291,7 @@
     "title": "Collections",
     "add": "Créer une collection",
     "edit": "Modifier la collection",
-    "confirm-delete": "Ceci supprimera définitivement la collection avec le nom \"{name}\".",
+    "confirm-delete": "Cela supprimera définitivement la collection avec le nom \"{name}\".",
     "delete-success": "Collection supprimée avec succès",
     "update-success": "La collection a été mise à jour avec succès",
     "add-success": "La connexion a été ajoutée avec succès",
@@ -527,7 +531,9 @@
     "export-notice": "Veuillez garder à l'esprit qu'en fonction de la configuration du serveur et de la taille du bar sélectionné, la génération de l'export peut prendre plusieurs minutes.",
     "start-success": "Export du bar démarré",
     "confirm-delete": "Cela supprimera le fichier d'exportation sélectionné",
-    "delete-success": "Export supprimé"
+    "delete-success": "Export supprimé",
+    "types-hint": "Click here to learn more about export types",
+    "force-units": "Convert units"
   },
   "start": "Démarrer",
   "filter": "Filtrer",
@@ -536,7 +542,8 @@
   "unit": {
     "ml-full": "Mililitres (ml)",
     "oz-full": "Onces (oz)",
-    "cl-full": "Centilitres (cl)"
+    "cl-full": "Centilitres (cl)",
+    "original": "Keep original units"
   },
   "no-default-units": "Aucune unité par défaut",
   "wakelock-toggle": "Empêcher le verrouillage de l'écran",
@@ -584,5 +591,6 @@
     "add": "Ajouter un prix",
     "price-categories": "Catégories de prix",
     "add-price-category": "Ajouter une catégorie de prix"
-  }
+  },
+  "shopping-list-empty": "Your shopping list is empty"
 }

@@ -55,13 +55,14 @@
 </template>
 
 <script>
-import ApiRequests from '@/ApiRequests'
+import BarAssistantClient from '@/api/BarAssistantClient'
 import OverlayLoader from '@/components/OverlayLoader.vue'
 import PageHeader from '@/components/PageHeader.vue'
 import Navigation from '@/components/Settings/SettingsNavigation.vue'
 import SaltRimDialog from '@/components/Dialog/SaltRimDialog.vue'
 import PriceCategoryForm from '@/components/Settings/PriceCategoryForm.vue'
 import EmptyState from '../EmptyState.vue'
+import { useTitle } from '@/composables/title'
 
 export default {
     components: {
@@ -82,7 +83,7 @@ export default {
         }
     },
     created() {
-        document.title = `${this.$t('prices.price-categories')} \u22C5 ${this.site_title}`
+        useTitle(this.$t('prices.price-categories'))
 
         this.refreshCategories()
     },
@@ -90,8 +91,8 @@ export default {
         refreshCategories() {
             this.showDialog = false
             this.isLoading = true
-            ApiRequests.fetchPriceCategories().then(data => {
-                this.categories = data
+            BarAssistantClient.getPriceCategories().then(resp => {
+                this.categories = resp.data
                 this.isLoading = false
             }).catch(e => {
                 this.$toast.error(e.message)
@@ -107,7 +108,7 @@ export default {
                 onResolved: (dialog) => {
                     this.isLoading = true
                     dialog.close()
-                    ApiRequests.deletePriceCategory(category.id).then(() => {
+                    BarAssistantClient.deletePriceCategory(category.id).then(() => {
                         this.isLoading = false
                         this.$toast.default(this.$t('price.category-delete-success'))
                         this.refreshCategories()

@@ -1,5 +1,6 @@
 <template>
     <form class="site-autocomplete" novalidate @keyup.esc="close">
+        <div class="dialog-title">{{ $t('search.title') }}</div>
         <ais-instant-search :search-client="searchClient" index-name="cocktails">
             <ais-configure :hits-per-page.camel="5" :restrict-searchable-attributes.camel="['name']" />
             <ais-search-box autofocus>
@@ -66,8 +67,8 @@ export default {
     },
     created() {
         this.searchClient = instantMeiliSearch(
-            appState.bar.search_driver_host,
-            appState.bar.search_driver_api_key,
+            appState.bar.search_host,
+            appState.bar.search_token,
         ).searchClient
     },
     methods: {

@@ -1,7 +1,7 @@
 <template>
     <Teleport to="body">
         <Transition name="dialog-animation">
-            <div v-if="shown" class="dialog" style="z-index: 5;">
+            <div v-if="shown" class="dialog" style="z-index: 6;">
                 <div class="dialog__overlay"></div>
                 <div class="dialog__container">
                     <div class="dialog__content">
@@ -21,6 +21,8 @@
 </template>
 
 <script>
+import { dialogBus } from '@/composables/eventBus'
+
 export default {
     data() {
         return {
@@ -38,7 +40,11 @@ export default {
         }
     },
     mounted() {
-        this.$eventBus.on('requestConfirm', (payload) => this.show(payload))
+        dialogBus.on((e, payload) => {
+            if (e === 'requestConfirm') {
+                this.show(payload)
+            }
+        })
     },
     methods: {
         show(payload) {

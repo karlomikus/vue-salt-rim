@@ -23,23 +23,23 @@
         </div>
         <h3 class="form-section-title">{{ $t('media') }}</h3>
         <SubscriptionCheck>Subscribe to "Mixologist" plan to upload more than one cocktail recipe image!</SubscriptionCheck>
-        <ImageUpload ref="imagesUpload" :value="cocktail.images" :max-images="maxImages" />
+        <ImageUpload ref="imagesUpload" :images="cocktail.images" />
         <h3 class="form-section-title">{{ $t('ingredient.ingredients') }}</h3>
         <div class="block-container block-container--padded block-container--inset">
             <ul v-show="cocktail.ingredients.length > 0" class="cocktail-form__ingredients" style="margin-bottom: 20px;">
-                <li v-for="ing in cocktail.ingredients" :key="ing.ingredient_id" class="block-container" :data-id="ing.ingredient_id">
+                <li v-for="ing in cocktail.ingredients" :key="ing.ingredient.id" class="block-container" :data-id="ing.ingredient.id">
                     <div class="drag-handle"></div>
                     <div class="cocktail-form__ingredients__content">
                         <div class="form-group">
                             <label class="form-label">{{ $t('ingredient.title') }}<template v-if="ing.sort <= 1"> ({{ $t('ingredient.base') }})</template>:</label>
                             <p>
-                                {{ ing.name }}
+                                {{ ing.ingredient.name }}
                                 <span v-if="ing.note">&middot; {{ ing.note }}</span>
                                 <small v-show="ing.optional">({{ ing.optional ? $t('optional') : '' }})</small>
                             </p>
                             <p v-if="ing.substitutes && ing.substitutes.length > 0" class="substitutes">
                                 <template v-for="sub in ing.substitutes">
-                                    {{ $t('or').toLowerCase() }} {{ sub.name }}&nbsp;
+                                    {{ $t('or').toLowerCase() }} {{ sub.ingredient.name }}&nbsp;
                                 </template>
                             </p>
                         </div>
@@ -48,7 +48,7 @@
                             <p :title="ing.amount + ' ' + ing.units">{{ printIngredientAmount(ing) }}</p>
                         </div>
                         <div class="cocktail-form__ingredients__actions">
-                            <a href="#" @click.prevent="editIngredient(ing)">
+                            <a href="#" @click.prevent="cocktailIngredientForEdit = ing; showDialog = true">
                                 {{ $t('edit') }}
                             </a>
                             &middot;
@@ -68,7 +68,7 @@
                     <button class="button button--dark" type="button" @click="addIngredient">{{ $t('ingredient.add') }}</button>
                 </template>
                 <template #dialog>
-                    <IngredientModal :value="cocktailIngredientForEdit" @close="closeModal" />
+                    <IngredientModal :cocktail-ingredient="cocktailIngredientForEdit" @close="showDialog = false" />
                 </template>
             </SaltRimDialog>
         </div>
@@ -77,7 +77,7 @@
                 <span></span>
             </template>
             <template #dialog>
-                <SubstituteModal :value="cocktailIngredientForSubstitutes" @close="closeSubstituteModal" />
+                <SubstituteModal :value="cocktailIngredientForSubstitutes" @close="showSubstituteDialog = false" />
             </template>
         </SaltRimDialog>
         <h3 class="form-section-title">{{ $t('additional-information') }}</h3>
@@ -128,9 +128,10 @@
 </template>
 
 <script>
+import { useTitle } from '@/composables/title'
 import Utils from './../../Utils.js'
 import UnitHandler from './../../UnitHandler'
-import ApiRequests from './../../ApiRequests.js'
+import BarAssistantClient from '@/api/BarAssistantClient';
 import OverlayLoader from './../OverlayLoader.vue'
 import IngredientModal from './../Cocktail/IngredientModal.vue'
 import ImageUpload from './../ImageUpload.vue'
@@ -155,10 +156,11 @@ export default {
         SubstituteModal,
         SubscriptionCheck,
         TimeStamps,
-        TagSelector
+        TagSelector,
     },
     data() {
         return {
+            appState: new AppState(),
             showDialog: false,
             showSubstituteDialog: false,
             cocktailIngredientForEdit: {},
@@ -185,7 +187,7 @@ export default {
     watch: {
         showDialog(newVal) {
             if (newVal == false) {
-                const emptyIngredient = this.cocktail.ingredients.findIndex(i => i.ingredient_id == null)
+                const emptyIngredient = this.cocktail.ingredients.findIndex(i => i.ingredient.id == null)
                 if (emptyIngredient != -1) {
                     this.cocktail.ingredients.splice(emptyIngredient, 1)
                 }
@@ -193,35 +195,35 @@ export default {
         }
     },
     async created() {
-        document.title = `${this.$t('cocktail.title')} \u22C5 ${this.site_title}`
+        useTitle(this.$t('cocktail.add'))
 
         this.isLoading = true
         const cocktailId = this.$route.query.id || null
 
         if (cocktailId) {
-            await ApiRequests.fetchCocktail(cocktailId).then(data => {
-                data.description = Utils.decodeHtml(data.description)
-                data.instructions = Utils.decodeHtml(data.instructions)
-                data.garnish = Utils.decodeHtml(data.garnish)
-                if (!data.method) {
-                    data.method = {}
+            await BarAssistantClient.getCocktail(cocktailId).then(resp => {
+                resp.data.description = Utils.decodeHtml(resp.data.description)
+                resp.data.instructions = Utils.decodeHtml(resp.data.instructions)
+                resp.data.garnish = Utils.decodeHtml(resp.data.garnish)
+                if (!resp.data.method) {
+                    resp.data.method = {}
                 }
-                if (!data.glass) {
-                    data.glass = {}
+                if (!resp.data.glass) {
+                    resp.data.glass = {}
                 }
-                data.utensils = data.utensils.map(ut => ut.id)
-                data.tags = data.tags.map(i => i.name)
+                resp.data.utensils = resp.data.utensils.map(ut => ut.id)
+                resp.data.tags = resp.data.tags.map(i => i.name)
 
-                this.cocktail = data
+                this.cocktail = resp.data
 
-                document.title = `${this.$t('cocktail.title')} \u22C5 ${this.cocktail.name} \u22C5 ${this.site_title}`
+                useTitle(`${this.$t('cocktail.title')} \u22C5 ${this.cocktail.name}`)
             })
         }
 
-        await ApiRequests.fetchGlasses().then(data => this.glasses = data)
-        await ApiRequests.fetchCocktailMethods().then(data => this.methods = data)
-        await ApiRequests.fetchTags().then(data => this.tags = data)
-        await ApiRequests.fetchUtensils().then(data => this.utensils = data)
+        this.glasses = (await BarAssistantClient.getGlasses())?.data ?? []
+        this.methods = (await BarAssistantClient.getCocktailMethods())?.data ?? []
+        this.tags = (await BarAssistantClient.getTags())?.data ?? []
+        this.utensils = (await BarAssistantClient.getUtensils())?.data ?? []
 
         this.isLoading = false
     },
@@ -237,8 +239,7 @@ export default {
             },
         })
 
-        const state = new AppState()
-        if (!state.isSubscribed()) {
+        if (!this.appState.isSubscribed()) {
             this.maxImages = 1
         }
     },
@@ -250,20 +251,10 @@ export default {
                 const parsedScrapeResult = JSON.parse(scraped)
 
                 this.cocktail = parsedScrapeResult
-
-                if (parsedScrapeResult.images.length > 0) {
-                    this.cocktail.images = [
-                        {
-                            copyright: parsedScrapeResult.images[0].copyright,
-                            url: parsedScrapeResult.images[0].url,
-                            file: parsedScrapeResult.images[0].url,
-                        }
-                    ]
-                }
             }
         },
         removeIngredient(ing) {
-            if (!ing.ingredient_id) {
+            if (!ing.ingredient.id) {
                 this.cocktail.ingredients.splice(
                     this.cocktail.ingredients.findIndex(i => i == ing),
                     1
@@ -272,7 +263,7 @@ export default {
                 return
             }
 
-            this.$confirm(this.$t('cocktail.ingredient-remove', { name: ing.name }), {
+            this.$confirm(this.$t('cocktail.ingredient-remove', { name: ing.ingredient.name }), {
                 onResolved: (dialog) => {
                     dialog.close()
                     this.cocktail.ingredients.splice(
@@ -282,30 +273,8 @@ export default {
                 }
             })
         },
-        closeModal(eventData) {
-            // User canceled ingredient edit
-            if (eventData.type == 'cancel') {
-                this.cocktailIngredientForEdit.id = this.cocktailIngredientForEditOriginal.id
-                this.cocktailIngredientForEdit.name = this.cocktailIngredientForEditOriginal.name
-                this.cocktailIngredientForEdit.ingredient_id = this.cocktailIngredientForEditOriginal.ingredient_id
-                this.cocktailIngredientForEdit.ingredient_slug = this.cocktailIngredientForEditOriginal.ingredient_slug
-                this.cocktailIngredientForEdit.amount = this.cocktailIngredientForEditOriginal.amount
-                this.cocktailIngredientForEdit.amount_max = this.cocktailIngredientForEditOriginal.amount_max
-                this.cocktailIngredientForEdit.units = this.cocktailIngredientForEditOriginal.units
-                this.cocktailIngredientForEdit.optional = this.cocktailIngredientForEditOriginal.optional
-                this.cocktailIngredientForEdit.sort = this.cocktailIngredientForEditOriginal.sort
-                this.cocktailIngredientForEdit.substitutes = this.cocktailIngredientForEditOriginal.substitutes
-                this.cocktailIngredientForEdit.note = this.cocktailIngredientForEditOriginal.note
-            }
-
-            this.showDialog = false
-        },
-        closeSubstituteModal() {
-            this.showSubstituteDialog = false
-        },
         addIngredient() {
-            const appState = new AppState()
-            const userUnit = appState.defaultUnit
+            const userUnit = this.appState.defaultUnit
             let defaultAmount = 30
             let defaultUnits = 'ml'
 
@@ -319,55 +288,28 @@ export default {
                 defaultUnits = 'cl'
             }
 
-            let placeholderData = {
-                ingredient_id: null,
+            const placeholderData = {
                 amount: defaultAmount,
                 amount_max: null,
                 note: null,
                 units: defaultUnits,
-                name: this.$t('ingredient.name-placeholder'),
-                sort: this.cocktail.ingredients.length + 1
-            }
-
-            this.cocktail.ingredients.push(placeholderData)
-
-            // Show modal after adding ingredient
-            this.editIngredient(placeholderData)
-        },
-        printIngredientAmount(ing) {
-            const appState = new AppState()
-            const defaultUnit = appState.defaultUnit
-
-            return UnitHandler.print(ing, defaultUnit)
-        },
-        editIngredient(cocktailIngredient) {
-            if (!cocktailIngredient.substitutes) {
-                cocktailIngredient.substitutes = []
-            }
-
-            this.cocktailIngredientForEditOriginal = JSON.parse(JSON.stringify(cocktailIngredient))
-
-            const appState = new AppState()
-            const userUnit = appState.defaultUnit
-
-            // Update unit view
-            cocktailIngredient.amount = UnitHandler.convertFromTo(cocktailIngredient.units, cocktailIngredient.amount, userUnit)
-            if (userUnit == 'oz') {
-                cocktailIngredient.amount = UnitHandler.asFraction(cocktailIngredient.amount)
-            }
-            if (cocktailIngredient.amount_max) {
-                cocktailIngredient.amount_max = UnitHandler.convertFromTo(cocktailIngredient.units, cocktailIngredient.amount_max, userUnit)
-                if (userUnit == 'oz') {
-                    cocktailIngredient.amount_max = UnitHandler.asFraction(cocktailIngredient.amount_max)
+                sort: this.cocktail.ingredients.length + 1,
+                substitutes: [],
+                ingredient: {
+                    id: null,
+                    slug: null,
+                    name: this.$t('ingredient.name-placeholder'),
                 }
             }
 
-            if (cocktailIngredient.units == 'ml' || cocktailIngredient.units == 'oz' || cocktailIngredient.units == 'cl') {
-                cocktailIngredient.units = userUnit
-            }
-
-            this.cocktailIngredientForEdit = cocktailIngredient
+            this.cocktail.ingredients.push(placeholderData)
+            this.cocktailIngredientForEdit = placeholderData;
             this.showDialog = true
+        },
+        printIngredientAmount(ing) {
+            const defaultUnit = this.appState.defaultUnit
+
+            return UnitHandler.print(ing, defaultUnit)
         },
         editIngredientSubstitutes(ing) {
             this.cocktailIngredientForSubstitutes = ing
@@ -382,7 +324,6 @@ export default {
                 name: this.cocktail.name,
                 description: this.cocktail.description,
                 instructions: this.cocktail.instructions,
-                history: this.cocktail.history,
                 garnish: this.cocktail.garnish,
                 source: this.cocktail.source,
                 cocktail_method_id: this.cocktail.method.id,
@@ -391,52 +332,62 @@ export default {
                 tags: this.cocktail.tags,
                 glass_id: this.cocktail.glass.id,
                 ingredients: this.cocktail.ingredients
-                    .filter(i => i.ingredient_id != null)
+                    .filter(i => i.ingredient.id != null)
                     .map((cIngredient) => {
                         cIngredient.amount = UnitHandler.asDecimal(cIngredient.amount)
                         if (cIngredient.amount_max) {
                             cIngredient.amount_max = UnitHandler.asDecimal(cIngredient.amount_max)
                         }
-                        cIngredient.sort = sortedIngredientList.findIndex(sortedId => sortedId == cIngredient.ingredient_id) + 1
+                        cIngredient.sort = sortedIngredientList.findIndex(sortedId => sortedId == cIngredient.ingredient.id) + 1
 
                         // Handle substitutes
-                        cIngredient.substitutes.filter(sub => sub.units).map(sub => {
+                        cIngredient.substitutes.map(sub => {
+                            sub.ingredient_id = sub.ingredient.id
+
+                            return sub
+                        }).filter(sub => sub.units).map(sub => {
                             if (sub.amount) {
                                 sub.amount = UnitHandler.asDecimal(sub.amount)
                             }
                             if (sub.amount_max) {
                                 sub.amount_max = UnitHandler.asDecimal(sub.amount_max)
                             }
+
+                            return sub
                         })
+
+                        cIngredient.ingredient_id = cIngredient.ingredient.id
 
                         return cIngredient
                     })
             }
 
-            const imageResources = await this.$refs.imagesUpload.uploadPictures().catch(() => {
+            const imageResources = await this.$refs.imagesUpload.save().catch(() => {
                 this.$toast.error(`${this.$t('imageupload.error')} ${this.$t('imageupload.error-cocktail')}`)
-            }) || []
+
+                return []
+            })
 
             if (imageResources.length > 0) {
                 postData.images = imageResources.map(img => img.id)
             }
 
             if (this.cocktail.id) {
-                ApiRequests.updateCocktail(this.cocktail.id, postData).then(data => {
+                BarAssistantClient.updateCocktail(this.cocktail.id, postData).then(resp => {
                     this.isLoading = false
                     this.$toast.default(this.$t('cocktail.update-success'))
-                    this.$router.push({ name: 'cocktails.show', params: { id: data.slug } })
+                    this.$router.push({ name: 'cocktails.show', params: { id: resp.data.slug } })
                 }).catch(e => {
                     this.$toast.error(e.message)
                     this.isLoading = false
                 })
             } else {
-                ApiRequests.saveCocktail(postData).then(data => {
+                BarAssistantClient.saveCocktail(postData).then(resp => {
                     this.isLoading = false
                     this.$toast.open({
                         message: this.$t('cocktail.create-success')
                     })
-                    this.$router.push({ name: 'cocktails.show', params: { id: data.slug } })
+                    this.$router.push({ name: 'cocktails.show', params: { id: resp.data.slug } })
                 }).catch(e => {
                     this.$toast.error(e.message)
                     this.isLoading = false
@@ -447,7 +398,7 @@ export default {
             const sortedIngredientList = this.sortable.toArray()
 
             this.cocktail.ingredients.map((cIngredient) => {
-                cIngredient.sort = sortedIngredientList.findIndex(sortedId => sortedId == cIngredient.ingredient_id) + 1
+                cIngredient.sort = sortedIngredientList.findIndex(sortedId => sortedId == cIngredient.ingredient.id) + 1
 
                 return cIngredient
             })
@@ -462,7 +413,7 @@ export default {
     margin: 0;
     padding: 0;
     display: grid;
-    row-gap: var(--gap-size-3)
+    row-gap: var(--gap-size-1)
 }
 
 .cocktail-form__ingredients li {

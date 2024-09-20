@@ -1,6 +1,5 @@
 <template>
     <div class="block-container block-container--hover ingredient-grid-item" :class="{ 'ingredient-grid-item--shelf': inShelf }">
-        <OverlayLoader v-if="isLoading" />
         <div class="ingredient-grid-item__image">
             <IngredientImage :ingredient="ingredient"></IngredientImage>
         </div>
@@ -11,38 +10,25 @@
             </RouterLink>
             <p v-html="cleanDescription"></p>
             <div class="ingredient-grid-item__actions">
-                <a href="#" @click.prevent="toggleShelf">
-                    <template v-if="!inShelf">
-                        {{ $t('ingredient.add-to-shelf') }}
-                    </template>
-                    <template v-else>
-                        {{ $t('ingredient.remove-from-shelf') }}
-                    </template>
-                </a>
+                <ToggleIngredientShelf :ingredient="ingredient" :status="inShelf"></ToggleIngredientShelf>
                 &middot;
-                <a href="#" @click.prevent="toggleList">
-                    <template v-if="!inList">
-                        {{ $t('ingredient.add-to-list') }}
-                    </template>
-                    <template v-else>
-                        {{ $t('ingredient.remove-from-list') }}
-                    </template>
-                </a>
+                <ToggleIngredientShoppingCart :ingredient="ingredient" :status="inList"></ToggleIngredientShoppingCart>
             </div>
         </div>
     </div>
 </template>
 
 <script>
-import OverlayLoader from './../OverlayLoader.vue'
 import IngredientImage from './IngredientImage.vue'
-import ApiRequests from './../../ApiRequests.js'
 import removeMd from 'remove-markdown'
+import ToggleIngredientShoppingCart from '@/components/ToggleIngredientShoppingCart.vue'
+import ToggleIngredientShelf from '@/components/ToggleIngredientShelf.vue'
 
 export default {
     components: {
-        OverlayLoader,
-        IngredientImage
+        IngredientImage,
+        ToggleIngredientShoppingCart,
+        ToggleIngredientShelf,
     },
     props: {
         ingredient: {
@@ -64,90 +50,17 @@ export default {
             }
         }
     },
-    data() {
-        return {
-            isLoading: false,
-            scopedUserIngredients: [],
-            scopedShoppingList: [],
-        }
-    },
     computed: {
         inShelf() {
-            return this.scopedUserIngredients.includes(this.ingredient.id)
+            return this.userIngredients.map(i => i.id).includes(this.ingredient.id)
         },
         inList() {
-            return this.scopedShoppingList.includes(this.ingredient.id)
+            return this.shoppingList.map(i => i.ingredient.id).includes(this.ingredient.id)
         },
         cleanDescription() {
             return removeMd(this.ingredient.description)
         }
     },
-    watch: {
-        userIngredients: {
-            handler(newVal) {
-                this.scopedUserIngredients = newVal
-            },
-            immediate: true
-        },
-        shoppingList: {
-            handler(newVal) {
-                this.scopedShoppingList = newVal
-            },
-            immediate: true
-        }
-    },
-    methods: {
-        toggleShelf() {
-            this.isLoading = true
-
-            if (this.inShelf) {
-                ApiRequests.removeIngredientsFromShelf({ingredient_ids: [this.ingredient.id]}).then(() => {
-                    this.isLoading = false
-                    this.$toast.default(this.$t('ingredient.shelf-remove-success', { name: this.ingredient.name }))
-                    this.scopedUserIngredients.splice(this.scopedUserIngredients.indexOf(this.ingredient.id), 1)
-                }).catch(e => {
-                    this.$toast.error(e.message)
-                    this.isLoading = false
-                })
-            } else {
-                ApiRequests.addIngredientsToShelf({ingredient_ids: [this.ingredient.id]}).then(() => {
-                    this.isLoading = false
-                    this.$toast.default(this.$t('ingredient.shelf-add-success', { name: this.ingredient.name }))
-                    this.scopedUserIngredients.push(this.ingredient.id)
-                }).catch(e => {
-                    this.$toast.error(e.message)
-                    this.isLoading = false
-                })
-            }
-        },
-        toggleList() {
-            this.isLoading = true
-
-            const postData = {
-                ingredient_ids: [this.ingredient.id]
-            }
-
-            if (this.inList) {
-                ApiRequests.removeIngredientsFromShoppingList(postData).then(() => {
-                    this.isLoading = false
-                    this.$toast.default(this.$t('ingredient.list-remove-success', { name: this.ingredient.name }))
-                    this.scopedShoppingList.splice(this.scopedShoppingList.indexOf(this.ingredient.id), 1)
-                }).catch(e => {
-                    this.$toast.error(e.message)
-                    this.isLoading = false
-                })
-            } else {
-                ApiRequests.addIngredientsToShoppingList(postData).then(() => {
-                    this.isLoading = false
-                    this.$toast.default(this.$t('ingredient.list-add-success', { name: this.ingredient.name }))
-                    this.scopedShoppingList.push(this.ingredient.id)
-                }).catch(e => {
-                    this.$toast.error(e.message)
-                    this.isLoading = false
-                })
-            }
-        }
-    }
 }
 </script>
 

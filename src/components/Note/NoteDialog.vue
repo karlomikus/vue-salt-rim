@@ -14,7 +14,7 @@
 </template>
 
 <script>
-import ApiRequests from './../../ApiRequests.js'
+import BarAssistantClient from '@/api/BarAssistantClient'
 import OverlayLoader from './../OverlayLoader.vue'
 
 export default {
@@ -41,7 +41,7 @@ export default {
     methods: {
         submit() {
             this.isLoading = true
-            ApiRequests.saveNote({
+            BarAssistantClient.saveNote({
                 note: this.note.note,
                 resource_id: this.resourceId,
                 resource: this.resource,

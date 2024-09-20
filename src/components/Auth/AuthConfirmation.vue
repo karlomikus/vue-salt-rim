@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import ApiRequests from './../../ApiRequests.js'
+import BarAssistantClient from '@/api/BarAssistantClient'
 
 export default {
     data() {
@@ -13,7 +13,7 @@ export default {
     },
     created() {
         this.isLoading = true
-        ApiRequests.confirmAccount(this.$route.params.id, this.$route.params.hash).then(() => {
+        BarAssistantClient.confirmAccount(this.$route.params.id, this.$route.params.hash).then(() => {
             this.$toast.default(this.$t('auth.account-confirmed'))
             this.$router.push('/login')
         }).catch(e => {

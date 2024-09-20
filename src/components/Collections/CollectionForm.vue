@@ -24,7 +24,7 @@
 </template>
 
 <script>
-import ApiRequests from './../../ApiRequests'
+import BarAssistantClient from '@/api/BarAssistantClient';
 import OverlayLoader from './../OverlayLoader.vue'
 
 export default {
@@ -61,7 +61,7 @@ export default {
             }
 
             if (this.collection.id) {
-                ApiRequests.updateCollection(this.collection.id, postData).then(() => {
+                BarAssistantClient.updateCollection(this.collection.id, postData).then(() => {
                     this.isLoading = false
                     this.$toast.default(this.$t('collections.update-success'))
                     this.$emit('collectionDialogClosed')
@@ -70,7 +70,7 @@ export default {
                     this.isLoading = false
                 })
             } else {
-                ApiRequests.saveCollection(postData).then(() => {
+                BarAssistantClient.saveCollection(postData).then(() => {
                     this.isLoading = false
                     this.$toast.default(this.$t('collections.add-success'))
                     this.$emit('collectionDialogClosed')

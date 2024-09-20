@@ -74,7 +74,7 @@
     </div>
 </template>
 <script>
-import ApiRequests from './../../ApiRequests'
+import { useTitle } from '@/composables/title'
 import OverlayLoader from './../OverlayLoader.vue'
 import SaltRimDialog from './../Dialog/SaltRimDialog.vue'
 import PageHeader from './../PageHeader.vue'
@@ -84,6 +84,7 @@ import DateFormatter from './../DateFormatter.vue'
 import Utils from './../../Utils.js'
 import EmptyState from './../EmptyState.vue'
 import SubscriptionCheck from '../SubscriptionCheck.vue'
+import BarAssistantClient from '@/api/BarAssistantClient'
 
 export default {
     components: {
@@ -132,7 +133,7 @@ export default {
         }
     },
     created() {
-        document.title = `${this.$t('bars.title')} \u22C5 ${this.site_title}`
+        useTitle(this.$t('bars.title'))
     },
     mounted() {
         this.refreshBars()
@@ -140,8 +141,8 @@ export default {
     methods: {
         refreshBars() {
             this.isLoading = true
-            ApiRequests.fetchBars().then(data => {
-                this.bars = data.map(bar => {
+            BarAssistantClient.getBars().then(resp => {
+                this.bars = resp.data.map(bar => {
                     bar.show_invite_code = false
 
                     return bar
@@ -153,8 +154,7 @@ export default {
             })
         },
         selectBar(bar) {
-            const appState = new AppState()
-            appState.setBar(bar)
+            this.appState.setBar(bar)
             window.location.replace('/')
         },
         getRoleName(roleId) {
@@ -165,11 +165,10 @@ export default {
                 onResolved: (dialog) => {
                     this.isLoading = true
                     dialog.close()
-                    ApiRequests.deleteBar(bar.id).then(() => {
+                    BarAssistantClient.deleteBar(bar.id).then(() => {
                         this.isLoading = false
-                        const appState = new AppState()
-                        if (appState.bar.id == bar.id) {
-                            appState.forgetBar()
+                        if (this.appState.bar.id == bar.id) {
+                            this.appState.forgetBar()
                             window.location.reload()
                         }
                         this.$toast.default(this.$t('bars.delete-success'))
@@ -186,11 +185,10 @@ export default {
                 onResolved: (dialog) => {
                     this.isLoading = true
                     dialog.close()
-                    ApiRequests.leaveBar(bar.id).then(() => {
+                    BarAssistantClient.leaveBar(bar.id).then(() => {
                         this.isLoading = false
-                        const appState = new AppState()
-                        if (appState.bar.id == bar.id) {
-                            appState.forgetBar()
+                        if (this.appState.bar.id == bar.id) {
+                            this.appState.forgetBar()
                             window.location.reload()
                         }
                         this.$toast.default(this.$t('bars.delete-success'))
@@ -207,7 +205,7 @@ export default {
                 onResolved: (dialog) => {
                     this.isLoading = true
                     dialog.close()
-                    ApiRequests.updateBarStatus(bar.id, 'active').then(() => {
+                    BarAssistantClient.updateBarStatus(bar.id, 'active').then(() => {
                         this.isLoading = false
                         this.$toast.default(this.$t('bars.activation-success'))
                         this.refreshBars()

@@ -47,12 +47,13 @@
 </template>
 
 <script>
-import ApiRequests from '@/ApiRequests'
+import BarAssistantClient from '@/api/BarAssistantClient'
 import OverlayLoader from '@/components/OverlayLoader.vue'
 import PageHeader from '@/components/PageHeader.vue'
 import Navigation from '@/components/Settings/SettingsNavigation.vue'
 import SaltRimDialog from '@/components/Dialog/SaltRimDialog.vue'
 import CategoryForm from '@/components/Settings/CategoryForm.vue'
+import { useTitle } from '@/composables/title'
 
 export default {
     components: {
@@ -72,7 +73,7 @@ export default {
         }
     },
     created() {
-        document.title = `${this.$t('ingredient.categories')} \u22C5 ${this.site_title}`
+        useTitle(this.$t('ingredient.categories'))
 
         this.refreshCategories()
     },
@@ -80,8 +81,8 @@ export default {
         refreshCategories() {
             this.showDialog = false
             this.isLoading = true
-            ApiRequests.fetchIngredientCategories().then(data => {
-                this.categories = data
+            BarAssistantClient.getIngredientCategories().then(resp => {
+                this.categories = resp.data
                 this.isLoading = false
             }).catch(e => {
                 this.$toast.error(e.message)
@@ -97,7 +98,7 @@ export default {
                 onResolved: (dialog) => {
                     this.isLoading = true
                     dialog.close()
-                    ApiRequests.deleteIngredientCategory(category.id).then(() => {
+                    BarAssistantClient.deleteIngredientCategory(category.id).then(() => {
                         this.isLoading = false
                         this.$toast.default(this.$t('ingredient-category.delete-success'))
                         this.refreshCategories()

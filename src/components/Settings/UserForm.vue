@@ -35,7 +35,7 @@
 </template>
 
 <script>
-import ApiRequests from './../../ApiRequests.js'
+import BarAssistantClient from '@/api/BarAssistantClient'
 import OverlayLoader from './../OverlayLoader.vue'
 import SaltRimRadio from './../SaltRimRadio.vue'
 
@@ -86,7 +86,7 @@ export default {
                     postData.password = this.user.password
                 }
 
-                ApiRequests.updateUserById(this.user.id, postData).then(() => {
+                BarAssistantClient.updateUser(this.user.id, postData).then(() => {
                     this.isLoading = false
                     this.$toast.default(this.$t('users.update-success'))
                     this.$emit('userDialogClosed')
@@ -96,7 +96,7 @@ export default {
                 })
             } else {
                 postData.password = this.user.password
-                ApiRequests.saveUser(postData).then(() => {
+                BarAssistantClient.saveUser(postData).then(() => {
                     this.isLoading = false
                     this.$toast.default(this.$t('users.add-success'))
                     this.$emit('userDialogClosed')

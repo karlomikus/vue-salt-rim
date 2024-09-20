@@ -18,7 +18,7 @@
 </template>
 
 <script>
-import ApiRequests from './../../ApiRequests.js'
+import BarAssistantClient from '@/api/BarAssistantClient'
 import OverlayLoader from './../OverlayLoader.vue'
 
 export default {
@@ -55,7 +55,7 @@ export default {
             }
 
             if (this.utensil.id) {
-                ApiRequests.updateUtensil(this.utensil.id, postData).then(() => {
+                BarAssistantClient.updateUtensil(this.utensil.id, postData).then(() => {
                     this.isLoading = false
                     this.$toast.default(this.$t('utensils.update-success'))
                     this.$emit('utensilDialogClosed')
@@ -64,7 +64,7 @@ export default {
                     this.isLoading = false
                 })
             } else {
-                ApiRequests.saveUtensil(postData).then(() => {
+                BarAssistantClient.saveUtensil(postData).then(() => {
                     this.isLoading = false
                     this.$toast.default(this.$t('utensils.add-success'))
                     this.$emit('utensilDialogClosed')

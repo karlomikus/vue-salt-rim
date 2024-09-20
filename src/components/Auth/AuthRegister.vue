@@ -29,7 +29,7 @@
 </template>
 
 <script>
-import ApiRequests from './../../ApiRequests.js'
+import BarAssistantClient from '@/api/BarAssistantClient';
 import OverlayLoader from './../OverlayLoader.vue'
 import SiteLogo from './../Layout/SiteLogo.vue'
 
@@ -58,7 +58,7 @@ export default {
             }
 
             this.isLoading = true
-            ApiRequests.registerNewUser(postData).then(() => {
+            BarAssistantClient.register(postData).then(() => {
                 if (window.srConfig.MAILS_ENABLED === true) {
                     this.$toast.default(this.$t('register-success-email'))
                 } else {

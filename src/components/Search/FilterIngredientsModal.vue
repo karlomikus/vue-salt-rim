@@ -18,7 +18,7 @@
 <script>
 import OverlayLoader from './../OverlayLoader.vue'
 import IngredientFinder from './../IngredientFinder.vue'
-import ApiRequests from '../../ApiRequests'
+import BarAssistantClient from '@/api/BarAssistantClient';
 
 export default {
     components: {
@@ -51,8 +51,8 @@ export default {
         matchIngredients() {
             if (this.value.length > 0) {
                 this.isLoading = true
-                ApiRequests.fetchIngredients({'filter[id]': this.value.join(',')}).then(data => {
-                    this.selectedIngredients = data.data
+                BarAssistantClient.getIngredients({'filter[id]': this.value.join(',')}).then(resp => {
+                    this.selectedIngredients = resp.data
                     this.isLoading = false
                 }).catch(() => {
                     this.isLoading = false

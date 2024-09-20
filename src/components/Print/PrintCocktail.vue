@@ -1,8 +1,9 @@
 <template>
     <div class="cocktail-print-container">
         <div class="print-first-row">
-            <div v-if="cocktail.main_image_id" class="cocktail-print-image">
+            <div v-if="cocktail.images && cocktail.images.length > 0" class="cocktail-print-image">
                 <img :src="cocktail.images[0].url" :alt="cocktail.images[0].copyright">
+                <span>{{ cocktail.images[0].copyright }}</span>
             </div>
             <div class="cocktail-main-info">
                 <h1>{{ cocktail.name }}</h1>
@@ -37,7 +38,7 @@
 </template>
 <script>
 import {micromark} from 'micromark'
-import ApiRequests from '@/ApiRequests'
+import BarAssistantClient from '@/api/BarAssistantClient'
 import AppState from './../../AppState'
 import UnitHandler from '../../UnitHandler'
 import CocktailIngredientShare from '../Cocktail/CocktailIngredientShare.vue'
@@ -75,16 +76,18 @@ export default {
         },
     },
     created() {
-        window.addEventListener('afterprint', () => {
-            window.close()
-        })
-
-        ApiRequests.fetchCocktail(this.$route.params.id).then(data => {
-            this.cocktail = data
+        BarAssistantClient.getCocktail(this.$route.params.id).then(resp => {
+            this.cocktail = resp.data
             this.printReady = true
-            // this.$nextTick(() => {
-            //     window.print();
-            // })
+            this.$nextTick(() => {
+                window.print();
+            })
+
+            window.addEventListener('afterprint', () => {
+                this.$nextTick(() => {
+                    window.close();
+                })
+            })
         }).catch(e => {
             this.$toast.error(e.message)
         })

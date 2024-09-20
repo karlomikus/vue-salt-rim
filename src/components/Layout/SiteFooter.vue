@@ -23,7 +23,12 @@
             <div class="site-footer__links">
                 <span>Salt Rim: <a href="https://github.com/karlomikus/vue-salt-rim/releases" target="_blank">{{ clientVersion }}</a></span>
                 <span>&middot;</span>
-                <span>Bar Assistant: <a href="https://github.com/karlomikus/bar-assistant/releases" target="_blank">{{ apiVersion }}</a></span>
+                <span>Bar Assistant: <a href="https://github.com/karlomikus/bar-assistant/releases" target="_blank">
+                    {{ apiVersion }}
+                    <template v-if="!isLatest">
+                        (Update available)
+                    </template>
+                </a></span>
                 <span>&middot;</span>
                 <span>Meilisearch: <a href="https://github.com/meilisearch/meilisearch/releases" target="_blank">{{ meiliVersion }}</a></span>
             </div>
@@ -33,15 +38,16 @@
 
 <script>
 import AppState from '../../AppState'
-import ApiRequests from './../../ApiRequests'
+import BarAssistantClient from '@/api/BarAssistantClient';
 
 export default {
     data() {
         return {
             appState: new AppState(),
+            isLatest: true,
             versions: {
                 api: null,
-                client: this.app_version,
+                client: window.srConfig.VERSION || 'local',
                 meili: null
             }
         }
@@ -58,9 +64,10 @@ export default {
         }
     },
     created() {
-        ApiRequests.fetchApiVersion().then(resp => {
-            this.versions.api = resp.version
-            this.versions.meili = resp.search_version
+        BarAssistantClient.getServerVersion().then(resp => {
+            this.versions.api = resp.data.version
+            this.versions.meili = resp.data.search_version
+            this.versions.isLatest = resp.data.is_latest
         }).catch(() => {
             this.versions.api = 'n/a'
             this.versions = 'n/a'

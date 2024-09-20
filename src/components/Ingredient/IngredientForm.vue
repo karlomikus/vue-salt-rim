@@ -64,7 +64,7 @@
             </div>
             <div v-show="isComplex" class="ingredient-form__complex-ingredients">
                 <div>
-                    <IngredientFinder @ingredient-selected="selectIngredientPart"></IngredientFinder>
+                    <IngredientFinder @ingredient-selected="selectIngredientPart" :disabled-ingredients="disabledFinderIngredients"></IngredientFinder>
                 </div>
                 <div>
                     <ul v-if="ingredient.ingredient_parts.length > 0" class="block-container block-container--inset ingredient-form__complex-ingredients__list">
@@ -75,7 +75,7 @@
             </div>
         </div>
         <h3 class="form-section-title">{{ $t('media') }}</h3>
-        <ImageUpload ref="imagesUpload" :value="ingredient.images" :max-images="1" />
+        <ImageUpload ref="imagesUpload" :images="ingredient.images" :max-images="1" />
         <h3 class="form-section-title">{{ $t('price.prices') }}</h3>
         <div class="block-container block-container--padded block-container--inset ingredient-prices">
             <template v-if="priceCategories.length > 0">
@@ -93,7 +93,7 @@
                     </div>
                     <div class="form-group" style="max-width: 150px;">
                         <label class="form-label form-label--required" :for="'ingredient-price-price-' + idx">{{ $t('price.price') }} <template v-if="price.price_category.id">({{ priceCategories.find(p => p.id == price.price_category.id).currency }})</template></label>
-                        <input :id="'ingredient-price-price-' + idx" v-model="price.price" type="text" class="form-input" required>
+                        <input :id="'ingredient-price-price-' + idx" v-model="price.price.price" type="text" class="form-input" required>
                     </div>
                     <div class="form-group" style="max-width: 150px;">
                         <label class="form-label form-label--required" :for="'ingredient-price-vol-' + idx">{{ $t('amount') }}</label>
@@ -128,7 +128,7 @@
 </template>
 
 <script>
-import ApiRequests from './../../ApiRequests.js'
+import BarAssistantClient from '@/api/BarAssistantClient'
 import Utils from './../../Utils.js'
 import ImageUpload from './../ImageUpload.vue'
 import PageHeader from './../PageHeader.vue'
@@ -140,6 +140,7 @@ import SaltRimCheckbox from '../SaltRimCheckbox.vue'
 import SaltRimDialog from '../Dialog/SaltRimDialog.vue'
 import CategoryForm from '../Settings/CategoryForm.vue'
 import CloseButton from '../CloseButton.vue'
+import { useTitle } from '@/composables/title'
 
 export default {
     components: {
@@ -194,7 +195,7 @@ export default {
         }
     },
     created() {
-        document.title = `${this.$t('ingredient.title')} \u22C5 ${this.site_title}`
+        useTitle(this.$t('ingredient.add'))
 
         const ingredientId = this.$route.query.id || null
 
@@ -209,28 +210,28 @@ export default {
     methods: {
         refreshIngredient() {
             this.isLoading = true
-            ApiRequests.fetchIngredient(this.ingredient.id).then(data => {
-                data.description = Utils.decodeHtml(data.description)
+            BarAssistantClient.getIngredient(this.ingredient.id).then(resp => {
+                resp.data.description = Utils.decodeHtml(resp.data.description)
 
-                this.ingredient = data
+                this.ingredient = resp.data
                 this.isParent = this.ingredient.parent_ingredient != null
                 this.isComplex = this.ingredient.ingredient_parts.length > 0
-                if (data.category) {
-                    this.ingredientCategoryId = data.category.id
+                if (resp.data.category) {
+                    this.ingredientCategoryId = resp.data.category.id
                 }
 
-                document.title = `${this.$t('ingredient.title')} \u22C5 ${this.ingredient.name} \u22C5 ${this.site_title}`
+                useTitle(`${this.$t('ingredient.title')} \u22C5 ${this.ingredient.name}`)
                 this.isLoading = false
             })
         },
         refreshCategories() {
-            ApiRequests.fetchIngredientCategories().then(data => {
-                this.categories = data
+            BarAssistantClient.getIngredientCategories().then(resp => {
+                this.categories = resp.data
             })
         },
         refreshPriceCategories() {
-            ApiRequests.fetchPriceCategories().then(data => {
-                this.priceCategories = data
+            BarAssistantClient.getPriceCategories().then(resp => {
+                this.priceCategories = resp.data
             })
         },
         selectIngredientPart(ingredient) {
@@ -254,7 +255,7 @@ export default {
             }
         },
         addIngredientPrice() {
-            this.ingredient.prices.push({price_category: {id: null}})
+            this.ingredient.prices.push({price_category: {id: null}, price: {}})
         },
         removeIngredientPrice(price) {
             this.ingredient.prices.splice(this.ingredient.prices.indexOf(price), 1)
@@ -282,14 +283,14 @@ export default {
                 complex_ingredient_part_ids: [...new Set(this.ingredient.ingredient_parts.map(i => i.id))],
                 prices: this.ingredient.prices.filter(p => p.price_category.id != null).map(p => ({
                     price_category_id: p.price_category.id,
-                    price: p.price,
+                    price: p.price.price,
                     amount: p.amount,
                     units: p.units,
                     description: p.description,
                 }))
             }
 
-            const imageResources = await this.$refs.imagesUpload.uploadPictures().catch(() => {
+            const imageResources = await this.$refs.imagesUpload.save().catch(() => {
                 this.$toast.error(`${this.$t('imageupload.error')} ${this.$t('imageupload.error-ingredient')}`)
             }) || []
 
@@ -298,9 +299,9 @@ export default {
             }
 
             if (this.ingredient.id) {
-                ApiRequests.updateIngredient(this.ingredient.id, postData).then(data => {
+                BarAssistantClient.updateIngredient(this.ingredient.id, postData).then(resp => {
                     this.$toast.default(this.$t('ingredient.update-success'))
-                    this.$router.push({ name: 'ingredients.show', params: { id: data.slug } })
+                    this.$router.push({ name: 'ingredients.show', params: { id: resp.data.slug } })
                     this.isLoading = false
                 }).catch(e => {
                     this.$toast.error(e.message)
@@ -308,9 +309,9 @@ export default {
                     this.isLoading = false
                 })
             } else {
-                ApiRequests.saveIngredient(postData).then(data => {
+                BarAssistantClient.saveIngredient(postData).then(resp => {
                     this.$toast.default(this.$t('ingredient.create-success'))
-                    this.$router.push({ name: 'ingredients.show', params: { id: data.slug } })
+                    this.$router.push({ name: 'ingredients.show', params: { id: resp.data.slug } })
                     this.isLoading = false
                 }).catch(e => {
                     this.$toast.error(e.message)

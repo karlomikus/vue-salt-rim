@@ -41,7 +41,7 @@
 </template>
 
 <script>
-import ApiRequests from './../../ApiRequests.js'
+import BarAssistantClient from '@/api/BarAssistantClient';
 import OverlayLoader from './../OverlayLoader.vue'
 import SubscriptionCheck from '../SubscriptionCheck.vue'
 
@@ -52,12 +52,6 @@ export default {
     },
     props: {
         cocktails: {
-            type: Array,
-            default() {
-                return []
-            }
-        },
-        cocktailCollections: {
             type: Array,
             default() {
                 return []
@@ -79,11 +73,21 @@ export default {
     },
     computed: {
         isPartOfCollection() {
-            if (!this.collectionId) {
+            if (!this.collectionId || !this.isManagingSingleCocktail) {
                 return false
             }
 
             return this.cocktailCollections.find((val) => val.id == this.collectionId)
+        },
+        cocktailCollections() {
+            if (this.isManagingSingleCocktail) {
+                return this.collections.filter(collection => collection.cocktails.some(cocktail => cocktail.id == this.cocktails[0]))
+            }
+
+            return this.collections
+        },
+        isManagingSingleCocktail() {
+            return this.cocktails.length == 1
         }
     },
     mounted() {
@@ -92,17 +96,23 @@ export default {
     methods: {
         fetchCollections() {
             this.isLoading = true
-            ApiRequests.fetchCollections().then(data => {
+            BarAssistantClient.getCollections({include: 'cocktails'}).then(resp => {
                 this.isLoading = false
-                this.collections = data
+                this.collections = resp.data
             })
         },
         removeCocktailFromCollection() {
+            if (!this.isManagingSingleCocktail) {
+                return false
+            }
+
             this.$confirm(this.$t('collections.confirm-remove-cocktail'), {
                 onResolved: (dialog) => {
                     this.isLoading = true
                     dialog.close()
-                    ApiRequests.removeCocktailFromCollection(this.collectionId, this.cocktails[0]).then(() => {
+                    const existingCollectionCocktailIds = this.collections.find(c => c.id == this.collectionId).cocktails.map(c => c.id)
+                    existingCollectionCocktailIds.splice(existingCollectionCocktailIds.indexOf(this.cocktails[0]), 1)
+                    BarAssistantClient.syncCollectionCocktails(this.collectionId, existingCollectionCocktailIds).then(() => {
                         this.$toast.default(this.$t('collections.cocktail-remove-success'))
                         this.$emit('collectionDialogClosed')
                         this.isLoading = false
@@ -115,8 +125,10 @@ export default {
         },
         saveAndClose() {
             if (this.collectionId) {
+                const existingCollectionCocktailIds = this.collections.find(c => c.id == this.collectionId).cocktails.map(c => c.id)
+                const newCocktailCollections = existingCollectionCocktailIds.concat(this.cocktails)
                 this.isLoading = true
-                ApiRequests.addCocktailsToCollection(this.collectionId, this.cocktails).then(() => {
+                BarAssistantClient.syncCollectionCocktails(this.collectionId, newCocktailCollections).then(() => {
                     this.isLoading = false
                     this.$toast.default(this.$t('collections.cocktail-add-success'))
                     this.$emit('collectionDialogClosed')
@@ -127,10 +139,10 @@ export default {
             } else {
                 this.isLoading = true
                 this.newCollection.cocktails = this.cocktails
-                ApiRequests.saveCollection(this.newCollection).then(collectionData => {
+                BarAssistantClient.saveCollection(this.newCollection).then(resp => {
                     this.isLoading = false
                     this.$toast.default(this.$t('collections.cocktail-add-success'))
-                    this.collectionId = collectionData.id
+                    this.collectionId = resp.data.id
                     this.$emit('collectionDialogClosed')
                 }).catch(e => {
                     this.$toast.error(e.message)

@@ -10,7 +10,7 @@
             <template #default="{ items }">
                 <div class="ingredient-finder__options">
                     <OverlayLoader v-if="isLoading"></OverlayLoader>
-                    <a v-for="item in items" :key="item.id" href="#" @click.prevent="selectIngredient(item)">
+                    <a v-for="item in items" :key="item.id" href="#" @click.prevent="selectIngredient(item)" :class="{ 'ingredient-finder__options--disabled': disabledIngredients.includes(item.id) }">
                         <IngredientImage class="ingredient__image--small" :ingredient="item"></IngredientImage>
                         <div class="ingredient-finder__options__content">
                             <span>{{ item.name }}</span>
@@ -32,9 +32,9 @@
 <script>
 import { instantMeiliSearch } from '@meilisearch/instant-meilisearch'
 import OverlayLoader from './OverlayLoader.vue'
-import ApiRequests from '../ApiRequests'
 import AppState from './../AppState'
 import IngredientImage from './Ingredient/IngredientImage.vue'
+import BarAssistantClient from '@/api/BarAssistantClient'
 
 const appState = new AppState()
 
@@ -83,8 +83,8 @@ export default {
                 },
             },
             searchClient: instantMeiliSearch(
-                appState.bar.search_driver_host,
-                appState.bar.search_driver_api_key,
+                appState.bar.search_host,
+                appState.bar.search_token,
             ).searchClient,
         }
     },
@@ -102,7 +102,7 @@ export default {
         },
         newIngredient() {
             this.isLoading = true
-            ApiRequests.saveIngredient({
+            BarAssistantClient.saveIngredient({
                 name: this.currentQuery,
                 description: null,
                 strength: 0,
@@ -110,12 +110,12 @@ export default {
                 color: null,
                 images: [],
                 ingredient_category_id: null,
-            }).then(data => {
-                this.$toast.default(this.$t('ingredient.dialog.new-ingredient-success', { name: data.name }))
+            }).then(resp => {
+                this.$toast.default(this.$t('ingredient.dialog.new-ingredient-success', { name: resp.data.name }))
                 this.selectIngredient({
-                    name: data.name,
-                    slug: data.slug,
-                    id: data.id
+                    name: resp.data.name,
+                    slug: resp.data.slug,
+                    id: resp.data.id
                 })
                 this.isLoading = false
             }).catch(() => {
@@ -168,6 +168,10 @@ export default {
 
 .dark-theme .ingredient-finder__options a:hover {
     background-color: var(--clr-dark-main-700);
+}
+
+.ingredient-finder__options a.ingredient-finder__options--disabled {
+    opacity: .3;
 }
 
 .ingredient-finder__options a svg {

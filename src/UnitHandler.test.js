@@ -23,6 +23,7 @@ test('ingredients are pretty printed', () => {
     expect(UnitHandler.print({ amount: 60, units: 'ml' }, 'ml', 3)).toBe('180 ml')
     expect(UnitHandler.print({ amount: null, units: 'ml' }, 'ml')).toBe('0 ml')
     expect(UnitHandler.print({ amount: null, amount_max: null, units: 'ml' }, 'ml')).toBe('0 ml')
+    expect(UnitHandler.print({ amount: '0.125', units: 'oz' }, 'oz')).toBe('1/8 oz')
 })
 
 test('numbers are fixed and truncated', () => {

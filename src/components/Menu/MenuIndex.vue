@@ -49,11 +49,11 @@
                             <div class="menu-category__cocktail__content__price">
                                 <div class="form-group">
                                     <label class="form-label" :for="'cocktail-category-price-' + idx + '-' + cidx">{{ $t('menu.price') }}:</label>
-                                    <input :id="'cocktail-category-price-' + idx + '-' + cidx" v-model="cocktail.price" class="form-input" type="text">
+                                    <input :id="'cocktail-category-price-' + idx + '-' + cidx" v-model="cocktail.price.price" class="form-input" type="text">
                                 </div>
                                 <div class="form-group">
                                     <label class="form-label" :for="'cocktail-category-currency-' + idx + '-' + cidx">{{ $t('menu.currency') }}:</label>
-                                    <input :id="'cocktail-category-currency-' + idx + '-' + cidx" v-model="cocktail.currency" class="form-input" type="text">
+                                    <input :id="'cocktail-category-currency-' + idx + '-' + cidx" v-model="cocktail.price.currency" class="form-input" type="text">
                                 </div>
                             </div>
                         </div>
@@ -87,8 +87,9 @@ import SaltRimDialog from './../Dialog/SaltRimDialog.vue'
 import CocktailFinder from './../CocktailFinder.vue'
 import AppState from '../../AppState'
 import QRCodeVue3 from 'qrcode-vue3'
-import ApiRequests from './../../ApiRequests.js'
 import OverlayLoader from '../OverlayLoader.vue'
+import { useTitle } from '@/composables/title'
+import BarAssistantClient from '@/api/BarAssistantClient'
 
 export default {
     components: {
@@ -133,6 +134,7 @@ export default {
         }
     },
     created() {
+        useTitle(this.$t('menu.title'))
         this.refreshMenu()
         this.refreshBar()
     },
@@ -206,10 +208,10 @@ export default {
         },
         refreshMenu() {
             this.isLoading = true
-            ApiRequests.fetchMenu().then(data => {
+            BarAssistantClient.getMenu().then(resp => {
                 this.isLoading = false
-                this.menu.is_enabled = data.is_enabled
-                this.categories = data.categories
+                this.menu.is_enabled = resp.data.is_enabled
+                this.categories = resp.data.categories
                 this.$nextTick(() => {
                     this.refreshSortable()
                 })
@@ -219,8 +221,8 @@ export default {
             })
         },
         refreshBar() {
-            ApiRequests.fetchBar(this.appState.bar.id).then(data => {
-                this.bar = data
+            BarAssistantClient.getBar(this.appState.bar.id).then(resp => {
+                this.bar = resp.data
                 this.menu.url = `${window.location.origin}/bars/${this.bar.slug}`
             }).catch(() => {
             })
@@ -271,8 +273,8 @@ export default {
                     cocktail_id: cocktail.id,
                     category_name: cat.name,
                     sort: sortedCocktails.findIndex(sortedId => sortedId == cocktail.id) + 1,
-                    price: cocktail.price,
-                    currency: cocktail.currency,
+                    price: cocktail.price.price,
+                    currency: cocktail.price.currency,
                 }))
             })
 
@@ -288,13 +290,13 @@ export default {
                 cocktails: cocktails
             }
 
-            ApiRequests.updateMenu(postData).then(() => {
+            BarAssistantClient.updateMenu(postData).then(() => {
                 this.isLoading = false
                 this.refreshMenu()
                 this.$toast.default(this.$t('menu.saved'))
-            }).catch(() => {
+            }).catch(e => {
                 this.isLoading = false
-                this.$toast.error(this.$t('menu.update-error'))
+                this.$toast.error(this.$t('menu.update-error') + ': ' + e.message)
             })
         },
     }
@@ -436,15 +438,11 @@ export default {
 }
 
 .menu-url {
-    background: var(--clr-gray-100);
+    background: var(--clr-accent-purple);
     padding: 0.5rem;
     font-weight: var(--fw-bold);
     border-radius: var(--radius-1);
     width: 100%;
-}
-
-.dark-theme .menu-url {
-    background: var(--clr-gray-900);
 }
 
 .menu-url a {

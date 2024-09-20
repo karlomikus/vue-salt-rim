@@ -1,3 +1,23 @@
+# v3.0.0
+## New
+- Added compatibility with Bar Assistant v4.0.0
+- Importing now supports substitute ingredients
+- Added shopping list page
+- Image uploads now show file paths
+- Added "Can be substituted with" and "Is a substitute for" to ingredient details
+
+## Changes
+- Update PWA image and name
+- Removed importing from collection
+- Removed importing from yaml
+- Removed downloading csv from collections
+- Updated cocktail details layout
+- Updated ingredient details layout
+- Importing no longer automatically converts units
+
+## Fixes
+- Fixed wrong volume calculations for multiple servings
+
 # v2.18.0
 ## New
 - Enabled Italian language

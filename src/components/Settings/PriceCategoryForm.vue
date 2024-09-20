@@ -1,7 +1,7 @@
 <script setup>
 import { ref } from 'vue'
 import { useSaltRimToast } from './../../composables/toast'
-import ApiRequests from '@/ApiRequests'
+import BarAssistantClient from '@/api/BarAssistantClient'
 import OverlayLoader from '@/components/OverlayLoader.vue'
 import { useI18n } from 'vue-i18n'
 
@@ -34,19 +34,19 @@ function submit() {
     }
 
     if (category.value.id) {
-        ApiRequests.updatePriceCategory(category.value.id, postData).then(resp => {
+        BarAssistantClient.updatePriceCategory(category.value.id, postData).then(resp => {
             isLoading.value = false
             toast.default(t('prices.price-category-update-success'))
-            emit('formClosed', resp)
+            emit('formClosed', resp.data)
         }).catch(e => {
             toast.error(e.message)
             isLoading.value = false
         })
     } else {
-        ApiRequests.savePriceCategory(postData).then(resp => {
+        BarAssistantClient.savePriceCategory(postData).then(resp => {
             isLoading.value = false
             toast.default(t('prices.price-category-add-success'))
-            emit('formClosed', resp)
+            emit('formClosed', resp.data)
         }).catch(e => {
             toast.error(e.message)
             isLoading.value = false

@@ -4,7 +4,7 @@
         <SubscriptionCheck>Subscribe to "Mixologist" plan to enable image editing!</SubscriptionCheck>
         <div class="dialog-title">{{ $t('image-editor.title') }}</div>
         <div class="image-editor-container">
-            <img ref="image" :src="modelValue.url">
+            <img ref="image" :src="modelValue.preview">
         </div>
         <div class="image-editor-actions">
             <a href="#" @click.prevent="cropper.setDragMode('move')">{{ $t('image-editor.move') }}</a>
@@ -76,7 +76,14 @@ export default {
             this.$toast.default(this.$t('image-editor.edit-success'))
 
             croppedImage.toBlob(blob => {
-                const newImage = Object.assign(this.modelValue, {url: croppedImage.toDataURL(), file: blob, update_file: true})
+                const newImage = {
+                    id: this.modelValue.id,
+                    file: blob,
+                    preview: croppedImage.toDataURL(),
+                    fileName: this.modelValue.fileName,
+                    copyright: this.modelValue.copyright,
+                    sort: this.modelValue.sort,
+                }
                 this.$emit('update:modelValue', newImage)
                 this.$emit('imageDialogClosed')
             })

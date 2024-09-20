@@ -6,6 +6,7 @@
     "de-DE": "Njemački",
     "pl-PL": "Poljski",
     "it-IT": "Italian",
+    "sv-SE": "Swedish",
     "help": "Pomozi sa prijevodima"
   },
   "shelf": {
@@ -58,7 +59,9 @@
     "complex-note": "Ako imate sve uključene sastojke, recepti s ovim sastojkom će automatski biti prikazani",
     "complex": "Kompleksan sastojak",
     "variety-note": "Recepti koje možete napraviti uključuju matični sastojak kao zamjenu (oovisno o postavkama korisnika)",
-    "ingredients": "Sastojci"
+    "ingredients": "Sastojci",
+    "used_as_substitute_for": "Used as a substitute for",
+    "can_be_substituted_with": "Can be substituted with"
   },
   "share": {
     "title": "Podijeli",
@@ -74,6 +77,7 @@
   "settings": "Postavke",
   "logout": "Odjava",
   "profile": "Profil",
+  "filename": "File name",
   "users": {
     "title": "Korisnici",
     "add": "Dodaj korisnika",
@@ -527,7 +531,9 @@
     "export-notice": "Please keep in mind that depending on server configuration and selected bar size, generating export can take several minutes.",
     "start-success": "Started bar export",
     "confirm-delete": "This will delete the selected export file",
-    "delete-success": "Export removed"
+    "delete-success": "Export removed",
+    "types-hint": "Click here to learn more about export types",
+    "force-units": "Convert units"
   },
   "start": "Započni",
   "filter": "Filter",
@@ -536,7 +542,8 @@
   "unit": {
     "ml-full": "Mililitre (ml)",
     "oz-full": "Unce (oz)",
-    "cl-full": "Centilitre (cl)"
+    "cl-full": "Centilitre (cl)",
+    "original": "Keep original units"
   },
   "no-default-units": "Nema osnovnih jedinica",
   "wakelock-toggle": "Zaustavi zaključavanje ekrana",
@@ -584,5 +591,6 @@
     "add": "Add price",
     "price-categories": "Price categories",
     "add-price-category": "Add price category"
-  }
+  },
+  "shopping-list-empty": "Your shopping list is empty"
 }

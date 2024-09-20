@@ -50,7 +50,7 @@
 </template>
 
 <script>
-import ApiRequests from './../../ApiRequests.js'
+import BarAssistantClient from '@/api/BarAssistantClient'
 import OverlayLoader from '@/components/OverlayLoader.vue'
 import PageHeader from '@/components/PageHeader.vue'
 import Navigation from '@/components/Settings/SettingsNavigation.vue'
@@ -58,6 +58,7 @@ import SaltRimDialog from '@/components/Dialog/SaltRimDialog.vue'
 import UserForm from '@/components/Settings/UserForm.vue'
 import AppState from './../../AppState.js'
 import SubscriptionCheck from '../SubscriptionCheck.vue'
+import { useTitle } from '@/composables/title'
 
 export default {
     components: {
@@ -81,7 +82,7 @@ export default {
         }
     },
     created() {
-        document.title = `${this.$t('users.title')} \u22C5 ${this.site_title}`
+        useTitle(this.$t('users.title'))
 
         this.refreshUsers()
     },
@@ -89,8 +90,8 @@ export default {
         refreshUsers() {
             this.showDialog = false
             this.isLoading = true
-            ApiRequests.fetchUsers().then(data => {
-                this.users = data
+            BarAssistantClient.getUsers().then(resp => {
+                this.users = resp.data
                 this.isLoading = false
             }).catch(e => {
                 this.$toast.error(e.message)
@@ -107,7 +108,7 @@ export default {
                 onResolved: (dialog) => {
                     this.isLoading = true
                     dialog.close()
-                    ApiRequests.removeUserFromBar(appState.bar.id, user.id).then(() => {
+                    BarAssistantClient.removeUserFromBar(appState.bar.id, user.id).then(() => {
                         this.isLoading = false
                         this.$toast.default(this.$t('users.delete-success'))
                         this.refreshUsers()

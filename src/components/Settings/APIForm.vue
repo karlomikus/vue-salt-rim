@@ -58,7 +58,7 @@
 </template>
 
 <script>
-import ApiRequests from '../../ApiRequests'
+import BarAssistantClient from '@/api/BarAssistantClient';
 import OverlayLoader from '../OverlayLoader.vue'
 
 export default {
@@ -85,10 +85,10 @@ export default {
                 abilities: this.apiKey.abilities,
             }
 
-            ApiRequests.saveToken(postData).then((data) => {
+            BarAssistantClient.saveToken(postData).then((resp) => {
                 this.isLoading = false
                 this.$toast.default(this.$t('api.add-success'))
-                this.plainTextToken = data.token
+                this.plainTextToken = resp.data.token
             }).catch(e => {
                 this.$toast.error(e.message)
                 this.isLoading = false

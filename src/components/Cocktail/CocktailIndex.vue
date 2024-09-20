@@ -95,7 +95,7 @@
                             <CollectionDialog title="collections.add-from-query" :cocktails="currentCocktailIds" @collection-dialog-closed="handleCollectionsDialogClosed" />
                         </template>
                     </SaltRimDialog>
-                    <button type="button" class="button button--outline button--icon" :title="$t('clear-filters')" @click.prevent="clearRefinements">
+                    <button v-show="totalActiveRefinements > 0" type="button" class="button button--outline button--icon" :title="$t('clear-filters')" @click.prevent="clearRefinements">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path d="M12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22ZM12 20C16.4183 20 20 16.4183 20 12C20 7.58172 16.4183 4 12 4C7.58172 4 4 7.58172 4 12C4 16.4183 7.58172 20 12 20ZM12 10.5858L14.8284 7.75736L16.2426 9.17157L13.4142 12L16.2426 14.8284L14.8284 16.2426L12 13.4142L9.17157 16.2426L7.75736 14.8284L10.5858 12L7.75736 9.17157L9.17157 7.75736L12 10.5858Z"></path></svg>
                     </button>
                 </div>
@@ -118,7 +118,7 @@
 
 <script>
 import OverlayLoader from './../OverlayLoader.vue'
-import ApiRequests from './../../ApiRequests.js'
+import BarAssistantClient from '@/api/BarAssistantClient'
 import CocktailGridItem from './CocktailGridItem.vue'
 import CocktailGridContainer from './CocktailGridContainer.vue'
 import PageHeader from './../PageHeader.vue'
@@ -130,6 +130,7 @@ import qs from 'qs'
 import AppState from '../../AppState'
 import EmptyState from './../EmptyState.vue'
 import FilterIngredientsModal from '../Search/FilterIngredientsModal.vue'
+import { useTitle } from '@/composables/title'
 
 export default {
     components: {
@@ -210,6 +211,7 @@ export default {
                 ignore_ingredients: [],
                 specific_ingredients: [],
                 ingredient_id: [],
+                ingredient_substitute_id: [],
                 id: [],
             }
         }
@@ -360,7 +362,7 @@ export default {
         },
     },
     created() {
-        document.title = `${this.$t('cocktail.cocktails')} \u22C5 ${this.site_title}`
+        useTitle(this.$t('cocktail.cocktails'))
 
         this.fetchRefinements()
 
@@ -377,32 +379,32 @@ export default {
     },
     methods: {
         fetchRefinements() {
-            ApiRequests.fetchTags().then(data => {
-                this.availableRefinements.tags = data
+            BarAssistantClient.getTags().then(resp => {
+                this.availableRefinements.tags = resp.data
             })
 
-            ApiRequests.fetchGlasses().then(data => {
-                this.availableRefinements.glasses = data
+            BarAssistantClient.getGlasses().then(resp => {
+                this.availableRefinements.glasses = resp.data
             })
 
-            ApiRequests.fetchCocktailMethods().then(data => {
-                this.availableRefinements.methods = data
+            BarAssistantClient.getCocktailMethods().then(resp => {
+                this.availableRefinements.methods = resp.data
             })
 
-            ApiRequests.fetchIngredients({'filter[main_ingredients]': true, per_page: 100}).then(resp => {
+            BarAssistantClient.getIngredients({'filter[main_ingredients]': true, per_page: 100}).then(resp => {
                 this.availableRefinements.main_ingredients = resp.data
             })
 
-            ApiRequests.fetchCollections({per_page: 100}).then(data => {
-                this.availableRefinements.collections = data
+            BarAssistantClient.getCollections({per_page: 100, include: 'cocktails'}).then(resp => {
+                this.availableRefinements.collections = resp.data
             })
 
-            ApiRequests.fetchBarMembers(this.appState.bar.id).then(data => {
-                this.availableRefinements.members = data
+            BarAssistantClient.getBarMembers(this.appState.bar.id).then(resp => {
+                this.availableRefinements.members = resp.data
             })
 
-            ApiRequests.fetchSharedCollections().then(data => {
-                this.availableRefinements.shared_collections = data
+            BarAssistantClient.getSharedCollections(this.appState.bar.id).then(resp => {
+                this.availableRefinements.shared_collections = resp.data
             })
         },
         updateRouterPath() {
@@ -414,11 +416,12 @@ export default {
         },
         refreshCocktails() {
             const query = this.stateToQuery()
+            query.include = 'ratings,ingredients.ingredient,tags,images'
 
             this.isLoading = true
-            ApiRequests.fetchCocktails(query).then(async resp => {
+            BarAssistantClient.getCocktails(query).then(async resp => {
                 this.cocktails = resp.data
-                const favorites = await ApiRequests.fetchCocktailFavorites().catch(() => [])
+                const favorites = (await BarAssistantClient.getUserCocktailFavorites(this.appState.user.id)).data
                 this.cocktails.map(c => {
                     c.isFavorited = favorites.includes(c.id)
 
@@ -454,6 +457,7 @@ export default {
             this.activeFilters.specific_ingredients = state.filter && state.filter.specific_ingredients ? String(state.filter.specific_ingredients).split(',') : []
             this.activeFilters.id = state.filter && state.filter.id ? String(state.filter.id).split(',') : []
             this.activeFilters.ingredient_id = state.filter && state.filter.ingredient_id ? String(state.filter.ingredient_id).split(',') : []
+            this.activeFilters.ingredient_substitute_id = state.filter && state.filter.ingredient_substitute_id ? String(state.filter.ingredient_substitute_id).split(',') : []
             this.activeFilters.user_rating = state.filter && state.filter.user_rating_min ? state.filter.user_rating_min : null
             this.activeFilters.average_rating = state.filter && state.filter.average_rating_min ? state.filter.average_rating_min : null
             this.searchQuery = state.filter && state.filter.name ? state.filter.name : null
@@ -496,6 +500,7 @@ export default {
                 main_ingredient_id: this.activeFilters.main_ingredients.length > 0 ? this.activeFilters.main_ingredients.join(',') : null,
                 specific_ingredients: this.activeFilters.specific_ingredients.length > 0 ? this.activeFilters.specific_ingredients.join(',') : null,
                 ingredient_id: this.activeFilters.ingredient_id.length > 0 ? this.activeFilters.ingredient_id.join(',') : null,
+                ingredient_substitute_id: this.activeFilters.ingredient_substitute_id.length > 0 ? this.activeFilters.ingredient_substitute_id.join(',') : null,
                 collection_id: this.activeFilters.collections.length > 0 ? this.activeFilters.collections.join(',') : null,
                 user_shelves: this.activeFilters.user_shelves.length > 0 ? this.activeFilters.user_shelves.join(',') : null,
                 id: this.activeFilters.id.length > 0 ? this.activeFilters.id.join(',') : null,
@@ -557,6 +562,7 @@ export default {
                 ignore_ingredients: [],
                 specific_ingredients: [],
                 ingredient_id: [],
+                ingredient_substitute_id: [],
                 id: [],
             }
 

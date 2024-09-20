@@ -15,7 +15,7 @@
 </template>
 
 <script>
-import ApiRequests from './../../ApiRequests.js'
+import BarAssistantClient from '@/api/BarAssistantClient'
 import OverlayLoader from './../OverlayLoader.vue'
 import dayjs from 'dayjs'
 import SubscriptionCheck from '../SubscriptionCheck.vue'
@@ -66,8 +66,8 @@ export default {
     methods: {
         generatePublicLink() {
             this.isLoading = true
-            ApiRequests.createPublicLink(this.cocktail.id).then(data => {
-                this.publicData = data
+            BarAssistantClient.savePublicCocktailLink(this.cocktail.id).then(resp => {
+                this.publicData = resp.data
                 this.isLoading = false
             }).catch(e => {
                 this.$toast.error(e.message)
@@ -76,8 +76,8 @@ export default {
         },
         deletePublicLink() {
             this.isLoading = true
-            ApiRequests.deletePublicLink(this.cocktail.id).then(data => {
-                this.publicData = data
+            BarAssistantClient.deletePublicCocktailLink(this.cocktail.id).then(resp => {
+                this.publicData = resp.data
                 this.isLoading = false
             }).catch(e => {
                 this.$toast.error(e.message)
@@ -100,7 +100,7 @@ export default {
     background: var(--clr-gray-100);
     padding: 0.5rem;
     font-weight: var(--fw-bold);
-    font-size: 1.25rem;
+    /* font-size: 1.25rem; */
     font-family: monospace;
     border-radius: var(--radius-1);
 }

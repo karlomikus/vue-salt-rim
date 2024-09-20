@@ -1,28 +1,11 @@
 <template>
     <PageHeader>
         {{ $t('ingredient.ingredients') }}
-        <template v-if="appState.isAdmin() || appState.isModerator() || appState.isGeneral()" #actions>
-            <Dropdown>
-                <template #default="{ toggleDropdown }">
-                    <button type="button" class="button button--outline" @click="toggleDropdown">{{ $t('your-shopping-list') }}</button>
-                </template>
-                <template #content>
-                    <RouterLink class="dropdown-menu__item" target="_blank" :to="{ name: 'print.shopping-list' }">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18">
-                            <path fill="none" d="M0 0h24v24H0z" />
-                            <path d="M6 19H3a1 1 0 0 1-1-1V8a1 1 0 0 1 1-1h3V3a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v4h3a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1h-3v2a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1v-2zm0-2v-1a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v1h2V9H4v8h2zM8 4v3h8V4H8zm0 13v3h8v-3H8zm-3-7h3v2H5v-2z" />
-                        </svg>
-                        {{ $t('print') }}
-                    </RouterLink>
-                    <a class="dropdown-menu__item" href="#copy" @click.prevent="shareFromFormat('markdown')">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18">
-                            <path d="M3 3H21C21.5523 3 22 3.44772 22 4V20C22 20.5523 21.5523 21 21 21H3C2.44772 21 2 20.5523 2 20V4C2 3.44772 2.44772 3 3 3ZM4 5V19H20V5H4ZM7 15.5H5V8.5H7L9 10.5L11 8.5H13V15.5H11V11.5L9 13.5L7 11.5V15.5ZM18 12.5H20L17 15.5L14 12.5H16V8.5H18V12.5Z"></path>
-                        </svg>
-                        {{ $t('share.copy-md') }}
-                    </a>
-                </template>
-            </Dropdown>
-            <RouterLink class="button button--dark" :to="{ name: 'ingredients.form' }">{{ $t('ingredient.add') }}</RouterLink>
+        <template #actions>
+            <RouterLink class="button button--outline" :to="{ name: 'shopping-list.index' }">{{ $t('your-shopping-list') }}</RouterLink>
+            <template v-if="appState.isAdmin() || appState.isModerator() || appState.isGeneral()">
+                <RouterLink class="button button--dark" :to="{ name: 'ingredients.form' }">{{ $t('ingredient.add') }}</RouterLink>
+            </template>
         </template>
     </PageHeader>
     <div class="resource-search-wrapper">
@@ -69,12 +52,12 @@
                         <option value="50">50</option>
                         <option value="100">100</option>
                     </select>
-                    <button type="button" class="button button--outline button--icon" :title="$t('clear-filters')" @click.prevent="clearRefinements">
+                    <button v-show="totalActiveRefinements > 0" type="button" class="button button--outline button--icon" :title="$t('clear-filters')" @click.prevent="clearRefinements">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path d="M12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22ZM12 20C16.4183 20 20 16.4183 20 12C20 7.58172 16.4183 4 12 4C7.58172 4 4 7.58172 4 12C4 16.4183 7.58172 20 12 20ZM12 10.5858L14.8284 7.75736L16.2426 9.17157L13.4142 12L16.2426 14.8284L14.8284 16.2426L12 13.4142L9.17157 16.2426L7.75736 14.8284L10.5858 12L7.75736 9.17157L9.17157 7.75736L12 10.5858Z"></path></svg>
                     </button>
                 </div>
                 <IngredientGridContainer v-if="ingredients.length > 0">
-                    <IngredientGridItem v-for="ingredient in ingredients" :key="ingredient.id" :ingredient="ingredient" :user-ingredients="ingredientIdsOnShelf" :shopping-list="ingredientIdsOnShoppingList" />
+                    <IngredientGridItem v-for="ingredient in ingredients" :key="ingredient.id" :ingredient="ingredient" :user-ingredients="userIngredients" :shopping-list="shoppingListIngredients" />
                 </IngredientGridContainer>
                 <EmptyState v-else style="margin-top: 1rem;">
                     <template #icon>
@@ -92,7 +75,6 @@
 
 <script>
 import OverlayLoader from './../OverlayLoader.vue'
-import ApiRequests from './../../ApiRequests.js'
 import IngredientGridContainer from './../Ingredient/IngredientGridContainer.vue'
 import IngredientGridItem from './../Ingredient/IngredientGridItem.vue'
 import PageHeader from './../PageHeader.vue'
@@ -102,6 +84,8 @@ import qs from 'qs'
 import Dropdown from './../SaltRimDropdown.vue'
 import EmptyState from './../EmptyState.vue'
 import AppState from '../../AppState'
+import BarAssistantClient from '@/api/BarAssistantClient'
+import { useTitle } from '@/composables/title'
 
 export default {
     components: {
@@ -127,9 +111,9 @@ export default {
             searchQuery: null,
             ingredients: [],
             shoppingListIngredients: [],
+            userIngredients: [],
             availableRefinements: {
                 categories: [],
-                userIngredients: [],
                 global: [
                     { name: this.$t('shelf-ingredients'), active: false, id: 'on_shelf' },
                     { name: this.$t('shopping-list-ingredients'), active: false, id: 'on_shopping_list' },
@@ -189,12 +173,6 @@ export default {
                 }
             })
         },
-        ingredientIdsOnShelf() {
-            return this.availableRefinements.userIngredients.map(ui => ui.ingredient_id)
-        },
-        ingredientIdsOnShoppingList() {
-            return this.shoppingListIngredients.map(i => i.ingredient_id)
-        },
         totalActiveRefinements() {
             let total = 0
 
@@ -216,7 +194,7 @@ export default {
         },
     },
     created() {
-        document.title = `${this.$t('ingredient.ingredients')} \u22C5 ${this.site_title}`
+        useTitle(this.$t('ingredient.ingredients'))
 
         this.fetchRefinements()
 
@@ -227,6 +205,7 @@ export default {
                     this.queryToState()
                     this.refreshIngredients()
                     this.refreshShoppingListIngredients()
+                    this.refreshShelfIngredients()
                 }
             },
             { immediate: true }
@@ -234,12 +213,8 @@ export default {
     },
     methods: {
         fetchRefinements() {
-            ApiRequests.fetchIngredientCategories().then(data => {
-                this.availableRefinements.categories = data
-            })
-
-            ApiRequests.fetchMyShelf().then(data => {
-                this.availableRefinements.userIngredients = data
+            BarAssistantClient.getIngredientCategories().then(resp => {
+                this.availableRefinements.categories = resp.data
             })
         },
         queryToState() {
@@ -301,9 +276,10 @@ export default {
         },
         refreshIngredients() {
             const query = this.stateToQuery()
+            query.include = 'images,category'
 
             this.isLoading = true
-            ApiRequests.fetchIngredients(query).then(resp => {
+            BarAssistantClient.getIngredients(query).then(resp => {
                 this.ingredients = resp.data
                 this.meta = resp.meta
                 this.isLoading = false
@@ -346,20 +322,16 @@ export default {
                 this.showRefinements = !this.showRefinements
             }
         },
-        shareFromFormat(format) {
-            ApiRequests.shareShoppingList({ type: format }).then(data => {
-                navigator.clipboard.writeText(data).then(() => {
-                    this.$toast.default(this.$t('share.format-copied'))
-                }, () => {
-                    this.$toast.error(this.$t('share.format-copy-failed'))
-                })
+        refreshShoppingListIngredients() {
+            BarAssistantClient.getShoppingList(this.appState.user.id).then(resp => {
+                this.shoppingListIngredients = resp.data
             })
         },
-        refreshShoppingListIngredients() {
-            ApiRequests.fetchShoppingList().then(data => {
-                this.shoppingListIngredients = data
+        refreshShelfIngredients() {
+            BarAssistantClient.getUserIngredientShelf(this.appState.user.id).then(resp => {
+                this.userIngredients = resp.data
             })
-        }
+        },
     }
 }
 </script>

@@ -1,5 +1,5 @@
 .block-container {
-    --_bc-padding: 1.75rem;
+    --_bc-padding: 1.5rem;
     background: #fcf9fb;
     border-bottom: 1px solid var(--clr-accent-200);
     border-top: 2px solid #fff;
