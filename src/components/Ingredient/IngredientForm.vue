@@ -230,8 +230,8 @@ export default {
             })
         },
         refreshPriceCategories() {
-            BarAssistantClient.getPriceCategories().then(data => {
-                this.priceCategories = data
+            BarAssistantClient.getPriceCategories().then(resp => {
+                this.priceCategories = resp.data
             })
         },
         selectIngredientPart(ingredient) {
@@ -299,9 +299,9 @@ export default {
             }
 
             if (this.ingredient.id) {
-                BarAssistantClient.updateIngredient(this.ingredient.id, postData).then(data => {
+                BarAssistantClient.updateIngredient(this.ingredient.id, postData).then(resp => {
                     this.$toast.default(this.$t('ingredient.update-success'))
-                    this.$router.push({ name: 'ingredients.show', params: { id: data.slug } })
+                    this.$router.push({ name: 'ingredients.show', params: { id: resp.data.slug } })
                     this.isLoading = false
                 }).catch(e => {
                     this.$toast.error(e.message)
@@ -309,9 +309,9 @@ export default {
                     this.isLoading = false
                 })
             } else {
-                BarAssistantClient.saveIngredient(postData).then(data => {
+                BarAssistantClient.saveIngredient(postData).then(resp => {
                     this.$toast.default(this.$t('ingredient.create-success'))
-                    this.$router.push({ name: 'ingredients.show', params: { id: data.slug } })
+                    this.$router.push({ name: 'ingredients.show', params: { id: resp.data.slug } })
                     this.isLoading = false
                 }).catch(e => {
                     this.$toast.error(e.message)
