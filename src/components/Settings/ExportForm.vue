@@ -14,7 +14,7 @@
             <select id="export-type" v-model="exportModel.type" class="form-select" required>
                 <option v-for="type in types" :key="type.id" :value="type.id">{{ type.name }}</option>
             </select>
-            <p class="form-input-hint"><a href="#">{{ $t('exports.types-hint') }}</a></p>
+            <p class="form-input-hint"><a href="https://docs.barassistant.app/data">{{ $t('exports.types-hint') }}</a></p>
         </div>
         <div class="form-group">
             <label class="form-label form-label--required" for="force-units">{{ $t('exports.force-units') }}:</label>
