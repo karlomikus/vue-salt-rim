@@ -397,7 +397,7 @@ async function finishImporting() {
 
             return {
                 units: ing.units,
-                amount: ing.amount.toFixed(2),
+                amount: ing.amount,
                 amount_max: ing.amount_max,
                 optional: ing.optional,
                 sort: ing.sort,

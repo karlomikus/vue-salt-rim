@@ -1,3 +1,7 @@
+# v3.0.2
+## Fixes
+- Fixed incorrect function call on cocktail import
+
 # v3.0.1
 ## Fixes
 - Fixed footer version check
