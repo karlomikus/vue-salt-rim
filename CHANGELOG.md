@@ -1,3 +1,7 @@
+# v3.0.1
+## Fixes
+- Fixed footer version check
+
 # v3.0.0
 ## New
 - Added compatibility with Bar Assistant v4.0.0
