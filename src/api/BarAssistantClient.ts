@@ -512,10 +512,10 @@ export default class BarAssistantClient {
   }
 
   static async getSubscriptionStatus() {
-    return (await client.GET('/billing/subscriptions')).data
+    return (await client.GET('/billing/subscription')).data
   }
 
   static async updateSubscriptionStatus(status: string) {
-    return (await client.POST('/billing/subscriptions', { body: { type: status } })).data
+    return (await client.POST('/billing/subscription', { body: { type: status } })).data
   }
 }

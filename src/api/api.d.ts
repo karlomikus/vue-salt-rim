@@ -1190,7 +1190,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/billing/subscriptions": {
+    "/billing/subscription": {
         parameters: {
             query?: never;
             header?: never;
@@ -1198,10 +1198,10 @@ export interface paths {
             cookie?: never;
         };
         /** Get subscription status */
-        get: operations["5e298d4bebc46cd05931c3a15c92f248"];
+        get: operations["69a9ec343d37c0baa6b984cac0c06da8"];
         put?: never;
         /** Update subscription */
-        post: operations["6b69b6aa21e0e7174a5601c02a19161e"];
+        post: operations["6b1e9ae3c684b7a71a5ab7348766e6c5"];
         delete?: never;
         options?: never;
         head?: never;
@@ -7181,7 +7181,7 @@ export interface operations {
             };
         };
     };
-    "5e298d4bebc46cd05931c3a15c92f248": {
+    "69a9ec343d37c0baa6b984cac0c06da8": {
         parameters: {
             query?: never;
             header?: never;
@@ -7214,7 +7214,7 @@ export interface operations {
             };
         };
     };
-    "6b69b6aa21e0e7174a5601c02a19161e": {
+    "6b1e9ae3c684b7a71a5ab7348766e6c5": {
         parameters: {
             query?: never;
             header?: never;

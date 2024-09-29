@@ -3,7 +3,7 @@
         <div class="print-first-row">
             <div v-if="cocktail.images && cocktail.images.length > 0" class="cocktail-print-image">
                 <img :src="cocktail.images[0].url" :alt="cocktail.images[0].copyright">
-                <span>{{ cocktail.images[0].copyright }}</span>
+                <span>© {{ cocktail.images[0].copyright }}</span>
             </div>
             <div class="cocktail-main-info">
                 <h1>{{ cocktail.name }}</h1>
@@ -166,10 +166,12 @@ ul, ol {
     display: flex;
     align-items: center;
     justify-content: center;
+    flex-direction: column;
 }
 
 .cocktail-print-image img {
     padding: 10px;
+    padding-bottom: 2px;
     max-height: 300px;
     max-width: 300px;
     display: block;

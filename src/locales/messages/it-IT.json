@@ -192,8 +192,8 @@
     "delete-success": "Categoria d'ingredienti eliminata con successo"
   },
   "origin": "Origine",
-  "sort-asc": "Cre",
-  "sort-desc": "Dec",
+  "sort-asc": "Crescente",
+  "sort-desc": "Decrescente",
   "show-more": "Mostra altro",
   "ABV": "ABV",
   "date-modified": "Data di modifica",
