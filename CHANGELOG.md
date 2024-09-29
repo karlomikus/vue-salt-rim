@@ -1,3 +1,10 @@
+# v3.1.0
+## New
+- Presing ctrl+p on cocktail page will open print dialog
+
+## Fixes
+- Fixed wrong endpoint name
+
 # v3.0.2
 ## Fixes
 - Fixed incorrect function call on cocktail import
