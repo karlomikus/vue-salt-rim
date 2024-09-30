@@ -67,7 +67,7 @@ export default {
         generatePublicLink() {
             this.isLoading = true
             BarAssistantClient.savePublicCocktailLink(this.cocktail.id).then(resp => {
-                this.publicData = resp.data
+                this.publicData = resp.data || {}
                 this.isLoading = false
             }).catch(e => {
                 this.$toast.error(e.message)
@@ -77,7 +77,7 @@ export default {
         deletePublicLink() {
             this.isLoading = true
             BarAssistantClient.deletePublicCocktailLink(this.cocktail.id).then(resp => {
-                this.publicData = resp.data
+                this.publicData = resp.data || {}
                 this.isLoading = false
             }).catch(e => {
                 this.$toast.error(e.message)
