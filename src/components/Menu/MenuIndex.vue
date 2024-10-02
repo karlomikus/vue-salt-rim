@@ -223,7 +223,7 @@ export default {
         refreshBar() {
             BarAssistantClient.getBar(this.appState.bar.id).then(resp => {
                 this.bar = resp.data
-                this.menu.url = `${window.location.origin}/bars/${this.bar.slug}`
+                this.menu.url = `${window.location.origin}/menu/${this.bar.slug}`
             }).catch(() => {
             })
         },

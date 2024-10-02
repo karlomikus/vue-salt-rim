@@ -30,7 +30,7 @@ export default {
     data() {
         return {
             isLoading: false,
-            inviteCode: null,
+            inviteCode: this.$route.params.invite || null,
         }
     },
     methods: {

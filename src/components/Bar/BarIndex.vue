@@ -30,7 +30,10 @@
                             <DateFormatter :date="bar.created_at" />
                         </p>
                         <template v-if="bar.show_invite_code && bar.access.can_edit">
-                            <label class="form-label">{{ $t('bars.invite-code') }}:</label>
+                            <div class="bar__invite_label_container">
+                                <label class="form-label">{{ $t('bars.invite-code') }}:</label>
+                                <a href="#" @click.prevent="copyInviteLinkToClipboard(bar.invite_code)">Copy invite link</a>
+                            </div>
                             <p class="bar__invite_code">
                                 {{ bar.invite_code }}
                             </p>
@@ -100,7 +103,7 @@ export default {
         return {
             isLoading: false,
             bars: [],
-            showJoinDialog: false,
+            showJoinDialog: (this.$route.name == 'bars.join'), // If the route is bars.join then show the join dialog, otherwise don't
             showCreateDialog: false,
             appState: new AppState(),
         }
@@ -139,6 +142,13 @@ export default {
         this.refreshBars()
     },
     methods: {
+        copyInviteLinkToClipboard(invite_code) {
+            if (Utils.copyToClipboard(`${window.location.origin}/bars/join/${invite_code}`)) {
+                this.$toast.success(this.$t('bars.invite-link-copied'))
+            } else {
+                this.$toast.error(this.$t('bars.invite-link-error'))
+            }
+        },
         refreshBars() {
             this.isLoading = true
             BarAssistantClient.getBars().then(resp => {
@@ -270,6 +280,11 @@ export default {
     font-size: 0.8rem;
     margin-bottom: 0.5rem;
     color: var(--clr-gray-400);
+}
+
+.bar__invite_label_container {
+    display: flex;
+    justify-content: space-between;
 }
 
 .bar__invite_code {

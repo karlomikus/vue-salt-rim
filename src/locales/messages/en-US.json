@@ -375,6 +375,8 @@
     "join-notice": "To join existing bar you need an invite code. Ask the bar owner to send you one and paste it in the input below.",
     "invite-code": "Invite code",
     "toggle-invite-code": "Toggle invite code",
+    "invite-link-copied": "Invite link copied to clipboard",
+    "invite-link-error": "Unable to copy invite link to clipboard",
     "confirm-delete": "This will permanently delete bar with name \"{name}\".",
     "confirm-leave": "You will lose all your data in bar (\"{name}\") if you leave it.",
     "enable-invites": "Enable joining via invite code",
