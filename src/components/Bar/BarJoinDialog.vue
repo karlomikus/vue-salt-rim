@@ -14,7 +14,7 @@
         </div>
         <div class="dialog-actions" style="margin-top: 1rem">
             <button type="button" class="button button--outline" @click="$emit('dialogClosed')">{{ $t('cancel') }}</button>
-            <button type="submit" class="button button--dark">{{ $t('save') }}</button>
+            <button type="submit" class="button button--dark">{{ $t('join') }}</button>
         </div>
     </form>
 </template>
