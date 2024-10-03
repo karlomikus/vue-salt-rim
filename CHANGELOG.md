@@ -1,3 +1,11 @@
+# v3.2.0
+## New
+- Added `Copy invite link` to bars
+    - This link will automatically open and fill join bar modal
+
+## Fixes
+- Fixed endless loading when deleting public link
+
 # v3.1.0
 ## New
 - Presing ctrl+p on cocktail page will open print dialog
