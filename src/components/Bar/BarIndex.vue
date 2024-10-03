@@ -144,7 +144,7 @@ export default {
     methods: {
         copyInviteLinkToClipboard(invite_code) {
             if (Utils.copyToClipboard(`${window.location.origin}/bars/join/${invite_code}`)) {
-                this.$toast.success(this.$t('bars.invite-link-copied'))
+                this.$toast.default(this.$t('bars.invite-link-copied'))
             } else {
                 this.$toast.error(this.$t('bars.invite-link-error'))
             }
