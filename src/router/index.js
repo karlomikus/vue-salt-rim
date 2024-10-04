@@ -66,6 +66,14 @@ const router = createRouter({
             component: () => import('../views/PublicCocktailView.vue'),
             meta: { requiresAuth: false }
         },
+        // This new route allows bars with custom links such as 'form' or 'join' (which are already reserved routes) to be seen by the user.
+        // This is the new default route that is displayed with a public menu, but the user can still access the legacy route as to not break the QR codes.
+        {
+            path: '/menu/:slug',
+            name: 'menu.menu',
+            component: () => import('../views/MenuPublicView.vue'),
+            meta: { requiresAuth: false }
+        },
         {
             path: '/bars/:slug',
             name: 'bars.menu',
@@ -206,6 +214,11 @@ const router = createRouter({
                     path: '/bars/form',
                     name: 'bars.form',
                     component: () => import('../views/BarFormView.vue'),
+                },
+                {
+                    path: '/bars/join/:invite?',
+                    name: 'bars.join',
+                    component: () => import('../views/BarsView.vue'),
                 },
                 {
                     path: '/menu',

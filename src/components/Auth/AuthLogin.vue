@@ -99,13 +99,15 @@ export default {
                     appState.setUser(profileResp.data)
 
                     BarAssistantClient.getBars().then(barsResp => {
-                        if (barsResp.data.length == 1) {
-                            appState.setBar(barsResp.data[0])
-                            redirectPath = '/'
-                        } else {
-                            redirectPath = '/bars'
+                        if (redirectPath == undefined) {
+                            if (barsResp.data.length == 1) {
+                                appState.setBar(barsResp.data[0])
+                                redirectPath = '/'
+                            } else {
+                                redirectPath = '/bars'
+                            }
                         }
-
+                        
                         this.$router.push(redirectPath)
                     })
                 }).catch(e => {
