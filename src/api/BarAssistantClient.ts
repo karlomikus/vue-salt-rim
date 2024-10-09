@@ -93,7 +93,7 @@ export default class BarAssistantClient {
   }
 
   static async confirmAccount(id: number, hash: string) {
-    return (await client.POST('/auth/verify/{id}/{hash}', { params: { path: { id: id, hash: hash } } })).data
+    return (await client.GET('/auth/verify/{id}/{hash}', { params: { path: { id: id, hash: hash } } })).data
   }
 
   static async getIngredients(query = {}) {

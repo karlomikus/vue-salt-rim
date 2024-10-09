@@ -5,8 +5,8 @@
     "hr-HR": "Chorwacki",
     "de-DE": "Niemiecki",
     "pl-PL": "Polski",
-    "it-IT": "Italian",
-    "sv-SE": "Swedish",
+    "it-IT": "Włoski",
+    "sv-SE": "Szwedzki",
     "help": "Pomoc w tłumaczeniach"
   },
   "shelf": {
@@ -31,7 +31,7 @@
     "remove-from-list": "Usuń z listy zakupów",
     "update-success": "Składnik został pomyślnie zaktualizowany",
     "create-success": "Składnik został pomyślnie utworzony",
-    "name-placeholder": "<Not selected>",
+    "name-placeholder": "<Nie zaznaczono>",
     "in-shelf": "Masz ten składnik",
     "cocktail-children": "Używany w {total} koktajlach",
     "delete-confirm": "Spowoduje to trwałe usunięcie składnika z nazwą \"{name}\". Ta akcja zmodyfikuje {total} przepisów na koktajl.",
@@ -61,10 +61,10 @@
     "variety-note": "Recipe matching will include the parent ingredient as a substitute (depending on user settings)",
     "ingredients": "Składniki",
     "used_as_substitute_for": "Used as a substitute for",
-    "can_be_substituted_with": "Can be substituted with"
+    "can_be_substituted_with": "Można zamienić na"
   },
   "share": {
-    "title": "Share",
+    "title": "Udostępnij",
     "copy-json": "Kopiuj jako JSON",
     "copy-yaml": "Kopiuj jako YAML",
     "format-copied": "Tekst skopiowany",
@@ -72,12 +72,12 @@
     "copy-text": "Kopiuj jako zwykły tekst",
     "copy-md": "Kopiuj jako Markdown",
     "copy-xml": "Kopiuj jako XML",
-    "copy-json-ld": "Copy JSON+LD schema"
+    "copy-json-ld": "Skopiuj schemat JSON+LD"
   },
   "settings": "Ustawienia",
   "logout": "Wyloguj",
   "profile": "Profil",
-  "filename": "File name",
+  "filename": "Nazwa pliku",
   "users": {
     "title": "Użytkownicy",
     "add": "Dodaj użytkownika",
@@ -102,7 +102,7 @@
     "Layer": "Layer"
   },
   "total": {
-    "approx": "Approx. total",
+    "approx": "Około łącznie",
     "title": "Ogółem",
     "cocktails": "Ogółem koktajli",
     "ingredients": "Ogółem składników"
@@ -112,10 +112,10 @@
     "favorites": "Twoje ostatnie ulubione"
   },
   "strength": "Strength",
-  "rating": "Rating",
-  "created": "Created",
-  "updated": "Updated",
-  "non-alcoholic": "Non alcoholic",
+  "rating": "Ocena",
+  "created": "Utworzono",
+  "updated": "Zaktualizowano",
+  "non-alcoholic": "Bezalkoholowe",
   "weak": "Słaby",
   "medium": "Średni",
   "strong": "Mocny",
@@ -135,11 +135,11 @@
   "edit": "Edytuj",
   "remove": "Usuń",
   "description": "Opis",
-  "media": "Media",
+  "media": "Multimedia",
   "field-supports-md": "To pole obsługuje markdown.",
-  "cancel": "Anulować",
+  "cancel": "Anuluj",
   "save": "Zapisz",
-  "join": "Join",
+  "join": "Dołącz",
   "recipe-information": "Informacje o przepisie",
   "additional-information": "Dodatkowe informacje",
   "source": "Źródło",
@@ -178,7 +178,7 @@
   "substitutes": "Zamienniki",
   "no-substitutes": "Nie wybrano zamienników.",
   "units-help-text": "Use \"oz\", \"cl\", \"ml\" for common fluid units to enable unit conversion on cocktail page.",
-  "servings": "Servings",
+  "servings": "Porcje",
   "print-recipe": "Wydrukuj przepis",
   "create-public-link": "Utwórz link publiczny",
   "avg-rating": "Średnia ocena",
@@ -189,7 +189,7 @@
     "add-success": "Kategoria składników została pomyślnie dodana.",
     "edit": "Edytuj kategorię",
     "update-success": "Kategoria składnika została pomyślnie zaktualizowana.",
-    "confirm-delete": "This will permanently category with name \"{name}\".",
+    "confirm-delete": "Spowoduje to trwałe usunięcie tagu o nazwie \"{name}\".",
     "delete-success": "Kategoria składnika została pomyślnie usunięta"
   },
   "origin": "Pochodzenie",
@@ -222,22 +222,22 @@
   },
   "glass-type": {
     "types": "Glass types",
-    "title": "Glass type",
-    "add": "Add glass type",
-    "edit": "Edit glass type",
+    "title": "Rodzaj szkła",
+    "add": "Dodaj typ szkła",
+    "edit": "Edytuj typ szkła",
     "confirm-delete": "This will permanently glass type with name \"{name}\".",
     "delete-success": "Glass type deleted successfully",
     "update-success": "Glass type updated successfully",
     "add-success": "Glass type added successfully",
-    "volume": "Volume"
+    "volume": "Objętość"
   },
-  "information": "Information",
-  "image-url": "Image URL",
+  "information": "Informacje",
+  "image-url": "URL obrazka",
   "public-dialog": {
-    "title": "Cocktail public link",
-    "public_at": "Made public on: {date}",
-    "missing": "No public link available",
-    "action-copy": "Copy link",
+    "title": "Publiczny link koktajlu",
+    "public_at": "Upubliczniony: {date}",
+    "missing": "Brak publicznego linku",
+    "action-copy": "Kopiuj odnośnik",
     "action-delete": "Delete link",
     "action-generate": "Generate link",
     "toasts": {
@@ -288,10 +288,10 @@
   "collections": {
     "add-to": "Add to collection",
     "collection": "Collection",
-    "create": "Create a new collection",
+    "create": "Utwórz nową kolekcję",
     "title": "Kolekcje",
-    "add": "Create collection",
-    "edit": "Edit collection",
+    "add": "Utwórz kolekcję",
+    "edit": "Edytuj kolekcję",
     "confirm-delete": "This will permanently delete collection with name \"{name}\".",
     "delete-success": "Collection successfully removed",
     "update-success": "Collection updated successfully",

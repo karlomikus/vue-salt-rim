@@ -1,3 +1,7 @@
+# v3.2.1
+## Fixes
+- Fix wrong method call on endpoint
+
 # v3.2.0
 ## New
 - Added `Copy invite link` to bars
