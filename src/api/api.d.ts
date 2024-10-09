@@ -96,10 +96,10 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        get?: never;
-        put?: never;
         /** Confirm user account */
-        post: operations["015719985fb92cfb18e9c6a19c82b1db"];
+        get: operations["46fe45b80f30383e9f9fe664be4d5dff"];
+        put?: never;
+        post?: never;
         delete?: never;
         options?: never;
         head?: never;
@@ -2668,7 +2668,7 @@ export interface operations {
             };
         };
     };
-    "015719985fb92cfb18e9c6a19c82b1db": {
+    "46fe45b80f30383e9f9fe664be4d5dff": {
         parameters: {
             query?: never;
             header?: never;
