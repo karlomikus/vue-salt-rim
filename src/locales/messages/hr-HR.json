@@ -5,8 +5,8 @@
     "hr-HR": "Hrvatski",
     "de-DE": "Njemački",
     "pl-PL": "Poljski",
-    "it-IT": "Italian",
-    "sv-SE": "Swedish",
+    "it-IT": "Talijanski",
+    "sv-SE": "Švedski",
     "help": "Pomozi sa prijevodima"
   },
   "shelf": {
@@ -60,8 +60,8 @@
     "complex": "Kompleksan sastojak",
     "variety-note": "Recepti koje možete napraviti uključuju matični sastojak kao zamjenu (oovisno o postavkama korisnika)",
     "ingredients": "Sastojci",
-    "used_as_substitute_for": "Used as a substitute for",
-    "can_be_substituted_with": "Can be substituted with"
+    "used_as_substitute_for": "Koristi se kao zamjena za",
+    "can_be_substituted_with": "Može se zamijeniti sa"
   },
   "share": {
     "title": "Podijeli",
@@ -72,12 +72,12 @@
     "copy-text": "Kopiraj kao običan tekst",
     "copy-md": "Kopiraj u Markdown formatu",
     "copy-xml": "Kopiraj kao XML",
-    "copy-json-ld": "Copy JSON+LD schema"
+    "copy-json-ld": "Kopiraj kao JSON+LD"
   },
   "settings": "Postavke",
   "logout": "Odjava",
   "profile": "Profil",
-  "filename": "File name",
+  "filename": "Naziv datoteka",
   "users": {
     "title": "Korisnici",
     "add": "Dodaj korisnika",
@@ -102,7 +102,7 @@
     "Layer": "Slojevi"
   },
   "total": {
-    "approx": "Approx. total",
+    "approx": "Približno ukupno",
     "title": "Ukupno",
     "cocktails": "Ukupno koktela",
     "ingredients": "Ukupno sastojaka"
@@ -113,8 +113,8 @@
   },
   "strength": "Jačina",
   "rating": "Ocjena",
-  "created": "Created",
-  "updated": "Updated",
+  "created": "Kreirano",
+  "updated": "Ažurirano",
   "non-alcoholic": "Bez alkohola",
   "weak": "Slabi",
   "medium": "Srednji",
@@ -139,7 +139,7 @@
   "field-supports-md": "Ovo polje podržava markdown format.",
   "cancel": "Odustani",
   "save": "Spremi",
-  "join": "Join",
+  "join": "Pridruži se",
   "recipe-information": "Podaci o receptu",
   "additional-information": "Dodatni podaci",
   "source": "Izvor",
@@ -301,8 +301,8 @@
     "cocktail-remove-success": "Koktel je uspješno uklonjen iz kolekcije",
     "cocktail-add-success": "Koktel dodan u kolekciju",
     "share-in-bar": "Podijeli kolekciju sa svim članovima bara",
-    "quantitiy-calculator": "Quantity calculator",
-    "cocktail-quantities": "Cocktail quantities",
+    "quantitiy-calculator": "Kalkulator količine",
+    "cocktail-quantities": "Količina koktela",
     "ingredient-breakdown": "Popis sastojaka za {total} koktela"
   },
   "no-cocktails": "Nisu pronađeni kokteli",
