@@ -1,3 +1,8 @@
+# v3.2.2
+## Fixes
+- Fixed print shortcut opening multiple tabs
+- Fixed adding all ingredients instead of only missing ingredients #242
+
 # v3.2.1
 ## Fixes
 - Fix wrong method call on endpoint
