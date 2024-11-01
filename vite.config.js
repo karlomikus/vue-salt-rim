@@ -50,7 +50,13 @@ const manifest = {
 
 // https://vitejs.dev/config/
 export default defineConfig({
-    plugins: [vue(), VitePWA({
+    plugins: [vue({
+        template: {
+            compilerOptions: {
+                isCustomElement: (tag) => ['swiper-container', 'swiper-slide'].includes(tag),
+            }
+        }
+    }), VitePWA({
         workbox: {
             navigateFallbackDenylist: [/^\/bar/]
         },
