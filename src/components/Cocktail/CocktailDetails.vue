@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { ref, computed, watch, onMounted } from 'vue'
+import { ref, computed, watch } from 'vue'
+import { useEventListener } from '@vueuse/core'
 import { micromark } from 'micromark'
 import { useRoute, useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
@@ -32,7 +33,6 @@ type Cocktail = components["schemas"]["Cocktail"]
 type Note = components["schemas"]["Note"]
 type ShoppingList = components["schemas"]["ShoppingList"]
 type CocktailBasic = components["schemas"]["CocktailBasic"]
-type IngredientBasic = components["schemas"]["IngredientBasic"]
 
 const { t } = useI18n()
 const appState = new AppState()
@@ -52,24 +52,19 @@ const showPublicDialog = ref(false)
 const showDownloadImageDialog = ref(false)
 const cocktail = ref({} as Cocktail)
 const userNotes = ref([] as Note[])
-const userShelfIngredients = ref([] as IngredientBasic[])
 const userShoppingListIngredients = ref([] as ShoppingList[])
 const servings = ref(1)
 const currentUnit = ref(appState.defaultUnit)
 
 watch(() => route.params.id as string, fetchCocktail, { immediate: true })
 
-
-const printInterceptor = onMounted(() => {
-    window.addEventListener('keydown', (e) => {
-        if (e.key === "p" && e.ctrlKey === true) {
-            e.preventDefault();
-            const routeData = router.resolve({ name: 'print.cocktail', params: { id: (cocktail as any).slug } });
-            window.open(routeData.href, "_blank");
-        }
-    })
+useEventListener(document, 'keydown', (e) => {
+    if (e.key === "p" && e.ctrlKey === true) {
+        e.preventDefault();
+        const routeData = router.resolve({ name: 'print.cocktail', params: { id: cocktail.value.slug } });
+        window.open(routeData.href, "_blank");
+    }
 })
-
 
 const sortedImages = computed(() => {
     if (!cocktail.value.images) {
@@ -111,7 +106,7 @@ const totalLiquid = computed(() => {
 
 const missingIngredientIds = computed(() => {
     return cocktail.value?.ingredients?.filter(cocktailIngredient => {
-        return !userShelfIngredients.value.map(i => i.id).includes(cocktailIngredient.ingredient.id)
+        return !cocktailIngredient.in_shelf
             && !userShoppingListIngredients.value.map(i => i.ingredient.id).includes(cocktailIngredient.ingredient.id)
     }).map(cocktailIngredient => cocktailIngredient.ingredient.id) ?? []
 })
