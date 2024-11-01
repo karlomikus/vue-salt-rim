@@ -23,7 +23,7 @@
         </div>
         <h3 class="form-section-title">{{ $t('media') }}</h3>
         <SubscriptionCheck>Subscribe to "Mixologist" plan to upload more than one cocktail recipe image!</SubscriptionCheck>
-        <ImageUpload ref="imagesUpload" :images="cocktail.images" />
+        <ImageUpload ref="imagesUpload" :images="cocktail.images" :max-images="10" />
         <h3 class="form-section-title">{{ $t('ingredient.ingredients') }}</h3>
         <div class="block-container block-container--padded block-container--inset">
             <ul v-show="cocktail.ingredients.length > 0" class="cocktail-form__ingredients" style="margin-bottom: 20px;">
