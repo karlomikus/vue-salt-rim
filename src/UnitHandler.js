@@ -100,7 +100,7 @@ const handler = {
     },
 
     toFixedWithTruncate(num, fixed) {
-        if (num == null || isNaN(num)) {
+        if (num == null || isNaN(num) || num == Infinity) {
             return ''
         }
 

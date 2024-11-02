@@ -49,14 +49,29 @@ const isFavorited = ref(false)
 const showNoteDialog = ref(false)
 const showCollectionDialog = ref(false)
 const showPublicDialog = ref(false)
+const targetVolumeToScaleTo = ref<null|number>(null)
+const targetVolumeDilution = ref(0)
+const currentBatchType = ref('servings')
 const showDownloadImageDialog = ref(false)
 const cocktail = ref({} as Cocktail)
 const userNotes = ref([] as Note[])
 const userShoppingListIngredients = ref([] as ShoppingList[])
-const servings = ref(1)
+const ingredientScaleFactor = ref(1)
 const currentUnit = ref(appState.defaultUnit)
 
 watch(() => route.params.id as string, fetchCocktail, { immediate: true })
+
+// Reset scale factor when changing batch type
+watch(currentBatchType, (newType, oldType) => {
+    if (newType === 'servings') {
+        ingredientScaleFactor.value = 1
+        targetVolumeToScaleTo.value = null
+        targetVolumeDilution.value = 0
+    }
+    if (newType === 'volume') {
+        ingredientScaleFactor.value = 1
+    }
+})
 
 useEventListener(document, 'keydown', (e) => {
     if (e.key === "p" && e.ctrlKey === true) {
@@ -72,6 +87,35 @@ const sortedImages = computed(() => {
     }
 
     return cocktail.value.images.slice(0).sort((a, b) => (a?.sort ?? 0) - (b?.sort ?? 0))
+})
+
+// Ingredient amount scale factor when batch type is volume
+const volumeScaleFactor = computed(() => {
+    const volInMl = parseFloat(cocktail.value?.volume_ml?.toString() ?? '')
+    const totalVolume = UnitHandler.convertFromTo('ml', volInMl, currentUnit.value)
+
+    if (!targetVolumeToScaleTo.value) {
+        return null
+    }
+
+    const dilutionVolume = (targetVolumeDilution.value / 100) * totalVolume;
+    const finalTotalVolume = totalVolume + dilutionVolume;
+
+    return targetVolumeToScaleTo.value / finalTotalVolume
+})
+
+// Extra required water dilution when batch type is volume and dilution is set
+const waterDilution = computed(() => {
+    const volInMl = parseFloat(cocktail.value?.volume_ml?.toString() ?? '')
+    const totalVolume = UnitHandler.convertFromTo('ml', volInMl, currentUnit.value)
+
+    if (!targetVolumeToScaleTo.value || !totalVolume || !volumeScaleFactor.value) {
+        return null
+    }
+
+    const dilutionVolume = (targetVolumeDilution.value / 100) * totalVolume
+
+    return UnitHandler.print({ amount: dilutionVolume * volumeScaleFactor.value }, currentUnit.value, ingredientScaleFactor.value)
 })
 
 const parsedInstructions = computed(() => {
@@ -98,10 +142,10 @@ const parsedGarnish = computed(() => {
     return micromark(cocktail.value.garnish)
 })
 
-const totalLiquid = computed(() => {
+const totalLiquidConverted = computed(() => {
     const amount = parseFloat(cocktail.value?.volume_ml?.toString() ?? '')
 
-    return UnitHandler.print({ amount: amount, units: 'ml' }, currentUnit.value, servings.value) 
+    return UnitHandler.print({ amount: amount, units: 'ml' }, currentUnit.value, ingredientScaleFactor.value)
 })
 
 const missingIngredientIds = computed(() => {
@@ -116,6 +160,12 @@ async function fetchCocktail(idOrSlug: string) {
     cocktail.value = (await BarAssistantClient.getCocktail(idOrSlug))?.data ?? {} as Cocktail
     useTitle(cocktail.value.name)
     isLoading.value = false
+
+    // Automatic target volume dilution
+    targetVolumeDilution.value = 0
+    if (cocktail.value.method) {
+        targetVolumeDilution.value = cocktail.value.method.dilution_percentage
+    }
 
     await fetchCocktailUserNotes()
     fetchFavorites()
@@ -169,7 +219,7 @@ async function copy() {
 }
 
 function buildSubstituteString(sub: components["schemas"]["CocktailIngredientSubstitute"]) {
-    return new String(sub.ingredient.name + ' ' + UnitHandler.print(sub, currentUnit.value, servings.value)).trim()
+    return new String(sub.ingredient.name + ' ' + UnitHandler.print(sub, currentUnit.value, ingredientScaleFactor.value)).trim()
 }
 
 function shareFromFormat(format: string) {
@@ -220,7 +270,7 @@ fetchShoppingList()
     <div v-else>
         <OverlayLoader v-if="isLoading" />
         <PageHeader>
-            {{ t(cocktail.name) }}
+            {{ cocktail.name }}
             <small>
                 <DateFormatter :date="cocktail.created_at" format="short" /> <template v-if="cocktail?.updated_user">&middot; {{ cocktail.updated_user.name }}</template>
             </small>
@@ -458,12 +508,28 @@ fetchShoppingList()
                         <h3 class="details-block-container__title">{{ t('ingredient.ingredients') }}</h3>
                         <div style="display: grid; grid-template-columns: 1fr 1fr; margin-bottom: 1rem;">
                             <div class="button-group">
-                                <h4>{{ t('servings') }}:</h4>
-                                <button @click="servings <= 1 ? servings = 1 : servings--">-</button>
-                                <button class="is-active">{{ servings }}</button>
-                                <button @click="servings++">+</button>
+                                <h4><a :class="{'bold': currentBatchType === 'servings'}" href="#" @click.prevent="currentBatchType = 'servings'">{{ $t('servings') }}</a> &middot; <a :class="{'bold': currentBatchType === 'volume'}" href="#" @click.prevent="currentBatchType = 'volume'">{{ $t('volume') }}</a>:</h4>
+                                <template v-if="currentBatchType === 'servings'">
+                                    <button @click="ingredientScaleFactor <= 1 ? ingredientScaleFactor = 1 : ingredientScaleFactor--">-</button>
+                                    <button class="is-active">{{ ingredientScaleFactor }}</button>
+                                    <button @click="ingredientScaleFactor++">+</button>
+                                </template>
                             </div>
                             <UnitPicker></UnitPicker>
+                        </div>
+                        <div class="block-container block-container--inset volume-scaling-container" v-if="currentBatchType === 'volume'">
+                            <div class="form-group">
+                                <label class="form-label form-label--required" for="cocktail-target-volume">{{ $t('target-volume') }} ({{ currentUnit }}):</label>
+                                <input class="form-input" id="cocktail-target-volume" type="text" v-model="targetVolumeToScaleTo">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="cocktail-target-volume-dilution">{{ $t('target-volume-dilution') }} (%):</label>
+                                <input class="form-input" id="cocktail-target-volume-dilution" type="text" v-model="targetVolumeDilution">
+                            </div>
+                            <div class="volume-scaling__water" v-if="waterDilution && targetVolumeDilution > 0">
+                                Dilute with {{ UnitHandler.toFixedWithTruncate(waterDilution, 2) }} {{ currentUnit }} of water.
+                            </div>
+                            <p class="form-input-hint">Insipired by Jeffrey Morgenthaler's <a href="https://www.batchcalc.com/" target="_blank">The Batch Cocktail Calculator</a></p>
                         </div>
                         <ul class="cocktail-ingredients">
                             <li v-for="ing in cocktail.ingredients" :key="ing.sort">
@@ -472,7 +538,7 @@ fetchShoppingList()
                                     <RouterLink class="cocktail-ingredients__ingredient__name" :to="{ name: 'ingredients.show', params: { id: ing.ingredient.slug } }" data-ingredient="preferred">
                                         {{ ing.ingredient.name }} <span v-if="ing.note" class="cocktail-ingredients__flags__flag">&ndash; {{ ing.note }}</span> <small v-if="ing.optional">({{ t('optional') }})</small>
                                     </RouterLink>
-                                    <div class="cocktail-ingredients__ingredient__amount">{{ UnitHandler.print(ing, currentUnit, servings) }}</div>
+                                    <div class="cocktail-ingredients__ingredient__amount">{{ UnitHandler.print(ing, currentUnit, volumeScaleFactor ?? ingredientScaleFactor) }}</div>
                                 </div>
                                 <div class="cocktail-ingredients__flags">
                                     <div v-if="ing.substitutes && ing.substitutes.length > 0" class="cocktail-ingredients__flags__flag">
@@ -492,7 +558,7 @@ fetchShoppingList()
                             </li>
                         </ul>
                         <div v-if="cocktail.volume_ml" class="cocktail-ingredients__total-amount">
-                            Approx: {{ totalLiquid }} <span v-show="(cocktail?.calories ?? 0) > 0">&middot; {{ cocktail.calories?.toFixed(0) }} kcal</span> <span v-show="(cocktail?.alcohol_units ?? 0) > 0">&middot; {{ cocktail.alcohol_units?.toFixed(2) }} units</span>
+                            Approx: {{ totalLiquidConverted }} <span v-show="(cocktail?.calories ?? 0) > 0">&middot; {{ cocktail.calories?.toFixed(0) }} kcal</span> <span v-show="(cocktail?.alcohol_units ?? 0) > 0">&middot; {{ cocktail.alcohol_units?.toFixed(2) }} units</span>
                         </div>
                         <a v-show="missingIngredientIds.length > 0" href="#" @click.prevent="addMissingIngredients">{{ t('cocktail.missing-ing-action') }}</a>
                     </div>
@@ -678,5 +744,20 @@ swiper-container {
         right: 10px;
         top: -20px;
     }
+}
+
+.volume-scaling-container {
+    padding: var(--gap-size-3);
+    margin-bottom: var(--gap-size-2);
+}
+
+.volume-scaling__water {
+    font-weight: var(--fw-bold);
+    font-size: 1.25rem;
+    margin-bottom: var(--gap-size-2);
+}
+
+.bold {
+    font-weight: var(--fw-bold);
 }
 </style>
