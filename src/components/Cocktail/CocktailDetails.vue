@@ -70,6 +70,9 @@ watch(currentBatchType, (newType, oldType) => {
     }
     if (newType === 'volume') {
         ingredientScaleFactor.value = 1
+        if (cocktail.value.method) {
+            targetVolumeDilution.value = cocktail.value.method.dilution_percentage
+        }
     }
 })
 
@@ -145,7 +148,7 @@ const parsedGarnish = computed(() => {
 const totalLiquidConverted = computed(() => {
     const amount = parseFloat(cocktail.value?.volume_ml?.toString() ?? '')
 
-    return UnitHandler.print({ amount: amount, units: 'ml' }, currentUnit.value, ingredientScaleFactor.value)
+    return UnitHandler.print({ amount: amount, units: 'ml' }, currentUnit.value, volumeScaleFactor.value ?? ingredientScaleFactor.value)
 })
 
 const missingIngredientIds = computed(() => {
@@ -514,6 +517,9 @@ fetchShoppingList()
                                     <button class="is-active">{{ ingredientScaleFactor }}</button>
                                     <button @click="ingredientScaleFactor++">+</button>
                                 </template>
+                                <template v-else>
+                                    <h3>{{ $t('scale-recipe') }}:</h3>
+                                </template>
                             </div>
                             <UnitPicker></UnitPicker>
                         </div>
@@ -527,7 +533,7 @@ fetchShoppingList()
                                 <input class="form-input" id="cocktail-target-volume-dilution" type="text" v-model="targetVolumeDilution">
                             </div>
                             <div class="volume-scaling__water" v-if="waterDilution && targetVolumeDilution > 0">
-                                Dilute with {{ UnitHandler.toFixedWithTruncate(waterDilution, 2) }} {{ currentUnit }} of water.
+                                {{ $t('target-volume-dilution-help', {total: UnitHandler.toFixedWithTruncate(waterDilution, 2) + ' ' + currentUnit}) }}
                             </div>
                             <p class="form-input-hint">Insipired by Jeffrey Morgenthaler's <a href="https://www.batchcalc.com/" target="_blank">The Batch Cocktail Calculator</a></p>
                         </div>

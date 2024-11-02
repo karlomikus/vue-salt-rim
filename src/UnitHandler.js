@@ -32,7 +32,7 @@ const handler = {
 
         // Don't convert unconvertable units
         if (orgUnits != 'ml' && orgUnits != 'oz' && orgUnits != 'cl') {
-            return `${orgAmount == 0 ? '' : orgAmount}${orgAmountMax != 0 ? '-' + orgAmountMax : ''} ${orgUnits}`
+            return `${orgAmount == 0 ? '' : this.toFixedWithTruncate(orgAmount, 3)}${orgAmountMax != 0 ? '-' + this.toFixedWithTruncate(orgAmountMax, 3) : ''} ${orgUnits}`
         }
 
         let minAmount = this.convertFromTo(orgUnits, orgAmount, convertTo)

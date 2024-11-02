@@ -597,5 +597,7 @@
   },
   "shopping-list-empty": "Your shopping list is empty",
   "target-volume": "Target volume",
-  "target-volume-dilution": "Optional dilution"
+  "target-volume-dilution": "Optional dilution",
+  "scale-recipe": "Scale recipe",
+  "target-volume-dilution-help": "Dilute with {total} of water"
 }
