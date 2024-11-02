@@ -595,5 +595,9 @@
     "price-categories": "Kategorije cijena",
     "add-price-category": "Dodaj kategoriju cijene"
   },
-  "shopping-list-empty": "Tvoja lista za trgovinu je prazna"
+  "shopping-list-empty": "Tvoja lista za trgovinu je prazna",
+  "target-volume": "Target volume",
+  "target-volume-dilution": "Optional dilution",
+  "scale-recipe": "Scale recipe",
+  "target-volume-dilution-help": "Dilute with {total} of water"
 }
