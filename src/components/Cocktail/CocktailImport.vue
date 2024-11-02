@@ -449,6 +449,9 @@ async function finishImporting() {
             <div v-else class="form-group">
                 <label class="form-label form-label--required" for="import-source">{{ t('source') }}:</label>
                 <textarea id="import-source" v-model="source" class="form-input" rows="14" required></textarea>
+                <p class="form-input-hint">
+                    JSON structure needs to be compatible with <a href="https://barassistant.app/cocktail-02.schema.json">Draft 2</a> or <a href="https://barassistant.app/cocktail-01.schema.json">Draft 1</a> JSON schema.
+                </p>
             </div>
             <!-- <div v-if="importType === 'json'" class="form-group">
                 <label class="form-label form-label--required">{{ t('duplicate.actions') }}:</label>
