@@ -79,7 +79,7 @@ watch(currentBatchType, (newType, oldType) => {
 useEventListener(document, 'keydown', (e) => {
     if (e.key === "p" && e.ctrlKey === true) {
         e.preventDefault();
-        const routeData = router.resolve({ name: 'print.cocktail', params: { id: cocktail.value.slug } });
+        const routeData = router.resolve({ name: 'print.cocktail', params: { id: cocktail.value.slug }, query: { scaleFactor: (volumeScaleFactor.value ?? ingredientScaleFactor.value).toFixed(4), targetVolumeToScaleTo: targetVolumeToScaleTo.value, targetVolumeDilution: targetVolumeDilution.value } });
         window.open(routeData.href, "_blank");
     }
 })

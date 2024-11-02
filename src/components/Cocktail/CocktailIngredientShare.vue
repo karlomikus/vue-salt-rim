@@ -21,7 +21,7 @@ export default {
                 return {}
             }
         },
-        servings: {
+        scaleFactor: {
             type: Number,
             default: 1
         },
@@ -40,11 +40,11 @@ export default {
             return name
         },
         amount() {
-            return UnitHandler.print(this.cocktailIngredient, this.units)
+            return UnitHandler.print(this.cocktailIngredient, this.units, this.scaleFactor)
         },
         substitutes() {
             return this.cocktailIngredient.substitutes.map(sub => {
-                return new String(sub.ingredient.name + ' ' + UnitHandler.print(sub, this.units, this.servings)).trim()
+                return new String(sub.ingredient.name + ' ' + UnitHandler.print(sub, this.units, this.scaleFactor)).trim()
             }).join(', ')
         }
     }
