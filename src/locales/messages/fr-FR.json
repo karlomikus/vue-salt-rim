@@ -6,7 +6,7 @@
     "de-DE": "Allemand",
     "pl-PL": "Polonais",
     "it-IT": "Italien",
-    "sv-SE": "Swedish",
+    "sv-SE": "Suédois",
     "help": "Aide aux traductions"
   },
   "shelf": {
@@ -77,7 +77,7 @@
   "settings": "Paramètres",
   "logout": "Déconnexion",
   "profile": "Profil",
-  "filename": "File name",
+  "filename": "Nom du fichier",
   "users": {
     "title": "Utilisateurs",
     "add": "Ajouter un utilisateur",
@@ -139,7 +139,7 @@
   "field-supports-md": "Ce champ prend en charge le markdown.",
   "cancel": "Annuler",
   "save": "Sauvegarder",
-  "join": "Join",
+  "join": "Rejoindre",
   "recipe-information": "Informations sur la recette",
   "additional-information": "Informations complémentaires",
   "source": "Source",
@@ -536,7 +536,7 @@
     "confirm-delete": "Cela supprimera le fichier d'exportation sélectionné",
     "delete-success": "Export supprimé",
     "types-hint": "Click here to learn more about export types",
-    "force-units": "Convert units"
+    "force-units": "Convertir les unités"
   },
   "start": "Démarrer",
   "filter": "Filtrer",
@@ -546,7 +546,7 @@
     "ml-full": "Mililitres (ml)",
     "oz-full": "Onces (oz)",
     "cl-full": "Centilitres (cl)",
-    "original": "Keep original units"
+    "original": "Garder les unités d'origine"
   },
   "no-default-units": "Aucune unité par défaut",
   "wakelock-toggle": "Empêcher le verrouillage de l'écran",
@@ -595,5 +595,5 @@
     "price-categories": "Catégories de prix",
     "add-price-category": "Ajouter une catégorie de prix"
   },
-  "shopping-list-empty": "Your shopping list is empty"
+  "shopping-list-empty": "Votre liste de courses est vide"
 }
