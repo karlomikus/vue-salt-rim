@@ -1,3 +1,10 @@
+# v3.3.0
+## New
+- Added cocktail recipe target volume scaling
+
+## Changes
+- Cocktails page now default to latest cocktails
+
 # v3.2.2
 ## Fixes
 - Fixed print shortcut opening multiple tabs
