@@ -15,7 +15,13 @@
         </div>
         <div class="print-second-row">
             <div class="print-ingredients">
-                <p class="print-ingredients-batch" v-if="targetVolumeToScaleTo">Batch size {{ targetVolumeToScaleTo }} {{ appState.defaultUnit }} ({{ targetVolumeDilution }}% dilution).</p>
+                <p class="print-ingredients-batch" v-if="targetVolumeToScaleTo">
+                    Batch size {{ targetVolumeToScaleTo }} {{ appState.defaultUnit }} ({{ targetVolumeDilution }}% dilution).
+                    <template v-if="waterDilution > 0">
+                        <br>
+                        {{ $t('target-volume-dilution-help', {total: waterDilution + ' ' + appState.defaultUnit}) }}
+                    </template>
+                </p>
                 <h2>{{ $t('ingredient.ingredients') }}:</h2>
                 <ul>
                     <li v-for="ingredient in cocktail.ingredients" :key="ingredient.id">
@@ -53,6 +59,7 @@ export default {
             scaleFactor: 1,
             targetVolumeToScaleTo: null,
             targetVolumeDilution: 0,
+            waterDilution: 0,
             printReady: false
         }
     },
@@ -83,6 +90,7 @@ export default {
         this.scaleFactor = this.$route.query.scaleFactor ?? 1
         this.targetVolumeToScaleTo = this.$route.query.targetVolumeToScaleTo ?? null
         this.targetVolumeDilution = this.$route.query.targetVolumeDilution ?? 0
+        this.waterDilution = this.$route.query.waterDilution ?? 0
         BarAssistantClient.getCocktail(this.$route.params.id).then(resp => {
             this.cocktail = resp.data
             this.printReady = true
