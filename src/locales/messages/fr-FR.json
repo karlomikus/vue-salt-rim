@@ -595,5 +595,9 @@
     "price-categories": "Catégories de prix",
     "add-price-category": "Ajouter une catégorie de prix"
   },
-  "shopping-list-empty": "Votre liste de courses est vide"
+  "shopping-list-empty": "Votre liste de courses est vide",
+  "target-volume": "Target volume",
+  "target-volume-dilution": "Optional dilution",
+  "scale-recipe": "Scale recipe",
+  "target-volume-dilution-help": "Dilute with {total} of water"
 }
