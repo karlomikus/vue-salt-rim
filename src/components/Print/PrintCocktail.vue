@@ -15,10 +15,17 @@
         </div>
         <div class="print-second-row">
             <div class="print-ingredients">
+                <p class="print-ingredients-batch" v-if="targetVolumeToScaleTo">
+                    Batch size {{ targetVolumeToScaleTo }} {{ appState.defaultUnit }} ({{ targetVolumeDilution }}% dilution).
+                    <template v-if="waterDilution > 0">
+                        <br>
+                        {{ $t('target-volume-dilution-help', {total: waterDilution + ' ' + appState.defaultUnit}) }}
+                    </template>
+                </p>
                 <h2>{{ $t('ingredient.ingredients') }}:</h2>
                 <ul>
                     <li v-for="ingredient in cocktail.ingredients" :key="ingredient.id">
-                        <CocktailIngredientShare :cocktail-ingredient="ingredient" :units="appState.defaultUnit"></CocktailIngredientShare>
+                        <CocktailIngredientShare :cocktail-ingredient="ingredient" :units="appState.defaultUnit" :scale-factor="scaleFactor"></CocktailIngredientShare>
                     </li>
                 </ul>
             </div>
@@ -49,6 +56,10 @@ export default {
         return {
             appState: new AppState(),
             cocktail: {},
+            scaleFactor: 1,
+            targetVolumeToScaleTo: null,
+            targetVolumeDilution: 0,
+            waterDilution: 0,
             printReady: false
         }
     },
@@ -76,6 +87,10 @@ export default {
         },
     },
     created() {
+        this.scaleFactor = this.$route.query.scaleFactor ?? 1
+        this.targetVolumeToScaleTo = this.$route.query.targetVolumeToScaleTo ?? null
+        this.targetVolumeDilution = this.$route.query.targetVolumeDilution ?? 0
+        this.waterDilution = this.$route.query.waterDilution ?? 0
         BarAssistantClient.getCocktail(this.$route.params.id).then(resp => {
             this.cocktail = resp.data
             this.printReady = true
@@ -181,5 +196,10 @@ ul, ol {
     text-align: center;
     font-size: 0.45rem;
     margin-top: 10px;
+}
+
+.print-ingredients-batch {
+    border: 1px dashed #000;
+    padding: 10px;
 }
 </style>

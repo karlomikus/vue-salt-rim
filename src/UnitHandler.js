@@ -11,10 +11,10 @@ const handler = {
      *
      * @param {object} ingredient
      * @param {string} convertTo
-     * @param {number} servings
+     * @param {number} scaleFactor
      * @returns {string}
      */
-    print(ingredient, convertTo = 'ml', servings = 1) {
+    print(ingredient, convertTo = 'ml', scaleFactor = 1) {
         let orgAmount = 0
         if (ingredient.amount !== null && ingredient.amount !== undefined) {
             orgAmount = numericQuantity(`${ingredient.amount}`)
@@ -25,14 +25,14 @@ const handler = {
             orgAmountMax = numericQuantity(`${(ingredient.amount_max || 0)}`)
         }
 
-        orgAmount *= servings
-        orgAmountMax *= servings
+        orgAmount *= scaleFactor
+        orgAmountMax *= scaleFactor
 
         let orgUnits = ingredient.units ? ingredient.units.toLowerCase() : ''
 
         // Don't convert unconvertable units
         if (orgUnits != 'ml' && orgUnits != 'oz' && orgUnits != 'cl') {
-            return `${orgAmount == 0 ? '' : orgAmount}${orgAmountMax != 0 ? '-' + orgAmountMax : ''} ${orgUnits}`
+            return `${orgAmount == 0 ? '' : this.toFixedWithTruncate(orgAmount, 3)}${orgAmountMax != 0 ? '-' + this.toFixedWithTruncate(orgAmountMax, 3) : ''} ${orgUnits}`
         }
 
         let minAmount = this.convertFromTo(orgUnits, orgAmount, convertTo)
@@ -100,7 +100,7 @@ const handler = {
     },
 
     toFixedWithTruncate(num, fixed) {
-        if (num == null || isNaN(num)) {
+        if (num == null || isNaN(num) || num == Infinity) {
             return ''
         }
 
