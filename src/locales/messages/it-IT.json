@@ -418,7 +418,7 @@
     "type-json-description": "Importa da formato JSON",
     "type-yaml-description": "Importa da formato YAML",
     "type-collection-description": "Importa da raccolta JSON Bar Assistant",
-    "notice": "Gli ingredienti, i metodi e la vetreria esistenti saranno abbinati al loro nome (senza distinzione tra maiuscole e minuscole). Se l'ingrediente non esiste, verrà creato. Le unità comuni vengono convertite automaticamente in \"ml\". A seconda delle dimensioni della raccolta, l'importazione può richiedere alcuni minuti."
+    "notice": "Gli ingredienti, i metodi e la vetreria esistenti saranno abbinati al loro nome (senza distinzione tra maiuscole e minuscole). Se l'ingrediente non esiste, verrà creato."
   },
   "remove-from-bar": "Rimuovi dal bar",
   "public-shelves": "Scaffali pubblici",

@@ -418,7 +418,7 @@
     "type-json-description": "Aus JSON-Format importieren",
     "type-yaml-description": "Aus YAML-Format importieren",
     "type-collection-description": "Import aus Bar Assistant JSON-Sammlung",
-    "notice": "Vorhandene Zutaten und Trinkgläser werden anhand ihres Namens abgeglichen (Groß- und Kleinschreibung wird nicht berücksichtigt). Wenn ein Bestandteil bzw. ein Glas nicht vorhanden ist, wird es neu erstellt. Übliche Einheiten werden automatisch umgewandelt in \"ml\"."
+    "notice": "Vorhandene Zutaten und Trinkgläser werden anhand ihres Namens abgeglichen (Groß- und Kleinschreibung wird nicht berücksichtigt). Wenn ein Bestandteil bzw. ein Glas nicht vorhanden ist, wird es neu erstellt."
   },
   "remove-from-bar": "Aus der Bar entfernen",
   "public-shelves": "Öffentliche Regale",

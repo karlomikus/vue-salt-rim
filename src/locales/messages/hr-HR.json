@@ -418,7 +418,7 @@
     "type-json-description": "Uvoz iz JSON formata",
     "type-yaml-description": "Uvoz iz YAML formata",
     "type-collection-description": "Uvoz iz Bar Assistant JSON kolekcije",
-    "notice": "Postojeći podaci će biti spojeni ako se imena podudaraju (neovisno o velikim i malim slovima). Ako sastojak ili čaša ne postoje, nove će biti kreirane. Najčešće jedinice se automatski pretvaraju u \"ml\"."
+    "notice": "Postojeći podaci će biti spojeni ako se imena podudaraju (neovisno o velikim i malim slovima). Ako sastojak ili čaša ne postoje, nove će biti kreirane."
   },
   "remove-from-bar": "Ukloni iz bara",
   "public-shelves": "Javne police",

@@ -418,7 +418,7 @@
     "type-json-description": "Importera i JSON-format",
     "type-yaml-description": "Importera i YAML-format",
     "type-collection-description": "Importera från Bar Assistant JSON samling",
-    "notice": "Existerande ingredienser, metoder och glastyper kommer matchas med deras namn (skiftlägesokänslig). Om en ingrediens inte finns kommer den skapas. Kända enheter konverteras automatiskt till \"ml\". Beroende på storlek kan importen ta flera minuter"
+    "notice": "Existerande ingredienser, metoder och glastyper kommer matchas med deras namn (skiftlägesokänslig). Om en ingrediens inte finns kommer den skapas."
   },
   "remove-from-bar": "Ta bort från baren",
   "public-shelves": "Publika hyllor",
