@@ -115,6 +115,7 @@ export default {
             availableRefinements: {
                 categories: [],
                 global: [
+                    { name: this.$t('bar-shelf-ingredients'), active: false, id: 'bar_shelf' },
                     { name: this.$t('shelf-ingredients'), active: false, id: 'on_shelf' },
                     { name: this.$t('shopping-list-ingredients'), active: false, id: 'on_shopping_list' },
                     { name: this.$t('used-as-main-ingredient'), active: false, id: 'main_ingredients' },
@@ -130,6 +131,7 @@ export default {
             activeFilters: {
                 category_id: [],
                 on_shelf: false,
+                bar_shelf: false,
                 main_ingredients: false,
                 on_shopping_list: false,
                 complex: false,
@@ -223,6 +225,7 @@ export default {
             this.activeFilters.category_id = state.filter && state.filter.category_id ? String(state.filter.category_id).split(',') : []
 
             this.activeFilters.on_shelf = state.filter && state.filter.on_shelf ? state.filter.on_shelf : null
+            this.activeFilters.bar_shelf = state.filter && state.filter.bar_shelf ? state.filter.bar_shelf : null
             this.activeFilters.main_ingredients = state.filter && state.filter.main_ingredients ? state.filter.main_ingredients : null
             this.activeFilters.on_shopping_list = state.filter && state.filter.on_shopping_list ? state.filter.on_shopping_list : null
             this.activeFilters.complex = state.filter && state.filter.complex ? state.filter.complex : null
@@ -254,6 +257,7 @@ export default {
                 name: (this.searchQuery != null && this.searchQuery != '') ? this.searchQuery : null,
                 category_id: this.activeFilters.category_id.length > 0 ? this.activeFilters.category_id.join(',') : null,
                 on_shelf: this.activeFilters.on_shelf,
+                bar_shelf: this.activeFilters.bar_shelf,
                 complex: this.activeFilters.complex,
                 main_ingredients: this.activeFilters.main_ingredients,
                 on_shopping_list: this.activeFilters.on_shopping_list,
@@ -309,6 +313,7 @@ export default {
             this.activeFilters = {
                 category_id: [],
                 on_shelf: false,
+                bar_shelf: false,
                 main_ingredients: false,
                 on_shopping_list: false,
                 complex: false,

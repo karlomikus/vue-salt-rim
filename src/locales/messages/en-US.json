@@ -25,7 +25,7 @@
     "main": "Main ingredient",
     "add": "Add ingredient",
     "on-shopping-list": "You have this ingredient on shopping list",
-    "add-to-shelf": "Add to shelf",
+    "add-to-shelf": "Add to your shelf",
     "remove-from-shelf": "Remove from shelf",
     "add-to-list": "Add to shopping list",
     "remove-from-list": "Remove from shopping list",
@@ -61,7 +61,9 @@
     "variety-note": "Recipe matching will include the parent ingredient as a substitute (depending on user settings)",
     "ingredients": "Ingredients",
     "used_as_substitute_for": "Used as a substitute for",
-    "can_be_substituted_with": "Can be substituted with"
+    "can_be_substituted_with": "Can be substituted with",
+    "add-to-bar-shelf": "Add to bar shelf",
+    "remove-from-bar-shelf": "Remove from bar shelf"
   },
   "share": {
     "title": "Share",
@@ -599,5 +601,9 @@
   "target-volume": "Target volume",
   "target-volume-dilution": "Optional dilution",
   "scale-recipe": "Scale recipe",
-  "target-volume-dilution-help": "Dilute with {total} of water"
+  "target-volume-dilution-help": "Dilute with {total} of water",
+  "bar_shelf": {
+    "cocktails": "Bar shelf cocktails"
+  },
+  "bar-shelf-ingredients": "Bar shelf ingredients"
 }

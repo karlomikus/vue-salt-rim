@@ -164,6 +164,7 @@ export default {
             per_page: 50,
             availableRefinements: {
                 global: [
+                    { name: this.$t('bar_shelf.cocktails'), active: false, id: 'bar_shelf' },
                     { name: this.$t('shelf.cocktails'), active: false, id: 'on_shelf' },
                     { name: this.$t('my-favorites'), active: false, id: 'favorites' },
                     { name: this.$t('cocktail.shared'), active: false, id: 'is_public' },
@@ -194,6 +195,7 @@ export default {
             },
             activeFilters: {
                 on_shelf: false,
+                bar_shelf: false,
                 favorites: false,
                 is_public: false,
                 tags: [],
@@ -449,6 +451,7 @@ export default {
             this.activeFilters.user_shelves = state.filter && state.filter.user_shelves ? String(state.filter.user_shelves).split(',') : []
             this.activeFilters.users = state.filter && state.filter.created_user_id ? String(state.filter.created_user_id).split(',') : []
             this.activeFilters.on_shelf = state.filter && state.filter.on_shelf ? state.filter.on_shelf : null
+            this.activeFilters.bar_shelf = state.filter && state.filter.bar_shelf ? state.filter.bar_shelf : null
             this.activeFilters.favorites = state.filter && state.filter.favorites ? state.filter.favorites : null
             this.activeFilters.is_public = state.filter && state.filter.is_public ? state.filter.is_public : null
             this.activeFilters.total_ingredients = state.filter && state.filter.total_ingredients ? state.filter.total_ingredients : null
@@ -487,6 +490,7 @@ export default {
             const filters = {
                 name: (this.searchQuery != null && this.searchQuery != '') ? this.searchQuery : null,
                 on_shelf: this.activeFilters.on_shelf,
+                bar_shelf: this.activeFilters.bar_shelf,
                 favorites: this.activeFilters.favorites,
                 is_public: this.activeFilters.is_public,
                 user_rating_min: this.activeFilters.user_rating ? this.activeFilters.user_rating : null,
@@ -545,6 +549,7 @@ export default {
             this.per_page = 50,
             this.activeFilters = {
                 on_shelf: false,
+                bar_shelf: false,
                 favorites: false,
                 is_public: false,
                 tags: [],

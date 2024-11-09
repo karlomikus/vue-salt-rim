@@ -2,6 +2,7 @@ class AppState {
     constructor() {
         this.theme = 'light'
         this.defaultUnit = 'ml'
+        this.defaultShelf = 'bar'
         this.language = 'en-US'
         this.token = null
         /**
@@ -63,6 +64,11 @@ class AppState {
 
     setDefaultUnits(unit) {
         this.defaultUnit = unit
+        this._updateState()
+    }
+
+    setDefaultShelf(shelf) {
+        this.defaultShelf = shelf
         this._updateState()
     }
 
@@ -133,6 +139,7 @@ class AppState {
 
             this.theme = newState.theme
             this.defaultUnit = newState.defaultUnit
+            this.defaultShelf = newState.defaultShelf
             this.language = newState.language
             this.token = newState.token
             this.rememberMe = newState.rememberMe
