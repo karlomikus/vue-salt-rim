@@ -27,6 +27,7 @@
             <div v-if="baServerAvailable" style="text-align: right; margin-top: 20px;">
                 <RouterLink v-if="registrationAllowed" class="button button--outline" :to="{ name: 'register' }">{{ $t('register') }}</RouterLink>
                 <button type="submit" class="button button--dark" style="margin-left: 5px;" :disabled="!baServerAvailable">{{ $t('login') }}</button>
+                <button type="button" class="button button--dark" @click="loginWithOidc" style="margin-left: 5px;" :disabled="!baServerAvailable">{{ $t('OIDC') }}</button>
             </div>
         </form>
     </div>
@@ -74,6 +75,7 @@ export default {
         }
     },
     created() {
+        this.checkIfOidcRedirectBack();
         this.isLoading = true
         BarAssistantClient.getServerVersion().then(resp => {
             this.server = resp.data
@@ -119,6 +121,44 @@ export default {
                 this.isLoading = false
                 this.$toast.error(e.message)
             })
+        },
+        async loginWithOidc() {
+            const appState = new AppState();
+            let redirectUrl = window.location.origin;
+            try {
+                const oidcResponse = await BarAssistantClient.oidc(redirectUrl, 'web');
+                appState.setOidcCode(oidcResponse.data.code)
+                window.location.href = oidcResponse.data.auth_url;
+            } catch (e) {
+                this.isLoading = false;
+                this.$toast.error(e.message);
+            }
+        },
+        async checkIfOidcRedirectBack() {
+            const appState = new AppState();
+            const oidcCode = appState.getOidcCode();
+            if (oidcCode && oidcCode.length > 0) {
+                const tokenResp = await BarAssistantClient.oidcToken(oidcCode);
+                console.log("tokenResp",tokenResp);
+
+                if (tokenResp && tokenResp.data.token && tokenResp.data.token.length > 0) {
+                    appState.forgetOidcCode()
+                    appState.setToken(tokenResp.data.token);
+                    const profileResp = await BarAssistantClient.getProfile();
+                    appState.setUser(profileResp.data);
+                    const barsResp = await BarAssistantClient.getBars();
+                    let redirectPath;
+                    if (!redirectPath) {
+                        if (barsResp.data.length === 1) {
+                            appState.setBar(barsResp.data[0]);
+                            redirectPath = '/';
+                        } else {
+                            redirectPath = '/bars';
+                        }
+                    }
+                    this.$router.push(redirectPath);
+                }
+            }
         }
     }
 }

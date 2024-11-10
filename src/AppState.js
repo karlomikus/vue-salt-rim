@@ -14,6 +14,9 @@ class AppState {
         this.user = {}
 
         this._key = '_salt_rim'
+        this.oidcCode = ''
+        this._oidcExpireTime = 120
+        this.oidcStartAt = 0
         this._readStateFromStorage()
     }
 
@@ -50,6 +53,23 @@ class AppState {
         this._updateState()
     }
 
+    setOidcCode(code) {
+        this.oidcCode = code
+        this.oidcStartAt = Date.now();
+        this._updateState()
+    }
+
+    getOidcCode() {
+        if (this.oidcCode === '') {
+            return '';
+        }
+        const elapsedTime = (Date.now() - this.oidcStartAt) / 1000; 
+        if (elapsedTime > this._oidcExpireTime) {
+            this.forgetOidcCode()
+        }
+        return this.oidcCode; 
+    }
+
     forgetUser() {
         this.user = {}
         this.token = null
@@ -58,6 +78,11 @@ class AppState {
 
     forgetBar() {
         this.bar = {}
+        this._updateState()
+    }
+
+    forgetOidcCode(){
+        this.oidcCode = ""
         this._updateState()
     }
 
@@ -138,6 +163,8 @@ class AppState {
             this.rememberMe = newState.rememberMe
             this.bar = newState.bar
             this.user = newState.user
+            this.oidcCode = newState.oidcCode
+            this.oidcStartAt = newState.oidcStartAt
         }
     }
 }

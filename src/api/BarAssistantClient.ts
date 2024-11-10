@@ -68,6 +68,14 @@ export default class BarAssistantClient {
     return (await client.POST('/auth/login', { body: { email: email, password: password } })).data
   }
 
+  static async oidc(redirectUrl: string, tokenName: string) {
+    return (await client.POST('/auth/oidc', { body: { redirect_url: redirectUrl, token_name: tokenName } })).data
+  }
+
+  static async oidcToken(code: string) {
+    return (await client.POST('/auth/oidc/token', { body: { code: code} })).data
+  }
+  
   static async logout() {
     return (await client.POST('/auth/logout')).data
   }

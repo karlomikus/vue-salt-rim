@@ -21,6 +21,26 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/auth/oidc": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Initiate OIDC login */
+        post: operations["oidcInitiateLogin"];
+    };
+    "/auth/oidc/token": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Exchange code for token */
+        post: operations["oidcTokenExchange"];
+    };
     "/auth/logout": {
         parameters: {
             query?: never;
@@ -2152,6 +2172,20 @@ export interface components {
             /** @example cocktail */
             resource: string;
         };
+        OIDCRequest: {
+            redirect_url?: string; 
+            token_name?: string;  
+        };
+        OIDCResponse: {
+            auth_url: string;
+            code: string;
+        };
+        OIDCTokenRequest: {
+            code: string;
+        };
+        OIDCTokenResponse: {
+            token: string;
+        };
         PersonalAccessToken: {
             /** @example 1 */
             id?: number;
@@ -2540,6 +2574,44 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content?: never;
+            };
+        };
+    };
+    oidcInitiateLogin: {
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["OIDCRequest"];
+            }
+        };
+        response: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data: components["schemas"]["OIDCResponse"];
+                    };
+                };
+            };
+        };
+    };
+    oidcTokenExchange: {
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["OIDCTokenRequest"];
+            }
+        };
+        response: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data: components["schemas"]["OIDCTokenResponse"];
+                    };
+                };
             };
         };
     };
