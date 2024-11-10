@@ -66,6 +66,7 @@
                         <option value="created_at">{{ $t('date-added') }}</option>
                         <option value="favorited_at">{{ $t('date-favorited') }}</option>
                         <option value="missing_ingredients">{{ $t('missing-ingredients') }}</option>
+                        <option value="missing_bar_ingredients">{{ $t('missing-ingredients') }} ({{ $t('bars.bar')}})</option>
                         <option value="total_ingredients">{{ $t('total.ingredients') }}</option>
                         <option value="average_rating">{{ $t('average-rating') }}</option>
                         <option value="user_rating">{{ $t('user-rating') }}</option>

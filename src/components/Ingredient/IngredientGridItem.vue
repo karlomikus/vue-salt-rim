@@ -1,5 +1,5 @@
 <template>
-    <div class="block-container block-container--hover ingredient-grid-item" :class="{ 'ingredient-grid-item--shelf': inShelf }">
+    <div class="block-container block-container--hover ingredient-grid-item">
         <div class="ingredient-grid-item__image">
             <IngredientImage :ingredient="ingredient"></IngredientImage>
         </div>
@@ -10,9 +10,13 @@
             </RouterLink>
             <p v-html="cleanDescription"></p>
             <div class="ingredient-grid-item__actions">
-                <ToggleIngredientShelf :ingredient="ingredient" :status="inShelf"></ToggleIngredientShelf>
+                <template v-if="showBarShelf">
+                    <ToggleIngredientBarShelf :ingredient="ingredient" :status="ingredient.in_bar_shelf"></ToggleIngredientBarShelf>
+                    &middot;
+                </template>
+                <ToggleIngredientShelf :ingredient="ingredient" :status="ingredient.in_shelf"></ToggleIngredientShelf>
                 &middot;
-                <ToggleIngredientShoppingCart :ingredient="ingredient" :status="inList"></ToggleIngredientShoppingCart>
+                <ToggleIngredientShoppingCart :ingredient="ingredient" :status="ingredient.in_shopping_list"></ToggleIngredientShoppingCart>
             </div>
         </div>
     </div>
@@ -23,12 +27,15 @@ import IngredientImage from './IngredientImage.vue'
 import removeMd from 'remove-markdown'
 import ToggleIngredientShoppingCart from '@/components/ToggleIngredientShoppingCart.vue'
 import ToggleIngredientShelf from '@/components/ToggleIngredientShelf.vue'
+import ToggleIngredientBarShelf from '@/components/ToggleIngredientBarShelf.vue'
+import AppState from '@/AppState'
 
 export default {
     components: {
         IngredientImage,
         ToggleIngredientShoppingCart,
         ToggleIngredientShelf,
+        ToggleIngredientBarShelf,
     },
     props: {
         ingredient: {
@@ -36,26 +43,13 @@ export default {
             default() {
                 return {}
             }
-        },
-        userIngredients: {
-            type: Array,
-            default() {
-                return []
-            }
-        },
-        shoppingList: {
-            type: Array,
-            default() {
-                return []
-            }
         }
     },
     computed: {
-        inShelf() {
-            return this.userIngredients.map(i => i.id).includes(this.ingredient.id)
-        },
-        inList() {
-            return this.shoppingList.map(i => i.ingredient.id).includes(this.ingredient.id)
+        showBarShelf() {
+            const appState = new AppState();
+
+            return appState.isAdmin() || appState.isModerator()
         },
         cleanDescription() {
             return removeMd(this.ingredient.description)

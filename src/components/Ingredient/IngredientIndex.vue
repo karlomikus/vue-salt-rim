@@ -57,7 +57,7 @@
                     </button>
                 </div>
                 <IngredientGridContainer v-if="ingredients.length > 0">
-                    <IngredientGridItem v-for="ingredient in ingredients" :key="ingredient.id" :ingredient="ingredient" :user-ingredients="userIngredients" :shopping-list="shoppingListIngredients" />
+                    <IngredientGridItem v-for="ingredient in ingredients" :key="ingredient.id" :ingredient="ingredient" />
                 </IngredientGridContainer>
                 <EmptyState v-else style="margin-top: 1rem;">
                     <template #icon>
@@ -110,8 +110,6 @@ export default {
             currentPage: 1,
             searchQuery: null,
             ingredients: [],
-            shoppingListIngredients: [],
-            userIngredients: [],
             availableRefinements: {
                 categories: [],
                 global: [
@@ -206,8 +204,6 @@ export default {
                 if (this.$route.name == 'ingredients') {
                     this.queryToState()
                     this.refreshIngredients()
-                    this.refreshShoppingListIngredients()
-                    this.refreshShelfIngredients()
                 }
             },
             { immediate: true }
@@ -326,16 +322,6 @@ export default {
             if (e && e.target && e.target.classList.contains('resource-search__refinements')) {
                 this.showRefinements = !this.showRefinements
             }
-        },
-        refreshShoppingListIngredients() {
-            BarAssistantClient.getShoppingList(this.appState.user.id).then(resp => {
-                this.shoppingListIngredients = resp.data
-            })
-        },
-        refreshShelfIngredients() {
-            BarAssistantClient.getUserIngredientShelf(this.appState.user.id).then(resp => {
-                this.userIngredients = resp.data
-            })
         },
     }
 }
