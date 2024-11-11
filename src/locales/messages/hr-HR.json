@@ -25,8 +25,8 @@
     "main": "Glavni sastojak",
     "add": "Dodaj sastojak",
     "on-shopping-list": "Ovaj sastojak je na popisu za kupovinu",
-    "add-to-shelf": "Dodaj na policu",
-    "remove-from-shelf": "Ukloni s police",
+    "add-to-shelf": "Add to your shelf",
+    "remove-from-shelf": "Remove from your shelf",
     "add-to-list": "Dodaj na popis za kupovinu",
     "remove-from-list": "Ukloni s popisa za kupovinu",
     "update-success": "Sastojak uspješno uređen",
@@ -61,7 +61,13 @@
     "variety-note": "Recepti koje možete napraviti uključuju matični sastojak kao zamjenu (oovisno o postavkama korisnika)",
     "ingredients": "Sastojci",
     "used_as_substitute_for": "Koristi se kao zamjena za",
-    "can_be_substituted_with": "Može se zamijeniti sa"
+    "can_be_substituted_with": "Može se zamijeniti sa",
+    "add-to-bar-shelf": "Add to bar shelf",
+    "remove-from-bar-shelf": "Remove from bar shelf",
+    "shelf-bar-help": "Recipes matching ingredients in bar shelf will be shown to all bar members.",
+    "shelf-user-help": "Recipes matching ingredients in your shelf can only be managed by you.",
+    "bar-shelf-add-success": "Added \"{name}\" to bar shelf",
+    "bar-shelf-remove-success": "Removed \"{name}\" from bar shelf"
   },
   "share": {
     "title": "Podijeli",
@@ -262,7 +268,7 @@
   "clear-filters": "Poništi filtere",
   "rating-removed": "Ocjena uklonjena",
   "rating-rated": "Koktel ocijenjen sa ocjenom {rating}",
-  "shelf-ingredients": "Sastojci u polici",
+  "shelf-ingredients": "My shelf ingredients",
   "shopping-list-ingredients": "Sastojci na popisu za kupovinu",
   "notes": "Bilješke",
   "collection-shared": "Podijeljeno s barom",
@@ -575,7 +581,8 @@
     "add": "Dodaj koktel",
     "copy-action": "Udvostruči i uredi",
     "copy-success": "Koktel dupliciran",
-    "source": "Izvor koktela"
+    "source": "Izvor koktela",
+    "confirm-copy": "This will create a copy of \"{name}\""
   },
   "ABV-definition": "Postotak alkohola",
   "ingredient-category": {},
@@ -599,5 +606,9 @@
   "target-volume": "Target volume",
   "target-volume-dilution": "Optional dilution",
   "scale-recipe": "Scale recipe",
-  "target-volume-dilution-help": "Dilute with {total} of water"
+  "target-volume-dilution-help": "Dilute with {total} of water",
+  "bar_shelf": {
+    "cocktails": "Bar shelf cocktails"
+  },
+  "bar-shelf-ingredients": "Bar shelf ingredients"
 }
