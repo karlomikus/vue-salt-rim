@@ -2,6 +2,9 @@
 ## New
 - Added support for bar shelf
 
+## Changes
+- Copy cocktail action now requires confirmation
+
 ## Fixes
 - Fixed auth session reseting in certain cases
 

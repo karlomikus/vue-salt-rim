@@ -216,14 +216,19 @@ async function fetchFavorites() {
 }
 
 async function copy() {
-    isLoading.value = true
-    BarAssistantClient.copyCocktail(cocktail.value.slug).then(resp => {
-        isLoading.value = false
-        toast.default(t('cocktail.copy-success'))
-        router.push({ name: 'cocktails.form', query: { id: resp?.data?.id } })
-    }).catch(e => {
-        isLoading.value = false
-        toast.error(e.message)
+    confirm.show(t('cocktail.confirm-copy', { name: cocktail.value.name }), {
+        onResolved: (dialog: any) => {
+            dialog.close()
+            isLoading.value = true
+            BarAssistantClient.copyCocktail(cocktail.value.slug).then(resp => {
+                isLoading.value = false
+                toast.default(t('cocktail.copy-success'))
+                router.push({ name: 'cocktails.form', query: { id: resp?.data?.id } })
+            }).catch(e => {
+                isLoading.value = false
+                toast.error(e.message)
+            })
+        }
     })
 }
 

@@ -581,7 +581,8 @@
     "add": "Add cocktail",
     "copy-action": "Duplicate and edit",
     "copy-success": "Cocktail duplicated",
-    "source": "Cocktail source"
+    "source": "Cocktail source",
+    "confirm-copy": "This will create a copy of \"{name}\""
   },
   "ABV-definition": "Alcohol by volume",
   "ingredient-category": {},
