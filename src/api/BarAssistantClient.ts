@@ -518,4 +518,12 @@ export default class BarAssistantClient {
   static async updateSubscriptionStatus(status: string) {
     return (await client.POST('/billing/subscription', { body: { type: status } })).data
   }
+
+  static async addToBarShelf(id: number, data: {}) {
+    return (await client.POST('/bars/{id}/ingredients/batch-store', { params: { path: { id: id } }, body: data })).data
+  }
+
+  static async removeFromBarShelf(id: number, data: {}) {
+    return (await client.POST('/bars/{id}/ingredients/batch-delete', { params: { path: { id: id } }, body: data })).data
+  }
 }
