@@ -25,8 +25,8 @@
     "main": "Ingrédient principal",
     "add": "Ajouter un ingrédient",
     "on-shopping-list": "Vous avez cet ingrédient sur la liste de courses",
-    "add-to-shelf": "Ajouter à l’étagère",
-    "remove-from-shelf": "Retirer de l’étagère",
+    "add-to-shelf": "Add to your shelf",
+    "remove-from-shelf": "Remove from your shelf",
     "add-to-list": "Ajouter à la liste de courses",
     "remove-from-list": "Supprimer de la liste de courses",
     "update-success": "Ingrédient mis à jour avec succès",
@@ -61,7 +61,13 @@
     "variety-note": "La correspondance des recettes inclura l'ingrédient parent comme substitut (selon les paramètres de l'utilisateur)",
     "ingredients": "Ingrédients",
     "used_as_substitute_for": "Used as a substitute for",
-    "can_be_substituted_with": "Can be substituted with"
+    "can_be_substituted_with": "Can be substituted with",
+    "add-to-bar-shelf": "Add to bar shelf",
+    "remove-from-bar-shelf": "Remove from bar shelf",
+    "shelf-bar-help": "Recipes matching ingredients in bar shelf will be shown to all bar members.",
+    "shelf-user-help": "Recipes matching ingredients in your shelf can only be managed by you.",
+    "bar-shelf-add-success": "Added \"{name}\" to bar shelf",
+    "bar-shelf-remove-success": "Removed \"{name}\" from bar shelf"
   },
   "share": {
     "title": "Partager",
@@ -262,7 +268,7 @@
   "clear-filters": "Effacer tous les filtres",
   "rating-removed": "Suppression de la note cocktail",
   "rating-rated": "Cocktail noté avec {rating} étoiles",
-  "shelf-ingredients": "Ingrédients de rayon",
+  "shelf-ingredients": "My shelf ingredients",
   "shopping-list-ingredients": "Ingrédients de la liste de courses",
   "notes": "Remarques",
   "collection-shared": "Partagé avec le bar",
@@ -575,7 +581,8 @@
     "add": "Ajouter un cocktail",
     "copy-action": "Dupliquer et modifier",
     "copy-success": "Cocktail dupliqué",
-    "source": "Source cocktail"
+    "source": "Source cocktail",
+    "confirm-copy": "This will create a copy of \"{name}\""
   },
   "ABV-definition": "Alcool par volume",
   "ingredient-category": {},
@@ -599,5 +606,9 @@
   "target-volume": "Target volume",
   "target-volume-dilution": "Optional dilution",
   "scale-recipe": "Scale recipe",
-  "target-volume-dilution-help": "Dilute with {total} of water"
+  "target-volume-dilution-help": "Dilute with {total} of water",
+  "bar_shelf": {
+    "cocktails": "Bar shelf cocktails"
+  },
+  "bar-shelf-ingredients": "Bar shelf ingredients"
 }
