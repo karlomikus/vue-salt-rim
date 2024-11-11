@@ -1,3 +1,10 @@
+# v3.4.0
+## New
+- Added support for bar shelf
+
+## Fixes
+- Fixed auth session reseting in certain cases
+
 # v3.3.0
 ## New
 - Added cocktail recipe target volume scaling
