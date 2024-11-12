@@ -399,7 +399,8 @@
     "status-provisioning": "Procesuiranje",
     "confirm-activation": "Are you sure you want to activate \"{name}\"? On free plan you can have only one bar activated, you will not be able to activate any other bars.",
     "activation-success": "Bar aktiviran",
-    "members": "Članovi bara"
+    "members": "Članovi bara",
+    "logo": "Bar logo"
   },
   "close": "Zatvori",
   "save-as": "Spremi kao",
