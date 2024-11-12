@@ -399,7 +399,8 @@
     "status-provisioning": "Provisionnement",
     "confirm-activation": "Êtes-vous sûr de vouloir activer \"{name}\" ? Avec la formule gratuite, vous ne pouvez avoir qu'un seul bar actif, vous ne pourrez pas activer d'autres bars.",
     "activation-success": "Bar activé",
-    "members": "Membres du bar"
+    "members": "Membres du bar",
+    "logo": "Bar logo"
   },
   "close": "Fermer",
   "save-as": "Enregistrer sous",
