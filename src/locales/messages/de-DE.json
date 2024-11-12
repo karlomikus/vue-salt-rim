@@ -399,7 +399,8 @@
     "status-provisioning": "Provisioning",
     "confirm-activation": "Are you sure you want to activate \"{name}\"? On free plan you can have only one bar activated, you will not be able to activate any other bars.",
     "activation-success": "Bar aktiviert",
-    "members": "Bar-Mitglieder"
+    "members": "Bar-Mitglieder",
+    "logo": "Bar logo"
   },
   "close": "Schließen",
   "save-as": "Speichern unter",
