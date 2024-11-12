@@ -104,6 +104,13 @@ h3.form-section-title::before {
     height: 40px;
 }
 
+.site-logo__image img {
+    width: auto;
+    height: auto;
+    max-width: 40px;
+    max-height: 40px;
+}
+
 .site-logo__title {
     font-weight: var(--fw-bold);
     margin-left: 10px;
