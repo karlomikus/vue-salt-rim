@@ -399,7 +399,8 @@
     "status-provisioning": "Provisionamento",
     "confirm-activation": "Sei sicuro di voler attivare \"{name}\"? Sul piano gratuito puoi solo avere un bar attivo, non sarai in grado di attivare altri bar.",
     "activation-success": "Bar attivato",
-    "members": "Membri del bar"
+    "members": "Membri del bar",
+    "logo": "Bar logo"
   },
   "close": "Chiudi",
   "save-as": "Salva come",
