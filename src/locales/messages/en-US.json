@@ -26,7 +26,7 @@
     "add": "Add ingredient",
     "on-shopping-list": "You have this ingredient on shopping list",
     "add-to-shelf": "Add to your shelf",
-    "remove-from-shelf": "Remove from your shelf",
+    "remove-from-shelf": "Remove from shelf",
     "add-to-list": "Add to shopping list",
     "remove-from-list": "Remove from shopping list",
     "update-success": "Ingredient updated successfully",
@@ -268,7 +268,7 @@
   "clear-filters": "Clear all filters",
   "rating-removed": "Removed cocktail rating",
   "rating-rated": "Cocktail rated with {rating} stars",
-  "shelf-ingredients": "My shelf ingredients",
+  "shelf-ingredients": "Shelf ingredients",
   "shopping-list-ingredients": "Shopping list ingredients",
   "notes": "Notes",
   "collection-shared": "Shared with bar",
@@ -399,7 +399,8 @@
     "status-provisioning": "Provisioning",
     "confirm-activation": "Are you sure you want to activate \"{name}\"? On free plan you can have only one bar activated, you will not be able to activate any other bars.",
     "activation-success": "Bar activated",
-    "members": "Bar members"
+    "members": "Bar members",
+    "logo": "Bar logo"
   },
   "close": "Close",
   "save-as": "Save as",
