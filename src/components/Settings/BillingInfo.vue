@@ -226,8 +226,8 @@ export default {
         refreshUser() {
             const appState = new AppState()
 
-            BarAssistantClient.getProfile().then(user => {
-                appState.setUser(user)
+            BarAssistantClient.getProfile().then(resp => {
+                appState.setUser(resp.data)
             })
         },
         afterCheckoutHook() {

@@ -57,7 +57,7 @@
                     </button>
                 </div>
                 <IngredientGridContainer v-if="ingredients.length > 0">
-                    <IngredientGridItem v-for="ingredient in ingredients" :key="ingredient.id" :ingredient="ingredient" :user-ingredients="userIngredients" :shopping-list="shoppingListIngredients" />
+                    <IngredientGridItem v-for="ingredient in ingredients" :key="ingredient.id" :ingredient="ingredient" />
                 </IngredientGridContainer>
                 <EmptyState v-else style="margin-top: 1rem;">
                     <template #icon>
@@ -110,11 +110,10 @@ export default {
             currentPage: 1,
             searchQuery: null,
             ingredients: [],
-            shoppingListIngredients: [],
-            userIngredients: [],
             availableRefinements: {
                 categories: [],
                 global: [
+                    { name: this.$t('bar-shelf-ingredients'), active: false, id: 'bar_shelf' },
                     { name: this.$t('shelf-ingredients'), active: false, id: 'on_shelf' },
                     { name: this.$t('shopping-list-ingredients'), active: false, id: 'on_shopping_list' },
                     { name: this.$t('used-as-main-ingredient'), active: false, id: 'main_ingredients' },
@@ -130,6 +129,7 @@ export default {
             activeFilters: {
                 category_id: [],
                 on_shelf: false,
+                bar_shelf: false,
                 main_ingredients: false,
                 on_shopping_list: false,
                 complex: false,
@@ -204,8 +204,6 @@ export default {
                 if (this.$route.name == 'ingredients') {
                     this.queryToState()
                     this.refreshIngredients()
-                    this.refreshShoppingListIngredients()
-                    this.refreshShelfIngredients()
                 }
             },
             { immediate: true }
@@ -223,6 +221,7 @@ export default {
             this.activeFilters.category_id = state.filter && state.filter.category_id ? String(state.filter.category_id).split(',') : []
 
             this.activeFilters.on_shelf = state.filter && state.filter.on_shelf ? state.filter.on_shelf : null
+            this.activeFilters.bar_shelf = state.filter && state.filter.bar_shelf ? state.filter.bar_shelf : null
             this.activeFilters.main_ingredients = state.filter && state.filter.main_ingredients ? state.filter.main_ingredients : null
             this.activeFilters.on_shopping_list = state.filter && state.filter.on_shopping_list ? state.filter.on_shopping_list : null
             this.activeFilters.complex = state.filter && state.filter.complex ? state.filter.complex : null
@@ -254,6 +253,7 @@ export default {
                 name: (this.searchQuery != null && this.searchQuery != '') ? this.searchQuery : null,
                 category_id: this.activeFilters.category_id.length > 0 ? this.activeFilters.category_id.join(',') : null,
                 on_shelf: this.activeFilters.on_shelf,
+                bar_shelf: this.activeFilters.bar_shelf,
                 complex: this.activeFilters.complex,
                 main_ingredients: this.activeFilters.main_ingredients,
                 on_shopping_list: this.activeFilters.on_shopping_list,
@@ -309,6 +309,7 @@ export default {
             this.activeFilters = {
                 category_id: [],
                 on_shelf: false,
+                bar_shelf: false,
                 main_ingredients: false,
                 on_shopping_list: false,
                 complex: false,
@@ -321,16 +322,6 @@ export default {
             if (e && e.target && e.target.classList.contains('resource-search__refinements')) {
                 this.showRefinements = !this.showRefinements
             }
-        },
-        refreshShoppingListIngredients() {
-            BarAssistantClient.getShoppingList(this.appState.user.id).then(resp => {
-                this.shoppingListIngredients = resp.data
-            })
-        },
-        refreshShelfIngredients() {
-            BarAssistantClient.getUserIngredientShelf(this.appState.user.id).then(resp => {
-                this.userIngredients = resp.data
-            })
         },
     }
 }
