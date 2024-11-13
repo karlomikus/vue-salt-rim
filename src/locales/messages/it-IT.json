@@ -25,8 +25,8 @@
     "main": "Ingrediente principale",
     "add": "Aggiungi ingrediente",
     "on-shopping-list": "Hai questo ingrediente nella lista della spesa",
-    "add-to-shelf": "Aggiungi alla dispensa",
-    "remove-from-shelf": "Rimuovi dalla dispensa",
+    "add-to-shelf": "Add to your shelf",
+    "remove-from-shelf": "Remove from your shelf",
     "add-to-list": "Aggiungi alla lista della spesa",
     "remove-from-list": "Rimuovi dalla lista della spesa",
     "update-success": "Ingrediente aggiornato con successo",
@@ -61,7 +61,13 @@
     "variety-note": "La ricerca delle ricette includerà l'ingrediente base come sostituto (a seconda delle impostazioni dell'utente)",
     "ingredients": "Ingredienti",
     "used_as_substitute_for": "Utilizzato come sostituto di",
-    "can_be_substituted_with": "Può essere sostituito con"
+    "can_be_substituted_with": "Può essere sostituito con",
+    "add-to-bar-shelf": "Add to bar shelf",
+    "remove-from-bar-shelf": "Remove from bar shelf",
+    "shelf-bar-help": "Recipes matching ingredients in bar shelf will be shown to all bar members.",
+    "shelf-user-help": "Recipes matching ingredients in your shelf can only be managed by you.",
+    "bar-shelf-add-success": "Added \"{name}\" to bar shelf",
+    "bar-shelf-remove-success": "Removed \"{name}\" from bar shelf"
   },
   "share": {
     "title": "Condividi",
@@ -262,7 +268,7 @@
   "clear-filters": "Cancella tutti i filtri",
   "rating-removed": "Valutazione cocktail rimossa",
   "rating-rated": "Cocktail valutato con {rating} stelle",
-  "shelf-ingredients": "Ingredienti in dispensa",
+  "shelf-ingredients": "My shelf ingredients",
   "shopping-list-ingredients": "Ingredienti lista della spesa",
   "notes": "Note",
   "collection-shared": "Condiviso con il bar",
@@ -393,7 +399,8 @@
     "status-provisioning": "Provisionamento",
     "confirm-activation": "Sei sicuro di voler attivare \"{name}\"? Sul piano gratuito puoi solo avere un bar attivo, non sarai in grado di attivare altri bar.",
     "activation-success": "Bar attivato",
-    "members": "Membri del bar"
+    "members": "Membri del bar",
+    "logo": "Bar logo"
   },
   "close": "Chiudi",
   "save-as": "Salva come",
@@ -575,7 +582,8 @@
     "add": "Aggiungi cocktail",
     "copy-action": "Duplica e modifica",
     "copy-success": "Cocktail duplicato",
-    "source": "Sorgente cocktail"
+    "source": "Sorgente cocktail",
+    "confirm-copy": "This will create a copy of \"{name}\""
   },
   "ABV-definition": "Gradi alcolici",
   "ingredient-category": {},
@@ -599,5 +607,9 @@
   "target-volume": "Target volume",
   "target-volume-dilution": "Optional dilution",
   "scale-recipe": "Scale recipe",
-  "target-volume-dilution-help": "Dilute with {total} of water"
+  "target-volume-dilution-help": "Dilute with {total} of water",
+  "bar_shelf": {
+    "cocktails": "Bar shelf cocktails"
+  },
+  "bar-shelf-ingredients": "Bar shelf ingredients"
 }
