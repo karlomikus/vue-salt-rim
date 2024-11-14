@@ -25,8 +25,8 @@
     "main": "Huvudingrediens",
     "add": "Lägg till ingrediens",
     "on-shopping-list": "Du har den här ingrediensen på din inköpslista",
-    "add-to-shelf": "Lägg till på hylla",
-    "remove-from-shelf": "Ta bort från hylla",
+    "add-to-shelf": "Add to your shelf",
+    "remove-from-shelf": "Remove from your shelf",
     "add-to-list": "Lägg till på inköpslista",
     "remove-from-list": "Ta bort från inköpslista",
     "update-success": "Ingrediens har uppdaterats",
@@ -61,7 +61,13 @@
     "variety-note": "Recept matchning kommer innehålla föräldraingrediensen som ett substitut (beroende på användarinställningar)",
     "ingredients": "Ingredienser",
     "used_as_substitute_for": "Används som ersättning för",
-    "can_be_substituted_with": "Kan ersättas med"
+    "can_be_substituted_with": "Kan ersättas med",
+    "add-to-bar-shelf": "Add to bar shelf",
+    "remove-from-bar-shelf": "Remove from bar shelf",
+    "shelf-bar-help": "Recipes matching ingredients in bar shelf will be shown to all bar members.",
+    "shelf-user-help": "Recipes matching ingredients in your shelf can only be managed by you.",
+    "bar-shelf-add-success": "Added \"{name}\" to bar shelf",
+    "bar-shelf-remove-success": "Removed \"{name}\" from bar shelf"
   },
   "share": {
     "title": "Dela",
@@ -262,7 +268,7 @@
   "clear-filters": "Töm alla filter",
   "rating-removed": "Tog bort drinkens betyg",
   "rating-rated": "Drinkar betygsatta med {rating} stjärnor",
-  "shelf-ingredients": "Ingredienser på hyllan",
+  "shelf-ingredients": "My shelf ingredients",
   "shopping-list-ingredients": "Ingredienser på inköpslistan",
   "notes": "Anteckningar",
   "collection-shared": "Delad med bar",
@@ -393,7 +399,8 @@
     "status-provisioning": "Provisionering",
     "confirm-activation": "Är du säker på att du vill aktivera baren \"{name}\"? I gratisversionen kan du bara ha en bar aktiverad. Du kommer inte kunna aktivera någon annan bar.",
     "activation-success": "Baren aktiverad",
-    "members": "Barens medlemmar"
+    "members": "Barens medlemmar",
+    "logo": "Bar logo"
   },
   "close": "Stäng",
   "save-as": "Spara som",
@@ -575,7 +582,8 @@
     "add": "Lägg till drink",
     "copy-action": "Duplicera och redigera",
     "copy-success": "Drinken duplicerad",
-    "source": "Källa till drinken"
+    "source": "Källa till drinken",
+    "confirm-copy": "This will create a copy of \"{name}\""
   },
   "ABV-definition": "Alkohol per volym",
   "ingredient-category": {},
@@ -599,5 +607,9 @@
   "target-volume": "Målvolym",
   "target-volume-dilution": "Frivillig utspädning",
   "scale-recipe": "Skala receptet",
-  "target-volume-dilution-help": "Späd ut med {total} mängd vatten"
+  "target-volume-dilution-help": "Späd ut med {total} mängd vatten",
+  "bar_shelf": {
+    "cocktails": "Bar shelf cocktails"
+  },
+  "bar-shelf-ingredients": "Bar shelf ingredients"
 }
