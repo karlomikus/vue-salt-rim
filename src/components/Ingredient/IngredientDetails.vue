@@ -484,4 +484,11 @@ svg.shelf-actions__action__status {
     line-height: 1.2;
     color: var(--clr-gray-400);
 }
+
+@media (max-width: 450px) {
+    .shelf-actions {
+        display: flex;
+        flex-direction: column;
+    }
+}
 </style>

@@ -158,9 +158,10 @@ export default {
                 postData.images = imageResources.map(img => img.id)
             }
 
+            const appState = new AppState()
+
             this.isLoading = true
             if (this.bar.id) {
-                const appState = new AppState()
                 BarAssistantClient.updateBar(this.bar.id, postData).then(resp => {
                     appState.setBar(resp.data)
                     this.isLoading = false
