@@ -25,8 +25,8 @@
     "main": "Hauptzutaten",
     "add": "Zutat hinzufügen",
     "on-shopping-list": "Du hast diese auf deiner Einkaufsliste",
-    "add-to-shelf": "Zum Regal hinzufügen",
-    "remove-from-shelf": "Aus dem Regal löschen",
+    "add-to-shelf": "Add to your shelf",
+    "remove-from-shelf": "Remove from your shelf",
     "add-to-list": "Zur Einkaufsliste hinzufügen",
     "remove-from-list": "Von der Einkaufsliste entfernen",
     "update-success": "Zutat aktualisiert",
@@ -61,7 +61,13 @@
     "variety-note": "Recipe matching will include the parent ingredient as a substitute (depending on user settings)",
     "ingredients": "Zutaten",
     "used_as_substitute_for": "Used as a substitute for",
-    "can_be_substituted_with": "Can be substituted with"
+    "can_be_substituted_with": "Can be substituted with",
+    "add-to-bar-shelf": "Add to bar shelf",
+    "remove-from-bar-shelf": "Remove from bar shelf",
+    "shelf-bar-help": "Recipes matching ingredients in bar shelf will be shown to all bar members.",
+    "shelf-user-help": "Recipes matching ingredients in your shelf can only be managed by you.",
+    "bar-shelf-add-success": "Added \"{name}\" to bar shelf",
+    "bar-shelf-remove-success": "Removed \"{name}\" from bar shelf"
   },
   "share": {
     "title": "Aktie",
@@ -262,7 +268,7 @@
   "clear-filters": "Filter zurücksetzen",
   "rating-removed": "Bewertung zurücksetzen",
   "rating-rated": "Cocktails mit {rating} sternen bewertet",
-  "shelf-ingredients": "Zutaten im Regal",
+  "shelf-ingredients": "My shelf ingredients",
   "shopping-list-ingredients": "Zutaten auf der Einkaufsliste",
   "notes": "Notizen",
   "collection-shared": "Shared with bar",
@@ -393,7 +399,8 @@
     "status-provisioning": "Provisioning",
     "confirm-activation": "Are you sure you want to activate \"{name}\"? On free plan you can have only one bar activated, you will not be able to activate any other bars.",
     "activation-success": "Bar aktiviert",
-    "members": "Bar-Mitglieder"
+    "members": "Bar-Mitglieder",
+    "logo": "Bar logo"
   },
   "close": "Schließen",
   "save-as": "Speichern unter",
@@ -418,7 +425,7 @@
     "type-json-description": "Aus JSON-Format importieren",
     "type-yaml-description": "Aus YAML-Format importieren",
     "type-collection-description": "Import aus Bar Assistant JSON-Sammlung",
-    "notice": "Vorhandene Zutaten und Trinkgläser werden anhand ihres Namens abgeglichen (Groß- und Kleinschreibung wird nicht berücksichtigt). Wenn ein Bestandteil bzw. ein Glas nicht vorhanden ist, wird es neu erstellt. Übliche Einheiten werden automatisch umgewandelt in \"ml\"."
+    "notice": "Vorhandene Zutaten und Trinkgläser werden anhand ihres Namens abgeglichen (Groß- und Kleinschreibung wird nicht berücksichtigt). Wenn ein Bestandteil bzw. ein Glas nicht vorhanden ist, wird es neu erstellt."
   },
   "remove-from-bar": "Aus der Bar entfernen",
   "public-shelves": "Öffentliche Regale",
@@ -575,7 +582,8 @@
     "add": "Neuer Cocktail",
     "copy-action": "Kopieren und bearbeiten",
     "copy-success": "Cocktail kopiert",
-    "source": "Cocktail Herkunft"
+    "source": "Cocktail Herkunft",
+    "confirm-copy": "This will create a copy of \"{name}\""
   },
   "ABV-definition": "Volumenprozent Alkohol",
   "ingredient-category": {},
@@ -599,5 +607,9 @@
   "target-volume": "Target volume",
   "target-volume-dilution": "Optional dilution",
   "scale-recipe": "Scale recipe",
-  "target-volume-dilution-help": "Dilute with {total} of water"
+  "target-volume-dilution-help": "Dilute with {total} of water",
+  "bar_shelf": {
+    "cocktails": "Bar shelf cocktails"
+  },
+  "bar-shelf-ingredients": "Bar shelf ingredients"
 }

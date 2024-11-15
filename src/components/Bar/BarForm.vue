@@ -4,6 +4,7 @@
         <PageHeader>
             {{ $t('bars.bar') }}
         </PageHeader>
+        <h3 class="form-section-title">{{ $t('information') }}</h3>
         <div class="block-container block-container--padded">
             <div class="form-group">
                 <label class="form-label form-label--required" for="name">{{ $t('name') }}:</label>
@@ -44,6 +45,8 @@
                 </template>
             </div>
         </div>
+        <h3 class="form-section-title">{{ $t('bars.logo') }}</h3>
+        <ImageUpload ref="imagesUpload" :images="bar.images" :max-images="1" />
         <div class="form-actions">
             <RouterLink class="button button--outline" :to="{ name: 'bars' }">{{ $t('cancel') }}</RouterLink>
             <button type="submit" class="button button--dark">{{ $t('save') }}</button>
@@ -57,17 +60,20 @@ import OverlayLoader from './../OverlayLoader.vue'
 import PageHeader from './../PageHeader.vue'
 import slug from 'slug'
 import BarAssistantClient from '@/api/BarAssistantClient'
+import ImageUpload from '../ImageUpload.vue'
 
 export default {
     components: {
         OverlayLoader,
-        PageHeader
+        PageHeader,
+        ImageUpload,
     },
     data() {
         return {
             isLoading: false,
             skipSlugGenerationFromName: false,
             bar: {
+                images: [],
                 settings: {
                     default_units: 'ml',
                 },
@@ -129,23 +135,34 @@ export default {
 
             this.bar.slug = slug(e.target.value)
         },
-        submit() {
+        async submit() {
             let postSlug = null
             if (this.bar.slug) {
                 postSlug = slug(this.bar.slug)
             }
 
+            const postData = {
+                name: this.bar.name,
+                subtitle: this.bar.subtitle,
+                description: this.bar.description,
+                enable_invites: this.enableInvites,
+                slug: postSlug,
+                default_units: this.bar.settings.default_units,
+            };
+
+            const imageResources = await this.$refs.imagesUpload.save().catch(() => {
+                this.$toast.error(`${this.$t('imageupload.error')} ${this.$t('imageupload.error-ingredient')}`)
+            }) || []
+
+            if (imageResources.length > 0) {
+                postData.images = imageResources.map(img => img.id)
+            }
+
+            const appState = new AppState()
+
             this.isLoading = true
             if (this.bar.id) {
-                const appState = new AppState()
-                BarAssistantClient.updateBar(this.bar.id, {
-                    name: this.bar.name,
-                    subtitle: this.bar.subtitle,
-                    description: this.bar.description,
-                    enable_invites: this.enableInvites,
-                    slug: postSlug,
-                    default_units: this.bar.settings.default_units,
-                }).then(resp => {
+                BarAssistantClient.updateBar(this.bar.id, postData).then(resp => {
                     appState.setBar(resp.data)
                     this.isLoading = false
                     this.$toast.default(this.$t('bars.add-success', { name: this.bar.name }))
@@ -155,15 +172,9 @@ export default {
                     this.$toast.error(e.message)
                 })
             } else {
-                BarAssistantClient.saveBar({
-                    name: this.bar.name,
-                    subtitle: this.bar.subtitle,
-                    description: this.bar.description,
-                    enable_invites: this.enableInvites,
-                    options: this.bar.options,
-                    slug: postSlug,
-                    default_units: this.bar.settings.default_units,
-                }).then(() => {
+                postData.options = this.bar.options
+
+                BarAssistantClient.saveBar(postData).then(() => {
                     this.isLoading = false
                     this.$toast.default(this.$t('bars.add-success', { name: this.bar.name }))
                     this.$router.push({ name: 'bars' })

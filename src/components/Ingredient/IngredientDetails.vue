@@ -108,13 +108,27 @@ import UnitHandler from '../../UnitHandler.js'
                             </ul>
                         </div>
                     </div>
-                    <ul class="ingredient-details__more">
+                    <ul class="block-container block-container--inset ingredient-details__more">
                         <OverlayLoader v-if="isLoadingExtra" />
                         <li>
-                            <ToggleIngredientShelf :ingredient="ingredient" :status="ingredient.in_shelf"></ToggleIngredientShelf>
-                        </li>
-                        <li>
-                            <ToggleIngredientShoppingCart :ingredient="ingredient" :status="ingredient.in_shopping_list"></ToggleIngredientShoppingCart>
+                            <div class="shelf-actions">
+                                <div class="block-container shelf-actions__action" v-if="appState.isAdmin() || appState.isModerator()">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill-rule="evenodd" d="M8.755 2.308A4 4 0 0 0 5.46 6.733l.017.14a1 1 0 0 0 .992.879h1.764L5.267 21.595a.75.75 0 0 0 1.467.314l.944-4.407h8.644l.945 4.407a.75.75 0 0 0 1.466-.314L15.767 7.752h1.764a1 1 0 0 0 .993-.88l.017-.139a4 4 0 0 0-3.295-4.425l-.373-.064a17 17 0 0 0-5.745 0l-.373.064Zm5.495 5.444h-4.5a.753.753 0 0 1-.016.157l-1.735 8.093h8.002l-1.734-8.093a.755.755 0 0 1-.017-.157Z" clip-rule="evenodd"/></svg>
+                                    <ToggleIngredientBarShelf :ingredient="ingredient" :status="ingredient.in_bar_shelf"></ToggleIngredientBarShelf>
+                                    <br>
+                                    <small>{{ $t('ingredient.shelf-bar-help') }}</small>
+                                </div>
+                                <div class="block-container shelf-actions__action">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M16.533 18H6.75v2a.75.75 0 1 1-1.5 0v-2.324c-.829-.362-1.49-1.005-1.808-1.817-.01-.023-.02-.05-.039-.102L2.1 12.264C1.685 11.15 2.613 10 3.927 10c.81 0 1.534.453 1.81 1.134l1.098 2.706c.1.246.15.37.222.47a1.2 1.2 0 0 0 .74.463c.13.027.277.027.57.027h6.98c.569 0 .853 0 1.091-.098.13-.054.248-.128.349-.219.184-.166.281-.405.475-.883l1.001-2.466c.276-.68 1-1.134 1.81-1.134 1.314 0 2.242 1.15 1.827 2.264l-1.12 3c-.195.524-.292.785-.421 1.008a3.43 3.43 0 0 1-1.609 1.404V20a.75.75 0 1 1-1.5 0v-2.005c-.187.005-.415.005-.717.005Z"/><path d="M13.236 3.5h-2.472c-1.1 0-1.976 0-2.66.088-.706.09-1.285.28-1.746.72-.464.441-.669 1.003-.765 1.685-.093.658-.093 1.495-.093 2.54v.88l.21.15c.416.294.752.698.954 1.195L7.898 13.8h7.449l.363-.001h.002l.388-.007.126-.3.11-.268 1-2.466c.202-.497.538-.9.954-1.196l.21-.15v-.88c0-1.044 0-1.881-.093-2.539-.096-.682-.301-1.244-.765-1.686-.46-.438-1.04-.629-1.745-.72-.685-.087-1.56-.087-2.661-.087Z"/></svg>
+                                    <ToggleIngredientShelf :ingredient="ingredient" :status="ingredient.in_shelf"></ToggleIngredientShelf>
+                                    <br>
+                                    <small>{{ $t('ingredient.shelf-user-help') }}</small>
+                                </div>
+                                <div class="block-container shelf-actions__action">
+                                    <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" viewBox="0 0 24 24"><path d="M2.25 2.25a.75.75 0 0 0 0 1.5h1.386c.17 0 .318.114.362.278l2.558 9.592a3.752 3.752 0 0 0-2.806 3.63c0 .414.336.75.75.75h15.75a.75.75 0 0 0 0-1.5H5.378A2.25 2.25 0 0 1 7.5 15h11.218a.75.75 0 0 0 .674-.421 60.358 60.358 0 0 0 2.96-7.228.75.75 0 0 0-.525-.965A60.864 60.864 0 0 0 5.68 4.509l-.232-.867A1.875 1.875 0 0 0 3.636 2.25H2.25zm1.5 18a1.5 1.5 0 1 1 3 0 1.5 1.5 0 0 1-3 0zm12.75 0a1.5 1.5 0 1 1 3 0 1.5 1.5 0 0 1-3 0z"/></svg>
+                                    <ToggleIngredientShoppingCart :ingredient="ingredient" :status="ingredient.in_shopping_list"></ToggleIngredientShoppingCart>
+                                </div>
+                            </div>
                         </li>
                         <li v-if="ingredient.ingredient_parts.length">
                             {{ $t('contains-ingredients') }}:
@@ -156,6 +170,7 @@ import BarAssistantClient from '@/api/BarAssistantClient'
 import AppState from '@/AppState.js'
 import ToggleIngredientShoppingCart from '@/components/ToggleIngredientShoppingCart.vue'
 import ToggleIngredientShelf from '@/components/ToggleIngredientShelf.vue'
+import ToggleIngredientBarShelf from '../ToggleIngredientBarShelf.vue'
 import Dropdown from '@/components/SaltRimDropdown.vue'
 import { useTitle } from '@/composables/title'
 
@@ -166,6 +181,7 @@ export default {
         ToggleIngredientShelf,
         ToggleIngredientShoppingCart,
         Dropdown,
+        ToggleIngredientBarShelf,
     },
     data: () => ({
         appState: new AppState(),
@@ -402,8 +418,6 @@ export default {
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
-    background-color: var(--clr-accent-purple);
-    border-radius: var(--radius-2);
     padding: 0.5rem 0.75rem;
     margin: 0 0 1rem 0;
     list-style-type: none;
@@ -436,5 +450,45 @@ export default {
 
 .ingredient-details__prices__list__item h5 {
     font-size: 12px;
+}
+
+.shelf-actions {
+    display: grid;
+    gap: var(--gap-size-2);
+    grid-template-columns: 1fr 1fr 1fr;
+}
+
+.shelf-actions__action {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    padding: var(--gap-size-2);
+    text-align: center;
+}
+
+.shelf-actions__action svg {
+    width: 32px;
+    height: 32px;
+    display: block;
+    fill: var(--clr-gray-500);
+}
+
+svg.shelf-actions__action__status {
+    width: 16px;
+    height: 16px;
+    display: block;
+    color: green;
+}
+
+.shelf-actions__action small {
+    line-height: 1.2;
+    color: var(--clr-gray-400);
+}
+
+@media (max-width: 450px) {
+    .shelf-actions {
+        display: flex;
+        flex-direction: column;
+    }
 }
 </style>

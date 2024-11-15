@@ -645,7 +645,10 @@ export interface paths {
         };
         get?: never;
         put?: never;
-        /** Import from recipe schema */
+        /**
+         * Import recipe
+         * @description Import a recipe from a JSON structure that follows Bar Assistant recipe JSON schema. Supported schemas include [Draft 2](https://barassistant.app/cocktail-02.schema.json) and [Draft 1](https://barassistant.app/cocktail-01.schema.json).
+         */
         post: operations["f46bb44c14109f5d529b854e81d57150"];
         delete?: never;
         options?: never;
@@ -1105,6 +1108,60 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/bars/{id}/ingredients": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Show a list of bar shelf ingredients
+         * @description Ingredients that bar has in it's shelf
+         */
+        get: operations["0b3c5cbb1c0b8aa375aee04c1b3f021a"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/bars/{id}/ingredients/batch-store": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Batch store bar ingredients to bar shelf */
+        post: operations["72acd54d8500a59f453864e000f51c7b"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/bars/{id}/ingredients/batch-delete": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Delete multiple ingredients from bar shelf */
+        post: operations["2a4715024c2fca55798ecd592feaf6e5"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/users/{id}/shopping-list": {
         parameters: {
             query?: never;
@@ -1550,6 +1607,7 @@ export interface components {
             created_user?: components["schemas"]["UserBasic"];
             updated_user?: components["schemas"]["UserBasic"] | null;
             in_shelf?: boolean;
+            in_bar_shelf?: boolean;
             access?: {
                 /** @example true */
                 can_edit: boolean;
@@ -1712,6 +1770,12 @@ export interface components {
             in_shelf_as_substitute?: boolean;
             /** @example true */
             in_shelf_as_complex_ingredient?: boolean;
+            /** @example true */
+            in_bar_shelf?: boolean;
+            /** @example true */
+            in_bar_shelf_as_substitute?: boolean;
+            /** @example true */
+            in_bar_shelf_as_complex_ingredient?: boolean;
         };
         CocktailIngredientRequest: {
             ingredient_id: number;
@@ -1749,6 +1813,8 @@ export interface components {
             units: string | null;
             /** @example true */
             in_shelf: boolean;
+            /** @example true */
+            in_bar_shelf: boolean;
         };
         CocktailIngredientSubstituteRequest: {
             ingredient_id: number;
@@ -1962,6 +2028,11 @@ export interface components {
             }[];
             ingredient_parts?: components["schemas"]["IngredientBasic"][];
             prices?: components["schemas"]["IngredientPrice"][];
+            in_shelf?: boolean;
+            in_bar_shelf?: boolean;
+            in_shopping_list?: boolean;
+            used_as_substitute_for?: components["schemas"]["IngredientBasic"][];
+            can_be_substituted_with?: components["schemas"]["IngredientBasic"][];
         };
         /** @description Minimal ingredient information */
         IngredientBasic: {
@@ -3231,6 +3302,7 @@ export interface operations {
                     collection_id?: string;
                     favorites?: boolean;
                     on_shelf?: boolean;
+                    bar_shelf?: boolean;
                     user_shelves?: string;
                     shelf_ingredients?: string;
                     is_public?: boolean;
@@ -5040,6 +5112,7 @@ export interface operations {
         requestBody: {
             content: {
                 "application/json": {
+                    /** @description Valid JSON structure to import. */
                     source?: string;
                     /** @description How to handle duplicates. Cocktails are matched by lowercase name. */
                     duplicate_actions?: components["schemas"]["DuplicateActionsEnum"];
@@ -5358,6 +5431,7 @@ export interface operations {
                     created_user_id?: number;
                     on_shopping_list?: boolean;
                     on_shelf?: boolean;
+                    bar_shelf?: boolean;
                     /** Format: float */
                     strength_min?: number;
                     /** Format: float */
@@ -6908,6 +6982,154 @@ export interface operations {
                         data: components["schemas"]["IngredientRecommend"][];
                     };
                 };
+            };
+            /** @description You are not authorized for this action. */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data?: components["schemas"]["APIError"];
+                    };
+                };
+            };
+            /** @description Resource record not found. */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data?: components["schemas"]["APIError"];
+                    };
+                };
+            };
+        };
+    };
+    "0b3c5cbb1c0b8aa375aee04c1b3f021a": {
+        parameters: {
+            query?: {
+                /** @description Set current page number */
+                page?: number;
+                /** @description Set number of results per page */
+                per_page?: number;
+            };
+            header?: never;
+            path: {
+                /** @description Database id of a resource */
+                id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data?: components["schemas"]["IngredientBasic"][];
+                        links?: {
+                            first?: string | null;
+                            last?: string | null;
+                            prev?: string | null;
+                            next?: string | null;
+                        };
+                        meta?: {
+                            current_page?: number;
+                            from?: number;
+                            last_page?: number;
+                            links?: {
+                                url?: string;
+                                label?: string;
+                                active?: boolean;
+                            }[];
+                            path?: string;
+                            per_page?: number;
+                            to?: number;
+                            total?: number;
+                        };
+                    };
+                };
+            };
+        };
+    };
+    "72acd54d8500a59f453864e000f51c7b": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Database id of a resource */
+                id: number;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": {
+                    ingredients?: number[];
+                };
+            };
+        };
+        responses: {
+            /** @description Successful response */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description You are not authorized for this action. */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data?: components["schemas"]["APIError"];
+                    };
+                };
+            };
+            /** @description Resource record not found. */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data?: components["schemas"]["APIError"];
+                    };
+                };
+            };
+        };
+    };
+    "2a4715024c2fca55798ecd592feaf6e5": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Database id of a resource */
+                id: number;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": {
+                    ingredients?: number[];
+                };
+            };
+        };
+        responses: {
+            /** @description Successful response */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
             };
             /** @description You are not authorized for this action. */
             403: {
