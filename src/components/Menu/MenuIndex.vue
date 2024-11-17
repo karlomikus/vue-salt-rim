@@ -45,9 +45,7 @@
                             <div>
                                 <h4>{{ cocktail.name }}</h4>
                                 <small>{{ cocktail.short_ingredients.join(', ') }}</small><br>
-                                <a href="#" @click.prevent="copyCurrency(cocktail.currency)">{{ $t('menu.copy-currency') }}</a>
-                                &middot; <a href="#" @click.prevent="removeCocktail(category, cocktail)">{{ $t('remove') }}</a>
-                                &middot; <a href="#" @click.prevent="removeCocktail(category, cocktail)">{{ $t('recommend-price') }}</a>
+                                <a href="#" @click.prevent="copyCurrency(cocktail.price.currency)">{{ $t('menu.copy-currency') }}</a> &middot; <a href="#" @click.prevent="removeCocktail(category, cocktail)">{{ $t('remove') }}</a>
                             </div>
                             <div class="menu-category__cocktail__content__price">
                                 <div class="form-group">
@@ -110,6 +108,7 @@ export default {
             categories: [],
             bar: {},
             menu: {
+                is_enabled: false,
                 url: null
             },
             sortableInstances: [],
@@ -121,7 +120,7 @@ export default {
         },
         guessCurrency() {
             // Use map() to create a new array with just the currencies
-            let currencyArray = this.cocktails.map(item => item.currency)
+            let currencyArray = this.cocktails.map(item => item.price.currency)
 
             // Convert it into a Set, which will automatically remove any duplicates
             let uniqueCurrencySet = new Set(currencyArray)
@@ -161,7 +160,7 @@ export default {
                 short_ingredients: cocktail.short_ingredients,
                 price: {
                     price: '0.00',
-                    currency: this.guessCurrency
+                    currency: this.guessCurrency,
                 },
             })
         },
@@ -265,7 +264,7 @@ export default {
         copyCurrency(currency) {
             this.categories.forEach(cat => {
                 cat.cocktails.forEach(cocktail => {
-                    cocktail.currency = currency
+                    cocktail.price.currency = currency
                 })
             })
         },

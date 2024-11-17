@@ -1,3 +1,7 @@
+# v3.4.1
+## Fixes
+- Fix issues with updating menu prices
+
 # v3.4.0
 ## New
 - Added support for bar shelf
