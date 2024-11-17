@@ -45,7 +45,17 @@
                             <div>
                                 <h4>{{ cocktail.name }}</h4>
                                 <small>{{ cocktail.short_ingredients.join(', ') }}</small><br>
-                                <a href="#" @click.prevent="copyCurrency(cocktail.price.currency)">{{ $t('menu.copy-currency') }}</a> &middot; <a href="#" @click.prevent="removeCocktail(category, cocktail)">{{ $t('remove') }}</a>
+                                <a href="#" @click.prevent="copyCurrency(cocktail.price.currency)">{{ $t('menu.copy-currency') }}</a> &middot; <a href="#" @click.prevent="removeCocktail(category, cocktail)">{{ $t('remove') }}</a> &middot;
+                                <SaltRimDialog v-model="showCurrencyCalculator[cidx + '-' + idx]">
+                                    <template #trigger>
+                                        <a style="margin-top: 0.5rem; display: inline-block;" href="#addcocktail" @click.prevent="showCurrencyCalculator[cidx + '-' + idx] = !showCurrencyCalculator[cidx + '-' + idx]">
+                                            {{ $t('menu.calculate-price') }}
+                                        </a>
+                                    </template>
+                                    <template #dialog>
+                                        <CocktailPriceCalculator :cocktail="cocktail" @selected-price="price => handleCalculatedPrice(cocktail, price)" @closed="showCurrencyCalculator[cidx + '-' + idx] = false"></CocktailPriceCalculator>
+                                    </template>
+                                </SaltRimDialog>
                             </div>
                             <div class="menu-category__cocktail__content__price">
                                 <div class="form-group">
@@ -86,6 +96,7 @@ import PageHeader from '../PageHeader.vue'
 import Sortable from 'sortablejs'
 import SaltRimDialog from './../Dialog/SaltRimDialog.vue'
 import CocktailFinder from './../CocktailFinder.vue'
+import CocktailPriceCalculator from './../Calculator/CocktailPriceCalculator.vue'
 import AppState from '../../AppState'
 import QRCodeVue3 from 'qrcode-vue3'
 import OverlayLoader from '../OverlayLoader.vue'
@@ -99,11 +110,13 @@ export default {
         SaltRimDialog,
         QRCodeVue3,
         OverlayLoader,
+        CocktailPriceCalculator,
     },
     data() {
         return {
             isLoading: false,
             showCocktailFinder: {},
+            showCurrencyCalculator: {},
             appState: new AppState(),
             categories: [],
             bar: {},
@@ -267,6 +280,10 @@ export default {
                     cocktail.price.currency = currency
                 })
             })
+        },
+        handleCalculatedPrice(cocktail, e) {
+            cocktail.price.price = e.price
+            cocktail.price.currency = e.currency
         },
         saveMenu() {
             this.isLoading = true
