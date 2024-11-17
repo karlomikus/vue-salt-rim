@@ -17,6 +17,7 @@
                         <span>{{ $t('menu.is-active') }}</span>
                     </label>
                 </div>
+                <button class="button button--dark">Add all shelf cocktails</button>
             </div>
             <div class="block-container block-container--padded menu-qr-code">
                 <QRCodeVue3
@@ -44,7 +45,9 @@
                             <div>
                                 <h4>{{ cocktail.name }}</h4>
                                 <small>{{ cocktail.short_ingredients.join(', ') }}</small><br>
-                                <a href="#" @click.prevent="copyCurrency(cocktail.currency)">{{ $t('menu.copy-currency') }}</a> &middot; <a href="#" @click.prevent="removeCocktail(category, cocktail)">{{ $t('remove') }}</a>
+                                <a href="#" @click.prevent="copyCurrency(cocktail.currency)">{{ $t('menu.copy-currency') }}</a>
+                                &middot; <a href="#" @click.prevent="removeCocktail(category, cocktail)">{{ $t('remove') }}</a>
+                                &middot; <a href="#" @click.prevent="removeCocktail(category, cocktail)">{{ $t('recommend-price') }}</a>
                             </div>
                             <div class="menu-category__cocktail__content__price">
                                 <div class="form-group">
@@ -156,8 +159,10 @@ export default {
                 name: cocktail.name,
                 sort: 0,
                 short_ingredients: cocktail.short_ingredients,
-                price: '0.00',
-                currency: this.guessCurrency
+                price: {
+                    price: '0.00',
+                    currency: this.guessCurrency
+                },
             })
         },
         addCategory() {

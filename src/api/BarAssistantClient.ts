@@ -526,4 +526,8 @@ export default class BarAssistantClient {
   static async removeFromBarShelf(id: number, data: {}) {
     return (await client.POST('/bars/{id}/ingredients/batch-delete', { params: { path: { id: id } }, body: data })).data
   }
+
+  static async getCocktailPrices(id: string) {
+    return (await client.GET('/cocktails/{id}/prices', { params: { path: { id: id } } })).data
+  }
 }

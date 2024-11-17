@@ -355,6 +355,26 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/cocktails/{id}/prices": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Show cocktail prices
+         * @description Shows a list of cocktail prices grouped per available price categories. Missing ingredient prices are skipped.
+         */
+        get: operations["getCocktailPrices"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/cocktail-methods": {
         parameters: {
             query?: never;
@@ -1495,6 +1515,8 @@ export interface components {
             /** @example 1 */
             total_shelf_ingredients: number;
             /** @example 1 */
+            total_bar_shelf_cocktails?: number;
+            /** @example 1 */
             total_bar_members: number;
             /** @example 1 */
             total_collections: number;
@@ -1846,6 +1868,23 @@ export interface components {
             name: string;
             /** @example 20 */
             dilution_percentage: number;
+        };
+        CocktailPrice: {
+            /**
+             * @description Number of ingredients that are missing defined prices in this category
+             * @example 1
+             */
+            missing_prices_count: number;
+            price_category: components["schemas"]["PriceCategory"];
+            /** @description Total cocktail price, sum of `price_per_pour` amounts */
+            total_price: components["schemas"]["Price"];
+            prices_per_ingredient: {
+                ingredient: components["schemas"]["IngredientBasic"];
+                /** @description Price per 1 unit of ingredient amount */
+                price_per_amount: components["schemas"]["Price"];
+                /** @description Price per cocktail ingredient part */
+                price_per_pour: components["schemas"]["Price"];
+            }[];
         };
         CocktailRequest: {
             /** @example Cocktail name */
@@ -3318,7 +3357,7 @@ export interface operations {
                     specific_ingredients?: string;
                     ignore_ingredients?: string;
                 };
-                /** @description Sort by attributes. Available attributes: `name`, `created_at`, `average_rating`, `user_rating`, `abv`, `total_ingredients`, `missing_ingredients`, `favorited_at`. */
+                /** @description Sort by attributes. Available attributes: `name`, `created_at`, `average_rating`, `user_rating`, `abv`, `total_ingredients`, `missing_ingredients`, `missing_bar_ingredients`, `favorited_at`. */
                 sort?: string;
                 /** @description Include additional relationships. Available relations: `glass`, `method`, `user`, `navigation`, `utensils`, `createdUser`, `updatedUser`, `images`, `tags`, `ingredients.ingredient`, `ratings`. */
                 include?: string;
@@ -3853,6 +3892,53 @@ export interface operations {
             };
             /** @description You are not authorized for this action. */
             403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data?: components["schemas"]["APIError"];
+                    };
+                };
+            };
+        };
+    };
+    getCocktailPrices: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Database id or slug of a resource */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data: components["schemas"]["CocktailPrice"][];
+                    };
+                };
+            };
+            /** @description You are not authorized for this action. */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data?: components["schemas"]["APIError"];
+                    };
+                };
+            };
+            /** @description Resource record not found. */
+            404: {
                 headers: {
                     [name: string]: unknown;
                 };
