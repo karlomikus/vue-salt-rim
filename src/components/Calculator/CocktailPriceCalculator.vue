@@ -1,6 +1,7 @@
 <template>
     <div>
         <div class="dialog-title">{{ props.cocktail.name }}</div>
+        <OverlayLoader v-if="isLoadingPrices"></OverlayLoader>
         <div class="cocktail-price-calculator__prices">
             <div v-for="cocktailPrice in cocktailPrices">
                 <CocktailPrice :cocktail-price=cocktailPrice></CocktailPrice>
@@ -29,6 +30,7 @@ import type { components } from '@/api/api'
 import UnitHandler from '@/UnitHandler'
 import BarAssistantClient from '@/api/BarAssistantClient';
 import CocktailPrice from './../Cocktail/CocktailPrice.vue'
+import OverlayLoader from '../OverlayLoader.vue';
 
 type Cocktail = components["schemas"]["Cocktail"]
 type CocktailPrice = components["schemas"]["CocktailPrice"]

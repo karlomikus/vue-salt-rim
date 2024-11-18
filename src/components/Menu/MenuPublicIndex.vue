@@ -104,6 +104,12 @@ export default {
     color: var(--clr-gray-200);
 }
 
+.public-page-menu {
+    padding: var(--gap-size-3);
+    background-color: var(--clr-dark-main-800);
+    border-radius: var(--radius-2);
+}
+
 .public-page-menu__bar {
     color: var(--clr-gray-200);
 }
@@ -204,14 +210,15 @@ export default {
 }
 
 .public-page-menu__cocktail__price {
-    font-size: 1.25rem;
+    font-size: 1.5rem;
+    color: var(--clr-gray-900);
     font-weight: var(--fw-bold);
 }
 
 @media (max-width: 545px) {
     .public-page-menu__cocktail__price {
         margin-top: auto;
-        font-size: 1rem;
+        font-size: 1.15rem;
         text-align: right;
     }
 }
