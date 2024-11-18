@@ -81,7 +81,16 @@ export default {
 </script>
 <style scoped>
 .public-page__header {
-    padding: 2rem 0;
+    padding: var(--gap-size-3);
+    margin: var(--gap-size-3) 0;
+    background-color: #332d46;
+    border-bottom: 1px solid #6b6188;
+    box-shadow:
+        inset 0px 0.4px 0.5px hsl(var(--shadow-color-dark) / 0.25),
+        inset 0px 1.1px 1.2px -0.8px hsl(var(--shadow-color-dark) / 0.25),
+        inset 0px 2.6px 2.9px -1.7px hsl(var(--shadow-color-dark) / 0.25),
+        inset 0px 6.3px 7.1px -2.5px hsl(var(--shadow-color-dark) / 0.25);
+    border-radius: var(--radius-3);
 }
 
 .public-page {
@@ -106,16 +115,15 @@ export default {
 
 .public-page-menu {
     padding: var(--gap-size-3);
-    background-color: var(--clr-dark-main-800);
+    background-color: var(--clr-gray-100);
     border-radius: var(--radius-2);
 }
 
 .public-page-menu__bar {
-    color: var(--clr-gray-200);
+    color: var(--clr-gray-900);
 }
 
 .public-page-menu__bar h2 {
-    color: var(--clr-gray-100);
     font-weight: var(--fw-bold);
 }
 
@@ -124,9 +132,8 @@ export default {
     font-size: 1rem;
     text-transform: uppercase;
     letter-spacing: 1px;
-    color: #DDD4F0;
+    color: var(--clr-gray-800);
     font-weight: var(--fw-bold);
-    text-shadow: 0 2px 0 rgba(0, 0, 0, .7);
 }
 
 .public-page-menu__category__cocktails {
@@ -147,8 +154,8 @@ export default {
     display: flex;
     gap: var(--gap-size-3);
     padding: var(--gap-size-2);
-    border-radius: var(--radius-3);
-    color: var(--clr-gray-600);
+    border-radius: var(--radius-1);
+    /* color: var(--clr-gray-600); */
     box-shadow: var(--shadow-elevation-low-dark);
 }
 
@@ -164,7 +171,7 @@ export default {
     height: 100px;
     flex-basis: 100px;
     flex-shrink: 0;
-    border-radius: var(--radius-2);
+    border-radius: var(--radius-1);
     overflow: hidden;
 }
 
