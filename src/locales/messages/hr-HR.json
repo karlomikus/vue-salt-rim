@@ -508,7 +508,13 @@
     "cocktail-removed": "Cocktail removed from menu category",
     "menu-not-found": "Menu not found",
     "description": "Here you can set up a simple web menu for your bar. You can update your bar link when adding or editing a bar. Use the URL or QR code to share your bar menu with the guests.",
-    "no-cocktails-added": "Menu needs to have at least one cocktail"
+    "no-cocktails-added": "Menu needs to have at least one cocktail",
+    "calculate-price": "Calculate price",
+    "clear-category-confirm": "This will remove all cocktails from category \"{name}\"",
+    "category-cleared": "Category cleared",
+    "clear-category": "Clear category",
+    "add-shelf-cocktails": "Add missing cocktails from bar shelf",
+    "export": "Export as csv"
   },
   "bar": {
     "url": "Custom bar URL",
@@ -596,7 +602,8 @@
     "currency": "Valuta",
     "currency-format-notice": "Valuta mora biti u ISO 4271 (Alpha3) formatu",
     "price-categories-empty": "Nema kategorija cijena",
-    "no-matching-units": "No matching unit pricing found"
+    "no-matching-units": "No matching unit pricing found",
+    "select": "Select price"
   },
   "prices": {
     "add": "Dodaj cijenu",
@@ -611,5 +618,7 @@
   "bar_shelf": {
     "cocktails": "Bar shelf cocktails"
   },
-  "bar-shelf-ingredients": "Bar shelf ingredients"
+  "bar-shelf-ingredients": "Bar shelf ingredients",
+  "target-pour-cost": "Target pour cost",
+  "target-pour-cost-help": "Percentage of the cocktail's selling price that comes from the cost of the ingredients."
 }
