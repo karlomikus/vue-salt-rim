@@ -355,6 +355,26 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/cocktails/{id}/prices": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Show cocktail prices
+         * @description Shows a list of cocktail prices grouped per available price categories. Missing ingredient prices are skipped.
+         */
+        get: operations["getCocktailPrices"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/cocktail-methods": {
         parameters: {
             query?: never;
@@ -839,6 +859,26 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/menu/export": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Export menu
+         * @description Export menu as CSV
+         */
+        get: operations["69581b120488a658b86369819bd257e0"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/notes": {
         parameters: {
             query?: never;
@@ -1156,6 +1196,26 @@ export interface paths {
         put?: never;
         /** Delete multiple ingredients from bar shelf */
         post: operations["2a4715024c2fca55798ecd592feaf6e5"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/bars/{id}/cocktails": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Show a list bar shelf cocktails
+         * @description Cocktails that the bar can make with ingredients on their shelf
+         */
+        get: operations["40813734b16874942a79324150fb3dd1"];
+        put?: never;
+        post?: never;
         delete?: never;
         options?: never;
         head?: never;
@@ -1495,6 +1555,8 @@ export interface components {
             /** @example 1 */
             total_shelf_ingredients: number;
             /** @example 1 */
+            total_bar_shelf_cocktails?: number;
+            /** @example 1 */
             total_bar_members: number;
             /** @example 1 */
             total_collections: number;
@@ -1633,6 +1695,7 @@ export interface components {
             slug: string;
             /** @example Old fashioned */
             name: string;
+            short_ingredients?: string[];
         };
         CocktailExplore: {
             bar?: components["schemas"]["BarBasic"];
@@ -1846,6 +1909,23 @@ export interface components {
             name: string;
             /** @example 20 */
             dilution_percentage: number;
+        };
+        CocktailPrice: {
+            /**
+             * @description Number of ingredients that are missing defined prices in this category
+             * @example 1
+             */
+            missing_prices_count: number;
+            price_category: components["schemas"]["PriceCategory"];
+            /** @description Total cocktail price, sum of `price_per_pour` amounts */
+            total_price: components["schemas"]["Price"];
+            prices_per_ingredient: {
+                ingredient: components["schemas"]["IngredientBasic"];
+                /** @description Price per 1 unit of ingredient amount */
+                price_per_amount: components["schemas"]["Price"];
+                /** @description Price per cocktail ingredient part */
+                price_per_pour: components["schemas"]["Price"];
+            }[];
         };
         CocktailRequest: {
             /** @example Cocktail name */
@@ -3318,7 +3398,7 @@ export interface operations {
                     specific_ingredients?: string;
                     ignore_ingredients?: string;
                 };
-                /** @description Sort by attributes. Available attributes: `name`, `created_at`, `average_rating`, `user_rating`, `abv`, `total_ingredients`, `missing_ingredients`, `favorited_at`. */
+                /** @description Sort by attributes. Available attributes: `name`, `created_at`, `average_rating`, `user_rating`, `abv`, `total_ingredients`, `missing_ingredients`, `missing_bar_ingredients`, `favorited_at`. */
                 sort?: string;
                 /** @description Include additional relationships. Available relations: `glass`, `method`, `user`, `navigation`, `utensils`, `createdUser`, `updatedUser`, `images`, `tags`, `ingredients.ingredient`, `ratings`. */
                 include?: string;
@@ -3853,6 +3933,53 @@ export interface operations {
             };
             /** @description You are not authorized for this action. */
             403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data?: components["schemas"]["APIError"];
+                    };
+                };
+            };
+        };
+    };
+    getCocktailPrices: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Database id or slug of a resource */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data: components["schemas"]["CocktailPrice"][];
+                    };
+                };
+            };
+            /** @description You are not authorized for this action. */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data?: components["schemas"]["APIError"];
+                    };
+                };
+            };
+            /** @description Resource record not found. */
+            404: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -5992,6 +6119,43 @@ export interface operations {
             };
         };
     };
+    "69581b120488a658b86369819bd257e0": {
+        parameters: {
+            query?: {
+                /** @description Database id of a bar. Required if you are not using `Bar-Assistant-Bar-Id` header. */
+                bar_id?: number;
+            };
+            header?: {
+                /** @description Database id of a bar. Required if you are not using `bar_id` query string. */
+                "Bar-Assistant-Bar-Id"?: number;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "text/csv": string;
+                };
+            };
+            /** @description You are not authorized for this action. */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data?: components["schemas"]["APIError"];
+                    };
+                };
+            };
+        };
+    };
     "8b1d23cbbf81842599e3e9463477cb58": {
         parameters: {
             query?: {
@@ -7150,6 +7314,56 @@ export interface operations {
                 content: {
                     "application/json": {
                         data?: components["schemas"]["APIError"];
+                    };
+                };
+            };
+        };
+    };
+    "40813734b16874942a79324150fb3dd1": {
+        parameters: {
+            query?: {
+                /** @description Set current page number */
+                page?: number;
+                /** @description Set number of results per page */
+                per_page?: number;
+            };
+            header?: never;
+            path: {
+                /** @description Database id of a resource */
+                id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data?: components["schemas"]["CocktailBasic"][];
+                        links?: {
+                            first?: string | null;
+                            last?: string | null;
+                            prev?: string | null;
+                            next?: string | null;
+                        };
+                        meta?: {
+                            current_page?: number;
+                            from?: number;
+                            last_page?: number;
+                            links?: {
+                                url?: string;
+                                label?: string;
+                                active?: boolean;
+                            }[];
+                            path?: string;
+                            per_page?: number;
+                            to?: number;
+                            total?: number;
+                        };
                     };
                 };
             };

@@ -17,6 +17,11 @@
                         <span>{{ $t('menu.is-active') }}</span>
                     </label>
                 </div>
+                <p>
+                    <a href="#" @click.prevent="quickAddShelf">{{ $t('menu.add-shelf-cocktails') }}</a>
+                    &middot;
+                    <a href="#" @click.prevent="exportMenu">{{ $t('menu.export') }}</a>
+                </p>
             </div>
             <div class="block-container block-container--padded menu-qr-code">
                 <QRCodeVue3
@@ -36,6 +41,8 @@
                         <input :id="'menu-category-' + idx" v-model="category.name" class="form-input" type="text">
                     </div>
                     <a href="#" @click.prevent="removeCategory(category)">{{ $t('menu.remove-category') }}</a>
+                    &middot;
+                    <a href="#" @click.prevent="clearCategory(category)">{{ $t('menu.clear-category') }}</a>
                 </div>
                 <div ref="cocktailsList" class="menu-category-cocktails" :data-category-idx="idx">
                     <div v-for="(cocktail, cidx) in category.cocktails" :key="cocktail.id" class="block-container menu-category__cocktail" :data-id="cocktail.id">
@@ -44,7 +51,17 @@
                             <div>
                                 <h4>{{ cocktail.name }}</h4>
                                 <small>{{ cocktail.short_ingredients.join(', ') }}</small><br>
-                                <a href="#" @click.prevent="copyCurrency(cocktail.price.currency)">{{ $t('menu.copy-currency') }}</a> &middot; <a href="#" @click.prevent="removeCocktail(category, cocktail)">{{ $t('remove') }}</a>
+                                <a href="#" @click.prevent="copyCurrency(cocktail.price.currency)">{{ $t('menu.copy-currency') }}</a> &middot; <a href="#" @click.prevent="removeCocktail(category, cocktail)">{{ $t('remove') }}</a> &middot;
+                                <SaltRimDialog v-model="showCurrencyCalculator[cidx + '-' + idx]">
+                                    <template #trigger>
+                                        <a style="margin-top: 0.5rem; display: inline-block;" href="#addcocktail" @click.prevent="showCurrencyCalculator[cidx + '-' + idx] = !showCurrencyCalculator[cidx + '-' + idx]">
+                                            {{ $t('menu.calculate-price') }}
+                                        </a>
+                                    </template>
+                                    <template #dialog>
+                                        <CocktailPriceCalculator :cocktail="cocktail" @selected-price="price => handleCalculatedPrice(cocktail, price)" @closed="showCurrencyCalculator[cidx + '-' + idx] = false"></CocktailPriceCalculator>
+                                    </template>
+                                </SaltRimDialog>
                             </div>
                             <div class="menu-category__cocktail__content__price">
                                 <div class="form-group">
@@ -85,6 +102,7 @@ import PageHeader from '../PageHeader.vue'
 import Sortable from 'sortablejs'
 import SaltRimDialog from './../Dialog/SaltRimDialog.vue'
 import CocktailFinder from './../CocktailFinder.vue'
+import CocktailPriceCalculator from './../Calculator/CocktailPriceCalculator.vue'
 import AppState from '../../AppState'
 import QRCodeVue3 from 'qrcode-vue3'
 import OverlayLoader from '../OverlayLoader.vue'
@@ -98,11 +116,13 @@ export default {
         SaltRimDialog,
         QRCodeVue3,
         OverlayLoader,
+        CocktailPriceCalculator,
     },
     data() {
         return {
             isLoading: false,
             showCocktailFinder: {},
+            showCurrencyCalculator: {},
             appState: new AppState(),
             categories: [],
             bar: {},
@@ -140,16 +160,10 @@ export default {
         this.refreshBar()
     },
     methods: {
-        selectCocktail(cocktail, category, finderIdx) {
+        addCocktailToCategory(cocktail, category) {
             if (this.cocktails.findIndex(c => parseInt(c.id) == parseInt(cocktail.id)) >= 0) {
-                this.$toast.default(this.$t('menu.cocktail-already-added', {name: cocktail.name}))
-
                 return
             }
-
-            this.$toast.default(this.$t('menu.cocktail-added', {name: cocktail.name}))
-
-            this.showCocktailFinder[finderIdx] = false
 
             category.cocktails.push({
                 id: cocktail.id,
@@ -163,11 +177,30 @@ export default {
                 },
             })
         },
-        addCategory() {
-            this.categories.push({
-                name: 'Category name ' + (this.categories.length + 1),
+        selectCocktail(cocktail, category, finderIdx) {
+            if (this.cocktails.findIndex(c => parseInt(c.id) == parseInt(cocktail.id)) >= 0) {
+                this.$toast.default(this.$t('menu.cocktail-already-added', {name: cocktail.name}))
+
+                return
+            }
+
+            this.showCocktailFinder[finderIdx] = false
+
+            this.addCocktailToCategory(cocktail, category)
+
+            this.$toast.default(this.$t('menu.cocktail-added', {name: cocktail.name}))
+        },
+        addCategory(e, name) {
+            if (!name) {
+                name = 'Category name ' + (this.categories.length + 1)
+            }
+
+            const category = {
+                name: name,
                 cocktails: []
-            })
+            };
+
+            this.categories.push(category)
 
             this.$toast.default(this.$t('menu.category-added'))
 
@@ -175,6 +208,8 @@ export default {
                 this.refreshSortable()
                 document.querySelector(`[data-category-idx="${this.categories.length - 1}"]`).scrollIntoView(true)
             })
+
+            return category
         },
         removeCategory(category) {
             if (category.cocktails.length > 0) {
@@ -196,6 +231,19 @@ export default {
                 this.categories.findIndex(i => i == category),
                 1
             )
+        },
+        clearCategory(category) {
+            if (category.cocktails.length == 0) {
+                return
+            }
+
+            this.$confirm(this.$t('menu.clear-category-confirm', {name: category.name}), {
+                onResolved: (dialog) => {
+                    dialog.close()
+                    this.$toast.default(this.$t('menu.category-cleared'))
+                    category.cocktails = []
+                }
+            })
         },
         removeCocktail(category, cocktail) {
             this.$confirm(this.$t('menu.delete-cocktail-confirm', {name: cocktail.name}), {
@@ -229,6 +277,19 @@ export default {
                 this.menu.url = `${window.location.origin}/menu/${this.bar.slug}`
             }).catch(() => {
             })
+        },
+        async exportMenu() {
+            const csv = await BarAssistantClient.getMenuExport()
+            const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+
+            const url = window?.URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.setAttribute('download', this.appState.bar.slug + '-menu.csv');
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            window?.URL.revokeObjectURL(url);
         },
         refreshSortable() {
             this.sortableInstances = []
@@ -265,6 +326,23 @@ export default {
                 cat.cocktails.forEach(cocktail => {
                     cocktail.price.currency = currency
                 })
+            })
+        },
+        handleCalculatedPrice(cocktail, e) {
+            cocktail.price.price = e.price
+            cocktail.price.currency = e.currency
+        },
+        quickAddShelf() {
+            this.isLoading = true
+            BarAssistantClient.getBarShelfCocktails(this.appState.user.id).then((resp) => {
+                const cat = this.addCategory(null, 'Bar shelf')
+                resp.data.forEach(cocktail => {
+                    this.addCocktailToCategory(cocktail, cat)
+                })
+                this.isLoading = false
+                this.$toast.default(this.$t('menu.added-multiple-cocktails'))
+            }).catch(() => {
+                this.isLoading = false
             })
         },
         saveMenu() {
