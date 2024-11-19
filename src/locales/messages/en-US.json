@@ -509,7 +509,12 @@
     "menu-not-found": "Menu not found",
     "description": "Here you can set up a simple web menu for your bar. You can update your bar link when adding or editing a bar. Use the URL or QR code to share your bar menu with the guests.",
     "no-cocktails-added": "Menu needs to have at least one cocktail",
-    "calculate-price": "Calculate price"
+    "calculate-price": "Calculate price",
+    "clear-category-confirm": "This will remove all cocktails from category \"{name}\"",
+    "category-cleared": "Category cleared",
+    "clear-category": "Clear category",
+    "add-shelf-cocktails": "Add missing cocktails from bar shelf",
+    "export": "Export as csv"
   },
   "bar": {
     "url": "Custom bar URL",
