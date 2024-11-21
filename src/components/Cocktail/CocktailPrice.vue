@@ -8,7 +8,7 @@
         </div>
         <ul class="cocktail-price__ingredients">
             <li v-for="ingredient in cocktailPrice.prices_per_ingredient" :key="ingredient.ingredient.id">
-                {{ ingredient.ingredient.name }} &middot; {{ UnitHandler.formatPrice(ingredient.price_per_pour.price, ingredient.price_per_pour.currency) }} <small>/per use</small>
+                {{ ingredient.ingredient.name }} &middot; {{ UnitHandler.formatPrice(ingredient.price_per_use.price, ingredient.price_per_use.currency) }} <small>/per use ({{ ingredient.units }})</small>
             </li>
             <li class="cocktail-price__missing-note" v-if="cocktailPrice.missing_prices_count > 0">Some ingredients are missing prices</li>
         </ul>

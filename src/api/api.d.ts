@@ -1921,10 +1921,12 @@ export interface components {
             total_price: components["schemas"]["Price"];
             prices_per_ingredient: {
                 ingredient: components["schemas"]["IngredientBasic"];
+                /** @description Units used for price calculation */
+                units: string;
                 /** @description Price per 1 unit of ingredient amount */
-                price_per_amount: components["schemas"]["Price"];
+                price_per_unit: components["schemas"]["Price"];
                 /** @description Price per cocktail ingredient part */
-                price_per_pour: components["schemas"]["Price"];
+                price_per_use: components["schemas"]["Price"];
             }[];
         };
         CocktailRequest: {
