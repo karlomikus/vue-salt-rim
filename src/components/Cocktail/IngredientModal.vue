@@ -70,6 +70,9 @@ function selectIngredient(item: FinderIngredient): void {
             <input v-model="hasVariableAmount" type="checkbox">
             <span>{{ t('ingredient.has-variable-amount') }}</span>
         </label>
+        <p style="margin: 0.5rem 0;">
+            {{ t('ingredient.units-help') }}
+        </p>
         <div class="ingredient-form-group">
             <div class="form-group">
                 <label class="form-label form-label--required" for="ingredient-amount">{{ t('amount') }}:</label>
@@ -89,6 +92,8 @@ function selectIngredient(item: FinderIngredient): void {
                     <option>dashes</option>
                     <option>barspoon</option>
                     <option>drops</option>
+                    <option>topup</option>
+                    <option>leaves</option>
                 </datalist>
             </div>
         </div>
