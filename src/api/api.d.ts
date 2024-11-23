@@ -14,7 +14,7 @@ export interface paths {
         get?: never;
         put?: never;
         /** Authenticate user and get a token */
-        post: operations["ff0821f3f5e448e9be30bed07cac39a3"];
+        post: operations["authenticate"];
         delete?: never;
         options?: never;
         head?: never;
@@ -31,7 +31,7 @@ export interface paths {
         get?: never;
         put?: never;
         /** Logout currently authenticated user */
-        post: operations["7faef09646fa779e3f4eb458d4472c75"];
+        post: operations["logout"];
         delete?: never;
         options?: never;
         head?: never;
@@ -48,7 +48,7 @@ export interface paths {
         get?: never;
         put?: never;
         /** Register a new user */
-        post: operations["26578afaf886b858f56e5e1b8fc3403b"];
+        post: operations["register"];
         delete?: never;
         options?: never;
         head?: never;
@@ -65,7 +65,7 @@ export interface paths {
         get?: never;
         put?: never;
         /** Request a new user password */
-        post: operations["7a6f983e087620ddd905bd4925f83983"];
+        post: operations["passwordForgot"];
         delete?: never;
         options?: never;
         head?: never;
@@ -82,7 +82,7 @@ export interface paths {
         get?: never;
         put?: never;
         /** Reset user password */
-        post: operations["5000f083616176e5a4edc804f813aecc"];
+        post: operations["passwordReset"];
         delete?: never;
         options?: never;
         head?: never;
@@ -97,7 +97,7 @@ export interface paths {
             cookie?: never;
         };
         /** Confirm user account */
-        get: operations["46fe45b80f30383e9f9fe664be4d5dff"];
+        get: operations["confirmAccount"];
         put?: never;
         post?: never;
         delete?: never;
@@ -117,10 +117,10 @@ export interface paths {
          * Show a list of bars
          * @description Show a list of bars user has access to. Includes bars that user has made and bars he is a member of.
          */
-        get: operations["8e4aff1910c2f6b973c0bcff7ac77418"];
+        get: operations["listBars"];
         put?: never;
         /** Create a new bar */
-        post: operations["af500d926f43cd1cd146adc9c46f8e41"];
+        post: operations["saveBar"];
         delete?: never;
         options?: never;
         head?: never;
@@ -135,12 +135,12 @@ export interface paths {
             cookie?: never;
         };
         /** Show a specific bar */
-        get: operations["6e92536f11339d30675019e6e93f9ce4"];
+        get: operations["showBar"];
         /** Update a bar */
-        put: operations["06fb0f42934fc2cd15b00b25027494d1"];
+        put: operations["updateBar"];
         post?: never;
         /** Delete a bar */
-        delete: operations["dac7d15bfe40981c358d5a52c8a9e31b"];
+        delete: operations["deleteBar"];
         options?: never;
         head?: never;
         patch?: never;
@@ -156,7 +156,7 @@ export interface paths {
         get?: never;
         put?: never;
         /** Join a bar via invite code */
-        post: operations["825a1e86cd76f3ca07ad2f11ea45f648"];
+        post: operations["joinBar"];
         delete?: never;
         options?: never;
         head?: never;
@@ -171,11 +171,11 @@ export interface paths {
             cookie?: never;
         };
         /** List all members of a bar */
-        get: operations["7a49e26fb4754edae7aa107fd1e35205"];
+        get: operations["listBarMembership"];
         put?: never;
         post?: never;
         /** Leave a bar you are a member of */
-        delete: operations["c3986ac9cf5fe6e4090b993e323480ad"];
+        delete: operations["leaveBar"];
         options?: never;
         head?: never;
         patch?: never;
@@ -192,7 +192,7 @@ export interface paths {
         put?: never;
         post?: never;
         /** Remove a member from a bar */
-        delete: operations["74df840e62b14107dd9d65b49ed84b27"];
+        delete: operations["removeBarMembership"];
         options?: never;
         head?: never;
         patch?: never;
@@ -208,7 +208,7 @@ export interface paths {
         get?: never;
         put?: never;
         /** Transfer bar ownership */
-        post: operations["208f8a6850027fe0ea9f3b304975fa30"];
+        post: operations["transferBarOwnership"];
         delete?: never;
         options?: never;
         head?: never;
@@ -225,7 +225,7 @@ export interface paths {
         get?: never;
         put?: never;
         /** Update bar status */
-        post: operations["200c1aba9ada2cd66a7d0b7a4ec90a8e"];
+        post: operations["toggleBarStatus"];
         delete?: never;
         options?: never;
         head?: never;
@@ -240,10 +240,10 @@ export interface paths {
             cookie?: never;
         };
         /** Show a list of cocktails */
-        get: operations["4400982243630124406e8675b4632a32"];
+        get: operations["listCocktails"];
         put?: never;
         /** Create a new cocktail */
-        post: operations["cbc4c3f93b89c16a916c7cc574ca118e"];
+        post: operations["saveCocktail"];
         delete?: never;
         options?: never;
         head?: never;
@@ -258,12 +258,12 @@ export interface paths {
             cookie?: never;
         };
         /** Show a specific cocktail */
-        get: operations["9286466f1f4b710e7f06c79f947ec7b0"];
+        get: operations["showCocktail"];
         /** Update a specific cocktail */
-        put: operations["ca968c657169055c33bc68a1b08b6eaa"];
+        put: operations["updateCocktail"];
         post?: never;
         /** Delete a specific cocktail */
-        delete: operations["c642d725c11d12c781fbfad353ba7bcb"];
+        delete: operations["deleteCocktail"];
         options?: never;
         head?: never;
         patch?: never;
@@ -279,7 +279,7 @@ export interface paths {
         get?: never;
         put?: never;
         /** Toggle cocktail as favorite */
-        post: operations["89742b5d96b9183518a473d9e640db6e"];
+        post: operations["toggleCocktailFavorite"];
         delete?: never;
         options?: never;
         head?: never;
@@ -296,9 +296,9 @@ export interface paths {
         get?: never;
         put?: never;
         /** Create a public ID for cocktail */
-        post: operations["191e2ca5633e6d5f7c25430fddbbd9c8"];
+        post: operations["createCocktailPublicLink"];
         /** Delete cocktail public link */
-        delete: operations["a4a90713002827189fef279434f86791"];
+        delete: operations["deleteCocktailPublicLink"];
         options?: never;
         head?: never;
         patch?: never;
@@ -312,7 +312,7 @@ export interface paths {
             cookie?: never;
         };
         /** Share a cocktail */
-        get: operations["c2af4839cdc102afb67b7be674895e8c"];
+        get: operations["shareCocktail"];
         put?: never;
         post?: never;
         delete?: never;
@@ -329,7 +329,7 @@ export interface paths {
             cookie?: never;
         };
         /** Show similar cocktails */
-        get: operations["3e08ff7e8e549570aadbaf5b727eaa2a"];
+        get: operations["showSimilarCocktails"];
         put?: never;
         post?: never;
         delete?: never;
@@ -348,7 +348,7 @@ export interface paths {
         get?: never;
         put?: never;
         /** Copy cocktail */
-        post: operations["d7c826954ef1111d8a897c62e27df861"];
+        post: operations["copyCocktail"];
         delete?: never;
         options?: never;
         head?: never;
@@ -383,10 +383,10 @@ export interface paths {
             cookie?: never;
         };
         /** Show a list of all methods */
-        get: operations["14008654b6c5780b9e826e4e2fcf237a"];
+        get: operations["listCocktailMethods"];
         put?: never;
         /** Create a new method */
-        post: operations["4b70b5048cbee429f002bf3f270c8a94"];
+        post: operations["saveCocktailMethod"];
         delete?: never;
         options?: never;
         head?: never;
@@ -401,12 +401,12 @@ export interface paths {
             cookie?: never;
         };
         /** Show a single method */
-        get: operations["f1714d10fa6232a1cc65c88929b26bb8"];
+        get: operations["showCocktailMethod"];
         /** Update a specific method */
-        put: operations["7507b8dac0ec7199fc2c229a2c127a4e"];
+        put: operations["updateCocktailMethod"];
         post?: never;
         /** Delete specific method */
-        delete: operations["42b0ceafc9fa786c4984ff1508868ec3"];
+        delete: operations["deleteCocktailMethod"];
         options?: never;
         head?: never;
         patch?: never;
@@ -420,10 +420,10 @@ export interface paths {
             cookie?: never;
         };
         /** Show a list of collections */
-        get: operations["308d0156539f4be8f650f7ed64ed3d7f"];
+        get: operations["listCollections"];
         put?: never;
         /** Create a new collection */
-        post: operations["a2c6fd135d182cbeeadbc042b35b0a80"];
+        post: operations["saveCollection"];
         delete?: never;
         options?: never;
         head?: never;
@@ -438,7 +438,7 @@ export interface paths {
             cookie?: never;
         };
         /** List bar shared collections */
-        get: operations["a15fa7e1679d8b4eafed56112a63da76"];
+        get: operations["listSharedCollections"];
         put?: never;
         post?: never;
         delete?: never;
@@ -455,12 +455,12 @@ export interface paths {
             cookie?: never;
         };
         /** Show a specific collection */
-        get: operations["621b31f704cec7566d650351f0907df6"];
+        get: operations["showCollection"];
         /** Update a specific collection */
-        put: operations["7497163b1fe8e97bae47a3904200722a"];
+        put: operations["updateCollection"];
         post?: never;
         /** Delete a specific collection */
-        delete: operations["00390f2c5b043adc54cc72165bc3eccb"];
+        delete: operations["deleteCollection"];
         options?: never;
         head?: never;
         patch?: never;
@@ -478,7 +478,7 @@ export interface paths {
          * Sync cocktails in a collection
          * @description Used to updated/add/delete cocktails in a collection. To delete all cocktails pass an empty array.
          */
-        put: operations["934e63129e4bf90dd91eccc108f51f40"];
+        put: operations["syncCocktailsInCollection"];
         post?: never;
         delete?: never;
         options?: never;
@@ -494,7 +494,7 @@ export interface paths {
             cookie?: never;
         };
         /** Show a public cocktail */
-        get: operations["83841be3da52f7694d8382c5f5b13d8e"];
+        get: operations["showPublicCocktail"];
         put?: never;
         post?: never;
         delete?: never;
@@ -511,10 +511,10 @@ export interface paths {
             cookie?: never;
         };
         /** Show a list of exports */
-        get: operations["5bc2aea6bb7fb81d2a426faccbb4b4d7"];
+        get: operations["listExports"];
         put?: never;
         /** Create a new export */
-        post: operations["1bedc78fd0edd24fdcc408977166e8cb"];
+        post: operations["saveExport"];
         delete?: never;
         options?: never;
         head?: never;
@@ -532,7 +532,7 @@ export interface paths {
         put?: never;
         post?: never;
         /** Delete export */
-        delete: operations["6566cf7c2310f6d0f77d6be65bb36868"];
+        delete: operations["deleteExport"];
         options?: never;
         head?: never;
         patch?: never;
@@ -546,13 +546,13 @@ export interface paths {
             cookie?: never;
         };
         /** Download export */
-        get: operations["df14ed9175061d3560c934ca7c89b47a"];
+        get: operations["downloadExport"];
         put?: never;
         /**
          * Generate download link
          * @description Generates a publicly accessible download link for the export. The link will be valid for 1 minute by default.
          */
-        post: operations["48e1c2637c22de5ec50f90272526b454"];
+        post: operations["generateExportDownloadLink"];
         delete?: never;
         options?: never;
         head?: never;
@@ -567,10 +567,10 @@ export interface paths {
             cookie?: never;
         };
         /** Show a list of glass types */
-        get: operations["aa68a5da541be756aa65f07353e63cdf"];
+        get: operations["listGlassware"];
         put?: never;
         /** Create a new glass */
-        post: operations["b81ce1bc5d5988d9221774a715a90950"];
+        post: operations["saveGlassware"];
         delete?: never;
         options?: never;
         head?: never;
@@ -585,12 +585,12 @@ export interface paths {
             cookie?: never;
         };
         /** Show glass */
-        get: operations["aca8ea95b45a17cfe2a0442cde2f53ad"];
+        get: operations["showGlassware"];
         /** Update glass */
-        put: operations["c9c1cb0561aa1222cc78654eaceb9a62"];
+        put: operations["updateGlassware"];
         post?: never;
         /** Delete glass */
-        delete: operations["876925de63d0a9bf6b8d2337661f135a"];
+        delete: operations["deleteGlassware"];
         options?: never;
         head?: never;
         patch?: never;
@@ -607,13 +607,13 @@ export interface paths {
          * List uploaded images
          * @description List all images uploaded by the authenticated user
          */
-        get: operations["3ac02bbdafb65e59d8b5c6d5aaf9806d"];
+        get: operations["listImages"];
         put?: never;
         /**
          * Upload an image
          * @description Used to upload multiple images at once. Uploaded images via this endpoint will not be attached to any resource. Images are converted to WebP format with 85% quality of the original image.
          */
-        post: operations["d889115b2fa2ccddce23e39df958cc47"];
+        post: operations["uploadImage"];
         delete?: never;
         options?: never;
         head?: never;
@@ -628,12 +628,12 @@ export interface paths {
             cookie?: never;
         };
         /** Show an image */
-        get: operations["02d07ad762ad36175a8b4c2cdf4eef03"];
+        get: operations["showImage"];
         put?: never;
         /** Update image */
-        post: operations["18a765565c4f43cc01167738ab8ff7cd"];
+        post: operations["updateImage"];
         /** Delete image */
-        delete: operations["99a6b84660d0881a68e57435afb2e6ea"];
+        delete: operations["deleteImage"];
         options?: never;
         head?: never;
         patch?: never;
@@ -647,7 +647,7 @@ export interface paths {
             cookie?: never;
         };
         /** Get a thumbnail of an image */
-        get: operations["f3fac097ef10296417650431b970d7b3"];
+        get: operations["getImageThumbnail"];
         put?: never;
         post?: never;
         delete?: never;
@@ -669,7 +669,7 @@ export interface paths {
          * Import recipe
          * @description Import a recipe from a JSON structure that follows Bar Assistant recipe JSON schema. Supported schemas include [Draft 2](https://barassistant.app/cocktail-02.schema.json) and [Draft 1](https://barassistant.app/cocktail-01.schema.json).
          */
-        post: operations["f46bb44c14109f5d529b854e81d57150"];
+        post: operations["importCocktail"];
         delete?: never;
         options?: never;
         head?: never;
@@ -689,7 +689,7 @@ export interface paths {
          * Scrape a recipe
          * @description Try to scrape a recipe from a website. Most of the well known recipe websites should work. Data returned is a valid JSON schema that you can import using import cocktail endpoint.
          */
-        post: operations["33b756be1976d85e9b0e8e734beed74f"];
+        post: operations["scrapeRecipe"];
         delete?: never;
         options?: never;
         head?: never;
@@ -704,10 +704,10 @@ export interface paths {
             cookie?: never;
         };
         /** Show a list of ingredient categories */
-        get: operations["9c5a332d2fd9a695a6805451249a0c28"];
+        get: operations["listIngredientCategories"];
         put?: never;
         /** Create a new ingredient category */
-        post: operations["beef561152a333f7c81fec58a7590f37"];
+        post: operations["saveIngredientCategory"];
         delete?: never;
         options?: never;
         head?: never;
@@ -722,12 +722,12 @@ export interface paths {
             cookie?: never;
         };
         /** Show ingredient category */
-        get: operations["cca43ededebdf742491f0f8eb0dcfab5"];
+        get: operations["showIngredientCategory"];
         /** Update ingredient category */
-        put: operations["bdd96c56bc078a0dbdbc9cb71b1bd503"];
+        put: operations["updateIngredientCategory"];
         post?: never;
         /** Delete ingredient category */
-        delete: operations["5190ba80efae47305bdbcf1a68de6fd7"];
+        delete: operations["deleteIngredientCategory"];
         options?: never;
         head?: never;
         patch?: never;
@@ -741,10 +741,10 @@ export interface paths {
             cookie?: never;
         };
         /** Show a list of ingredients */
-        get: operations["1638cf5bb5113e3ca4793347b9ca84ed"];
+        get: operations["listIngredients"];
         put?: never;
         /** Create an ingredient */
-        post: operations["efa43043e488624a2f3d8e8123a2d9be"];
+        post: operations["saveIngredient"];
         delete?: never;
         options?: never;
         head?: never;
@@ -759,12 +759,12 @@ export interface paths {
             cookie?: never;
         };
         /** Show an ingredient */
-        get: operations["0ede5ee7aaed9fd2c985386b7a13e005"];
+        get: operations["showIngredient"];
         /** Update an ingredient */
-        put: operations["f9433e9c103e95ceebcf99171a11e81d"];
+        put: operations["updateIngredient"];
         post?: never;
         /** Delete an ingredient */
-        delete: operations["31e064558b854ed32ba5f29a76aee385"];
+        delete: operations["deleteIngredient"];
         options?: never;
         head?: never;
         patch?: never;
@@ -778,7 +778,7 @@ export interface paths {
             cookie?: never;
         };
         /** Extra cocktails you can make if you add this ingredient to your shelf */
-        get: operations["ff324ec47870a7091f125afea3f7e664"];
+        get: operations["extraIngredients"];
         put?: never;
         post?: never;
         delete?: never;
@@ -795,7 +795,7 @@ export interface paths {
             cookie?: never;
         };
         /** List of cocktails that use this ingredient */
-        get: operations["aba5fae0baf2ce1fc02a691412c8a6ab"];
+        get: operations["ingredientCocktails"];
         put?: never;
         post?: never;
         delete?: never;
@@ -815,7 +815,7 @@ export interface paths {
          * List ingredient substitutes
          * @description Show a list of ingredients that are used as a substitute for this ingredient in cocktail recipes.
          */
-        get: operations["fccb6b72c41f8a78ab604bc86a879c27"];
+        get: operations["ingredientSubstitutes"];
         put?: never;
         post?: never;
         delete?: never;
@@ -832,10 +832,10 @@ export interface paths {
             cookie?: never;
         };
         /** Show menu */
-        get: operations["15005db445c5ccad445e198729cc4e22"];
+        get: operations["showMenu"];
         put?: never;
         /** Update menu */
-        post: operations["9ac6e03b541a1351a5d691b2aa232283"];
+        post: operations["updateMenu"];
         delete?: never;
         options?: never;
         head?: never;
@@ -850,7 +850,7 @@ export interface paths {
             cookie?: never;
         };
         /** Show public bar menu */
-        get: operations["c2dee2186390212153a41c0527ddb728"];
+        get: operations["publicMenu"];
         put?: never;
         post?: never;
         delete?: never;
@@ -870,7 +870,7 @@ export interface paths {
          * Export menu
          * @description Export menu as CSV
          */
-        get: operations["69581b120488a658b86369819bd257e0"];
+        get: operations["exportMenu"];
         put?: never;
         post?: never;
         delete?: never;
@@ -887,10 +887,10 @@ export interface paths {
             cookie?: never;
         };
         /** Show a list of all notes */
-        get: operations["8b1d23cbbf81842599e3e9463477cb58"];
+        get: operations["listNotes"];
         put?: never;
         /** Create a new note */
-        post: operations["a0c90a217efa521e80b3b94c1a4bf3a7"];
+        post: operations["saveNote"];
         delete?: never;
         options?: never;
         head?: never;
@@ -905,11 +905,11 @@ export interface paths {
             cookie?: never;
         };
         /** Show a single note */
-        get: operations["c46ec527098402aba4a10b074a7b4047"];
+        get: operations["showNote"];
         put?: never;
         post?: never;
         /** Delete a specific note */
-        delete: operations["075f33453cc8e1e0d26bd8f07b2c5d59"];
+        delete: operations["deleteNote"];
         options?: never;
         head?: never;
         patch?: never;
@@ -923,10 +923,10 @@ export interface paths {
             cookie?: never;
         };
         /** Show a list of tokens */
-        get: operations["68b9d61d5bd7070a04356cf10d75f151"];
+        get: operations["listTokens"];
         put?: never;
         /** Create new personal access token */
-        post: operations["d91a0f74be09f52fd56164e7c58e7795"];
+        post: operations["saveToken"];
         delete?: never;
         options?: never;
         head?: never;
@@ -944,7 +944,7 @@ export interface paths {
         put?: never;
         post?: never;
         /** Revoke personal access token */
-        delete: operations["e3638ffac30ab37a8015b26a88b7bad9"];
+        delete: operations["deleteToken"];
         options?: never;
         head?: never;
         patch?: never;
@@ -958,10 +958,10 @@ export interface paths {
             cookie?: never;
         };
         /** Show a list of price categories */
-        get: operations["8ffdcf8e07576f57714428563d35c0ff"];
+        get: operations["listPriceCategories"];
         put?: never;
         /** Create a new price category */
-        post: operations["000ce8107dfa5fe811876785a0f24308"];
+        post: operations["savePriceCategory"];
         delete?: never;
         options?: never;
         head?: never;
@@ -978,10 +978,10 @@ export interface paths {
         /** Show a price category */
         get: operations["10017aa4f043f641c210bafc56092997"];
         /** Update price category */
-        put: operations["86fc70306463caa72b7bfd33553393be"];
+        put: operations["updatePriceCategory"];
         post?: never;
         /** Delete price category */
-        delete: operations["9f109b6442b874b6de95a9b1b400d1fb"];
+        delete: operations["deletePriceCategory"];
         options?: never;
         head?: never;
         patch?: never;
@@ -995,10 +995,10 @@ export interface paths {
             cookie?: never;
         };
         /** Show profile */
-        get: operations["73fd658c723e80f927b251628b9a616b"];
+        get: operations["showProfile"];
         put?: never;
         /** Update profile */
-        post: operations["c5958eea850b563b057d22dc8258efbf"];
+        post: operations["updateProfile"];
         delete?: never;
         options?: never;
         head?: never;
@@ -1015,9 +1015,9 @@ export interface paths {
         get?: never;
         put?: never;
         /** Rate a cocktail */
-        post: operations["c7c135615b762420f7b338e0bc744a76"];
+        post: operations["rateCocktail"];
         /** Delete current user's cocktail rating */
-        delete: operations["93d095c7348ac6ee7d0f3cb8ea1f1c36"];
+        delete: operations["deleteRating"];
         options?: never;
         head?: never;
         patch?: never;
@@ -1031,7 +1031,7 @@ export interface paths {
             cookie?: never;
         };
         /** Show server information */
-        get: operations["25784e4e494f0fd4dbbdb7b92c301b26"];
+        get: operations["showServerVersion"];
         put?: never;
         post?: never;
         delete?: never;
@@ -1051,7 +1051,7 @@ export interface paths {
          * Show a list of shelf ingredients
          * @description Ingredients that user saved to their shelf
          */
-        get: operations["b34236369b075eabaacef013be799024"];
+        get: operations["listUserIngredients"];
         put?: never;
         post?: never;
         delete?: never;
@@ -1071,7 +1071,7 @@ export interface paths {
          * Show a list shelf cocktails
          * @description Cocktails that the user can make with ingredients on their shelf
          */
-        get: operations["5a48f072f2ca1f25807838c8ae331db5"];
+        get: operations["listUserShelfCocktails"];
         put?: never;
         post?: never;
         delete?: never;
@@ -1088,7 +1088,7 @@ export interface paths {
             cookie?: never;
         };
         /** Show a list of cocktails user has favorited */
-        get: operations["0038cb5730a723a0c58e5605fecb0ccb"];
+        get: operations["listUserFavoriteCocktails"];
         put?: never;
         post?: never;
         delete?: never;
@@ -1107,7 +1107,7 @@ export interface paths {
         get?: never;
         put?: never;
         /** Batch store ingredients to the shelf */
-        post: operations["28c0db334504ef005e3704dcc80154b1"];
+        post: operations["batchStoreUserIngredients"];
         delete?: never;
         options?: never;
         head?: never;
@@ -1124,7 +1124,7 @@ export interface paths {
         get?: never;
         put?: never;
         /** Delete multiple ingredients from the shelf */
-        post: operations["8effce422c8cbe13a9b273a71f9d8afc"];
+        post: operations["batchDeleteUserIngredients"];
         delete?: never;
         options?: never;
         head?: never;
@@ -1139,7 +1139,7 @@ export interface paths {
             cookie?: never;
         };
         /** Recommend next ingredients */
-        get: operations["f5e680e7f9f44a047888ad4bc8a22ba8"];
+        get: operations["recommendIngredients"];
         put?: never;
         post?: never;
         delete?: never;
@@ -1159,7 +1159,7 @@ export interface paths {
          * Show a list of bar shelf ingredients
          * @description Ingredients that bar has in it's shelf
          */
-        get: operations["0b3c5cbb1c0b8aa375aee04c1b3f021a"];
+        get: operations["listBarShelfIngredients"];
         put?: never;
         post?: never;
         delete?: never;
@@ -1178,7 +1178,7 @@ export interface paths {
         get?: never;
         put?: never;
         /** Batch store bar ingredients to bar shelf */
-        post: operations["72acd54d8500a59f453864e000f51c7b"];
+        post: operations["batchStoreBarShelfIngredients"];
         delete?: never;
         options?: never;
         head?: never;
@@ -1195,7 +1195,7 @@ export interface paths {
         get?: never;
         put?: never;
         /** Delete multiple ingredients from bar shelf */
-        post: operations["2a4715024c2fca55798ecd592feaf6e5"];
+        post: operations["batchDeleteBarShelfIngredients"];
         delete?: never;
         options?: never;
         head?: never;
@@ -1213,7 +1213,7 @@ export interface paths {
          * Show a list bar shelf cocktails
          * @description Cocktails that the bar can make with ingredients on their shelf
          */
-        get: operations["40813734b16874942a79324150fb3dd1"];
+        get: operations["listBarShelfCocktails"];
         put?: never;
         post?: never;
         delete?: never;
@@ -1230,7 +1230,7 @@ export interface paths {
             cookie?: never;
         };
         /** Show shopping list */
-        get: operations["ea114c1013eabd71064b7b33513d13cd"];
+        get: operations["listShoppingListIngredients"];
         put?: never;
         post?: never;
         delete?: never;
@@ -1249,7 +1249,7 @@ export interface paths {
         get?: never;
         put?: never;
         /** Batch add ingredients to shopping list */
-        post: operations["c9dbd5fceec4406656e93b94646ea5f6"];
+        post: operations["batchStoreShoppingListIngredients"];
         delete?: never;
         options?: never;
         head?: never;
@@ -1266,7 +1266,7 @@ export interface paths {
         get?: never;
         put?: never;
         /** Batch delete ingredients from shopping list */
-        post: operations["cec5d8ca07890aaad3cd264ba62a88bb"];
+        post: operations["batchDeleteShoppingListIngredients"];
         delete?: never;
         options?: never;
         head?: never;
@@ -1281,7 +1281,7 @@ export interface paths {
             cookie?: never;
         };
         /** Share shopping list */
-        get: operations["1d4aaec85e00ac2c559f362058f02056"];
+        get: operations["shareShoppingList"];
         put?: never;
         post?: never;
         delete?: never;
@@ -1298,7 +1298,7 @@ export interface paths {
             cookie?: never;
         };
         /** Show bar stats */
-        get: operations["d62319d3bf13005383b7d8027e9056ec"];
+        get: operations["showBarStats"];
         put?: never;
         post?: never;
         delete?: never;
@@ -1315,10 +1315,10 @@ export interface paths {
             cookie?: never;
         };
         /** Get subscription status */
-        get: operations["69a9ec343d37c0baa6b984cac0c06da8"];
+        get: operations["showSubscription"];
         put?: never;
         /** Update subscription */
-        post: operations["6b1e9ae3c684b7a71a5ab7348766e6c5"];
+        post: operations["updateSubscription"];
         delete?: never;
         options?: never;
         head?: never;
@@ -1333,10 +1333,10 @@ export interface paths {
             cookie?: never;
         };
         /** Show a list of all tags */
-        get: operations["e5e1e0ec136ce6b73c6636ef9635a596"];
+        get: operations["listTags"];
         put?: never;
         /** Create a new tag */
-        post: operations["436ed7a7115fce5026326a5d67a016ac"];
+        post: operations["saveTag"];
         delete?: never;
         options?: never;
         head?: never;
@@ -1351,12 +1351,12 @@ export interface paths {
             cookie?: never;
         };
         /** Show a single tag */
-        get: operations["df2e47c29c59436f33f9b36e4b5f30f2"];
+        get: operations["showTag"];
         /** Update tag */
-        put: operations["3a6faf0d586a666498d08786030214c3"];
+        put: operations["updateTag"];
         post?: never;
         /** Delete tag */
-        delete: operations["3093352bf630017b8fcf7705e9b329c4"];
+        delete: operations["deleteTag"];
         options?: never;
         head?: never;
         patch?: never;
@@ -1370,10 +1370,10 @@ export interface paths {
             cookie?: never;
         };
         /** Show a list of users of a bar */
-        get: operations["0d0cb04fffa73faf3be78b1a0b658561"];
+        get: operations["listUsers"];
         put?: never;
         /** Create a new user */
-        post: operations["a53b4f22b9e0de280870f1e187f6bee3"];
+        post: operations["saveUser"];
         delete?: never;
         options?: never;
         head?: never;
@@ -1388,12 +1388,12 @@ export interface paths {
             cookie?: never;
         };
         /** Show a user */
-        get: operations["89cd377bbebe14aaf4174e3916502852"];
+        get: operations["showUser"];
         /** Update a user */
-        put: operations["6972a68618aa96af50377dcc8fe79aef"];
+        put: operations["updateUser"];
         post?: never;
         /** Delete a user */
-        delete: operations["0c7e7a133a818ac4b30f2d7dd1b04b91"];
+        delete: operations["deleteUser"];
         options?: never;
         head?: never;
         patch?: never;
@@ -1407,10 +1407,10 @@ export interface paths {
             cookie?: never;
         };
         /** Show a list of utensils */
-        get: operations["613e6e2fed96a23278a5036159e9087d"];
+        get: operations["listUtensils"];
         put?: never;
         /** Create a new utensil */
-        post: operations["eef2f70636f45820b56cc0025448f847"];
+        post: operations["saveUtensil"];
         delete?: never;
         options?: never;
         head?: never;
@@ -1425,12 +1425,12 @@ export interface paths {
             cookie?: never;
         };
         /** Show utensil */
-        get: operations["1b9d7fe5ecf4a0271c20ba17654d209a"];
+        get: operations["showUtensil"];
         /** Update a specific utensil */
-        put: operations["0688a6a8648cdad35503bad732bba86f"];
+        put: operations["updateUtensil"];
         post?: never;
         /** Delete specific utensil */
-        delete: operations["2f216f7ba27dd48b73ea157501c8bc81"];
+        delete: operations["deleteUtensil"];
         options?: never;
         head?: never;
         patch?: never;
@@ -2663,7 +2663,7 @@ export interface components {
 }
 export type $defs = Record<string, never>;
 export interface operations {
-    ff0821f3f5e448e9be30bed07cac39a3: {
+    authenticate: {
         parameters: {
             query?: never;
             header?: never;
@@ -2696,7 +2696,7 @@ export interface operations {
             };
         };
     };
-    "7faef09646fa779e3f4eb458d4472c75": {
+    logout: {
         parameters: {
             query?: never;
             header?: never;
@@ -2714,7 +2714,7 @@ export interface operations {
             };
         };
     };
-    "26578afaf886b858f56e5e1b8fc3403b": {
+    register: {
         parameters: {
             query?: never;
             header?: never;
@@ -2751,7 +2751,7 @@ export interface operations {
             };
         };
     };
-    "7a6f983e087620ddd905bd4925f83983": {
+    passwordForgot: {
         parameters: {
             query?: never;
             header?: never;
@@ -2783,7 +2783,7 @@ export interface operations {
             };
         };
     };
-    "5000f083616176e5a4edc804f813aecc": {
+    passwordReset: {
         parameters: {
             query?: never;
             header?: never;
@@ -2821,7 +2821,7 @@ export interface operations {
             };
         };
     };
-    "46fe45b80f30383e9f9fe664be4d5dff": {
+    confirmAccount: {
         parameters: {
             query?: never;
             header?: never;
@@ -2866,7 +2866,7 @@ export interface operations {
             };
         };
     };
-    "8e4aff1910c2f6b973c0bcff7ac77418": {
+    listBars: {
         parameters: {
             query?: never;
             header?: never;
@@ -2888,7 +2888,7 @@ export interface operations {
             };
         };
     };
-    af500d926f43cd1cd146adc9c46f8e41: {
+    saveBar: {
         parameters: {
             query?: never;
             header?: never;
@@ -2936,7 +2936,7 @@ export interface operations {
             };
         };
     };
-    "6e92536f11339d30675019e6e93f9ce4": {
+    showBar: {
         parameters: {
             query?: never;
             header?: never;
@@ -2983,7 +2983,7 @@ export interface operations {
             };
         };
     };
-    "06fb0f42934fc2cd15b00b25027494d1": {
+    updateBar: {
         parameters: {
             query?: never;
             header?: never;
@@ -3043,7 +3043,7 @@ export interface operations {
             };
         };
     };
-    dac7d15bfe40981c358d5a52c8a9e31b: {
+    deleteBar: {
         parameters: {
             query?: never;
             header?: never;
@@ -3086,7 +3086,7 @@ export interface operations {
             };
         };
     };
-    "825a1e86cd76f3ca07ad2f11ea45f648": {
+    joinBar: {
         parameters: {
             query?: never;
             header?: never;
@@ -3137,7 +3137,7 @@ export interface operations {
             };
         };
     };
-    "7a49e26fb4754edae7aa107fd1e35205": {
+    listBarMembership: {
         parameters: {
             query?: never;
             header?: never;
@@ -3184,7 +3184,7 @@ export interface operations {
             };
         };
     };
-    c3986ac9cf5fe6e4090b993e323480ad: {
+    leaveBar: {
         parameters: {
             query?: never;
             header?: never;
@@ -3216,7 +3216,7 @@ export interface operations {
             };
         };
     };
-    "74df840e62b14107dd9d65b49ed84b27": {
+    removeBarMembership: {
         parameters: {
             query?: never;
             header?: never;
@@ -3261,7 +3261,7 @@ export interface operations {
             };
         };
     };
-    "208f8a6850027fe0ea9f3b304975fa30": {
+    transferBarOwnership: {
         parameters: {
             query?: never;
             header?: never;
@@ -3314,7 +3314,7 @@ export interface operations {
             };
         };
     };
-    "200c1aba9ada2cd66a7d0b7a4ec90a8e": {
+    toggleBarStatus: {
         parameters: {
             query?: never;
             header?: never;
@@ -3363,7 +3363,7 @@ export interface operations {
             };
         };
     };
-    "4400982243630124406e8675b4632a32": {
+    listCocktails: {
         parameters: {
             query?: {
                 /** @description Database id of a bar. Required if you are not using `Bar-Assistant-Bar-Id` header. */
@@ -3458,7 +3458,7 @@ export interface operations {
             };
         };
     };
-    cbc4c3f93b89c16a916c7cc574ca118e: {
+    saveCocktail: {
         parameters: {
             query?: {
                 /** @description Database id of a bar. Required if you are not using `Bar-Assistant-Bar-Id` header. */
@@ -3512,7 +3512,7 @@ export interface operations {
             };
         };
     };
-    "9286466f1f4b710e7f06c79f947ec7b0": {
+    showCocktail: {
         parameters: {
             query?: never;
             header?: never;
@@ -3559,7 +3559,7 @@ export interface operations {
             };
         };
     };
-    ca968c657169055c33bc68a1b08b6eaa: {
+    updateCocktail: {
         parameters: {
             query?: never;
             header?: never;
@@ -3619,7 +3619,7 @@ export interface operations {
             };
         };
     };
-    c642d725c11d12c781fbfad353ba7bcb: {
+    deleteCocktail: {
         parameters: {
             query?: never;
             header?: never;
@@ -3662,7 +3662,7 @@ export interface operations {
             };
         };
     };
-    "89742b5d96b9183518a473d9e640db6e": {
+    toggleCocktailFavorite: {
         parameters: {
             query?: never;
             header?: never;
@@ -3714,7 +3714,7 @@ export interface operations {
             };
         };
     };
-    "191e2ca5633e6d5f7c25430fddbbd9c8": {
+    createCocktailPublicLink: {
         parameters: {
             query?: never;
             header?: never;
@@ -3761,7 +3761,7 @@ export interface operations {
             };
         };
     };
-    a4a90713002827189fef279434f86791: {
+    deleteCocktailPublicLink: {
         parameters: {
             query?: never;
             header?: never;
@@ -3804,7 +3804,7 @@ export interface operations {
             };
         };
     };
-    c2af4839cdc102afb67b7be674895e8c: {
+    shareCocktail: {
         parameters: {
             query?: {
                 /** @description Share format */
@@ -3861,7 +3861,7 @@ export interface operations {
             };
         };
     };
-    "3e08ff7e8e549570aadbaf5b727eaa2a": {
+    showSimilarCocktails: {
         parameters: {
             query?: never;
             header?: never;
@@ -3908,7 +3908,7 @@ export interface operations {
             };
         };
     };
-    d7c826954ef1111d8a897c62e27df861: {
+    copyCocktail: {
         parameters: {
             query?: never;
             header?: never;
@@ -3993,7 +3993,7 @@ export interface operations {
             };
         };
     };
-    "14008654b6c5780b9e826e4e2fcf237a": {
+    listCocktailMethods: {
         parameters: {
             query?: {
                 /** @description Database id of a bar. Required if you are not using `Bar-Assistant-Bar-Id` header. */
@@ -4021,7 +4021,7 @@ export interface operations {
             };
         };
     };
-    "4b70b5048cbee429f002bf3f270c8a94": {
+    saveCocktailMethod: {
         parameters: {
             query?: {
                 /** @description Database id of a bar. Required if you are not using `Bar-Assistant-Bar-Id` header. */
@@ -4066,7 +4066,7 @@ export interface operations {
             };
         };
     };
-    f1714d10fa6232a1cc65c88929b26bb8: {
+    showCocktailMethod: {
         parameters: {
             query?: never;
             header?: never;
@@ -4113,7 +4113,7 @@ export interface operations {
             };
         };
     };
-    "7507b8dac0ec7199fc2c229a2c127a4e": {
+    updateCocktailMethod: {
         parameters: {
             query?: never;
             header?: never;
@@ -4164,7 +4164,7 @@ export interface operations {
             };
         };
     };
-    "42b0ceafc9fa786c4984ff1508868ec3": {
+    deleteCocktailMethod: {
         parameters: {
             query?: never;
             header?: never;
@@ -4207,7 +4207,7 @@ export interface operations {
             };
         };
     };
-    "308d0156539f4be8f650f7ed64ed3d7f": {
+    listCollections: {
         parameters: {
             query?: {
                 /** @description Database id of a bar. Required if you are not using `Bar-Assistant-Bar-Id` header. */
@@ -4245,7 +4245,7 @@ export interface operations {
             };
         };
     };
-    a2c6fd135d182cbeeadbc042b35b0a80: {
+    saveCollection: {
         parameters: {
             query?: {
                 /** @description Database id of a bar. Required if you are not using `Bar-Assistant-Bar-Id` header. */
@@ -4290,7 +4290,7 @@ export interface operations {
             };
         };
     };
-    a15fa7e1679d8b4eafed56112a63da76: {
+    listSharedCollections: {
         parameters: {
             query?: never;
             header?: never;
@@ -4337,7 +4337,7 @@ export interface operations {
             };
         };
     };
-    "621b31f704cec7566d650351f0907df6": {
+    showCollection: {
         parameters: {
             query?: never;
             header?: never;
@@ -4384,7 +4384,7 @@ export interface operations {
             };
         };
     };
-    "7497163b1fe8e97bae47a3904200722a": {
+    updateCollection: {
         parameters: {
             query?: never;
             header?: never;
@@ -4435,7 +4435,7 @@ export interface operations {
             };
         };
     };
-    "00390f2c5b043adc54cc72165bc3eccb": {
+    deleteCollection: {
         parameters: {
             query?: never;
             header?: never;
@@ -4478,7 +4478,7 @@ export interface operations {
             };
         };
     };
-    "934e63129e4bf90dd91eccc108f51f40": {
+    syncCocktailsInCollection: {
         parameters: {
             query?: never;
             header?: never;
@@ -4520,7 +4520,7 @@ export interface operations {
             };
         };
     };
-    "83841be3da52f7694d8382c5f5b13d8e": {
+    showPublicCocktail: {
         parameters: {
             query?: never;
             header?: never;
@@ -4556,7 +4556,7 @@ export interface operations {
             };
         };
     };
-    "5bc2aea6bb7fb81d2a426faccbb4b4d7": {
+    listExports: {
         parameters: {
             query?: never;
             header?: never;
@@ -4578,7 +4578,7 @@ export interface operations {
             };
         };
     };
-    "1bedc78fd0edd24fdcc408977166e8cb": {
+    saveExport: {
         parameters: {
             query?: never;
             header?: never;
@@ -4615,7 +4615,7 @@ export interface operations {
             };
         };
     };
-    "6566cf7c2310f6d0f77d6be65bb36868": {
+    deleteExport: {
         parameters: {
             query?: never;
             header?: never;
@@ -4658,7 +4658,7 @@ export interface operations {
             };
         };
     };
-    df14ed9175061d3560c934ca7c89b47a: {
+    downloadExport: {
         parameters: {
             query: {
                 /** @description Token */
@@ -4697,7 +4697,7 @@ export interface operations {
             };
         };
     };
-    "48e1c2637c22de5ec50f90272526b454": {
+    generateExportDownloadLink: {
         parameters: {
             query?: never;
             header?: never;
@@ -4744,7 +4744,7 @@ export interface operations {
             };
         };
     };
-    aa68a5da541be756aa65f07353e63cdf: {
+    listGlassware: {
         parameters: {
             query?: {
                 /** @description Database id of a bar. Required if you are not using `Bar-Assistant-Bar-Id` header. */
@@ -4778,7 +4778,7 @@ export interface operations {
             };
         };
     };
-    b81ce1bc5d5988d9221774a715a90950: {
+    saveGlassware: {
         parameters: {
             query?: {
                 /** @description Database id of a bar. Required if you are not using `Bar-Assistant-Bar-Id` header. */
@@ -4823,7 +4823,7 @@ export interface operations {
             };
         };
     };
-    aca8ea95b45a17cfe2a0442cde2f53ad: {
+    showGlassware: {
         parameters: {
             query?: never;
             header?: never;
@@ -4870,7 +4870,7 @@ export interface operations {
             };
         };
     };
-    c9c1cb0561aa1222cc78654eaceb9a62: {
+    updateGlassware: {
         parameters: {
             query?: never;
             header?: never;
@@ -4921,7 +4921,7 @@ export interface operations {
             };
         };
     };
-    "876925de63d0a9bf6b8d2337661f135a": {
+    deleteGlassware: {
         parameters: {
             query?: never;
             header?: never;
@@ -4964,7 +4964,7 @@ export interface operations {
             };
         };
     };
-    "3ac02bbdafb65e59d8b5c6d5aaf9806d": {
+    listImages: {
         parameters: {
             query?: {
                 /** @description Set current page number */
@@ -5033,7 +5033,7 @@ export interface operations {
             };
         };
     };
-    d889115b2fa2ccddce23e39df958cc47: {
+    uploadImage: {
         parameters: {
             query?: never;
             header?: never;
@@ -5061,7 +5061,7 @@ export interface operations {
             };
         };
     };
-    "02d07ad762ad36175a8b4c2cdf4eef03": {
+    showImage: {
         parameters: {
             query?: never;
             header?: never;
@@ -5108,7 +5108,7 @@ export interface operations {
             };
         };
     };
-    "18a765565c4f43cc01167738ab8ff7cd": {
+    updateImage: {
         parameters: {
             query?: never;
             header?: never;
@@ -5148,7 +5148,7 @@ export interface operations {
             };
         };
     };
-    "99a6b84660d0881a68e57435afb2e6ea": {
+    deleteImage: {
         parameters: {
             query?: never;
             header?: never;
@@ -5191,7 +5191,7 @@ export interface operations {
             };
         };
     };
-    f3fac097ef10296417650431b970d7b3: {
+    getImageThumbnail: {
         parameters: {
             query?: never;
             header?: never;
@@ -5225,7 +5225,7 @@ export interface operations {
             };
         };
     };
-    f46bb44c14109f5d529b854e81d57150: {
+    importCocktail: {
         parameters: {
             query?: {
                 /** @description Database id of a bar. Required if you are not using `Bar-Assistant-Bar-Id` header. */
@@ -5273,7 +5273,7 @@ export interface operations {
             };
         };
     };
-    "33b756be1976d85e9b0e8e734beed74f": {
+    scrapeRecipe: {
         parameters: {
             query?: {
                 /** @description Database id of a bar. Required if you are not using `Bar-Assistant-Bar-Id` header. */
@@ -5327,7 +5327,7 @@ export interface operations {
             };
         };
     };
-    "9c5a332d2fd9a695a6805451249a0c28": {
+    listIngredientCategories: {
         parameters: {
             query?: {
                 /** @description Database id of a bar. Required if you are not using `Bar-Assistant-Bar-Id` header. */
@@ -5355,7 +5355,7 @@ export interface operations {
             };
         };
     };
-    beef561152a333f7c81fec58a7590f37: {
+    saveIngredientCategory: {
         parameters: {
             query?: {
                 /** @description Database id of a bar. Required if you are not using `Bar-Assistant-Bar-Id` header. */
@@ -5400,7 +5400,7 @@ export interface operations {
             };
         };
     };
-    cca43ededebdf742491f0f8eb0dcfab5: {
+    showIngredientCategory: {
         parameters: {
             query?: never;
             header?: never;
@@ -5447,7 +5447,7 @@ export interface operations {
             };
         };
     };
-    bdd96c56bc078a0dbdbc9cb71b1bd503: {
+    updateIngredientCategory: {
         parameters: {
             query?: never;
             header?: never;
@@ -5498,7 +5498,7 @@ export interface operations {
             };
         };
     };
-    "5190ba80efae47305bdbcf1a68de6fd7": {
+    deleteIngredientCategory: {
         parameters: {
             query?: never;
             header?: never;
@@ -5541,7 +5541,7 @@ export interface operations {
             };
         };
     };
-    "1638cf5bb5113e3ca4793347b9ca84ed": {
+    listIngredients: {
         parameters: {
             query?: {
                 /** @description Database id of a bar. Required if you are not using `Bar-Assistant-Bar-Id` header. */
@@ -5626,7 +5626,7 @@ export interface operations {
             };
         };
     };
-    efa43043e488624a2f3d8e8123a2d9be: {
+    saveIngredient: {
         parameters: {
             query?: {
                 /** @description Database id of a bar. Required if you are not using `Bar-Assistant-Bar-Id` header. */
@@ -5671,7 +5671,7 @@ export interface operations {
             };
         };
     };
-    "0ede5ee7aaed9fd2c985386b7a13e005": {
+    showIngredient: {
         parameters: {
             query?: never;
             header?: never;
@@ -5718,7 +5718,7 @@ export interface operations {
             };
         };
     };
-    f9433e9c103e95ceebcf99171a11e81d: {
+    updateIngredient: {
         parameters: {
             query?: never;
             header?: never;
@@ -5769,7 +5769,7 @@ export interface operations {
             };
         };
     };
-    "31e064558b854ed32ba5f29a76aee385": {
+    deleteIngredient: {
         parameters: {
             query?: never;
             header?: never;
@@ -5812,7 +5812,7 @@ export interface operations {
             };
         };
     };
-    ff324ec47870a7091f125afea3f7e664: {
+    extraIngredients: {
         parameters: {
             query?: never;
             header?: never;
@@ -5859,7 +5859,7 @@ export interface operations {
             };
         };
     };
-    aba5fae0baf2ce1fc02a691412c8a6ab: {
+    ingredientCocktails: {
         parameters: {
             query?: {
                 /** @description Set current page number */
@@ -5931,7 +5931,7 @@ export interface operations {
             };
         };
     };
-    fccb6b72c41f8a78ab604bc86a879c27: {
+    ingredientSubstitutes: {
         parameters: {
             query?: {
                 /** @description Set current page number */
@@ -6003,7 +6003,7 @@ export interface operations {
             };
         };
     };
-    "15005db445c5ccad445e198729cc4e22": {
+    showMenu: {
         parameters: {
             query?: {
                 /** @description Database id of a bar. Required if you are not using `Bar-Assistant-Bar-Id` header. */
@@ -6042,7 +6042,7 @@ export interface operations {
             };
         };
     };
-    "9ac6e03b541a1351a5d691b2aa232283": {
+    updateMenu: {
         parameters: {
             query?: {
                 /** @description Database id of a bar. Required if you are not using `Bar-Assistant-Bar-Id` header. */
@@ -6085,7 +6085,7 @@ export interface operations {
             };
         };
     };
-    c2dee2186390212153a41c0527ddb728: {
+    publicMenu: {
         parameters: {
             query?: never;
             header?: never;
@@ -6121,7 +6121,7 @@ export interface operations {
             };
         };
     };
-    "69581b120488a658b86369819bd257e0": {
+    exportMenu: {
         parameters: {
             query?: {
                 /** @description Database id of a bar. Required if you are not using `Bar-Assistant-Bar-Id` header. */
@@ -6158,7 +6158,7 @@ export interface operations {
             };
         };
     };
-    "8b1d23cbbf81842599e3e9463477cb58": {
+    listNotes: {
         parameters: {
             query?: {
                 /** @description Set current page number */
@@ -6205,7 +6205,7 @@ export interface operations {
             };
         };
     };
-    a0c90a217efa521e80b3b94c1a4bf3a7: {
+    saveNote: {
         parameters: {
             query?: never;
             header?: never;
@@ -6255,7 +6255,7 @@ export interface operations {
             };
         };
     };
-    c46ec527098402aba4a10b074a7b4047: {
+    showNote: {
         parameters: {
             query?: never;
             header?: never;
@@ -6302,7 +6302,7 @@ export interface operations {
             };
         };
     };
-    "075f33453cc8e1e0d26bd8f07b2c5d59": {
+    deleteNote: {
         parameters: {
             query?: never;
             header?: never;
@@ -6345,7 +6345,7 @@ export interface operations {
             };
         };
     };
-    "68b9d61d5bd7070a04356cf10d75f151": {
+    listTokens: {
         parameters: {
             query?: never;
             header?: never;
@@ -6367,7 +6367,7 @@ export interface operations {
             };
         };
     };
-    d91a0f74be09f52fd56164e7c58e7795: {
+    saveToken: {
         parameters: {
             query?: never;
             header?: never;
@@ -6404,7 +6404,7 @@ export interface operations {
             };
         };
     };
-    e3638ffac30ab37a8015b26a88b7bad9: {
+    deleteToken: {
         parameters: {
             query?: never;
             header?: never;
@@ -6447,7 +6447,7 @@ export interface operations {
             };
         };
     };
-    "8ffdcf8e07576f57714428563d35c0ff": {
+    listPriceCategories: {
         parameters: {
             query?: {
                 /** @description Database id of a bar. Required if you are not using `Bar-Assistant-Bar-Id` header. */
@@ -6475,7 +6475,7 @@ export interface operations {
             };
         };
     };
-    "000ce8107dfa5fe811876785a0f24308": {
+    savePriceCategory: {
         parameters: {
             query?: {
                 /** @description Database id of a bar. Required if you are not using `Bar-Assistant-Bar-Id` header. */
@@ -6567,7 +6567,7 @@ export interface operations {
             };
         };
     };
-    "86fc70306463caa72b7bfd33553393be": {
+    updatePriceCategory: {
         parameters: {
             query?: never;
             header?: never;
@@ -6618,7 +6618,7 @@ export interface operations {
             };
         };
     };
-    "9f109b6442b874b6de95a9b1b400d1fb": {
+    deletePriceCategory: {
         parameters: {
             query?: never;
             header?: never;
@@ -6661,7 +6661,7 @@ export interface operations {
             };
         };
     };
-    "73fd658c723e80f927b251628b9a616b": {
+    showProfile: {
         parameters: {
             query?: never;
             header?: never;
@@ -6694,7 +6694,7 @@ export interface operations {
             };
         };
     };
-    c5958eea850b563b057d22dc8258efbf: {
+    updateProfile: {
         parameters: {
             query?: never;
             header?: never;
@@ -6731,7 +6731,7 @@ export interface operations {
             };
         };
     };
-    c7c135615b762420f7b338e0bc744a76: {
+    rateCocktail: {
         parameters: {
             query?: never;
             header?: never;
@@ -6780,7 +6780,7 @@ export interface operations {
             };
         };
     };
-    "93d095c7348ac6ee7d0f3cb8ea1f1c36": {
+    deleteRating: {
         parameters: {
             query?: never;
             header?: never;
@@ -6823,7 +6823,7 @@ export interface operations {
             };
         };
     };
-    "25784e4e494f0fd4dbbdb7b92c301b26": {
+    showServerVersion: {
         parameters: {
             query?: never;
             header?: never;
@@ -6845,7 +6845,7 @@ export interface operations {
             };
         };
     };
-    b34236369b075eabaacef013be799024: {
+    listUserIngredients: {
         parameters: {
             query?: {
                 /** @description Database id of a bar. Required if you are not using `Bar-Assistant-Bar-Id` header. */
@@ -6900,7 +6900,7 @@ export interface operations {
             };
         };
     };
-    "5a48f072f2ca1f25807838c8ae331db5": {
+    listUserShelfCocktails: {
         parameters: {
             query?: {
                 /** @description Database id of a bar. Required if you are not using `Bar-Assistant-Bar-Id` header. */
@@ -6955,7 +6955,7 @@ export interface operations {
             };
         };
     };
-    "0038cb5730a723a0c58e5605fecb0ccb": {
+    listUserFavoriteCocktails: {
         parameters: {
             query?: {
                 /** @description Database id of a bar. Required if you are not using `Bar-Assistant-Bar-Id` header. */
@@ -7010,7 +7010,7 @@ export interface operations {
             };
         };
     };
-    "28c0db334504ef005e3704dcc80154b1": {
+    batchStoreUserIngredients: {
         parameters: {
             query?: {
                 /** @description Database id of a bar. Required if you are not using `Bar-Assistant-Bar-Id` header. */
@@ -7065,7 +7065,7 @@ export interface operations {
             };
         };
     };
-    "8effce422c8cbe13a9b273a71f9d8afc": {
+    batchDeleteUserIngredients: {
         parameters: {
             query?: {
                 /** @description Database id of a bar. Required if you are not using `Bar-Assistant-Bar-Id` header. */
@@ -7120,7 +7120,7 @@ export interface operations {
             };
         };
     };
-    f5e680e7f9f44a047888ad4bc8a22ba8: {
+    recommendIngredients: {
         parameters: {
             query?: {
                 /** @description Database id of a bar. Required if you are not using `Bar-Assistant-Bar-Id` header. */
@@ -7173,7 +7173,7 @@ export interface operations {
             };
         };
     };
-    "0b3c5cbb1c0b8aa375aee04c1b3f021a": {
+    listBarShelfIngredients: {
         parameters: {
             query?: {
                 /** @description Set current page number */
@@ -7223,7 +7223,7 @@ export interface operations {
             };
         };
     };
-    "72acd54d8500a59f453864e000f51c7b": {
+    batchStoreBarShelfIngredients: {
         parameters: {
             query?: never;
             header?: never;
@@ -7272,7 +7272,7 @@ export interface operations {
             };
         };
     };
-    "2a4715024c2fca55798ecd592feaf6e5": {
+    batchDeleteBarShelfIngredients: {
         parameters: {
             query?: never;
             header?: never;
@@ -7321,7 +7321,7 @@ export interface operations {
             };
         };
     };
-    "40813734b16874942a79324150fb3dd1": {
+    listBarShelfCocktails: {
         parameters: {
             query?: {
                 /** @description Set current page number */
@@ -7371,7 +7371,7 @@ export interface operations {
             };
         };
     };
-    ea114c1013eabd71064b7b33513d13cd: {
+    listShoppingListIngredients: {
         parameters: {
             query?: {
                 /** @description Database id of a bar. Required if you are not using `Bar-Assistant-Bar-Id` header. */
@@ -7413,7 +7413,7 @@ export interface operations {
             };
         };
     };
-    c9dbd5fceec4406656e93b94646ea5f6: {
+    batchStoreShoppingListIngredients: {
         parameters: {
             query?: {
                 /** @description Database id of a bar. Required if you are not using `Bar-Assistant-Bar-Id` header. */
@@ -7466,7 +7466,7 @@ export interface operations {
             };
         };
     };
-    cec5d8ca07890aaad3cd264ba62a88bb: {
+    batchDeleteShoppingListIngredients: {
         parameters: {
             query?: {
                 /** @description Database id of a bar. Required if you are not using `Bar-Assistant-Bar-Id` header. */
@@ -7523,7 +7523,7 @@ export interface operations {
             };
         };
     };
-    "1d4aaec85e00ac2c559f362058f02056": {
+    shareShoppingList: {
         parameters: {
             query?: {
                 /** @description Database id of a bar. Required if you are not using `Bar-Assistant-Bar-Id` header. */
@@ -7572,7 +7572,7 @@ export interface operations {
             };
         };
     };
-    d62319d3bf13005383b7d8027e9056ec: {
+    showBarStats: {
         parameters: {
             query?: never;
             header?: never;
@@ -7619,7 +7619,7 @@ export interface operations {
             };
         };
     };
-    "69a9ec343d37c0baa6b984cac0c06da8": {
+    showSubscription: {
         parameters: {
             query?: never;
             header?: never;
@@ -7652,7 +7652,7 @@ export interface operations {
             };
         };
     };
-    "6b1e9ae3c684b7a71a5ab7348766e6c5": {
+    updateSubscription: {
         parameters: {
             query?: never;
             header?: never;
@@ -7698,7 +7698,7 @@ export interface operations {
             };
         };
     };
-    e5e1e0ec136ce6b73c6636ef9635a596: {
+    listTags: {
         parameters: {
             query?: {
                 /** @description Database id of a bar. Required if you are not using `Bar-Assistant-Bar-Id` header. */
@@ -7726,7 +7726,7 @@ export interface operations {
             };
         };
     };
-    "436ed7a7115fce5026326a5d67a016ac": {
+    saveTag: {
         parameters: {
             query?: {
                 /** @description Database id of a bar. Required if you are not using `Bar-Assistant-Bar-Id` header. */
@@ -7771,7 +7771,7 @@ export interface operations {
             };
         };
     };
-    df2e47c29c59436f33f9b36e4b5f30f2: {
+    showTag: {
         parameters: {
             query?: never;
             header?: never;
@@ -7818,7 +7818,7 @@ export interface operations {
             };
         };
     };
-    "3a6faf0d586a666498d08786030214c3": {
+    updateTag: {
         parameters: {
             query?: never;
             header?: never;
@@ -7869,7 +7869,7 @@ export interface operations {
             };
         };
     };
-    "3093352bf630017b8fcf7705e9b329c4": {
+    deleteTag: {
         parameters: {
             query?: never;
             header?: never;
@@ -7912,7 +7912,7 @@ export interface operations {
             };
         };
     };
-    "0d0cb04fffa73faf3be78b1a0b658561": {
+    listUsers: {
         parameters: {
             query?: {
                 /** @description Database id of a bar. Required if you are not using `Bar-Assistant-Bar-Id` header. */
@@ -7940,7 +7940,7 @@ export interface operations {
             };
         };
     };
-    a53b4f22b9e0de280870f1e187f6bee3: {
+    saveUser: {
         parameters: {
             query?: {
                 /** @description Database id of a bar. Required if you are not using `Bar-Assistant-Bar-Id` header. */
@@ -7985,7 +7985,7 @@ export interface operations {
             };
         };
     };
-    "89cd377bbebe14aaf4174e3916502852": {
+    showUser: {
         parameters: {
             query?: {
                 /** @description Database id of a bar. Required if you are not using `Bar-Assistant-Bar-Id` header. */
@@ -8038,7 +8038,7 @@ export interface operations {
             };
         };
     };
-    "6972a68618aa96af50377dcc8fe79aef": {
+    updateUser: {
         parameters: {
             query?: {
                 /** @description Database id of a bar. Required if you are not using `Bar-Assistant-Bar-Id` header. */
@@ -8095,7 +8095,7 @@ export interface operations {
             };
         };
     };
-    "0c7e7a133a818ac4b30f2d7dd1b04b91": {
+    deleteUser: {
         parameters: {
             query?: never;
             header?: never;
@@ -8138,7 +8138,7 @@ export interface operations {
             };
         };
     };
-    "613e6e2fed96a23278a5036159e9087d": {
+    listUtensils: {
         parameters: {
             query?: {
                 /** @description Database id of a bar. Required if you are not using `Bar-Assistant-Bar-Id` header. */
@@ -8166,7 +8166,7 @@ export interface operations {
             };
         };
     };
-    eef2f70636f45820b56cc0025448f847: {
+    saveUtensil: {
         parameters: {
             query?: {
                 /** @description Database id of a bar. Required if you are not using `Bar-Assistant-Bar-Id` header. */
@@ -8211,7 +8211,7 @@ export interface operations {
             };
         };
     };
-    "1b9d7fe5ecf4a0271c20ba17654d209a": {
+    showUtensil: {
         parameters: {
             query?: never;
             header?: never;
@@ -8258,7 +8258,7 @@ export interface operations {
             };
         };
     };
-    "0688a6a8648cdad35503bad732bba86f": {
+    updateUtensil: {
         parameters: {
             query?: never;
             header?: never;
@@ -8309,7 +8309,7 @@ export interface operations {
             };
         };
     };
-    "2f216f7ba27dd48b73ea157501c8bc81": {
+    deleteUtensil: {
         parameters: {
             query?: never;
             header?: never;
