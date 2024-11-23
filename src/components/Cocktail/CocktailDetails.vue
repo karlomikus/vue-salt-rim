@@ -159,6 +159,22 @@ const parsedGarnish = computed(() => {
     return micromark(cocktail.value.garnish)
 })
 
+const calculatedCalories = computed(() => {
+    if (!cocktail.value.calories) {
+        return 0
+    }
+
+    return cocktail.value.calories * (volumeScaleFactor.value ?? ingredientScaleFactor.value)
+})
+
+const calculatedAlcUnits = computed(() => {
+    if (!cocktail.value.alcohol_units) {
+        return 0
+    }
+
+    return cocktail.value.alcohol_units * (volumeScaleFactor.value ?? ingredientScaleFactor.value)
+})
+
 const totalLiquidConverted = computed(() => {
     const amount = parseFloat(cocktail.value?.volume_ml?.toString() ?? '')
 
@@ -637,7 +653,7 @@ fetchShoppingList()
                             </li>
                         </ul>
                         <div v-if="cocktail.volume_ml" class="cocktail-ingredients__total-amount">
-                            Approx: {{ totalLiquidConverted }} <span v-show="(cocktail?.calories ?? 0) > 0">&middot; {{ cocktail.calories?.toFixed(0) }} kcal</span> <span v-show="(cocktail?.alcohol_units ?? 0) > 0">&middot; {{ cocktail.alcohol_units?.toFixed(2) }} units</span>
+                            Approx: {{ totalLiquidConverted }} <span v-show="(cocktail?.calories ?? 0) > 0">&middot; {{ calculatedCalories.toFixed(0) }} kcal</span> <span v-show="(cocktail?.alcohol_units ?? 0) > 0">&middot; {{ calculatedAlcUnits.toFixed(2) }} units</span>
                         </div>
                     </div>
                 </UnitConverter>
