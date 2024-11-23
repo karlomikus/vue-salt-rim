@@ -128,7 +128,8 @@ export default {
 }
 
 .public-page-menu__category h3 {
-    margin: 0.5rem 0;
+    margin: 1rem 0;
+    text-align: center;
     font-size: 1rem;
     text-transform: uppercase;
     letter-spacing: 1px;
@@ -168,8 +169,8 @@ export default {
 
 .public-page-menu__cocktail__image {
     width: 100%;
-    height: 100px;
-    flex-basis: 100px;
+    height: 80px;
+    flex-basis: 80px;
     flex-shrink: 0;
     border-radius: var(--radius-1);
     overflow: hidden;
