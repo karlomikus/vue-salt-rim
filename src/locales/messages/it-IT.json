@@ -67,7 +67,8 @@
     "shelf-bar-help": "Recipes matching ingredients in bar shelf will be shown to all bar members.",
     "shelf-user-help": "Recipes matching ingredients in your shelf can only be managed by you.",
     "bar-shelf-add-success": "Added \"{name}\" to bar shelf",
-    "bar-shelf-remove-success": "Removed \"{name}\" from bar shelf"
+    "bar-shelf-remove-success": "Removed \"{name}\" from bar shelf",
+    "units-help": "Some features work the best if you use common units. Some recommendations for units are: ml, oz, cl, dashes, barspoon, drops, topup, leaves."
   },
   "share": {
     "title": "Condividi",
@@ -603,7 +604,9 @@
     "currency-format-notice": "La valuta deve essere nel formato ISO 4271 (Alpha3)",
     "price-categories-empty": "Non ci sono categorie di prezzo",
     "no-matching-units": "Nessun prezzo unitario corrispondente trovato",
-    "select": "Select price"
+    "select": "Select price",
+    "category-delete-success": "Price category deleted",
+    "category-confirm-delete": "This will permanently price category with name \\\"{name}\\\"."
   },
   "prices": {
     "add": "Aggiungi prezzo",
