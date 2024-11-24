@@ -252,6 +252,10 @@ export default class BarAssistantClient {
     return (await client.GET('/users/{id}/ingredients/recommend', { params: { path: { id: id } } })).data
   }
 
+  static async getBarRecommendedIngredients(id: number) {
+    return (await client.GET('/bars/{id}/ingredients/recommend', { params: { path: { id: id } } })).data
+  }
+
   static async getBars() {
     return (await client.GET('/bars')).data
   }

@@ -1222,6 +1222,23 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/bars/{id}/ingredients/recommend": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Recommend next ingredients for bar */
+        get: operations["recommendBarIngredients"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/users/{id}/shopping-list": {
         parameters: {
             query?: never;
@@ -1555,7 +1572,9 @@ export interface components {
             /** @example 1 */
             total_shelf_ingredients: number;
             /** @example 1 */
-            total_bar_shelf_cocktails?: number;
+            total_bar_shelf_ingredients: number;
+            /** @example 1 */
+            total_bar_shelf_cocktails: number;
             /** @example 1 */
             total_bar_members: number;
             /** @example 1 */
@@ -7366,6 +7385,53 @@ export interface operations {
                             to?: number;
                             total?: number;
                         };
+                    };
+                };
+            };
+        };
+    };
+    recommendBarIngredients: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Database id of a resource */
+                id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data: components["schemas"]["IngredientRecommend"][];
+                    };
+                };
+            };
+            /** @description You are not authorized for this action. */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data?: components["schemas"]["APIError"];
+                    };
+                };
+            };
+            /** @description Resource record not found. */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data?: components["schemas"]["APIError"];
                     };
                 };
             };
