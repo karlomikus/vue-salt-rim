@@ -67,7 +67,8 @@
     "shelf-bar-help": "Recipes matching ingredients in bar shelf will be shown to all bar members.",
     "shelf-user-help": "Recipes matching ingredients in your shelf can only be managed by you.",
     "bar-shelf-add-success": "Added \"{name}\" to bar shelf",
-    "bar-shelf-remove-success": "Removed \"{name}\" from bar shelf"
+    "bar-shelf-remove-success": "Removed \"{name}\" from bar shelf",
+    "units-help": "Some features work the best if you use common units. Some recommendations for units are: ml, oz, cl, dashes, barspoon, drops, topup, leaves."
   },
   "share": {
     "title": "Dela",
@@ -508,7 +509,13 @@
     "cocktail-removed": "Drinken har tagits bort från menykategorin",
     "menu-not-found": "Menyn kunde inte hittas",
     "description": "Här kan du skapa en enkel webbmeny för din bar. Du kan uppdatera din bar-länk när du lägger till eller editerar en bar. Använd denna URL eller QR-kod för att dela din barmeny med dina gäster.",
-    "no-cocktails-added": "Menyn behöver minst en drink"
+    "no-cocktails-added": "Menyn behöver minst en drink",
+    "calculate-price": "Calculate price",
+    "clear-category-confirm": "This will remove all cocktails from category \"{name}\"",
+    "category-cleared": "Category cleared",
+    "clear-category": "Clear category",
+    "add-shelf-cocktails": "Add missing cocktails from bar shelf",
+    "export": "Export as csv"
   },
   "bar": {
     "url": "Anpassad bar-URL",
@@ -596,7 +603,10 @@
     "currency": "Valuta",
     "currency-format-notice": "Valuta måste vara i ISO 4271 (Alpha3) format",
     "price-categories-empty": "Det finns inga priskategorier",
-    "no-matching-units": "Ingen matchande enhet för pris hittad"
+    "no-matching-units": "Ingen matchande enhet för pris hittad",
+    "select": "Select price",
+    "category-delete-success": "Price category deleted",
+    "category-confirm-delete": "This will permanently price category with name \\\"{name}\\\"."
   },
   "prices": {
     "add": "Lägg till pris",
@@ -611,5 +621,7 @@
   "bar_shelf": {
     "cocktails": "Bar shelf cocktails"
   },
-  "bar-shelf-ingredients": "Bar shelf ingredients"
+  "bar-shelf-ingredients": "Bar shelf ingredients",
+  "target-pour-cost": "Target pour cost",
+  "target-pour-cost-help": "Percentage of the cocktail's selling price that comes from the cost of the ingredients."
 }
