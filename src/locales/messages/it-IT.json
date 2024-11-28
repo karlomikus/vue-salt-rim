@@ -515,7 +515,8 @@
     "category-cleared": "Category cleared",
     "clear-category": "Clear category",
     "add-shelf-cocktails": "Add missing cocktails from bar shelf",
-    "export": "Export as csv"
+    "export": "Export as csv",
+    "added-multiple-cocktails": "Added multiple cocktails"
   },
   "bar": {
     "url": "URL personalizzato bar",
