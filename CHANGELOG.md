@@ -1,3 +1,13 @@
+# v3.5.0
+## New
+- Show prices in cocktail details
+- Add final cocktail price calculation to menu
+    - Support target pour cost
+- Add "Add missing cocktails from bar shelf" action to menu
+    - This will add a new menu category with all menus from bar shelf
+- You can now export menu as CSV
+- Add "Clear category" action to menu category
+
 # v3.4.1
 ## Fixes
 - Fix issues with updating menu prices

@@ -29,7 +29,7 @@ const authMiddleware: Middleware = {
     const scopedState = new AppState()
     accessToken = scopedState.token
     request.headers.set("Authorization", `Bearer ${accessToken}`);
-    request.headers.set("Accept", "application/json");
+    // request.headers.set("Accept", "application/json");
     return request;
   },
 };
@@ -172,6 +172,10 @@ export default class BarAssistantClient {
     return (await client.GET('/users/{id}/cocktails/favorites', { params: { path: { id: id }, query: { per_page: 500 } } })).data
   }
 
+  static async getUserCocktailShelf(id: number) {
+    return (await client.GET('/users/{id}/cocktails', { params: { path: { id: id }, query: { per_page: 500 } } })).data
+  }
+
   static async getNotes(query = {}) {
     return (await client.GET('/notes', { params: { query: query } })).data
   }
@@ -246,6 +250,10 @@ export default class BarAssistantClient {
 
   static async getRecommendedIngredients(id: number) {
     return (await client.GET('/users/{id}/ingredients/recommend', { params: { path: { id: id } } })).data
+  }
+
+  static async getBarRecommendedIngredients(id: number) {
+    return (await client.GET('/bars/{id}/ingredients/recommend', { params: { path: { id: id } } })).data
   }
 
   static async getBars() {
@@ -525,5 +533,17 @@ export default class BarAssistantClient {
 
   static async removeFromBarShelf(id: number, data: {}) {
     return (await client.POST('/bars/{id}/ingredients/batch-delete', { params: { path: { id: id } }, body: data })).data
+  }
+
+  static async getCocktailPrices(id: string) {
+    return (await client.GET('/cocktails/{id}/prices', { params: { path: { id: id } } })).data
+  }
+
+  static async getBarShelfCocktails(id: number) {
+    return (await client.GET('/bars/{id}/cocktails', { params: { path: { id: id }, query: { per_page: 500 } } })).data
+  }
+
+  static async getMenuExport() {
+    return (await client.GET('/menu/export', {parseAs: 'text'})).data
   }
 }

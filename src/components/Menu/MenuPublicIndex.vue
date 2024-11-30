@@ -81,7 +81,16 @@ export default {
 </script>
 <style scoped>
 .public-page__header {
-    padding: 2rem 0;
+    padding: var(--gap-size-3);
+    margin: var(--gap-size-3) 0;
+    background-color: #332d46;
+    border-bottom: 1px solid #6b6188;
+    box-shadow:
+        inset 0px 0.4px 0.5px hsl(var(--shadow-color-dark) / 0.25),
+        inset 0px 1.1px 1.2px -0.8px hsl(var(--shadow-color-dark) / 0.25),
+        inset 0px 2.6px 2.9px -1.7px hsl(var(--shadow-color-dark) / 0.25),
+        inset 0px 6.3px 7.1px -2.5px hsl(var(--shadow-color-dark) / 0.25);
+    border-radius: var(--radius-3);
 }
 
 .public-page {
@@ -104,23 +113,28 @@ export default {
     color: var(--clr-gray-200);
 }
 
+.public-page-menu {
+    padding: var(--gap-size-3);
+    background-color: var(--clr-gray-100);
+    border-radius: var(--radius-2);
+}
+
 .public-page-menu__bar {
-    color: var(--clr-gray-200);
+    color: var(--clr-gray-900);
 }
 
 .public-page-menu__bar h2 {
-    color: var(--clr-gray-100);
     font-weight: var(--fw-bold);
 }
 
 .public-page-menu__category h3 {
-    margin: 0.5rem 0;
+    margin: 1rem 0;
+    text-align: center;
     font-size: 1rem;
     text-transform: uppercase;
     letter-spacing: 1px;
-    color: #DDD4F0;
+    color: var(--clr-gray-800);
     font-weight: var(--fw-bold);
-    text-shadow: 0 2px 0 rgba(0, 0, 0, .7);
 }
 
 .public-page-menu__category__cocktails {
@@ -141,8 +155,8 @@ export default {
     display: flex;
     gap: var(--gap-size-3);
     padding: var(--gap-size-2);
-    border-radius: var(--radius-3);
-    color: var(--clr-gray-600);
+    border-radius: var(--radius-1);
+    /* color: var(--clr-gray-600); */
     box-shadow: var(--shadow-elevation-low-dark);
 }
 
@@ -155,10 +169,10 @@ export default {
 
 .public-page-menu__cocktail__image {
     width: 100%;
-    height: 100px;
-    flex-basis: 100px;
+    height: 80px;
+    flex-basis: 80px;
     flex-shrink: 0;
-    border-radius: var(--radius-2);
+    border-radius: var(--radius-1);
     overflow: hidden;
 }
 
@@ -204,14 +218,15 @@ export default {
 }
 
 .public-page-menu__cocktail__price {
-    font-size: 1.25rem;
+    font-size: 1.5rem;
+    color: var(--clr-gray-900);
     font-weight: var(--fw-bold);
 }
 
 @media (max-width: 545px) {
     .public-page-menu__cocktail__price {
         margin-top: auto;
-        font-size: 1rem;
+        font-size: 1.15rem;
         text-align: right;
     }
 }

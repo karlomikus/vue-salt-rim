@@ -2,7 +2,7 @@
     <PageHeader>
         {{ $t('welcome-user', { 'name': appState.user.name }) }} 👋
     </PageHeader>
-
+    <StatusCheck></StatusCheck>
     <div class="stats">
         <OverlayLoader v-if="loaders.stats"></OverlayLoader>
         <div class="stats__stat">
@@ -160,6 +160,7 @@ import IngredientTile from '../Tiles/IngredientTile.vue'
 import ToggleIngredientShoppingCart from '../ToggleIngredientShoppingCart.vue'
 import ToggleIngredientShelf from '../ToggleIngredientShelf.vue'
 import RecommendedIngredients from '../Ingredient/RecommendedIngredients.vue'
+import StatusCheck from '../StatusCheck.vue'
 
 export default {
     components: {
@@ -173,6 +174,7 @@ export default {
         ToggleIngredientShoppingCart,
         ToggleIngredientShelf,
         RecommendedIngredients,
+        StatusCheck,
     },
     data() {
         return {

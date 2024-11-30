@@ -67,7 +67,8 @@
     "shelf-bar-help": "Recipes matching ingredients in bar shelf will be shown to all bar members.",
     "shelf-user-help": "Recipes matching ingredients in your shelf can only be managed by you.",
     "bar-shelf-add-success": "Added \"{name}\" to bar shelf",
-    "bar-shelf-remove-success": "Removed \"{name}\" from bar shelf"
+    "bar-shelf-remove-success": "Removed \"{name}\" from bar shelf",
+    "units-help": "Some features work the best if you use common units. Some recommendations for units are: ml, oz, cl, dashes, barspoon, drops, topup, leaves."
   },
   "share": {
     "title": "Udostępnij",
@@ -508,7 +509,14 @@
     "cocktail-removed": "Cocktail removed from menu category",
     "menu-not-found": "Menu not found",
     "description": "Here you can set up a simple web menu for your bar. You can update your bar link when adding or editing a bar. Use the URL or QR code to share your bar menu with the guests.",
-    "no-cocktails-added": "Menu needs to have at least one cocktail"
+    "no-cocktails-added": "Menu needs to have at least one cocktail",
+    "calculate-price": "Calculate price",
+    "clear-category-confirm": "This will remove all cocktails from category \"{name}\"",
+    "category-cleared": "Category cleared",
+    "clear-category": "Clear category",
+    "add-shelf-cocktails": "Add missing cocktails from bar shelf",
+    "export": "Export as csv",
+    "added-multiple-cocktails": "Added multiple cocktails"
   },
   "bar": {
     "url": "Custom bar URL",
@@ -596,7 +604,10 @@
     "currency": "Currency",
     "currency-format-notice": "Currency must be in ISO 4271 (Alpha3) format",
     "price-categories-empty": "There is no price categories",
-    "no-matching-units": "No matching unit pricing found"
+    "no-matching-units": "No matching unit pricing found",
+    "select": "Select price",
+    "category-delete-success": "Price category deleted",
+    "category-confirm-delete": "This will permanently price category with name \\\"{name}\\\"."
   },
   "prices": {
     "add": "Add price",
@@ -611,5 +622,7 @@
   "bar_shelf": {
     "cocktails": "Bar shelf cocktails"
   },
-  "bar-shelf-ingredients": "Bar shelf ingredients"
+  "bar-shelf-ingredients": "Bar shelf ingredients",
+  "target-pour-cost": "Target pour cost",
+  "target-pour-cost-help": "Percentage of the cocktail's selling price that comes from the cost of the ingredients."
 }

@@ -46,7 +46,8 @@
     --form-clr-text: var(--clr-gray-800);
     --form-clr-bg: #fff;
     --form-clr-bg-focus: #fff;
-    --form-clr-border: var(--clr-gray-100);
+    /* --form-clr-border: var(--clr-gray-100); */
+    --form-clr-border: #ece6ea;
     --form-clr-border-focus: var(--clr-gray-800);
     --form-clr-placeholder: var(--clr-gray-500);
     -webkit-appearance: none;

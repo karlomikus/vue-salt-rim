@@ -15,6 +15,7 @@ import OverlayLoader from '@/components/OverlayLoader.vue'
 import UnitHandler from '@/UnitHandler'
 import NoteDetails from '@/components/Note/NoteDetails.vue'
 import NoteDialog from '@/components/Note/NoteDialog.vue'
+import CocktailPrice from './CocktailPrice.vue'
 import SaltRimDialog from '@/components/Dialog/SaltRimDialog.vue'
 import CollectionDialog from '@/components/Collections/CollectionDialog.vue'
 import CocktailCollections from '@/components/Collections/CollectionWidget.vue'
@@ -34,6 +35,7 @@ type CocktailIngredient = components["schemas"]["CocktailIngredient"]
 type Note = components["schemas"]["Note"]
 type ShoppingList = components["schemas"]["ShoppingList"]
 type CocktailBasic = components["schemas"]["CocktailBasic"]
+type CocktailPrice = components["schemas"]["CocktailPrice"]
 
 const { t } = useI18n()
 const appState = new AppState()
@@ -43,6 +45,7 @@ const toast = useSaltRimToast()
 const confirm = useConfirm()
 const isLoading = ref(false)
 const isLoadingNotes = ref(false)
+const isLoadingPrices = ref(false)
 const isLoadingShoppingList = ref(false)
 const isLoadingShare = ref(false)
 const isLoadingFavorite = ref(false)
@@ -56,6 +59,7 @@ const currentBatchType = ref('servings')
 const showDownloadImageDialog = ref(false)
 const cocktail = ref({} as Cocktail)
 const userNotes = ref([] as Note[])
+const cocktailPrices = ref([] as CocktailPrice[])
 const userShoppingListIngredients = ref([] as ShoppingList[])
 const ingredientScaleFactor = ref(1)
 const currentUnit = ref(appState.defaultUnit)
@@ -96,6 +100,10 @@ const sortedImages = computed(() => {
     }
 
     return cocktail.value.images.slice(0).sort((a, b) => (a?.sort ?? 0) - (b?.sort ?? 0))
+})
+
+const completeCocktailPrices = computed(() => {
+    return cocktailPrices.value.filter(price => price.prices_per_ingredient.length > 0)
 })
 
 // Ingredient amount scale factor when batch type is volume
@@ -151,6 +159,22 @@ const parsedGarnish = computed(() => {
     return micromark(cocktail.value.garnish)
 })
 
+const calculatedCalories = computed(() => {
+    if (!cocktail.value.calories) {
+        return 0
+    }
+
+    return cocktail.value.calories * (volumeScaleFactor.value ?? ingredientScaleFactor.value)
+})
+
+const calculatedAlcUnits = computed(() => {
+    if (!cocktail.value.alcohol_units) {
+        return 0
+    }
+
+    return cocktail.value.alcohol_units * (volumeScaleFactor.value ?? ingredientScaleFactor.value)
+})
+
 const totalLiquidConverted = computed(() => {
     const amount = parseFloat(cocktail.value?.volume_ml?.toString() ?? '')
 
@@ -176,7 +200,8 @@ async function fetchCocktail(idOrSlug: string) {
         targetVolumeDilution.value = cocktail.value.method.dilution_percentage
     }
 
-    await fetchCocktailUserNotes()
+    fetchCocktailUserNotes()
+    fetchCocktailPrices()
     fetchFavorites()
 }
 
@@ -200,6 +225,12 @@ async function fetchCocktailUserNotes() {
     isLoadingNotes.value = true
     userNotes.value = (await BarAssistantClient.getNotes({ 'filter[cocktail_id]': cocktail.value.id }))?.data ?? [] as Note[]
     isLoadingNotes.value = false
+}
+
+async function fetchCocktailPrices() {
+    isLoadingPrices.value = true
+    cocktailPrices.value = (await BarAssistantClient.getCocktailPrices(cocktail.value.id.toString()))?.data ?? [] as CocktailPrice[]
+    isLoadingPrices.value = false
 }
 
 async function fetchShoppingList() {
@@ -622,7 +653,7 @@ fetchShoppingList()
                             </li>
                         </ul>
                         <div v-if="cocktail.volume_ml" class="cocktail-ingredients__total-amount">
-                            Approx: {{ totalLiquidConverted }} <span v-show="(cocktail?.calories ?? 0) > 0">&middot; {{ cocktail.calories?.toFixed(0) }} kcal</span> <span v-show="(cocktail?.alcohol_units ?? 0) > 0">&middot; {{ cocktail.alcohol_units?.toFixed(2) }} units</span>
+                            Approx: {{ totalLiquidConverted }} <span v-show="(cocktail?.calories ?? 0) > 0">&middot; {{ calculatedCalories.toFixed(0) }} kcal</span> <span v-show="(cocktail?.alcohol_units ?? 0) > 0">&middot; {{ calculatedAlcUnits.toFixed(2) }} units</span>
                         </div>
                     </div>
                 </UnitConverter>
@@ -638,6 +669,13 @@ fetchShoppingList()
                 <div v-if="cocktail.garnish" class="block-container block-container--padded">
                     <h3 class="details-block-container__title">{{ t('garnish') }}</h3>
                     <div v-html="parsedGarnish"></div>
+                </div>
+                <div v-if="completeCocktailPrices.length > 0" class="block-container block-container--padded">
+                    <h3 class="details-block-container__title">{{ t('price.prices') }}</h3>
+                    <p>Prices are categorized by bar price categories. If price category is missing, the ingredients don't have a price in that category. If there are multiple prices in category, the minimum price is used. Keep in mind that the price is just an estimate and might not be accurate.</p>
+                    <div class="cocktail-prices">
+                        <CocktailPrice v-for="cocktailPrice in completeCocktailPrices" :cocktail-price=cocktailPrice></CocktailPrice>
+                    </div>
                 </div>
                 <div v-if="userNotes.length > 0" class="block-container block-container--padded">
                     <OverlayLoader v-if="isLoadingNotes" />
@@ -666,7 +704,7 @@ swiper-container {
     display: grid;
     gap: var(--gap-size-3);
     grid-template-columns: 500px minmax(0, 1fr);
-    grid-template-rows: 1fr;
+    grid-template-rows: 700px 100%;
     grid-template-areas:
         "image content"
         "sidebar content";
@@ -681,6 +719,7 @@ swiper-container {
 @media (max-width: 800px) {
     .cocktail-details {
         grid-template-columns: minmax(0, 1fr);
+        grid-template-rows: 1fr;
         grid-template-areas:
             "image"
             "content"
@@ -826,5 +865,12 @@ swiper-container {
 
 .cocktail-ingredients__actions {
     margin-bottom: var(--gap-size-3);
+}
+
+.cocktail-prices {
+    margin-top: var(--gap-size-3);
+    display: flex;
+    flex-direction: column;
+    gap: var(--gap-size-2);
 }
 </style>
