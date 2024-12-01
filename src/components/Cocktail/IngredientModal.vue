@@ -59,7 +59,7 @@ function selectIngredient(item: FinderIngredient): void {
         <p style="margin: 0 0 1rem 0;">
             {{ t('ingredient.units-help') }}
         </p>
-        <IngredientFinder :cocktail-ingredient="localCocktailingredient" @ingredient-selected="selectIngredient"></IngredientFinder>
+        <IngredientFinder :selected-ingredients="[localCocktailingredient.ingredient.id]" @ingredient-selected="selectIngredient"></IngredientFinder>
         <div class="selected-ingredient">
             <small>{{ t('ingredient.dialog.current') }}:</small>
             <p>{{ localCocktailingredient.ingredient.name }}</p>

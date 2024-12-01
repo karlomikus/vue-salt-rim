@@ -50,10 +50,10 @@ export default {
                 return {}
             }
         },
-        cocktailIngredient: { // Temp workaround until cocktail form flow is fixed with v-models
-            type: Object,
+        selectedIngredients: {
+            type: Array,
             default() {
-                return {}
+                return []
             }
         },
         initialQuery: {
@@ -98,7 +98,7 @@ export default {
             this.$emit('ingredientSelected', ing)
         },
         isSelected(ing) {
-            return this.cocktailIngredient.ingredient.id == ing.id
+            return this.selectedIngredients.includes(ing.id)
         },
         newIngredient() {
             this.isLoading = true
