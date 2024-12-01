@@ -21,11 +21,14 @@
                 <p class="form-input-hint">{{ $t('field-supports-md') }}</p>
             </div>
         </div>
-        <h3 class="form-section-title">{{ $t('media') }}</h3>
-        <SubscriptionCheck>Subscribe to "Mixologist" plan to upload more than one cocktail recipe image!</SubscriptionCheck>
-        <ImageUpload ref="imagesUpload" :images="cocktail.images" :max-images="10" />
         <h3 class="form-section-title">{{ $t('ingredient.ingredients') }}</h3>
         <div class="block-container block-container--padded block-container--inset">
+            <div v-show="cocktail.ingredients.length === 0" class="cocktail-form__ingredients__onboard">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+                    <path d="M35.074 4.959 53.04 15.33l.633.958.174.93-.144.866-.565.978-.869.684-1.211.25-.725-.182-.73.646-3.897 2.849-4.14 3.064-2.263 1.659.254.383.187.701-.055.917-.719 1.245-.958.633-.93.174-.23-.014-.475 1.03-8.328 22.228.95 1.023.367.805.034.968-.439 1.17-.64.697-.663.329-1.071.211-.548-.078-16.453-9.5-.632-.958-.174-.93.092-.777.668-1.156.958-.633 1.07-.212.548.08.852.373.654-.927 15.086-18.326-.44-1.085-.049-.739.182-.725.514-.89.677-.557 1.033-.352.23.014.167-.496.491-4.342.504-4.57.477-4.112-.543-.907-.188-.702-.048-.739.065-.318.719-1.245.626-.468 1.033-.352.917.055Zm-.568 1.806-.561.15-.295.305-.04.687.341.435 16.72 9.653.547.079.472-.202.27-.674-.2-.472-17.254-9.961Zm-.145 3.948-.168.496-.518 4.8-.49 4.341-.385 3.336.038.14 5.069 2.927 3.514-2.596 3.706-2.722 3.323-2.47.051-.088-14.14-8.164Zm-3.07 14.354-.599.01-.332.164-.219.585.15.562 6.582 3.8.701-.189.308-.533-.15-.562-.216-.242-6.225-3.595Zm-.945 3.486-.59.609L14.67 47.488l-.102.178 11.74 6.778.643-1.526 8.108-21.643-4.713-2.722ZM11.954 48.291l-.548-.079-.42.113-.309.534.188.701 15.742 9.088.56-.15.36-.623-.15-.56-.215-.244-15.208-8.78Z"/>
+                </svg>
+                <p>Here you can manage this cocktail's ingredients and amounts. Start by adding your first ingredient.</p>
+            </div>
             <ul v-show="cocktail.ingredients.length > 0" class="cocktail-form__ingredients" style="margin-bottom: 20px;">
                 <li v-for="ing in cocktail.ingredients" :key="ing.ingredient.id" class="block-container" :data-id="ing.ingredient.id">
                     <div class="drag-handle"></div>
@@ -63,14 +66,16 @@
                     </div>
                 </li>
             </ul>
-            <SaltRimDialog v-model="showDialog">
-                <template #trigger>
-                    <button class="button button--dark" type="button" @click="addIngredient">{{ $t('ingredient.add') }}</button>
-                </template>
-                <template #dialog>
-                    <IngredientModal :cocktail-ingredient="cocktailIngredientForEdit" @close="showDialog = false" />
-                </template>
-            </SaltRimDialog>
+            <div style="text-align: center;">
+                <SaltRimDialog v-model="showDialog">
+                    <template #trigger>
+                        <button class="button button--dark" type="button" @click="addIngredient">{{ $t('ingredient.add') }}</button>
+                    </template>
+                    <template #dialog>
+                        <IngredientModal :cocktail-ingredient="cocktailIngredientForEdit" @close="showDialog = false" />
+                    </template>
+                </SaltRimDialog>
+            </div>
         </div>
         <SaltRimDialog v-model="showSubstituteDialog">
             <template #trigger>
@@ -80,6 +85,9 @@
                 <SubstituteModal :value="cocktailIngredientForSubstitutes" @close="showSubstituteDialog = false" />
             </template>
         </SaltRimDialog>
+        <h3 class="form-section-title">{{ $t('media') }}</h3>
+        <SubscriptionCheck>Subscribe to "Mixologist" plan to upload more than one cocktail recipe image!</SubscriptionCheck>
+        <ImageUpload ref="imagesUpload" :images="cocktail.images" :max-images="10" />
         <h3 class="form-section-title">{{ $t('additional-information') }}</h3>
         <div class="block-container block-container--padded">
             <div class="form-group">
@@ -457,5 +465,20 @@ export default {
     grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
     gap: var(--gap-size-3);
     margin-top: 0.5rem;
+}
+
+.cocktail-form__ingredients__onboard {
+    text-align: center;
+    margin-bottom: 1rem;
+}
+
+.cocktail-form__ingredients__onboard p {
+    max-width: 400px;
+    margin: 0 auto;
+}
+
+.cocktail-form__ingredients__onboard svg {
+    height: 64px;
+    fill: var(--clr-gray-700);
 }
 </style>
