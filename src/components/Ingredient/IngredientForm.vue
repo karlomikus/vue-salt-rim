@@ -50,13 +50,12 @@
         <h3 class="form-section-title">{{ $t('recipe-matching') }}</h3>
         <div class="block-container block-container--padded">
             <div class="form-group">
-                <SaltRimCheckbox id="parent-ingredient-checkbox" v-model="isParent" :label="$t('ingredient.is-variety')" :description="$t('ingredient.variety-note')"></SaltRimCheckbox>
+                <SaltRimCheckbox id="parent-ingredient-checkbox" v-model="isParent" :label="$t('ingredient.is-variety')" :description="'[EXPERIMENTAL] ' + $t('ingredient.variety-note')"></SaltRimCheckbox>
             </div>
             <div v-show="isParent" class="form-group">
                 <IngredientFinder v-show="ingredient.parent_ingredient == null" v-model="ingredient.parent_ingredient" :disabled-ingredients="disabledFinderIngredients"></IngredientFinder>
                 <div v-if="ingredient.parent_ingredient" style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
-                    <button type="button" class="button button--outline">{{ ingredient.parent_ingredient.name }}</button>
-                    <button type="button" class="button button--dark" @click="ingredient.parent_ingredient = null">{{ $t('remove') }}</button>
+                    {{ ingredient.parent_ingredient.name }} &middot; <a href="#" @click.prevent="ingredient.parent_ingredient = null">{{ $t('remove') }}</a>
                 </div>
             </div>
             <div class="form-group">
@@ -64,7 +63,7 @@
             </div>
             <div v-show="isComplex" class="ingredient-form__complex-ingredients">
                 <div>
-                    <IngredientFinder @ingredient-selected="selectIngredientPart" :disabled-ingredients="disabledFinderIngredients"></IngredientFinder>
+                    <IngredientFinder :selected-ingredients="ingredient.ingredient_parts.map(i => i.id)" @ingredient-selected="selectIngredientPart" :disabled-ingredients="disabledFinderIngredients"></IngredientFinder>
                 </div>
                 <div>
                     <ul v-if="ingredient.ingredient_parts.length > 0" class="block-container block-container--inset ingredient-form__complex-ingredients__list">
