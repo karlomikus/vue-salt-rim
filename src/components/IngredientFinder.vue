@@ -162,10 +162,6 @@ export default {
     align-items: center;
 }
 
-.ingredient-finder__options a:hover {
-    background-color: var(--clr-gray-50);
-}
-
 .dark-theme .ingredient-finder__options a:hover {
     background-color: var(--clr-dark-main-700);
 }
@@ -193,5 +189,16 @@ export default {
 
 a.ingredient-finder__options__create {
     text-decoration: underline;
+}
+
+.ingredient-finder__options a:hover,
+.ingredient-finder__options a:active {
+    color: var(--clr-gray-50);
+    background-color: var(--clr-gray-800);
+}
+
+.ingredient-finder__options a:hover .ingredient-finder__options__content small,
+.ingredient-finder__options a:active .ingredient-finder__options__content small {
+    color: var(--clr-gray-300);
 }
 </style>
