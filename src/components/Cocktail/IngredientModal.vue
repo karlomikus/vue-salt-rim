@@ -25,7 +25,6 @@ const props = defineProps<{
 const originalCocktailingredient = JSON.parse(JSON.stringify(props.cocktailIngredient)) as CocktailIngredient
 const localCocktailingredient = ref(props.cocktailIngredient)
 const isLoading = ref(false)
-const hasVariableAmount = ref(props.cocktailIngredient.amount_max != null)
 
 localCocktailingredient.value.amount = UnitHandler.convertFromTo(localCocktailingredient.value.units, localCocktailingredient.value.amount, appState.defaultUnit)
 if (localCocktailingredient.value.amount_max) {
@@ -57,6 +56,9 @@ function selectIngredient(item: FinderIngredient): void {
     <form @submit.prevent="save">
         <OverlayLoader v-if="isLoading" />
         <div class="dialog-title">{{ t('ingredient.title') }}</div>
+        <p style="margin: 0 0 1rem 0;">
+            {{ t('ingredient.units-help') }}
+        </p>
         <IngredientFinder :cocktail-ingredient="localCocktailingredient" @ingredient-selected="selectIngredient"></IngredientFinder>
         <div class="selected-ingredient">
             <small>{{ t('ingredient.dialog.current') }}:</small>
@@ -66,19 +68,12 @@ function selectIngredient(item: FinderIngredient): void {
             <input v-model="localCocktailingredient.optional" type="checkbox">
             <span>{{ t('ingredient.dialog.optional-checkbox') }}</span>
         </label>
-        <label class="form-checkbox">
-            <input v-model="hasVariableAmount" type="checkbox">
-            <span>{{ t('ingredient.has-variable-amount') }}</span>
-        </label>
-        <p style="margin: 0.5rem 0;">
-            {{ t('ingredient.units-help') }}
-        </p>
         <div class="ingredient-form-group">
             <div class="form-group">
                 <label class="form-label form-label--required" for="ingredient-amount">{{ t('amount') }}:</label>
                 <AmountInput id="ingredient-amount" v-model="localCocktailingredient.amount" required></AmountInput>
             </div>
-            <div v-if="hasVariableAmount" class="form-group">
+            <div class="form-group">
                 <label class="form-label" for="ingredient-amount-max">{{ t('amount') }} max:</label>
                 <AmountInput id="ingredient-amount-max" v-model="localCocktailingredient.amount_max"></AmountInput>
             </div>
@@ -125,6 +120,7 @@ function selectIngredient(item: FinderIngredient): void {
 
 .ingredient-form-group {
     margin-top: 1rem;
+    margin-bottom: 1rem;
     display: flex;
     flex-wrap: wrap;
     gap: var(--gap-size-1);
@@ -132,6 +128,7 @@ function selectIngredient(item: FinderIngredient): void {
 
 .ingredient-form-group .form-group {
     flex-basis: 150px;
+    margin: 0;
 }
 
 .ingredient-form-group .form-group:last-child {

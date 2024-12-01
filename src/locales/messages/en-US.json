@@ -68,7 +68,7 @@
     "shelf-user-help": "Recipes matching ingredients in your shelf can only be managed by you.",
     "bar-shelf-add-success": "Added \"{name}\" to bar shelf",
     "bar-shelf-remove-success": "Removed \"{name}\" from bar shelf",
-    "units-help": "Some features work the best if you use common units. Some recommendations for units are: ml, oz, cl, dashes, barspoon, drops, topup, leaves."
+    "units-help": "Optional ingredients won't be used in recipe matching. Some features work the best if you use common units. Some recommendations for units are: ml, oz, cl, dashes, barspoon, drops, topup, leaves."
   },
   "share": {
     "title": "Share",
