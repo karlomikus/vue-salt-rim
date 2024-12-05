@@ -14,6 +14,7 @@
 
 <script>
 import AppState from './../../AppState.js'
+import { barBus } from '@/composables/eventBus'
 
 export default {
     props: {
@@ -45,6 +46,13 @@ export default {
         element() {
             return this.noLink ? 'div' : 'RouterLink'
         }
-    }
+    },
+    mounted() {
+        barBus.on((e, payload) => {
+            if (e === 'barUpdated') {
+                this.appState = new AppState()
+            }
+        })
+    },
 }
 </script>

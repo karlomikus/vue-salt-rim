@@ -25,7 +25,7 @@
                             {{ getRoleName(bar.access.role_id) }}
                             <template v-if="bar.created_user.id == appState.user.id">&middot; Owner</template>
                         </span>
-                        <h4 class="bar__title">{{ bar.name }}</h4>
+                        <a href="#" @click.prevent="selectBar(bar)"><h4 class="bar__title">{{ bar.name }}</h4></a>
                         <p class="bar__owner">{{ $t('created-by') }} {{ bar.created_user.name }} &middot;
                             <DateFormatter :date="bar.created_at" />
                         </p>
