@@ -24,6 +24,12 @@
             </p>
         </div>
         <div class="stats__stat">
+            <h3>{{ stats.total_bar_shelf_ingredients }}</h3>
+            <p>
+                <RouterLink :to="{ name: 'ingredients', query: { 'filter[bar_shelf]': true } }">{{ $t('bar-shelf-ingredients') }}</RouterLink>
+            </p>
+        </div>
+        <div class="stats__stat">
             <h3>{{ stats.total_favorited_cocktails }}</h3>
             <p>
                 <RouterLink :to="{ name: 'cocktails', query: { 'filter[favorites]': true } }">{{ $t('favorited-cocktails') }}</RouterLink>
