@@ -1,3 +1,9 @@
+# v3.5.1
+## Fixed
+- Added missing stats tile: Bar shelf ingredients
+- Fixed missing checkmark in ingredient finder
+- Fixed site logo not updating on bar update
+
 # v3.5.0
 ## New
 - Show prices in cocktail details
@@ -7,6 +13,15 @@
     - This will add a new menu category with all menus from bar shelf
 - You can now export menu as CSV
 - Add "Clear category" action to menu category
+- Added more amounts to amount suggestions
+
+## Changes
+- Public menu now uses thumbnail images
+- Updated maintenance mode page
+
+## Fixes
+- Calories and alcohol units now update with the recipe scaling
+- Added missing translations
 
 # v3.4.1
 ## Fixes
