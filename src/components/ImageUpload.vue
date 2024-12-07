@@ -163,8 +163,9 @@ async function save() {
     <div class="block-container block-container--padded block-container--inset image-upload">
         <OverlayLoader v-if="isLoading" />
         <div class="image-upload__images" ref="imageList">
-            <div v-if="images.length == 0">
-                No images attached.
+            <div v-if="images.length == 0" class="image-upload__images__onboard">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256"><path d="M216,40H72A16,16,0,0,0,56,56V72H40A16,16,0,0,0,24,88V200a16,16,0,0,0,16,16H184a16,16,0,0,0,16-16V184h16a16,16,0,0,0,16-16V56A16,16,0,0,0,216,40ZM72,56H216v62.75l-10.07-10.06a16,16,0,0,0-22.63,0l-20,20-44-44a16,16,0,0,0-22.62,0L72,109.37ZM184,200H40V88H56v80a16,16,0,0,0,16,16H184Zm32-32H72V132l36-36,49.66,49.66a8,8,0,0,0,11.31,0L194.63,120,216,141.38V168ZM160,84a12,12,0,1,1,12,12A12,12,0,0,1,160,84Z"></path></svg>
+                <p>No images attached. Start by uploading your first image.</p>
             </div>
             <div class="block-container block-container--padded image-upload__images__item" v-for="(img, idx) in images" :key="idx" :data-id="img.fileName">
                 <div class="drag-handle"></div>
@@ -229,5 +230,23 @@ async function save() {
         flex-direction: column;
         gap: var(--gap-size-2);
     }
+}
+
+.image-upload__actions {
+    text-align: center;
+}
+
+.image-upload__images__onboard {
+    text-align: center;
+}
+
+.image-upload__images__onboard p {
+    max-width: 400px;
+    margin: 0 auto;
+}
+
+.image-upload__images__onboard svg {
+    height: 64px;
+    fill: var(--clr-gray-700);
 }
 </style>

@@ -61,6 +61,7 @@ import PageHeader from './../PageHeader.vue'
 import slug from 'slug'
 import BarAssistantClient from '@/api/BarAssistantClient'
 import ImageUpload from '../ImageUpload.vue'
+import { barBus } from '@/composables/eventBus'
 
 export default {
     components: {
@@ -166,6 +167,7 @@ export default {
                     appState.setBar(resp.data)
                     this.isLoading = false
                     this.$toast.default(this.$t('bars.add-success', { name: this.bar.name }))
+                    barBus.emit('barUpdated', resp.data)
                     this.$router.push({ name: 'bars' })
                 }).catch(e => {
                     this.isLoading = false

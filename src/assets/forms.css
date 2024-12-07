@@ -28,17 +28,21 @@
     --form-clr-label: var(--clr-gray-200);
 }
 
-@media (max-width: 450px) {
-    .form-label {
-        font-size: 0.85rem;
-    }
-}
-
 .form-label--required::after {
     content: '•';
     font-size: 1rem;
     color: rgb(202, 13, 39);
     text-shadow: 0 0 3px red;
+}
+
+@media (max-width: 450px) {
+    .form-label {
+        font-size: 0.85rem;
+    }
+
+    .form-label--required::after {
+        font-size: 0.85rem;
+    }
 }
 
 .form-input,

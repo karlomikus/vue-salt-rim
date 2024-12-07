@@ -21,11 +21,14 @@
                 <p class="form-input-hint">{{ $t('field-supports-md') }}</p>
             </div>
         </div>
-        <h3 class="form-section-title">{{ $t('media') }}</h3>
-        <SubscriptionCheck>Subscribe to "Mixologist" plan to upload more than one cocktail recipe image!</SubscriptionCheck>
-        <ImageUpload ref="imagesUpload" :images="cocktail.images" :max-images="10" />
         <h3 class="form-section-title">{{ $t('ingredient.ingredients') }}</h3>
         <div class="block-container block-container--padded block-container--inset">
+            <div v-show="cocktail.ingredients.length === 0" class="cocktail-form__ingredients__onboard">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48">
+                    <path d="m15.139 7.813 4.638 18.29h8.446l4.638-18.29ZM19.723 29.861l-4.7 10.674 8.977-.02 8.977.02-4.7-10.674-3.619.002h-1.316zM18.88 26.61v2.997h10.24V26.61z" style="fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round" />
+                </svg>
+                <p>Here you can manage this cocktail's ingredients and amounts. Start by adding your first ingredient.</p>
+            </div>
             <ul v-show="cocktail.ingredients.length > 0" class="cocktail-form__ingredients" style="margin-bottom: 20px;">
                 <li v-for="ing in cocktail.ingredients" :key="ing.ingredient.id" class="block-container" :data-id="ing.ingredient.id">
                     <div class="drag-handle"></div>
@@ -63,14 +66,16 @@
                     </div>
                 </li>
             </ul>
-            <SaltRimDialog v-model="showDialog">
-                <template #trigger>
-                    <button class="button button--dark" type="button" @click="addIngredient">{{ $t('ingredient.add') }}</button>
-                </template>
-                <template #dialog>
-                    <IngredientModal :cocktail-ingredient="cocktailIngredientForEdit" @close="showDialog = false" />
-                </template>
-            </SaltRimDialog>
+            <div style="text-align: center;">
+                <SaltRimDialog v-model="showDialog">
+                    <template #trigger>
+                        <button class="button button--dark" type="button" @click="addIngredient">{{ $t('ingredient.add') }}</button>
+                    </template>
+                    <template #dialog>
+                        <IngredientModal :cocktail-ingredient="cocktailIngredientForEdit" @close="showDialog = false" />
+                    </template>
+                </SaltRimDialog>
+            </div>
         </div>
         <SaltRimDialog v-model="showSubstituteDialog">
             <template #trigger>
@@ -80,6 +85,9 @@
                 <SubstituteModal :value="cocktailIngredientForSubstitutes" @close="showSubstituteDialog = false" />
             </template>
         </SaltRimDialog>
+        <h3 class="form-section-title">{{ $t('media') }}</h3>
+        <SubscriptionCheck>Subscribe to "Mixologist" plan to upload more than one cocktail recipe image!</SubscriptionCheck>
+        <ImageUpload ref="imagesUpload" :images="cocktail.images" :max-images="10" />
         <h3 class="form-section-title">{{ $t('additional-information') }}</h3>
         <div class="block-container block-container--padded">
             <div class="form-group">
@@ -457,5 +465,20 @@ export default {
     grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
     gap: var(--gap-size-3);
     margin-top: 0.5rem;
+}
+
+.cocktail-form__ingredients__onboard {
+    text-align: center;
+    margin-bottom: 1rem;
+}
+
+.cocktail-form__ingredients__onboard p {
+    max-width: 400px;
+    margin: 0 auto;
+}
+
+.cocktail-form__ingredients__onboard svg {
+    height: 64px;
+    stroke: var(--clr-gray-700);
 }
 </style>

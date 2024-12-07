@@ -8,7 +8,7 @@
 
 .dropdown-menu {
     background-color: #fff;
-    padding: 8px;
+    padding: 0.5rem;
     border-radius: var(--radius-3);
     display: flex;
     flex-direction: column;

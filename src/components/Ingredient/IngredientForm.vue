@@ -50,13 +50,12 @@
         <h3 class="form-section-title">{{ $t('recipe-matching') }}</h3>
         <div class="block-container block-container--padded">
             <div class="form-group">
-                <SaltRimCheckbox id="parent-ingredient-checkbox" v-model="isParent" :label="$t('ingredient.is-variety')" :description="$t('ingredient.variety-note')"></SaltRimCheckbox>
+                <SaltRimCheckbox id="parent-ingredient-checkbox" v-model="isParent" :label="$t('ingredient.is-variety')" :description="'[EXPERIMENTAL] ' + $t('ingredient.variety-note')"></SaltRimCheckbox>
             </div>
             <div v-show="isParent" class="form-group">
                 <IngredientFinder v-show="ingredient.parent_ingredient == null" v-model="ingredient.parent_ingredient" :disabled-ingredients="disabledFinderIngredients"></IngredientFinder>
                 <div v-if="ingredient.parent_ingredient" style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
-                    <button type="button" class="button button--outline">{{ ingredient.parent_ingredient.name }}</button>
-                    <button type="button" class="button button--dark" @click="ingredient.parent_ingredient = null">{{ $t('remove') }}</button>
+                    {{ ingredient.parent_ingredient.name }} &middot; <a href="#" @click.prevent="ingredient.parent_ingredient = null">{{ $t('remove') }}</a>
                 </div>
             </div>
             <div class="form-group">
@@ -64,7 +63,7 @@
             </div>
             <div v-show="isComplex" class="ingredient-form__complex-ingredients">
                 <div>
-                    <IngredientFinder @ingredient-selected="selectIngredientPart" :disabled-ingredients="disabledFinderIngredients"></IngredientFinder>
+                    <IngredientFinder :selected-ingredients="ingredient.ingredient_parts.map(i => i.id)" @ingredient-selected="selectIngredientPart" :disabled-ingredients="disabledFinderIngredients"></IngredientFinder>
                 </div>
                 <div>
                     <ul v-if="ingredient.ingredient_parts.length > 0" class="block-container block-container--inset ingredient-form__complex-ingredients__list">
@@ -79,6 +78,12 @@
         <h3 class="form-section-title">{{ $t('price.prices') }}</h3>
         <div class="block-container block-container--padded block-container--inset ingredient-prices">
             <template v-if="priceCategories.length > 0">
+                <div v-show="ingredient.prices.length === 0" class="ingredient-prices__onboard">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256">
+                        <path d="M184,89.57V84c0-25.08-37.83-44-88-44S8,58.92,8,84v40c0,20.89,26.25,37.49,64,42.46V172c0,25.08,37.83,44,88,44s88-18.92,88-44V132C248,111.3,222.58,94.68,184,89.57ZM232,132c0,13.22-30.79,28-72,28-3.73,0-7.43-.13-11.08-.37C170.49,151.77,184,139,184,124V105.74C213.87,110.19,232,122.27,232,132ZM72,150.25V126.46A183.74,183.74,0,0,0,96,128a183.74,183.74,0,0,0,24-1.54v23.79A163,163,0,0,1,96,152,163,163,0,0,1,72,150.25Zm96-40.32V124c0,8.39-12.41,17.4-32,22.87V123.5C148.91,120.37,159.84,115.71,168,109.93ZM96,56c41.21,0,72,14.78,72,28s-30.79,28-72,28S24,97.22,24,84,54.79,56,96,56ZM24,124V109.93c8.16,5.78,19.09,10.44,32,13.57v23.37C36.41,141.4,24,132.39,24,124Zm64,48v-4.17c2.63.1,5.29.17,8,.17,3.88,0,7.67-.13,11.39-.35A121.92,121.92,0,0,0,120,171.41v23.46C100.41,189.4,88,180.39,88,172Zm48,26.25V174.4a179.48,179.48,0,0,0,24,1.6,183.74,183.74,0,0,0,24-1.54v23.79a165.45,165.45,0,0,1-48,0Zm64-3.38V171.5c12.91-3.13,23.84-7.79,32-13.57V172C232,180.39,219.59,189.4,200,194.87Z"></path>
+                    </svg>
+                    <p>Here you can manage this ingredient's prices. Start by adding your first price.</p>
+                </div>
                 <div v-for="(price, idx) in ingredient.prices" :key="idx" class="block-container ingredient-prices__price">
                     <CloseButton @closed="removeIngredientPrice(price)"></CloseButton>
                     <div class="form-group" style="width: 100%; max-width: 300px;">
@@ -108,7 +113,7 @@
                         <input :id="'ingredient-price-description-' + idx" v-model="price.description" type="text" class="form-input">
                     </div>
                 </div>
-                <div>
+                <div style="text-align: center;">
                     <button class="button button--dark" type="button" @click="addIngredientPrice">{{ $t('prices.add') }}</button>
                 </div>
             </template>
@@ -361,5 +366,19 @@ export default {
 
 .ingredient-prices__price .form-group {
     margin: 0;
+}
+
+.ingredient-prices__onboard {
+    text-align: center;
+}
+
+.ingredient-prices__onboard p {
+    max-width: 400px;
+    margin: 0 auto;
+}
+
+.ingredient-prices__onboard svg {
+    height: 64px;
+    fill: var(--clr-gray-700);
 }
 </style>

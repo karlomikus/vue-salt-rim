@@ -8,9 +8,9 @@
         </ais-search-box>
         <ais-hits class="ingredient-finder__hits">
             <template #default="{ items }">
-                <div class="ingredient-finder__options">
+                <div class="ingredient-finder__options block-container block-container--inset">
                     <OverlayLoader v-if="isLoading"></OverlayLoader>
-                    <a v-for="item in items" :key="item.id" href="#" @click.prevent="selectIngredient(item)" :class="{ 'ingredient-finder__options--disabled': disabledIngredients.includes(item.id) }">
+                    <a v-for="item in items" :key="item.id" class="block-container block-container--hover" href="#" @click.prevent="selectIngredient(item)" :class="{ 'ingredient-finder__options--disabled': disabledIngredients.includes(item.id) }">
                         <IngredientImage class="ingredient__image--small" :ingredient="item"></IngredientImage>
                         <div class="ingredient-finder__options__content">
                             <span>{{ item.name }}</span>
@@ -50,10 +50,10 @@ export default {
                 return {}
             }
         },
-        cocktailIngredient: { // Temp workaround until cocktail form flow is fixed with v-models
-            type: Object,
+        selectedIngredients: {
+            type: Array,
             default() {
-                return {}
+                return []
             }
         },
         initialQuery: {
@@ -98,7 +98,7 @@ export default {
             this.$emit('ingredientSelected', ing)
         },
         isSelected(ing) {
-            return this.cocktailIngredient.ingredient_id == ing.id
+            return this.selectedIngredients.includes(ing.id)
         },
         newIngredient() {
             this.isLoading = true
@@ -129,45 +129,25 @@ export default {
 
 <style scoped>
 .ingredient-finder__search-input {
-    border-bottom-left-radius: 0;
-    border-bottom-right-radius: 0;
     width: 100%;
+    margin-bottom: 0.5rem;
 }
 
 .ingredient-finder__options {
     display: flex;
+    gap: var(--gap-size-1);
     flex-direction: column;
-    height: 15rem;
+    height: 18rem;
     overflow-y: auto;
-    padding: 0.5rem;
-    border-radius: var(--radius-2);
-    border-top-left-radius: 0;
-    border-top-right-radius: 0;
-    border: 2px solid var(--clr-gray-100);
-    border-top: 0;
-    background: #fff;
-}
-
-.dark-theme .ingredient-finder__options {
-    border-color: var(--clr-dark-main-600);
-    background-color: var(--clr-dark-main-900);
+    padding: var(--gap-size-1);
 }
 
 .ingredient-finder__options a {
     display: flex;
     gap: var(--gap-size-2);
     padding: 0.25rem 0.5rem;
-    border-radius: var(--radius-1);
     text-decoration: none;
     align-items: center;
-}
-
-.ingredient-finder__options a:hover {
-    background-color: var(--clr-gray-50);
-}
-
-.dark-theme .ingredient-finder__options a:hover {
-    background-color: var(--clr-dark-main-700);
 }
 
 .ingredient-finder__options a.ingredient-finder__options--disabled {

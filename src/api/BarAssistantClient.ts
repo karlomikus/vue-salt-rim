@@ -29,7 +29,6 @@ const authMiddleware: Middleware = {
     const scopedState = new AppState()
     accessToken = scopedState.token
     request.headers.set("Authorization", `Bearer ${accessToken}`);
-    // request.headers.set("Accept", "application/json");
     return request;
   },
 };
@@ -56,7 +55,7 @@ const rejectOnError: Middleware = {
 };
 
 const apiBaseUrl = window.srConfig.API_URL + '/api'
-const client = createClient<paths>({ baseUrl: apiBaseUrl });
+const client = createClient<paths>({ baseUrl: apiBaseUrl, headers: { "Accept": "application/json" } });
 client.use(authMiddleware);
 client.use(barIdMiddleware);
 client.use(rejectOnError);
