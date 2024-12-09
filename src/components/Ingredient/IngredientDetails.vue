@@ -285,7 +285,7 @@ export default {
     display: grid;
     gap: var(--gap-size-3);
     grid-template-columns: 300px minmax(0, 1fr);
-    grid-template-rows: 400px 100%;
+    grid-template-rows: 400px 1fr;
     grid-template-areas:
         "image content"
         "sidebar content";

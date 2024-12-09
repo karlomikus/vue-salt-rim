@@ -704,7 +704,7 @@ swiper-container {
     display: grid;
     gap: var(--gap-size-3);
     grid-template-columns: 500px minmax(0, 1fr);
-    grid-template-rows: 700px 100%;
+    grid-template-rows: 700px 1fr;
     grid-template-areas:
         "image content"
         "sidebar content";
