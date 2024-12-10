@@ -65,6 +65,7 @@ interface Draft1Schema {
         sort: number;
     }[];
 }
+type Cocktail = components["schemas"]["Cocktail"]
 type Glass = components["schemas"]["Glass"]
 type FullIngredient = components["schemas"]["Ingredient"]
 type CocktailMethod = components["schemas"]["CocktailMethod"]
@@ -96,6 +97,8 @@ const isLoading = ref(false)
 const showIngredientDialog = ref(false)
 const ingredientEdit = ref<CocktailIngredient | SubstituteCocktailIngredient | null>(null)
 const importType = ref('url')
+const similarCocktails = ref([] as Cocktail[])
+const isLoadingSimilar = ref(false)
 const duplicateAction = ref('none')
 const source = ref<null | string>(null)
 const result = ref<LocalSchema>({} as LocalSchema)
@@ -119,12 +122,15 @@ const cocktailTags = computed({
 useTitle(t('cocktail.import'))
 
 function clearImport() {
+    similarCocktails.value = []
     source.value = null
     ingredientEdit.value = null
     result.value = {} as LocalSchema
 }
 
 function importCocktail() {
+    similarCocktails.value = []
+
     if (importType.value == 'url') {
         fromUrl()
     }
@@ -145,6 +151,8 @@ function fromUrl() {
         if (!schema) {
             return
         }
+
+        findSimilarCocktails(schema.recipe.name)
 
         result.value = {
             ...schema,
@@ -421,6 +429,13 @@ async function finishImporting() {
     sessionStorage.setItem('scrapeResult', JSON.stringify(cocktail))
     router.push({ name: 'cocktails.form' })
 }
+
+async function findSimilarCocktails(name: string): Promise<void> {
+    isLoadingSimilar.value = true
+    const response = await BarAssistantClient.getCocktails({ 'filter[name]': name.toLowerCase(), per_page: 10 })
+    isLoadingSimilar.value = false
+    similarCocktails.value = response?.data ?? []
+}
 </script>
 <template>
     <form @submit.prevent="finishImporting">
@@ -471,6 +486,13 @@ async function finishImporting() {
             <div style="display: flex; gap: var(--gap-size-2);">
                 <button type="button" class="button button--outline" @click.prevent="clearImport">{{ t('clear') }}</button>
                 <button type="button" class="button button--dark" @click.prevent="importCocktail">{{ t('import.start') }}</button>
+            </div>
+        </div>
+        <div class="sda" v-if="similarCocktails.length > 0">
+            <h3 class="form-section-title">{{ t('cocktails-similar') }}</h3>
+            <div class="similar-cocktails-list block-container block-container--padded">
+                <OverlayLoader v-if="isLoadingSimilar" />
+                <RouterLink :to="{name: 'cocktails.show', params: { id: cocktail.slug }}" v-for="cocktail in similarCocktails" :key="cocktail.id">{{ cocktail.name }}</RouterLink>
             </div>
         </div>
         <div v-if="result.recipe" class="scraper-form">
@@ -671,5 +693,11 @@ async function finishImporting() {
 .import-image-preview {
     max-width: 150px;
     max-height: 200px;
+}
+
+.similar-cocktails-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--gap-size-3);
 }
 </style>
