@@ -87,7 +87,7 @@
         </SaltRimDialog>
         <h3 class="form-section-title">{{ $t('media') }}</h3>
         <SubscriptionCheck>Subscribe to "Mixologist" plan to upload more than one cocktail recipe image!</SubscriptionCheck>
-        <ImageUpload ref="imagesUpload" :images="cocktail.images" :max-images="10" />
+        <ImageUpload ref="imagesUpload" :images="cocktail.images" :max-images="maxImages" />
         <h3 class="form-section-title">{{ $t('additional-information') }}</h3>
         <div class="block-container block-container--padded">
             <div class="form-group">
@@ -167,14 +167,16 @@ export default {
         TagSelector,
     },
     data() {
+        const appState = new AppState()
+
         return {
-            appState: new AppState(),
+            appState: appState,
             showDialog: false,
             showSubstituteDialog: false,
             cocktailIngredientForEdit: {},
             cocktailIngredientForEditOriginal: {},
             cocktailIngredientForSubstitutes: {},
-            maxImages: 10,
+            maxImages: appState.isSubscribed() ? 10 : 1,
             isLoading: false,
             cocktail: {
                 id: null,
