@@ -170,6 +170,9 @@ function fromUrl() {
         } as LocalSchema
 
         isLoading.value = false
+    }).catch(e => {
+        toast.error(e.message)
+        isLoading.value = false
     })
 }
 
