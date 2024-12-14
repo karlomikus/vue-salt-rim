@@ -110,6 +110,8 @@ $ npm run dev
 
 Fork the respository, follow manual installation steps and make your changes. Issues and PR's are appreciated.
 
+This project is tested with BrowserStack.
+
 ### Internationalization
 
 You can use Crowdin Bar Assistant project, and this will automaticall pull new languages.
