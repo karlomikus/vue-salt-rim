@@ -83,7 +83,7 @@ export default {
         BarAssistantClient.getBar(appState.bar.id).then(resp => {
             this.isLoading = false
             this.searchClient = instantMeiliSearch(
-                resp.data.search_host,
+                appState.bar.search_host,
                 resp.data.search_token,
             ).searchClient
         }).catch(e => {
