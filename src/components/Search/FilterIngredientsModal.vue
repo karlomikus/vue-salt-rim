@@ -2,7 +2,7 @@
     <form @submit.prevent="filter">
         <OverlayLoader v-if="isLoading" />
         <div class="dialog-title">{{ title }}</div>
-        <IngredientFinder :search-host="searchHost" :search-token="searchToken" :selected-ingredients="selectedIngredients.map(s => s.id)" @ingredient-selected="selectIngredient"></IngredientFinder>
+        <IngredientFinder :search-token="searchToken" :selected-ingredients="selectedIngredients.map(s => s.id)" @ingredient-selected="selectIngredient"></IngredientFinder>
         <div class="search-ingredients-modal-ingredients">
             <div v-for="ing in selectedIngredients" :key="ing.id" class="search-ingredients-modal-ingredients__ingredient">
                 {{ ing.name }} <button type="button" @click.prevent="removeIngredient(ing)"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="12" height="12" fill="currentcolor"><path fill="none" d="M0 0h24v24H0z" /><path d="M12 10.586l4.95-4.95 1.414 1.414-4.95 4.95 4.95 4.95-1.414 1.414-4.95-4.95-4.95 4.95-1.414-1.414 4.95-4.95-4.95-4.95L7.05 5.636z" /></svg></button>
@@ -26,10 +26,6 @@ export default {
         IngredientFinder,
     },
     props: {
-        searchHost: {
-            type: String,
-            required: true,
-        },
         searchToken: {
             type: String,
             required: true,

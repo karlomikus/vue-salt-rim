@@ -72,7 +72,7 @@
                         <button class="button button--dark" type="button" @click="addIngredient">{{ $t('ingredient.add') }}</button>
                     </template>
                     <template #dialog>
-                        <IngredientModal :search-host="bar.search_host" :search-token="bar.search_token" :cocktail-ingredient="cocktailIngredientForEdit" @close="showDialog = false" />
+                        <IngredientModal :search-token="bar.search_token" :cocktail-ingredient="cocktailIngredientForEdit" @close="showDialog = false" />
                     </template>
                 </SaltRimDialog>
             </div>
@@ -82,7 +82,7 @@
                 <span></span>
             </template>
             <template #dialog>
-                <SubstituteModal :search-host="bar.search_host" :search-token="bar.search_token" :value="cocktailIngredientForSubstitutes" @close="showSubstituteDialog = false" />
+                <SubstituteModal :search-token="bar.search_token" :value="cocktailIngredientForSubstitutes" @close="showSubstituteDialog = false" />
             </template>
         </SaltRimDialog>
         <h3 class="form-section-title">{{ $t('media') }}</h3>

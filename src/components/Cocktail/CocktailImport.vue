@@ -630,7 +630,7 @@ async function getBar(barId: number): Promise<void> {
                 <template #dialog>
                     <div class="dialog-title">{{ t('import.manually-match') }}</div>
                     <p style="margin-bottom: 1rem;">{{ t('import.manual-match-notice', {name: ingredientEdit.refIngredient.name}) }}</p>
-                    <IngredientFinder v-if="bar.search_host && bar.search_token" :search-host="bar.search_host" :search-token="bar.search_token" :initial-query="ingredientEdit.refIngredient.name" @ingredient-selected="handleIngredientEdit"></IngredientFinder>
+                    <IngredientFinder v-if="bar.search_token" :search-token="bar.search_token" :initial-query="ingredientEdit.refIngredient.name" @ingredient-selected="handleIngredientEdit"></IngredientFinder>
                     <div class="dialog-actions">
                         <button type="button" class="button button--outline" @click="showIngredientDialog = false">{{ t('close') }}</button>
                     </div>

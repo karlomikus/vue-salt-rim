@@ -53,7 +53,7 @@
                 <SaltRimCheckbox id="parent-ingredient-checkbox" v-model="isParent" :label="$t('ingredient.is-variety')" :description="'[EXPERIMENTAL] ' + $t('ingredient.variety-note')"></SaltRimCheckbox>
             </div>
             <div v-show="isParent" class="form-group" v-if="bar.search_host">
-                <IngredientFinder v-show="ingredient.parent_ingredient == null" :search-host="bar.search_host" :search-token="bar.search_token" v-model="ingredient.parent_ingredient" :disabled-ingredients="disabledFinderIngredients"></IngredientFinder>
+                <IngredientFinder v-show="ingredient.parent_ingredient == null" :search-token="bar.search_token" v-model="ingredient.parent_ingredient" :disabled-ingredients="disabledFinderIngredients"></IngredientFinder>
                 <div v-if="ingredient.parent_ingredient" style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
                     {{ ingredient.parent_ingredient.name }} &middot; <a href="#" @click.prevent="ingredient.parent_ingredient = null">{{ $t('remove') }}</a>
                 </div>
@@ -63,7 +63,7 @@
             </div>
             <div v-show="isComplex" class="ingredient-form__complex-ingredients" v-if="bar.search_host">
                 <div>
-                    <IngredientFinder :selected-ingredients="ingredient.ingredient_parts.map(i => i.id)" :search-host="bar.search_host" :search-token="bar.search_token" @ingredient-selected="selectIngredientPart" :disabled-ingredients="disabledFinderIngredients"></IngredientFinder>
+                    <IngredientFinder :selected-ingredients="ingredient.ingredient_parts.map(i => i.id)" :search-token="bar.search_token" @ingredient-selected="selectIngredientPart" :disabled-ingredients="disabledFinderIngredients"></IngredientFinder>
                 </div>
                 <div>
                     <ul v-if="ingredient.ingredient_parts.length > 0" class="block-container block-container--inset ingredient-form__complex-ingredients__list">

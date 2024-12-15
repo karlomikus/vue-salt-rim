@@ -22,7 +22,7 @@
                                 <a href="#" @click.prevent="showSpecificIngredientsModal = true">{{ $t('search.ingredients') }} ({{ activeFilters.specific_ingredients.length }})</a>
                             </template>
                             <template #dialog>
-                                <FilterIngredientsModal :search-host="appState.bar.search_host" :search-token="appState.bar.search_token" :title="$t('search.select-specific-ingredients')" :value="activeFilters.specific_ingredients" @close="updateSpecificIngredients"></FilterIngredientsModal>
+                                <FilterIngredientsModal :search-token="appState.bar.search_token" :title="$t('search.select-specific-ingredients')" :value="activeFilters.specific_ingredients" @close="updateSpecificIngredients"></FilterIngredientsModal>
                             </template>
                         </SaltRimDialog>
                         <br>
@@ -31,7 +31,7 @@
                                 <a href="#" @click.prevent="showIgnoreIngredientsModal = true">{{ $t('search.ignore-ingredients') }} ({{ activeFilters.ignore_ingredients.length }})</a>
                             </template>
                             <template #dialog>
-                                <FilterIngredientsModal :search-host="appState.bar.search_host" :search-token="appState.bar.search_token" :title="$t('search.select-ingredients-to-ignore')" :value="activeFilters.ignore_ingredients" @close="updateIgnoredIngredients"></FilterIngredientsModal>
+                                <FilterIngredientsModal :search-token="appState.bar.search_token" :title="$t('search.select-ingredients-to-ignore')" :value="activeFilters.ignore_ingredients" @close="updateIgnoredIngredients"></FilterIngredientsModal>
                             </template>
                         </SaltRimDialog>
                     </Refinement>

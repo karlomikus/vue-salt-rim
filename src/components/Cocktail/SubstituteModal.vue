@@ -3,7 +3,7 @@
         <OverlayLoader v-if="isLoading" />
         <div class="dialog-title">{{ $t('ingredient.dialog.select-substitutes') }}</div>
         <p style="margin-bottom: 1rem;">{{ $t('ingredient.dialog.select-substitutes-for', {name: cocktailIngredient.ingredient.name}) }}</p>
-        <IngredientFinder :search-host="searchHost" :search-token="searchToken" :selected-ingredients="selectedSubstitutes.map(s => s.ingredient.id)" @ingredient-selected="selectIngredient"></IngredientFinder>
+        <IngredientFinder :search-token="searchToken" :selected-ingredients="selectedSubstitutes.map(s => s.ingredient.id)" @ingredient-selected="selectIngredient"></IngredientFinder>
         <div class="substitutes">
             <h4>{{ $t('substitutes') }}:</h4>
             <div v-for="(substitute, index) in selectedSubstitutes" :key="substitute.ingredient.id" class="substitutes__substitute">
@@ -61,10 +61,6 @@ export default {
         AmountInput,
     },
     props: {
-        searchHost: {
-            type: String,
-            required: true,
-        },
         searchToken: {
             type: String,
             required: true,
