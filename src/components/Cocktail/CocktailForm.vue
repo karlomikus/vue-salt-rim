@@ -72,7 +72,7 @@
                         <button class="button button--dark" type="button" @click="addIngredient">{{ $t('ingredient.add') }}</button>
                     </template>
                     <template #dialog>
-                        <IngredientModal :cocktail-ingredient="cocktailIngredientForEdit" @close="showDialog = false" />
+                        <IngredientModal :search-host="bar.search_host" :search-token="bar.search_token" :cocktail-ingredient="cocktailIngredientForEdit" @close="showDialog = false" />
                     </template>
                 </SaltRimDialog>
             </div>
@@ -82,7 +82,7 @@
                 <span></span>
             </template>
             <template #dialog>
-                <SubstituteModal :value="cocktailIngredientForSubstitutes" @close="showSubstituteDialog = false" />
+                <SubstituteModal :search-host="bar.search_host" :search-token="bar.search_token" :value="cocktailIngredientForSubstitutes" @close="showSubstituteDialog = false" />
             </template>
         </SaltRimDialog>
         <h3 class="form-section-title">{{ $t('media') }}</h3>
@@ -171,6 +171,10 @@ export default {
 
         return {
             appState: appState,
+            bar: {
+                search_host: null,
+                search_token: null,
+            },
             showDialog: false,
             showSubstituteDialog: false,
             cocktailIngredientForEdit: {},
@@ -209,6 +213,8 @@ export default {
 
         this.isLoading = true
         const cocktailId = this.$route.query.id || null
+
+        this.bar = (await BarAssistantClient.getBar(this.appState.bar.id)).data ?? {}
 
         if (cocktailId) {
             await BarAssistantClient.getCocktail(cocktailId).then(resp => {

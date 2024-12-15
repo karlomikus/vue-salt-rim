@@ -20,6 +20,8 @@ interface FinderIngredient {
 const emit = defineEmits(['close', 'ingredient-changed'])
 const props = defineProps<{
     cocktailIngredient: CocktailIngredient,
+    searchHost: string,
+    searchToken: string,
 }>()
 
 const originalCocktailingredient = JSON.parse(JSON.stringify(props.cocktailIngredient)) as CocktailIngredient
@@ -59,7 +61,7 @@ function selectIngredient(item: FinderIngredient): void {
         <p style="margin: 0 0 1rem 0;">
             {{ t('ingredient.units-help') }}
         </p>
-        <IngredientFinder :selected-ingredients="[localCocktailingredient.ingredient.id]" @ingredient-selected="selectIngredient"></IngredientFinder>
+        <IngredientFinder :search-host="searchHost" :search-token="searchToken" :selected-ingredients="[localCocktailingredient.ingredient.id]" @ingredient-selected="selectIngredient"></IngredientFinder>
         <div class="selected-ingredient">
             <small>{{ t('ingredient.dialog.current') }}:</small>
             <p>{{ localCocktailingredient.ingredient.name }}</p>

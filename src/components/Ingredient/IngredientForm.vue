@@ -52,8 +52,8 @@
             <div class="form-group">
                 <SaltRimCheckbox id="parent-ingredient-checkbox" v-model="isParent" :label="$t('ingredient.is-variety')" :description="'[EXPERIMENTAL] ' + $t('ingredient.variety-note')"></SaltRimCheckbox>
             </div>
-            <div v-show="isParent" class="form-group">
-                <IngredientFinder v-show="ingredient.parent_ingredient == null" v-model="ingredient.parent_ingredient" :disabled-ingredients="disabledFinderIngredients"></IngredientFinder>
+            <div v-show="isParent" class="form-group" v-if="bar.search_host">
+                <IngredientFinder v-show="ingredient.parent_ingredient == null" :search-host="bar.search_host" :search-token="bar.search_token" v-model="ingredient.parent_ingredient" :disabled-ingredients="disabledFinderIngredients"></IngredientFinder>
                 <div v-if="ingredient.parent_ingredient" style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
                     {{ ingredient.parent_ingredient.name }} &middot; <a href="#" @click.prevent="ingredient.parent_ingredient = null">{{ $t('remove') }}</a>
                 </div>
@@ -61,9 +61,9 @@
             <div class="form-group">
                 <SaltRimCheckbox id="complex-ingredient-checkbox" v-model="isComplex" :label="$t('ingredient.is-complex')" :description="$t('ingredient.complex-note')"></SaltRimCheckbox>
             </div>
-            <div v-show="isComplex" class="ingredient-form__complex-ingredients">
+            <div v-show="isComplex" class="ingredient-form__complex-ingredients" v-if="bar.search_host">
                 <div>
-                    <IngredientFinder :selected-ingredients="ingredient.ingredient_parts.map(i => i.id)" @ingredient-selected="selectIngredientPart" :disabled-ingredients="disabledFinderIngredients"></IngredientFinder>
+                    <IngredientFinder :selected-ingredients="ingredient.ingredient_parts.map(i => i.id)" :search-host="bar.search_host" :search-token="bar.search_token" @ingredient-selected="selectIngredientPart" :disabled-ingredients="disabledFinderIngredients"></IngredientFinder>
                 </div>
                 <div>
                     <ul v-if="ingredient.ingredient_parts.length > 0" class="block-container block-container--inset ingredient-form__complex-ingredients__list">
@@ -146,6 +146,7 @@ import SaltRimDialog from '../Dialog/SaltRimDialog.vue'
 import CategoryForm from '../Settings/CategoryForm.vue'
 import CloseButton from '../CloseButton.vue'
 import { useTitle } from '@/composables/title'
+import AppState from '@/AppState.js'
 
 export default {
     components: {
@@ -162,11 +163,16 @@ export default {
     },
     data() {
         return {
+            appState: new AppState(),
             isLoading: false,
             isParent: false,
             isComplex: false,
             showCategoryDialog: false,
             ingredientCategoryId: null,
+            bar: {
+                search_host: null,
+                search_token: null,
+            },
             ingredient: {
                 id: null,
                 color: '#000',
@@ -199,10 +205,12 @@ export default {
             }, {})
         }
     },
-    created() {
+    async created() {
         useTitle(this.$t('ingredient.add'))
 
         const ingredientId = this.$route.query.id || null
+
+        this.bar = (await BarAssistantClient.getBar(this.appState.bar.id)).data ?? {}
 
         if (ingredientId) {
             this.ingredient.id = ingredientId

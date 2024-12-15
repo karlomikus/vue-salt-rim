@@ -32,11 +32,8 @@
 <script>
 import { instantMeiliSearch } from '@meilisearch/instant-meilisearch'
 import OverlayLoader from './OverlayLoader.vue'
-import AppState from './../AppState'
 import IngredientImage from './Ingredient/IngredientImage.vue'
 import BarAssistantClient from '@/api/BarAssistantClient'
-
-const appState = new AppState()
 
 export default {
     components: {
@@ -44,6 +41,14 @@ export default {
         IngredientImage
     },
     props: {
+        searchHost: {
+            type: String,
+            required: true,
+        },
+        searchToken: {
+            type: String,
+            required: true,
+        },
         modelValue: {
             type: Object,
             default() {
@@ -83,8 +88,8 @@ export default {
                 },
             },
             searchClient: instantMeiliSearch(
-                appState.bar.search_host,
-                appState.bar.search_token,
+                this.searchHost,
+                this.searchToken,
             ).searchClient,
         }
     },

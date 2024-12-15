@@ -13,6 +13,7 @@ import { useI18n } from 'vue-i18n'
 
 import type { components } from '@/api/api'
 import { useTitle } from '@/composables/title'
+import AppState from '@/AppState'
 interface Ingredient {
     id: string,
     name: string,
@@ -66,6 +67,7 @@ interface Draft1Schema {
     }[];
 }
 type Cocktail = components["schemas"]["Cocktail"]
+type Bar = components["schemas"]["Bar"]
 type Glass = components["schemas"]["Glass"]
 type FullIngredient = components["schemas"]["Ingredient"]
 type CocktailMethod = components["schemas"]["CocktailMethod"]
@@ -99,6 +101,8 @@ const ingredientEdit = ref<CocktailIngredient | SubstituteCocktailIngredient | n
 const importType = ref('url')
 const similarCocktails = ref([] as Cocktail[])
 const isLoadingSimilar = ref(false)
+const bar = ref({} as Bar)
+const appState = new AppState()
 const duplicateAction = ref('none')
 const source = ref<null | string>(null)
 const result = ref<LocalSchema>({} as LocalSchema)
@@ -120,6 +124,8 @@ const cocktailTags = computed({
 })
 
 useTitle(t('cocktail.import'))
+
+getBar(appState.bar.id)
 
 function clearImport() {
     similarCocktails.value = []
@@ -439,6 +445,15 @@ async function findSimilarCocktails(name: string): Promise<void> {
     isLoadingSimilar.value = false
     similarCocktails.value = response?.data ?? []
 }
+
+async function getBar(barId: number): Promise<void> {
+    isLoading.value = true
+    const resp = await BarAssistantClient.getBar(barId)
+    if (resp) {
+        bar.value = resp.data
+    }
+    isLoading.value = false
+}
 </script>
 <template>
     <form @submit.prevent="finishImporting">
@@ -615,7 +630,7 @@ async function findSimilarCocktails(name: string): Promise<void> {
                 <template #dialog>
                     <div class="dialog-title">{{ t('import.manually-match') }}</div>
                     <p style="margin-bottom: 1rem;">{{ t('import.manual-match-notice', {name: ingredientEdit.refIngredient.name}) }}</p>
-                    <IngredientFinder :initial-query="ingredientEdit.refIngredient.name" @ingredient-selected="handleIngredientEdit"></IngredientFinder>
+                    <IngredientFinder v-if="bar.search_host && bar.search_token" :search-host="bar.search_host" :search-token="bar.search_token" :initial-query="ingredientEdit.refIngredient.name" @ingredient-selected="handleIngredientEdit"></IngredientFinder>
                     <div class="dialog-actions">
                         <button type="button" class="button button--outline" @click="showIngredientDialog = false">{{ t('close') }}</button>
                     </div>
