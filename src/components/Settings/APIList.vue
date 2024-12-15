@@ -1,7 +1,7 @@
 <template>
     <PageHeader>
         {{ $t('api.tokens') }}
-        <template #actions>
+        <template v-if="appState.isSubscribed()" #actions>
             <SaltRimDialog v-model="showDialog">
                 <template #trigger>
                     <button type="button" class="button button--dark" @click.prevent="showDialog = true">{{ $t('api.add') }}</button>
@@ -65,6 +65,7 @@ import DateFormatter from '../DateFormatter.vue'
 import APIForm from './APIForm.vue'
 import SubscriptionCheck from '../SubscriptionCheck.vue'
 import { useTitle } from '@/composables/title'
+import AppState from './../../AppState.js'
 
 export default {
     components: {
@@ -78,6 +79,7 @@ export default {
     },
     data() {
         return {
+            appState: new AppState(),
             isLoading: false,
             showDialog: false,
             tokens: [],

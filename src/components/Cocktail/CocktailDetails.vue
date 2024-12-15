@@ -543,7 +543,7 @@ fetchShoppingList()
                             <div class="item-details__chips__group__title">{{ t('tag.tags') }}:</div>
                             <ul class="chips-list">
                                 <li v-for="tag in cocktail.tags" :key="tag.id">
-                                    <RouterLink class="chip" :to="{ name: 'cocktails', query: { 'filter[tag_id]': tag.id } }">{{ tag.name }}</RouterLink>
+                                    <RouterLink :to="{ name: 'cocktails', query: { 'filter[tag_id]': tag.id } }">{{ tag.name }}</RouterLink>
                                 </li>
                             </ul>
                         </div>
@@ -551,7 +551,7 @@ fetchShoppingList()
                             <div class="item-details__chips__group__title">{{ t('glass-type.title') }}:</div>
                             <ul class="chips-list">
                                 <li>
-                                    <RouterLink class="chip" :to="{ name: 'cocktails', query: { 'filter[glass_id]': cocktail.glass.id } }">{{ cocktail.glass.name }}</RouterLink>
+                                    <RouterLink :to="{ name: 'cocktails', query: { 'filter[glass_id]': cocktail.glass.id } }">{{ cocktail.glass.name }}</RouterLink>
                                 </li>
                             </ul>
                         </div>
@@ -559,7 +559,7 @@ fetchShoppingList()
                             <div class="item-details__chips__group__title">{{ t('method.title') }}:</div>
                             <ul class="chips-list">
                                 <li>
-                                    <RouterLink class="chip" :to="{ name: 'cocktails', query: { 'filter[cocktail_method_id]': cocktail.method.id } }">{{ t('method.' + cocktail.method.name) }}</RouterLink>
+                                    <RouterLink :to="{ name: 'cocktails', query: { 'filter[cocktail_method_id]': cocktail.method.id } }">{{ t('method.' + cocktail.method.name) }}</RouterLink>
                                 </li>
                             </ul>
                         </div>
@@ -567,7 +567,7 @@ fetchShoppingList()
                             <div class="item-details__chips__group__title">{{ t('ABV') }}:</div>
                             <ul class="chips-list">
                                 <li>
-                                    <RouterLink class="chip" :to="{ name: 'cocktails', query: { 'filter[abv_min]': cocktail.abv } }">{{ cocktail.abv }}%</RouterLink>
+                                    <RouterLink :to="{ name: 'cocktails', query: { 'filter[abv_min]': cocktail.abv } }">{{ cocktail.abv }}%</RouterLink>
                                 </li>
                             </ul>
                         </div>
@@ -575,7 +575,7 @@ fetchShoppingList()
                             <div class="item-details__chips__group__title">{{ t('avg-rating') }}:</div>
                             <ul class="chips-list">
                                 <li>
-                                    <RouterLink class="chip" :to="{ name: 'cocktails', query: { 'filter[user_rating_min]': cocktail.rating.average } }">{{ cocktail.rating.average }} ★</RouterLink>
+                                    <RouterLink :to="{ name: 'cocktails', query: { 'filter[user_rating_min]': cocktail.rating.average } }">{{ cocktail.rating.average }} ★</RouterLink>
                                 </li>
                             </ul>
                         </div>
@@ -704,7 +704,7 @@ swiper-container {
     display: grid;
     gap: var(--gap-size-3);
     grid-template-columns: 500px minmax(0, 1fr);
-    grid-template-rows: 700px 100%;
+    grid-template-rows: 700px 1fr;
     grid-template-areas:
         "image content"
         "sidebar content";

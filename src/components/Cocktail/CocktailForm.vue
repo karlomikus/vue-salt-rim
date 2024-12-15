@@ -72,7 +72,7 @@
                         <button class="button button--dark" type="button" @click="addIngredient">{{ $t('ingredient.add') }}</button>
                     </template>
                     <template #dialog>
-                        <IngredientModal :cocktail-ingredient="cocktailIngredientForEdit" @close="showDialog = false" />
+                        <IngredientModal :search-token="bar.search_token" :cocktail-ingredient="cocktailIngredientForEdit" @close="showDialog = false" />
                     </template>
                 </SaltRimDialog>
             </div>
@@ -82,12 +82,12 @@
                 <span></span>
             </template>
             <template #dialog>
-                <SubstituteModal :value="cocktailIngredientForSubstitutes" @close="showSubstituteDialog = false" />
+                <SubstituteModal :search-token="bar.search_token" :value="cocktailIngredientForSubstitutes" @close="showSubstituteDialog = false" />
             </template>
         </SaltRimDialog>
         <h3 class="form-section-title">{{ $t('media') }}</h3>
         <SubscriptionCheck>Subscribe to "Mixologist" plan to upload more than one cocktail recipe image!</SubscriptionCheck>
-        <ImageUpload ref="imagesUpload" :images="cocktail.images" :max-images="10" />
+        <ImageUpload ref="imagesUpload" :images="cocktail.images" :max-images="maxImages" />
         <h3 class="form-section-title">{{ $t('additional-information') }}</h3>
         <div class="block-container block-container--padded">
             <div class="form-group">
@@ -167,14 +167,20 @@ export default {
         TagSelector,
     },
     data() {
+        const appState = new AppState()
+
         return {
-            appState: new AppState(),
+            appState: appState,
+            bar: {
+                search_host: null,
+                search_token: null,
+            },
             showDialog: false,
             showSubstituteDialog: false,
             cocktailIngredientForEdit: {},
             cocktailIngredientForEditOriginal: {},
             cocktailIngredientForSubstitutes: {},
-            maxImages: 10,
+            maxImages: appState.isSubscribed() ? 10 : 1,
             isLoading: false,
             cocktail: {
                 id: null,
@@ -207,6 +213,8 @@ export default {
 
         this.isLoading = true
         const cocktailId = this.$route.query.id || null
+
+        this.bar = (await BarAssistantClient.getBar(this.appState.bar.id)).data ?? {}
 
         if (cocktailId) {
             await BarAssistantClient.getCocktail(cocktailId).then(resp => {

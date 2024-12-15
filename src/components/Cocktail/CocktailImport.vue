@@ -13,6 +13,7 @@ import { useI18n } from 'vue-i18n'
 
 import type { components } from '@/api/api'
 import { useTitle } from '@/composables/title'
+import AppState from '@/AppState'
 interface Ingredient {
     id: string,
     name: string,
@@ -65,6 +66,8 @@ interface Draft1Schema {
         sort: number;
     }[];
 }
+type Cocktail = components["schemas"]["Cocktail"]
+type Bar = components["schemas"]["Bar"]
 type Glass = components["schemas"]["Glass"]
 type FullIngredient = components["schemas"]["Ingredient"]
 type CocktailMethod = components["schemas"]["CocktailMethod"]
@@ -96,6 +99,10 @@ const isLoading = ref(false)
 const showIngredientDialog = ref(false)
 const ingredientEdit = ref<CocktailIngredient | SubstituteCocktailIngredient | null>(null)
 const importType = ref('url')
+const similarCocktails = ref([] as Cocktail[])
+const isLoadingSimilar = ref(false)
+const bar = ref({} as Bar)
+const appState = new AppState()
 const duplicateAction = ref('none')
 const source = ref<null | string>(null)
 const result = ref<LocalSchema>({} as LocalSchema)
@@ -118,13 +125,18 @@ const cocktailTags = computed({
 
 useTitle(t('cocktail.import'))
 
+getBar(appState.bar.id)
+
 function clearImport() {
+    similarCocktails.value = []
     source.value = null
     ingredientEdit.value = null
     result.value = {} as LocalSchema
 }
 
 function importCocktail() {
+    similarCocktails.value = []
+
     if (importType.value == 'url') {
         fromUrl()
     }
@@ -146,6 +158,8 @@ function fromUrl() {
             return
         }
 
+        findSimilarCocktails(schema.recipe.name)
+
         result.value = {
             ...schema,
             recipe: {
@@ -161,6 +175,9 @@ function fromUrl() {
             }
         } as LocalSchema
 
+        isLoading.value = false
+    }).catch(e => {
+        toast.error(e.message)
         isLoading.value = false
     })
 }
@@ -421,6 +438,22 @@ async function finishImporting() {
     sessionStorage.setItem('scrapeResult', JSON.stringify(cocktail))
     router.push({ name: 'cocktails.form' })
 }
+
+async function findSimilarCocktails(name: string): Promise<void> {
+    isLoadingSimilar.value = true
+    const response = await BarAssistantClient.getCocktails({ 'filter[name]': name.toLowerCase(), per_page: 10 })
+    isLoadingSimilar.value = false
+    similarCocktails.value = response?.data ?? []
+}
+
+async function getBar(barId: number): Promise<void> {
+    isLoading.value = true
+    const resp = await BarAssistantClient.getBar(barId)
+    if (resp) {
+        bar.value = resp.data
+    }
+    isLoading.value = false
+}
 </script>
 <template>
     <form @submit.prevent="finishImporting">
@@ -471,6 +504,13 @@ async function finishImporting() {
             <div style="display: flex; gap: var(--gap-size-2);">
                 <button type="button" class="button button--outline" @click.prevent="clearImport">{{ t('clear') }}</button>
                 <button type="button" class="button button--dark" @click.prevent="importCocktail">{{ t('import.start') }}</button>
+            </div>
+        </div>
+        <div class="sda" v-if="similarCocktails.length > 0">
+            <h3 class="form-section-title">{{ t('cocktails-similar') }}</h3>
+            <div class="similar-cocktails-list block-container block-container--padded">
+                <OverlayLoader v-if="isLoadingSimilar" />
+                <RouterLink :to="{name: 'cocktails.show', params: { id: cocktail.slug }}" v-for="cocktail in similarCocktails" :key="cocktail.id">{{ cocktail.name }}</RouterLink>
             </div>
         </div>
         <div v-if="result.recipe" class="scraper-form">
@@ -590,7 +630,7 @@ async function finishImporting() {
                 <template #dialog>
                     <div class="dialog-title">{{ t('import.manually-match') }}</div>
                     <p style="margin-bottom: 1rem;">{{ t('import.manual-match-notice', {name: ingredientEdit.refIngredient.name}) }}</p>
-                    <IngredientFinder :initial-query="ingredientEdit.refIngredient.name" @ingredient-selected="handleIngredientEdit"></IngredientFinder>
+                    <IngredientFinder v-if="bar.search_token" :search-token="bar.search_token" :initial-query="ingredientEdit.refIngredient.name" @ingredient-selected="handleIngredientEdit"></IngredientFinder>
                     <div class="dialog-actions">
                         <button type="button" class="button button--outline" @click="showIngredientDialog = false">{{ t('close') }}</button>
                     </div>
@@ -671,5 +711,11 @@ async function finishImporting() {
 .import-image-preview {
     max-width: 150px;
     max-height: 200px;
+}
+
+.similar-cocktails-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--gap-size-3);
 }
 </style>

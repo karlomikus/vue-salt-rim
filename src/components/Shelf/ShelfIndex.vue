@@ -138,7 +138,7 @@
         <div v-if="stats.most_popular_ingredients.length > 0" class="list-grid__col">
             <h3 class="page-subtitle">{{ $t('most-popular-ingredients') }}</h3>
             <div class="list-grid__container">
-                <IngredientTile v-for="ingredient in stats.most_popular_ingredients" :key="ingredient.id" :ingredient="ingredient">
+                <IngredientTile v-for="ingredient in stats.most_popular_ingredients" :key="ingredient.id" :ingredient="ingredient" :images="[]">
                     <template #content>
                         {{ ingredient.cocktails_count }} {{ $t('cocktail.cocktails') }}
                     </template>

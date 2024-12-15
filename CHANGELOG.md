@@ -1,3 +1,7 @@
+# v3.5.2
+## Fixed
+- Fixed broken layout on cocktail/ingredient details page
+
 # v3.5.1
 ## Fixed
 - Added missing stats tile: Bar shelf ingredients
