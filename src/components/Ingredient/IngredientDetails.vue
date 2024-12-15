@@ -26,7 +26,7 @@ import UnitHandler from '../../UnitHandler.js'
                     <h3 class="page-subtitle">{{ $t('see-also') }}</h3>
                     <ul class="ingredient-chips-list">
                         <li v-for="variety in ingredient.varieties" :key="variety.slug">
-                            <RouterLink class="chip" :to="{ name: 'ingredients.show', params: { id: variety.slug } }">{{ variety.name }}</RouterLink>
+                            <RouterLink :to="{ name: 'ingredients.show', params: { id: variety.slug } }">{{ variety.name }}</RouterLink>
                         </li>
                     </ul>
                 </div>
@@ -34,7 +34,7 @@ import UnitHandler from '../../UnitHandler.js'
                     <h3 class="page-subtitle">{{ $t('ingredient.used_as_substitute_for') }}</h3>
                     <ul class="ingredient-chips-list">
                         <li v-for="s in ingredient.used_as_substitute_for" :key="s.slug">
-                            <RouterLink class="chip" :to="{ name: 'ingredients.show', params: { id: s.slug } }">{{ s.name }}</RouterLink>
+                            <RouterLink :to="{ name: 'ingredients.show', params: { id: s.slug } }">{{ s.name }}</RouterLink>
                         </li>
                         <li>
                             <RouterLink :to="{name: 'cocktails', query: {'filter[ingredient_substitute_id]': ingredient.id}}">
@@ -47,7 +47,7 @@ import UnitHandler from '../../UnitHandler.js'
                     <h3 class="page-subtitle">{{ $t('ingredient.can_be_substituted_with') }}</h3>
                     <ul class="ingredient-chips-list">
                         <li v-for="s in ingredient.can_be_substituted_with" :key="s.slug">
-                            <RouterLink class="chip" :to="{ name: 'ingredients.show', params: { id: s.slug } }">{{ s.name }}</RouterLink>
+                            <RouterLink :to="{ name: 'ingredients.show', params: { id: s.slug } }">{{ s.name }}</RouterLink>
                         </li>
                     </ul>
                 </div>
@@ -87,15 +87,15 @@ import UnitHandler from '../../UnitHandler.js'
                             <div class="item-details__chips__group__title">{{ $t('strength') }}:</div>
                             <ul v-if="ingredient.strength > 0" class="chips-list">
                                 <li>
-                                    <span class="chip"><abbr :title="$t('ABV-definition')">{{ $t('ABV') }}</abbr>: {{ ingredient.strength + '%' }}</span>
+                                    <span><abbr :title="$t('ABV-definition')">{{ $t('ABV') }}</abbr>: {{ ingredient.strength + '%' }}</span>
                                 </li>
                                 <li>
-                                    <span class="chip">{{ $t('alcohol-proof') }}: {{ ingredient.strength * 2 }}</span>
+                                    <span>{{ $t('alcohol-proof') }}: {{ ingredient.strength * 2 }}</span>
                                 </li>
                             </ul>
                             <ul v-else class="chips-list">
                                 <li>
-                                    <span class="chip">{{ $t('non-alcoholic') }}</span>
+                                    <span>{{ $t('non-alcoholic') }}</span>
                                 </li>
                             </ul>
                         </div>
@@ -103,7 +103,7 @@ import UnitHandler from '../../UnitHandler.js'
                             <div class="item-details__chips__group__title">{{ $t('origin') }}:</div>
                             <ul class="chips-list">
                                 <li>
-                                    <span class="chip">{{ ingredient.origin }}</span>
+                                    <span>{{ ingredient.origin }}</span>
                                 </li>
                             </ul>
                         </div>
