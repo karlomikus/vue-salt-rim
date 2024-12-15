@@ -1,7 +1,8 @@
 <template>
     <form class="site-autocomplete" novalidate @keyup.esc="close">
         <div class="dialog-title">{{ $t('search.title') }}</div>
-        <ais-instant-search :search-client="searchClient" index-name="cocktails">
+        <OverlayLoader v-if="isLoading"></OverlayLoader>
+        <ais-instant-search v-if="searchClient" :search-client="searchClient" index-name="cocktails">
             <ais-configure :hits-per-page.camel="5" :restrict-searchable-attributes.camel="['name']" />
             <ais-search-box autofocus>
                 <template #default="{ currentRefinement, refine }">
@@ -60,22 +61,35 @@
 
 <script>
 import { instantMeiliSearch } from '@meilisearch/instant-meilisearch'
+import BarAssistantClient from '@/api/BarAssistantClient'
+import OverlayLoader from './OverlayLoader.vue'
 import AppState from './../AppState'
-
-const appState = new AppState()
 
 export default {
     emits: ['closeAutocomplete'],
+    components: {
+        OverlayLoader,
+    },
     data() {
         return {
-            searchClient: null
+            searchClient: null,
+            isLoading: false,
         }
     },
     created() {
-        this.searchClient = instantMeiliSearch(
-            appState.bar.search_host,
-            appState.bar.search_token,
-        ).searchClient
+        const appState = new AppState()
+
+        this.isLoading = true
+        BarAssistantClient.getBar(appState.bar.id).then(resp => {
+            this.isLoading = false
+            this.searchClient = instantMeiliSearch(
+                resp.data.search_host,
+                resp.data.search_token,
+            ).searchClient
+        }).catch(e => {
+            this.isLoading = false
+            this.$toast.error(e.message)
+        })
     },
     methods: {
         close() {
