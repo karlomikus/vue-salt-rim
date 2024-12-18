@@ -14,6 +14,7 @@
     "@floating-ui/vue": "^1.1.5",
     "@meilisearch/instant-meilisearch": "^1.0.0",
     "@paddle/paddle-js": "^1.2.1",
+    "@sentry/vue": "^8.47.0",
     "@types/sortablejs": "^1.15.8",
     "@vueuse/core": "^11.0.3",
     "cropperjs": "^1.6.1",
