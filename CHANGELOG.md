@@ -1,3 +1,11 @@
+# v3.6.1
+## Fixed
+- Fixed missing theme toggle icon on iOS Safari
+- Fixed custom radio buttons overflowing on iOS Safari
+- Fixed custom radio buttons having wrong color on iOS Safari
+- Fixed selecting a suggested tag not working on iOS Safari
+- Fixed missing icons on shopping list actions on iOS Safari
+
 # v3.6.0
 ## New
 - Cocktail import now shows similar cocktails to prevent possible duplicates
