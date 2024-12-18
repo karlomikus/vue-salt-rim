@@ -164,4 +164,9 @@ async function shareFromFormat(format: string) {
     padding: 0;
     margin: 0;
 }
+
+.shopping-list__quantity-actions svg {
+    width: 24px;
+    height: 24px;
+}
 </style>
