@@ -99,6 +99,10 @@ export default {
     text-align: left;
 }
 
+.sr-radio__content h3 {
+    color: var(--clr-body-font);
+}
+
 .sr-radio__content p {
     color: var(--clr-description);
     font-size: 0.85rem;
