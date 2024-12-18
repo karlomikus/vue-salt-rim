@@ -696,6 +696,7 @@ async function getBar(barId: number): Promise<void> {
 .import-types {
     display: grid;
     grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr;
     gap: var(--gap-size-2);
 }
 
