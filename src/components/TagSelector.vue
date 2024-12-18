@@ -163,7 +163,7 @@ function handleBlur(e) {
                 <div v-show="filteredOptions.length > 0 && showDropdown" ref="content" class="floating-element" :style="floatingStyles">
                     <div class="dropdown-menu dropdown-menu--tags">
                         <span class="dropdown-menu__title">{{ $t('suggestions') }}:</span>
-                        <a v-for="option in filteredOptions" :key="option.name" class="dropdown-menu__item" :class="{'dropdown-menu__item--focused': currentFocusedDropdownOption == option}" href="#" @click.prevent="selectOption(option[props.labelKey])" @mouseover="currentFocusedDropdownOption = option">
+                        <a v-for="option in filteredOptions" :key="option.name" class="dropdown-menu__item" tabindex="0" :class="{'dropdown-menu__item--focused': currentFocusedDropdownOption == option}" href="#" @click.prevent="selectOption(option[props.labelKey])" @mouseover="currentFocusedDropdownOption = option">
                             {{ option.name }}
                         </a>
                     </div>

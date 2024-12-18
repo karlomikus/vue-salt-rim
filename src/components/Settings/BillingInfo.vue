@@ -274,6 +274,7 @@ export default {
     display: grid;
     gap: var(--gap-size-3);
     grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr;
     margin: 1rem 0;
 }
 

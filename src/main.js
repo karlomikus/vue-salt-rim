@@ -10,6 +10,7 @@ import AppState from './AppState.js'
 import Plausible from 'plausible-tracker'
 import { registerSW } from 'virtual:pwa-register'
 import { register as registerSwiperElements } from 'swiper/element/bundle'
+import * as Sentry from "@sentry/vue";
 
 import en_US from './locales/en-US'
 import hr_HR from './locales/hr-HR'
@@ -45,6 +46,16 @@ if (userSelectedTheme == 'dark' && !document.body.classList.contains('dark-theme
 }
 
 const app = createApp(App)
+
+if (window.srConfig.SENTRY_DSN && window.srConfig.SENTRY_DSN != '') {
+    Sentry.init({
+        app,
+        release: window.srConfig.VERSION,
+        dsn: window.srConfig.SENTRY_DSN,
+        integrations: [],
+    });
+}
+
 const i18n = createI18n({
     legacy: false,
     locale: userSelectedLocale,
