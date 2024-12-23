@@ -628,5 +628,6 @@
   "is_favorited": "Your favorite cocktail",
   "in_bar_shelf": "Available in bar shelf",
   "in_your_shelf": "Available in your shelf",
-  "is_public": "Has public link"
+  "is_public": "Has public link",
+  "website": "Site-ul web"
 }
