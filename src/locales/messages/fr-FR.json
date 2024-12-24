@@ -615,7 +615,7 @@
     "add-price-category": "Ajouter une catégorie de prix"
   },
   "shopping-list-empty": "Votre liste de courses est vide",
-  "target-volume": "Target volume",
+  "target-volume": "",
   "target-volume-dilution": "Optional dilution",
   "scale-recipe": "Scale recipe",
   "target-volume-dilution-help": "Dilute with {total} of water",
@@ -623,7 +623,7 @@
     "cocktails": "Bar shelf cocktails"
   },
   "bar-shelf-ingredients": "Bar shelf ingredients",
-  "target-pour-cost": "Target pour cost",
+  "target-pour-cost": "",
   "target-pour-cost-help": "Percentage of the cocktail's selling price that comes from the cost of the ingredients.",
   "is_favorited": "Your favorite cocktail",
   "in_bar_shelf": "Available in bar shelf",
