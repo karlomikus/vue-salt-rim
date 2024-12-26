@@ -24,42 +24,27 @@ import UnitHandler from '../../UnitHandler.js'
             <div class="ingredient-details__column-sidebar">
                 <div v-if="ingredient.varieties.length > 0">
                     <h3 class="page-subtitle">{{ $t('see-also') }}</h3>
-                    <ul class="ingredient-chips-list">
-                        <li v-for="variety in ingredient.varieties" :key="variety.slug">
-                            <RouterLink :to="{ name: 'ingredients.show', params: { id: variety.slug } }">{{ variety.name }}</RouterLink>
-                        </li>
-                    </ul>
+                    <IngredientTile v-for="ing in ingredient.varieties" :key="ing.slug" :ingredient="ing"></IngredientTile>
                 </div>
                 <div v-if="ingredient.used_as_substitute_for && ingredient.used_as_substitute_for.length > 0">
                     <h3 class="page-subtitle">{{ $t('ingredient.used_as_substitute_for') }}</h3>
-                    <ul class="ingredient-chips-list">
-                        <li v-for="s in ingredient.used_as_substitute_for" :key="s.slug">
-                            <RouterLink :to="{ name: 'ingredients.show', params: { id: s.slug } }">{{ s.name }}</RouterLink>
-                        </li>
-                        <li>
-                            <RouterLink :to="{name: 'cocktails', query: {'filter[ingredient_substitute_id]': ingredient.id}}">
-                                View all
-                            </RouterLink>
-                        </li>
-                    </ul>
+                    <IngredientTile v-for="ing in ingredient.used_as_substitute_for" :key="ing.slug" :ingredient="ing"></IngredientTile>
+                    <RouterLink :to="{name: 'cocktails', query: {'filter[ingredient_substitute_id]': ingredient.id}}">
+                        View all
+                    </RouterLink>
                 </div>
                 <div v-if="ingredient.can_be_substituted_with && ingredient.can_be_substituted_with.length > 0">
                     <h3 class="page-subtitle">{{ $t('ingredient.can_be_substituted_with') }}</h3>
-                    <ul class="ingredient-chips-list">
-                        <li v-for="s in ingredient.can_be_substituted_with" :key="s.slug">
-                            <RouterLink :to="{ name: 'ingredients.show', params: { id: s.slug } }">{{ s.name }}</RouterLink>
-                        </li>
-                    </ul>
+                    <IngredientTile v-for="ing in ingredient.can_be_substituted_with" :key="ing.slug" :ingredient="ing"></IngredientTile>
                 </div>
             </div>
             <div class="ingredient-details__column-content">
                 <div v-if="ingredient.access && (ingredient.access.can_edit || ingredient.access.can_delete)" class="ingredient-details__actions">
                     <Dropdown>
                         <template #default="{ toggleDropdown }">
-                            <button type="button" class="button button-circle" @click.prevent="toggleDropdown"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
-                                <path fill="none" d="M0 0h24v24H0z" />
-                                <path d="M12 3c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 14c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0-7c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z" />
-                            </svg></button>
+                            <button type="button" class="button button-circle" @click.prevent="toggleDropdown">
+                                <IconMore></IconMore>
+                            </button>
                         </template>
                         <template #content>
                             <RouterLink v-if="ingredient.access.can_edit" class="dropdown-menu__item" :to="{ name: 'ingredients.form', query: { id: ingredient.id } }">
@@ -113,19 +98,19 @@ import UnitHandler from '../../UnitHandler.js'
                         <li>
                             <div class="shelf-actions">
                                 <div class="block-container shelf-actions__action" v-if="appState.isAdmin() || appState.isModerator()">
-                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill-rule="evenodd" d="M8.755 2.308A4 4 0 0 0 5.46 6.733l.017.14a1 1 0 0 0 .992.879h1.764L5.267 21.595a.75.75 0 0 0 1.467.314l.944-4.407h8.644l.945 4.407a.75.75 0 0 0 1.466-.314L15.767 7.752h1.764a1 1 0 0 0 .993-.88l.017-.139a4 4 0 0 0-3.295-4.425l-.373-.064a17 17 0 0 0-5.745 0l-.373.064Zm5.495 5.444h-4.5a.753.753 0 0 1-.016.157l-1.735 8.093h8.002l-1.734-8.093a.755.755 0 0 1-.017-.157Z" clip-rule="evenodd"/></svg>
+                                    <IconBarShelf></IconBarShelf>
                                     <ToggleIngredientBarShelf :ingredient="ingredient" :status="ingredient.in_bar_shelf"></ToggleIngredientBarShelf>
                                     <br>
                                     <small>{{ $t('ingredient.shelf-bar-help') }}</small>
                                 </div>
                                 <div class="block-container shelf-actions__action">
-                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M16.533 18H6.75v2a.75.75 0 1 1-1.5 0v-2.324c-.829-.362-1.49-1.005-1.808-1.817-.01-.023-.02-.05-.039-.102L2.1 12.264C1.685 11.15 2.613 10 3.927 10c.81 0 1.534.453 1.81 1.134l1.098 2.706c.1.246.15.37.222.47a1.2 1.2 0 0 0 .74.463c.13.027.277.027.57.027h6.98c.569 0 .853 0 1.091-.098.13-.054.248-.128.349-.219.184-.166.281-.405.475-.883l1.001-2.466c.276-.68 1-1.134 1.81-1.134 1.314 0 2.242 1.15 1.827 2.264l-1.12 3c-.195.524-.292.785-.421 1.008a3.43 3.43 0 0 1-1.609 1.404V20a.75.75 0 1 1-1.5 0v-2.005c-.187.005-.415.005-.717.005Z"/><path d="M13.236 3.5h-2.472c-1.1 0-1.976 0-2.66.088-.706.09-1.285.28-1.746.72-.464.441-.669 1.003-.765 1.685-.093.658-.093 1.495-.093 2.54v.88l.21.15c.416.294.752.698.954 1.195L7.898 13.8h7.449l.363-.001h.002l.388-.007.126-.3.11-.268 1-2.466c.202-.497.538-.9.954-1.196l.21-.15v-.88c0-1.044 0-1.881-.093-2.539-.096-.682-.301-1.244-.765-1.686-.46-.438-1.04-.629-1.745-.72-.685-.087-1.56-.087-2.661-.087Z"/></svg>
+                                    <IconUserShelf></IconUserShelf>
                                     <ToggleIngredientShelf :ingredient="ingredient" :status="ingredient.in_shelf"></ToggleIngredientShelf>
                                     <br>
                                     <small>{{ $t('ingredient.shelf-user-help') }}</small>
                                 </div>
                                 <div class="block-container shelf-actions__action">
-                                    <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" viewBox="0 0 24 24"><path d="M2.25 2.25a.75.75 0 0 0 0 1.5h1.386c.17 0 .318.114.362.278l2.558 9.592a3.752 3.752 0 0 0-2.806 3.63c0 .414.336.75.75.75h15.75a.75.75 0 0 0 0-1.5H5.378A2.25 2.25 0 0 1 7.5 15h11.218a.75.75 0 0 0 .674-.421 60.358 60.358 0 0 0 2.96-7.228.75.75 0 0 0-.525-.965A60.864 60.864 0 0 0 5.68 4.509l-.232-.867A1.875 1.875 0 0 0 3.636 2.25H2.25zm1.5 18a1.5 1.5 0 1 1 3 0 1.5 1.5 0 0 1-3 0zm12.75 0a1.5 1.5 0 1 1 3 0 1.5 1.5 0 0 1-3 0z"/></svg>
+                                    <IconShoppingCart></IconShoppingCart>
                                     <ToggleIngredientShoppingCart :ingredient="ingredient" :status="ingredient.in_shopping_list"></ToggleIngredientShoppingCart>
                                 </div>
                             </div>
@@ -173,6 +158,11 @@ import ToggleIngredientShelf from '@/components/ToggleIngredientShelf.vue'
 import ToggleIngredientBarShelf from '../ToggleIngredientBarShelf.vue'
 import Dropdown from '@/components/SaltRimDropdown.vue'
 import { useTitle } from '@/composables/title'
+import IconBarShelf from '../Icons/IconBarShelf.vue'
+import IconUserShelf from '../Icons/IconUserShelf.vue'
+import IconShoppingCart from '../Icons/IconShoppingCart.vue'
+import IconMore from '../Icons/IconMore.vue'
+import IngredientTile from '../Tiles/IngredientTile.vue'
 
 export default {
     components: {
@@ -182,6 +172,11 @@ export default {
         ToggleIngredientShoppingCart,
         Dropdown,
         ToggleIngredientBarShelf,
+        IconBarShelf,
+        IconUserShelf,
+        IconShoppingCart,
+        IconMore,
+        IngredientTile,
     },
     data: () => ({
         appState: new AppState(),

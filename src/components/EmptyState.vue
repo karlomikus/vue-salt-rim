@@ -36,5 +36,7 @@
 
 .empty-state svg {
     fill: var(--clr-gray-500);
+    width: 32px;
+    height: 32px;
 }
 </style>

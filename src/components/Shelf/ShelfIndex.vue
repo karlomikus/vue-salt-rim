@@ -69,10 +69,7 @@
             </CocktailListContainer>
             <EmptyState v-else>
                 <template #icon>
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="32" height="32">
-                        <path fill="none" d="M0 0h24v24H0z" />
-                        <path d="M3 10H2V4.003C2 3.449 2.455 3 2.992 3h18.016A.99.99 0 0 1 22 4.003V10h-1v10.001a.996.996 0 0 1-.993.999H3.993A.996.996 0 0 1 3 20.001V10zm16 0H5v9h14v-9zM4 5v3h16V5H4zm5 7h6v2H9v-2z" />
-                    </svg>
+                    <IconCocktail></IconCocktail>
                 </template>
                 <template #default>
                     {{ $t('missing-cocktails') }}<br>
@@ -88,10 +85,7 @@
             </CocktailListContainer>
             <EmptyState v-else>
                 <template #icon>
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="32" height="32">
-                        <path fill="none" d="M0 0H24V24H0z" />
-                        <path d="M19.243 4.757c1.462 1.466 2.012 3.493 1.65 5.38.568.16 1.106.463 1.554.908 1.404 1.394 1.404 3.654 0 5.047L17 21.5l-3.022-3L11 21.485 2.52 12.993C.417 10.637.496 7.019 2.757 4.757c2.265-2.264 5.888-2.34 8.244-.228 2.349-2.109 5.979-2.039 8.242.228zm-6.281 7.708c-.616.611-.616 1.597 0 2.208L17 18.682l4.038-4.009c.616-.611.616-1.597 0-2.208-.624-.62-1.642-.62-2.268.002l-1.772 1.754-1.407-1.396-.363-.36c-.624-.62-1.642-.62-2.266 0zm-8.79-6.293c-1.49 1.49-1.565 3.875-.192 5.451L11 18.654l1.559-1.562-1.006-1c-1.404-1.393-1.404-3.653 0-5.047 1.404-1.393 3.68-1.393 5.084 0l.363.36.363-.36c.425-.421.93-.715 1.465-.882.416-1.367.078-2.912-1.001-3.993-1.5-1.502-3.92-1.563-5.49-.153l-1.335 1.198-1.336-1.197c-1.575-1.412-3.99-1.35-5.494.154z" />
-                    </svg>
+                    <IconFavorite></IconFavorite>
                 </template>
                 <template #default>
                     {{ $t('missing-favorites') }}<br>
@@ -113,10 +107,7 @@
             </IngredientListContainer>
             <EmptyState v-else>
                 <template #icon>
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="32" height="32">
-                        <path fill="none" d="M0 0h24v24H0z" />
-                        <path d="M4 16V4H2V2h3a1 1 0 0 1 1 1v12h12.438l2-8H8V5h13.72a1 1 0 0 1 .97 1.243l-2.5 10a1 1 0 0 1-.97.757H5a1 1 0 0 1-1-1zm2 7a2 2 0 1 1 0-4 2 2 0 0 1 0 4zm12 0a2 2 0 1 1 0-4 2 2 0 0 1 0 4z" />
-                    </svg>
+                    <IconShoppingCart></IconShoppingCart>
                 </template>
                 <template #default>
                     {{ $t('missing.ingredients') }}<br>
@@ -167,6 +158,9 @@ import ToggleIngredientShoppingCart from '../ToggleIngredientShoppingCart.vue'
 import ToggleIngredientShelf from '../ToggleIngredientShelf.vue'
 import RecommendedIngredients from '../Ingredient/RecommendedIngredients.vue'
 import StatusCheck from '../StatusCheck.vue'
+import IconShoppingCart from '../Icons/IconShoppingCart.vue'
+import IconFavorite from '../Icons/IconFavorite.vue'
+import IconCocktail from '../Icons/IconCocktail.vue'
 
 export default {
     components: {
@@ -181,6 +175,9 @@ export default {
         ToggleIngredientShelf,
         RecommendedIngredients,
         StatusCheck,
+        IconShoppingCart,
+        IconFavorite,
+        IconCocktail,
     },
     data() {
         return {
