@@ -29,6 +29,7 @@ import AppState from '@/AppState'
 import UnitConverter from '@/components/Units/UnitConverter.vue'
 import UnitPicker from '@/components/Units/UnitPicker.vue'
 import WakeLockToggle from '../WakeLockToggle.vue'
+import IconMore from '../Icons/IconMore.vue'
 
 type Cocktail = components["schemas"]["Cocktail"]
 type CocktailIngredient = components["schemas"]["CocktailIngredient"]
@@ -349,6 +350,15 @@ async function addMissingIngredients() {
     })
 }
 
+function isValidUrl(input: string) {
+    try {
+        new URL(input.startsWith('http') ? input : `https://${input}`);
+        return true;
+    } catch (err) {
+        return false;
+    }
+}
+
 fetchShoppingList()
 </script>
 
@@ -474,10 +484,9 @@ fetchShoppingList()
                     </Dropdown>
                     <Dropdown>
                         <template #default="{ toggleDropdown }">
-                            <button type="button" class="button button-circle" @click="toggleDropdown"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
-                                <path fill="none" d="M0 0h24v24H0z" />
-                                <path d="M12 3c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 14c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0-7c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z" />
-                            </svg></button>
+                            <button type="button" class="button button-circle" @click="toggleDropdown">
+                                <IconMore></IconMore>
+                            </button>
                         </template>
                         <template #content>
                             <RouterLink v-if="cocktail.access && cocktail.access.can_edit" class="dropdown-menu__item" :to="{ name: 'cocktails.form', query: { id: cocktail.id } }">
@@ -518,13 +527,6 @@ fetchShoppingList()
                                     <NoteDialog :resource-id="cocktail.id" resource="cocktail" @note-dialog-closed="showNoteDialog = false; fetchCocktailUserNotes()" />
                                 </template>
                             </SaltRimDialog>
-                            <a v-if="cocktail.source" class="dropdown-menu__item" target="_blank" :href="cocktail.source">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18">
-                                    <path fill="none" d="M0 0h24v24H0z" />
-                                    <path d="M10 6v2H5v11h11v-5h2v6a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h6zm11-3v8h-2V6.413l-7.793 7.794-1.414-1.414L17.585 5H13V3h8z" />
-                                </svg>
-                                {{ t('cocktail.source') }}
-                            </a>
                             <hr v-if="cocktail.access && cocktail.access.can_delete" class="dropdown-menu__separator">
                             <a v-if="cocktail.access && cocktail.access.can_delete" class="dropdown-menu__item" href="javascript:;" @click.prevent="deleteCocktail">
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18">
@@ -539,11 +541,20 @@ fetchShoppingList()
                 <div class="block-container block-container--padded">
                     <h3 class="details-block-container__title">{{ t('description') }}</h3>
                     <div class="item-details__chips">
+                        <div v-if="cocktail.source" class="item-details__chips__group">
+                            <div class="item-details__chips__group__title">{{ t('source') }}:</div>
+                            <ul class="chips-list">
+                                <li>
+                                    <a v-if="isValidUrl(cocktail.source)" :href="cocktail.source" target="_blank">{{ t('website') }}</a>
+                                    <span v-else>{{ cocktail.source }}</span>
+                                </li>
+                            </ul>
+                        </div>
                         <div v-if="cocktail.tags && cocktail.tags.length > 0" class="item-details__chips__group">
                             <div class="item-details__chips__group__title">{{ t('tag.tags') }}:</div>
                             <ul class="chips-list">
                                 <li v-for="tag in cocktail.tags" :key="tag.id">
-                                    <RouterLink class="chip" :to="{ name: 'cocktails', query: { 'filter[tag_id]': tag.id } }">{{ tag.name }}</RouterLink>
+                                    <RouterLink :to="{ name: 'cocktails', query: { 'filter[tag_id]': tag.id } }">{{ tag.name }}</RouterLink>
                                 </li>
                             </ul>
                         </div>
@@ -551,7 +562,7 @@ fetchShoppingList()
                             <div class="item-details__chips__group__title">{{ t('glass-type.title') }}:</div>
                             <ul class="chips-list">
                                 <li>
-                                    <RouterLink class="chip" :to="{ name: 'cocktails', query: { 'filter[glass_id]': cocktail.glass.id } }">{{ cocktail.glass.name }}</RouterLink>
+                                    <RouterLink :to="{ name: 'cocktails', query: { 'filter[glass_id]': cocktail.glass.id } }">{{ cocktail.glass.name }}</RouterLink>
                                 </li>
                             </ul>
                         </div>
@@ -559,7 +570,7 @@ fetchShoppingList()
                             <div class="item-details__chips__group__title">{{ t('method.title') }}:</div>
                             <ul class="chips-list">
                                 <li>
-                                    <RouterLink class="chip" :to="{ name: 'cocktails', query: { 'filter[cocktail_method_id]': cocktail.method.id } }">{{ t('method.' + cocktail.method.name) }}</RouterLink>
+                                    <RouterLink :to="{ name: 'cocktails', query: { 'filter[cocktail_method_id]': cocktail.method.id } }">{{ t('method.' + cocktail.method.name) }}</RouterLink>
                                 </li>
                             </ul>
                         </div>
@@ -567,7 +578,7 @@ fetchShoppingList()
                             <div class="item-details__chips__group__title">{{ t('ABV') }}:</div>
                             <ul class="chips-list">
                                 <li>
-                                    <RouterLink class="chip" :to="{ name: 'cocktails', query: { 'filter[abv_min]': cocktail.abv } }">{{ cocktail.abv }}%</RouterLink>
+                                    <RouterLink :to="{ name: 'cocktails', query: { 'filter[abv_min]': cocktail.abv } }">{{ cocktail.abv }}%</RouterLink>
                                 </li>
                             </ul>
                         </div>
@@ -575,7 +586,7 @@ fetchShoppingList()
                             <div class="item-details__chips__group__title">{{ t('avg-rating') }}:</div>
                             <ul class="chips-list">
                                 <li>
-                                    <RouterLink class="chip" :to="{ name: 'cocktails', query: { 'filter[user_rating_min]': cocktail.rating.average } }">{{ cocktail.rating.average }} ★</RouterLink>
+                                    <RouterLink :to="{ name: 'cocktails', query: { 'filter[user_rating_min]': cocktail.rating.average } }">{{ cocktail.rating.average }} ★</RouterLink>
                                 </li>
                             </ul>
                         </div>
@@ -704,7 +715,7 @@ swiper-container {
     display: grid;
     gap: var(--gap-size-3);
     grid-template-columns: 500px minmax(0, 1fr);
-    grid-template-rows: 700px 100%;
+    grid-template-rows: 700px 1fr;
     grid-template-areas:
         "image content"
         "sidebar content";

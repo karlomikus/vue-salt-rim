@@ -25,13 +25,13 @@
     "main": "Ingrediente principale",
     "add": "Aggiungi ingrediente",
     "on-shopping-list": "Hai questo ingrediente nella lista della spesa",
-    "add-to-shelf": "Add to your shelf",
-    "remove-from-shelf": "Remove from your shelf",
+    "add-to-shelf": "Aggiungi al tuo scaffale",
+    "remove-from-shelf": "Rimuovi dal tuo scaffale",
     "add-to-list": "Aggiungi alla lista della spesa",
     "remove-from-list": "Rimuovi dalla lista della spesa",
     "update-success": "Ingrediente aggiornato con successo",
     "create-success": "Ingrediente creato con successo",
-    "name-placeholder": "<Not selected>",
+    "name-placeholder": "<Non selezionato>",
     "in-shelf": "Hai questo ingrediente",
     "cocktail-children": "Usato in {total} cocktail",
     "delete-confirm": "Questo eliminerà definitivamente l'ingrediente \"{name}\". Questa azione modificherà {total} ricette cocktail.",
@@ -62,13 +62,13 @@
     "ingredients": "Ingredienti",
     "used_as_substitute_for": "Utilizzato come sostituto di",
     "can_be_substituted_with": "Può essere sostituito con",
-    "add-to-bar-shelf": "Add to bar shelf",
-    "remove-from-bar-shelf": "Remove from bar shelf",
-    "shelf-bar-help": "Recipes matching ingredients in bar shelf will be shown to all bar members.",
-    "shelf-user-help": "Recipes matching ingredients in your shelf can only be managed by you.",
-    "bar-shelf-add-success": "Added \"{name}\" to bar shelf",
-    "bar-shelf-remove-success": "Removed \"{name}\" from bar shelf",
-    "units-help": "Some features work the best if you use common units. Some recommendations for units are: ml, oz, cl, dashes, barspoon, drops, topup, leaves."
+    "add-to-bar-shelf": "Aggiungi allo scaffale del bar",
+    "remove-from-bar-shelf": "Rimuovi dallo scaffale del bar",
+    "shelf-bar-help": "Le ricette che corrispondono agli ingredienti nello scaffale del bar verranno mostrate a tutti i membri del bar.",
+    "shelf-user-help": "Le ricette che corrispondono agli ingredienti presenti nel tuo scaffale possono essere gestite solo da te.",
+    "bar-shelf-add-success": "Aggiunto \"{name}\" allo scaffale del bar",
+    "bar-shelf-remove-success": "Rimosso \"{name}\" dallo scaffale del bar",
+    "units-help": "Alcune funzionalità funzionano meglio se si utilizzano unità comuni. Alcune raccomandazioni per le unità sono: ml, oz, cl, dashes, cucchiaio da bar, gocce, topup, leaves."
   },
   "share": {
     "title": "Condividi",
@@ -269,7 +269,7 @@
   "clear-filters": "Cancella tutti i filtri",
   "rating-removed": "Valutazione cocktail rimossa",
   "rating-rated": "Cocktail valutato con {rating} stelle",
-  "shelf-ingredients": "My shelf ingredients",
+  "shelf-ingredients": "I miei ingredienti da scaffale",
   "shopping-list-ingredients": "Ingredienti lista della spesa",
   "notes": "Note",
   "collection-shared": "Condiviso con il bar",
@@ -510,13 +510,13 @@
     "menu-not-found": "Menu non trovato",
     "description": "Qui puoi impostare un semplice menu web per il tuo bar. Puoi aggiornare il tuo collegamento del bar quando aggiungi o modifichi un bar. Usa l'URL o il codice QR per condividere il tuo menu del bar con gli ospiti.",
     "no-cocktails-added": "Il menu deve avere almeno un cocktail",
-    "calculate-price": "Calculate price",
-    "clear-category-confirm": "This will remove all cocktails from category \"{name}\"",
-    "category-cleared": "Category cleared",
-    "clear-category": "Clear category",
-    "add-shelf-cocktails": "Add missing cocktails from bar shelf",
-    "export": "Export as csv",
-    "added-multiple-cocktails": "Added multiple cocktails"
+    "calculate-price": "Calcola il prezzo",
+    "clear-category-confirm": "Questo rimuoverà tutti i cocktail dalla categoria \"{name}\"",
+    "category-cleared": "Categoria cancellata",
+    "clear-category": "Cancella categoria",
+    "add-shelf-cocktails": "Aggiungi i cocktail mancanti dallo scaffale del bar",
+    "export": "Esporta come csv",
+    "added-multiple-cocktails": "Aggiunti più cocktail"
   },
   "bar": {
     "url": "URL personalizzato bar",
@@ -591,7 +591,7 @@
     "copy-action": "Duplica e modifica",
     "copy-success": "Cocktail duplicato",
     "source": "Sorgente cocktail",
-    "confirm-copy": "This will create a copy of \"{name}\""
+    "confirm-copy": "Questo creerà una copia di\"{name}\""
   },
   "ABV-definition": "Gradi alcolici",
   "ingredient-category": {},
@@ -605,9 +605,9 @@
     "currency-format-notice": "La valuta deve essere nel formato ISO 4271 (Alpha3)",
     "price-categories-empty": "Non ci sono categorie di prezzo",
     "no-matching-units": "Nessun prezzo unitario corrispondente trovato",
-    "select": "Select price",
-    "category-delete-success": "Price category deleted",
-    "category-confirm-delete": "This will permanently price category with name \\\"{name}\\\"."
+    "select": "Seleziona prezzo",
+    "category-delete-success": "Categoria di prezzo eliminata",
+    "category-confirm-delete": "Questo stabilirà in modo permanente la categoria di prezzo con il nome \\\"{name}\\\"."
   },
   "prices": {
     "add": "Aggiungi prezzo",
@@ -616,18 +616,18 @@
   },
   "shopping-list-empty": "La tua lista della spesa è vuota",
   "target-volume": "Target volume",
-  "target-volume-dilution": "Optional dilution",
-  "scale-recipe": "Scale recipe",
-  "target-volume-dilution-help": "Dilute with {total} of water",
+  "target-volume-dilution": "Diluizione facoltativa",
+  "scale-recipe": "Ricetta in scala",
+  "target-volume-dilution-help": "Diluito con {total} di acqua",
   "bar_shelf": {
-    "cocktails": "Bar shelf cocktails"
+    "cocktails": "Cocktail sullo scaffale del bar"
   },
-  "bar-shelf-ingredients": "Bar shelf ingredients",
-  "target-pour-cost": "Target pour cost",
-  "target-pour-cost-help": "Percentage of the cocktail's selling price that comes from the cost of the ingredients.",
   "is_favorited": "Your favorite cocktail",
   "in_bar_shelf": "Available in bar shelf",
   "in_your_shelf": "Available in your shelf",
   "is_public": "Has public link",
+  "bar-shelf-ingredients": "Ingredienti per lo scaffale del bar",
+  "target-pour-cost": "Costo più basso previsto",
+  "target-pour-cost-help": "Percentuale del prezzo di vendita del cocktail che deriva dal costo degli ingredienti.",
   "website": "Sito web"
 }

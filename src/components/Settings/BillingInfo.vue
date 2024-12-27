@@ -17,13 +17,14 @@
                             <li>Create and manage up to 10 bars</li>
                             <li>Add unlimited cocktail recipes</li>
                             <li>Invite users to your bar</li>
-                            <li>Share your recipes with other users</li>
+                            <li>Share your recipes with bar members</li>
                             <li>Manage user roles</li>
                             <li>Enable sharing recipes via public links</li>
                             <li>Add more images to recipes</li>
+                            <li>Enable image editing</li>
                             <li>Add unlimited cocktail collections</li>
                             <li>No rate limits for import actions</li>
-                            <!-- <li>Create personal access API tokens</li> -->
+                            <li>Create personal access API tokens</li>
                             <li>Save <span>15%</span> when paying annually</li>
                         </ul>
                         <div class="form-group">
@@ -273,6 +274,7 @@ export default {
     display: grid;
     gap: var(--gap-size-3);
     grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr;
     margin: 1rem 0;
 }
 

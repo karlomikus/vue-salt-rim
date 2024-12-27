@@ -36,6 +36,7 @@ const confirm = useConfirm()
 const { t } = useI18n()
 const isLoading = ref(false)
 const imageList = ref(null)
+const isDragover = ref(false)
 const sortable = ref(null)
 const imageDialogs = ref<{
     [key: number]: boolean;
@@ -73,13 +74,15 @@ onMounted(() => {
     initSortable()
 })
 
-onChange((files) => {
+onChange(files => handleFiles(files))
+
+function handleFiles(files: FileList | null) {
     if (!files) {
         return
     }
 
     for (const file of files) {
-        if (hasMaxImages.value) {
+        if (hasMaxImages.value || !file.type.startsWith('image/')) {
             return
         }
 
@@ -94,7 +97,7 @@ onChange((files) => {
             sort: 1,
         })
     }
-})
+}
 
 function initSortable() {
     sortable.value = Sortable.create(imageList.value, {
@@ -135,6 +138,21 @@ function getHashAsImage(img: ImageViewModel): string {
     return thumbHashToDataURL(Uint8Array.from(atob(img.hash), c => c.charCodeAt(0)))
 }
 
+function handleDrop(e: DropEvent): void {
+    e.preventDefault()
+    isDragover.value = false
+    handleFiles(e.dataTransfer.files)
+}
+
+function handleDragover(e: DragEvent): void {
+    e.preventDefault()
+    isDragover.value = true
+}
+
+function handleDragend(e: DragEvent): void {
+    isDragover.value = false
+}
+
 async function save() {
     if (!sortable.value) {
         return;
@@ -160,7 +178,7 @@ async function save() {
 }
 </script>
 <template>
-    <div class="block-container block-container--padded block-container--inset image-upload">
+    <div class="block-container block-container--padded block-container--inset image-upload" :class="{'block-container--placeholder': isDragover}" @drop="handleDrop" @dragover="handleDragover" @dragleave="handleDragend" @dragend="handleDragend">
         <OverlayLoader v-if="isLoading" />
         <div class="image-upload__images" ref="imageList">
             <div v-if="images.length == 0" class="image-upload__images__onboard">
@@ -203,6 +221,10 @@ async function save() {
 </template>
 
 <style scoped>
+.image-upload--dragover {
+    background-color: red;
+}
+
 .image-upload__images {
     margin-bottom: var(--gap-size-3);
     display: grid;

@@ -13,7 +13,10 @@ export interface paths {
         };
         get?: never;
         put?: never;
-        /** Authenticate user and get a token */
+        /**
+         * Authenticate user
+         * @description Authenticate user and get auth token
+         */
         post: operations["authenticate"];
         delete?: never;
         options?: never;
@@ -30,7 +33,10 @@ export interface paths {
         };
         get?: never;
         put?: never;
-        /** Logout currently authenticated user */
+        /**
+         * Logout
+         * @description Logout currently authenticated user
+         */
         post: operations["logout"];
         delete?: never;
         options?: never;
@@ -47,7 +53,10 @@ export interface paths {
         };
         get?: never;
         put?: never;
-        /** Register a new user */
+        /**
+         * Register
+         * @description Register a new user
+         */
         post: operations["register"];
         delete?: never;
         options?: never;
@@ -64,7 +73,10 @@ export interface paths {
         };
         get?: never;
         put?: never;
-        /** Request a new user password */
+        /**
+         * Request password reset
+         * @description Request a new password reset link
+         */
         post: operations["passwordForgot"];
         delete?: never;
         options?: never;
@@ -81,7 +93,10 @@ export interface paths {
         };
         get?: never;
         put?: never;
-        /** Reset user password */
+        /**
+         * Reset password
+         * @description Reset user password
+         */
         post: operations["passwordReset"];
         delete?: never;
         options?: never;
@@ -96,7 +111,10 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** Confirm user account */
+        /**
+         * Confirm account
+         * @description Confirm user account, if applicable
+         */
         get: operations["confirmAccount"];
         put?: never;
         post?: never;
@@ -114,12 +132,15 @@ export interface paths {
             cookie?: never;
         };
         /**
-         * Show a list of bars
+         * List bars
          * @description Show a list of bars user has access to. Includes bars that user has made and bars he is a member of.
          */
         get: operations["listBars"];
         put?: never;
-        /** Create a new bar */
+        /**
+         * Create bar
+         * @description Create a new bar
+         */
         post: operations["saveBar"];
         delete?: never;
         options?: never;
@@ -134,12 +155,21 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** Show a specific bar */
+        /**
+         * Show bar
+         * @description Show information about a specific bar
+         */
         get: operations["showBar"];
-        /** Update a bar */
+        /**
+         * Update bar
+         * @description Update a specific bar
+         */
         put: operations["updateBar"];
         post?: never;
-        /** Delete a bar */
+        /**
+         * Delete bar
+         * @description Delete a specific bar
+         */
         delete: operations["deleteBar"];
         options?: never;
         head?: never;
@@ -155,7 +185,10 @@ export interface paths {
         };
         get?: never;
         put?: never;
-        /** Join a bar via invite code */
+        /**
+         * Join a bar
+         * @description Join a bar via invite code
+         */
         post: operations["joinBar"];
         delete?: never;
         options?: never;
@@ -170,11 +203,17 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** List all members of a bar */
+        /**
+         * List members
+         * @description List all bar members
+         */
         get: operations["listBarMembership"];
         put?: never;
         post?: never;
-        /** Leave a bar you are a member of */
+        /**
+         * Leave a bar
+         * @description Deletes a user's membership to a bar
+         */
         delete: operations["leaveBar"];
         options?: never;
         head?: never;
@@ -191,7 +230,10 @@ export interface paths {
         get?: never;
         put?: never;
         post?: never;
-        /** Remove a member from a bar */
+        /**
+         * Remove member
+         * @description Removes a specific user's membership from a bar
+         */
         delete: operations["removeBarMembership"];
         options?: never;
         head?: never;
@@ -207,7 +249,10 @@ export interface paths {
         };
         get?: never;
         put?: never;
-        /** Transfer bar ownership */
+        /**
+         * Transfer ownership
+         * @description Transfer a bar to another user.
+         */
         post: operations["transferBarOwnership"];
         delete?: never;
         options?: never;
@@ -224,7 +269,10 @@ export interface paths {
         };
         get?: never;
         put?: never;
-        /** Update bar status */
+        /**
+         * Update status
+         * @description Update current status of a bar
+         */
         post: operations["toggleBarStatus"];
         delete?: never;
         options?: never;
@@ -239,10 +287,16 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** Show a list of cocktails */
+        /**
+         * List cocktails
+         * @description Show a list of all cocktails in a bar
+         */
         get: operations["listCocktails"];
         put?: never;
-        /** Create a new cocktail */
+        /**
+         * Create cocktail
+         * @description Create a new cocktail
+         */
         post: operations["saveCocktail"];
         delete?: never;
         options?: never;
@@ -257,12 +311,21 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** Show a specific cocktail */
+        /**
+         * Show cocktail
+         * @description Show details of a specific cocktail
+         */
         get: operations["showCocktail"];
-        /** Update a specific cocktail */
+        /**
+         * Update cocktail
+         * @description Update a specific cocktail
+         */
         put: operations["updateCocktail"];
         post?: never;
-        /** Delete a specific cocktail */
+        /**
+         * Delete cocktail
+         * @description Delete a specific cocktail
+         */
         delete: operations["deleteCocktail"];
         options?: never;
         head?: never;
@@ -278,7 +341,10 @@ export interface paths {
         };
         get?: never;
         put?: never;
-        /** Toggle cocktail as favorite */
+        /**
+         * Toggle favorite
+         * @description Marks cocktail as users favorite. Can be called again to remove the favorite.
+         */
         post: operations["toggleCocktailFavorite"];
         delete?: never;
         options?: never;
@@ -295,9 +361,15 @@ export interface paths {
         };
         get?: never;
         put?: never;
-        /** Create a public ID for cocktail */
+        /**
+         * Create a public ID
+         * @description Create a public link that can be shared
+         */
         post: operations["createCocktailPublicLink"];
-        /** Delete cocktail public link */
+        /**
+         * Delete public link
+         * @description Delete a cocktail public link
+         */
         delete: operations["deleteCocktailPublicLink"];
         options?: never;
         head?: never;
@@ -311,7 +383,10 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** Share a cocktail */
+        /**
+         * Share cocktail
+         * @description Get cocktail details in a specific shareable format
+         */
         get: operations["shareCocktail"];
         put?: never;
         post?: never;
@@ -328,7 +403,10 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** Show similar cocktails */
+        /**
+         * Show similar cocktails
+         * @description Shows similar cocktails to the given cocktail. Prefers cocktails with same base ingredient.
+         */
         get: operations["showSimilarCocktails"];
         put?: never;
         post?: never;
@@ -347,7 +425,10 @@ export interface paths {
         };
         get?: never;
         put?: never;
-        /** Copy cocktail */
+        /**
+         * Copy cocktail
+         * @description Create a copy of a cocktail
+         */
         post: operations["copyCocktail"];
         delete?: never;
         options?: never;
@@ -364,7 +445,7 @@ export interface paths {
         };
         /**
          * Show cocktail prices
-         * @description Shows a list of cocktail prices grouped per available price categories. Missing ingredient prices are skipped.
+         * @description Show calculated prices categorized by bar price categories. Prices are calculated using ingredient prices. If price category is missing, the ingredients don't have a price in that category. If there are multiple prices in category, the minimum price is used. Keep in mind that the price is just an estimate and might not be accurate.
          */
         get: operations["getCocktailPrices"];
         put?: never;
@@ -382,10 +463,16 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** Show a list of all methods */
+        /**
+         * List methods
+         * @description Show a list of all cocktail methods in a bar
+         */
         get: operations["listCocktailMethods"];
         put?: never;
-        /** Create a new method */
+        /**
+         * Create method
+         * @description Create a new cocktail method
+         */
         post: operations["saveCocktailMethod"];
         delete?: never;
         options?: never;
@@ -400,12 +487,21 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** Show a single method */
+        /**
+         * Show method
+         * @description Show a specific cocktail method
+         */
         get: operations["showCocktailMethod"];
-        /** Update a specific method */
+        /**
+         * Update method
+         * @description Update a specific cocktail method
+         */
         put: operations["updateCocktailMethod"];
         post?: never;
-        /** Delete specific method */
+        /**
+         * Delete method
+         * @description Delete a specific cocktail method
+         */
         delete: operations["deleteCocktailMethod"];
         options?: never;
         head?: never;
@@ -419,10 +515,16 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** Show a list of collections */
+        /**
+         * List collections
+         * @description Show a list of all user collections in a specific bar
+         */
         get: operations["listCollections"];
         put?: never;
-        /** Create a new collection */
+        /**
+         * Create collection
+         * @description Create a new collection
+         */
         post: operations["saveCollection"];
         delete?: never;
         options?: never;
@@ -437,7 +539,10 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** List bar shared collections */
+        /**
+         * List shared collections
+         * @description Show a list of all collections that users shared with the bar
+         */
         get: operations["listSharedCollections"];
         put?: never;
         post?: never;
@@ -454,12 +559,21 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** Show a specific collection */
+        /**
+         * Show collection
+         * @description Show a specific collection
+         */
         get: operations["showCollection"];
-        /** Update a specific collection */
+        /**
+         * Update collection
+         * @description Update a specific collection
+         */
         put: operations["updateCollection"];
         post?: never;
-        /** Delete a specific collection */
+        /**
+         * Delete collection
+         * @description Delete a specific collection
+         */
         delete: operations["deleteCollection"];
         options?: never;
         head?: never;
@@ -493,7 +607,10 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** Show a public cocktail */
+        /**
+         * Show cocktail
+         * @description Show details from a cocktail using a public id
+         */
         get: operations["showPublicCocktail"];
         put?: never;
         post?: never;
@@ -510,10 +627,16 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** Show a list of exports */
+        /**
+         * List exports
+         * @description Show a list of all generated exports in a bar
+         */
         get: operations["listExports"];
         put?: never;
-        /** Create a new export */
+        /**
+         * Create export
+         * @description Start a new export process
+         */
         post: operations["saveExport"];
         delete?: never;
         options?: never;
@@ -531,7 +654,10 @@ export interface paths {
         get?: never;
         put?: never;
         post?: never;
-        /** Delete export */
+        /**
+         * Delete export
+         * @description Delete a specific export
+         */
         delete: operations["deleteExport"];
         options?: never;
         head?: never;
@@ -545,11 +671,14 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** Download export */
+        /**
+         * Download export
+         * @description Download a specific export
+         */
         get: operations["downloadExport"];
         put?: never;
         /**
-         * Generate download link
+         * Generate link
          * @description Generates a publicly accessible download link for the export. The link will be valid for 1 minute by default.
          */
         post: operations["generateExportDownloadLink"];
@@ -566,10 +695,16 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** Show a list of glass types */
+        /**
+         * List glassware
+         * @description Show a list of all glassware in the bar
+         */
         get: operations["listGlassware"];
         put?: never;
-        /** Create a new glass */
+        /**
+         * Create glassware
+         * @description Create a new glassware
+         */
         post: operations["saveGlassware"];
         delete?: never;
         options?: never;
@@ -584,12 +719,21 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** Show glass */
+        /**
+         * Show glassware
+         * @description Show a specific glassware
+         */
         get: operations["showGlassware"];
-        /** Update glass */
+        /**
+         * Update glassware
+         * @description Update a specific glassware
+         */
         put: operations["updateGlassware"];
         post?: never;
-        /** Delete glass */
+        /**
+         * Delete glassware
+         * @description Delete a specific glassware
+         */
         delete: operations["deleteGlassware"];
         options?: never;
         head?: never;
@@ -604,13 +748,13 @@ export interface paths {
             cookie?: never;
         };
         /**
-         * List uploaded images
+         * List images
          * @description List all images uploaded by the authenticated user
          */
         get: operations["listImages"];
         put?: never;
         /**
-         * Upload an image
+         * Upload image
          * @description Used to upload multiple images at once. Uploaded images via this endpoint will not be attached to any resource. Images are converted to WebP format with 85% quality of the original image.
          */
         post: operations["uploadImage"];
@@ -627,12 +771,21 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** Show an image */
+        /**
+         * Show image
+         * @description Show a single image
+         */
         get: operations["showImage"];
         put?: never;
-        /** Update image */
+        /**
+         * Update image
+         * @description Update a specific image
+         */
         post: operations["updateImage"];
-        /** Delete image */
+        /**
+         * Delete image
+         * @description Delete a specific image
+         */
         delete: operations["deleteImage"];
         options?: never;
         head?: never;
@@ -646,7 +799,10 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** Get a thumbnail of an image */
+        /**
+         * Get thumbnail
+         * @description Generate a thumbnail of a specific image
+         */
         get: operations["getImageThumbnail"];
         put?: never;
         post?: never;
@@ -686,7 +842,7 @@ export interface paths {
         get?: never;
         put?: never;
         /**
-         * Scrape a recipe
+         * Scrape recipe
          * @description Try to scrape a recipe from a website. Most of the well known recipe websites should work. Data returned is a valid JSON schema that you can import using import cocktail endpoint.
          */
         post: operations["scrapeRecipe"];
@@ -703,10 +859,16 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** Show a list of ingredient categories */
+        /**
+         * List ingredient categories
+         * @description List all ingredient categories in a bar
+         */
         get: operations["listIngredientCategories"];
         put?: never;
-        /** Create a new ingredient category */
+        /**
+         * Create ingredient category
+         * @description Create a specific ingredient category
+         */
         post: operations["saveIngredientCategory"];
         delete?: never;
         options?: never;
@@ -721,12 +883,21 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** Show ingredient category */
+        /**
+         * Show ingredient category
+         * @description Show a specific ingredient category
+         */
         get: operations["showIngredientCategory"];
-        /** Update ingredient category */
+        /**
+         * Update ingredient category
+         * @description Update a specific ingredient category
+         */
         put: operations["updateIngredientCategory"];
         post?: never;
-        /** Delete ingredient category */
+        /**
+         * Delete ingredient category
+         * @description Delete a specific ingredient category
+         */
         delete: operations["deleteIngredientCategory"];
         options?: never;
         head?: never;
@@ -740,10 +911,16 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** Show a list of ingredients */
+        /**
+         * List ingredients
+         * @description Show a list of all ingredients in a bar
+         */
         get: operations["listIngredients"];
         put?: never;
-        /** Create an ingredient */
+        /**
+         * Create ingredient
+         * @description Create a new ingredient
+         */
         post: operations["saveIngredient"];
         delete?: never;
         options?: never;
@@ -758,12 +935,21 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** Show an ingredient */
+        /**
+         * Show ingredient
+         * @description Show a specific ingredient
+         */
         get: operations["showIngredient"];
-        /** Update an ingredient */
+        /**
+         * Update ingredient
+         * @description Update a specific ingredient
+         */
         put: operations["updateIngredient"];
         post?: never;
-        /** Delete an ingredient */
+        /**
+         * Delete ingredient
+         * @description Delete a specific ingredient
+         */
         delete: operations["deleteIngredient"];
         options?: never;
         head?: never;
@@ -777,7 +963,10 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** Extra cocktails you can make if you add this ingredient to your shelf */
+        /**
+         * Extra cocktails
+         * @description Show a list of extra cocktails you can make if you add given ingredient to your shelf
+         */
         get: operations["extraIngredients"];
         put?: never;
         post?: never;
@@ -794,7 +983,10 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** List of cocktails that use this ingredient */
+        /**
+         * List cocktails
+         * @description List all cocktails that use this ingredient
+         */
         get: operations["ingredientCocktails"];
         put?: never;
         post?: never;
@@ -831,10 +1023,16 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** Show menu */
+        /**
+         * Show menu
+         * @description Show a bar menu
+         */
         get: operations["showMenu"];
         put?: never;
-        /** Update menu */
+        /**
+         * Update menu
+         * @description Update bar menu
+         */
         post: operations["updateMenu"];
         delete?: never;
         options?: never;
@@ -849,7 +1047,10 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** Show public bar menu */
+        /**
+         * Show public menu
+         * @description Show a public bar menu details
+         */
         get: operations["publicMenu"];
         put?: never;
         post?: never;
@@ -886,10 +1087,16 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** Show a list of all notes */
+        /**
+         * List notes
+         * @description Show list of all user notes
+         */
         get: operations["listNotes"];
         put?: never;
-        /** Create a new note */
+        /**
+         * Create note
+         * @description Create a new note
+         */
         post: operations["saveNote"];
         delete?: never;
         options?: never;
@@ -904,11 +1111,17 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** Show a single note */
+        /**
+         * Show note
+         * @description Show a single note
+         */
         get: operations["showNote"];
         put?: never;
         post?: never;
-        /** Delete a specific note */
+        /**
+         * Delete note
+         * @description Delete a single note
+         */
         delete: operations["deleteNote"];
         options?: never;
         head?: never;
@@ -922,10 +1135,16 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** Show a list of tokens */
+        /**
+         * List tokens
+         * @description List all personal access tokens
+         */
         get: operations["listTokens"];
         put?: never;
-        /** Create new personal access token */
+        /**
+         * Create token
+         * @description Create a new personal access token
+         */
         post: operations["saveToken"];
         delete?: never;
         options?: never;
@@ -943,7 +1162,10 @@ export interface paths {
         get?: never;
         put?: never;
         post?: never;
-        /** Revoke personal access token */
+        /**
+         * Revoke token
+         * @description Revoke a personal access token
+         */
         delete: operations["deleteToken"];
         options?: never;
         head?: never;
@@ -957,10 +1179,16 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** Show a list of price categories */
+        /**
+         * List price categories
+         * @description List all price categories in a bar
+         */
         get: operations["listPriceCategories"];
         put?: never;
-        /** Create a new price category */
+        /**
+         * Create price category
+         * @description Create a new price category
+         */
         post: operations["savePriceCategory"];
         delete?: never;
         options?: never;
@@ -975,12 +1203,21 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** Show a price category */
+        /**
+         * Show price category
+         * @description Show a single price category
+         */
         get: operations["10017aa4f043f641c210bafc56092997"];
-        /** Update price category */
+        /**
+         * Update price category
+         * @description Update a single price category
+         */
         put: operations["updatePriceCategory"];
         post?: never;
-        /** Delete price category */
+        /**
+         * Delete price category
+         * @description Delete a single price category
+         */
         delete: operations["deletePriceCategory"];
         options?: never;
         head?: never;
@@ -994,10 +1231,16 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** Show profile */
+        /**
+         * Show profile
+         * @description Show current user profile information
+         */
         get: operations["showProfile"];
         put?: never;
-        /** Update profile */
+        /**
+         * Update profile
+         * @description Update user profile
+         */
         post: operations["updateProfile"];
         delete?: never;
         options?: never;
@@ -1014,9 +1257,15 @@ export interface paths {
         };
         get?: never;
         put?: never;
-        /** Rate a cocktail */
+        /**
+         * Rate cocktail
+         * @description Rate a single cocktail
+         */
         post: operations["rateCocktail"];
-        /** Delete current user's cocktail rating */
+        /**
+         * Delete cocktail rating
+         * @description Delete current user cocktail rating
+         */
         delete: operations["deleteRating"];
         options?: never;
         head?: never;
@@ -1030,7 +1279,10 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** Show server information */
+        /**
+         * Show information
+         * @description Show server status and information
+         */
         get: operations["showServerVersion"];
         put?: never;
         post?: never;
@@ -1048,7 +1300,7 @@ export interface paths {
             cookie?: never;
         };
         /**
-         * Show a list of shelf ingredients
+         * List user ingredients
          * @description Ingredients that user saved to their shelf
          */
         get: operations["listUserIngredients"];
@@ -1068,7 +1320,7 @@ export interface paths {
             cookie?: never;
         };
         /**
-         * Show a list shelf cocktails
+         * List shelf cocktails
          * @description Cocktails that the user can make with ingredients on their shelf
          */
         get: operations["listUserShelfCocktails"];
@@ -1087,7 +1339,10 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** Show a list of cocktails user has favorited */
+        /**
+         * List favorites
+         * @description Show a list of cocktails user has favorited
+         */
         get: operations["listUserFavoriteCocktails"];
         put?: never;
         post?: never;
@@ -1106,7 +1361,10 @@ export interface paths {
         };
         get?: never;
         put?: never;
-        /** Batch store ingredients to the shelf */
+        /**
+         * Save user ingredients
+         * @description Save multiple ingredients to user shelf
+         */
         post: operations["batchStoreUserIngredients"];
         delete?: never;
         options?: never;
@@ -1123,7 +1381,10 @@ export interface paths {
         };
         get?: never;
         put?: never;
-        /** Delete multiple ingredients from the shelf */
+        /**
+         * Delete user ingredients
+         * @description Delete multiple ingredients from user shelf
+         */
         post: operations["batchDeleteUserIngredients"];
         delete?: never;
         options?: never;
@@ -1138,7 +1399,10 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** Recommend next ingredients */
+        /**
+         * Recommend user ingredients
+         * @description Shows a list of ingredients that will increase total shelf cocktails when added to user shef
+         */
         get: operations["recommendIngredients"];
         put?: never;
         post?: never;
@@ -1156,7 +1420,7 @@ export interface paths {
             cookie?: never;
         };
         /**
-         * Show a list of bar shelf ingredients
+         * List bar shelf ingredients
          * @description Ingredients that bar has in it's shelf
          */
         get: operations["listBarShelfIngredients"];
@@ -1177,7 +1441,10 @@ export interface paths {
         };
         get?: never;
         put?: never;
-        /** Batch store bar ingredients to bar shelf */
+        /**
+         * Save bar ingredients
+         * @description Save multiple ingredients to bar shelf
+         */
         post: operations["batchStoreBarShelfIngredients"];
         delete?: never;
         options?: never;
@@ -1194,7 +1461,10 @@ export interface paths {
         };
         get?: never;
         put?: never;
-        /** Delete multiple ingredients from bar shelf */
+        /**
+         * Delete bar ingredients
+         * @description Delete multiple ingredients from bar shelf
+         */
         post: operations["batchDeleteBarShelfIngredients"];
         delete?: never;
         options?: never;
@@ -1210,7 +1480,7 @@ export interface paths {
             cookie?: never;
         };
         /**
-         * Show a list bar shelf cocktails
+         * List bar shelf cocktails
          * @description Cocktails that the bar can make with ingredients on their shelf
          */
         get: operations["listBarShelfCocktails"];
@@ -1229,7 +1499,10 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** Recommend next ingredients for bar */
+        /**
+         * Recommend bar ingredients
+         * @description Shows a list of ingredients that will increase total bar shelf cocktails when added to bar shef
+         */
         get: operations["recommendBarIngredients"];
         put?: never;
         post?: never;
@@ -1246,7 +1519,10 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** Show shopping list */
+        /**
+         * Show shopping list
+         * @description List all ingredients on a shopping list
+         */
         get: operations["listShoppingListIngredients"];
         put?: never;
         post?: never;
@@ -1265,7 +1541,10 @@ export interface paths {
         };
         get?: never;
         put?: never;
-        /** Batch add ingredients to shopping list */
+        /**
+         * Add ingredients
+         * @description Add multiple ingredients to a shopping list
+         */
         post: operations["batchStoreShoppingListIngredients"];
         delete?: never;
         options?: never;
@@ -1282,7 +1561,10 @@ export interface paths {
         };
         get?: never;
         put?: never;
-        /** Batch delete ingredients from shopping list */
+        /**
+         * Delete ingredients
+         * @description Remove multiple ingredients from shopping list
+         */
         post: operations["batchDeleteShoppingListIngredients"];
         delete?: never;
         options?: never;
@@ -1297,7 +1579,10 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** Share shopping list */
+        /**
+         * Share shopping list
+         * @description Get a shopping list in a specific format
+         */
         get: operations["shareShoppingList"];
         put?: never;
         post?: never;
@@ -1314,7 +1599,10 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** Show bar stats */
+        /**
+         * Show bar stats
+         * @description Show detailed stats about a single bar
+         */
         get: operations["showBarStats"];
         put?: never;
         post?: never;
@@ -1331,10 +1619,16 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** Get subscription status */
+        /**
+         * Show subscription
+         * @description Show a subscription status
+         */
         get: operations["showSubscription"];
         put?: never;
-        /** Update subscription */
+        /**
+         * Update subscription
+         * @description Update user billing subscription
+         */
         post: operations["updateSubscription"];
         delete?: never;
         options?: never;
@@ -1349,10 +1643,16 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** Show a list of all tags */
+        /**
+         * List tags
+         * @description Show a list of tags in a bar
+         */
         get: operations["listTags"];
         put?: never;
-        /** Create a new tag */
+        /**
+         * Create tag
+         * @description Create a new tag
+         */
         post: operations["saveTag"];
         delete?: never;
         options?: never;
@@ -1367,12 +1667,21 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** Show a single tag */
+        /**
+         * Show tag
+         * @description Show a single tag
+         */
         get: operations["showTag"];
-        /** Update tag */
+        /**
+         * Update tag
+         * @description Update a single tag
+         */
         put: operations["updateTag"];
         post?: never;
-        /** Delete tag */
+        /**
+         * Delete tag
+         * @description Delete a single tag
+         */
         delete: operations["deleteTag"];
         options?: never;
         head?: never;
@@ -1386,10 +1695,16 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** Show a list of users of a bar */
+        /**
+         * List users
+         * @description Show a list of all users in a bar
+         */
         get: operations["listUsers"];
         put?: never;
-        /** Create a new user */
+        /**
+         * Create user
+         * @description Create a new user
+         */
         post: operations["saveUser"];
         delete?: never;
         options?: never;
@@ -1404,12 +1719,21 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** Show a user */
+        /**
+         * Show user
+         * @description Show a single user
+         */
         get: operations["showUser"];
-        /** Update a user */
+        /**
+         * Update user
+         * @description Update a single user
+         */
         put: operations["updateUser"];
         post?: never;
-        /** Delete a user */
+        /**
+         * Delete user
+         * @description Delete a single user
+         */
         delete: operations["deleteUser"];
         options?: never;
         head?: never;
@@ -1423,10 +1747,16 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** Show a list of utensils */
+        /**
+         * List utensils
+         * @description List all utensils in a bar
+         */
         get: operations["listUtensils"];
         put?: never;
-        /** Create a new utensil */
+        /**
+         * Create utensil
+         * @description Create a new utensil
+         */
         post: operations["saveUtensil"];
         delete?: never;
         options?: never;
@@ -1441,12 +1771,21 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** Show utensil */
+        /**
+         * Show utensil
+         * @description Show a single utensil
+         */
         get: operations["showUtensil"];
-        /** Update a specific utensil */
+        /**
+         * Update utensil
+         * @description Update a single utensil
+         */
         put: operations["updateUtensil"];
         post?: never;
-        /** Delete specific utensil */
+        /**
+         * Delete utensil
+         * @description Delete a single utensil
+         */
         delete: operations["deleteUtensil"];
         options?: never;
         head?: never;
@@ -1558,7 +1897,7 @@ export interface components {
             /** @description Enable users with invite code to join this bar. Default `false`. */
             enable_invites?: boolean;
             /** @description List of data that the bar will start with. Cocktails cannot be imported without ingredients. */
-            options?: ("ingredients" | "cocktails")[];
+            options?: components["schemas"]["BarOptionsEnum"];
         };
         BarStats: {
             /** @example 1 */
@@ -1689,6 +2028,7 @@ export interface components {
             updated_user?: components["schemas"]["UserBasic"] | null;
             in_shelf?: boolean;
             in_bar_shelf?: boolean;
+            is_favorited?: boolean;
             access?: {
                 /** @example true */
                 can_edit: boolean;
@@ -2413,14 +2753,6 @@ export interface components {
             is_shelf_public?: boolean;
             use_parent_as_substitute?: boolean;
         };
-        Rating: {
-            /** @example 1 */
-            rateable_id?: number;
-            /** @example 1 */
-            user_id?: number;
-            /** @example 3 */
-            rating?: number;
-        };
         RegisterRequest: {
             /** @example admin@example.com */
             email: string;
@@ -2698,6 +3030,10 @@ export interface operations {
             /** @description Successful response */
             200: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -2749,6 +3085,10 @@ export interface operations {
             /** @description Successful response */
             200: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -2760,6 +3100,10 @@ export interface operations {
             /** @description Resource record not found. */
             404: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -2864,6 +3208,10 @@ export interface operations {
             /** @description You are not authorized for this action. */
             403: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -2875,6 +3223,10 @@ export interface operations {
             /** @description Resource record not found. */
             404: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -2897,6 +3249,10 @@ export interface operations {
             /** @description Successful response */
             200: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -2936,6 +3292,10 @@ export interface operations {
             /** @description You are not authorized for this action. */
             403: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -2947,6 +3307,10 @@ export interface operations {
             /** @description Request validation failed. */
             422: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -2970,6 +3334,10 @@ export interface operations {
             /** @description Successful response */
             200: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -2981,6 +3349,10 @@ export interface operations {
             /** @description You are not authorized for this action. */
             403: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -2992,6 +3364,10 @@ export interface operations {
             /** @description Resource record not found. */
             404: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -3021,6 +3397,10 @@ export interface operations {
             /** @description Successful response */
             200: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -3032,6 +3412,10 @@ export interface operations {
             /** @description You are not authorized for this action. */
             403: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -3043,6 +3427,10 @@ export interface operations {
             /** @description Resource record not found. */
             404: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -3054,6 +3442,10 @@ export interface operations {
             /** @description Request validation failed. */
             422: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -3084,6 +3476,10 @@ export interface operations {
             /** @description You are not authorized for this action. */
             403: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -3095,6 +3491,10 @@ export interface operations {
             /** @description Resource record not found. */
             404: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -3124,6 +3524,10 @@ export interface operations {
             /** @description Successful response */
             200: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -3135,6 +3539,10 @@ export interface operations {
             /** @description You are not authorized for this action. */
             403: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -3146,6 +3554,10 @@ export interface operations {
             /** @description Resource record not found. */
             404: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -3171,6 +3583,10 @@ export interface operations {
             /** @description Successful response */
             200: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -3182,6 +3598,10 @@ export interface operations {
             /** @description You are not authorized for this action. */
             403: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -3193,6 +3613,10 @@ export interface operations {
             /** @description Resource record not found. */
             404: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -3225,6 +3649,10 @@ export interface operations {
             /** @description Resource record not found. */
             404: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -3259,6 +3687,10 @@ export interface operations {
             /** @description You are not authorized for this action. */
             403: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -3270,6 +3702,10 @@ export interface operations {
             /** @description Resource record not found. */
             404: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -3312,6 +3748,10 @@ export interface operations {
             /** @description You are not authorized for this action. */
             403: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -3323,6 +3763,10 @@ export interface operations {
             /** @description Resource record not found. */
             404: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -3361,6 +3805,10 @@ export interface operations {
             /** @description You are not authorized for this action. */
             403: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -3372,6 +3820,10 @@ export interface operations {
             /** @description Resource record not found. */
             404: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -3385,8 +3837,6 @@ export interface operations {
     listCocktails: {
         parameters: {
             query?: {
-                /** @description Database id of a bar. Required if you are not using `Bar-Assistant-Bar-Id` header. */
-                bar_id?: number;
                 /** @description Set current page number */
                 page?: number;
                 /** @description Set number of results per page */
@@ -3416,6 +3866,7 @@ export interface operations {
                     main_ingredient_id?: string;
                     total_ingredients?: string;
                     missing_ingredients?: string;
+                    missing_bar_ingredients?: string;
                     specific_ingredients?: string;
                     ignore_ingredients?: string;
                 };
@@ -3436,6 +3887,10 @@ export interface operations {
             /** @description Successful response */
             200: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -3467,6 +3922,10 @@ export interface operations {
             /** @description You are not authorized for this action. */
             403: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -3479,10 +3938,7 @@ export interface operations {
     };
     saveCocktail: {
         parameters: {
-            query?: {
-                /** @description Database id of a bar. Required if you are not using `Bar-Assistant-Bar-Id` header. */
-                bar_id?: number;
-            };
+            query?: never;
             header?: {
                 /** @description Database id of a bar. Required if you are not using `bar_id` query string. */
                 "Bar-Assistant-Bar-Id"?: number;
@@ -3512,6 +3968,10 @@ export interface operations {
             /** @description You are not authorized for this action. */
             403: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -3523,6 +3983,10 @@ export interface operations {
             /** @description Request validation failed. */
             422: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -3546,6 +4010,10 @@ export interface operations {
             /** @description Successful response */
             200: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -3557,6 +4025,10 @@ export interface operations {
             /** @description You are not authorized for this action. */
             403: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -3568,6 +4040,10 @@ export interface operations {
             /** @description Resource record not found. */
             404: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -3597,6 +4073,10 @@ export interface operations {
             /** @description Successful response */
             200: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -3608,6 +4088,10 @@ export interface operations {
             /** @description You are not authorized for this action. */
             403: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -3619,6 +4103,10 @@ export interface operations {
             /** @description Resource record not found. */
             404: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -3630,6 +4118,10 @@ export interface operations {
             /** @description Request validation failed. */
             422: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -3660,6 +4152,10 @@ export interface operations {
             /** @description You are not authorized for this action. */
             403: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -3671,6 +4167,10 @@ export interface operations {
             /** @description Resource record not found. */
             404: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -3696,6 +4196,10 @@ export interface operations {
             /** @description Successful response */
             200: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -3712,6 +4216,10 @@ export interface operations {
             /** @description You are not authorized for this action. */
             403: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -3723,6 +4231,10 @@ export interface operations {
             /** @description Resource record not found. */
             404: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -3748,6 +4260,10 @@ export interface operations {
             /** @description Successful response */
             200: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -3759,6 +4275,10 @@ export interface operations {
             /** @description You are not authorized for this action. */
             403: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -3770,6 +4290,10 @@ export interface operations {
             /** @description Resource record not found. */
             404: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -3802,6 +4326,10 @@ export interface operations {
             /** @description You are not authorized for this action. */
             403: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -3813,6 +4341,10 @@ export interface operations {
             /** @description Resource record not found. */
             404: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -3843,6 +4375,10 @@ export interface operations {
             /** @description Successful response */
             200: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -3859,6 +4395,10 @@ export interface operations {
             /** @description You are not authorized for this action. */
             403: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -3870,6 +4410,10 @@ export interface operations {
             /** @description Resource record not found. */
             404: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -3895,6 +4439,10 @@ export interface operations {
             /** @description Successful response */
             200: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -3906,6 +4454,10 @@ export interface operations {
             /** @description You are not authorized for this action. */
             403: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -3917,6 +4469,10 @@ export interface operations {
             /** @description Resource record not found. */
             404: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -3955,6 +4511,10 @@ export interface operations {
             /** @description You are not authorized for this action. */
             403: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -3980,6 +4540,10 @@ export interface operations {
             /** @description Successful response */
             200: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -3991,6 +4555,10 @@ export interface operations {
             /** @description You are not authorized for this action. */
             403: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -4002,6 +4570,10 @@ export interface operations {
             /** @description Resource record not found. */
             404: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -4015,8 +4587,10 @@ export interface operations {
     listCocktailMethods: {
         parameters: {
             query?: {
-                /** @description Database id of a bar. Required if you are not using `Bar-Assistant-Bar-Id` header. */
-                bar_id?: number;
+                /** @description Filter by attributes */
+                filter?: {
+                    name?: string;
+                };
             };
             header?: {
                 /** @description Database id of a bar. Required if you are not using `bar_id` query string. */
@@ -4030,6 +4604,10 @@ export interface operations {
             /** @description Successful response */
             200: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -4042,10 +4620,7 @@ export interface operations {
     };
     saveCocktailMethod: {
         parameters: {
-            query?: {
-                /** @description Database id of a bar. Required if you are not using `Bar-Assistant-Bar-Id` header. */
-                bar_id?: number;
-            };
+            query?: never;
             header?: {
                 /** @description Database id of a bar. Required if you are not using `bar_id` query string. */
                 "Bar-Assistant-Bar-Id"?: number;
@@ -4075,6 +4650,10 @@ export interface operations {
             /** @description You are not authorized for this action. */
             403: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -4100,6 +4679,10 @@ export interface operations {
             /** @description Successful response */
             200: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -4111,6 +4694,10 @@ export interface operations {
             /** @description You are not authorized for this action. */
             403: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -4122,6 +4709,10 @@ export interface operations {
             /** @description Resource record not found. */
             404: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -4151,6 +4742,10 @@ export interface operations {
             /** @description Successful response */
             200: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -4162,6 +4757,10 @@ export interface operations {
             /** @description You are not authorized for this action. */
             403: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -4173,6 +4772,10 @@ export interface operations {
             /** @description Resource record not found. */
             404: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -4205,6 +4808,10 @@ export interface operations {
             /** @description You are not authorized for this action. */
             403: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -4216,6 +4823,10 @@ export interface operations {
             /** @description Resource record not found. */
             404: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -4229,8 +4840,6 @@ export interface operations {
     listCollections: {
         parameters: {
             query?: {
-                /** @description Database id of a bar. Required if you are not using `Bar-Assistant-Bar-Id` header. */
-                bar_id?: number;
                 /** @description Filter by attributes */
                 filter?: {
                     id?: number;
@@ -4254,6 +4863,10 @@ export interface operations {
             /** @description Successful response */
             200: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -4266,10 +4879,7 @@ export interface operations {
     };
     saveCollection: {
         parameters: {
-            query?: {
-                /** @description Database id of a bar. Required if you are not using `Bar-Assistant-Bar-Id` header. */
-                bar_id?: number;
-            };
+            query?: never;
             header?: {
                 /** @description Database id of a bar. Required if you are not using `bar_id` query string. */
                 "Bar-Assistant-Bar-Id"?: number;
@@ -4299,6 +4909,10 @@ export interface operations {
             /** @description You are not authorized for this action. */
             403: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -4324,6 +4938,10 @@ export interface operations {
             /** @description Successful response */
             200: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -4335,6 +4953,10 @@ export interface operations {
             /** @description You are not authorized for this action. */
             403: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -4346,6 +4968,10 @@ export interface operations {
             /** @description Resource record not found. */
             404: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -4371,6 +4997,10 @@ export interface operations {
             /** @description Successful response */
             200: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -4382,6 +5012,10 @@ export interface operations {
             /** @description You are not authorized for this action. */
             403: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -4393,6 +5027,10 @@ export interface operations {
             /** @description Resource record not found. */
             404: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -4422,6 +5060,10 @@ export interface operations {
             /** @description Successful response */
             200: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -4433,6 +5075,10 @@ export interface operations {
             /** @description You are not authorized for this action. */
             403: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -4444,6 +5090,10 @@ export interface operations {
             /** @description Resource record not found. */
             404: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -4476,6 +5126,10 @@ export interface operations {
             /** @description You are not authorized for this action. */
             403: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -4487,6 +5141,10 @@ export interface operations {
             /** @description Resource record not found. */
             404: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -4518,6 +5176,10 @@ export interface operations {
             /** @description Successful response */
             200: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -4529,6 +5191,10 @@ export interface operations {
             /** @description You are not authorized for this action. */
             403: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -4554,6 +5220,10 @@ export interface operations {
             /** @description Successful response */
             200: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -4565,6 +5235,10 @@ export interface operations {
             /** @description Resource record not found. */
             404: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -4587,6 +5261,10 @@ export interface operations {
             /** @description Successful response */
             200: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -4613,6 +5291,10 @@ export interface operations {
             /** @description Successful response */
             200: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -4624,6 +5306,10 @@ export interface operations {
             /** @description You are not authorized for this action. */
             403: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -4631,6 +5317,17 @@ export interface operations {
                         data?: components["schemas"]["APIError"];
                     };
                 };
+            };
+            /** @description Reached rate limit. */
+            429: {
+                headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
+                    [name: string]: unknown;
+                };
+                content?: never;
             };
         };
     };
@@ -4656,6 +5353,10 @@ export interface operations {
             /** @description You are not authorized for this action. */
             403: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -4667,6 +5368,10 @@ export interface operations {
             /** @description Resource record not found. */
             404: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -4697,6 +5402,10 @@ export interface operations {
             /** @description Successful response */
             200: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -4706,6 +5415,10 @@ export interface operations {
             /** @description Resource record not found. */
             404: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -4731,6 +5444,10 @@ export interface operations {
             /** @description Successful response */
             200: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -4742,6 +5459,10 @@ export interface operations {
             /** @description You are not authorized for this action. */
             403: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -4753,6 +5474,10 @@ export interface operations {
             /** @description Resource record not found. */
             404: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -4766,8 +5491,6 @@ export interface operations {
     listGlassware: {
         parameters: {
             query?: {
-                /** @description Database id of a bar. Required if you are not using `Bar-Assistant-Bar-Id` header. */
-                bar_id?: number;
                 /** @description Filter by attributes */
                 filter?: {
                     name?: string;
@@ -4787,6 +5510,10 @@ export interface operations {
             /** @description Successful response */
             200: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -4799,10 +5526,7 @@ export interface operations {
     };
     saveGlassware: {
         parameters: {
-            query?: {
-                /** @description Database id of a bar. Required if you are not using `Bar-Assistant-Bar-Id` header. */
-                bar_id?: number;
-            };
+            query?: never;
             header?: {
                 /** @description Database id of a bar. Required if you are not using `bar_id` query string. */
                 "Bar-Assistant-Bar-Id"?: number;
@@ -4832,6 +5556,10 @@ export interface operations {
             /** @description You are not authorized for this action. */
             403: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -4857,6 +5585,10 @@ export interface operations {
             /** @description Successful response */
             200: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -4868,6 +5600,10 @@ export interface operations {
             /** @description You are not authorized for this action. */
             403: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -4879,6 +5615,10 @@ export interface operations {
             /** @description Resource record not found. */
             404: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -4908,6 +5648,10 @@ export interface operations {
             /** @description Successful response */
             200: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -4919,6 +5663,10 @@ export interface operations {
             /** @description You are not authorized for this action. */
             403: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -4930,6 +5678,10 @@ export interface operations {
             /** @description Resource record not found. */
             404: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -4962,6 +5714,10 @@ export interface operations {
             /** @description You are not authorized for this action. */
             403: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -4973,6 +5729,10 @@ export interface operations {
             /** @description Resource record not found. */
             404: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -5000,6 +5760,10 @@ export interface operations {
             /** @description Successful response */
             200: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -5031,6 +5795,10 @@ export interface operations {
             /** @description You are not authorized for this action. */
             403: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -5042,6 +5810,10 @@ export interface operations {
             /** @description Resource record not found. */
             404: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -5070,6 +5842,10 @@ export interface operations {
             /** @description Successful response */
             200: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -5095,6 +5871,10 @@ export interface operations {
             /** @description Successful response */
             200: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -5106,6 +5886,10 @@ export interface operations {
             /** @description You are not authorized for this action. */
             403: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -5117,6 +5901,10 @@ export interface operations {
             /** @description Resource record not found. */
             404: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -5146,6 +5934,10 @@ export interface operations {
             /** @description Successful response */
             200: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -5157,6 +5949,10 @@ export interface operations {
             /** @description You are not authorized for this action. */
             403: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -5189,6 +5985,10 @@ export interface operations {
             /** @description You are not authorized for this action. */
             403: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -5200,6 +6000,10 @@ export interface operations {
             /** @description Resource record not found. */
             404: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -5225,6 +6029,10 @@ export interface operations {
             /** @description Successful response */
             200: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -5234,6 +6042,10 @@ export interface operations {
             /** @description Resource record not found. */
             404: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -5246,10 +6058,7 @@ export interface operations {
     };
     importCocktail: {
         parameters: {
-            query?: {
-                /** @description Database id of a bar. Required if you are not using `Bar-Assistant-Bar-Id` header. */
-                bar_id?: number;
-            };
+            query?: never;
             header?: {
                 /** @description Database id of a bar. Required if you are not using `bar_id` query string. */
                 "Bar-Assistant-Bar-Id"?: number;
@@ -5271,6 +6080,10 @@ export interface operations {
             /** @description Successful response */
             200: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -5282,6 +6095,10 @@ export interface operations {
             /** @description You are not authorized for this action. */
             403: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -5290,14 +6107,22 @@ export interface operations {
                     };
                 };
             };
+            /** @description Reached rate limit. */
+            429: {
+                headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
         };
     };
     scrapeRecipe: {
         parameters: {
-            query?: {
-                /** @description Database id of a bar. Required if you are not using `Bar-Assistant-Bar-Id` header. */
-                bar_id?: number;
-            };
+            query?: never;
             header?: {
                 /** @description Database id of a bar. Required if you are not using `bar_id` query string. */
                 "Bar-Assistant-Bar-Id"?: number;
@@ -5317,6 +6142,10 @@ export interface operations {
             /** @description Successful response */
             200: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -5336,6 +6165,10 @@ export interface operations {
             /** @description You are not authorized for this action. */
             403: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -5348,10 +6181,7 @@ export interface operations {
     };
     listIngredientCategories: {
         parameters: {
-            query?: {
-                /** @description Database id of a bar. Required if you are not using `Bar-Assistant-Bar-Id` header. */
-                bar_id?: number;
-            };
+            query?: never;
             header?: {
                 /** @description Database id of a bar. Required if you are not using `bar_id` query string. */
                 "Bar-Assistant-Bar-Id"?: number;
@@ -5364,6 +6194,10 @@ export interface operations {
             /** @description Successful response */
             200: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -5376,10 +6210,7 @@ export interface operations {
     };
     saveIngredientCategory: {
         parameters: {
-            query?: {
-                /** @description Database id of a bar. Required if you are not using `Bar-Assistant-Bar-Id` header. */
-                bar_id?: number;
-            };
+            query?: never;
             header?: {
                 /** @description Database id of a bar. Required if you are not using `bar_id` query string. */
                 "Bar-Assistant-Bar-Id"?: number;
@@ -5409,6 +6240,10 @@ export interface operations {
             /** @description You are not authorized for this action. */
             403: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -5434,6 +6269,10 @@ export interface operations {
             /** @description Successful response */
             200: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -5445,6 +6284,10 @@ export interface operations {
             /** @description You are not authorized for this action. */
             403: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -5456,6 +6299,10 @@ export interface operations {
             /** @description Resource record not found. */
             404: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -5485,6 +6332,10 @@ export interface operations {
             /** @description Successful response */
             200: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -5496,6 +6347,10 @@ export interface operations {
             /** @description You are not authorized for this action. */
             403: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -5507,6 +6362,10 @@ export interface operations {
             /** @description Resource record not found. */
             404: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -5539,6 +6398,10 @@ export interface operations {
             /** @description You are not authorized for this action. */
             403: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -5550,6 +6413,10 @@ export interface operations {
             /** @description Resource record not found. */
             404: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -5563,8 +6430,6 @@ export interface operations {
     listIngredients: {
         parameters: {
             query?: {
-                /** @description Database id of a bar. Required if you are not using `Bar-Assistant-Bar-Id` header. */
-                bar_id?: number;
                 /** @description Set current page number */
                 page?: number;
                 /** @description Set number of results per page */
@@ -5604,6 +6469,10 @@ export interface operations {
             /** @description Successful response */
             200: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -5635,6 +6504,10 @@ export interface operations {
             /** @description You are not authorized for this action. */
             403: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -5647,10 +6520,7 @@ export interface operations {
     };
     saveIngredient: {
         parameters: {
-            query?: {
-                /** @description Database id of a bar. Required if you are not using `Bar-Assistant-Bar-Id` header. */
-                bar_id?: number;
-            };
+            query?: never;
             header?: {
                 /** @description Database id of a bar. Required if you are not using `bar_id` query string. */
                 "Bar-Assistant-Bar-Id"?: number;
@@ -5680,6 +6550,10 @@ export interface operations {
             /** @description You are not authorized for this action. */
             403: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -5705,6 +6579,10 @@ export interface operations {
             /** @description Successful response */
             200: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -5716,6 +6594,10 @@ export interface operations {
             /** @description You are not authorized for this action. */
             403: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -5727,6 +6609,10 @@ export interface operations {
             /** @description Resource record not found. */
             404: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -5756,6 +6642,10 @@ export interface operations {
             /** @description Successful response */
             200: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -5767,6 +6657,10 @@ export interface operations {
             /** @description You are not authorized for this action. */
             403: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -5778,6 +6672,10 @@ export interface operations {
             /** @description Resource record not found. */
             404: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -5810,6 +6708,10 @@ export interface operations {
             /** @description You are not authorized for this action. */
             403: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -5821,6 +6723,10 @@ export interface operations {
             /** @description Resource record not found. */
             404: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -5846,6 +6752,10 @@ export interface operations {
             /** @description Successful response */
             200: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -5857,6 +6767,10 @@ export interface operations {
             /** @description You are not authorized for this action. */
             403: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -5868,6 +6782,10 @@ export interface operations {
             /** @description Resource record not found. */
             404: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -5898,6 +6816,10 @@ export interface operations {
             /** @description Successful response */
             200: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -5929,6 +6851,10 @@ export interface operations {
             /** @description You are not authorized for this action. */
             403: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -5940,6 +6866,10 @@ export interface operations {
             /** @description Resource record not found. */
             404: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -5970,6 +6900,10 @@ export interface operations {
             /** @description Successful response */
             200: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -6001,6 +6935,10 @@ export interface operations {
             /** @description You are not authorized for this action. */
             403: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -6012,6 +6950,10 @@ export interface operations {
             /** @description Resource record not found. */
             404: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -6024,10 +6966,7 @@ export interface operations {
     };
     showMenu: {
         parameters: {
-            query?: {
-                /** @description Database id of a bar. Required if you are not using `Bar-Assistant-Bar-Id` header. */
-                bar_id?: number;
-            };
+            query?: never;
             header?: {
                 /** @description Database id of a bar. Required if you are not using `bar_id` query string. */
                 "Bar-Assistant-Bar-Id"?: number;
@@ -6040,6 +6979,10 @@ export interface operations {
             /** @description Successful response */
             200: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -6051,6 +6994,10 @@ export interface operations {
             /** @description You are not authorized for this action. */
             403: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -6063,10 +7010,7 @@ export interface operations {
     };
     updateMenu: {
         parameters: {
-            query?: {
-                /** @description Database id of a bar. Required if you are not using `Bar-Assistant-Bar-Id` header. */
-                bar_id?: number;
-            };
+            query?: never;
             header?: {
                 /** @description Database id of a bar. Required if you are not using `bar_id` query string. */
                 "Bar-Assistant-Bar-Id"?: number;
@@ -6083,6 +7027,10 @@ export interface operations {
             /** @description Successful response */
             200: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -6094,6 +7042,10 @@ export interface operations {
             /** @description You are not authorized for this action. */
             403: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -6119,6 +7071,10 @@ export interface operations {
             /** @description Successful response */
             200: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -6130,6 +7086,10 @@ export interface operations {
             /** @description Resource record not found. */
             404: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -6142,10 +7102,7 @@ export interface operations {
     };
     exportMenu: {
         parameters: {
-            query?: {
-                /** @description Database id of a bar. Required if you are not using `Bar-Assistant-Bar-Id` header. */
-                bar_id?: number;
-            };
+            query?: never;
             header?: {
                 /** @description Database id of a bar. Required if you are not using `bar_id` query string. */
                 "Bar-Assistant-Bar-Id"?: number;
@@ -6158,6 +7115,10 @@ export interface operations {
             /** @description Successful response */
             200: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -6167,6 +7128,10 @@ export interface operations {
             /** @description You are not authorized for this action. */
             403: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -6194,6 +7159,10 @@ export interface operations {
             /** @description Successful response */
             200: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -6253,6 +7222,10 @@ export interface operations {
             /** @description You are not authorized for this action. */
             403: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -6264,6 +7237,10 @@ export interface operations {
             /** @description Resource record not found. */
             404: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -6289,6 +7266,10 @@ export interface operations {
             /** @description Successful response */
             200: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -6300,6 +7281,10 @@ export interface operations {
             /** @description You are not authorized for this action. */
             403: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -6311,6 +7296,10 @@ export interface operations {
             /** @description Resource record not found. */
             404: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -6343,6 +7332,10 @@ export interface operations {
             /** @description You are not authorized for this action. */
             403: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -6354,6 +7347,10 @@ export interface operations {
             /** @description Resource record not found. */
             404: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -6376,6 +7373,10 @@ export interface operations {
             /** @description Successful response */
             200: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -6413,6 +7414,10 @@ export interface operations {
             /** @description You are not authorized for this action. */
             403: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -6445,6 +7450,10 @@ export interface operations {
             /** @description You are not authorized for this action. */
             403: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -6456,6 +7465,10 @@ export interface operations {
             /** @description Resource record not found. */
             404: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -6468,10 +7481,7 @@ export interface operations {
     };
     listPriceCategories: {
         parameters: {
-            query?: {
-                /** @description Database id of a bar. Required if you are not using `Bar-Assistant-Bar-Id` header. */
-                bar_id?: number;
-            };
+            query?: never;
             header?: {
                 /** @description Database id of a bar. Required if you are not using `bar_id` query string. */
                 "Bar-Assistant-Bar-Id"?: number;
@@ -6484,6 +7494,10 @@ export interface operations {
             /** @description Successful response */
             200: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -6496,10 +7510,7 @@ export interface operations {
     };
     savePriceCategory: {
         parameters: {
-            query?: {
-                /** @description Database id of a bar. Required if you are not using `Bar-Assistant-Bar-Id` header. */
-                bar_id?: number;
-            };
+            query?: never;
             header?: {
                 /** @description Database id of a bar. Required if you are not using `bar_id` query string. */
                 "Bar-Assistant-Bar-Id"?: number;
@@ -6529,6 +7540,10 @@ export interface operations {
             /** @description You are not authorized for this action. */
             403: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -6554,6 +7569,10 @@ export interface operations {
             /** @description Successful response */
             200: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -6565,6 +7584,10 @@ export interface operations {
             /** @description You are not authorized for this action. */
             403: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -6576,6 +7599,10 @@ export interface operations {
             /** @description Resource record not found. */
             404: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -6605,6 +7632,10 @@ export interface operations {
             /** @description Successful response */
             200: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -6616,6 +7647,10 @@ export interface operations {
             /** @description You are not authorized for this action. */
             403: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -6627,6 +7662,10 @@ export interface operations {
             /** @description Resource record not found. */
             404: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -6659,6 +7698,10 @@ export interface operations {
             /** @description You are not authorized for this action. */
             403: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -6670,6 +7713,10 @@ export interface operations {
             /** @description Resource record not found. */
             404: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -6692,6 +7739,10 @@ export interface operations {
             /** @description Successful response */
             200: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -6703,6 +7754,10 @@ export interface operations {
             /** @description Resource record not found. */
             404: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -6740,6 +7795,10 @@ export interface operations {
             /** @description You are not authorized for this action. */
             403: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -6778,6 +7837,10 @@ export interface operations {
             /** @description You are not authorized for this action. */
             403: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -6789,6 +7852,10 @@ export interface operations {
             /** @description Resource record not found. */
             404: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -6821,6 +7888,10 @@ export interface operations {
             /** @description You are not authorized for this action. */
             403: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -6832,6 +7903,10 @@ export interface operations {
             /** @description Resource record not found. */
             404: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -6854,6 +7929,10 @@ export interface operations {
             /** @description Successful response */
             200: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -6867,8 +7946,6 @@ export interface operations {
     listUserIngredients: {
         parameters: {
             query?: {
-                /** @description Database id of a bar. Required if you are not using `Bar-Assistant-Bar-Id` header. */
-                bar_id?: number;
                 /** @description Set current page number */
                 page?: number;
                 /** @description Set number of results per page */
@@ -6889,6 +7966,10 @@ export interface operations {
             /** @description Successful response */
             200: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -6922,8 +8003,6 @@ export interface operations {
     listUserShelfCocktails: {
         parameters: {
             query?: {
-                /** @description Database id of a bar. Required if you are not using `Bar-Assistant-Bar-Id` header. */
-                bar_id?: number;
                 /** @description Set current page number */
                 page?: number;
                 /** @description Set number of results per page */
@@ -6944,6 +8023,10 @@ export interface operations {
             /** @description Successful response */
             200: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -6977,8 +8060,6 @@ export interface operations {
     listUserFavoriteCocktails: {
         parameters: {
             query?: {
-                /** @description Database id of a bar. Required if you are not using `Bar-Assistant-Bar-Id` header. */
-                bar_id?: number;
                 /** @description Set current page number */
                 page?: number;
                 /** @description Set number of results per page */
@@ -6999,6 +8080,10 @@ export interface operations {
             /** @description Successful response */
             200: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -7031,10 +8116,7 @@ export interface operations {
     };
     batchStoreUserIngredients: {
         parameters: {
-            query?: {
-                /** @description Database id of a bar. Required if you are not using `Bar-Assistant-Bar-Id` header. */
-                bar_id?: number;
-            };
+            query?: never;
             header?: {
                 /** @description Database id of a bar. Required if you are not using `bar_id` query string. */
                 "Bar-Assistant-Bar-Id"?: number;
@@ -7063,6 +8145,10 @@ export interface operations {
             /** @description You are not authorized for this action. */
             403: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -7074,6 +8160,10 @@ export interface operations {
             /** @description Resource record not found. */
             404: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -7086,10 +8176,7 @@ export interface operations {
     };
     batchDeleteUserIngredients: {
         parameters: {
-            query?: {
-                /** @description Database id of a bar. Required if you are not using `Bar-Assistant-Bar-Id` header. */
-                bar_id?: number;
-            };
+            query?: never;
             header?: {
                 /** @description Database id of a bar. Required if you are not using `bar_id` query string. */
                 "Bar-Assistant-Bar-Id"?: number;
@@ -7118,6 +8205,10 @@ export interface operations {
             /** @description You are not authorized for this action. */
             403: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -7129,6 +8220,10 @@ export interface operations {
             /** @description Resource record not found. */
             404: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -7141,10 +8236,7 @@ export interface operations {
     };
     recommendIngredients: {
         parameters: {
-            query?: {
-                /** @description Database id of a bar. Required if you are not using `Bar-Assistant-Bar-Id` header. */
-                bar_id?: number;
-            };
+            query?: never;
             header?: {
                 /** @description Database id of a bar. Required if you are not using `bar_id` query string. */
                 "Bar-Assistant-Bar-Id"?: number;
@@ -7160,6 +8252,10 @@ export interface operations {
             /** @description Successful response */
             200: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -7171,6 +8267,10 @@ export interface operations {
             /** @description You are not authorized for this action. */
             403: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -7182,6 +8282,10 @@ export interface operations {
             /** @description Resource record not found. */
             404: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -7212,6 +8316,10 @@ export interface operations {
             /** @description Successful response */
             200: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -7270,6 +8378,10 @@ export interface operations {
             /** @description You are not authorized for this action. */
             403: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -7281,6 +8393,10 @@ export interface operations {
             /** @description Resource record not found. */
             404: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -7319,6 +8435,10 @@ export interface operations {
             /** @description You are not authorized for this action. */
             403: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -7330,6 +8450,10 @@ export interface operations {
             /** @description Resource record not found. */
             404: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -7360,6 +8484,10 @@ export interface operations {
             /** @description Successful response */
             200: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -7405,6 +8533,10 @@ export interface operations {
             /** @description Successful response */
             200: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -7416,6 +8548,10 @@ export interface operations {
             /** @description You are not authorized for this action. */
             403: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -7427,6 +8563,10 @@ export interface operations {
             /** @description Resource record not found. */
             404: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -7439,10 +8579,7 @@ export interface operations {
     };
     listShoppingListIngredients: {
         parameters: {
-            query?: {
-                /** @description Database id of a bar. Required if you are not using `Bar-Assistant-Bar-Id` header. */
-                bar_id?: number;
-            };
+            query?: never;
             header?: {
                 /** @description Database id of a bar. Required if you are not using `bar_id` query string. */
                 "Bar-Assistant-Bar-Id"?: number;
@@ -7458,6 +8595,10 @@ export interface operations {
             /** @description Successful response */
             200: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -7469,6 +8610,10 @@ export interface operations {
             /** @description You are not authorized for this action. */
             403: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -7481,10 +8626,7 @@ export interface operations {
     };
     batchStoreShoppingListIngredients: {
         parameters: {
-            query?: {
-                /** @description Database id of a bar. Required if you are not using `Bar-Assistant-Bar-Id` header. */
-                bar_id?: number;
-            };
+            query?: never;
             header?: {
                 /** @description Database id of a bar. Required if you are not using `bar_id` query string. */
                 "Bar-Assistant-Bar-Id"?: number;
@@ -7511,6 +8653,10 @@ export interface operations {
             /** @description You are not authorized for this action. */
             403: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -7522,6 +8668,10 @@ export interface operations {
             /** @description Resource record not found. */
             404: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -7534,10 +8684,7 @@ export interface operations {
     };
     batchDeleteShoppingListIngredients: {
         parameters: {
-            query?: {
-                /** @description Database id of a bar. Required if you are not using `Bar-Assistant-Bar-Id` header. */
-                bar_id?: number;
-            };
+            query?: never;
             header?: {
                 /** @description Database id of a bar. Required if you are not using `bar_id` query string. */
                 "Bar-Assistant-Bar-Id"?: number;
@@ -7568,6 +8715,10 @@ export interface operations {
             /** @description You are not authorized for this action. */
             403: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -7579,6 +8730,10 @@ export interface operations {
             /** @description Resource record not found. */
             404: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -7592,8 +8747,6 @@ export interface operations {
     shareShoppingList: {
         parameters: {
             query?: {
-                /** @description Database id of a bar. Required if you are not using `Bar-Assistant-Bar-Id` header. */
-                bar_id?: number;
                 /** @description Type of share. Available types: `markdown`. */
                 type?: string;
             };
@@ -7612,6 +8765,10 @@ export interface operations {
             /** @description Successful response */
             200: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -7628,6 +8785,10 @@ export interface operations {
             /** @description You are not authorized for this action. */
             403: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -7653,6 +8814,10 @@ export interface operations {
             /** @description Successful response */
             200: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -7664,6 +8829,10 @@ export interface operations {
             /** @description You are not authorized for this action. */
             403: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -7675,6 +8844,10 @@ export interface operations {
             /** @description Resource record not found. */
             404: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -7697,6 +8870,10 @@ export interface operations {
             /** @description Successful response */
             200: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -7708,6 +8885,10 @@ export interface operations {
             /** @description Resource record not found. */
             404: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -7743,6 +8924,10 @@ export interface operations {
             /** @description You are not authorized for this action. */
             403: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -7754,6 +8939,10 @@ export interface operations {
             /** @description Resource record not found. */
             404: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -7766,10 +8955,7 @@ export interface operations {
     };
     listTags: {
         parameters: {
-            query?: {
-                /** @description Database id of a bar. Required if you are not using `Bar-Assistant-Bar-Id` header. */
-                bar_id?: number;
-            };
+            query?: never;
             header?: {
                 /** @description Database id of a bar. Required if you are not using `bar_id` query string. */
                 "Bar-Assistant-Bar-Id"?: number;
@@ -7782,6 +8968,10 @@ export interface operations {
             /** @description Successful response */
             200: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -7794,10 +8984,7 @@ export interface operations {
     };
     saveTag: {
         parameters: {
-            query?: {
-                /** @description Database id of a bar. Required if you are not using `Bar-Assistant-Bar-Id` header. */
-                bar_id?: number;
-            };
+            query?: never;
             header?: {
                 /** @description Database id of a bar. Required if you are not using `bar_id` query string. */
                 "Bar-Assistant-Bar-Id"?: number;
@@ -7827,6 +9014,10 @@ export interface operations {
             /** @description You are not authorized for this action. */
             403: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -7852,6 +9043,10 @@ export interface operations {
             /** @description Successful response */
             200: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -7863,6 +9058,10 @@ export interface operations {
             /** @description You are not authorized for this action. */
             403: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -7874,6 +9073,10 @@ export interface operations {
             /** @description Resource record not found. */
             404: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -7903,6 +9106,10 @@ export interface operations {
             /** @description Successful response */
             200: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -7914,6 +9121,10 @@ export interface operations {
             /** @description You are not authorized for this action. */
             403: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -7925,6 +9136,10 @@ export interface operations {
             /** @description Resource record not found. */
             404: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -7957,6 +9172,10 @@ export interface operations {
             /** @description You are not authorized for this action. */
             403: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -7968,6 +9187,10 @@ export interface operations {
             /** @description Resource record not found. */
             404: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -7980,10 +9203,7 @@ export interface operations {
     };
     listUsers: {
         parameters: {
-            query?: {
-                /** @description Database id of a bar. Required if you are not using `Bar-Assistant-Bar-Id` header. */
-                bar_id?: number;
-            };
+            query?: never;
             header?: {
                 /** @description Database id of a bar. Required if you are not using `bar_id` query string. */
                 "Bar-Assistant-Bar-Id"?: number;
@@ -7996,6 +9216,10 @@ export interface operations {
             /** @description Successful response */
             200: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -8008,10 +9232,7 @@ export interface operations {
     };
     saveUser: {
         parameters: {
-            query?: {
-                /** @description Database id of a bar. Required if you are not using `Bar-Assistant-Bar-Id` header. */
-                bar_id?: number;
-            };
+            query?: never;
             header?: {
                 /** @description Database id of a bar. Required if you are not using `bar_id` query string. */
                 "Bar-Assistant-Bar-Id"?: number;
@@ -8041,6 +9262,10 @@ export interface operations {
             /** @description You are not authorized for this action. */
             403: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -8053,10 +9278,7 @@ export interface operations {
     };
     showUser: {
         parameters: {
-            query?: {
-                /** @description Database id of a bar. Required if you are not using `Bar-Assistant-Bar-Id` header. */
-                bar_id?: number;
-            };
+            query?: never;
             header?: {
                 /** @description Database id of a bar. Required if you are not using `bar_id` query string. */
                 "Bar-Assistant-Bar-Id"?: number;
@@ -8072,6 +9294,10 @@ export interface operations {
             /** @description Successful response */
             200: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -8083,6 +9309,10 @@ export interface operations {
             /** @description You are not authorized for this action. */
             403: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -8094,6 +9324,10 @@ export interface operations {
             /** @description Resource record not found. */
             404: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -8106,10 +9340,7 @@ export interface operations {
     };
     updateUser: {
         parameters: {
-            query?: {
-                /** @description Database id of a bar. Required if you are not using `Bar-Assistant-Bar-Id` header. */
-                bar_id?: number;
-            };
+            query?: never;
             header?: {
                 /** @description Database id of a bar. Required if you are not using `bar_id` query string. */
                 "Bar-Assistant-Bar-Id"?: number;
@@ -8129,6 +9360,10 @@ export interface operations {
             /** @description Successful response */
             200: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -8140,6 +9375,10 @@ export interface operations {
             /** @description You are not authorized for this action. */
             403: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -8151,6 +9390,10 @@ export interface operations {
             /** @description Resource record not found. */
             404: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -8183,6 +9426,10 @@ export interface operations {
             /** @description You are not authorized for this action. */
             403: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -8194,6 +9441,10 @@ export interface operations {
             /** @description Resource record not found. */
             404: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -8206,10 +9457,7 @@ export interface operations {
     };
     listUtensils: {
         parameters: {
-            query?: {
-                /** @description Database id of a bar. Required if you are not using `Bar-Assistant-Bar-Id` header. */
-                bar_id?: number;
-            };
+            query?: never;
             header?: {
                 /** @description Database id of a bar. Required if you are not using `bar_id` query string. */
                 "Bar-Assistant-Bar-Id"?: number;
@@ -8222,6 +9470,10 @@ export interface operations {
             /** @description Successful response */
             200: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -8234,10 +9486,7 @@ export interface operations {
     };
     saveUtensil: {
         parameters: {
-            query?: {
-                /** @description Database id of a bar. Required if you are not using `Bar-Assistant-Bar-Id` header. */
-                bar_id?: number;
-            };
+            query?: never;
             header?: {
                 /** @description Database id of a bar. Required if you are not using `bar_id` query string. */
                 "Bar-Assistant-Bar-Id"?: number;
@@ -8267,6 +9516,10 @@ export interface operations {
             /** @description You are not authorized for this action. */
             403: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -8292,6 +9545,10 @@ export interface operations {
             /** @description Successful response */
             200: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -8303,6 +9560,10 @@ export interface operations {
             /** @description You are not authorized for this action. */
             403: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -8314,6 +9575,10 @@ export interface operations {
             /** @description Resource record not found. */
             404: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -8343,6 +9608,10 @@ export interface operations {
             /** @description Successful response */
             200: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -8354,6 +9623,10 @@ export interface operations {
             /** @description You are not authorized for this action. */
             403: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -8365,6 +9638,10 @@ export interface operations {
             /** @description Resource record not found. */
             404: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -8397,6 +9674,10 @@ export interface operations {
             /** @description You are not authorized for this action. */
             403: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
@@ -8408,6 +9689,10 @@ export interface operations {
             /** @description Resource record not found. */
             404: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {

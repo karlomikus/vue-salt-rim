@@ -1,13 +1,13 @@
 .item-details__chips {
     display: flex;
     flex-wrap: wrap;
-    gap: 0.25rem;
+    gap: var(--gap-size-2);
     margin-bottom: 1rem;
 }
 
 .item-details__chips__group__title {
-    font-size: 0.7rem;
-    margin-bottom: 0.2rem;
+    font-size: 0.65rem;
+    margin-bottom: -2px;
     color: var(--clr-gray-600);
 }
 
@@ -25,15 +25,15 @@
     margin: 0;
     display: flex;
     flex-wrap: wrap;
-    gap: 0.25rem;
+    gap: var(--gap-size-2);
 }
 
 .chip {
     display: block;
     padding: 1px 9px;
     font-size: 0.75rem;
-    background-color: #DFE7FD;
-    color: #30384d;
+    background-color: #E6DBF0;
+    color: #3a304d;
     border-radius: var(--radius-1);
     text-decoration: none;
 }

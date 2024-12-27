@@ -10,3 +10,4 @@ window.srConfig.BILLING_ENABLED = "$BILLING_ENABLED" === 'true';
 window.srConfig.BILLING_ENV = "$BILLING_ENV";
 window.srConfig.ANALYTICS_HOST = "$ANALYTICS_HOST";
 window.srConfig.ALLOW_REGISTRATION = "$ALLOW_REGISTRATION";
+window.srConfig.SENTRY_DSN = "$SENTRY_DSN";
