@@ -26,7 +26,7 @@
     "add": "Ajouter un ingrédient",
     "on-shopping-list": "Vous avez cet ingrédient sur la liste de courses",
     "add-to-shelf": "Ajouter à l’étagère",
-    "remove-from-shelf": "Remove from your shelf",
+    "remove-from-shelf": "Retirer de votre étagère",
     "add-to-list": "Ajouter à la liste de courses",
     "remove-from-list": "Supprimer de la liste de courses",
     "update-success": "Ingrédient mis à jour avec succès",
@@ -60,14 +60,14 @@
     "complex": "Ingrédient complexe",
     "variety-note": "La correspondance des recettes inclura l'ingrédient parent comme substitut (selon les paramètres de l'utilisateur)",
     "ingredients": "Ingrédients",
-    "used_as_substitute_for": "Used as a substitute for",
-    "can_be_substituted_with": "Can be substituted with",
-    "add-to-bar-shelf": "Add to bar shelf",
-    "remove-from-bar-shelf": "Remove from bar shelf",
-    "shelf-bar-help": "Recipes matching ingredients in bar shelf will be shown to all bar members.",
-    "shelf-user-help": "Recipes matching ingredients in your shelf can only be managed by you.",
-    "bar-shelf-add-success": "Added \"{name}\" to bar shelf",
-    "bar-shelf-remove-success": "Removed \"{name}\" from bar shelf",
+    "used_as_substitute_for": "Utilisé pour remplacer",
+    "can_be_substituted_with": "Peut être remplacée par",
+    "add-to-bar-shelf": "Ajouter à l'étagère de barre",
+    "remove-from-bar-shelf": "Retirer de l'étagère du bar",
+    "shelf-bar-help": "Les recettes correspondant aux ingrédients contenus dans les étagères du bar seront affichées à tous les membres du bar.",
+    "shelf-user-help": "Les recettes qui correspondent aux ingrédients de votre étagère ne peuvent être gérées que par vous.",
+    "bar-shelf-add-success": "Ajout de \"{name}\" à l'étagère du bar",
+    "bar-shelf-remove-success": "Supprimer \"{name}\" de l'étagère du bar",
     "units-help": "Some features work the best if you use common units. Some recommendations for units are: ml, oz, cl, dashes, barspoon, drops, topup, leaves."
   },
   "share": {
@@ -269,7 +269,7 @@
   "clear-filters": "Effacer tous les filtres",
   "rating-removed": "Suppression de la note cocktail",
   "rating-rated": "Cocktail noté avec {rating} étoiles",
-  "shelf-ingredients": "My shelf ingredients",
+  "shelf-ingredients": "Mes ingrédients",
   "shopping-list-ingredients": "Ingrédients de la liste de courses",
   "notes": "Remarques",
   "collection-shared": "Partagé avec le bar",
@@ -383,8 +383,8 @@
     "join-notice": "Pour rejoindre un bar existant, vous avez besoin d'un code d'invitation. Demandez au propriétaire du bar de vous en envoyer un et collez-le dans le champ ci-dessous.",
     "invite-code": "Code d'invitation",
     "toggle-invite-code": "Afficher le code d'invitation",
-    "invite-link-copied": "Invite link copied to clipboard",
-    "invite-link-error": "Unable to copy invite link to clipboard",
+    "invite-link-copied": "Lien d'invitation copié dans le presse-papier",
+    "invite-link-error": "Impossible de copier le lien d'invitation dans le presse-papier",
     "confirm-delete": "Cela supprimera définitivement le bar \"{name}\".",
     "confirm-leave": "Vous perdrez toutes les données du bar (\"{name}\") si vous le quittez.",
     "enable-invites": "Permettre de rejoindre avec un code d'invitation",
@@ -401,7 +401,7 @@
     "confirm-activation": "Êtes-vous sûr de vouloir activer \"{name}\" ? Avec la formule gratuite, vous ne pouvez avoir qu'un seul bar actif, vous ne pourrez pas activer d'autres bars.",
     "activation-success": "Bar activé",
     "members": "Membres du bar",
-    "logo": "Bar logo"
+    "logo": "Logo du bar"
   },
   "close": "Fermer",
   "save-as": "Enregistrer sous",
@@ -426,7 +426,7 @@
     "type-json-description": "Importer à partir du format JSON",
     "type-yaml-description": "Importer à partir du format YAML",
     "type-collection-description": "Importation depuis une collection JSON de Bar Assistant",
-    "notice": "Existing ingredients, methods and glassware will be matched by their name (case insensitive). If ingredient does not exist, it will be created."
+    "notice": "Les ingrédients, méthodes et verres existants seront associé à leur nom (insensible à la casse). Si l'ingrédient n'existe pas, il sera créé."
   },
   "remove-from-bar": "Supprimer du bar",
   "public-shelves": "Étagères publiques",
@@ -510,13 +510,13 @@
     "menu-not-found": "Carte non trouvée",
     "description": "Ici, vous pouvez configurer une carte en ligne simple pour votre bar. Vous pouvez mettre à jour votre lien de bar lors de l'ajout ou de la modification d'un bar. Utilisez l'URL ou le code QR pour partager votre carte avec les invités.",
     "no-cocktails-added": "La carte doit avoir au moins un cocktail",
-    "calculate-price": "Calculate price",
-    "clear-category-confirm": "This will remove all cocktails from category \"{name}\"",
-    "category-cleared": "Category cleared",
-    "clear-category": "Clear category",
-    "add-shelf-cocktails": "Add missing cocktails from bar shelf",
-    "export": "Export as csv",
-    "added-multiple-cocktails": "Added multiple cocktails"
+    "calculate-price": "Calculer le prix",
+    "clear-category-confirm": "Cela supprimera tous les cocktails de la catégorie \"{name}\"",
+    "category-cleared": "Catégorie vidée",
+    "clear-category": "Vider la catégorie",
+    "add-shelf-cocktails": "Ajouter les cocktails manquants depuis l'étagère du bar",
+    "export": "Exporter en CSV",
+    "added-multiple-cocktails": "Ajouté plusieurs cocktails"
   },
   "bar": {
     "url": "URL personnalisée du bar",
@@ -550,7 +550,7 @@
     "start-success": "Export du bar démarré",
     "confirm-delete": "Cela supprimera le fichier d'exportation sélectionné",
     "delete-success": "Export supprimé",
-    "types-hint": "Click here to learn more about export types",
+    "types-hint": "Cliquez ici pour en savoir plus sur les types d'export",
     "force-units": "Convertir les unités"
   },
   "start": "Démarrer",
@@ -591,7 +591,7 @@
     "copy-action": "Dupliquer et modifier",
     "copy-success": "Cocktail dupliqué",
     "source": "Source cocktail",
-    "confirm-copy": "This will create a copy of \"{name}\""
+    "confirm-copy": "Ceci va créer une copie de \"{name}\""
   },
   "ABV-definition": "Alcool par volume",
   "ingredient-category": {},
@@ -605,9 +605,9 @@
     "currency-format-notice": "La devise doit être au format ISO 4271 (Alpha3)",
     "price-categories-empty": "Il n'y a pas de catégories de prix",
     "no-matching-units": "Aucun prix unitaire correspondant n'a été trouvé",
-    "select": "Select price",
-    "category-delete-success": "Price category deleted",
-    "category-confirm-delete": "This will permanently price category with name \\\"{name}\\\"."
+    "select": "Sélectionner le prix",
+    "category-delete-success": "Catégorie de prix supprimée",
+    "category-confirm-delete": "La catégorie de prix avec le nom \\\"{name}\"\\ sera définitivement supprimé"
   },
   "prices": {
     "add": "Ajouter un prix",
@@ -615,15 +615,19 @@
     "add-price-category": "Ajouter une catégorie de prix"
   },
   "shopping-list-empty": "Votre liste de courses est vide",
-  "target-volume": "Target volume",
-  "target-volume-dilution": "Optional dilution",
-  "scale-recipe": "Scale recipe",
-  "target-volume-dilution-help": "Dilute with {total} of water",
+  "target-volume": "",
+  "target-volume-dilution": "Dilution en option",
+  "scale-recipe": "Échelle de la recette",
+  "target-volume-dilution-help": "Dilué avec {total} d'eau",
   "bar_shelf": {
-    "cocktails": "Bar shelf cocktails"
+    "cocktails": "Étagère de cocktails du bar"
   },
-  "bar-shelf-ingredients": "Bar shelf ingredients",
-  "target-pour-cost": "Target pour cost",
-  "target-pour-cost-help": "Percentage of the cocktail's selling price that comes from the cost of the ingredients.",
+  "bar-shelf-ingredients": "Étagères d'ingrédient du bar",
+  "target-pour-cost": "Cible pour cout",
+  "target-pour-cost-help": "Pourcentage du prix de vente du cocktail provenant du coût des ingrédients.",
+  "is_favorited": "Votre cocktail préféré",
+  "in_bar_shelf": "Disponible dans l'étagère du bar",
+  "in_your_shelf": "Disponible dans votre étagère",
+  "is_public": "Possède un lien public",
   "website": "Site web"
 }
