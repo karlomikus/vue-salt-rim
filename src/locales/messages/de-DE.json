@@ -36,7 +36,7 @@
     "cocktail-children": "Wird in {total} Cocktails verwendet",
     "delete-confirm": "Dies löscht Zutat \"{name}\". Diese Aktion betrifft {total} Cocktails.",
     "shelf-remove-success": "\"{name}\" wurde erfolgreich aus deiner Bar gelöscht",
-    "shelf-add-success": "\"{name}\" wurde erfolgreich zu deiner Bar hinzugefügt",
+    "shelf-add-success": "\"{name}\" wurde erfolgreich zu deinem Regal hinzugefügt",
     "list-remove-success": "\"{name}\" von der Einkaufsliste entfernt",
     "list-add-success": "\"{name}\" zu der Einkaufsliste hinzugefügt",
     "spotlight": "Hauptzutat",
@@ -62,8 +62,8 @@
     "ingredients": "Zutaten",
     "used_as_substitute_for": "Verwendet als Ersatz für",
     "can_be_substituted_with": "Kann ersetzt werden durch",
-    "add-to-bar-shelf": "Zum Bar-Regal hinzufügen",
-    "remove-from-bar-shelf": "Aus dem Bar-Regal entfernen",
+    "add-to-bar-shelf": "Zum Bar Regal hinzufügen",
+    "remove-from-bar-shelf": "Aus dem Bar Regal entfernen",
     "shelf-bar-help": "Recipes matching ingredients in bar shelf will be shown to all bar members.",
     "shelf-user-help": "Recipes matching ingredients in your shelf can only be managed by you.",
     "bar-shelf-add-success": "Added \"{name}\" to bar shelf",
@@ -620,13 +620,13 @@
   "scale-recipe": "Scale recipe",
   "target-volume-dilution-help": "Dilute with {total} of water",
   "bar_shelf": {
-    "cocktails": "Bar-Regal Cocktails"
+    "cocktails": "Barregal Cocktails"
   },
-  "bar-shelf-ingredients": "Bar-Regal Zutaten",
+  "bar-shelf-ingredients": "Barregal Zutaten",
   "target-pour-cost": "Target pour cost",
   "target-pour-cost-help": "Percentage of the cocktail's selling price that comes from the cost of the ingredients.",
   "is_favorited": "Your favorite cocktail",
-  "in_bar_shelf": "Verfügbar im Bar-Regal",
+  "in_bar_shelf": "Verfügbar im Barregal",
   "in_your_shelf": "Verfügbar in deinem Regal",
   "is_public": "Has public link",
   "website": "Webseite"
