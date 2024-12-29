@@ -412,7 +412,7 @@ export default class BarAssistantClient {
   }
 
   static async deleteCollection(id: number) {
-    return (await client.DELETE('/cocktails/{id}', { params: { path: { id: id } } })).data
+    return (await client.DELETE('/collections/{id}', { params: { path: { id: id } } })).data
   }
 
   static async syncCollectionCocktails(id: number, cocktails: number[]) {

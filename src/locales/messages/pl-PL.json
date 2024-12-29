@@ -624,5 +624,10 @@
   },
   "bar-shelf-ingredients": "Bar shelf ingredients",
   "target-pour-cost": "Target pour cost",
-  "target-pour-cost-help": "Percentage of the cocktail's selling price that comes from the cost of the ingredients."
+  "target-pour-cost-help": "Percentage of the cocktail's selling price that comes from the cost of the ingredients.",
+  "is_favorited": "Your favorite cocktail",
+  "in_bar_shelf": "Available in bar shelf",
+  "in_your_shelf": "Available in your shelf",
+  "is_public": "Has public link",
+  "website": "Strona internetowa"
 }

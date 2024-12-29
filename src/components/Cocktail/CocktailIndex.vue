@@ -440,12 +440,6 @@ export default {
             this.isLoading = true
             BarAssistantClient.getCocktails(query).then(async resp => {
                 this.cocktails = resp.data
-                const favorites = (await BarAssistantClient.getUserCocktailFavorites(this.appState.user.id)).data
-                this.cocktails.map(c => {
-                    c.isFavorited = favorites.includes(c.id)
-
-                    return c
-                })
                 this.meta = resp.meta
                 this.isLoading = false
             }).catch(e => {

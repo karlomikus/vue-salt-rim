@@ -2,11 +2,17 @@
     <RouterLink class="cocktail-grid-item" :to="{ name: 'cocktails.show', params: { id: cocktail.slug } }">
         <div class="cocktail-grid-item__graphic">
             <div class="cocktail-grid-item__badges">
-                <div v-if="cocktail.isFavorited" class="cocktail-badge">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                        <path fill="none" d="M0 0H24V24H0z" />
-                        <path d="M20.243 4.757c2.262 2.268 2.34 5.88.236 8.236l-8.48 8.492-8.478-8.492c-2.104-2.356-2.025-5.974.236-8.236C5.515 3 8.093 2.56 10.261 3.44L6.343 7.358l1.414 1.415L12 4.53l-.013-.014.014.013c2.349-2.109 5.979-2.039 8.242.228z" />
-                    </svg>
+                <div v-if="cocktail.is_favorited" class="cocktail-badge" :title="$t('is_favorited')">
+                    <IconFavorite></IconFavorite>
+                </div>
+                <div v-if="cocktail.in_bar_shelf" class="cocktail-badge" :title="$t('in_bar_shelf')">
+                    <IconBarShelf></IconBarShelf>
+                </div>
+                <div v-if="cocktail.in_shelf" class="cocktail-badge" :title="$t('in_your_shelf')">
+                    <IconUserShelf></IconUserShelf>
+                </div>
+                <div v-if="cocktail.public_id" class="cocktail-badge" :title="$t('is_public')">
+                    <IconPublicLink></IconPublicLink>
                 </div>
             </div>
             <img class="cocktail-grid-item__graphic__image" :data-img-src="mainCocktailImageUrl" :src="placeholderImage" alt="Main image of the cocktail">
@@ -29,10 +35,18 @@
 import BarAssistantClient from '@/api/BarAssistantClient';
 import { thumbHashToDataURL } from 'thumbhash'
 import CocktailRating from './CocktailRating.vue'
+import IconFavorite from '../Icons/IconFavorite.vue';
+import IconBarShelf from '../Icons/IconBarShelf.vue';
+import IconUserShelf from '../Icons/IconUserShelf.vue';
+import IconPublicLink from '../Icons/IconPublicLink.vue';
 
 export default {
     components: {
-        CocktailRating
+        CocktailRating,
+        IconFavorite,
+        IconBarShelf,
+        IconUserShelf,
+        IconPublicLink,
     },
     props: {
         cocktail: {
@@ -165,6 +179,8 @@ export default {
     position: absolute;
     top: 0.5rem;
     left: 0.5rem;
+    display: flex;
+    gap: var(--gap-size-1);
     z-index: 1;
 }
 
@@ -180,8 +196,8 @@ export default {
 
 .cocktail-badge svg {
     fill: rgba(255, 255, 255, .9);
-    width: 12px;
-    height: 12px;
+    width: 16px;
+    height: 16px;
 }
 
 @media (max-width: 545px) {

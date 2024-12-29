@@ -4,7 +4,7 @@
             <h4>{{ title }} {{ totalSelected }}</h4>
             <div class="resource-search__refinements__refinement__title__actions">
                 <button v-show="isClearable" type="button" class="button" @click="clear">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16"><path fill="none" d="M0 0h24v24H0z" /><path d="M12 10.586l4.95-4.95 1.414 1.414-4.95 4.95 4.95 4.95-1.414 1.414-4.95-4.95-4.95 4.95-1.414-1.414 4.95-4.95-4.95-4.95L7.05 5.636z" /></svg>
+                    <IconClose></IconClose>
                 </button>
                 <button v-if="collapsable" type="button" class="button" @click="collapsed = !collapsed">
                     <svg v-show="collapsed == false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16"><path d="M11.9997 13.1714L16.9495 8.22168L18.3637 9.63589L11.9997 15.9999L5.63574 9.63589L7.04996 8.22168L11.9997 13.1714Z"></path></svg>
@@ -26,6 +26,8 @@
     </div>
 </template>
 <script>
+import IconClose from '../Icons/IconClose.vue';
+
 export default {
     props: {
         modelValue: {
@@ -60,6 +62,9 @@ export default {
             type: Boolean,
             default: true
         }
+    },
+    components: {
+        IconClose,
     },
     emits: ['update:modelValue', 'change'],
     data() {
@@ -140,6 +145,11 @@ export default {
     margin: 0;
     width: auto;
     height: auto;
+}
+
+.resource-search__refinements__refinement__title__actions button svg {
+    width: 16px;
+    height: 16px;
 }
 
 .resource-search__refinements__refinement__title__actions svg {
