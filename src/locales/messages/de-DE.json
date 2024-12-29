@@ -20,7 +20,7 @@
     "cocktails": "Cocktails, die ich mixen kann"
   },
   "ingredient": {
-    "title": "Bestandteil",
+    "title": "Zutat",
     "categories": "Zutaten Kategorien",
     "main": "Hauptzutaten",
     "add": "Zutat hinzufügen",
@@ -54,7 +54,7 @@
       "new-ingredient-fail": "Zutat kann nicht hinzugefügt werden.",
       "select-substitutes-for": "Wähle Ersatzzutaten für \"{name}\"."
     },
-    "base": "Base",
+    "base": "Basis",
     "is-complex": "Zutat enthält andere Zutaten",
     "complex-note": "If you have all of the listed ingredients, automatically match recipes with this ingredient",
     "complex": "Complex ingredient",
@@ -269,7 +269,7 @@
   "clear-filters": "Filter zurücksetzen",
   "rating-removed": "Bewertung zurücksetzen",
   "rating-rated": "Cocktails mit {rating} sternen bewertet",
-  "shelf-ingredients": "My shelf ingredients",
+  "shelf-ingredients": "Zutaten in meinem Regal",
   "shopping-list-ingredients": "Zutaten auf der Einkaufsliste",
   "notes": "Notizen",
   "collection-shared": "Shared with bar",
@@ -551,7 +551,7 @@
     "confirm-delete": "This will delete the selected export file",
     "delete-success": "Export removed",
     "types-hint": "Click here to learn more about export types",
-    "force-units": "Convert units"
+    "force-units": "Einheiten umwandeln"
   },
   "start": "Start",
   "filter": "Filter",
@@ -559,8 +559,8 @@
   "volume": "Volumen",
   "unit": {
     "ml-full": "Mililiter (ml)",
-    "oz-full": "Fluid ounces (oz)",
-    "cl-full": "Centiliters (cl)",
+    "oz-full": "Flüssigunze (oz)",
+    "cl-full": "Zentiliter (cl)",
     "original": "Keep original units"
   },
   "no-default-units": "Keine Standard-Einheit",
@@ -620,14 +620,14 @@
   "scale-recipe": "Scale recipe",
   "target-volume-dilution-help": "Dilute with {total} of water",
   "bar_shelf": {
-    "cocktails": "Bar shelf cocktails"
+    "cocktails": "Bar-Regal Cocktails"
   },
-  "bar-shelf-ingredients": "Bar shelf ingredients",
+  "bar-shelf-ingredients": "Bar-Regal Zutaten",
   "target-pour-cost": "Target pour cost",
   "target-pour-cost-help": "Percentage of the cocktail's selling price that comes from the cost of the ingredients.",
   "is_favorited": "Your favorite cocktail",
-  "in_bar_shelf": "Available in bar shelf",
-  "in_your_shelf": "Available in your shelf",
+  "in_bar_shelf": "Verfügbar im Bar-Regal",
+  "in_your_shelf": "Verfügbar in deinem Regal",
   "is_public": "Has public link",
   "website": "Webseite"
 }
