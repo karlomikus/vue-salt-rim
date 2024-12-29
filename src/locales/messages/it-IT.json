@@ -31,7 +31,7 @@
     "remove-from-list": "Rimuovi dalla lista della spesa",
     "update-success": "Ingrediente aggiornato con successo",
     "create-success": "Ingrediente creato con successo",
-    "name-placeholder": "<Non selezionato>",
+    "name-placeholder": "<Not selected>",
     "in-shelf": "Hai questo ingrediente",
     "cocktail-children": "Usato in {total} cocktail",
     "delete-confirm": "Questo eliminerà definitivamente l'ingrediente \"{name}\". Questa azione modificherà {total} ricette cocktail.",
@@ -622,12 +622,12 @@
   "bar_shelf": {
     "cocktails": "Cocktail sullo scaffale del bar"
   },
+  "bar-shelf-ingredients": "Ingredienti per lo scaffale del bar",
+  "target-pour-cost": "Costo più basso previsto",
+  "target-pour-cost-help": "Percentuale del prezzo di vendita del cocktail che deriva dal costo degli ingredienti.",
   "is_favorited": "Your favorite cocktail",
   "in_bar_shelf": "Available in bar shelf",
   "in_your_shelf": "Available in your shelf",
   "is_public": "Has public link",
-  "bar-shelf-ingredients": "Ingredienti per lo scaffale del bar",
-  "target-pour-cost": "Costo più basso previsto",
-  "target-pour-cost-help": "Percentuale del prezzo di vendita del cocktail che deriva dal costo degli ingredienti.",
   "website": "Sito web"
 }
