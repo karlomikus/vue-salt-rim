@@ -44,7 +44,7 @@ export default {
     /* align-items: center; */
     justify-content: center;
     z-index: var(--z-overlay-loader);
-    backdrop-filter: blur(5px);
+    backdrop-filter: blur(1px);
 }
 
 .overlay-loader:after {
