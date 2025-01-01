@@ -14,6 +14,8 @@ RUN npm run build
 
 FROM nginx AS prod
 
+LABEL org.opencontainers.image.source="https://github.com/karlomikus/vue-salt-rim"
+
 COPY --from=build /app/dist /var/www/html
 
 COPY --from=build /app/docker/config.js /var/www/config.js
