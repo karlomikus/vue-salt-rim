@@ -232,26 +232,38 @@ async function deleteCocktail() {
 
 async function fetchCocktailUserNotes() {
     isLoadingNotes.value = true
-    userNotes.value = (await BarAssistantClient.getNotes({ 'filter[cocktail_id]': cocktail.value.id }))?.data ?? [] as Note[]
+    try {
+        userNotes.value = (await BarAssistantClient.getNotes({ 'filter[cocktail_id]': cocktail.value.id }))?.data ?? [] as Note[]
+    } catch (e) {
+    }
     isLoadingNotes.value = false
 }
 
 async function fetchCocktailPrices() {
     isLoadingPrices.value = true
-    cocktailPrices.value = (await BarAssistantClient.getCocktailPrices(cocktail.value.id.toString()))?.data ?? [] as CocktailPrice[]
+    try {
+        cocktailPrices.value = (await BarAssistantClient.getCocktailPrices(cocktail.value.id.toString()))?.data ?? [] as CocktailPrice[]
+    } catch (e) {
+    }
     isLoadingPrices.value = false
 }
 
 async function fetchShoppingList() {
     isLoadingShoppingList.value = true
-    userShoppingListIngredients.value = (await BarAssistantClient.getShoppingList(appState.user.id))?.data ?? [] as ShoppingList[]
+    try {
+        userShoppingListIngredients.value = (await BarAssistantClient.getShoppingList(appState.user.id))?.data ?? [] as ShoppingList[]
+    } catch (e) {
+    }
     isLoadingShoppingList.value = false
 }
 
 async function fetchFavorites() {
     isLoadingFavorite.value = true
-    const favorites = (await BarAssistantClient.getUserCocktailFavorites(appState.user.id))?.data ?? [] as CocktailBasic[]
-    isFavorited.value = favorites.map(f => f.id).includes(cocktail.value.id)
+    try {
+        const favorites = (await BarAssistantClient.getUserCocktailFavorites(appState.user.id))?.data ?? [] as CocktailBasic[]
+        isFavorited.value = favorites.map(f => f.id).includes(cocktail.value.id)
+    } catch (e) {
+    }
     isLoadingFavorite.value = false
 }
 
