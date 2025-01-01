@@ -1,10 +1,10 @@
 <template>
     <form @submit.prevent="saveMenu">
-        <OverlayLoader v-if="isLoading"></OverlayLoader>
         <PageHeader>
             {{ $t('menu.bar-title-menu', { name: appState.bar.name }) }}
         </PageHeader>
         <div class="menu-details">
+            <OverlayLoader v-if="isLoading" />
             <div class="block-container block-container--padded" style="width: 100%;">
                 <p style="margin-bottom: 1rem;">{{ $t('menu.description') }}</p>
                 <div class="form-group">
