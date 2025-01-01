@@ -1,9 +1,20 @@
 <script setup>
 import UnitHandler from '../../UnitHandler.js'
+import DateFormatter from '../DateFormatter.vue'
 </script>
 <template>
-    <OverlayLoader v-if="isLoadingIngredient" />
-    <div v-if="ingredient.id">
+    <div v-if="!ingredient.id">
+        <PageHeader>
+            {{ $t('ingredient.title') }}
+            <small>
+                <DateFormatter format="short" />
+            </small>
+        </PageHeader>
+        <div class="ingredient-details">
+            <OverlayLoader v-if="isLoadingIngredient" />
+        </div>
+    </div>
+    <div v-else>
         <PageHeader>
             {{ ingredient.name }}
             <small :title="$t('added-on-by', { date: createdDate, name: ingredient.created_user.name })">
@@ -24,18 +35,18 @@ import UnitHandler from '../../UnitHandler.js'
             <div class="ingredient-details__column-sidebar">
                 <div v-if="ingredient.varieties.length > 0">
                     <h3 class="page-subtitle">{{ $t('see-also') }}</h3>
-                    <IngredientTile v-for="ing in ingredient.varieties" :key="ing.slug" :ingredient="ing"></IngredientTile>
+                    <IngredientTile v-for="ing in ingredient.varieties" :key="ing.slug" :ingredient="ing" :images="[]"></IngredientTile>
                 </div>
                 <div v-if="ingredient.used_as_substitute_for && ingredient.used_as_substitute_for.length > 0">
                     <h3 class="page-subtitle">{{ $t('ingredient.used_as_substitute_for') }}</h3>
-                    <IngredientTile v-for="ing in ingredient.used_as_substitute_for" :key="ing.slug" :ingredient="ing"></IngredientTile>
+                    <IngredientTile v-for="ing in ingredient.used_as_substitute_for" :key="ing.slug" :ingredient="ing" :images="[]"></IngredientTile>
                     <RouterLink :to="{name: 'cocktails', query: {'filter[ingredient_substitute_id]': ingredient.id}}">
                         View all
                     </RouterLink>
                 </div>
                 <div v-if="ingredient.can_be_substituted_with && ingredient.can_be_substituted_with.length > 0">
                     <h3 class="page-subtitle">{{ $t('ingredient.can_be_substituted_with') }}</h3>
-                    <IngredientTile v-for="ing in ingredient.can_be_substituted_with" :key="ing.slug" :ingredient="ing"></IngredientTile>
+                    <IngredientTile v-for="ing in ingredient.can_be_substituted_with" :key="ing.slug" :ingredient="ing" :images="[]"></IngredientTile>
                 </div>
             </div>
             <div class="ingredient-details__column-content">
@@ -248,7 +259,14 @@ export default {
     methods: {
         async refreshIngredient() {
             this.isLoadingIngredient = true
-            this.ingredient = (await BarAssistantClient.getIngredient(this.$route.params.id)).data
+            try {
+                this.ingredient = (await BarAssistantClient.getIngredient(this.$route.params.id)).data
+            } catch (e) {
+                this.$toast.default(e.message)
+                this.isLoadingIngredient = false
+                this.$router.push({ name: 'ingredients' })
+                return
+            }
             this.isLoadingIngredient = false
 
             this.isLoadingExtra = true
