@@ -191,7 +191,15 @@ const missingIngredientIds = computed(() => {
 
 async function fetchCocktail(idOrSlug: string) {
     isLoading.value = true
-    cocktail.value = (await BarAssistantClient.getCocktail(idOrSlug))?.data ?? {} as Cocktail
+    try {
+        cocktail.value = (await BarAssistantClient.getCocktail(idOrSlug))?.data ?? {} as Cocktail
+    } catch (e: any) {
+        toast.default(e.message)
+        isLoading.value = false
+        router.push({ name: 'cocktails' })
+        return
+    }
+
     useTitle(cocktail.value.name)
     isLoading.value = false
 
@@ -363,9 +371,18 @@ fetchShoppingList()
 </script>
 
 <template>
-    <OverlayLoader v-if="!cocktail.id" />
+    <div v-if="!cocktail.id">
+        <PageHeader>
+            {{ $t('cocktail.title') }}
+            <small>
+                <DateFormatter format="short" />
+            </small>
+        </PageHeader>
+        <article class="cocktail-details">
+            <OverlayLoader v-if="isLoading" />
+        </article>
+    </div>
     <div v-else>
-        <OverlayLoader v-if="isLoading" />
         <PageHeader>
             {{ cocktail.name }}
             <small>
