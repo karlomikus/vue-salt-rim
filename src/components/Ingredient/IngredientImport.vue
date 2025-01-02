@@ -15,20 +15,31 @@ const router = useRouter()
 const toast = useSaltRimToast()
 const importType = ref('text')
 const source = ref('')
+const file = ref<File | null>()
 const isLoading = ref(false)
 
 useTitle(t('ingredient.import'))
 
-function clearImport() {
-
+async function onFileChanged($event: Event) {
+    const target = $event.target as HTMLInputElement;
+    if (target && target.files) {
+        file.value = target.files[0];
+    }
 }
 
 async function importIngredients() {
     isLoading.value = true
-    try {
-        toast.default(t('ingredient.csv-import-started'));
-        (await BarAssistantClient.importIngredientsAsCSVBody(source.value))
-    } catch (e) {
+    toast.default(t('ingredient.csv-import-started'));
+    if (file.value) {
+        try {
+            (await BarAssistantClient.importIngredientsAsCSVFile(file.value))
+        } catch (e) {
+        }
+    } else {
+        try {
+            (await BarAssistantClient.importIngredientsAsCSVBody(source.value))
+        } catch (e) {
+        }
     }
     isLoading.value = false
     router.push({ name: 'ingredients' })
@@ -46,7 +57,7 @@ async function importIngredients() {
                 <label class="form-label form-label--required">{{ t('type') }}:</label>
                 <div class="import-types">
                     <SaltRimRadio v-model="importType" :title="t('import.type-csv-text-title')" :description="t('import.type-csv-text-description')" value="text"></SaltRimRadio>
-                    <!-- <SaltRimRadio v-model="importType" :title="t('import.type-csv-file-title')" :description="t('import.type-csv-file-description')" value="file"></SaltRimRadio> -->
+                    <SaltRimRadio v-model="importType" :title="t('import.type-csv-file-title')" :description="t('import.type-csv-file-description')" value="file"></SaltRimRadio>
                 </div>
             </div>
             <div class="ingredient-csv-import-notice">
@@ -74,14 +85,13 @@ async function importIngredients() {
             </div>
             <div v-if="importType === 'file'" class="form-group">
                 <label class="form-label form-label--required" for="import-source">{{ t('source') }}:</label>
-                <input id="import-source" type="file" class="form-input" required>
+                <input id="import-source" type="file" class="form-input" required @change="onFileChanged($event)">
             </div>
             <div v-else class="form-group">
                 <label class="form-label form-label--required" for="import-source">{{ t('source') }}:</label>
                 <textarea id="import-source" v-model="source" class="form-input" rows="14" required></textarea>
             </div>
             <div style="display: flex; gap: var(--gap-size-2); justify-content: flex-end;">
-                <!-- <button type="button" class="button button--outline" @click.prevent="clearImport">{{ t('clear') }}</button> -->
                 <button type="button" class="button button--dark" @click.prevent="importIngredients" :disabled="isLoading"><OverlayLoader v-if="isLoading" />{{ t('import.start') }}</button>
             </div>
         </div>
