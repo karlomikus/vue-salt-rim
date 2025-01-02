@@ -62,8 +62,8 @@
     "ingredients": "Zutaten",
     "used_as_substitute_for": "Verwendet als Ersatz für",
     "can_be_substituted_with": "Kann ersetzt werden durch",
-    "add-to-bar-shelf": "Zum Barregal hinzufügen",
-    "remove-from-bar-shelf": "Aus dem Barregal entfernen",
+    "add-to-bar-shelf": "Zum Bar Regal hinzufügen",
+    "remove-from-bar-shelf": "Aus dem Bar Regal entfernen",
     "shelf-bar-help": "Rezepte, die den Zutaten im Barregal entsprechen, werden allen Barmitgliedern angezeigt.",
     "shelf-user-help": "Rezepte für passende Zutaten in deinem Regal können nur von dir verwaltet werden.",
     "bar-shelf-add-success": "\"{name}\" wurde zum Barregal hinzugefügt",
@@ -620,13 +620,13 @@
   "scale-recipe": "Scale recipe",
   "target-volume-dilution-help": "Dilute with {total} of water",
   "bar_shelf": {
-    "cocktails": "Barregal Cocktails"
+    "cocktails": "Bar-Regal Cocktails"
   },
-  "bar-shelf-ingredients": "Barregal Zutaten",
+  "bar-shelf-ingredients": "Bar-Regal Zutaten",
   "target-pour-cost": "Target pour cost",
   "target-pour-cost-help": "Percentage of the cocktail's selling price that comes from the cost of the ingredients.",
   "is_favorited": "Your favorite cocktail",
-  "in_bar_shelf": "Verfügbar im Barregal",
+  "in_bar_shelf": "Verfügbar im Bar-Regal",
   "in_your_shelf": "Verfügbar in deinem Regal",
   "is_public": "Has public link",
   "website": "Webseite"
