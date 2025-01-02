@@ -2,7 +2,7 @@
     <PageHeader>
         {{ $t('ingredient.ingredients') }}
         <template #actions>
-            <RouterLink class="button button--outline" :to="{ name: 'shopping-list.index' }">{{ $t('your-shopping-list') }}</RouterLink>
+            <!-- <RouterLink class="button button--outline" :to="{ name: 'shopping-list.index' }">{{ $t('your-shopping-list') }}</RouterLink> -->
             <template v-if="appState.isAdmin() || appState.isModerator() || appState.isGeneral()">
                 <RouterLink class="button button--dark" :to="{ name: 'ingredients.form' }">{{ $t('ingredient.add') }}</RouterLink>
             </template>
