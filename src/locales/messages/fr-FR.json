@@ -68,7 +68,8 @@
     "shelf-user-help": "Les recettes qui correspondent aux ingrédients de votre étagère ne peuvent être gérées que par vous.",
     "bar-shelf-add-success": "Ajout de \"{name}\" à l'étagère du bar",
     "bar-shelf-remove-success": "Supprimer \"{name}\" de l'étagère du bar",
-    "units-help": "Some features work the best if you use common units. Some recommendations for units are: ml, oz, cl, dashes, barspoon, drops, topup, leaves."
+    "units-help": "Some features work the best if you use common units. Some recommendations for units are: ml, oz, cl, dashes, barspoon, drops, topup, leaves.",
+    "import": "Import ingredients"
   },
   "share": {
     "title": "Partager",
@@ -127,7 +128,7 @@
   "medium": "Moyen",
   "strong": "Fort",
   "welcome-user": "Bienvenue {name}",
-  "your-shopping-list": "Votre liste de courses",
+  "your-shopping-list": "Shopping list",
   "view-all": "Tout voir",
   "add-to-shelf": "Ajouter à mon étagère",
   "remove-from-list": "Supprimer de la liste",
@@ -426,7 +427,11 @@
     "type-json-description": "Importer à partir du format JSON",
     "type-yaml-description": "Importer à partir du format YAML",
     "type-collection-description": "Importation depuis une collection JSON de Bar Assistant",
-    "notice": "Les ingrédients, méthodes et verres existants seront associé à leur nom (insensible à la casse). Si l'ingrédient n'existe pas, il sera créé."
+    "notice": "Les ingrédients, méthodes et verres existants seront associé à leur nom (insensible à la casse). Si l'ingrédient n'existe pas, il sera créé.",
+    "type-csv-text-title": "CSV text",
+    "type-csv-text-description": "Import by pasting the CSV structure",
+    "type-csv-file-title": "CSV file",
+    "type-csv-file-description": "Import by uploading CSV file"
   },
   "remove-from-bar": "Supprimer du bar",
   "public-shelves": "Étagères publiques",
