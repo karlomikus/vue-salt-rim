@@ -1,6 +1,7 @@
 # v3.7.0
 ## New
 - Added bulk ingredient import page
+Added `org.opencontainers.image.source` label to docker image
 
 ## Fixes
 - Better 404 HTTP status handling for ingredients and cocktails

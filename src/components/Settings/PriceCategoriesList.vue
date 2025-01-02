@@ -89,7 +89,7 @@ export default {
     },
     computed: {
         showCreateAction() {
-            return this.categories.length < 1 && !this.appState.isSubscribed()
+            return this.appState.isSubscribed() || (!this.appState.isSubscribed() && this.categories.length < 1)
         }
     },
     created() {
