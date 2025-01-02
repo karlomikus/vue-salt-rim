@@ -33,12 +33,18 @@ async function importIngredients() {
     if (file.value) {
         try {
             (await BarAssistantClient.importIngredientsAsCSVFile(file.value))
-        } catch (e) {
+        } catch (e: any) {
+            toast.default(e.message)
+            isLoading.value = false
+            return
         }
     } else {
         try {
             (await BarAssistantClient.importIngredientsAsCSVBody(source.value))
-        } catch (e) {
+        } catch (e: any) {
+            toast.default(e.message)
+            isLoading.value = false
+            return
         }
     }
     isLoading.value = false

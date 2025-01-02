@@ -1,7 +1,7 @@
 <template>
     <PageHeader>
         {{ $t('prices.price-categories') }}
-        <template #actions>
+        <template v-if="showCreateAction" #actions>
             <SaltRimDialog v-model="showDialog">
                 <template #trigger>
                     <button type="button" class="button button--dark" @click.prevent="openDialog($t('prices.add-price-category'), {})">{{ $t('prices.add-price-category') }}</button>
@@ -18,6 +18,7 @@
         </div>
         <div class="settings-page__content">
             <OverlayLoader v-if="isLoading" />
+            <SubscriptionCheck>Subscribe to "Mixologist" plan to unlock unlimited price categories!</SubscriptionCheck>
             <div v-if="categories.length > 0" class="block-container block-container--padded">
                 <table class="table">
                     <thead>
@@ -63,6 +64,8 @@ import SaltRimDialog from '@/components/Dialog/SaltRimDialog.vue'
 import PriceCategoryForm from '@/components/Settings/PriceCategoryForm.vue'
 import EmptyState from '../EmptyState.vue'
 import { useTitle } from '@/composables/title'
+import SubscriptionCheck from '../SubscriptionCheck.vue'
+import AppState from '@/AppState'
 
 export default {
     components: {
@@ -72,14 +75,21 @@ export default {
         PriceCategoryForm,
         SaltRimDialog,
         EmptyState,
+        SubscriptionCheck,
     },
     data() {
         return {
+            appState: new AppState(),
             isLoading: false,
             showDialog: false,
             dialogTitle: 'Price category data',
             editPriceCategory: {},
             categories: [],
+        }
+    },
+    computed: {
+        showCreateAction() {
+            return this.categories.length < 1 && !this.appState.isSubscribed()
         }
     },
     created() {
