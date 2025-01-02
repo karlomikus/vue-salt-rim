@@ -68,7 +68,8 @@
     "shelf-user-help": "Le ricette che corrispondono agli ingredienti presenti nel tuo scaffale possono essere gestite solo da te.",
     "bar-shelf-add-success": "Aggiunto \"{name}\" allo scaffale del bar",
     "bar-shelf-remove-success": "Rimosso \"{name}\" dallo scaffale del bar",
-    "units-help": "Alcune funzionalità funzionano meglio se si utilizzano unità comuni. Alcune raccomandazioni per le unità sono: ml, oz, cl, dashes, cucchiaio da bar, gocce, topup, leaves."
+    "units-help": "Alcune funzionalità funzionano meglio se si utilizzano unità comuni. Alcune raccomandazioni per le unità sono: ml, oz, cl, dashes, cucchiaio da bar, gocce, topup, leaves.",
+    "import": "Import ingredients"
   },
   "share": {
     "title": "Condividi",
@@ -127,7 +128,7 @@
   "medium": "Medio",
   "strong": "Forte",
   "welcome-user": "Benvenuto {name}",
-  "your-shopping-list": "La tua lista della spesa",
+  "your-shopping-list": "Shopping list",
   "view-all": "Vedi tutto",
   "add-to-shelf": "Aggiungi alla mia dispensa",
   "remove-from-list": "Rimuovi dalla lista",
@@ -426,7 +427,11 @@
     "type-json-description": "Importa da formato JSON",
     "type-yaml-description": "Importa da formato YAML",
     "type-collection-description": "Importa da raccolta JSON Bar Assistant",
-    "notice": "Gli ingredienti, i metodi e la vetreria esistenti saranno abbinati al loro nome (senza distinzione tra maiuscole e minuscole). Se l'ingrediente non esiste, verrà creato."
+    "notice": "Gli ingredienti, i metodi e la vetreria esistenti saranno abbinati al loro nome (senza distinzione tra maiuscole e minuscole). Se l'ingrediente non esiste, verrà creato.",
+    "type-csv-text-title": "CSV text",
+    "type-csv-text-description": "Import by pasting the CSV structure",
+    "type-csv-file-title": "CSV file",
+    "type-csv-file-description": "Import by uploading CSV file"
   },
   "remove-from-bar": "Rimuovi dal bar",
   "public-shelves": "Scaffali pubblici",
