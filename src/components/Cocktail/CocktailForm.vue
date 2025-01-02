@@ -1,9 +1,9 @@
 <template>
+    <PageHeader>
+        {{ $t('cocktail.title') }}
+    </PageHeader>
     <form @submit.prevent="submit">
         <OverlayLoader v-if="isLoading" />
-        <PageHeader>
-            {{ $t('cocktail.title') }}
-        </PageHeader>
         <h3 class="form-section-title">{{ $t('recipe-information') }}</h3>
         <div class="block-container block-container--padded">
             <div class="form-group">
