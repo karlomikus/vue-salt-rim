@@ -198,6 +198,7 @@ export default {
     text-decoration: none;
     font-weight: var(--fw-bold);
     color: rgba(255, 255, 255, .7);
+    white-space: nowrap;
 }
 
 .subnavigation-bar__nav>a:hover {

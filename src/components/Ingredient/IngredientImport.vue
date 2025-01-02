@@ -124,5 +124,6 @@ async function importIngredients() {
     padding: var(--gap-size-2);
     background-color: var(--clr-gray-100);
     color: var(--clr-gray-700);
+    overflow: auto;
 }
 </style>
