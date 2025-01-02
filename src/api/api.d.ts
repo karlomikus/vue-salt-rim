@@ -852,6 +852,26 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/import/ingredients": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Import ingredients
+         * @description Import ingredients from a CSV source
+         */
+        post: operations["importIngredients"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/ingredient-categories": {
         parameters: {
             query?: never;
@@ -2735,9 +2755,9 @@ export interface components {
             /** @example Floral */
             name: string;
             /** @example example@example.com */
-            email?: string;
-            is_subscribed?: boolean;
-            memberships?: components["schemas"]["BarMembership"][];
+            email: string;
+            is_subscribed: boolean;
+            memberships: components["schemas"]["BarMembership"][];
         };
         ProfileRequest: {
             bar_id?: number | null;
@@ -6161,6 +6181,53 @@ export interface operations {
                         };
                     };
                 };
+            };
+            /** @description You are not authorized for this action. */
+            403: {
+                headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data?: components["schemas"]["APIError"];
+                    };
+                };
+            };
+        };
+    };
+    importIngredients: {
+        parameters: {
+            query?: never;
+            header?: {
+                /** @description Database id of a bar. Required if you are not using `bar_id` query string. */
+                "Bar-Assistant-Bar-Id"?: number;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "text/csv": unknown;
+                "multipart/form-data": {
+                    /**
+                     * Format: binary
+                     * @description CSV file
+                     */
+                    source: string;
+                };
+            };
+        };
+        responses: {
+            /** @description Successful response */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
             };
             /** @description You are not authorized for this action. */
             403: {

@@ -68,7 +68,8 @@
     "shelf-user-help": "Recipes matching ingredients in your shelf can only be managed by you.",
     "bar-shelf-add-success": "Added \"{name}\" to bar shelf",
     "bar-shelf-remove-success": "Removed \"{name}\" from bar shelf",
-    "units-help": "Optional ingredients won't be used in recipe matching. Some features work the best if you use common units. Some recommendations for units are: ml, oz, cl, dashes, barspoon, drops, topup, leaves."
+    "units-help": "Optional ingredients won't be used in recipe matching. Some features work the best if you use common units. Some recommendations for units are: ml, oz, cl, dashes, barspoon, drops, topup, leaves.",
+    "import": "Import ingredients"
   },
   "share": {
     "title": "Share",
@@ -426,7 +427,11 @@
     "type-json-description": "Import from JSON format",
     "type-yaml-description": "Import from YAML format",
     "type-collection-description": "Import from Bar Assistant JSON collection",
-    "notice": "Existing ingredients, methods and glassware will be matched by their name (case insensitive). If ingredient does not exist, it will be created."
+    "notice": "Existing ingredients, methods and glassware will be matched by their name (case insensitive). If ingredient does not exist, it will be created.",
+    "type-csv-text-title": "CSV text",
+    "type-csv-text-description": "Import by pasting the CSV structure",
+    "type-csv-file-title": "CSV file",
+    "type-csv-file-description": "Import by uploading CSV file"
   },
   "remove-from-bar": "Remove from bar",
   "public-shelves": "Public shelves",
