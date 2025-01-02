@@ -68,7 +68,8 @@
     "shelf-user-help": "Rezepte für passende Zutaten in deinem Regal können nur von dir verwaltet werden.",
     "bar-shelf-add-success": "\"{name}\" wurde zum Barregal hinzugefügt",
     "bar-shelf-remove-success": "\"{name}\" aus Barregal entfernt",
-    "units-help": "Some features work the best if you use common units. Some recommendations for units are: ml, oz, cl, dashes, barspoon, drops, topup, leaves."
+    "units-help": "Some features work the best if you use common units. Some recommendations for units are: ml, oz, cl, dashes, barspoon, drops, topup, leaves.",
+    "import": "Import ingredients"
   },
   "share": {
     "title": "Aktie",
@@ -426,7 +427,11 @@
     "type-json-description": "Aus JSON-Format importieren",
     "type-yaml-description": "Aus YAML-Format importieren",
     "type-collection-description": "Import aus Bar Assistant JSON-Sammlung",
-    "notice": "Vorhandene Zutaten und Trinkgläser werden anhand ihres Namens abgeglichen (Groß- und Kleinschreibung wird nicht berücksichtigt). Wenn ein Bestandteil bzw. ein Glas nicht vorhanden ist, wird es neu erstellt."
+    "notice": "Vorhandene Zutaten und Trinkgläser werden anhand ihres Namens abgeglichen (Groß- und Kleinschreibung wird nicht berücksichtigt). Wenn ein Bestandteil bzw. ein Glas nicht vorhanden ist, wird es neu erstellt.",
+    "type-csv-text-title": "CSV text",
+    "type-csv-text-description": "Import by pasting the CSV structure",
+    "type-csv-file-title": "CSV file",
+    "type-csv-file-description": "Import by uploading CSV file"
   },
   "remove-from-bar": "Aus der Bar entfernen",
   "public-shelves": "Öffentliche Regale",
