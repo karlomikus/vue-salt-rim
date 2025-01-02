@@ -2,6 +2,7 @@
     <div>
         <div class="dialog-title">{{ props.cocktail.name }}</div>
         <OverlayLoader v-if="isLoadingPrices"></OverlayLoader>
+        <SubscriptionCheck>Subscribe to "Mixologist" plan to unlock automatic price calculation!</SubscriptionCheck>
         <div class="cocktail-price-calculator__prices">
             <div v-for="cocktailPrice in cocktailPrices">
                 <CocktailPrice :cocktail-price=cocktailPrice></CocktailPrice>
@@ -13,11 +14,11 @@
             <input id="name" v-model="targetPourCost" class="form-input" type="text" required>
             <span class="form-input-hint">{{ $t('target-pour-cost-help') }}</span>
         </div>
-        <h2 class="cocktail-price-calculator__price" v-if="finalPrice">
+        <h2 class="cocktail-price-calculator__price" v-if="finalPrice && appState.isSubscribed()">
             <small>{{ $t('price.price') }}</small>
             {{ UnitHandler.formatPrice(parseFloat(finalPrice.price), finalPrice.currency) }}
         </h2>
-        <div class="dialog-actions">
+        <div class="dialog-actions" v-if="appState.isSubscribed()">
             <button class="button button--outline" @click="emit('closed')">{{ $t('cancel') }}</button>
             <button type="button" class="button button--dark" :disabled="!finalPrice" @click="selectFinalPrice">{{ $t('price.select') }}</button>
         </div>
@@ -31,6 +32,8 @@ import UnitHandler from '@/UnitHandler'
 import BarAssistantClient from '@/api/BarAssistantClient';
 import CocktailPrice from './../Cocktail/CocktailPrice.vue'
 import OverlayLoader from '../OverlayLoader.vue';
+import SubscriptionCheck from '../SubscriptionCheck.vue';
+import AppState from '@/AppState';
 
 type Cocktail = components["schemas"]["Cocktail"]
 type CocktailPrice = components["schemas"]["CocktailPrice"]
@@ -41,6 +44,7 @@ const props = defineProps<{
 
 const emit = defineEmits(['closed', 'selectedPrice'])
 
+const appState = new AppState()
 const targetPourCost = ref(22)
 const isLoadingPrices = ref(false)
 const cocktailPrices = ref([] as CocktailPrice[])

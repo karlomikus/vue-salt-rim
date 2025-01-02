@@ -127,6 +127,12 @@ const router = createRouter({
                     meta: { requiresBar: true },
                 },
                 {
+                    path: '/ingredients/import',
+                    name: 'ingredients.import',
+                    component: () => import('../views/IngredientImport.vue'),
+                    meta: { requiresBar: true },
+                },
+                {
                     path: '/ingredients',
                     name: 'ingredients',
                     component: () => import('../views/IngredientsView.vue'),

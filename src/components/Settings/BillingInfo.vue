@@ -25,6 +25,9 @@
                             <li>Add unlimited cocktail collections</li>
                             <li>No rate limits for import actions</li>
                             <li>Create personal access API tokens</li>
+                            <li>Automatic cocktail price menu suggestions</li>
+                            <li>Bulk ingredient import</li>
+                            <li>Unlimited price categories</li>
                             <li>Save <span>15%</span> when paying annually</li>
                         </ul>
                         <div class="form-group">

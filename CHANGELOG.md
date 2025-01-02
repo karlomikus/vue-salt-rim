@@ -1,3 +1,15 @@
+# v3.7.0
+## New
+- Added bulk ingredient import page
+Added `org.opencontainers.image.source` label to docker image
+
+## Fixes
+- Better 404 HTTP status handling for ingredients and cocktails
+
+## Changes
+- Moved shopping list to main navigation
+- Updated loader styling and positioning
+
 # v3.6.1
 ## Fixed
 - Fixed missing theme toggle icon on iOS Safari

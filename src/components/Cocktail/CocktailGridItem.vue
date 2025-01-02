@@ -202,7 +202,7 @@ export default {
 
 @media (max-width: 545px) {
     .cocktail-grid-item {
-        --_image-size: 200px;
+        --_image-size: 250px;
     }
 
     .cocktail-grid-item__title {

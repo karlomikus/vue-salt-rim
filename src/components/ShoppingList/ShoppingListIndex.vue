@@ -9,6 +9,7 @@ import UnitHandler from '@/UnitHandler';
 import Dropdown from '../SaltRimDropdown.vue';
 import ToggleIngredientShoppingCart from '../ToggleIngredientShoppingCart.vue';
 import EmptyState from '../EmptyState.vue';
+import OverlayLoader from '../OverlayLoader.vue';
 
 import type { components } from '@/api/api'
 import AppState from '@/AppState';
@@ -22,6 +23,7 @@ interface ShoppingListItemWithFullIngredient extends ShoppingList {
 
 const { t } = useI18n()
 const toast = useSaltRimToast()
+const isLoading = ref(false)
 const appState = new AppState()
 const shoppingList = ref([] as ShoppingList[])
 const ingredients = ref([] as Ingredient[])
@@ -42,6 +44,7 @@ const throttleShoppingListUpdate = useThrottleFn(() => {
 }, 700, true)
 
 async function refreshShoppingList() {
+    isLoading.value = true
     shoppingList.value = (await BarAssistantClient.getShoppingList(appState.user.id))?.data ?? []
     ingredients.value = (await BarAssistantClient.getIngredients({
         'filter[id]': shoppingList.value.map(shoppingListItem => shoppingListItem.ingredient.id).join(','),
@@ -50,6 +53,7 @@ async function refreshShoppingList() {
     list.value = shoppingList.value.map(sl => {
         return {...sl, ingredientRef: ingredients.value.find(i => i.id === sl.ingredient.id)} as ShoppingListItemWithFullIngredient
     })
+    isLoading.value = false
 }
 
 async function updateShoppingList() {
@@ -112,6 +116,7 @@ async function shareFromFormat(format: string) {
         </template>
     </PageHeader>
     <div class="shopping-list">
+        <OverlayLoader v-if="isLoading" />
         <EmptyState v-if="list.length <= 0">
             {{ t('shopping-list-empty') }}
         </EmptyState>
@@ -119,7 +124,7 @@ async function shareFromFormat(format: string) {
             <div>
                 <RouterLink :to="{ name: 'ingredients.show', params: { id: shoppingListItem.ingredientRef.slug }}">{{ shoppingListItem.ingredientRef.name }}</RouterLink>
                 <br>
-                <small>{{ shoppingListItem.ingredientRef.category?.name }} &middot; Qty: {{ shoppingListItem.quantity }}</small>
+                <small>{{ shoppingListItem.ingredientRef.category?.name ?? t('uncategorized') }} &middot; Qty: {{ shoppingListItem.quantity }}</small>
                 &middot;
                 <ToggleIngredientShoppingCart :ingredient="shoppingListItem.ingredientRef" :status="true"></ToggleIngredientShoppingCart>
                 <ul class="shopping-list__item__prices">

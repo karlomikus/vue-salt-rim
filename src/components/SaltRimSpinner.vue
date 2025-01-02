@@ -10,7 +10,7 @@ export default {
     props: {
         color: {
             type: String,
-            default: '#AF5091'
+            default: '#693057'
         },
         size: {
             type: Number,

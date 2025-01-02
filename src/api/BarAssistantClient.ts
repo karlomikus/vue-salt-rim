@@ -545,4 +545,20 @@ export default class BarAssistantClient {
   static async getMenuExport() {
     return (await client.GET('/menu/export', {parseAs: 'text'})).data
   }
+
+  static async importIngredientsAsCSVBody(body: string) {
+    return (await client.POST('/import/ingredients', { parseAs: 'text', body: body, bodySerializer(body) {
+      return body
+    }, headers: { 'Content-Type': 'text/csv' } })).data
+  }
+
+  static async importIngredientsAsCSVFile(file: File) {
+    return (await client.POST('/import/ingredients', {
+      body: { source: file }, bodySerializer(body: any) {
+        const fd = new FormData();
+        fd.append('source', body.source)
+        return fd
+      }
+    })).data
+  }
 }

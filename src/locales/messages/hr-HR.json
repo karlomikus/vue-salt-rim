@@ -68,7 +68,8 @@
     "shelf-user-help": "Recipes matching ingredients in your shelf can only be managed by you.",
     "bar-shelf-add-success": "Added \"{name}\" to bar shelf",
     "bar-shelf-remove-success": "Removed \"{name}\" from bar shelf",
-    "units-help": "Some features work the best if you use common units. Some recommendations for units are: ml, oz, cl, dashes, barspoon, drops, topup, leaves."
+    "units-help": "Some features work the best if you use common units. Some recommendations for units are: ml, oz, cl, dashes, barspoon, drops, topup, leaves.",
+    "import": "Import ingredients"
   },
   "share": {
     "title": "Podijeli",
@@ -127,7 +128,7 @@
   "medium": "Srednji",
   "strong": "Jaki",
   "welcome-user": "Pozdrav {name}",
-  "your-shopping-list": "Popis za kupovinu",
+  "your-shopping-list": "Shopping list",
   "view-all": "Pogledaj sve",
   "add-to-shelf": "Dodaj na policu",
   "remove-from-list": "Ukloni s popisa",
@@ -426,7 +427,11 @@
     "type-json-description": "Uvoz iz JSON formata",
     "type-yaml-description": "Uvoz iz YAML formata",
     "type-collection-description": "Uvoz iz Bar Assistant JSON kolekcije",
-    "notice": "Postojeći podaci će biti spojeni ako se imena podudaraju (neovisno o velikim i malim slovima). Ako sastojak ili čaša ne postoje, nove će biti kreirane."
+    "notice": "Postojeći podaci će biti spojeni ako se imena podudaraju (neovisno o velikim i malim slovima). Ako sastojak ili čaša ne postoje, nove će biti kreirane.",
+    "type-csv-text-title": "CSV text",
+    "type-csv-text-description": "Import by pasting the CSV structure",
+    "type-csv-file-title": "CSV file",
+    "type-csv-file-description": "Import by uploading CSV file"
   },
   "remove-from-bar": "Ukloni iz bara",
   "public-shelves": "Javne police",
@@ -629,5 +634,6 @@
   "in_bar_shelf": "Available in bar shelf",
   "in_your_shelf": "Available in your shelf",
   "is_public": "Has public link",
-  "website": "Web stranica"
+  "website": "Web stranica",
+  "uncategorized": "Uncategorized"
 }

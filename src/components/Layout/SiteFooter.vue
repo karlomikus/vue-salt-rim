@@ -51,6 +51,7 @@ export default {
     created() {
         BarAssistantClient.getServerVersion().then(resp => {
             this.versions = resp.data
+        }).catch(() => {
         })
     }
 }

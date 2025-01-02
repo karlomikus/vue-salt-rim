@@ -96,6 +96,7 @@ const { t } = useI18n()
 const router = useRouter()
 const toast = useSaltRimToast()
 const isLoading = ref(false)
+const isImporting = ref(false)
 const showIngredientDialog = ref(false)
 const ingredientEdit = ref<CocktailIngredient | SubstituteCocktailIngredient | null>(null)
 const importType = ref('url')
@@ -135,6 +136,9 @@ function clearImport() {
 }
 
 function importCocktail() {
+    similarCocktails.value = []
+    ingredientEdit.value = null
+    result.value = {} as LocalSchema
     similarCocktails.value = []
 
     if (importType.value == 'url') {
@@ -354,7 +358,7 @@ async function getOrCreateIngredient(ingredient: SchemaIngredient): Promise<Full
 }
 
 async function finishImporting() {
-    isLoading.value = true
+    isImporting.value = true
     if (result.value.recipe.glass) {
         result.value.recipe.matchedGlassId = (await getGlass(result.value.recipe.glass))?.id ?? null
     }
@@ -457,12 +461,12 @@ async function getBar(barId: number): Promise<void> {
 </script>
 <template>
     <form @submit.prevent="finishImporting">
-        <OverlayLoader v-if="isLoading" />
         <PageHeader>
             {{ t('cocktail.import') }}
         </PageHeader>
         <h3 class="form-section-title">{{ t('import.type') }}</h3>
         <div class="block-container block-container--padded">
+            <!-- <OverlayLoader v-if="isLoading" /> -->
             <SubscriptionCheck>Subscribe to "Mixologist" plan to remove limit of two import actions per minute!</SubscriptionCheck>
             <div class="form-group">
                 <label class="form-label form-label--required">{{ t('type') }}:</label>
@@ -503,7 +507,7 @@ async function getBar(barId: number): Promise<void> {
             </div> -->
             <div style="display: flex; gap: var(--gap-size-2);">
                 <button type="button" class="button button--outline" @click.prevent="clearImport">{{ t('clear') }}</button>
-                <button type="button" class="button button--dark" @click.prevent="importCocktail">{{ t('import.start') }}</button>
+                <button type="button" class="button button--dark" @click.prevent="importCocktail" :disabled="isLoading"><OverlayLoader v-if="isLoading" />{{ t('import.start') }}</button>
             </div>
         </div>
         <div class="sda" v-if="similarCocktails.length > 0">
@@ -638,7 +642,7 @@ async function getBar(barId: number): Promise<void> {
             </SaltRimDialog>
             <div class="form-actions">
                 <RouterLink class="button button--outline" :to="{ name: 'cocktails' }">{{ t('cancel') }}</RouterLink>
-                <button type="submit" class="button button--dark">{{ t('import.continue') }}</button>
+                <button type="submit" class="button button--dark" :disabled="isImporting"><OverlayLoader v-if="isImporting" />{{ t('import.continue') }}</button>
             </div>
         </div>
     </form>
