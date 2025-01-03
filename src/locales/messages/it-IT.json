@@ -162,7 +162,8 @@
     "site-search": "Cerca un cocktail o un ingrediente...",
     "image-copyright": "URL immagine o altro riferimento...",
     "search-ingredients": "Cerca ingredienti...",
-    "search-cocktails": "Cerca cocktail..."
+    "search-cocktails": "Cerca cocktail...",
+    "external-image": "Paste image URL"
   },
   "amount": "Quantità",
   "units": "Unità di misura",

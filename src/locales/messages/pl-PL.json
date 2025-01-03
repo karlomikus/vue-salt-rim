@@ -162,7 +162,8 @@
     "site-search": "Wyszukaj koktajl lub składnik...",
     "image-copyright": "Adres URL źródła obrazu lub inne odniesienie...",
     "search-ingredients": "Wyszukaj składniki...",
-    "search-cocktails": "Wyszukaj koktajle..."
+    "search-cocktails": "Wyszukaj koktajle...",
+    "external-image": "Paste image URL"
   },
   "amount": "Ilość",
   "units": "Jednostki",
