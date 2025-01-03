@@ -1,4 +1,4 @@
-# v3.7.0
+# v3.8.0
 ## New
 - Added bulk ingredient import page
 Added `org.opencontainers.image.source` label to docker image
@@ -9,6 +9,13 @@ Added `org.opencontainers.image.source` label to docker image
 ## Changes
 - Moved shopping list to main navigation
 - Updated loader styling and positioning
+
+# v3.7.0
+## New
+- Added back cocktail badges
+
+## Fixed
+- Fixed collections delete action
 
 # v3.6.1
 ## Fixed
