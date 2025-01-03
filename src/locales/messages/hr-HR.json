@@ -162,7 +162,8 @@
     "site-search": "Pretraži koktele ili sastojke...",
     "image-copyright": "Izvor slike ili neka druga referenca...",
     "search-ingredients": "Pretraži sastojke...",
-    "search-cocktails": "Pretraži koktele..."
+    "search-cocktails": "Pretraži koktele...",
+    "external-image": "Paste image URL"
   },
   "amount": "Količina",
   "units": "Jedinica",
