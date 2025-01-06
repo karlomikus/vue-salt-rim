@@ -162,7 +162,8 @@
     "site-search": "Sök efter drink eller ingrediens...",
     "image-copyright": "URL för bildkälla eller annan referens...",
     "search-ingredients": "Sök efter ingrediens...",
-    "search-cocktails": "Sök efter drink..."
+    "search-cocktails": "Sök efter drink...",
+    "external-image": "Paste image URL"
   },
   "amount": "Antal",
   "units": "Enhet",
