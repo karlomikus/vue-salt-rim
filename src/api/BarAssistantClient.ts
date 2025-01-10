@@ -28,7 +28,10 @@ const authMiddleware: Middleware = {
   async onRequest({ request }) {
     const scopedState = new AppState()
     accessToken = scopedState.token
-    request.headers.set("Authorization", `Bearer ${accessToken}`);
+    // oauth will bypass this and use cookies instead
+    if (accessToken) {
+      request.headers.set("Authorization", `Bearer ${accessToken}`);
+    }
     return request;
   },
 };
@@ -63,6 +66,22 @@ client.use(checkToken);
 client.use(checkService);
 
 export default class BarAssistantClient {
+  static async getAuthConfig() {
+    return (await client.GET('/auth/config')).data
+  }
+
+  static async getOAuthAccounts() {
+    return (await client.GET('/oauth/accounts')).data
+  }
+
+  static async unlinkOAuthAccount(id: number) {
+    return (await client.DELETE('/oauth/accounts/{id}', { params: { path: { id } } })).data
+  }
+
+  static async loginWithOAuth(providerId: string, code: string, codeVerifier: string) {
+    return (await client.POST('/oauth/login', { body: { providerId, code, codeVerifier } })).data
+  }
+
   static async getLoginToken(email: string, password: string) {
     return (await client.POST('/auth/login', { body: { email: email, password: password } })).data
   }

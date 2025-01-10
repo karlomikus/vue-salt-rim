@@ -31,6 +31,12 @@ const router = createRouter({
             meta: { requiresAuth: false }
         },
         {
+            path: '/login/callback',
+            name: 'loginCallback',
+            component: () => import('../views/OAuthLoginCallbackView.vue'),
+            meta: { requiresAuth: false },
+        },
+        {
             path: '/service-down',
             name: 'service-down',
             component: () => import('../views/ServiceDownView.vue'),
@@ -205,6 +211,11 @@ const router = createRouter({
                     path: '/settings/tokens',
                     name: 'settings.tokens',
                     component: () => import('../views/SettingsAPIView.vue'),
+                },
+                {
+                    path: '/settings/oauth',
+                    name: 'settings.oauth',
+                    component: () => import('../views/SettingsOAuthView.vue'),
                 },
                 {
                     path: '/settings/exports',

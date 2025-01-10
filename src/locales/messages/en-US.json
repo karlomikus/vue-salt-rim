@@ -360,7 +360,10 @@
     "reset-password-reset": "Reset",
     "password-reset-success": "Password successfully reset",
     "password-reset-error": "Unable to reset your password",
-    "account-confirmed": "Account successfully confirmed"
+    "account-confirmed": "Account successfully confirmed",
+    "login-oauth": "Login with {name}",
+    "login-again": "Login again",
+    "redirecting": "Redirecting..."
   },
   "used-as-main-ingredient": "Used as main ingredient",
   "added-on-by": "Added on {date} by {name}",
@@ -539,7 +542,13 @@
     "add-success": "Token created",
     "token-notice": "Please save this API token somewhere safe and accessible. For security reasons, you won't be able to view it again. If you lose this API token, you'll need to generate a new one.",
     "confirm-revoke": "This will revoke token \"{name}\"",
-    "revoke-success": "Token revoked"
+    "revoke-success": "Token revoked",
+    "oauth": "OAuth Accounts",
+    "oauth-provider": "Provider",
+    "oauth-id": "User ID",
+    "oauth-unlink": "Unlink",
+    "oauth-unlink-confirm": "This will unlink OAuth account \"{name}\"",
+    "oauth-unlink-success": "OAuth account unlinked"
   },
   "expires_at": "Expires",
   "revoke": "Revoke",

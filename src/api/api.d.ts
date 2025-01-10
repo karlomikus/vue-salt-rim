@@ -4,6 +4,26 @@
  */
 
 export interface paths {
+    "/auth/config": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get auth config
+         * @description Get local and OAuth configuration
+         */
+        get: operations["auth-config"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/auth/login": {
         parameters: {
             query?: never;
@@ -1148,6 +1168,66 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/oauth/login": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Authenticate user with OAuth
+         * @description Authenticate user with OAuth login and get auth token
+         */
+        post: operations["oauth-login"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/oauth/accounts": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * List OAuth accounts
+         * @description Show list of all user OAuth accounts
+         */
+        get: operations["listOAuthAccounts"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/oauth/accounts/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        /**
+         * Unlink OAuth Account
+         * @description Unlink an OAuth account
+         */
+        delete: operations["unlinkOAuthAccount"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/tokens": {
         parameters: {
             query?: never;
@@ -1833,6 +1913,17 @@ export interface components {
             type: string;
             /** @example Resource record not found. */
             message: string;
+        };
+        AuthConfig: {
+            /** @example true|false */
+            allowRegistration: boolean;
+            /** @example true|false */
+            localLoginEnabled: boolean;
+            /** @example true|false */
+            oauthLoginEnabled: boolean;
+            /** @example true|false */
+            oauthLoginSelfRegistrationEnabled: boolean;
+            oauthProviders?: components["schemas"]["OAuthProvider"][];
         };
         Bar: {
             /** @example 1 */
@@ -2684,6 +2775,32 @@ export interface components {
             /** @example cocktail */
             resource: string;
         };
+        OAuthLoginRequest: {
+            /** @example google|facebook|keycloak */
+            providerId: string;
+            /** @example 52f8b40c-7a71-4041-95fb-d115a82530cf.4206bcef-ca2a-4228-a5ca-aae12d5aac7b.d3edfb2b-5046-472f-aa12-857b78e6011d */
+            code: string;
+            /** @example 479107e2ddb341a4a177bda6194ab6c9bea4a6e6be3440cbb930af9d66aec5bb14eff15738c7467c92324e2eab4278b0 */
+            codeVerifier?: string;
+        };
+        OAuthProvider: {
+            /** @example google|facebook|keycloak */
+            id: string;
+            /** @example bar-assistant */
+            clientId: string;
+            /** @example google|facebook|keycloak|oidc */
+            type: string;
+            /** @example google.svg|facebook.svg|oidc.png */
+            icon: string;
+            /** @example Google|Facebook|Keycloak */
+            name?: string;
+            /** @example https://example.com/auth */
+            authority: string;
+            /** @example https://example.com/login/callback */
+            redirectUri: string;
+            /** @example openid profile email */
+            scope: string;
+        };
         PersonalAccessToken: {
             /** @example 1 */
             id?: number;
@@ -2892,6 +3009,21 @@ export interface components {
             /** @example Bartender */
             name: string;
         };
+        UserOAuthAccount: {
+            /** @example 1 */
+            id?: number;
+            /** @example oidc.svg */
+            icon?: string;
+            /** @example Google|Facebook|Keycloak */
+            name?: number;
+            /** @example 1|faaf-fawefa-ffawef-awef */
+            userId?: number;
+            /**
+             * Format: date-time
+             * @example 2022-01-01T00:00:00+00:00
+             */
+            createdAt?: string;
+        };
         UserRequest: {
             /** @example 1 */
             role_id: number;
@@ -3034,6 +3166,32 @@ export interface components {
 }
 export type $defs = Record<string, never>;
 export interface operations {
+    "auth-config": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful response */
+            200: {
+                headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data: components["schemas"]["AuthConfig"];
+                    };
+                };
+            };
+        };
+    };
     authenticate: {
         parameters: {
             query?: never;
@@ -7378,6 +7536,112 @@ export interface operations {
         };
     };
     deleteNote: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Database id of a resource */
+                id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful response */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description You are not authorized for this action. */
+            403: {
+                headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data?: components["schemas"]["APIError"];
+                    };
+                };
+            };
+            /** @description Resource record not found. */
+            404: {
+                headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data?: components["schemas"]["APIError"];
+                    };
+                };
+            };
+        };
+    };
+    "oauth-login": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["OAuthLoginRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful response */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Unable to authenticate */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    listOAuthAccounts: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful response */
+            200: {
+                headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data: components["schemas"]["UserOAuthAccount"][];
+                    };
+                };
+            };
+        };
+    };
+    unlinkOAuthAccount: {
         parameters: {
             query?: never;
             header?: never;

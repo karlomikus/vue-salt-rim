@@ -8,7 +8,9 @@
     "lint": "eslint --ext .js,.vue src",
     "lint-fix": "eslint --fix --ext .js,.vue src",
     "test": "vitest",
-    "gen": "npx openapi-typescript ./spec.yml -o ./src/api/api.d.ts"
+    "gen": "npx openapi-typescript ./spec.yml -o ./src/api/api.d.ts",
+    "gen-remote": "npm run download-spec && npm run gen",
+    "download-spec": "wget http://localhost:8000/api/server/openapi -O spec.yml"
   },
   "dependencies": {
     "@floating-ui/vue": "^1.1.5",
@@ -23,6 +25,7 @@
     "html-to-image": "^1.11.11",
     "micromark": "^4.0.0",
     "numeric-quantity": "^2.0.1",
+    "oidc-client-ts": "^3.1.0",
     "openapi-fetch": "^0.11.1",
     "plausible-tracker": "^0.3.8",
     "qrcode-vue3": "^1.6.8",
