@@ -236,6 +236,11 @@ const router = createRouter({
                     name: 'shopping-list.index',
                     component: () => import('../views/ShoppingListView.vue'),
                 },
+                {
+                    path: '/calculators',
+                    name: 'calculators.index',
+                    component: () => import('../views/CalculatorsIndex.vue'),
+                },
             ]
         },
         {
