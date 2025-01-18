@@ -636,5 +636,25 @@
   "in_your_shelf": "Available in your shelf",
   "is_public": "Has public link",
   "website": "Website",
-  "uncategorized": "Uncategorized"
+  "uncategorized": "Uncategorized",
+  "calculators": {
+    "title": "Calculators",
+    "add": "Create calculator",
+    "information": "Basic information",
+    "inputs": "Inputs",
+    "evaluations": "Evaluations",
+    "expression": "Expression",
+    "var-name": "Variable name",
+    "missing-result": "None, click preview to resolve",
+    "add-evaluation": "Add evaluation",
+    "add-input": "Add input",
+    "edit": "Edit calculator"
+  },
+  "label": "Label",
+  "prefix": "Prefix",
+  "suffix": "Suffix",
+  "default-value": "Default value",
+  "result": "Result",
+  "error": "Error",
+  "preview": "Preview"
 }
