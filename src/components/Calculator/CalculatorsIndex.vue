@@ -64,12 +64,10 @@ fetchCalculators()
     <div>
         <OverlayLoader v-if="isLoading" />
         <div class="calculators">
-            <div v-for="calc in calculators" :key="calc.id" class="calculators__calculator">
-                <div class="block-container block-container--padded">
-                    <CalculatorRender :calculator="calc"></CalculatorRender>
-                    <div class="calculators__calculator__actions">
-                        <RouterLink :to="{ name: 'calculators.form', query: { id: calc.id } }">{{ t('edit') }}</RouterLink> &middot; <a href="#" @click.prevent="removeCalculator(calc)">{{ t('remove') }}</a>
-                    </div>
+            <div v-for="calc in calculators" :key="calc.id" class="block-container block-container--padded calculators__calculator">
+                <CalculatorRender :calculator="calc"></CalculatorRender>
+                <div class="calculators__calculator__actions">
+                    <RouterLink :to="{ name: 'calculators.form', query: { id: calc.id } }">{{ t('edit') }}</RouterLink> &middot; <a href="#" @click.prevent="removeCalculator(calc)">{{ t('remove') }}</a>
                 </div>
             </div>
         </div>
@@ -88,7 +86,13 @@ fetchCalculators()
 .calculators {
     display: grid;
     gap: var(--gap-size-2);
-    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+}
+
+@media (max-width: 450px) {
+    .calculators {
+        grid-template-columns: 1fr;
+    }
 }
 
 .calculators__calculator__actions {
