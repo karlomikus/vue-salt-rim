@@ -9,10 +9,14 @@ import { useConfirm } from '@/composables/confirm';
 import { useTitle } from '@/composables/title'
 import { useI18n } from 'vue-i18n';
 import { RouterLink } from 'vue-router';
+import { useSaltRimToast } from '@/composables/toast.js'
+import EmptyState from './../EmptyState.vue'
+import IconCalculator from '../Icons/IconCalculator.vue';
 
 type Calculator = components["schemas"]["Calculator"]
 
 const { t } = useI18n()
+const toast = useSaltRimToast()
 const confirm = useConfirm()
 const calculators = ref<Calculator[]>([])
 const isLoading = ref<boolean>(false)
@@ -31,13 +35,15 @@ async function fetchCalculators() {
 }
 
 async function removeCalculator(calc: Calculator) {
-    confirm.show(t('imageupload.delete-confirm'), {
+    confirm.show(t('calculators.delete-confirm', {name: calc.name}), {
         onResolved: (dialog: any) => {
             dialog.close()
             isLoading.value = true
             BarAssistantClient.deleteCalculator(calc.id).then(() => {
+                toast.default(t('calculators.delete-success'))
                 fetchCalculators()
-            }).catch(() => {
+            }).catch((e: any) => {
+                toast.error(e.message)
             }).finally(() => {
                 isLoading.value = false
             })
@@ -55,16 +61,26 @@ fetchCalculators()
             <RouterLink class="button button--dark" :to="{ name: 'calculators.form' }">{{ t('calculators.add') }}</RouterLink>
         </template>
     </PageHeader>
-    <div class="calculators">
+    <div>
         <OverlayLoader v-if="isLoading" />
-        <div v-for="calc in calculators" :key="calc.id" class="calculators__calculator">
-            <div class="block-container block-container--padded">
-                <CalculatorRender :calculator="calc"></CalculatorRender>
-                <div class="calculators__calculator__actions">
-                    <RouterLink :to="{ name: 'calculators.form', query: { id: calc.id } }">{{ t('edit') }}</RouterLink> &middot; <a href="#" @click.prevent="removeCalculator(calc)">{{ t('remove') }}</a>
+        <div class="calculators">
+            <div v-for="calc in calculators" :key="calc.id" class="calculators__calculator">
+                <div class="block-container block-container--padded">
+                    <CalculatorRender :calculator="calc"></CalculatorRender>
+                    <div class="calculators__calculator__actions">
+                        <RouterLink :to="{ name: 'calculators.form', query: { id: calc.id } }">{{ t('edit') }}</RouterLink> &middot; <a href="#" @click.prevent="removeCalculator(calc)">{{ t('remove') }}</a>
+                    </div>
                 </div>
             </div>
         </div>
+        <EmptyState v-if="calculators.length == 0">
+            <template #icon>
+                <IconCalculator />
+            </template>
+            <template #default>
+                {{ $t('calculators.empty') }}
+            </template>
+        </EmptyState>
     </div>
 </template>
 

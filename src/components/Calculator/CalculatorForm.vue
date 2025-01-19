@@ -11,6 +11,7 @@ import BarAssistantClient from '@/api/BarAssistantClient';
 import { useI18n } from 'vue-i18n';
 import { useRoute, useRouter } from 'vue-router';
 import UnitHandler from '@/UnitHandler'
+import { useConfirm } from '@/composables/confirm';
 
 type Calculator = components["schemas"]["Calculator"]
 type CalculatorRequest = components["schemas"]["CalculatorRequest"]
@@ -22,6 +23,7 @@ interface CalculatorFormulaEvaluation {
     error: string|null;
 }
 
+const confirm = useConfirm()
 const toast = useSaltRimToast()
 const route = useRoute()
 const router = useRouter()
@@ -50,6 +52,7 @@ async function fetchCalculator(id: number): Promise<void> {
 
     try {
         calculator.value = (await BarAssistantClient.getCalculator(id))?.data ?? {} as Calculator
+        useTitle(calculator.value.name + ' \u22C5 ' + t('calculators.title'))
         inputs.value = calculator.value?.blocks?.filter((block) => block.type === 'input') as CalculatorBlockRequest[]
         evaluations.value = calculator.value?.blocks?.filter((block) => block.type === 'eval').map(e => {
             return {
@@ -104,7 +107,16 @@ function addInputVariable() {
 }
 
 function removeInput(input: CalculatorBlockRequest) {
-    inputs.value.splice(inputs.value.indexOf(input), 1)
+    if (input.value !== '') {
+        confirm.show(t('calculators.confirm-input-delete'), {
+            onResolved: (dialog: any) => {
+                dialog.close()
+                inputs.value.splice(inputs.value.indexOf(input), 1)
+            }
+        })
+    } else {
+        inputs.value.splice(inputs.value.indexOf(input), 1)
+    }
 }
 
 function addEvaluation() {
@@ -127,7 +139,16 @@ function addEvaluation() {
 }
 
 function removeEvaluation(evaluation: CalculatorFormulaEvaluation) {
-    evaluations.value.splice(evaluations.value.indexOf(evaluation), 1)
+    if (evaluation.block.value !== '') {
+        confirm.show(t('calculators.confirm-eval-delete'), {
+            onResolved: (dialog: any) => {
+                dialog.close()
+                evaluations.value.splice(evaluations.value.indexOf(evaluation), 1)
+            }
+        })
+    } else {
+        evaluations.value.splice(evaluations.value.indexOf(evaluation), 1)
+    }
 }
 
 function resolveAll(): void {
@@ -210,7 +231,7 @@ async function save(): Promise<void> {
                 </div>
             </div>
             <h3 class="form-section-title">{{ t('calculators.inputs') }}</h3>
-            <p>In this section, you define all your required inputs that will change the result of your evaluations. Each input can be used in all evaluations.</p>
+            <p class="calculator-form__section-info">{{ t('calculators.inputs-description') }}</p>
             <div class="calculator-form-group block-container block-container--inset block-container--padded">
                 <div class="block-container calculator-input-group" v-for="input in inputs" :key="input.sort">
                     <div class="form-row-group">
@@ -239,10 +260,12 @@ async function save(): Promise<void> {
                     </div>
                     <a href="#" @click.prevent="removeInput(input)">{{ t('remove') }}</a>
                 </div>
-                <button class="button button--dark" @click.prevent="addInputVariable()">{{ t('calculators.add-input') }}</button>
+                <div class="ignore-sortable" style="text-align: center;">
+                    <button class="button button--dark" @click.prevent="addInputVariable()">{{ t('calculators.add-input') }}</button>
+                </div>
             </div>
             <h3 class="form-section-title">{{ t('calculators.evaluations') }}</h3>
-            <p>In this section, you define your evaluations and their result display settings. Each evaluation can access and use all previously defined inputs and evaluation results in its formula using defined variable name.</p>
+            <p class="calculator-form__section-info">{{ t('calculators.evaluations-description') }}</p>
             <div class="calculator-form-group block-container block-container--inset block-container--padded" ref="evalList">
                 <div class="block-container calculator-evaluation-group" v-for="evaluation in evaluations" :data-id="evaluation.block.sort">
                     <div class="drag-handle"></div>
@@ -285,10 +308,17 @@ async function save(): Promise<void> {
                         <a href="#" @click.prevent="removeEvaluation(evaluation)">{{ t('remove') }}</a>
                     </div>
                 </div>
-                <button class="button button--dark ignore-sortable" type="button" @click.prevent="addEvaluation()">{{ t('calculators.add-evaluation') }}</button>
+                <div class="ignore-sortable" style="text-align: center;">
+                    <button class="button button--dark" type="button" @click.prevent="addEvaluation()">{{ t('calculators.add-evaluation') }}</button>
+                </div>
             </div>
-            <button class="button button--outline" type="button" @click="resolveAll()">{{ t('preview') }}</button>
-            <button class="button button--dark" type="submit">{{ t('save') }}</button>
+            <div class="form-actions form-actions--timestamps">
+                <div class="form-actions__buttons">
+                    <RouterLink class="button button--outline" :to="{ name: 'calculators.index' }">{{ t('cancel') }}</RouterLink>
+                    <button class="button button--outline" type="button" @click="resolveAll()">{{ t('preview') }}</button>
+                    <button class="button button--dark" type="submit">{{ $t('save') }}</button>
+                </div>
+            </div>
         </div>
     </form>
 </template>
@@ -303,12 +333,13 @@ async function save(): Promise<void> {
 }
 .calculator-input-group {
     padding: var(--gap-size-3);
-    /* display: flex;
-    gap: var(--gap-size-2); */
 }
 .calculator-evaluation-group {
     padding: var(--gap-size-3);
     display: flex;
     gap: var(--gap-size-2);
+}
+.calculator-form__section-info {
+    margin-bottom: var(--gap-size-3);
 }
 </style>
