@@ -280,6 +280,58 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/calculators": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * List calculators
+         * @description Show a list of all calculators in a bar
+         */
+        get: operations["listCalculators"];
+        put?: never;
+        /**
+         * Create calculator
+         * @description Create a new calculator
+         */
+        post: operations["saveCalculator"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/calculators/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Show calculator
+         * @description Show a specific calculator
+         */
+        get: operations["showCalculator"];
+        /**
+         * Update calculator
+         * @description Update a specific calculator
+         */
+        put: operations["updateCalculator"];
+        post?: never;
+        /**
+         * Delete calculator
+         * @description Delete a specific calculator
+         */
+        delete: operations["deleteCalculator"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/cocktails": {
         parameters: {
             query?: never;
@@ -1828,6 +1880,8 @@ export interface components {
         AbilityEnum: "cocktails.read" | "cocktails.write" | "ingredients.read" | "ingredients.write";
         /** @enum {string} */
         BarStatusEnum: "provisioning" | "active" | "deactivated";
+        /** @enum {string} */
+        CalculatorBlockTypeEnum: "input" | "eval";
         APIError: {
             /** @example api_error */
             type: string;
@@ -1978,6 +2032,48 @@ export interface components {
                 /** @example 42 */
                 votes: number;
             }[];
+        };
+        Calculator: {
+            /** @example 1 */
+            id: number;
+            /** @example Calculator name */
+            name: string;
+            /** @example Calculator description */
+            description?: string | null;
+            blocks: components["schemas"]["CalculatorBlock"][];
+        };
+        CalculatorBlock: {
+            /** @example 1 */
+            sort: number;
+            /** @example Short label */
+            label: string;
+            /** @example var-name */
+            variable_name: string;
+            /** @example sugar * 2 */
+            value: string;
+            type?: components["schemas"]["CalculatorBlockTypeEnum"];
+            /** @example Short description */
+            description: string | null;
+            settings: components["schemas"]["CalculatorBlockSettings"];
+        };
+        CalculatorBlockRequest: {
+            label: string;
+            variable_name: string;
+            value: string;
+            type: components["schemas"]["CalculatorBlockTypeEnum"];
+            settings: components["schemas"]["CalculatorBlockSettings"];
+            description?: string | null;
+            sort: number;
+        };
+        CalculatorBlockSettings: {
+            suffix?: string | null;
+            prefix?: string | null;
+            decimal_places?: string | null;
+        };
+        CalculatorRequest: {
+            name: string;
+            blocks?: components["schemas"]["CalculatorBlockRequest"][];
+            description?: string | null;
         };
         Cocktail: {
             /** @example 1 */
@@ -3814,6 +3910,254 @@ export interface operations {
                 };
             };
         };
+        responses: {
+            /** @description Successful response */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description You are not authorized for this action. */
+            403: {
+                headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data?: components["schemas"]["APIError"];
+                    };
+                };
+            };
+            /** @description Resource record not found. */
+            404: {
+                headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data?: components["schemas"]["APIError"];
+                    };
+                };
+            };
+        };
+    };
+    listCalculators: {
+        parameters: {
+            query?: never;
+            header?: {
+                /** @description Database id of a bar. Required if you are not using `bar_id` query string. */
+                "Bar-Assistant-Bar-Id"?: number;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful response */
+            200: {
+                headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data: components["schemas"]["Calculator"][];
+                    };
+                };
+            };
+        };
+    };
+    saveCalculator: {
+        parameters: {
+            query?: never;
+            header?: {
+                /** @description Database id of a bar. Required if you are not using `bar_id` query string. */
+                "Bar-Assistant-Bar-Id"?: number;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["CalculatorRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful response */
+            201: {
+                headers: {
+                    /** @description URL of the new resource */
+                    Location?: string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data: components["schemas"]["Calculator"];
+                    };
+                };
+            };
+            /** @description You are not authorized for this action. */
+            403: {
+                headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data?: components["schemas"]["APIError"];
+                    };
+                };
+            };
+        };
+    };
+    showCalculator: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Database id of a resource */
+                id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful response */
+            200: {
+                headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data: components["schemas"]["Calculator"];
+                    };
+                };
+            };
+            /** @description You are not authorized for this action. */
+            403: {
+                headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data?: components["schemas"]["APIError"];
+                    };
+                };
+            };
+            /** @description Resource record not found. */
+            404: {
+                headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data?: components["schemas"]["APIError"];
+                    };
+                };
+            };
+        };
+    };
+    updateCalculator: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Database id of a resource */
+                id: number;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["CalculatorRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful response */
+            200: {
+                headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data: components["schemas"]["Calculator"];
+                    };
+                };
+            };
+            /** @description You are not authorized for this action. */
+            403: {
+                headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data?: components["schemas"]["APIError"];
+                    };
+                };
+            };
+            /** @description Resource record not found. */
+            404: {
+                headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data?: components["schemas"]["APIError"];
+                    };
+                };
+            };
+        };
+    };
+    deleteCalculator: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Database id of a resource */
+                id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
         responses: {
             /** @description Successful response */
             204: {
