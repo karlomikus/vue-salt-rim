@@ -69,7 +69,8 @@
     "bar-shelf-add-success": "Ajout de \"{name}\" à l'étagère du bar",
     "bar-shelf-remove-success": "Supprimer \"{name}\" de l'étagère du bar",
     "units-help": "Some features work the best if you use common units. Some recommendations for units are: ml, oz, cl, dashes, barspoon, drops, topup, leaves.",
-    "import": "Import ingredients"
+    "import": "Import ingredients",
+    "attach-calculator": "Attach calculator"
   },
   "share": {
     "title": "Partager",
@@ -639,6 +640,7 @@
   "uncategorized": "Uncategorized",
   "calculators": {
     "title": "Calculators",
+    "calculator": "Calculator",
     "add": "Create calculator",
     "information": "Basic information",
     "inputs": "Inputs",
@@ -655,7 +657,9 @@
     "confirm-eval-delete": "This will remove selected evaluation",
     "confirm-input-delete": "This will remove selected input",
     "inputs-description": "In this section, you define all your required inputs that will change the result of your evaluations. Each input can be used in all evaluations.",
-    "evaluations-description": "In this section, you define your evaluations and their result display settings. Each evaluation can access and use all previously defined inputs and evaluation results in expression using defined variable name."
+    "evaluations-description": "In this section, you define your evaluations and their result display settings. Each evaluation can access and use all previously defined inputs and evaluation results in expression using defined variable name.",
+    "copy-success": "Calculator copied to clipboard",
+    "import": "Import calculator"
   },
   "label": "Label",
   "prefix": "Prefix",
@@ -663,5 +667,8 @@
   "default-value": "Default value",
   "result": "Result",
   "error": "Error",
+  "permissions": {
+    "clipboard-error": "Your browser or server config does not support clipboard sharing."
+  },
   "preview": "Preview"
 }
