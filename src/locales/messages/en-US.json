@@ -69,7 +69,8 @@
     "bar-shelf-add-success": "Added \"{name}\" to bar shelf",
     "bar-shelf-remove-success": "Removed \"{name}\" from bar shelf",
     "units-help": "Optional ingredients won't be used in recipe matching. Some features work the best if you use common units. Some recommendations for units are: ml, oz, cl, dashes, barspoon, drops, topup, leaves.",
-    "import": "Import ingredients"
+    "import": "Import ingredients",
+    "attach-calculator": "Attach calculator"
   },
   "share": {
     "title": "Share",
@@ -639,6 +640,7 @@
   "uncategorized": "Uncategorized",
   "calculators": {
     "title": "Calculators",
+    "calculator": "Calculator",
     "add": "Create calculator",
     "information": "Basic information",
     "inputs": "Inputs",

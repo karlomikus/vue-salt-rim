@@ -12,7 +12,7 @@
             </div>
             <div class="form-group">
                 <label class="form-label" for="category">{{ $t('category.title') }}:</label>
-                <select id="category" v-model="ingredientCategoryId" class="form-select" required>
+                <select id="category" v-model="ingredientCategoryId" class="form-select">
                     <option :value="null" disabled>{{ $t('select-category') }}</option>
                     <option v-for="cat in categories" :key="cat.id" :value="cat.id">{{ cat.name }}</option>
                 </select>
@@ -45,6 +45,13 @@
                     <label class="form-label" for="color">{{ $t('color') }}:</label>
                     <input id="color" v-model="ingredient.color" class="form-input" type="color" style="width: 100%">
                 </div>
+            </div>
+            <div class="form-group">
+                <label class="form-label" for="calculator">{{ $t('ingredient.attach-calculator') }}:</label>
+                <select id="calculator" v-model="ingredient.calculator_id" class="form-select">
+                    <option :value="null">{{ $t('none') }}</option>
+                    <option v-for="calc in calculators" :key="calc.id" :value="calc.id">{{ calc.name }}</option>
+                </select>
             </div>
         </div>
         <h3 class="form-section-title">{{ $t('recipe-matching') }}</h3>
@@ -180,9 +187,11 @@ export default {
                 images: [],
                 ingredient_parts: [],
                 prices: [],
+                calculator_id: null,
             },
             categories: [],
             priceCategories: [],
+            calculators: [],
         }
     },
     computed: {
@@ -219,6 +228,7 @@ export default {
 
         this.refreshCategories()
         this.refreshPriceCategories()
+        this.refreshCalculators()
     },
     methods: {
         refreshIngredient() {
@@ -240,6 +250,11 @@ export default {
         refreshCategories() {
             BarAssistantClient.getIngredientCategories().then(resp => {
                 this.categories = resp.data
+            })
+        },
+        refreshCalculators() {
+            BarAssistantClient.getCalculators().then(resp => {
+                this.calculators = resp.data
             })
         },
         refreshPriceCategories() {
@@ -290,6 +305,7 @@ export default {
                 strength: this.ingredient.strength,
                 origin: this.ingredient.origin,
                 color: this.ingredient.color,
+                calculator_id: this.ingredient.calculator_id,
                 parent_ingredient_id: this.isParent && this.ingredient.parent_ingredient ? this.ingredient.parent_ingredient.id : null,
                 images: [],
                 ingredient_category_id: this.ingredientCategoryId,
