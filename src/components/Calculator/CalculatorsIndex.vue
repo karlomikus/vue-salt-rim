@@ -12,6 +12,9 @@ import { RouterLink } from 'vue-router';
 import { useSaltRimToast } from '@/composables/toast.js'
 import EmptyState from './../EmptyState.vue'
 import IconCalculator from '../Icons/IconCalculator.vue';
+import { useClipboard } from '@vueuse/core'
+import CalculatorImportDialog from './CalculatorImportDialog.vue';
+import SaltRimDialog from './../Dialog/SaltRimDialog.vue'
 
 type Calculator = components["schemas"]["Calculator"]
 
@@ -20,6 +23,8 @@ const toast = useSaltRimToast()
 const confirm = useConfirm()
 const calculators = ref<Calculator[]>([])
 const isLoading = ref<boolean>(false)
+const showImportDialog = ref<boolean>(false)
+const { copy, copied, isSupported } = useClipboard()
 
 useTitle(t('calculators.title'))
 
@@ -51,6 +56,22 @@ async function removeCalculator(calc: Calculator) {
     })
 }
 
+async function share(calc: Calculator) {
+    if (!isSupported.value) {
+        toast.error(t('permissions.clipboard-error'))
+        return
+    }
+
+    const { id, ...withoutId } = calc;
+
+    const source = JSON.stringify(withoutId)
+    await copy(source)
+
+    if (copied.value) {
+        toast.default(t('calculators.copy-success'))
+    }
+}
+
 fetchCalculators()
 </script>
 
@@ -58,6 +79,14 @@ fetchCalculators()
     <PageHeader>
         {{ t('calculators.title') }}
         <template #actions>
+            <SaltRimDialog v-model="showImportDialog">
+                <template #trigger>
+                    <button type="button" class="button button--outline" @click.prevent="showImportDialog = !showImportDialog">{{ $t('calculators.import') }}</button>
+                </template>
+                <template #dialog>
+                    <CalculatorImportDialog @closed="showImportDialog = false" @imported="fetchCalculators" />
+                </template>
+            </SaltRimDialog>
             <RouterLink class="button button--dark" :to="{ name: 'calculators.form' }">{{ t('calculators.add') }}</RouterLink>
         </template>
     </PageHeader>
@@ -67,7 +96,7 @@ fetchCalculators()
             <div v-for="calc in calculators" :key="calc.id" class="block-container block-container--padded calculators__calculator">
                 <CalculatorRender :calculator="calc"></CalculatorRender>
                 <div class="calculators__calculator__actions">
-                    <RouterLink :to="{ name: 'calculators.form', query: { id: calc.id } }">{{ t('edit') }}</RouterLink> &middot; <a href="#" @click.prevent="removeCalculator(calc)">{{ t('remove') }}</a>
+                    <RouterLink :to="{ name: 'calculators.form', query: { id: calc.id } }">{{ t('edit') }}</RouterLink> &middot; <a href="#" @click.prevent="share(calc)">{{ t('share.title') }}</a> &middot; <a href="#" @click.prevent="removeCalculator(calc)">{{ t('remove') }}</a>
                 </div>
             </div>
         </div>
