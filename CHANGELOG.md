@@ -1,3 +1,12 @@
+# v3.9.0
+## New
+- Added support for calculators api endpoints
+- Added support for adding images from URLs
+
+## Fixes
+- Empty shopping list no longer makes unnecessary requests to the API
+- Fixed import source getting saved between import types
+
 # v3.8.0
 ## New
 - Added bulk ingredient import page
