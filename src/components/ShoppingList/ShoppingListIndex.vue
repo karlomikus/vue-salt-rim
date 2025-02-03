@@ -57,6 +57,10 @@ async function refreshShoppingList() {
 }
 
 async function updateShoppingList() {
+    if (list.value.length === 0) {
+        return
+    }
+
     const postData = {
         ingredients: list.value.map(l => {
             return {
@@ -66,7 +70,11 @@ async function updateShoppingList() {
         })
     } as ShoppingListRequest
 
-    (await BarAssistantClient.addToShoppingList(appState.user.id, postData))
+    try {
+        (await BarAssistantClient.addToShoppingList(appState.user.id, postData))
+    } catch (e: any) {
+        toast.error(e.message)
+    }
 }
 
 function updateQuantity(shoppingListItem: ShoppingListItemWithFullIngredient, delta: number) {
