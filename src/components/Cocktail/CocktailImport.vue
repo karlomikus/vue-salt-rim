@@ -105,7 +105,13 @@ const isLoadingSimilar = ref(false)
 const bar = ref({} as Bar)
 const appState = new AppState()
 const duplicateAction = ref('none')
-const source = ref<null | string>(null)
+const source = ref<{
+    url: null | string,
+    json: null | string,
+}>({
+    url: null,
+    json: null,
+})
 const result = ref<LocalSchema>({} as LocalSchema)
 const cocktailTags = computed({
     get() {
@@ -130,7 +136,10 @@ getBar(appState.bar.id)
 
 function clearImport() {
     similarCocktails.value = []
-    source.value = null
+    source.value = {
+        url: null,
+        json: null,
+    }
     ingredientEdit.value = null
     result.value = {} as LocalSchema
 }
@@ -151,12 +160,12 @@ function importCocktail() {
 }
 
 function fromUrl() {
-    if (!source.value) {
+    if (!source.value.url) {
         return
     }
 
     isLoading.value = true
-    BarAssistantClient.scrapeCocktail(source.value).then(resp => {
+    BarAssistantClient.scrapeCocktail(source.value.url).then(resp => {
         const schema = resp?.data.schema
         if (!schema) {
             return
@@ -189,12 +198,12 @@ function fromUrl() {
 function fromJson() {
     isLoading.value = true
     try {
-        if (source.value != null) {
-            const parsed = JSON.parse(source.value) as Draft2Schema
+        if (source.value.json != null) {
+            const parsed = JSON.parse(source.value.json) as Draft2Schema
 
             // Draft 1 schema
             if (!parsed.recipe) {
-                const parsedDraft1 = JSON.parse(source.value) as Draft1Schema
+                const parsedDraft1 = JSON.parse(source.value.json) as Draft1Schema
 
                 result.value = {
                     ingredients: [],
@@ -207,6 +216,7 @@ function fromJson() {
                         source: parsedDraft1.source,
                         method: parsedDraft1.method,
                         glass: parsedDraft1.glass,
+                        tags: parsedDraft1.tags,
                         matchedGlassId: null,
                         matchedMethodId: null,
                         images: parsedDraft1.images?.map(img => ({file: img.source, uri: img.source, copyright: img.copyright})) ?? [],
@@ -481,11 +491,11 @@ async function getBar(barId: number): Promise<void> {
             </div>
             <div v-if="importType === 'url'" class="form-group">
                 <label class="form-label form-label--required" for="import-source">{{ t('source') }}:</label>
-                <input id="import-source" v-model="source" type="url" class="form-input" placeholder="https://" required>
+                <input id="import-source" v-model="source.url" type="url" class="form-input" placeholder="https://" required>
             </div>
             <div v-else class="form-group">
                 <label class="form-label form-label--required" for="import-source">{{ t('source') }}:</label>
-                <textarea id="import-source" v-model="source" class="form-input" rows="14" required></textarea>
+                <textarea id="import-source" v-model="source.json" class="form-input" rows="14" required></textarea>
                 <p class="form-input-hint">
                     JSON structure needs to be compatible with <a href="https://barassistant.app/cocktail-02.schema.json">Draft 2</a> or <a href="https://barassistant.app/cocktail-01.schema.json">Draft 1</a> JSON schema.
                 </p>
