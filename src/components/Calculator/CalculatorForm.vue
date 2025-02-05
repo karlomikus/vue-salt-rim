@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, computed, nextTick } from 'vue'
 import { parser } from 'mathjs'
 import OverlayLoader from '@/components/OverlayLoader.vue'
 import PageHeader from '../PageHeader.vue';
@@ -81,6 +81,10 @@ function updateSortPosition(): void {
     })
 }
 
+const sortedEvaluations = computed(() => {
+    return [...evaluations.value].sort((a, b) => a.block.sort - b.block.sort)
+})
+
 function initSortable() {
     sortable.value = Sortable.create(evalList.value, {
         handle: '.drag-handle',
@@ -160,8 +164,8 @@ function resolveAll(): void {
         mathParser.set(input.variable_name, input.value)
     })
 
-    for(let i = 0; i < evaluations.value.length; i++) {
-        const evaluation = evaluations.value[i]
+    for(let i = 0; i < sortedEvaluations.value.length; i++) {
+        const evaluation = sortedEvaluations.value[i]
         let result = null
 
         try {
