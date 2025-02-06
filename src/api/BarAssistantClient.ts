@@ -561,4 +561,24 @@ export default class BarAssistantClient {
       }
     })).data
   }
+
+  static async getCalculators() {
+    return (await client.GET('/calculators')).data
+  }
+
+  static async getCalculator(id: number) {
+    return (await client.GET('/calculators/{id}', { params: { path: { id: id } } })).data
+  }
+
+  static async saveCalculator(data: components["schemas"]["CalculatorRequest"]) {
+    return (await client.POST('/calculators', { body: data })).data
+  }
+
+  static async updateCalculator(id: number, data: components["schemas"]["CalculatorRequest"]) {
+    return (await client.PUT('/calculators/{id}', { params: { path: { id: id } }, body: data })).data
+  }
+
+  static async deleteCalculator(id: number) {
+    return (await client.DELETE('/calculators/{id}', { params: { path: { id: id } } })).data
+  }
 }

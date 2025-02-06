@@ -1,6 +1,7 @@
 <script setup>
 import UnitHandler from '../../UnitHandler.js'
 import DateFormatter from '../DateFormatter.vue'
+import CalculatorRender from '../Calculator/CalculatorRender.vue'
 </script>
 <template>
     <div v-if="!ingredient.id">
@@ -141,6 +142,11 @@ import DateFormatter from '../DateFormatter.vue'
                     </ul>
                     <div v-html="parsedDescription" class="has-markdown"></div>
                 </div>
+                <div v-if="ingredient.calculator_id" class="block-container block-container--padded">
+                    <h2 class="details-block-container__title">{{ $t('calculators.calculator') }}</h2>
+                    <OverlayLoader v-if="isLoadingCalculator" />
+                    <CalculatorRender v-if="calculator" :calculator="calculator"></CalculatorRender>
+                </div>
                 <div v-if="ingredient.prices.length > 0" class="block-container block-container--padded ingredient-details__prices">
                     <h2 class="details-block-container__title">{{ $t('price.prices') }}</h2>
                     <div class="ingredient-details__prices__list">
@@ -191,9 +197,11 @@ export default {
     },
     data: () => ({
         appState: new AppState(),
+        isLoadingCalculator: false,
         isLoadingIngredient: false,
         isLoadingExtra: false,
         ingredient: {},
+        calculator: null,
         extraIfAddedToShelf: []
     }),
     computed: {
@@ -251,6 +259,9 @@ export default {
             async () => {
                 if (this.$route.name == 'ingredients.show') {
                     await this.refreshIngredient()
+                    if (this.ingredient.calculator_id) {
+                        await this.fetchCalculator()
+                    }
                 }
             },
             { immediate: true }
@@ -272,6 +283,16 @@ export default {
             this.isLoadingExtra = true
             this.extraIfAddedToShelf = (await BarAssistantClient.getExtraCocktailsWithIngredient(this.ingredient.id)).data
             this.isLoadingExtra = false
+        },
+        async fetchCalculator() {
+            this.isLoadingCalculator = true
+            try {
+                this.calculator = (await BarAssistantClient.getCalculator(this.ingredient.calculator_id)).data
+            } catch (e) {
+                this.$toast.default(e.message)
+            } finally {
+                this.isLoadingCalculator = false
+            }
         },
         deleteIngredient() {
             this.$confirm(this.$t('ingredient.delete-confirm', { name: this.ingredient.name, total: this.ingredient.cocktails_count }), {

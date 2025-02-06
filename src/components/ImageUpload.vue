@@ -31,6 +31,7 @@ defineExpose({
     save
 })
 
+const externalImageUrl = ref('')
 const toast = useSaltRimToast()
 const confirm = useConfirm()
 const { t } = useI18n()
@@ -153,6 +154,28 @@ function handleDragend(e: DragEvent): void {
     isDragover.value = false
 }
 
+function addExternalImage() {
+    if (!externalImageUrl.value || externalImageUrl.value == '') {
+        return
+    }
+
+    const url = URL.parse(externalImageUrl.value)
+    if (!url) {
+        return
+    }
+
+    images.value.push({
+        id: null,
+        file: externalImageUrl.value,
+        preview: externalImageUrl.value,
+        fileName: url.pathname.split('/').pop(),
+        copyright: url.hostname,
+        sort: images.value.length + 1,
+    })
+
+    externalImageUrl.value = ''
+}
+
 async function save() {
     if (!sortable.value) {
         return;
@@ -213,9 +236,21 @@ async function save() {
             </div>
         </div>
         <div class="image-upload__actions">
-            <button :disabled="hasMaxImages" type="button" @click="open()" class="button button--dark">{{ t('imageupload.browse') }}</button>
-            <br>
-            {{ t('imageupload.validation', {max: '50MB'}) }} &middot; {{ t('imageupload.status', {current: images.length, max: maxImages}) }}
+            <div>
+                <button :disabled="hasMaxImages" type="button" @click="open()" class="button button--dark">{{ t('imageupload.browse') }}</button>
+            </div>
+            <div>
+                &mdash; {{ t('or') }} &mdash;
+            </div>
+            <div class="image-upload__actions__external">
+                <input v-model="externalImageUrl" class="form-input form-input--small" type="text" :placeholder="t('placeholder.external-image')">
+                <button :disabled="hasMaxImages" type="button" @click="addExternalImage()" class="button button--dark">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M16.1716 10.9999L10.8076 5.63589L12.2218 4.22168L20 11.9999L12.2218 19.778L10.8076 18.3638L16.1716 12.9999H4V10.9999H16.1716Z"></path></svg>
+                </button>
+            </div>
+            <div>
+                {{ t('imageupload.validation', {max: '50MB'}) }} &middot; {{ t('imageupload.status', {current: images.length, max: maxImages}) }}
+            </div>
         </div>
     </div>
 </template>
@@ -256,6 +291,9 @@ async function save() {
 
 .image-upload__actions {
     text-align: center;
+    display: flex;
+    flex-direction: column;
+    gap: var(--gap-size-2);
 }
 
 .image-upload__images__onboard {
@@ -270,5 +308,12 @@ async function save() {
 .image-upload__images__onboard svg {
     height: 64px;
     fill: var(--clr-gray-700);
+}
+
+.image-upload__actions__external {
+    max-width: 400px;
+    margin: 0 auto;
+    display: flex;
+    gap: var(--gap-size-1);
 }
 </style>

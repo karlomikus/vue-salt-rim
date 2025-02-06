@@ -6,6 +6,13 @@
     gap: var(--gap-size-2);
 }
 
+.form-row-group {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: var(--gap-size-2);
+}
+
 @media (max-width: 450px) {
     .form-group {
         margin-bottom: 1.25rem;

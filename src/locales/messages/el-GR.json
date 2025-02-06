@@ -69,7 +69,8 @@
     "bar-shelf-add-success": "Added \"{name}\" to bar shelf",
     "bar-shelf-remove-success": "Removed \"{name}\" from bar shelf",
     "units-help": "Some features work the best if you use common units. Some recommendations for units are: ml, oz, cl, dashes, barspoon, drops, topup, leaves.",
-    "import": "Import ingredients"
+    "import": "Import ingredients",
+    "attach-calculator": "Attach calculator"
   },
   "share": {
     "title": "Share",
@@ -162,7 +163,8 @@
     "site-search": "Search for a cocktail or ingredient...",
     "image-copyright": "Image source URL or other reference...",
     "search-ingredients": "Search for ingredients...",
-    "search-cocktails": "Search for cocktails..."
+    "search-cocktails": "Search for cocktails...",
+    "external-image": "Paste image URL"
   },
   "amount": "Amount",
   "units": "Units",
@@ -635,5 +637,38 @@
   "in_your_shelf": "Available in your shelf",
   "is_public": "Has public link",
   "website": "Δικτυακός τόπος",
-  "uncategorized": "Uncategorized"
+  "uncategorized": "Uncategorized",
+  "calculators": {
+    "title": "Calculators",
+    "calculator": "Calculator",
+    "add": "Create calculator",
+    "information": "Basic information",
+    "inputs": "Inputs",
+    "evaluations": "Evaluations",
+    "expression": "Expression",
+    "var-name": "Variable name",
+    "missing-result": "None, click preview to resolve",
+    "add-evaluation": "Add evaluation",
+    "add-input": "Add input",
+    "edit": "Edit calculator",
+    "delete-confirm": "This will permanently delete calculator with name \"{name}\".",
+    "delete-success": "Calculator deleted successfully",
+    "empty": "There are no calculators added yet",
+    "confirm-eval-delete": "This will remove selected evaluation",
+    "confirm-input-delete": "This will remove selected input",
+    "inputs-description": "In this section, you define all your required inputs that will change the result of your evaluations. Each input can be used in all evaluations.",
+    "evaluations-description": "In this section, you define your evaluations and their result display settings. Each evaluation can access and use all previously defined inputs and evaluation results in expression using defined variable name.",
+    "copy-success": "Calculator copied to clipboard",
+    "import": "Import calculator"
+  },
+  "label": "Label",
+  "prefix": "Prefix",
+  "suffix": "Suffix",
+  "default-value": "Default value",
+  "result": "Result",
+  "error": "Error",
+  "permissions": {
+    "clipboard-error": "Your browser or server config does not support clipboard sharing."
+  },
+  "preview": "Preview"
 }
