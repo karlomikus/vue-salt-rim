@@ -24,9 +24,22 @@
                     Unable to connect to "{{ baServer }}" API server. <a href="https://docs.barassistant.app/faq/" target="_blank">Learn more</a>.
                 </div>
             </div>
-            <div v-if="baServerAvailable" style="text-align: right; margin-top: 20px;">
-                <RouterLink v-if="registrationAllowed" class="button button--outline" :to="{ name: 'register' }">{{ $t('register') }}</RouterLink>
-                <button type="submit" class="button button--dark" style="margin-left: 5px;" :disabled="!baServerAvailable">{{ $t('login') }}</button>
+            <div v-if="baServerAvailable && localLoginEnabled" style="text-align: right; margin-top: 20px;">
+                <RouterLink v-if="registrationAllowed" class="button button--outline" :to="{ name: 'register' }">{{
+                    $t('register') }}</RouterLink>
+                <button type="submit" class="button button--dark" style="margin-left: 5px;"
+                    :disabled="!baServerAvailable">{{ $t('login') }}</button>
+            </div>
+            <div v-if="baServerAvailable && oauthLoginEnabled" class="login-page__oauth-login">
+                <button v-for="provider in providers" key="provider.name" @click="oauthLogin(provider)" :class="[
+                    'button',
+                    'button--outline',
+                    'login-page__oauth-login-button',
+                    `login-page__oauth-login-button-${provider.type}`
+                ]" type="button">
+                    <img :src="`/oauth-icons/${provider.icon}`" alt="oauth login icon" width="24" height="24">
+                    <span>{{ $t('auth.login-oauth', { name: provider.name }) }}</span>
+                </button>
             </div>
         </form>
     </div>
@@ -37,6 +50,8 @@ import BarAssistantClient from '@/api/BarAssistantClient'
 import OverlayLoader from './../OverlayLoader.vue'
 import SiteLogo from './../Layout/SiteLogo.vue'
 import AppState from './../../AppState'
+import { createUserManager, PROVIDER_ID_KEY } from '@/api/OIDC';
+import { initAppState } from '@/api/Auth';
 
 export default {
     components: {
@@ -50,8 +65,12 @@ export default {
             password: null,
             rememberMe: localStorage.getItem('sr_remember_login') ?? true,
             baServer: window.srConfig.API_URL,
-            registrationAllowed: window.srConfig.ALLOW_REGISTRATION && window.srConfig.ALLOW_REGISTRATION === 'false' ? false : true,
+            registrationAllowed: window.srConfig.ALLOW_REGISTRATION !== false,
             server: {},
+            providers: [],
+            localLoginEnabled: false,
+            oauthLoginEnabled: false,
+            oauthLoginSelfRegistrationEnabled: false,
         }
     },
     computed: {
@@ -63,7 +82,7 @@ export default {
         },
         showForgotPassword() {
             return window.srConfig.MAILS_ENABLED === true
-        }
+        },
     },
     watch: {
         rememberMe: {
@@ -73,52 +92,54 @@ export default {
             immediate: true
         }
     },
-    created() {
+    async created() {
         this.isLoading = true
-        BarAssistantClient.getServerVersion().then(resp => {
-            this.server = resp.data
+
+        try {
+            const [serverVersion, authConfig] = await Promise.all([
+                BarAssistantClient.getServerVersion(),
+                BarAssistantClient.getAuthConfig(),
+            ])
+
+            this.server = serverVersion.data
+            this.localLoginEnabled = authConfig.data.localLoginEnabled
+            this.oauthLoginEnabled = authConfig.data.oauthLoginEnabled
+            this.providers = authConfig.data.oauthProviders
+
             this.isLoading = false
 
             if (this.isDemo) {
                 this.email = 'admin@example.com'
                 this.password = 'password'
             }
-        }).catch(() => {
+        } catch (err) {
             this.isLoading = false
-        })
+        }
     },
     methods: {
-        login() {
+        async login() {
             this.isLoading = true
             const appState = new AppState()
-            let redirectPath = this.$route.query.redirect
 
-            BarAssistantClient.getLoginToken(this.email, this.password).then(resp => {
-                appState.setToken(resp.data.token)
-                BarAssistantClient.getProfile().then(profileResp => {
-                    appState.setUser(profileResp.data)
+            try {
+                const token = await BarAssistantClient.getLoginToken(this.email, this.password)
 
-                    BarAssistantClient.getBars().then(barsResp => {
-                        if (redirectPath == undefined) {
-                            if (barsResp.data.length == 1) {
-                                appState.setBar(barsResp.data[0])
-                                redirectPath = '/'
-                            } else {
-                                redirectPath = '/bars'
-                            }
-                        }
-                        
-                        this.$router.push(redirectPath)
-                    })
-                }).catch(e => {
-                    appState.forgetUser()
-                    this.isLoading = false
-                    this.$toast.error(e.message)
+                const redirectPath = await initAppState({
+                    token: token.data.token,
+                    appState: appState,
+                    redirectPath: this.$route.query.redirect,
                 })
-            }).catch(e => {
+
+                this.$router.push(redirectPath)
+            } catch (err) {
+                appState.forgetUser()
                 this.isLoading = false
-                this.$toast.error(e.message)
-            })
+                this.$toast.error(err.message)
+            }
+        },
+        oauthLogin(provider) {
+            localStorage.setItem(PROVIDER_ID_KEY, provider.id)
+            createUserManager(provider).signinRedirect()
         }
     }
 }
@@ -159,6 +180,14 @@ export default {
     color: var(--clr-accent-700);
 }
 
+.login-page__oauth-login {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    justify-content: center;
+    margin-top: 2rem;
+}
+
 .form-label--forgot-password {
     display: flex;
     flex-direction: wrap;
@@ -167,5 +196,38 @@ export default {
 .form-label--forgot-password a {
     margin-left: auto;
     font-size: 0.85rem;
+}
+
+.login-page__oauth-login-button {
+    display: flex;
+}
+
+.login-page__oauth-login-button img {
+    margin-right: auto;
+}
+
+.login-page__oauth-login-button span {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.login-page__oauth-login-button-google {
+    background: #fff;
+    color: var(--clr-gray-950);
+}
+
+.login-page__oauth-login-button-facebook {
+    background: #3b5998;
+    color: #fff;
+}
+
+.login-page__oauth-login-button-facebook:hover {
+    color: #fff;
+}
+
+.login-page__oauth-login-button-oidc {
+    background: #fff;
+    color: var(--clr-gray-950)
 }
 </style>

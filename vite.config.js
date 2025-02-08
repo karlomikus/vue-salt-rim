@@ -50,6 +50,21 @@ const manifest = {
 
 // https://vitejs.dev/config/
 export default defineConfig({
+    server: {
+        proxy: {
+            '/api': {
+                target: 'http://localhost:8000',
+                changeOrigin: true,
+                secure: false,
+            },
+            '/search': {
+                target: 'http://localhost:7700',
+                changeOrigin: true,
+                secure: false,
+                rewrite: (path) => path.replace(/^\/search/, ''),
+            },
+        },
+    },
     plugins: [vue({
         template: {
             compilerOptions: {
