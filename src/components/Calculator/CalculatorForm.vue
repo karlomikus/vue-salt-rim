@@ -232,6 +232,7 @@ async function save(): Promise<void> {
                 <div class="form-group">
                     <label class="form-label">{{ t('description') }}</label>
                     <textarea class="form-input" rows="3" v-model="calculator.description"></textarea>
+                    <p class="form-input-hint">{{ $t('field-supports-md') }}</p>
                 </div>
             </div>
             <h3 class="form-section-title">{{ t('calculators.inputs') }}</h3>
