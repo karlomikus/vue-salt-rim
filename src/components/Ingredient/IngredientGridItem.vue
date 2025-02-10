@@ -5,7 +5,7 @@
         </div>
         <div class="ingredient-grid-item__content">
             <RouterLink class="ingredient-grid-item__title" :to="{ name: 'ingredients.show', params: { id: ingredient.slug } }">
-                <small v-if="ingredient.category">{{ ingredient.category.name }}</small>
+                <small v-if="ingredient.materialized_path">{{ ingredient.materialized_path }}</small>
                 {{ ingredient.name }}
             </RouterLink>
             <p v-html="cleanDescription"></p>

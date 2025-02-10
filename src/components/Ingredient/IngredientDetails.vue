@@ -19,8 +19,10 @@ import CalculatorRender from '../Calculator/CalculatorRender.vue'
         <PageHeader>
             {{ ingredient.name }}
             <small :title="$t('added-on-by', { date: createdDate, name: ingredient.created_user.name })">
-                <template v-if="ingredient.category">
-                    <RouterLink :to="{ name: 'ingredients', query: { 'filter[category_id]': ingredient.category.id } }">{{ ingredient.category.name }}</RouterLink> &middot;
+                <template v-for="(ancestor, index) in ingredient.relationships.ancestors" :key="ancestor.id">
+                    <RouterLink :to="{ name: 'ingredients.show', params: { id: ancestor.slug } }">{{ ancestor.name }}</RouterLink>
+                    <template v-if="index + 1 !== ingredient.relationships.ancestors.length"> > </template>
+                    <template v-else> &middot; </template>
                 </template>
                 <template v-if="ingredient.updated_user">{{ $t('updated-on-by', { date: updatedDate, name: ingredient.updated_user.name }) }}</template>
                 <template v-else>{{ $t('added-on-by', { date: createdDate, name: ingredient.created_user.name }) }}</template>
@@ -34,10 +36,10 @@ import CalculatorRender from '../Calculator/CalculatorRender.vue'
                 </div>
             </div>
             <div class="ingredient-details__column-sidebar">
-                <div v-if="ingredient.varieties.length > 0">
+                <!-- <div v-if="ingredient.varieties.length > 0">
                     <h3 class="page-subtitle">{{ $t('see-also') }}</h3>
                     <IngredientTile v-for="ing in ingredient.varieties" :key="ing.slug" :ingredient="ing" :images="[]"></IngredientTile>
-                </div>
+                </div> -->
                 <div v-if="ingredient.used_as_substitute_for && ingredient.used_as_substitute_for.length > 0">
                     <h3 class="page-subtitle">{{ $t('ingredient.used_as_substitute_for') }}</h3>
                     <IngredientTile v-for="ing in ingredient.used_as_substitute_for" :key="ing.slug" :ingredient="ing" :images="[]"></IngredientTile>
