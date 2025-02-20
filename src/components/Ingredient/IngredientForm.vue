@@ -11,23 +11,6 @@
                 <input id="name" v-model="ingredient.name" class="form-input" type="text" required>
             </div>
             <div class="form-group">
-                <label class="form-label" for="category">{{ $t('category.title') }}:</label>
-                <select id="category" v-model="ingredientCategoryId" class="form-select">
-                    <option :value="null" disabled>{{ $t('select-category') }}</option>
-                    <option v-for="cat in categories" :key="cat.id" :value="cat.id">{{ cat.name }}</option>
-                </select>
-                <p class="form-input-hint">
-                    <SaltRimDialog v-model="showCategoryDialog">
-                        <template #trigger>
-                            <a href="#" @click.prevent="showCategoryDialog = true">{{ $t('category.add') }}</a>
-                        </template>
-                        <template #dialog>
-                            <CategoryForm :dialog-title="$t('category.add')" @category-dialog-closed="handleCategoryDialogClosed" />
-                        </template>
-                    </SaltRimDialog>
-                </p>
-            </div>
-            <div class="form-group">
                 <label class="form-label" for="description">{{ $t('description') }}:</label>
                 <textarea id="description" v-model="ingredient.description" rows="4" class="form-input"></textarea>
                 <p class="form-input-hint">{{ $t('field-supports-md') }}</p>
@@ -60,9 +43,9 @@
                 <SaltRimCheckbox id="parent-ingredient-checkbox" v-model="isParent" :label="$t('ingredient.is-variety')" :description="'[EXPERIMENTAL] ' + $t('ingredient.variety-note')"></SaltRimCheckbox>
             </div>
             <div v-show="isParent" class="form-group" v-if="bar.search_host">
-                <IngredientFinder v-show="ingredient.parent_ingredient == null" :search-token="bar.search_token" v-model="ingredient.parent_ingredient" :disabled-ingredients="disabledFinderIngredients"></IngredientFinder>
-                <div v-if="ingredient.parent_ingredient" style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
-                    {{ ingredient.parent_ingredient.name }} &middot; <a href="#" @click.prevent="ingredient.parent_ingredient = null">{{ $t('remove') }}</a>
+                <IngredientFinder v-show="ingredient.hierarchy.parent_ingredient == null" :search-token="bar.search_token" v-model="ingredient.hierarchy.parent_ingredient" :disabled-ingredients="disabledFinderIngredients"></IngredientFinder>
+                <div v-if="ingredient.hierarchy.parent_ingredient" style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+                    {{ ingredient.hierarchy.parent_ingredient.name }} &middot; <a href="#" @click.prevent="ingredient.hierarchy.parent_ingredient = null">{{ $t('remove') }}</a>
                 </div>
             </div>
             <div class="form-group">
@@ -150,7 +133,6 @@ import TimeStamps from '../TimeStamps.vue'
 import EmptyState from '../EmptyState.vue'
 import SaltRimCheckbox from '../SaltRimCheckbox.vue'
 import SaltRimDialog from '../Dialog/SaltRimDialog.vue'
-import CategoryForm from '../Settings/CategoryForm.vue'
 import CloseButton from '../CloseButton.vue'
 import { useTitle } from '@/composables/title'
 import AppState from '@/AppState.js'
@@ -165,7 +147,6 @@ export default {
         EmptyState,
         SaltRimCheckbox,
         SaltRimDialog,
-        CategoryForm,
         CloseButton
     },
     data() {
@@ -174,8 +155,6 @@ export default {
             isLoading: false,
             isParent: false,
             isComplex: false,
-            showCategoryDialog: false,
-            ingredientCategoryId: null,
             bar: {
                 search_host: null,
                 search_token: null,
@@ -183,13 +162,12 @@ export default {
             ingredient: {
                 id: null,
                 color: '#000',
-                category: {},
                 images: [],
                 ingredient_parts: [],
+                hierarchy: {},
                 prices: [],
                 calculator_id: null,
             },
-            categories: [],
             priceCategories: [],
             calculators: [],
         }
@@ -226,7 +204,6 @@ export default {
             this.refreshIngredient()
         }
 
-        this.refreshCategories()
         this.refreshPriceCategories()
         this.refreshCalculators()
     },
@@ -237,19 +214,11 @@ export default {
                 resp.data.description = Utils.decodeHtml(resp.data.description)
 
                 this.ingredient = resp.data
-                this.isParent = this.ingredient.parent_ingredient != null
+                this.isParent = this.ingredient.hierarchy.parent_ingredient != null
                 this.isComplex = this.ingredient.ingredient_parts.length > 0
-                if (resp.data.category) {
-                    this.ingredientCategoryId = resp.data.category.id
-                }
 
                 useTitle(`${this.$t('ingredient.title')} \u22C5 ${this.ingredient.name}`)
                 this.isLoading = false
-            })
-        },
-        refreshCategories() {
-            BarAssistantClient.getIngredientCategories().then(resp => {
-                this.categories = resp.data
             })
         },
         refreshCalculators() {
@@ -275,13 +244,6 @@ export default {
                 1
             )
         },
-        handleCategoryDialogClosed(eventPayload) {
-            this.showCategoryDialog = false
-            if (eventPayload) {
-                this.ingredientCategoryId = eventPayload.id
-                this.refreshCategories()
-            }
-        },
         addIngredientPrice() {
             this.ingredient.prices.push({price_category: {id: null}, price: {}})
         },
@@ -306,9 +268,8 @@ export default {
                 origin: this.ingredient.origin,
                 color: this.ingredient.color,
                 calculator_id: this.ingredient.calculator_id,
-                parent_ingredient_id: this.isParent && this.ingredient.parent_ingredient ? this.ingredient.parent_ingredient.id : null,
+                parent_ingredient_id: this.isParent && this.ingredient.hierarchy.parent_ingredient ? this.ingredient.hierarchy.parent_ingredient.id : null,
                 images: [],
-                ingredient_category_id: this.ingredientCategoryId,
                 complex_ingredient_part_ids: [...new Set(this.ingredient.ingredient_parts.map(i => i.id))],
                 prices: this.ingredient.prices.filter(p => p.price_category.id != null).map(p => ({
                     price_category_id: p.price_category.id,

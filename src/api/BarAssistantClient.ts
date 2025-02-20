@@ -339,10 +339,6 @@ export default class BarAssistantClient {
     return (await client.DELETE('/utensils/{id}', { params: { path: { id: id } } })).data
   }
 
-  static async getIngredientCategories() {
-    return (await client.GET('/ingredient-categories')).data
-  }
-
   static async getPriceCategories() {
     return (await client.GET('/price-categories')).data
   }
@@ -357,22 +353,6 @@ export default class BarAssistantClient {
 
   static async deletePriceCategory(id: number) {
     return (await client.DELETE('/price-categories/{id}', { params: { path: { id: id } } })).data
-  }
-
-  static async getIngredientCategory(id: number) {
-    return (await client.GET('/ingredient-categories/{id}', { params: { path: { id: id } } })).data
-  }
-
-  static async updateIngredientCategory(id: number, data: components["schemas"]["IngredientCategoryRequest"]) {
-    return (await client.PUT('/ingredient-categories/{id}', { params: { path: { id: id } }, body: data })).data
-  }
-
-  static async deleteIngredientCategory(id: number) {
-    return (await client.DELETE('/ingredient-categories/{id}', { params: { path: { id: id } } })).data
-  }
-
-  static async saveIngredientCategory(data: components["schemas"]["IngredientCategoryRequest"]) {
-    return (await client.POST('/ingredient-categories', { body: data })).data
   }
 
   static async getUsers() {

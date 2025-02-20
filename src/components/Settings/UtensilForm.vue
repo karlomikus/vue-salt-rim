@@ -41,7 +41,6 @@ export default {
     data() {
         return {
             isLoading: false,
-            categoryId: null,
             utensil: this.sourceData,
         }
     },

@@ -19,7 +19,7 @@
                             <label :for="'global-' + filter.id">{{ filter.name }}</label>
                         </div>
                     </Refinement>
-                    <Refinement id="ingredient-category" v-model="activeFilters.category_id" :title="$t('category.title')" :refinements="refineCategories" @change="updateRouterPath"></Refinement>
+                    <Refinement id="ingredient-category" v-model="activeFilters.descendants_of" :title="$t('category.title')" :refinements="refineCategories" @change="updateRouterPath"></Refinement>
                     <Refinement id="strength" v-model="activeFilters.strength" :title="$t('strength')" :refinements="refineStrength" type="radio" @change="updateRouterPath"></Refinement>
                 </div>
             </div>
@@ -129,7 +129,8 @@ export default {
                 ],
             },
             activeFilters: {
-                category_id: [],
+                descendants_of: [],
+                parent_ingredient_id: [],
                 on_shelf: false,
                 bar_shelf: false,
                 main_ingredients: false,
@@ -213,15 +214,15 @@ export default {
     },
     methods: {
         fetchRefinements() {
-            BarAssistantClient.getIngredientCategories().then(resp => {
+            BarAssistantClient.getIngredients({ 'filter[parent_ingredient_id]': 'null' }).then(resp => {
                 this.availableRefinements.categories = resp.data
             })
         },
         queryToState() {
             const state = qs.parse(this.$route.query)
 
-            this.activeFilters.category_id = state.filter && state.filter.category_id ? String(state.filter.category_id).split(',') : []
-
+            this.activeFilters.descendants_of = state.filter && state.filter.descendants_of ? String(state.filter.descendants_of).split(',') : []
+            this.activeFilters.parent_ingredient_id = state.filter && state.filter.parent_ingredient_id ? String(state.filter.parent_ingredient_id).split(',') : []
             this.activeFilters.on_shelf = state.filter && state.filter.on_shelf ? state.filter.on_shelf : null
             this.activeFilters.bar_shelf = state.filter && state.filter.bar_shelf ? state.filter.bar_shelf : null
             this.activeFilters.main_ingredients = state.filter && state.filter.main_ingredients ? state.filter.main_ingredients : null
@@ -253,7 +254,8 @@ export default {
 
             const filters = {
                 name: (this.searchQuery != null && this.searchQuery != '') ? this.searchQuery : null,
-                category_id: this.activeFilters.category_id.length > 0 ? this.activeFilters.category_id.join(',') : null,
+                descendants_of: this.activeFilters.descendants_of.length > 0 ? this.activeFilters.descendants_of.join(',') : null,
+                parent_ingredient_id: this.activeFilters.parent_ingredient_id.length > 0 ? this.activeFilters.parent_ingredient_id.join(',') : null,
                 on_shelf: this.activeFilters.on_shelf,
                 bar_shelf: this.activeFilters.bar_shelf,
                 complex: this.activeFilters.complex,
@@ -278,7 +280,7 @@ export default {
         },
         refreshIngredients() {
             const query = this.stateToQuery()
-            query.include = 'images,category'
+            query.include = 'images,ancestors'
 
             this.isLoading = true
             BarAssistantClient.getIngredients(query).then(resp => {
@@ -309,7 +311,8 @@ export default {
             this.currentPage = 1,
             this.per_page = 50,
             this.activeFilters = {
-                category_id: [],
+                descendants_of: [],
+                parent_ingredient_id: [],
                 on_shelf: false,
                 bar_shelf: false,
                 main_ingredients: false,
