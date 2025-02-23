@@ -19,9 +19,9 @@ import CalculatorRender from '../Calculator/CalculatorRender.vue'
         <PageHeader>
             {{ ingredient.name }}
             <small :title="$t('added-on-by', { date: createdDate, name: ingredient.created_user.name })">
-                <template v-for="(ancestor, index) in ingredient.relationships.ancestors" :key="ancestor.id">
-                    <RouterLink :to="{ name: 'ingredients.show', params: { id: ancestor.slug } }">{{ ancestor.name }}</RouterLink>
-                    <template v-if="index + 1 !== ingredient.relationships.ancestors.length"> > </template>
+                <template v-for="(ancestor, index) in ingredient.hierarchy.ancestors" :key="ancestor.id">
+                    <RouterLink :to="{ name: 'ingredients', query: { 'filter[descendants_of]': ancestor.id } }">{{ ancestor.name }}</RouterLink>
+                    <template v-if="index + 1 !== ingredient.hierarchy.ancestors.length"> > </template>
                     <template v-else> &middot; </template>
                 </template>
                 <template v-if="ingredient.updated_user">{{ $t('updated-on-by', { date: updatedDate, name: ingredient.updated_user.name }) }}</template>
@@ -36,10 +36,32 @@ import CalculatorRender from '../Calculator/CalculatorRender.vue'
                 </div>
             </div>
             <div class="ingredient-details__column-sidebar">
-                <!-- <div v-if="ingredient.varieties.length > 0">
-                    <h3 class="page-subtitle">{{ $t('see-also') }}</h3>
-                    <IngredientTile v-for="ing in ingredient.varieties" :key="ing.slug" :ingredient="ing" :images="[]"></IngredientTile>
-                </div> -->
+                <div class="item-details__chips">
+                    <div class="item-details__chips__group">
+                        <div class="item-details__chips__group__title">{{ $t('strength') }}:</div>
+                        <ul v-if="ingredient.strength > 0" class="chips-list">
+                            <li>
+                                <span><abbr :title="$t('ABV-definition')">{{ $t('ABV') }}</abbr>: {{ ingredient.strength + '%' }}</span>
+                            </li>
+                            <li>
+                                <span>{{ $t('alcohol-proof') }}: {{ ingredient.strength * 2 }}</span>
+                            </li>
+                        </ul>
+                        <ul v-else class="chips-list">
+                            <li>
+                                <span>{{ $t('non-alcoholic') }}</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div v-if="ingredient.origin" class="item-details__chips__group">
+                        <div class="item-details__chips__group__title">{{ $t('origin') }}:</div>
+                        <ul class="chips-list">
+                            <li>
+                                <span>{{ ingredient.origin }}</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
                 <div v-if="ingredient.used_as_substitute_for && ingredient.used_as_substitute_for.length > 0">
                     <h3 class="page-subtitle">{{ $t('ingredient.used_as_substitute_for') }}</h3>
                     <IngredientTile v-for="ing in ingredient.used_as_substitute_for" :key="ing.slug" :ingredient="ing" :images="[]"></IngredientTile>
@@ -80,33 +102,7 @@ import CalculatorRender from '../Calculator/CalculatorRender.vue'
                     </Dropdown>
                 </div>
                 <div class="block-container block-container--padded">
-                    <h2 class="details-block-container__title">{{ $t('description') }}</h2>
-                    <div class="item-details__chips">
-                        <div class="item-details__chips__group">
-                            <div class="item-details__chips__group__title">{{ $t('strength') }}:</div>
-                            <ul v-if="ingredient.strength > 0" class="chips-list">
-                                <li>
-                                    <span><abbr :title="$t('ABV-definition')">{{ $t('ABV') }}</abbr>: {{ ingredient.strength + '%' }}</span>
-                                </li>
-                                <li>
-                                    <span>{{ $t('alcohol-proof') }}: {{ ingredient.strength * 2 }}</span>
-                                </li>
-                            </ul>
-                            <ul v-else class="chips-list">
-                                <li>
-                                    <span>{{ $t('non-alcoholic') }}</span>
-                                </li>
-                            </ul>
-                        </div>
-                        <div v-if="ingredient.origin" class="item-details__chips__group">
-                            <div class="item-details__chips__group__title">{{ $t('origin') }}:</div>
-                            <ul class="chips-list">
-                                <li>
-                                    <span>{{ ingredient.origin }}</span>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
+                    <h2 class="details-block-container__title">{{ $t('ingredient.status') }}</h2>
                     <ul class="block-container block-container--inset ingredient-details__more">
                         <OverlayLoader v-if="isLoadingExtra" />
                         <li>
@@ -142,7 +138,11 @@ import CalculatorRender from '../Calculator/CalculatorRender.vue'
                         </li>
                         <li v-if="extraIfAddedToShelf.length > 0">{{ $t('ingredient.extra-cocktails') }}: <RouterLink :to="{name: 'cocktails', query: {'filter[id]': extraCocktailsIds}}">{{ extraIfAddedToShelf.length }} {{ $t('cocktail.cocktails') }}</RouterLink></li>
                     </ul>
-                    <div v-html="parsedDescription" class="has-markdown"></div>
+                    <template v-if="ingredient.description">
+                        <h2 class="details-block-container__title">{{ $t('description') }}</h2>
+                        <div v-html="parsedDescription" class="has-markdown"></div>
+                    </template>
+                    <IngredientHierarchy :parent-id="ingredient.id" :root-id="ingredient.hierarchy.root_ingredient_id"></IngredientHierarchy>
                 </div>
                 <div v-if="ingredient.calculator_id" class="block-container block-container--padded">
                     <h2 class="details-block-container__title">{{ $t('calculators.calculator') }}</h2>
@@ -182,6 +182,7 @@ import IconUserShelf from '../Icons/IconUserShelf.vue'
 import IconShoppingCart from '../Icons/IconShoppingCart.vue'
 import IconMore from '../Icons/IconMore.vue'
 import IngredientTile from '../Tiles/IngredientTile.vue'
+import IngredientHierarchy from './IngredientHierarchy.vue'
 
 export default {
     components: {
@@ -196,6 +197,7 @@ export default {
         IconShoppingCart,
         IconMore,
         IngredientTile,
+        IngredientHierarchy,
     },
     data: () => ({
         appState: new AppState(),

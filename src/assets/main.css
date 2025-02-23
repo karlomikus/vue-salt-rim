@@ -20,6 +20,8 @@
 
 @import "cropperjs/dist/cropper.min.css";
 
+@import "treeflex/dist/css/treeflex.css";
+
 #app {
     font-weight: normal;
     display: flex;

@@ -1056,6 +1056,26 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/ingredients/{id}/tree": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Show tree
+         * @description Show a ingredient hierarchy as a tree
+         */
+        get: operations["showIngredientTree"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/menu": {
         parameters: {
             query?: never;
@@ -2227,6 +2247,8 @@ export interface components {
             units: string;
             /** @example false */
             optional?: boolean;
+            /** @example false */
+            is_specified?: boolean;
             substitutes?: components["schemas"]["CocktailIngredientSubstitute"][];
             variants_in_shelf?: components["schemas"]["IngredientBasic"][];
             /** @example Additional notes */
@@ -2589,8 +2611,6 @@ export interface components {
             slug: string;
             /** @example Gin */
             name: string;
-            /** @example 1/2/3/ */
-            materialized_path: string | null;
         };
         /** @description Ingredient hierarchy */
         IngredientHierarchy: {
@@ -2656,6 +2676,10 @@ export interface components {
              * @example 1
              */
             calculator_id?: number | null;
+        };
+        IngredientTree: {
+            ingredient: components["schemas"]["IngredientBasic"];
+            children: components["schemas"]["IngredientTree"][];
         };
         LoginRequest: {
             /** @example admin@example.com */
@@ -7146,6 +7170,65 @@ export interface operations {
                             to?: number;
                             total?: number;
                         };
+                    };
+                };
+            };
+            /** @description You are not authorized for this action. */
+            403: {
+                headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data?: components["schemas"]["APIError"];
+                    };
+                };
+            };
+            /** @description Resource record not found. */
+            404: {
+                headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data?: components["schemas"]["APIError"];
+                    };
+                };
+            };
+        };
+    };
+    showIngredientTree: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Database id or slug of a resource */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful response */
+            200: {
+                headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data: components["schemas"]["IngredientTree"];
                     };
                 };
             };

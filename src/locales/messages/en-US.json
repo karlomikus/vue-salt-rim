@@ -70,7 +70,12 @@
     "bar-shelf-remove-success": "Removed \"{name}\" from bar shelf",
     "units-help": "Optional ingredients won't be used in recipe matching. Some features work the best if you use common units. Some recommendations for units are: ml, oz, cl, dashes, barspoon, drops, topup, leaves.",
     "import": "Import ingredients",
-    "attach-calculator": "Attach calculator"
+    "attach-calculator": "Attach calculator",
+    "hierarchy": "Hierarchy",
+    "status": "Ingredient status",
+    "hierarchy-description": "This is an overview of the ingredient hierarchy. Depending on the cocktail recipe, if you have any of the variants in the shelf, they can be used as a substitute for the main ingredient when matching recipes.",
+    "show-variants": "Show variants",
+    "show-ancestors": "Show ancestors"
   },
   "share": {
     "title": "Share",
@@ -670,5 +675,6 @@
   "permissions": {
     "clipboard-error": "Your browser or server config does not support clipboard sharing."
   },
-  "preview": "Preview"
+  "preview": "Preview",
+  "available-variants": "Variants in shelf"
 }

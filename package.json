@@ -32,6 +32,7 @@
     "sortablejs": "^1.15.0",
     "swiper": "^11.0.0",
     "thumbhash": "^0.1.1",
+    "treeflex": "^2.0.1",
     "vue": "^3.2.40",
     "vue-i18n": "^10.0.0",
     "vue-instantsearch": "^4.6.0",

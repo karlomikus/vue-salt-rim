@@ -315,6 +315,10 @@ export default class BarAssistantClient {
     return (await client.GET('/ingredients/{id}', { params: { path: { id: id } } })).data
   }
 
+  static async getIngredientTree(id: string) {
+    return (await client.GET('/ingredients/{id}/tree', { params: { path: { id: id } } })).data
+  }
+
   static async getExtraCocktailsWithIngredient(id: number) {
     return (await client.GET('/ingredients/{id}/extra', { params: { path: { id: id } } })).data
   }
