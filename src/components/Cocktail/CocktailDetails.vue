@@ -30,6 +30,7 @@ import UnitConverter from '@/components/Units/UnitConverter.vue'
 import UnitPicker from '@/components/Units/UnitPicker.vue'
 import WakeLockToggle from '../WakeLockToggle.vue'
 import IconMore from '../Icons/IconMore.vue'
+import CocktailIngredientView from './CocktailIngredient.vue'
 
 type Cocktail = components["schemas"]["Cocktail"]
 type CocktailIngredient = components["schemas"]["CocktailIngredient"]
@@ -284,10 +285,6 @@ async function copy() {
     })
 }
 
-function buildSubstituteString(sub: components["schemas"]["CocktailIngredientSubstitute"]) {
-    return new String(sub.ingredient.name + ' ' + UnitHandler.print(sub, currentUnit.value, ingredientScaleFactor.value)).trim()
-}
-
 function shareFromFormat(format: string) {
     isLoadingShare.value = true
     BarAssistantClient.shareCocktail(cocktail.value.slug, { type: format, units: currentUnit.value }).then(resp => {
@@ -300,47 +297,6 @@ function shareFromFormat(format: string) {
     })
 }
 
-function statusClass(ing: CocktailIngredient) {
-    if (currentShelf.value === 'bar') {
-        return {
-            'ingredient-shelf-status--in-shelf': ing.in_bar_shelf,
-            'ingredient-shelf-status--missing': !ing.in_bar_shelf,
-            'ingredient-shelf-status--substitute': !ing.in_bar_shelf && ing.in_bar_shelf_as_substitute,
-            'ingredient-shelf-status--complex': !ing.in_bar_shelf && ing.in_bar_shelf_as_complex_ingredient
-        }
-    }
-
-    return {
-        'ingredient-shelf-status--in-shelf': ing.in_shelf,
-        'ingredient-shelf-status--missing': !ing.in_shelf,
-        'ingredient-shelf-status--substitute': !ing.in_shelf && ing.in_shelf_as_substitute,
-        'ingredient-shelf-status--complex': !ing.in_shelf && ing.in_shelf_as_complex_ingredient
-    }
-}
-
-function showComplexStatus(ing: CocktailIngredient) {
-    if (currentShelf.value === 'bar') {
-        return !ing.in_bar_shelf && !ing.in_bar_shelf_as_substitute && !ing.in_bar_shelf_as_complex_ingredient
-    }
-
-    return !ing.in_shelf && !ing.in_shelf_as_substitute && !ing.in_shelf_as_complex_ingredient
-}
-
-function showSubstituteStatus(ing: CocktailIngredient) {
-    if (currentShelf.value === 'bar') {
-        return !ing.in_bar_shelf && ing.in_bar_shelf_as_substitute
-    }
-
-    return !ing.in_shelf && ing.in_shelf_as_substitute
-}
-
-function showComplexCanBeMadeStatus(ing: CocktailIngredient) {
-    if (currentShelf.value === 'bar') {
-        return !ing.in_bar_shelf && ing.in_bar_shelf_as_complex_ingredient
-    }
-
-    return !ing.in_shelf && ing.in_shelf_as_complex_ingredient
-}
 
 function favorite() {
     isLoadingFavorite.value = true
@@ -668,28 +624,7 @@ fetchShoppingList()
                         </div>
                         <ul class="cocktail-ingredients">
                             <li v-for="ing in cocktail.ingredients" :key="ing.sort">
-                                <div class="cocktail-ingredients__ingredient">
-                                    <span class="ingredient-shelf-status" :class="statusClass(ing)"></span>
-                                    <RouterLink class="cocktail-ingredients__ingredient__name" :to="{ name: 'ingredients.show', params: { id: ing.ingredient.slug } }" data-ingredient="preferred">
-                                        {{ ing.ingredient.name }} <span v-if="ing.note" class="cocktail-ingredients__flags__flag">&ndash; {{ ing.note }}</span> <small v-if="ing.optional">({{ t('optional') }})</small>
-                                    </RouterLink>
-                                    <div class="cocktail-ingredients__ingredient__amount">{{ UnitHandler.print(ing, currentUnit, volumeScaleFactor ?? ingredientScaleFactor) }}</div>
-                                </div>
-                                <div class="cocktail-ingredients__flags">
-                                    <div v-if="ing.substitutes && ing.substitutes.length > 0" class="cocktail-ingredients__flags__flag">
-                                        <div v-if="showSubstituteStatus(ing)" class="cocktail-ingredients__flags__flag">&middot; {{ t('cocktail.missing-ing-sub-available') }}</div>
-                                        &middot; {{ t('substitutes') }}:
-                                        <template v-for="(sub, index) in ing.substitutes" :key="index">
-                                            <RouterLink :style="{'font-weight': (currentShelf === 'bar' ? sub.in_bar_shelf : sub.in_shelf) ? 'bold' : 'normal'}" :to="{ name: 'ingredients.show', params: { id: sub.ingredient.slug } }" data-ingredient="substitute">
-                                                {{ buildSubstituteString(sub) }}
-                                            </RouterLink>
-                                            <template v-if="index + 1 !== ing.substitutes.length">, </template>
-                                        </template>
-                                    </div>
-                                    <div v-if="showComplexStatus(ing)" class="cocktail-ingredients__flags__flag">&middot; {{ t('cocktail.missing-ing') }}</div>
-                                    <div v-if="showComplexCanBeMadeStatus(ing)" class="cocktail-ingredients__flags__flag">&middot; {{ t('cocktail.missing-ing-complex') }}</div>
-                                    <div v-if="userShoppingListIngredients.map(i => i.ingredient.id).includes(ing.ingredient.id)" class="cocktail-ingredients__flags__flag">&middot; {{ t('ingredient.on-shopping-list') }}</div>
-                                </div>
+                                <CocktailIngredientView :cocktail-ingredient="ing" :shopping-list="userShoppingListIngredients" :current-shelf="currentShelf" :scale-factor="volumeScaleFactor ?? ingredientScaleFactor" :units="currentUnit"></CocktailIngredientView>
                             </li>
                         </ul>
                         <div v-if="cocktail.volume_ml" class="cocktail-ingredients__total-amount">
@@ -722,10 +657,6 @@ fetchShoppingList()
                     <h3 class="details-block-container__title">{{ t('notes') }}</h3>
                     <NoteDetails v-for="note in userNotes" :key="note.id" :note="note" @note-deleted="fetchCocktailUserNotes"></NoteDetails>
                 </div>
-                <!-- <div class="cocktail-details__navigation">
-                    <RouterLink v-if="cocktail.navigation.prev" :to="{ name: 'cocktails.show', params: { id: cocktail.navigation.prev } }">{{ t('pagination.cocktail-prev') }}</RouterLink>
-                    <RouterLink v-if="cocktail.navigation.next" :to="{ name: 'cocktails.show', params: { id: cocktail.navigation.next } }">{{ t('pagination.cocktail-next') }}</RouterLink>
-                </div> -->
             </div>
         </article>
     </div>
