@@ -69,6 +69,10 @@ function selectIngredient(item: FinderIngredient): void {
             <input v-model="localCocktailingredient.optional" type="checkbox">
             <span>{{ t('ingredient.dialog.optional-checkbox') }}</span>
         </label>
+        <label class="form-checkbox">
+            <input v-model="localCocktailingredient.is_specified" type="checkbox">
+            <span>{{ t('ingredient.dialog.is-specified-checkbox') }}</span>
+        </label>
         <div class="ingredient-form-group">
             <div class="form-group">
                 <label class="form-label form-label--required" for="ingredient-amount">{{ t('amount') }}:</label>
