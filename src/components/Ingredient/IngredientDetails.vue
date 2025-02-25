@@ -341,8 +341,8 @@ export default {
         grid-template-rows: 1fr;
         grid-template-areas:
             "image"
-            "content"
-            "sidebar";
+            "sidebar"
+            "content";
     }
 }
 
