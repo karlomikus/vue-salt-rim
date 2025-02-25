@@ -1870,6 +1870,8 @@ export interface components {
         BarStatusEnum: "provisioning" | "active" | "deactivated";
         /** @enum {string} */
         CalculatorBlockTypeEnum: "input" | "eval";
+        /** @enum {string} */
+        MenuItemTypeEnum: "cocktail" | "ingredient";
         APIError: {
             /** @example api_error */
             type: string;
@@ -2703,19 +2705,16 @@ export interface components {
             categories?: {
                 /** @example Category name */
                 name?: string;
-                cocktails?: {
+                items?: {
                     /** @example 1 */
                     id?: number;
-                    /** @example cocktail-name-1 */
-                    slug?: string;
+                    type?: components["schemas"]["MenuItemTypeEnum"];
                     /** @example 1 */
                     sort?: number;
                     price?: components["schemas"]["Price"];
-                    /** @example EUR */
-                    currency?: string;
                     /** @example Cocktail name */
                     name?: string;
-                    short_ingredients?: string[];
+                    description?: string[];
                 }[];
             }[];
         };
