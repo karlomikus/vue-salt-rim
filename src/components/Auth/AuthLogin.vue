@@ -1,9 +1,102 @@
+<script setup lang="ts">
+import { ref, computed, watch } from 'vue'
+import BarAssistantClient from '@/api/BarAssistantClient'
+import ProviderList from './ProviderList.vue'
+import OverlayLoader from './../OverlayLoader.vue'
+import SiteLogo from './../Layout/SiteLogo.vue'
+import AppState from './../../AppState'
+import type { components } from '@/api/api'
+import { useRouter } from 'vue-router'
+import { useAuth } from '@/composables/useAuth'
+
+type ServerVersion = components["schemas"]["ServerVersion"]
+type SSOProvider = components["schemas"]["SSOProvider"]
+
+const router = useRouter()
+const isLoading = ref(false)
+const isLoadingProviders = ref(false)
+const email = ref<null | string>(null)
+const password = ref<null | string>(null)
+const rememberMe = ref(localStorage.getItem('sr_remember_login') ?? true)
+const baServer = ref(window.srConfig.API_URL)
+const registrationAllowed = ref(window.srConfig.ALLOW_REGISTRATION && window.srConfig.ALLOW_REGISTRATION === 'false' ? false : true)
+const server = ref<ServerVersion>()
+const providers = ref<SSOProvider[]>()
+
+const baServerAvailable = computed(() => {
+    return server.value?.version != null
+})
+
+const isDemo = computed(() => {
+    return window.srConfig.ENV === 'demo'
+})
+
+const showForgotPassword = computed(() => {
+    return window.srConfig.MAILS_ENABLED === true
+})
+
+const enabledProviders = computed(() => {
+    return providers.value?.filter(p => p.enabled) ?? []
+})
+
+watch(rememberMe, (newVal) => {
+    localStorage.setItem('sr_remember_login', newVal.toString())
+}, { immediate: true })
+
+async function refreshServerVersion() {
+    fetchListOfProviders()
+    isLoading.value = true
+    server.value = (await BarAssistantClient.getServerVersion())?.data
+    isLoading.value = false
+
+    if (isDemo.value) {
+        email.value = 'admin@example.com'
+        password.value = 'password'
+    }
+}
+
+async function fetchListOfProviders() {
+    isLoadingProviders.value = true
+    providers.value = (await BarAssistantClient.getProvidersList())?.data ?? []
+    isLoadingProviders.value = false
+}
+
+async function login() {
+    isLoading.value = true
+    const appState = new AppState()
+
+    if (email.value == null || password.value == null) {
+        return
+    }
+
+    try {
+        const token = (await BarAssistantClient.getLoginToken(email.value, password.value))?.data.token
+
+        if (token) {
+            const redirectUrl = await useAuth(token)
+            router.push(redirectUrl)
+        }
+    } catch (e: any) {
+        isLoading.value = false
+        appState.forgetUser()
+        return
+    }
+}
+
+refreshServerVersion()
+</script>
+
 <template>
     <div class="login-page">
         <SiteLogo></SiteLogo>
         <form @submit.prevent="login">
+            <OverlayLoader v-if="isLoadingProviders"></OverlayLoader>
             <div v-if="isDemo" class="login-page__demo-notice">
                 Welcome to Bar Assistant Demo instance. Use <code>admin@example.com</code> as email, and <code>password</code> as password to login.
+            </div>
+            <div v-if="baServerAvailable && providers && enabledProviders.length > 0">
+                <OverlayLoader v-if="isLoadingProviders"></OverlayLoader>
+                <ProviderList :providers="enabledProviders"></ProviderList>
             </div>
             <div class="form-group">
                 <label class="form-label" for="email">{{ $t('email') }}:</label>
@@ -20,6 +113,7 @@
                 </label>
             </div>
             <div class="server-status" v-if="!baServerAvailable">
+                <OverlayLoader v-if="isLoading"></OverlayLoader>
                 <div class="server-status__status">
                     Unable to connect to "{{ baServer }}" API server. <a href="https://docs.barassistant.app/faq/" target="_blank">Learn more</a>.
                 </div>
@@ -31,98 +125,6 @@
         </form>
     </div>
 </template>
-
-<script>
-import BarAssistantClient from '@/api/BarAssistantClient'
-import OverlayLoader from './../OverlayLoader.vue'
-import SiteLogo from './../Layout/SiteLogo.vue'
-import AppState from './../../AppState'
-
-export default {
-    components: {
-        OverlayLoader,
-        SiteLogo
-    },
-    data() {
-        return {
-            isLoading: false,
-            email: null,
-            password: null,
-            rememberMe: localStorage.getItem('sr_remember_login') ?? true,
-            baServer: window.srConfig.API_URL,
-            registrationAllowed: window.srConfig.ALLOW_REGISTRATION && window.srConfig.ALLOW_REGISTRATION === 'false' ? false : true,
-            server: {},
-        }
-    },
-    computed: {
-        baServerAvailable() {
-            return this.server.version != null
-        },
-        isDemo() {
-            return window.srConfig.ENV === 'demo'
-        },
-        showForgotPassword() {
-            return window.srConfig.MAILS_ENABLED === true
-        }
-    },
-    watch: {
-        rememberMe: {
-            handler(newVal) {
-                localStorage.setItem('sr_remember_login', newVal)
-            },
-            immediate: true
-        }
-    },
-    created() {
-        this.isLoading = true
-        BarAssistantClient.getServerVersion().then(resp => {
-            this.server = resp.data
-            this.isLoading = false
-
-            if (this.isDemo) {
-                this.email = 'admin@example.com'
-                this.password = 'password'
-            }
-        }).catch(() => {
-            this.isLoading = false
-        })
-    },
-    methods: {
-        login() {
-            this.isLoading = true
-            const appState = new AppState()
-            let redirectPath = this.$route.query.redirect
-
-            BarAssistantClient.getLoginToken(this.email, this.password).then(resp => {
-                appState.setToken(resp.data.token)
-                BarAssistantClient.getProfile().then(profileResp => {
-                    appState.setUser(profileResp.data)
-
-                    BarAssistantClient.getBars().then(barsResp => {
-                        if (redirectPath == undefined) {
-                            if (barsResp.data.length == 1) {
-                                appState.setBar(barsResp.data[0])
-                                redirectPath = '/'
-                            } else {
-                                redirectPath = '/bars'
-                            }
-                        }
-                        
-                        this.$router.push(redirectPath)
-                    })
-                }).catch(e => {
-                    appState.forgetUser()
-                    this.isLoading = false
-                    this.$toast.error(e.message)
-                })
-            }).catch(e => {
-                this.isLoading = false
-                this.$toast.error(e.message)
-            })
-        }
-    }
-}
-</script>
 
 <style scoped>
 .server-status {

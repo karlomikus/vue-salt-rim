@@ -1308,6 +1308,26 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/profile/sso/{provider}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        /**
+         * Delete SSO provider
+         * @description Delete user's SSO provider
+         */
+        delete: operations["deleteSSO"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/cocktails/{id}/ratings": {
         parameters: {
             query?: never;
@@ -1327,6 +1347,66 @@ export interface paths {
          * @description Delete current user cocktail rating
          */
         delete: operations["deleteRating"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/auth/sso/{provider}/redirect": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * SSO redirect
+         * @description Redirect to SSO authentication
+         */
+        get: operations["ssoRedirect"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/auth/sso/{provider}/callback": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * SSO callback
+         * @description Callback for SSO login
+         */
+        get: operations["ssoCallback"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/auth/sso/providers": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * SSO providers
+         * @description Configured SSO providers
+         */
+        get: operations["ssoProviders"];
+        put?: never;
+        post?: never;
+        delete?: never;
         options?: never;
         head?: never;
         patch?: never;
@@ -1864,6 +1944,26 @@ export interface components {
         ForceUnitConvertEnum: "none" | "ml" | "oz" | "cl";
         /** @enum {string} */
         DuplicateActionsEnum: "none" | "skip" | "overwrite";
+        /** @description OAuth Credential information */
+        OauthCredential: {
+            provider: components["schemas"]["SSOProvider"];
+            /** Format: date-time */
+            created_at: string;
+            /** Format: date-time */
+            updated_at: string | null;
+        };
+        /** @description SSO Provider information */
+        SSOProvider: {
+            /** @example github */
+            name: string;
+            /** @example GitHub */
+            display_name: string;
+            /**
+             * @description Whether the provider is configured and enabled by server
+             * @example true
+             */
+            enabled: boolean;
+        };
         /** @enum {string} */
         AbilityEnum: "cocktails.read" | "cocktails.write" | "ingredients.read" | "ingredients.write";
         /** @enum {string} */
@@ -2714,7 +2814,7 @@ export interface components {
                     price?: components["schemas"]["Price"];
                     /** @example Cocktail name */
                     name?: string;
-                    description?: string[];
+                    description?: string;
                 }[];
             }[];
         };
@@ -2864,6 +2964,7 @@ export interface components {
             email: string;
             is_subscribed: boolean;
             memberships: components["schemas"]["BarMembership"][];
+            oauth_credentials: components["schemas"]["OauthCredential"][];
         };
         ProfileRequest: {
             bar_id?: number | null;
@@ -3040,6 +3141,11 @@ export interface components {
                 [key: string]: string[];
             };
         };
+        /**
+         * @description Provides a list of supported SSO providers.
+         * @enum {string}
+         */
+        OauthProvider: "github" | "google" | "gitlab" | "authentik" | "authelia" | "keycloak";
         /**
          * Cocktail recipe - Draft 02
          * @description Schema for a cocktail recipe including detailed ingredient data. Draft 02 splits ingredients and recipe data.
@@ -8108,6 +8214,57 @@ export interface operations {
             };
         };
     };
+    deleteSSO: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Provider ID */
+                provider: components["schemas"]["OauthProvider"];
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful response */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description You are not authorized for this action. */
+            403: {
+                headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data?: components["schemas"]["APIError"];
+                    };
+                };
+            };
+            /** @description Resource record not found. */
+            404: {
+                headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data?: components["schemas"]["APIError"];
+                    };
+                };
+            };
+        };
+    };
     rateCocktail: {
         parameters: {
             query?: never;
@@ -8211,6 +8368,130 @@ export interface operations {
                 content: {
                     "application/json": {
                         data?: components["schemas"]["APIError"];
+                    };
+                };
+            };
+        };
+    };
+    ssoRedirect: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Provider ID */
+                provider: components["schemas"]["OauthProvider"];
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Redirect response */
+            302: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Resource record not found. */
+            404: {
+                headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data?: components["schemas"]["APIError"];
+                    };
+                };
+            };
+        };
+    };
+    ssoCallback: {
+        parameters: {
+            query: {
+                /** @description Oauth token */
+                code: string;
+            };
+            header?: never;
+            path: {
+                /** @description Provider ID */
+                provider: components["schemas"]["OauthProvider"];
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful response */
+            200: {
+                headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data: components["schemas"]["Token"];
+                    };
+                };
+            };
+            /** @description You are not authorized for this action. */
+            403: {
+                headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data?: components["schemas"]["APIError"];
+                    };
+                };
+            };
+            /** @description Resource record not found. */
+            404: {
+                headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data?: components["schemas"]["APIError"];
+                    };
+                };
+            };
+        };
+    };
+    ssoProviders: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful response */
+            200: {
+                headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data: components["schemas"]["SSOProvider"][];
                     };
                 };
             };

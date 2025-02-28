@@ -63,6 +63,10 @@ client.use(checkToken);
 client.use(checkService);
 
 export default class BarAssistantClient {
+  static getBaseUrl() {
+    return apiBaseUrl
+  }
+
   static async getLoginToken(email: string, password: string) {
     return (await client.POST('/auth/login', { body: { email: email, password: password } })).data
   }
@@ -564,5 +568,17 @@ export default class BarAssistantClient {
 
   static async deleteCalculator(id: number) {
     return (await client.DELETE('/calculators/{id}', { params: { path: { id: id } } })).data
+  }
+
+  static async getSSOCallback(provider: components["schemas"]["OauthProvider"], code: string) {
+    return (await client.GET('/auth/sso/{provider}/callback', { params: { query: { code: code }, path: { provider: provider } } })).data
+  }
+
+  static async getProvidersList() {
+    return (await client.GET('/auth/sso/providers')).data
+  }
+
+  static async deleteProfileSSOCredentials(provider: components["schemas"]["OauthProvider"]) {
+    return (await client.DELETE('/profile/sso/{provider}', { params: { path: { provider: provider } } })).data
   }
 }

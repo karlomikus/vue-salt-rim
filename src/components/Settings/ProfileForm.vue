@@ -37,6 +37,31 @@
                     <input id="repeat-new-password" v-model="user.repeatPassword" class="form-input" type="password">
                 </div>
             </div>
+            <template v-if="user.oauth_credentials && user.oauth_credentials.length > 0">
+                <h3 class="form-section-title">{{ $t('sso.profile-providers') }}</h3>
+                <div class="block-container block-container--padded">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>{{ $t('sso.provider-name') }}</th>
+                                <th>{{ $t('sso.created-date') }}</th>
+                                <th>{{ $t('sso.is-configured') }}</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for="cred in user.oauth_credentials" :key="cred.provider.name">
+                                <td>{{ cred.provider.display_name }}</td>
+                                <td :title="cred.created_at">{{ $d(cred.created_at, 'short') }}</td>
+                                <td>{{ cred.provider.enabled ? $t('sso.provider-enabled') : $t('sso.provider-disabled') }}</td>
+                                <td style="text-align: right;">
+                                    <a class="list-group__action" href="#" @click="deleteSSOAccount(cred)">{{ $t('sso.delete-account') }}</a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </template>
             <template v-if="appState.bar.id">
                 <h3 class="form-section-title">{{ $t('bars.bar') }}</h3>
                 <div class="block-container block-container--padded">
@@ -89,22 +114,25 @@ export default {
     created() {
         useTitle(this.$t('profile'))
 
-        this.isLoading = true
-
-        BarAssistantClient.getProfile().then(resp => {
-            this.user = resp.data
-            if (this.appState.bar.id) {
-                const barMembership = resp.data.memberships.filter(m => m.bar_id == this.appState.bar.id)
-                this.user.is_shelf_public = barMembership.length > 0 ? barMembership[0].is_shelf_public : false
-                this.user.use_parent_as_substitute = barMembership.length > 0 ? barMembership[0].use_parent_as_substitute : false
-            }
-            this.isLoading = false
-        }).catch(e => {
-            this.$toast.error(e.message)
-            this.isLoading = false
-        })
+        this.refreshProfile()
     },
     methods: {
+        async refreshProfile() {
+            this.isLoading = true
+
+            BarAssistantClient.getProfile().then(resp => {
+                this.user = resp.data
+                if (this.appState.bar.id) {
+                    const barMembership = resp.data.memberships.filter(m => m.bar_id == this.appState.bar.id)
+                    this.user.is_shelf_public = barMembership.length > 0 ? barMembership[0].is_shelf_public : false
+                    this.user.use_parent_as_substitute = barMembership.length > 0 ? barMembership[0].use_parent_as_substitute : false
+                }
+                this.isLoading = false
+            }).catch(e => {
+                this.$toast.error(e.message)
+                this.isLoading = false
+            })
+        },
         submit() {
             this.isLoading = true
 
@@ -137,6 +165,23 @@ export default {
             }).catch(e => {
                 this.isLoading = false
                 this.$toast.error(e.message)
+            })
+        },
+        deleteSSOAccount(cred) {
+            this.$confirm(this.$t('sso.confirm-delete', { name: cred.provider.display_name }), {
+                onResolved: (dialog) => {
+                    dialog.close()
+                    this.isLoading = true
+                    BarAssistantClient.deleteProfileSSOCredentials(cred.provider.name).then(() => {
+                        this.isLoading = false
+                        this.$toast.default(this.$t('sso.delete-success'))
+
+                        this.refreshProfile()
+                    }).catch(e => {
+                        this.isLoading = false
+                        this.$toast.error(e.message)
+                    })
+                }
             })
         },
         deleteAccount() {
