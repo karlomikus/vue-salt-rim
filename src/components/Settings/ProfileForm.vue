@@ -68,9 +68,6 @@
                     <div class="form-group">
                         <SaltRimCheckbox id="parent-ingredient-checkbox" v-model="user.is_shelf_public" :label="$t('profile-public-shelf')" description="Other bar members will be able to filter by cocktails you have in your shelf"></SaltRimCheckbox>
                     </div>
-                    <div class="form-group">
-                        <SaltRimCheckbox id="profile-use-parent-as-substitute" v-model="user.use_parent_as_substitute" :label="$t('profile-use-parent-as-substitute')" description="[EXPERIMENTAL] Match cocktail recipe ingredients with parent ingredients as possible substitutes"></SaltRimCheckbox>
-                    </div>
                 </div>
             </template>
             <h3 class="form-section-title">{{ $t('data') }}</h3>
@@ -106,7 +103,6 @@ export default {
             isLoading: false,
             user: {
                 is_shelf_public: false,
-                use_parent_as_substitute: false,
             },
             currentLocale: this.$i18n.locale
         }
@@ -125,7 +121,6 @@ export default {
                 if (this.appState.bar.id) {
                     const barMembership = resp.data.memberships.filter(m => m.bar_id == this.appState.bar.id)
                     this.user.is_shelf_public = barMembership.length > 0 ? barMembership[0].is_shelf_public : false
-                    this.user.use_parent_as_substitute = barMembership.length > 0 ? barMembership[0].use_parent_as_substitute : false
                 }
                 this.isLoading = false
             }).catch(e => {
@@ -153,7 +148,6 @@ export default {
             if (appState.bar.id) {
                 postData.bar_id = appState.bar.id
                 postData.is_shelf_public = this.user.is_shelf_public
-                postData.use_parent_as_substitute = this.user.use_parent_as_substitute
             }
 
             BarAssistantClient.updateProfile(postData).then(resp => {
