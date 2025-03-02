@@ -26,7 +26,7 @@
                             <template v-if="bar.created_user.id == appState.user.id">&middot; Owner</template>
                         </span>
                         <a href="#" @click.prevent="selectBar(bar)"><h4 class="bar__title">{{ bar.name }}</h4></a>
-                        <p class="bar__owner">{{ $t('created-by') }} {{ bar.created_user.name }} &middot;
+                        <p class="bar__owner">Bar ID: {{ bar.id }} &middot; {{ $t('created-by') }} {{ bar.created_user.name }} &middot;
                             <DateFormatter :date="bar.created_at" />
                         </p>
                         <template v-if="bar.show_invite_code && bar.access.can_edit">
