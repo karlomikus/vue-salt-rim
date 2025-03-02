@@ -52,7 +52,8 @@
       "optional-checkbox": "Make this ingredient optional.",
       "new-ingredient-success": "Created uncategorized ingredient \"{name}\".",
       "new-ingredient-fail": "Unable to add ingredient.",
-      "select-substitutes-for": "Select substitute ingredients for \"{name}\"."
+      "select-substitutes-for": "Select substitute ingredients for \"{name}\".",
+      "is-specified-checkbox": "Use this specific ingredient (ignore varieties as substitutes)"
     },
     "base": "Base",
     "is-complex": "Ingredient contains other ingredients",
