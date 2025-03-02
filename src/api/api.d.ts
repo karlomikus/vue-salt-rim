@@ -2778,6 +2778,18 @@ export interface components {
              * @example 1
              */
             calculator_id?: number | null;
+            /**
+             * Format: float
+             * @example 0.24
+             */
+            sugar_g_per_ml?: number | null;
+            /**
+             * Format: float
+             * @example 0.1
+             */
+            acidity?: number | null;
+            /** @example Buffalo trace */
+            distillery?: string | null;
         };
         IngredientTree: {
             ingredient: components["schemas"]["IngredientBasic"];

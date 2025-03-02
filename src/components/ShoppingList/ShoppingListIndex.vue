@@ -48,7 +48,7 @@ async function refreshShoppingList() {
     shoppingList.value = (await BarAssistantClient.getShoppingList(appState.user.id))?.data ?? []
     ingredients.value = (await BarAssistantClient.getIngredients({
         'filter[id]': shoppingList.value.map(shoppingListItem => shoppingListItem.ingredient.id).join(','),
-        include: 'prices',
+        include: 'prices,ancestors',
     }))?.data ?? []
     list.value = shoppingList.value.map(sl => {
         return {...sl, ingredientRef: ingredients.value.find(i => i.id === sl.ingredient.id)} as ShoppingListItemWithFullIngredient
@@ -132,7 +132,7 @@ async function shareFromFormat(format: string) {
             <div>
                 <RouterLink :to="{ name: 'ingredients.show', params: { id: shoppingListItem.ingredientRef.slug }}">{{ shoppingListItem.ingredientRef.name }}</RouterLink>
                 <br>
-                <small>{{ shoppingListItem.ingredientRef.category?.name ?? t('uncategorized') }} &middot; Qty: {{ shoppingListItem.quantity }}</small>
+                <small>{{ shoppingListItem.ingredientRef.hierarchy.path_to_self ?? t('uncategorized') }} &middot; Qty: {{ shoppingListItem.quantity }}</small>
                 &middot;
                 <ToggleIngredientShoppingCart :ingredient="shoppingListItem.ingredientRef" :status="true"></ToggleIngredientShoppingCart>
                 <ul class="shopping-list__item__prices">
