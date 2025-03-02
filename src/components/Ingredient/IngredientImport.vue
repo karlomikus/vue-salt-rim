@@ -70,7 +70,7 @@ async function importIngredients() {
                 <p>Source CSV has the following guidelines:</p>
                 <ul>
                     <li>It is recommended to use UTF-8 charset</li>
-                    <li>It must contain header row with the following field names: <code>name</code>, <code>strength</code>, <code>description</code>, <code>origin</code>, <code>color</code>, <code>category</code></li>
+                    <li>It must contain header row with the following field names: <code>name</code>, <code>strength</code>, <code>description</code>, <code>origin</code>, <code>color</code>, <code>sugar_g_per_ml</code>, <code>acidity</code>, <code>distillery</code></li>
                     <li>Header row field names are not case sensitive</li>
                     <li>Header row fields are not order sensitive</li>
                     <li>Fields must be comma <code>,</code> separated</li>
@@ -82,11 +82,11 @@ async function importIngredients() {
                 </ul>
                 <p>Here is an example of valid CSV:</p>
                 <div class="ingredient-csv-import-notice__example">
-                    name,strength,description,origin,color,category
+                    name,strength,description,origin,color,sugar_g_per_ml,acidity,distillery
                     <br>
-                    Campari,40,Bitter liquer,Italy,#008800,Liquers
+                    Campari,40,Bitter liquer,Italy,#008800,,,
                     <br>
-                    Whiskey,,,,,Spirits
+                    Whiskey,,,,,,,
                 </div>
             </div>
             <div v-if="importType === 'file'" class="form-group">
