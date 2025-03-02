@@ -690,5 +690,8 @@
     "title": "Single Sign-On",
     "auth-error": "Unable to authenticate via Single Sign-On provider",
     "login-with": "Login with {name}"
-  }
+  },
+  "distillery": "Distillery",
+  "sweetness": "Sweetness (g/ml)",
+  "acidity": "Acidity (%)"
 }

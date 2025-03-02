@@ -19,14 +19,28 @@
                 <label class="form-label" for="strength">{{ $t('strength') }} ({{ $t('ABV') }} %):</label>
                 <input id="strength" v-model="ingredient.strength" class="form-input" type="text">
             </div>
-            <div class="sr-grid sr-grid--2-col">
+            <div class="sr-grid sr-grid--3-col">
                 <div class="form-group">
                     <label class="form-label" for="origin">{{ $t('origin') }}:</label>
                     <input id="origin" v-model="ingredient.origin" class="form-input" type="text">
                 </div>
                 <div class="form-group">
+                    <label class="form-label" for="origin">{{ $t('distillery') }}:</label>
+                    <input id="origin" v-model="ingredient.distillery" class="form-input" type="text">
+                </div>
+                <div class="form-group">
                     <label class="form-label" for="color">{{ $t('color') }}:</label>
                     <input id="color" v-model="ingredient.color" class="form-input" type="color" style="width: 100%">
+                </div>
+            </div>
+            <div class="sr-grid sr-grid--2-col">
+                <div class="form-group">
+                    <label class="form-label" for="origin">{{ $t('sweetness') }}:</label>
+                    <input id="origin" v-model="ingredient.sugar_g_per_ml" class="form-input" type="text">
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="color">{{ $t('acidity') }}:</label>
+                    <input id="color" v-model="ingredient.acidity" class="form-input" type="text">
                 </div>
             </div>
             <div class="form-group">
@@ -40,7 +54,7 @@
         <h3 class="form-section-title">{{ $t('recipe-matching') }}</h3>
         <div class="block-container block-container--padded">
             <div class="form-group">
-                <SaltRimCheckbox id="parent-ingredient-checkbox" v-model="isParent" :label="$t('ingredient.is-variety')" :description="'[EXPERIMENTAL] ' + $t('ingredient.variety-note')"></SaltRimCheckbox>
+                <SaltRimCheckbox id="parent-ingredient-checkbox" v-model="isParent" :label="$t('ingredient.is-variety')" :description="$t('ingredient.variety-note')"></SaltRimCheckbox>
             </div>
             <div v-show="isParent" class="form-group" v-if="bar.search_host">
                 <IngredientFinder v-show="ingredient.hierarchy.parent_ingredient == null" :search-token="bar.search_token" v-model="ingredient.hierarchy.parent_ingredient" :disabled-ingredients="disabledFinderIngredients"></IngredientFinder>
@@ -267,6 +281,9 @@ export default {
                 strength: this.ingredient.strength,
                 origin: this.ingredient.origin,
                 color: this.ingredient.color,
+                sugar_g_per_ml: this.ingredient.sugar_g_per_ml,
+                acidity: this.ingredient.acidity,
+                distillery: this.ingredient.distillery,
                 calculator_id: this.ingredient.calculator_id,
                 parent_ingredient_id: this.isParent && this.ingredient.hierarchy.parent_ingredient ? this.ingredient.hierarchy.parent_ingredient.id : null,
                 images: [],

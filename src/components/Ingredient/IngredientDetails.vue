@@ -61,6 +61,30 @@ import CalculatorRender from '../Calculator/CalculatorRender.vue'
                             </li>
                         </ul>
                     </div>
+                    <div v-if="ingredient.distillery" class="item-details__chips__group">
+                        <div class="item-details__chips__group__title">{{ $t('distillery') }}:</div>
+                        <ul class="chips-list">
+                            <li>
+                                <span>{{ ingredient.distillery }}</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div v-if="ingredient.sugar_g_per_ml" class="item-details__chips__group">
+                        <div class="item-details__chips__group__title">{{ $t('sweetness') }}:</div>
+                        <ul class="chips-list">
+                            <li>
+                                <span>{{ ingredient.sugar_g_per_ml }}</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div v-if="ingredient.acidity" class="item-details__chips__group">
+                        <div class="item-details__chips__group__title">{{ $t('acidity') }}:</div>
+                        <ul class="chips-list">
+                            <li>
+                                <span>{{ ingredient.acidity }}</span>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
                 <div v-if="ingredient.used_as_substitute_for && ingredient.used_as_substitute_for.length > 0">
                     <h3 class="page-subtitle">{{ $t('ingredient.used_as_substitute_for') }}</h3>
