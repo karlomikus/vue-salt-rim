@@ -10,7 +10,7 @@ class AppState {
          */
         this.bar = {}
         /**
-         * @type {{id: number}}
+         * @type {{id: number, name: string}}
          */
         this.user = {}
 

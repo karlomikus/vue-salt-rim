@@ -581,4 +581,8 @@ export default class BarAssistantClient {
   static async deleteProfileSSOCredentials(provider: components["schemas"]["OauthProvider"]) {
     return (await client.DELETE('/profile/sso/{provider}', { params: { path: { provider: provider } } })).data
   }
+
+  static async getRecommendedCocktails() {
+    return (await client.GET('/recommender/cocktails')).data
+  }
 }
