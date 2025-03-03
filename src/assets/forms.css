@@ -123,7 +123,8 @@
 }
 
 textarea.form-input,
-.form-input[type="file"] {
+.form-input[type="file"],
+.form-input--auto-height {
     height: auto;
 }
 

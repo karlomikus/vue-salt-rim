@@ -58,7 +58,7 @@
             </div>
             <div v-show="isParent" class="form-group" v-if="bar.search_host">
                 <IngredientFinder v-show="ingredient.hierarchy.parent_ingredient == null" :search-token="bar.search_token" v-model="ingredient.hierarchy.parent_ingredient" :disabled-ingredients="disabledFinderIngredients"></IngredientFinder>
-                <div v-if="ingredient.hierarchy.parent_ingredient" style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+                <div class="form-input form-input--auto-height" v-if="ingredient.hierarchy.parent_ingredient">
                     {{ ingredient.hierarchy.parent_ingredient.name }} &middot; <a href="#" @click.prevent="ingredient.hierarchy.parent_ingredient = null">{{ $t('remove') }}</a>
                 </div>
             </div>
@@ -187,12 +187,19 @@ export default {
         }
     },
     computed: {
+        descendantIngredientIds() {
+            if (this.ingredient && !this.ingredient.hierarchy.descendants) {
+                return []
+            }
+
+            return this.ingredient.hierarchy.descendants.map(ingredient => ingredient.id)
+        },
         disabledFinderIngredients() {
             if (!this.ingredient.id) {
                 return []
             }
 
-            return [this.ingredient.id]
+            return [this.ingredient.id].concat(this.descendantIngredientIds)
         },
         groupedPriceCategories() {
             return this.priceCategories.reduce((acc, obj) => {
