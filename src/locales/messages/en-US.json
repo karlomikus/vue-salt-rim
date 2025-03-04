@@ -697,5 +697,6 @@
   },
   "distillery": "Distillery",
   "sweetness": "Sweetness (g/ml)",
-  "acidity": "Acidity (%)"
+  "acidity": "Acidity (%)",
+  "missing-recommended-cocktails": "Add some cocktails to your favorites to start getting recommendations."
 }

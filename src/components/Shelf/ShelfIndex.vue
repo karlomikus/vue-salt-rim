@@ -19,6 +19,10 @@ import StatusCheck from '../StatusCheck.vue'
 import IconShoppingCart from '../Icons/IconShoppingCart.vue'
 import IconFavorite from '../Icons/IconFavorite.vue'
 import IconCocktail from '../Icons/IconCocktail.vue'
+import IconJigger from '../Icons/IconJigger.vue'
+import IconRecommender from '../Icons/IconRecommender.vue'
+import IconStar from '../Icons/IconStar.vue'
+import IconMedal from '../Icons/IconMedal.vue'
 
 type BarStats = components["schemas"]["BarStats"]
 type Cocktail = components["schemas"]["Cocktail"]
@@ -206,12 +210,21 @@ refreshShelf()
         <div class="shelf-grid__col">
             <OverlayLoader v-if="loaders.recommendedCocktails"></OverlayLoader>
             <h3 class="page-subtitle">{{ $t('shelf.recommended-cocktails') }}</h3>
-            <div class="list-grid__container">
+            <div class="list-grid__container" v-if="recommendedCocktails.length > 0">
                 <RouterLink v-for="cocktail in recommendedCocktails" :key="cocktail.id" :to="{ name: 'cocktails.show', params: { id: cocktail.slug } }" class="shelf-stats-count block-container block-container--hover">
                     <h4>{{ cocktail.name }}</h4>
                     <small>{{ cocktail.short_ingredients?.join(', ') }}</small>
                 </RouterLink>
             </div>
+            <EmptyState v-else>
+                <template #icon>
+                    <IconRecommender></IconRecommender>
+                </template>
+                <template #default>
+                    {{ $t('missing-recommended-cocktails') }}<br>
+                    <RouterLink :to="{ name: 'ingredients' }">{{ $t('all-ingredients') }}</RouterLink>
+                </template>
+            </EmptyState>
         </div>
         <div class="shelf-grid__col">
             <OverlayLoader v-if="loaders.latestIngredients"></OverlayLoader>
@@ -226,10 +239,10 @@ refreshShelf()
             </IngredientListContainer>
             <EmptyState v-else>
                 <template #icon>
-                    <IconShoppingCart></IconShoppingCart>
+                    <IconJigger></IconJigger>
                 </template>
                 <template #default>
-                    {{ $t('missing.ingredients') }}<br>
+                    {{ $t('ingredients-not-found') }}.<br>
                     <RouterLink :to="{ name: 'ingredients' }">{{ $t('all-ingredients') }}</RouterLink>
                 </template>
             </EmptyState>
@@ -277,27 +290,54 @@ refreshShelf()
         <div class="shelf-grid__col">
             <OverlayLoader v-if="loaders.barStats"></OverlayLoader>
             <h3 class="page-subtitle">{{ $t('top-rated-cocktails') }}</h3>
-            <div class="list-grid__container">
+            <div class="list-grid__container" v-if="stats.top_rated_cocktails && stats.top_rated_cocktails.length > 0">
                 <RouterLink v-for="cocktail in stats.top_rated_cocktails" :key="cocktail.id" :to="{ name: 'cocktails.show', params: { id: cocktail.slug } }" class="shelf-stats-count block-container block-container--hover">
                     <h4>{{ cocktail.name }}</h4>
                     <small>{{ $t('avg-rating') }}: {{ cocktail.avg_rating }} &middot; {{ $t('votes') }}: {{ cocktail.votes }}</small>
                 </RouterLink>
             </div>
+            <EmptyState v-else>
+                <template #icon>
+                    <IconStar></IconStar>
+                </template>
+                <template #default>
+                    {{ $t('no-cocktails') }}.<br>
+                    <RouterLink :to="{ name: 'cocktails.form' }">{{ $t('cocktail.add') }}</RouterLink>
+                </template>
+            </EmptyState>
         </div>
         <div class="shelf-grid__col">
             <OverlayLoader v-if="loaders.barStats"></OverlayLoader>
             <h3 class="page-subtitle">{{ $t('most-popular-ingredients') }}</h3>
-            <div class="list-grid__container">
+            <div class="list-grid__container" v-if="stats.most_popular_ingredients && stats.most_popular_ingredients.length > 0">
                 <IngredientTile v-for="ingredient in stats.most_popular_ingredients" :key="ingredient.id" :ingredient="ingredient" :images="[]">
                     <template #content>
                         {{ ingredient.cocktails_count }} {{ $t('cocktail.cocktails') }}
                     </template>
                 </IngredientTile>
             </div>
+            <EmptyState v-else>
+                <template #icon>
+                    <IconMedal></IconMedal>
+                </template>
+                <template #default>
+                    {{ $t('ingredients-not-found') }}.<br>
+                    <RouterLink :to="{ name: 'ingredients' }">{{ $t('all-ingredients') }}</RouterLink>
+                </template>
+            </EmptyState>
         </div>
         <div class="shelf-grid__col">
             <h3 class="page-subtitle">{{ $t('recommended-ingredients') }}</h3>
-            <RecommendedIngredients :stats="stats"></RecommendedIngredients>
+            <RecommendedIngredients v-if="stats?.total_cocktails > 0" :stats="stats"></RecommendedIngredients>
+            <EmptyState v-else>
+                <template #icon>
+                    <IconRecommender></IconRecommender>
+                </template>
+                <template #default>
+                    {{ $t('ingredients-not-found') }}.<br>
+                    <RouterLink :to="{ name: 'ingredients.form' }">{{ $t('ingredient.add') }}</RouterLink>
+                </template>
+            </EmptyState>
         </div>
     </div>
 </template>
