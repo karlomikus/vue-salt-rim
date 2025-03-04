@@ -17,7 +17,9 @@
       "stats-error": "An error occured while fetching stats from a server",
       "list-error": "An error occured while fetching ingredients on your shopping list from a server"
     },
-    "cocktails": "Cocktails I can make"
+    "cocktails": "Cocktails I can make",
+    "bar-stats": "Bar statistics",
+    "recommended-cocktails": "Recommended cocktails"
   },
   "ingredient": {
     "title": "Ingredient",
@@ -124,7 +126,8 @@
   },
   "latest": {
     "cocktails": "Latest cocktails",
-    "favorites": "Your recent favorites"
+    "favorites": "Your recent favorites",
+    "ingredients": "Latest ingredients"
   },
   "strength": "Strength",
   "rating": "Rating",

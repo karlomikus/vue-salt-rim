@@ -19,7 +19,6 @@ import StatusCheck from '../StatusCheck.vue'
 import IconShoppingCart from '../Icons/IconShoppingCart.vue'
 import IconFavorite from '../Icons/IconFavorite.vue'
 import IconCocktail from '../Icons/IconCocktail.vue'
-import { useSaltRimToast } from '@/composables/toast.js'
 
 type BarStats = components["schemas"]["BarStats"]
 type Cocktail = components["schemas"]["Cocktail"]
@@ -28,7 +27,6 @@ type Ingredient = components["schemas"]["Ingredient"]
 type IngredientRecommend = components["schemas"]["IngredientRecommend"]
 
 const { t } = useI18n()
-const toast = useSaltRimToast()
 
 useTitle(t('shelf.title'))
 
@@ -65,7 +63,7 @@ async function refreshShelf() {
     BarAssistantClient.getRecommendedCocktails().then(resp => {
         recommendedCocktails.value = resp?.data ?? []
     }).catch(() => {
-        toast.error(t('shelf.toasts.random-cocktail-error'))
+        // toast.error(t('shelf.toasts.random-cocktail-error'))
     }).finally(() => {
         loaders.value.recommendedCocktails = false
     })
@@ -73,7 +71,7 @@ async function refreshShelf() {
     BarAssistantClient.getCocktails({ 'filter[favorites]': true, per_page: maxItems.value, sort: '-favorited_at', include: 'ratings,ingredients.ingredient,images' }).then(resp => {
         favoriteCocktails.value = resp?.data ?? []
     }).catch(() => {
-        toast.error(t('shelf.toasts.favorites-error'))
+        // toast.error(t('shelf.toasts.favorites-error'))
     }).finally(() => {
         loaders.value.cocktailFavorites = false
     })
@@ -81,7 +79,7 @@ async function refreshShelf() {
     BarAssistantClient.getCocktails({ per_page: maxItems.value, sort: '-created_at', include: 'ratings,ingredients.ingredient,images' }).then(resp => {
         latestCocktails.value = resp?.data ?? []
     }).catch(() => {
-        toast.error(t('shelf.toasts.shelf-error'))
+        // toast.error(t('shelf.toasts.shelf-error'))
     }).finally(() => {
         loaders.value.cocktailLatest = false
     })
@@ -89,7 +87,7 @@ async function refreshShelf() {
     BarAssistantClient.getIngredients({ 'filter[on_shopping_list]': true, per_page: maxItems.value, include: 'images' }).then(resp => {
         shoppingListIngredients.value = resp?.data ?? []
     }).catch(() => {
-        toast.error(t('shelf.toasts.list-error'))
+        // toast.error(t('shelf.toasts.list-error'))
     }).finally(() => {
         loaders.value.shoppingList = false
     })
@@ -97,7 +95,7 @@ async function refreshShelf() {
     BarAssistantClient.getIngredients({ per_page: maxItems.value, sort: '-created_at', include: 'images,ancestors' }).then(resp => {
         latestIngredients.value = resp?.data ?? []
     }).catch(() => {
-        toast.error(t('shelf.toasts.list-error'))
+        // toast.error(t('shelf.toasts.list-error'))
     }).finally(() => {
         loaders.value.latestIngredients = false
     })
@@ -105,7 +103,7 @@ async function refreshShelf() {
     BarAssistantClient.getBarStats(appState.bar.id).then(resp => {
         stats.value = resp?.data ?? {} as BarStats
     }).catch(() => {
-        toast.error(t('shelf.toasts.stats-error'))
+        // toast.error(t('shelf.toasts.stats-error'))
     }).finally(() => {
         loaders.value.barStats = false
     })
@@ -113,7 +111,7 @@ async function refreshShelf() {
     BarAssistantClient.getRecommendedIngredients(appState.user.id).then(resp => {
         recommendedIngredients.value = resp?.data ?? []
     }).catch(() => {
-        toast.error(t('shelf.toasts.shelf-error'))
+        // toast.error(t('shelf.toasts.shelf-error'))
     }).finally(() => {
         loaders.value.recommendedIngredients = false
     })
@@ -127,7 +125,7 @@ refreshShelf()
         {{ $t('welcome-user', { 'name': appState.user.name }) }} 👋
     </PageHeader>
     <StatusCheck></StatusCheck>
-    <div class="shelf-grid" style="grid-template-columns: 1fr 1fr 1fr;">
+    <div class="shelf-grid">
         <div class="shelf-grid__col">
             <OverlayLoader v-if="loaders.barStats"></OverlayLoader>
             <h3 class="page-subtitle">{{ $t('shelf.bar-stats') }}</h3>
@@ -215,8 +213,6 @@ refreshShelf()
                 </RouterLink>
             </div>
         </div>
-    </div>
-    <div class="shelf-grid" style="grid-template-columns: repeat(auto-fit, minmax(var(--cocktail-list-card-width), 1fr))">
         <div class="shelf-grid__col">
             <OverlayLoader v-if="loaders.latestIngredients"></OverlayLoader>
             <h3 class="page-subtitle">{{ $t('latest.ingredients') }}</h3>
@@ -278,8 +274,6 @@ refreshShelf()
                 </template>
             </EmptyState>
         </div>
-    </div>
-    <div class="shelf-grid" style="grid-template-columns: repeat(auto-fit, minmax(var(--cocktail-list-card-width), 1fr))">
         <div class="shelf-grid__col">
             <OverlayLoader v-if="loaders.barStats"></OverlayLoader>
             <h3 class="page-subtitle">{{ $t('top-rated-cocktails') }}</h3>
@@ -311,36 +305,23 @@ refreshShelf()
 <style scoped>
 .shelf-grid {
     display: grid;
-    gap: var(--gap-size-2);
-}
-
-.list-grid {
-    display: grid;
     grid-template-columns: repeat(auto-fit, minmax(var(--cocktail-list-card-width), 1fr));
     gap: var(--gap-size-2);
 }
 
 @media (max-width: 450px) {
-    .list-grid {
+    .shelf-grid {
         grid-template-columns: 100%;
     }
 }
 
-.list-grid h3 {
-    padding-bottom: 5px;
-    margin-bottom: 10px;
-}
-
 .stats {
-    /* margin-top: 20px; */
     display: flex;
     flex-wrap: wrap;
     gap: var(--gap-size-2);
 }
 
 .stats__stat {
-    /* background-color: var(--clr-accent-green);
-    border-radius: var(--radius-3); */
     padding: 1rem 1.5rem;
     display: flex;
     flex-direction: column;
