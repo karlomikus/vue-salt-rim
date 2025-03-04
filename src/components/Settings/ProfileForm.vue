@@ -55,7 +55,7 @@
                                 <td :title="cred.created_at">{{ $d(cred.created_at, 'short') }}</td>
                                 <td>{{ cred.provider.enabled ? $t('sso.provider-enabled') : $t('sso.provider-disabled') }}</td>
                                 <td style="text-align: right;">
-                                    <a class="list-group__action" href="#" @click="deleteSSOAccount(cred)">{{ $t('sso.delete-account') }}</a>
+                                    <a class="list-group__action" href="#" @click.prevent="deleteSSOAccount(cred)">{{ $t('sso.delete-account') }}</a>
                                 </td>
                             </tr>
                         </tbody>
