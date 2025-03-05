@@ -15,11 +15,15 @@
                 <input id="subtitle" v-model="bar.subtitle" class="form-input" type="text">
             </div>
             <div class="form-group">
-                <label class="form-label" for="description">{{ $t('default-units') }}:</label>
+                <label class="form-label" for="bar-units">{{ $t('default-units') }}:</label>
                 <select id="bar-units" v-model="bar.settings.default_units" class="form-select" required>
                     <option :value="undefined">{{ $t('no-default-units') }}</option>
                     <option v-for="unit in availableUnits" :key="unit.value" :value="unit.value">{{ unit.text }}</option>
                 </select>
+            </div>
+            <div class="form-group">
+                <label class="form-label" for="default-currency">{{ $t('default-currency') }}:</label>
+                <input id="default-currency" v-model="bar.settings.default_currency" class="form-input" type="text">
             </div>
             <div class="form-group">
                 <label class="form-label" for="slug">{{ $t('bar.url') }}:</label>
@@ -77,6 +81,7 @@ export default {
                 images: [],
                 settings: {
                     default_units: 'ml',
+                    default_currency: null,
                 },
                 options: [
                     'cocktails',
@@ -149,6 +154,7 @@ export default {
                 enable_invites: this.enableInvites,
                 slug: postSlug,
                 default_units: this.bar.settings.default_units,
+                default_currency: this.bar.settings.default_currency,
             };
 
             const imageResources = await this.$refs.imagesUpload.save().catch(() => {

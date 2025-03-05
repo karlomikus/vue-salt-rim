@@ -400,8 +400,8 @@
     "confirm-delete": "This will permanently delete bar with name \"{name}\".",
     "confirm-leave": "You will lose all your data in bar (\"{name}\") if you leave it.",
     "enable-invites": "Enable joining via invite code",
-    "import-base-cocktails": "Open bar with base cocktails",
-    "import-base-ingredients": "Open bar with base ingredients",
+    "import-base-cocktails": "Fill bar with default cocktails",
+    "import-base-ingredients": "Fill bar with default ingredients",
     "join-error": "Unable to join bar",
     "select-bar": "Select bar",
     "delete-success": "Bar successfully removed",
@@ -701,5 +701,6 @@
   "missing-recommended-cocktails": "Add some cocktails to your favorites to start getting recommendations.",
   "ui-theme": "Default theme",
   "theme-dark": "Dark",
-  "theme-light": "Light"
+  "theme-light": "Light",
+  "default-currency": "Default currency"
 }
