@@ -8,10 +8,12 @@ import AppState from './../../AppState'
 import type { components } from '@/api/api'
 import { useRouter } from 'vue-router'
 import { useAuth } from '@/composables/useAuth'
+import { useSaltRimToast } from '@/composables/toast'
 
 type ServerVersion = components["schemas"]["ServerVersion"]
 type SSOProvider = components["schemas"]["SSOProvider"]
 
+const toast = useSaltRimToast();
 const router = useRouter()
 const isLoading = ref(false)
 const isLoadingProviders = ref(false)
@@ -77,6 +79,7 @@ async function login() {
             router.push(redirectUrl)
         }
     } catch (e: any) {
+        toast.default(e.message)
         isLoading.value = false
         appState.forgetUser()
         return

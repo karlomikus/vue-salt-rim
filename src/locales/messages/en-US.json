@@ -698,5 +698,8 @@
   "distillery": "Distillery",
   "sweetness": "Sweetness (g/ml)",
   "acidity": "Acidity (%)",
-  "missing-recommended-cocktails": "Add some cocktails to your favorites to start getting recommendations."
+  "missing-recommended-cocktails": "Add some cocktails to your favorites to start getting recommendations.",
+  "ui-theme": "Default theme",
+  "theme-dark": "Dark",
+  "theme-light": "Light"
 }

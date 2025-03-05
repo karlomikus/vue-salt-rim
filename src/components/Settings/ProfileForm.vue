@@ -25,6 +25,12 @@
                     </select>
                     <p class="form-input-hint"><a href="https://crowdin.com/project/bar-assistant" target="_blank">{{ $t('locales.help') }}</a></p>
                 </div>
+                <div class="form-group">
+                    <label class="form-label" for="ui-language">{{ $t('ui-theme') }}:</label>
+                    <select id="ui-theme" v-model="currentTheme" class="form-select">
+                        <option v-for="theme in themes" :key="theme" :value="theme">{{ $t('theme-' + theme) }}</option>
+                    </select>
+                </div>
             </div>
             <h3 class="form-section-title">{{ $t('password') }}</h3>
             <div class="block-container block-container--padded">
@@ -104,6 +110,8 @@ export default {
             user: {
                 is_shelf_public: false,
             },
+            themes: ['light', 'dark'],
+            currentTheme: null,
             currentLocale: this.$i18n.locale
         }
     },
@@ -122,6 +130,19 @@ export default {
                     const barMembership = resp.data.memberships.filter(m => m.bar_id == this.appState.bar.id)
                     this.user.is_shelf_public = barMembership.length > 0 ? barMembership[0].is_shelf_public : false
                 }
+
+                if (resp.data.settings && resp.data.settings.theme) {
+                    this.currentTheme = resp.data.settings.theme
+                } else {
+                    this.currentTheme = this.appState.theme
+                }
+
+                if (resp.data.settings && resp.data.settings.language) {
+                    this.currentLocale = resp.data.settings.language
+                } else {
+                    this.currentLocale = this.appState.language
+                }
+
                 this.isLoading = false
             }).catch(e => {
                 this.$toast.error(e.message)
@@ -136,6 +157,10 @@ export default {
                 name: this.user.name,
                 password: this.user.password,
                 password_confirmation: this.user.repeatPassword,
+                settings: {
+                    theme: this.currentTheme,
+                    language: null,
+                },
             }
 
             const appState = new AppState()
@@ -143,6 +168,7 @@ export default {
             if (this.currentLocale) {
                 appState.setLanguage(this.currentLocale)
                 this.$i18n.locale = this.currentLocale
+                postData.settings.language = this.currentLocale
             }
 
             if (appState.bar.id) {

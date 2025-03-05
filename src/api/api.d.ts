@@ -2997,19 +2997,25 @@ export interface components {
             is_subscribed: boolean;
             memberships: components["schemas"]["BarMembership"][];
             oauth_credentials: components["schemas"]["OauthCredential"][];
+            settings: components["schemas"]["ProfileSettings"] | null;
         };
         ProfileRequest: {
-            bar_id?: number | null;
             /** @example Bar Tender */
             name: string;
             /** @example new@email.com */
             email: string;
+            settings?: components["schemas"]["ProfileSettings"] | null;
+            bar_id?: number | null;
             /**
              * Format: password
              * @example newpassword
              */
             password?: string | null;
             is_shelf_public?: boolean;
+        };
+        ProfileSettings: {
+            language?: string | null;
+            theme?: string | null;
         };
         RegisterRequest: {
             /** @example admin@example.com */

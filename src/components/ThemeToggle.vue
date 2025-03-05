@@ -11,6 +11,7 @@
 
 <script>
 import AppState from './../AppState'
+import { useTheme } from './../composables/useTheme'
 
 export default {
     data() {
@@ -23,22 +24,21 @@ export default {
         }
     },
     mounted() {
-        if (document.body.classList.contains('dark-theme')) {
-            this.current = 'dark'
-        } else {
-            this.current = 'light'
+        const appState = new AppState()
+        if (appState.theme) {
+            console.log(appState.theme)
+            useTheme(appState.theme)
+            this.current = appState.theme
         }
     },
     methods: {
         toggleTheme() {
             if (this.current == 'dark') {
-                document.body.classList.remove('dark-theme')
+                useTheme('light')
                 this.current = 'light'
-                document.querySelector('meta[name="theme-color"]').setAttribute('content', this.metaThemeColor.light)
             } else if (this.current == 'light') {
-                document.body.classList.add('dark-theme')
+                useTheme('dark')
                 this.current = 'dark'
-                document.querySelector('meta[name="theme-color"]').setAttribute('content', this.metaThemeColor.dark)
             }
 
             this.rememberTheme()
