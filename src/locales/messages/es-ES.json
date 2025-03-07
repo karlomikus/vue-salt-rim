@@ -1,9 +1,9 @@
 {
   "locales": {
     "en-US": "English",
-    "fr-FR": "French",
+    "fr-FR": "Francés",
     "hr-HR": "Croatian",
-    "de-DE": "German",
+    "de-DE": "Alemán",
     "pl-PL": "Polish",
     "it-IT": "Italian",
     "sv-SE": "Swedish",
@@ -13,7 +13,7 @@
     "title": "Shelf",
     "toasts": {
       "favorites-error": "An error occured while fetching your favorite cocktails from a server",
-      "shelf-error": "An error occured while fetching cocktails you can make from a server",
+      "shelf-error": "",
       "stats-error": "An error occured while fetching stats from a server",
       "list-error": "An error occured while fetching ingredients on your shopping list from a server"
     },
