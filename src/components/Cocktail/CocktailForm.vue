@@ -115,7 +115,7 @@
             <div class="form-group">
                 <label class="form-label" for="cocktail-tags">{{ $t('tag.tags') }}:</label>
                 <TagSelector id="cocktail-tags" v-model="cocktail.tags" :options="tags" label-key="name" :placeholder="$t('placeholder.tags')"></TagSelector>
-                <p class="form-input-hint">{{ $t('tag.help-text') }}</p>
+                <p class="form-input-hint">{{ $t('tag.help-text') }} {{ $t('tag.help-text-recommender') }}</p>
             </div>
             <div v-show="utensils.length > 0" class="form-group">
                 <label class="form-label" for="utensil">{{ $t('utensils.title') }}:</label>
