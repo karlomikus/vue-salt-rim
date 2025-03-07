@@ -20,16 +20,18 @@
                     <option :value="undefined">{{ $t('no-default-units') }}</option>
                     <option v-for="unit in availableUnits" :key="unit.value" :value="unit.value">{{ unit.text }}</option>
                 </select>
+                <p class="form-input-hint">{{ $t('bar.default-units-hint') }}</p>
             </div>
             <div class="form-group">
                 <label class="form-label" for="default-currency">{{ $t('default-currency') }}:</label>
                 <input id="default-currency" v-model="bar.settings.default_currency" class="form-input" type="text">
+                <p class="form-input-hint">{{ $t('bar.default-currency-hint') }}</p>
             </div>
             <div class="form-group">
                 <label class="form-label" for="slug">{{ $t('bar.url') }}:</label>
                 <input id="slug" v-model="bar.slug" class="form-input" type="text" @blur="updateSlug">
                 <p v-show="urlWithSlug" class="form-input-hint">
-                    {{ $t('bar.url-help', {url: urlWithSlug}) }}
+                    {{ $t('bar.url-menu-hint') }} {{ $t('bar.url-help', {url: urlWithSlug}) }}
                 </p>
             </div>
             <div class="form-group">

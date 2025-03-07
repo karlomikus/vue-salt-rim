@@ -237,7 +237,8 @@
     "confirm-delete": "This will permanently delete tag with name \"{name}\".",
     "delete-success": "Tag deleted successfully",
     "add": "Add tag",
-    "edit": "Edit tag"
+    "edit": "Edit tag",
+    "help-text-recommender": "Tags are used to recommend cocktails based on your preferences."
   },
   "glass-type": {
     "types": "Glass types",
@@ -536,7 +537,10 @@
   },
   "bar": {
     "url": "Custom bar URL",
-    "url-help": "Your public bar URL will be: {url}"
+    "url-help": "Your public bar URL will be: {url}",
+    "url-menu-hint": "Used for public menu if enabled.",
+    "default-currency-hint": "Used as default currency suggestion, can be changed anytime.",
+    "default-units-hint": "Used as default units on cocktail details, can be changed anytime."
   },
   "api": {
     "tokens": "API Tokens",
