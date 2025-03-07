@@ -18,7 +18,8 @@ import UnitHandler from '../../UnitHandler.js'
                 <div class="public-page-menu__category__cocktails">
                     <div v-for="cocktail in category.items" :key="cocktail.sort" class="public-page-menu__cocktail">
                         <div class="public-page-menu__cocktail__image">
-                            <img :src="cocktail.image" alt="">
+                            <img v-if="cocktail.image" :src="cocktail.image" alt="">
+                            <img v-else src="/no-cocktail.jpg" alt="">
                         </div>
                         <div class="public-page-menu__cocktail__info">
                             <h4>{{ cocktail.name }}</h4>
