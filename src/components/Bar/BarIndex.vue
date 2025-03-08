@@ -85,7 +85,7 @@ import PageHeader from './../PageHeader.vue'
 import BarJoinDialog from './BarJoinDialog.vue'
 import AppState from '../../AppState'
 import DateFormatter from './../DateFormatter.vue'
-import Utils from './../../Utils.js'
+import { getRoleName } from './../../composables/useGetRoleName';
 import EmptyState from './../EmptyState.vue'
 import SubscriptionCheck from '../SubscriptionCheck.vue'
 import BarAssistantClient from '@/api/BarAssistantClient'
@@ -176,7 +176,7 @@ export default {
             window.location.replace('/')
         },
         getRoleName(roleId) {
-            return Utils.getRoleName(roleId)
+            return getRoleName(roleId)
         },
         deleteBar(bar) {
             this.$confirm(this.$t('bars.confirm-delete', { name: bar.name }), {
