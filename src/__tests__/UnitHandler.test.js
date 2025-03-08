@@ -1,5 +1,5 @@
 import { expect, test } from 'vitest'
-import UnitHandler from './UnitHandler'
+import UnitHandler from './../UnitHandler'
 
 test('format numbers as fraction', () => {
     expect(UnitHandler.asFraction(1.5)).toBe('1 1/2')
