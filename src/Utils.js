@@ -1,15 +1,4 @@
 class Utils {
-    static copyToClipboard(string) {
-        try {
-            const clipboard = navigator.clipboard;
-            clipboard.writeText(string);
-            return true
-        } catch (error) {
-            console.error('Failed to copy: ', error);
-            return false
-        }
-    }
-
     static decodeHtml(string) {
         var txt = document.createElement('textarea')
         txt.innerHTML = string

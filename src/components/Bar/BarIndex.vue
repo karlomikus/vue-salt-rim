@@ -78,6 +78,7 @@
 </template>
 <script>
 import { useTitle } from '@/composables/title'
+import { useClipboard } from '@vueuse/core'
 import OverlayLoader from './../OverlayLoader.vue'
 import SaltRimDialog from './../Dialog/SaltRimDialog.vue'
 import PageHeader from './../PageHeader.vue'
@@ -143,10 +144,17 @@ export default {
     },
     methods: {
         copyInviteLinkToClipboard(invite_code) {
-            if (Utils.copyToClipboard(`${window.location.origin}/bars/join/${invite_code}`)) {
+            const { copy, copied, isSupported } = useClipboard()
+
+            if (!isSupported.value) {
+                this.$toast.error(this.$t('permissions.clipboard-error'))
+                return
+            }
+
+            copy(`${window.location.origin}/bars/join/${invite_code}`)
+
+            if (copied.value) {
                 this.$toast.default(this.$t('bars.invite-link-copied'))
-            } else {
-                this.$toast.error(this.$t('bars.invite-link-error'))
             }
         },
         refreshBars() {
