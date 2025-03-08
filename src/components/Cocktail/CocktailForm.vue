@@ -137,7 +137,7 @@
 
 <script>
 import { useTitle } from '@/composables/title'
-import Utils from './../../Utils.js'
+import { useHtmlDecode } from './../../composables/useHtmlDecode';
 import UnitHandler from './../../UnitHandler'
 import BarAssistantClient from '@/api/BarAssistantClient';
 import OverlayLoader from './../OverlayLoader.vue'
@@ -218,9 +218,9 @@ export default {
 
         if (cocktailId) {
             await BarAssistantClient.getCocktail(cocktailId).then(resp => {
-                resp.data.description = Utils.decodeHtml(resp.data.description)
-                resp.data.instructions = Utils.decodeHtml(resp.data.instructions)
-                resp.data.garnish = Utils.decodeHtml(resp.data.garnish)
+                resp.data.description = useHtmlDecode(resp.data.description)
+                resp.data.instructions = useHtmlDecode(resp.data.instructions)
+                resp.data.garnish = useHtmlDecode(resp.data.garnish)
                 if (!resp.data.method) {
                     resp.data.method = {}
                 }

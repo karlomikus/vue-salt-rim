@@ -1,11 +1,4 @@
 class Utils {
-    static decodeHtml(string) {
-        var txt = document.createElement('textarea')
-        txt.innerHTML = string
-
-        return txt.value
-    }
-
     static getRoleName(roleId) {
         switch (roleId) {
             case 1:

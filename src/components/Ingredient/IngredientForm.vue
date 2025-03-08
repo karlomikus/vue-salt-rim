@@ -138,7 +138,6 @@
 
 <script>
 import BarAssistantClient from '@/api/BarAssistantClient'
-import Utils from './../../Utils.js'
 import ImageUpload from './../ImageUpload.vue'
 import PageHeader from './../PageHeader.vue'
 import OverlayLoader from './../OverlayLoader.vue'
@@ -150,6 +149,7 @@ import SaltRimDialog from '../Dialog/SaltRimDialog.vue'
 import CloseButton from '../CloseButton.vue'
 import { useTitle } from '@/composables/title'
 import AppState from '@/AppState'
+import { useHtmlDecode } from './../../composables/useHtmlDecode';
 
 export default {
     components: {
@@ -232,7 +232,7 @@ export default {
         refreshIngredient() {
             this.isLoading = true
             BarAssistantClient.getIngredient(this.ingredient.id).then(resp => {
-                resp.data.description = Utils.decodeHtml(resp.data.description)
+                resp.data.description = useHtmlDecode(resp.data.description)
 
                 this.ingredient = resp.data
                 this.isParent = this.ingredient.hierarchy.parent_ingredient != null
