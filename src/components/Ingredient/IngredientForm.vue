@@ -149,7 +149,7 @@ import SaltRimCheckbox from '../SaltRimCheckbox.vue'
 import SaltRimDialog from '../Dialog/SaltRimDialog.vue'
 import CloseButton from '../CloseButton.vue'
 import { useTitle } from '@/composables/title'
-import AppState from '@/AppState.js'
+import AppState from '@/AppState'
 
 export default {
     components: {

@@ -10,7 +10,7 @@
 </template>
 
 <script>
-import AppState from './../AppState'
+import AppState from '../AppState'
 import { useTheme } from './../composables/useTheme'
 
 export default {

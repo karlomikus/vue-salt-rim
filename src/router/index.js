@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import qs from 'qs'
-import AppState from './../AppState'
+import AppState from '../AppState'
 
 const router = createRouter({
     history: createWebHistory(),

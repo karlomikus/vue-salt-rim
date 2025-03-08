@@ -2012,9 +2012,7 @@ export interface components {
             /** @example 01H8S3VH2HTEB3D893AW8NTBBC */
             invite_code: string | null;
             status: components["schemas"]["BarStatusEnum"];
-            settings: {
-                [key: string]: unknown;
-            }[];
+            settings: components["schemas"]["BarSettings"];
             search_host: string | null;
             search_token: string | null;
             /** Format: date-time */
@@ -2034,7 +2032,7 @@ export interface components {
                 can_activate?: boolean;
                 /** @example true */
                 can_deactivate?: boolean;
-            }[];
+            };
         };
         BarBasic: {
             /** @example 1 */
@@ -2072,14 +2070,18 @@ export interface components {
              */
             default_units?: "ml" | "cl" | "oz";
             /**
-             * @description Locale code, used only as a setting for client apps, does not change language of the API.
-             * @example en-US
+             * @description ISO 4217 format of currency. Used only as a setting for client apps.
+             * @example EUR
              */
-            default_lang?: string | null;
+            default_currency?: string | null;
             /** @description Enable users with invite code to join this bar. Default `false`. */
             enable_invites?: boolean;
             /** @description List of data that the bar will start with. Cocktails cannot be imported without ingredients. */
             options?: components["schemas"]["BarOptionsEnum"];
+        };
+        BarSettings: {
+            default_units?: string | null;
+            default_currency?: string | null;
         };
         BarStats: {
             /** @example 1 */

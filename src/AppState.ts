@@ -1,37 +1,49 @@
-class AppState {
+import type { components } from "./api/api"
+
+type Bar = components["schemas"]["Bar"]
+type Profile = components["schemas"]["Profile"]
+
+interface AppState {
+    theme: string
+    defaultUnit: string
+    defaultShelf: string
+    language: string
+    token: string|null
+    bar: Bar
+    user: Profile
+    rememberMe: boolean
+}
+
+class AppState implements AppState {
+    _key: string
+
     constructor() {
         this.theme = 'light'
         this.defaultUnit = 'ml'
         this.defaultShelf = 'bar'
         this.language = 'en-US'
         this.token = null
-        /**
-         * @type {{id: number, name: string, search_host: string}}
-         */
-        this.bar = {}
-        /**
-         * @type {{id: number, name: string}}
-         */
-        this.user = {}
+        this.bar = {} as Bar
+        this.user = {} as Profile
 
         this._key = '_salt_rim'
         this._readStateFromStorage()
     }
 
-    setToken(token) {
+    setToken(token: string|null) {
         this.token = token
         this._updateState()
     }
 
-    setUser(user) {
+    setUser(user: Profile) {
         this.user = user
         this._updateState()
     }
 
-    setBar(bar) {
+    setBar(bar: Bar) {
         let searchHost = window.srConfig.MEILISEARCH_URL
         if (!searchHost) {
-            searchHost = bar.search_host
+            searchHost = bar.search_host ?? ''
         }
 
         if (!(searchHost.startsWith('http://') || searchHost.startsWith('https://'))) {
@@ -52,37 +64,41 @@ class AppState {
     }
 
     forgetUser() {
-        this.user = {}
+        this.user = {} as Profile
         this.token = null
         this._updateState()
     }
 
     forgetBar() {
-        this.bar = {}
+        this.bar = {} as Bar
         this._updateState()
     }
 
-    setDefaultUnits(unit) {
+    setDefaultUnits(unit: string) {
         this.defaultUnit = unit
         this._updateState()
     }
 
-    setDefaultShelf(shelf) {
+    setDefaultShelf(shelf: string) {
         this.defaultShelf = shelf
         this._updateState()
     }
 
-    setTheme(theme) {
+    setTheme(theme: string) {
         this.theme = theme
         this._updateState()
     }
 
-    setLanguage(language) {
+    setLanguage(language: string) {
         this.language = language
         this._updateState()
     }
 
     hasUserInfo() {
+        if (!this.user) {
+            return false
+        }
+
         return this.user.id != null || this.user.id != undefined
     }
 
@@ -107,6 +123,10 @@ class AppState {
     }
 
     isSubscribed() {
+        if (!this.user) {
+            return false
+        }
+
         if (window.srConfig.BILLING_ENABLED === true) {
             return this.user.is_subscribed
         }
@@ -118,7 +138,7 @@ class AppState {
         return window.srConfig.BILLING_ENABLED === true
     }
 
-    _getStorage() {
+    _getStorage(): Storage {
         const val = localStorage.getItem('sr_remember_login')
         const rememberMe = val === null || val === 'true' ? true : false
 
@@ -135,7 +155,7 @@ class AppState {
 
     _readStateFromStorage() {
         if (this._getStorage().getItem(this._key)) {
-            const newState = JSON.parse(this._getStorage().getItem(this._key))
+            const newState = JSON.parse(this._getStorage().getItem(this._key) ?? '')
 
             this.theme = newState.theme
             this.defaultUnit = newState.defaultUnit

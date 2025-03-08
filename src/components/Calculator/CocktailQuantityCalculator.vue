@@ -10,7 +10,7 @@ import UnitPicker from '../Units/UnitPicker.vue'
 import ToggleIngredientShoppingCart from '../ToggleIngredientShoppingCart.vue'
 import UnitHandler from '../../UnitHandler.js'
 import BarAssistantClient from '@/api/BarAssistantClient'
-import AppState from '@/AppState.js'
+import AppState from './../../AppState'
 import CollectionDetailsWidget from '../Collections/CollectionDetailsWidget.vue'
 import type { components } from '@/api/api'
 

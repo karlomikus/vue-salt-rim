@@ -46,7 +46,7 @@
 <script>
 import {micromark} from 'micromark'
 import BarAssistantClient from '@/api/BarAssistantClient'
-import AppState from './../../AppState'
+import AppState from '../../AppState'
 import UnitHandler from '../../UnitHandler'
 import CocktailIngredientShare from '../Cocktail/CocktailIngredientShare.vue'
 

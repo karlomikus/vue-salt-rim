@@ -92,7 +92,7 @@ import BarAssistantClient from '@/api/BarAssistantClient'
 import OverlayLoader from '@/components/OverlayLoader.vue'
 import PageHeader from '@/components/PageHeader.vue'
 import Navigation from '@/components/Settings/SettingsNavigation.vue'
-import AppState from './../../AppState'
+import AppState from '../../AppState'
 import SaltRimCheckbox from '../SaltRimCheckbox.vue'
 import { useTitle } from '@/composables/title'
 
