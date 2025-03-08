@@ -26,7 +26,6 @@ export default {
     mounted() {
         const appState = new AppState()
         if (appState.theme) {
-            console.log(appState.theme)
             useTheme(appState.theme)
             this.current = appState.theme
         }

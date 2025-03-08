@@ -169,7 +169,7 @@ export default {
             const uniqueCurrencies = Array.from(uniqueCurrencySet)
 
             if (uniqueCurrencies.length == 0) {
-                return null
+                return this.appState.bar.settings.default_currency ?? null
             }
 
             return uniqueCurrencies[0]

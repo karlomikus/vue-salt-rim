@@ -4,7 +4,9 @@ import { useSaltRimToast } from './../../composables/toast'
 import BarAssistantClient from '@/api/BarAssistantClient'
 import OverlayLoader from '@/components/OverlayLoader.vue'
 import { useI18n } from 'vue-i18n'
+import AppState from '../../AppState'
 
+const appState = new AppState()
 const { t } = useI18n()
 const emit = defineEmits(['formClosed'])
 const toast = useSaltRimToast()
@@ -23,6 +25,10 @@ const props = defineProps({
 
 const isLoading = ref(false)
 const category = ref(props.sourceCategory)
+
+if (appState.bar.settings && appState.bar.settings.default_currency) {
+    category.value.currency = appState.bar.settings.default_currency
+}
 
 function submit() {
     isLoading.value = true
