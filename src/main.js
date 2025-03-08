@@ -39,10 +39,13 @@ if (!userSelectedLocale) {
     userSelectedLocale = window.srConfig.DEFAULT_LOCALE || 'en-US'
 }
 
-let userSelectedTheme = appState.theme
+const userSelectedTheme = appState.theme
 if (userSelectedTheme == 'dark' && !document.body.classList.contains('dark-theme')) {
     document.body.classList.add('dark-theme')
-    document.querySelector('meta[name="theme-color"]').setAttribute('content', '#282238')
+    const metaColor = document.querySelector('meta[name="theme-color"]')
+    if (metaColor) {
+        document.querySelector('meta[name="theme-color"]').setAttribute('content', '#282238')
+    }
 }
 
 const app = createApp(App)

@@ -113,7 +113,6 @@ export default {
                 origin: null,
                 color: null,
                 images: [],
-                ingredient_category_id: null,
             }).then(resp => {
                 this.$toast.default(this.$t('ingredient.dialog.new-ingredient-success', { name: resp.data.name }))
                 this.selectIngredient({
