@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue'
 import { useThrottleFn } from '@vueuse/core'
-import { useSaltRimToast } from '@/composables/toast.js'
+import { useSaltRimToast } from '@/composables/toast'
 import { useI18n } from 'vue-i18n'
 import BarAssistantClient from '@/api/BarAssistantClient';
 import PageHeader from '@/components/PageHeader.vue'

@@ -1,6 +1,6 @@
 <script setup>
 import { ref } from 'vue'
-import { useSaltRimToast } from './../../composables/toast'
+import { useSaltRimToast } from '../../composables/toast'
 import BarAssistantClient from '@/api/BarAssistantClient'
 import OverlayLoader from '@/components/OverlayLoader.vue'
 import { useI18n } from 'vue-i18n'

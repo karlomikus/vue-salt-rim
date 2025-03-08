@@ -5,7 +5,7 @@ import { micromark } from 'micromark'
 import { useRoute, useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import { useTitle } from '@/composables/title'
-import { useSaltRimToast } from '@/composables/toast.js'
+import { useSaltRimToast } from '@/composables/toast'
 import { useConfirm } from '@/composables/confirm.js'
 import BarAssistantClient from '@/api/BarAssistantClient';
 import PageHeader from '@/components/PageHeader.vue'

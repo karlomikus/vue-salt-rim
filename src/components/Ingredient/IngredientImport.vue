@@ -6,7 +6,7 @@ import OverlayLoader from '../OverlayLoader.vue'
 import BarAssistantClient from '@/api/BarAssistantClient'
 import SubscriptionCheck from '../SubscriptionCheck.vue'
 import { useI18n } from 'vue-i18n'
-import { useSaltRimToast } from '@/composables/toast.js'
+import { useSaltRimToast } from '@/composables/toast'
 import { useRouter } from 'vue-router'
 import { useTitle } from '@/composables/title'
 

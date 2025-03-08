@@ -6,7 +6,7 @@ import PageHeader from '../PageHeader.vue';
 import type { components } from '@/api/api'
 import Sortable from 'sortablejs'
 import { useTitle } from '@/composables/title'
-import { useSaltRimToast } from '@/composables/toast.js'
+import { useSaltRimToast } from '@/composables/toast'
 import BarAssistantClient from '@/api/BarAssistantClient';
 import { useI18n } from 'vue-i18n';
 import { useRoute, useRouter } from 'vue-router';
