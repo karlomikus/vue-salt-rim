@@ -6,7 +6,7 @@ import { useRoute, useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import { useTitle } from '@/composables/title'
 import { useSaltRimToast } from '@/composables/toast'
-import { useConfirm } from '@/composables/confirm.js'
+import { useConfirm } from '@/composables/confirm'
 import BarAssistantClient from '@/api/BarAssistantClient';
 import PageHeader from '@/components/PageHeader.vue'
 import SimilarCocktails from '@/components/Cocktail/SimilarCocktails.vue'
