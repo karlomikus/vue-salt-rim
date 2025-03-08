@@ -18,6 +18,14 @@
 ## Fixes
 - Fix public menu thumbnails not showing
 
+# v3.9.2
+## Changes
+- Add image to GitHub Container Registry
+
+# v3.9.1
+## Changes
+- Added markdown support to calculator descriptions
+
 # v3.9.0
 ## New
 - Added support for calculators api endpoints

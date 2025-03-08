@@ -3,6 +3,7 @@ import type { components } from '@/api/api'
 import { parser } from 'mathjs'
 import { computed } from 'vue'
 import CalculatorRenderBlock from './CalculatorRenderBlock.vue'
+import { micromark } from 'micromark'
 
 type Calculator = components["schemas"]["Calculator"]
 type CalculatorBlock = components["schemas"]["CalculatorBlock"]
@@ -19,6 +20,14 @@ const props = defineProps<{
 
 const inputs = props.calculator.blocks.filter(input => input.type === 'input')
 const evaluations = props.calculator.blocks.filter(input => input.type === 'eval').sort((a, b) => a.sort - b.sort)
+
+const parsedDescription = computed(() => {
+    if (!props.calculator.description) {
+        return null
+    }
+
+    return micromark(props.calculator.description)
+})
 
 const resolvedCalculations = computed<CalculatorFormulaEvaluation[]>(() => {
     inputs.forEach(input => {
@@ -50,7 +59,7 @@ function resolveCalculation(evaluation: CalculatorBlock): string {
 <template>
     <div class="calculator">
         <h3 class="calculator__title">{{ calculator.name }}</h3>
-        <p>{{ calculator.description }}</p>
+        <div v-html="parsedDescription"></div>
         <div class="calculator__inputs">
             <div class="form-group" v-for="input in inputs">
                 <label class="form-label form-label--required" :for="'calculator-render-' + calculator.id + '-' + input.sort">{{ input.settings.prefix }} {{ input.label }} {{ input.settings.suffix }}</label>
