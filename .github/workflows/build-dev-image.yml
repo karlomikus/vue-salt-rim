@@ -25,6 +25,13 @@ jobs:
           username: ${{ secrets.HUB_BASS_USERNAME }}
           password: ${{ secrets.HUB_BASS_TOKEN }}
       -
+        name: Login to GitHub Container Registry
+        uses: docker/login-action@v2
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      -
         name: Build and push
         uses: docker/build-push-action@v3
         with:
@@ -32,6 +39,8 @@ jobs:
           platforms: linux/amd64,linux/arm64
           push: true
           build-args: BUILD_VERSION=develop
-          tags: barassistant/salt-rim:dev
+          tags: |
+            barassistant/salt-rim:dev
+            ghcr.io/${{ github.repository_owner }}/salt-rim:dev
           cache-from: type=gha
           cache-to: type=gha,mode=max
