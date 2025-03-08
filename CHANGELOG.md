@@ -1,3 +1,7 @@
+# v3.9.1
+## Changes
+- Add image to GitHub Container Registry
+
 # v3.9.0
 ## New
 - Added support for calculators api endpoints
