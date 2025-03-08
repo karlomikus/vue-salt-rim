@@ -27,7 +27,7 @@ const checkToken: Middleware = {
 const authMiddleware: Middleware = {
   async onRequest({ request }) {
     const scopedState = new AppState()
-    accessToken = scopedState.token
+    accessToken = scopedState.token ?? ''
     request.headers.set("Authorization", `Bearer ${accessToken}`);
     return request;
   },
@@ -163,7 +163,7 @@ export default class BarAssistantClient {
     return (await client.POST('/cocktails/{id}/copy', { params: { path: { id: id } } })).data
   }
 
-  static async rateCocktail(id: number, data: {}) {
+  static async rateCocktail(id: number, data: object = {}) {
     return (await client.POST('/cocktails/{id}/ratings', { params: { path: { id: id } }, body: data })).data
   }
 
@@ -307,11 +307,11 @@ export default class BarAssistantClient {
     return (await client.GET('/users/{id}/ingredients', { params: { path: { id: id } } })).data
   }
 
-  static async addToUserShelf(id: number, data: {}) {
+  static async addToUserShelf(id: number, data: object = {}) {
     return (await client.POST('/users/{id}/ingredients/batch-store', { params: { path: { id: id } }, body: data })).data
   }
 
-  static async removeFromUserShelf(id: number, data: {}) {
+  static async removeFromUserShelf(id: number, data: object = {}) {
     return (await client.POST('/users/{id}/ingredients/batch-delete', { params: { path: { id: id } }, body: data })).data
   }
 
@@ -514,11 +514,11 @@ export default class BarAssistantClient {
     return (await client.POST('/billing/subscription', { body: { type: status } })).data
   }
 
-  static async addToBarShelf(id: number, data: {}) {
+  static async addToBarShelf(id: number, data: object = {}) {
     return (await client.POST('/bars/{id}/ingredients/batch-store', { params: { path: { id: id } }, body: data })).data
   }
 
-  static async removeFromBarShelf(id: number, data: {}) {
+  static async removeFromBarShelf(id: number, data: object = {}) {
     return (await client.POST('/bars/{id}/ingredients/batch-delete', { params: { path: { id: id } }, body: data })).data
   }
 

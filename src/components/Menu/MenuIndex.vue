@@ -160,13 +160,13 @@ export default {
         },
         guessCurrency() {
             // Use map() to create a new array with just the currencies
-            let currencyArray = this.cocktailMenuItems.map(item => item.price.currency)
+            const currencyArray = this.cocktailMenuItems.map(item => item.price.currency)
 
             // Convert it into a Set, which will automatically remove any duplicates
-            let uniqueCurrencySet = new Set(currencyArray)
+            const uniqueCurrencySet = new Set(currencyArray)
 
             // Now convert back into an Array using Array.from()
-            let uniqueCurrencies = Array.from(uniqueCurrencySet)
+            const uniqueCurrencies = Array.from(uniqueCurrencySet)
 
             if (uniqueCurrencies.length == 0) {
                 return null

@@ -12,7 +12,7 @@ import EmptyState from '../EmptyState.vue';
 import OverlayLoader from '../OverlayLoader.vue';
 
 import type { components } from '@/api/api'
-import AppState from '@/AppState';
+import AppState from '../../AppState';
 import { useTitle } from '@/composables/title';
 type ShoppingList = components["schemas"]["ShoppingList"]
 type ShoppingListRequest = components["schemas"]["ShoppingListRequest"]

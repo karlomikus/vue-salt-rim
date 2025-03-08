@@ -3,7 +3,7 @@ import type { components } from "./api/api"
 type Bar = components["schemas"]["Bar"]
 type Profile = components["schemas"]["Profile"]
 
-interface AppState {
+class AppState {
     theme: string
     defaultUnit: string
     defaultShelf: string
@@ -12,9 +12,6 @@ interface AppState {
     bar: Bar
     user: Profile
     rememberMe: boolean
-}
-
-class AppState implements AppState {
     _key: string
 
     constructor() {
@@ -23,6 +20,7 @@ class AppState implements AppState {
         this.defaultShelf = 'bar'
         this.language = 'en-US'
         this.token = null
+        this.rememberMe = false
         this.bar = {} as Bar
         this.user = {} as Profile
 
