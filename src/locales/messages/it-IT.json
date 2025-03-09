@@ -17,7 +17,9 @@
       "stats-error": "Si è verificato un errore durante il recupero delle statistiche dal server",
       "list-error": "Si è verificato un errore durante il recupero degli ingredienti nella tua lista della spesa dal server"
     },
-    "cocktails": "Cocktail che posso fare"
+    "cocktails": "Cocktail che posso fare",
+    "bar-stats": "Bar statistics",
+    "recommended-cocktails": "Recommended cocktails"
   },
   "ingredient": {
     "title": "Ingrediente",
@@ -40,7 +42,7 @@
     "list-remove-success": "Rimosso \"{name}\" dalla tua lista della spesa",
     "list-add-success": "Aggiunto \"{name}\" alla tua lista della spesa",
     "spotlight": "Approfondimento sull'ingrediente",
-    "is-variety": "Questo ingrediente è una variazione di un altro ingrediente",
+    "is-variety": "Ingredient is variant of another ingredient",
     "information": "Informazioni sull'ingrediente",
     "extra-cocktails": "Aggiungi alla dispensa e potrai fare",
     "has-variable-amount": "Ha quantità variabile",
@@ -52,13 +54,14 @@
       "optional-checkbox": "Rendi questo ingrediente facoltativo.",
       "new-ingredient-success": "Creato ingrediente non categorizzato \"{name}\".",
       "new-ingredient-fail": "Impossibile aggiungere l'ingrediente.",
-      "select-substitutes-for": "Seleziona ingredienti sostitutivi per \"{name}\"."
+      "select-substitutes-for": "Seleziona ingredienti sostitutivi per \"{name}\".",
+      "is-specified-checkbox": "Use this specific ingredient (ignore varieties as substitutes)"
     },
     "base": "Base",
     "is-complex": "L'ingrediente contiene altri ingredienti",
     "complex-note": "Se hai tutti gli ingredienti elencati, abbina automaticamente le ricette con questo ingrediente",
     "complex": "Ingrediente complesso",
-    "variety-note": "La ricerca delle ricette includerà l'ingrediente base come sostituto (a seconda delle impostazioni dell'utente)",
+    "variety-note": "Recipe matching can include this ingredient as a possible substitute for parent ingredient",
     "ingredients": "Ingredienti",
     "used_as_substitute_for": "Utilizzato come sostituto di",
     "can_be_substituted_with": "Può essere sostituito con",
@@ -70,7 +73,12 @@
     "bar-shelf-remove-success": "Rimosso \"{name}\" dallo scaffale del bar",
     "units-help": "Alcune funzionalità funzionano meglio se si utilizzano unità comuni. Alcune raccomandazioni per le unità sono: ml, oz, cl, dashes, cucchiaio da bar, gocce, topup, leaves.",
     "import": "Import ingredients",
-    "attach-calculator": "Attach calculator"
+    "attach-calculator": "Attach calculator",
+    "hierarchy": "Hierarchy",
+    "status": "Ingredient status",
+    "hierarchy-description": "This is an overview of the ingredient hierarchy. Depending on the cocktail recipe, if you have any of the variants in the shelf, they can be used as a substitute for the main ingredient when matching recipes.",
+    "show-variants": "Show variants",
+    "show-ancestors": "Show ancestors"
   },
   "share": {
     "title": "Condividi",
@@ -118,7 +126,8 @@
   },
   "latest": {
     "cocktails": "Ultimi cocktail",
-    "favorites": "I tuoi preferiti recenti"
+    "favorites": "I tuoi preferiti recenti",
+    "ingredients": "Latest ingredients"
   },
   "strength": "Intensità",
   "rating": "Valutazione",
@@ -228,7 +237,8 @@
     "confirm-delete": "Questo eliminerà definitivamente il tag \"{name}\".",
     "delete-success": "Tag eliminato con successo",
     "add": "Aggiungi tag",
-    "edit": "Modifica tag"
+    "edit": "Modifica tag",
+    "help-text-recommender": "Tags are used to recommend cocktails based on your preferences."
   },
   "glass-type": {
     "types": "Tipi di bicchiere",
@@ -391,8 +401,8 @@
     "confirm-delete": "Questo eliminerà definitivamente il bar \"{name}\".",
     "confirm-leave": "Perderai tutti i tuoi dati nel bar (\"{name}\") se lo lasci.",
     "enable-invites": "Abilita l'adesione tramite codice d'invito",
-    "import-base-cocktails": "Apri bar con cocktail base",
-    "import-base-ingredients": "Apri bar con ingredienti base",
+    "import-base-cocktails": "Fill bar with default cocktails",
+    "import-base-ingredients": "Fill bar with default ingredients",
     "join-error": "Impossibile entrare nel bar",
     "select-bar": "Seleziona bar",
     "delete-success": "Bar rimosso con successo",
@@ -504,19 +514,19 @@
     "add-cocktail": "Aggiungi cocktail",
     "price": "Prezzo",
     "currency": "Valuta",
-    "copy-currency": "Copia valuta in tutti i cocktail",
-    "cocktail-added": "Cocktail \"{name}\" aggiunto al menu",
+    "copy-currency": "Copy currency to all items",
+    "cocktail-added": "Item \"{name}\" added to menu",
     "category-added": "Categoria menu aggiunta",
     "delete-category-confirm": "Questo eliminerà la categoria del menu \"{name}\"",
     "category-removed": "Categoria menu eliminata",
     "saved": "Menu aggiornato",
     "update-error": "Impossibile aggiornare il menu del bar",
-    "cocktail-already-added": "Cocktail \"{name}\" è già stato aggiunto al menu",
-    "delete-cocktail-confirm": "Questo rimuoverà il cocktail \"{name}\" dalla categoria menu",
-    "cocktail-removed": "Cocktail rimosso dalla categoria menu",
+    "cocktail-already-added": "Item \"{name}\" is already in the menu",
+    "delete-cocktail-confirm": "This will remove item \"{name}\" from menu category",
+    "cocktail-removed": "Item removed from menu category",
     "menu-not-found": "Menu non trovato",
     "description": "Qui puoi impostare un semplice menu web per il tuo bar. Puoi aggiornare il tuo collegamento del bar quando aggiungi o modifichi un bar. Usa l'URL o il codice QR per condividere il tuo menu del bar con gli ospiti.",
-    "no-cocktails-added": "Il menu deve avere almeno un cocktail",
+    "no-cocktails-added": "Menu needs to have at least one item",
     "calculate-price": "Calcola il prezzo",
     "clear-category-confirm": "Questo rimuoverà tutti i cocktail dalla categoria \"{name}\"",
     "category-cleared": "Categoria cancellata",
@@ -527,7 +537,10 @@
   },
   "bar": {
     "url": "URL personalizzato bar",
-    "url-help": "Il tuo URL pubblico del bar sarà: {url}"
+    "url-help": "Il tuo URL pubblico del bar sarà: {url}",
+    "url-menu-hint": "Used for public menu if enabled.",
+    "default-currency-hint": "Used as default currency suggestion, can be changed anytime.",
+    "default-units-hint": "Used as default units on cocktail details, can be changed anytime."
   },
   "api": {
     "tokens": "Token API",
@@ -614,7 +627,7 @@
     "no-matching-units": "Nessun prezzo unitario corrispondente trovato",
     "select": "Seleziona prezzo",
     "category-delete-success": "Categoria di prezzo eliminata",
-    "category-confirm-delete": "Questo stabilirà in modo permanente la categoria di prezzo con il nome \\\"{name}\\\"."
+    "category-confirm-delete": "This will permanently price category with name \"{name}\"."
   },
   "prices": {
     "add": "Aggiungi prezzo",
@@ -670,5 +683,28 @@
   "permissions": {
     "clipboard-error": "Your browser or server config does not support clipboard sharing."
   },
-  "preview": "Preview"
+  "preview": "Preview",
+  "available-variants": "Variants in shelf",
+  "sso": {
+    "profile-providers": "SSO accounts",
+    "provider-name": "Provider name",
+    "created-date": "Token created at",
+    "delete-account": "Remove account link",
+    "confirm-delete": "This will permanently delete SSO account link from provider \"{name}\".",
+    "is-configured": "Server configuration",
+    "delete-success": "SSO account link deleted",
+    "provider-enabled": "Enabled",
+    "provider-disabled": "Disabled",
+    "title": "Single Sign-On",
+    "auth-error": "Unable to authenticate via Single Sign-On provider",
+    "login-with": "Login with {name}"
+  },
+  "distillery": "Distillery",
+  "sweetness": "Sweetness (g/ml)",
+  "acidity": "Acidity (%)",
+  "missing-recommended-cocktails": "Add some cocktails to your favorites to start getting recommendations.",
+  "ui-theme": "Default theme",
+  "theme-dark": "Dark",
+  "theme-light": "Light",
+  "default-currency": "Default currency"
 }
