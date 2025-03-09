@@ -8,7 +8,7 @@ import OverlayLoader from './../OverlayLoader.vue'
 import UnitConverter from '../Units/UnitConverter.vue'
 import UnitPicker from '../Units/UnitPicker.vue'
 import ToggleIngredientShoppingCart from '../ToggleIngredientShoppingCart.vue'
-import UnitHandler from '../../UnitHandler.js'
+import { unitHandler } from '@/composables/useUnits'
 import BarAssistantClient from '@/api/BarAssistantClient'
 import AppState from './../../AppState'
 import CollectionDetailsWidget from '../Collections/CollectionDetailsWidget.vue'
@@ -102,9 +102,9 @@ const totalCocktailCount = computed(() => {
 const ingredientsWithCalculatedAmounts = computed((): IngredientWithCalculatedAmount[] => {
     return cocktails.value.flatMap(cocktail =>
         cocktail?.ingredients?.map(ingredient => {
-            const convertedAmount = UnitHandler.convertFromTo(ingredient.units, ingredient.amount, selectedUnit.value)
+            const convertedAmount = unitHandler.convertFromTo(ingredient.units, ingredient.amount, selectedUnit.value)
             const totalAmount = convertedAmount * cocktail.count
-            const units = UnitHandler.isUnitConvertable(ingredient.units) ? selectedUnit.value : ingredient.units
+            const units = unitHandler.isUnitConvertable(ingredient.units) ? selectedUnit.value : ingredient.units
 
             return {
                 id: ingredient.ingredient.id,
@@ -161,9 +161,9 @@ const finalIngredients = computed((): FinalIngredientObject[] => {
             by_amounts: collectionIngredientData.by_amounts,
             total_cocktails: collectionIngredientData.total_cocktails,
             prices: i?.prices?.map(p => {
-                const units = !UnitHandler.isUnitConvertable(p.units) ? p.units : selectedUnit.value
+                const units = !unitHandler.isUnitConvertable(p.units) ? p.units : selectedUnit.value
 
-                return { ...p, amount: UnitHandler.toFixedWithTruncate(UnitHandler.convertFromTo(p.units, p.amount, selectedUnit.value), 2), units: units }
+                return { ...p, amount: unitHandler.toFixedWithTruncate(unitHandler.convertFromTo(p.units, p.amount, selectedUnit.value), 2), units: units }
             }).map(p => {
                 let bestUnitForPrice = {} as { total_amount: number }
                 if (collectionIngredientData.by_amounts[p.units]) {
@@ -247,17 +247,17 @@ async function refreshCollection(id: number) {
  * Calculate price per unit, with unit conversion
  */
 function calculatePricePerUnits(price: IngredientPriceWithQuantity, newUnits: string) {
-    const result = price.price.price / UnitHandler.convertFromTo(price.units, price.amount, newUnits)
+    const result = price.price.price / unitHandler.convertFromTo(price.units, price.amount, newUnits)
     const curr = price.price_category.currency
-    const unit = !UnitHandler.isUnitConvertable(price.units) ? price.units : newUnits
-    let pricePerUnit = `${UnitHandler.formatPrice(result, curr)}/${unit}`
+    const unit = !unitHandler.isUnitConvertable(price.units) ? price.units : newUnits
+    let pricePerUnit = `${unitHandler.formatPrice(result, curr)}/${unit}`
 
     if (result < 0.01) {
-        pricePerUnit = `${UnitHandler.formatPrice(0.01, curr)}/${unit}`
+        pricePerUnit = `${unitHandler.formatPrice(0.01, curr)}/${unit}`
     }
 
     if (price.has_unit_price) {
-        return `${pricePerUnit} - x${price.needed_quantity} (${price.amount}${price.units}) · ${UnitHandler.formatPrice(price.needed_quantity_price, price.price_category.currency)}`
+        return `${pricePerUnit} - x${price.needed_quantity} (${price.amount}${price.units}) · ${unitHandler.formatPrice(price.needed_quantity_price, price.price_category.currency)}`
     }
 
     // return `${pricePerUnit} - ${t('price.no-matching-units')}`
@@ -336,10 +336,10 @@ function saveState() {
                                 <td colspan="2">
                                     <template v-for="(total, curr) in totalsPerCurrency" :key="curr">
                                         <template v-if="total.min_total == total.max_total">
-                                            {{ UnitHandler.formatPrice(total.min_total, curr.toString()) }}<br>
+                                            {{ unitHandler.formatPrice(total.min_total, curr.toString()) }}<br>
                                         </template>
                                         <template v-else>
-                                            {{ UnitHandler.formatPrice(total.min_total, curr.toString()) }} - {{ UnitHandler.formatPrice(total.max_total, curr.toString()) }}<br>
+                                            {{ unitHandler.formatPrice(total.min_total, curr.toString()) }} - {{ unitHandler.formatPrice(total.max_total, curr.toString()) }}<br>
                                         </template>
                                     </template>
                                 </td>

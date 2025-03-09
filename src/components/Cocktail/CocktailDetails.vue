@@ -12,7 +12,7 @@ import PageHeader from '@/components/PageHeader.vue'
 import SimilarCocktails from '@/components/Cocktail/SimilarCocktails.vue'
 import IngredientSpotlight from '@/components/Ingredient/IngredientSpotlight.vue'
 import OverlayLoader from '@/components/OverlayLoader.vue'
-import UnitHandler from '@/UnitHandler'
+import { unitHandler } from '@/composables/useUnits'
 import NoteDetails from '@/components/Note/NoteDetails.vue'
 import NoteDialog from '@/components/Note/NoteDialog.vue'
 import CocktailPrice from './CocktailPrice.vue'
@@ -111,7 +111,7 @@ const completeCocktailPrices = computed(() => {
 // Ingredient amount scale factor when batch type is volume
 const volumeScaleFactor = computed(() => {
     const volInMl = parseFloat(cocktail.value?.volume_ml?.toString() ?? '')
-    const totalVolume = UnitHandler.convertFromTo('ml', volInMl, currentUnit.value)
+    const totalVolume = unitHandler.convertFromTo('ml', volInMl, currentUnit.value)
 
     if (!targetVolumeToScaleTo.value) {
         return null
@@ -126,7 +126,7 @@ const volumeScaleFactor = computed(() => {
 // Extra required water dilution when batch type is volume and dilution is set
 const waterDilution = computed(() => {
     const volInMl = parseFloat(cocktail.value?.volume_ml?.toString() ?? '')
-    const totalVolume = UnitHandler.convertFromTo('ml', volInMl, currentUnit.value)
+    const totalVolume = unitHandler.convertFromTo('ml', volInMl, currentUnit.value)
 
     if (!targetVolumeToScaleTo.value || !totalVolume || !volumeScaleFactor.value) {
         return null
@@ -134,7 +134,7 @@ const waterDilution = computed(() => {
 
     const dilutionVolume = (targetVolumeDilution.value / 100) * totalVolume
 
-    return UnitHandler.print({ amount: dilutionVolume * volumeScaleFactor.value }, currentUnit.value, ingredientScaleFactor.value)
+    return unitHandler.print({ amount: dilutionVolume * volumeScaleFactor.value }, currentUnit.value, ingredientScaleFactor.value)
 })
 
 const parsedInstructions = computed(() => {
@@ -180,7 +180,7 @@ const calculatedAlcUnits = computed(() => {
 const totalLiquidConverted = computed(() => {
     const amount = parseFloat(cocktail.value?.volume_ml?.toString() ?? '')
 
-    return UnitHandler.print({ amount: amount, units: 'ml' }, currentUnit.value, volumeScaleFactor.value ?? ingredientScaleFactor.value)
+    return unitHandler.print({ amount: amount, units: 'ml' }, currentUnit.value, volumeScaleFactor.value ?? ingredientScaleFactor.value)
 })
 
 const missingIngredientIds = computed(() => {
@@ -618,7 +618,7 @@ fetchShoppingList()
                                 <input class="form-input" id="cocktail-target-volume-dilution" type="text" v-model="targetVolumeDilution">
                             </div>
                             <div class="volume-scaling__water" v-if="waterDilution && targetVolumeDilution > 0">
-                                {{ $t('target-volume-dilution-help', {total: UnitHandler.toFixedWithTruncate(waterDilution, 2) + ' ' + currentUnit}) }}
+                                {{ $t('target-volume-dilution-help', {total: unitHandler.toFixedWithTruncate(parseFloat(waterDilution), 2) + ' ' + currentUnit}) }}
                             </div>
                             <p class="form-input-hint">Insipired by Jeffrey Morgenthaler's <a href="https://www.batchcalc.com/" target="_blank">The Batch Cocktail Calculator</a></p>
                         </div>

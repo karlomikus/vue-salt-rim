@@ -47,7 +47,7 @@
 import {micromark} from 'micromark'
 import BarAssistantClient from '@/api/BarAssistantClient'
 import AppState from '../../AppState'
-import UnitHandler from '../../UnitHandler'
+import { unitHandler } from '@/composables/useUnits'
 import CocktailIngredientShare from '../Cocktail/CocktailIngredientShare.vue'
 
 export default {
@@ -112,7 +112,7 @@ export default {
             const appState = new AppState()
             const defaultUnit = appState.defaultUnit
 
-            return UnitHandler.print(ing, defaultUnit)
+            return unitHandler.print(ing, defaultUnit)
         }
     }
 }

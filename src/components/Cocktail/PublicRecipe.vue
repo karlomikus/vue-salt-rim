@@ -40,7 +40,7 @@
 <script>
 import {micromark} from 'micromark'
 import SiteLogo from '../Layout/SiteLogo.vue'
-import UnitHandler from '../../UnitHandler'
+import { unitHandler } from '@/composables/useUnits'
 import AppState from '../../AppState'
 import CocktailIngredientShare from './CocktailIngredientShare.vue'
 
@@ -118,11 +118,11 @@ export default {
     },
     methods: {
         printAmount(ingredient) {
-            return UnitHandler.print(ingredient, this.currentUnit)
+            return unitHandler.print(ingredient, this.currentUnit)
         },
         printSubstitutes(substitutes) {
             return substitutes.map(sub => {
-                return new String(sub.name + ' ' + UnitHandler.print(sub, this.currentUnit, this.servings)).trim()
+                return new String(sub.name + ' ' + unitHandler.print(sub, this.currentUnit, this.servings)).trim()
             }).join(', ')
         }
     }

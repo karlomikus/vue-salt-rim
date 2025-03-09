@@ -1,5 +1,5 @@
 <script setup>
-import UnitHandler from '../../UnitHandler.js'
+import { unitHandler } from '@/composables/useUnits'
 </script>
 
 <template>
@@ -29,7 +29,7 @@ import UnitHandler from '../../UnitHandler.js'
                             <a v-if="cocktail.public_id" :href="publicUrl(cocktail)">View recipe</a>
                         </div>
                         <div v-if="cocktail.price.price > 0" class="public-page-menu__cocktail__price">
-                            {{ UnitHandler.formatPrice(cocktail.price.price, cocktail.price.currency) }}
+                            {{ unitHandler.formatPrice(cocktail.price.price, cocktail.price.currency) }}
                         </div>
                     </div>
                 </div>

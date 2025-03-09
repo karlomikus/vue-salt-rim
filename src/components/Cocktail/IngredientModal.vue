@@ -6,7 +6,7 @@ import { ref } from 'vue'
 import type { components } from '@/api/api'
 import { useI18n } from 'vue-i18n'
 import AppState from '@/AppState'
-import UnitHandler from '@/UnitHandler'
+import { unitHandler } from '@/composables/useUnits'
 
 const appState = new AppState()
 const { t } = useI18n()
@@ -27,12 +27,12 @@ const originalCocktailingredient = JSON.parse(JSON.stringify(props.cocktailIngre
 const localCocktailingredient = ref(props.cocktailIngredient)
 const isLoading = ref(false)
 
-localCocktailingredient.value.amount = UnitHandler.convertFromTo(localCocktailingredient.value.units, localCocktailingredient.value.amount, appState.defaultUnit)
+localCocktailingredient.value.amount = unitHandler.convertFromTo(localCocktailingredient.value.units, localCocktailingredient.value.amount, appState.defaultUnit)
 if (localCocktailingredient.value.amount_max) {
-    localCocktailingredient.value.amount_max = UnitHandler.convertFromTo(localCocktailingredient.value.units, localCocktailingredient.value.amount_max, appState.defaultUnit)
+    localCocktailingredient.value.amount_max = unitHandler.convertFromTo(localCocktailingredient.value.units, localCocktailingredient.value.amount_max, appState.defaultUnit)
 }
 
-if (UnitHandler.isUnitConvertable(localCocktailingredient.value.units)) {
+if (unitHandler.isUnitConvertable(localCocktailingredient.value.units)) {
     localCocktailingredient.value.units = appState.defaultUnit
 }
 

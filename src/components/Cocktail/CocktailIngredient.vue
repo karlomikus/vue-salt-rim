@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { components } from '@/api/api'
-import UnitHandler from '@/UnitHandler'
+import { unitHandler } from '@/composables/useUnits'
 import { useI18n } from 'vue-i18n'
 
 type CocktailIngredient = components['schemas']['CocktailIngredient'];
@@ -67,7 +67,7 @@ function showComplexCanBeMadeStatus(ing: CocktailIngredient) {
 }
 
 function buildSubstituteString(sub: CocktailIngredientSubstitute) {
-    return new String(sub.ingredient.name + ' ' + UnitHandler.print(sub, units, scaleFactor)).trim()
+    return new String(sub.ingredient.name + ' ' + unitHandler.print(sub, units, scaleFactor)).trim()
 }
 </script>
 
@@ -78,7 +78,7 @@ function buildSubstituteString(sub: CocktailIngredientSubstitute) {
             <RouterLink class="cocktail-ingredients__ingredient__name" :to="{ name: 'ingredients.show', params: { id: cocktailIngredient.ingredient.slug } }" data-ingredient="preferred">
                 {{ cocktailIngredient.ingredient.name }} <span v-if="cocktailIngredient.note" class="cocktail-ingredients__flags__flag">&ndash; {{ cocktailIngredient.note }}</span> <small v-if="cocktailIngredient.optional">({{ t('optional') }})</small>
             </RouterLink>
-            <div class="cocktail-ingredients__ingredient__amount">{{ UnitHandler.print(cocktailIngredient, units, scaleFactor) }}</div>
+            <div class="cocktail-ingredients__ingredient__amount">{{ unitHandler.print(cocktailIngredient, units, scaleFactor) }}</div>
         </div>
         <div class="cocktail-ingredients__flags">
             <div v-if="cocktailIngredient.substitutes && cocktailIngredient.substitutes.length > 0" class="cocktail-ingredients__flags__flag">

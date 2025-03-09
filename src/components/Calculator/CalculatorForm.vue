@@ -10,7 +10,7 @@ import { useSaltRimToast } from '@/composables/toast'
 import BarAssistantClient from '@/api/BarAssistantClient';
 import { useI18n } from 'vue-i18n';
 import { useRoute, useRouter } from 'vue-router';
-import UnitHandler from '@/UnitHandler'
+import { unitHandler } from '@/composables/useUnits'
 import { useConfirm } from '@/composables/confirm';
 
 type Calculator = components["schemas"]["Calculator"]
@@ -175,7 +175,7 @@ function resolveAll(): void {
             continue
         }
 
-        evaluation.result = UnitHandler.toFixedWithTruncate(result, evaluation.block.settings.decimal_places ?? 0)
+        evaluation.result = unitHandler.toFixedWithTruncate(result, parseFloat(evaluation.block.settings.decimal_places ?? '0')).toString()
 
         mathParser.set(evaluation.block.variable_name, result)
     }

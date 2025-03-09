@@ -2,13 +2,13 @@
     <div class="block-container block-container--inset cocktail-price">
         <div class="cocktail-price__price">
             <h4>
-                {{ UnitHandler.formatPrice(cocktailPrice.total_price.price, cocktailPrice.total_price.currency) }}
+                {{ unitHandler.formatPrice(cocktailPrice.total_price.price, cocktailPrice.total_price.currency) }}
                 <small>{{ cocktailPrice.price_category.name }}</small>
             </h4>
         </div>
         <ul class="cocktail-price__ingredients">
             <li v-for="ingredient in cocktailPrice.prices_per_ingredient" :key="ingredient.ingredient.id">
-                {{ ingredient.ingredient.name }} &middot; {{ UnitHandler.formatPrice(ingredient.price_per_use.price, ingredient.price_per_use.currency) }} <small>/per use ({{ ingredient.units }})</small>
+                {{ ingredient.ingredient.name }} &middot; {{ unitHandler.formatPrice(ingredient.price_per_use.price, ingredient.price_per_use.currency) }} <small>/per use ({{ ingredient.units }})</small>
             </li>
             <li class="cocktail-price__missing-note" v-if="cocktailPrice.missing_prices_count > 0">Some ingredients are missing prices</li>
         </ul>
@@ -16,7 +16,7 @@
 </template>
 
 <script setup lang="ts">
-import UnitHandler from '@/UnitHandler'
+import { unitHandler } from '@/composables/useUnits'
 import type { components } from '@/api/api'
 
 type CocktailPrice = components["schemas"]["CocktailPrice"]

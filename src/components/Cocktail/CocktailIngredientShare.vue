@@ -11,7 +11,7 @@
 </template>
 
 <script>
-import UnitHandler from '../../UnitHandler'
+import { unitHandler } from '@/composables/useUnits'
 
 export default {
     props: {
@@ -40,11 +40,11 @@ export default {
             return name
         },
         amount() {
-            return UnitHandler.print(this.cocktailIngredient, this.units, this.scaleFactor)
+            return unitHandler.print(this.cocktailIngredient, this.units, this.scaleFactor)
         },
         substitutes() {
             return this.cocktailIngredient.substitutes.map(sub => {
-                return new String(sub.ingredient.name + ' ' + UnitHandler.print(sub, this.units, this.scaleFactor)).trim()
+                return new String(sub.ingredient.name + ' ' + unitHandler.print(sub, this.units, this.scaleFactor)).trim()
             }).join(', ')
         }
     }

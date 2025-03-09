@@ -1,22 +1,17 @@
-<script setup>
+<script setup lang="ts">
 import { RouterView } from 'vue-router'
+
+function printPage() {
+    window.print()
+}
 </script>
 
 <template>
     <div>
         <RouterView />
         <div class="no-print" style="text-align: center;">
-            <button type="button" class="button button--dark" @click="print">{{ $t('print') }}</button>
+            <button type="button" class="button button--dark" @click="printPage">{{ $t('print') }}</button>
         </div>
     </div>
 </template>
 
-<script>
-export default {
-    methods: {
-        print() {
-            window.print()
-        }
-    }
-}
-</script>

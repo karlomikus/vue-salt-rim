@@ -5,7 +5,7 @@ import { useSaltRimToast } from '@/composables/toast'
 import { useI18n } from 'vue-i18n'
 import BarAssistantClient from '@/api/BarAssistantClient';
 import PageHeader from '@/components/PageHeader.vue'
-import UnitHandler from '@/UnitHandler';
+import { unitHandler } from '@/composables/useUnits'
 import Dropdown from '../SaltRimDropdown.vue';
 import ToggleIngredientShoppingCart from '../ToggleIngredientShoppingCart.vue';
 import EmptyState from '../EmptyState.vue';
@@ -137,7 +137,7 @@ async function shareFromFormat(format: string) {
                 <ToggleIngredientShoppingCart :ingredient="shoppingListItem.ingredientRef" :status="true"></ToggleIngredientShoppingCart>
                 <ul class="shopping-list__item__prices">
                     <li v-for="ingredientPrice in shoppingListItem.ingredientRef.prices">
-                        {{ ingredientPrice.price_category.name }}: <strong>{{ UnitHandler.formatPrice(ingredientPrice.price.price, ingredientPrice.price_category.currency) }}</strong> &middot; {{ ingredientPrice.amount }}{{ ingredientPrice.units }}
+                        {{ ingredientPrice.price_category.name }}: <strong>{{ unitHandler.formatPrice(ingredientPrice.price.price, ingredientPrice.price_category.currency) }}</strong> &middot; {{ ingredientPrice.amount }}{{ ingredientPrice.units }}
                     </li>
                 </ul>
             </div>

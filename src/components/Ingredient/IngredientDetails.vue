@@ -1,5 +1,5 @@
 <script setup>
-import UnitHandler from '../../UnitHandler.js'
+import { unitHandler } from '@/composables/useUnits'
 import DateFormatter from '../DateFormatter.vue'
 import CalculatorRender from '../Calculator/CalculatorRender.vue'
 </script>
@@ -179,7 +179,7 @@ import CalculatorRender from '../Calculator/CalculatorRender.vue'
                         <div v-for="ingredientPrice in ingredient.prices" :key="ingredientPrice.id" class="ingredient-details__prices__list__item">
                             <h5>{{ ingredientPrice.price_category.name }} ({{ ingredientPrice.price_category.currency }})</h5>
                             <p>
-                                {{ UnitHandler.formatPrice(ingredientPrice.price.price, ingredientPrice.price_category.currency) }} &middot; {{ ingredientPrice.amount }}{{ ingredientPrice.units }} <template v-if="ingredientPrice.description">&middot; {{ ingredientPrice.description }}</template>
+                                {{ unitHandler.formatPrice(ingredientPrice.price.price, ingredientPrice.price_category.currency) }} &middot; {{ ingredientPrice.amount }}{{ ingredientPrice.units }} <template v-if="ingredientPrice.description">&middot; {{ ingredientPrice.description }}</template>
                             </p>
                         </div>
                     </div>

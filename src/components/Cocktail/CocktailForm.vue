@@ -138,7 +138,7 @@
 <script>
 import { useTitle } from '@/composables/title'
 import { useHtmlDecode } from './../../composables/useHtmlDecode';
-import UnitHandler from './../../UnitHandler'
+import { unitHandler } from '@/composables/useUnits'
 import BarAssistantClient from '@/api/BarAssistantClient';
 import OverlayLoader from './../OverlayLoader.vue'
 import IngredientModal from './../Cocktail/IngredientModal.vue'
@@ -325,7 +325,7 @@ export default {
         printIngredientAmount(ing) {
             const defaultUnit = this.appState.defaultUnit
 
-            return UnitHandler.print(ing, defaultUnit)
+            return unitHandler.print(ing, defaultUnit)
         },
         editIngredientSubstitutes(ing) {
             this.cocktailIngredientForSubstitutes = ing
@@ -350,9 +350,9 @@ export default {
                 ingredients: this.cocktail.ingredients
                     .filter(i => i.ingredient.id != null)
                     .map((cIngredient) => {
-                        cIngredient.amount = UnitHandler.asDecimal(cIngredient.amount)
+                        cIngredient.amount = unitHandler.asDecimal(cIngredient.amount)
                         if (cIngredient.amount_max) {
-                            cIngredient.amount_max = UnitHandler.asDecimal(cIngredient.amount_max)
+                            cIngredient.amount_max = unitHandler.asDecimal(cIngredient.amount_max)
                         }
                         cIngredient.sort = sortedIngredientList.findIndex(sortedId => sortedId == cIngredient.ingredient.id) + 1
 
@@ -363,10 +363,10 @@ export default {
                             return sub
                         }).filter(sub => sub.units).map(sub => {
                             if (sub.amount) {
-                                sub.amount = UnitHandler.asDecimal(sub.amount)
+                                sub.amount = unitHandler.asDecimal(sub.amount)
                             }
                             if (sub.amount_max) {
-                                sub.amount_max = UnitHandler.asDecimal(sub.amount_max)
+                                sub.amount_max = unitHandler.asDecimal(sub.amount_max)
                             }
 
                             return sub
