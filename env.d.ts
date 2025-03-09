@@ -1,4 +1,5 @@
 /// <reference types="vite/client" />
+/// <reference types="vite-plugin-pwa/client" />
 
 declare module 'sortablejs'
 
@@ -15,5 +16,6 @@ interface Window {
         BILLING_ENV: string,
         ANALYTICS_HOST: string,
         ALLOW_REGISTRATION: string,
+        SENTRY_DSN: string,
     }
 }

@@ -332,6 +332,26 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/calculators/{id}/solve": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Solve calculator
+         * @description Solve calculator expressions. Takes a JSON body with the calculator input variables names as keys and their values as values and solves the defined evaluations. Results are objects with evaluation variable names as keys and solved expression result as values.
+         */
+        post: operations["solveCalculator"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/cocktails": {
         parameters: {
             query?: never;
@@ -924,58 +944,6 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/ingredient-categories": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * List ingredient categories
-         * @description List all ingredient categories in a bar
-         */
-        get: operations["listIngredientCategories"];
-        put?: never;
-        /**
-         * Create ingredient category
-         * @description Create a specific ingredient category
-         */
-        post: operations["saveIngredientCategory"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/ingredient-categories/{id}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * Show ingredient category
-         * @description Show a specific ingredient category
-         */
-        get: operations["showIngredientCategory"];
-        /**
-         * Update ingredient category
-         * @description Update a specific ingredient category
-         */
-        put: operations["updateIngredientCategory"];
-        post?: never;
-        /**
-         * Delete ingredient category
-         * @description Delete a specific ingredient category
-         */
-        delete: operations["deleteIngredientCategory"];
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
     "/ingredients": {
         parameters: {
             query?: never;
@@ -1080,6 +1048,26 @@ export interface paths {
          * @description Show a list of ingredients that are used as a substitute for this ingredient in cocktail recipes.
          */
         get: operations["ingredientSubstitutes"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/ingredients/{id}/tree": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Show tree
+         * @description Show a ingredient hierarchy as a tree
+         */
+        get: operations["showIngredientTree"];
         put?: never;
         post?: never;
         delete?: never;
@@ -1320,6 +1308,26 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/profile/sso/{provider}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        /**
+         * Delete SSO provider
+         * @description Delete user's SSO provider
+         */
+        delete: operations["deleteSSO"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/cocktails/{id}/ratings": {
         parameters: {
             query?: never;
@@ -1339,6 +1347,86 @@ export interface paths {
          * @description Delete current user cocktail rating
          */
         delete: operations["deleteRating"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/recommender/cocktails": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Recommend cocktails
+         * @description Recommends cocktails based on bar member favorites.
+         */
+        get: operations["recommendCocktails"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/auth/sso/{provider}/redirect": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * SSO redirect
+         * @description Redirect to SSO authentication
+         */
+        get: operations["ssoRedirect"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/auth/sso/{provider}/callback": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * SSO callback
+         * @description Callback for SSO login
+         */
+        get: operations["ssoCallback"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/auth/sso/providers": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * SSO providers
+         * @description Configured SSO providers
+         */
+        get: operations["ssoProviders"];
+        put?: never;
+        post?: never;
+        delete?: never;
         options?: never;
         head?: never;
         patch?: never;
@@ -1876,12 +1964,34 @@ export interface components {
         ForceUnitConvertEnum: "none" | "ml" | "oz" | "cl";
         /** @enum {string} */
         DuplicateActionsEnum: "none" | "skip" | "overwrite";
+        /** @description OAuth Credential information */
+        OauthCredential: {
+            provider: components["schemas"]["SSOProvider"];
+            /** Format: date-time */
+            created_at: string;
+            /** Format: date-time */
+            updated_at: string | null;
+        };
+        /** @description SSO Provider information */
+        SSOProvider: {
+            /** @example github */
+            name: string;
+            /** @example GitHub */
+            display_name: string;
+            /**
+             * @description Whether the provider is configured and enabled by server
+             * @example true
+             */
+            enabled: boolean;
+        };
         /** @enum {string} */
         AbilityEnum: "cocktails.read" | "cocktails.write" | "ingredients.read" | "ingredients.write";
         /** @enum {string} */
         BarStatusEnum: "provisioning" | "active" | "deactivated";
         /** @enum {string} */
         CalculatorBlockTypeEnum: "input" | "eval";
+        /** @enum {string} */
+        MenuItemTypeEnum: "cocktail" | "ingredient";
         APIError: {
             /** @example api_error */
             type: string;
@@ -1902,9 +2012,7 @@ export interface components {
             /** @example 01H8S3VH2HTEB3D893AW8NTBBC */
             invite_code: string | null;
             status: components["schemas"]["BarStatusEnum"];
-            settings: {
-                [key: string]: unknown;
-            }[];
+            settings: components["schemas"]["BarSettings"];
             search_host: string | null;
             search_token: string | null;
             /** Format: date-time */
@@ -1924,7 +2032,7 @@ export interface components {
                 can_activate?: boolean;
                 /** @example true */
                 can_deactivate?: boolean;
-            }[];
+            };
         };
         BarBasic: {
             /** @example 1 */
@@ -1945,8 +2053,6 @@ export interface components {
             bar_id: number;
             /** @example true */
             is_shelf_public: boolean;
-            /** @example true */
-            use_parent_as_substitute: boolean;
         };
         BarRequest: {
             /** @example Bar name */
@@ -1964,14 +2070,18 @@ export interface components {
              */
             default_units?: "ml" | "cl" | "oz";
             /**
-             * @description Locale code, used only as a setting for client apps, does not change language of the API.
-             * @example en-US
+             * @description ISO 4217 format of currency. Used only as a setting for client apps.
+             * @example EUR
              */
-            default_lang?: string | null;
+            default_currency?: string | null;
             /** @description Enable users with invite code to join this bar. Default `false`. */
             enable_invites?: boolean;
             /** @description List of data that the bar will start with. Cocktails cannot be imported without ingredients. */
             options?: components["schemas"]["BarOptionsEnum"];
+        };
+        BarSettings: {
+            default_units?: string | null;
+            default_currency?: string | null;
         };
         BarStats: {
             /** @example 1 */
@@ -2074,6 +2184,21 @@ export interface components {
             name: string;
             blocks?: components["schemas"]["CalculatorBlockRequest"][];
             description?: string | null;
+        };
+        CalculatorResult: {
+            /** @description string> */
+            inputs: {
+                [key: string]: string;
+            };
+            /** @description string> */
+            results: {
+                [key: string]: string;
+            };
+        };
+        CalculatorSolveRequest: {
+            inputs: {
+                [key: string]: string;
+            };
         };
         Cocktail: {
             /** @example 1 */
@@ -2246,7 +2371,10 @@ export interface components {
             units: string;
             /** @example false */
             optional?: boolean;
+            /** @example false */
+            is_specified?: boolean;
             substitutes?: components["schemas"]["CocktailIngredientSubstitute"][];
+            variants_in_shelf?: components["schemas"]["IngredientBasic"][];
             /** @example Additional notes */
             note?: string | null;
             /** @description Amounts in different units, converted if possible */
@@ -2305,6 +2433,8 @@ export interface components {
             /** @example true */
             in_shelf?: boolean;
             /** @example true */
+            in_shelf_as_variant?: boolean;
+            /** @example true */
             in_shelf_as_substitute?: boolean;
             /** @example true */
             in_shelf_as_complex_ingredient?: boolean;
@@ -2314,6 +2444,8 @@ export interface components {
             in_bar_shelf_as_substitute?: boolean;
             /** @example true */
             in_bar_shelf_as_complex_ingredient?: boolean;
+            /** @example true */
+            in_bar_shelf_as_variant?: boolean;
         };
         CocktailIngredientRequest: {
             ingredient_id: number;
@@ -2327,6 +2459,8 @@ export interface components {
             units: string;
             sort?: number;
             optional?: boolean;
+            /** @description Ignores descendants as possible substitutes */
+            is_specified?: boolean;
             substitutes?: components["schemas"]["CocktailIngredientSubstituteRequest"][];
             /**
              * Format: float
@@ -2559,14 +2693,12 @@ export interface components {
             created_at: string;
             /** Format: date-time */
             updated_at: string | null;
+            materialized_path: string | null;
             images?: components["schemas"]["Image"][];
-            parent_ingredient?: components["schemas"]["IngredientBasic"] | null;
             /** @example #ffffff */
             color: string;
-            category?: components["schemas"]["IngredientCategory"] | null;
             /** @example 12 */
             cocktails_count?: number;
-            varieties?: components["schemas"]["IngredientBasic"][];
             cocktails?: {
                 /** @example 1 */
                 id?: number;
@@ -2576,6 +2708,7 @@ export interface components {
                 name?: string;
             }[];
             created_user?: components["schemas"]["UserBasic"];
+            hierarchy: components["schemas"]["IngredientHierarchy"];
             updated_user?: components["schemas"]["UserBasic"] | null;
             access?: {
                 /** @example true */
@@ -2586,10 +2719,13 @@ export interface components {
             ingredient_parts?: components["schemas"]["IngredientBasic"][];
             prices?: components["schemas"]["IngredientPrice"][];
             in_shelf?: boolean;
+            in_shelf_as_variant?: boolean;
             in_bar_shelf?: boolean;
             in_shopping_list?: boolean;
+            in_bar_shelf_as_variant?: boolean;
             used_as_substitute_for?: components["schemas"]["IngredientBasic"][];
             can_be_substituted_with?: components["schemas"]["IngredientBasic"][];
+            calculator_id?: number | null;
         };
         /** @description Minimal ingredient information */
         IngredientBasic: {
@@ -2600,21 +2736,13 @@ export interface components {
             /** @example Gin */
             name: string;
         };
-        IngredientCategory: {
-            /** @example 1 */
-            id: number;
-            /** @example Spirits */
-            name: string;
-            /** @example Category of base spirits */
-            description: string | null;
-            /** @example 32 */
-            ingredients_count: number;
-        };
-        IngredientCategoryRequest: {
-            /** @example Spirits */
-            name: string;
-            /** @example Category of base spirits */
-            description?: string | null;
+        /** @description Ingredient hierarchy */
+        IngredientHierarchy: {
+            /** @example Spirits > Gin */
+            path_to_self?: number;
+            parent_ingredient?: components["schemas"]["IngredientBasic"] | null;
+            descendants?: components["schemas"]["IngredientBasic"][];
+            ancestors?: components["schemas"]["IngredientBasic"][];
         };
         IngredientPrice: {
             price_category: components["schemas"]["PriceCategory"];
@@ -2649,8 +2777,6 @@ export interface components {
         IngredientRequest: {
             /** @example Gin */
             name: string;
-            /** @example 1 */
-            ingredient_category_id?: number | null;
             /**
              * Format: float
              * @example 40
@@ -2669,6 +2795,27 @@ export interface components {
             /** @description Existing ingredient ids */
             complex_ingredient_part_ids?: number[];
             prices?: components["schemas"]["IngredientPriceRequest"][];
+            /**
+             * @description Calculator you want to attach to this ingredient
+             * @example 1
+             */
+            calculator_id?: number | null;
+            /**
+             * Format: float
+             * @example 0.24
+             */
+            sugar_g_per_ml?: number | null;
+            /**
+             * Format: float
+             * @example 0.1
+             */
+            acidity?: number | null;
+            /** @example Buffalo trace */
+            distillery?: string | null;
+        };
+        IngredientTree: {
+            ingredient: components["schemas"]["IngredientBasic"];
+            children: components["schemas"]["IngredientTree"][];
         };
         LoginRequest: {
             /** @example admin@example.com */
@@ -2692,19 +2839,16 @@ export interface components {
             categories?: {
                 /** @example Category name */
                 name?: string;
-                cocktails?: {
+                items?: {
                     /** @example 1 */
                     id?: number;
-                    /** @example cocktail-name-1 */
-                    slug?: string;
+                    type?: components["schemas"]["MenuItemTypeEnum"];
                     /** @example 1 */
                     sort?: number;
                     price?: components["schemas"]["Price"];
-                    /** @example EUR */
-                    currency?: string;
                     /** @example Cocktail name */
                     name?: string;
-                    short_ingredients?: string[];
+                    description?: string;
                 }[];
             }[];
         };
@@ -2854,20 +2998,26 @@ export interface components {
             email: string;
             is_subscribed: boolean;
             memberships: components["schemas"]["BarMembership"][];
+            oauth_credentials: components["schemas"]["OauthCredential"][];
+            settings: components["schemas"]["ProfileSettings"] | null;
         };
         ProfileRequest: {
-            bar_id?: number | null;
             /** @example Bar Tender */
             name: string;
             /** @example new@email.com */
             email: string;
+            settings?: components["schemas"]["ProfileSettings"] | null;
+            bar_id?: number | null;
             /**
              * Format: password
              * @example newpassword
              */
             password?: string | null;
             is_shelf_public?: boolean;
-            use_parent_as_substitute?: boolean;
+        };
+        ProfileSettings: {
+            language?: string | null;
+            theme?: string | null;
         };
         RegisterRequest: {
             /** @example admin@example.com */
@@ -3031,6 +3181,11 @@ export interface components {
                 [key: string]: string[];
             };
         };
+        /**
+         * @description Provides a list of supported SSO providers.
+         * @enum {string}
+         */
+        OauthProvider: "github" | "google" | "gitlab" | "authentik" | "authelia" | "keycloak";
         /**
          * Cocktail recipe - Draft 02
          * @description Schema for a cocktail recipe including detailed ingredient data. Draft 02 splits ingredients and recipe data.
@@ -4198,6 +4353,69 @@ export interface operations {
             };
         };
     };
+    solveCalculator: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Database id of a resource */
+                id: number;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["CalculatorSolveRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful response */
+            200: {
+                headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data: components["schemas"]["CalculatorResult"];
+                    };
+                };
+            };
+            /** @description You are not authorized for this action. */
+            403: {
+                headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data?: components["schemas"]["APIError"];
+                    };
+                };
+            };
+            /** @description Resource record not found. */
+            404: {
+                headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data?: components["schemas"]["APIError"];
+                    };
+                };
+            };
+        };
+    };
     listCocktails: {
         parameters: {
             query?: {
@@ -4234,7 +4452,7 @@ export interface operations {
                     specific_ingredients?: string;
                     ignore_ingredients?: string;
                 };
-                /** @description Sort by attributes. Available attributes: `name`, `created_at`, `average_rating`, `user_rating`, `abv`, `total_ingredients`, `missing_ingredients`, `missing_bar_ingredients`, `favorited_at`. */
+                /** @description Sort by attributes. Available attributes: `name`, `created_at`, `average_rating`, `user_rating`, `abv`, `total_ingredients`, `missing_ingredients`, `missing_bar_ingredients`, `favorited_at`, `random`. */
                 sort?: string;
                 /** @description Include additional relationships. Available relations: `glass`, `method`, `user`, `navigation`, `utensils`, `createdUser`, `updatedUser`, `images`, `tags`, `ingredients.ingredient`, `ratings`. */
                 include?: string;
@@ -6590,254 +6808,6 @@ export interface operations {
             };
         };
     };
-    listIngredientCategories: {
-        parameters: {
-            query?: never;
-            header?: {
-                /** @description Database id of a bar. Required if you are not using `bar_id` query string. */
-                "Bar-Assistant-Bar-Id"?: number;
-            };
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description Successful response */
-            200: {
-                headers: {
-                    /** @description Max number of attempts. */
-                    "x-ratelimit-limit"?: number;
-                    /** @description Remaining number of attempts. */
-                    "x-ratelimit-remaining"?: number;
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": {
-                        data: components["schemas"]["IngredientCategory"][];
-                    };
-                };
-            };
-        };
-    };
-    saveIngredientCategory: {
-        parameters: {
-            query?: never;
-            header?: {
-                /** @description Database id of a bar. Required if you are not using `bar_id` query string. */
-                "Bar-Assistant-Bar-Id"?: number;
-            };
-            path?: never;
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["IngredientCategoryRequest"];
-            };
-        };
-        responses: {
-            /** @description Successful response */
-            201: {
-                headers: {
-                    /** @description URL of the new resource */
-                    Location?: string;
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": {
-                        data: components["schemas"]["IngredientCategory"];
-                    };
-                };
-            };
-            /** @description You are not authorized for this action. */
-            403: {
-                headers: {
-                    /** @description Max number of attempts. */
-                    "x-ratelimit-limit"?: number;
-                    /** @description Remaining number of attempts. */
-                    "x-ratelimit-remaining"?: number;
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": {
-                        data?: components["schemas"]["APIError"];
-                    };
-                };
-            };
-        };
-    };
-    showIngredientCategory: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                /** @description Database id of a resource */
-                id: number;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description Successful response */
-            200: {
-                headers: {
-                    /** @description Max number of attempts. */
-                    "x-ratelimit-limit"?: number;
-                    /** @description Remaining number of attempts. */
-                    "x-ratelimit-remaining"?: number;
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": {
-                        data: components["schemas"]["IngredientCategory"];
-                    };
-                };
-            };
-            /** @description You are not authorized for this action. */
-            403: {
-                headers: {
-                    /** @description Max number of attempts. */
-                    "x-ratelimit-limit"?: number;
-                    /** @description Remaining number of attempts. */
-                    "x-ratelimit-remaining"?: number;
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": {
-                        data?: components["schemas"]["APIError"];
-                    };
-                };
-            };
-            /** @description Resource record not found. */
-            404: {
-                headers: {
-                    /** @description Max number of attempts. */
-                    "x-ratelimit-limit"?: number;
-                    /** @description Remaining number of attempts. */
-                    "x-ratelimit-remaining"?: number;
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": {
-                        data?: components["schemas"]["APIError"];
-                    };
-                };
-            };
-        };
-    };
-    updateIngredientCategory: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                /** @description Database id of a resource */
-                id: number;
-            };
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["IngredientCategoryRequest"];
-            };
-        };
-        responses: {
-            /** @description Successful response */
-            200: {
-                headers: {
-                    /** @description Max number of attempts. */
-                    "x-ratelimit-limit"?: number;
-                    /** @description Remaining number of attempts. */
-                    "x-ratelimit-remaining"?: number;
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": {
-                        data: components["schemas"]["IngredientCategory"];
-                    };
-                };
-            };
-            /** @description You are not authorized for this action. */
-            403: {
-                headers: {
-                    /** @description Max number of attempts. */
-                    "x-ratelimit-limit"?: number;
-                    /** @description Remaining number of attempts. */
-                    "x-ratelimit-remaining"?: number;
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": {
-                        data?: components["schemas"]["APIError"];
-                    };
-                };
-            };
-            /** @description Resource record not found. */
-            404: {
-                headers: {
-                    /** @description Max number of attempts. */
-                    "x-ratelimit-limit"?: number;
-                    /** @description Remaining number of attempts. */
-                    "x-ratelimit-remaining"?: number;
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": {
-                        data?: components["schemas"]["APIError"];
-                    };
-                };
-            };
-        };
-    };
-    deleteIngredientCategory: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                /** @description Database id of a resource */
-                id: number;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description Successful response */
-            204: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-            /** @description You are not authorized for this action. */
-            403: {
-                headers: {
-                    /** @description Max number of attempts. */
-                    "x-ratelimit-limit"?: number;
-                    /** @description Remaining number of attempts. */
-                    "x-ratelimit-remaining"?: number;
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": {
-                        data?: components["schemas"]["APIError"];
-                    };
-                };
-            };
-            /** @description Resource record not found. */
-            404: {
-                headers: {
-                    /** @description Max number of attempts. */
-                    "x-ratelimit-limit"?: number;
-                    /** @description Remaining number of attempts. */
-                    "x-ratelimit-remaining"?: number;
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": {
-                        data?: components["schemas"]["APIError"];
-                    };
-                };
-            };
-        };
-    };
     listIngredients: {
         parameters: {
             query?: {
@@ -6850,7 +6820,6 @@ export interface operations {
                     id?: number;
                     name?: string;
                     name_exact?: string;
-                    category_id?: number;
                     origin?: string;
                     created_user_id?: number;
                     on_shopping_list?: boolean;
@@ -6860,12 +6829,18 @@ export interface operations {
                     strength_min?: number;
                     /** Format: float */
                     strength_max?: number;
+                    /** @description Show only ingredients that are used as main ingredients in cocktails */
                     main_ingredients?: string;
+                    /** @description Show only ingredients that can be made with other ingredients */
                     complex?: boolean;
+                    /** @description Show only direct children of given ingredient. Use null as value to get ingredients without parent ingredient */
+                    parent_ingredient_id?: number;
+                    /** @description Show all descendants of given ingredient */
+                    descendants_of?: number;
                 };
                 /** @description Sort by attributes. Available attributes: `name`, `created_at`, `strength`, `total_cocktails`. */
                 sort?: string;
-                /** @description Include additional relationships. Available relations: `parentIngredient`, `varieties`, `prices`, `ingredientParts`, `category`, `images`. */
+                /** @description Include additional relationships. Available relations: `parentIngredient`, `varieties`, `prices`, `ingredientParts`, `descendants`, `ancestors`, `images`. */
                 include?: string;
             };
             header?: {
@@ -7340,6 +7315,65 @@ export interface operations {
                             to?: number;
                             total?: number;
                         };
+                    };
+                };
+            };
+            /** @description You are not authorized for this action. */
+            403: {
+                headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data?: components["schemas"]["APIError"];
+                    };
+                };
+            };
+            /** @description Resource record not found. */
+            404: {
+                headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data?: components["schemas"]["APIError"];
+                    };
+                };
+            };
+        };
+    };
+    showIngredientTree: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Database id or slug of a resource */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful response */
+            200: {
+                headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data: components["schemas"]["IngredientTree"];
                     };
                 };
             };
@@ -8220,6 +8254,57 @@ export interface operations {
             };
         };
     };
+    deleteSSO: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Provider ID */
+                provider: components["schemas"]["OauthProvider"];
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful response */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description You are not authorized for this action. */
+            403: {
+                headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data?: components["schemas"]["APIError"];
+                    };
+                };
+            };
+            /** @description Resource record not found. */
+            404: {
+                headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data?: components["schemas"]["APIError"];
+                    };
+                };
+            };
+        };
+    };
     rateCocktail: {
         parameters: {
             query?: never;
@@ -8323,6 +8408,189 @@ export interface operations {
                 content: {
                     "application/json": {
                         data?: components["schemas"]["APIError"];
+                    };
+                };
+            };
+        };
+    };
+    recommendCocktails: {
+        parameters: {
+            query?: never;
+            header?: {
+                /** @description Database id of a bar. Required if you are not using `bar_id` query string. */
+                "Bar-Assistant-Bar-Id"?: number;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful response */
+            200: {
+                headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data: components["schemas"]["CocktailBasic"][];
+                    };
+                };
+            };
+            /** @description You are not authorized for this action. */
+            403: {
+                headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data?: components["schemas"]["APIError"];
+                    };
+                };
+            };
+            /** @description Resource record not found. */
+            404: {
+                headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data?: components["schemas"]["APIError"];
+                    };
+                };
+            };
+        };
+    };
+    ssoRedirect: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Provider ID */
+                provider: components["schemas"]["OauthProvider"];
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Redirect response */
+            302: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Resource record not found. */
+            404: {
+                headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data?: components["schemas"]["APIError"];
+                    };
+                };
+            };
+        };
+    };
+    ssoCallback: {
+        parameters: {
+            query: {
+                /** @description Oauth token */
+                code: string;
+            };
+            header?: never;
+            path: {
+                /** @description Provider ID */
+                provider: components["schemas"]["OauthProvider"];
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful response */
+            200: {
+                headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data: components["schemas"]["Token"];
+                    };
+                };
+            };
+            /** @description You are not authorized for this action. */
+            403: {
+                headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data?: components["schemas"]["APIError"];
+                    };
+                };
+            };
+            /** @description Resource record not found. */
+            404: {
+                headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data?: components["schemas"]["APIError"];
+                    };
+                };
+            };
+        };
+    };
+    ssoProviders: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful response */
+            200: {
+                headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data: components["schemas"]["SSOProvider"][];
                     };
                 };
             };

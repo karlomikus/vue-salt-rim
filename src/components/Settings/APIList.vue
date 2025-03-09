@@ -65,7 +65,7 @@ import DateFormatter from '../DateFormatter.vue'
 import APIForm from './APIForm.vue'
 import SubscriptionCheck from '../SubscriptionCheck.vue'
 import { useTitle } from '@/composables/title'
-import AppState from './../../AppState.js'
+import AppState from '../../AppState'
 
 export default {
     components: {

@@ -16,7 +16,7 @@
         </div>
         <h2 class="cocktail-price-calculator__price" v-if="finalPrice && appState.isSubscribed()">
             <small>{{ $t('price.price') }}</small>
-            {{ UnitHandler.formatPrice(parseFloat(finalPrice.price), finalPrice.currency) }}
+            {{ unitHandler.formatPrice(parseFloat(finalPrice.price), finalPrice.currency) }}
         </h2>
         <div class="dialog-actions" v-if="appState.isSubscribed()">
             <button class="button button--outline" @click="emit('closed')">{{ $t('cancel') }}</button>
@@ -28,7 +28,7 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
 import type { components } from '@/api/api'
-import UnitHandler from '@/UnitHandler'
+import { unitHandler } from '@/composables/useUnits'
 import BarAssistantClient from '@/api/BarAssistantClient';
 import CocktailPrice from './../Cocktail/CocktailPrice.vue'
 import OverlayLoader from '../OverlayLoader.vue';

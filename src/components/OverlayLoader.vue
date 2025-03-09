@@ -1,24 +1,6 @@
 <template>
-    <div class="overlay-loader">
-        <!-- <SaltRimSpinner :size="size" /> -->
-    </div>
+    <div class="overlay-loader"></div>
 </template>
-
-<script>
-import SaltRimSpinner from './SaltRimSpinner.vue'
-
-export default {
-    components: {
-        SaltRimSpinner,
-    },
-    props: {
-        size: {
-            type: Number,
-            default: 50
-        }
-    }
-}
-</script>
 
 <style scoped>
 @keyframes p-skeleton-animation {
@@ -40,8 +22,6 @@ export default {
     background: var(--ol-clr-bg);
     width: 100%;
     height: 100%;
-    /* padding-top: 5%; */
-    /* align-items: center; */
     justify-content: center;
     z-index: var(--z-overlay-loader);
     backdrop-filter: blur(1px);

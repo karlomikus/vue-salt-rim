@@ -1,14 +1,16 @@
-<script setup>
-defineProps({
-    rating: {
-        type: Number,
-        default: 0
-    }
-})
+<script setup lang="ts">
+import { useI18n } from 'vue-i18n'
+
+const { t } = useI18n()
+const {
+    rating = 0,
+} = defineProps<{
+    rating: number;
+}>()
 </script>
 
 <template>
-    <span class="mini-rating" :title="$t('your-rating')">
+    <span class="mini-rating" :title="t('your-rating')">
         {{ rating }} ★
     </span>
 </template>

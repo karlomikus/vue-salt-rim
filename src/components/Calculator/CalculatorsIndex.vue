@@ -9,7 +9,7 @@ import { useConfirm } from '@/composables/confirm';
 import { useTitle } from '@/composables/title'
 import { useI18n } from 'vue-i18n';
 import { RouterLink } from 'vue-router';
-import { useSaltRimToast } from '@/composables/toast.js'
+import { useSaltRimToast } from '@/composables/toast'
 import EmptyState from './../EmptyState.vue'
 import IconCalculator from '../Icons/IconCalculator.vue';
 import { useClipboard } from '@vueuse/core'

@@ -63,7 +63,7 @@
 import { instantMeiliSearch } from '@meilisearch/instant-meilisearch'
 import BarAssistantClient from '@/api/BarAssistantClient'
 import OverlayLoader from './OverlayLoader.vue'
-import AppState from './../AppState'
+import AppState from '../AppState'
 
 export default {
     emits: ['closeAutocomplete'],

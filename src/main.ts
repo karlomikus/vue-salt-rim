@@ -2,11 +2,12 @@ import { createApp } from 'vue'
 import App from './App.vue'
 import { createI18n } from 'vue-i18n'
 import ToastPlugin from 'vue-toast-notification'
+// @ts-ignore
 import InstantSearch from 'vue-instantsearch/vue3/es'
 import router from './router'
 import dialog from './components/Dialog/plugin'
 import './assets/main.css'
-import AppState from './AppState.js'
+import AppState from './AppState'
 import Plausible from 'plausible-tracker'
 import { registerSW } from 'virtual:pwa-register'
 import { register as registerSwiperElements } from 'swiper/element/bundle'
@@ -39,10 +40,13 @@ if (!userSelectedLocale) {
     userSelectedLocale = window.srConfig.DEFAULT_LOCALE || 'en-US'
 }
 
-let userSelectedTheme = appState.theme
+const userSelectedTheme = appState.theme
 if (userSelectedTheme == 'dark' && !document.body.classList.contains('dark-theme')) {
     document.body.classList.add('dark-theme')
-    document.querySelector('meta[name="theme-color"]').setAttribute('content', '#282238')
+    const metaColor = document.querySelector('meta[name="theme-color"]')
+    if (metaColor) {
+        metaColor.setAttribute('content', '#282238')
+    }
 }
 
 const app = createApp(App)
@@ -56,6 +60,7 @@ if (window.srConfig.SENTRY_DSN && window.srConfig.SENTRY_DSN != '') {
     });
 }
 
+// @ts-ignore
 const i18n = createI18n({
     legacy: false,
     locale: userSelectedLocale,

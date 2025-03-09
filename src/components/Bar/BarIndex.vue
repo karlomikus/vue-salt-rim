@@ -26,7 +26,7 @@
                             <template v-if="bar.created_user.id == appState.user.id">&middot; Owner</template>
                         </span>
                         <a href="#" @click.prevent="selectBar(bar)"><h4 class="bar__title">{{ bar.name }}</h4></a>
-                        <p class="bar__owner">{{ $t('created-by') }} {{ bar.created_user.name }} &middot;
+                        <p class="bar__owner">Bar ID: {{ bar.id }} &middot; {{ $t('created-by') }} {{ bar.created_user.name }} &middot;
                             <DateFormatter :date="bar.created_at" />
                         </p>
                         <template v-if="bar.show_invite_code && bar.access.can_edit">
@@ -78,13 +78,14 @@
 </template>
 <script>
 import { useTitle } from '@/composables/title'
+import { useClipboard } from '@vueuse/core'
 import OverlayLoader from './../OverlayLoader.vue'
 import SaltRimDialog from './../Dialog/SaltRimDialog.vue'
 import PageHeader from './../PageHeader.vue'
 import BarJoinDialog from './BarJoinDialog.vue'
-import AppState from './../../AppState.js'
+import AppState from '../../AppState'
 import DateFormatter from './../DateFormatter.vue'
-import Utils from './../../Utils.js'
+import { getRoleName } from './../../composables/useGetRoleName';
 import EmptyState from './../EmptyState.vue'
 import SubscriptionCheck from '../SubscriptionCheck.vue'
 import BarAssistantClient from '@/api/BarAssistantClient'
@@ -143,10 +144,17 @@ export default {
     },
     methods: {
         copyInviteLinkToClipboard(invite_code) {
-            if (Utils.copyToClipboard(`${window.location.origin}/bars/join/${invite_code}`)) {
+            const { copy, copied, isSupported } = useClipboard()
+
+            if (!isSupported.value) {
+                this.$toast.error(this.$t('permissions.clipboard-error'))
+                return
+            }
+
+            copy(`${window.location.origin}/bars/join/${invite_code}`)
+
+            if (copied.value) {
                 this.$toast.default(this.$t('bars.invite-link-copied'))
-            } else {
-                this.$toast.error(this.$t('bars.invite-link-error'))
             }
         },
         refreshBars() {
@@ -168,7 +176,7 @@ export default {
             window.location.replace('/')
         },
         getRoleName(roleId) {
-            return Utils.getRoleName(roleId)
+            return getRoleName(roleId)
         },
         deleteBar(bar) {
             this.$confirm(this.$t('bars.confirm-delete', { name: bar.name }), {

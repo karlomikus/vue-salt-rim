@@ -2,25 +2,22 @@
     <div></div>
 </template>
 
-<script>
+<script setup lang="ts">
 import BarAssistantClient from '@/api/BarAssistantClient'
+import { useSaltRimToast } from '@/composables/toast';
+import { useI18n } from 'vue-i18n';
+import { useRoute, useRouter } from 'vue-router';
 
-export default {
-    data() {
-        return {
-            isLoading: false,
-        }
-    },
-    created() {
-        this.isLoading = true
-        BarAssistantClient.confirmAccount(this.$route.params.id, this.$route.params.hash).then(() => {
-            this.$toast.default(this.$t('auth.account-confirmed'))
-            this.$router.push('/login')
-        }).catch(e => {
-            this.isLoading = false
-            this.$toast.error(e.message)
-            this.$router.push('/login')
-        })
-    }
-}
+const { t } = useI18n()
+const route = useRoute()
+const router = useRouter()
+const toast = useSaltRimToast()
+
+BarAssistantClient.confirmAccount(parseInt(route.params.id.toString()), route.params.hash.toString()).then(() => {
+    toast.default(t('auth.account-confirmed'))
+    router.push('/login')
+}).catch(e => {
+    toast.error(e.message)
+    router.push('/login')
+})
 </script>

@@ -2,7 +2,7 @@
 import {ref, computed} from 'vue'
 import {useFloating, offset, flip, shift, autoUpdate} from '@floating-ui/vue'
 import AppState from './../AppState'
-import UnitHandler from './../UnitHandler'
+import { unitHandler } from './../composables/useUnits'
 import { onClickOutside } from '@vueuse/core'
 
 const appState = new AppState()
@@ -22,7 +22,7 @@ if (appState.defaultUnit == 'cl') {
     defaultAmounts.value = defaultAmountsInMl.map(amount => (parseFloat(amount) / 10).toString())
 }
 if (appState.defaultUnit == 'oz') {
-    defaultAmounts.value = defaultAmountsInMl.map(amount => UnitHandler.asFraction(UnitHandler.ml2oz(parseFloat(amount))))
+    defaultAmounts.value = defaultAmountsInMl.map(amount => unitHandler.asFraction(unitHandler.ml2oz(parseFloat(amount))))
 }
 
 function selectRecommendedAmount(amount: string) {

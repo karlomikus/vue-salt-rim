@@ -1,6 +1,30 @@
-# v3.9.1
+# v3.10.0
+## New
+- Added support for Bar Assistant v5.0
+- Added recommended cocktails to shelf
+- Added latest ingredients to shelf
+- Added "Default theme" settings to profile
+    - Now set when signing in
+- Added a list of linked OAuth providers to profile
+- Added default currency to bar form
+    - Used as default suggestion on menu
+    - Used as default suggestion on price categories
+
+## Changes
+- Updated shelf layout
+- Removed ingredient categories page
+- Default language is now automatically set when signing in
+
+## Fixes
+- Fix public menu thumbnails not showing
+
+# v3.9.2
 ## Changes
 - Add image to GitHub Container Registry
+
+# v3.9.1
+## Changes
+- Added markdown support to calculator descriptions
 
 # v3.9.0
 ## New
