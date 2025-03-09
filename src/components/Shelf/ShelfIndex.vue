@@ -232,7 +232,7 @@ refreshShelf()
             <IngredientListContainer v-if="latestIngredients.length > 0">
                 <IngredientTile v-for="ingredient in latestIngredients" :key="ingredient.id" :ingredient="ingredient" :images="ingredient.images ?? []">
                     <template #content>
-                        {{ ingredient.hierarchy.path_to_self }}
+                        {{ ingredient.hierarchy.path_to_self ?? t('uncategorized') }}
                     </template>
                 </IngredientTile>
                 <RouterLink :to="{ name: 'ingredients', query: { 'filter[on_shopping_list]': 'true' } }">{{ $t('view-all') }}</RouterLink>
