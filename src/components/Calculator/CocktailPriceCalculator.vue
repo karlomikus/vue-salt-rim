@@ -3,12 +3,13 @@
         <div class="dialog-title">{{ props.cocktail.name }}</div>
         <OverlayLoader v-if="isLoadingPrices"></OverlayLoader>
         <SubscriptionCheck>Subscribe to "Mixologist" plan to unlock automatic price calculation!</SubscriptionCheck>
-        <div class="cocktail-price-calculator__prices">
+        <div class="cocktail-price-calculator__prices" v-if="cocktailPrices.length > 0">
             <div v-for="cocktailPrice in cocktailPrices">
                 <CocktailPrice :cocktail-price=cocktailPrice></CocktailPrice>
                 <a href="#" @click.prevent="selectedCocktailPrice = cocktailPrice"><span style="letter-spacing: -4px;">&boxur;&rtrif;</span> {{ $t('price.select') }}</a>
             </div>
         </div>
+        <EmptyState style="margin-bottom: 1rem;">{{ t('price.missing-cocktail-price-calculator') }}</EmptyState>
         <div class="form-group">
             <label class="form-label form-label--required" for="name">{{ $t('target-pour-cost') }}:</label>
             <input id="name" v-model="targetPourCost" class="form-input" type="text" required>
@@ -34,6 +35,8 @@ import CocktailPrice from './../Cocktail/CocktailPrice.vue'
 import OverlayLoader from '../OverlayLoader.vue';
 import SubscriptionCheck from '../SubscriptionCheck.vue';
 import AppState from '@/AppState';
+import EmptyState from '@/components/EmptyState.vue';
+import { useI18n } from 'vue-i18n'
 
 type Cocktail = components["schemas"]["Cocktail"]
 type CocktailPrice = components["schemas"]["CocktailPrice"]
@@ -44,6 +47,7 @@ const props = defineProps<{
 
 const emit = defineEmits(['closed', 'selectedPrice'])
 
+const { t } = useI18n()
 const appState = new AppState()
 const targetPourCost = ref(22)
 const isLoadingPrices = ref(false)

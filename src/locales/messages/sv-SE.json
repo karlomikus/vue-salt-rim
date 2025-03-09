@@ -513,7 +513,7 @@
     "update-error": "Kunde inte uppdatera meny",
     "cocktail-already-added": "Drinken \"{name}\" finns redan på menyn",
     "delete-cocktail-confirm": "Detta kommer ta bort drinken \"{name}\" från menykategorin",
-    "cocktail-removed": "Drinken har tagits bort från menykategorin",
+    "cocktail-removed": "Objekt som tas bort från menykategorin",
     "menu-not-found": "Menyn kunde inte hittas",
     "description": "Här kan du skapa en enkel webbmeny för din bar. Du kan uppdatera din bar-länk när du lägger till eller editerar en bar. Använd denna URL eller QR-kod för att dela din barmeny med dina gäster.",
     "no-cocktails-added": "Menyn behöver minst en drink",
