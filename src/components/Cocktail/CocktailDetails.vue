@@ -342,9 +342,6 @@ fetchShoppingList()
     <div v-if="!cocktail.id">
         <PageHeader>
             {{ $t('cocktail.title') }}
-            <small>
-                <DateFormatter format="short" />
-            </small>
         </PageHeader>
         <article class="cocktail-details">
             <OverlayLoader v-if="isLoading" />
