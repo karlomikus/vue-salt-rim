@@ -20,6 +20,7 @@
     "@vueuse/core": "^11.0.3",
     "cropperjs": "^1.6.1",
     "dayjs": "^1.11.7",
+    "entities": "^6.0.0",
     "format-quantity": "^3.0.0",
     "html-to-image": "^1.11.11",
     "mathjs": "^14.0.1",
@@ -42,16 +43,16 @@
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^5.2.1",
-    "@vue/tsconfig": "^0.7.0",
-    "@vue/eslint-config-typescript": "^14.4.0",
     "@vitest/eslint-plugin": "1.1.31",
+    "@vue/eslint-config-typescript": "^14.4.0",
+    "@vue/tsconfig": "^0.7.0",
     "eslint": "^9.22.0",
     "eslint-plugin-vue": "^10.0",
     "openapi-typescript": "^7.3.0",
     "typescript": "^5.5.4",
     "vite": "^6.1.0",
-    "vite-plugin-vue-devtools": "^7.7.2",
     "vite-plugin-pwa": "^0.21.1",
+    "vite-plugin-vue-devtools": "^7.7.2",
     "vitest": "^3.0.8",
     "vue-tsc": "^2.2.2"
   }

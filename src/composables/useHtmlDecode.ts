@@ -1,6 +1,5 @@
-export function useHtmlDecode(input: string): string {
-    const txt = document.createElement('textarea')
-    txt.innerHTML = input
+import { decode } from 'entities'
 
-    return txt.value
+export function useHtmlDecode(input: string): string {
+    return decode(input)
 }
