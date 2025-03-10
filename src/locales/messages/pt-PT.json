@@ -627,7 +627,8 @@
     "no-matching-units": "No matching unit pricing found",
     "select": "Select price",
     "category-delete-success": "Price category deleted",
-    "category-confirm-delete": "This will permanently price category with name \"{name}\"."
+    "category-confirm-delete": "This will permanently price category with name \"{name}\".",
+    "missing-cocktail-price-calculator": "There are no prices available for this cocktail. Add prices to ingredients in the recipe to enable price calculation."
   },
   "prices": {
     "add": "Add price",
@@ -706,5 +707,6 @@
   "ui-theme": "Default theme",
   "theme-dark": "Dark",
   "theme-light": "Light",
-  "default-currency": "Default currency"
+  "default-currency": "Default currency",
+  "loading": "Loading"
 }
