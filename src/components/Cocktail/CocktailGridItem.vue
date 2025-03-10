@@ -133,6 +133,7 @@ export default {
     font-family: var(--font-heading);
     font-weight: var(--fw-bold);
     line-height: 1.3;
+    text-wrap: balance;
 }
 
 .cocktail-grid-item__content {

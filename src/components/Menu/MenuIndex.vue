@@ -98,7 +98,11 @@
                         </a>
                     </template>
                     <template #dialog>
+                        <div class="dialog-title">{{ $t('ingredient.ingredients') }}</div>
                         <IngredientFinder :search-token="appState.bar.search_token" @ingredient-selected="ingredient => selectIngredient(ingredient, category, idx)"></IngredientFinder>
+                        <div class="dialog-actions">
+                            <button type="submit" class="button button--dark" @click="showIngredientFinder[idx] = !showIngredientFinder[idx]">{{ $t('close') }}</button>
+                        </div>
                     </template>
                 </SaltRimDialog>
             </div>
