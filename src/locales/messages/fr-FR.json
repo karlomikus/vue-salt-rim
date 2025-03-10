@@ -17,7 +17,9 @@
       "stats-error": "Une erreur s’est produite lors de la récupération des statistiques du serveur",
       "list-error": "Une erreur s’est produite lors de la récupération des ingrédients de votre liste de courses à partir du serveur"
     },
-    "cocktails": "Cocktails que je peux faire"
+    "cocktails": "Cocktails que je peux faire",
+    "bar-stats": "Bar statistics",
+    "recommended-cocktails": "Recommended cocktails"
   },
   "ingredient": {
     "title": "Ingrédient",
@@ -52,7 +54,8 @@
       "optional-checkbox": "Rendre cet ingrédient facultatif.",
       "new-ingredient-success": "Ingrédient non classifié \"{name}\" créé.",
       "new-ingredient-fail": "Impossible d’ajouter l’ingrédient.",
-      "select-substitutes-for": "Sélectionnez des ingrédients pour remplacer \"{name}\"."
+      "select-substitutes-for": "Sélectionnez des ingrédients pour remplacer \"{name}\".",
+      "is-specified-checkbox": "Use this specific ingredient (ignore varieties as substitutes)"
     },
     "base": "Base",
     "is-complex": "L'ingrédient contient d'autres ingrédients",
@@ -70,7 +73,12 @@
     "bar-shelf-remove-success": "Supprimer \"{name}\" de l'étagère du bar",
     "units-help": "Some features work the best if you use common units. Some recommendations for units are: ml, oz, cl, dashes, barspoon, drops, topup, leaves.",
     "import": "Import ingredients",
-    "attach-calculator": "Attach calculator"
+    "attach-calculator": "Attach calculator",
+    "hierarchy": "Hierarchy",
+    "status": "Ingredient status",
+    "hierarchy-description": "This is an overview of the ingredient hierarchy. Depending on the cocktail recipe, if you have any of the variants in the shelf, they can be used as a substitute for the main ingredient when matching recipes.",
+    "show-variants": "Show variants",
+    "show-ancestors": "Show ancestors"
   },
   "share": {
     "title": "Partager",
@@ -118,7 +126,8 @@
   },
   "latest": {
     "cocktails": "Derniers cocktails",
-    "favorites": "Vos favoris récents"
+    "favorites": "Vos favoris récents",
+    "ingredients": "Latest ingredients"
   },
   "strength": "Force",
   "rating": "Évaluation",
@@ -228,7 +237,8 @@
     "confirm-delete": "Cela supprimera définitivement la balise avec le nom \"{name}\".",
     "delete-success": "Balise supprimée avec succès",
     "add": "Ajouter une balise",
-    "edit": "Modifier la balise"
+    "edit": "Modifier la balise",
+    "help-text-recommender": "Tags are used to recommend cocktails based on your preferences."
   },
   "glass-type": {
     "types": "Types de verre",
@@ -527,7 +537,10 @@
   },
   "bar": {
     "url": "URL personnalisée du bar",
-    "url-help": "L'URL publique de votre bar sera : {url}"
+    "url-help": "L'URL publique de votre bar sera : {url}",
+    "url-menu-hint": "Used for public menu if enabled.",
+    "default-currency-hint": "Used as default currency suggestion, can be changed anytime.",
+    "default-units-hint": "Used as default units on cocktail details, can be changed anytime."
   },
   "api": {
     "tokens": "Jetons d'API",
@@ -614,7 +627,8 @@
     "no-matching-units": "Aucun prix unitaire correspondant n'a été trouvé",
     "select": "Sélectionner le prix",
     "category-delete-success": "Catégorie de prix supprimée",
-    "category-confirm-delete": "La catégorie de prix avec le nom \\\"{name}\"\\ sera définitivement supprimé"
+    "category-confirm-delete": "La catégorie de prix avec le nom \\\"{name}\"\\ sera définitivement supprimé",
+    "missing-cocktail-price-calculator": "There are no prices available for this cocktail. Add prices to ingredients in the recipe to enable price calculation."
   },
   "prices": {
     "add": "Ajouter un prix",
@@ -670,5 +684,29 @@
   "permissions": {
     "clipboard-error": "Your browser or server config does not support clipboard sharing."
   },
-  "preview": "Preview"
+  "preview": "Preview",
+  "available-variants": "Variants in shelf",
+  "sso": {
+    "profile-providers": "SSO accounts",
+    "provider-name": "Provider name",
+    "created-date": "Token created at",
+    "delete-account": "Remove account link",
+    "confirm-delete": "This will permanently delete SSO account link from provider \"{name}\".",
+    "is-configured": "Server configuration",
+    "delete-success": "SSO account link deleted",
+    "provider-enabled": "Enabled",
+    "provider-disabled": "Disabled",
+    "title": "Single Sign-On",
+    "auth-error": "Unable to authenticate via Single Sign-On provider",
+    "login-with": "Login with {name}"
+  },
+  "distillery": "Distillery",
+  "sweetness": "Sweetness (g/ml)",
+  "acidity": "Acidity (%)",
+  "missing-recommended-cocktails": "Add some cocktails to your favorites to start getting recommendations.",
+  "ui-theme": "Default theme",
+  "theme-dark": "Dark",
+  "theme-light": "Light",
+  "default-currency": "Default currency",
+  "loading": "Loading"
 }
