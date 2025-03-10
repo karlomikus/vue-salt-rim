@@ -707,5 +707,6 @@
   "ui-theme": "Default theme",
   "theme-dark": "Dark",
   "theme-light": "Light",
-  "default-currency": "Default currency"
+  "default-currency": "Default currency",
+  "loading": "Loading"
 }

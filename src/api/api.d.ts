@@ -2738,8 +2738,11 @@ export interface components {
         };
         /** @description Ingredient hierarchy */
         IngredientHierarchy: {
-            /** @example Spirits > Gin */
-            path_to_self?: number;
+            /**
+             * @description Path to the current ingredient from the root
+             * @example Spirits > Gin
+             */
+            path_to_self?: string;
             parent_ingredient?: components["schemas"]["IngredientBasic"] | null;
             descendants?: components["schemas"]["IngredientBasic"][];
             ancestors?: components["schemas"]["IngredientBasic"][];
@@ -2815,7 +2818,7 @@ export interface components {
         };
         IngredientTree: {
             ingredient: components["schemas"]["IngredientBasic"];
-            children: components["schemas"]["IngredientTree"][];
+            children?: components["schemas"]["IngredientTree"][];
         };
         LoginRequest: {
             /** @example admin@example.com */

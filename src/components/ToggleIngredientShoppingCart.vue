@@ -53,9 +53,11 @@ function toggle() {
 }
 </script>
 <template>
-    <template v-if="!isLoading">
-        <a v-if="!inList" href="#" @click.prevent="toggle">{{ $t('ingredient.add-to-list') }}</a>
-        <a v-else href="#" @click.prevent="toggle">{{ $t('ingredient.remove-from-list') }}</a>
-    </template>
-    <span v-else>Loading...</span>
+    <slot :is-loading="isLoading" :in-list="inList" :toggle="toggle">
+        <template v-if="!isLoading">
+            <a v-if="!inList" href="#" @click.prevent="toggle">{{ t('ingredient.add-to-list') }}</a>
+            <a v-else href="#" @click.prevent="toggle">{{ t('ingredient.remove-from-list') }}</a>
+        </template>
+        <span v-else>{{ t('loading') }}...</span>
+    </slot>
 </template>

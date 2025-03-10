@@ -48,7 +48,7 @@ watch(() => parentId, () => {
 </script>
 
 <template>
-    <div style="margin-top: var(--gap-size-3);" v-if="hierarchy">
+    <div v-if="hierarchy">
         <h2 class="details-block-container__title">{{ t('ingredient.hierarchy') }}</h2>
         <p>{{ t('ingredient.hierarchy-description') }}</p>
         <a href="#" @click.prevent="showVariants">{{ t('ingredient.show-variants') }}</a> &middot; <a href="#" @click.prevent="showRoot">{{ t('ingredient.show-ancestors') }}</a>

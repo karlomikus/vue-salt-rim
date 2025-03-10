@@ -36,57 +36,7 @@ import CalculatorRender from '../Calculator/CalculatorRender.vue'
                 </div>
             </div>
             <div class="ingredient-details__column-sidebar">
-                <div class="item-details__chips">
-                    <div class="item-details__chips__group">
-                        <div class="item-details__chips__group__title">{{ $t('strength') }}:</div>
-                        <ul v-if="ingredient.strength > 0" class="chips-list">
-                            <li>
-                                <span><abbr :title="$t('ABV-definition')">{{ $t('ABV') }}</abbr>: {{ ingredient.strength + '%' }}</span>
-                            </li>
-                            <li>
-                                <span>{{ $t('alcohol-proof') }}: {{ ingredient.strength * 2 }}</span>
-                            </li>
-                        </ul>
-                        <ul v-else class="chips-list">
-                            <li>
-                                <span>{{ $t('non-alcoholic') }}</span>
-                            </li>
-                        </ul>
-                    </div>
-                    <div v-if="ingredient.origin" class="item-details__chips__group">
-                        <div class="item-details__chips__group__title">{{ $t('origin') }}:</div>
-                        <ul class="chips-list">
-                            <li>
-                                <span>{{ ingredient.origin }}</span>
-                            </li>
-                        </ul>
-                    </div>
-                    <div v-if="ingredient.distillery" class="item-details__chips__group">
-                        <div class="item-details__chips__group__title">{{ $t('distillery') }}:</div>
-                        <ul class="chips-list">
-                            <li>
-                                <span>{{ ingredient.distillery }}</span>
-                            </li>
-                        </ul>
-                    </div>
-                    <div v-if="ingredient.sugar_g_per_ml" class="item-details__chips__group">
-                        <div class="item-details__chips__group__title">{{ $t('sweetness') }}:</div>
-                        <ul class="chips-list">
-                            <li>
-                                <span>{{ ingredient.sugar_g_per_ml }}</span>
-                            </li>
-                        </ul>
-                    </div>
-                    <div v-if="ingredient.acidity" class="item-details__chips__group">
-                        <div class="item-details__chips__group__title">{{ $t('acidity') }}:</div>
-                        <ul class="chips-list">
-                            <li>
-                                <span>{{ ingredient.acidity }}</span>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-                <div v-if="ingredient.used_as_substitute_for && ingredient.used_as_substitute_for.length > 0">
+                <!-- <div v-if="ingredient.used_as_substitute_for && ingredient.used_as_substitute_for.length > 0">
                     <h3 class="page-subtitle">{{ $t('ingredient.used_as_substitute_for') }}</h3>
                     <IngredientTile v-for="ing in ingredient.used_as_substitute_for" :key="ing.slug" :ingredient="ing" :images="[]"></IngredientTile>
                     <RouterLink :to="{name: 'cocktails', query: {'filter[ingredient_substitute_id]': ingredient.id}}">
@@ -96,7 +46,56 @@ import CalculatorRender from '../Calculator/CalculatorRender.vue'
                 <div v-if="ingredient.can_be_substituted_with && ingredient.can_be_substituted_with.length > 0">
                     <h3 class="page-subtitle">{{ $t('ingredient.can_be_substituted_with') }}</h3>
                     <IngredientTile v-for="ing in ingredient.can_be_substituted_with" :key="ing.slug" :ingredient="ing" :images="[]"></IngredientTile>
-                </div>
+                </div> -->
+                <ToggleIngredientBarShelf :ingredient="ingredient" :status="ingredient.in_bar_shelf">
+                    <template v-slot="{ isLoading, inList, toggle }">
+                        <a href="#" class="block-container block-container--hover shelf-actions__action" v-if="appState.isAdmin() || appState.isModerator()" @click.prevent="toggle">
+                            <div>
+                                <IconBarShelf></IconBarShelf>
+                                <IconCheck v-if="inList" class="shelf-actions__action__active"></IconCheck>
+                            </div>
+                            <template v-if="!isLoading">
+                                <span v-if="!inList">{{ $t('ingredient.add-to-bar-shelf') }}</span>
+                                <span v-else>{{ $t('ingredient.remove-from-bar-shelf') }}</span>
+                            </template>
+                            <span v-else>{{ $t('loading') }}...</span>
+                            <br>
+                            <small>{{ $t('ingredient.shelf-bar-help') }}</small>
+                        </a>
+                    </template>
+                </ToggleIngredientBarShelf>
+                <ToggleIngredientShelf :ingredient="ingredient" :status="ingredient.in_shelf">
+                    <template v-slot="{ isLoading, inList, toggle }">
+                        <a href="#" class="block-container block-container--hover shelf-actions__action" @click.prevent="toggle">
+                            <div>
+                                <IconUserShelf></IconUserShelf>
+                                <IconCheck v-if="inList" class="shelf-actions__action__active"></IconCheck>
+                            </div>
+                            <template v-if="!isLoading">
+                                <span v-if="!inList">{{ $t('ingredient.add-to-shelf') }}</span>
+                                <span v-else>{{ $t('ingredient.remove-from-shelf') }}</span>
+                            </template>
+                            <span v-else>{{ $t('loading') }}...</span>
+                            <br>
+                            <small>{{ $t('ingredient.shelf-user-help') }}</small>
+                        </a>
+                    </template>
+                </ToggleIngredientShelf>
+                <ToggleIngredientShoppingCart :ingredient="ingredient" :status="ingredient.in_shopping_list">
+                    <template v-slot="{ isLoading, inList, toggle }">
+                        <a href="#" class="block-container block-container--hover shelf-actions__action" @click.prevent="toggle">
+                            <div>
+                                <IconShoppingCart></IconShoppingCart>
+                                <IconCheck v-if="inList" class="shelf-actions__action__active"></IconCheck>
+                            </div>
+                            <template v-if="!isLoading">
+                                <span v-if="!inList">{{ $t('ingredient.add-to-list') }}</span>
+                                <span v-else>{{ $t('ingredient.remove-from-list') }}</span>
+                            </template>
+                            <span v-else>{{ $t('loading') }}...</span>
+                        </a>
+                    </template>
+                </ToggleIngredientShoppingCart>
             </div>
             <div class="ingredient-details__column-content">
                 <div v-if="ingredient.access && (ingredient.access.can_edit || ingredient.access.can_delete)" class="ingredient-details__actions">
@@ -125,30 +124,60 @@ import CalculatorRender from '../Calculator/CalculatorRender.vue'
                         </template>
                     </Dropdown>
                 </div>
-                <div class="block-container block-container--padded">
-                    <h2 class="details-block-container__title">{{ $t('ingredient.status') }}</h2>
+                <div class="block-container block-container--padded" v-if="ingredient.description">
+                    <h2 class="details-block-container__title">{{ $t('description') }}</h2>
+                    <div class="item-details__chips">
+                        <div class="item-details__chips__group">
+                            <div class="item-details__chips__group__title">{{ $t('strength') }}:</div>
+                            <ul v-if="ingredient.strength > 0" class="chips-list">
+                                <li>
+                                    <span><abbr :title="$t('ABV-definition')">{{ $t('ABV') }}</abbr>: {{ ingredient.strength + '%' }}</span>
+                                </li>
+                                <li>
+                                    <span>{{ $t('alcohol-proof') }}: {{ ingredient.strength * 2 }}</span>
+                                </li>
+                            </ul>
+                            <ul v-else class="chips-list">
+                                <li>
+                                    <span>{{ $t('non-alcoholic') }}</span>
+                                </li>
+                            </ul>
+                        </div>
+                        <div v-if="ingredient.origin" class="item-details__chips__group">
+                            <div class="item-details__chips__group__title">{{ $t('origin') }}:</div>
+                            <ul class="chips-list">
+                                <li>
+                                    <span>{{ ingredient.origin }}</span>
+                                </li>
+                            </ul>
+                        </div>
+                        <div v-if="ingredient.distillery" class="item-details__chips__group">
+                            <div class="item-details__chips__group__title">{{ $t('distillery') }}:</div>
+                            <ul class="chips-list">
+                                <li>
+                                    <span>{{ ingredient.distillery }}</span>
+                                </li>
+                            </ul>
+                        </div>
+                        <div v-if="ingredient.sugar_g_per_ml" class="item-details__chips__group">
+                            <div class="item-details__chips__group__title">{{ $t('sweetness') }}:</div>
+                            <ul class="chips-list">
+                                <li>
+                                    <span>{{ ingredient.sugar_g_per_ml }}</span>
+                                </li>
+                            </ul>
+                        </div>
+                        <div v-if="ingredient.acidity" class="item-details__chips__group">
+                            <div class="item-details__chips__group__title">{{ $t('acidity') }}:</div>
+                            <ul class="chips-list">
+                                <li>
+                                    <span>{{ ingredient.acidity }}</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
                     <ul class="block-container block-container--inset ingredient-details__more">
                         <OverlayLoader v-if="isLoadingExtra" />
-                        <li>
-                            <div class="shelf-actions">
-                                <div class="block-container shelf-actions__action" v-if="appState.isAdmin() || appState.isModerator()">
-                                    <IconBarShelf></IconBarShelf>
-                                    <ToggleIngredientBarShelf :ingredient="ingredient" :status="ingredient.in_bar_shelf"></ToggleIngredientBarShelf>
-                                    <br>
-                                    <small>{{ $t('ingredient.shelf-bar-help') }}</small>
-                                </div>
-                                <div class="block-container shelf-actions__action">
-                                    <IconUserShelf></IconUserShelf>
-                                    <ToggleIngredientShelf :ingredient="ingredient" :status="ingredient.in_shelf"></ToggleIngredientShelf>
-                                    <br>
-                                    <small>{{ $t('ingredient.shelf-user-help') }}</small>
-                                </div>
-                                <div class="block-container shelf-actions__action">
-                                    <IconShoppingCart></IconShoppingCart>
-                                    <ToggleIngredientShoppingCart :ingredient="ingredient" :status="ingredient.in_shopping_list"></ToggleIngredientShoppingCart>
-                                </div>
-                            </div>
-                        </li>
                         <li v-if="ingredient.ingredient_parts.length">
                             {{ $t('contains-ingredients') }}:
                             <template v-for="(part, index) in ingredient.ingredient_parts" :key="part.id">
@@ -162,10 +191,9 @@ import CalculatorRender from '../Calculator/CalculatorRender.vue'
                         </li>
                         <li v-if="extraIfAddedToShelf.length > 0">{{ $t('ingredient.extra-cocktails') }}: <RouterLink :to="{name: 'cocktails', query: {'filter[id]': extraCocktailsIds}}">{{ extraIfAddedToShelf.length }} {{ $t('cocktail.cocktails') }}</RouterLink></li>
                     </ul>
-                    <template v-if="ingredient.description">
-                        <h2 class="details-block-container__title">{{ $t('description') }}</h2>
-                        <div v-html="parsedDescription" class="has-markdown"></div>
-                    </template>
+                    <div v-html="parsedDescription" class="has-markdown"></div>
+                </div>
+                <div class="block-container block-container--padded">
                     <IngredientHierarchy :parent-id="ingredient.id" :root-id="ingredient.hierarchy.root_ingredient_id"></IngredientHierarchy>
                 </div>
                 <div v-if="ingredient.calculator_id" class="block-container block-container--padded">
@@ -207,6 +235,7 @@ import IconShoppingCart from '../Icons/IconShoppingCart.vue'
 import IconMore from '../Icons/IconMore.vue'
 import IngredientTile from '../Tiles/IngredientTile.vue'
 import IngredientHierarchy from './IngredientHierarchy.vue'
+import IconCheck from '../Icons/IconCheck.vue'
 
 export default {
     components: {
@@ -380,6 +409,9 @@ export default {
 
 .ingredient-details__column-sidebar {
     grid-area: sidebar;
+    display: flex;
+    flex-direction: column;
+    gap: var(--gap-size-1);
 }
 
 .ingredient-details .ingredient-details__image {
@@ -496,10 +528,6 @@ export default {
     height: 16px;
 }
 
-.ingredient-details__prices {
-    margin-top: 1rem;
-}
-
 .ingredient-details__prices__list {
     display: flex;
     flex-direction: column;
@@ -528,6 +556,7 @@ export default {
     flex-direction: column;
     padding: var(--gap-size-2);
     text-align: center;
+    text-decoration: none;
 }
 
 .shelf-actions__action svg {
@@ -537,11 +566,15 @@ export default {
     fill: var(--clr-gray-500);
 }
 
-svg.shelf-actions__action__status {
+.shelf-actions__action svg.shelf-actions__action__active {
     width: 16px;
     height: 16px;
-    display: block;
-    color: green;
+    fill: rgb(6, 150, 95);
+    background: #fff;
+    border-radius: 50%;
+    position: absolute;
+    bottom: 0;
+    right: 0;
 }
 
 .shelf-actions__action small {
