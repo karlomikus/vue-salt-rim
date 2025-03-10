@@ -36,66 +36,58 @@ import CalculatorRender from '../Calculator/CalculatorRender.vue'
                 </div>
             </div>
             <div class="ingredient-details__column-sidebar">
-                <!-- <div v-if="ingredient.used_as_substitute_for && ingredient.used_as_substitute_for.length > 0">
-                    <h3 class="page-subtitle">{{ $t('ingredient.used_as_substitute_for') }}</h3>
-                    <IngredientTile v-for="ing in ingredient.used_as_substitute_for" :key="ing.slug" :ingredient="ing" :images="[]"></IngredientTile>
-                    <RouterLink :to="{name: 'cocktails', query: {'filter[ingredient_substitute_id]': ingredient.id}}">
-                        View all
-                    </RouterLink>
+                <h3 class="page-subtitle" style="margin-top: 0;">{{ $t('ingredient.status') }}</h3>
+                <div class="block-container block-container--inset shelf-actions">
+                    <ToggleIngredientBarShelf :ingredient="ingredient" :status="ingredient.in_bar_shelf">
+                        <template v-slot="{ isLoading, inList, toggle }">
+                            <a href="#" class="block-container block-container--hover shelf-actions__action" v-if="appState.isAdmin() || appState.isModerator()" @click.prevent="toggle">
+                                <div>
+                                    <IconBarShelf></IconBarShelf>
+                                    <IconCheck v-if="inList" class="shelf-actions__action__active"></IconCheck>
+                                </div>
+                                <template v-if="!isLoading">
+                                    <span v-if="!inList">{{ $t('ingredient.add-to-bar-shelf') }}</span>
+                                    <span v-else>{{ $t('ingredient.remove-from-bar-shelf') }}</span>
+                                </template>
+                                <span v-else>{{ $t('loading') }}...</span>
+                                <br>
+                                <small>{{ $t('ingredient.shelf-bar-help') }}</small>
+                            </a>
+                        </template>
+                    </ToggleIngredientBarShelf>
+                    <ToggleIngredientShelf :ingredient="ingredient" :status="ingredient.in_shelf">
+                        <template v-slot="{ isLoading, inList, toggle }">
+                            <a href="#" class="block-container block-container--hover shelf-actions__action" @click.prevent="toggle">
+                                <div>
+                                    <IconUserShelf></IconUserShelf>
+                                    <IconCheck v-if="inList" class="shelf-actions__action__active"></IconCheck>
+                                </div>
+                                <template v-if="!isLoading">
+                                    <span v-if="!inList">{{ $t('ingredient.add-to-shelf') }}</span>
+                                    <span v-else>{{ $t('ingredient.remove-from-shelf') }}</span>
+                                </template>
+                                <span v-else>{{ $t('loading') }}...</span>
+                                <br>
+                                <small>{{ $t('ingredient.shelf-user-help') }}</small>
+                            </a>
+                        </template>
+                    </ToggleIngredientShelf>
+                    <ToggleIngredientShoppingCart :ingredient="ingredient" :status="ingredient.in_shopping_list">
+                        <template v-slot="{ isLoading, inList, toggle }">
+                            <a href="#" class="block-container block-container--hover shelf-actions__action" @click.prevent="toggle">
+                                <div>
+                                    <IconShoppingCart></IconShoppingCart>
+                                    <IconCheck v-if="inList" class="shelf-actions__action__active"></IconCheck>
+                                </div>
+                                <template v-if="!isLoading">
+                                    <span v-if="!inList">{{ $t('ingredient.add-to-list') }}</span>
+                                    <span v-else>{{ $t('ingredient.remove-from-list') }}</span>
+                                </template>
+                                <span v-else>{{ $t('loading') }}...</span>
+                            </a>
+                        </template>
+                    </ToggleIngredientShoppingCart>
                 </div>
-                <div v-if="ingredient.can_be_substituted_with && ingredient.can_be_substituted_with.length > 0">
-                    <h3 class="page-subtitle">{{ $t('ingredient.can_be_substituted_with') }}</h3>
-                    <IngredientTile v-for="ing in ingredient.can_be_substituted_with" :key="ing.slug" :ingredient="ing" :images="[]"></IngredientTile>
-                </div> -->
-                <ToggleIngredientBarShelf :ingredient="ingredient" :status="ingredient.in_bar_shelf">
-                    <template v-slot="{ isLoading, inList, toggle }">
-                        <a href="#" class="block-container block-container--hover shelf-actions__action" v-if="appState.isAdmin() || appState.isModerator()" @click.prevent="toggle">
-                            <div>
-                                <IconBarShelf></IconBarShelf>
-                                <IconCheck v-if="inList" class="shelf-actions__action__active"></IconCheck>
-                            </div>
-                            <template v-if="!isLoading">
-                                <span v-if="!inList">{{ $t('ingredient.add-to-bar-shelf') }}</span>
-                                <span v-else>{{ $t('ingredient.remove-from-bar-shelf') }}</span>
-                            </template>
-                            <span v-else>{{ $t('loading') }}...</span>
-                            <br>
-                            <small>{{ $t('ingredient.shelf-bar-help') }}</small>
-                        </a>
-                    </template>
-                </ToggleIngredientBarShelf>
-                <ToggleIngredientShelf :ingredient="ingredient" :status="ingredient.in_shelf">
-                    <template v-slot="{ isLoading, inList, toggle }">
-                        <a href="#" class="block-container block-container--hover shelf-actions__action" @click.prevent="toggle">
-                            <div>
-                                <IconUserShelf></IconUserShelf>
-                                <IconCheck v-if="inList" class="shelf-actions__action__active"></IconCheck>
-                            </div>
-                            <template v-if="!isLoading">
-                                <span v-if="!inList">{{ $t('ingredient.add-to-shelf') }}</span>
-                                <span v-else>{{ $t('ingredient.remove-from-shelf') }}</span>
-                            </template>
-                            <span v-else>{{ $t('loading') }}...</span>
-                            <br>
-                            <small>{{ $t('ingredient.shelf-user-help') }}</small>
-                        </a>
-                    </template>
-                </ToggleIngredientShelf>
-                <ToggleIngredientShoppingCart :ingredient="ingredient" :status="ingredient.in_shopping_list">
-                    <template v-slot="{ isLoading, inList, toggle }">
-                        <a href="#" class="block-container block-container--hover shelf-actions__action" @click.prevent="toggle">
-                            <div>
-                                <IconShoppingCart></IconShoppingCart>
-                                <IconCheck v-if="inList" class="shelf-actions__action__active"></IconCheck>
-                            </div>
-                            <template v-if="!isLoading">
-                                <span v-if="!inList">{{ $t('ingredient.add-to-list') }}</span>
-                                <span v-else>{{ $t('ingredient.remove-from-list') }}</span>
-                            </template>
-                            <span v-else>{{ $t('loading') }}...</span>
-                        </a>
-                    </template>
-                </ToggleIngredientShoppingCart>
             </div>
             <div class="ingredient-details__column-content">
                 <div v-if="ingredient.access && (ingredient.access.can_edit || ingredient.access.can_delete)" class="ingredient-details__actions">
@@ -190,6 +182,18 @@ import CalculatorRender from '../Calculator/CalculatorRender.vue'
                             </RouterLink>
                         </li>
                         <li v-if="extraIfAddedToShelf.length > 0">{{ $t('ingredient.extra-cocktails') }}: <RouterLink :to="{name: 'cocktails', query: {'filter[id]': extraCocktailsIds}}">{{ extraIfAddedToShelf.length }} {{ $t('cocktail.cocktails') }}</RouterLink></li>
+                        <li v-if="ingredient.can_be_substituted_with.length > 0">
+                            {{ $t('ingredient.can_be_substituted_with') }}:
+                            <template v-for="(ing, index) in ingredient.can_be_substituted_with" :key="ing.id">
+                                <RouterLink :to="{name: 'ingredients.show', params: {id: ing.slug}}">{{ ing.name }}</RouterLink><template v-if="index + 1 !== ingredient.can_be_substituted_with.length">, </template>
+                            </template>
+                        </li>
+                        <li v-if="ingredient.used_as_substitute_for.length > 0">
+                            {{ $t('ingredient.can_be_substituted_with') }}:
+                            <template v-for="(ing, index) in ingredient.used_as_substitute_for" :key="ing.id">
+                                <RouterLink :to="{name: 'ingredients.show', params: {id: ing.slug}}">{{ ing.name }}</RouterLink><template v-if="index + 1 !== ingredient.used_as_substitute_for.length">, </template>
+                            </template>
+                        </li>
                     </ul>
                     <div v-html="parsedDescription" class="has-markdown"></div>
                 </div>
@@ -545,9 +549,10 @@ export default {
 }
 
 .shelf-actions {
-    display: grid;
+    display: flex;
+    flex-direction: column;
     gap: var(--gap-size-2);
-    grid-template-columns: 1fr 1fr 1fr;
+    padding: var(--gap-size-2);
 }
 
 .shelf-actions__action {
