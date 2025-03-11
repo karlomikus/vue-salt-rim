@@ -1,4 +1,4 @@
-# v3.10.0
+# v4.0.0
 ## New
 - Added support for Bar Assistant v5.0
 - Added recommended cocktails to shelf
@@ -6,6 +6,7 @@
 - Added "Default theme" settings to profile
     - Now set when signing in
 - Added a list of linked OAuth providers to profile
+- Added OAuth callback route `/oauth/callback`
 - Added default currency to bar form
     - Used as default suggestion on menu
     - Used as default suggestion on price categories
