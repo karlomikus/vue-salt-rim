@@ -7,7 +7,7 @@ import SaltRimRadio from '../SaltRimRadio.vue'
 import IngredientFinder from './../IngredientFinder.vue'
 import SaltRimDialog from '../Dialog/SaltRimDialog.vue'
 import SubscriptionCheck from '../SubscriptionCheck.vue'
-import { useSaltRimToast } from '@/composables/toast.js'
+import { useSaltRimToast } from '@/composables/toast'
 import { useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 

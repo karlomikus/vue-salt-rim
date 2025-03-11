@@ -18,7 +18,7 @@ import { ref } from 'vue'
 import BarAssistantClient from '@/api/BarAssistantClient';
 import OverlayLoader from './../OverlayLoader.vue'
 import type { components } from '@/api/api'
-import { useSaltRimToast } from '@/composables/toast.js'
+import { useSaltRimToast } from '@/composables/toast'
 
 type Calculator = components["schemas"]["Calculator"]
 type CalculatorRequest = components["schemas"]["CalculatorRequest"]

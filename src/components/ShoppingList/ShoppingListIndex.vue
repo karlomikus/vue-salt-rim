@@ -1,18 +1,18 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue'
 import { useThrottleFn } from '@vueuse/core'
-import { useSaltRimToast } from '@/composables/toast.js'
+import { useSaltRimToast } from '@/composables/toast'
 import { useI18n } from 'vue-i18n'
 import BarAssistantClient from '@/api/BarAssistantClient';
 import PageHeader from '@/components/PageHeader.vue'
-import UnitHandler from '@/UnitHandler';
+import { unitHandler } from '@/composables/useUnits'
 import Dropdown from '../SaltRimDropdown.vue';
 import ToggleIngredientShoppingCart from '../ToggleIngredientShoppingCart.vue';
 import EmptyState from '../EmptyState.vue';
 import OverlayLoader from '../OverlayLoader.vue';
 
 import type { components } from '@/api/api'
-import AppState from '@/AppState';
+import AppState from '../../AppState';
 import { useTitle } from '@/composables/title';
 type ShoppingList = components["schemas"]["ShoppingList"]
 type ShoppingListRequest = components["schemas"]["ShoppingListRequest"]
@@ -48,7 +48,7 @@ async function refreshShoppingList() {
     shoppingList.value = (await BarAssistantClient.getShoppingList(appState.user.id))?.data ?? []
     ingredients.value = (await BarAssistantClient.getIngredients({
         'filter[id]': shoppingList.value.map(shoppingListItem => shoppingListItem.ingredient.id).join(','),
-        include: 'category,prices',
+        include: 'prices,ancestors',
     }))?.data ?? []
     list.value = shoppingList.value.map(sl => {
         return {...sl, ingredientRef: ingredients.value.find(i => i.id === sl.ingredient.id)} as ShoppingListItemWithFullIngredient
@@ -132,12 +132,12 @@ async function shareFromFormat(format: string) {
             <div>
                 <RouterLink :to="{ name: 'ingredients.show', params: { id: shoppingListItem.ingredientRef.slug }}">{{ shoppingListItem.ingredientRef.name }}</RouterLink>
                 <br>
-                <small>{{ shoppingListItem.ingredientRef.category?.name ?? t('uncategorized') }} &middot; Qty: {{ shoppingListItem.quantity }}</small>
+                <small>{{ shoppingListItem.ingredientRef.hierarchy.path_to_self ?? t('uncategorized') }} &middot; Qty: {{ shoppingListItem.quantity }}</small>
                 &middot;
                 <ToggleIngredientShoppingCart :ingredient="shoppingListItem.ingredientRef" :status="true"></ToggleIngredientShoppingCart>
                 <ul class="shopping-list__item__prices">
                     <li v-for="ingredientPrice in shoppingListItem.ingredientRef.prices">
-                        {{ ingredientPrice.price_category.name }}: <strong>{{ UnitHandler.formatPrice(ingredientPrice.price.price, ingredientPrice.price_category.currency) }}</strong> &middot; {{ ingredientPrice.amount }}{{ ingredientPrice.units }}
+                        {{ ingredientPrice.price_category.name }}: <strong>{{ unitHandler.formatPrice(ingredientPrice.price.price, ingredientPrice.price_category.currency) }}</strong> &middot; {{ ingredientPrice.amount }}{{ ingredientPrice.units }}
                     </li>
                 </ul>
             </div>

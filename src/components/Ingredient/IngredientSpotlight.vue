@@ -5,7 +5,7 @@
             <img :src="mainIngredientImageUrl" :alt="ingredient.name" />
         </div>
         <div class="ingredient-spotlight__content">
-            <small v-if="ingredient.category">{{ ingredient.category.name }}</small>
+            <small v-if="ingredient.hierarchy && ingredient.hierarchy.path_to_self">{{ ingredient.hierarchy.path_to_self }}</small>
             <h4>{{ ingredient.name }}</h4>
             <p>{{ truncatedDescription }}</p>
             <RouterLink :to="{name: 'ingredients.show', params: { id: ingredient.slug }}">{{ $t('show-more') }}</RouterLink>
@@ -30,9 +30,7 @@ export default {
     data() {
         return {
             isLoading: false,
-            ingredient: {
-                category: {}
-            },
+            ingredient: {},
         }
     },
     computed: {
@@ -71,9 +69,7 @@ export default {
                 this.ingredient = resp.data
                 this.isLoading = false
             }).catch(() => {
-                this.ingredient = {
-                    category: {}
-                }
+                this.ingredient = {}
                 this.isLoading = false
             })
         },

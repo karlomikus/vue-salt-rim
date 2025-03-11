@@ -1,5 +1,5 @@
 <script setup>
-import UnitHandler from '../../UnitHandler.js'
+import { unitHandler } from '@/composables/useUnits'
 </script>
 
 <template>
@@ -16,19 +16,20 @@ import UnitHandler from '../../UnitHandler.js'
             <div v-for="category in menu.categories" :key="category.name" class="public-page-menu__category">
                 <h3>{{ category.name }}</h3>
                 <div class="public-page-menu__category__cocktails">
-                    <div v-for="cocktail in category.cocktails" :key="cocktail.sort" class="public-page-menu__cocktail">
+                    <div v-for="cocktail in category.items" :key="cocktail.sort" class="public-page-menu__cocktail">
                         <div class="public-page-menu__cocktail__image">
-                            <img :src="cocktail.image" alt="">
+                            <img v-if="cocktail.image" :src="cocktail.image" alt="">
+                            <img v-else src="/no-cocktail.jpg" alt="">
                         </div>
                         <div class="public-page-menu__cocktail__info">
                             <h4>{{ cocktail.name }}</h4>
                             <p>
-                                {{ cocktail.short_ingredients.join(', ') }}
+                                {{ cocktail.description }}
                             </p>
                             <a v-if="cocktail.public_id" :href="publicUrl(cocktail)">View recipe</a>
                         </div>
                         <div v-if="cocktail.price.price > 0" class="public-page-menu__cocktail__price">
-                            {{ UnitHandler.formatPrice(cocktail.price.price, cocktail.price.currency) }}
+                            {{ unitHandler.formatPrice(cocktail.price.price, cocktail.price.currency) }}
                         </div>
                     </div>
                 </div>

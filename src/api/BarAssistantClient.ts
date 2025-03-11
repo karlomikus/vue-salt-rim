@@ -27,7 +27,7 @@ const checkToken: Middleware = {
 const authMiddleware: Middleware = {
   async onRequest({ request }) {
     const scopedState = new AppState()
-    accessToken = scopedState.token
+    accessToken = scopedState.token ?? ''
     request.headers.set("Authorization", `Bearer ${accessToken}`);
     return request;
   },
@@ -63,6 +63,10 @@ client.use(checkToken);
 client.use(checkService);
 
 export default class BarAssistantClient {
+  static getBaseUrl() {
+    return apiBaseUrl
+  }
+
   static async getLoginToken(email: string, password: string) {
     return (await client.POST('/auth/login', { body: { email: email, password: password } })).data
   }
@@ -159,7 +163,7 @@ export default class BarAssistantClient {
     return (await client.POST('/cocktails/{id}/copy', { params: { path: { id: id } } })).data
   }
 
-  static async rateCocktail(id: number, data: {}) {
+  static async rateCocktail(id: number, data: object = {}) {
     return (await client.POST('/cocktails/{id}/ratings', { params: { path: { id: id } }, body: data })).data
   }
 
@@ -303,16 +307,20 @@ export default class BarAssistantClient {
     return (await client.GET('/users/{id}/ingredients', { params: { path: { id: id } } })).data
   }
 
-  static async addToUserShelf(id: number, data: {}) {
+  static async addToUserShelf(id: number, data: object = {}) {
     return (await client.POST('/users/{id}/ingredients/batch-store', { params: { path: { id: id } }, body: data })).data
   }
 
-  static async removeFromUserShelf(id: number, data: {}) {
+  static async removeFromUserShelf(id: number, data: object = {}) {
     return (await client.POST('/users/{id}/ingredients/batch-delete', { params: { path: { id: id } }, body: data })).data
   }
 
   static async getIngredient(id: string) {
     return (await client.GET('/ingredients/{id}', { params: { path: { id: id } } })).data
+  }
+
+  static async getIngredientTree(id: string) {
+    return (await client.GET('/ingredients/{id}/tree', { params: { path: { id: id } } })).data
   }
 
   static async getExtraCocktailsWithIngredient(id: number) {
@@ -339,10 +347,6 @@ export default class BarAssistantClient {
     return (await client.DELETE('/utensils/{id}', { params: { path: { id: id } } })).data
   }
 
-  static async getIngredientCategories() {
-    return (await client.GET('/ingredient-categories')).data
-  }
-
   static async getPriceCategories() {
     return (await client.GET('/price-categories')).data
   }
@@ -357,22 +361,6 @@ export default class BarAssistantClient {
 
   static async deletePriceCategory(id: number) {
     return (await client.DELETE('/price-categories/{id}', { params: { path: { id: id } } })).data
-  }
-
-  static async getIngredientCategory(id: number) {
-    return (await client.GET('/ingredient-categories/{id}', { params: { path: { id: id } } })).data
-  }
-
-  static async updateIngredientCategory(id: number, data: components["schemas"]["IngredientCategoryRequest"]) {
-    return (await client.PUT('/ingredient-categories/{id}', { params: { path: { id: id } }, body: data })).data
-  }
-
-  static async deleteIngredientCategory(id: number) {
-    return (await client.DELETE('/ingredient-categories/{id}', { params: { path: { id: id } } })).data
-  }
-
-  static async saveIngredientCategory(data: components["schemas"]["IngredientCategoryRequest"]) {
-    return (await client.POST('/ingredient-categories', { body: data })).data
   }
 
   static async getUsers() {
@@ -526,11 +514,11 @@ export default class BarAssistantClient {
     return (await client.POST('/billing/subscription', { body: { type: status } })).data
   }
 
-  static async addToBarShelf(id: number, data: {}) {
+  static async addToBarShelf(id: number, data: object = {}) {
     return (await client.POST('/bars/{id}/ingredients/batch-store', { params: { path: { id: id } }, body: data })).data
   }
 
-  static async removeFromBarShelf(id: number, data: {}) {
+  static async removeFromBarShelf(id: number, data: object = {}) {
     return (await client.POST('/bars/{id}/ingredients/batch-delete', { params: { path: { id: id } }, body: data })).data
   }
 
@@ -580,5 +568,21 @@ export default class BarAssistantClient {
 
   static async deleteCalculator(id: number) {
     return (await client.DELETE('/calculators/{id}', { params: { path: { id: id } } })).data
+  }
+
+  static async getSSOCallback(provider: components["schemas"]["OauthProvider"], code: string) {
+    return (await client.GET('/auth/sso/{provider}/callback', { params: { query: { code: code }, path: { provider: provider } } })).data
+  }
+
+  static async getProvidersList() {
+    return (await client.GET('/auth/sso/providers')).data
+  }
+
+  static async deleteProfileSSOCredentials(provider: components["schemas"]["OauthProvider"]) {
+    return (await client.DELETE('/profile/sso/{provider}', { params: { path: { provider: provider } } })).data
+  }
+
+  static async getRecommendedCocktails() {
+    return (await client.GET('/recommender/cocktails')).data
   }
 }

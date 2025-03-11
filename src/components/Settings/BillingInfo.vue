@@ -147,7 +147,7 @@ export default {
         // Refresh user to fetch and save subscription info in storage
         this.refreshUser()
 
-        let self = this
+        const self = this
 
         initializePaddle({
             environment: window.srConfig.BILLING_ENV,
@@ -182,7 +182,7 @@ export default {
             })
         },
         updateSubscription(type) {
-            let self = this
+            const self = this
             this.$confirm(this.$t('billing.confirm-sub-update-' + type), {
                 onResolved(dialog) {
                     dialog.close()
@@ -199,7 +199,7 @@ export default {
                 return
             }
 
-            let customer = {}
+            const customer = {}
 
             if (this.billing.customer.paddle_id) {
                 customer.id = this.billing.customer.paddle_id

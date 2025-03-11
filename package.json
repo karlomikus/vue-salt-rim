@@ -5,9 +5,10 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview --port 4173",
-    "lint": "eslint --ext .js,.vue src",
-    "lint-fix": "eslint --fix --ext .js,.vue src",
+    "lint": "eslint src/",
+    "lint-fix": "eslint --fix src",
     "test": "vitest",
+    "type-check": "vue-tsc --build",
     "gen": "npx openapi-typescript ./spec.yml -o ./src/api/api.d.ts"
   },
   "dependencies": {
@@ -19,6 +20,7 @@
     "@vueuse/core": "^11.0.3",
     "cropperjs": "^1.6.1",
     "dayjs": "^1.11.7",
+    "entities": "^6.0.0",
     "format-quantity": "^3.0.0",
     "html-to-image": "^1.11.11",
     "mathjs": "^14.0.1",
@@ -32,6 +34,7 @@
     "sortablejs": "^1.15.0",
     "swiper": "^11.0.0",
     "thumbhash": "^0.1.1",
+    "treeflex": "^2.0.1",
     "vue": "^3.2.40",
     "vue-i18n": "^10.0.0",
     "vue-instantsearch": "^4.6.0",
@@ -39,14 +42,18 @@
     "vue-toast-notification": "^3.0.4"
   },
   "devDependencies": {
-    "@vitejs/plugin-vue": "^5.1.4",
-    "@vue/tsconfig": "^0.5.1",
-    "eslint": "^8.48.0",
-    "eslint-plugin-vue": "^9.17.0",
+    "@vitejs/plugin-vue": "^5.2.1",
+    "@vitest/eslint-plugin": "1.1.31",
+    "@vue/eslint-config-typescript": "^14.4.0",
+    "@vue/tsconfig": "^0.7.0",
+    "eslint": "^9.22.0",
+    "eslint-plugin-vue": "^10.0",
     "openapi-typescript": "^7.3.0",
     "typescript": "^5.5.4",
-    "vite": ">=5.4.6",
-    "vite-plugin-pwa": "^0.17.4",
-    "vitest": "^2.0.5"
+    "vite": "^6.1.0",
+    "vite-plugin-pwa": "^0.21.1",
+    "vite-plugin-vue-devtools": "^7.7.2",
+    "vitest": "^3.0.8",
+    "vue-tsc": "^2.2.2"
   }
 }

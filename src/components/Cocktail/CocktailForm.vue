@@ -115,7 +115,7 @@
             <div class="form-group">
                 <label class="form-label" for="cocktail-tags">{{ $t('tag.tags') }}:</label>
                 <TagSelector id="cocktail-tags" v-model="cocktail.tags" :options="tags" label-key="name" :placeholder="$t('placeholder.tags')"></TagSelector>
-                <p class="form-input-hint">{{ $t('tag.help-text') }}</p>
+                <p class="form-input-hint">{{ $t('tag.help-text') }} {{ $t('tag.help-text-recommender') }}</p>
             </div>
             <div v-show="utensils.length > 0" class="form-group">
                 <label class="form-label" for="utensil">{{ $t('utensils.title') }}:</label>
@@ -137,8 +137,8 @@
 
 <script>
 import { useTitle } from '@/composables/title'
-import Utils from './../../Utils.js'
-import UnitHandler from './../../UnitHandler'
+import { useHtmlDecode } from './../../composables/useHtmlDecode';
+import { unitHandler } from '@/composables/useUnits'
 import BarAssistantClient from '@/api/BarAssistantClient';
 import OverlayLoader from './../OverlayLoader.vue'
 import IngredientModal from './../Cocktail/IngredientModal.vue'
@@ -147,7 +147,7 @@ import PageHeader from './../PageHeader.vue'
 import Sortable from 'sortablejs'
 import SaltRimDialog from './../Dialog/SaltRimDialog.vue'
 import SaltRimRadio from '../SaltRimRadio.vue'
-import AppState from './../../AppState'
+import AppState from '../../AppState'
 import SubstituteModal from './SubstituteModal.vue'
 import SubscriptionCheck from '../SubscriptionCheck.vue'
 import TimeStamps from '../TimeStamps.vue'
@@ -218,9 +218,9 @@ export default {
 
         if (cocktailId) {
             await BarAssistantClient.getCocktail(cocktailId).then(resp => {
-                resp.data.description = Utils.decodeHtml(resp.data.description)
-                resp.data.instructions = Utils.decodeHtml(resp.data.instructions)
-                resp.data.garnish = Utils.decodeHtml(resp.data.garnish)
+                resp.data.description = useHtmlDecode(resp.data.description)
+                resp.data.instructions = useHtmlDecode(resp.data.instructions)
+                resp.data.garnish = useHtmlDecode(resp.data.garnish)
                 if (!resp.data.method) {
                     resp.data.method = {}
                 }
@@ -325,7 +325,7 @@ export default {
         printIngredientAmount(ing) {
             const defaultUnit = this.appState.defaultUnit
 
-            return UnitHandler.print(ing, defaultUnit)
+            return unitHandler.print(ing, defaultUnit)
         },
         editIngredientSubstitutes(ing) {
             this.cocktailIngredientForSubstitutes = ing
@@ -350,9 +350,9 @@ export default {
                 ingredients: this.cocktail.ingredients
                     .filter(i => i.ingredient.id != null)
                     .map((cIngredient) => {
-                        cIngredient.amount = UnitHandler.asDecimal(cIngredient.amount)
+                        cIngredient.amount = unitHandler.asDecimal(cIngredient.amount)
                         if (cIngredient.amount_max) {
-                            cIngredient.amount_max = UnitHandler.asDecimal(cIngredient.amount_max)
+                            cIngredient.amount_max = unitHandler.asDecimal(cIngredient.amount_max)
                         }
                         cIngredient.sort = sortedIngredientList.findIndex(sortedId => sortedId == cIngredient.ingredient.id) + 1
 
@@ -363,10 +363,10 @@ export default {
                             return sub
                         }).filter(sub => sub.units).map(sub => {
                             if (sub.amount) {
-                                sub.amount = UnitHandler.asDecimal(sub.amount)
+                                sub.amount = unitHandler.asDecimal(sub.amount)
                             }
                             if (sub.amount_max) {
-                                sub.amount_max = UnitHandler.asDecimal(sub.amount_max)
+                                sub.amount_max = unitHandler.asDecimal(sub.amount_max)
                             }
 
                             return sub

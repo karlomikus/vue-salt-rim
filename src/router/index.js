@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import qs from 'qs'
-import AppState from './../AppState'
+import AppState from '../AppState'
 
 const router = createRouter({
     history: createWebHistory(),
@@ -28,6 +28,12 @@ const router = createRouter({
             path: '/login',
             name: 'login',
             component: () => import('../views/LoginView.vue'),
+            meta: { requiresAuth: false }
+        },
+        {
+            path: '/oauth/callback',
+            name: 'oauth.callback',
+            component: () => import('../views/OauthCallbackView.vue'),
             meta: { requiresAuth: false }
         },
         {
@@ -152,12 +158,6 @@ const router = createRouter({
                     path: '/settings/billing',
                     name: 'settings.billing',
                     component: () => import('../views/SettingsBillingView.vue'),
-                },
-                {
-                    path: '/settings/categories',
-                    name: 'settings.categories',
-                    component: () => import('../views/SettingsCategoriesView.vue'),
-                    meta: { requiresBar: true },
                 },
                 {
                     path: '/settings/glasses',

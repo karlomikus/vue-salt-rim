@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, provide } from 'vue'
-import UnitHandler from '../../UnitHandler'
+import { unitHandler } from '../../composables/useUnits'
 import AppState from '../../AppState'
 
 const emit = defineEmits(['unitChanged'])
@@ -17,7 +17,7 @@ function updateCurrentUnit(unit: string) {
 }
 
 function printIngredient(ingredient: any): string {
-    return UnitHandler.print(ingredient, currentUnit.value, 1)
+    return unitHandler.print(ingredient, currentUnit.value, 1)
 }
 
 provide('currentUnit', {

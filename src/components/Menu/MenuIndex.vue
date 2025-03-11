@@ -45,32 +45,36 @@
                     <a href="#" @click.prevent="clearCategory(category)">{{ $t('menu.clear-category') }}</a>
                 </div>
                 <div ref="cocktailsList" class="menu-category-cocktails" :data-category-idx="idx">
-                    <div v-for="(cocktail, cidx) in category.cocktails" :key="cocktail.id" class="block-container menu-category__cocktail" :data-id="cocktail.id">
+                    <div v-for="(item, cidx) in category.items" :key="item.id" class="block-container menu-category__cocktail" :data-id="item.id" :data-type="item.type">
                         <div class="drag-handle"></div>
                         <div class="menu-category__cocktail__content">
                             <div>
-                                <h4>{{ cocktail.name }}</h4>
-                                <small>{{ cocktail.short_ingredients.join(', ') }}</small><br>
-                                <a href="#" @click.prevent="copyCurrency(cocktail.price.currency)">{{ $t('menu.copy-currency') }}</a> &middot; <a href="#" @click.prevent="removeCocktail(category, cocktail)">{{ $t('remove') }}</a> &middot;
-                                <SaltRimDialog v-model="showCurrencyCalculator[cidx + '-' + idx]">
-                                    <template #trigger>
-                                        <a style="margin-top: 0.5rem; display: inline-block;" href="#addcocktail" @click.prevent="showCurrencyCalculator[cidx + '-' + idx] = !showCurrencyCalculator[cidx + '-' + idx]">
-                                            {{ $t('menu.calculate-price') }}
-                                        </a>
-                                    </template>
-                                    <template #dialog>
-                                        <CocktailPriceCalculator :cocktail="cocktail" @selected-price="price => handleCalculatedPrice(cocktail, price)" @closed="showCurrencyCalculator[cidx + '-' + idx] = false"></CocktailPriceCalculator>
-                                    </template>
-                                </SaltRimDialog>
+                                <h4>{{ item.name }}</h4>
+                                <p><span class="menu-item-type" :class="{'menu-item-type--ingredient': item.type == 'ingredient', 'menu-item-type--cocktail': item.type == 'cocktail'}">{{ item.type }}</span> {{ item.description }}</p>
+                                <a href="#" @click.prevent="copyCurrency(item.price.currency)">{{ $t('menu.copy-currency') }}</a> &middot;
+                                <template v-if="item.type == 'cocktail'">
+                                    <SaltRimDialog v-model="showCurrencyCalculator[cidx + '-' + idx]">
+                                        <template #trigger>
+                                            <a style="margin-top: 0.5rem; display: inline-block;" href="#addcocktail" @click.prevent="showCurrencyCalculator[cidx + '-' + idx] = !showCurrencyCalculator[cidx + '-' + idx]">
+                                                {{ $t('menu.calculate-price') }}
+                                            </a>
+                                        </template>
+                                        <template #dialog>
+                                            <CocktailPriceCalculator :cocktail="item" @selected-price="price => handleCalculatedPrice(item, price)" @closed="showCurrencyCalculator[cidx + '-' + idx] = false"></CocktailPriceCalculator>
+                                        </template>
+                                    </SaltRimDialog>
+                                    &middot;
+                                </template>
+                                <a href="#" @click.prevent="removeItem(category, item)">{{ $t('remove') }}</a>
                             </div>
                             <div class="menu-category__cocktail__content__price">
                                 <div class="form-group">
                                     <label class="form-label" :for="'cocktail-category-price-' + idx + '-' + cidx">{{ $t('menu.price') }}:</label>
-                                    <input :id="'cocktail-category-price-' + idx + '-' + cidx" v-model="cocktail.price.price" class="form-input" type="text">
+                                    <input :id="'cocktail-category-price-' + idx + '-' + cidx" v-model="item.price.price" class="form-input" type="text">
                                 </div>
                                 <div class="form-group">
                                     <label class="form-label" :for="'cocktail-category-currency-' + idx + '-' + cidx">{{ $t('menu.currency') }}:</label>
-                                    <input :id="'cocktail-category-currency-' + idx + '-' + cidx" v-model="cocktail.price.currency" class="form-input" type="text">
+                                    <input :id="'cocktail-category-currency-' + idx + '-' + cidx" v-model="item.price.currency" class="form-input" type="text">
                                 </div>
                             </div>
                         </div>
@@ -84,6 +88,21 @@
                     </template>
                     <template #dialog>
                         <CocktailFinder @cocktail-selected="cocktail => selectCocktail(cocktail, category, idx)" @closed="showCocktailFinder[idx] = false"></CocktailFinder>
+                    </template>
+                </SaltRimDialog>
+                &middot;
+                <SaltRimDialog v-model="showIngredientFinder[idx]">
+                    <template #trigger>
+                        <a style="margin-top: 0.5rem; display: inline-block;" href="#addingredient" @click.prevent="showIngredientFinder[idx] = !showIngredientFinder[idx]">
+                            {{ $t('ingredient.add') }}
+                        </a>
+                    </template>
+                    <template #dialog>
+                        <div class="dialog-title">{{ $t('ingredient.ingredients') }}</div>
+                        <IngredientFinder :search-token="appState.bar.search_token" @ingredient-selected="ingredient => selectIngredient(ingredient, category, idx)"></IngredientFinder>
+                        <div class="dialog-actions">
+                            <button type="submit" class="button button--dark" @click="showIngredientFinder[idx] = !showIngredientFinder[idx]">{{ $t('close') }}</button>
+                        </div>
                     </template>
                 </SaltRimDialog>
             </div>
@@ -102,6 +121,7 @@ import PageHeader from '../PageHeader.vue'
 import Sortable from 'sortablejs'
 import SaltRimDialog from './../Dialog/SaltRimDialog.vue'
 import CocktailFinder from './../CocktailFinder.vue'
+import IngredientFinder from './../IngredientFinder.vue'
 import CocktailPriceCalculator from './../Calculator/CocktailPriceCalculator.vue'
 import AppState from '../../AppState'
 import QRCodeVue3 from 'qrcode-vue3'
@@ -117,11 +137,13 @@ export default {
         QRCodeVue3,
         OverlayLoader,
         CocktailPriceCalculator,
+        IngredientFinder,
     },
     data() {
         return {
             isLoading: false,
             showCocktailFinder: {},
+            showIngredientFinder: {},
             showCurrencyCalculator: {},
             appState: new AppState(),
             categories: [],
@@ -134,21 +156,24 @@ export default {
         }
     },
     computed: {
-        cocktails() {
-            return this.categories.flatMap(c => c.cocktails).sort((a, b) => { a.sort - b.sort })
+        cocktailMenuItems() {
+            return this.categories.flatMap(c => c.items).filter(c => c.type == 'cocktail').sort((a, b) => { a.sort - b.sort })
+        },
+        ingredientMenuItems() {
+            return this.categories.flatMap(c => c.items).filter(c => c.type == 'ingredient').sort((a, b) => { a.sort - b.sort })
         },
         guessCurrency() {
             // Use map() to create a new array with just the currencies
-            let currencyArray = this.cocktails.map(item => item.price.currency)
+            const currencyArray = this.cocktailMenuItems.map(item => item.price.currency)
 
             // Convert it into a Set, which will automatically remove any duplicates
-            let uniqueCurrencySet = new Set(currencyArray)
+            const uniqueCurrencySet = new Set(currencyArray)
 
             // Now convert back into an Array using Array.from()
-            let uniqueCurrencies = Array.from(uniqueCurrencySet)
+            const uniqueCurrencies = Array.from(uniqueCurrencySet)
 
             if (uniqueCurrencies.length == 0) {
-                return null
+                return this.appState.bar.settings.default_currency ?? null
             }
 
             return uniqueCurrencies[0]
@@ -160,25 +185,11 @@ export default {
         this.refreshBar()
     },
     methods: {
-        addCocktailToCategory(cocktail, category) {
-            if (this.cocktails.findIndex(c => parseInt(c.id) == parseInt(cocktail.id)) >= 0) {
-                return
-            }
-
-            category.cocktails.push({
-                id: cocktail.id,
-                slug: cocktail.slug,
-                name: cocktail.name,
-                sort: 0,
-                short_ingredients: cocktail.short_ingredients,
-                price: {
-                    price: '0.00',
-                    currency: this.guessCurrency,
-                },
-            })
+        addItemToCategory(item, category) {
+            category.items.push(item)
         },
         selectCocktail(cocktail, category, finderIdx) {
-            if (this.cocktails.findIndex(c => parseInt(c.id) == parseInt(cocktail.id)) >= 0) {
+            if (this.cocktailMenuItems.findIndex(c => parseInt(c.id) == parseInt(cocktail.id)) >= 0) {
                 this.$toast.default(this.$t('menu.cocktail-already-added', {name: cocktail.name}))
 
                 return
@@ -186,18 +197,51 @@ export default {
 
             this.showCocktailFinder[finderIdx] = false
 
-            this.addCocktailToCategory(cocktail, category)
+            this.addItemToCategory({
+                id: cocktail.id,
+                name: cocktail.name,
+                type: 'cocktail',
+                sort: 0,
+                description: cocktail.short_ingredients.join(', '),
+                price: {
+                    price: '0.00',
+                    currency: this.guessCurrency,
+                },
+            }, category)
 
             this.$toast.default(this.$t('menu.cocktail-added', {name: cocktail.name}))
         },
-        addCategory(e, name) {
+        selectIngredient(ingredient, category, finderIdx) {
+            if (this.ingredientMenuItems.findIndex(c => parseInt(c.id) == parseInt(ingredient.id)) >= 0) {
+                this.$toast.default(this.$t('menu.cocktail-already-added', {name: ingredient.name}))
+
+                return
+            }
+
+            this.showIngredientFinder[finderIdx] = false
+
+            this.addItemToCategory({
+                id: ingredient.id,
+                name: ingredient.name,
+                type: 'ingredient',
+                sort: 0,
+                description: ingredient.category,
+                price: {
+                    price: '0.00',
+                    currency: this.guessCurrency,
+                },
+            }, category)
+
+            this.$toast.default(this.$t('menu.cocktail-added', {name: ingredient.name}))
+        },
+        addCategory(_, name) {
             if (!name) {
                 name = 'Category name ' + (this.categories.length + 1)
             }
 
             const category = {
                 name: name,
-                cocktails: []
+                items: []
             };
 
             this.categories.push(category)
@@ -212,7 +256,7 @@ export default {
             return category
         },
         removeCategory(category) {
-            if (category.cocktails.length > 0) {
+            if (category.items.length > 0) {
                 this.$confirm(this.$t('menu.delete-category-confirm', {name: category.name}), {
                     onResolved: (dialog) => {
                         dialog.close()
@@ -233,7 +277,7 @@ export default {
             )
         },
         clearCategory(category) {
-            if (category.cocktails.length == 0) {
+            if (category.items.length == 0) {
                 return
             }
 
@@ -241,17 +285,17 @@ export default {
                 onResolved: (dialog) => {
                     dialog.close()
                     this.$toast.default(this.$t('menu.category-cleared'))
-                    category.cocktails = []
+                    category.items = []
                 }
             })
         },
-        removeCocktail(category, cocktail) {
-            this.$confirm(this.$t('menu.delete-cocktail-confirm', {name: cocktail.name}), {
+        removeItem(category, item) {
+            this.$confirm(this.$t('menu.delete-cocktail-confirm', {name: item.name}), {
                 onResolved: (dialog) => {
                     dialog.close()
                     this.$toast.default(this.$t('menu.cocktail-removed'))
-                    category.cocktails.splice(
-                        category.cocktails.findIndex(i => i == cocktail),
+                    category.items.splice(
+                        category.items.findIndex(i => i == item),
                         1
                     )
                 }
@@ -303,41 +347,61 @@ export default {
                     fallbackOnBody: true,
                     swapThreshold: 0.65,
                     onAdd: function (evt) {
-                        const sourceCocktail = self.cocktails.find(c => c.id == evt.item.dataset.id)
+                        const datasetId = evt.item.dataset.id
+                        let sourceItem = null
+                        if (evt.item.dataset.type == 'cocktail') {
+                            sourceItem = self.cocktailMenuItems.find(c => c.id == datasetId)
+                        } else {
+                            sourceItem = self.ingredientMenuItems.find(c => c.id == datasetId)
+                        }
+                        if (!sourceItem) {
+                            return
+                        }
+
                         const fromCategory = self.categories[evt.from.dataset.categoryIdx]
                         const targetCategory = self.categories[evt.to.dataset.categoryIdx]
 
                         // Remove from old cat
-                        fromCategory.cocktails.splice(
-                            fromCategory.cocktails.findIndex(i => i == sourceCocktail),
+                        fromCategory.items.splice(
+                            fromCategory.items.findIndex(i => i == sourceItem),
                             1
                         )
 
-                        sourceCocktail.sort = evt.newIndex + 1
+                        sourceItem.sort = evt.newIndex + 1
 
                         // Add to new cat
-                        targetCategory.cocktails.splice(evt.newIndex, 0, sourceCocktail)
+                        targetCategory.items.splice(evt.newIndex, 0, sourceItem)
                     },
                 }))
             })
         },
         copyCurrency(currency) {
             this.categories.forEach(cat => {
-                cat.cocktails.forEach(cocktail => {
-                    cocktail.price.currency = currency
+                cat.items.forEach(item => {
+                    item.price.currency = currency
                 })
             })
         },
-        handleCalculatedPrice(cocktail, e) {
-            cocktail.price.price = e.price
-            cocktail.price.currency = e.currency
+        handleCalculatedPrice(item, e) {
+            item.price.price = e.price
+            item.price.currency = e.currency
         },
         quickAddShelf() {
             this.isLoading = true
             BarAssistantClient.getBarShelfCocktails(this.appState.user.id).then((resp) => {
-                const cat = this.addCategory(null, 'Bar shelf')
+                const cat = this.addCategory('Bar shelf')
                 resp.data.forEach(cocktail => {
-                    this.addCocktailToCategory(cocktail, cat)
+                    this.addItemToCategory({
+                        id: cocktail.id,
+                        name: cocktail.name,
+                        type: 'cocktail',
+                        sort: 0,
+                        description: cocktail.short_ingredients.join(', '),
+                        price: {
+                            price: '0.00',
+                            currency: this.guessCurrency,
+                        },
+                    }, cat)
                 })
                 this.isLoading = false
                 this.$toast.default(this.$t('menu.added-multiple-cocktails'))
@@ -349,17 +413,18 @@ export default {
             this.isLoading = true
 
             const sortedCocktails = this.sortableInstances.flatMap(sortableInstance => sortableInstance.toArray())
-            const cocktails = this.categories.flatMap(cat => {
-                return cat.cocktails.map(cocktail => ({
-                    cocktail_id: cocktail.id,
+            const items = this.categories.flatMap(cat => {
+                return cat.items.map(item => ({
+                    id: item.id,
+                    type: item.type,
                     category_name: cat.name,
-                    sort: sortedCocktails.findIndex(sortedId => sortedId == cocktail.id) + 1,
-                    price: cocktail.price.price,
-                    currency: cocktail.price.currency,
+                    sort: sortedCocktails.findIndex(sortedId => sortedId == item.id) + 1,
+                    price: item.price.price,
+                    currency: item.price.currency,
                 }))
             })
 
-            if (cocktails.length == 0) {
+            if (items.length == 0) {
                 this.$toast.error(this.$t('menu.no-cocktails-added'))
                 this.isLoading = false
 
@@ -368,7 +433,7 @@ export default {
 
             const postData = {
                 is_enabled: this.menu.is_enabled,
-                cocktails: cocktails
+                items: items
             }
 
             BarAssistantClient.updateMenu(postData).then(() => {
@@ -475,6 +540,7 @@ export default {
     display: flex;
     margin-left: auto;
     gap: var(--gap-size-2);
+    flex-shrink: 0;
 }
 
 @media (max-width: 450px) {
@@ -496,7 +562,7 @@ export default {
     }
 }
 
-.menu-category__cocktail__content small {
+.menu-category__cocktail__content p {
     font-size: 0.85rem;
     color: var(--clr-gray-600);
 }
@@ -528,5 +594,23 @@ export default {
 
 .menu-url a {
     font-weight: var(--fw-bold);
+}
+
+.menu-item-type {
+    display: inline-block;
+    padding: 1px 4px;
+    font-size: 0.75rem;
+    border-radius: var(--radius-1);
+    text-decoration: none;
+}
+
+.menu-item-type.menu-item-type--cocktail {
+    background-color: #E6DBF0;
+    color: #3a304d;
+}
+
+.menu-item-type.menu-item-type--ingredient {
+    background-color: #f0dbe6;
+    color: #4d3042;
 }
 </style>

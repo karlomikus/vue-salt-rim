@@ -76,6 +76,7 @@ import SiteLogo from './../Layout/SiteLogo.vue'
 import ThemeToggle from './../ThemeToggle.vue'
 import AppState from '../../AppState'
 import SaltRimDropdown from './../SaltRimDropdown.vue'
+import { useTheme } from '@/composables/useTheme'
 
 export default {
     components: {
@@ -105,6 +106,7 @@ export default {
                 onResolved: (dialog) => {
                     dialog.close()
                     BarAssistantClient.logout().then(() => {
+                        useTheme('light')
                         const appState = new AppState()
                         appState.clear()
                         this.$router.push({ name: 'login' })

@@ -8,7 +8,6 @@
         </template>
         <template v-if="appState.isAdmin() || appState.isModerator()">
             <RouterLink :to="{name: 'settings.users'}">{{ $t('users.title') }}</RouterLink>
-            <RouterLink :to="{name: 'settings.categories'}">{{ $t('ingredient.categories') }}</RouterLink>
             <RouterLink :to="{name: 'settings.glasses'}">{{ $t('glass-type.types') }}</RouterLink>
             <RouterLink :to="{name: 'settings.tags'}">{{ $t('tag.tags') }}</RouterLink>
             <RouterLink :to="{name: 'settings.utensils'}">{{ $t('utensils.title') }}</RouterLink>
@@ -17,7 +16,7 @@
     </nav>
 </template>
 <script>
-import AppState from './../../AppState.js'
+import AppState from '../../AppState'
 
 export default {
     data() {

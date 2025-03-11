@@ -17,7 +17,9 @@
       "stats-error": "Beim Abrufen von Statistiken von einem Server ist ein Fehler aufgetreten.",
       "list-error": "Beim Abrufen Ihrer Einkaufsliste von einem Server ist ein Fehler aufgetreten."
     },
-    "cocktails": "Cocktails, die ich mixen kann"
+    "cocktails": "Cocktails, die ich mixen kann",
+    "bar-stats": "Bar statistics",
+    "recommended-cocktails": "Recommended cocktails"
   },
   "ingredient": {
     "title": "Zutat",
@@ -40,7 +42,7 @@
     "list-remove-success": "\"{name}\" von der Einkaufsliste entfernt",
     "list-add-success": "\"{name}\" zu der Einkaufsliste hinzugefügt",
     "spotlight": "Hauptzutat",
-    "is-variety": "Zutat ist Variation einer anderen Zutat",
+    "is-variety": "Ingredient is variant of another ingredient",
     "information": "Zutateninformationen",
     "extra-cocktails": "Zum Regal hinzufügen um weitere Cocktails mixen zu können",
     "has-variable-amount": "Hat einen variablen Betrag",
@@ -52,13 +54,14 @@
       "optional-checkbox": "Optionale Zutat.",
       "new-ingredient-success": "Nicht kategorisierte Zutat \"{name}\" erstellen.",
       "new-ingredient-fail": "Zutat kann nicht hinzugefügt werden.",
-      "select-substitutes-for": "Wähle Ersatzzutaten für \"{name}\"."
+      "select-substitutes-for": "Wähle Ersatzzutaten für \"{name}\".",
+      "is-specified-checkbox": "Use this specific ingredient (ignore varieties as substitutes)"
     },
     "base": "Basis",
     "is-complex": "Zutat enthält andere Zutaten",
     "complex-note": "If you have all of the listed ingredients, automatically match recipes with this ingredient",
     "complex": "Complex ingredient",
-    "variety-note": "Passende Rezepte werden übergeordnete Zutaten als Ersatz enthalten (abhängig von Benutzereinstellungen)",
+    "variety-note": "Recipe matching can include this ingredient as a possible substitute for parent ingredient",
     "ingredients": "Zutaten",
     "used_as_substitute_for": "Verwendet als Ersatz für",
     "can_be_substituted_with": "Kann ersetzt werden durch",
@@ -70,7 +73,12 @@
     "bar-shelf-remove-success": "\"{name}\" aus Barregal entfernt",
     "units-help": "Some features work the best if you use common units. Some recommendations for units are: ml, oz, cl, dashes, barspoon, drops, topup, leaves.",
     "import": "Import ingredients",
-    "attach-calculator": "Attach calculator"
+    "attach-calculator": "Attach calculator",
+    "hierarchy": "Hierarchy",
+    "status": "Ingredient status",
+    "hierarchy-description": "This is an overview of the ingredient hierarchy. Depending on the cocktail recipe, if you have any of the variants in the shelf, they can be used as a substitute for the main ingredient when matching recipes.",
+    "show-variants": "Show variants",
+    "show-ancestors": "Show ancestors"
   },
   "share": {
     "title": "Aktie",
@@ -118,7 +126,8 @@
   },
   "latest": {
     "cocktails": "Deine neuesten Cocktails",
-    "favorites": "Deine neuesten Favoriten"
+    "favorites": "Deine neuesten Favoriten",
+    "ingredients": "Latest ingredients"
   },
   "strength": "Stärke",
   "rating": "Bewertung",
@@ -228,7 +237,8 @@
     "confirm-delete": "Dies wird \"{name}\" als Tag löschen.",
     "delete-success": "Tag gelöscht",
     "add": "Tag hinzufügen",
-    "edit": "Tag bearbeiten"
+    "edit": "Tag bearbeiten",
+    "help-text-recommender": "Tags are used to recommend cocktails based on your preferences."
   },
   "glass-type": {
     "types": "Gläser",
@@ -391,8 +401,8 @@
     "confirm-delete": "Dadurch wird die Bar mit dem Namen \"{name}\" dauerhaft gelöscht.",
     "confirm-leave": "You will lose all your data in bar (\"{name}\") if you leave it.",
     "enable-invites": "Beitritt über Einladungscode aktivieren",
-    "import-base-cocktails": "Bar mit Basiscocktails anlegen",
-    "import-base-ingredients": "Bar mit Basiszutaten anlegen",
+    "import-base-cocktails": "Fill bar with default cocktails",
+    "import-base-ingredients": "Fill bar with default ingredients",
     "join-error": "Unable to join bar",
     "select-bar": "Bar auswählen",
     "delete-success": "Bar erfolgreich gelöscht",
@@ -504,19 +514,19 @@
     "add-cocktail": "Cocktail hinzufügen",
     "price": "Preis",
     "currency": "Währung",
-    "copy-currency": "Währung zu allen Cocktails kopieren",
-    "cocktail-added": "Cocktail \"{name}\" auf Cocktailkarte hinzugefügt",
+    "copy-currency": "Copy currency to all items",
+    "cocktail-added": "Item \"{name}\" added to menu",
     "category-added": "Cocktailkarten-Kategorie hinzugefügt",
     "delete-category-confirm": "Dies löscht \"{name}\" Cocktailkarten-Kategorie",
     "category-removed": "Menükategorie entfernt",
     "saved": "Cocktailkarte aktualisiert",
     "update-error": "Cocktailkarten konnte nicht aktualisiert werden",
-    "cocktail-already-added": "Cocktail \"{name}\" ist bereits auf der Cocktailkarte",
-    "delete-cocktail-confirm": "Dies wird Cocktail \"{name}\" aus der Cocktailkarten-Kategorie entfernen",
-    "cocktail-removed": "Cocktail aus Menükategorie entfernt",
+    "cocktail-already-added": "Item \"{name}\" is already in the menu",
+    "delete-cocktail-confirm": "This will remove item \"{name}\" from menu category",
+    "cocktail-removed": "Item removed from menu category",
     "menu-not-found": "Cocktailkarte nicht gefunden",
     "description": "Hier kannst du eine einfache Web-Cocktailkarte für deine Bar einrichten. Du kannst deinen Bar-Link beim Hinzufügen oder Bearbeiten einer Bar aktualisieren. Benutze die URL oder den QR-Code, um deine Cocktailkarte mit den Gästen zu teilen.",
-    "no-cocktails-added": "Cocktailkarte benötigt mindestens einen Cocktail",
+    "no-cocktails-added": "Menu needs to have at least one item",
     "calculate-price": "Calculate price",
     "clear-category-confirm": "This will remove all cocktails from category \"{name}\"",
     "category-cleared": "Category cleared",
@@ -527,7 +537,10 @@
   },
   "bar": {
     "url": "Benutzerdefinierte Bar-URL",
-    "url-help": "Deine öffentliche Bar-URL lautet: {url}"
+    "url-help": "Deine öffentliche Bar-URL lautet: {url}",
+    "url-menu-hint": "Used for public menu if enabled.",
+    "default-currency-hint": "Used as default currency suggestion, can be changed anytime.",
+    "default-units-hint": "Used as default units on cocktail details, can be changed anytime."
   },
   "api": {
     "tokens": "API Tokens",
@@ -614,7 +627,8 @@
     "no-matching-units": "Keine passenden Preise für Einheit gefunden",
     "select": "Select price",
     "category-delete-success": "Price category deleted",
-    "category-confirm-delete": "This will permanently price category with name \\\"{name}\\\"."
+    "category-confirm-delete": "This will permanently price category with name \\\"{name}\\\".",
+    "missing-cocktail-price-calculator": "There are no prices available for this cocktail. Add prices to ingredients in the recipe to enable price calculation."
   },
   "prices": {
     "add": "Preis hinzufügen",
@@ -670,5 +684,29 @@
   "permissions": {
     "clipboard-error": "Your browser or server config does not support clipboard sharing."
   },
-  "preview": "Preview"
+  "preview": "Preview",
+  "available-variants": "Variants in shelf",
+  "sso": {
+    "profile-providers": "SSO accounts",
+    "provider-name": "Provider name",
+    "created-date": "Token created at",
+    "delete-account": "Remove account link",
+    "confirm-delete": "This will permanently delete SSO account link from provider \"{name}\".",
+    "is-configured": "Server configuration",
+    "delete-success": "SSO account link deleted",
+    "provider-enabled": "Enabled",
+    "provider-disabled": "Disabled",
+    "title": "Single Sign-On",
+    "auth-error": "Unable to authenticate via Single Sign-On provider",
+    "login-with": "Login with {name}"
+  },
+  "distillery": "Distillery",
+  "sweetness": "Sweetness (g/ml)",
+  "acidity": "Acidity (%)",
+  "missing-recommended-cocktails": "Add some cocktails to your favorites to start getting recommendations.",
+  "ui-theme": "Default theme",
+  "theme-dark": "Dark",
+  "theme-light": "Light",
+  "default-currency": "Default currency",
+  "loading": "Loading"
 }

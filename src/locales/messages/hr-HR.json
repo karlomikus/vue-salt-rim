@@ -17,7 +17,9 @@
       "stats-error": "Greška prilikom dohvaćanja statistika sa servera",
       "list-error": "Greška prilikom dohvaćanja popisa za kupovinu sa servera"
     },
-    "cocktails": "Kokteli koje mogu napraviti"
+    "cocktails": "Kokteli koje mogu napraviti",
+    "bar-stats": "Bar statistics",
+    "recommended-cocktails": "Recommended cocktails"
   },
   "ingredient": {
     "title": "Sastojak",
@@ -52,7 +54,8 @@
       "optional-checkbox": "Označi ovaj sastojak kao opcionalan.",
       "new-ingredient-success": "Kreiran sastojak bez kategorije: \"{name}\".",
       "new-ingredient-fail": "Greška kod kreiranja sastojka.",
-      "select-substitutes-for": "Odaberite zamjenske sastojke za \"{name}\"."
+      "select-substitutes-for": "Odaberite zamjenske sastojke za \"{name}\".",
+      "is-specified-checkbox": "Use this specific ingredient (ignore varieties as substitutes)"
     },
     "base": "Baza",
     "is-complex": "Sastojak sadrži druge sastojke",
@@ -70,7 +73,12 @@
     "bar-shelf-remove-success": "Removed \"{name}\" from bar shelf",
     "units-help": "Some features work the best if you use common units. Some recommendations for units are: ml, oz, cl, dashes, barspoon, drops, topup, leaves.",
     "import": "Import ingredients",
-    "attach-calculator": "Attach calculator"
+    "attach-calculator": "Attach calculator",
+    "hierarchy": "Hierarchy",
+    "status": "Ingredient status",
+    "hierarchy-description": "This is an overview of the ingredient hierarchy. Depending on the cocktail recipe, if you have any of the variants in the shelf, they can be used as a substitute for the main ingredient when matching recipes.",
+    "show-variants": "Show variants",
+    "show-ancestors": "Show ancestors"
   },
   "share": {
     "title": "Podijeli",
@@ -118,7 +126,8 @@
   },
   "latest": {
     "cocktails": "Posljednji kokteli",
-    "favorites": "Posljednji favoriti"
+    "favorites": "Posljednji favoriti",
+    "ingredients": "Latest ingredients"
   },
   "strength": "Jačina",
   "rating": "Ocjena",
@@ -228,7 +237,8 @@
     "confirm-delete": "Ova akcija će trajno ukloniti oznaku \"{name}\".",
     "delete-success": "Oznaka uspješno uklonjena",
     "add": "Dodaj oznaku",
-    "edit": "Uredi oznaku"
+    "edit": "Uredi oznaku",
+    "help-text-recommender": "Tags are used to recommend cocktails based on your preferences."
   },
   "glass-type": {
     "types": "Čaše",
@@ -505,18 +515,18 @@
     "price": "Cijena",
     "currency": "Valuta",
     "copy-currency": "Kopiraj valutu svim koktelima",
-    "cocktail-added": "Cocktail \"{name}\" added to menu",
+    "cocktail-added": "Item \"{name}\" added to menu",
     "category-added": "Menu category added",
     "delete-category-confirm": "This will delete \"{name}\" menu category",
     "category-removed": "Menu category removed",
     "saved": "Menu updated",
     "update-error": "Unable to update bar menu",
-    "cocktail-already-added": "Cocktail \"{name}\" is already in the menu",
-    "delete-cocktail-confirm": "This will remove cocktail \"{name}\" from menu category",
-    "cocktail-removed": "Cocktail removed from menu category",
+    "cocktail-already-added": "Stavka \"{name}\" već je u izborniku",
+    "delete-cocktail-confirm": "Ovo će ukloniti stavku \"{name}\" iz kategorije izbornika",
+    "cocktail-removed": "Item removed from menu category",
     "menu-not-found": "Menu not found",
     "description": "Here you can set up a simple web menu for your bar. You can update your bar link when adding or editing a bar. Use the URL or QR code to share your bar menu with the guests.",
-    "no-cocktails-added": "Menu needs to have at least one cocktail",
+    "no-cocktails-added": "Menu needs to have at least one item",
     "calculate-price": "Calculate price",
     "clear-category-confirm": "This will remove all cocktails from category \"{name}\"",
     "category-cleared": "Category cleared",
@@ -527,7 +537,10 @@
   },
   "bar": {
     "url": "Custom bar URL",
-    "url-help": "Your public bar URL will be: {url}"
+    "url-help": "Your public bar URL will be: {url}",
+    "url-menu-hint": "Used for public menu if enabled.",
+    "default-currency-hint": "Used as default currency suggestion, can be changed anytime.",
+    "default-units-hint": "Used as default units on cocktail details, can be changed anytime."
   },
   "api": {
     "tokens": "API Tokeni",
@@ -614,7 +627,8 @@
     "no-matching-units": "No matching unit pricing found",
     "select": "Select price",
     "category-delete-success": "Price category deleted",
-    "category-confirm-delete": "This will permanently price category with name \\\"{name}\\\"."
+    "category-confirm-delete": "This will permanently price category with name \\\"{name}\\\".",
+    "missing-cocktail-price-calculator": "There are no prices available for this cocktail. Add prices to ingredients in the recipe to enable price calculation."
   },
   "prices": {
     "add": "Dodaj cijenu",
@@ -670,5 +684,29 @@
   "permissions": {
     "clipboard-error": "Your browser or server config does not support clipboard sharing."
   },
-  "preview": "Preview"
+  "preview": "Preview",
+  "available-variants": "Variants in shelf",
+  "sso": {
+    "profile-providers": "SSO accounts",
+    "provider-name": "Provider name",
+    "created-date": "Token created at",
+    "delete-account": "Remove account link",
+    "confirm-delete": "This will permanently delete SSO account link from provider \"{name}\".",
+    "is-configured": "Server configuration",
+    "delete-success": "SSO account link deleted",
+    "provider-enabled": "Enabled",
+    "provider-disabled": "Disabled",
+    "title": "Single Sign-On",
+    "auth-error": "Unable to authenticate via Single Sign-On provider",
+    "login-with": "Login with {name}"
+  },
+  "distillery": "Distillery",
+  "sweetness": "Sweetness (g/ml)",
+  "acidity": "Acidity (%)",
+  "missing-recommended-cocktails": "Add some cocktails to your favorites to start getting recommendations.",
+  "ui-theme": "Default theme",
+  "theme-dark": "Dark",
+  "theme-light": "Light",
+  "default-currency": "Default currency",
+  "loading": "Loading"
 }

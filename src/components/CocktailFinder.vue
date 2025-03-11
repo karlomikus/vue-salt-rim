@@ -29,7 +29,7 @@
 
 <script>
 import { instantMeiliSearch } from '@meilisearch/instant-meilisearch'
-import AppState from './../AppState'
+import AppState from '../AppState'
 import CocktailThumb from './Cocktail/CocktailThumb.vue'
 
 const appState = new AppState()

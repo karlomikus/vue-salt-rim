@@ -13,7 +13,7 @@
 </template>
 
 <script>
-import AppState from './../../AppState.js'
+import AppState from '../../AppState'
 import { barBus } from '@/composables/eventBus'
 
 export default {

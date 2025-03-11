@@ -56,7 +56,7 @@ import PageHeader from '@/components/PageHeader.vue'
 import Navigation from '@/components/Settings/SettingsNavigation.vue'
 import SaltRimDialog from '@/components/Dialog/SaltRimDialog.vue'
 import UserForm from '@/components/Settings/UserForm.vue'
-import AppState from './../../AppState.js'
+import AppState from '../../AppState'
 import SubscriptionCheck from '../SubscriptionCheck.vue'
 import { useTitle } from '@/composables/title'
 
