@@ -60,7 +60,7 @@
                                             </a>
                                         </template>
                                         <template #dialog>
-                                            <CocktailPriceCalculator :cocktail="item" @selected-price="price => handleCalculatedPrice(cocktail, price)" @closed="showCurrencyCalculator[cidx + '-' + idx] = false"></CocktailPriceCalculator>
+                                            <CocktailPriceCalculator :cocktail="item" @selected-price="price => handleCalculatedPrice(item, price)" @closed="showCurrencyCalculator[cidx + '-' + idx] = false"></CocktailPriceCalculator>
                                         </template>
                                     </SaltRimDialog>
                                     &middot;
@@ -382,9 +382,9 @@ export default {
                 })
             })
         },
-        handleCalculatedPrice(cocktail, e) {
-            cocktail.price.price = e.price
-            cocktail.price.currency = e.currency
+        handleCalculatedPrice(item, e) {
+            item.price.price = e.price
+            item.price.currency = e.currency
         },
         quickAddShelf() {
             this.isLoading = true
