@@ -64,7 +64,7 @@
     "variety-note": "Recipe matching will include the parent ingredient as a substitute (depending on user settings)",
     "ingredients": "Ingredients",
     "used_as_substitute_for": "Used as a substitute for",
-    "can_be_substituted_with": "Sometimes substituted with",
+    "can_be_substituted_with": "Can be substituted with",
     "add-to-bar-shelf": "Add to bar shelf",
     "remove-from-bar-shelf": "Remove from bar shelf",
     "shelf-bar-help": "Recipes matching ingredients in bar shelf will be shown to all bar members.",
@@ -627,7 +627,7 @@
     "no-matching-units": "No matching unit pricing found",
     "select": "Select price",
     "category-delete-success": "Price category deleted",
-    "category-confirm-delete": "This will permanently price category with name \"{name}\".",
+    "category-confirm-delete": "This will permanently price category with name \\\"{name}\\\".",
     "missing-cocktail-price-calculator": "There are no prices available for this cocktail. Add prices to ingredients in the recipe to enable price calculation."
   },
   "prices": {
