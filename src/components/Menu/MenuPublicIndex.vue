@@ -1,5 +1,39 @@
-<script setup>
+<script setup lang="ts">
+import { ref, onUnmounted } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
+import BarAssistantClient from '@/api/BarAssistantClient'
+import SiteLogo from '@/components/Layout/SiteLogo.vue'
 import { unitHandler } from '@/composables/useUnits'
+import type { components } from '@/api/api'
+
+type MenuExplore = components["schemas"]["MenuExplore"]
+
+document.body.classList.add('public-body')
+onUnmounted(() => {
+    document.body.classList.remove('public-body')
+})
+
+const route = useRoute()
+const router = useRouter()
+const host = window.location.host
+const protocol = window.location.protocol
+const menu = ref<MenuExplore>()
+
+async function refreshMenu() {
+    try {
+        const resp = (await BarAssistantClient.getPublicMenu(route.params.slug.toString()))?.data
+        menu.value = resp
+    } catch (e) {
+        router.push('/')
+        return
+    }
+}
+
+function publicUrl(cocktail: components["schemas"]["MenuExplore"]["categories"][0]["items"][0]) {
+    return `${protocol}//${host}/e/cocktail/${cocktail.public_id}/cocktail`
+}
+
+refreshMenu()
 </script>
 
 <template>
@@ -7,7 +41,7 @@ import { unitHandler } from '@/composables/useUnits'
         <div class="public-page__header">
             <SiteLogo :no-link="true"></SiteLogo>
         </div>
-        <div class="public-page-menu">
+        <div class="public-page-menu" v-if="menu">
             <div class="public-page-menu__bar">
                 <h2>{{ menu.bar.name }}</h2>
                 <h4 v-show="menu.bar.subtitle">{{ menu.bar.subtitle }}</h4>
@@ -16,20 +50,20 @@ import { unitHandler } from '@/composables/useUnits'
             <div v-for="category in menu.categories" :key="category.name" class="public-page-menu__category">
                 <h3>{{ category.name }}</h3>
                 <div class="public-page-menu__category__cocktails">
-                    <div v-for="cocktail in category.items" :key="cocktail.sort" class="public-page-menu__cocktail">
+                    <div v-for="item in category.items" :key="item.sort" class="public-page-menu__cocktail">
                         <div class="public-page-menu__cocktail__image">
-                            <img v-if="cocktail.image" :src="cocktail.image" alt="">
+                            <img v-if="item.image" :src="item.image" alt="">
                             <img v-else src="/no-cocktail.jpg" alt="">
                         </div>
                         <div class="public-page-menu__cocktail__info">
-                            <h4>{{ cocktail.name }}</h4>
+                            <h4>{{ item.name }}</h4>
                             <p>
-                                {{ cocktail.description }}
+                                {{ item.description }}
                             </p>
-                            <a v-if="cocktail.public_id" :href="publicUrl(cocktail)">View recipe</a>
+                            <a v-if="item.public_id" :href="publicUrl(item)">View recipe</a>
                         </div>
-                        <div v-if="cocktail.price.price > 0" class="public-page-menu__cocktail__price">
-                            {{ unitHandler.formatPrice(cocktail.price.price, cocktail.price.currency) }}
+                        <div v-if="item.price.price > 0" class="public-page-menu__cocktail__price">
+                            {{ unitHandler.formatPrice(item.price.price, item.price.currency) }}
                         </div>
                     </div>
                 </div>
@@ -40,46 +74,6 @@ import { unitHandler } from '@/composables/useUnits'
         </div>
     </div>
 </template>
-<script>
-import BarAssistantClient from '@/api/BarAssistantClient'
-import SiteLogo from '../Layout/SiteLogo.vue'
-
-export default {
-    components: {
-        SiteLogo,
-    },
-    data() {
-        return {
-            isLoading: false,
-            host: window.location.host,
-            protocol: window.location.protocol,
-            menu: {
-                bar: {},
-                categories: []
-            },
-        }
-    },
-    created() {
-        BarAssistantClient.getPublicMenu(this.$route.params.slug).then(resp => {
-            this.menu = resp.data
-        }).catch(() => {
-            this.$toast.default(this.$t('menu.menu-not-found'))
-            this.$router.push('/')
-        })
-    },
-    mounted() {
-        document.body.classList.add('public-body')
-    },
-    unmounted() {
-        document.body.classList.remove('public-body')
-    },
-    methods: {
-        publicUrl(cocktail) {
-            return `${this.protocol}//${this.host}/e/cocktail/${cocktail.public_id}/${cocktail.slug}`
-        },
-    }
-}
-</script>
 <style scoped>
 .public-page__header {
     padding: var(--gap-size-3);
