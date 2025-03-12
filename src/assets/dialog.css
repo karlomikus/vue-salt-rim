@@ -58,14 +58,6 @@
     box-shadow: var(--shadow-elevation-high-dark);
 }
 
-@media (max-width: 450px) {
-    .dialog__content {
-        margin: auto auto 0 auto;
-        border-bottom-left-radius: 0;
-        border-bottom-right-radius: 0;
-    }
-}
-
 .dark-theme .dialog__content {
     background-color: var(--clr-dark-main-800);
     border-bottom: 1px solid var(--clr-dark-main-900);
@@ -79,14 +71,13 @@
 }
 
 .dialog-title {
-    font-size: 1.5rem;
+    font-size: 1.5em;
     margin-bottom: 1.5rem;
     line-height: 1;
 }
 
 @media (max-width: 450px) {
     .dialog-title {
-        font-size: 1.15rem;
         margin-bottom: 1rem;
     }
 }
