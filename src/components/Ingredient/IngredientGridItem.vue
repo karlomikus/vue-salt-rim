@@ -1,7 +1,7 @@
 <template>
     <div class="block-container block-container--hover ingredient-grid-item">
         <div class="ingredient-grid-item__image">
-            <IngredientImage :ingredient="ingredient"></IngredientImage>
+            <IngredientImage :image-url="ingredient.images[0]?.url ?? null" :color="ingredient.color"></IngredientImage>
         </div>
         <div class="ingredient-grid-item__content">
             <RouterLink class="ingredient-grid-item__title" :to="{ name: 'ingredients.show', params: { id: ingredient.slug } }">
@@ -100,5 +100,6 @@ export default {
     overflow: hidden;
     font-size: 0.815rem;
     max-height: calc(3 * 1.3rem);
+    text-wrap: balance;
 }
 </style>

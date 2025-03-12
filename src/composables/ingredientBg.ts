@@ -13,7 +13,7 @@ const useIngredientBg = (hex: string) => {
         const green = (hexValue >> 8) & 255;
         const blue = hexValue & 255;
 
-        return `rgba(${red}, ${green}, ${blue}, 0.13)`;
+        return `rgba(${red}, ${green}, ${blue}, 0.3)`;
     }
 
     return hex;

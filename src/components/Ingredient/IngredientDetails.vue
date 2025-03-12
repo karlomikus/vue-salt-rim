@@ -7,9 +7,6 @@ import CalculatorRender from '../Calculator/CalculatorRender.vue'
     <div v-if="!ingredient.id">
         <PageHeader>
             {{ $t('ingredient.title') }}
-            <small>
-                <DateFormatter format="short" />
-            </small>
         </PageHeader>
         <div class="ingredient-details">
             <OverlayLoader v-if="isLoadingIngredient" />
@@ -22,10 +19,7 @@ import CalculatorRender from '../Calculator/CalculatorRender.vue'
                 <template v-for="(ancestor, index) in ingredient.hierarchy.ancestors" :key="ancestor.id">
                     <RouterLink :to="{ name: 'ingredients', query: { 'filter[descendants_of]': ancestor.id } }">{{ ancestor.name }}</RouterLink>
                     <template v-if="index + 1 !== ingredient.hierarchy.ancestors.length"> > </template>
-                    <template v-else> &middot; </template>
                 </template>
-                <template v-if="ingredient.updated_user">{{ $t('updated-on-by', { date: updatedDate, name: ingredient.updated_user.name }) }}</template>
-                <template v-else>{{ $t('added-on-by', { date: createdDate, name: ingredient.created_user.name }) }}</template>
             </small>
         </PageHeader>
         <div class="ingredient-details">
@@ -216,6 +210,9 @@ import CalculatorRender from '../Calculator/CalculatorRender.vue'
                         </div>
                     </div>
                 </div>
+                <div style="margin-top: var(--gap-size-2);">
+                    <TimeStamps v-if="ingredient.id" :resource="ingredient"></TimeStamps>
+                </div>
             </div>
         </div>
     </div>
@@ -240,6 +237,8 @@ import IconMore from '../Icons/IconMore.vue'
 import IngredientTile from '../Tiles/IngredientTile.vue'
 import IngredientHierarchy from './IngredientHierarchy.vue'
 import IconCheck from '../Icons/IconCheck.vue'
+import { useIngredientBg } from '@/composables/ingredientBg'
+import TimeStamps from '@/components/TimeStamps.vue'
 
 export default {
     components: {
@@ -255,6 +254,7 @@ export default {
         IconMore,
         IngredientTile,
         IngredientHierarchy,
+        TimeStamps,
     },
     data: () => ({
         appState: new AppState(),
@@ -296,17 +296,7 @@ export default {
         backgroundColor() {
             const hex = this.ingredient.color || '#51274c'
 
-            let c
-            if (/^#([A-Fa-f0-9]{3}){1,2}$/.test(hex)) {
-                c = hex.substring(1).split('')
-                if (c.length == 3) {
-                    c = [c[0], c[0], c[1], c[1], c[2], c[2]]
-                }
-                c = '0x' + c.join('')
-                return 'rgba(' + [(c >> 16) & 255, (c >> 8) & 255, c & 255].join(',') + ',.13)'
-            }
-
-            return hex
+            return useIngredientBg(hex)
         },
     },
     watch: {

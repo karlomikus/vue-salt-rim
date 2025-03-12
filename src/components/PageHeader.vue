@@ -57,7 +57,6 @@
     }
 
     .site-page-header__title h2 {
-        font-size: 1.75em;
         text-align: center;
     }
 }
