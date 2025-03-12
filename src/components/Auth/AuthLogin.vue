@@ -9,6 +9,7 @@ import type { components } from '@/api/api'
 import { useRouter } from 'vue-router'
 import { useAuth } from '@/composables/useAuth'
 import { useSaltRimToast } from '@/composables/toast'
+import SaltRimSpinner from '../SaltRimSpinner.vue'
 
 type ServerVersion = components["schemas"]["ServerVersion"]
 type SSOProvider = components["schemas"]["SSOProvider"]
@@ -68,6 +69,8 @@ async function login() {
     const appState = new AppState()
 
     if (email.value == null || password.value == null) {
+        toast.default('Please provide valid login information')
+
         return
     }
 
@@ -121,7 +124,8 @@ refreshServerVersion()
                     Unable to connect to "{{ baServer }}" API server. <a href="https://docs.barassistant.app/faq/" target="_blank">Learn more</a>.
                 </div>
             </div>
-            <div v-if="baServerAvailable" style="text-align: right; margin-top: 20px;">
+            <div v-if="baServerAvailable" style="text-align: right; margin-top: 20px; justify-content: end; display: flex;">
+                <SaltRimSpinner v-if="isLoading" :size="32" style="margin-right: auto;"></SaltRimSpinner>
                 <RouterLink v-if="registrationAllowed" class="button button--outline" :to="{ name: 'register' }">{{ $t('register') }}</RouterLink>
                 <button type="submit" class="button button--dark" style="margin-left: 5px;" :disabled="!baServerAvailable">{{ $t('login') }}</button>
             </div>
