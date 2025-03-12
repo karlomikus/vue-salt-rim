@@ -203,13 +203,6 @@ body {
     color-scheme: var(--default-scheme);
 }
 
-@media (max-width: 450px) {
-    body {
-        font-size: 14px;
-        line-height: 1.6;
-    }
-}
-
 @media print {
 
     .no-print,
