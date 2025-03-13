@@ -83,9 +83,11 @@ async function login() {
         }
     } catch (e: any) {
         toast.default(e.message)
-        isLoading.value = false
         appState.forgetUser()
+        isLoading.value = false
         return
+    } finally {
+        isLoading.value = false
     }
 }
 
@@ -96,7 +98,6 @@ refreshServerVersion()
     <div class="login-page">
         <SiteLogo></SiteLogo>
         <form @submit.prevent="login">
-            <OverlayLoader v-if="isLoadingProviders"></OverlayLoader>
             <div v-if="isDemo" class="login-page__demo-notice">
                 Welcome to Bar Assistant Demo instance. Use <code>admin@example.com</code> as email, and <code>password</code> as password to login.
             </div>
@@ -119,7 +120,6 @@ refreshServerVersion()
                 </label>
             </div>
             <div class="server-status" v-if="!baServerAvailable">
-                <OverlayLoader v-if="isLoading"></OverlayLoader>
                 <div class="server-status__status">
                     Unable to connect to "{{ baServer }}" API server. <a href="https://docs.barassistant.app/faq/" target="_blank">Learn more</a>.
                 </div>
