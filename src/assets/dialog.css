@@ -9,7 +9,7 @@
 
 @media (max-width: 450px) {
     .dialog {
-        --dialog-margin: 0.5rem;
+        --dialog-margin: 0rem;
         --dialog-padding: 1rem;
     }
 }
@@ -47,12 +47,11 @@
     outline: none;
     pointer-events: auto;
     contain: layout;
-    /* background-color: var(--clr-gray-50); */
     background-color: #fcf9fb;
     border-top: 2px solid #fff;
     padding: var(--dialog-padding);
     margin: auto;
-    border-radius: var(--radius-2);
+    border-radius: var(--radius-3);
     transition: all 200ms cubic-bezier(0.16, 1, 0.3, 1);
     max-width: 600px;
     width: 100%;
@@ -72,14 +71,13 @@
 }
 
 .dialog-title {
-    font-size: 1.5rem;
+    font-size: 1.5em;
     margin-bottom: 1.5rem;
     line-height: 1;
 }
 
 @media (max-width: 450px) {
     .dialog-title {
-        font-size: 1.15rem;
         margin-bottom: 1rem;
     }
 }
@@ -90,14 +88,4 @@
     flex-wrap: wrap;
     gap: var(--gap-size-2);
     margin-top: 1.5rem;
-}
-
-.site-autocomplete-dialog .dialog__content {
-    margin-top: 3rem;
-}
-
-@media (max-width: 450px) {
-    .site-autocomplete-dialog .dialog__content {
-        margin-top: 0;
-    }
 }

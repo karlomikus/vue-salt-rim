@@ -15,7 +15,7 @@
                 <template v-if="!collectionId">
                     <div class="form-group">
                         <label class="form-label" for="dialog-collection-name">{{ $t('name') }}:</label>
-                        <input id="dialog-collection-name" v-model="newCollection.name" class="form-input" type="text">
+                        <input id="dialog-collection-name" v-model="newCollection.name" class="form-input" type="text" ref="collectionName">
                     </div>
                     <div class="form-group">
                         <label class="form-label" for="dialog-collection-description">{{ $t('description') }}:</label>
@@ -91,6 +91,7 @@ export default {
         }
     },
     mounted() {
+        this.$refs.collectionName.focus()
         this.fetchCollections()
     },
     methods: {

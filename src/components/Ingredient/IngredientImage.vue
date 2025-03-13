@@ -1,64 +1,41 @@
 <template>
     <div class="ingredient__image" :style="{ 'background-color': backgroundColor }">
-        <img :src="mainIngredientImageUrl" :alt="ingredient.name">
+        <img :src="mainIngredientImageUrl" alt="Image of an ingredient">
     </div>
 </template>
-<script>
-import { thumbHashToDataURL } from 'thumbhash'
-import BarAssistantClient from '@/api/BarAssistantClient';
 
-export default {
-    props: {
-        ingredient: {
-            type: Object,
-            default() {
-                return {}
-            }
-        }
-    },
-    computed: {
-        placeholderImage() {
-            if (this.ingredient.images.length > 0) {
-                return thumbHashToDataURL(
-                    Uint8Array.from(atob(this.ingredient.images[0].placeholder_hash), c => c.charCodeAt(0))
-                )
-            }
+<script setup lang="ts">
+import { computed } from 'vue'
+import { useIngredientBg } from '@/composables/ingredientBg';
 
-            return ''
-        },
-        backgroundColor() {
-            const hex = this.ingredient.color || '#51274c'
+const {
+    imageUrl = null,
+    color = null,
+} = defineProps<{
+    imageUrl: string|null;
+    color?: string|null;
+}>()
 
-            let c
-            if (/^#([A-Fa-f0-9]{3}){1,2}$/.test(hex)) {
-                c = hex.substring(1).split('')
-                if (c.length == 3) {
-                    c = [c[0], c[0], c[1], c[1], c[2], c[2]]
-                }
-                c = '0x' + c.join('')
-                return 'rgba(' + [(c >> 16) & 255, (c >> 8) & 255, c & 255].join(',') + ',.13)'
-            }
-
-            return hex
-        },
-        mainIngredientImageUrl() {
-            if (this.ingredient.image_url) {
-                return this.ingredient.image_url
-            }
-
-            if (this.ingredient.images && this.ingredient.images.length > 0) {
-                return BarAssistantClient.getImageThumbUrl(this.ingredient.images[0].id)
-            }
-
-            return '/no-ingredient.png'
-        }
+const backgroundColor = computed(() => {
+    if (!color) {
+        return useIngredientBg('#fff')
     }
-}
+
+    return useIngredientBg(color)
+})
+
+const mainIngredientImageUrl = computed(() => {
+    if (imageUrl) {
+        return imageUrl
+    }
+
+    return '/no-ingredient.png'
+})
 </script>
 <style scoped>
 .ingredient__image {
-    width: 70px;
-    height: 70px;
+    width: 80px;
+    height: 80px;
     border-radius: var(--radius-1);
     display: flex;
     align-items: center;
@@ -66,6 +43,13 @@ export default {
     flex-shrink: 0;
     overflow: hidden;
     background-color: #fff;
+}
+
+@media (max-width: 450px) {
+    .ingredient__image {
+        width: 100px;
+        height: 100px;
+    }
 }
 
 .ingredient__image img {

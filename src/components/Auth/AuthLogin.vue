@@ -9,6 +9,7 @@ import type { components } from '@/api/api'
 import { useRouter } from 'vue-router'
 import { useAuth } from '@/composables/useAuth'
 import { useSaltRimToast } from '@/composables/toast'
+import SaltRimSpinner from '../SaltRimSpinner.vue'
 
 type ServerVersion = components["schemas"]["ServerVersion"]
 type SSOProvider = components["schemas"]["SSOProvider"]
@@ -68,6 +69,8 @@ async function login() {
     const appState = new AppState()
 
     if (email.value == null || password.value == null) {
+        toast.default('Please provide valid login information')
+
         return
     }
 
@@ -80,9 +83,11 @@ async function login() {
         }
     } catch (e: any) {
         toast.default(e.message)
-        isLoading.value = false
         appState.forgetUser()
+        isLoading.value = false
         return
+    } finally {
+        isLoading.value = false
     }
 }
 
@@ -93,7 +98,6 @@ refreshServerVersion()
     <div class="login-page">
         <SiteLogo></SiteLogo>
         <form @submit.prevent="login">
-            <OverlayLoader v-if="isLoadingProviders"></OverlayLoader>
             <div v-if="isDemo" class="login-page__demo-notice">
                 Welcome to Bar Assistant Demo instance. Use <code>admin@example.com</code> as email, and <code>password</code> as password to login.
             </div>
@@ -116,12 +120,12 @@ refreshServerVersion()
                 </label>
             </div>
             <div class="server-status" v-if="!baServerAvailable">
-                <OverlayLoader v-if="isLoading"></OverlayLoader>
                 <div class="server-status__status">
                     Unable to connect to "{{ baServer }}" API server. <a href="https://docs.barassistant.app/faq/" target="_blank">Learn more</a>.
                 </div>
             </div>
-            <div v-if="baServerAvailable" style="text-align: right; margin-top: 20px;">
+            <div v-if="baServerAvailable" style="text-align: right; margin-top: 20px; justify-content: end; display: flex;">
+                <SaltRimSpinner v-if="isLoading" :size="32" style="margin-right: auto;"></SaltRimSpinner>
                 <RouterLink v-if="registrationAllowed" class="button button--outline" :to="{ name: 'register' }">{{ $t('register') }}</RouterLink>
                 <button type="submit" class="button button--dark" style="margin-left: 5px;" :disabled="!baServerAvailable">{{ $t('login') }}</button>
             </div>

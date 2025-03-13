@@ -1998,29 +1998,61 @@ export interface components {
             /** @example Resource record not found. */
             message: string;
         };
+        /** @description Details about a bar */
         Bar: {
-            /** @example 1 */
+            /**
+             * @description Unique number that can be used to reference a specific bar.
+             * @example 1
+             */
             id: number;
-            /** @example bar-name-1 */
+            /**
+             * @description Unique string that can be used to reference a specific bar.
+             * @example bar-name-1
+             */
             slug: string;
-            /** @example Bar name */
+            /**
+             * @description Name of the bar
+             * @example Bar name
+             */
             name: string;
-            /** @example A short subtitle of a bar */
+            /**
+             * @description Optional short quip about the bar
+             * @example A short subtitle of a bar
+             */
             subtitle: string | null;
-            /** @example Bar description */
+            /**
+             * @description Description of the bar
+             * @example Bar description
+             */
             description: string | null;
-            /** @example 01H8S3VH2HTEB3D893AW8NTBBC */
+            /**
+             * @description Random code used to invite people to the bar
+             * @example 01H8S3VH2HTEB3D893AW8NTBBC
+             */
             invite_code: string | null;
+            /** @description Current status of the bar */
             status: components["schemas"]["BarStatusEnum"];
+            /** @description Settings for the bar */
             settings: components["schemas"]["BarSettings"];
+            /** @description Host URL used to access the bar's search engine */
             search_host: string | null;
+            /** @description Auth token used to access the bar's search engine */
             search_token: string | null;
-            /** Format: date-time */
+            /**
+             * Format: date-time
+             * @description Date and time when the bar was created
+             */
             created_at: string;
-            /** Format: date-time */
+            /**
+             * Format: date-time
+             * @description Date and time when the bar was last updated
+             */
             updated_at: string | null;
+            /** @description User who created the bar */
             created_user?: components["schemas"]["UserBasic"];
+            /** @description User who last updated the bar */
             updated_user?: components["schemas"]["UserBasic"] | null;
+            /** @description User access rights for the bar */
             access: {
                 /** @example 1 */
                 role_id?: number;
@@ -2726,6 +2758,11 @@ export interface components {
             used_as_substitute_for?: components["schemas"]["IngredientBasic"][];
             can_be_substituted_with?: components["schemas"]["IngredientBasic"][];
             calculator_id?: number | null;
+            /** Format: float */
+            sugar_g_per_ml?: number | null;
+            /** Format: float */
+            acidity?: number | null;
+            distillery?: string | null;
         };
         /** @description Minimal ingredient information */
         IngredientBasic: {
@@ -2856,32 +2893,32 @@ export interface components {
             }[];
         };
         MenuExplore: {
-            bar?: {
+            bar: {
                 /** @example Bar name */
-                name?: string;
+                name: string;
                 /** @example Bar subtitle */
-                subtitle?: string;
+                subtitle: string;
                 /** @example Bar description */
-                description?: string;
+                description: string;
+                images?: string[];
             };
-            categories?: {
+            categories: {
                 /** @example Category name */
-                name?: string;
-                cocktails?: {
+                name: string;
+                items: {
+                    /** @example false */
+                    in_bar_shelf: boolean;
+                    type: components["schemas"]["MenuItemTypeEnum"];
                     /** @example 1 */
-                    sort?: number;
-                    price?: components["schemas"]["Price"];
+                    sort: number;
+                    price: components["schemas"]["Price"];
                     /** @example 01ARZ3NDEKTSV4RRFFQ69G5FAV */
-                    public_id?: string;
-                    /** @example cocktail-name-1 */
-                    slug?: string;
-                    /** @example EUR */
-                    currency?: string;
+                    public_id: string;
                     /** @example Cocktail name */
-                    name?: string;
-                    short_ingredients?: string[];
-                    /** @example https://example.com/image.jpg */
-                    image?: string;
+                    name: string;
+                    description: string;
+                    /** @description Image URL */
+                    image: string | null;
                 }[];
             }[];
         };
