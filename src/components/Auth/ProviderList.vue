@@ -38,7 +38,6 @@ const icons: Record<string, string> = {
 
 <style scoped>
 .sso-providers {
-    margin-bottom: var(--gap-size-3);
     display: flex;
     flex-wrap: wrap;
     flex-direction: column;

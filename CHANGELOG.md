@@ -1,6 +1,6 @@
 # v4.0.1
 ## Fixes
-- Fixed inifnite loader on login page
+- Fixed infinite loader on login page
 - Fixed menu not resolving cocktail public IDs
 
 ## Changes
