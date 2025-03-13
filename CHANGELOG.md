@@ -1,3 +1,11 @@
+# v4.0.1
+## Fixes
+- Fixed inifnite loader on login page
+- Fixed menu not resolving cocktail public IDs
+
+## Changes
+- Increased font size on mobile
+
 # v4.0.0
 ## New
 - Added support for Bar Assistant v5.0
