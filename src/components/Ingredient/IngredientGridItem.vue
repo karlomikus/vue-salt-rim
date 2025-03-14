@@ -1,23 +1,21 @@
 <template>
     <div class="block-container block-container--hover ingredient-grid-item">
-        <div class="ingredient-grid-item__image">
-            <IngredientImage :image-url="defaultImage" :color="ingredient.color"></IngredientImage>
-        </div>
-        <div class="ingredient-grid-item__content">
+        <div class="ingredient-grid-item__header">
+            <IngredientImage :image-url="defaultImage" :color="ingredient.color" class="ingredient__image--small"></IngredientImage>
             <RouterLink class="ingredient-grid-item__title sr-grid-title" :to="{ name: 'ingredients.show', params: { id: ingredient.slug } }">
                 <small v-if="ingredient.hierarchy.path_to_self">{{ ingredient.hierarchy.path_to_self }}</small>
                 {{ ingredient.name }}
             </RouterLink>
+        </div>
+        <div class="ingredient-grid-item__content">
             <p v-html="cleanDescription"></p>
-            <div class="ingredient-grid-item__actions">
-                <template v-if="showBarShelf">
-                    <ToggleIngredientBarShelf :ingredient="ingredient" :status="ingredient.in_bar_shelf ?? false"></ToggleIngredientBarShelf>
-                    &middot;
-                </template>
-                <ToggleIngredientShelf :ingredient="ingredient" :status="ingredient.in_shelf ?? false"></ToggleIngredientShelf>
+            <template v-if="showBarShelf">
+                <ToggleIngredientBarShelf :ingredient="ingredient" :status="ingredient.in_bar_shelf ?? false"></ToggleIngredientBarShelf>
                 &middot;
-                <ToggleIngredientShoppingCart :ingredient="ingredient" :status="ingredient.in_shopping_list ?? false"></ToggleIngredientShoppingCart>
-            </div>
+            </template>
+            <ToggleIngredientShelf :ingredient="ingredient" :status="ingredient.in_shelf ?? false"></ToggleIngredientShelf>
+            &middot;
+            <ToggleIngredientShoppingCart :ingredient="ingredient" :status="ingredient.in_shopping_list ?? false"></ToggleIngredientShoppingCart>
         </div>
     </div>
 </template>
@@ -65,14 +63,18 @@ const defaultImage = computed(() => {
 
 <style scoped>
 .ingredient-grid-item {
-    --_clr-content: var(--clr-gray-500);
-    display: flex;
     width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: var(--gap-size-3);
     padding: var(--gap-size-3);
 }
 
-.dark-theme .ingredient-grid-item {
-    --_clr-content: var(--clr-gray-400);
+.ingredient-grid-item__header {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: var(--gap-size-2);
 }
 
 .ingredient-grid-item__image {
@@ -90,16 +92,12 @@ const defaultImage = computed(() => {
     font-family: var(--font-primary);
 }
 
-.ingredient-grid-item__content {
-    display: flex;
-    flex-direction: column;
-    gap: var(--gap-size-2);
+.ingredient-grid-item__content p {
+    text-wrap: balance;
+    color: var(--clr-gray-600);
 }
 
-.ingredient-grid-item__content p {
-    color: var(--_clr-content);
-    overflow: hidden;
-    line-height: 1.4;
-    text-wrap: balance;
+.dark-theme .ingredient-grid-item__content p {
+    color: var(--clr-gray-400);
 }
 </style>

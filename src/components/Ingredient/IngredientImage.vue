@@ -52,6 +52,11 @@ const mainIngredientImageUrl = computed(() => {
     }
 }
 
+.ingredient__image.ingredient__image--small {
+    width: 50px;
+    height: 50px;
+}
+
 .ingredient__image img {
     height: 100px;
     position: absolute;
