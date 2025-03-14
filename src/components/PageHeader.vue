@@ -14,9 +14,9 @@
     --sph-clr-border: var(--clr-accent-200);
     display: flex;
     flex-wrap: wrap;
-    border-bottom: 3px double var(--sph-clr-border);
+    /* border-bottom: 3px double var(--sph-clr-border); */
     padding-bottom: 1rem;
-    margin-bottom: 1rem;
+    /* margin-bottom: 1rem; */
     align-items: center;
 }
 

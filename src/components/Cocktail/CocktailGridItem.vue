@@ -18,7 +18,7 @@
             <img class="cocktail-grid-item__graphic__image" :data-img-src="mainCocktailImageUrl" :src="placeholderImage" alt="Main image of the cocktail">
         </div>
         <div class="block-container cocktail-grid-item__content">
-            <h2 class="cocktail-grid-item__title">{{ cocktail.name }}</h2>
+            <h2 class="cocktail-grid-item__title sr-grid-title">{{ cocktail.name }}</h2>
             <div class="cocktail-grid-item__rating">
                 <CocktailRating :user-rating="cocktail.rating.user" :average-rating="cocktail.rating.average" />
             </div>
@@ -129,10 +129,6 @@ export default {
 }
 
 .cocktail-grid-item__title {
-    font-size: 1.7rem;
-    font-family: var(--font-heading);
-    font-weight: var(--fw-bold);
-    line-height: 1.3;
     text-wrap: balance;
 }
 
@@ -206,10 +202,6 @@ export default {
         --_image-size: 250px;
     }
 
-    .cocktail-grid-item__title {
-        font-size: 1.25rem;
-    }
-
     .cocktail-grid-item__content {
         padding: var(--gap-size-3);
         border-radius: var(--radius-2);
@@ -224,10 +216,6 @@ export default {
     .cocktail-tags .chip {
         padding: 1px 5px;
         font-size: 0.65rem;
-    }
-
-    .cocktail-grid-item__ingredients {
-        font-size: 0.75rem;
     }
 }
 </style>

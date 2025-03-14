@@ -282,3 +282,16 @@ hr {
     border: 1px solid var(--clr-gray-300);
     margin: 0.75rem 0;
 }
+
+.sr-grid-title {
+    font-size: 1.7em;
+    font-family: var(--font-heading);
+    font-weight: var(--fw-bold);
+    line-height: 1.2;
+}
+
+@media (max-width: 450px) {
+    .sr-grid-title {
+        font-size: 1.5em;
+    }
+}

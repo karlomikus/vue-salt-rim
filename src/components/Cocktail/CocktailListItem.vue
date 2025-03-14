@@ -86,7 +86,7 @@ export default {
 }
 
 .cocktail-list-item__title {
-    font-size: 1.1rem;
+    font-size: 1.2em;
     font-family: var(--font-heading);
     font-weight: var(--fw-bold);
 }
@@ -98,6 +98,6 @@ export default {
 
 .cocktail-list-item__content p {
     color: var(--cli-clr-content);
-    font-size: 0.8rem;
+    font-size: 0.85em;
 }
 </style>

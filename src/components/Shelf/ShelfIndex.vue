@@ -416,4 +416,8 @@ refreshShelf()
 .dark-theme .shelf-stats-count small {
     color: var(--clr-gray-400);
 }
+
+.shelf-grid__col .page-subtitle {
+    margin-bottom: var(--gap-size-2);
+}
 </style>
