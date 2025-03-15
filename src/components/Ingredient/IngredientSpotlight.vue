@@ -6,7 +6,7 @@
         </div>
         <div class="ingredient-spotlight__content">
             <small v-if="ingredient.hierarchy && ingredient.hierarchy.path_to_self">{{ ingredient.hierarchy.path_to_self }}</small>
-            <h4>{{ ingredient.name }}</h4>
+            <h4 class="sr-list-item-title">{{ ingredient.name }}</h4>
             <p>{{ truncatedDescription }}</p>
             <RouterLink :to="{name: 'ingredients.show', params: { id: ingredient.slug }}">{{ $t('show-more') }}</RouterLink>
         </div>
@@ -82,11 +82,12 @@ export default {
 }
 
 .ingredient-spotlight-wrapper h4 {
-    font-size: 1.5rem;
-    font-weight: var(--fw-bold);
-    line-height: 1.2;
-    font-family: var(--font-heading);
-    margin-bottom: 0.5rem;
+    margin-top: -2px;
+    margin-bottom: var(--gap-size-1);
+}
+
+.ingredient-spotlight-wrapper p {
+    line-height: 1.4;
 }
 
 .ingredient-spotlight__image {
