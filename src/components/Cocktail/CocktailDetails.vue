@@ -374,7 +374,7 @@ fetchShoppingList()
                     <IngredientSpotlight :id="cocktail.ingredients[0].ingredient.id"></IngredientSpotlight>
                 </template>
                 <h3 class="page-subtitle">{{ t('cocktails-similar') }}</h3>
-                <SimilarCocktails :from-cocktail="cocktail"></SimilarCocktails>
+                <SimilarCocktails v-model="cocktail"></SimilarCocktails>
             </div>
             <div class="cocktail-details__column-content">
                 <div class="cocktail-details__actions">

@@ -17,7 +17,7 @@ export default {
     },
     computed: {
         mainCocktailImageUrl() {
-            if (!this.cocktail.main_image_id && !this.cocktail.image_url) {
+            if (!this.cocktail.images && !this.cocktail.image_url) {
                 return '/no-cocktail.jpg'
             }
 
@@ -25,15 +25,19 @@ export default {
                 return this.cocktail.image_url
             }
 
-            return BarAssistantClient.getImageThumbUrl(this.cocktail.main_image_id)
+            if (this.cocktail.images.length == 0) {
+                return '/no-cocktail.jpg'
+            }
+
+            return BarAssistantClient.getImageThumbUrl(this.cocktail.images[0].id)
         },
     }
 }
 </script>
 <style scoped>
 .cocktail-thumb {
-    width: 50px;
-    height: 50px;
+    width: 60px;
+    height: 60px;
     border-radius: var(--radius-1);
     overflow: hidden;
     flex-shrink: 0;

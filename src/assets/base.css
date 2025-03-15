@@ -295,3 +295,10 @@ hr {
         font-size: 1.5em;
     }
 }
+
+.sr-list-item-title {
+    font-size: 1.25em;
+    font-family: var(--font-heading);
+    font-weight: var(--fw-bold);
+    line-height: 1.2;
+}

@@ -2328,6 +2328,8 @@ export interface components {
             /** @example Old fashioned */
             name: string;
             short_ingredients?: string[];
+            /** @description Main resource image */
+            image?: components["schemas"]["Image"];
         };
         CocktailExplore: {
             bar?: components["schemas"]["BarBasic"];
@@ -2685,6 +2687,8 @@ export interface components {
             file_path: string;
             /** @example http://example.com/uploads/cocktails/1/image.jpg */
             url: string;
+            /** @example http://example.com/uploads/cocktails/1/thumb */
+            thumb_url?: string;
             /** @example Image copyright */
             copyright: string | null;
             /** @example 1 */
@@ -2772,6 +2776,8 @@ export interface components {
             slug: string;
             /** @example Gin */
             name: string;
+            /** @description Main resource image */
+            image?: components["schemas"]["Image"];
         };
         /** @description Ingredient hierarchy */
         IngredientHierarchy: {

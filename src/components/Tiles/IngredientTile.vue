@@ -40,8 +40,8 @@ const viewModel = computed(() => {
             <img :src="viewModel.image" alt="">
         </div>
         <div class="ingredient-tile__content">
-            <h4 class="ingredient-tile__title">
-                <RouterLink :to="{ name: 'ingredients.show', params: { id: viewModel.slug } }">{{ viewModel.name }}</RouterLink>
+            <h4>
+                <RouterLink :to="{ name: 'ingredients.show', params: { id: viewModel.slug } }" class="sr-list-item-title">{{ viewModel.name }}</RouterLink>
             </h4>
             <div class="ingredient-tile__description">
                 <slot name="content">
@@ -68,18 +68,8 @@ const viewModel = computed(() => {
     gap: var(--gap-size-2);
 }
 
-.ingredient-tile__title {
-    line-height: 1.2;
-}
-
 .ingredient-tile__description {
     font-size: 0.85rem;
-}
-
-.ingredient-tile__title a {
-    font-size: 1.25em;
-    font-family: var(--font-heading);
-    font-weight: var(--fw-bold);
 }
 
 .ingredient-tile__image {
