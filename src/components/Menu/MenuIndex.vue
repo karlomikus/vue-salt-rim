@@ -49,7 +49,7 @@
                         <div class="drag-handle"></div>
                         <div class="menu-category__cocktail__content">
                             <div>
-                                <h4>{{ item.name }}</h4>
+                                <h4 class="sr-list-item-title">{{ item.name }}</h4>
                                 <p><span class="menu-item-type" :class="{'menu-item-type--ingredient': item.type == 'ingredient', 'menu-item-type--cocktail': item.type == 'cocktail'}">{{ item.type }}</span> {{ item.description }}</p>
                                 <a href="#" @click.prevent="copyCurrency(item.price.currency)">{{ $t('menu.copy-currency') }}</a> &middot;
                                 <template v-if="item.type == 'cocktail'">
@@ -547,18 +547,6 @@ export default {
     .menu-category__cocktail__content__price {
         margin-top: 0.5rem;
         margin-left: 0;
-    }
-}
-
-.menu-category__cocktail__content h4 {
-    font-weight: var(--fw-bold);
-    font-family: var(--font-heading);
-    font-size: 1.25rem;
-}
-
-@media (max-width: 450px) {
-    .menu-category__cocktail__content h4 {
-        font-size: 1rem;
     }
 }
 
