@@ -139,8 +139,8 @@ export default {
 }
 
 .site-autocomplete__results li a .site-autocomplete__results__image {
-    width: 30px;
-    height: 30px;
+    width: 50px;
+    height: 50px;
     border-radius: var(--radius-2);
     background-color: #eae4e9;
     background-position: center center;

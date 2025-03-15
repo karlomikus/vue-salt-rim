@@ -1,3 +1,7 @@
+# v4.0.2
+## Fixes
+- Fixed rating not getting refresh on route change
+
 # v4.0.1
 ## Fixes
 - Fixed infinite loader on login page
