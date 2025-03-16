@@ -57,7 +57,7 @@
                 <SaltRimCheckbox id="parent-ingredient-checkbox" v-model="isParent" :label="$t('ingredient.is-variety')" :description="$t('ingredient.variety-note')"></SaltRimCheckbox>
             </div>
             <div v-show="isParent" class="form-group" v-if="bar.search_host">
-                <IngredientFinder v-show="ingredient.hierarchy.parent_ingredient == null" :search-token="bar.search_token" v-model="ingredient.hierarchy.parent_ingredient" :disabled-ingredients="disabledFinderIngredients"></IngredientFinder>
+                <IngredientFinder v-if="bar.search_token" v-show="ingredient.hierarchy.parent_ingredient == null" :search-token="bar.search_token" v-model="ingredient.hierarchy.parent_ingredient" :disabled-ingredients="disabledFinderIngredients"></IngredientFinder>
                 <div class="form-input form-input--auto-height" v-if="ingredient.hierarchy.parent_ingredient">
                     {{ ingredient.hierarchy.parent_ingredient.name }} &middot; <a href="#" @click.prevent="ingredient.hierarchy.parent_ingredient = null">{{ $t('remove') }}</a>
                 </div>
@@ -65,9 +65,9 @@
             <div class="form-group">
                 <SaltRimCheckbox id="complex-ingredient-checkbox" v-model="isComplex" :label="$t('ingredient.is-complex')" :description="$t('ingredient.complex-note')"></SaltRimCheckbox>
             </div>
-            <div v-show="isComplex" class="ingredient-form__complex-ingredients" v-if="bar.search_host">
+            <div v-show="isComplex" class="ingredient-form__complex-ingredients" v-if="bar.search_host && ingredient.ingredient_parts">
                 <div>
-                    <IngredientFinder :selected-ingredients="ingredient.ingredient_parts.map(i => i.id)" :search-token="bar.search_token" @ingredient-selected="selectIngredientPart" :disabled-ingredients="disabledFinderIngredients"></IngredientFinder>
+                    <IngredientFinder v-if="bar.search_token" :selected-ingredients="ingredient.ingredient_parts.map(i => i.id)" :search-token="bar.search_token" @ingredient-selected="selectIngredientPart" :disabled-ingredients="disabledFinderIngredients"></IngredientFinder>
                 </div>
                 <div>
                     <ul v-if="ingredient.ingredient_parts.length > 0" class="block-container block-container--inset ingredient-form__complex-ingredients__list">
@@ -78,11 +78,11 @@
             </div>
         </div>
         <h3 class="form-section-title">{{ $t('media') }}</h3>
-        <ImageUpload ref="imagesUpload" :images="ingredient.images" :max-images="1" />
+        <ImageUpload ref="imagesUpload" :images="ingredient.images ?? []" :max-images="1" />
         <h3 class="form-section-title">{{ $t('price.prices') }}</h3>
         <div class="block-container block-container--padded block-container--inset ingredient-prices">
             <template v-if="priceCategories.length > 0">
-                <div v-show="ingredient.prices.length === 0" class="ingredient-prices__onboard">
+                <div v-if="ingredient.prices" v-show="ingredient.prices.length === 0" class="ingredient-prices__onboard">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256">
                         <path d="M184,89.57V84c0-25.08-37.83-44-88-44S8,58.92,8,84v40c0,20.89,26.25,37.49,64,42.46V172c0,25.08,37.83,44,88,44s88-18.92,88-44V132C248,111.3,222.58,94.68,184,89.57ZM232,132c0,13.22-30.79,28-72,28-3.73,0-7.43-.13-11.08-.37C170.49,151.77,184,139,184,124V105.74C213.87,110.19,232,122.27,232,132ZM72,150.25V126.46A183.74,183.74,0,0,0,96,128a183.74,183.74,0,0,0,24-1.54v23.79A163,163,0,0,1,96,152,163,163,0,0,1,72,150.25Zm96-40.32V124c0,8.39-12.41,17.4-32,22.87V123.5C148.91,120.37,159.84,115.71,168,109.93ZM96,56c41.21,0,72,14.78,72,28s-30.79,28-72,28S24,97.22,24,84,54.79,56,96,56ZM24,124V109.93c8.16,5.78,19.09,10.44,32,13.57v23.37C36.41,141.4,24,132.39,24,124Zm64,48v-4.17c2.63.1,5.29.17,8,.17,3.88,0,7.67-.13,11.39-.35A121.92,121.92,0,0,0,120,171.41v23.46C100.41,189.4,88,180.39,88,172Zm48,26.25V174.4a179.48,179.48,0,0,0,24,1.6,183.74,183.74,0,0,0,24-1.54v23.79a165.45,165.45,0,0,1-48,0Zm64-3.38V171.5c12.91-3.13,23.84-7.79,32-13.57V172C232,180.39,219.59,189.4,200,194.87Z"></path>
                     </svg>
@@ -93,7 +93,7 @@
                     <div class="form-group" style="width: 100%; max-width: 300px;">
                         <label class="form-label form-label--required" :for="'ingredient-price-category-' + idx">{{ $t('price.category') }}</label>
                         <select :id="'ingredient-price-category-' + idx" v-model="price.price_category.id" class="form-select" required>
-                            <option :value="null" disabled>Select price category</option>
+                            <option :value="0" disabled>Select price category</option>
                             <hr>
                             <optgroup v-for="(priceCategoriesPerCurrency, currency) in groupedPriceCategories" :key="currency" :label="currency">
                                 <option v-for="pc in priceCategoriesPerCurrency" :key="pc.id" :value="pc.id">{{ pc.name }}</option>
@@ -101,7 +101,7 @@
                         </select>
                     </div>
                     <div class="form-group" style="max-width: 150px;">
-                        <label class="form-label form-label--required" :for="'ingredient-price-price-' + idx">{{ $t('price.price') }} <template v-if="price.price_category.id">({{ priceCategories.find(p => p.id == price.price_category.id).currency }})</template></label>
+                        <label class="form-label form-label--required" :for="'ingredient-price-price-' + idx">{{ $t('price.price') }} <template v-if="price.price_category.id">({{ priceCategories.find(p => p.id == price.price_category.id)?.currency }})</template></label>
                         <input :id="'ingredient-price-price-' + idx" v-model="price.price.price" type="text" class="form-input" required>
                     </div>
                     <div class="form-group" style="max-width: 150px;">
@@ -136,7 +136,8 @@
     </form>
 </template>
 
-<script>
+<script setup lang="ts">
+import { computed, ref, useTemplateRef } from 'vue'
 import BarAssistantClient from '@/api/BarAssistantClient'
 import ImageUpload from './../ImageUpload.vue'
 import PageHeader from './../PageHeader.vue'
@@ -150,192 +151,226 @@ import CloseButton from '../CloseButton.vue'
 import { useTitle } from '@/composables/title'
 import AppState from '@/AppState'
 import { useHtmlDecode } from './../../composables/useHtmlDecode';
+import type { components } from '@/api/api'
+import { useI18n } from 'vue-i18n'
+import { useSaltRimToast } from '@/composables/toast'
+import { useRoute, useRouter } from 'vue-router'
+import type { SearchResults } from '@/api/SearchResults'
 
-export default {
-    components: {
-        ImageUpload,
-        PageHeader,
-        OverlayLoader,
-        IngredientFinder,
-        TimeStamps,
-        EmptyState,
-        SaltRimCheckbox,
-        SaltRimDialog,
-        CloseButton
-    },
-    data() {
-        return {
-            appState: new AppState(),
-            isLoading: false,
-            isParent: false,
-            isComplex: false,
-            bar: {
-                search_host: null,
-                search_token: null,
-            },
-            ingredient: {
-                id: null,
-                color: '#000',
-                images: [],
-                ingredient_parts: [],
-                hierarchy: {},
-                prices: [],
-                calculator_id: null,
-            },
-            priceCategories: [],
-            calculators: [],
+type Ingredient = components['schemas']['Ingredient']
+type IngredientPrice = components['schemas']['IngredientPrice']
+type IngredientBasic = components['schemas']['IngredientBasic']
+type IngredientSearchResult = SearchResults['ingredient']
+type Calculator = components['schemas']['Calculator']
+type PriceCategory = components['schemas']['PriceCategory']
+
+const route = useRoute()
+const router = useRouter()
+const { t } = useI18n()
+const toast = useSaltRimToast()
+const imageUpload = useTemplateRef('imagesUpload')
+const isLoading = ref(false)
+const isParent = ref(false)
+const isComplex = ref(false)
+const ingredient = ref<Ingredient>({
+    hierarchy: {}
+} as Ingredient)
+const calculators = ref<Calculator[]>([])
+const appState = new AppState()
+const bar = appState.bar
+const priceCategories = ref<PriceCategory[]>([])
+
+async function refreshIngredient(id: string) {
+    isLoading.value = true
+    const resp = (await BarAssistantClient.getIngredient(id))?.data ?? null
+    if (!resp) {
+        return
+    }
+
+    resp.description = useHtmlDecode(resp.description ?? '')
+    isParent.value = resp.hierarchy.parent_ingredient != null
+    isComplex.value = (resp.ingredient_parts && resp.ingredient_parts.length > 0) || false
+    ingredient.value = resp
+
+    useTitle(`${t('ingredient.title')} \u22C5 ${ingredient.value.name}`)
+
+    isLoading.value = false
+}
+
+function refreshCalculators() {
+    BarAssistantClient.getCalculators().then(resp => {
+        calculators.value = resp?.data ?? []
+    })
+}
+
+function refreshPriceCategories() {
+    BarAssistantClient.getPriceCategories().then(resp => {
+        priceCategories.value = resp?.data ?? []
+    })
+}
+
+function selectIngredientPart(ingredientPart: IngredientSearchResult) {
+    if (ingredient.value.ingredient_parts && ingredient.value.ingredient_parts.some(ing => ing.id == ingredientPart.id)) {
+        return
+    }
+
+    ingredient.value?.ingredient_parts?.push(ingredientPart)
+}
+
+function removeIngredientPart(ingredientPart: IngredientBasic) {
+    if (!ingredient.value.ingredient_parts) {
+        return
+    }
+
+    ingredient.value.ingredient_parts.splice(
+        ingredient.value.ingredient_parts.findIndex(i => i == ingredientPart),
+        1
+    )
+}
+
+function addIngredientPrice() {
+    if (!ingredient.value.prices) {
+        ingredient.value.prices = []
+    }
+
+    ingredient.value.prices.push({
+        price: {
+            price: 0,
+            price_minor: 0,
+            formatted_price: '',
+            currency: '',
+        },
+        price_category: {
+            id: 0,
+            name: '',
+            currency: '',
+            description: '',
+        },
+        description: '',
+        amount: 0,
+        units: '',
+        created_at: '',
+        updated_at: null
+    })
+}
+
+function removeIngredientPrice(price: IngredientPrice) {
+    if (!ingredient.value.prices) {
+        return;
+    }
+
+    ingredient.value.prices.splice(ingredient.value.prices.indexOf(price), 1)
+}
+
+async function submit() {
+    isLoading.value = true
+
+    if (!isComplex.value) {
+        ingredient.value.ingredient_parts = []
+    }
+
+    if (!ingredient.value.strength) {
+        ingredient.value.strength = 0
+    }
+
+    const postData = {
+        name: ingredient.value.name,
+        description: ingredient.value.description,
+        strength: ingredient.value.strength,
+        origin: ingredient.value.origin,
+        color: ingredient.value.color,
+        sugar_g_per_ml: ingredient.value.sugar_g_per_ml,
+        acidity: ingredient.value.acidity,
+        distillery: ingredient.value.distillery,
+        calculator_id: ingredient.value.calculator_id,
+        parent_ingredient_id: isParent.value && ingredient.value.hierarchy.parent_ingredient ? ingredient.value.hierarchy.parent_ingredient.id : null,
+        images: [] as number[],
+        complex_ingredient_part_ids: ingredient.value.ingredient_parts ? [...new Set(ingredient.value.ingredient_parts.map(i => i.id))] : [],
+        prices: ingredient.value.prices ? ingredient.value.prices.filter(p => p.price_category.id != null).map(p => ({
+            price_category_id: p.price_category.id,
+            price: p.price.price,
+            amount: p.amount,
+            units: p.units,
+            description: p.description,
+        })) : [],
+    }
+
+    if (imageUpload.value) {
+        const imageResources = await imageUpload.value.save().catch(() => {
+            toast.error(`${t('imageupload.error')} ${t('imageupload.error-ingredient')}`)
+        }) || []
+
+        if (imageResources.length > 0) {
+            postData.images = imageResources.map(img => img.id)
         }
-    },
-    computed: {
-        descendantIngredientIds() {
-            if (this.ingredient && !this.ingredient.hierarchy.descendants) {
-                return []
-            }
+    }
 
-            return this.ingredient.hierarchy.descendants.map(ingredient => ingredient.id)
-        },
-        disabledFinderIngredients() {
-            if (!this.ingredient.id) {
-                return []
-            }
-
-            return [this.ingredient.id].concat(this.descendantIngredientIds)
-        },
-        groupedPriceCategories() {
-            return this.priceCategories.reduce((acc, obj) => {
-                const keyValue = obj['currency']
-                if (!acc[keyValue]) {
-                    acc[keyValue] = []
-                }
-                acc[keyValue].push(obj)
-
-                return acc
-            }, {})
-        }
-    },
-    async created() {
-        useTitle(this.$t('ingredient.add'))
-
-        const ingredientId = this.$route.query.id || null
-
-        this.bar = (await BarAssistantClient.getBar(this.appState.bar.id)).data ?? {}
-
-        if (ingredientId) {
-            this.ingredient.id = ingredientId
-            this.refreshIngredient()
-        }
-
-        this.refreshPriceCategories()
-        this.refreshCalculators()
-    },
-    methods: {
-        refreshIngredient() {
-            this.isLoading = true
-            BarAssistantClient.getIngredient(this.ingredient.id).then(resp => {
-                resp.data.description = useHtmlDecode(resp.data.description)
-
-                this.ingredient = resp.data
-                this.isParent = this.ingredient.hierarchy.parent_ingredient != null
-                this.isComplex = this.ingredient.ingredient_parts.length > 0
-
-                useTitle(`${this.$t('ingredient.title')} \u22C5 ${this.ingredient.name}`)
-                this.isLoading = false
-            })
-        },
-        refreshCalculators() {
-            BarAssistantClient.getCalculators().then(resp => {
-                this.calculators = resp.data
-            })
-        },
-        refreshPriceCategories() {
-            BarAssistantClient.getPriceCategories().then(resp => {
-                this.priceCategories = resp.data
-            })
-        },
-        selectIngredientPart(ingredient) {
-            if (this.ingredient.ingredient_parts.some(ing => ing.id == ingredient.id)) {
+    if (ingredient.value.id) {
+        BarAssistantClient.updateIngredient(ingredient.value.id, postData).then(resp => {
+            if (!resp) {
                 return
             }
 
-            this.ingredient.ingredient_parts.push(ingredient)
-        },
-        removeIngredientPart(ingredient) {
-            this.ingredient.ingredient_parts.splice(
-                this.ingredient.ingredient_parts.findIndex(i => i == ingredient),
-                1
-            )
-        },
-        addIngredientPrice() {
-            this.ingredient.prices.push({price_category: {id: null}, price: {}})
-        },
-        removeIngredientPrice(price) {
-            this.ingredient.prices.splice(this.ingredient.prices.indexOf(price), 1)
-        },
-        async submit() {
-            this.isLoading = true
-
-            if (!this.isComplex) {
-                this.ingredient.ingredient_parts = []
+            toast.default(t('ingredient.update-success'))
+            router.push({ name: 'ingredients.show', params: { id: resp.data.slug } })
+        }).catch(e => {
+            toast.error(e.message)
+        }).finally(() => {
+            isLoading.value = false
+        })
+    } else {
+        BarAssistantClient.saveIngredient(postData).then(resp => {
+            if (!resp) {
+                return
             }
 
-            if (!this.ingredient.strength) {
-                this.ingredient.strength = 0
-            }
-
-            const postData = {
-                name: this.ingredient.name,
-                description: this.ingredient.description,
-                strength: this.ingredient.strength,
-                origin: this.ingredient.origin,
-                color: this.ingredient.color,
-                sugar_g_per_ml: this.ingredient.sugar_g_per_ml,
-                acidity: this.ingredient.acidity,
-                distillery: this.ingredient.distillery,
-                calculator_id: this.ingredient.calculator_id,
-                parent_ingredient_id: this.isParent && this.ingredient.hierarchy.parent_ingredient ? this.ingredient.hierarchy.parent_ingredient.id : null,
-                images: [],
-                complex_ingredient_part_ids: [...new Set(this.ingredient.ingredient_parts.map(i => i.id))],
-                prices: this.ingredient.prices.filter(p => p.price_category.id != null).map(p => ({
-                    price_category_id: p.price_category.id,
-                    price: p.price.price,
-                    amount: p.amount,
-                    units: p.units,
-                    description: p.description,
-                }))
-            }
-
-            const imageResources = await this.$refs.imagesUpload.save().catch(() => {
-                this.$toast.error(`${this.$t('imageupload.error')} ${this.$t('imageupload.error-ingredient')}`)
-            }) || []
-
-            if (imageResources.length > 0) {
-                postData.images = imageResources.map(img => img.id)
-            }
-
-            if (this.ingredient.id) {
-                BarAssistantClient.updateIngredient(this.ingredient.id, postData).then(resp => {
-                    this.$toast.default(this.$t('ingredient.update-success'))
-                    this.$router.push({ name: 'ingredients.show', params: { id: resp.data.slug } })
-                    this.isLoading = false
-                }).catch(e => {
-                    this.$toast.error(e.message)
-                    this.isLoading = false
-                    this.isLoading = false
-                })
-            } else {
-                BarAssistantClient.saveIngredient(postData).then(resp => {
-                    this.$toast.default(this.$t('ingredient.create-success'))
-                    this.$router.push({ name: 'ingredients.show', params: { id: resp.data.slug } })
-                    this.isLoading = false
-                }).catch(e => {
-                    this.$toast.error(e.message)
-                    this.isLoading = false
-                    this.isLoading = false
-                })
-            }
-        }
+            toast.default(t('ingredient.create-success'))
+            router.push({ name: 'ingredients.show', params: { id: resp.data.slug } })
+        }).catch(e => {
+            toast.error(e.message)
+        }).finally(() => {
+            isLoading.value = false
+        })
     }
 }
+
+const descendantIngredientIds = computed(() => {
+    if (!ingredient.value.hierarchy.descendants) {
+        return []
+    }
+
+    return ingredient.value.hierarchy.descendants.map(ingredient => ingredient.id)
+})
+
+const disabledFinderIngredients = computed(() => {
+    if (!ingredient.value.id) {
+        return []
+    }
+
+    return [ingredient.value.id].concat(descendantIngredientIds.value)
+})
+
+const groupedPriceCategories = computed(() => {
+    return priceCategories.value.reduce((acc: Record<string, PriceCategory[]>, obj) => {
+        const keyValue = obj['currency']
+        if (!acc[keyValue]) {
+            acc[keyValue] = []
+        }
+        acc[keyValue].push(obj)
+
+        return acc
+    }, {})
+})
+
+useTitle(t('ingredient.add'))
+
+const ingredientId = route.query.id || null
+if (ingredientId) {
+    refreshIngredient(ingredientId.toString())
+}
+
+refreshCalculators()
+refreshPriceCategories()
 </script>
 
 <style scoped>
