@@ -14,7 +14,7 @@ const imageUrl = computed(() => {
         return '/no-cocktail.jpg'
     }
 
-    return props.image.thumb_url
+    return `${window.srConfig.API_URL}${props.image.thumb_url}`
 })
 
 const placeholderImage = computed(() => {

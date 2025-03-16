@@ -3,7 +3,7 @@
         <ais-configure :hits-per-page="maxHits" />
         <ais-search-box autofocus>
             <template #default="{ refine }">
-                <input v-model="currentQuery" class="form-input ingredient-finder__search-input" type="search" :placeholder="$t('placeholder.search-ingredients')" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" maxlength="512" @input="refine(currentQuery)">
+                <input v-model="currentQuery" class="form-input ingredient-finder__search-input" type="search" :placeholder="t('placeholder.search-ingredients')" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" maxlength="512" @input="refine(currentQuery)">
             </template>
         </ais-search-box>
         <ais-hits class="ingredient-finder__hits">
@@ -21,7 +21,7 @@
                         </svg>
                     </a>
                     <a v-show="currentQuery" href="#" class="ingredient-finder__options__create" @click.prevent="newIngredient">
-                        {{ $t('ingredient.dialog.search-not-found') }} {{ $t('ingredient.dialog.create-ingredient', { name: currentQuery }) }}
+                        {{ t('ingredient.dialog.search-not-found') }} {{ t('ingredient.dialog.create-ingredient', { name: currentQuery }) }}
                     </a>
                 </div>
             </template>
@@ -58,7 +58,9 @@ const {
     disabledIngredients = [],
 } = defineProps<Props>()
 
-const emits = defineEmits(['ingredientSelected'])
+const emit = defineEmits<{
+    ingredientSelected: [ing: SearchResult]
+}>()
 const toast = useSaltRimToast()
 const { t } = useI18n()
 const isLoading = ref(false)
@@ -115,7 +117,7 @@ function selectIngredient(ing: SearchResult) {
         return false
     }
 
-    emits('ingredientSelected', ing)
+    emit('ingredientSelected', ing)
 }
 
 function isSelected(ing: SearchResult) {

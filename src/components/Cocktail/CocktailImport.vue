@@ -10,7 +10,7 @@ import SubscriptionCheck from '../SubscriptionCheck.vue'
 import { useSaltRimToast } from '@/composables/toast'
 import { useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
-
+import type { SearchResults } from '@/api/SearchResults'
 import type { components } from '@/api/api'
 import { useTitle } from '@/composables/title'
 import AppState from '@/AppState'
@@ -19,6 +19,7 @@ interface Ingredient {
     name: string,
     slug: string,
 }
+type SearchResult = SearchResults['ingredient']
 type Draft2Schema = components["schemas"]["cocktail-02.schema"]
 interface Draft1Schema {
     _id: string;
@@ -307,13 +308,13 @@ function removeSubIngredient(parentIngredient: CocktailIngredient, ingredient: s
     )
 }
 
-function handleIngredientEdit(selectedIngredient: Ingredient) {
+function handleIngredientEdit(selectedIngredient: SearchResult) {
     if (ingredientEdit.value == null) {
         return
     }
 
     ingredientEdit.value.matchedIngredient = {
-        id: selectedIngredient.id,
+        id: selectedIngredient.id.toString(),
         slug: selectedIngredient.slug,
         name: selectedIngredient.name,
     }

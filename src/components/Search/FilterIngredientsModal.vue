@@ -9,80 +9,74 @@
             </div>
         </div>
         <div class="dialog-actions">
-            <button type="button" class="button button--outline" @click="filter">{{ $t('cancel') }}</button>
             <button type="submit" class="button button--dark" :disabled="isLoading">{{ $t('filter') }}</button>
         </div>
     </form>
 </template>
 
-<script>
+<script setup lang="ts">
+import { ref } from 'vue'
 import OverlayLoader from './../OverlayLoader.vue'
 import IngredientFinder from './../IngredientFinder.vue'
 import BarAssistantClient from '@/api/BarAssistantClient';
 import IconClose from './../Icons/IconClose.vue';
+import type { SearchResults } from '@/api/SearchResults';
+import type { components } from '@/api/api'
 
-export default {
-    components: {
-        OverlayLoader,
-        IngredientFinder,
-        IconClose,
-    },
-    props: {
-        searchToken: {
-            type: String,
-            required: true,
-        },
-        title: {
-            type: String,
-            default: ''
-        },
-        value: {
-            type: Array,
-            default() {
-                return []
-            }
-        }
-    },
-    emits: ['close'],
-    data() {
-        return {
-            isLoading: false,
-            selectedIngredients: [],
-        }
-    },
-    created() {
-        this.matchIngredients()
-    },
-    methods: {
-        matchIngredients() {
-            if (this.value.length > 0) {
-                this.isLoading = true
-                BarAssistantClient.getIngredients({'filter[id]': this.value.join(',')}).then(resp => {
-                    this.selectedIngredients = resp.data
-                    this.isLoading = false
-                }).catch(() => {
-                    this.isLoading = false
-                })
-            }
-        },
-        selectIngredient(item) {
-            if (this.selectedIngredients.some(sub => sub.id == item.id)) {
-                return
-            }
+type Ingredient = components['schemas']['Ingredient']
 
-            this.selectedIngredients.push(item)
-        },
-        removeIngredient(item) {
-            this.selectedIngredients.splice(
-                this.selectedIngredients.findIndex(i => i == item),
-                1
-            )
-        },
-        filter() {
-            this.$emit('close', {newFilters: this.selectedIngredients.map(i => i.id)})
+type IngredientSearchResult = SearchResults['ingredient']
+const emit = defineEmits(['close'])
+const props = defineProps<{
+    searchToken: string
+    title: string
+    value: number[]
+}>()
+const isLoading = ref(false)
+const selectedIngredients = ref<IngredientSearchResult[]>([])
+
+const matchIngredients = async () => {
+    if (props.value.length > 0) {
+        isLoading.value = true
+        try {
+            const resp = (await BarAssistantClient.getIngredients({'filter[id]': props.value.join(',')}))?.data ?? []
+            selectedIngredients.value = resp.map((i: Ingredient) => {
+                return {
+                    id: i.id,
+                    name: i.name,
+                    slug: i.slug,
+                    image_url: null,
+                    description: null,
+                    category: null,
+                    bar_id: 0,
+                }
+            })
+        } catch (error) {
+            selectedIngredients.value = []
+        } finally {
+            isLoading.value = false
         }
-    },
+    }
 }
+
+const selectIngredient = (item: IngredientSearchResult) => {
+    if (!selectedIngredients.value.some(sub => sub.id == item.id)) {
+        selectedIngredients.value.push(item)
+    }
+}
+
+const removeIngredient = (item: IngredientSearchResult) => {
+    selectedIngredients.value.splice(
+        selectedIngredients.value.findIndex(i => i == item),
+        1
+    )
+}
+
+const filter = () => {
+    emit('close', { newFilters: selectedIngredients.value.map(i => i.id) })
+}
+
+matchIngredients()
 </script>
 
 <style scoped>
