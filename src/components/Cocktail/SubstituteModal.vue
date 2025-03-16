@@ -49,76 +49,69 @@
     </form>
 </template>
 
-<script>
+<script setup lang="ts">
+import { ref } from 'vue'
 import OverlayLoader from './../OverlayLoader.vue'
 import IngredientFinder from './../IngredientFinder.vue'
 import AmountInput from './../AmountInput.vue'
+import type { SearchResults } from '@/api/SearchResults';
+import type { components } from '@/api/api'
 
-export default {
-    components: {
-        OverlayLoader,
-        IngredientFinder,
-        AmountInput,
-    },
-    props: {
-        searchToken: {
-            type: String,
-            required: true,
-        },
-        value: {
-            type: Object,
-            default() {
-                return {}
-            }
-        }
-    },
-    emits: ['close'],
-    data() {
-        return {
-            isLoading: false,
-            cocktailIngredient: this.value,
-            selectedSubstitutes: this.value.substitutes,
-            amountDisplayTracker: []
-        }
-    },
-    methods: {
-        selectIngredient(item) {
-            if (this.selectedSubstitutes.some(sub => sub.ingredient.id == item.id) || this.cocktailIngredient.ingredient.id == item.id) {
-                return
-            }
+type CocktailIngredient = components['schemas']['CocktailIngredient']
+type CocktailIngredientSubstitute = components['schemas']['CocktailIngredientSubstitute']
+type IngredientSearchResult = SearchResults['ingredient']
 
-            this.selectedSubstitutes.push({
-                ingredient: {
-                    name: item.name,
-                    id: item.id,
-                    slug: item.slug,
-                },
-                amount: null,
-                amount_max: null,
-                units: null,
-            })
+const props = defineProps<{
+    searchToken: string;
+    value: CocktailIngredient;
+}>()
+const isLoading = ref(false)
+const amountDisplayTracker = ref<number[]>([])
+const cocktailIngredient = ref<CocktailIngredient>(props.value)
+const selectedSubstitutes = ref<CocktailIngredientSubstitute[]>(props.value.substitutes ?? [])
+const emit = defineEmits<{
+    close: [type: {type: string}]
+}>()
+
+function selectIngredient(item: IngredientSearchResult) {
+    if (selectedSubstitutes.value.some(sub => sub.ingredient.id == item.id) || cocktailIngredient.value.ingredient.id == item.id) {
+        return
+    }
+
+    selectedSubstitutes.value.push({
+        ingredient: {
+            name: item.name,
+            id: item.id,
+            slug: item.slug,
         },
-        removeIngredient(item) {
-            this.selectedSubstitutes.splice(
-                this.selectedSubstitutes.findIndex(i => i == item),
-                1
-            )
-        },
-        toggleAmountDisplay(sub) {
-            if (this.amountDisplayTracker.includes(sub.ingredient.id)) {
-                this.amountDisplayTracker.splice(
-                    this.amountDisplayTracker.findIndex(i => i == sub.ingredient.id),
-                    1
-                )
-            } else {
-                this.amountDisplayTracker.push(sub.ingredient.id)
-            }
-        },
-        save() {
-            // this.cocktailIngredient.substitutes = this.selectedSubstitutes
-            this.$emit('close', {type: 'save'})
-        }
-    },
+        amount: null,
+        amount_max: null,
+        units: null,
+        in_bar_shelf: false,
+        in_shelf: false,
+    })
+}
+
+function removeIngredient(item: CocktailIngredientSubstitute) {
+    selectedSubstitutes.value.splice(
+        selectedSubstitutes.value.findIndex(i => i == item),
+        1
+    )
+}
+
+function toggleAmountDisplay(sub: CocktailIngredientSubstitute) {
+    if (amountDisplayTracker.value.includes(sub.ingredient.id)) {
+        amountDisplayTracker.value.splice(
+            amountDisplayTracker.value.findIndex(i => i == sub.ingredient.id),
+            1
+        )
+    } else {
+        amountDisplayTracker.value.push(sub.ingredient.id)
+    }
+}
+
+function save() {
+    emit('close', {type: 'save'})
 }
 </script>
 
