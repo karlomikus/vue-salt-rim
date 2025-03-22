@@ -18,8 +18,8 @@
       "list-error": "Beim Abrufen Ihrer Einkaufsliste von einem Server ist ein Fehler aufgetreten."
     },
     "cocktails": "Cocktails, die ich mixen kann",
-    "bar-stats": "Bar statistics",
-    "recommended-cocktails": "Recommended cocktails"
+    "bar-stats": "Bar Statistiken",
+    "recommended-cocktails": "Empfohlene Cocktails"
   },
   "ingredient": {
     "title": "Zutat",
@@ -74,7 +74,7 @@
     "units-help": "Some features work the best if you use common units. Some recommendations for units are: ml, oz, cl, dashes, barspoon, drops, topup, leaves.",
     "import": "Import ingredients",
     "attach-calculator": "Attach calculator",
-    "hierarchy": "Hierarchy",
+    "hierarchy": "Hierarchie",
     "status": "Ingredient status",
     "hierarchy-description": "This is an overview of the ingredient hierarchy. Depending on the cocktail recipe, if you have any of the variants in the shelf, they can be used as a substitute for the main ingredient when matching recipes.",
     "show-variants": "Show variants",
