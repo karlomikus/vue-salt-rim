@@ -72,7 +72,7 @@
     "bar-shelf-add-success": "\"{name}\" wurde zum Barregal hinzugefügt",
     "bar-shelf-remove-success": "\"{name}\" aus Barregal entfernt",
     "units-help": "Some features work the best if you use common units. Some recommendations for units are: ml, oz, cl, dashes, barspoon, drops, topup, leaves.",
-    "import": "Import ingredients",
+    "import": "Zutaten importieren",
     "attach-calculator": "Attach calculator",
     "hierarchy": "Hierarchie",
     "status": "Ingredient status",
@@ -127,7 +127,7 @@
   "latest": {
     "cocktails": "Deine neuesten Cocktails",
     "favorites": "Deine neuesten Favoriten",
-    "ingredients": "Latest ingredients"
+    "ingredients": "Neueste Zutaten"
   },
   "strength": "Stärke",
   "rating": "Bewertung",
@@ -173,7 +173,7 @@
     "image-copyright": "URL der Bildquelle oder sonstige Referenz...",
     "search-ingredients": "Suche nach Zutaten...",
     "search-cocktails": "Suche nach Cocktails...",
-    "external-image": "Paste image URL"
+    "external-image": "Bild-URL einfügen"
   },
   "amount": "Menge",
   "units": "Einheiten",
@@ -440,10 +440,10 @@
     "type-yaml-description": "Aus YAML-Format importieren",
     "type-collection-description": "Import aus Bar Assistant JSON-Sammlung",
     "notice": "Vorhandene Zutaten und Trinkgläser werden anhand ihres Namens abgeglichen (Groß- und Kleinschreibung wird nicht berücksichtigt). Wenn ein Bestandteil bzw. ein Glas nicht vorhanden ist, wird es neu erstellt.",
-    "type-csv-text-title": "CSV text",
-    "type-csv-text-description": "Import by pasting the CSV structure",
-    "type-csv-file-title": "CSV file",
-    "type-csv-file-description": "Import by uploading CSV file"
+    "type-csv-text-title": "CSV-Text",
+    "type-csv-text-description": "Importieren durch Einfügen der CSV-Struktur",
+    "type-csv-file-title": "CSV-Datei",
+    "type-csv-file-description": "Importieren durch Hochladen der CSV-Datei"
   },
   "remove-from-bar": "Aus der Bar entfernen",
   "public-shelves": "Öffentliche Regale",
@@ -651,7 +651,7 @@
   "in_your_shelf": "Verfügbar in deinem Regal",
   "is_public": "Has public link",
   "website": "Webseite",
-  "uncategorized": "Uncategorized",
+  "uncategorized": "Nicht kategorisiert",
   "calculators": {
     "title": "Calculators",
     "calculator": "Calculator",
@@ -700,9 +700,9 @@
     "auth-error": "Unable to authenticate via Single Sign-On provider",
     "login-with": "Login with {name}"
   },
-  "distillery": "Distillery",
-  "sweetness": "Sweetness (g/ml)",
-  "acidity": "Acidity (%)",
+  "distillery": "Brennerei",
+  "sweetness": "Süße (g/ml)",
+  "acidity": "Säure (%)",
   "missing-recommended-cocktails": "Add some cocktails to your favorites to start getting recommendations.",
   "ui-theme": "Default theme",
   "theme-dark": "Dark",
