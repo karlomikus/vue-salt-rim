@@ -2328,6 +2328,8 @@ export interface components {
             /** @example Old fashioned */
             name: string;
             short_ingredients?: string[];
+            /** @description Main resource image */
+            image?: components["schemas"]["Image"];
         };
         CocktailExplore: {
             bar?: components["schemas"]["BarBasic"];
@@ -2685,6 +2687,8 @@ export interface components {
             file_path: string;
             /** @example http://example.com/uploads/cocktails/1/image.jpg */
             url: string;
+            /** @example http://example.com/uploads/cocktails/1/thumb */
+            thumb_url?: string;
             /** @example Image copyright */
             copyright: string | null;
             /** @example 1 */
@@ -2772,6 +2776,8 @@ export interface components {
             slug: string;
             /** @example Gin */
             name: string;
+            /** @description Main resource image */
+            image?: components["schemas"]["Image"];
         };
         /** @description Ingredient hierarchy */
         IngredientHierarchy: {
@@ -2870,25 +2876,25 @@ export interface components {
         };
         Menu: {
             /** @example 1 */
-            id?: number;
-            is_enabled?: boolean;
+            id: number;
+            is_enabled: boolean;
             /** Format: date-time */
-            created_at?: string;
+            created_at: string;
             /** Format: date-time */
-            updated_at?: string | null;
-            categories?: {
+            updated_at: string | null;
+            categories: {
                 /** @example Category name */
-                name?: string;
-                items?: {
+                name: string;
+                items: {
                     /** @example 1 */
-                    id?: number;
-                    type?: components["schemas"]["MenuItemTypeEnum"];
+                    id: number;
+                    type: components["schemas"]["MenuItemTypeEnum"];
                     /** @example 1 */
-                    sort?: number;
-                    price?: components["schemas"]["Price"];
+                    sort: number;
+                    price: components["schemas"]["Price"];
                     /** @example Cocktail name */
-                    name?: string;
-                    description?: string;
+                    name: string;
+                    description: string;
                 }[];
             }[];
         };
@@ -2924,23 +2930,24 @@ export interface components {
         };
         MenuRequest: {
             is_enabled: boolean;
-            cocktails: {
+            items: {
                 /** @example 1 */
-                cocktail_id?: number;
+                id: number;
+                type: components["schemas"]["MenuItemTypeEnum"];
+                /** @example Category name */
+                category_name: string;
+                /** @example 1 */
+                sort: number;
                 /**
                  * Format: minor
                  * @example 2252
                  */
-                price?: number;
-                /** @example Category name */
-                category_name?: string;
-                /** @example 1 */
-                sort?: number;
+                price: number;
                 /**
                  * Format: ISO 4217
                  * @example EUR
                  */
-                currency?: string;
+                currency: string;
             }[];
         };
         Note: {

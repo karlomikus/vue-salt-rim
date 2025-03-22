@@ -101,7 +101,8 @@ app.use(i18n)
 app.use(ToastPlugin, {
     position: 'top',
     type: 'default',
-    duration: 4000,
+    duration: 1500,
+    pauseOnHover: true,
 })
 
 app.mount('#app')

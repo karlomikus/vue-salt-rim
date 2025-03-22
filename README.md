@@ -29,25 +29,30 @@ Salt Rim is a web client used for connecting to your [Bar Assistant](https://git
 
 <p align="center">
     <picture>
-      <img src="./art/landing3.png" alt="Landing image" />
+      <img src="./art/herov4.png" alt="Landing image" />
     </picture>
 </p>
 
 ## Features
 
-- Intuitive UI for your Bar Assistant instance
-- Supports all features of Bar Assistant
+- Always up to date with latest Bar Assistant features
 - Desktop and mobile support
+- Progressive Web App (PWA) capabilities
 - Powerful search and filtering capabilities using [Vue Instantsearch](https://www.algolia.com/doc/guides/building-search-ui/what-is-instantsearch/vue/)
 - Support for multiple measurement units
 - Personal shopping list management and exporting
 - Markdown support for cocktails and ingredients
 - Automatic ingredient suggestions
 - Dark theme support
-- Localizations available: English, German, Croatian, French, Polish
-- Progressive Web App (PWA) capabilities
+- Change localizations on the fly
 - Organize your personal recipe collections
 - Easy recipe copying and sharing
+- Instant custom calculators solving
+- Cocktail menu cost suggestions
+- Cocktail recipe batch scaling
+- Review scraped recipe data before importing
+- Automatic menu QR code generator
+- Easy to use bottle quantity calculator
 
 ## Documentation
 
@@ -117,8 +122,6 @@ This project is tested with BrowserStack.
 You can use Crowdin Bar Assistant project, and this will automaticall pull new languages.
 
 <a title="Crowdin" target="_blank" href="https://crowdin.com/project/bar-assistant"><img src="https://badges.crowdin.net/bar-assistant/localized.svg"></a>
-
-If you want to contribute translations of the UI you can find all the strings that need translations in `src/locales/` directory. Copy one of the locale files and start translating the strings. For extra information you can check out the [i18n plugin this project is using here](https://vue-i18n.intlify.dev/).
 
 ## License
 

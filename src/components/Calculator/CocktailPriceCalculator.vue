@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div class="dialog-title">{{ props.cocktail.name }}</div>
+        <div class="dialog-title">{{ cocktail.name }}</div>
         <OverlayLoader v-if="isLoadingPrices"></OverlayLoader>
         <SubscriptionCheck>Subscribe to "Mixologist" plan to unlock automatic price calculation!</SubscriptionCheck>
         <div class="cocktail-price-calculator__prices" v-if="nonZeroPrices.length > 0">
@@ -38,11 +38,11 @@ import AppState from '@/AppState';
 import EmptyState from '@/components/EmptyState.vue';
 import { useI18n } from 'vue-i18n'
 
-type Cocktail = components["schemas"]["Cocktail"]
+type CocktailBasic = components["schemas"]["CocktailBasic"]
 type CocktailPrice = components["schemas"]["CocktailPrice"]
 
 const props = defineProps<{
-    cocktail: Cocktail
+    cocktail: CocktailBasic
 }>()
 
 const emit = defineEmits(['closed', 'selectedPrice'])

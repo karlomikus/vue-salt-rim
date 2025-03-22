@@ -4,16 +4,10 @@
     </div>
 </template>
 
-<script>
+<script setup lang="ts">
 import AppState from '../AppState'
 
-export default {
-    data() {
-        return {
-            appState: new AppState()
-        }
-    }
-}
+const appState = new AppState()
 </script>
 
 <style scoped>

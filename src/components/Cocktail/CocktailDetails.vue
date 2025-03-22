@@ -374,7 +374,7 @@ fetchShoppingList()
                     <IngredientSpotlight :id="cocktail.ingredients[0].ingredient.id"></IngredientSpotlight>
                 </template>
                 <h3 class="page-subtitle">{{ t('cocktails-similar') }}</h3>
-                <SimilarCocktails :from-cocktail="cocktail"></SimilarCocktails>
+                <SimilarCocktails v-model="cocktail"></SimilarCocktails>
             </div>
             <div class="cocktail-details__column-content">
                 <div class="cocktail-details__actions">
@@ -705,6 +705,9 @@ swiper-container {
 
 .cocktail-details__column-sidebar {
     grid-area: sidebar;
+    display: flex;
+    flex-direction: column;
+    gap: var(--gap-size-3);
 }
 
 .cocktail-details__graphic {
@@ -747,10 +750,6 @@ swiper-container {
     margin: 0;
 }
 
-/* .dark-theme .cocktail-ingredients {
-    --ci-clr-list-bg: rgba(0, 0, 0, .4);
-} */
-
 .cocktail-ingredients__total-amount,
 .cocktail-ingredients__total-amount span {
     text-align: right;
@@ -768,35 +767,6 @@ swiper-container {
 
 .dark-theme .cocktail-ingredients li {
     color: var(--clr-gray-300);
-}
-
-.cocktail-ingredients__ingredient {
-    display: flex;
-}
-
-.cocktail-ingredients__flags {
-    font-size: 0.7rem;
-}
-
-.cocktail-ingredients__ingredient__name {
-    font-weight: var(--fw-bold);
-}
-
-.cocktail-ingredients__ingredient__name small {
-    font-size: 0.70rem;
-}
-
-.cocktail-ingredients__ingredient__amount {
-    font-weight: var(--fw-bold);
-    font-size: 1.2rem;
-    margin-left: auto;
-    text-align: right;
-}
-
-@media (max-width: 450px) {
-    .cocktail-ingredients__ingredient__amount {
-        font-size: 1rem;
-    }
 }
 
 .cocktail-details__actions {

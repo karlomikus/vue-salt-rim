@@ -234,7 +234,6 @@ import IconBarShelf from '../Icons/IconBarShelf.vue'
 import IconUserShelf from '../Icons/IconUserShelf.vue'
 import IconShoppingCart from '../Icons/IconShoppingCart.vue'
 import IconMore from '../Icons/IconMore.vue'
-import IngredientTile from '../Tiles/IngredientTile.vue'
 import IngredientHierarchy from './IngredientHierarchy.vue'
 import IconCheck from '../Icons/IconCheck.vue'
 import { useIngredientBg } from '@/composables/ingredientBg'
@@ -252,7 +251,6 @@ export default {
         IconUserShelf,
         IconShoppingCart,
         IconMore,
-        IngredientTile,
         IngredientHierarchy,
         TimeStamps,
     },

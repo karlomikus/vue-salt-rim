@@ -5,70 +5,52 @@
     </div>
 </template>
 
-<script>
+<script setup lang="ts">
+import { ref, watch } from 'vue'
 import BarAssistantClient from '@/api/BarAssistantClient';
 import OverlayLoader from './OverlayLoader.vue'
+import { useSaltRimToast } from '@/composables/toast';
+import { useI18n } from 'vue-i18n'
 
-export default {
-    components: {
-        OverlayLoader,
-    },
-    props: {
-        rating: {
-            type: Number,
-            default: 0
-        },
-        id: {
-            type: Number,
-            default: 0
-        },
-        type: {
-            type: String,
-            default: 'cocktail'
-        }
-    },
-    data() {
-        return {
-            isLoading: false,
-            currentRating: this.rating,
-            max: 5,
-            min: 1
-        }
-    },
-    watch: {
-        rating(newVal) {
-            this.currentRating = newVal
-        }
-    },
-    methods: {
-        rate(rating) {
-            if (this.isLoading) {
-                return
-            }
+const { t } = useI18n()
+const toast = useSaltRimToast()
+const isLoading = ref(false)
+const max = 5
+const min = 1
+const props = defineProps<{
+    rating: number
+    id: number
+    type: string
+}>()
+const currentRating = ref(props.rating)
 
-            this.isLoading = true
-            if (this.currentRating == rating) {
-                BarAssistantClient.deleteCocktailRating(this.id).then(() => {
-                    this.currentRating = 0
-                    this.$toast.default(this.$t('rating-removed'))
-                    this.isLoading = false
-                }).catch(e => {
-                    this.$toast.error(e.message)
-                    this.isLoading = false
-                })
-            } else {
-                BarAssistantClient.rateCocktail(this.id, { rating: rating }).then(() => {
-                    this.currentRating = rating
-                    this.$toast.default(this.$t('rating-rated', {rating: rating}))
-                    this.isLoading = false
-                }).catch(e => {
-                    this.$toast.error(e.message)
-                    this.isLoading = false
-                })
-            }
+async function rate(rating: number) {
+    if (isLoading.value || rating < min || rating > max) {
+        return
+    }
+
+    isLoading.value = true
+
+    try {
+        if (currentRating.value == rating) {
+            await BarAssistantClient.deleteCocktailRating(props.id)
+            currentRating.value = 0
+            toast.default(t('rating-removed'))
+        } else {
+            await BarAssistantClient.rateCocktail(props.id, { rating: rating })
+            currentRating.value = rating
+            toast.default(t('rating-rated', { rating: rating }))
         }
+    } catch (e) {
+        toast.error(t('rating-error'))
+    } finally {
+        isLoading.value = false
     }
 }
+
+watch(() => props.id, () => {
+    currentRating.value = props.rating
+}, { immediate: true })
 </script>
 
 <style scoped>

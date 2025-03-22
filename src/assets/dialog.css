@@ -9,7 +9,7 @@
 
 @media (max-width: 450px) {
     .dialog {
-        --dialog-margin: 0rem;
+        --dialog-margin: 0.5rem;
         --dialog-padding: 1rem;
     }
 }
@@ -79,6 +79,7 @@
 @media (max-width: 450px) {
     .dialog-title {
         margin-bottom: 1rem;
+        margin-right: 1rem;
     }
 }
 

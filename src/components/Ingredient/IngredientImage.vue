@@ -34,8 +34,8 @@ const mainIngredientImageUrl = computed(() => {
 </script>
 <style scoped>
 .ingredient__image {
-    width: 80px;
-    height: 80px;
+    width: 60px;
+    height: 60px;
     border-radius: var(--radius-1);
     display: flex;
     align-items: center;
@@ -50,6 +50,11 @@ const mainIngredientImageUrl = computed(() => {
         width: 100px;
         height: 100px;
     }
+}
+
+.ingredient__image.ingredient__image--small {
+    width: 50px;
+    height: 50px;
 }
 
 .ingredient__image img {

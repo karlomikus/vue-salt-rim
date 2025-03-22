@@ -16,7 +16,7 @@
     <div class="bars">
         <OverlayLoader v-if="isLoading"></OverlayLoader>
         <SubscriptionCheck v-if="bars.length >= 1">Subscribe to "Mixologist" plan to create and manage up to 10 bars!</SubscriptionCheck>
-        <div v-if="bars.length > 0">
+        <div v-if="bars.length > 0" class="bars__groups">
             <template v-for="(barsInGroup, group) in groupedBars" :key="group">
                 <h3 v-if="barsInGroup.length > 0" class="page-subtitle">{{ $t('bars.status-' + group) }}</h3>
                 <div class="bars__grid">
@@ -241,6 +241,12 @@ export default {
 .bars__grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
+    gap: var(--gap-size-2);
+}
+
+.bars__groups {
+    display: flex;
+    flex-direction: column;
     gap: var(--gap-size-2);
 }
 

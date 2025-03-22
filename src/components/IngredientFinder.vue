@@ -3,17 +3,17 @@
         <ais-configure :hits-per-page="maxHits" />
         <ais-search-box autofocus>
             <template #default="{ refine }">
-                <input v-model="currentQuery" class="form-input ingredient-finder__search-input" type="search" :placeholder="$t('placeholder.search-ingredients')" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" maxlength="512" @input="refine($event.currentTarget.value)">
+                <input v-model="currentQuery" class="form-input ingredient-finder__search-input" type="search" :placeholder="t('placeholder.search-ingredients')" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" maxlength="512" @input="refine(currentQuery)">
             </template>
         </ais-search-box>
         <ais-hits class="ingredient-finder__hits">
-            <template #default="{ items }">
+            <template #default="{ items }: { items: SearchResult[] }">
                 <div class="ingredient-finder__options block-container block-container--inset">
                     <OverlayLoader v-if="isLoading"></OverlayLoader>
                     <a v-for="item in items" :key="item.id" class="block-container block-container--hover" href="#" @click.prevent="selectIngredient(item)" :class="{ 'ingredient-finder__options--disabled': disabledIngredients.includes(item.id) }">
-                        <IngredientImage class="ingredient__image--small" :ingredient="item"></IngredientImage>
+                        <IngredientImage class="ingredient__image--small" :image-url="item.image_url"></IngredientImage>
                         <div class="ingredient-finder__options__content">
-                            <span>{{ item.name }}</span>
+                            <span class="sr-list-item-title">{{ item.name }}</span>
                             <small>{{ item.category }}</small>
                         </div>
                         <svg v-show="isSelected(item)" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
@@ -21,7 +21,7 @@
                         </svg>
                     </a>
                     <a v-show="currentQuery" href="#" class="ingredient-finder__options__create" @click.prevent="newIngredient">
-                        {{ $t('ingredient.dialog.search-not-found') }} {{ $t('ingredient.dialog.create-ingredient', { name: currentQuery }) }}
+                        {{ t('ingredient.dialog.search-not-found') }} {{ t('ingredient.dialog.create-ingredient', { name: currentQuery }) }}
                     </a>
                 </div>
             </template>
@@ -29,104 +29,99 @@
     </ais-instant-search>
 </template>
 
-<script>
+<script setup lang="ts">
+import { ref } from 'vue'
 import { instantMeiliSearch } from '@meilisearch/instant-meilisearch'
 import OverlayLoader from './OverlayLoader.vue'
 import IngredientImage from './Ingredient/IngredientImage.vue'
 import BarAssistantClient from '@/api/BarAssistantClient'
 import AppState from '@/AppState';
+import type { SearchResults } from '@/api/SearchResults'
+import { useSaltRimToast } from '@/composables/toast'
+import { useI18n } from 'vue-i18n'
 
-export default {
-    components: {
-        OverlayLoader,
-        IngredientImage
-    },
-    props: {
-        searchToken: {
-            type: String,
-            required: true,
-        },
-        modelValue: {
-            type: Object,
-            default() {
-                return {}
-            }
-        },
-        selectedIngredients: {
-            type: Array,
-            default() {
-                return []
-            }
-        },
-        initialQuery: {
-            type: String,
-            default: null,
-        },
-        maxHits: {
-            type: Number,
-            default: 15
-        },
-        disabledIngredients: {
-            type: Array,
-            default() {
-                return []
-            }
-        }
-    },
-    emits: ['update:modelValue', 'ingredientSelected'],
-    data() {
-        const appState = new AppState();
+type SearchResult = SearchResults['ingredient']
 
-        return {
-            isLoading: false,
-            currentQuery: this.initialQuery,
-            index: 'ingredients:name:asc',
-            initialUiState: {
-                'ingredients:name:asc': {
-                    query: this.initialQuery,
-                },
-            },
-            searchClient: instantMeiliSearch(
-                appState.bar.search_host,
-                this.searchToken,
-            ).searchClient,
-        }
-    },
-    methods: {
-        selectIngredient(ing) {
-            if (ing && this.disabledIngredients.includes(ing.id)) {
-                return false
-            }
+interface Props {
+    searchToken: string;
+    selectedIngredients?: number[];
+    initialQuery?: string | null;
+    maxHits?: number;
+    disabledIngredients?: number[];
+}
 
-            this.$emit('update:modelValue', ing)
-            this.$emit('ingredientSelected', ing)
-        },
-        isSelected(ing) {
-            return this.selectedIngredients.includes(ing.id)
-        },
-        newIngredient() {
-            this.isLoading = true
-            BarAssistantClient.saveIngredient({
-                name: this.currentQuery,
-                description: null,
-                strength: 0,
-                origin: null,
-                color: null,
-                images: [],
-            }).then(resp => {
-                this.$toast.default(this.$t('ingredient.dialog.new-ingredient-success', { name: resp.data.name }))
-                this.selectIngredient({
-                    name: resp.data.name,
-                    slug: resp.data.slug,
-                    id: resp.data.id
-                })
-                this.isLoading = false
-            }).catch(() => {
-                this.$toast.error(this.$t('ingredient.dialog.new-ingredient-fail'))
-                this.isLoading = false
-            })
-        },
+const {
+    searchToken,
+    selectedIngredients = [],
+    initialQuery = null,
+    maxHits = 15,
+    disabledIngredients = [],
+} = defineProps<Props>()
+
+const emit = defineEmits<{
+    ingredientSelected: [ing: SearchResult]
+}>()
+const toast = useSaltRimToast()
+const { t } = useI18n()
+const isLoading = ref(false)
+const currentQuery = ref(initialQuery)
+const index = 'ingredients:name:asc'
+const initialUiState = {
+    'ingredients:name:asc': {
+        query: initialQuery,
+    },
+}
+const appState = new AppState()
+const searchClient = instantMeiliSearch(
+    appState.bar.search_host ?? '',
+    searchToken,
+).searchClient
+
+async function newIngredient() {
+    if (currentQuery.value === null || currentQuery.value === '') {
+        return
     }
+
+    const postData = {
+        name: currentQuery.value,
+    };
+
+    isLoading.value = true
+    
+    try {
+        const ing = (await BarAssistantClient.saveIngredient(postData))?.data ?? null
+        if (!ing) {
+            isLoading.value = false
+            return
+        }
+
+        toast.default(t('ingredient.dialog.new-ingredient-success', { name: ing.name }))
+        selectIngredient({
+            id: ing.id,
+            slug: ing.slug,
+            name: ing.name,
+            image_url: null,
+            description: null,
+            category: null,
+            bar_id: appState.bar.id,
+        })
+    } catch (error) {
+        toast.error(t('ingredient.dialog.new-ingredient-fail'))
+    } finally {
+        isLoading.value = false
+    }
+}
+
+function selectIngredient(ing: SearchResult) {
+    if (ing && disabledIngredients.includes(ing.id)) {
+        return false
+    }
+
+    emit('ingredientSelected', ing)
+}
+
+function isSelected(ing: SearchResult) {
+    return selectedIngredients.includes(ing.id)
 }
 </script>
 
