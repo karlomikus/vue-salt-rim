@@ -19,7 +19,7 @@
     },
     "cocktails": "Koktajle, które mogę zrobić",
     "bar-stats": "Bar statistics",
-    "recommended-cocktails": "Recommended cocktails"
+    "recommended-cocktails": "Polecane koktajle"
   },
   "ingredient": {
     "title": "Składnik",
@@ -63,7 +63,7 @@
     "complex": "Złożony składnik",
     "variety-note": "Recipe matching can include this ingredient as a possible substitute for parent ingredient",
     "ingredients": "Składniki",
-    "used_as_substitute_for": "Used as a substitute for",
+    "used_as_substitute_for": "Używany jako zamiennik dla",
     "can_be_substituted_with": "Można zamienić na",
     "add-to-bar-shelf": "Add to bar shelf",
     "remove-from-bar-shelf": "Remove from bar shelf",
@@ -72,9 +72,9 @@
     "bar-shelf-add-success": "Added \"{name}\" to bar shelf",
     "bar-shelf-remove-success": "Removed \"{name}\" from bar shelf",
     "units-help": "Some features work the best if you use common units. Some recommendations for units are: ml, oz, cl, dashes, barspoon, drops, topup, leaves.",
-    "import": "Import ingredients",
+    "import": "Importuj składniki",
     "attach-calculator": "Attach calculator",
-    "hierarchy": "Hierarchy",
+    "hierarchy": "Hierarchia",
     "status": "Ingredient status",
     "hierarchy-description": "This is an overview of the ingredient hierarchy. Depending on the cocktail recipe, if you have any of the variants in the shelf, they can be used as a substitute for the main ingredient when matching recipes.",
     "show-variants": "Show variants",
@@ -116,7 +116,7 @@
     "Build": "Build",
     "Blend": "Blend",
     "Muddle": "Muddle",
-    "Layer": "Layer"
+    "Layer": "Warstwa"
   },
   "total": {
     "approx": "Około łącznie",
@@ -129,7 +129,7 @@
     "favorites": "Twoje ostatnie ulubione",
     "ingredients": "Latest ingredients"
   },
-  "strength": "Strength",
+  "strength": "Siła",
   "rating": "Ocena",
   "created": "Utworzono",
   "updated": "Zaktualizowano",
@@ -138,7 +138,7 @@
   "medium": "Średni",
   "strong": "Mocny",
   "welcome-user": "Witaj {name}",
-  "your-shopping-list": "Shopping list",
+  "your-shopping-list": "Lista zakupów",
   "view-all": "Pokaż wszystkie",
   "add-to-shelf": "Dodaj do mojej półki",
   "remove-from-list": "Usunąć z listy",
