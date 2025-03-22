@@ -14,8 +14,8 @@
                     <a v-for="item in items" :key="item.id" class="cocktail-finder__option block-container block-container--hover" href="#" @click.prevent="$emit('cocktailSelected', item)">
                         <CocktailThumb :cocktail="item"></CocktailThumb>
                         <div>
-                            <h4><ais-highlight attribute="name" :hit="item" /></h4>
-                            <small>{{ item.short_ingredients.join(', ') }}</small>
+                            <h4 class="sr-list-item-title">{{ item.name }}</h4>
+                            <p>{{ item.short_ingredients.join(', ') }}</p>
                         </div>
                     </a>
                 </template>
@@ -96,23 +96,18 @@ export default {
     padding: var(--gap-size-2);
 }
 
-.cocktail-finder__option h4 span {
-    font-size: 1rem;
-    font-family: var(--font-heading);
-    font-weight: var(--fw-bold);
-}
-
 :deep(.cocktail-finder__option h4 span .ais-Highlight-highlighted) {
     background-color: var(--clr-accent-200);
     font-weight: var(--fw-bold);
 }
 
-.cocktail-finder__option small {
-    font-size: 0.85rem;
+.cocktail-finder__option p {
+    font-size: 0.85em;
+    line-height: 1.6;
     color: var(--clr-gray-600);
 }
 
-.dark-theme .cocktail-finder__option small {
+.dark-theme .cocktail-finder__option p {
     color: var(--clr-gray-400);
 }
 </style>

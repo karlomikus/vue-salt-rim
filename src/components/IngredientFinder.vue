@@ -13,7 +13,7 @@
                     <a v-for="item in items" :key="item.id" class="block-container block-container--hover" href="#" @click.prevent="selectIngredient(item)" :class="{ 'ingredient-finder__options--disabled': disabledIngredients.includes(item.id) }">
                         <IngredientImage class="ingredient__image--small" :image-url="item.image_url"></IngredientImage>
                         <div class="ingredient-finder__options__content">
-                            <span>{{ item.name }}</span>
+                            <span class="sr-list-item-title">{{ item.name }}</span>
                             <small>{{ item.category }}</small>
                         </div>
                         <svg v-show="isSelected(item)" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">

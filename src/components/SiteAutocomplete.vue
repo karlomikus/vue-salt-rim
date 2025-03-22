@@ -153,6 +153,9 @@ export default {
 .site-autocomplete__results__content span,
 :deep(.site-autocomplete__results__content span .ais-Highlight-highlighted) {
     font-weight: var(--fw-bold);
+    font-size: 1.25em;
+    font-family: var(--font-heading);
+    line-height: 1.2;
 }
 
 .site-autocomplete__results__content small {
