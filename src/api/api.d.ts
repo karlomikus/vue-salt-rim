@@ -280,6 +280,26 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/bars/{id}/optimize": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Optimize bar
+         * @description Triggers bar optimizations. Updates all cocktail ABVs, rebuilds ingredient hierarchy, updates search index. Limited call to once per minute.
+         */
+        post: operations["optimizeBar"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/calculators": {
         parameters: {
             query?: never;
@@ -754,6 +774,26 @@ export interface paths {
          * @description Generates a publicly accessible download link for the export. The link will be valid for 1 minute by default.
          */
         post: operations["generateExportDownloadLink"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/feeds": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * List feeds
+         * @description Show a list of news and recipes from RSS/Atom feeds
+         */
+        get: operations["listFeeds"];
+        put?: never;
+        post?: never;
         delete?: never;
         options?: never;
         head?: never;
@@ -1964,6 +2004,27 @@ export interface components {
         ForceUnitConvertEnum: "none" | "ml" | "oz" | "cl";
         /** @enum {string} */
         DuplicateActionsEnum: "none" | "skip" | "overwrite";
+        /**
+         * FeedsRecipe
+         * @description Represents a recipe from an RSS/Atom feed
+         */
+        FeedsRecipe: {
+            /** @description The source of the recipe */
+            source: string;
+            /** @description The title of the recipe */
+            title: string;
+            /** @description The description of the recipe */
+            description?: string;
+            /** @description The link to the recipe */
+            link: string;
+            /**
+             * Format: date-time
+             * @description The date the recipe was modified
+             */
+            date: string;
+            /** @description The image URL of the recipe */
+            image: string;
+        };
         /** @description OAuth Credential information */
         OauthCredential: {
             provider: components["schemas"]["SSOProvider"];
@@ -4152,6 +4213,68 @@ export interface operations {
             };
         };
     };
+    optimizeBar: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Database id of a resource */
+                id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful response */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description You are not authorized for this action. */
+            403: {
+                headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data?: components["schemas"]["APIError"];
+                    };
+                };
+            };
+            /** @description Resource record not found. */
+            404: {
+                headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data?: components["schemas"]["APIError"];
+                    };
+                };
+            };
+            /** @description Reached rate limit. */
+            429: {
+                headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
     listCalculators: {
         parameters: {
             query?: never;
@@ -6112,6 +6235,32 @@ export interface operations {
                 content: {
                     "application/json": {
                         data?: components["schemas"]["APIError"];
+                    };
+                };
+            };
+        };
+    };
+    listFeeds: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful response */
+            200: {
+                headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data: components["schemas"]["FeedsRecipe"][];
                     };
                 };
             };

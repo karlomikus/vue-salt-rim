@@ -585,4 +585,8 @@ export default class BarAssistantClient {
   static async getRecommendedCocktails() {
     return (await client.GET('/recommender/cocktails')).data
   }
+
+  static async getFeeds() {
+    return (await client.GET('/feeds')).data
+  }
 }
