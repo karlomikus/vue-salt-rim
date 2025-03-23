@@ -57,8 +57,8 @@
                 <SaltRimCheckbox id="parent-ingredient-checkbox" v-model="isParent" :label="$t('ingredient.is-variety')" :description="$t('ingredient.variety-note')"></SaltRimCheckbox>
             </div>
             <div v-show="isParent" class="form-group" v-if="bar.search_host">
-                <IngredientFinder v-if="bar.search_token" v-show="ingredient.hierarchy.parent_ingredient == null" :search-token="bar.search_token" v-model="ingredient.hierarchy.parent_ingredient" :disabled-ingredients="disabledFinderIngredients"></IngredientFinder>
-                <div class="form-input form-input--auto-height" v-if="ingredient.hierarchy.parent_ingredient">
+                <IngredientFinder v-if="bar.search_token" v-show="ingredient.hierarchy.parent_ingredient?.id == null" :search-token="bar.search_token" @ingredient-selected="selectParentIngredient" :disabled-ingredients="disabledFinderIngredients"></IngredientFinder>
+                <div class="form-input form-input--auto-height" v-if="ingredient.hierarchy.parent_ingredient?.id">
                     {{ ingredient.hierarchy.parent_ingredient.name }} &middot; <a href="#" @click.prevent="ingredient.hierarchy.parent_ingredient = null">{{ $t('remove') }}</a>
                 </div>
             </div>
@@ -173,7 +173,10 @@ const isLoading = ref(false)
 const isParent = ref(false)
 const isComplex = ref(false)
 const ingredient = ref<Ingredient>({
-    hierarchy: {}
+    hierarchy: {
+        parent_ingredient: {},
+    },
+    ingredient_parts: [] as IngredientBasic[],
 } as Ingredient)
 const calculators = ref<Calculator[]>([])
 const appState = new AppState()
@@ -215,6 +218,10 @@ function selectIngredientPart(ingredientPart: IngredientSearchResult) {
     }
 
     ingredient.value?.ingredient_parts?.push(ingredientPart)
+}
+
+function selectParentIngredient(parent: IngredientSearchResult) {
+    ingredient.value.hierarchy.parent_ingredient = parent
 }
 
 function removeIngredientPart(ingredientPart: IngredientBasic) {

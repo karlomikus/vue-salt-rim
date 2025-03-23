@@ -1,6 +1,14 @@
+# v4.0.3
+## Fixes
+- Fixed ingredient finder missing on ingredient form
+
 # v4.0.2
 ## Fixes
 - Fixed rating not getting refresh on route change
+- Added missing images to shelf
+- Fixed loader hiding error messages in login
+- Fixed missing images in ingredient finder
+- Fixed refinement search overflow
 
 # v4.0.1
 ## Fixes
