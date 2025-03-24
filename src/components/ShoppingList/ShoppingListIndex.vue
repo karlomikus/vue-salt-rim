@@ -49,6 +49,7 @@ async function refreshShoppingList() {
     ingredients.value = (await BarAssistantClient.getIngredients({
         'filter[id]': shoppingList.value.map(shoppingListItem => shoppingListItem.ingredient.id).join(','),
         include: 'prices,ancestors',
+        per_page: shoppingList.value.length,
     }))?.data ?? []
     list.value = shoppingList.value.map(sl => {
         return {...sl, ingredientRef: ingredients.value.find(i => i.id === sl.ingredient.id)} as ShoppingListItemWithFullIngredient
