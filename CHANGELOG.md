@@ -1,3 +1,7 @@
+# v4.0.4
+## Fixes
+- Fixed shopping list not fetching more than 50 items
+
 # v4.0.3
 ## Fixes
 - Fixed ingredient finder missing on ingredient form
