@@ -4,27 +4,15 @@ import type { components } from '@/api/api'
 import BarAssistantClient from '@/api/BarAssistantClient';
 import PageHeader from '../PageHeader.vue';
 import OverlayLoader from './../OverlayLoader.vue'
-import { useConfirm } from '@/composables/confirm';
 import { useTitle } from '@/composables/title'
 import { useI18n } from 'vue-i18n';
-import { RouterLink } from 'vue-router';
-import { useSaltRimToast } from '@/composables/toast'
-import ListItemContainer from '../ListItemContainer.vue';
-import EmptyState from './../EmptyState.vue'
-import IconCalculator from '../Icons/IconCalculator.vue';
-import { useClipboard } from '@vueuse/core'
-import SaltRimDialog from './../Dialog/SaltRimDialog.vue'
 import FeedsRecipe from './FeedsRecipe.vue';
 
 type FeedsRecipe = components["schemas"]["FeedsRecipe"]
 
 const { t } = useI18n()
-const toast = useSaltRimToast()
-const confirm = useConfirm()
 const recipes = ref<FeedsRecipe[]>([])
 const isLoading = ref<boolean>(false)
-const showImportDialog = ref<boolean>(false)
-const { copy, copied, isSupported } = useClipboard()
 
 useTitle(t('feeds.title'))
 
@@ -51,8 +39,7 @@ fetchFeeds()
         <div class="block-container block-container--padded feeds-recipe">
             <div class="feeds-recipe__content">
                 <h5 class="sr-list-item-title">[Beta] From the web</h5>
-                <small>Bar Assistant Feeds</small>
-                <p>Here you can find the latest interesting news and recipes from the web. You can also quickly import recipe if feed entry supports it. Use github issues to give feedback or to recommend sites that you would like to see included.</p>
+                <p>Here you can find the latest interesting cocktail news and recipes from the web. You can also quickly import recipe if feed entry supports it. Use <a href="https://github.com/karlomikus/bar-assistant/issues" target="_blank">github issues to give feedback</a> or to recommend sites that you would like to see included.</p>
             </div>
         </div>
         <FeedsRecipe :recipe="feed" v-for="feed in recipes" :key="feed.title"></FeedsRecipe>
