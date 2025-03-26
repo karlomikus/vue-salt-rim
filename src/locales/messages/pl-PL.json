@@ -19,7 +19,7 @@
     },
     "cocktails": "Koktajle, które mogę zrobić",
     "bar-stats": "Bar statistics",
-    "recommended-cocktails": "Recommended cocktails"
+    "recommended-cocktails": "Polecane koktajle"
   },
   "ingredient": {
     "title": "Składnik",
@@ -28,7 +28,7 @@
     "add": "Dodaj składnik",
     "on-shopping-list": "Masz ten składnik na liście zakupów",
     "add-to-shelf": "Dodaj do półki",
-    "remove-from-shelf": "Remove from your shelf",
+    "remove-from-shelf": "Usuń z półki",
     "add-to-list": "Dodaj do listy zakupów",
     "remove-from-list": "Usuń z listy zakupów",
     "update-success": "Składnik został pomyślnie zaktualizowany",
@@ -63,7 +63,7 @@
     "complex": "Złożony składnik",
     "variety-note": "Recipe matching can include this ingredient as a possible substitute for parent ingredient",
     "ingredients": "Składniki",
-    "used_as_substitute_for": "Used as a substitute for",
+    "used_as_substitute_for": "Używany jako zamiennik dla",
     "can_be_substituted_with": "Można zamienić na",
     "add-to-bar-shelf": "Add to bar shelf",
     "remove-from-bar-shelf": "Remove from bar shelf",
@@ -72,9 +72,9 @@
     "bar-shelf-add-success": "Added \"{name}\" to bar shelf",
     "bar-shelf-remove-success": "Removed \"{name}\" from bar shelf",
     "units-help": "Some features work the best if you use common units. Some recommendations for units are: ml, oz, cl, dashes, barspoon, drops, topup, leaves.",
-    "import": "Import ingredients",
+    "import": "Importuj składniki",
     "attach-calculator": "Attach calculator",
-    "hierarchy": "Hierarchy",
+    "hierarchy": "Hierarchia",
     "status": "Ingredient status",
     "hierarchy-description": "This is an overview of the ingredient hierarchy. Depending on the cocktail recipe, if you have any of the variants in the shelf, they can be used as a substitute for the main ingredient when matching recipes.",
     "show-variants": "Show variants",
@@ -116,7 +116,7 @@
     "Build": "Build",
     "Blend": "Blend",
     "Muddle": "Muddle",
-    "Layer": "Layer"
+    "Layer": "Warstwa"
   },
   "total": {
     "approx": "Około łącznie",
@@ -129,7 +129,7 @@
     "favorites": "Twoje ostatnie ulubione",
     "ingredients": "Latest ingredients"
   },
-  "strength": "Strength",
+  "strength": "Siła",
   "rating": "Ocena",
   "created": "Utworzono",
   "updated": "Zaktualizowano",
@@ -138,7 +138,7 @@
   "medium": "Średni",
   "strong": "Mocny",
   "welcome-user": "Witaj {name}",
-  "your-shopping-list": "Shopping list",
+  "your-shopping-list": "Twoja lista zakupów",
   "view-all": "Pokaż wszystkie",
   "add-to-shelf": "Dodaj do mojej półki",
   "remove-from-list": "Usunąć z listy",
@@ -282,7 +282,7 @@
   "clear-filters": "Wyczyść wszystkie filtry",
   "rating-removed": "Usunięto ocenę koktajlu",
   "rating-rated": "Koktajl z oceną {rating} gwiazdek",
-  "shelf-ingredients": "My shelf ingredients",
+  "shelf-ingredients": "Półka ze składnikami",
   "shopping-list-ingredients": "Lista zakupów składników",
   "notes": "Notatki",
   "collection-shared": "Wspólnie z barem",
@@ -439,7 +439,7 @@
     "type-json-description": "Import from JSON format",
     "type-yaml-description": "Import from YAML format",
     "type-collection-description": "Import from Bar Assistant JSON collection",
-    "notice": "Existing ingredients, methods and glassware will be matched by their name (case insensitive). If ingredient does not exist, it will be created.",
+    "notice": "Existing ingredients, methods and glassware will be matched by their name (case insensitive). If ingredient does not exist, it will be created. Common units are automatically converted to \"ml\". Depending on collection size, importing can take a few minutes.",
     "type-csv-text-title": "CSV text",
     "type-csv-text-description": "Import by pasting the CSV structure",
     "type-csv-file-title": "CSV file",

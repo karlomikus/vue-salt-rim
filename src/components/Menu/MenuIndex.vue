@@ -573,7 +573,7 @@ refreshBar()
 
 .menu-category__cocktail__content p {
     font-size: 0.85rem;
-    color: var(--clr-gray-600);
+    color: var(--clr-gray-500);
 }
 
 .dark-theme .menu-category__cocktail__content small {
@@ -621,5 +621,15 @@ refreshBar()
 .menu-item-type.menu-item-type--ingredient {
     background-color: #f0dbe6;
     color: #4d3042;
+}
+
+.dark-theme .menu-item-type.menu-item-type--cocktail {
+    background-color: #3a304d;
+    color: #E6DBF0;
+}
+
+.dark-theme .menu-item-type.menu-item-type--ingredient {
+    background-color: #4d3042;
+    color: #f0dbe6;
 }
 </style>

@@ -41,10 +41,10 @@
 }
 
 .dark-theme .overlay-loader {
-    --ol-clr-bg: rgba(30, 28, 32, 0.7);
+    --ol-clr-bg: rgba(30, 23, 36, 0.7);
 }
 
 .dark-theme .overlay-loader:after {
-    background: linear-gradient(90deg,rgba(30, 28, 32, 0),rgba(94, 89, 99, 0.9),rgba(30, 28, 32, 0));
+    background: linear-gradient(90deg,rgba(30, 23, 36, 0),rgba(94, 89, 99, 0.9),rgba(30, 23, 36, 0));
 }
 </style>
