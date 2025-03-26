@@ -24,7 +24,7 @@ const model = defineModel({ required: true, type: null })
         </div>
         <div class="sr-checkbox__text">
             <label :for="$attrs.id">{{ label }}</label>
-            <p>{{ description }}</p>
+            <p class="form-input-hint">{{ description }}</p>
         </div>
     </div>
 </template>
@@ -48,6 +48,5 @@ const model = defineModel({ required: true, type: null })
 }
 .sr-checkbox__text p {
     font-size: 0.8rem;
-    color: var(--clr-gray-600);
 }
 </style>
