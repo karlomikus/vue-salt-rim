@@ -206,12 +206,29 @@ export default {
                     this.cocktail.ingredients.splice(emptyIngredient, 1)
                 }
             }
-        }
+        },
+        'cocktail.instructions': function (newVal) {
+            if (this.cocktail.method && !this.cocktail.method.id) {
+                const matchedMethod = this.methods.find(method =>
+                    newVal.toLowerCase().includes(method.name.toLowerCase())
+                )
+
+                if (matchedMethod) {
+                    this.cocktail.method.id = matchedMethod.id;
+                }
+            }
+        },
     },
     async created() {
         useTitle(this.$t('cocktail.add'))
 
         this.isLoading = true
+
+        this.glasses = (await BarAssistantClient.getGlasses())?.data ?? []
+        this.methods = (await BarAssistantClient.getCocktailMethods())?.data ?? []
+        this.tags = (await BarAssistantClient.getTags())?.data ?? []
+        this.utensils = (await BarAssistantClient.getUtensils())?.data ?? []
+
         const cocktailId = this.$route.query.id || null
 
         this.bar = (await BarAssistantClient.getBar(this.appState.bar.id)).data ?? {}
@@ -236,16 +253,15 @@ export default {
             })
         }
 
-        this.glasses = (await BarAssistantClient.getGlasses())?.data ?? []
-        this.methods = (await BarAssistantClient.getCocktailMethods())?.data ?? []
-        this.tags = (await BarAssistantClient.getTags())?.data ?? []
-        this.utensils = (await BarAssistantClient.getUtensils())?.data ?? []
+        this.checkForImportData()
+
+        if (!this.appState.isSubscribed()) {
+            this.maxImages = 1
+        }
 
         this.isLoading = false
     },
     mounted() {
-        this.checkForImportData()
-
         this.sortable = Sortable.create(document.querySelector('.cocktail-form__ingredients'), {
             handle: '.drag-handle',
             ghostClass: 'block-container--placeholder',
@@ -254,10 +270,6 @@ export default {
                 this.updateSortPosition()
             },
         })
-
-        if (!this.appState.isSubscribed()) {
-            this.maxImages = 1
-        }
     },
     methods: {
         checkForImportData() {
