@@ -103,27 +103,29 @@ checkServerStatus()
                 <div v-if="isDemo" class="login-page__demo-notice">
                     Welcome to Bar Assistant Demo instance. Use <code>admin@example.com</code> as email, and <code>password</code> as password to login.
                 </div>
-                <div class="form-group">
-                    <label class="form-label" for="email">{{ t('email') }}:</label>
-                    <input id="email" v-model="email" class="form-input" type="email" required>
-                </div>
-                <div class="form-group">
-                    <label class="form-label form-label--forgot-password" for="password">{{ t('password') }}: <RouterLink v-if="showForgotPassword" :to="{name: 'forgot-password'}">Forgot password?</RouterLink></label>
-                    <input id="password" v-model="password" class="form-input" type="password" required>
-                </div>
-                <div class="form-group">
-                    <label class="form-checkbox" for="share-in-bar">
-                        <input id="share-in-bar" v-model="rememberMe" type="checkbox" :value="true">
-                        <span>{{ t('remember-me') }}</span>
-                    </label>
-                </div>
-                <div class="login-page__form__actions">
-                    <SaltRimSpinner v-if="isLoadingAuth" :size="32" style="margin-right: auto;"></SaltRimSpinner>
-                    <RouterLink v-if="registrationAllowed" class="button button--outline" :to="{ name: 'register' }">{{ t('register') }}</RouterLink>
-                    <button type="submit" class="button button--dark" style="margin-left: 5px;">{{ t('login') }}</button>
-                </div>
+                <template v-if="server?.is_password_login_enabled ?? true">
+                    <div class="form-group">
+                        <label class="form-label" for="email">{{ t('email') }}:</label>
+                        <input id="email" v-model="email" class="form-input" type="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label form-label--forgot-password" for="password">{{ t('password') }}: <RouterLink v-if="showForgotPassword" :to="{name: 'forgot-password'}">Forgot password?</RouterLink></label>
+                        <input id="password" v-model="password" class="form-input" type="password" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-checkbox" for="share-in-bar">
+                            <input id="share-in-bar" v-model="rememberMe" type="checkbox" :value="true">
+                            <span>{{ t('remember-me') }}</span>
+                        </label>
+                    </div>
+                    <div class="login-page__form__actions">
+                        <SaltRimSpinner v-if="isLoadingAuth" :size="32" style="margin-right: auto;"></SaltRimSpinner>
+                        <RouterLink v-if="registrationAllowed" class="button button--outline" :to="{ name: 'register' }">{{ t('register') }}</RouterLink>
+                        <button type="submit" class="button button--dark" style="margin-left: 5px;">{{ t('login') }}</button>
+                    </div>
+                </template>
                 <template v-if="providers && enabledProviders.length > 0">
-                    <div class="login-or-separator">
+                    <div class="login-or-separator" v-if="server?.is_password_login_enabled ?? true">
                         <div class="login-or-separator__line"></div>
                         <span class="login-or-separator__text">{{ t('or') }}</span>
                         <div class="login-or-separator__line"></div>

@@ -2014,7 +2014,7 @@ export interface components {
             /** @description The title of the recipe */
             title: string;
             /** @description The description of the recipe */
-            description?: string;
+            description: string;
             /** @description The link to the recipe */
             link: string;
             /**
@@ -2046,7 +2046,7 @@ export interface components {
             enabled: boolean;
         };
         /** @enum {string} */
-        AbilityEnum: "cocktails.read" | "cocktails.write" | "ingredients.read" | "ingredients.write";
+        AbilityEnum: "cocktails.read" | "cocktails.write" | "ingredients.read" | "ingredients.write" | "bars.read" | "bars.write";
         /** @enum {string} */
         BarStatusEnum: "provisioning" | "active" | "deactivated";
         /** @enum {string} */
@@ -3139,21 +3139,43 @@ export interface components {
             password: string;
         };
         ServerVersion: {
-            /** @example 1.0.0 */
+            /**
+             * @description Version of the server
+             * @example 1.0.0
+             */
             version: string;
             /**
              * @description Latest version available on GitHub
              * @example 3.1.0
              */
-            latest_version?: string;
-            /** @example true */
-            is_latest?: boolean;
-            /** @example production */
+            latest_version: string;
+            /**
+             * @description Whether the server is running the latest version
+             * @example true
+             */
+            is_latest: boolean;
+            /**
+             * @description Environment the server is running in
+             * @example production
+             */
             type: string;
             /** @example https://search.example.com */
             search_host: string;
-            /** @example 1.2.0 */
+            /**
+             * @description Version of the search engine
+             * @example 1.2.0
+             */
             search_version: string;
+            /**
+             * @description Whether feeds are enabled
+             * @example true
+             */
+            is_feeds_enabled: string;
+            /**
+             * @description Whether password login is enabled
+             * @example true
+             */
+            is_password_login_enabled: string;
         };
         ShoppingList: {
             ingredient: components["schemas"]["IngredientBasic"];
@@ -3421,7 +3443,7 @@ export interface operations {
                     };
                 };
             };
-            /** @description Unable to authenticate */
+            /** @description Unable to authenticate. Possible reasons: invalid credentials, unconfirmed account or disabled password login */
             400: {
                 headers: {
                     [name: string]: unknown;
