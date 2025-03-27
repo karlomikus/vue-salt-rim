@@ -3170,12 +3170,12 @@ export interface components {
              * @description Whether feeds are enabled
              * @example true
              */
-            is_feeds_enabled: string;
+            is_feeds_enabled: boolean;
             /**
              * @description Whether password login is enabled
              * @example true
              */
-            is_password_login_enabled: string;
+            is_password_login_enabled: boolean;
         };
         ShoppingList: {
             ingredient: components["schemas"]["IngredientBasic"];

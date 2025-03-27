@@ -76,6 +76,9 @@ async function login() {
         const token = (await BarAssistantClient.getLoginToken(email.value, password.value))?.data.token
 
         if (token) {
+            if (server.value) {
+                appState.setServerSettings(server.value.is_feeds_enabled, server.value.is_password_login_enabled)
+            }
             const redirectUrl = await useAuth(token)
             router.push(redirectUrl)
         }
