@@ -176,6 +176,7 @@ const ingredient = ref<Ingredient>({
     hierarchy: {
         parent_ingredient: {},
     },
+    prices: [] as IngredientPrice[],
     ingredient_parts: [] as IngredientBasic[],
 } as Ingredient)
 const calculators = ref<Calculator[]>([])
