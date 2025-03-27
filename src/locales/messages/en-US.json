@@ -708,5 +708,8 @@
   "theme-dark": "Dark",
   "theme-light": "Light",
   "default-currency": "Default currency",
-  "loading": "Loading"
+  "loading": "Loading",
+  "feeds": {
+    "title": "Feeds"
+  }
 }
