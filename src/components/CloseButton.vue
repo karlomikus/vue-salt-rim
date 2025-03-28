@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import IconClose from './Icons/IconClose.vue';
 
 const emit = defineEmits(['closed'])

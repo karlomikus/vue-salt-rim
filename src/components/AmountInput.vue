@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import {ref, computed} from 'vue'
 import {useFloating, offset, flip, shift, autoUpdate} from '@floating-ui/vue'
+import { useRecommendedAmounts } from '@/composables/useRecommendedAmounts';
 import AppState from './../AppState'
 import { unitHandler } from './../composables/useUnits'
 import { onClickOutside } from '@vueuse/core'
@@ -15,9 +16,9 @@ const { floatingStyles } = useFloating(reference, floating, {
 })
 const showRecommendedAmounts = ref(false)
 
-const model = defineModel({ type: null, required: true })
+const model = defineModel<string | null>({ required: true });
 const defaultAmountsInMl = ['7.5', '15', '22.5', '30', '37.5', '45', '52.5', '60']
-const defaultAmounts = ref(defaultAmountsInMl)
+const { defaultAmounts } = useRecommendedAmounts(appState.defaultUnit);
 if (appState.defaultUnit == 'cl') {
     defaultAmounts.value = defaultAmountsInMl.map(amount => (parseFloat(amount) / 10).toString())
 }
