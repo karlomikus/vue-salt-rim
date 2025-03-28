@@ -132,10 +132,6 @@ const cocktailTags = computed({
     }
 })
 
-useTitle(t('cocktail.import'))
-
-getBar(appState.bar.id)
-
 function clearImport() {
     similarCocktails.value = []
     source.value = {
@@ -471,12 +467,21 @@ async function getBar(barId: number): Promise<void> {
     isLoading.value = false
 }
 
-const prefilledUrl = route.query.url?.toString()
-if (prefilledUrl) {
-    isLoading.value = true
-    source.value.url = prefilledUrl
-    fromUrl()
+async function init()
+{
+    useTitle(t('cocktail.import'))
+
+    await getBar(appState.bar.id)
+
+    const prefilledUrl = route.query.url?.toString()
+    if (prefilledUrl) {
+        isLoading.value = true
+        source.value.url = prefilledUrl
+        importCocktail()
+    }
 }
+
+init()
 </script>
 <template>
     <form @submit.prevent="finishImporting">
