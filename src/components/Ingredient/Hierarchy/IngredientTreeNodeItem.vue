@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import type { components } from '@/api/api'
-import { useI18n } from 'vue-i18n'
 
 type IngredientBasic = components['schemas']['IngredientBasic'];
 
@@ -9,7 +8,6 @@ interface Props {
     currentId: string;
 }
 
-const { t } = useI18n()
 const {
     ingredient,
 } = defineProps<Props>();
