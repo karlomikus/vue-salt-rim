@@ -401,8 +401,8 @@
     "confirm-delete": "Questo eliminerà definitivamente il bar \"{name}\".",
     "confirm-leave": "Perderai tutti i tuoi dati nel bar (\"{name}\") se lo lasci.",
     "enable-invites": "Abilita l'adesione tramite codice d'invito",
-    "import-base-cocktails": "Apri bar con cocktail base",
-    "import-base-ingredients": "Apri bar con ingredienti base",
+    "import-base-cocktails": "Include cocktails and ingredints",
+    "import-base-ingredients": "Include ingredients",
     "join-error": "Impossibile entrare nel bar",
     "select-bar": "Seleziona bar",
     "delete-success": "Bar rimosso con successo",
@@ -414,7 +414,15 @@
     "confirm-activation": "Sei sicuro di voler attivare \"{name}\"? Sul piano gratuito puoi solo avere un bar attivo, non sarai in grado di attivare altri bar.",
     "activation-success": "Bar attivato",
     "members": "Membri del bar",
-    "logo": "Bar logo"
+    "logo": "Bar logo",
+    "edit-success": "Bar \"{name}\" updated",
+    "default-data": "Default dataset",
+    "no-default": {
+      "data": "No default data"
+    },
+    "optimization-started": "Started bar optimization",
+    "optimize": "Optimize bar",
+    "confirm-optimization": "This will run bar optimizations"
   },
   "close": "Chiudi",
   "save-as": "Salva come",
