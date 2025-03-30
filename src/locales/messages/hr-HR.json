@@ -401,8 +401,8 @@
     "confirm-delete": "Ovo će zauvijek obrisati bar s imenom \"{name}\".",
     "confirm-leave": "Izgubit ćete sve svoje podatke u baru \"{name}\" ako ga napustite.",
     "enable-invites": "Dopusti pridruživanje pomoću pozivnog koda",
-    "import-base-cocktails": "Otvori bar sa postojećim koktelima",
-    "import-base-ingredients": "Otvori bar sa postojećim sastojcima",
+    "import-base-cocktails": "Include cocktails and ingredints",
+    "import-base-ingredients": "Include ingredients",
     "join-error": "Nemoguće se pridružiti baru",
     "select-bar": "Odaberite bar",
     "delete-success": "Bar uspješno obrisan",
@@ -414,7 +414,15 @@
     "confirm-activation": "Are you sure you want to activate \"{name}\"? On free plan you can have only one bar activated, you will not be able to activate any other bars.",
     "activation-success": "Bar aktiviran",
     "members": "Članovi bara",
-    "logo": "Bar logo"
+    "logo": "Bar logo",
+    "edit-success": "Bar \"{name}\" updated",
+    "default-data": "Default dataset",
+    "no-default": {
+      "data": "No default data"
+    },
+    "optimization-started": "Started bar optimization",
+    "optimize": "Optimize bar",
+    "confirm-optimization": "This will run bar optimizations"
   },
   "close": "Zatvori",
   "save-as": "Spremi kao",
@@ -708,5 +716,8 @@
   "theme-dark": "Dark",
   "theme-light": "Light",
   "default-currency": "Default currency",
-  "loading": "Loading"
+  "loading": "Loading",
+  "feeds": {
+    "title": "Feeds"
+  }
 }

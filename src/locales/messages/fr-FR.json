@@ -401,8 +401,8 @@
     "confirm-delete": "Cela supprimera définitivement le bar \"{name}\".",
     "confirm-leave": "Vous perdrez toutes les données du bar (\"{name}\") si vous le quittez.",
     "enable-invites": "Permettre de rejoindre avec un code d'invitation",
-    "import-base-cocktails": "Ouvrir le bar avec les cocktails de base",
-    "import-base-ingredients": "Ouvrir le bar avec les ingrédients de base",
+    "import-base-cocktails": "Include cocktails and ingredints",
+    "import-base-ingredients": "Include ingredients",
     "join-error": "Impossible de rejoindre le bar",
     "select-bar": "Sélectionnez la barre",
     "delete-success": "Bar supprimé avec succès",
@@ -414,7 +414,15 @@
     "confirm-activation": "Êtes-vous sûr de vouloir activer \"{name}\" ? Avec la formule gratuite, vous ne pouvez avoir qu'un seul bar actif, vous ne pourrez pas activer d'autres bars.",
     "activation-success": "Bar activé",
     "members": "Membres du bar",
-    "logo": "Logo du bar"
+    "logo": "Logo du bar",
+    "edit-success": "Bar \"{name}\" updated",
+    "default-data": "Default dataset",
+    "no-default": {
+      "data": "No default data"
+    },
+    "optimization-started": "Started bar optimization",
+    "optimize": "Optimize bar",
+    "confirm-optimization": "This will run bar optimizations"
   },
   "close": "Fermer",
   "save-as": "Enregistrer sous",
@@ -708,5 +716,8 @@
   "theme-dark": "Dark",
   "theme-light": "Light",
   "default-currency": "Default currency",
-  "loading": "Loading"
+  "loading": "Loading",
+  "feeds": {
+    "title": "Feeds"
+  }
 }
