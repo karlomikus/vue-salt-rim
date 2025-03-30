@@ -16,7 +16,7 @@ const { floatingStyles } = useFloating(reference, floating, {
 })
 const showRecommendedAmounts = ref(false)
 
-const model = defineModel<string | null>({ required: true });
+const model = defineModel<string | number | null>({ required: true });
 const defaultAmountsInMl = ['7.5', '15', '22.5', '30', '37.5', '45', '52.5', '60']
 const { defaultAmounts } = useRecommendedAmounts(appState.defaultUnit);
 if (appState.defaultUnit == 'cl') {
