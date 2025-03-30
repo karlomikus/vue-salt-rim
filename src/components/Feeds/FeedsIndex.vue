@@ -52,4 +52,10 @@ fetchFeeds()
     grid-template-columns: repeat(auto-fill, minmax(550px, 1fr));
     gap: 1rem;
 }
+
+@media (max-width: 550px) {
+    .feeds-container {
+        grid-template-columns: 1fr;
+    }
+}
 </style>

@@ -53,4 +53,10 @@ defineProps<Props>()
 .feeds-recipe__content small {
     color: var(--clr-gray-500);
 }
+
+@media (max-width: 450px) {
+    .feeds-recipe {
+        flex-direction: column;
+    }
+}
 </style>

@@ -1,3 +1,13 @@
+# v4.1.0
+## New
+- Added support for feeds
+- Autoselect method from instructions text
+- Added support for disabled password logins
+- Added bar optimize button to edit bar
+- Added support for default ingredient units
+- Added support for bars ability in token
+- Added support to auto import URL from query string
+
 # v4.0.4
 ## Fixes
 - Fixed shopping list not fetching more than 50 items
