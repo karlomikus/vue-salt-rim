@@ -401,8 +401,8 @@
     "confirm-delete": "Detta kommer permanent ta bort baren med namn \"{name}\".",
     "confirm-leave": "Du kommer förlora all din data i bar \"{name}\" om du lämnar.",
     "enable-invites": "Slå på inbjudningskod",
-    "import-base-cocktails": "Öppna bar med grundläggande drinkar",
-    "import-base-ingredients": "Öppna bar med grundläggande ingredienser",
+    "import-base-cocktails": "Include cocktails and ingredints",
+    "import-base-ingredients": "Include ingredients",
     "join-error": "Kunde inte gå med i baren",
     "select-bar": "Välj bar",
     "delete-success": "Baren har tagits bort",
@@ -414,7 +414,15 @@
     "confirm-activation": "Är du säker på att du vill aktivera baren \"{name}\"? I gratisversionen kan du bara ha en bar aktiverad. Du kommer inte kunna aktivera någon annan bar.",
     "activation-success": "Baren aktiverad",
     "members": "Barens medlemmar",
-    "logo": "Bar logo"
+    "logo": "Bar logo",
+    "edit-success": "Bar \"{name}\" updated",
+    "default-data": "Default dataset",
+    "no-default": {
+      "data": "No default data"
+    },
+    "optimization-started": "Started bar optimization",
+    "optimize": "Optimize bar",
+    "confirm-optimization": "This will run bar optimizations"
   },
   "close": "Stäng",
   "save-as": "Spara som",
@@ -708,5 +716,8 @@
   "theme-dark": "Dark",
   "theme-light": "Light",
   "default-currency": "Default currency",
-  "loading": "Loading"
+  "loading": "Loading",
+  "feeds": {
+    "title": "Feeds"
+  }
 }
