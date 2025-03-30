@@ -56,7 +56,7 @@
             <div class="form-group" v-if="bar.id">
                 <div class="alert alert--info">
                     <p>This action helps synchronize your search data with the actual data. It also recalculates all cocktail ABVs and ingredient materialized paths. You can run this action manually, but it is limited to once every 10 minutes. Regular execution is not necessary, you should only run this if you notice problems with incorrect data.</p>
-                    <button type="button" class="button button--dark" @click="runBarOptimize">{{ $t('bars.optimize') }}</button>
+                    <button type="button" class="button button--dark" @click="runBarOptimize"><OverlayLoader v-if="isOptimizationRunning" />{{ $t('bars.optimize') }}</button>
                 </div>
             </div>
         </div>
@@ -193,11 +193,12 @@ async function submit() {
 
 async function runBarOptimize() {
     confirm.show(t('bars.confirm-optimization'), {
-        onResolved: (dialog: any) => {
-            dialog.close()
-            BarAssistantClient.optimizeBar(bar.value.id)
+        onResolved: async (dialog: any) => {
             isOptimizationRunning.value = true
             toast.default(t('bars.optimization-started', { name: bar.value.name }))
+            dialog.close()
+            await BarAssistantClient.optimizeBar(bar.value.id)
+            isOptimizationRunning.value = false
         }
     })
 }
