@@ -104,6 +104,7 @@ async function newIngredient() {
             description: null,
             category: null,
             bar_id: appState.bar.id,
+            units: null,
         })
     } catch (error) {
         toast.error(t('ingredient.dialog.new-ingredient-fail'))
