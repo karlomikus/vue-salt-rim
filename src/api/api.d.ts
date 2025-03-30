@@ -2126,6 +2126,7 @@ export interface components {
                 /** @example true */
                 can_deactivate?: boolean;
             };
+            images?: components["schemas"]["Image"][];
         };
         BarBasic: {
             /** @example 1 */
@@ -2171,6 +2172,8 @@ export interface components {
             enable_invites?: boolean;
             /** @description List of data that the bar will start with. Cocktails cannot be imported without ingredients. */
             options?: components["schemas"]["BarOptionsEnum"];
+            /** @description Existing image ids */
+            images?: number[];
         };
         BarSettings: {
             default_units?: string | null;
@@ -2919,6 +2922,11 @@ export interface components {
             acidity?: number | null;
             /** @example Buffalo trace */
             distillery?: string | null;
+            /**
+             * @description Default unit that would be used for this ingredient
+             * @example ml
+             */
+            units?: string | null;
         };
         IngredientTree: {
             ingredient: components["schemas"]["IngredientBasic"];
