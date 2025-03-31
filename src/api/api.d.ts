@@ -2799,6 +2799,11 @@ export interface components {
             color: string;
             /** @example 12 */
             cocktails_count?: number;
+            /**
+             * @description Number of cocktails that use this ingredient as a substitute
+             * @example 1
+             */
+            cocktails_as_substitute_count?: number;
             cocktails?: {
                 /** @example 1 */
                 id?: number;
@@ -2815,7 +2820,7 @@ export interface components {
                 can_edit?: boolean;
                 /** @example true */
                 can_delete?: boolean;
-            }[];
+            };
             ingredient_parts?: components["schemas"]["IngredientBasic"][];
             prices?: components["schemas"]["IngredientPrice"][];
             in_shelf?: boolean;
@@ -2831,6 +2836,7 @@ export interface components {
             /** Format: float */
             acidity?: number | null;
             distillery?: string | null;
+            units?: string | null;
         };
         /** @description Minimal ingredient information */
         IngredientBasic: {
@@ -2853,6 +2859,8 @@ export interface components {
             parent_ingredient?: components["schemas"]["IngredientBasic"] | null;
             descendants?: components["schemas"]["IngredientBasic"][];
             ancestors?: components["schemas"]["IngredientBasic"][];
+            /** @description Root ingredient ID */
+            root_ingredient_id?: string | null;
         };
         IngredientPrice: {
             price_category: components["schemas"]["PriceCategory"];

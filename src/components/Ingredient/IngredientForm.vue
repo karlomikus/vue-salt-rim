@@ -127,7 +127,7 @@
                 </div>
             </template>
             <div v-else>
-                To add ingredient prices, you need to define bar <RouterLink :to="{name: 'settings.price-categories'}">price categories</RouterLink> first.
+                To add ingredient prices, you need to define bar <RouterLink :to="{name: 'settings.price-categories'}" target="_blank">price categories</RouterLink> first.
             </div>
         </div>
         <div class="form-actions form-actions--timestamps">
