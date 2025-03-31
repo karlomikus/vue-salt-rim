@@ -348,7 +348,6 @@ watch(
     () => route.params.id,
     async () => {
         if (route.name == 'ingredients.show') {
-            console.log('Route changed', route.params.id)
             await refreshIngredient()
             await fetchCalculator()
         }
