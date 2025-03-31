@@ -12,30 +12,45 @@
                 <input id="expires-at" v-model="apiKey.expires_at" class="form-input" type="date">
             </div>
             <label class="form-label form-label--required">{{ $t('api.abilities') }}:</label>
-            <div class="api-ability">
-                <h4>{{ $t('cocktail.cocktails') }}</h4>
-                <div class="api-ability__options">
-                    <label class="form-checkbox">
-                        <input v-model="apiKey.abilities" type="checkbox" value="cocktails.read">
-                        <span>{{ $t('api.read') }}</span>
-                    </label>
-                    <label class="form-checkbox">
-                        <input v-model="apiKey.abilities" type="checkbox" value="cocktails.write">
-                        <span>{{ $t('api.write') }}</span>
-                    </label>
+            <div class="api-abilities">
+                <div class="api-ability">
+                    <h4>{{ $t('cocktail.cocktails') }}</h4>
+                    <div class="api-ability__options">
+                        <label class="form-checkbox">
+                            <input v-model="apiKey.abilities" type="checkbox" value="cocktails.read">
+                            <span>{{ $t('api.read') }}</span>
+                        </label>
+                        <label class="form-checkbox">
+                            <input v-model="apiKey.abilities" type="checkbox" value="cocktails.write">
+                            <span>{{ $t('api.write') }}</span>
+                        </label>
+                    </div>
                 </div>
-            </div>
-            <div class="api-ability">
-                <h4>{{ $t('ingredient.ingredients') }}</h4>
-                <div class="api-ability__options">
-                    <label class="form-checkbox">
-                        <input v-model="apiKey.abilities" type="checkbox" value="ingredients.read">
-                        <span>{{ $t('api.read') }}</span>
-                    </label>
-                    <label class="form-checkbox">
-                        <input v-model="apiKey.abilities" type="checkbox" value="ingredients.write">
-                        <span>{{ $t('api.write') }}</span>
-                    </label>
+                <div class="api-ability">
+                    <h4>{{ $t('ingredient.ingredients') }}</h4>
+                    <div class="api-ability__options">
+                        <label class="form-checkbox">
+                            <input v-model="apiKey.abilities" type="checkbox" value="ingredients.read">
+                            <span>{{ $t('api.read') }}</span>
+                        </label>
+                        <label class="form-checkbox">
+                            <input v-model="apiKey.abilities" type="checkbox" value="ingredients.write">
+                            <span>{{ $t('api.write') }}</span>
+                        </label>
+                    </div>
+                </div>
+                <div class="api-ability">
+                    <h4>{{ $t('bars.title') }}</h4>
+                    <div class="api-ability__options">
+                        <label class="form-checkbox">
+                            <input v-model="apiKey.abilities" type="checkbox" value="bars.read">
+                            <span>{{ $t('api.read') }}</span>
+                        </label>
+                        <label class="form-checkbox">
+                            <input v-model="apiKey.abilities" type="checkbox" value="bars.write">
+                            <span>{{ $t('api.write') }}</span>
+                        </label>
+                    </div>
                 </div>
             </div>
             <div class="dialog-actions">
@@ -48,7 +63,7 @@
             <div class="alert alert--warning">{{ $t('api.token-notice') }}</div>
             <div class="api-input">
                 <input ref="tokenInput" v-model="plainTextToken" type="text" class="form-input" spellcheck="false" readonly @focus="selectAll">
-                <button type="button" class="button button--dark" @click="copy">{{ $t('copy') }}</button>
+                <button type="button" class="button button--dark" @click="doCopy">{{ $t('copy') }}</button>
             </div>
             <div class="dialog-actions">
                 <button class="button button--outline" @click.prevent="$emit('apiKeyDialogClosed')">{{ $t('close') }}</button>
@@ -57,83 +72,92 @@
     </form>
 </template>
 
-<script>
+<script setup lang="ts">
+import { ref, useTemplateRef } from 'vue'
+import { useI18n } from 'vue-i18n'
+import { useSaltRimToast } from '@/composables/toast';
 import BarAssistantClient from '@/api/BarAssistantClient';
 import OverlayLoader from '../OverlayLoader.vue'
+import type { components } from '@/api/api'
+import { useClipboard } from '@vueuse/core';
 
-export default {
-    components: {
-        OverlayLoader,
-    },
-    emits: ['apiKeyDialogClosed'],
-    data() {
-        return {
-            isLoading: false,
-            apiKey: {
-                abilities: [],
-            },
-            plainTextToken: null,
-        }
-    },
-    methods: {
-        submit() {
-            this.isLoading = true
+type PersonalAccessToken = components['schemas']['PersonalAccessToken']
+type PersonalAccessTokenRequest = components['schemas']['PersonalAccessTokenRequest']
 
-            const postData = {
-                name: this.apiKey.name,
-                expires_at: this.apiKey.expires_at,
-                abilities: this.apiKey.abilities,
-            }
+const isLoading = ref(false)
+const tokenInput = useTemplateRef<HTMLInputElement>('tokenInput')
+const plainTextToken = ref<string | null>(null)
+const toast = useSaltRimToast()
+const { t } = useI18n()
+const apiKey = ref<PersonalAccessToken>({
+    name: '',
+    expires_at: '',
+    abilities: [],
+})
 
-            BarAssistantClient.saveToken(postData).then((resp) => {
-                this.isLoading = false
-                this.$toast.default(this.$t('api.add-success'))
-                this.plainTextToken = resp.data.token
-            }).catch(e => {
-                this.$toast.error(e.message)
-                this.isLoading = false
-            })
-        },
-        selectAll() {
-            this.$refs.tokenInput.select()
-            this.$refs.tokenInput.setSelectionRange(0, 99999)
-        },
-        copy() {
-            this.selectAll(this.$refs.tokenInput)
-            navigator.clipboard.writeText(this.plainTextToken).then(() => {
-                this.$toast.default(this.$t('api.key-copied'))
-            }, () => {
-                this.$toast.error('Unable to copy')
-            })
-        }
+function submit() {
+    isLoading.value = true
+
+    const postData = {
+        name: apiKey.value.name,
+        expires_at: apiKey.value.expires_at,
+        abilities: apiKey.value.abilities,
+    } as PersonalAccessTokenRequest
+
+    BarAssistantClient.saveToken(postData).then((resp) => {
+        isLoading.value = false
+        plainTextToken.value = resp?.data.token ?? null
+        toast.default(t('api.add-success'))
+    }).catch(e => {
+        toast.error(e.message)
+        isLoading.value = false
+    })
+}
+
+function selectAll() {
+    if (!tokenInput.value) {
+        return
+    }
+
+    tokenInput.value.select()
+    tokenInput.value.setSelectionRange(0, 99999)
+}
+
+function doCopy() {
+    selectAll()
+
+    const { copy, copied, isSupported } = useClipboard()
+
+    if (!isSupported.value) {
+        toast.error(t('permissions.clipboard-error'))
+        return
+    }
+
+    copy(plainTextToken.value ?? '')
+
+    if (copied.value) {
+        toast.default(t('api.key-copied'))
     }
 }
 </script>
 
 <style scoped>
+.api-abilities {
+    margin-top: var(--gap-size-2);
+    display: flex;
+    flex-direction: column;
+    gap: var(--gap-size-2);
+}
+
 .api-ability {
     display: flex;
-    margin-top: var(--gap-size-2);
+    gap: var(--gap-size-2);
 }
 
 .api-ability__options {
     margin-left: auto;
     display: flex;
-    gap: var(--gap-size-1);
-}
-
-.api-ability__options .form-checkbox {
-    background-color: var(--clr-gray-100);
-    border: 1px solid var(--clr-gray-200);
-    box-shadow: inset 0 1px 0 var(--clr-gray-50);
-    border-radius: 3px;
-    padding: 2px 7px;
-}
-
-.dark-theme .api-ability__options .form-checkbox {
-    background-color: var(--clr-gray-800);
-    border: 1px solid var(--clr-gray-600);
-    box-shadow: inset 0 1px 0 var(--clr-gray-900);
+    gap: var(--gap-size-3);
 }
 
 .api-input {

@@ -585,4 +585,12 @@ export default class BarAssistantClient {
   static async getRecommendedCocktails() {
     return (await client.GET('/recommender/cocktails')).data
   }
+
+  static async getFeeds() {
+    return (await client.GET('/feeds')).data
+  }
+
+  static async optimizeBar(id: number) {
+    return (await client.POST('/bars/{id}/optimize', { params: { path: { id: id } } })).data
+  }
 }

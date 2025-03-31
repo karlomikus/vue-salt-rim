@@ -1,8 +1,3 @@
-<script setup>
-import { unitHandler } from '@/composables/useUnits'
-import DateFormatter from '../DateFormatter.vue'
-import CalculatorRender from '../Calculator/CalculatorRender.vue'
-</script>
 <template>
     <div v-if="!ingredient.id">
         <PageHeader>
@@ -15,10 +10,10 @@ import CalculatorRender from '../Calculator/CalculatorRender.vue'
     <div v-else>
         <PageHeader>
             {{ ingredient.name }}
-            <small :title="$t('added-on-by', { date: createdDate, name: ingredient.created_user.name })">
+            <small :title="$t('added-on-by', { date: createdDate, name: ingredient.created_user?.name })">
                 <template v-for="(ancestor, index) in ingredient.hierarchy.ancestors" :key="ancestor.id">
                     <RouterLink :to="{ name: 'ingredients', query: { 'filter[descendants_of]': ancestor.id } }">{{ ancestor.name }}</RouterLink>
-                    <template v-if="index + 1 !== ingredient.hierarchy.ancestors.length"> > </template>
+                    <template v-if="index + 1 !== ingredient.hierarchy?.ancestors?.length"> > </template>
                 </template>
             </small>
         </PageHeader>
@@ -32,7 +27,7 @@ import CalculatorRender from '../Calculator/CalculatorRender.vue'
             <div class="ingredient-details__column-sidebar">
                 <h3 class="page-subtitle" style="margin-top: 0;">{{ $t('ingredient.status') }}</h3>
                 <div class="block-container block-container--inset shelf-actions">
-                    <ToggleIngredientBarShelf :ingredient="ingredient" :status="ingredient.in_bar_shelf">
+                    <ToggleIngredientBarShelf v-if="ingredient.in_bar_shelf !== undefined" :ingredient="ingredient" v-model="ingredient.in_bar_shelf">
                         <template v-slot="{ isLoading, inList, toggle }">
                             <a href="#" class="block-container block-container--hover shelf-actions__action" v-if="appState.isAdmin() || appState.isModerator()" @click.prevent="toggle">
                                 <div>
@@ -49,7 +44,7 @@ import CalculatorRender from '../Calculator/CalculatorRender.vue'
                             </a>
                         </template>
                     </ToggleIngredientBarShelf>
-                    <ToggleIngredientShelf :ingredient="ingredient" :status="ingredient.in_shelf">
+                    <ToggleIngredientShelf v-if="ingredient.in_shelf !== undefined" :ingredient="ingredient" v-model="ingredient.in_shelf">
                         <template v-slot="{ isLoading, inList, toggle }">
                             <a href="#" class="block-container block-container--hover shelf-actions__action" @click.prevent="toggle">
                                 <div>
@@ -66,7 +61,7 @@ import CalculatorRender from '../Calculator/CalculatorRender.vue'
                             </a>
                         </template>
                     </ToggleIngredientShelf>
-                    <ToggleIngredientShoppingCart :ingredient="ingredient" :status="ingredient.in_shopping_list">
+                    <ToggleIngredientShoppingCart v-if="ingredient.in_shopping_list !== undefined" :ingredient="ingredient" v-model="ingredient.in_shopping_list">
                         <template v-slot="{ isLoading, inList, toggle }">
                             <a href="#" class="block-container block-container--hover shelf-actions__action" @click.prevent="toggle">
                                 <div>
@@ -164,7 +159,7 @@ import CalculatorRender from '../Calculator/CalculatorRender.vue'
                     </div>
                     <ul class="block-container block-container--inset ingredient-details__more">
                         <OverlayLoader v-if="isLoadingExtra" />
-                        <li v-if="ingredient.ingredient_parts.length">
+                        <li v-if="ingredient.ingredient_parts?.length">
                             {{ $t('contains-ingredients') }}:
                             <template v-for="(part, index) in ingredient.ingredient_parts" :key="part.id">
                                 <RouterLink :to="{name: 'ingredients.show', params: {id: part.slug}}">{{ part.name }}</RouterLink><template v-if="index + 1 !== ingredient.ingredient_parts.length">, </template>
@@ -176,13 +171,13 @@ import CalculatorRender from '../Calculator/CalculatorRender.vue'
                             </RouterLink>
                         </li>
                         <li v-if="extraIfAddedToShelf.length > 0">{{ $t('ingredient.extra-cocktails') }}: <RouterLink :to="{name: 'cocktails', query: {'filter[id]': extraCocktailsIds}}">{{ extraIfAddedToShelf.length }} {{ $t('cocktail.cocktails') }}</RouterLink></li>
-                        <li v-if="ingredient.can_be_substituted_with.length > 0">
+                        <li v-if="ingredient.can_be_substituted_with?.length">
                             {{ $t('ingredient.can_be_substituted_with') }}:
                             <template v-for="(ing, index) in ingredient.can_be_substituted_with" :key="ing.id">
                                 <RouterLink :to="{name: 'ingredients.show', params: {id: ing.slug}}">{{ ing.name }}</RouterLink><template v-if="index + 1 !== ingredient.can_be_substituted_with.length">, </template>
                             </template>
                         </li>
-                        <li v-if="ingredient.used_as_substitute_for.length > 0">
+                        <li v-if="ingredient.used_as_substitute_for?.length">
                             {{ $t('ingredient.can_be_substituted_with') }}:
                             <template v-for="(ing, index) in ingredient.used_as_substitute_for" :key="ing.id">
                                 <RouterLink :to="{name: 'ingredients.show', params: {id: ing.slug}}">{{ ing.name }}</RouterLink><template v-if="index + 1 !== ingredient.used_as_substitute_for.length">, </template>
@@ -192,17 +187,17 @@ import CalculatorRender from '../Calculator/CalculatorRender.vue'
                     <div v-html="parsedDescription" class="has-markdown"></div>
                 </div>
                 <div class="block-container block-container--padded">
-                    <IngredientHierarchy :parent-id="ingredient.id" :root-id="ingredient.hierarchy.root_ingredient_id"></IngredientHierarchy>
+                    <IngredientHierarchy :parent-id="ingredient.id" :root-id="ingredient.hierarchy.root_ingredient_id ?? 0"></IngredientHierarchy>
                 </div>
                 <div v-if="ingredient.calculator_id" class="block-container block-container--padded">
                     <h2 class="details-block-container__title">{{ $t('calculators.calculator') }}</h2>
                     <OverlayLoader v-if="isLoadingCalculator" />
                     <CalculatorRender v-if="calculator" :calculator="calculator"></CalculatorRender>
                 </div>
-                <div v-if="ingredient.prices.length > 0" class="block-container block-container--padded ingredient-details__prices">
+                <div v-if="ingredient.prices && ingredient.prices.length > 0" class="block-container block-container--padded ingredient-details__prices">
                     <h2 class="details-block-container__title">{{ $t('price.prices') }}</h2>
                     <div class="ingredient-details__prices__list">
-                        <div v-for="ingredientPrice in ingredient.prices" :key="ingredientPrice.id" class="ingredient-details__prices__list__item">
+                        <div v-for="ingredientPrice in ingredient.prices" :key="ingredientPrice.created_at" class="ingredient-details__prices__list__item">
                             <h5>{{ ingredientPrice.price_category.name }} ({{ ingredientPrice.price_category.currency }})</h5>
                             <p>
                                 {{ unitHandler.formatPrice(ingredientPrice.price.price, ingredientPrice.price_category.currency) }} &middot; {{ ingredientPrice.amount }}{{ ingredientPrice.units }} <template v-if="ingredientPrice.description">&middot; {{ ingredientPrice.description }}</template>
@@ -218,13 +213,16 @@ import CalculatorRender from '../Calculator/CalculatorRender.vue'
     </div>
 </template>
 
-<script>
+<script setup lang="ts">
+import { ref, computed, watch } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
+import { unitHandler } from '@/composables/useUnits'
+import CalculatorRender from '../Calculator/CalculatorRender.vue'
 import OverlayLoader from '@/components/OverlayLoader.vue'
 import { micromark } from 'micromark'
 import dayjs from 'dayjs'
 import PageHeader from '../PageHeader.vue'
 import BarAssistantClient from '@/api/BarAssistantClient'
-import AppState from '@/AppState'
 import ToggleIngredientShoppingCart from '@/components/ToggleIngredientShoppingCart.vue'
 import ToggleIngredientShelf from '@/components/ToggleIngredientShelf.vue'
 import ToggleIngredientBarShelf from '../ToggleIngredientBarShelf.vue'
@@ -238,129 +236,124 @@ import IngredientHierarchy from './IngredientHierarchy.vue'
 import IconCheck from '../Icons/IconCheck.vue'
 import { useIngredientBg } from '@/composables/ingredientBg'
 import TimeStamps from '@/components/TimeStamps.vue'
+import type { components } from '@/api/api'
+import { useSaltRimToast } from '@/composables/toast'
+import { useConfirm } from '@/composables/confirm'
+import { useI18n } from 'vue-i18n'
+import AppState from '@/AppState'
 
-export default {
-    components: {
-        OverlayLoader,
-        PageHeader,
-        ToggleIngredientShelf,
-        ToggleIngredientShoppingCart,
-        Dropdown,
-        ToggleIngredientBarShelf,
-        IconBarShelf,
-        IconUserShelf,
-        IconShoppingCart,
-        IconMore,
-        IngredientHierarchy,
-        TimeStamps,
-    },
-    data: () => ({
-        appState: new AppState(),
-        isLoadingCalculator: false,
-        isLoadingIngredient: false,
-        isLoadingExtra: false,
-        ingredient: {},
-        calculator: null,
-        extraIfAddedToShelf: []
-    }),
-    computed: {
-        mainIngredientImage() {
-            if (this.ingredient.images.length <= 0) {
-                return { url: '/no-ingredient.png', copyright: null }
-            }
+type Ingredient = components['schemas']['Ingredient']
+type CocktailBasic = components['schemas']['CocktailBasic']
+type Calculator = components['schemas']['Calculator']
 
-            return this.ingredient.images[0]
-        },
-        parsedDescription() {
-            if (!this.ingredient.description) {
-                return null
-            }
+const { t } = useI18n()
+const confirm = useConfirm()
+const toast = useSaltRimToast()
+const route = useRoute()
+const router = useRouter()
+const appState = new AppState()
+const isLoadingIngredient = ref(false)
+const isLoadingCalculator = ref(false)
+const isLoadingExtra = ref(false)
+const extraIfAddedToShelf = ref<CocktailBasic[]>([])
+const ingredient = ref<Ingredient>({
+    prices: [] as components['schemas']['IngredientPrice'][],
+    ingredient_parts: [] as components['schemas']['IngredientBasic'][],
+} as Ingredient)
+const calculator = ref<Calculator>({} as Calculator)
 
-            return micromark(this.ingredient.description)
-        },
-        createdDate() {
-            const date = dayjs(this.ingredient.created_at).toDate()
+async function refreshIngredient() {
+    isLoadingIngredient.value = true
+    try {
+        ingredient.value = (await BarAssistantClient.getIngredient(route.params.id.toString()))?.data ?? {} as Ingredient
+        useTitle(ingredient.value.name)
+    } catch (e: any) {
+        toast.default(e.message)
+        isLoadingIngredient.value = false
+        router.push({ name: 'ingredients' })
+        return
+    }
+    isLoadingIngredient.value = false
 
-            return this.$d(date, 'short')
-        },
-        updatedDate() {
-            const date = dayjs(this.ingredient.updated_at).toDate()
+    isLoadingExtra.value = true
+    extraIfAddedToShelf.value = (await BarAssistantClient.getExtraCocktailsWithIngredient(ingredient.value.id))?.data ?? []
+    isLoadingExtra.value = false
+}
 
-            return this.$d(date, 'short')
-        },
-        extraCocktailsIds() {
-            return this.extraIfAddedToShelf.map(c => c.id).join(',')
-        },
-        backgroundColor() {
-            const hex = this.ingredient.color || '#51274c'
+async function fetchCalculator() {
+    if (!ingredient.value.calculator_id) {
+        return
+    }
 
-            return useIngredientBg(hex)
-        },
-    },
-    watch: {
-        ingredient(val) {
-            useTitle(val.name)
-        }
-    },
-    created() {
-        this.$watch(
-            () => this.$route.params.id,
-            async () => {
-                if (this.$route.name == 'ingredients.show') {
-                    await this.refreshIngredient()
-                    if (this.ingredient.calculator_id) {
-                        await this.fetchCalculator()
-                    }
-                }
-            },
-            { immediate: true }
-        )
-    },
-    methods: {
-        async refreshIngredient() {
-            this.isLoadingIngredient = true
-            try {
-                this.ingredient = (await BarAssistantClient.getIngredient(this.$route.params.id)).data
-            } catch (e) {
-                this.$toast.default(e.message)
-                this.isLoadingIngredient = false
-                this.$router.push({ name: 'ingredients' })
-                return
-            }
-            this.isLoadingIngredient = false
-
-            this.isLoadingExtra = true
-            this.extraIfAddedToShelf = (await BarAssistantClient.getExtraCocktailsWithIngredient(this.ingredient.id)).data
-            this.isLoadingExtra = false
-        },
-        async fetchCalculator() {
-            this.isLoadingCalculator = true
-            try {
-                this.calculator = (await BarAssistantClient.getCalculator(this.ingredient.calculator_id)).data
-            } catch (e) {
-                this.$toast.default(e.message)
-            } finally {
-                this.isLoadingCalculator = false
-            }
-        },
-        deleteIngredient() {
-            this.$confirm(this.$t('ingredient.delete-confirm', { name: this.ingredient.name, total: this.ingredient.cocktails_count }), {
-                onResolved: (dialog) => {
-                    dialog.close()
-                    this.isLoadingIngredient = true
-                    BarAssistantClient.deleteIngredient(this.ingredient.id).then(() => {
-                        this.$toast.default(`Ingredient "${this.ingredient.name}" successfully removed`)
-                        this.$router.push({ name: 'ingredients' })
-                        this.isLoadingIngredient = false
-                    }).catch(e => {
-                        this.$toast.error(e.message)
-                        this.isLoadingIngredient = false
-                    })
-                }
-            })
-        },
+    isLoadingCalculator.value = true
+    try {
+        calculator.value = (await BarAssistantClient.getCalculator(ingredient.value.calculator_id))?.data ?? {} as Calculator
+    } catch (e: any) {
+        toast.default(e.message)
+    } finally {
+        isLoadingCalculator.value = false
     }
 }
+
+function deleteIngredient() {
+    confirm.show(t('ingredient.delete-confirm', { name: ingredient.value.name, total: ingredient.value.cocktails_count }), {
+        onResolved: (dialog: any) => {
+            dialog.close()
+            isLoadingIngredient.value = true
+            BarAssistantClient.deleteIngredient(ingredient.value.id).then(() => {
+                toast.default(`Ingredient "${ingredient.value.name}" successfully removed`)
+                router.push({ name: 'ingredients' })
+                isLoadingIngredient.value = false
+            }).catch(e => {
+                toast.error(e.message)
+                isLoadingIngredient.value = false
+            })
+        }
+    })
+}
+
+const mainIngredientImage = computed(() => {
+    if (!ingredient.value.images || ingredient.value.images.length <= 0) {
+        return { url: '/no-ingredient.png', copyright: null }
+    }
+
+    return ingredient.value.images[0]
+})
+
+const parsedDescription = computed(() => {
+    if (!ingredient.value.description) {
+        return null
+    }
+
+    return micromark(ingredient.value.description)
+})
+
+const createdDate = computed(() => {
+    const date = dayjs(ingredient.value.created_at).toDate()
+
+    return date.toLocaleDateString()
+})
+
+const extraCocktailsIds = computed(() => {
+    return extraIfAddedToShelf.value.map(c => c.id).join(',')
+})
+
+const backgroundColor = computed(() => {
+    const hex = ingredient.value.color || '#51274c'
+
+    return useIngredientBg(hex)
+})
+
+watch(
+    () => route.params.id,
+    async () => {
+        if (route.name == 'ingredients.show') {
+            await refreshIngredient()
+            await fetchCalculator()
+        }
+    },
+    { immediate: true }
+)
 </script>
 
 <style scoped>

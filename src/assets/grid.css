@@ -16,3 +16,9 @@
         grid-template-columns: 1fr;
     }
 }
+
+@media (max-width: 450px) {
+    .sr-grid.sr-grid--3-col {
+        grid-template-columns: 1fr;
+    }
+}

@@ -135,7 +135,7 @@ async function shareFromFormat(format: string) {
                 <br>
                 <small>{{ shoppingListItem.ingredientRef.hierarchy.path_to_self ?? t('uncategorized') }} &middot; Qty: {{ shoppingListItem.quantity }}</small>
                 &middot;
-                <ToggleIngredientShoppingCart :ingredient="shoppingListItem.ingredientRef" :status="true"></ToggleIngredientShoppingCart>
+                <ToggleIngredientShoppingCart :ingredient="shoppingListItem.ingredientRef" :model-value="true"></ToggleIngredientShoppingCart>
                 <ul class="shopping-list__item__prices">
                     <li v-for="ingredientPrice in shoppingListItem.ingredientRef.prices">
                         {{ ingredientPrice.price_category.name }}: <strong>{{ unitHandler.formatPrice(ingredientPrice.price.price, ingredientPrice.price_category.currency) }}</strong> &middot; {{ ingredientPrice.amount }}{{ ingredientPrice.units }}

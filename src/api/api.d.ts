@@ -280,6 +280,26 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/bars/{id}/optimize": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Optimize bar
+         * @description Triggers bar optimizations. Updates all cocktail ABVs, rebuilds ingredient hierarchy, updates search index. Limited call to once per minute.
+         */
+        post: operations["optimizeBar"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/calculators": {
         parameters: {
             query?: never;
@@ -754,6 +774,26 @@ export interface paths {
          * @description Generates a publicly accessible download link for the export. The link will be valid for 1 minute by default.
          */
         post: operations["generateExportDownloadLink"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/feeds": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * List feeds
+         * @description Show a list of news and recipes from RSS/Atom feeds
+         */
+        get: operations["listFeeds"];
+        put?: never;
+        post?: never;
         delete?: never;
         options?: never;
         head?: never;
@@ -1964,6 +2004,27 @@ export interface components {
         ForceUnitConvertEnum: "none" | "ml" | "oz" | "cl";
         /** @enum {string} */
         DuplicateActionsEnum: "none" | "skip" | "overwrite";
+        /**
+         * FeedsRecipe
+         * @description Represents a recipe from an RSS/Atom feed
+         */
+        FeedsRecipe: {
+            /** @description The source of the recipe */
+            source: string;
+            /** @description The title of the recipe */
+            title: string;
+            /** @description The description of the recipe */
+            description: string;
+            /** @description The link to the recipe */
+            link: string;
+            /**
+             * Format: date-time
+             * @description The date the recipe was modified
+             */
+            date: string;
+            /** @description The image URL of the recipe */
+            image: string;
+        };
         /** @description OAuth Credential information */
         OauthCredential: {
             provider: components["schemas"]["SSOProvider"];
@@ -1985,7 +2046,7 @@ export interface components {
             enabled: boolean;
         };
         /** @enum {string} */
-        AbilityEnum: "cocktails.read" | "cocktails.write" | "ingredients.read" | "ingredients.write";
+        AbilityEnum: "cocktails.read" | "cocktails.write" | "ingredients.read" | "ingredients.write" | "bars.read" | "bars.write";
         /** @enum {string} */
         BarStatusEnum: "provisioning" | "active" | "deactivated";
         /** @enum {string} */
@@ -2065,6 +2126,7 @@ export interface components {
                 /** @example true */
                 can_deactivate?: boolean;
             };
+            images?: components["schemas"]["Image"][];
         };
         BarBasic: {
             /** @example 1 */
@@ -2110,6 +2172,8 @@ export interface components {
             enable_invites?: boolean;
             /** @description List of data that the bar will start with. Cocktails cannot be imported without ingredients. */
             options?: components["schemas"]["BarOptionsEnum"];
+            /** @description Existing image ids */
+            images?: number[];
         };
         BarSettings: {
             default_units?: string | null;
@@ -2735,6 +2799,11 @@ export interface components {
             color: string;
             /** @example 12 */
             cocktails_count?: number;
+            /**
+             * @description Number of cocktails that use this ingredient as a substitute
+             * @example 1
+             */
+            cocktails_as_substitute_count?: number;
             cocktails?: {
                 /** @example 1 */
                 id?: number;
@@ -2751,7 +2820,7 @@ export interface components {
                 can_edit?: boolean;
                 /** @example true */
                 can_delete?: boolean;
-            }[];
+            };
             ingredient_parts?: components["schemas"]["IngredientBasic"][];
             prices?: components["schemas"]["IngredientPrice"][];
             in_shelf?: boolean;
@@ -2767,6 +2836,7 @@ export interface components {
             /** Format: float */
             acidity?: number | null;
             distillery?: string | null;
+            units?: string | null;
         };
         /** @description Minimal ingredient information */
         IngredientBasic: {
@@ -2789,6 +2859,8 @@ export interface components {
             parent_ingredient?: components["schemas"]["IngredientBasic"] | null;
             descendants?: components["schemas"]["IngredientBasic"][];
             ancestors?: components["schemas"]["IngredientBasic"][];
+            /** @description Root ingredient ID */
+            root_ingredient_id?: string | null;
         };
         IngredientPrice: {
             price_category: components["schemas"]["PriceCategory"];
@@ -2858,6 +2930,11 @@ export interface components {
             acidity?: number | null;
             /** @example Buffalo trace */
             distillery?: string | null;
+            /**
+             * @description Default unit that would be used for this ingredient
+             * @example ml
+             */
+            units?: string | null;
         };
         IngredientTree: {
             ingredient: components["schemas"]["IngredientBasic"];
@@ -3078,21 +3155,43 @@ export interface components {
             password: string;
         };
         ServerVersion: {
-            /** @example 1.0.0 */
+            /**
+             * @description Version of the server
+             * @example 1.0.0
+             */
             version: string;
             /**
              * @description Latest version available on GitHub
              * @example 3.1.0
              */
-            latest_version?: string;
-            /** @example true */
-            is_latest?: boolean;
-            /** @example production */
+            latest_version: string;
+            /**
+             * @description Whether the server is running the latest version
+             * @example true
+             */
+            is_latest: boolean;
+            /**
+             * @description Environment the server is running in
+             * @example production
+             */
             type: string;
             /** @example https://search.example.com */
             search_host: string;
-            /** @example 1.2.0 */
+            /**
+             * @description Version of the search engine
+             * @example 1.2.0
+             */
             search_version: string;
+            /**
+             * @description Whether feeds are enabled
+             * @example true
+             */
+            is_feeds_enabled: boolean;
+            /**
+             * @description Whether password login is enabled
+             * @example true
+             */
+            is_password_login_enabled: boolean;
         };
         ShoppingList: {
             ingredient: components["schemas"]["IngredientBasic"];
@@ -3360,7 +3459,7 @@ export interface operations {
                     };
                 };
             };
-            /** @description Unable to authenticate */
+            /** @description Unable to authenticate. Possible reasons: invalid credentials, unconfirmed account or disabled password login */
             400: {
                 headers: {
                     [name: string]: unknown;
@@ -4149,6 +4248,68 @@ export interface operations {
                         data?: components["schemas"]["APIError"];
                     };
                 };
+            };
+        };
+    };
+    optimizeBar: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Database id of a resource */
+                id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful response */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description You are not authorized for this action. */
+            403: {
+                headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data?: components["schemas"]["APIError"];
+                    };
+                };
+            };
+            /** @description Resource record not found. */
+            404: {
+                headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data?: components["schemas"]["APIError"];
+                    };
+                };
+            };
+            /** @description Reached rate limit. */
+            429: {
+                headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
+                    [name: string]: unknown;
+                };
+                content?: never;
             };
         };
     };
@@ -6112,6 +6273,32 @@ export interface operations {
                 content: {
                     "application/json": {
                         data?: components["schemas"]["APIError"];
+                    };
+                };
+            };
+        };
+    };
+    listFeeds: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful response */
+            200: {
+                headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data: components["schemas"]["FeedsRecipe"][];
                     };
                 };
             };

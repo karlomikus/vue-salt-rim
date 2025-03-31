@@ -42,6 +42,7 @@
     "vue-toast-notification": "^3.0.4"
   },
   "devDependencies": {
+    "@types/slug": "^5.0.9",
     "@vitejs/plugin-vue": "^5.2.1",
     "@vitest/eslint-plugin": "1.1.31",
     "@vue/eslint-config-typescript": "^14.4.0",
@@ -50,7 +51,7 @@
     "eslint-plugin-vue": "^10.0",
     "openapi-typescript": "^7.3.0",
     "typescript": "^5.5.4",
-    "vite": "^6.1.0",
+    "vite": "^6.2.3",
     "vite-plugin-pwa": "^0.21.1",
     "vite-plugin-vue-devtools": "^7.7.2",
     "vitest": "^3.0.8",

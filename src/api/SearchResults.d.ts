@@ -7,6 +7,7 @@ export interface SearchResults {
         description: string|null;
         category: string|null;
         bar_id: number;
+        units?: string|null;
     },
     cocktail: {
         id: number;

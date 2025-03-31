@@ -12,6 +12,8 @@ class AppState {
     bar: Bar
     user: Profile
     rememberMe: boolean
+    isFeedsEnabled: boolean
+    isPasswordLoginEnabled: boolean
     _key: string
 
     constructor() {
@@ -21,6 +23,8 @@ class AppState {
         this.language = 'en-US'
         this.token = null
         this.rememberMe = false
+        this.isFeedsEnabled = false
+        this.isPasswordLoginEnabled = true
         this.bar = {} as Bar
         this.user = {} as Profile
 
@@ -89,6 +93,12 @@ class AppState {
 
     setLanguage(language: string) {
         this.language = language
+        this._updateState()
+    }
+
+    setServerSettings(isFeedsEnabled: boolean, isPasswordLoginEnabled: boolean) {
+        this.isFeedsEnabled = isFeedsEnabled
+        this.isPasswordLoginEnabled = isPasswordLoginEnabled
         this._updateState()
     }
 
@@ -163,6 +173,8 @@ class AppState {
             this.rememberMe = newState.rememberMe
             this.bar = newState.bar
             this.user = newState.user
+            this.isFeedsEnabled = newState.isFeedsEnabled
+            this.isPasswordLoginEnabled = newState.isPasswordLoginEnabled
         }
     }
 }

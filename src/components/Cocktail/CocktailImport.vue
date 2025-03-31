@@ -8,7 +8,7 @@ import IngredientFinder from './../IngredientFinder.vue'
 import SaltRimDialog from '../Dialog/SaltRimDialog.vue'
 import SubscriptionCheck from '../SubscriptionCheck.vue'
 import { useSaltRimToast } from '@/composables/toast'
-import { useRouter } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import type { SearchResults } from '@/api/SearchResults'
 import type { components } from '@/api/api'
@@ -95,6 +95,7 @@ type SubstituteCocktailIngredient = LocalSchema["recipe"]["ingredients"][0]["sub
 
 const { t } = useI18n()
 const router = useRouter()
+const route = useRoute()
 const toast = useSaltRimToast()
 const isLoading = ref(false)
 const isImporting = ref(false)
@@ -130,10 +131,6 @@ const cocktailTags = computed({
         }
     }
 })
-
-useTitle(t('cocktail.import'))
-
-getBar(appState.bar.id)
 
 function clearImport() {
     similarCocktails.value = []
@@ -469,6 +466,22 @@ async function getBar(barId: number): Promise<void> {
     }
     isLoading.value = false
 }
+
+async function init()
+{
+    useTitle(t('cocktail.import'))
+
+    await getBar(appState.bar.id)
+
+    const prefilledUrl = route.query.url?.toString()
+    if (prefilledUrl) {
+        isLoading.value = true
+        source.value.url = prefilledUrl
+        importCocktail()
+    }
+}
+
+init()
 </script>
 <template>
     <form @submit.prevent="finishImporting">

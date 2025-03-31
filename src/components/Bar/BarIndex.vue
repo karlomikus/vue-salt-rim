@@ -293,7 +293,7 @@ export default {
 .bar__owner {
     font-size: 0.8rem;
     margin-bottom: 0.5rem;
-    color: var(--clr-gray-400);
+    color: var(--clr-gray-500);
 }
 
 .bar__invite_label_container {

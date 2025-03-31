@@ -30,7 +30,7 @@
                 <p>Here you can manage this cocktail's ingredients and amounts. Start by adding your first ingredient.</p>
             </div>
             <ul v-show="cocktail.ingredients.length > 0" class="cocktail-form__ingredients" style="margin-bottom: 20px;">
-                <li v-for="ing in cocktail.ingredients" :key="ing.ingredient.id" class="block-container" :data-id="ing.ingredient.id">
+                <li v-for="(ing, idx) in cocktail.ingredients" :key="ing.ingredient.id" class="block-container" :data-id="ing.ingredient.id">
                     <div class="drag-handle"></div>
                     <div class="cocktail-form__ingredients__content">
                         <div class="form-group">
@@ -51,9 +51,16 @@
                             <p :title="ing.amount + ' ' + ing.units">{{ printIngredientAmount(ing) }}</p>
                         </div>
                         <div class="cocktail-form__ingredients__actions">
-                            <a href="#" @click.prevent="cocktailIngredientForEdit = ing; showDialog = true">
-                                {{ $t('edit') }}
-                            </a>
+                            <SaltRimDialog v-model="showDialogs[idx]">
+                                <template #trigger>
+                                    <a href="#" @click.prevent="showDialogs[idx] = true">
+                                        {{ $t('edit') }}
+                                    </a>
+                                </template>
+                                <template #dialog>
+                                    <CocktailIngredientModal :search-token="bar.search_token" v-model="cocktail.ingredients[idx]" @close="handleCocktailIngredientModalClose(idx)" />
+                                </template>
+                            </SaltRimDialog>
                             &middot;
                             <a href="#" @click.prevent="editIngredientSubstitutes(ing)">
                                 {{ $t('ingredient.dialog.select-substitutes') }}
@@ -67,14 +74,7 @@
                 </li>
             </ul>
             <div style="text-align: center;">
-                <SaltRimDialog v-model="showDialog">
-                    <template #trigger>
-                        <button class="button button--dark" type="button" @click="addIngredient">{{ $t('ingredient.add') }}</button>
-                    </template>
-                    <template #dialog>
-                        <IngredientModal :search-token="bar.search_token" :cocktail-ingredient="cocktailIngredientForEdit" @close="showDialog = false" />
-                    </template>
-                </SaltRimDialog>
+                <button class="button button--dark" type="button" @click="addIngredient">{{ $t('ingredient.add') }}</button>
             </div>
         </div>
         <SaltRimDialog v-model="showSubstituteDialog">
@@ -141,7 +141,7 @@ import { useHtmlDecode } from './../../composables/useHtmlDecode';
 import { unitHandler } from '@/composables/useUnits'
 import BarAssistantClient from '@/api/BarAssistantClient';
 import OverlayLoader from './../OverlayLoader.vue'
-import IngredientModal from './../Cocktail/IngredientModal.vue'
+import CocktailIngredientModal from './CocktailIngredientModal.vue';
 import ImageUpload from './../ImageUpload.vue'
 import PageHeader from './../PageHeader.vue'
 import Sortable from 'sortablejs'
@@ -156,7 +156,6 @@ import TagSelector from '../TagSelector.vue'
 export default {
     components: {
         OverlayLoader,
-        IngredientModal,
         ImageUpload,
         PageHeader,
         SaltRimDialog,
@@ -165,6 +164,7 @@ export default {
         SubscriptionCheck,
         TimeStamps,
         TagSelector,
+        CocktailIngredientModal,
     },
     data() {
         const appState = new AppState()
@@ -175,10 +175,8 @@ export default {
                 search_host: null,
                 search_token: null,
             },
-            showDialog: false,
+            showDialogs: [],
             showSubstituteDialog: false,
-            cocktailIngredientForEdit: {},
-            cocktailIngredientForEditOriginal: {},
             cocktailIngredientForSubstitutes: {},
             maxImages: appState.isSubscribed() ? 10 : 1,
             isLoading: false,
@@ -206,12 +204,29 @@ export default {
                     this.cocktail.ingredients.splice(emptyIngredient, 1)
                 }
             }
-        }
+        },
+        'cocktail.instructions': function (newVal) {
+            if (this.cocktail.method && !this.cocktail.method.id) {
+                const matchedMethod = this.methods.find(method =>
+                    newVal.toLowerCase().includes(method.name.toLowerCase())
+                )
+
+                if (matchedMethod) {
+                    this.cocktail.method.id = matchedMethod.id;
+                }
+            }
+        },
     },
     async created() {
         useTitle(this.$t('cocktail.add'))
 
         this.isLoading = true
+
+        this.glasses = (await BarAssistantClient.getGlasses())?.data ?? []
+        this.methods = (await BarAssistantClient.getCocktailMethods())?.data ?? []
+        this.tags = (await BarAssistantClient.getTags())?.data ?? []
+        this.utensils = (await BarAssistantClient.getUtensils())?.data ?? []
+
         const cocktailId = this.$route.query.id || null
 
         this.bar = (await BarAssistantClient.getBar(this.appState.bar.id)).data ?? {}
@@ -236,16 +251,15 @@ export default {
             })
         }
 
-        this.glasses = (await BarAssistantClient.getGlasses())?.data ?? []
-        this.methods = (await BarAssistantClient.getCocktailMethods())?.data ?? []
-        this.tags = (await BarAssistantClient.getTags())?.data ?? []
-        this.utensils = (await BarAssistantClient.getUtensils())?.data ?? []
+        this.checkForImportData()
+
+        if (!this.appState.isSubscribed()) {
+            this.maxImages = 1
+        }
 
         this.isLoading = false
     },
     mounted() {
-        this.checkForImportData()
-
         this.sortable = Sortable.create(document.querySelector('.cocktail-form__ingredients'), {
             handle: '.drag-handle',
             ghostClass: 'block-container--placeholder',
@@ -254,12 +268,15 @@ export default {
                 this.updateSortPosition()
             },
         })
-
-        if (!this.appState.isSubscribed()) {
-            this.maxImages = 1
-        }
     },
     methods: {
+        handleCocktailIngredientModalClose(idx) {
+            this.showDialogs[idx] = false
+            const emptyIngredient = this.cocktail.ingredients.findIndex(i => i.ingredient.id == null)
+            if (emptyIngredient != -1) {
+                this.cocktail.ingredients.splice(emptyIngredient, 1)
+            }
+        },
         checkForImportData() {
             const scraped = sessionStorage.getItem('scrapeResult')
             if (scraped) {
@@ -319,8 +336,7 @@ export default {
             }
 
             this.cocktail.ingredients.push(placeholderData)
-            this.cocktailIngredientForEdit = placeholderData;
-            this.showDialog = true
+            this.showDialogs[this.cocktail.ingredients.length - 1] = true
         },
         printIngredientAmount(ing) {
             const defaultUnit = this.appState.defaultUnit

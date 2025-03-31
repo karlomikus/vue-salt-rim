@@ -26,7 +26,7 @@
 
 .block-container.block-container--hover:hover {
     background: rgba(255, 255, 255, .8);
-    border-bottom-color: var(--clr-link-color-hover);
+    /* border-bottom-color: var(--clr-link-color-hover); */
 }
 
 .dark-theme .block-container.block-container--hover:hover {

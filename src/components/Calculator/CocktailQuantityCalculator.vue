@@ -326,7 +326,7 @@ function saveState() {
                                     </div>
                                 </td>
                                 <td style="text-align: right;">
-                                    <ToggleIngredientShoppingCart :ingredient="{ id: ingredient.id, name: ingredient.name, slug: ingredient.slug }" :status="shoppingList.map(l => l.ingredient.id).includes(ingredient.id)"></ToggleIngredientShoppingCart>
+                                    <ToggleIngredientShoppingCart :ingredient="{ id: ingredient.id, name: ingredient.name, slug: ingredient.slug }" :model-value="shoppingList.map(l => l.ingredient.id).includes(ingredient.id)"></ToggleIngredientShoppingCart>
                                 </td>
                             </tr>
                             <tr style="border-top-width: 3px;">

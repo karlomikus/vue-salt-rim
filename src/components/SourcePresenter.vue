@@ -3,26 +3,22 @@
     <span v-else>{{ $t('source') }}: {{ source }}</span>
 </template>
 
-<script>
-export default {
-    props: {
-        source: {
-            type: String,
-            default: null,
-        }
-    },
-    computed: {
-        isLink() {
-            let url
+<script setup lang="ts">
+import { computed } from 'vue'
 
-            try {
-                url = new URL(this.source)
-            } catch (_) {
-                return false
-            }
+const props = defineProps<{
+    source: string;
+}>()
 
-            return url.protocol === 'http:' || url.protocol === 'https:'
-        }
+const isLink = computed(() => {
+    let url
+
+    try {
+        url = new URL(props.source)
+    } catch (_) {
+        return false
     }
-}
+
+    return url.protocol === 'http:' || url.protocol === 'https:'
+})
 </script>

@@ -2,6 +2,7 @@
 /// <reference types="vite-plugin-pwa/client" />
 
 declare module 'sortablejs'
+declare module '@types/slug'
 
 interface Window {
     srConfig: {

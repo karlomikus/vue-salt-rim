@@ -33,7 +33,7 @@
                     <input id="color" v-model="ingredient.color" class="form-input" type="color" style="width: 100%">
                 </div>
             </div>
-            <div class="sr-grid sr-grid--2-col">
+            <div class="sr-grid sr-grid--3-col">
                 <div class="form-group">
                     <label class="form-label" for="origin">{{ $t('sweetness') }}:</label>
                     <input id="origin" v-model="ingredient.sugar_g_per_ml" class="form-input" type="text">
@@ -41,6 +41,11 @@
                 <div class="form-group">
                     <label class="form-label" for="color">{{ $t('acidity') }}:</label>
                     <input id="color" v-model="ingredient.acidity" class="form-input" type="text">
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="default-units">{{ $t('default-units') }}:</label>
+                    <input id="default-units" v-model="ingredient.units" class="form-input" type="text">
+                    <p class="form-input-hint">Used to autofill units when selecting ingredient for cocktail recipe</p>
                 </div>
             </div>
             <div class="form-group">
@@ -122,7 +127,7 @@
                 </div>
             </template>
             <div v-else>
-                To add ingredient prices, you need to define bar <RouterLink :to="{name: 'settings.price-categories'}">price categories</RouterLink> first.
+                To add ingredient prices, you need to define bar <RouterLink :to="{name: 'settings.price-categories'}" target="_blank">price categories</RouterLink> first.
             </div>
         </div>
         <div class="form-actions form-actions--timestamps">
@@ -176,6 +181,7 @@ const ingredient = ref<Ingredient>({
     hierarchy: {
         parent_ingredient: {},
     },
+    prices: [] as IngredientPrice[],
     ingredient_parts: [] as IngredientBasic[],
 } as Ingredient)
 const calculators = ref<Calculator[]>([])
@@ -290,6 +296,7 @@ async function submit() {
         acidity: ingredient.value.acidity,
         distillery: ingredient.value.distillery,
         calculator_id: ingredient.value.calculator_id,
+        units: ingredient.value.units,
         parent_ingredient_id: isParent.value && ingredient.value.hierarchy.parent_ingredient ? ingredient.value.hierarchy.parent_ingredient.id : null,
         images: [] as number[],
         complex_ingredient_part_ids: ingredient.value.ingredient_parts ? [...new Set(ingredient.value.ingredient_parts.map(i => i.id))] : [],
