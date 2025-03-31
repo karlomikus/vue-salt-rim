@@ -301,9 +301,9 @@ refreshShelf()
                     <template #content>
                         <h5 class="sr-list-item-title">{{ ingredient.name }}</h5>
                         <p>
-                            <ToggleIngredientShelf v-if="ingredient.in_shelf !== undefined" :ingredient="ingredient" :status="ingredient.in_shelf"></ToggleIngredientShelf>
+                            <ToggleIngredientShelf v-if="ingredient.in_shelf !== undefined" :ingredient="ingredient" v-model="ingredient.in_shelf"></ToggleIngredientShelf>
                             &middot;
-                            <ToggleIngredientShoppingCart v-if="ingredient.in_shopping_list !== undefined" :ingredient="ingredient" :status="ingredient.in_shopping_list"></ToggleIngredientShoppingCart>
+                            <ToggleIngredientShoppingCart v-if="ingredient.in_shopping_list !== undefined" :ingredient="ingredient" v-model="ingredient.in_shopping_list"></ToggleIngredientShoppingCart>
                         </p>
                     </template>
                 </ListItemContainer>

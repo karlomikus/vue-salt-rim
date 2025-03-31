@@ -27,7 +27,7 @@
             <div class="ingredient-details__column-sidebar">
                 <h3 class="page-subtitle" style="margin-top: 0;">{{ $t('ingredient.status') }}</h3>
                 <div class="block-container block-container--inset shelf-actions">
-                    <ToggleIngredientBarShelf v-if="ingredient.in_bar_shelf !== undefined" :ingredient="ingredient" :status="ingredient.in_bar_shelf">
+                    <ToggleIngredientBarShelf v-if="ingredient.in_bar_shelf !== undefined" :ingredient="ingredient" v-model="ingredient.in_bar_shelf">
                         <template v-slot="{ isLoading, inList, toggle }">
                             <a href="#" class="block-container block-container--hover shelf-actions__action" v-if="appState.isAdmin() || appState.isModerator()" @click.prevent="toggle">
                                 <div>
@@ -44,7 +44,7 @@
                             </a>
                         </template>
                     </ToggleIngredientBarShelf>
-                    <ToggleIngredientShelf v-if="ingredient.in_shelf !== undefined" :ingredient="ingredient" :status="ingredient.in_shelf">
+                    <ToggleIngredientShelf v-if="ingredient.in_shelf !== undefined" :ingredient="ingredient" v-model="ingredient.in_shelf">
                         <template v-slot="{ isLoading, inList, toggle }">
                             <a href="#" class="block-container block-container--hover shelf-actions__action" @click.prevent="toggle">
                                 <div>
@@ -61,7 +61,7 @@
                             </a>
                         </template>
                     </ToggleIngredientShelf>
-                    <ToggleIngredientShoppingCart v-if="ingredient.in_shopping_list !== undefined" :ingredient="ingredient" :status="ingredient.in_shopping_list">
+                    <ToggleIngredientShoppingCart v-if="ingredient.in_shopping_list !== undefined" :ingredient="ingredient" v-model="ingredient.in_shopping_list">
                         <template v-slot="{ isLoading, inList, toggle }">
                             <a href="#" class="block-container block-container--hover shelf-actions__action" @click.prevent="toggle">
                                 <div>

@@ -10,12 +10,12 @@
         <div class="ingredient-grid-item__content">
             <p v-html="cleanDescription"></p>
             <template v-if="showBarShelf">
-                <ToggleIngredientBarShelf :ingredient="ingredient" :status="ingredient.in_bar_shelf ?? false"></ToggleIngredientBarShelf>
+                <ToggleIngredientBarShelf v-if="ingredient.in_bar_shelf !== undefined" :ingredient="ingredient" v-model="ingredient.in_bar_shelf"></ToggleIngredientBarShelf>
                 &middot;
             </template>
-            <ToggleIngredientShelf :ingredient="ingredient" :status="ingredient.in_shelf ?? false"></ToggleIngredientShelf>
+            <ToggleIngredientShelf v-if="ingredient.in_shelf !== undefined" :ingredient="ingredient" v-model="ingredient.in_shelf"></ToggleIngredientShelf>
             &middot;
-            <ToggleIngredientShoppingCart :ingredient="ingredient" :status="ingredient.in_shopping_list ?? false"></ToggleIngredientShoppingCart>
+            <ToggleIngredientShoppingCart v-if="ingredient.in_shopping_list !== undefined" :ingredient="ingredient" v-model="ingredient.in_shopping_list"></ToggleIngredientShoppingCart>
         </div>
     </div>
 </template>
