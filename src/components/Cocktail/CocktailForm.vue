@@ -141,7 +141,6 @@ import { useHtmlDecode } from './../../composables/useHtmlDecode';
 import { unitHandler } from '@/composables/useUnits'
 import BarAssistantClient from '@/api/BarAssistantClient';
 import OverlayLoader from './../OverlayLoader.vue'
-import IngredientModal from './../Cocktail/IngredientModal.vue'
 import CocktailIngredientModal from './CocktailIngredientModal.vue';
 import ImageUpload from './../ImageUpload.vue'
 import PageHeader from './../PageHeader.vue'
@@ -157,7 +156,6 @@ import TagSelector from '../TagSelector.vue'
 export default {
     components: {
         OverlayLoader,
-        IngredientModal,
         ImageUpload,
         PageHeader,
         SaltRimDialog,
