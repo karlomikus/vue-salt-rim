@@ -21,7 +21,7 @@
             <div class="ingredient-details__column-image">
                 <div class="ingredient-details__graphic" :style="{ 'background-color': backgroundColor }">
                     <div v-if="mainIngredientImage.copyright" class="ingredient-details__graphic__copyright">{{ $t('imageupload.copyright-notice', { copyright: mainIngredientImage.copyright }) }}</div>
-                    <img :src="mainIngredientImage.url" :alt="ingredient.name" />
+                    <img v-if="mainIngredientImage.url" :src="mainIngredientImage.url" :alt="ingredient.name" />
                 </div>
             </div>
             <div class="ingredient-details__column-sidebar">
@@ -105,7 +105,7 @@
                         </template>
                     </Dropdown>
                 </div>
-                <div class="block-container block-container--padded" v-if="ingredient.description">
+                <div class="block-container block-container--padded">
                     <h2 class="details-block-container__title">{{ $t('description') }}</h2>
                     <div class="item-details__chips">
                         <div class="item-details__chips__group">
