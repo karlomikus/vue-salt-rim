@@ -5,7 +5,7 @@
         </div>
         <div class="feeds-recipe__content">
             <a :href="recipe.link" target="_blank"><h5 class="sr-list-item-title">{{ recipe.title }} <IconExternal width="14" height="14" /></h5></a>
-            <small>{{ recipe.source }} &middot; {{ d(recipe.date, 'short') }}</small>
+            <small>{{ recipe.source }} <template v-if="recipe.date">&middot; {{ d(recipe.date, 'short') }}</template></small>
             <p v-html="recipe.description"></p>
             <p>
                 <RouterLink :to="{ name: 'cocktails.scrape', query: { 'url': encodeURI(recipe.link) } }">Import recipe</RouterLink>

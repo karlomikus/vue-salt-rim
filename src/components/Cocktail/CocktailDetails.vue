@@ -359,7 +359,7 @@ fetchShoppingList()
                 <div class="cocktail-details__graphic">
                     <swiper-container v-if="cocktail.images && cocktail.images.length > 0" navigation="true" :pagination="{clickable: true}" follow-finger="false">
                         <swiper-slide v-for="image in sortedImages" :key="image.sort">
-                            <img :src="image.url" :alt="image.copyright ?? ''" />
+                            <img v-if="image.url" :src="image.url" :alt="image.copyright ?? ''" />
                             <div v-if="image.copyright" class="cocktail-details__graphic__copyright">{{ t('imageupload.copyright-notice', { copyright: image.copyright }) }}</div>
                         </swiper-slide>
                     </swiper-container>
