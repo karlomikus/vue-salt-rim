@@ -6,7 +6,7 @@ import SiteLogo from '@/components/Layout/SiteLogo.vue'
 import { unitHandler } from '@/composables/useUnits'
 import type { components } from '@/api/api'
 
-type MenuExplore = components["schemas"]["MenuExplore"]
+type MenuPublic = components["schemas"]["MenuPublic"]
 
 document.body.classList.add('public-body')
 onUnmounted(() => {
@@ -17,7 +17,7 @@ const route = useRoute()
 const router = useRouter()
 const host = window.location.host
 const protocol = window.location.protocol
-const menu = ref<MenuExplore>()
+const menu = ref<MenuPublic>()
 
 async function refreshMenu() {
     try {
@@ -29,7 +29,7 @@ async function refreshMenu() {
     }
 }
 
-function publicUrl(cocktail: components["schemas"]["MenuExplore"]["categories"][0]["items"][0]) {
+function publicUrl(cocktail: components["schemas"]["MenuPublic"]["categories"][0]["items"][0]) {
     return `${protocol}//${host}/e/cocktail/${cocktail.public_id}/cocktail`
 }
 

@@ -2004,60 +2004,102 @@ export interface components {
         ForceUnitConvertEnum: "none" | "ml" | "oz" | "cl";
         /** @enum {string} */
         DuplicateActionsEnum: "none" | "skip" | "overwrite";
-        /**
-         * FeedsRecipe
-         * @description Represents a recipe from an RSS/Atom feed
-         */
-        FeedsRecipe: {
-            /** @description The source of the recipe */
-            source: string;
-            /** @description The title of the recipe */
-            title: string;
-            /** @description The description of the recipe */
-            description: string;
-            /** @description The link to the recipe */
-            link: string;
+        /** @description Represents the amount of cocktail ingredient in different formats */
+        AmountFormats: {
+            ml: {
+                /**
+                 * Format: float
+                 * @example 30
+                 */
+                amount: number;
+                /**
+                 * Format: float
+                 * @example 60
+                 */
+                amount_max: number;
+                /** @example ml */
+                units: string;
+                /** @example 30-60 ml */
+                full_text: string;
+            };
+            oz: {
+                /**
+                 * Format: float
+                 * @example 1
+                 */
+                amount: number;
+                /**
+                 * Format: float
+                 * @example 2
+                 */
+                amount_max: number;
+                /** @example oz */
+                units: string;
+                /** @example 1-2 oz */
+                full_text: string;
+            };
+            cl: {
+                /**
+                 * Format: float
+                 * @example 3
+                 */
+                amount: number;
+                /**
+                 * Format: float
+                 * @example 6
+                 */
+                amount_max: number;
+                /** @example cl */
+                units: string;
+                /** @example 3-6 cl */
+                full_text: string;
+            };
+        };
+        /** @description Represents a bar with basic information */
+        BarBasic: {
             /**
-             * Format: date-time
-             * @description The date the recipe was modified
+             * @description The ID of the bar
+             * @example 1
              */
-            date: string;
-            /** @description The image URL of the recipe */
-            image: string;
-        };
-        /** @description OAuth Credential information */
-        OauthCredential: {
-            provider: components["schemas"]["SSOProvider"];
-            /** Format: date-time */
-            created_at: string;
-            /** Format: date-time */
-            updated_at: string | null;
-        };
-        /** @description SSO Provider information */
-        SSOProvider: {
-            /** @example github */
-            name: string;
-            /** @example GitHub */
-            display_name: string;
+            id: number;
             /**
-             * @description Whether the provider is configured and enabled by server
+             * @description The slug of the bar
+             * @example bar-name-1
+             */
+            slug: string;
+            /**
+             * @description The name of the bar
+             * @example Bar name
+             */
+            name: string;
+            /**
+             * @description The subtitle of the bar
+             * @example Bar subtitle
+             */
+            subtitle: string | null;
+        };
+        /** @description Represents a bar membership */
+        BarMembership: {
+            /**
+             * @description The ID of the user
+             * @example 1
+             */
+            user_id: number;
+            /**
+             * @description The name of the user
+             * @example Bartender
+             */
+            user_name: string;
+            /**
+             * @description The ID of the bar
+             * @example 1
+             */
+            bar_id: number;
+            /**
+             * @description Indicates if the shelf is public
              * @example true
              */
-            enabled: boolean;
-        };
-        /** @enum {string} */
-        AbilityEnum: "cocktails.read" | "cocktails.write" | "ingredients.read" | "ingredients.write" | "bars.read" | "bars.write";
-        /** @enum {string} */
-        BarStatusEnum: "provisioning" | "active" | "deactivated";
-        /** @enum {string} */
-        CalculatorBlockTypeEnum: "input" | "eval";
-        /** @enum {string} */
-        MenuItemTypeEnum: "cocktail" | "ingredient";
-        APIError: {
-            /** @example api_error */
-            type: string;
-            /** @example Resource record not found. */
-            message: string;
+            is_shelf_public: boolean;
         };
         /** @description Details about a bar */
         Bar: {
@@ -2095,9 +2137,15 @@ export interface components {
             status: components["schemas"]["BarStatusEnum"];
             /** @description Settings for the bar */
             settings: components["schemas"]["BarSettings"];
-            /** @description Host URL used to access the bar's search engine */
+            /**
+             * @description Host URL used to access the bar's search engine
+             * @example my.test.com
+             */
             search_host: string | null;
-            /** @description Auth token used to access the bar's search engine */
+            /**
+             * @description Auth token used to access the bar's search engine
+             * @example null
+             */
             search_token: string | null;
             /**
              * Format: date-time
@@ -2116,37 +2164,1172 @@ export interface components {
             /** @description User access rights for the bar */
             access: {
                 /** @example 1 */
-                role_id?: number;
+                role_id: number;
                 /** @example true */
-                can_edit?: boolean;
+                can_edit: boolean;
                 /** @example true */
-                can_delete?: boolean;
+                can_delete: boolean;
                 /** @example true */
-                can_activate?: boolean;
+                can_activate: boolean;
                 /** @example true */
-                can_deactivate?: boolean;
+                can_deactivate: boolean;
             };
+            /** @description Images associated with the bar */
             images?: components["schemas"]["Image"][];
         };
-        BarBasic: {
+        /** @description Represents a calculator block with basic information */
+        CalculatorBlock: {
+            /**
+             * @description The label of the block
+             * @example Block label
+             */
+            label: string;
+            /**
+             * @description The variable name of the block
+             * @example block_variable_name
+             */
+            variable_name: string;
+            /**
+             * @description The value of the block
+             * @example block_value
+             */
+            value: string;
+            /**
+             * @description The sort order of the block
+             * @example 1
+             */
+            sort: number;
+            /**
+             * @description The type of the block
+             * @example number
+             */
+            type?: string;
+            /**
+             * @description The description of the block
+             * @example Block description
+             */
+            description: string | null;
+            /** @description The settings of the block */
+            settings: components["schemas"]["CalculatorBlockSettings"];
+        };
+        /** @description Represents a calculator with basic information */
+        Calculator: {
+            /**
+             * @description The ID of the calculator
+             * @example 1
+             */
+            id: number;
+            /**
+             * @description The name of the calculator
+             * @example Calculator name
+             */
+            name: string;
+            /**
+             * @description The description of the calculator
+             * @example Calculator description
+             */
+            description?: string | null;
+            /** @description The blocks of the calculator */
+            blocks: components["schemas"]["CalculatorBlock"][];
+        };
+        /** @description Represents the result of a calculator */
+        CalculatorResult: {
+            /** @description The inputs of the calculator */
+            inputs: {
+                [key: string]: string;
+            };
+            /** @description The results of the calculator */
+            results: {
+                [key: string]: string;
+            };
+        };
+        /** @description Minimal cocktail information */
+        CocktailBasic: {
+            /**
+             * @description The ID of the cocktail
+             * @example 1
+             */
+            id: number;
+            /**
+             * @description The slug of the cocktail
+             * @example old-fashioned-1
+             */
+            slug: string;
+            /**
+             * @description The name of the cocktail
+             * @example Old fashioned
+             */
+            name: string;
+            /** @description List of short ingredient names */
+            short_ingredients?: string[];
+            image?: components["schemas"]["Image"];
+        };
+        /** @description Cocktail ingredient */
+        CocktailIngredient: {
+            /**
+             * @description Sort order of the ingredient
+             * @example 1
+             */
+            sort: number;
+            /**
+             * Format: float
+             * @description Amount of the ingredient
+             * @example 30
+             */
+            amount: number;
+            /**
+             * Format: float
+             * @description Amount of the ingredient
+             * @example 60
+             */
+            amount_max?: number | null;
+            /**
+             * @description Units of the ingredient
+             * @example ml
+             */
+            units: string;
+            /**
+             * @description Is the ingredient optional
+             * @example false
+             */
+            optional?: boolean;
+            /** @description Ingredient information */
+            ingredient: components["schemas"]["IngredientBasic"];
+            /** @description Substitutes for the ingredient */
+            substitutes?: components["schemas"]["CocktailIngredientSubstitute"][];
+            /** @description Variants of the ingredient in the shelf */
+            variants_in_shelf?: components["schemas"]["IngredientBasic"][];
+            /**
+             * @description Additional notes about the ingredient
+             * @example Additional notes
+             */
+            note: string | null;
+            /**
+             * @description Is the ingredient specified (ignores variants in matching)
+             * @example false
+             */
+            is_specified: boolean;
+            formatted: components["schemas"]["AmountFormats"];
+            /**
+             * @description Is the ingredient in the user's shelf
+             * @example true
+             */
+            in_shelf?: boolean;
+            /**
+             * @description Is the ingredient in the user's shelf as a variant
+             * @example true
+             */
+            in_shelf_as_variant?: boolean;
+            /**
+             * @description Is the ingredient in the user's shelf as a substitute
+             * @example true
+             */
+            in_shelf_as_substitute?: boolean;
+            /**
+             * @description Is the ingredient in the user's shelf as a complex ingredient
+             * @example true
+             */
+            in_shelf_as_complex_ingredient?: boolean;
+            /**
+             * @description Is the ingredient in the bar shelf
+             * @example true
+             */
+            in_bar_shelf?: boolean;
+            /**
+             * @description Is the ingredient in the bar shelf as a substitute
+             * @example true
+             */
+            in_bar_shelf_as_substitute?: boolean;
+            /**
+             * @description Is the ingredient in the bar shelf as a complex ingredient
+             * @example true
+             */
+            in_bar_shelf_as_complex_ingredient?: boolean;
+            /**
+             * @description Is the ingredient in the bar shelf as a variant
+             * @example true
+             */
+            in_bar_shelf_as_variant?: boolean;
+        };
+        /** @description Cocktail ingredient substitute */
+        CocktailIngredientSubstitute: {
+            ingredient: components["schemas"]["IngredientBasic"];
+            /** @example 30 */
+            amount: number | null;
+            /** @example 60 */
+            amount_max: number | null;
+            /** @example ml */
+            units: string | null;
+            /** @example true */
+            in_shelf: boolean;
+            /** @example true */
+            in_bar_shelf: boolean;
+        };
+        /** @description Cocktail method resource */
+        CocktailMethod: {
+            /**
+             * @description Cocktail method ID
+             * @example 1
+             */
+            id: number;
+            /**
+             * @description Cocktail method name
+             * @example Shake
+             */
+            name: string;
+            /**
+             * @description Dilution percentage
+             * @example 20
+             */
+            dilution_percentage: number;
+            /**
+             * @description Number of cocktails using this method
+             * @example 32
+             */
+            cocktails_count?: number;
+        };
+        /** @description Cocktail price resource */
+        CocktailPrice: {
+            /**
+             * @description Number of ingredients that are missing defined prices in this category
+             * @example 2
+             */
+            missing_prices_count: number;
+            price_category: components["schemas"]["PriceCategory"];
+            /** @description Total cocktail price, sum of `price_per_pour` amounts */
+            total_price: components["schemas"]["Price"];
+            /** @description Prices per each ingredient. */
+            prices_per_ingredient: {
+                ingredient: components["schemas"]["IngredientBasic"];
+                /** @description Units used for price calculation */
+                units: string;
+                /** @description Price per 1 unit of ingredient amount */
+                price_per_unit: components["schemas"]["Price"];
+                /** @description Price per cocktail ingredient part */
+                price_per_use: components["schemas"]["Price"];
+            }[];
+        };
+        /** @description Cocktail resource */
+        Cocktail: {
+            /**
+             * @description Cocktail ID
+             * @example 1
+             */
+            id: number;
+            /**
+             * @description Cocktail name
+             * @example Cocktail name
+             */
+            name: string;
+            /**
+             * @description Cocktail slug
+             * @example cocktail-name-1
+             */
+            slug: string;
+            /**
+             * @description Cocktail instructions
+             * @example Step by step instructions
+             */
+            instructions: string;
+            /**
+             * @description Cocktail garnish
+             * @example Garnish
+             */
+            garnish: string | null;
+            /**
+             * @description Cocktail description
+             * @example Cocktail description
+             */
+            description: string | null;
+            /**
+             * @description Cocktail source
+             * @example Source of the recipe
+             */
+            source: string | null;
+            /**
+             * @description Public ID of the cocktail
+             * @example public-id-1
+             */
+            public_id: string | null;
+            /**
+             * Format: date-time
+             * @description Public date of the cocktail
+             * @example 2023-10-01T12:00:00Z
+             */
+            public_at: string | null;
+            /** @description Cocktail images */
+            images?: components["schemas"]["Image"][];
+            /** @description Cocktail tags */
+            tags?: {
+                /**
+                 * @description Tag ID
+                 * @example 1
+                 */
+                id?: number;
+                /**
+                 * @description Tag name
+                 * @example Tag name
+                 */
+                name?: string;
+            }[];
+            rating?: {
+                /**
+                 * @description Current user's rating
+                 * @example 1
+                 */
+                user: number | null;
+                /**
+                 * @description Average rating
+                 * @example 4
+                 */
+                average: number;
+                /** @example 12 */
+                total_votes: number;
+            };
+            /** @description Cocktail glass */
+            glass?: components["schemas"]["Glass"] | null;
+            /** @description Cocktail utensils */
+            utensils?: components["schemas"]["Utensil"][];
+            /** @description Cocktail ingredients */
+            ingredients?: components["schemas"]["CocktailIngredient"][];
+            /**
+             * Format: date-time
+             * @description Creation date of the cocktail
+             * @example 2023-10-01T12:00:00Z
+             */
+            created_at: string;
+            /**
+             * Format: date-time
+             * @description Last update date of the cocktail
+             * @example 2023-10-01T12:00:00Z
+             */
+            updated_at: string | null;
+            /** @description Cocktail method */
+            method?: components["schemas"]["CocktailMethod"] | null;
+            /**
+             * Format: float
+             * @description Alcohol by volume (ABV) percentage
+             * @example 0.5
+             */
+            abv: number | null;
+            /**
+             * Format: float
+             * @description Cocktail volume in milliliters
+             * @example 200
+             */
+            volume_ml?: number;
+            /**
+             * Format: float
+             * @description Alcohol units in the cocktail
+             * @example 1.5
+             */
+            alcohol_units?: number;
+            /**
+             * Format: float
+             * @description Calories in the cocktail
+             * @example 150
+             */
+            calories?: number;
+            /** @description User who created the cocktail */
+            created_user?: components["schemas"]["UserBasic"];
+            /** @description User who last updated the cocktail */
+            updated_user?: components["schemas"]["UserBasic"] | null;
+            /**
+             * @description Is the cocktail in the user's shelf
+             * @example true
+             */
+            in_shelf?: boolean;
+            /**
+             * @description Is the cocktail in the bar's shelf
+             * @example true
+             */
+            in_bar_shelf?: boolean;
+            /**
+             * @description Is the cocktail favorited by the user
+             * @example true
+             */
+            is_favorited?: boolean;
+            /** @description User access to the cocktail */
+            access?: {
+                /**
+                 * @description Can the user edit the cocktail
+                 * @example true
+                 */
+                can_edit: boolean;
+                /**
+                 * @description Can the user delete the cocktail
+                 * @example true
+                 */
+                can_delete: boolean;
+                /**
+                 * @description Can the user rate the cocktail
+                 * @example true
+                 */
+                can_rate: boolean;
+                /**
+                 * @description Can the user add a note to the cocktail
+                 * @example true
+                 */
+                can_add_note: boolean;
+            };
+        };
+        /** @description Collection resource */
+        Collection: {
             /** @example 1 */
             id: number;
-            /** @example bar-name-1 */
-            slug: string;
-            /** @example Bar name */
+            /** @example Collection name */
             name: string;
-            /** @example Bar subtitle */
-            subtitle: string;
+            /** @example Collection description */
+            description: string | null;
+            is_bar_shared: boolean;
+            /**
+             * Format: date-time
+             * @example 2023-05-14T21:23:40.000000Z
+             */
+            created_at: unknown;
+            created_user?: components["schemas"]["UserBasic"];
+            cocktails?: components["schemas"]["CocktailBasic"][];
         };
-        BarMembership: {
+        /** @description Cocktail explore resource */
+        CocktailExplore: {
+            bar: components["schemas"]["BarBasic"];
+            /** @example Cocktail name */
+            name: string;
+            /** @example Step by step instructions */
+            instructions: string;
+            /** @example Garnish */
+            garnish: string | null;
+            /** @example Cocktail description */
+            description: string | null;
+            /** @example Source of the recipe */
+            source: string | null;
+            tags: string[];
+            glass: string | null;
+            utensils: string[];
+            method: string | null;
+            images: {
+                /** @example 1 */
+                sort?: number;
+                /** @example a1b2c3d4e5f6g7h8i9j0 */
+                placeholder_hash?: string;
+                /** @example https://example.com/image.jpg */
+                url?: string;
+                /** @example Image copyright */
+                copyright?: string;
+            }[];
+            ingredients: {
+                ingredient?: {
+                    /** @example Ingredient name */
+                    name?: string;
+                };
+                /** @example 30 */
+                amount?: number;
+                /** @example 45 */
+                amount_max?: number | null;
+                /** @example ml */
+                units?: string;
+                /** @example true */
+                optional?: boolean;
+                /** @example Ingredient note */
+                note?: string | null;
+                substitutes?: {
+                    ingredient?: {
+                        /** @example Ingredient name */
+                        name?: string;
+                    };
+                    /** @example 30 */
+                    amount?: number | null;
+                    /** @example 45 */
+                    amount_max?: number | null;
+                    /** @example ml */
+                    units?: string | null;
+                }[];
+            }[];
+            /**
+             * Format: float
+             * @description Alcohol by volume (ABV) percentage
+             * @example 0.5
+             */
+            abv?: number | null;
+        };
+        /** @description Export resource */
+        Export: {
             /** @example 1 */
-            user_id: number;
-            /** @example Bartender */
-            user_name: string;
-            /** @example 1 */
-            bar_id: number;
+            id?: number;
+            /** @example cocktails.csv */
+            filename?: string;
+            /** Format: date-time */
+            created_at?: string;
+            /** @example Bar name */
+            bar_name?: string;
             /** @example true */
-            is_shelf_public: boolean;
+            is_done?: boolean;
+        };
+        /**
+         * FeedsRecipe
+         * @description Represents a recipe from an RSS/Atom feed
+         */
+        FeedsRecipe: {
+            /** @description The source of the recipe */
+            source: string;
+            /** @description The title of the recipe */
+            title: string;
+            /** @description The description of the recipe */
+            description: string | null;
+            /** @description The link to the recipe */
+            link: string;
+            /**
+             * Format: date-time
+             * @description The date the recipe was modified
+             */
+            date: string | null;
+            /** @description The image URL of the recipe */
+            image: string | null;
+        };
+        /** @description Represents glassware */
+        Glass: {
+            /**
+             * @description The ID of the glassware
+             * @example 1
+             */
+            id: number;
+            /**
+             * @description The name of the glassware
+             * @example Lowball
+             */
+            name: string;
+            /**
+             * @description The description of the glassware
+             * @example Glass for smaller cocktails
+             */
+            description: string | null;
+            /**
+             * @description The number of cocktails that use this glassware
+             * @example 32
+             */
+            cocktails_count: number;
+            /**
+             * Format: float
+             * @description The volume of the glassware
+             * @example 120
+             */
+            volume: number | null;
+            /**
+             * @description The volume units of the glassware
+             * @example ml
+             */
+            volume_units: string | null;
+        };
+        /** @description Image attached to a specific resource */
+        Image: {
+            /**
+             * @description The ID of the image
+             * @example 1
+             */
+            id: number;
+            /**
+             * @description The file path of the image
+             * @example cocktails/1/image.jpg
+             */
+            file_path: string;
+            /**
+             * @description The URL of the image
+             * @example http://example.com/uploads/cocktails/1/image.jpg
+             */
+            url: string | null;
+            /**
+             * @description The thumbnail URL of the image
+             * @example http://example.com/uploads/cocktails/1/thumb
+             */
+            thumb_url?: string | null;
+            /**
+             * @description The copyright information of the image
+             * @example Image copyright
+             */
+            copyright: string | null;
+            /**
+             * @description The sort order of the image
+             * @example 1
+             */
+            sort: number;
+            /**
+             * @description The placeholder hash for the image
+             * @example 1QcSHQRnh493V4dIh4eXh1h4kJUI
+             */
+            placeholder_hash: string | null;
+        };
+        /** @description Minimal ingredient information */
+        IngredientBasic: {
+            /**
+             * @description The ID of the ingredient
+             * @example 1
+             */
+            id: number;
+            /**
+             * @description The slug of the ingredient
+             * @example gin-1
+             */
+            slug: string;
+            /**
+             * @description The name of the ingredient
+             * @example Gin
+             */
+            name: string;
+            /** @description Main resource image */
+            image?: components["schemas"]["Image"];
+        };
+        /** @description Ingredient price */
+        IngredientPrice: {
+            price_category: components["schemas"]["PriceCategory"];
+            price: components["schemas"]["Price"];
+            /** @example 30 */
+            amount: number;
+            /** @example ml */
+            units: string;
+            /** @example Updated price */
+            description: string | null;
+            /** Format: date-time */
+            created_at: string;
+            /** Format: date-time */
+            updated_at: string | null;
+        };
+        /** @description Represents an ingredient */
+        Ingredient: {
+            /**
+             * @description The ID of the ingredient
+             * @example 1
+             */
+            id: number;
+            /**
+             * @description The slug of the ingredient
+             * @example vodka
+             */
+            slug: string;
+            /**
+             * @description The name of the ingredient
+             * @example Vodka
+             */
+            name: string;
+            /**
+             * Format: float
+             * @description The strength of the ingredient
+             * @example 40
+             */
+            strength: number;
+            /**
+             * @description The description of the ingredient
+             * @example Vodka is a clear distilled alcoholic beverage
+             */
+            description: string | null;
+            /**
+             * @description The origin of the ingredient
+             * @example Russia
+             */
+            origin: string | null;
+            /**
+             * Format: date-time
+             * @description The creation date of the ingredient
+             * @example 2023-01-01T00:00:00Z
+             */
+            created_at: string;
+            /**
+             * Format: date-time
+             * @description The last update date of the ingredient
+             * @example 2023-01-01T00:00:00Z
+             */
+            updated_at: string | null;
+            /**
+             * @description The materialized path of the ingredient
+             * @example 1.2.3
+             */
+            materialized_path: string | null;
+            /** @description The hierarchy of the ingredient */
+            hierarchy: components["schemas"]["IngredientHierarchy"];
+            /** @description The images of the ingredient */
+            images?: components["schemas"]["Image"][];
+            /**
+             * @description The color of the ingredient
+             * @example #ffffff
+             */
+            color: string | null;
+            /**
+             * @description The number of cocktails that use this ingredient
+             * @example 12
+             */
+            cocktails_count?: number;
+            /**
+             * @description Number of cocktails that use this ingredient as a substitute
+             * @example 1
+             */
+            cocktails_as_substitute_count?: number;
+            /** @description The user who created the ingredient */
+            created_user?: components["schemas"]["UserBasic"];
+            /** @description The user who created the ingredient */
+            updated_user?: components["schemas"]["UserBasic"] | null;
+            /** @description Access rights for the ingredient */
+            access?: {
+                /**
+                 * @description Whether the user can edit the ingredient
+                 * @example true
+                 */
+                can_edit?: boolean;
+                /**
+                 * @description Whether the user can delete the ingredient
+                 * @example false
+                 */
+                can_delete?: boolean;
+            };
+            /**
+             * @description Whether the user has this ingredient in their shelf
+             * @example true
+             */
+            in_shelf?: boolean;
+            /**
+             * @description Whether the user has this ingredient in their shelf as a variant
+             * @example true
+             */
+            in_shelf_as_variant?: boolean;
+            /**
+             * @description Whether the bar has this ingredient in their shelf
+             * @example true
+             */
+            in_bar_shelf?: boolean;
+            /**
+             * @description Whether the bar has this ingredient in their shelf as a variant
+             * @example true
+             */
+            in_bar_shelf_as_variant?: boolean;
+            /**
+             * @description Whether the user has this ingredient in their shopping list
+             * @example true
+             */
+            in_shopping_list?: boolean;
+            /** @description Ingredients that this ingredient is used as a substitute for */
+            used_as_substitute_for?: components["schemas"]["IngredientBasic"][];
+            /** @description Ingredients that can be substituted with this ingredient */
+            can_be_substituted_with?: components["schemas"]["IngredientBasic"][];
+            /** @description Parts of this ingredient */
+            ingredient_parts?: components["schemas"]["IngredientBasic"][];
+            /** @description Prices of the ingredient */
+            prices?: components["schemas"]["IngredientPrice"][];
+            /**
+             * @description The calculator ID of the ingredient
+             * @example 1
+             */
+            calculator_id?: number | null;
+            /**
+             * Format: float
+             * @description The sugar content of the ingredient in grams per milliliter
+             * @example 0
+             */
+            sugar_g_per_ml?: number | null;
+            /**
+             * Format: float
+             * @description The acidity of the ingredient
+             * @example 0
+             */
+            acidity?: number | null;
+            /**
+             * @description The distillery of the ingredient
+             * @example Distillery Name
+             */
+            distillery?: string | null;
+            /**
+             * @description The units of the ingredient
+             * @example ml
+             */
+            units?: string | null;
+        };
+        /** @description Represents an ingredient tree with its children */
+        IngredientTree: {
+            ingredient: components["schemas"]["IngredientBasic"];
+            /** @description Recursive list of child ingredients */
+            children: components["schemas"]["IngredientTree"][];
+        };
+        /** @description Menu resource */
+        MenuPublic: {
+            /** @description Bar information */
+            bar: {
+                /** @example Bar name */
+                name: string;
+                /** @example Bar subtitle */
+                subtitle: string | null;
+                /** @example Bar description */
+                description: string | null;
+                /**
+                 * @description Bar images (like bar logo)
+                 * @example [
+                 *       "https://example.com/image1.jpg",
+                 *       "https://example.com/image2.jpg"
+                 *     ]
+                 */
+                images?: string[];
+            };
+            /** @description List of menu categories */
+            categories: {
+                /** @example Category name */
+                name: string;
+                items: {
+                    /** @example false */
+                    in_bar_shelf: boolean;
+                    type: components["schemas"]["MenuItemTypeEnum"];
+                    /** @example 1 */
+                    sort: number;
+                    price: components["schemas"]["Price"];
+                    /** @example 01ARZ3NDEKTSV4RRFFQ69G5FAV */
+                    public_id: string | null;
+                    /** @example Cocktail name */
+                    name: string;
+                    description: string | null;
+                    /** @description Image URL */
+                    image?: string | null;
+                }[];
+            }[];
+        };
+        /** @description Menu resource */
+        Menu: {
+            /**
+             * @description Menu ID
+             * @example 1
+             */
+            id: number;
+            /**
+             * @description Is menu enabled
+             * @example true
+             */
+            is_enabled: boolean;
+            /**
+             * Format: date-time
+             * @description Creation date
+             */
+            created_at: string;
+            /**
+             * Format: date-time
+             * @description Last update date
+             */
+            updated_at: string | null;
+            categories: {
+                /** @example Category name */
+                name: string;
+                items: {
+                    /** @example 1 */
+                    id: number;
+                    type: components["schemas"]["MenuItemTypeEnum"];
+                    /** @example 1 */
+                    sort: number;
+                    price: components["schemas"]["Price"];
+                    /**
+                     * @description Cocktail name
+                     * @example Cocktail name
+                     */
+                    name: string;
+                    /** @example Cocktail description */
+                    description: string | null;
+                }[];
+            }[];
+        };
+        /** @description Note resource */
+        Note: {
+            /**
+             * @description Note ID
+             * @example 1
+             */
+            id: number;
+            /**
+             * @description Note text
+             * @example Note text
+             */
+            note: string;
+            /**
+             * @description User ID
+             * @example 1
+             */
+            user_id: number;
+            /**
+             * Format: date-time
+             * @description Creation date and time
+             * @example 2022-01-01T00:00:00+00:00
+             */
+            created_at: string;
+        };
+        /** @description OAuth Credential information */
+        OauthCredential: {
+            provider: components["schemas"]["SSOProvider"];
+            /** Format: date-time */
+            created_at: string;
+            /** Format: date-time */
+            updated_at: string | null;
+        };
+        /** @description Personal Access Token */
+        PersonalAccessToken: {
+            /** @example 1 */
+            id: number;
+            /** @example user_generated */
+            name: string;
+            /** @example [
+             *       "cocktails.read",
+             *       "cocktails.write",
+             *       "ingredients.read",
+             *       "ingredients.write"
+             *     ] */
+            abilities: string[];
+            /**
+             * Format: date-time
+             * @example 2023-05-14T21:23:40.000000Z
+             */
+            last_used_at: string;
+            /**
+             * Format: date-time
+             * @example 2023-05-14T21:23:40.000000Z
+             */
+            created_at: string;
+            /**
+             * Format: date-time
+             * @example 2023-05-14T21:23:40.000000Z
+             */
+            expires_at: string;
+        };
+        /** @description Price category */
+        PriceCategory: {
+            /** @example 1 */
+            id: number;
+            /** @example Amazon (DE) */
+            name: string;
+            /** @example Current price on amazon.de */
+            description: string | null;
+            /**
+             * Format: ISO 4217
+             * @example EUR
+             */
+            currency: string;
+            /** @example € */
+            currency_symbol?: string;
+        };
+        /** @description Schema representing a price */
+        Price: {
+            /**
+             * @description Price in major units (e.g., euros)
+             * @example 13.39
+             */
+            price: number;
+            /**
+             * @description Price in minor units (e.g., cents)
+             * @example 1339
+             */
+            price_minor: number;
+            /**
+             * @description Pretty formatted price string
+             * @example EUR 13.39
+             */
+            formatted_price: string;
+            /**
+             * @description Currency code in ISO 4217 format
+             * @example EUR
+             */
+            currency: string;
+        };
+        /** @description User profile resource */
+        Profile: {
+            /** @example 1 */
+            id: number;
+            /** @example Floral */
+            name: string;
+            /**
+             * Format: email
+             * @description User email
+             * @example example@example.com
+             */
+            email: string;
+            /**
+             * @description Is user subscribed
+             * @example true
+             */
+            is_subscribed: boolean;
+            /** @description User memberships */
+            memberships: components["schemas"]["BarMembership"][];
+            /** @description OAuth credentials */
+            oauth_credentials: components["schemas"]["OauthCredential"][];
+            settings: components["schemas"]["ProfileSettings"];
+        };
+        /** @description SSO Provider information */
+        SSOProvider: {
+            /** @example github */
+            name: string;
+            /** @example GitHub */
+            display_name: string;
+            /**
+             * @description Whether the provider is configured and enabled by server
+             * @example true
+             */
+            enabled: boolean;
+        };
+        /** @description Subscription resource */
+        Subscription: {
+            type: string;
+            paddle_id: string;
+            status: string;
+            /** Format: date-time */
+            created_at: string;
+            /** Format: date-time */
+            updated_at: string;
+            /** Format: date-time */
+            paused_at: string;
+            /** Format: date-time */
+            ends_at: string;
+            past_due: boolean;
+            is_recurring: boolean;
+            next_billed_at: {
+                currency: string;
+                amount: string;
+                /** Format: date-time */
+                date: string;
+            } | null;
+            /** Format: uri */
+            update_payment_url: string;
+            /** Format: uri */
+            cancel_url: string;
+            transactions?: {
+                total: string;
+                tax: string;
+                currency: string;
+                status: string;
+                invoice_number: string;
+                /** Format: uri */
+                url: string;
+                /** Format: date-time */
+                billed_at: string;
+                /** Format: date-time */
+                created_at: string;
+                /** Format: date-time */
+                updated_at: string | null;
+            }[];
+        };
+        /** @description Represents a tag with basic information */
+        Tag: {
+            /**
+             * @description The ID of the tag
+             * @example 1
+             */
+            id: number;
+            /**
+             * @description The name of the tag
+             * @example Floral
+             */
+            name: string;
+            /**
+             * @description The number of cocktails associated with the tag
+             * @example 12
+             */
+            cocktails_count: number;
+        };
+        /** @description Auth token resource */
+        Token: {
+            /**
+             * @description Access token
+             * @example 1|dvWHLWuZbmWWFbjaUDla393Q9jK5Ou9ujWYPcvII
+             */
+            token: string;
+        };
+        /** @description Represents a user with basic information */
+        UserBasic: {
+            /**
+             * @description The ID of the user
+             * @example 1
+             */
+            id: number;
+            /**
+             * @description The name of the user
+             * @example Bartender
+             */
+            name: string;
+        };
+        /** @description Represents a user in current bar */
+        User: {
+            /**
+             * @description User ID
+             * @example 1
+             */
+            id: number;
+            /**
+             * @description User name
+             * @example Bartender
+             */
+            name: string;
+            /**
+             * @description User email
+             * @example test@email.com
+             */
+            email: string;
+            /**
+             * @description Subscription status
+             * @example true
+             */
+            is_subscribed: boolean;
+            role: {
+                /**
+                 * @description Bar ID
+                 * @example 1
+                 */
+                bar_id: number;
+                /**
+                 * @description Role ID
+                 * @example 1
+                 */
+                role_id: number | null;
+                /**
+                 * @description Role name
+                 * @example Admin
+                 */
+                role_name: string | null;
+            };
+        };
+        /** @description Shopping list resource */
+        ShoppingList: {
+            ingredient: components["schemas"]["IngredientBasic"];
+            /** @example 3 */
+            quantity: number | null;
+        };
+        /** @description User subscription resource */
+        UserSubscription: {
+            prices: string[];
+            customer: {
+                paddle_id: string | null;
+                paddle_email: string | null;
+                paddle_name: string | null;
+            };
+            subscription: components["schemas"]["Subscription"] | null;
+        };
+        /** @description Represents a utensil with basic information */
+        Utensil: {
+            /**
+             * @description The ID of the utensil
+             * @example 1
+             */
+            id: number;
+            /**
+             * @description The name of the utensil
+             * @example Shaker
+             */
+            name: string;
+            /**
+             * @description The description of the utensil
+             * @example Used to shake ingredients
+             */
+            description: string | null;
+        };
+        /** @enum {string} */
+        AbilityEnum: "cocktails.read" | "cocktails.write" | "ingredients.read" | "ingredients.write" | "bars.read" | "bars.write";
+        /** @enum {string} */
+        BarStatusEnum: "provisioning" | "active" | "deactivated";
+        /** @enum {string} */
+        CalculatorBlockTypeEnum: "input" | "eval";
+        /** @enum {string} */
+        MenuItemTypeEnum: "cocktail" | "ingredient";
+        APIError: {
+            /** @example api_error */
+            type: string;
+            /** @example Resource record not found. */
+            message: string;
         };
         BarRequest: {
             /** @example Bar name */
@@ -2156,7 +3339,7 @@ export interface components {
             /** @example Bar description */
             description?: string | null;
             /** @example bar-name-1 */
-            slug?: string;
+            slug?: string | null;
             /**
              * @description Used only as a setting for client apps.
              * @example ml
@@ -2171,7 +3354,7 @@ export interface components {
             /** @description Enable users with invite code to join this bar. Default `false`. */
             enable_invites?: boolean;
             /** @description List of data that the bar will start with. Cocktails cannot be imported without ingredients. */
-            options?: components["schemas"]["BarOptionsEnum"];
+            options?: components["schemas"]["BarOptionsEnum"] | null;
             /** @description Existing image ids */
             images?: number[];
         };
@@ -2239,29 +3422,6 @@ export interface components {
                 votes: number;
             }[];
         };
-        Calculator: {
-            /** @example 1 */
-            id: number;
-            /** @example Calculator name */
-            name: string;
-            /** @example Calculator description */
-            description?: string | null;
-            blocks: components["schemas"]["CalculatorBlock"][];
-        };
-        CalculatorBlock: {
-            /** @example 1 */
-            sort: number;
-            /** @example Short label */
-            label: string;
-            /** @example var-name */
-            variable_name: string;
-            /** @example sugar * 2 */
-            value: string;
-            type?: components["schemas"]["CalculatorBlockTypeEnum"];
-            /** @example Short description */
-            description: string | null;
-            settings: components["schemas"]["CalculatorBlockSettings"];
-        };
         CalculatorBlockRequest: {
             label: string;
             variable_name: string;
@@ -2281,269 +3441,10 @@ export interface components {
             blocks?: components["schemas"]["CalculatorBlockRequest"][];
             description?: string | null;
         };
-        CalculatorResult: {
-            /** @description string> */
-            inputs: {
-                [key: string]: string;
-            };
-            /** @description string> */
-            results: {
-                [key: string]: string;
-            };
-        };
         CalculatorSolveRequest: {
             inputs: {
                 [key: string]: string;
             };
-        };
-        Cocktail: {
-            /** @example 1 */
-            id: number;
-            /** @example Cocktail name */
-            name: string;
-            /** @example cocktail-name-1 */
-            slug: string;
-            /** @example Step by step instructions */
-            instructions: string;
-            /** @example Garnish */
-            garnish: string | null;
-            /** @example Cocktail description */
-            description: string | null;
-            /** @example Source of the recipe */
-            source: string | null;
-            /** @example public-id-1 */
-            public_id: string | null;
-            /** Format: date-time */
-            public_at: string | null;
-            images?: components["schemas"]["Image"][];
-            tags?: {
-                /** @example 1 */
-                id?: number;
-                /** @example Tag name */
-                name?: string;
-            }[];
-            rating?: {
-                /**
-                 * @description Current user's rating
-                 * @example 1
-                 */
-                user: number | null;
-                /**
-                 * @description Average rating
-                 * @example 4
-                 */
-                average: number;
-                /** @example 12 */
-                total_votes: number;
-            };
-            glass?: components["schemas"]["Glass"] | null;
-            utensils?: components["schemas"]["Utensil"][];
-            ingredients?: components["schemas"]["CocktailIngredient"][];
-            /** Format: date-time */
-            created_at: string;
-            /** Format: date-time */
-            updated_at: string | null;
-            method?: components["schemas"]["CocktailMethod"] | null;
-            /**
-             * Format: float
-             * @example 40
-             */
-            abv: number | null;
-            /**
-             * Format: float
-             * @example 67.5
-             */
-            volume_ml?: number | null;
-            /**
-             * Format: float
-             * @example 25.5
-             */
-            alcohol_units?: number | null;
-            /** @example 350 */
-            calories?: number | null;
-            created_user?: components["schemas"]["UserBasic"];
-            updated_user?: components["schemas"]["UserBasic"] | null;
-            in_shelf?: boolean;
-            in_bar_shelf?: boolean;
-            is_favorited?: boolean;
-            access?: {
-                /** @example true */
-                can_edit: boolean;
-                /** @example true */
-                can_delete: boolean;
-                /** @example true */
-                can_rate: boolean;
-                /** @example true */
-                can_add_note: boolean;
-            };
-            navigation?: {
-                /** @example old-fashioned-1 */
-                prev: string | null;
-                /** @example tom-collins-1 */
-                next: string | null;
-            };
-        };
-        /** @description Minimal cocktail information */
-        CocktailBasic: {
-            /** @example 1 */
-            id: number;
-            /** @example old-fashioned-1 */
-            slug: string;
-            /** @example Old fashioned */
-            name: string;
-            short_ingredients?: string[];
-            /** @description Main resource image */
-            image?: components["schemas"]["Image"];
-        };
-        CocktailExplore: {
-            bar?: components["schemas"]["BarBasic"];
-            /** @example Cocktail name */
-            name?: string;
-            /** @example Step by step instructions */
-            instructions?: string;
-            /** @example Garnish */
-            garnish?: string | null;
-            /** @example Cocktail description */
-            description?: string | null;
-            /** @example Source of the recipe */
-            source?: string | null;
-            images?: {
-                /** @example 1 */
-                sort?: number;
-                /** @example a1b2c3d4e5f6g7h8i9j0 */
-                placeholder_hash?: string;
-                /** @example https://example.com/image.jpg */
-                url?: string;
-                /** @example Image copyright */
-                copyright?: string;
-            }[];
-            tags?: string[];
-            glass?: string | null;
-            utensils?: string[];
-            ingredients?: {
-                /** @example Ingredient name */
-                name?: string;
-                /** @example 30 */
-                amount?: number;
-                /** @example 45 */
-                amount_max?: number | null;
-                /** @example ml */
-                units?: string;
-                /** @example true */
-                optional?: boolean;
-                /** @example Ingredient note */
-                note?: string | null;
-                substitutes?: {
-                    /** @example Ingredient name */
-                    name?: string;
-                    /** @example 30 */
-                    amount?: number | null;
-                    /** @example 45 */
-                    amount_max?: number | null;
-                    /** @example ml */
-                    units?: string | null;
-                }[];
-            }[];
-            method?: string | null;
-            /**
-             * Format: float
-             * @example 40
-             */
-            abv?: number | null;
-        };
-        CocktailIngredient: {
-            ingredient: components["schemas"]["IngredientBasic"];
-            /** @example 0 */
-            sort: number;
-            /**
-             * Format: float
-             * @example 30
-             */
-            amount: number;
-            /**
-             * Format: float
-             * @example 60
-             */
-            amount_max?: number | null;
-            /** @example ml */
-            units: string;
-            /** @example false */
-            optional?: boolean;
-            /** @example false */
-            is_specified?: boolean;
-            substitutes?: components["schemas"]["CocktailIngredientSubstitute"][];
-            variants_in_shelf?: components["schemas"]["IngredientBasic"][];
-            /** @example Additional notes */
-            note?: string | null;
-            /** @description Amounts in different units, converted if possible */
-            formatted: {
-                ml: {
-                    /**
-                     * Format: float
-                     * @example 30
-                     */
-                    amount: number;
-                    /**
-                     * Format: float
-                     * @example 60
-                     */
-                    amount_max: number;
-                    /** @example ml */
-                    units: string;
-                    /** @example 30-60 ml */
-                    full_text: string;
-                };
-                oz: {
-                    /**
-                     * Format: float
-                     * @example 1
-                     */
-                    amount: number;
-                    /**
-                     * Format: float
-                     * @example 2
-                     */
-                    amount_max: number;
-                    /** @example oz */
-                    units: string;
-                    /** @example 1-2 oz */
-                    full_text: string;
-                };
-                cl: {
-                    /**
-                     * Format: float
-                     * @example 3
-                     */
-                    amount: number;
-                    /**
-                     * Format: float
-                     * @example 6
-                     */
-                    amount_max: number;
-                    /** @example cl */
-                    units: string;
-                    /** @example 3-6 cl */
-                    full_text: string;
-                };
-            } & {
-                [key: string]: unknown;
-            };
-            /** @example true */
-            in_shelf?: boolean;
-            /** @example true */
-            in_shelf_as_variant?: boolean;
-            /** @example true */
-            in_shelf_as_substitute?: boolean;
-            /** @example true */
-            in_shelf_as_complex_ingredient?: boolean;
-            /** @example true */
-            in_bar_shelf?: boolean;
-            /** @example true */
-            in_bar_shelf_as_substitute?: boolean;
-            /** @example true */
-            in_bar_shelf_as_complex_ingredient?: boolean;
-            /** @example true */
-            in_bar_shelf_as_variant?: boolean;
         };
         CocktailIngredientRequest: {
             ingredient_id: number;
@@ -2567,25 +3468,6 @@ export interface components {
             amount_max?: number | null;
             note?: string | null;
         };
-        CocktailIngredientSubstitute: {
-            ingredient: components["schemas"]["IngredientBasic"];
-            /**
-             * Format: float
-             * @example 30
-             */
-            amount: number | null;
-            /**
-             * Format: float
-             * @example 60
-             */
-            amount_max: number | null;
-            /** @example ml */
-            units: string | null;
-            /** @example true */
-            in_shelf: boolean;
-            /** @example true */
-            in_bar_shelf: boolean;
-        };
         CocktailIngredientSubstituteRequest: {
             ingredient_id: number;
             /**
@@ -2601,40 +3483,11 @@ export interface components {
             /** @example ml */
             units?: string | null;
         };
-        CocktailMethod: {
-            /** @example 1 */
-            id: number;
-            /** @example Shake */
-            name: string;
-            /** @example 20 */
-            dilution_percentage: number;
-            /** @example 32 */
-            cocktails_count: number;
-        };
         CocktailMethodRequest: {
             /** @example Shake */
             name: string;
             /** @example 20 */
             dilution_percentage: number;
-        };
-        CocktailPrice: {
-            /**
-             * @description Number of ingredients that are missing defined prices in this category
-             * @example 1
-             */
-            missing_prices_count: number;
-            price_category: components["schemas"]["PriceCategory"];
-            /** @description Total cocktail price, sum of `price_per_pour` amounts */
-            total_price: components["schemas"]["Price"];
-            prices_per_ingredient: {
-                ingredient: components["schemas"]["IngredientBasic"];
-                /** @description Units used for price calculation */
-                units: string;
-                /** @description Price per 1 unit of ingredient amount */
-                price_per_unit: components["schemas"]["Price"];
-                /** @description Price per cocktail ingredient part */
-                price_per_use: components["schemas"]["Price"];
-            }[];
         };
         CocktailRequest: {
             /** @example Cocktail name */
@@ -2658,22 +3511,6 @@ export interface components {
             /** @description List of existing utensil ids */
             utensils?: number[];
         };
-        Collection: {
-            /** @example 1 */
-            id: number;
-            /** @example Collection name */
-            name: string;
-            /** @example Collection description */
-            description: string | null;
-            is_bar_shared: boolean;
-            /**
-             * Format: date-time
-             * @example 2023-05-14T21:23:40.000000Z
-             */
-            created_at: string;
-            created_user?: components["schemas"]["UserBasic"];
-            cocktails?: components["schemas"]["CocktailBasic"][];
-        };
         CollectionRequest: {
             /** @example Collection name */
             name: string;
@@ -2681,21 +3518,6 @@ export interface components {
             description?: string | null;
             is_bar_shared?: boolean;
             cocktails?: number[];
-        };
-        Export: {
-            /** @example 1 */
-            id?: number;
-            /** @example cocktails.csv */
-            filename?: string;
-            /**
-             * Format: date-time
-             * @example 2023-05-14T21:23:40.000000Z
-             */
-            created_at?: string;
-            /** @example Bar name */
-            bar_name?: string;
-            /** @example true */
-            is_done?: boolean;
         };
         ExportRequest: {
             type?: components["schemas"]["ExportTypeEnum"];
@@ -2713,23 +3535,6 @@ export interface components {
             /** @example 2024-08-12T16:40:26+00:00 */
             expires?: string;
         };
-        Glass: {
-            /** @example 1 */
-            id: number;
-            /** @example Lowball */
-            name: string;
-            /** @example Glass for smaller cocktails */
-            description: string | null;
-            /** @example 32 */
-            cocktails_count: number;
-            /**
-             * Format: float
-             * @example 120
-             */
-            volume: number | null;
-            /** @example ml */
-            volume_units: string | null;
-        };
         GlassRequest: {
             /** @example Lowball */
             name: string;
@@ -2742,23 +3547,6 @@ export interface components {
             volume?: number | null;
             /** @example ml */
             volume_units?: string | null;
-        };
-        /** @description Image attached to a specific resource */
-        Image: {
-            /** @example 1 */
-            id: number;
-            /** @example cocktails/1/image.jpg */
-            file_path: string;
-            /** @example http://example.com/uploads/cocktails/1/image.jpg */
-            url: string;
-            /** @example http://example.com/uploads/cocktails/1/thumb */
-            thumb_url?: string;
-            /** @example Image copyright */
-            copyright: string | null;
-            /** @example 1 */
-            sort: number;
-            /** @example 1QcSHQRnh493V4dIh4eXh1h4kJUI */
-            placeholder_hash: string | null;
         };
         ImageRequest: {
             /**
@@ -2773,82 +3561,6 @@ export interface components {
             /** @example Image copyright */
             copyright?: string | null;
         };
-        Ingredient: {
-            /** @example 1 */
-            id: number;
-            /** @example gin-1 */
-            slug: string;
-            /** @example Gin */
-            name: string;
-            /**
-             * Format: float
-             * @example 40
-             */
-            strength: number;
-            /** @example Gin is a type of alcoholic spirit */
-            description: string | null;
-            /** @example Worldwide */
-            origin: string | null;
-            /** Format: date-time */
-            created_at: string;
-            /** Format: date-time */
-            updated_at: string | null;
-            materialized_path: string | null;
-            images?: components["schemas"]["Image"][];
-            /** @example #ffffff */
-            color: string;
-            /** @example 12 */
-            cocktails_count?: number;
-            /**
-             * @description Number of cocktails that use this ingredient as a substitute
-             * @example 1
-             */
-            cocktails_as_substitute_count?: number;
-            cocktails?: {
-                /** @example 1 */
-                id?: number;
-                /** @example old-fashioned-1 */
-                slug?: string;
-                /** @example Old fashioned */
-                name?: string;
-            }[];
-            created_user?: components["schemas"]["UserBasic"];
-            hierarchy: components["schemas"]["IngredientHierarchy"];
-            updated_user?: components["schemas"]["UserBasic"] | null;
-            access?: {
-                /** @example true */
-                can_edit?: boolean;
-                /** @example true */
-                can_delete?: boolean;
-            };
-            ingredient_parts?: components["schemas"]["IngredientBasic"][];
-            prices?: components["schemas"]["IngredientPrice"][];
-            in_shelf?: boolean;
-            in_shelf_as_variant?: boolean;
-            in_bar_shelf?: boolean;
-            in_shopping_list?: boolean;
-            in_bar_shelf_as_variant?: boolean;
-            used_as_substitute_for?: components["schemas"]["IngredientBasic"][];
-            can_be_substituted_with?: components["schemas"]["IngredientBasic"][];
-            calculator_id?: number | null;
-            /** Format: float */
-            sugar_g_per_ml?: number | null;
-            /** Format: float */
-            acidity?: number | null;
-            distillery?: string | null;
-            units?: string | null;
-        };
-        /** @description Minimal ingredient information */
-        IngredientBasic: {
-            /** @example 1 */
-            id: number;
-            /** @example gin-1 */
-            slug: string;
-            /** @example Gin */
-            name: string;
-            /** @description Main resource image */
-            image?: components["schemas"]["Image"];
-        };
         /** @description Ingredient hierarchy */
         IngredientHierarchy: {
             /**
@@ -2861,23 +3573,6 @@ export interface components {
             ancestors?: components["schemas"]["IngredientBasic"][];
             /** @description Root ingredient ID */
             root_ingredient_id?: string | null;
-        };
-        IngredientPrice: {
-            price_category: components["schemas"]["PriceCategory"];
-            price: components["schemas"]["Price"];
-            /**
-             * Format: float
-             * @example 30
-             */
-            amount: number;
-            /** @example ml */
-            units: string;
-            /** @example Updated price */
-            description: string | null;
-            /** Format: date-time */
-            created_at: string;
-            /** Format: date-time */
-            updated_at: string | null;
         };
         IngredientPriceRequest: {
             price_category_id: number;
@@ -2936,10 +3631,6 @@ export interface components {
              */
             units?: string | null;
         };
-        IngredientTree: {
-            ingredient: components["schemas"]["IngredientBasic"];
-            children?: components["schemas"]["IngredientTree"][];
-        };
         LoginRequest: {
             /** @example admin@example.com */
             email: string;
@@ -2950,60 +3641,6 @@ export interface components {
             password: string;
             /** @example My device */
             token_name?: string | null;
-        };
-        Menu: {
-            /** @example 1 */
-            id: number;
-            is_enabled: boolean;
-            /** Format: date-time */
-            created_at: string;
-            /** Format: date-time */
-            updated_at: string | null;
-            categories: {
-                /** @example Category name */
-                name: string;
-                items: {
-                    /** @example 1 */
-                    id: number;
-                    type: components["schemas"]["MenuItemTypeEnum"];
-                    /** @example 1 */
-                    sort: number;
-                    price: components["schemas"]["Price"];
-                    /** @example Cocktail name */
-                    name: string;
-                    description: string;
-                }[];
-            }[];
-        };
-        MenuExplore: {
-            bar: {
-                /** @example Bar name */
-                name: string;
-                /** @example Bar subtitle */
-                subtitle: string;
-                /** @example Bar description */
-                description: string;
-                images?: string[];
-            };
-            categories: {
-                /** @example Category name */
-                name: string;
-                items: {
-                    /** @example false */
-                    in_bar_shelf: boolean;
-                    type: components["schemas"]["MenuItemTypeEnum"];
-                    /** @example 1 */
-                    sort: number;
-                    price: components["schemas"]["Price"];
-                    /** @example 01ARZ3NDEKTSV4RRFFQ69G5FAV */
-                    public_id: string;
-                    /** @example Cocktail name */
-                    name: string;
-                    description: string;
-                    /** @description Image URL */
-                    image: string | null;
-                }[];
-            }[];
         };
         MenuRequest: {
             is_enabled: boolean;
@@ -3027,19 +3664,6 @@ export interface components {
                 currency: string;
             }[];
         };
-        Note: {
-            /** @example 1 */
-            id?: number;
-            /** @example Note text */
-            note?: string;
-            /** @example 1 */
-            user_id?: number;
-            /**
-             * Format: date-time
-             * @example 2022-01-01T00:00:00+00:00
-             */
-            created_at?: string;
-        };
         NoteRequest: {
             /** @example Note text */
             note: string;
@@ -3048,59 +3672,12 @@ export interface components {
             /** @example cocktail */
             resource: string;
         };
-        PersonalAccessToken: {
-            /** @example 1 */
-            id?: number;
-            /** @example user_generated */
-            name?: string;
-            /** @example [
-             *       "cocktails.read",
-             *       "cocktails.write",
-             *       "ingredients.read",
-             *       "ingredients.write"
-             *     ] */
-            abilities?: string[];
-            /** @example 2023-05-14T21:23:40.000000Z */
-            last_used_at?: string;
-            /** @example 2023-05-14T21:23:40.000000Z */
-            created_at?: string;
-            /** @example 2023-05-14T21:23:40.000000Z */
-            expires_at?: string;
-        };
         PersonalAccessTokenRequest: {
             /** @example user_generated */
             name?: string | null;
             abilities: components["schemas"]["AbilityEnum"][];
             /** @example 2023-05-14T21:23:40.000000Z */
             expires_at?: string | null;
-        };
-        Price: {
-            /**
-             * Format: float
-             * @example 13.39
-             */
-            price: number;
-            /** @example 1339 */
-            price_minor: number;
-            /** @example EUR 13.39 */
-            formatted_price: string;
-            /** @example EUR */
-            currency: string;
-        };
-        PriceCategory: {
-            /** @example 1 */
-            id: number;
-            /** @example Amazon (DE) */
-            name: string;
-            /** @example Current price on amazon.de */
-            description: string | null;
-            /**
-             * Format: ISO 4217
-             * @example EUR
-             */
-            currency: string;
-            /** @example € */
-            currency_symbol?: string;
         };
         PriceCategoryRequest: {
             /** @example Amazon (DE) */
@@ -3112,18 +3689,6 @@ export interface components {
              * @example EUR
              */
             currency: string;
-        };
-        Profile: {
-            /** @example 1 */
-            id: number;
-            /** @example Floral */
-            name: string;
-            /** @example example@example.com */
-            email: string;
-            is_subscribed: boolean;
-            memberships: components["schemas"]["BarMembership"][];
-            oauth_credentials: components["schemas"]["OauthCredential"][];
-            settings: components["schemas"]["ProfileSettings"] | null;
         };
         ProfileRequest: {
             /** @example Bar Tender */
@@ -3193,95 +3758,14 @@ export interface components {
              */
             is_password_login_enabled: boolean;
         };
-        ShoppingList: {
-            ingredient: components["schemas"]["IngredientBasic"];
-            /** @example 3 */
-            quantity: number;
-        };
         ShoppingListRequest: {
             ingredients: {
                 id?: number;
                 quantity?: number;
             }[];
         };
-        Subscription: {
-            type?: string;
-            paddle_id?: string;
-            status?: string;
-            /** Format: date-time */
-            created_at?: string;
-            /** Format: date-time */
-            updated_at?: string | null;
-            /** Format: date-time */
-            paused_at?: string | null;
-            /** Format: date-time */
-            ends_at?: string | null;
-            past_due?: boolean;
-            is_recurring?: boolean;
-            next_billed_at?: {
-                currency?: string;
-                amount?: string;
-                /** Format: date-time */
-                date?: string;
-            }[];
-            /** Format: uri */
-            update_payment_url?: string;
-            /** Format: uri */
-            cancel_url?: string;
-            transactions?: components["schemas"]["Transaction"][];
-        };
-        Tag: {
-            /** @example 1 */
-            id: number;
-            /** @example Floral */
-            name: string;
-            /** @example 12 */
-            cocktails_count: number;
-        };
         TagRequest: {
             /** @example Floral */
-            name: string;
-        };
-        Token: {
-            /** @example 1|dvWHLWuZbmWWFbjaUDla393Q9jK5Ou9ujWYPcvII */
-            token?: string;
-        };
-        Transaction: {
-            total?: string;
-            tax?: string;
-            currency?: string;
-            status?: string;
-            invoice_number?: string;
-            /** Format: uri */
-            url?: string;
-            /** Format: date-time */
-            billed_at?: string;
-            /** Format: date-time */
-            created_at?: string;
-            /** Format: date-time */
-            updated_at?: string | null;
-        };
-        User: {
-            /** @example 1 */
-            id?: number;
-            /** @example Bartender */
-            name?: string;
-            /** @example admin@example.com */
-            email?: string;
-            is_subscribed?: boolean;
-            role?: {
-                /** @example 1 */
-                bar_id?: number;
-                /** @example 1 */
-                role_id?: number;
-                /** @example Admin */
-                role_name?: string;
-            };
-        };
-        UserBasic: {
-            /** @example 1 */
-            id: number;
-            /** @example Bartender */
             name: string;
         };
         UserRequest: {
@@ -3296,23 +3780,6 @@ export interface components {
              * @example password
              */
             password: string;
-        };
-        UserSubscription: {
-            prices: string;
-            customer: {
-                paddle_id: string;
-                paddle_email: string;
-                paddle_name: string;
-            }[];
-            subscription: components["schemas"]["Subscription"] | null;
-        };
-        Utensil: {
-            /** @example 1 */
-            id: number;
-            /** @example Shaker */
-            name: string;
-            /** @example Used to shake ingredients */
-            description: string | null;
         };
         UtensilRequest: {
             /** @example Shaker */
@@ -4685,25 +5152,41 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
+                        /** @description The data for the current page */
                         data?: components["schemas"]["Cocktail"][];
+                        /** @description Links for pagination */
                         links?: {
+                            /** @description Link to the first page */
                             first?: string | null;
+                            /** @description Link to the last page */
                             last?: string | null;
+                            /** @description Link to the previous page */
                             prev?: string | null;
+                            /** @description Link to the next page */
                             next?: string | null;
                         };
                         meta?: {
+                            /** @description The current page number */
                             current_page?: number;
+                            /** @description The starting index of the current page */
                             from?: number;
+                            /** @description The last page number */
                             last_page?: number;
                             links?: {
-                                url?: string;
-                                label?: string;
-                                active?: boolean;
+                                /** @description The URL of the link */
+                                url?: string | null;
+                                /** @description The label of the link */
+                                label?: string | null;
+                                /** @description Whether the link is active */
+                                active?: boolean | null;
                             }[];
+                            /** @description The path of the current page */
                             path?: string;
+                            /** @description The number of items per page */
                             per_page?: number;
+                            /** @description The ending index of the current page */
                             to?: number;
+                            /** @description The total number of items */
                             total?: number;
                         };
                     };
@@ -6584,25 +7067,41 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
+                        /** @description The data for the current page */
                         data?: components["schemas"]["Image"][];
+                        /** @description Links for pagination */
                         links?: {
+                            /** @description Link to the first page */
                             first?: string | null;
+                            /** @description Link to the last page */
                             last?: string | null;
+                            /** @description Link to the previous page */
                             prev?: string | null;
+                            /** @description Link to the next page */
                             next?: string | null;
                         };
                         meta?: {
+                            /** @description The current page number */
                             current_page?: number;
+                            /** @description The starting index of the current page */
                             from?: number;
+                            /** @description The last page number */
                             last_page?: number;
                             links?: {
-                                url?: string;
-                                label?: string;
-                                active?: boolean;
+                                /** @description The URL of the link */
+                                url?: string | null;
+                                /** @description The label of the link */
+                                label?: string | null;
+                                /** @description Whether the link is active */
+                                active?: boolean | null;
                             }[];
+                            /** @description The path of the current page */
                             path?: string;
+                            /** @description The number of items per page */
                             per_page?: number;
+                            /** @description The ending index of the current page */
                             to?: number;
+                            /** @description The total number of items */
                             total?: number;
                         };
                     };
@@ -7097,25 +7596,41 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
+                        /** @description The data for the current page */
                         data?: components["schemas"]["Ingredient"][];
+                        /** @description Links for pagination */
                         links?: {
+                            /** @description Link to the first page */
                             first?: string | null;
+                            /** @description Link to the last page */
                             last?: string | null;
+                            /** @description Link to the previous page */
                             prev?: string | null;
+                            /** @description Link to the next page */
                             next?: string | null;
                         };
                         meta?: {
+                            /** @description The current page number */
                             current_page?: number;
+                            /** @description The starting index of the current page */
                             from?: number;
+                            /** @description The last page number */
                             last_page?: number;
                             links?: {
-                                url?: string;
-                                label?: string;
-                                active?: boolean;
+                                /** @description The URL of the link */
+                                url?: string | null;
+                                /** @description The label of the link */
+                                label?: string | null;
+                                /** @description Whether the link is active */
+                                active?: boolean | null;
                             }[];
+                            /** @description The path of the current page */
                             path?: string;
+                            /** @description The number of items per page */
                             per_page?: number;
+                            /** @description The ending index of the current page */
                             to?: number;
+                            /** @description The total number of items */
                             total?: number;
                         };
                     };
@@ -7444,25 +7959,41 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
+                        /** @description The data for the current page */
                         data?: components["schemas"]["CocktailBasic"][];
+                        /** @description Links for pagination */
                         links?: {
+                            /** @description Link to the first page */
                             first?: string | null;
+                            /** @description Link to the last page */
                             last?: string | null;
+                            /** @description Link to the previous page */
                             prev?: string | null;
+                            /** @description Link to the next page */
                             next?: string | null;
                         };
                         meta?: {
+                            /** @description The current page number */
                             current_page?: number;
+                            /** @description The starting index of the current page */
                             from?: number;
+                            /** @description The last page number */
                             last_page?: number;
                             links?: {
-                                url?: string;
-                                label?: string;
-                                active?: boolean;
+                                /** @description The URL of the link */
+                                url?: string | null;
+                                /** @description The label of the link */
+                                label?: string | null;
+                                /** @description Whether the link is active */
+                                active?: boolean | null;
                             }[];
+                            /** @description The path of the current page */
                             path?: string;
+                            /** @description The number of items per page */
                             per_page?: number;
+                            /** @description The ending index of the current page */
                             to?: number;
+                            /** @description The total number of items */
                             total?: number;
                         };
                     };
@@ -7528,25 +8059,41 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
+                        /** @description The data for the current page */
                         data?: components["schemas"]["IngredientBasic"][];
+                        /** @description Links for pagination */
                         links?: {
+                            /** @description Link to the first page */
                             first?: string | null;
+                            /** @description Link to the last page */
                             last?: string | null;
+                            /** @description Link to the previous page */
                             prev?: string | null;
+                            /** @description Link to the next page */
                             next?: string | null;
                         };
                         meta?: {
+                            /** @description The current page number */
                             current_page?: number;
+                            /** @description The starting index of the current page */
                             from?: number;
+                            /** @description The last page number */
                             last_page?: number;
                             links?: {
-                                url?: string;
-                                label?: string;
-                                active?: boolean;
+                                /** @description The URL of the link */
+                                url?: string | null;
+                                /** @description The label of the link */
+                                label?: string | null;
+                                /** @description Whether the link is active */
+                                active?: boolean | null;
                             }[];
+                            /** @description The path of the current page */
                             path?: string;
+                            /** @description The number of items per page */
                             per_page?: number;
+                            /** @description The ending index of the current page */
                             to?: number;
+                            /** @description The total number of items */
                             total?: number;
                         };
                     };
@@ -7758,7 +8305,7 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        data: components["schemas"]["MenuExplore"];
+                        data: components["schemas"]["MenuPublic"];
                     };
                 };
             };
@@ -7846,25 +8393,41 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
+                        /** @description The data for the current page */
                         data?: components["schemas"]["Note"][];
+                        /** @description Links for pagination */
                         links?: {
+                            /** @description Link to the first page */
                             first?: string | null;
+                            /** @description Link to the last page */
                             last?: string | null;
+                            /** @description Link to the previous page */
                             prev?: string | null;
+                            /** @description Link to the next page */
                             next?: string | null;
                         };
                         meta?: {
+                            /** @description The current page number */
                             current_page?: number;
+                            /** @description The starting index of the current page */
                             from?: number;
+                            /** @description The last page number */
                             last_page?: number;
                             links?: {
-                                url?: string;
-                                label?: string;
-                                active?: boolean;
+                                /** @description The URL of the link */
+                                url?: string | null;
+                                /** @description The label of the link */
+                                label?: string | null;
+                                /** @description Whether the link is active */
+                                active?: boolean | null;
                             }[];
+                            /** @description The path of the current page */
                             path?: string;
+                            /** @description The number of items per page */
                             per_page?: number;
+                            /** @description The ending index of the current page */
                             to?: number;
+                            /** @description The total number of items */
                             total?: number;
                         };
                     };
@@ -8887,25 +9450,41 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
+                        /** @description The data for the current page */
                         data?: components["schemas"]["IngredientBasic"][];
+                        /** @description Links for pagination */
                         links?: {
+                            /** @description Link to the first page */
                             first?: string | null;
+                            /** @description Link to the last page */
                             last?: string | null;
+                            /** @description Link to the previous page */
                             prev?: string | null;
+                            /** @description Link to the next page */
                             next?: string | null;
                         };
                         meta?: {
+                            /** @description The current page number */
                             current_page?: number;
+                            /** @description The starting index of the current page */
                             from?: number;
+                            /** @description The last page number */
                             last_page?: number;
                             links?: {
-                                url?: string;
-                                label?: string;
-                                active?: boolean;
+                                /** @description The URL of the link */
+                                url?: string | null;
+                                /** @description The label of the link */
+                                label?: string | null;
+                                /** @description Whether the link is active */
+                                active?: boolean | null;
                             }[];
+                            /** @description The path of the current page */
                             path?: string;
+                            /** @description The number of items per page */
                             per_page?: number;
+                            /** @description The ending index of the current page */
                             to?: number;
+                            /** @description The total number of items */
                             total?: number;
                         };
                     };
@@ -8944,25 +9523,41 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
+                        /** @description The data for the current page */
                         data?: components["schemas"]["CocktailBasic"][];
+                        /** @description Links for pagination */
                         links?: {
+                            /** @description Link to the first page */
                             first?: string | null;
+                            /** @description Link to the last page */
                             last?: string | null;
+                            /** @description Link to the previous page */
                             prev?: string | null;
+                            /** @description Link to the next page */
                             next?: string | null;
                         };
                         meta?: {
+                            /** @description The current page number */
                             current_page?: number;
+                            /** @description The starting index of the current page */
                             from?: number;
+                            /** @description The last page number */
                             last_page?: number;
                             links?: {
-                                url?: string;
-                                label?: string;
-                                active?: boolean;
+                                /** @description The URL of the link */
+                                url?: string | null;
+                                /** @description The label of the link */
+                                label?: string | null;
+                                /** @description Whether the link is active */
+                                active?: boolean | null;
                             }[];
+                            /** @description The path of the current page */
                             path?: string;
+                            /** @description The number of items per page */
                             per_page?: number;
+                            /** @description The ending index of the current page */
                             to?: number;
+                            /** @description The total number of items */
                             total?: number;
                         };
                     };
@@ -9001,25 +9596,41 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
+                        /** @description The data for the current page */
                         data?: components["schemas"]["CocktailBasic"][];
+                        /** @description Links for pagination */
                         links?: {
+                            /** @description Link to the first page */
                             first?: string | null;
+                            /** @description Link to the last page */
                             last?: string | null;
+                            /** @description Link to the previous page */
                             prev?: string | null;
+                            /** @description Link to the next page */
                             next?: string | null;
                         };
                         meta?: {
+                            /** @description The current page number */
                             current_page?: number;
+                            /** @description The starting index of the current page */
                             from?: number;
+                            /** @description The last page number */
                             last_page?: number;
                             links?: {
-                                url?: string;
-                                label?: string;
-                                active?: boolean;
+                                /** @description The URL of the link */
+                                url?: string | null;
+                                /** @description The label of the link */
+                                label?: string | null;
+                                /** @description Whether the link is active */
+                                active?: boolean | null;
                             }[];
+                            /** @description The path of the current page */
                             path?: string;
+                            /** @description The number of items per page */
                             per_page?: number;
+                            /** @description The ending index of the current page */
                             to?: number;
+                            /** @description The total number of items */
                             total?: number;
                         };
                     };
@@ -9237,25 +9848,41 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
+                        /** @description The data for the current page */
                         data?: components["schemas"]["IngredientBasic"][];
+                        /** @description Links for pagination */
                         links?: {
+                            /** @description Link to the first page */
                             first?: string | null;
+                            /** @description Link to the last page */
                             last?: string | null;
+                            /** @description Link to the previous page */
                             prev?: string | null;
+                            /** @description Link to the next page */
                             next?: string | null;
                         };
                         meta?: {
+                            /** @description The current page number */
                             current_page?: number;
+                            /** @description The starting index of the current page */
                             from?: number;
+                            /** @description The last page number */
                             last_page?: number;
                             links?: {
-                                url?: string;
-                                label?: string;
-                                active?: boolean;
+                                /** @description The URL of the link */
+                                url?: string | null;
+                                /** @description The label of the link */
+                                label?: string | null;
+                                /** @description Whether the link is active */
+                                active?: boolean | null;
                             }[];
+                            /** @description The path of the current page */
                             path?: string;
+                            /** @description The number of items per page */
                             per_page?: number;
+                            /** @description The ending index of the current page */
                             to?: number;
+                            /** @description The total number of items */
                             total?: number;
                         };
                     };
@@ -9405,25 +10032,41 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
+                        /** @description The data for the current page */
                         data?: components["schemas"]["CocktailBasic"][];
+                        /** @description Links for pagination */
                         links?: {
+                            /** @description Link to the first page */
                             first?: string | null;
+                            /** @description Link to the last page */
                             last?: string | null;
+                            /** @description Link to the previous page */
                             prev?: string | null;
+                            /** @description Link to the next page */
                             next?: string | null;
                         };
                         meta?: {
+                            /** @description The current page number */
                             current_page?: number;
+                            /** @description The starting index of the current page */
                             from?: number;
+                            /** @description The last page number */
                             last_page?: number;
                             links?: {
-                                url?: string;
-                                label?: string;
-                                active?: boolean;
+                                /** @description The URL of the link */
+                                url?: string | null;
+                                /** @description The label of the link */
+                                label?: string | null;
+                                /** @description Whether the link is active */
+                                active?: boolean | null;
                             }[];
+                            /** @description The path of the current page */
                             path?: string;
+                            /** @description The number of items per page */
                             per_page?: number;
+                            /** @description The ending index of the current page */
                             to?: number;
+                            /** @description The total number of items */
                             total?: number;
                         };
                     };

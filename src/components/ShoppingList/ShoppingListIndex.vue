@@ -79,7 +79,7 @@ async function updateShoppingList() {
 }
 
 function updateQuantity(shoppingListItem: ShoppingListItemWithFullIngredient, delta: number) {
-    if (isNaN(shoppingListItem.quantity) || shoppingListItem.quantity <= 0) {
+    if (!shoppingListItem.quantity || shoppingListItem.quantity <= 0) {
         shoppingListItem.quantity = 1
         return
     }

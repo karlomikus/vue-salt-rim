@@ -90,10 +90,8 @@ const plainTextToken = ref<string | null>(null)
 const toast = useSaltRimToast()
 const { t } = useI18n()
 const apiKey = ref<PersonalAccessToken>({
-    name: '',
-    expires_at: '',
-    abilities: [],
-})
+    abilities: [] as string[],
+} as PersonalAccessToken)
 
 function submit() {
     isLoading.value = true
