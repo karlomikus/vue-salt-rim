@@ -1,6 +1,6 @@
 <template>
     <PageHeader>
-        {{ $t('billing.title') }}
+        {{ t('billing.title') }}
     </PageHeader>
     <div class="settings-page">
         <div class="settings-page__nav">
@@ -11,7 +11,7 @@
             <div v-show="!isLoading" class="block-container block-container--padded">
                 <div class="billing">
                     <div v-if="showBuyingOptions" class="billing__card billing--inactive">
-                        <h3>{{ $t('billing.inactive-title', {name: 'Mixologist'}) }}</h3>
+                        <h3>{{ t('billing.inactive-title', {name: 'Mixologist'}) }}</h3>
                         <p style="margin-bottom: 1rem;">For enthusiasts that want to create a community around their bar</p>
                         <ul>
                             <li>Create and manage up to 10 bars</li>
@@ -47,47 +47,49 @@
                         <div class="billing__card__icon">
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17.0007 1.20801 18.3195 3.68083 20.7923 4.99968 18.3195 6.31852 17.0007 8.79134 15.6818 6.31852 13.209 4.99968 15.6818 3.68083 17.0007 1.20801ZM10.6673 9.33301 15.6673 11.9997 10.6673 14.6663 8.00065 19.6663 5.33398 14.6663.333984 11.9997 5.33398 9.33301 8.00065 4.33301 10.6673 9.33301ZM11.4173 11.9997 9.18905 10.8113 8.00065 8.58301 6.81224 10.8113 4.58398 11.9997 6.81224 13.1881 8.00065 15.4163 9.18905 13.1881 11.4173 11.9997ZM19.6673 16.333 18.0007 13.208 16.334 16.333 13.209 17.9997 16.334 19.6663 18.0007 22.7913 19.6673 19.6663 22.7923 17.9997 19.6673 16.333Z"></path></svg>
                         </div>
-                        <h3>{{ $t('billing.is_active', {name: 'Mixologist'}) }}</h3>
-                        <div v-if="billing.subscription.next_billed_at">
-                            {{ $t('billing.subscribed-on') }} <DateFormatter :date="billing.subscription.created_at" /> &middot; {{ billing.customer.paddle_email }}
-                            <br>
-                            {{ $t('billing.next_bill_at') }} <DateFormatter :date="billing.subscription.next_billed_at.date" /> ({{ billing.subscription.next_billed_at.amount }})
-                        </div>
-                        <div v-if="billing.subscription.paused_at">
-                            {{ $t('billing.end_at') }} <DateFormatter :date="billing.subscription.paused_at" />
-                        </div>
-                        <div v-if="billing.subscription.ends_at">
-                            {{ $t('billing.end_at') }} <DateFormatter :date="billing.subscription.ends_at" />
-                        </div>
-                        <a v-if="billing.subscription.paused_at" href="#" @click.prevent="updateSubscription('resume')">{{ $t('billing.resume') }}</a>
-                        <template v-if="billing.subscription.status === 'active' && !(billing.subscription.ends_at != null || billing.subscription.paused_at != null)">
-                            <template v-if="billing.subscription.update_payment_url">
-                                <a :href="billing.subscription.update_payment_url" target="_blank">{{ $t('billing.update-payment-method') }}</a>
+                        <h3>{{ t('billing.is_active', {name: 'Mixologist'}) }}</h3>
+                        <template v-if="billing.subscription">
+                            <div v-if="billing.subscription.next_billed_at">
+                                {{ t('billing.subscribed-on') }} <DateFormatter :date="billing.subscription.created_at" /> &middot; {{ billing.customer.paddle_email }}
+                                <br>
+                                {{ t('billing.next_bill_at') }} <DateFormatter :date="billing.subscription.next_billed_at.date" /> ({{ billing.subscription.next_billed_at.amount }})
+                            </div>
+                            <div v-if="billing.subscription.paused_at">
+                                {{ t('billing.end_at') }} <DateFormatter :date="billing.subscription.paused_at" />
+                            </div>
+                            <div v-if="billing.subscription.ends_at">
+                                {{ t('billing.end_at') }} <DateFormatter :date="billing.subscription.ends_at" />
+                            </div>
+                            <a v-if="billing.subscription.paused_at" href="#" @click.prevent="updateSubscription('resume')">{{ t('billing.resume') }}</a>
+                            <template v-if="billing.subscription.status === 'active' && !(billing.subscription.ends_at != null || billing.subscription.paused_at != null)">
+                                <template v-if="billing.subscription.update_payment_url">
+                                    <a :href="billing.subscription.update_payment_url" target="_blank">{{ t('billing.update-payment-method') }}</a>
+                                    &middot;
+                                </template>
+                                <a href="#" @click.prevent="updateSubscription('pause')">{{ t('billing.pause') }}</a>
                                 &middot;
+                                <a :href="billing.subscription.cancel_url" target="_blank">{{ t('billing.cancel') }}</a>
                             </template>
-                            <a href="#" @click.prevent="updateSubscription('pause')">{{ $t('billing.pause') }}</a>
-                            &middot;
-                            <a :href="billing.subscription.cancel_url" target="_blank">{{ $t('billing.cancel') }}</a>
                         </template>
                     </div>
                 </div>
             </div>
-            <template v-if="billing.subscription && billing.subscription.transactions.length > 0">
-                <h3 class="form-section-title">{{ $t('billing.transactions') }}</h3>
+            <template v-if="billing.subscription && billing.subscription.transactions && billing.subscription.transactions.length > 0">
+                <h3 class="form-section-title">{{ t('billing.transactions') }}</h3>
                 <div class="block-container block-container--padded">
                     <table class="table">
                         <thead>
                             <tr>
-                                <th>{{ $t('billing.billed_at') }}</th>
-                                <th>{{ $t('billing.amount') }}</th>
-                                <th>{{ $t('billing.currency') }}</th>
-                                <th>{{ $t('billing.invoice-number') }}</th>
+                                <th>{{ t('billing.billed_at') }}</th>
+                                <th>{{ t('billing.amount') }}</th>
+                                <th>{{ t('billing.currency') }}</th>
+                                <th>{{ t('billing.invoice-number') }}</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr v-for="tx in billing.subscription.transactions" :key="tx.invoice_number">
                                 <td><DateFormatter :date="tx.billed_at" format="long" /></td>
-                                <td>{{ new Intl.NumberFormat(userLocale, { style: "currency", currency: tx.currency }).format(tx.total / 100) }}</td>
+                                <td>{{ new Intl.NumberFormat(userLocale, { style: "currency", currency: tx.currency }).format(parseFloat(tx.total) / 100) }}</td>
                                 <td>{{ tx.currency }}</td>
                                 <td>
                                     <template v-if="tx.invoice_number">
@@ -105,9 +107,9 @@
     </div>
 </template>
 
-
-<script>
-import { initializePaddle } from '@paddle/paddle-js'
+<script setup lang="ts">
+import { ref, computed } from 'vue'
+import { initializePaddle, type CheckoutCustomer, type Environments, type Paddle } from '@paddle/paddle-js'
 import BarAssistantClient from '@/api/BarAssistantClient'
 import OverlayLoader from './../OverlayLoader.vue'
 import DateFormatter from './../DateFormatter.vue'
@@ -115,134 +117,132 @@ import SaltRimRadio from './../SaltRimRadio.vue'
 import PageHeader from './../PageHeader.vue'
 import Navigation from './../Settings/SettingsNavigation.vue'
 import AppState from '../../AppState'
+import { useI18n } from 'vue-i18n'
+import type { components } from '@/api/api'
+import type { LineItem } from '@paddle/paddle-js/types/price-preview/price-preview'
+import { useConfirm } from '@/composables/confirm'
 
-export default {
-    components: {
-        OverlayLoader,
-        DateFormatter,
-        SaltRimRadio,
-        PageHeader,
-        Navigation
-    },
-    data() {
-        return {
-            isLoading: false,
-            productPrices: [],
-            paddle: null,
-            selectedPriceCategory: null,
-            userLocale: navigator.languages && navigator.languages.length ? navigator.languages[0] : navigator.language,
-            billing: {
-                prices: [],
-                customer: {},
-                subscription: null,
-            }
+type UserSubscription = components["schemas"]["UserSubscription"]
+
+const confirm = useConfirm()
+const { t } = useI18n()
+const isLoading = ref(false)
+const productPrices = ref<LineItem[]>([])
+const selectedPriceCategory = ref<any>(null)
+const paddle = ref<Paddle | null>(null)
+const billing = ref<UserSubscription>({} as UserSubscription)
+const userLocale = navigator.languages && navigator.languages.length ? navigator.languages[0] : navigator.language
+
+const showBuyingOptions = computed(() => {
+    if (!billing.value) {
+        return false
+    }
+
+    return billing.value?.subscription == null || billing.value?.subscription.status == 'canceled'
+})
+
+async function fetchSubscriptionStatus() {
+    isLoading.value = true
+    const resp = (await BarAssistantClient.getSubscriptionStatus())?.data ?? null
+    if (resp === null) {
+        return
+    }
+
+    billing.value = resp
+
+    await fetchProductsFromPaddle()
+
+    isLoading.value = false
+}
+
+function updateSubscription(type: string) {
+    confirm.show(t('billing.confirm-sub-update-' + type), {
+        onResolved(dialog: any) {
+            dialog.close()
+            isLoading.value = true
+            BarAssistantClient.updateSubscriptionStatus(type).then(() => {
+                isLoading.value = false
+                fetchSubscriptionStatus()
+            })
         }
-    },
-    computed: {
-        showBuyingOptions() {
-            return this.billing.subscription == null || this.billing.subscription.status == 'canceled'
-        }
-    },
-    created() {
-        // Refresh user to fetch and save subscription info in storage
-        this.refreshUser()
+    })
+}
 
-        const self = this
+function upgradePlan() {
+    if (!selectedPriceCategory.value || !paddle.value) {
+        return
+    }
 
-        initializePaddle({
-            environment: window.srConfig.BILLING_ENV,
-            token: window.srConfig.BILLING_TOKEN,
-            checkout: {
-                settings: {
-                    showAddTaxId: false,
-                    allowLogout: false,
-                    theme: 'light'
-                }
-            },
-            eventCallback(data) {
-                if (data.name == 'checkout.closed') {
-                    self.afterCheckoutHook()
-                }
-            }
-        }).then(paddleInstance => {
-            self.paddle = paddleInstance
-            self.fetchBilling()
+    const customer = {} as CheckoutCustomer
+
+    if (billing.value.customer.paddle_id) {
+        customer.id = billing.value.customer.paddle_id
+    } else {
+        customer.email = billing.value.customer.paddle_email ?? undefined
+    }
+
+    paddle.value.Checkout.open({
+        items: [
+            {priceId: selectedPriceCategory.value}
+        ],
+        customer: customer
+    })
+}
+
+async function fetchProductsFromPaddle() {
+    if (!showBuyingOptions.value || !paddle.value || !billing.value) {
+        return
+    }
+
+    const result = await paddle.value.PricePreview({
+        items: billing.value.prices.map(priceId => {
+            return { priceId: priceId, quantity: 1 }
         })
+    })
+
+    productPrices.value = result.data.details.lineItems
+}
+
+async function refreshUser() {
+    const appState = new AppState()
+
+    const resp = (await BarAssistantClient.getProfile())?.data
+    if (!resp) {
+        return
+    }
+
+    appState.setUser(resp)
+}
+
+function afterCheckoutHook() {
+    isLoading.value = true
+    setTimeout(() => {
+        isLoading.value = false
+        window.location.reload()
+    }, 3000)
+}
+
+refreshUser()
+
+initializePaddle({
+    environment: (window.srConfig.BILLING_ENV as Environments),
+    token: window.srConfig.BILLING_TOKEN,
+    checkout: {
+        settings: {
+            showAddTaxId: false,
+            allowLogout: false,
+            theme: 'light'
+        }
     },
-    methods: {
-        fetchBilling() {
-            this.isLoading = true
-            BarAssistantClient.getSubscriptionStatus().then(resp => {
-                this.billing = resp.data
-                this.fetchProduct().then(() => {
-                    this.isLoading = false
-                }).catch(() => {
-                    this.isLoading = false
-                })
-            })
-        },
-        updateSubscription(type) {
-            const self = this
-            this.$confirm(this.$t('billing.confirm-sub-update-' + type), {
-                onResolved(dialog) {
-                    dialog.close()
-                    self.isLoading = true
-                    BarAssistantClient.updateSubscriptionStatus(type).then(() => {
-                        self.isLoading = false
-                        self.fetchBilling()
-                    })
-                }
-            })
-        },
-        upgradePlan() {
-            if (!this.selectedPriceCategory) {
-                return
-            }
-
-            const customer = {}
-
-            if (this.billing.customer.paddle_id) {
-                customer.id = this.billing.customer.paddle_id
-            } else {
-                customer.email = this.billing.customer.paddle_email
-            }
-
-            this.paddle.Checkout.open({
-                items: [
-                    {priceId: this.selectedPriceCategory}
-                ],
-                customer: customer
-            })
-        },
-        async fetchProduct() {
-            if (!this.showBuyingOptions) {
-                return
-            }
-
-            const result = await this.paddle.PricePreview({
-                items: this.billing.prices.map(priceId => {
-                    return { priceId: priceId, quantity: 1 }
-                })
-            })
-
-            this.productPrices = result.data.details.lineItems
-        },
-        refreshUser() {
-            const appState = new AppState()
-
-            BarAssistantClient.getProfile().then(resp => {
-                appState.setUser(resp.data)
-            })
-        },
-        afterCheckoutHook() {
-            this.isLoading = true
-            setTimeout(() => {
-                this.isLoading = false
-                window.location.reload()
-            }, 3000)
+    eventCallback(data) {
+        if (data.name == 'checkout.closed') {
+            afterCheckoutHook()
         }
     }
-}
+}).then(paddleInstance => {
+    paddle.value = paddleInstance ?? null
+    fetchSubscriptionStatus()
+})
 </script>
 
 <style scoped>
