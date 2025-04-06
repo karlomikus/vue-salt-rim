@@ -51,7 +51,7 @@
                             <p :title="ing.amount + ' ' + ing.units">{{ printIngredientAmount(ing) }}</p>
                         </div>
                         <div class="cocktail-form__ingredients__actions">
-                            <SaltRimDialog v-model="showDialogs[idx]">
+                            <SaltRimDialog v-model="showDialogs[idx]" @dialog-closed="handleCocktailIngredientModalClose(idx)">
                                 <template #trigger>
                                     <a href="#" @click.prevent="showDialogs[idx] = true">
                                         {{ $t('edit') }}

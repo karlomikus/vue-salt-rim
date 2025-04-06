@@ -9,7 +9,7 @@ const {
     format = 'short'
 } = defineProps<{
     date: string;
-    format: string;
+    format?: string;
 }>()
 
 const formattedDate = computed(() => {
