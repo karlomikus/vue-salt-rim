@@ -1,3 +1,11 @@
+# v4.1.2
+## Fixes
+- Fixed empty cocktail ingredient sticking when clicking X on modal
+
+# v4.1.1
+## Fixes
+- Fixed missing details for ingredients without descriptions
+
 # v4.1.0
 ## New
 - Added support for feeds
