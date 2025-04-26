@@ -192,7 +192,7 @@
                 <div v-if="ingredient.calculator_id" class="block-container block-container--padded">
                     <h2 class="details-block-container__title">{{ $t('calculators.calculator') }}</h2>
                     <OverlayLoader v-if="isLoadingCalculator" />
-                    <CalculatorRender v-if="calculator" :calculator="calculator"></CalculatorRender>
+                    <CalculatorRender v-if="calculator.id" :calculator="calculator"></CalculatorRender>
                 </div>
                 <div v-if="ingredient.prices && ingredient.prices.length > 0" class="block-container block-container--padded ingredient-details__prices">
                     <h2 class="details-block-container__title">{{ $t('price.prices') }}</h2>
