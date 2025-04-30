@@ -1,3 +1,12 @@
+# v4.2.0
+## New
+- Added `REDIRECT_TO_SSO` env variable
+    - This will automatically redirect to the only SSO provider if enabled
+
+# v4.1.3
+## Fixes
+- Fixed calculator not showing on ingredient details
+
 # v4.1.2
 ## Fixes
 - Fixed empty cocktail ingredient sticking when clicking X on modal
