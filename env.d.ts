@@ -18,5 +18,6 @@ interface Window {
         ANALYTICS_HOST: string,
         ALLOW_REGISTRATION: string,
         SENTRY_DSN: string,
+        REDIRECT_TO_SSO: boolean,
     }
 }
