@@ -7,7 +7,7 @@
                     <button type="button" class="button button--dark" @click.prevent="openDialog($t('cocktail-methods.add'), {} as CocktailMethod)">{{ $t('cocktail-methods.add') }}</button>
                 </template>
                 <template #dialog>
-                    <CocktailMethodsForm :source-tag="editTag" :dialog-title="dialogTitle" @method-dialog-closed="refreshMethods" />
+                    <CocktailMethodsForm :source-method="editMethod" :dialog-title="dialogTitle" @method-dialog-closed="refreshMethods" />
                 </template>
             </SaltRimDialog>
         </template>
@@ -67,7 +67,7 @@ type CocktailMethod = components['schemas']['CocktailMethod']
 const isLoading = ref(false);
 const showDialog = ref(false);
 const dialogTitle = ref('Tags data');
-const editTag = ref({} as CocktailMethod);
+const editMethod = ref({} as CocktailMethod);
 const methods = ref([] as CocktailMethod[]);
 const { t } = useI18n()
 const confirm = useConfirm()
@@ -88,7 +88,7 @@ async function refreshMethods() {
 
 function openDialog(title: string, obj: CocktailMethod) {
     dialogTitle.value = title
-    editTag.value = obj
+    editMethod.value = obj
     showDialog.value = true
 }
 
