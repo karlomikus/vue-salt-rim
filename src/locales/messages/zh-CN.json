@@ -719,5 +719,11 @@
   "loading": "Loading",
   "feeds": {
     "title": "Feeds"
+  },
+  "cocktail-methods": {
+    "cocktail-methods": "Cocktail methods",
+    "dilution-percentage": "Dilution percentage",
+    "add": "Add method",
+    "edit": "Edit method"
   }
 }
