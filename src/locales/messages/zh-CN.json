@@ -62,7 +62,7 @@
     "complex-note": "If you have all of the listed ingredients, automatically match recipes with this ingredient",
     "complex": "Complex ingredient",
     "variety-note": "Recipe matching can include this ingredient as a possible substitute for parent ingredient",
-    "ingredients": "Ingredients",
+    "ingredients": "原料",
     "used_as_substitute_for": "Used as a substitute for",
     "can_be_substituted_with": "Can be substituted with",
     "add-to-bar-shelf": "Add to bar shelf",
@@ -600,7 +600,7 @@
   "cocktail": {
     "title": "Cocktail",
     "import": "Import cocktail",
-    "cocktails": "Cocktails",
+    "cocktails": "鸡尾酒",
     "confirm-delete": "This will permanently delete cocktail with name \"{name}\".",
     "create-success": "Cocktail created successfully",
     "delete-success": "Cocktail \"{name}\" successfully removed",
