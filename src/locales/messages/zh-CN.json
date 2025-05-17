@@ -7,6 +7,7 @@
     "pl-PL": "波兰语",
     "it-IT": "意大利语",
     "sv-SE": "瑞典语",
+    "zh-CN": "Chinese (Simplified)",
     "help": "协助翻译"
   },
   "shelf": {
@@ -724,6 +725,10 @@
     "cocktail-methods": "Cocktail methods",
     "dilution-percentage": "Dilution percentage",
     "add": "Add method",
-    "edit": "Edit method"
+    "edit": "Edit method",
+    "update-success": "Cocktail method updated",
+    "add-success": "Cocktail method added",
+    "confirm-delete": "This will permanently remove cocktail method",
+    "delete-success": "Cocktail method removed successfully"
   }
 }
