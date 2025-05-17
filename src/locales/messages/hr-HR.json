@@ -7,6 +7,7 @@
     "pl-PL": "Poljski",
     "it-IT": "Talijanski",
     "sv-SE": "Švedski",
+    "zh-CN": "Chinese (Simplified)",
     "help": "Pomozi sa prijevodima"
   },
   "shelf": {
@@ -719,5 +720,15 @@
   "loading": "Loading",
   "feeds": {
     "title": "Feeds"
+  },
+  "cocktail-methods": {
+    "cocktail-methods": "Cocktail methods",
+    "dilution-percentage": "Dilution percentage",
+    "add": "Add method",
+    "edit": "Edit method",
+    "update-success": "Cocktail method updated",
+    "add-success": "Cocktail method added",
+    "confirm-delete": "This will permanently remove cocktail method",
+    "delete-success": "Cocktail method removed successfully"
   }
 }

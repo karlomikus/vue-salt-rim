@@ -7,6 +7,7 @@
     "pl-PL": "Polnische",
     "it-IT": "Italienisch",
     "sv-SE": "Schwedisch",
+    "zh-CN": "Chinese (Simplified)",
     "help": "Hilfe bei Übersetzungen"
   },
   "shelf": {
@@ -52,7 +53,7 @@
       "create-ingredient": "Zutat erstellen: \"{name}\"",
       "current": "Ausgewählte Zutat",
       "optional-checkbox": "Optionale Zutat.",
-      "new-ingredient-success": "Nicht kategorisierte Zutat \"{name}\" erstellen.",
+      "new-ingredient-success": "Nicht kategorisierte Zutat \"{name}\" erstellt.",
       "new-ingredient-fail": "Zutat kann nicht hinzugefügt werden.",
       "select-substitutes-for": "Wähle Ersatzzutaten für \"{name}\".",
       "is-specified-checkbox": "Use this specific ingredient (ignore varieties as substitutes)"
@@ -81,7 +82,7 @@
     "show-ancestors": "Zeige übergeordnete Elemente"
   },
   "share": {
-    "title": "Aktie",
+    "title": "Teilen",
     "copy-json": "Im JSON-Format kopieren",
     "copy-yaml": "Als YAML kopieren",
     "format-copied": "Text kopiert",
@@ -719,5 +720,15 @@
   "loading": "Loading",
   "feeds": {
     "title": "Feeds"
+  },
+  "cocktail-methods": {
+    "cocktail-methods": "Cocktail methods",
+    "dilution-percentage": "Dilution percentage",
+    "add": "Add method",
+    "edit": "Edit method",
+    "update-success": "Cocktail method updated",
+    "add-success": "Cocktail method added",
+    "confirm-delete": "This will permanently remove cocktail method",
+    "delete-success": "Cocktail method removed successfully"
   }
 }

@@ -105,7 +105,7 @@
             <div style="margin-bottom: 2rem;">
                 <label class="form-label">{{ $t('method-and-dilution') }}:</label>
                 <div class="cocktail-methods">
-                    <SaltRimRadio v-for="method in methods" :key="method.id" v-model="cocktail.method.id" :value="method.id" :title="$t('method.' + method.name)" :description="method.dilution_percentage + '%'"></SaltRimRadio>
+                    <SaltRimRadio v-for="method in translatableMethods" :key="method.id" v-model="cocktail.method.id" :value="method.id" :title="method.name" :description="method.dilution_percentage + '%'"></SaltRimRadio>
                 </div>
             </div>
             <div class="form-group">
@@ -195,6 +195,22 @@ export default {
             sortable: null,
             utensils: [],
         }
+    },
+    computed: {
+        translatableMethods() {
+            const methodsWithTranslations = ['Shake', 'Stir', 'Build', 'Blend', 'Muddle', 'Layer'];
+
+            return this.methods.map(method => {
+                if (methodsWithTranslations.includes(method.name)) {
+                    return {
+                        ...method,
+                        name: this.$t('method.' + method.name)
+                    }
+                }
+
+                return method
+            })
+        },
     },
     watch: {
         showDialog(newVal) {

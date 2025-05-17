@@ -1,40 +1,41 @@
 {
   "locales": {
-    "en-US": "English",
-    "fr-FR": "French",
-    "hr-HR": "Croatian",
-    "de-DE": "German",
-    "pl-PL": "Polish",
-    "it-IT": "Italian",
-    "sv-SE": "Swedish",
-    "help": "Help with translations"
+    "en-US": "英语",
+    "fr-FR": "法语",
+    "hr-HR": "克罗地亚语",
+    "de-DE": "德语",
+    "pl-PL": "波兰语",
+    "it-IT": "意大利语",
+    "sv-SE": "瑞典语",
+    "zh-CN": "Chinese (Simplified)",
+    "help": "协助翻译"
   },
   "shelf": {
-    "title": "Shelf",
+    "title": "货架",
     "toasts": {
-      "favorites-error": "An error occured while fetching your favorite cocktails from a server",
-      "shelf-error": "An error occured while fetching cocktails you can make from a server",
-      "stats-error": "An error occured while fetching stats from a server",
-      "list-error": "An error occured while fetching ingredients on your shopping list from a server"
+      "favorites-error": "从服务器获取您最喜欢的鸡尾酒时发生错误",
+      "shelf-error": "获取您可以从服务器上制作的鸡尾酒时发生错误",
+      "stats-error": "从服务器获取统计数据时发生错误",
+      "list-error": "从服务器获取购物清单中的成分时发生错误"
     },
-    "cocktails": "Cocktails I can make",
-    "bar-stats": "Bar statistics",
-    "recommended-cocktails": "Recommended cocktails"
+    "cocktails": "我可以制作的 Cocktels",
+    "bar-stats": "酒吧统计",
+    "recommended-cocktails": "推荐的cocktels"
   },
   "ingredient": {
-    "title": "Ingredient",
-    "categories": "Ingredient categories",
-    "main": "Main ingredient",
+    "title": "",
+    "categories": "成分类别",
+    "main": "主要成分：",
     "add": "Add ingredient",
-    "on-shopping-list": "You have this ingredient on shopping list",
+    "on-shopping-list": "",
     "add-to-shelf": "Add to shelf",
     "remove-from-shelf": "Remove from shelf",
-    "add-to-list": "Add to shopping list",
-    "remove-from-list": "Remove from shopping list",
-    "update-success": "Ingredient updated successfully",
-    "create-success": "Ingredient created successfully",
-    "name-placeholder": "<Not selected>",
-    "in-shelf": "You have this ingredient",
+    "add-to-list": "添加到购物清单",
+    "remove-from-list": "从购物清单移除",
+    "update-success": "成分更新成功",
+    "create-success": "成份创建成功",
+    "name-placeholder": "<未选择>",
+    "in-shelf": "你有这个成分了",
     "cocktail-children": "Used in {total} cocktails",
     "delete-confirm": "This will permanently delete ingredient with name \"{name}\". This action will modify {total} cocktail recipes.",
     "shelf-remove-success": "Removed \"{name}\" from your shelf",
@@ -43,15 +44,15 @@
     "list-add-success": "Added \"{name}\" to your shopping list",
     "spotlight": "Ingredient spotlight",
     "is-variety": "Ingredient is variant of another ingredient",
-    "information": "Ingredient information",
+    "information": "成分信息",
     "extra-cocktails": "Add to shelf and you can make",
     "has-variable-amount": "Has variable amount",
     "dialog": {
-      "select-substitutes": "Edit substitute ingredients",
-      "search-not-found": "Not found what you are looking for?",
+      "select-substitutes": "编辑替代成分：",
+      "search-not-found": "找不到您想要的东西？",
       "create-ingredient": "Create ingredient: \"{name}\"",
-      "current": "Selected ingredient",
-      "optional-checkbox": "Make this ingredient optional.",
+      "current": "选定的成分：",
+      "optional-checkbox": "将此成分变为可选成分。",
       "new-ingredient-success": "Created uncategorized ingredient \"{name}\".",
       "new-ingredient-fail": "Unable to add ingredient.",
       "select-substitutes-for": "Select substitute ingredients for \"{name}\".",
@@ -62,7 +63,7 @@
     "complex-note": "If you have all of the listed ingredients, automatically match recipes with this ingredient",
     "complex": "Complex ingredient",
     "variety-note": "Recipe matching can include this ingredient as a possible substitute for parent ingredient",
-    "ingredients": "Ingredients",
+    "ingredients": "原料",
     "used_as_substitute_for": "Used as a substitute for",
     "can_be_substituted_with": "Can be substituted with",
     "add-to-bar-shelf": "Add to bar shelf",
@@ -600,7 +601,7 @@
   "cocktail": {
     "title": "Cocktail",
     "import": "Import cocktail",
-    "cocktails": "Cocktails",
+    "cocktails": "鸡尾酒",
     "confirm-delete": "This will permanently delete cocktail with name \"{name}\".",
     "create-success": "Cocktail created successfully",
     "delete-success": "Cocktail \"{name}\" successfully removed",
@@ -719,5 +720,15 @@
   "loading": "Loading",
   "feeds": {
     "title": "Feeds"
+  },
+  "cocktail-methods": {
+    "cocktail-methods": "Cocktail methods",
+    "dilution-percentage": "Dilution percentage",
+    "add": "Add method",
+    "edit": "Edit method",
+    "update-success": "Cocktail method updated",
+    "add-success": "Cocktail method added",
+    "confirm-delete": "This will permanently remove cocktail method",
+    "delete-success": "Cocktail method removed successfully"
   }
 }

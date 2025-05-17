@@ -178,6 +178,12 @@ const router = createRouter({
                     meta: { requiresBar: true },
                 },
                 {
+                    path: '/settings/cocktail-methods',
+                    name: 'settings.cocktail-methods',
+                    component: () => import('../views/SettingsCocktailMethodsView.vue'),
+                    meta: { requiresBar: true },
+                },
+                {
                     path: '/collections/cocktail',
                     name: 'collections.cocktails',
                     component: () => import('../views/CocktailCollections.vue'),
