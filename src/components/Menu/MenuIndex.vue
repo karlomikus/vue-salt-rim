@@ -49,8 +49,8 @@
                         <div class="drag-handle"></div>
                         <div class="menu-category__cocktail__content">
                             <div>
-                                <RouterLink :to="{ name: 'cocktails.show', params: { id: item.id } }" class="sr-list-item-title">
-                                    <h4 class="sr-list-item-title menu-category__cocktail__content__title">{{ item.name }} </h4>
+                                <RouterLink :to="{ name: item.type == 'cocktail' ? 'cocktails.show' : 'ingredients.show', params: { id: item.id } }" class="sr-list-item-title">
+                                    <h4 class="sr-list-item-title menu-category__cocktail__content__title">{{ item.name }}</h4>
                                 </RouterLink>
                                 <p><span class="menu-item-type" :class="{'menu-item-type--ingredient': item.type == 'ingredient', 'menu-item-type--cocktail': item.type == 'cocktail'}">{{ item.type }}</span> {{ item.description }}</p>
                                 <a href="#" @click.prevent="copyCurrency(item.price.currency)">{{ t('menu.copy-currency') }}</a> &middot;
