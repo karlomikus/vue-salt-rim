@@ -49,7 +49,9 @@
                         <div class="drag-handle"></div>
                         <div class="menu-category__cocktail__content">
                             <div>
-                                <h4 class="sr-list-item-title">{{ item.name }}</h4>
+                                <RouterLink :to="{ name: 'cocktails.show', params: { id: item.id } }" class="sr-list-item-title">
+                                    <h4 class="sr-list-item-title menu-category__cocktail__content__title">{{ item.name }} </h4>
+                                </RouterLink>
                                 <p><span class="menu-item-type" :class="{'menu-item-type--ingredient': item.type == 'ingredient', 'menu-item-type--cocktail': item.type == 'cocktail'}">{{ item.type }}</span> {{ item.description }}</p>
                                 <a href="#" @click.prevent="copyCurrency(item.price.currency)">{{ t('menu.copy-currency') }}</a> &middot;
                                 <template v-if="item.type == 'cocktail'">
@@ -555,6 +557,10 @@ refreshBar()
     .menu-category__cocktail__content {
         flex-direction: column;
     }
+}
+
+.menu-category__cocktail__content__title {
+    margin-bottom: 0.5em;
 }
 
 .menu-category__cocktail__content__price {
