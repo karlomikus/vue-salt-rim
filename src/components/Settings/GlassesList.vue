@@ -31,9 +31,14 @@
                     <tbody>
                         <tr v-for="glass in glasses" :key="glass.id">
                             <td>
-                                <a href="#" @click.prevent="openDialog($t('glass-type.edit'), glass)">{{ glass.name }}</a>
-                                <br>
-                                <small>{{ glass.description }}</small>
+                                <div class="glass-with-image">
+                                    <img v-if="glass.images.length > 0" :src="glass.images[0].url" :alt="glass.images[0].copyright ?? 'Image of glassware'" />
+                                    <div>
+                                        <a href="#" @click.prevent="openDialog($t('glass-type.edit'), glass)">{{ glass.name }}</a>
+                                        <br>
+                                        <small>{{ glass.description }}</small>
+                                    </div>
+                                </div>
                             </td>
                             <td>{{ glass.cocktails_count }}</td>
                             <td v-if="glass.volume > 0">{{ glass.volume }} {{ glass.volume_units }}</td>
@@ -115,3 +120,16 @@ export default {
     }
 }
 </script>
+
+<style scoped>
+.glass-with-image {
+    display: flex;
+    align-items: center;
+}
+.glass-with-image img {
+    margin-right: 10px;
+    border-radius: 4px;
+    max-width: 28px;
+    max-height: 28px;
+}
+</style>

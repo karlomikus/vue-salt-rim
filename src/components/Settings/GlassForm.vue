@@ -8,7 +8,7 @@
         </div>
         <div class="form-group">
             <label class="form-label" for="description">{{ $t('description') }}:</label>
-            <textarea id="description" v-model="glass.description" rows="5" class="form-input"></textarea>
+            <textarea id="description" v-model="glass.description" rows="3" class="form-input"></textarea>
         </div>
         <div style="display: flex; gap: 0.5rem;">
             <div class="form-group" style="flex-basis: 300px;">
@@ -20,6 +20,7 @@
                 <input id="volume_units" v-model="glass.volume_units" class="form-input" type="text" style="width: 100%;">
             </div>
         </div>
+        <ImageUpload ref="imagesUpload" :images="glass.images ?? []" :max-images="1" />
         <div class="dialog-actions">
             <button class="button button--outline" @click.prevent="$emit('glassDialogClosed')">{{ $t('cancel') }}</button>
             <button class="button button--dark" type="submit">{{ $t('save') }}</button>
@@ -27,64 +28,73 @@
     </form>
 </template>
 
-<script>
+<script setup lang="ts">
 import BarAssistantClient from '@/api/BarAssistantClient'
 import OverlayLoader from '@/components/OverlayLoader.vue'
+import ImageUpload from '@/components/ImageUpload.vue'
+import type { components } from '@/api/api'
+import { ref, useTemplateRef } from 'vue'
+import { useSaltRimToast } from '@/composables/toast'
+import { useI18n } from 'vue-i18n'
 
-export default {
-    components: {
-        OverlayLoader,
+type Glass = components['schemas']['Glass']
+
+const props = defineProps({
+    sourceGlass: {
+        type: Object as () => Glass,
+        default: () => ({}),
     },
-    props: {
-        sourceGlass: {
-            type: Object,
-            default() {
-                return {}
-            }
-        },
-        dialogTitle: {
-            type: String,
-            default: ''
-        },
+    dialogTitle: {
+        type: String,
+        default: '',
     },
-    emits: ['glassDialogClosed'],
-    data() {
-        return {
-            isLoading: false,
-            glass: this.sourceGlass,
+})
+const emit = defineEmits(['glassDialogClosed'])
+const { t } = useI18n()
+const toast = useSaltRimToast()
+const isLoading = ref(false)
+const glass = ref<Glass>(props.sourceGlass)
+const imagesUpload = useTemplateRef('imagesUpload')
+
+async function submit() {
+    isLoading.value = true
+
+    const postData = {
+        name: glass.value.name,
+        description: glass.value.description,
+        volume: glass.value.volume,
+        volume_units: glass.value.volume_units,
+        images: [],
+    } as components['schemas']['GlassRequest']
+
+    if (imagesUpload.value) {
+        const imageResources = await imagesUpload.value.save().catch(() => {
+            toast.error(`${t('imageupload.error')}`)
+        }) || []
+
+        if (imageResources.length > 0) {
+            postData.images = imageResources.map(img => img.id)
         }
-    },
-    methods: {
-        submit() {
-            this.isLoading = true
+    }
 
-            const postData = {
-                name: this.glass.name,
-                description: this.glass.description,
-                volume: this.glass.volume,
-                volume_units: this.glass.volume_units,
-            }
-
-            if (this.glass.id) {
-                BarAssistantClient.updateGlass(this.glass.id, postData).then(() => {
-                    this.isLoading = false
-                    this.$toast.default(this.$t('glass-type.update-success'))
-                    this.$emit('glassDialogClosed')
-                }).catch(e => {
-                    this.$toast.error(e.message)
-                    this.isLoading = false
-                })
-            } else {
-                BarAssistantClient.saveGlass(postData).then(() => {
-                    this.isLoading = false
-                    this.$toast.default(this.$t('glass-type.add-success'))
-                    this.$emit('glassDialogClosed')
-                }).catch(e => {
-                    this.$toast.error(e.message)
-                    this.isLoading = false
-                })
-            }
-        }
+    if (glass.value.id) {
+        BarAssistantClient.updateGlass(glass.value.id, postData).then(() => {
+            isLoading.value = false
+            toast.default(t('glass-type.update-success'))
+            emit('glassDialogClosed')
+        }).catch(e => {
+            toast.error(e.message)
+            isLoading.value = false
+        })
+    } else {
+        BarAssistantClient.saveGlass(postData).then(() => {
+            isLoading.value = false
+            toast.default(t('glass-type.add-success'))
+            emit('glassDialogClosed')
+        }).catch(e => {
+            toast.error(e.message)
+            isLoading.value = false
+        })
     }
 }
 </script>

@@ -11,3 +11,4 @@ public/config.js
 
 Dockerfile
 .dockerignore
+crowdin.yml
