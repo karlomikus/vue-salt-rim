@@ -195,3 +195,12 @@ textarea.form-input,
 .form-actions__buttons {
     margin-left: auto;
 }
+
+.form-input--button {
+    cursor: pointer;
+    text-align: left;
+}
+
+.form-input--button:hover {
+    border-color: var(--form-clr-border-focus);
+}
