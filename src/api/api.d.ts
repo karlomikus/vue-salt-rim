@@ -2685,6 +2685,8 @@ export interface components {
             date: string | null;
             /** @description The image URL of the recipe */
             image: string | null;
+            /** @description Indicates if the recipe supports import into the application */
+            supports_recipe_import?: boolean;
         };
         /** @description Represents glassware */
         Glass: {
