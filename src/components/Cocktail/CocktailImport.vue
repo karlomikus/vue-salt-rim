@@ -75,7 +75,7 @@ type CocktailMethod = components["schemas"]["CocktailMethod"]
 type SchemaIngredient = components["schemas"]["cocktail-02.schema"]["ingredients"][0]
 interface SchemaWithExtraIngredientData {
     recipe: {
-        matchedGlassId: number | null,
+        matchedGlass: Glass | null,
         matchedMethodId: number | null,
         ingredients: {
             _source: string | null,
@@ -215,7 +215,7 @@ function fromJson() {
                         method: parsedDraft1.method,
                         glass: parsedDraft1.glass,
                         tags: parsedDraft1.tags,
-                        matchedGlassId: null,
+                        matchedGlass: null,
                         matchedMethodId: null,
                         images: parsedDraft1.images?.map(img => ({file: img.source, uri: img.source, copyright: img.copyright})) ?? [],
                         ingredients: parsedDraft1.ingredients.map(i => {
@@ -368,7 +368,7 @@ async function getOrCreateIngredient(ingredient: SchemaIngredient): Promise<Full
 async function finishImporting() {
     isImporting.value = true
     if (result.value.recipe.glass) {
-        result.value.recipe.matchedGlassId = (await getGlass(result.value.recipe.glass))?.id ?? null
+        result.value.recipe.matchedGlass = (await getGlass(result.value.recipe.glass)) ?? null
     }
 
     if (result.value.recipe.method) {
@@ -412,7 +412,7 @@ async function finishImporting() {
         garnish: result.value.recipe.garnish,
         source: result.value.recipe.source,
         method: {id: result.value.recipe.matchedMethodId},
-        glass: {id: result.value.recipe.matchedGlassId},
+        glass: result.value.recipe.matchedGlass,
         images: result.value.recipe.images?.map(img => ({
             url: img.uri,
             file: img.uri,

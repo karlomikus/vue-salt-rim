@@ -100,11 +100,11 @@
                 <SaltRimDialog v-model="showGlassSelectorDialog">
                     <template #trigger>
                         <button type="button" class="form-input form-input--auto-height form-input--button" @click="showGlassSelectorDialog = !showGlassSelectorDialog">
-                            <template v-if="!cocktail.glass.id">
+                            <template v-if="!cocktail.glass || !cocktail.glass.id">
                                 Select a glass type...
                             </template>
                             <div class="cocktail-selected-glass" v-else>
-                                <div v-if="cocktail.glass.images.length > 0" class="cocktail-selected-glass__image">
+                                <div v-if="cocktail.glass.images && cocktail.glass.images.length > 0" class="cocktail-selected-glass__image">
                                     <img :src="cocktail.glass.images[0].url" :alt="cocktail.glass.images[0].copyright">
                                 </div>
                                 <div>
@@ -571,5 +571,6 @@ export default {
 .cocktail-selected-glass p {
     font-size: 0.85rem;
     color: var(--clr-gray-500);
+    line-height: 1.4;
 }
 </style>
