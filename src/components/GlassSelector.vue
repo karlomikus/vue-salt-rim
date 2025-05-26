@@ -1,29 +1,37 @@
 <template>
-    <div class="glass-hits block-container block-container--inset">
-        <a v-for="option in options" :key="option.id" class="glass-hits__option block-container block-container--hover" href="#" @click.prevent="selectGlass(option)">
-            <div class="glass-hits__option__image">
-                <img v-if="option.images && option.images?.length > 0" :src="option.images[0].url ?? ''" alt="">
-            </div>
-            <div>
-                <h4 class="sr-list-item-title">{{ option.name }}</h4>
-                <p>{{ option.description }}</p>
-            </div>
-        </a>
+    <div class="glass-selector">
+        <input class="form-input" ref="searchInput" v-model="searchTerm" type="search" :placeholder="t('placeholder.search')" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+        <div class="glass-hits block-container block-container--inset">
+            <a v-for="option in filteredOptions" :key="option.id" class="glass-hits__option block-container block-container--hover" href="#" @click.prevent="selectGlass(option)">
+                <div class="glass-hits__option__image">
+                    <img v-if="option.images && option.images?.length > 0" :src="option.images[0].url ?? ''" alt="">
+                </div>
+                <div>
+                    <h4 class="sr-list-item-title">{{ option.name }}</h4>
+                    <p>{{ option.description }}</p>
+                </div>
+            </a>
+        </div>
     </div>
 </template>
 
 <script setup lang="ts">
 import type { components } from '@/api/api'
+import { computed, onMounted, ref, useTemplateRef } from 'vue';
+import { useI18n } from 'vue-i18n';
 
 type Glass = components['schemas']['Glass']
 
-defineProps<{
+const { t } = useI18n()
+const props = defineProps<{
     options: Glass[],
 }>()
+const searchInput = useTemplateRef<HTMLInputElement>('searchInput')
 const emit = defineEmits<{
     (e: 'glassSelected', glass: Glass): void
 }>()
-const model = defineModel<Glass>({
+const searchTerm = ref<string>('')
+const model = defineModel<Glass | null>({
     required: true,
 })
 
@@ -31,9 +39,28 @@ function selectGlass(glass: Glass): void {
     model.value = glass
     emit('glassSelected', glass)
 }
+
+const filteredOptions = computed(() => {
+    if (!searchTerm.value) {
+        return props.options
+    }
+    const term = searchTerm.value.toLowerCase()
+
+    return props.options.filter(option => option.name.toLowerCase().includes(term))
+})
+
+onMounted(() => {
+    searchInput.value?.focus()
+})
 </script>
 
 <style scoped>
+.glass-selector {
+    display: flex;
+    flex-direction: column;
+    gap: .5rem;
+}
+
 .glass-hits {
     padding: .25rem;
     display: flex;
