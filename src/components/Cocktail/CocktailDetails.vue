@@ -625,7 +625,7 @@ fetchShoppingList()
                             </li>
                         </ul>
                         <div v-if="cocktail.volume_ml" class="cocktail-ingredients__total-amount">
-                            Approx: {{ totalLiquidConverted }} <span v-show="(cocktail?.calories ?? 0) > 0">&middot; {{ calculatedCalories.toFixed(0) }} kcal</span> <span v-show="(cocktail?.alcohol_units ?? 0) > 0">&middot; {{ calculatedAlcUnits.toFixed(2) }} units</span>
+                            Approx: {{ totalLiquidConverted }} <span v-if="cocktail.glass && cocktail.glass.volume">({{ t('glass-type.title') }}: {{ cocktail.glass.volume }} {{ cocktail.glass.volume_units }})</span> <span v-show="(cocktail?.calories ?? 0) > 0">&middot; {{ calculatedCalories.toFixed(0) }} kcal</span> <span v-show="(cocktail?.alcohol_units ?? 0) > 0">&middot; {{ calculatedAlcUnits.toFixed(2) }} units</span>
                         </div>
                     </div>
                 </UnitConverter>
