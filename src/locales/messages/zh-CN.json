@@ -79,7 +79,11 @@
     "status": "成分状态",
     "hierarchy-description": "此为成分层级概览。若货架中有任意变体，配方匹配时可将其作为主成分的替代。",
     "show-variants": "显示变体",
-    "show-ancestors": "显示父级"
+    "show-ancestors": "显示父级",
+    "recommended-next": "This bar can make {totalPercent} of available recipes. Add one of the following ingredients to bar shelf to increase cocktail options: {ingredients}",
+    "used-in": "Used in {count} {substituteCount} cocktail recipes",
+    "used-in-substitutes": "+{total} as substitute",
+    "default-units-help": "Used to autofill units when selecting ingredient for cocktail recipe"
   },
   "share": {
     "title": "分享",
@@ -638,7 +642,8 @@
     "select": "选择价格",
     "category-delete-success": "价格分类已删除",
     "category-confirm-delete": "将永久删除名为 \"{name}\" 的价格分类。",
-    "missing-cocktail-price-calculator": "此鸡尾酒无可用价格。请为配方中的成分添加价格以启用计算。"
+    "missing-cocktail-price-calculator": "此鸡尾酒无可用价格。请为配方中的成分添加价格以启用计算。",
+    "missing-price-categories": "To add ingredient prices, you need to define bar {link} first."
   },
   "prices": {
     "add": "添加价格",
@@ -731,5 +736,6 @@
     "add-success": "鸡尾酒方法已添加",
     "confirm-delete": "将永久删除此调制方法",
     "delete-success": "调制方法删除成功"
-  }
+  },
+  "profile-public-shelf-description": "Other bar members will be able to filter by cocktails you have in your shelf"
 }
