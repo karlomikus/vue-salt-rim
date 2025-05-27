@@ -164,6 +164,7 @@
   "source": "Quelle",
   "method-and-dilution": "Zubereitung und Verdünnung",
   "placeholder": {
+    "search": "Enter search term...",
     "source": "URL oder Buch...",
     "tags": "Tags, die dir helfen, den Cocktail zu finden...",
     "cocktail-description": "Cocktail beschreibung oder Ursprung...",
