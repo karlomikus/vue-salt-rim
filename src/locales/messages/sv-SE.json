@@ -164,6 +164,7 @@
   "source": "Källa",
   "method-and-dilution": "Metod och utblandning",
   "placeholder": {
+    "search": "Enter search term...",
     "source": "URL eller bok...",
     "tags": "Taggar för att hjälpa till att hitta drink...",
     "cocktail-description": "Beskrivning av drink eller historia...",

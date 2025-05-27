@@ -164,6 +164,7 @@
   "source": "来源",
   "method-and-dilution": "方法与稀释",
   "placeholder": {
+    "search": "Enter search term...",
     "source": "URL 或书籍...",
     "tags": "帮助您查找鸡尾酒的标签...",
     "cocktail-description": "鸡尾酒描述或历史...",
@@ -385,7 +386,7 @@
     "add-success": "工具添加成功",
     "update-success": "工具更新成功"
   },
-    "your-favorite-ingredients": "您最喜爱的成分",
+  "your-favorite-ingredients": "您最喜爱的成分",
   "cocktails-top-rated": "评分最高的鸡尾酒",
   "bars": {
     "title": "酒吧",

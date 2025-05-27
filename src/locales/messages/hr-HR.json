@@ -164,6 +164,7 @@
   "source": "Izvor",
   "method-and-dilution": "Metoda i razvodnjavanje",
   "placeholder": {
+    "search": "Enter search term...",
     "source": "URL ili knjiga...",
     "tags": "Oznake za lakše pronalaženje koktela...",
     "cocktail-description": "Opis ili povijest koktela...",

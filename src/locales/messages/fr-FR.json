@@ -164,6 +164,7 @@
   "source": "Source",
   "method-and-dilution": "Méthode et dilution",
   "placeholder": {
+    "search": "Enter search term...",
     "source": "URL ou livre...",
     "tags": "Des tags pour vous aider à trouver le cocktail...",
     "cocktail-description": "Description du cocktail ou histoire...",
