@@ -167,7 +167,12 @@
                         </li>
                         <li>
                             <RouterLink :to="{name: 'cocktails', query: {'filter[ingredient_id]': ingredient.id}}">
-                                Used in <strong>{{ ingredient.cocktails_count }} <template v-if="ingredient.cocktails_as_substitute_count && ingredient.cocktails_as_substitute_count > 0">(+{{ ingredient.cocktails_as_substitute_count }} as substitute)</template></strong> cocktail recipes
+                                <i18n-t keypath="ingredient.used-in">
+                                    <template #count><strong>{{ ingredient.cocktails_count }}</strong></template>
+                                    <template v-if="ingredient.cocktails_as_substitute_count && ingredient.cocktails_as_substitute_count > 0" #substituteCount>
+                                        <strong>({{ t('ingredient.used-in-substitutes', {total: ingredient.cocktails_as_substitute_count}) }})</strong>
+                                    </template>
+                                </i18n-t>
                             </RouterLink>
                         </li>
                         <li v-if="extraIfAddedToShelf.length > 0">{{ $t('ingredient.extra-cocktails') }}: <RouterLink :to="{name: 'cocktails', query: {'filter[id]': extraCocktailsIds}}">{{ extraIfAddedToShelf.length }} {{ $t('cocktail.cocktails') }}</RouterLink></li>

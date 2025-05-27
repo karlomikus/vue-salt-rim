@@ -35,11 +35,17 @@ async function fetchRecommendedIngredients() {
     <div class="block-container block-recommended">
         <OverlayLoader v-if="isLoading"></OverlayLoader>
         <template v-if="stats.total_cocktails > 0">
-            This bar can make <strong>{{ shelfPercent }}</strong> of total bar cocktails. Add one of the following ingredients to bar shelf to increase cocktail options:
-            <template v-for="(ing, index) in recommendedIngredients" :key="ing.id">
-                <RouterLink :to="{ name: 'ingredients.show', params: { id: ing.slug } }">{{ ing.name }}</RouterLink>
-                <template v-if="index + 1 !== recommendedIngredients.length"> &middot; </template>
-            </template>
+            <i18n-t keypath="ingredient.recommended-next">
+                <template #totalPercent>
+                    <strong>{{ shelfPercent }}</strong>
+                </template>
+                <template #ingredients>
+                    <template v-for="(ing, index) in recommendedIngredients" :key="ing.id">
+                        <RouterLink :to="{ name: 'ingredients.show', params: { id: ing.slug } }">{{ ing.name }}</RouterLink>
+                        <template v-if="index + 1 !== recommendedIngredients.length"> &middot; </template>
+                    </template>
+                </template>
+            </i18n-t>
         </template>
     </div>
 </template>

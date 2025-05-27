@@ -23,7 +23,7 @@
     "recommended-cocktails": "推荐的鸡尾酒"
   },
   "ingredient": {
-    "title": "",
+    "title": "成分",
     "categories": "成分类别",
     "main": "主要成分：",
     "add": "添加成分",
