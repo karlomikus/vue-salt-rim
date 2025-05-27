@@ -164,6 +164,7 @@
   "source": "Źródło",
   "method-and-dilution": "Metoda i rozcieńczanie",
   "placeholder": {
+    "search": "Enter search term...",
     "source": "URL or book...",
     "tags": "Tagi, które pomogą Ci znaleźć koktajl...",
     "cocktail-description": "Opis koktajlu lub historia...",
