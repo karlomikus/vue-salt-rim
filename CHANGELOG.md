@@ -1,3 +1,10 @@
+# v4.4.0
+## New
+- Updated cocktail glass type selector
+
+## Fixes
+- Added missing translation strings
+
 # v4.3.0
 ## New
 - Added Zitadel SSO support
