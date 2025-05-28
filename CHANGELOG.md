@@ -1,3 +1,17 @@
+# v4.4.0
+## New
+- Updated cocktail glass type selector
+- Menu items are now clickable
+
+## Fixes
+- Added missing translation strings
+
+# v4.3.0
+## New
+- Added Zitadel SSO support
+- Added "Cocktail Methods" to settings
+- Enabled "Chinese (Simplified)" locale
+
 # v4.2.0
 ## New
 - Added `REDIRECT_TO_SSO` env variable

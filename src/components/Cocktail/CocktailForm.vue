@@ -97,10 +97,32 @@
             </div>
             <div class="form-group">
                 <label class="form-label" for="glass">{{ $t('glass-type.title') }}:</label>
-                <select id="glass" v-model="cocktail.glass.id" class="form-select">
-                    <option :value="undefined" disabled>Select a glass type...</option>
-                    <option v-for="glass in glasses" :key="glass.id" :value="glass.id">{{ glass.name }}</option>
-                </select>
+                <SaltRimDialog v-model="showGlassSelectorDialog">
+                    <template #trigger>
+                        <button type="button" class="form-input form-input--auto-height form-input--button" @click="showGlassSelectorDialog = !showGlassSelectorDialog">
+                            <template v-if="!cocktail.glass || !cocktail.glass.id">
+                                Select a glass type...
+                            </template>
+                            <div class="cocktail-selected-glass" v-else>
+                                <div v-if="cocktail.glass.images && cocktail.glass.images.length > 0" class="cocktail-selected-glass__image">
+                                    <img :src="cocktail.glass.images[0].url" :alt="cocktail.glass.images[0].copyright">
+                                </div>
+                                <div>
+                                    <h4>{{ cocktail.glass.name }}</h4>
+                                    <p>{{ cocktail.glass.description }}</p>
+                                    <p v-if="cocktail.glass.volume">{{ $t('volume') }}: {{ cocktail.glass.volume }} {{ cocktail.glass.volume_units }}</p>
+                                </div>
+                            </div>
+                        </button>
+                    </template>
+                    <template #dialog>
+                        <div class="dialog-title">{{ $t('glass-type.title') }}</div>
+                        <GlassSelector v-model="cocktail.glass" :options="glasses" @glass-selected="showGlassSelectorDialog = false"></GlassSelector>
+                        <div class="dialog-actions">
+                            <button class="button button--outline" @click.prevent="showGlassSelectorDialog = false">{{ $t('cancel') }}</button>
+                        </div>
+                    </template>
+                </SaltRimDialog>
             </div>
             <div style="margin-bottom: 2rem;">
                 <label class="form-label">{{ $t('method-and-dilution') }}:</label>
@@ -152,6 +174,7 @@ import SubstituteModal from './SubstituteModal.vue'
 import SubscriptionCheck from '../SubscriptionCheck.vue'
 import TimeStamps from '../TimeStamps.vue'
 import TagSelector from '../TagSelector.vue'
+import GlassSelector from '../GlassSelector.vue';
 
 export default {
     components: {
@@ -165,6 +188,7 @@ export default {
         TimeStamps,
         TagSelector,
         CocktailIngredientModal,
+        GlassSelector,
     },
     data() {
         const appState = new AppState()
@@ -177,6 +201,7 @@ export default {
             },
             showDialogs: [],
             showSubstituteDialog: false,
+            showGlassSelectorDialog: false,
             cocktailIngredientForSubstitutes: {},
             maxImages: appState.isSubscribed() ? 10 : 1,
             isLoading: false,
@@ -520,5 +545,32 @@ export default {
 .cocktail-form__ingredients__onboard svg {
     height: 64px;
     stroke: var(--clr-gray-700);
+}
+
+.cocktail-selected-glass {
+    display: flex;
+    flex-direction: row;
+    gap: .5rem;
+}
+
+.cocktail-selected-glass__image {
+    flex: 0;
+}
+
+.cocktail-selected-glass img {
+    max-width: 50px;
+    max-height: 50px;
+    height: auto;
+}
+
+.cocktail-selected-glass h4 {
+    margin: 0;
+    font-weight: bold;
+}
+
+.cocktail-selected-glass p {
+    font-size: 0.85rem;
+    color: var(--clr-gray-500);
+    line-height: 1.4;
 }
 </style>

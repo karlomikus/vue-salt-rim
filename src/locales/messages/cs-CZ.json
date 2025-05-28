@@ -79,7 +79,11 @@
     "status": "Ingredient status",
     "hierarchy-description": "This is an overview of the ingredient hierarchy. Depending on the cocktail recipe, if you have any of the variants in the shelf, they can be used as a substitute for the main ingredient when matching recipes.",
     "show-variants": "Show variants",
-    "show-ancestors": "Show ancestors"
+    "show-ancestors": "Show ancestors",
+    "recommended-next": "This bar can make {totalPercent} of available recipes. Add one of the following ingredients to bar shelf to increase cocktail options: {ingredients}",
+    "used-in": "Used in {count} {substituteCount} cocktail recipes",
+    "used-in-substitutes": "+{total} as substitute",
+    "default-units-help": "Used to autofill units when selecting ingredient for cocktail recipe"
   },
   "share": {
     "title": "Share",
@@ -164,6 +168,7 @@
   "source": "Source",
   "method-and-dilution": "Method & dilution",
   "placeholder": {
+    "search": "Enter search term...",
     "source": "URL or book...",
     "tags": "Tags to help you find the cocktail...",
     "cocktail-description": "Cocktail description or history...",
@@ -637,7 +642,8 @@
     "select": "Select price",
     "category-delete-success": "Price category deleted",
     "category-confirm-delete": "This will permanently price category with name \\\"{name}\\\".",
-    "missing-cocktail-price-calculator": "There are no prices available for this cocktail. Add prices to ingredients in the recipe to enable price calculation."
+    "missing-cocktail-price-calculator": "There are no prices available for this cocktail. Add prices to ingredients in the recipe to enable price calculation.",
+    "missing-price-categories": "To add ingredient prices, you need to define bar {link} first."
   },
   "prices": {
     "add": "Add price",
@@ -730,5 +736,6 @@
     "add-success": "Cocktail method added",
     "confirm-delete": "This will permanently remove cocktail method",
     "delete-success": "Cocktail method removed successfully"
-  }
+  },
+  "profile-public-shelf-description": "Other bar members will be able to filter by cocktails you have in your shelf"
 }

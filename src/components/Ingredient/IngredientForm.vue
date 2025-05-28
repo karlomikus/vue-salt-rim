@@ -45,7 +45,7 @@
                 <div class="form-group">
                     <label class="form-label" for="default-units">{{ $t('default-units') }}:</label>
                     <input id="default-units" v-model="ingredient.units" class="form-input" type="text">
-                    <p class="form-input-hint">Used to autofill units when selecting ingredient for cocktail recipe</p>
+                    <p class="form-input-hint">{{ t('ingredient.default-units-help') }}</p>
                 </div>
             </div>
             <div class="form-group">
@@ -127,7 +127,11 @@
                 </div>
             </template>
             <div v-else>
-                To add ingredient prices, you need to define bar <RouterLink :to="{name: 'settings.price-categories'}" target="_blank">price categories</RouterLink> first.
+                <i18n-t keypath="price.missing-price-categories">
+                    <template #link>
+                        <RouterLink :to="{name: 'settings.price-categories'}" target="_blank">{{ t('prices.price-categories').toLocaleLowerCase() }}</RouterLink>
+                    </template>
+                </i18n-t>
             </div>
         </div>
         <div class="form-actions form-actions--timestamps">
@@ -151,7 +155,6 @@ import IngredientFinder from './../IngredientFinder.vue'
 import TimeStamps from '../TimeStamps.vue'
 import EmptyState from '../EmptyState.vue'
 import SaltRimCheckbox from '../SaltRimCheckbox.vue'
-import SaltRimDialog from '../Dialog/SaltRimDialog.vue'
 import CloseButton from '../CloseButton.vue'
 import { useTitle } from '@/composables/title'
 import AppState from '@/AppState'

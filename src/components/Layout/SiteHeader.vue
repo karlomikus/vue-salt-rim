@@ -3,7 +3,7 @@
         <header class="site-header">
             <div class="header-bar">
                 <div class="header-bar__left">
-                    <SiteLogo></SiteLogo>
+                    <SiteLogo :bar="appState.bar"></SiteLogo>
                 </div>
                 <nav class="header-bar__navigation">
                     <template v-if="appState.bar.id">

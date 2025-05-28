@@ -2685,6 +2685,8 @@ export interface components {
             date: string | null;
             /** @description The image URL of the recipe */
             image: string | null;
+            /** @description Indicates if the recipe supports import into the application */
+            supports_recipe_import?: boolean;
         };
         /** @description Represents glassware */
         Glass: {
@@ -2719,6 +2721,8 @@ export interface components {
              * @example ml
              */
             volume_units: string | null;
+            /** @description Glassware images */
+            images?: components["schemas"]["Image"][];
         };
         /** @description Image attached to a specific resource */
         Image: {
@@ -3547,6 +3551,8 @@ export interface components {
             volume?: number | null;
             /** @example ml */
             volume_units?: string | null;
+            /** @description Existing image ids */
+            images?: number[];
         };
         ImageRequest: {
             /**
@@ -3798,7 +3804,7 @@ export interface components {
          * @description Provides a list of supported SSO providers.
          * @enum {string}
          */
-        OauthProvider: "github" | "google" | "gitlab" | "authentik" | "authelia" | "keycloak";
+        OauthProvider: "github" | "google" | "gitlab" | "authentik" | "authelia" | "keycloak" | "pocketid" | "zitadel";
         /**
          * Cocktail recipe - Draft 02
          * @description Schema for a cocktail recipe including detailed ingredient data. Draft 02 splits ingredients and recipe data.
@@ -4784,7 +4790,7 @@ export interface operations {
         parameters: {
             query?: never;
             header?: {
-                /** @description Database id of a bar. Required if you are not using `bar_id` query string. */
+                /** @description Database id of a bar. */
                 "Bar-Assistant-Bar-Id"?: number;
             };
             path?: never;
@@ -4813,7 +4819,7 @@ export interface operations {
         parameters: {
             query?: never;
             header?: {
-                /** @description Database id of a bar. Required if you are not using `bar_id` query string. */
+                /** @description Database id of a bar. */
                 "Bar-Assistant-Bar-Id"?: number;
             };
             path?: never;
@@ -5100,31 +5106,57 @@ export interface operations {
                 per_page?: number;
                 /** @description Filter by attributes */
                 filter?: {
+                    /** @description Filter by cocktail IDs */
                     id?: string;
+                    /** @description Filter by cocktail names (fuzzy search) */
                     name?: string;
+                    /** @description Filter by cocktail ingredient names (fuzzy search) */
                     ingredient_name?: string;
+                    /** @description Filter by tag IDs */
                     tag_id?: string;
+                    /** @description Filter by creator IDs */
                     created_user_id?: string;
+                    /** @description Filter by glass IDs */
                     glass_id?: string;
+                    /** @description Filter by cocktail method IDs */
                     cocktail_method_id?: string;
+                    /** @description Filter by collection IDs */
                     collection_id?: string;
+                    /** @description Show only user favorites */
                     favorites?: boolean;
+                    /** @description Show only cocktails on the user's shelf */
                     on_shelf?: boolean;
+                    /** @description Show only cocktails on the bar shelf */
                     bar_shelf?: boolean;
+                    /** @description Show only cocktails on the user's shelves. Comma separated list of user IDs */
                     user_shelves?: string;
+                    /** @description Show only cocktails that can be made with the given ingredients. Used as on-the-fly custom shelf filter */
                     shelf_ingredients?: string;
+                    /** @description Show only cocktails with public links */
                     is_public?: boolean;
+                    /** @description Filter by greater than or equal user rating */
                     user_rating_min?: string;
+                    /** @description Filter by less than or equal user rating */
                     user_rating_max?: string;
+                    /** @description Filter by greater than or equal average rating */
                     average_rating_min?: string;
+                    /** @description Filter by less than or equal average rating */
                     average_rating_max?: string;
+                    /** @description Filter by greater than or equal ABV */
                     abv_min?: string;
+                    /** @description Filter by less than or equal ABV */
                     abv_max?: string;
+                    /** @description Show only cocktails whose main ingredient is in the given list. Comma separated list of ingredient IDs */
                     main_ingredient_id?: string;
+                    /** @description Filter by total number of ingredients */
                     total_ingredients?: string;
+                    /** @description Filter by total number of missing ingredients */
                     missing_ingredients?: string;
+                    /** @description Filter by total number of missing bar ingredients */
                     missing_bar_ingredients?: string;
+                    /** @description Show cocktails that contain given ingredient IDs */
                     specific_ingredients?: string;
+                    /** @description Show cocktails that do not contain given ingredient IDs */
                     ignore_ingredients?: string;
                 };
                 /** @description Sort by attributes. Available attributes: `name`, `created_at`, `average_rating`, `user_rating`, `abv`, `total_ingredients`, `missing_ingredients`, `missing_bar_ingredients`, `favorited_at`, `random`. */
@@ -5133,7 +5165,7 @@ export interface operations {
                 include?: string;
             };
             header?: {
-                /** @description Database id of a bar. Required if you are not using `bar_id` query string. */
+                /** @description Database id of a bar. */
                 "Bar-Assistant-Bar-Id"?: number;
             };
             path?: never;
@@ -5213,7 +5245,7 @@ export interface operations {
         parameters: {
             query?: never;
             header?: {
-                /** @description Database id of a bar. Required if you are not using `bar_id` query string. */
+                /** @description Database id of a bar. */
                 "Bar-Assistant-Bar-Id"?: number;
             };
             path?: never;
@@ -5866,7 +5898,7 @@ export interface operations {
                 };
             };
             header?: {
-                /** @description Database id of a bar. Required if you are not using `bar_id` query string. */
+                /** @description Database id of a bar. */
                 "Bar-Assistant-Bar-Id"?: number;
             };
             path?: never;
@@ -5895,7 +5927,7 @@ export interface operations {
         parameters: {
             query?: never;
             header?: {
-                /** @description Database id of a bar. Required if you are not using `bar_id` query string. */
+                /** @description Database id of a bar. */
                 "Bar-Assistant-Bar-Id"?: number;
             };
             path?: never;
@@ -6125,7 +6157,7 @@ export interface operations {
                 sort?: string;
             };
             header?: {
-                /** @description Database id of a bar. Required if you are not using `bar_id` query string. */
+                /** @description Database id of a bar. */
                 "Bar-Assistant-Bar-Id"?: number;
             };
             path?: never;
@@ -6154,7 +6186,7 @@ export interface operations {
         parameters: {
             query?: never;
             header?: {
-                /** @description Database id of a bar. Required if you are not using `bar_id` query string. */
+                /** @description Database id of a bar. */
                 "Bar-Assistant-Bar-Id"?: number;
             };
             path?: never;
@@ -6682,6 +6714,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
+                    /** @example binary */
                     "application/octet-stream": unknown;
                 };
             };
@@ -6798,7 +6831,7 @@ export interface operations {
                 sort?: string;
             };
             header?: {
-                /** @description Database id of a bar. Required if you are not using `bar_id` query string. */
+                /** @description Database id of a bar. */
                 "Bar-Assistant-Bar-Id"?: number;
             };
             path?: never;
@@ -6827,7 +6860,7 @@ export interface operations {
         parameters: {
             query?: never;
             header?: {
-                /** @description Database id of a bar. Required if you are not using `bar_id` query string. */
+                /** @description Database id of a bar. */
                 "Bar-Assistant-Bar-Id"?: number;
             };
             path?: never;
@@ -7375,7 +7408,7 @@ export interface operations {
         parameters: {
             query?: never;
             header?: {
-                /** @description Database id of a bar. Required if you are not using `bar_id` query string. */
+                /** @description Database id of a bar. */
                 "Bar-Assistant-Bar-Id"?: number;
             };
             path?: never;
@@ -7439,7 +7472,7 @@ export interface operations {
         parameters: {
             query?: never;
             header?: {
-                /** @description Database id of a bar. Required if you are not using `bar_id` query string. */
+                /** @description Database id of a bar. */
                 "Bar-Assistant-Bar-Id"?: number;
             };
             path?: never;
@@ -7498,7 +7531,7 @@ export interface operations {
         parameters: {
             query?: never;
             header?: {
-                /** @description Database id of a bar. Required if you are not using `bar_id` query string. */
+                /** @description Database id of a bar. */
                 "Bar-Assistant-Bar-Id"?: number;
             };
             path?: never;
@@ -7550,17 +7583,31 @@ export interface operations {
                 per_page?: number;
                 /** @description Filter by attributes */
                 filter?: {
+                    /** @description Filter by ingredient id */
                     id?: number;
+                    /** @description Filter by ingredient name (fuzzy search) */
                     name?: string;
+                    /** @description Filter by ingredient name (exact match) */
                     name_exact?: string;
+                    /** @description Filter by ingredient origin */
                     origin?: string;
+                    /** @description Filter by user id who created the ingredient */
                     created_user_id?: number;
+                    /** @description Show only ingredients that are on the shopping list */
                     on_shopping_list?: boolean;
+                    /** @description Show only ingredients that are on the shelf */
                     on_shelf?: boolean;
+                    /** @description Show only ingredients that are on the bar shelf */
                     bar_shelf?: boolean;
-                    /** Format: float */
+                    /**
+                     * Format: float
+                     * @description Show only ingredients with strength greater than or equal to given value
+                     */
                     strength_min?: number;
-                    /** Format: float */
+                    /**
+                     * Format: float
+                     * @description Show only ingredients with strength less than or equal to given value
+                     */
                     strength_max?: number;
                     /** @description Show only ingredients that are used as main ingredients in cocktails */
                     main_ingredients?: string;
@@ -7577,7 +7624,7 @@ export interface operations {
                 include?: string;
             };
             header?: {
-                /** @description Database id of a bar. Required if you are not using `bar_id` query string. */
+                /** @description Database id of a bar. */
                 "Bar-Assistant-Bar-Id"?: number;
             };
             path?: never;
@@ -7657,7 +7704,7 @@ export interface operations {
         parameters: {
             query?: never;
             header?: {
-                /** @description Database id of a bar. Required if you are not using `bar_id` query string. */
+                /** @description Database id of a bar. */
                 "Bar-Assistant-Bar-Id"?: number;
             };
             path?: never;
@@ -8194,7 +8241,7 @@ export interface operations {
         parameters: {
             query?: never;
             header?: {
-                /** @description Database id of a bar. Required if you are not using `bar_id` query string. */
+                /** @description Database id of a bar. */
                 "Bar-Assistant-Bar-Id"?: number;
             };
             path?: never;
@@ -8238,7 +8285,7 @@ export interface operations {
         parameters: {
             query?: never;
             header?: {
-                /** @description Database id of a bar. Required if you are not using `bar_id` query string. */
+                /** @description Database id of a bar. */
                 "Bar-Assistant-Bar-Id"?: number;
             };
             path?: never;
@@ -8330,7 +8377,7 @@ export interface operations {
         parameters: {
             query?: never;
             header?: {
-                /** @description Database id of a bar. Required if you are not using `bar_id` query string. */
+                /** @description Database id of a bar. */
                 "Bar-Assistant-Bar-Id"?: number;
             };
             path?: never;
@@ -8725,7 +8772,7 @@ export interface operations {
         parameters: {
             query?: never;
             header?: {
-                /** @description Database id of a bar. Required if you are not using `bar_id` query string. */
+                /** @description Database id of a bar. */
                 "Bar-Assistant-Bar-Id"?: number;
             };
             path?: never;
@@ -8754,7 +8801,7 @@ export interface operations {
         parameters: {
             query?: never;
             header?: {
-                /** @description Database id of a bar. Required if you are not using `bar_id` query string. */
+                /** @description Database id of a bar. */
                 "Bar-Assistant-Bar-Id"?: number;
             };
             path?: never;
@@ -9214,7 +9261,7 @@ export interface operations {
         parameters: {
             query?: never;
             header?: {
-                /** @description Database id of a bar. Required if you are not using `bar_id` query string. */
+                /** @description Database id of a bar. */
                 "Bar-Assistant-Bar-Id"?: number;
             };
             path?: never;
@@ -9428,7 +9475,7 @@ export interface operations {
                 per_page?: number;
             };
             header?: {
-                /** @description Database id of a bar. Required if you are not using `bar_id` query string. */
+                /** @description Database id of a bar. */
                 "Bar-Assistant-Bar-Id"?: number;
             };
             path: {
@@ -9501,7 +9548,7 @@ export interface operations {
                 per_page?: number;
             };
             header?: {
-                /** @description Database id of a bar. Required if you are not using `bar_id` query string. */
+                /** @description Database id of a bar. */
                 "Bar-Assistant-Bar-Id"?: number;
             };
             path: {
@@ -9574,7 +9621,7 @@ export interface operations {
                 per_page?: number;
             };
             header?: {
-                /** @description Database id of a bar. Required if you are not using `bar_id` query string. */
+                /** @description Database id of a bar. */
                 "Bar-Assistant-Bar-Id"?: number;
             };
             path: {
@@ -9642,7 +9689,7 @@ export interface operations {
         parameters: {
             query?: never;
             header?: {
-                /** @description Database id of a bar. Required if you are not using `bar_id` query string. */
+                /** @description Database id of a bar. */
                 "Bar-Assistant-Bar-Id"?: number;
             };
             path: {
@@ -9702,7 +9749,7 @@ export interface operations {
         parameters: {
             query?: never;
             header?: {
-                /** @description Database id of a bar. Required if you are not using `bar_id` query string. */
+                /** @description Database id of a bar. */
                 "Bar-Assistant-Bar-Id"?: number;
             };
             path: {
@@ -9762,7 +9809,7 @@ export interface operations {
         parameters: {
             query?: never;
             header?: {
-                /** @description Database id of a bar. Required if you are not using `bar_id` query string. */
+                /** @description Database id of a bar. */
                 "Bar-Assistant-Bar-Id"?: number;
             };
             path: {
@@ -10137,7 +10184,7 @@ export interface operations {
         parameters: {
             query?: never;
             header?: {
-                /** @description Database id of a bar. Required if you are not using `bar_id` query string. */
+                /** @description Database id of a bar. */
                 "Bar-Assistant-Bar-Id"?: number;
             };
             path: {
@@ -10184,7 +10231,7 @@ export interface operations {
         parameters: {
             query?: never;
             header?: {
-                /** @description Database id of a bar. Required if you are not using `bar_id` query string. */
+                /** @description Database id of a bar. */
                 "Bar-Assistant-Bar-Id"?: number;
             };
             path: {
@@ -10242,7 +10289,7 @@ export interface operations {
         parameters: {
             query?: never;
             header?: {
-                /** @description Database id of a bar. Required if you are not using `bar_id` query string. */
+                /** @description Database id of a bar. */
                 "Bar-Assistant-Bar-Id"?: number;
             };
             path: {
@@ -10307,7 +10354,7 @@ export interface operations {
                 type?: string;
             };
             header?: {
-                /** @description Database id of a bar. Required if you are not using `bar_id` query string. */
+                /** @description Database id of a bar. */
                 "Bar-Assistant-Bar-Id"?: number;
             };
             path: {
@@ -10513,7 +10560,7 @@ export interface operations {
         parameters: {
             query?: never;
             header?: {
-                /** @description Database id of a bar. Required if you are not using `bar_id` query string. */
+                /** @description Database id of a bar. */
                 "Bar-Assistant-Bar-Id"?: number;
             };
             path?: never;
@@ -10542,7 +10589,7 @@ export interface operations {
         parameters: {
             query?: never;
             header?: {
-                /** @description Database id of a bar. Required if you are not using `bar_id` query string. */
+                /** @description Database id of a bar. */
                 "Bar-Assistant-Bar-Id"?: number;
             };
             path?: never;
@@ -10761,7 +10808,7 @@ export interface operations {
         parameters: {
             query?: never;
             header?: {
-                /** @description Database id of a bar. Required if you are not using `bar_id` query string. */
+                /** @description Database id of a bar. */
                 "Bar-Assistant-Bar-Id"?: number;
             };
             path?: never;
@@ -10790,7 +10837,7 @@ export interface operations {
         parameters: {
             query?: never;
             header?: {
-                /** @description Database id of a bar. Required if you are not using `bar_id` query string. */
+                /** @description Database id of a bar. */
                 "Bar-Assistant-Bar-Id"?: number;
             };
             path?: never;
@@ -10836,7 +10883,7 @@ export interface operations {
         parameters: {
             query?: never;
             header?: {
-                /** @description Database id of a bar. Required if you are not using `bar_id` query string. */
+                /** @description Database id of a bar. */
                 "Bar-Assistant-Bar-Id"?: number;
             };
             path: {
@@ -10898,7 +10945,7 @@ export interface operations {
         parameters: {
             query?: never;
             header?: {
-                /** @description Database id of a bar. Required if you are not using `bar_id` query string. */
+                /** @description Database id of a bar. */
                 "Bar-Assistant-Bar-Id"?: number;
             };
             path: {
@@ -11015,7 +11062,7 @@ export interface operations {
         parameters: {
             query?: never;
             header?: {
-                /** @description Database id of a bar. Required if you are not using `bar_id` query string. */
+                /** @description Database id of a bar. */
                 "Bar-Assistant-Bar-Id"?: number;
             };
             path?: never;
@@ -11044,7 +11091,7 @@ export interface operations {
         parameters: {
             query?: never;
             header?: {
-                /** @description Database id of a bar. Required if you are not using `bar_id` query string. */
+                /** @description Database id of a bar. */
                 "Bar-Assistant-Bar-Id"?: number;
             };
             path?: never;

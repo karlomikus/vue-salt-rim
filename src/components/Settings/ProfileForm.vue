@@ -21,7 +21,7 @@
                 <div class="form-group">
                     <label class="form-label" for="ui-language">{{ $t('ui-language') }}:</label>
                     <select id="ui-language" v-model="currentLocale" class="form-select">
-                        <option v-for="locale in $i18n.availableLocales" :key="locale" :value="locale">{{ $t('locales.' + locale) }}</option>
+                        <option v-for="locale in sortedLocales" :key="locale" :value="locale">{{ $t('locales.' + locale) }} ({{ locale }})</option>
                     </select>
                     <p class="form-input-hint"><a href="https://crowdin.com/project/bar-assistant" target="_blank">{{ $t('locales.help') }}</a></p>
                 </div>
@@ -72,7 +72,7 @@
                 <h3 class="form-section-title">{{ $t('bars.bar') }}</h3>
                 <div class="block-container block-container--padded">
                     <div class="form-group">
-                        <SaltRimCheckbox id="parent-ingredient-checkbox" v-model="user.is_shelf_public" :label="$t('profile-public-shelf')" description="Other bar members will be able to filter by cocktails you have in your shelf"></SaltRimCheckbox>
+                        <SaltRimCheckbox id="parent-ingredient-checkbox" v-model="user.is_shelf_public" :label="$t('profile-public-shelf')" :description="$t('profile-public-shelf-description')"></SaltRimCheckbox>
                     </div>
                 </div>
             </template>
@@ -119,6 +119,13 @@ export default {
         useTitle(this.$t('profile'))
 
         this.refreshProfile()
+    },
+    computed: {
+        sortedLocales() {
+            return this.$i18n.availableLocales.sort((a, b) => {
+                return a.localeCompare(b)
+            })
+        }
     },
     methods: {
         async refreshProfile() {

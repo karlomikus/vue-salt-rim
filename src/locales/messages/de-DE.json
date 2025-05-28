@@ -79,7 +79,11 @@
     "status": "Zutaten-Status",
     "hierarchy-description": "Dies ist eine Übersicht der Zutaten-Hierarchie. Je nach Cocktailrezept können Varianten, die du im Regal hast, als Ersatz für die Hauptzutat verwendet werden, wenn geprüft wird, welche Rezepte zu deinen vorhandenen Zutaten passen.",
     "show-variants": "Zeige Varianten",
-    "show-ancestors": "Zeige übergeordnete Elemente"
+    "show-ancestors": "Zeige übergeordnete Elemente",
+    "recommended-next": "This bar can make {totalPercent} of available recipes. Add one of the following ingredients to bar shelf to increase cocktail options: {ingredients}",
+    "used-in": "Used in {count} {substituteCount} cocktail recipes",
+    "used-in-substitutes": "+{total} as substitute",
+    "default-units-help": "Used to autofill units when selecting ingredient for cocktail recipe"
   },
   "share": {
     "title": "Teilen",
@@ -164,6 +168,7 @@
   "source": "Quelle",
   "method-and-dilution": "Zubereitung und Verdünnung",
   "placeholder": {
+    "search": "Enter search term...",
     "source": "URL oder Buch...",
     "tags": "Tags, die dir helfen, den Cocktail zu finden...",
     "cocktail-description": "Cocktail beschreibung oder Ursprung...",
@@ -637,7 +642,8 @@
     "select": "Select price",
     "category-delete-success": "Price category deleted",
     "category-confirm-delete": "This will permanently price category with name \\\"{name}\\\".",
-    "missing-cocktail-price-calculator": "There are no prices available for this cocktail. Add prices to ingredients in the recipe to enable price calculation."
+    "missing-cocktail-price-calculator": "There are no prices available for this cocktail. Add prices to ingredients in the recipe to enable price calculation.",
+    "missing-price-categories": "To add ingredient prices, you need to define bar {link} first."
   },
   "prices": {
     "add": "Preis hinzufügen",
@@ -730,5 +736,6 @@
     "add-success": "Cocktail method added",
     "confirm-delete": "This will permanently remove cocktail method",
     "delete-success": "Cocktail method removed successfully"
-  }
+  },
+  "profile-public-shelf-description": "Other bar members will be able to filter by cocktails you have in your shelf"
 }

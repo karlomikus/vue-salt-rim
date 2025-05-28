@@ -7,7 +7,7 @@
             <a :href="recipe.link" target="_blank"><h5 class="sr-list-item-title">{{ recipe.title }} <IconExternal width="14" height="14" /></h5></a>
             <small>{{ recipe.source }} <template v-if="recipe.date">&middot; {{ d(recipe.date, 'short') }}</template></small>
             <p v-html="recipe.description"></p>
-            <p>
+            <p v-if="recipe.supports_recipe_import">
                 <RouterLink :to="{ name: 'cocktails.scrape', query: { 'url': encodeURI(recipe.link) } }">Import recipe</RouterLink>
             </p>
         </div>
