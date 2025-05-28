@@ -129,7 +129,7 @@ export default {
 .glass-with-image img {
     margin-right: 10px;
     border-radius: 4px;
-    max-width: 28px;
-    max-height: 28px;
+    max-width: 50px;
+    max-height: 50px;
 }
 </style>

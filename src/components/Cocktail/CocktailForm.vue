@@ -558,8 +558,8 @@ export default {
 }
 
 .cocktail-selected-glass img {
-    max-width: 28px;
-    max-height: 28px;
+    max-width: 50px;
+    max-height: 50px;
     height: auto;
 }
 

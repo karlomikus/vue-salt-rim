@@ -83,8 +83,8 @@ onMounted(() => {
 
 .glass-hits__option img {
     display: block;
-    max-width: 32px;
-    max-height: 32px;
+    max-width: 50px;
+    max-height: 50px;
     height: auto;
 }
 
