@@ -1,6 +1,7 @@
 # v4.4.0
 ## New
 - Updated cocktail glass type selector
+- Menu items are now clickable
 
 ## Fixes
 - Added missing translation strings
