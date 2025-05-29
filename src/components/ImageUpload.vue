@@ -1,5 +1,4 @@
 <script setup lang="ts">
-// @ts-nocheck
 import { ref, onMounted, watch, computed } from 'vue'
 import Sortable from 'sortablejs'
 import { useI18n } from 'vue-i18n';
@@ -53,17 +52,15 @@ const hasMaxImages = computed(() => images.value.length >= props.maxImages)
 
 watch(() => props.images, () => {
     for (const img of props.images) {
-        const vmImage = {
+        images.value.push({
             id: img.id,
             file: img.file ?? null,
-            preview: img.url,
+            preview: img.url ?? '',
             fileName: img.file_path,
             copyright: img.copyright,
             sort: img.sort,
             hash: img.placeholder_hash,
-        }
-
-        images.value.push(vmImage)
+        })
     }
 }, { immediate: true })
 
@@ -139,9 +136,13 @@ function getHashAsImage(img: ImageViewModel): string {
     return thumbHashToDataURL(Uint8Array.from(atob(img.hash), c => c.charCodeAt(0)))
 }
 
-function handleDrop(e: DropEvent): void {
+function handleDrop(e: DragEvent): void {
     e.preventDefault()
     isDragover.value = false
+    if (!e.dataTransfer || !e.dataTransfer.files) {
+        return
+    }
+
     handleFiles(e.dataTransfer.files)
 }
 
@@ -168,7 +169,7 @@ function addExternalImage() {
         id: null,
         file: externalImageUrl.value,
         preview: externalImageUrl.value,
-        fileName: url.pathname.split('/').pop(),
+        fileName: url.pathname.split('/').pop() ?? 'unknown external image',
         copyright: url.hostname,
         sort: images.value.length + 1,
     })
@@ -183,9 +184,9 @@ async function save() {
 
     const request = [] as ImageRequest[]
 
-    const sortedImageList = sortable.value.toArray()
+    const sortedImageList = (sortable.value as any).toArray()
     for (const img of images.value) {
-        const newSort = sortedImageList.findIndex(sortedId => sortedId == img.fileName) + 1
+        const newSort = sortedImageList.findIndex((sortedId: string) => sortedId == img.fileName) + 1
         const imageRequest = {
             id: img.id ?? null,
             copyright: img.copyright,
