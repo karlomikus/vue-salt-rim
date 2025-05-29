@@ -177,7 +177,7 @@
                         </li>
                         <li v-if="extraIfAddedToShelf.length > 0">{{ $t('ingredient.extra-cocktails') }}: <RouterLink :to="{name: 'cocktails', query: {'filter[id]': extraCocktailsIds}}">{{ extraIfAddedToShelf.length }} {{ $t('cocktail.cocktails') }}</RouterLink></li>
                         <li v-if="ingredient.can_be_substituted_with?.length">
-                            {{ $t('ingredient.can_be_substituted_with') }}:
+                            {{ $t('ingredient.used_as_substitute_for') }}:
                             <template v-for="(ing, index) in ingredient.can_be_substituted_with" :key="ing.id">
                                 <RouterLink :to="{name: 'ingredients.show', params: {id: ing.slug}}">{{ ing.name }}</RouterLink><template v-if="index + 1 !== ingredient.can_be_substituted_with.length">, </template>
                             </template>
