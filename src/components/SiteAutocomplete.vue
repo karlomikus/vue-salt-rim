@@ -150,12 +150,15 @@ export default {
     flex-shrink: 0;
 }
 
-.site-autocomplete__results__content span,
-:deep(.site-autocomplete__results__content span .ais-Highlight-highlighted) {
+.site-autocomplete__results__content span {
     font-weight: var(--fw-bold);
     font-size: 1.25em;
     font-family: var(--font-heading);
     line-height: 1.2;
+}
+
+:deep(.site-autocomplete__results__content span mark) {
+    font-weight: var(--fw-bold);
 }
 
 .site-autocomplete__results__content small {
