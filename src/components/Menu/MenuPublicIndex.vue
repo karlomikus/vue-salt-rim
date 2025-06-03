@@ -54,7 +54,7 @@ refreshMenu()
                 <h3>{{ category.name }}</h3>
                 <div class="public-page-menu__category__cocktails">
                     <div v-for="item in category.items" :key="item.sort" class="public-page-menu__cocktail">
-                        <div class="public-page-menu__cocktail__image">
+                        <div :class="{'public-page-menu__cocktail__image': item.type === 'cocktail', 'public-page-menu__ingredient__image': item.type === 'ingredient'}">
                             <img v-if="item.image" :src="item.image" alt="">
                             <img v-else src="/no-cocktail.jpg" alt="">
                         </div>
@@ -205,6 +205,29 @@ refreshMenu()
     display: block;
     object-fit: cover;
     width: 100%;
+    height: 100%;
+}
+
+.public-page-menu__ingredient__image {
+    width: 100%;
+    height: 80px;
+    flex-basis: 80px;
+    flex-shrink: 0;
+    border-radius: var(--radius-1);
+    overflow: hidden;
+}
+
+@media (max-width: 545px) {
+    .public-page-menu__ingredient__image {
+        flex-basis: auto;
+        height: 150px;
+    }
+}
+
+.public-page-menu__ingredient__image img {
+    display: block;
+    width: auto;
+    margin: 0 auto;
     height: 100%;
 }
 
