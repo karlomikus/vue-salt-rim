@@ -737,5 +737,6 @@
     "confirm-delete": "将永久删除此调制方法",
     "delete-success": "调制方法删除成功"
   },
-  "profile-public-shelf-description": "Other bar members will be able to filter by cocktails you have in your shelf"
+  "profile-public-shelf-description": "Other bar members will be able to filter by cocktails you have in your shelf",
+  "sort-random": "In random order"
 }
