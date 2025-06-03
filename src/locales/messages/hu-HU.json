@@ -737,5 +737,6 @@
     "confirm-delete": "This will permanently remove cocktail method",
     "delete-success": "Cocktail method removed successfully"
   },
-  "profile-public-shelf-description": "Other bar members will be able to filter by cocktails you have in your shelf"
+  "profile-public-shelf-description": "Other bar members will be able to filter by cocktails you have in your shelf",
+  "sort-random": "In random order"
 }
