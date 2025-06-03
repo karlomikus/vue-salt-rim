@@ -110,7 +110,8 @@
     width: 3rem;
     height: 3rem;
     padding: 0;
-    background: var(--clr-gray-50);
+    background: var(--clr-gray-100);
+    color: var(--clr-gray-600);
     overflow: hidden;
     border-radius: var(--radius-round);
     display: flex;
@@ -118,20 +119,12 @@
     justify-content: center;
     border: 2px solid transparent;
     cursor: pointer;
-    transition: transform ease-in-out .06s;
-    --shadow-color: 0deg 0% 0%;
-    --shadow-elevation-medium:
-      0px 0.4px 0.5px hsl(var(--shadow-color) / 0.11),
-      0px 1.4px 1.6px -0.8px hsl(var(--shadow-color) / 0.11),
-      0px 3.4px 3.8px -1.7px hsl(var(--shadow-color) / 0.11),
-      0px 8.3px 9.3px -2.5px hsl(var(--shadow-color) / 0.11);
-    box-shadow: var(--shadow-elevation-medium), inset 0 2px 0 rgba(255, 255, 255, .4);
 }
 
 .button-circle svg {
     width: 1.75rem;
     height: 1.75rem;
-    fill: var(--clr-gray-600);
+    fill: currentColor;
     transition: transform 150ms cubic-bezier(0.785, 0.135, 0.15, 0.86);
 }
 
@@ -148,11 +141,8 @@
 }
 
 .button-circle:hover {
-    background: var(--clr-gray-100);
-}
-
-.button-circle:hover svg {
-    fill: var(--clr-gray-900);
+    background: var(--clr-gray-200);
+    color: var(--clr-gray-900);
 }
 
 .button-circle:focus {
