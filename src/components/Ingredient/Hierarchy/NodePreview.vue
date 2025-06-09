@@ -30,15 +30,14 @@ interface NodeConnection {
     to: number;
 }
 
-const allNodes = ref<Node[]>([]);
-const allConnections = ref<NodeConnection[]>([]);
-
 const canvas = useTemplateRef<HTMLDivElement>('nodeCanvas');
 const nodeEditor = useTemplateRef<HTMLDivElement>('nodeEditor');
 const connectorSvg = useTemplateRef<HTMLDivElement>('connectorSvg');
 const transformState = ref({ x: 0, y: 0, scale: 1 })
 const isPanning = ref(false)
 const panStart = ref({ x: 0, y: 0 })
+const nodes = ref<Node[]>([])
+const connections = ref<NodeConnection[]>([])
 
 const rootNode = defineModel<IngredientTree>({
     required: true,
@@ -87,7 +86,7 @@ const zoom = (e: WheelEvent) => {
 function flattenAndPositionTree(tree: IngredientTree) {
     const localNodes: Node[] = [];
     const localConnections: NodeConnection[] = [];
-    let y_cursor = 0; // Tracks the y-position for leaf nodes
+    let yCursor = 0; // Tracks the y-position for leaf nodes
 
     const X_SPACING = 450;
     const Y_SPACING = 100;
@@ -107,8 +106,8 @@ function flattenAndPositionTree(tree: IngredientTree) {
             });
             yPos = (childrenYPositions[0] + childrenYPositions[childrenYPositions.length - 1]) / 2;
         } else {
-            yPos = y_cursor;
-            y_cursor += Y_SPACING;
+            yPos = yCursor;
+            yCursor += Y_SPACING;
         }
 
         // Add the current node to the array
@@ -116,8 +115,8 @@ function flattenAndPositionTree(tree: IngredientTree) {
             tree: treeNode,
             x: depth * X_SPACING,
             y: yPos,
-            isOpen: true,
-            isVisible: false,
+            isOpen: false,
+            isVisible: depth === 0,
             childrenIds: childrenIds,
             el: null // Will be set when creating the DOM element
         });
@@ -153,7 +152,7 @@ function drawConnections(nodes: Node[], connections: NodeConnection[]) {
         const fromNode = nodes.find(n => n.tree.ingredient.id === conn.from);
         const toNode = nodes.find(n => n.tree.ingredient.id === conn.to);
 
-        if (fromNode && toNode) {
+        if (fromNode && toNode && fromNode.el && toNode.el) {
             const p1 = getConnectorPosition(fromNode, 'right');
             const p2 = getConnectorPosition(toNode, 'left');
             
@@ -169,13 +168,15 @@ function drawConnections(nodes: Node[], connections: NodeConnection[]) {
                 path.classList.add('hidden');
             }
 
-            connectorSvg.value.appendChild(path);
+            connectorSvg.value!.appendChild(path);
         }
     });
 }
 
 function getConnectorPosition(node: Node, side: string) {
     const nodeEl = node.el;
+    if (!nodeEl) return { x: 0, y: 0 };
+    
     const x = node.x + (side === 'right' ? nodeEl.offsetWidth : 0);
     const y = node.y + nodeEl.offsetHeight / 2;
     return { x, y };
@@ -189,9 +190,9 @@ function createNode(nodeData: Node) {
     const nodeEl = document.createElement('div');
     nodeEl.id = `node-${nodeData.tree.ingredient.id}`;
     nodeEl.className = 'node-editor__node block-container';
-    if (!nodeData.isVisible) nodeEl.classList.add('hidden');
-    if (nodeData.childrenIds.length > 0) nodeEl.classList.add('has-children');
-    if (nodeData.isOpen) nodeEl.classList.add('is-open');
+    if (!nodeData.isVisible) nodeEl.classList.add('node-editor__node--hidden');
+    if (nodeData.childrenIds.length > 0) nodeEl.classList.add('node-editor__node--has-children');
+    if (nodeData.isOpen) nodeEl.classList.add('node-editor__node--is-open');
     nodeEl.style.left = `${nodeData.x}px`;
     nodeEl.style.top = `${nodeData.y}px`;
 
@@ -201,36 +202,54 @@ function createNode(nodeData: Node) {
     nodeEl.innerHTML = labelHTML;
 
     canvas.value.appendChild(nodeEl);
-
     nodeData.el = nodeEl;
+
     return { ...nodeData, el: nodeEl };
 }
 
 function toggleNode(node: Node) {
     node.isOpen = !node.isOpen;
-    // node.el.classList.toggle('is-open');
+    node.el!.classList.toggle('node-editor__node--is-open');
 
-    // node.childrenIds.forEach(childId => {
-    //     const childNode = nodes.find(n => n.id === childId);
-    //     if (childNode) {
-    //         // If we're opening this node, make its direct children visible
-    //         if (node.isOpen) {
-    //             childNode.isVisible = true;
-    //             childNode.el.classList.remove('hidden');
-    //         } else {
-    //             // If we're closing this node, recursively hide all descendants
-    //             hideDescendants(childNode.id);
-    //         }
-    //     }
-    // });
+    node.childrenIds.forEach(childId => {
+        const childNode = nodes.value.find(n => n.tree.ingredient.id === childId);
+        if (childNode) {
+            // If we're opening this node, make its direct children visible
+            if (node.isOpen) {
+                childNode.isVisible = true;
+                childNode.el!.classList.remove('node-editor__node--hidden');
+            } else {
+                // If we're closing this node, recursively hide all descendants
+                hideDescendants(childNode.tree.ingredient.id);
+            }
+        }
+    });
 
-    // drawConnections();
+    drawConnections(nodes.value, connections.value);
+}
+
+function hideDescendants(nodeId: number) {
+    const node = nodes.value.find(n => n.tree.ingredient.id === nodeId);
+    if (!node) return;
+
+    // First hide this node
+    node.isVisible = false;
+    node.el!.classList.add('node-editor__node--hidden');
+    
+    // If the node was open, mark it as closed
+    if (node.isOpen) {
+        node.isOpen = false;
+        node.el!.classList.remove('node-editor__node--is-open');
+    }
+
+    node.childrenIds.forEach(childId => hideDescendants(childId));
 }
 
 function render() {
-    const stru = flattenAndPositionTree(rootNode.value)
-    stru.nodes.map(createNode)
-    drawConnections(stru.nodes, stru.connections);
+    const stru = flattenAndPositionTree(rootNode.value);
+    nodes.value = stru.nodes.map(createNode)
+    connections.value = stru.connections;
+    drawConnections(nodes.value, connections.value);
     applyTransform()
 }
 
@@ -268,8 +287,25 @@ onMounted(() => {
     align-items: center;
     padding: 0.75rem 1rem;
     user-select: none;
-    min-width: 150px;
+    min-width: 100px;
     transition: box-shadow 0.2s ease-in-out;
+    cursor: pointer;
+}
+
+.node-editor__node.node-editor__node--hidden {
+    display: none;
+}
+
+.node-editor__node--has-children::after {
+    content: '+';
+    position: absolute;
+    right: 10px;
+    font-size: 1.25rem;
+    color: var(--connector-color);
+}
+
+.node-editor__node--is-open.node-editor__node--has-children::after {
+    content: '−';
 }
 
 #connector-svg {
@@ -287,5 +323,9 @@ onMounted(() => {
     stroke-width: 2;
     fill: none;
     transition: opacity 0.3s ease;
+}
+
+.connector-path.hidden {
+    opacity: 0;
 }
 </style>
