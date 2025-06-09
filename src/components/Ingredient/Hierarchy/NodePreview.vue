@@ -1,16 +1,29 @@
 <template>
-    <!-- <pre>
-        debug: {{ transformState }}
-    </pre> -->
     <div class="node-editor-container block-container block-container--padded block-container--inset" ref="nodeEditor" @mousedown="startPan" @mousemove="pan" @mouseup="isPanning = false" @mouseleave="isPanning = false" @wheel="zoom">
         <div class="node-editor-canvas" ref="nodeCanvas">
-            <svg id="connector-svg" ref="connectorSvg"></svg>
+            <svg id="connector-svg">
+                <path v-for="path in paths" :d="path.definition" class="connector-path" :class="{'connector-path--hidden': path.isHidden}"></path>
+            </svg>
+            <template v-if="nodes.length > 0">
+                <div v-for="node in nodes" :key="node.tree.ingredient.id" :id="`node-${node.tree.ingredient.id}`"
+                     class="node-editor__node block-container"
+                     :class="{
+                         'highlighted': node.isHighlighted,
+                         'node-editor__node--hidden': !node.isVisible,
+                         'node-editor__node--has-children': node.childrenIds.length > 0,
+                         'node-editor__node--is-open': node.isOpen
+                     }"
+                     :style="{ left: `${node.x}px`, top: `${node.y}px` }"
+                     @click="toggleNode(node)">
+                    <div class="label">{{ node.tree.ingredient.name }}</div>
+                </div>
+            </template>
         </div>
     </div>
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref, useTemplateRef } from 'vue'; // Added watch
+import { nextTick, onMounted, ref, useTemplateRef } from 'vue'; // Added watch
 import type { components } from '@/api/api'
 
 type IngredientTree = components['schemas']['IngredientTree'];
@@ -21,8 +34,8 @@ interface Node {
     y: number;
     isOpen: boolean;
     isVisible: boolean;
+    isHighlighted: boolean;
     childrenIds: number[];
-    el: HTMLDivElement | null; // Reference to the DOM element for this node
 }
 
 interface NodeConnection {
@@ -30,14 +43,19 @@ interface NodeConnection {
     to: number;
 }
 
+interface Path {
+    definition: string;
+    isHidden: boolean;
+}
+
 const canvas = useTemplateRef<HTMLDivElement>('nodeCanvas');
 const nodeEditor = useTemplateRef<HTMLDivElement>('nodeEditor');
-const connectorSvg = useTemplateRef<HTMLDivElement>('connectorSvg');
 const transformState = ref({ x: 0, y: 0, scale: 1 })
 const isPanning = ref(false)
 const panStart = ref({ x: 0, y: 0 })
 const nodes = ref<Node[]>([])
 const connections = ref<NodeConnection[]>([])
+const paths = ref<Path[]>([]);
 
 const rootNode = defineModel<IngredientTree>({
     required: true,
@@ -83,7 +101,7 @@ const zoom = (e: WheelEvent) => {
     applyTransform();
 }
 
-function flattenAndPositionTree(tree: IngredientTree) {
+function positionIngredientNodes(tree: IngredientTree, openPath: number[]) {
     const localNodes: Node[] = [];
     const localConnections: NodeConnection[] = [];
     let yCursor = 0; // Tracks the y-position for leaf nodes
@@ -110,15 +128,19 @@ function flattenAndPositionTree(tree: IngredientTree) {
             yCursor += Y_SPACING;
         }
 
+        // Determine visibility and open state based on the path
+        const isInPath = openPath.includes(nodeId);
+        const parentInPath = parentId ? openPath.includes(parentId) : false;
+
         // Add the current node to the array
         localNodes.push({
             tree: treeNode,
             x: depth * X_SPACING,
             y: yPos,
-            isOpen: false,
-            isVisible: depth === 0,
+            isOpen: isInPath && childrenIds.length > 0,
+            isVisible: depth === 0 || parentInPath,
+            isHighlighted: isInPath,
             childrenIds: childrenIds,
-            el: null // Will be set when creating the DOM element
         });
 
         // Add connection from parent if it exists
@@ -141,75 +163,44 @@ function flattenAndPositionTree(tree: IngredientTree) {
         })
     }
 
-    return { nodes: localNodes, connections: localConnections };
+    nodes.value = localNodes
+    connections.value = localConnections
 }
 
-function drawConnections(nodes: Node[], connections: NodeConnection[]) {
-    if (!canvas.value || !connectorSvg.value) return;
+function buildConnectionPaths() {
+    paths.value = []
 
-    connectorSvg.value.innerHTML = ''; // Clear all paths
-    connections.forEach(conn => {
-        const fromNode = nodes.find(n => n.tree.ingredient.id === conn.from);
-        const toNode = nodes.find(n => n.tree.ingredient.id === conn.to);
+    connections.value.forEach(conn => {
+        const fromNode = nodes.value.find(n => n.tree.ingredient.id === conn.from);
+        const toNode = nodes.value.find(n => n.tree.ingredient.id === conn.to);
 
-        if (fromNode && toNode && fromNode.el && toNode.el) {
+        if (fromNode && toNode) {
             const p1 = getConnectorPosition(fromNode, 'right');
             const p2 = getConnectorPosition(toNode, 'left');
-            
-            const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+
             const curveX = Math.abs(p2.x - p1.x) * 0.5;
             const d = `M ${p1.x} ${p1.y} C ${p1.x + curveX} ${p1.y}, ${p2.x - curveX} ${p2.y}, ${p2.x} ${p2.y}`;
-            
-            path.setAttribute('d', d);
-            path.setAttribute('class', 'connector-path');
-            
-            // Hide path if target node is not visible
-            if (!toNode.isVisible) {
-                path.classList.add('hidden');
-            }
 
-            connectorSvg.value!.appendChild(path);
+            paths.value.push({
+                definition: d,
+                isHidden: !toNode.isVisible
+            })
         }
     });
 }
 
 function getConnectorPosition(node: Node, side: string) {
-    const nodeEl = node.el;
-    if (!nodeEl) return { x: 0, y: 0 };
-    
-    const x = node.x + (side === 'right' ? nodeEl.offsetWidth : 0);
-    const y = node.y + nodeEl.offsetHeight / 2;
+    const nodeElement = document.getElementById(`node-${node.tree.ingredient.id}`);
+    if (!nodeElement) return { x: 0, y: 0 };
+
+    const x = node.x + (side === 'right' ? nodeElement.offsetWidth : 0);
+    const y = node.y + nodeElement.offsetHeight / 2;
+
     return { x, y };
-}
-
-function createNode(nodeData: Node) {
-    if (!canvas.value) {
-        throw new Error('Canvas element is not available');
-    }
-
-    const nodeEl = document.createElement('div');
-    nodeEl.id = `node-${nodeData.tree.ingredient.id}`;
-    nodeEl.className = 'node-editor__node block-container';
-    if (!nodeData.isVisible) nodeEl.classList.add('node-editor__node--hidden');
-    if (nodeData.childrenIds.length > 0) nodeEl.classList.add('node-editor__node--has-children');
-    if (nodeData.isOpen) nodeEl.classList.add('node-editor__node--is-open');
-    nodeEl.style.left = `${nodeData.x}px`;
-    nodeEl.style.top = `${nodeData.y}px`;
-
-    const labelHTML = `<div class="label">${nodeData.tree.ingredient.name}</div>`;
-
-    nodeEl.addEventListener('click', () => toggleNode(nodeData));
-    nodeEl.innerHTML = labelHTML;
-
-    canvas.value.appendChild(nodeEl);
-    nodeData.el = nodeEl;
-
-    return { ...nodeData, el: nodeEl };
 }
 
 function toggleNode(node: Node) {
     node.isOpen = !node.isOpen;
-    node.el!.classList.toggle('node-editor__node--is-open');
 
     node.childrenIds.forEach(childId => {
         const childNode = nodes.value.find(n => n.tree.ingredient.id === childId);
@@ -217,44 +208,40 @@ function toggleNode(node: Node) {
             // If we're opening this node, make its direct children visible
             if (node.isOpen) {
                 childNode.isVisible = true;
-                childNode.el!.classList.remove('node-editor__node--hidden');
             } else {
                 // If we're closing this node, recursively hide all descendants
-                hideDescendants(childNode.tree.ingredient.id);
+                hideDescendants(childNode);
             }
         }
     });
 
-    drawConnections(nodes.value, connections.value);
+    nextTick(() => {
+        buildConnectionPaths()
+    })
 }
 
-function hideDescendants(nodeId: number) {
-    const node = nodes.value.find(n => n.tree.ingredient.id === nodeId);
-    if (!node) return;
-
+function hideDescendants(node: Node) {
     // First hide this node
     node.isVisible = false;
-    node.el!.classList.add('node-editor__node--hidden');
-    
-    // If the node was open, mark it as closed
+
     if (node.isOpen) {
         node.isOpen = false;
-        node.el!.classList.remove('node-editor__node--is-open');
     }
 
-    node.childrenIds.forEach(childId => hideDescendants(childId));
+    node.childrenIds.forEach(childId => hideDescendants(nodes.value.find(n => n.tree.ingredient.id === childId)!));
 }
 
-function render() {
-    const stru = flattenAndPositionTree(rootNode.value);
-    nodes.value = stru.nodes.map(createNode)
-    connections.value = stru.connections;
-    drawConnections(nodes.value, connections.value);
+function initialize() {
+    positionIngredientNodes(rootNode.value, [])
+    nextTick(() => {
+        buildConnectionPaths()
+    })
+
     applyTransform()
 }
 
 onMounted(() => {
-    render();
+    initialize();
 })
 </script>
 
@@ -322,10 +309,9 @@ onMounted(() => {
     stroke: var(--clr-gray-200);
     stroke-width: 2;
     fill: none;
-    transition: opacity 0.3s ease;
 }
 
-.connector-path.hidden {
+.connector-path.connector-path--hidden {
     opacity: 0;
 }
 </style>
