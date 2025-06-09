@@ -15,7 +15,14 @@
                      }"
                      :style="{ left: `${node.x}px`, top: `${node.y}px` }"
                      @click="toggleNode(node)">
-                    <div class="label">{{ node.tree.ingredient.name }}</div>
+                    <div class="node-editor__node__label">
+                        {{ node.tree.ingredient.name }}
+                    </div>
+                    <!-- <div class="node-editor__node__action">
+                        <RouterLink :to="{ name: 'ingredients.show', params: { id: node.tree.ingredient.id } }">
+                            View
+                        </RouterLink>
+                    </div> -->
                 </div>
             </template>
         </div>
@@ -142,8 +149,8 @@ function positionIngredientNodes(tree: IngredientTree, openPath: number[]) {
             tree: treeNode,
             x: depth * X_SPACING,
             y: yPos,
-            isOpen: isInPath && childrenIds.length > 0,
-            isVisible: depth === 0 || parentInPath,
+            isOpen: true, //isInPath && childrenIds.length > 0,
+            isVisible: true, //depth === 0 || parentInPath,
             isHighlighted: isInPath,
             childrenIds: childrenIds,
         });
@@ -266,6 +273,17 @@ function initialize() {
         buildConnectionPaths()
     })
 
+    const targetNode = nodes.value.find(n => n.tree.ingredient.id === props.targetIngredientId)
+    if (nodeEditor.value && targetNode) {
+        const editorRect = nodeEditor.value.getBoundingClientRect();
+        const nodeEl = document.getElementById(`node-${props.targetIngredientId}`);
+        const nodeWidth = nodeEl ? nodeEl.offsetWidth : 150;
+
+        // Calculate position to center the node
+        transformState.value.x = (editorRect.width / 2) - (targetNode.x + nodeWidth / 2);
+        transformState.value.y = (editorRect.height / 2) - (targetNode.y + (nodeEl ? nodeEl.offsetHeight / 2 : 25));
+    }
+
     applyTransform()
 }
 
@@ -300,11 +318,9 @@ onMounted(() => {
 
 .node-editor__node {
     position: absolute;
-    display: flex;
-    align-items: center;
     padding: 0.75rem 1rem;
     user-select: none;
-    min-width: 100px;
+    min-width: 200px;
     transition: box-shadow 0.2s ease-in-out;
     cursor: pointer;
     border: 0;
@@ -318,7 +334,7 @@ onMounted(() => {
     box-shadow: inset 0 0 0 2px var(--nec-highlight-color);
 }
 
-.node-editor__node--has-children::after {
+/* .node-editor__node--has-children::after {
     content: '+';
     position: absolute;
     right: 10px;
@@ -328,7 +344,7 @@ onMounted(() => {
 
 .node-editor__node--is-open.node-editor__node--has-children::after {
     content: '−';
-}
+} */
 
 #connector-svg {
     position: absolute;
