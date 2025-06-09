@@ -2,13 +2,13 @@
     <div class="node-editor-container block-container block-container--padded block-container--inset" ref="nodeEditor" @mousedown="startPan" @mousemove="pan" @mouseup="isPanning = false" @mouseleave="isPanning = false" @wheel="zoom">
         <div class="node-editor-canvas" ref="nodeCanvas">
             <svg id="connector-svg">
-                <path v-for="path in paths" :d="path.definition" class="connector-path" :class="{'connector-path--hidden': path.isHidden}"></path>
+                <path v-for="path in paths" :d="path.definition" class="connector-path" :class="{'connector-path--hidden': path.isHidden, 'connector-path--highlighted': path.isHighlighted}" />
             </svg>
             <template v-if="nodes.length > 0">
                 <div v-for="node in nodes" :key="node.tree.ingredient.id" :id="`node-${node.tree.ingredient.id}`"
                      class="node-editor__node block-container"
                      :class="{
-                         'highlighted': node.isHighlighted,
+                         'node-editor__node--highlighted': node.isHighlighted,
                          'node-editor__node--hidden': !node.isVisible,
                          'node-editor__node--has-children': node.childrenIds.length > 0,
                          'node-editor__node--is-open': node.isOpen
@@ -46,6 +46,7 @@ interface NodeConnection {
 interface Path {
     definition: string;
     isHidden: boolean;
+    isHighlighted: boolean;
 }
 
 const canvas = useTemplateRef<HTMLDivElement>('nodeCanvas');
@@ -56,10 +57,14 @@ const panStart = ref({ x: 0, y: 0 })
 const nodes = ref<Node[]>([])
 const connections = ref<NodeConnection[]>([])
 const paths = ref<Path[]>([]);
+const pathToOpen = ref<number[]>([]);
 
-const rootNode = defineModel<IngredientTree>({
+const ingredientTree = defineModel<IngredientTree>({
     required: true,
-});
+})
+const props = defineProps<{
+    targetIngredientId: number;
+}>()
 
 const applyTransform = () => {
     if (!canvas.value) return;
@@ -154,7 +159,7 @@ function positionIngredientNodes(tree: IngredientTree, openPath: number[]) {
     traverse(tree);
 
     // Root node is open by default
-    const firstNode = localNodes.find(n => n.tree.ingredient.id === rootNode.value.ingredient.id);
+    const firstNode = localNodes.find(n => n.tree.ingredient.id === ingredientTree.value.ingredient.id);
     if(firstNode) {
         firstNode.isOpen = true;
         firstNode.childrenIds.forEach(childId => {
@@ -181,12 +186,35 @@ function buildConnectionPaths() {
             const curveX = Math.abs(p2.x - p1.x) * 0.5;
             const d = `M ${p1.x} ${p1.y} C ${p1.x + curveX} ${p1.y}, ${p2.x - curveX} ${p2.y}, ${p2.x} ${p2.y}`;
 
+            // Highlight path if both nodes are in the open path
+            const shouldHighlight = pathToOpen.value.includes(conn.from) && pathToOpen.value.includes(conn.to);
+
             paths.value.push({
                 definition: d,
-                isHidden: !toNode.isVisible
+                isHidden: !toNode.isVisible,
+                isHighlighted: shouldHighlight
             })
         }
     });
+}
+
+function findPathToNode(treeNode: IngredientTree, targetId: number, currentPath: number[]): number[] | null {
+    const newPath = [...currentPath, treeNode.ingredient.id];
+
+    if (treeNode.ingredient.id === targetId) {
+        return newPath;
+    }
+
+    if (treeNode.children && treeNode.children.length > 0) {
+        for (const child of treeNode.children) {
+            const foundPath = findPathToNode(child, targetId, newPath);
+            if (foundPath) {
+                return foundPath;
+            }
+        }
+    }
+
+    return null;
 }
 
 function getConnectorPosition(node: Node, side: string) {
@@ -232,7 +260,8 @@ function hideDescendants(node: Node) {
 }
 
 function initialize() {
-    positionIngredientNodes(rootNode.value, [])
+    pathToOpen.value = findPathToNode(ingredientTree.value, props.targetIngredientId, []) || []
+    positionIngredientNodes(ingredientTree.value, pathToOpen.value);
     nextTick(() => {
         buildConnectionPaths()
     })
@@ -247,6 +276,7 @@ onMounted(() => {
 
 <style>
 .node-editor-container {
+    --nec-highlight-color: rgb(226, 115, 74);
     width: 100%;
     height: 100%;
     position: relative;
@@ -277,10 +307,15 @@ onMounted(() => {
     min-width: 100px;
     transition: box-shadow 0.2s ease-in-out;
     cursor: pointer;
+    border: 0;
 }
 
 .node-editor__node.node-editor__node--hidden {
     display: none;
+}
+
+.node-editor__node.node-editor__node--highlighted {
+    box-shadow: inset 0 0 0 2px var(--nec-highlight-color);
 }
 
 .node-editor__node--has-children::after {
@@ -313,5 +348,10 @@ onMounted(() => {
 
 .connector-path.connector-path--hidden {
     opacity: 0;
+}
+
+.connector-path.connector-path--highlighted {
+    stroke: var(--nec-highlight-color);
+    stroke-width: 3;
 }
 </style>
