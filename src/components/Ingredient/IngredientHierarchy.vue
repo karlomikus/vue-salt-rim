@@ -5,7 +5,6 @@ import { useI18n } from 'vue-i18n'
 import BarAssistantClient from '@/api/BarAssistantClient'
 import IngredientTreeNode from './Hierarchy/IngredientTreeNode.vue'
 import OverlayLoader from '../OverlayLoader.vue'
-import IngredientDendogram from './Hierarchy/IngredientDendogram.vue'
 import IngredientIcicle from './Hierarchy/IngredientIcicle.vue'
 
 type IngredientTree = components['schemas']['IngredientTree'];
@@ -13,7 +12,7 @@ type IngredientTree = components['schemas']['IngredientTree'];
 const { t } = useI18n()
 const isLoading = ref(false)
 const hierarchy = ref<IngredientTree | null>(null)
-const currentTab = ref<'dendogram' | 'icicle'>('icicle')
+const currentTab = ref<'dendogram' | 'icicle'>('dendogram')
 const {
     parentId,
     rootId,
