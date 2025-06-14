@@ -78,7 +78,7 @@
     "hierarchy": "Hierarchie",
     "status": "Zutaten-Status",
     "hierarchy-description": "Dies ist eine Übersicht der Zutaten-Hierarchie. Je nach Cocktailrezept können Varianten, die du im Regal hast, als Ersatz für die Hauptzutat verwendet werden, wenn geprüft wird, welche Rezepte zu deinen vorhandenen Zutaten passen.",
-    "show-variants": "Zeige Varianten",
+    "show-variants": "Variants",
     "show-ancestors": "Zeige übergeordnete Elemente",
     "recommended-next": "This bar can make {totalPercent} of available recipes. Add one of the following ingredients to bar shelf to increase cocktail options: {ingredients}",
     "used-in": "Used in {count} {substituteCount} cocktail recipes",
