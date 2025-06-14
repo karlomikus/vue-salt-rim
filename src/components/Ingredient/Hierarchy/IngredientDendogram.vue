@@ -292,7 +292,7 @@ onMounted(() => {
 })
 </script>
 
-<style>
+<style scoped>
 .node-editor-container {
     --nec-highlight-color: rgb(226, 115, 74);
     width: 100%;
