@@ -83,7 +83,8 @@
     "recommended-next": "This bar can make {totalPercent} of available recipes. Add one of the following ingredients to bar shelf to increase cocktail options: {ingredients}",
     "used-in": "Used in {count} {substituteCount} cocktail recipes",
     "used-in-substitutes": "+{total} as substitute",
-    "default-units-help": "Used to autofill units when selecting ingredient for cocktail recipe"
+    "default-units-help": "Used to autofill units when selecting ingredient for cocktail recipe",
+    "icicle-graph": "Icicle chart"
   },
   "share": {
     "title": "Condividi",
