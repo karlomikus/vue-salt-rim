@@ -1,7 +1,11 @@
 <template>
     <div class="ingredient-icicle-row">
         <div class="ingredient-icicle-row__node" :class="'ingredient-icicle-row__node--level-' + level" :id="'ingredient-icicle-node-' + node.ingredient.id">
-            <span class="node-content">{{ node.ingredient.name }}</span>
+            <span class="node-content">
+                <RouterLink :to="{ name: 'ingredients.show', params: { id: node.ingredient.slug } }">
+                    {{ node.ingredient.name }}
+                </RouterLink>
+            </span>
         </div>
         <div v-if="childrenSortedByName && childrenSortedByName.length" class="ingredient-icicle-row__sub-chart">
             <IngredientIcicleNode
@@ -43,52 +47,52 @@ const childrenSortedByName = computed(() => {
 }
 
 .ingredient-icicle-row__node--level-0 {
-    background-color: #c79d78;
+    background-color: hsl(28, 80%, 50%);
     color: #312419;
 }
 
 .ingredient-icicle-row__node--level-1 {
-    background-color: #d3a57d;
+    background-color: hsl(28, 80%, 55%);
     color: #312419;
 }
 
 .ingredient-icicle-row__node--level-2 {
-    background-color: #ddac82;
+    background-color: hsl(28, 80%, 60%);
     color: #312419;
 }
 
 .ingredient-icicle-row__node--level-3 {
-    background-color: #e6b184;
+    background-color: hsl(28, 80%, 65%);
     color: #312419;
 }
 
 .ingredient-icicle-row__node--level-4 {
-    background-color: #ecb788;
+    background-color: hsl(28, 80%, 70%);
     color: #312419;
 }
 
 .ingredient-icicle-row__node--level-5 {
-    background-color: #f1b988;
+    background-color: hsl(28, 80%, 75%);
     color: #312419;
 }
 
 .ingredient-icicle-row__node--level-6 {
-    background-color: #f3b986;
+    background-color: hsl(28, 80%, 80%);
     color: #312419;
 }
 
 .ingredient-icicle-row__node--level-7 {
-    background-color: #f8bb85;
+    background-color: hsl(28, 80%, 85%);
     color: #312419;
 }
 
 .ingredient-icicle-row__node--level-8 {
-    background-color: #ffbd84;
+    background-color: hsl(28, 80%, 90%);
     color: #312419;
 }
 
 .ingredient-icicle-row__node--level-9 {
-    background-color: #ffb879;
+    background-color: hsl(28, 80%, 95%);
     color: #312419;
 }
 

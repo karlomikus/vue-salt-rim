@@ -1,5 +1,15 @@
 <template>
-    <div class="node-editor-container block-container block-container--padded block-container--inset" :class="{'node-editor-container--is-panning': isPanning}" ref="nodeEditor" @pointerdown="startPan" @pointermove="pan" @pointerup="isPanning = false" @pointerleave="isPanning = false" @wheel="zoom">
+    <div class="node-editor-container block-container block-container--padded block-container--inset"
+         :class="{'node-editor-container--is-panning': isPanning}"
+         ref="nodeEditor"
+         @pointerdown="startPan"
+         @pointermove="pan"
+         @pointerup="isPanning = false"
+         @pointerleave="isPanning = false"
+         @wheel="zoom"
+         @touchstart="startTouchPan"
+         @touchmove="touchPan"
+         @touchend="touchEndCleanup">
         <div class="node-editor-canvas" ref="nodeCanvas">
             <div class="icicle-chart">
                 <IngredientIcicleNode :node="ingredientTree" :level="0"></IngredientIcicleNode>
@@ -20,6 +30,7 @@ const nodeEditor = useTemplateRef<HTMLDivElement>('nodeEditor');
 const transformState = ref({ x: 0, y: 0, scale: 1 })
 const isPanning = ref(false)
 const panStart = ref({ x: 0, y: 0 })
+const initialPinchDistance = ref(0);
 
 const ingredientTree = defineModel<IngredientTree>({
     required: true,
@@ -34,11 +45,57 @@ const applyTransform = () => {
 }
 
 const startPan = (e: PointerEvent) => {
-    if (e.button !== 0) return;
+    if (e.button !== 0 || (e.target as HTMLDivElement).closest('.ingredient-icicle-row__node a')) {
+        // Only start panning on left mouse button and not on node elements
+        return;
+    }
+
     e.preventDefault();
     isPanning.value = true;
     panStart.value.x = e.clientX - transformState.value.x;
     panStart.value.y = e.clientY - transformState.value.y;
+}
+
+const startTouchPan = (e: TouchEvent) => {
+    if ((e.target as HTMLDivElement).closest('.ingredient-icicle-row__node a')) {
+        return;
+    }
+
+    const touches = e.touches;
+    if (touches.length === 1) {
+        isPanning.value = true;
+        panStart.value.x = touches[0].clientX - transformState.value.x;
+        panStart.value.y = touches[0].clientY - transformState.value.y;
+    } else if (touches.length === 2) {
+        isPanning.value = false;
+        initialPinchDistance.value = Math.hypot(touches[0].clientX - touches[1].clientX, touches[0].clientY - touches[1].clientY);
+    }
+}
+
+const touchPan = (e: TouchEvent) => {
+    e.preventDefault();
+
+    const touches = e.touches;
+    if (touches.length === 1 && isPanning) {
+        transformState.value.x = touches[0].clientX - panStart.value.x;
+        transformState.value.y = touches[0].clientY - panStart.value.y;
+        applyTransform();
+    } else if (touches.length === 2 && initialPinchDistance) {
+        const currentDist = Math.hypot(touches[0].clientX - touches[1].clientX, touches[0].clientY - touches[1].clientY);
+        const scaleAmount = (currentDist / initialPinchDistance.value) - 1.0;
+
+        const midX = (touches[0].clientX + touches[1].clientX) / 2
+        const midY = (touches[0].clientY + touches[1].clientY) / 2
+
+        zoomAtPoint(scaleAmount, midX, midY);
+
+        initialPinchDistance.value = currentDist; // Update for next move
+    }
+}
+
+const touchEndCleanup = (e: TouchEvent) => {
+    isPanning.value = false;
+    initialPinchDistance.value = 0;
 }
 
 const pan = (e: PointerEvent) => {
@@ -54,12 +111,18 @@ const zoom = (e: WheelEvent) => {
     if (!nodeEditor.value) return;
 
     const scaleAmount = -e.deltaY * 0.001;
+    zoomAtPoint(scaleAmount, e.clientX, e.clientY);
+}
+
+const zoomAtPoint = (scaleAmount: number, pointX: number, pointY: number) => {
+    if (!nodeEditor.value) return;
+
     const newScale = Math.max(0.2, Math.min(2, transformState.value.scale + scaleAmount));
     const scaleRatio = newScale / transformState.value.scale;
 
     const rect = nodeEditor.value.getBoundingClientRect();
-    const mouseX = e.clientX - rect.left;
-    const mouseY = e.clientY - rect.top;
+    const mouseX = pointX - rect.left;
+    const mouseY = pointY - rect.top;
 
     transformState.value.x = mouseX - (mouseX - transformState.value.x) * scaleRatio;
     transformState.value.y = mouseY - (mouseY - transformState.value.y) * scaleRatio;
@@ -101,7 +164,10 @@ onMounted(() => {
     background-size: 20px 20px;
     overflow: hidden;
     cursor: grab;
-    touch-action: manipulation;
+    touch-action: none;
+}
+.dark-theme .node-editor-container {
+    background-image: radial-gradient(var(--clr-dark-main-700) 1px, transparent 1px);
 }
 
 .node-editor-container--is-panning {
