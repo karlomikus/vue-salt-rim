@@ -1,5 +1,5 @@
 <template>
-    <div class="node-editor-container block-container block-container--padded block-container--inset" ref="nodeEditor" @pointerdown="startPan" @pointermove="pan" @pointerup="isPanning = false" @pointerleave="isPanning = false" @wheel="zoom">
+    <div class="node-editor-container block-container block-container--padded block-container--inset" :class="{'node-editor-container--is-panning': isPanning}" ref="nodeEditor" @pointerdown="startPan" @pointermove="pan" @pointerup="isPanning = false" @pointerleave="isPanning = false" @wheel="zoom">
         <div class="node-editor-canvas" ref="nodeCanvas">
             <div class="icicle-chart">
                 <IngredientIcicleNode :node="ingredientTree" :level="0"></IngredientIcicleNode>
@@ -104,7 +104,7 @@ onMounted(() => {
     touch-action: manipulation;
 }
 
-.node-editor-container:active {
+.node-editor-container--is-panning {
     cursor: grabbing;
 }
 
