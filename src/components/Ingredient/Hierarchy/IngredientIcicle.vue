@@ -33,7 +33,7 @@ const applyTransform = () => {
     canvas.value.style.transform = `translate(${transformState.value.x}px, ${transformState.value.y}px) scale(${transformState.value.scale})`;
 }
 
-const startPan = (e: MouseEvent) => {
+const startPan = (e: PointerEvent) => {
     if (e.button !== 0) return;
     e.preventDefault();
     isPanning.value = true;
@@ -41,7 +41,7 @@ const startPan = (e: MouseEvent) => {
     panStart.value.y = e.clientY - transformState.value.y;
 }
 
-const pan = (e: MouseEvent) => {
+const pan = (e: PointerEvent) => {
     if (!isPanning.value) return;
     e.preventDefault();
     transformState.value.x = e.clientX - panStart.value.x;
@@ -101,6 +101,7 @@ onMounted(() => {
     background-size: 20px 20px;
     overflow: hidden;
     cursor: grab;
+    touch-action: manipulation;
 }
 
 .node-editor-container:active {
