@@ -538,8 +538,11 @@ fetchShoppingList()
                         <div v-if="cocktail.tags && cocktail.tags.length > 0" class="item-details__chips__group">
                             <div class="item-details__chips__group__title">{{ t('tag.tags') }}:</div>
                             <ul class="chips-list">
-                                <li v-for="tag in cocktail.tags" :key="tag.id">
-                                    <RouterLink :to="{ name: 'cocktails', query: { 'filter[tag_id]': tag.id } }">{{ tag.name }}</RouterLink>
+                                <li>
+                                    <template v-for="(tag, index) in cocktail.tags" :key="tag.id">
+                                        <RouterLink :to="{ name: 'cocktails', query: { 'filter[tag_id]': tag.id } }">{{ tag.name }}</RouterLink>
+                                        <template v-if="index + 1 !== cocktail.tags.length">, </template>
+                                    </template>
                                 </li>
                             </ul>
                         </div>
