@@ -88,11 +88,14 @@ watch(currentShelf, (newState, oldType) => {
     appState.setDefaultShelf(newState)
 })
 
+const printUrl = computed(() => {
+    return router.resolve({ name: 'print.cocktail', params: { id: cocktail.value.slug }, query: { scaleFactor: (volumeScaleFactor.value ?? ingredientScaleFactor.value).toFixed(4), targetVolumeToScaleTo: targetVolumeToScaleTo.value, targetVolumeDilution: targetVolumeDilution.value, waterDilution: waterDilution.value } })
+})
+
 useEventListener(document, 'keydown', (e) => {
     if (e.key === "p" && e.ctrlKey === true) {
         e.preventDefault();
-        const routeData = router.resolve({ name: 'print.cocktail', params: { id: cocktail.value.slug }, query: { scaleFactor: (volumeScaleFactor.value ?? ingredientScaleFactor.value).toFixed(4), targetVolumeToScaleTo: targetVolumeToScaleTo.value, targetVolumeDilution: targetVolumeDilution.value, waterDilution: waterDilution.value } });
-        window.open(routeData.href, "_blank");
+        window.open(printUrl.value.href, "_blank");
     }
 })
 
@@ -400,7 +403,7 @@ fetchShoppingList()
                             </button>
                         </template>
                         <template #content>
-                            <RouterLink class="dropdown-menu__item" target="_blank" :to="{ name: 'print.cocktail', params: { id: cocktail.slug } }">
+                            <RouterLink class="dropdown-menu__item" target="_blank" :to="printUrl">
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18">
                                     <path fill="none" d="M0 0h24v24H0z" />
                                     <path d="M6 19H3a1 1 0 0 1-1-1V8a1 1 0 0 1 1-1h3V3a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v4h3a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1h-3v2a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1v-2zm0-2v-1a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v1h2V9H4v8h2zM8 4v3h8V4H8zm0 13v3h8v-3H8zm-3-7h3v2H5v-2z" />
@@ -535,8 +538,11 @@ fetchShoppingList()
                         <div v-if="cocktail.tags && cocktail.tags.length > 0" class="item-details__chips__group">
                             <div class="item-details__chips__group__title">{{ t('tag.tags') }}:</div>
                             <ul class="chips-list">
-                                <li v-for="tag in cocktail.tags" :key="tag.id">
-                                    <RouterLink :to="{ name: 'cocktails', query: { 'filter[tag_id]': tag.id } }">{{ tag.name }}</RouterLink>
+                                <li>
+                                    <template v-for="(tag, index) in cocktail.tags" :key="tag.id">
+                                        <RouterLink :to="{ name: 'cocktails', query: { 'filter[tag_id]': tag.id } }">{{ tag.name }}</RouterLink>
+                                        <template v-if="index + 1 !== cocktail.tags.length">, </template>
+                                    </template>
                                 </li>
                             </ul>
                         </div>

@@ -105,5 +105,7 @@ export default {
 
 .ingredient-spotlight__content small {
     font-size: 0.75rem;
+    line-height: 1.4;
+    display: inline-block;
 }
 </style>

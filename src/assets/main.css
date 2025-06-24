@@ -57,8 +57,7 @@ main {
 }
 
 mark {
-    background-color: rgb(255, 190, 136);
-    padding: 0 2px;
+    background-color: var(--clr-accent-200);
 }
 
 .page-subtitle {

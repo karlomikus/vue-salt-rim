@@ -39,19 +39,22 @@ refreshMenu()
 <template>
     <div class="public-page">
         <div class="public-page__header">
-            <SiteLogo :no-link="true"></SiteLogo>
+            <SiteLogo element="div"></SiteLogo>
         </div>
         <div class="public-page-menu" v-if="menu">
             <div class="public-page-menu__bar">
-                <h2>{{ menu.bar.name }}</h2>
-                <h4 v-show="menu.bar.subtitle">{{ menu.bar.subtitle }}</h4>
-                <p v-show="menu.bar.description">{{ menu.bar.description }}</p>
+                <img v-if="menu.bar.images && menu.bar.images.length > 0" :src="menu.bar.images[0]" :alt="menu.bar.name">
+                <div class="public-page-menu__bar__info">
+                    <h2>{{ menu.bar.name }}</h2>
+                    <h4 v-show="menu.bar.subtitle">{{ menu.bar.subtitle }}</h4>
+                    <p v-show="menu.bar.description">{{ menu.bar.description }}</p>
+                </div>
             </div>
             <div v-for="category in menu.categories" :key="category.name" class="public-page-menu__category">
                 <h3>{{ category.name }}</h3>
                 <div class="public-page-menu__category__cocktails">
                     <div v-for="item in category.items" :key="item.sort" class="public-page-menu__cocktail">
-                        <div class="public-page-menu__cocktail__image">
+                        <div :class="{'public-page-menu__cocktail__image': item.type === 'cocktail', 'public-page-menu__ingredient__image': item.type === 'ingredient'}">
                             <img v-if="item.image" :src="item.image" alt="">
                             <img v-else src="/no-cocktail.jpg" alt="">
                         </div>
@@ -110,26 +113,46 @@ refreshMenu()
 
 .public-page-menu {
     padding: var(--gap-size-3);
-    background-color: var(--clr-gray-100);
+    background-color: var(--clr-gray-50);
     border-radius: var(--radius-2);
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
 }
 
 .public-page-menu__bar {
     color: var(--clr-gray-900);
+    display: flex;
+    flex-direction: row;
+    gap: var(--gap-size-3);
+    background-color: #fff;
+    padding: var(--gap-size-2);
+    border-radius: var(--radius-1);
+}
+
+.public-page-menu__bar img {
+    width: 100%;
+    height: 80px;
+    flex-basis: 80px;
+    flex-shrink: 0;
+    border-radius: var(--radius-1);
+    object-fit: cover;
 }
 
 .public-page-menu__bar h2 {
     font-weight: var(--fw-bold);
+    font-family: var(--font-heading);
+}
+
+.public-page-menu__bar p {
+    color: var(--clr-gray-600);
 }
 
 .public-page-menu__category h3 {
-    margin: 1rem 0;
-    text-align: center;
-    font-size: 1rem;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    color: var(--clr-gray-800);
+    font-size: 1.25em;
+    color: var(--clr-gray-500);
     font-weight: var(--fw-bold);
+    font-family: var(--font-heading);
 }
 
 .public-page-menu__category__cocktails {
@@ -146,13 +169,13 @@ refreshMenu()
 }
 
 .public-page-menu__cocktail {
-    background: var(--clr-gray-50);
+    background: #fff;
     display: flex;
     gap: var(--gap-size-3);
     padding: var(--gap-size-2);
     border-radius: var(--radius-1);
     /* color: var(--clr-gray-600); */
-    box-shadow: var(--shadow-elevation-low-dark);
+    /* box-shadow: var(--shadow-elevation-low-dark); */
 }
 
 @media (max-width: 545px) {
@@ -182,6 +205,29 @@ refreshMenu()
     display: block;
     object-fit: cover;
     width: 100%;
+    height: 100%;
+}
+
+.public-page-menu__ingredient__image {
+    width: 100%;
+    height: 80px;
+    flex-basis: 80px;
+    flex-shrink: 0;
+    border-radius: var(--radius-1);
+    overflow: hidden;
+}
+
+@media (max-width: 545px) {
+    .public-page-menu__ingredient__image {
+        flex-basis: auto;
+        height: 150px;
+    }
+}
+
+.public-page-menu__ingredient__image img {
+    display: block;
+    width: auto;
+    margin: 0 auto;
     height: 100%;
 }
 

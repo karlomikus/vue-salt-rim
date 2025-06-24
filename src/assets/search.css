@@ -147,3 +147,50 @@
     width: 1rem;
     height: 1rem;
 }
+
+.ingredient-finder__search-input {
+    width: 100%;
+    margin-bottom: 0.5rem;
+}
+
+.ingredient-finder__options {
+    display: flex;
+    gap: var(--gap-size-1);
+    flex-direction: column;
+    height: 18rem;
+    overflow-y: auto;
+    padding: var(--gap-size-1);
+}
+
+.ingredient-finder__options a {
+    display: flex;
+    gap: var(--gap-size-2);
+    padding: 0.25rem 0.5rem;
+    text-decoration: none;
+    align-items: center;
+}
+
+.ingredient-finder__options a.ingredient-finder__options--disabled {
+    opacity: .3;
+}
+
+.ingredient-finder__options a svg {
+    width: 24px;
+    height: 24px;
+    margin-left: auto;
+    flex-shrink: 0;
+}
+
+.ingredient-finder__options__content {
+    display: flex;
+    flex-direction: column;
+}
+
+.ingredient-finder__options__content small {
+    font-size: 0.75rem;
+    color: var(--clr-gray-500);
+}
+
+a.ingredient-finder__options__create {
+    text-decoration: underline;
+}

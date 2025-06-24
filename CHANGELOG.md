@@ -1,3 +1,17 @@
+# v4.5.0
+## New
+- Added select random cocktail button
+- Added random sorting option to cocktails
+- Added new way to show ingredient hierarchy using icicle chart
+    - Added zooming and panning to chart
+    - Still work in progress
+
+## Fixes
+- Fixed search highlight styling
+- Fixed public menu ingredient image display
+- Fixed cocktail print missing scaling values
+- Fixed bar shelf cocktails menu cocktails not fetching correctly
+
 # v4.4.0
 ## New
 - Updated cocktail glass type selector
