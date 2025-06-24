@@ -400,8 +400,9 @@ function handleCalculatedPrice(item: MenuItem, e: any) {
 
 function quickAddShelf() {
     isLoading.value = true
-    BarAssistantClient.getBarShelfCocktails(appState.user.id).then((resp) => {
-        if (!resp || !resp.data) {
+    BarAssistantClient.getBarShelfCocktails(appState.bar.id).then((resp) => {
+        if (!resp || !resp.data || resp.data.length == 0) {
+            isLoading.value = false
             return
         }
 

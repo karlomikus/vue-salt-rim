@@ -10,6 +10,7 @@
 - Fixed search highlight styling
 - Fixed public menu ingredient image display
 - Fixed cocktail print missing scaling values
+- Fixed bar shelf cocktails menu cocktails not fetching correctly
 
 # v4.4.0
 ## New
