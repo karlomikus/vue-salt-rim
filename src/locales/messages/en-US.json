@@ -739,5 +739,8 @@
     "delete-success": "Cocktail method removed successfully"
   },
   "profile-public-shelf-description": "Other bar members will be able to filter by cocktails you have in your shelf",
-  "sort-random": "In random order"
+  "sort-random": "In random order",
+  "cocktails-varieties": "Varieties",
+  "cocktail-variety-of": "Cocktail is variety of",
+  "cocktail-select-parent": "Select parent cocktail"
 }

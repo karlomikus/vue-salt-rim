@@ -2,6 +2,7 @@
     <form @submit.prevent="filter">
         <OverlayLoader v-if="isLoading" />
         <div class="dialog-title">{{ title }}</div>
+        <p v-if="description">{{ description }}</p>
         <IngredientFinder :search-token="searchToken" :selected-ingredients="selectedIngredients.map(s => s.id)" @ingredient-selected="selectIngredient"></IngredientFinder>
         <div class="search-ingredients-modal-ingredients">
             <div v-for="ing in selectedIngredients" :key="ing.id" class="search-ingredients-modal-ingredients__ingredient">
@@ -31,6 +32,7 @@ const props = defineProps<{
     searchToken: string
     title: string
     value: number[]
+    description?: string
 }>()
 const isLoading = ref(false)
 const selectedIngredients = ref<IngredientSearchResult[]>([])

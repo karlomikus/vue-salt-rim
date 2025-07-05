@@ -2572,6 +2572,10 @@ export interface components {
                  */
                 can_add_note: boolean;
             };
+            /** @description If this cocktail is a variety of existing cocktail, this will reference the original cocktail */
+            parent_cocktail?: components["schemas"]["CocktailBasic"] | null;
+            /** @description List of varieties of this cocktail */
+            varieties?: components["schemas"]["CocktailBasic"][];
         };
         /** @description Collection resource */
         Collection: {
@@ -3514,6 +3518,8 @@ export interface components {
             images?: number[];
             /** @description List of existing utensil ids */
             utensils?: number[];
+            /** @example 1 */
+            parent_cocktail_id?: number | null;
         };
         CollectionRequest: {
             /** @example Collection name */
@@ -3559,7 +3565,7 @@ export interface components {
              * Format: binary
              * @description Image file. Base64 encoded images also supported. Max 50MB
              */
-            image: string | null | Blob;
+            image: string | null;
             /** @description Existing image id, used to update an existing image */
             id?: number | null;
             /** @example 1 */
