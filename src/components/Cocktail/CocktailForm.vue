@@ -130,9 +130,15 @@
                     <SaltRimRadio v-for="method in translatableMethods" :key="method.id" v-model="cocktail.method.id" :value="method.id" :title="method.name" :description="method.dilution_percentage + '%'"></SaltRimRadio>
                 </div>
             </div>
-            <div class="form-group">
-                <label class="form-label" for="source">{{ $t('source') }}:</label>
-                <input id="source" v-model="cocktail.source" class="form-input" type="text" :placeholder="$t('placeholder.source')">
+            <div class="sr-grid sr-grid--2-col">
+                <div class="form-group">
+                    <label class="form-label" for="source">{{ $t('source') }}:</label>
+                    <input id="source" v-model="cocktail.source" class="form-input" type="text" :placeholder="$t('placeholder.source')">
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="year">{{ $t('year') }}:</label>
+                    <input id="year" v-model="cocktail.year" class="form-input" type="text" :placeholder="$t('placeholder.cocktail-year')">
+                </div>
             </div>
             <div class="form-group">
                 <label class="form-label" for="cocktail-tags">{{ $t('tag.tags') }}:</label>
@@ -428,6 +434,7 @@ export default {
                 images: [],
                 tags: this.cocktail.tags,
                 glass_id: this.cocktail.glass.id,
+                year: this.cocktail.year,
                 ingredients: this.cocktail.ingredients
                     .filter(i => i.ingredient.id != null)
                     .map((cIngredient) => {

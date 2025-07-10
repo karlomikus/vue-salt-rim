@@ -534,12 +534,15 @@ fetchShoppingList()
                 <div class="block-container block-container--padded">
                     <h3 class="details-block-container__title">{{ t('description') }}</h3>
                     <div class="item-details__chips">
-                        <div v-if="cocktail.source" class="item-details__chips__group">
+                        <div v-if="cocktail.source || cocktail.year" class="item-details__chips__group">
                             <div class="item-details__chips__group__title">{{ t('source') }}:</div>
                             <ul class="chips-list">
-                                <li>
+                                <li v-if="cocktail.source">
                                     <a v-if="isValidUrl(cocktail.source)" :href="cocktail.source" target="_blank">{{ t('website') }}</a>
                                     <span v-else>{{ cocktail.source }}</span>
+                                </li>
+                                <li v-if="cocktail.year">
+                                    <span>{{ cocktail.year }}.</span>
                                 </li>
                             </ul>
                         </div>
