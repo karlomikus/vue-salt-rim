@@ -180,7 +180,8 @@
     "image-copyright": "URL immagine o altro riferimento...",
     "search-ingredients": "Cerca ingredienti...",
     "search-cocktails": "Cerca cocktail...",
-    "external-image": "Paste image URL"
+    "external-image": "Paste image URL",
+    "cocktail-year": "Cocktail recipe release year"
   },
   "amount": "Quantità",
   "units": "Unità di misura",
@@ -739,5 +740,9 @@
     "delete-success": "Cocktail method removed successfully"
   },
   "profile-public-shelf-description": "Other bar members will be able to filter by cocktails you have in your shelf",
-  "sort-random": "In random order"
+  "sort-random": "In random order",
+  "cocktails-varieties": "Varieties",
+  "cocktail-variety-of": "Cocktail is variety of",
+  "cocktail-select-parent": "Select parent cocktail",
+  "year": "Year"
 }
