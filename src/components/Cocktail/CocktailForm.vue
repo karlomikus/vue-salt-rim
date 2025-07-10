@@ -403,7 +403,7 @@ export default {
                 utensils: this.cocktail.utensils,
                 images: [],
                 tags: this.cocktail.tags,
-                glass_id: this.cocktail.glass.id,
+                glass_id: this.cocktail.glass ? this.cocktail.glass.id : null,
                 ingredients: this.cocktail.ingredients
                     .filter(i => i.ingredient.id != null)
                     .map((cIngredient) => {
