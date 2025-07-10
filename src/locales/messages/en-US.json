@@ -180,7 +180,8 @@
     "image-copyright": "Image source URL or other reference...",
     "search-ingredients": "Search for ingredients...",
     "search-cocktails": "Search for cocktails...",
-    "external-image": "Paste image URL"
+    "external-image": "Paste image URL",
+    "cocktail-year": "Cocktail recipe release year"
   },
   "amount": "Amount",
   "units": "Units",
@@ -742,5 +743,6 @@
   "sort-random": "In random order",
   "cocktails-varieties": "Varieties",
   "cocktail-variety-of": "Cocktail is variety of",
-  "cocktail-select-parent": "Select parent cocktail"
+  "cocktail-select-parent": "Select parent cocktail",
+  "year": "Year"
 }
