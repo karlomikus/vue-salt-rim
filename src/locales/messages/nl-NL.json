@@ -650,7 +650,7 @@
   "prices": {
     "add": "Add price",
     "price-categories": "Price categories",
-    "add-price-category": "Add price category"
+    "add-price-category": "Categorie toevoegen"
   },
   "shopping-list-empty": "Your shopping list is empty",
   "target-volume": "Target volume",
@@ -709,7 +709,7 @@
     "created-date": "Token created at",
     "delete-account": "Remove account link",
     "confirm-delete": "This will permanently delete SSO account link from provider \"{name}\".",
-    "is-configured": "Server configuration",
+    "is-configured": "Serverconfiguratie",
     "delete-success": "SSO account link deleted",
     "provider-enabled": "Enabled",
     "provider-disabled": "Disabled",
@@ -743,6 +743,6 @@
   "sort-random": "In random order",
   "cocktails-varieties": "Varieties",
   "cocktail-variety-of": "Cocktail is variety of",
-  "cocktail-select-parent": "Select parent cocktail",
+  "cocktail-select-parent": "Selecteer oudercocktail",
   "year": "Year"
 }
