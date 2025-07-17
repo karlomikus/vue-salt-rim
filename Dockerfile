@@ -27,3 +27,17 @@ RUN chmod +x /usr/local/bin/entrypoint
 EXPOSE 8080
 
 CMD [ "entrypoint" ]
+
+FROM node:latest AS dev
+
+WORKDIR /app
+
+COPY package*.json ./
+
+RUN npm install
+
+COPY . .
+
+EXPOSE 5173
+
+CMD ["npm", "run", "dev"]
