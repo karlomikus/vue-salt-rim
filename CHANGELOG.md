@@ -1,3 +1,13 @@
+# v4.6.0
+## New
+- Added Dutch translations
+- Added support for cocktail year
+- Added support for cocktail recipe variants
+
+# v4.5.1
+## Fixes
+- Fixed missing glass object when importing recipes
+
 # v4.5.0
 ## New
 - Added select random cocktail button
