@@ -79,7 +79,7 @@
     "hierarchy": "层级结构",
     "status": "成分状态",
     "hierarchy-description": "此为成分层级概览。若货架中有任意变体，配方匹配时可将其作为主成分的替代。",
-    "show-variants": "显示变体",
+    "show-variants": "Show variants",
     "show-ancestors": "显示父级",
     "recommended-next": "This bar can make {totalPercent} of available recipes. Add one of the following ingredients to bar shelf to increase cocktail options: {ingredients}",
     "used-in": "Used in {count} {substituteCount} cocktail recipes",
