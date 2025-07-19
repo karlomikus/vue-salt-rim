@@ -389,17 +389,19 @@ async function finishImporting() {
             }
         }
 
-        for (const substitute of ingredient.substitutes) {
-            if (substitute.matchedIngredient) {
-                continue
-            }
+        if (ingredient.substitutes) {
+            for (const substitute of ingredient.substitutes) {
+                if (substitute.matchedIngredient) {
+                    continue
+                }
 
-            const foundIngredient = await getOrCreateIngredient(substitute.refIngredient)
-            if (foundIngredient) {
-                substitute.matchedIngredient = {
-                    id: foundIngredient.id.toString(),
-                    slug: foundIngredient.slug,
-                    name: foundIngredient.name,
+                const foundIngredient = await getOrCreateIngredient(substitute.refIngredient)
+                if (foundIngredient) {
+                    substitute.matchedIngredient = {
+                        id: foundIngredient.id.toString(),
+                        slug: foundIngredient.slug,
+                        name: foundIngredient.name,
+                    }
                 }
             }
         }
