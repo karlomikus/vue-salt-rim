@@ -433,7 +433,7 @@ export default {
                 parent_cocktail_id: this.cocktail.parent_cocktail ? this.cocktail.parent_cocktail.id : null,
                 images: [],
                 tags: this.cocktail.tags,
-                glass_id: this.cocktail.glass.id,
+                glass_id: this.cocktail.glass ? this.cocktail.glass.id : null,
                 year: this.cocktail.year,
                 ingredients: this.cocktail.ingredients
                     .filter(i => i.ingredient.id != null)
