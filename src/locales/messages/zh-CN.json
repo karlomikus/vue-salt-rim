@@ -8,6 +8,7 @@
     "it-IT": "意大利语",
     "sv-SE": "瑞典语",
     "zh-CN": "简体中文",
+    "nl-NL": "Netherlands",
     "help": "协助翻译"
   },
   "shelf": {
@@ -180,7 +181,8 @@
     "image-copyright": "图片来源 URL 或其他参考...",
     "search-ingredients": "搜索成分...",
     "search-cocktails": "搜索鸡尾酒...",
-    "external-image": "粘贴图片 URL"
+    "external-image": "粘贴图片 URL",
+    "cocktail-year": "Cocktail recipe release year"
   },
   "amount": "数量",
   "units": "单位",
@@ -739,5 +741,9 @@
     "delete-success": "调制方法删除成功"
   },
   "profile-public-shelf-description": "Other bar members will be able to filter by cocktails you have in your shelf",
-  "sort-random": "In random order"
+  "sort-random": "In random order",
+  "cocktails-varieties": "Varieties",
+  "cocktail-variety-of": "Cocktail is variety of",
+  "cocktail-select-parent": "Select parent cocktail",
+  "year": "Year"
 }

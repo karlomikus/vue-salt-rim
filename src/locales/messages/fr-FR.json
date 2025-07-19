@@ -8,6 +8,7 @@
     "it-IT": "Italien",
     "sv-SE": "Suédois",
     "zh-CN": "Chinese (Simplified)",
+    "nl-NL": "Netherlands",
     "help": "Aide aux traductions"
   },
   "shelf": {
@@ -180,7 +181,8 @@
     "image-copyright": "URL de la source de l’image ou autre référence...",
     "search-ingredients": "Recherche d’ingrédients...",
     "search-cocktails": "Recherche de cocktails...",
-    "external-image": "Paste image URL"
+    "external-image": "Paste image URL",
+    "cocktail-year": "Cocktail recipe release year"
   },
   "amount": "Quantité",
   "units": "Unités",
@@ -739,5 +741,9 @@
     "delete-success": "Cocktail method removed successfully"
   },
   "profile-public-shelf-description": "Other bar members will be able to filter by cocktails you have in your shelf",
-  "sort-random": "In random order"
+  "sort-random": "In random order",
+  "cocktails-varieties": "Varieties",
+  "cocktail-variety-of": "Cocktail is variety of",
+  "cocktail-select-parent": "Select parent cocktail",
+  "year": "Year"
 }

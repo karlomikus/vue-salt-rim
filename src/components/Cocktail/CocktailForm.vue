@@ -130,9 +130,15 @@
                     <SaltRimRadio v-for="method in translatableMethods" :key="method.id" v-model="cocktail.method.id" :value="method.id" :title="method.name" :description="method.dilution_percentage + '%'"></SaltRimRadio>
                 </div>
             </div>
-            <div class="form-group">
-                <label class="form-label" for="source">{{ $t('source') }}:</label>
-                <input id="source" v-model="cocktail.source" class="form-input" type="text" :placeholder="$t('placeholder.source')">
+            <div class="sr-grid sr-grid--2-col">
+                <div class="form-group">
+                    <label class="form-label" for="source">{{ $t('source') }}:</label>
+                    <input id="source" v-model="cocktail.source" class="form-input" type="text" :placeholder="$t('placeholder.source')">
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="year">{{ $t('year') }}:</label>
+                    <input id="year" v-model="cocktail.year" class="form-input" type="text" :placeholder="$t('placeholder.cocktail-year')">
+                </div>
             </div>
             <div class="form-group">
                 <label class="form-label" for="cocktail-tags">{{ $t('tag.tags') }}:</label>
@@ -144,6 +150,25 @@
                 <select id="utensil" v-model="cocktail.utensils" class="form-select" multiple style="height: 200px;">
                     <option v-for="utensil in utensils" :key="utensil.id" :value="utensil.id">{{ utensil.name }}</option>
                 </select>
+            </div>
+            <div class="form-group">
+                <label class="form-label" for="cocktail-parent-id">{{ $t('cocktail-variety-of') }}:</label>
+                <SaltRimDialog v-model="showVarietyDialog">
+                    <template #trigger>
+                        <button type="button" class="form-input form-input--auto-height form-input--button" @click="showVarietyDialog = !showVarietyDialog">
+                            <template v-if="!cocktail.parent_cocktail">
+                                {{ $t('cocktail-select-parent') }}
+                            </template>
+                            <div v-else>
+                                {{ cocktail.parent_cocktail.name }}
+                            </div>
+                        </button>
+                        <a v-show="cocktail.parent_cocktail !== null" href="#" @click.prevent="cocktail.parent_cocktail = null">{{ $t('remove') }}</a>
+                    </template>
+                    <template #dialog>
+                        <CocktailFinder @cocktail-selected="selectParentCocktail" @closed="showVarietyDialog = false"></CocktailFinder>
+                    </template>
+                </SaltRimDialog>
             </div>
         </div>
         <div class="form-actions form-actions--timestamps">
@@ -175,6 +200,7 @@ import SubscriptionCheck from '../SubscriptionCheck.vue'
 import TimeStamps from '../TimeStamps.vue'
 import TagSelector from '../TagSelector.vue'
 import GlassSelector from '../GlassSelector.vue';
+import CocktailFinder from '../CocktailFinder.vue';
 
 export default {
     components: {
@@ -189,6 +215,7 @@ export default {
         TagSelector,
         CocktailIngredientModal,
         GlassSelector,
+        CocktailFinder,
     },
     data() {
         const appState = new AppState()
@@ -200,6 +227,7 @@ export default {
                 search_token: null,
             },
             showDialogs: [],
+            showVarietyDialog: false,
             showSubstituteDialog: false,
             showGlassSelectorDialog: false,
             cocktailIngredientForSubstitutes: {},
@@ -212,7 +240,8 @@ export default {
                 glass: {},
                 method: {},
                 images: [],
-                utensils: []
+                utensils: [],
+                parent_cocktail: null,
             },
             glasses: [],
             methods: [],
@@ -401,9 +430,11 @@ export default {
                 source: this.cocktail.source,
                 cocktail_method_id: this.cocktail.method.id,
                 utensils: this.cocktail.utensils,
+                parent_cocktail_id: this.cocktail.parent_cocktail ? this.cocktail.parent_cocktail.id : null,
                 images: [],
                 tags: this.cocktail.tags,
                 glass_id: this.cocktail.glass ? this.cocktail.glass.id : null,
+                year: this.cocktail.year,
                 ingredients: this.cocktail.ingredients
                     .filter(i => i.ingredient.id != null)
                     .map((cIngredient) => {
@@ -475,6 +506,10 @@ export default {
 
                 return cIngredient
             })
+        },
+        selectParentCocktail(cocktail) {
+            this.cocktail.parent_cocktail = cocktail
+            this.showVarietyDialog = false
         }
     }
 }

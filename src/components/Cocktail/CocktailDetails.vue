@@ -31,6 +31,7 @@ import UnitPicker from '@/components/Units/UnitPicker.vue'
 import WakeLockToggle from '../WakeLockToggle.vue'
 import IconMore from '../Icons/IconMore.vue'
 import CocktailIngredientView from './CocktailIngredient.vue'
+import CocktailVarieties from './CocktailVarieties.vue'
 
 type Cocktail = components["schemas"]["Cocktail"]
 type CocktailIngredient = components["schemas"]["CocktailIngredient"]
@@ -354,6 +355,9 @@ fetchShoppingList()
         <PageHeader>
             {{ cocktail.name }}
             <small>
+                <template v-if="cocktail.parent_cocktail">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="14" height="14"><path d="M10.0001 19.0001L19 19.0002L19 17.0002L12.0001 17.0001L12 6.8283L15.9497 10.778L17.364 9.36381L11 2.99985L4.63603 9.36381L6.05025 10.778L10 6.82825L10.0001 19.0001Z"></path></svg> <RouterLink :to="{name: 'cocktails.show', params: { id: cocktail.parent_cocktail.slug }}">{{ cocktail.parent_cocktail.name }}</RouterLink> &middot;
+                </template>
                 <DateFormatter :date="cocktail.created_at" format="short" /> <template v-if="cocktail?.updated_user">&middot; {{ cocktail.updated_user.name }}</template>
             </small>
         </PageHeader>
@@ -375,6 +379,10 @@ fetchShoppingList()
                 <template v-if="cocktail.ingredients && cocktail.ingredients.length > 0">
                     <h3 class="page-subtitle">{{ t('ingredient.spotlight') }}</h3>
                     <IngredientSpotlight :id="cocktail.ingredients[0].ingredient.id"></IngredientSpotlight>
+                </template>
+                <template v-if="cocktail.varieties && cocktail.varieties.length > 0">
+                    <h3 class="page-subtitle">{{ t('cocktails-varieties') }}</h3>
+                    <CocktailVarieties :cocktails="cocktail.varieties"></CocktailVarieties>
                 </template>
                 <h3 class="page-subtitle">{{ t('cocktails-similar') }}</h3>
                 <SimilarCocktails v-model="cocktail"></SimilarCocktails>
@@ -526,12 +534,15 @@ fetchShoppingList()
                 <div class="block-container block-container--padded">
                     <h3 class="details-block-container__title">{{ t('description') }}</h3>
                     <div class="item-details__chips">
-                        <div v-if="cocktail.source" class="item-details__chips__group">
+                        <div v-if="cocktail.source || cocktail.year" class="item-details__chips__group">
                             <div class="item-details__chips__group__title">{{ t('source') }}:</div>
                             <ul class="chips-list">
-                                <li>
+                                <li v-if="cocktail.source">
                                     <a v-if="isValidUrl(cocktail.source)" :href="cocktail.source" target="_blank">{{ t('website') }}</a>
                                     <span v-else>{{ cocktail.source }}</span>
+                                </li>
+                                <li v-if="cocktail.year">
+                                    <span>{{ cocktail.year }}.</span>
                                 </li>
                             </ul>
                         </div>

@@ -2572,6 +2572,15 @@ export interface components {
                  */
                 can_add_note: boolean;
             };
+            /** @description If this cocktail is a variety of existing cocktail, this will reference the original cocktail */
+            parent_cocktail?: components["schemas"]["CocktailBasic"] | null;
+            /** @description List of varieties of this cocktail */
+            varieties?: components["schemas"]["CocktailBasic"][];
+            /**
+             * @description Cocktail recipe year
+             * @example 2023
+             */
+            year?: number | null;
         };
         /** @description Collection resource */
         Collection: {
@@ -3514,6 +3523,10 @@ export interface components {
             images?: number[];
             /** @description List of existing utensil ids */
             utensils?: number[];
+            /** @example 1 */
+            parent_cocktail_id?: number | null;
+            /** @example 2023 */
+            year?: number | null;
         };
         CollectionRequest: {
             /** @example Collection name */
