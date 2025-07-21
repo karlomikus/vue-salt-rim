@@ -8,7 +8,7 @@
     "it-IT": "意大利语",
     "sv-SE": "瑞典语",
     "zh-CN": "简体中文",
-    "nl-NL": "Netherlands",
+    "nl-NL": "荷兰",
     "help": "协助翻译"
   },
   "shelf": {
@@ -52,18 +52,18 @@
       "select-substitutes": "编辑替代成分：",
       "search-not-found": "找不到您想要的内容？",
       "create-ingredient": "创建成分：\"{name}\"",
-      "current": "选定的成分：",
-      "optional-checkbox": "将此成分设为可选",
+      "current": "选定的成分",
+      "optional-checkbox": "将此成分设为可选。",
       "new-ingredient-success": "已创建未分类成分 \"{name}\"。",
-      "new-ingredient-fail": "无法添加成分",
-      "select-substitutes-for": "为 \"{name}\" 选择替代成分",
+      "new-ingredient-fail": "无法添加成分。",
+      "select-substitutes-for": "为 \"{name}\" 选择替代成分。",
       "is-specified-checkbox": "使用此特定成分（忽略变体作为替代）"
     },
     "base": "基酒",
     "is-complex": "该成分包含其他成分",
     "complex-note": "若拥有所有列出的成分，自动匹配包含此成分的配方",
     "complex": "复合成分",
-    "variety-note": "配方匹配可将此成分作为父成分的替代",
+    "variety-note": "食谱匹配将包括作为替代品的父成分（取决于用户设置）",
     "ingredients": "原料",
     "used_as_substitute_for": "作为替代品用于",
     "can_be_substituted_with": "可用以下成分替代",
@@ -73,7 +73,7 @@
     "shelf-user-help": "您货架中的成分匹配的配方仅由您管理。",
     "bar-shelf-add-success": "已将 \"{name}\" 添加到酒吧货架",
     "bar-shelf-remove-success": "已将 \"{name}\" 从酒吧货架移除",
-    "units-help": "使用常见单位（如 ml、oz、cl、dashes、barspoon、drops、topup、leaves）以获得最佳功能。",
+    "units-help": "可选配料不会用于配方匹配。如果使用通用单位，某些功能的效果会更好。建议使用的单位有：毫升、盎司、克朗、毫升、巴勺、滴、上量、叶。",
     "import": "导入成分",
     "attach-calculator": "附加计算器",
     "hierarchy": "层级结构",
@@ -81,11 +81,11 @@
     "hierarchy-description": "此为成分层级概览。若货架中有任意变体，配方匹配时可将其作为主成分的替代。",
     "show-variants": "Show variants",
     "show-ancestors": "显示父级",
-    "recommended-next": "This bar can make {totalPercent} of available recipes. Add one of the following ingredients to bar shelf to increase cocktail options: {ingredients}",
-    "used-in": "Used in {count} {substituteCount} cocktail recipes",
-    "used-in-substitutes": "+{total} as substitute",
-    "default-units-help": "Used to autofill units when selecting ingredient for cocktail recipe",
-    "icicle-graph": "Icicle chart"
+    "recommended-next": "这家酒吧可以制作 {totalPercent} 种可用配方。请将以下原料之一添加到吧台货架，以增加鸡尾酒选择：{ingredients}",
+    "used-in": "用于 {count} {substituteCount} 种鸡尾酒配方",
+    "used-in-substitutes": "+{total} 作为替补",
+    "default-units-help": "用于在选择鸡尾酒配方的配料时自动填充单位",
+    "icicle-graph": "冰柱图"
   },
   "share": {
     "title": "分享",
@@ -108,10 +108,10 @@
     "confirm-delete": "将永久删除名为 \"{name}\" 的用户。",
     "delete-success": "用户删除成功",
     "edit": "编辑用户",
-    "update-success": "用户更新成功",
+    "update-success": "用户更新成功。",
     "role": "酒吧角色",
     "display-name": "显示名称",
-    "add-success": "用户添加成功"
+    "add-success": "用户添加成功。"
   },
   "filters": "筛选器",
   "sort": "排序方式",
@@ -170,25 +170,25 @@
   "source": "来源",
   "method-and-dilution": "方法与稀释",
   "placeholder": {
-    "search": "Enter search term...",
-    "source": "URL 或书籍...",
-    "tags": "帮助您查找鸡尾酒的标签...",
-    "cocktail-description": "鸡尾酒描述或历史...",
-    "cocktail-name": "鸡尾酒名称...",
-    "cocktail-instructions": "如何调制鸡尾酒...",
-    "cocktail-garnish": "装饰物...",
-    "site-search": "搜索鸡尾酒或成分...",
-    "image-copyright": "图片来源 URL 或其他参考...",
-    "search-ingredients": "搜索成分...",
-    "search-cocktails": "搜索鸡尾酒...",
+    "search": "输入搜索词……",
+    "source": "URL 或书籍……",
+    "tags": "帮助您查找鸡尾酒的标签……",
+    "cocktail-description": "鸡尾酒描述或历史……",
+    "cocktail-name": "鸡尾酒名称……",
+    "cocktail-instructions": "如何调制鸡尾酒……",
+    "cocktail-garnish": "装饰物……",
+    "site-search": "搜索鸡尾酒或成分……",
+    "image-copyright": "图片来源 URL 或其他参考……",
+    "search-ingredients": "搜索成分……",
+    "search-cocktails": "搜索鸡尾酒……",
     "external-image": "粘贴图片 URL",
-    "cocktail-year": "Cocktail recipe release year"
+    "cocktail-year": "鸡尾酒配方发布年份"
   },
   "amount": "数量",
   "units": "单位",
   "imageupload": {
     "browse": "点击此处选择图片。",
-    "validation": "支持 PNG、JPG、WEBP 或 GIF · 最大 100MB",
+    "validation": "PNG、JPG、WEBP 或 GIF - 最大 100MB",
     "status": "已添加 {current}/{max} 张图片。",
     "delete-confirm": "将永久删除此图片。",
     "delete-success": "图片删除成功",
@@ -646,7 +646,7 @@
     "category-delete-success": "价格分类已删除",
     "category-confirm-delete": "将永久删除名为 \"{name}\" 的价格分类。",
     "missing-cocktail-price-calculator": "此鸡尾酒无可用价格。请为配方中的成分添加价格以启用计算。",
-    "missing-price-categories": "To add ingredient prices, you need to define bar {link} first."
+    "missing-price-categories": "要添加配料价格，您需要先定义酒吧 {link}。"
   },
   "prices": {
     "add": "添加价格",
@@ -740,10 +740,10 @@
     "confirm-delete": "将永久删除此调制方法",
     "delete-success": "调制方法删除成功"
   },
-  "profile-public-shelf-description": "Other bar members will be able to filter by cocktails you have in your shelf",
-  "sort-random": "In random order",
-  "cocktails-varieties": "Varieties",
+  "profile-public-shelf-description": "其他酒吧成员将可以根据您架子上的鸡尾酒进行筛选",
+  "sort-random": "随机排序",
+  "cocktails-varieties": "种类",
   "cocktail-variety-of": "Cocktail is variety of",
   "cocktail-select-parent": "Select parent cocktail",
-  "year": "Year"
+  "year": "年"
 }
