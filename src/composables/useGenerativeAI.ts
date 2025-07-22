@@ -1,25 +1,6 @@
 import { Ollama } from 'ollama'
 import { ref } from 'vue'
 
-export const ingredientStructuredOutput = {
-    type: 'object',
-    properties: {
-        description: {
-            type: 'string',
-        },
-        color: {
-            type: 'string',
-        },
-        origin: {
-            type: 'string',
-        },
-        strength: {
-            type: 'number',
-        },
-    },
-    required: ['description', 'color', 'origin', 'strength'],
-}
-
 export const useLLM = () => {
     const response = ref('')
     const loading = ref(false)
@@ -32,18 +13,17 @@ export const useLLM = () => {
 
     const ollama = new Ollama({ host: settings.host })
 
-    const generate = async (prompt: string) => {
+    const generate = async (prompt: string, format: string | object = 'json') => {
         loading.value = true
         error.value = null
         response.value = ''
 
         try {
-            // Make sure your Ollama server is running.
             const result = await ollama.generate({
                 model: settings.model,
                 prompt: prompt,
                 stream: false,
-                format: ingredientStructuredOutput,
+                format: format,
                 options: {
                     temperature: 0.1,
                 },

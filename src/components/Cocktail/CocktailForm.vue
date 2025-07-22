@@ -144,6 +144,9 @@
                 <label class="form-label" for="cocktail-tags">{{ $t('tag.tags') }}:</label>
                 <TagSelector id="cocktail-tags" v-model="cocktail.tags" :options="tags" label-key="name" :placeholder="$t('placeholder.tags')"></TagSelector>
                 <p class="form-input-hint">{{ $t('tag.help-text') }} {{ $t('tag.help-text-recommender') }}</p>
+                <div class="form-group-ai" v-if="cocktailTagsPrompt">
+                    <ButtonGenerate :prompt="cocktailTagsPrompt" :format="structuredOutput" @before-generation="onBeforePrompt" @after-generation="onAfterPrompt"></ButtonGenerate>
+                </div>
             </div>
             <div v-show="utensils.length > 0" class="form-group">
                 <label class="form-label" for="utensil">{{ $t('utensils.title') }}:</label>
@@ -201,6 +204,10 @@ import TimeStamps from '../TimeStamps.vue'
 import TagSelector from '../TagSelector.vue'
 import GlassSelector from '../GlassSelector.vue';
 import CocktailFinder from '../CocktailFinder.vue';
+import usePrompts from '@/composables/usePrompts';
+import ButtonGenerate from '../AI/ButtonGenerate.vue';
+
+const prompts = usePrompts()
 
 export default {
     components: {
@@ -216,6 +223,7 @@ export default {
         CocktailIngredientModal,
         GlassSelector,
         CocktailFinder,
+        ButtonGenerate,
     },
     data() {
         const appState = new AppState()
@@ -248,6 +256,12 @@ export default {
             tags: [],
             sortable: null,
             utensils: [],
+            structuredOutput: {
+                type: 'array',
+                items: {
+                    type: 'string'
+                },
+            }
         }
     },
     computed: {
@@ -265,6 +279,23 @@ export default {
                 return method
             })
         },
+        cocktailTagsPrompt() {
+            if (!this.cocktail.name || this.cocktail.name.length < 2 || this.cocktail.ingredients.length === 0) {
+                return null
+            }
+
+            const promptText = `
+                Name: ${this.cocktail.name}
+                Garnish: ${this.cocktail.garnish || ''}
+                Description: ${this.cocktail.description || ''}
+                Preparation method: ${this.cocktail.instructions || ''}
+                Method and dilution: ${this.cocktail.method.name || ''} ${this.cocktail.method.dilution_percentage || ''}%
+                ABV: ${this.cocktail.abv}
+                Ingredients: ${this.cocktail.ingredients.map(i => `${i.ingredient.name} - ${i.amount} ${i.units}`).join(', ')}
+            `;
+
+            return prompts.buildCocktailTagsPrompt(promptText, this.tags.map(t => t.name))
+        }
     },
     watch: {
         showDialog(newVal) {
@@ -340,6 +371,16 @@ export default {
         })
     },
     methods: {
+        onBeforePrompt() {
+            this.isLoading = true
+        },
+
+        onAfterPrompt(result) {
+            this.isLoading = false
+            const uniqueTags = new Set([...this.cocktail.tags, ...result.map(tag => tag.trim())])
+            this.cocktail.tags = Array.from(uniqueTags)
+        },
+
         handleCocktailIngredientModalClose(idx) {
             this.showDialogs[idx] = false
             const emptyIngredient = this.cocktail.ingredients.findIndex(i => i.ingredient.id == null)

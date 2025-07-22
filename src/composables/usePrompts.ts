@@ -13,7 +13,27 @@ export default function usePrompts() {
             </INGREDIENT_NAME>`
     }
 
+    const buildCocktailTagsPrompt = (content: string, tags: string[]) => {
+        return `
+            Your responsibility is to help write tags for a cocktail recipes app.
+            Please analyze the COCKTAIL_RECIPE below and suggest relevant tags that describe its key themes, topics, and main ideas. The rules are:
+            - Aim for tags that are relevant to the cocktail recipe, such as flavors.
+            - Aim for 3-7 tags.
+            - Analyze ingredients, their amounts, preparation methods, and any other relevant aspects of the recipe.
+            - If there are no good tags, leave the array empty.
+            - Prefer tags that are defined in the EXISTING_TAGS array, but if there are no good matches, you can create new ones.
+            - DONT include ingredient names in the tags.
+
+            <EXISTING_TAGS>
+            ${tags.join(', ')}
+            </EXISTING_TAGS>
+            <COCKTAIL_RECIPE>
+            ${content}
+            </COCKTAIL_RECIPE>`;
+    }
+
     return {
-        buildIngredientPrompt
+        buildIngredientPrompt,
+        buildCocktailTagsPrompt,
     }
 }

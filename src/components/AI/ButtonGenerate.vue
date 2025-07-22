@@ -8,7 +8,8 @@ import IconAI from '../Icons/IconAI.vue'
 import { computed } from 'vue'
 
 const props = defineProps<{
-    prompt: string
+    prompt: string,
+    format?: string | object
 }>()
 
 const emit = defineEmits<{
@@ -24,7 +25,7 @@ const shouldShowButton = computed(() => {
 
 const startGenerate = () => {
     emit('beforeGeneration')
-    provider.generate(props.prompt).then(() => {
+    provider.generate(props.prompt, props.format ?? 'json').then(() => {
         const result = JSON.parse(provider.response.value)
         emit('afterGeneration', result)
     })

@@ -10,7 +10,7 @@
                 <label class="form-label form-label--required" for="name">{{ $t('name') }}:</label>
                 <input id="name" v-model="ingredient.name" class="form-input" type="text" required>
                 <div class="form-group-ai" v-if="ingredientPrompt">
-                    <ButtonGenerate :prompt="ingredientPrompt" @before-generation="onBeforePrompt" @after-generation="onAfterPrompt"></ButtonGenerate>
+                    <ButtonGenerate :prompt="ingredientPrompt" :format="ingredientStructuredOutput" @before-generation="onBeforePrompt" @after-generation="onAfterPrompt"></ButtonGenerate>
                 </div>
             </div>
             <div class="form-group">
@@ -197,6 +197,25 @@ const appState = new AppState()
 const bar = appState.bar
 const priceCategories = ref<PriceCategory[]>([])
 const prompts = usePrompts()
+
+const ingredientStructuredOutput = {
+    type: 'object',
+    properties: {
+        description: {
+            type: 'string',
+        },
+        color: {
+            type: 'string',
+        },
+        origin: {
+            type: 'string',
+        },
+        strength: {
+            type: 'number',
+        },
+    },
+    required: ['description', 'color', 'origin', 'strength'],
+}
 
 const onBeforePrompt = () => {
     isLoading.value = true
