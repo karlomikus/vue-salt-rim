@@ -9,10 +9,13 @@
             <div class="form-group">
                 <label class="form-label form-label--required" for="name">{{ $t('name') }}:</label>
                 <input id="name" v-model="ingredient.name" class="form-input" type="text" required>
+                <div class="form-group-ai" v-if="ingredientPrompt">
+                    <ButtonGenerate :prompt="ingredientPrompt" @before-generation="onBeforePrompt" @after-generation="onAfterPrompt"></ButtonGenerate>
+                </div>
             </div>
             <div class="form-group">
                 <label class="form-label" for="description">{{ $t('description') }}:</label>
-                <textarea id="description" v-model="ingredient.description" rows="4" class="form-input"></textarea>
+                <textarea id="description" v-model="ingredient.description" rows="10" class="form-input"></textarea>
                 <p class="form-input-hint">{{ $t('field-supports-md') }}</p>
             </div>
             <div class="form-group">
@@ -164,6 +167,8 @@ import { useI18n } from 'vue-i18n'
 import { useSaltRimToast } from '@/composables/toast'
 import { useRoute, useRouter } from 'vue-router'
 import type { SearchResults } from '@/api/SearchResults'
+import usePrompts from '@/composables/usePrompts'
+import ButtonGenerate from '@/components/AI/ButtonGenerate.vue'
 
 type Ingredient = components['schemas']['Ingredient']
 type IngredientPrice = components['schemas']['IngredientPrice']
@@ -191,6 +196,29 @@ const calculators = ref<Calculator[]>([])
 const appState = new AppState()
 const bar = appState.bar
 const priceCategories = ref<PriceCategory[]>([])
+const prompts = usePrompts()
+
+const onBeforePrompt = () => {
+    isLoading.value = true
+}
+
+const onAfterPrompt = (result: any) => {
+    isLoading.value = false
+    ingredient.value.description = ingredient.value.description + '\n\n' + result.description || ''
+    if (!ingredient.value.strength) {
+        ingredient.value.strength = result.strength || 0
+    }
+    ingredient.value.origin = result.origin || ingredient.value.origin
+    ingredient.value.color = result.color || '#000000'
+}
+
+const ingredientPrompt = computed(() => {
+    if (!ingredient.value.name || ingredient.value.name.length < 3) {
+        return null
+    }
+
+    return prompts.buildIngredientPrompt(ingredient.value.name)
+})
 
 async function refreshIngredient(id: string) {
     isLoading.value = true

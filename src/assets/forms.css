@@ -204,3 +204,9 @@ textarea.form-input,
 .form-input--button:hover {
     border-color: var(--form-clr-border-focus);
 }
+
+.form-group-ai {
+    position: absolute;
+    top: 0.85rem;
+    right: 0.5rem;
+}
