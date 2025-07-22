@@ -1,4 +1,4 @@
-import { Ollama } from 'ollama'
+import { Ollama } from 'ollama/browser'
 import { ref } from 'vue'
 
 export const useLLM = () => {
