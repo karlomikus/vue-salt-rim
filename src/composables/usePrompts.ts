@@ -21,15 +21,14 @@ export default function usePrompts() {
             - Aim for 3-7 tags.
             - Analyze ingredients, their amounts, preparation methods, and any other relevant aspects of the recipe.
             - If there are no good tags, leave the array empty.
-            - Prefer tags that are defined in the EXISTING_TAGS array, but if there are no good matches, you can create new ones.
             - DONT include ingredient names in the tags.
 
-            <EXISTING_TAGS>
-            ${tags.join(', ')}
-            </EXISTING_TAGS>
             <COCKTAIL_RECIPE>
             ${content}
-            </COCKTAIL_RECIPE>`;
+            </COCKTAIL_RECIPE>
+            <EXAMPLE_TAGS>
+            ${tags.join(', ')}
+            </EXAMPLE_TAGS>`;
     }
 
     return {

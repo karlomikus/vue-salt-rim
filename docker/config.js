@@ -12,3 +12,5 @@ window.srConfig.ANALYTICS_HOST = "$ANALYTICS_HOST";
 window.srConfig.ALLOW_REGISTRATION = "$ALLOW_REGISTRATION";
 window.srConfig.SENTRY_DSN = "$SENTRY_DSN";
 window.srConfig.REDIRECT_TO_SSO = "$REDIRECT_TO_SSO" === 'true';
+window.srConfig.OLLAMA_HOST = "$OLLAMA_HOST";
+window.srConfig.OLLAMA_MODEL = "$OLLAMA_MODEL";
