@@ -19,7 +19,9 @@ interface Window {
         ALLOW_REGISTRATION: string,
         SENTRY_DSN: string,
         REDIRECT_TO_SSO: boolean,
-        OLLAMA_HOST: string,
-        OLLAMA_MODEL: string,
+        AI_PROVIDER: string,
+        AI_API_KEY: string,
+        AI_HOST: string,
+        AI_MODEL: string,
     }
 }
