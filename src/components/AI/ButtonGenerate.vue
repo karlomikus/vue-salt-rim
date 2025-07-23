@@ -1,14 +1,25 @@
 <template>
-    <button v-if="shouldShowButton" type="button" class="button button--ai" @click="startGenerate"><IconAI /></button>
+    <button v-if="shouldShowButton" type="button" class="button button--ai" @click="startGenerate" :title="title" :disabled="isLoading">
+        <IconAI v-show="!isLoading" />
+        <SaltRimSpinner v-show="isLoading" fill="#4d0724"/>
+    </button>
 </template>
 
 <script setup lang="ts">
 import { useLLM } from '@/composables/useGenerativeAI'
 import IconAI from '../Icons/IconAI.vue'
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
+import SaltRimSpinner from '../SaltRimSpinner.vue';
 
-const props = defineProps<{
+const isLoading = ref(false)
+
+const {
+    prompt,
+    title = 'Generate with AI',
+    format = 'json'
+} = defineProps<{
     prompt: string,
+    title?: string,
     format?: string | object
 }>()
 
@@ -20,14 +31,16 @@ const emit = defineEmits<{
 const provider = useLLM()
 
 const shouldShowButton = computed(() => {
-    return window.srConfig.OLLAMA_HOST && window.srConfig.OLLAMA_MODEL && props.prompt && props.prompt.length > 2
+    return provider.settings.host && provider.settings.model && prompt && prompt.length > 2
 })
 
 const startGenerate = () => {
+    isLoading.value = true
     emit('beforeGeneration')
-    provider.generate(props.prompt, props.format ?? 'json').then(() => {
+    provider.generate(prompt, format ?? 'json').then(() => {
         const result = JSON.parse(provider.response.value)
         emit('afterGeneration', result)
+        isLoading.value = false
     })
 }
 </script>

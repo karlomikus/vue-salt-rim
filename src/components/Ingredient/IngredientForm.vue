@@ -10,19 +10,22 @@
                 <label class="form-label form-label--required" for="name">{{ $t('name') }}:</label>
                 <input id="name" v-model="ingredient.name" class="form-input" type="text" required>
                 <div class="form-group-ai" v-if="ingredientPrompt">
-                    <ButtonGenerate :prompt="ingredientPrompt" :format="ingredientStructuredOutput" @before-generation="onBeforePrompt" @after-generation="onAfterPrompt"></ButtonGenerate>
+                    <ButtonGenerate :prompt="ingredientPrompt" :format="ingredientStructuredOutput" @before-generation="onBeforePrompt" @after-generation="onAfterPrompt" title="Generate basic ingredient information"></ButtonGenerate>
                 </div>
             </div>
             <div class="form-group">
                 <label class="form-label" for="description">{{ $t('description') }}:</label>
                 <textarea id="description" v-model="ingredient.description" rows="10" class="form-input"></textarea>
                 <p class="form-input-hint">{{ $t('field-supports-md') }}</p>
+                <GenerationLoader v-if="isLoadingGen" />
             </div>
             <div class="form-group">
                 <label class="form-label" for="strength">{{ $t('strength') }} ({{ $t('ABV') }} %):</label>
                 <input id="strength" v-model="ingredient.strength" class="form-input" type="text">
+                <GenerationLoader v-if="isLoadingGen" />
             </div>
             <div class="sr-grid sr-grid--3-col">
+                <GenerationLoader v-if="isLoadingGen" />
                 <div class="form-group">
                     <label class="form-label" for="origin">{{ $t('origin') }}:</label>
                     <input id="origin" v-model="ingredient.origin" class="form-input" type="text">
@@ -169,6 +172,7 @@ import { useRoute, useRouter } from 'vue-router'
 import type { SearchResults } from '@/api/SearchResults'
 import usePrompts from '@/composables/usePrompts'
 import ButtonGenerate from '@/components/AI/ButtonGenerate.vue'
+import GenerationLoader from '../AI/GenerationLoader.vue'
 
 type Ingredient = components['schemas']['Ingredient']
 type IngredientPrice = components['schemas']['IngredientPrice']
@@ -183,6 +187,7 @@ const { t } = useI18n()
 const toast = useSaltRimToast()
 const imageUpload = useTemplateRef('imagesUpload')
 const isLoading = ref(false)
+const isLoadingGen = ref(false)
 const isParent = ref(false)
 const isComplex = ref(false)
 const ingredient = ref<Ingredient>({
@@ -218,12 +223,13 @@ const ingredientStructuredOutput = {
 }
 
 const onBeforePrompt = () => {
-    isLoading.value = true
+    isLoadingGen.value = true
 }
 
 const onAfterPrompt = (result: any) => {
-    isLoading.value = false
+    isLoadingGen.value = false
     ingredient.value.description = ingredient.value.description + '\n\n' + result.description || ''
+    ingredient.value.description = ingredient.value.description.trim()
     if (!ingredient.value.strength) {
         ingredient.value.strength = result.strength || 0
     }
@@ -365,7 +371,7 @@ async function submit() {
         }) || []
 
         if (imageResources.length > 0) {
-            postData.images = imageResources.map(img => img.id)
+            postData.images = imageResources.map((img: any) => img.id)
         }
     }
 

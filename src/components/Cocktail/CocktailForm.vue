@@ -144,8 +144,9 @@
                 <label class="form-label" for="cocktail-tags">{{ $t('tag.tags') }}:</label>
                 <TagSelector id="cocktail-tags" v-model="cocktail.tags" :options="tags" label-key="name" :placeholder="$t('placeholder.tags')"></TagSelector>
                 <p class="form-input-hint">{{ $t('tag.help-text') }} {{ $t('tag.help-text-recommender') }}</p>
+                <GenerationLoader v-if="isLoadingGen"></GenerationLoader>
                 <div class="form-group-ai" v-if="cocktailTagsPrompt">
-                    <ButtonGenerate :prompt="cocktailTagsPrompt" :format="structuredOutput" @before-generation="onBeforePrompt" @after-generation="onAfterPrompt"></ButtonGenerate>
+                    <ButtonGenerate :prompt="cocktailTagsPrompt" :format="structuredOutputTags" @before-generation="onBeforePrompt" @after-generation="onAfterPrompt"></ButtonGenerate>
                 </div>
             </div>
             <div v-show="utensils.length > 0" class="form-group">
@@ -206,6 +207,7 @@ import GlassSelector from '../GlassSelector.vue';
 import CocktailFinder from '../CocktailFinder.vue';
 import usePrompts from '@/composables/usePrompts';
 import ButtonGenerate from '../AI/ButtonGenerate.vue';
+import GenerationLoader from '../AI/GenerationLoader.vue'
 
 const prompts = usePrompts()
 
@@ -224,6 +226,7 @@ export default {
         GlassSelector,
         CocktailFinder,
         ButtonGenerate,
+        GenerationLoader,
     },
     data() {
         const appState = new AppState()
@@ -241,6 +244,7 @@ export default {
             cocktailIngredientForSubstitutes: {},
             maxImages: appState.isSubscribed() ? 10 : 1,
             isLoading: false,
+            isLoadingGen: false,
             cocktail: {
                 id: null,
                 ingredients: [],
@@ -256,12 +260,12 @@ export default {
             tags: [],
             sortable: null,
             utensils: [],
-            structuredOutput: {
+            structuredOutputTags: {
                 type: 'array',
                 items: {
                     type: 'string'
                 },
-            }
+            },
         }
     },
     computed: {
@@ -295,7 +299,7 @@ export default {
             `;
 
             return prompts.buildCocktailTagsPrompt(promptText, this.tags.map(t => t.name))
-        }
+        },
     },
     watch: {
         showDialog(newVal) {
@@ -372,15 +376,13 @@ export default {
     },
     methods: {
         onBeforePrompt() {
-            this.isLoading = true
+            this.isLoadingGen = true
         },
-
         onAfterPrompt(result) {
-            this.isLoading = false
+            this.isLoadingGen = false
             const uniqueTags = new Set([...this.cocktail.tags, ...result.map(tag => tag.trim())])
             this.cocktail.tags = Array.from(uniqueTags)
         },
-
         handleCocktailIngredientModalClose(idx) {
             this.showDialogs[idx] = false
             const emptyIngredient = this.cocktail.ingredients.findIndex(i => i.ingredient.id == null)
