@@ -254,10 +254,10 @@
     "title": "Rodzaj szkła",
     "add": "Dodaj typ szkła",
     "edit": "Edytuj typ szkła",
-    "confirm-delete": "This will permanently glass type with name \"{name}\".",
-    "delete-success": "Glass type deleted successfully",
+    "confirm-delete": "Spowoduje to trwałe usunięcie rodzaju szkła o nazwie „{name}”.",
+    "delete-success": "Rodzaj szkła został pomyślnie usunięty",
     "update-success": "Glass type updated successfully",
-    "add-success": "Glass type added successfully",
+    "add-success": "Rodzaj szkła został pomyślnie dodany",
     "volume": "Objętość"
   },
   "information": "Informacje",
@@ -312,7 +312,7 @@
     "generation-failed": "Error occured trying to generate an image"
   },
   "download": "Download",
-  "type": "Type",
+  "type": "Rodzaj",
   "cocktails-similar": "Similar cocktails",
   "collections": {
     "add-to": "Add to collection",
