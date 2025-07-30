@@ -7,7 +7,7 @@
     "pl-PL": "Polonais",
     "it-IT": "Italien",
     "sv-SE": "Suédois",
-    "zh-CN": "Chinese (Simplified)",
+    "zh-CN": "Chinois (simplifié)",
     "nl-NL": "Netherlands",
     "help": "Aide aux traductions"
   },
@@ -21,7 +21,7 @@
     },
     "cocktails": "Cocktails que je peux faire",
     "bar-stats": "Bar statistics",
-    "recommended-cocktails": "Recommended cocktails"
+    "recommended-cocktails": "Cocktails conseillés"
   },
   "ingredient": {
     "title": "Ingrédient",
@@ -29,8 +29,8 @@
     "main": "Ingrédient principal",
     "add": "Ajouter un ingrédient",
     "on-shopping-list": "Vous avez cet ingrédient sur la liste de courses",
-    "add-to-shelf": "Add to shelf",
-    "remove-from-shelf": "Remove from shelf",
+    "add-to-shelf": "Ajouter à l'étagère",
+    "remove-from-shelf": "Enlever de l'étagère",
     "add-to-list": "Ajouter à la liste de courses",
     "remove-from-list": "Supprimer de la liste de courses",
     "update-success": "Ingrédient mis à jour avec succès",
@@ -57,7 +57,7 @@
       "new-ingredient-success": "Ingrédient non classifié \"{name}\" créé.",
       "new-ingredient-fail": "Impossible d’ajouter l’ingrédient.",
       "select-substitutes-for": "Sélectionnez des ingrédients pour remplacer \"{name}\".",
-      "is-specified-checkbox": "Use this specific ingredient (ignore varieties as substitutes)"
+      "is-specified-checkbox": "Utiliser cet ingrédient spécifique (ignorer les variétés comme substitut)"
     },
     "base": "Base",
     "is-complex": "L'ingrédient contient d'autres ingrédients",
@@ -73,17 +73,17 @@
     "shelf-user-help": "Les recettes qui correspondent aux ingrédients de votre étagère ne peuvent être gérées que par vous.",
     "bar-shelf-add-success": "Ajout de \"{name}\" à l'étagère du bar",
     "bar-shelf-remove-success": "Supprimer \"{name}\" de l'étagère du bar",
-    "units-help": "Some features work the best if you use common units. Some recommendations for units are: ml, oz, cl, dashes, barspoon, drops, topup, leaves.",
-    "import": "Import ingredients",
+    "units-help": "Certains éléments fonctionnent mieux si vous utilisez les unités de mesure traditionnelles. Voici quelques recommandations : ml, oz, cl, dash, cuillère de bar, goutte.",
+    "import": "Importer les ingrédients",
     "attach-calculator": "Attach calculator",
-    "hierarchy": "Hierarchy",
-    "status": "Ingredient status",
-    "hierarchy-description": "This is an overview of the ingredient hierarchy. Depending on the cocktail recipe, if you have any of the variants in the shelf, they can be used as a substitute for the main ingredient when matching recipes.",
-    "show-variants": "Show variants",
+    "hierarchy": "Hiérarchie",
+    "status": "État des ingrédients",
+    "hierarchy-description": "Il s'agit d'un aperçu de l'ordre des ingrédients. En fonction de la recette du cocktail, si vous possédez une variante dans l'étagère vous pouvez l'utiliser en tant qu'ingrédient principal lorsqu'elle correspond à la recette.",
+    "show-variants": "Voir les variantes",
     "show-ancestors": "Show ancestors",
-    "recommended-next": "This bar can make {totalPercent} of available recipes. Add one of the following ingredients to bar shelf to increase cocktail options: {ingredients}",
-    "used-in": "Used in {count} {substituteCount} cocktail recipes",
-    "used-in-substitutes": "+{total} as substitute",
+    "recommended-next": "Ce bar propose {totalPercent} des recettes disponibles. Ajouter l'un des ingrédients suivants à l'étagère du bar pour augmenter les propositions de cocktails : {ingredients}",
+    "used-in": "Utilisé dans {count} {substituteCount} des recettes de cocktails",
+    "used-in-substitutes": "+{total} en substitut",
     "default-units-help": "Used to autofill units when selecting ingredient for cocktail recipe",
     "icicle-graph": "Icicle chart"
   },
@@ -134,7 +134,7 @@
   "latest": {
     "cocktails": "Derniers cocktails",
     "favorites": "Vos favoris récents",
-    "ingredients": "Latest ingredients"
+    "ingredients": "Derniers ingrédients"
   },
   "strength": "Force",
   "rating": "Évaluation",
@@ -145,7 +145,7 @@
   "medium": "Moyen",
   "strong": "Fort",
   "welcome-user": "Bienvenue {name}",
-  "your-shopping-list": "Your shopping list",
+  "your-shopping-list": "Votre liste de courses",
   "view-all": "Tout voir",
   "add-to-shelf": "Ajouter à mon étagère",
   "remove-from-list": "Supprimer de la liste",
@@ -181,8 +181,8 @@
     "image-copyright": "URL de la source de l’image ou autre référence...",
     "search-ingredients": "Recherche d’ingrédients...",
     "search-cocktails": "Recherche de cocktails...",
-    "external-image": "Paste image URL",
-    "cocktail-year": "Cocktail recipe release year"
+    "external-image": "Coller l'URL de l'image",
+    "cocktail-year": "Année de lancement de la recette de cocktail"
   },
   "amount": "Quantité",
   "units": "Unités",
@@ -247,7 +247,7 @@
     "delete-success": "Balise supprimée avec succès",
     "add": "Ajouter une balise",
     "edit": "Modifier la balise",
-    "help-text-recommender": "Tags are used to recommend cocktails based on your preferences."
+    "help-text-recommender": "Les tags sont utilisés pour recommander des cocktails en fonction de vos préférences."
   },
   "glass-type": {
     "types": "Types de verre",
@@ -291,7 +291,7 @@
   "clear-filters": "Effacer tous les filtres",
   "rating-removed": "Suppression de la note cocktail",
   "rating-rated": "Cocktail noté avec {rating} étoiles",
-  "shelf-ingredients": "Shelf ingredients",
+  "shelf-ingredients": "Ingrédients sur l'étagère",
   "shopping-list-ingredients": "Ingrédients de la liste de courses",
   "notes": "Remarques",
   "collection-shared": "Partagé avec le bar",
@@ -424,13 +424,13 @@
     "activation-success": "Bar activé",
     "members": "Membres du bar",
     "logo": "Logo du bar",
-    "edit-success": "Bar \"{name}\" updated",
+    "edit-success": "Bar \"{name}\" mis à jour",
     "default-data": "Default dataset",
     "no-default": {
       "data": "No default data"
     },
-    "optimization-started": "Started bar optimization",
-    "optimize": "Optimize bar",
+    "optimization-started": "Commencer l'optimisation du bar",
+    "optimize": "Optimiser le bar",
     "confirm-optimization": "This will run bar optimizations"
   },
   "close": "Fermer",
