@@ -1,3 +1,5 @@
+import schema from '@/schema/draft2.json'
+
 export default function usePrompts() {
     const buildIngredientPrompt = (ingredientName: string) => {
         return `
@@ -47,9 +49,23 @@ export default function usePrompts() {
             </RECIPE>`;
     }
 
+    const buildGenerateSchemaPrompt = (content: string) => {
+        return `
+        These are the steps you should follow:
+        1. Read and understand the JSON schema.
+        2. Read the provided recipe text and reformat it into this schema and return the JSON.
+
+        Schema:
+        ${JSON.stringify(schema)}
+
+        Recipe text:
+        ${content}`;
+    }
+
     return {
         buildIngredientPrompt,
         buildCocktailTagsPrompt,
         buildRecipeImprovementPrompt,
+        buildGenerateSchemaPrompt,
     }
 }
