@@ -230,11 +230,18 @@ const onAfterPrompt = (result: any) => {
     isLoadingGen.value = false
     ingredient.value.description = ingredient.value.description + '\n\n' + result.description || ''
     ingredient.value.description = ingredient.value.description.trim()
+
     if (!ingredient.value.strength) {
         ingredient.value.strength = result.strength || 0
     }
-    ingredient.value.origin = result.origin || ingredient.value.origin
-    ingredient.value.color = result.color || '#000000'
+
+    if (!ingredient.value.origin) {
+        ingredient.value.origin = result.origin || ''
+    }
+
+    if (!ingredient.value.color) {
+        ingredient.value.color = result.color || '#ffffff'
+    }
 }
 
 const ingredientPrompt = computed(() => {
