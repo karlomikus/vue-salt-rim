@@ -37,9 +37,14 @@ const shouldShowButton = computed(() => {
 const startGenerate = () => {
     isLoading.value = true
     emit('beforeGeneration')
-    provider.generate(prompt, format ?? 'json').then(() => {
+    provider.generate(prompt, {
+        format: format
+    }).then(() => {
         const result = JSON.parse(provider.response.value)
         emit('afterGeneration', result)
+        isLoading.value = false
+    }).catch((error) => {
+        console.error('Error during generation:', error)
         isLoading.value = false
     })
 }
