@@ -262,8 +262,9 @@ export default {
             utensils: [],
             structuredOutputTags: {
                 type: 'array',
+                description: 'List of tags for the cocktail, each tag is a string.',
                 items: {
-                    type: 'string'
+                    type: 'string',
                 },
             },
         }
