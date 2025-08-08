@@ -253,7 +253,7 @@ const glasses = ref<Glass[]>([])
 const methods = ref<CocktailMethod[]>([])
 const tags = ref<Tag[]>([])
 const utensils = ref<Utensil[]>([])
-const sortable = ref(null)
+const sortable = ref<any>(null)
 const selectedUtensilIds = ref<number[]>([])
 const selectedTagNames = ref<string[]>([])
 const cocktailIngredientForSubstitutes = ref<CocktailIngredient>({} as CocktailIngredient)
@@ -307,6 +307,10 @@ function printIngredientAmount(ing: UnitIngredient) {
     return unitHandler.print(ing, defaultUnit)
 }
 
+function isValidIngredient(ingredient: CocktailIngredient): boolean {
+    return ingredient.ingredient.id != null && ingredient.ingredient.id !== 0 && !!ingredient.units
+}
+
 function handleCocktailIngredientModalClose(idx: number) {
     if (!cocktail.value.ingredients) {
         return
@@ -356,24 +360,19 @@ function removeIngredient(ing: CocktailIngredient) {
 
 function addIngredient() {
     const userUnit = appState.defaultUnit
-    let defaultAmount = 30
-    let defaultUnits = 'ml'
-
-    if (userUnit == 'oz') {
-        defaultAmount = 1
-        defaultUnits = 'oz'
+    const DEFAULT_AMOUNTS = {
+        ml: { amount: 30, units: 'ml' },
+        oz: { amount: 1, units: 'oz' },
+        cl: { amount: 3, units: 'cl' }
     }
 
-    if (userUnit == 'cl') {
-        defaultAmount = 3
-        defaultUnits = 'cl'
-    }
+    const defaultValues = DEFAULT_AMOUNTS[userUnit as keyof typeof DEFAULT_AMOUNTS] || DEFAULT_AMOUNTS.ml
 
     const placeholderData: CocktailIngredient = {
         sort: (cocktail.value.ingredients?.length ?? 0) + 1,
-        amount: defaultAmount,
+        amount: defaultValues.amount,
         amount_max: null,
-        units: defaultUnits,
+        units: defaultValues.units,
         optional: false,
         is_specified: false,
         note: null,
@@ -383,7 +382,7 @@ function addIngredient() {
             id: 0,
             slug: '',
             name: t('ingredient.name-placeholder'),
-        }
+        } as components['schemas']['Ingredient']
     }
 
     cocktail.value.ingredients?.push(placeholderData)
@@ -431,17 +430,15 @@ function updateSortPosition() {
         return
     }
 
-    const sortedIngredientList = (sortable.value as any).toArray()
+    const sortedIngredientList = sortable.value.toArray() as number[]
 
-    cocktail.value.ingredients.map((cIngredient) => {
-        cIngredient.sort = sortedIngredientList.findIndex((sortedId: number) => sortedId == cIngredient.ingredient.id) + 1
-
-        return cIngredient
+    cocktail.value.ingredients.forEach((cIngredient) => {
+        cIngredient.sort = sortedIngredientList.findIndex(sortedId => sortedId === cIngredient.ingredient.id) + 1
     })
 }
 
 async function submit() {
-    const sortedIngredientList = (sortable.value as any).toArray()
+    const sortedIngredientList = sortable.value.toArray() as number[]
 
     isLoading.value = true
 
@@ -459,8 +456,7 @@ async function submit() {
         glass_id: cocktail.value.glass ? cocktail.value.glass.id : null,
         year: cocktail.value.year,
         ingredients: (cocktail.value.ingredients ?? [])
-            .filter(i => i.ingredient.id != null || i.ingredient.id !== 0)
-            .filter(i => i.units)
+            .filter(isValidIngredient)
             .map((cIngredient) => {
                 const substitutes = (cIngredient.substitutes ?? [])
                     .filter(sub => sub.ingredient.id != null && sub.ingredient.id !== 0)
@@ -482,7 +478,7 @@ async function submit() {
                     optional: cIngredient.optional,
                     is_specified: cIngredient.is_specified,
                     note: cIngredient.note,
-                    sort: sortedIngredientList.findIndex((sortedId: number) => sortedId == cIngredient.ingredient.id) + 1,
+                    sort: sortedIngredientList.findIndex(sortedId => sortedId === cIngredient.ingredient.id) + 1,
                     substitutes: substitutes
                 }
             })
@@ -534,39 +530,61 @@ async function init() {
 
     isLoading.value = true
 
-    glasses.value = (await BarAssistantClient.getGlasses())?.data ?? []
-    methods.value = (await BarAssistantClient.getCocktailMethods())?.data ?? []
-    tags.value = (await BarAssistantClient.getTags())?.data ?? []
-    utensils.value = (await BarAssistantClient.getUtensils())?.data ?? []
-    bar.value = (await BarAssistantClient.getBar(appState.bar.id))?.data ?? {}
+    try {
+        await loadInitialData()
+        await loadCocktailData()
+        initSortable()
+    } catch (error) {
+        console.error('Initialization error')
+    } finally {
+        isLoading.value = false
+    }
+}
 
+async function loadInitialData() {
+    const [glassesData, methodsData, tagsData, utensilsData, barData] = await Promise.all([
+        BarAssistantClient.getGlasses(),
+        BarAssistantClient.getCocktailMethods(),
+        BarAssistantClient.getTags(),
+        BarAssistantClient.getUtensils(),
+        BarAssistantClient.getBar(appState.bar.id)
+    ])
+
+    glasses.value = glassesData?.data ?? []
+    methods.value = methodsData?.data ?? []
+    tags.value = tagsData?.data ?? []
+    utensils.value = utensilsData?.data ?? []
+    bar.value = barData?.data ?? {}
+}
+
+async function loadCocktailData() {
     const cocktailId = route.query.id || null
 
     if (cocktailId) {
         const existingCocktail = (await BarAssistantClient.getCocktail(cocktailId.toString()))?.data ?? {} as Cocktail
-
-        existingCocktail.description = useHtmlDecode(existingCocktail.description ?? '')
-        existingCocktail.instructions = useHtmlDecode(existingCocktail.instructions ?? '')
-        existingCocktail.garnish = useHtmlDecode(existingCocktail.garnish ?? '')
-        if (!existingCocktail.method) {
-            existingCocktail.method = {} as CocktailMethod
-        }
-        if (!existingCocktail.glass) {
-            existingCocktail.glass = {} as Glass
-        }
-
-        cocktail.value = existingCocktail
-        selectedUtensilIds.value = existingCocktail.utensils?.map(ut => ut.id) ?? []
-        selectedTagNames.value = existingCocktail.tags?.map(t => t.name) ?? []
-
-        useTitle(`${t('cocktail.title')} \u22C5 ${cocktail.value.name}`)
+        setupExistingCocktail(existingCocktail)
     } else {
         checkForImportData()
     }
+}
 
-    initSortable()
+function setupExistingCocktail(existingCocktail: Cocktail) {
+    existingCocktail.description = useHtmlDecode(existingCocktail.description ?? '')
+    existingCocktail.instructions = useHtmlDecode(existingCocktail.instructions ?? '')
+    existingCocktail.garnish = useHtmlDecode(existingCocktail.garnish ?? '')
 
-    isLoading.value = false
+    if (!existingCocktail.method) {
+        existingCocktail.method = {} as CocktailMethod
+    }
+    if (!existingCocktail.glass) {
+        existingCocktail.glass = {} as Glass
+    }
+
+    cocktail.value = existingCocktail
+    selectedUtensilIds.value = existingCocktail.utensils?.map(ut => ut.id) ?? []
+    selectedTagNames.value = existingCocktail.tags?.map(t => t.name) ?? []
+
+    useTitle(`${t('cocktail.title')} \u22C5 ${cocktail.value.name}`)
 }
 
 init()
