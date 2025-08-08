@@ -1,3 +1,14 @@
+# v4.7.0
+## New
+- Added generative AI support
+  - Currently available only as global setting via environment variables
+  - Added `AI_PROVIDER` env variable. Use it to setup AI provider
+    - Supported values: `openai`, `ollama`
+  - Added `AI_HOST` env variable. Use it to setup AI host URL
+  - Added `AI_MODEL` env variable. Use it to setup AI model
+  - Added `AI_API_KEY` env variable. Use it to setup AI API key
+    - Required for `openai` provider
+
 # v4.6.0
 ## New
 - Added Dutch translations

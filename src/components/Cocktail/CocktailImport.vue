@@ -12,68 +12,24 @@ import { useRoute, useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import type { SearchResults } from '@/api/SearchResults'
 import type { components } from '@/api/api'
+import type { CocktailRecipeDraft02 as Draft2Schema } from '@/schema/draft2'
+import type { CocktailRecipe as Draft1Schema } from '@/schema/draft1'
 import { useTitle } from '@/composables/title'
 import AppState from '@/AppState'
+
 interface Ingredient {
     id: string,
     name: string,
     slug: string,
 }
 type SearchResult = SearchResults['ingredient']
-type Draft2Schema = components["schemas"]["cocktail-02.schema"]
-interface Draft1Schema {
-    _id: string;
-    name: string;
-    instructions: string;
-    created_at: string;
-    updated_at: string;
-    description: string;
-    source: string;
-    garnish: string | null;
-    abv: number;
-    tags: string[];
-    glass: string;
-    method: string;
-    utensils: string[];
-    images: {
-        source: string;
-        sort: number;
-        placeholder_hash: string;
-        copyright: string;
-    }[];
-    ingredients: {
-        _id: string;
-        name: string;
-        strength: number;
-        description: string;
-        origin: string | null;
-        category: string;
-        amount: number;
-        units: string;
-        optional: boolean;
-        amount_max: number | null;
-        note: string | null;
-        substitutes: {
-            _id: string;
-            amount?: number | null;
-            units?: string | null;
-            amount_max?: number | null;
-            name: string;
-            strength: number;
-            description: string;
-            origin: string | null;
-            category: string;
-        }[];
-        sort: number;
-    }[];
-}
 type Cocktail = components["schemas"]["Cocktail"]
 type Bar = components["schemas"]["Bar"]
 type Glass = components["schemas"]["Glass"]
 type FullIngredient = components["schemas"]["Ingredient"]
 type CocktailMethod = components["schemas"]["CocktailMethod"]
 type SchemaIngredient = components["schemas"]["cocktail-02.schema"]["ingredients"][0]
-interface SchemaWithExtraIngredientData {
+interface SchemaWithMatchedData {
     recipe: {
         matchedGlass: Glass | null,
         matchedMethodId: number | null,
@@ -89,7 +45,7 @@ interface SchemaWithExtraIngredientData {
     }
 }
 
-type LocalSchema = Draft2Schema & SchemaWithExtraIngredientData
+type LocalSchema = Draft2Schema & SchemaWithMatchedData
 type CocktailIngredient = LocalSchema["recipe"]["ingredients"][0]
 type SubstituteCocktailIngredient = LocalSchema["recipe"]["ingredients"][0]["substitutes"][0]
 
@@ -110,9 +66,11 @@ const duplicateAction = ref('none')
 const source = ref<{
     url: null | string,
     json: null | string,
+    ai_content: null | string,
 }>({
     url: null,
     json: null,
+    ai_content: null,
 })
 const result = ref<LocalSchema>({} as LocalSchema)
 const cocktailTags = computed({
@@ -137,6 +95,7 @@ function clearImport() {
     source.value = {
         url: null,
         json: null,
+        ai_content: null,
     }
     ingredientEdit.value = null
     result.value = {} as LocalSchema
@@ -218,7 +177,7 @@ function fromJson() {
                         matchedGlass: null,
                         matchedMethodId: null,
                         images: parsedDraft1.images?.map(img => ({file: img.source, uri: img.source, copyright: img.copyright})) ?? [],
-                        ingredients: parsedDraft1.ingredients.map(i => {
+                        ingredients: parsedDraft1.ingredients?.map(i => {
                             return {
                                 _id: i._id,
                                 _source: null,
@@ -499,6 +458,7 @@ init()
                 <div class="import-types">
                     <SaltRimRadio v-model="importType" :title="t('import.type-url-title')" :description="t('import.type-url-description')" value="url"></SaltRimRadio>
                     <SaltRimRadio v-model="importType" :title="t('import.type-json-title')" :description="t('import.type-json-description')" value="json"></SaltRimRadio>
+                    <!-- <SaltRimRadio v-model="importType" :title="t('import.type-ai-title')" :description="t('import.type-ai-description')" value="ai"></SaltRimRadio> -->
                 </div>
             </div>
             <div class="alert alert--info" style="margin: 1rem 0;">
@@ -509,6 +469,11 @@ init()
                 <label class="form-label form-label--required" for="import-source">{{ t('source') }}:</label>
                 <input id="import-source" v-model="source.url" type="url" class="form-input" placeholder="https://" required>
             </div>
+            <!-- <div v-else-if="importType === 'ai'" class="form-group">
+                <label class="form-label form-label--required" for="import-source">{{ t('source') }}:</label>
+                <textarea id="import-source" v-model="source.ai_content" class="form-input" rows="14" required></textarea>
+                <pre>{{importPrompt}}</pre>
+            </div> -->
             <div v-else class="form-group">
                 <label class="form-label form-label--required" for="import-source">{{ t('source') }}:</label>
                 <textarea id="import-source" v-model="source.json" class="form-input" rows="14" required></textarea>
