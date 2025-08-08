@@ -1,4 +1,5 @@
 import { Ollama } from 'ollama/browser'
+import OpenAI from 'openai'
 import { ref } from 'vue'
 
 interface LLMProvider {
@@ -28,6 +29,38 @@ class OllamaProvider implements LLMProvider {
     }
 }
 
+class OpenAIProvider implements LLMProvider {
+    private openai: OpenAI
+    private model: string
+
+    constructor(host: string|null, model: string, apiKey: string) {
+        let defaultSettings = { apiKey, dangerouslyAllowBrowser: true } as any
+        if (host) {
+            defaultSettings = { ...defaultSettings, baseURL: host }
+        }
+        this.openai = new OpenAI(defaultSettings)
+        this.model = model
+    }
+
+    async generate(prompt: string, format: string | object = 'json'): Promise<string> {
+        // const responseFormat = typeof format === 'object' ? 'json_schema' : 'json_object'
+        const chatCompletion = await this.openai.chat.completions.create({
+            messages: [{ role: 'user', content: prompt }],
+            model: this.model,
+            temperature: 0.5,
+            reasoning_effort: 'minimal',
+            response_format: {
+                type: 'json_schema',
+                json_schema: {
+                    name: 'tags',
+                    schema: format
+                }
+            },
+        })
+        return chatCompletion.choices[0].message.content ?? ''
+    }
+}
+
 export const useLLM = () => {
     const response = ref('')
     const loading = ref(false)
@@ -44,6 +77,8 @@ export const useLLM = () => {
         switch (settings.provider.toLowerCase()) {
             case 'ollama':
                 return new OllamaProvider(settings.host, settings.model)
+            case 'openai':
+                return new OpenAIProvider(settings.host, settings.model, settings.apiKey)
             default:
                 throw new Error(`Unsupported LLM provider: ${settings.provider}`)
         }
