@@ -2465,12 +2465,12 @@ export interface components {
                  * @description Tag ID
                  * @example 1
                  */
-                id?: number;
+                id: number;
                 /**
                  * @description Tag name
                  * @example Tag name
                  */
-                name?: string;
+                name: string;
             }[];
             rating?: {
                 /**
