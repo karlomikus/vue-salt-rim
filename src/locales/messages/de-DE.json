@@ -630,7 +630,8 @@
     "copy-action": "Kopieren und bearbeiten",
     "copy-success": "Cocktail kopiert",
     "source": "Cocktail Herkunft",
-    "confirm-copy": "This will create a copy of \"{name}\""
+    "confirm-copy": "This will create a copy of \"{name}\"",
+    "randomize": "Show random cocktail"
   },
   "ABV-definition": "Volumenprozent Alkohol",
   "ingredient-category": {},
