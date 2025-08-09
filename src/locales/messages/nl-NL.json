@@ -630,7 +630,8 @@
     "copy-action": "Dupliceren en bewerken",
     "copy-success": "Cocktail gedupliceerd",
     "source": "Cocktail bron",
-    "confirm-copy": "Dit maakt een kopie van \"{name}\""
+    "confirm-copy": "Dit maakt een kopie van \"{name}\"",
+    "randomize": "Show random cocktail"
   },
   "ABV-definition": "Alcohol naar volume",
   "ingredient-category": {},
