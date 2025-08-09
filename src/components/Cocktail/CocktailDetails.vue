@@ -34,7 +34,6 @@ import CocktailIngredientView from './CocktailIngredient.vue'
 import CocktailVarieties from './CocktailVarieties.vue'
 
 type Cocktail = components["schemas"]["Cocktail"]
-type CocktailIngredient = components["schemas"]["CocktailIngredient"]
 type Note = components["schemas"]["Note"]
 type ShoppingList = components["schemas"]["ShoppingList"]
 type CocktailBasic = components["schemas"]["CocktailBasic"]
