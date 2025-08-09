@@ -173,6 +173,7 @@ import type { SearchResults } from '@/api/SearchResults'
 import usePrompts from '@/composables/usePrompts'
 import ButtonGenerate from '@/components/AI/ButtonGenerate.vue'
 import GenerationLoader from '../AI/GenerationLoader.vue'
+import { jsonSchema } from 'ai'
 
 type Ingredient = components['schemas']['Ingredient']
 type IngredientPrice = components['schemas']['IngredientPrice']
@@ -203,7 +204,12 @@ const bar = appState.bar
 const priceCategories = ref<PriceCategory[]>([])
 const prompts = usePrompts()
 
-const ingredientStructuredOutput = {
+const ingredientStructuredOutput = jsonSchema<{
+    description: string
+    color: string
+    origin: string
+    strength: number
+}>({
     type: 'object',
     properties: {
         description: {
@@ -220,7 +226,7 @@ const ingredientStructuredOutput = {
         },
     },
     required: ['description', 'color', 'origin', 'strength'],
-}
+})
 
 const onBeforePrompt = () => {
     isLoadingGen.value = true

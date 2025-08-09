@@ -29,7 +29,7 @@
                 </svg>
                 <p>Here you can manage this cocktail's ingredients and amounts. Start by adding your first ingredient.</p>
             </div>
-            <ul ref="ingredientsList" v-show="(cocktail.ingredients?.length ?? 0) > 0" class="cocktail-form__ingredients" style="margin-bottom: 20px;">
+            <ul v-show="(cocktail.ingredients?.length ?? 0) > 0" class="cocktail-form__ingredients" style="margin-bottom: 20px;">
                 <li v-for="(ing, idx) in cocktail.ingredients" :key="ing.ingredient.id" class="block-container" :data-id="ing.ingredient.id">
                     <div class="drag-handle"></div>
                     <div class="cocktail-form__ingredients__content">
@@ -209,11 +209,12 @@ import usePrompts from '@/composables/usePrompts';
 import ButtonGenerate from '../AI/ButtonGenerate.vue';
 import GenerationLoader from '../AI/GenerationLoader.vue'
 import type { components } from '@/api/api'
-import { ref, computed, watch, onMounted, useTemplateRef, nextTick } from 'vue';
+import { ref, computed, watch, useTemplateRef, nextTick } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { useI18n } from 'vue-i18n';
 import { useSaltRimToast } from '@/composables/toast';
 import { useConfirm } from '@/composables/confirm'
+import { jsonSchema } from 'ai'
 
 type Cocktail = components['schemas']['Cocktail']
 type CocktailRequest = components["schemas"]["CocktailRequest"]
@@ -238,7 +239,6 @@ const showVarietyDialog = ref<boolean>(false)
 const showSubstituteDialog = ref<boolean>(false)
 const showGlassSelectorDialog = ref<boolean>(false)
 const imageUpload = useTemplateRef('imagesUpload')
-const ingredientsList = useTemplateRef('ingredientsList')
 const cocktail = ref<Partial<Cocktail>>({
     images: [],
     ingredients: [],
@@ -260,13 +260,13 @@ const cocktailIngredientForSubstitutes = ref<CocktailIngredient>({} as CocktailI
 const bar = ref<Partial<Bar>>({
     search_token: null,
 })
-const structuredOutputTags = {
+const structuredOutputTags = jsonSchema<string[]>({
     type: 'array',
     description: 'List of tags for the cocktail, each tag is a string.',
     items: {
         type: 'string',
     },
-}
+})
 
 const translatableMethods = computed(() => {
     const methodsWithTranslations = ['Shake', 'Stir', 'Build', 'Blend', 'Muddle', 'Layer'];
@@ -393,10 +393,11 @@ function onBeforePrompt() {
     isLoadingGen.value = true
 }
 
-function onAfterPrompt(result: any) {
+function onAfterPrompt(result: string[]) {
     isLoadingGen.value = false
-    const uniqueTags = new Set([...selectedTagNames.value, ...result.map((tag: string) => tag.trim())])
-    cocktail.value.tags = Array.from(uniqueTags)
+    const newTags = Array.from(result).map((tag: string) => tag.trim()).filter(tag => tag.length > 0)
+    const uniqueTags = new Set([...selectedTagNames.value, ...newTags])
+    selectedTagNames.value = Array.from(uniqueTags)
 }
 
 function selectParentCocktail(parentCocktail: Cocktail) {

@@ -10,17 +10,18 @@ import { useLLM } from '@/composables/useGenerativeAI'
 import IconAI from '../Icons/IconAI.vue'
 import { computed, ref } from 'vue'
 import SaltRimSpinner from '../SaltRimSpinner.vue';
+import { type Schema } from "ai";
 
 const isLoading = ref(false)
 
 const {
     prompt,
+    format,
     title = 'Generate with AI',
-    format = 'json'
 } = defineProps<{
     prompt: string,
+    format: Schema,
     title?: string,
-    format?: string | object
 }>()
 
 const emit = defineEmits<{
@@ -34,18 +35,12 @@ const shouldShowButton = computed(() => {
     return provider.settings.host && provider.settings.model && prompt && prompt.length > 2
 })
 
-const startGenerate = () => {
+const startGenerate = async () => {
     isLoading.value = true
     emit('beforeGeneration')
-    provider.generate(prompt, {
-        format: format
-    }).then(() => {
-        const result = JSON.parse(provider.response.value)
-        emit('afterGeneration', result)
-        isLoading.value = false
-    }).catch((error) => {
-        console.error('Error during generation:', error)
-        isLoading.value = false
-    })
+    await provider.generate(prompt, format)
+    const result = provider.response.value
+    emit('afterGeneration', result)
+    isLoading.value = false
 }
 </script>

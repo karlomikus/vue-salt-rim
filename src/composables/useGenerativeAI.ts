@@ -1,85 +1,13 @@
-import { Ollama } from "ollama/browser";
-import OpenAI from "openai";
 import { ref } from "vue";
-
-interface GenerateOptions {
-    temperature?: number;
-    format?: "json" | "text" | string | object;
-}
-
-interface LLMProvider {
-    generate(prompt: string, options?: GenerateOptions): Promise<string>;
-}
-
-class OllamaProvider implements LLMProvider {
-    private ollama: Ollama;
-    private model: string;
-
-    constructor(host: string, model: string) {
-        this.ollama = new Ollama({ host });
-        this.model = model;
-    }
-
-    async generate(
-        prompt: string,
-        options: GenerateOptions = {},
-    ): Promise<string> {
-        const { format = "json", temperature = 0.1 } = options;
-        const ollamaOptions: {
-            temperature: number;
-        } = {
-            temperature,
-        };
-
-        const result = await this.ollama.generate({
-            model: this.model,
-            prompt: prompt,
-            stream: false,
-            format: format,
-            options: ollamaOptions,
-        });
-        return result.response;
-    }
-}
-
-class OpenAIProvider implements LLMProvider {
-    private openai: OpenAI;
-    private model: string;
-
-    constructor(host: string | null, model: string, apiKey: string) {
-        let defaultSettings = { apiKey, dangerouslyAllowBrowser: true } as any;
-        if (host) {
-            defaultSettings = { ...defaultSettings, baseURL: host };
-        }
-        this.openai = new OpenAI(defaultSettings);
-        this.model = model;
-    }
-
-    async generate(
-        prompt: string,
-        options: GenerateOptions = {},
-    ): Promise<string> {
-        const { format = "json", temperature = 0.7 } = options;
-
-        const completion = await this.openai.chat.completions.create({
-            messages: [{ role: "user", content: prompt }],
-            model: this.model,
-            temperature,
-            response_format: {
-                type: format === "json" ? "json_object" : "text",
-            },
-        });
-
-        const content = completion.choices[0].message.content;
-        if (!content) {
-            throw new Error("No content in response from OpenAI.");
-        }
-        return content;
-    }
-}
+import { ollama } from 'ai-sdk-ollama';
+import {
+    createOpenAICompatible,
+    OpenAICompatibleChatLanguageModel,
+} from "@ai-sdk/openai-compatible";
+import { generateObject, type Schema } from "ai";
 
 export const useLLM = () => {
-    const response = ref("");
+    const response = ref<any>(null);
     const loading = ref(false);
     const error = ref<Error | null>(null);
 
@@ -90,32 +18,44 @@ export const useLLM = () => {
         apiKey: window.srConfig.AI_API_KEY,
     };
 
-    const createProvider = (): LLMProvider => {
-        switch (settings.provider.toLowerCase()) {
-            case "ollama":
-                return new OllamaProvider(settings.host, settings.model);
-            case "openai":
-                return new OpenAIProvider(
-                    settings.host,
-                    settings.model,
-                    settings.apiKey,
-                );
-            default:
-                throw new Error(
-                    `Unsupported LLM provider: ${settings.provider}`,
-                );
-        }
-    };
+    let model;
+    if (settings.provider === "lmstudio") {
+        // Special case needed to handle structured outputs
+        model = new OpenAICompatibleChatLanguageModel(
+            settings.model,
+            {
+                provider: settings.provider,
+                url: ({ path }) => {
+                    const url = new URL(`${settings.host}${path}`);
+                    return url.toString();
+                },
+                headers: () => ({}),
+                supportsStructuredOutputs: true,
+            },
+        );
+    } else if (settings.provider === "ollama") {
+        model = ollama(settings.model)
+    } else {
+        model = createOpenAICompatible({
+            baseURL: settings.host,
+            name: settings.provider,
+            apiKey: settings.apiKey,
+        }).chatModel(settings.model);
+    }
 
-    const provider = createProvider();
-
-    const generate = async (prompt: string, options: GenerateOptions = {}) => {
+    const generate = async (prompt: string, schema: Schema) => {
         loading.value = true;
         error.value = null;
-        response.value = "";
 
         try {
-            response.value = await provider.generate(prompt, options);
+            const { object } = await generateObject({
+                system: `You are an AI assistant in cocktail recipe application.`,
+                model: model,
+                prompt: prompt,
+                mode: "json",
+                schema: schema,
+            })
+            response.value = object;
         } catch (e) {
             if (e instanceof Error) {
                 error.value = e;

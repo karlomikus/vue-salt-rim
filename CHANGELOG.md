@@ -1,13 +1,18 @@
 # v4.7.0
 ## New
 - Added generative AI support
-  - Currently available only as global setting via environment variables
-  - Added `AI_PROVIDER` env variable. Use it to setup AI provider
-    - Supported values: `openai`, `ollama`
-  - Added `AI_HOST` env variable. Use it to setup AI host URL
-  - Added `AI_MODEL` env variable. Use it to setup AI model
-  - Added `AI_API_KEY` env variable. Use it to setup AI API key
-    - Required for `openai` provider
+    - Currently available only as global application configuration via environment variables
+    - Added `AI_PROVIDER` env variable. Use it to setup AI provider
+        - Currently only supports local-focused providers, more will be added in the future, although it will fallback to openai-compatibile API
+        - Supported values: `ollama`, `lmstudio`
+    - Added `AI_HOST` env variable. Use it to setup AI host URL
+    - Added `AI_MODEL` env variable. Use it to setup AI model
+    - Added `AI_API_KEY` env variable. Use it to setup AI API key
+    - AI enhancements are available on:
+        - Cocktail form page
+            - Ask to generate tags based on cocktail recipe
+        - Ingredient form page
+            - Fill in basic ingredient information based on name
 
 # v4.6.0
 ## New
