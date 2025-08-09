@@ -630,7 +630,8 @@
     "copy-action": "Duplicera och redigera",
     "copy-success": "Drinken duplicerad",
     "source": "Källa till drinken",
-    "confirm-copy": "This will create a copy of \"{name}\""
+    "confirm-copy": "This will create a copy of \"{name}\"",
+    "randomize": "Show random cocktail"
   },
   "ABV-definition": "Alkohol per volym",
   "ingredient-category": {},
