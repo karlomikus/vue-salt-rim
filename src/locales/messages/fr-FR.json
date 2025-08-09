@@ -630,7 +630,8 @@
     "copy-action": "Dupliquer et modifier",
     "copy-success": "Cocktail dupliqué",
     "source": "Source cocktail",
-    "confirm-copy": "Ceci va créer une copie de \"{name}\""
+    "confirm-copy": "Ceci va créer une copie de \"{name}\"",
+    "randomize": "Show random cocktail"
   },
   "ABV-definition": "Alcool par volume",
   "ingredient-category": {},
