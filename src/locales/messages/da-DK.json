@@ -630,7 +630,8 @@
     "copy-action": "Duplicate and edit",
     "copy-success": "Cocktail duplicated",
     "source": "Cocktail source",
-    "confirm-copy": "This will create a copy of \"{name}\""
+    "confirm-copy": "This will create a copy of \"{name}\"",
+    "randomize": "Show random cocktail"
   },
   "ABV-definition": "Alcohol by volume",
   "ingredient-category": {},
