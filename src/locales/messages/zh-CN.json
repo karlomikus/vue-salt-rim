@@ -630,7 +630,8 @@
     "copy-action": "复制并编辑",
     "copy-success": "鸡尾酒已复制",
     "source": "鸡尾酒来源",
-    "confirm-copy": "将创建 \"{name}\" 的副本"
+    "confirm-copy": "将创建 \"{name}\" 的副本",
+    "randomize": "Show random cocktail"
   },
   "ABV-definition": "酒精体积分数",
   "ingredient-category": {},
