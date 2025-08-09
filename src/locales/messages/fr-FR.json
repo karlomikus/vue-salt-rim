@@ -7,7 +7,7 @@
     "pl-PL": "Polonais",
     "it-IT": "Italien",
     "sv-SE": "Suédois",
-    "zh-CN": "Chinese (Simplified)",
+    "zh-CN": "Chinois (simplifié)",
     "nl-NL": "Netherlands",
     "help": "Aide aux traductions"
   },
@@ -20,8 +20,8 @@
       "list-error": "Une erreur s’est produite lors de la récupération des ingrédients de votre liste de courses à partir du serveur"
     },
     "cocktails": "Cocktails que je peux faire",
-    "bar-stats": "Bar statistics",
-    "recommended-cocktails": "Recommended cocktails"
+    "bar-stats": "Statistiques du bar",
+    "recommended-cocktails": "Cocktails conseillés"
   },
   "ingredient": {
     "title": "Ingrédient",
@@ -29,8 +29,8 @@
     "main": "Ingrédient principal",
     "add": "Ajouter un ingrédient",
     "on-shopping-list": "Vous avez cet ingrédient sur la liste de courses",
-    "add-to-shelf": "Ajouter à l’étagère",
-    "remove-from-shelf": "Retirer de l’étagère",
+    "add-to-shelf": "Ajouter à l'étagère",
+    "remove-from-shelf": "Enlever de l'étagère",
     "add-to-list": "Ajouter à la liste de courses",
     "remove-from-list": "Supprimer de la liste de courses",
     "update-success": "Ingrédient mis à jour avec succès",
@@ -57,7 +57,7 @@
       "new-ingredient-success": "Ingrédient non classifié \"{name}\" créé.",
       "new-ingredient-fail": "Impossible d’ajouter l’ingrédient.",
       "select-substitutes-for": "Sélectionnez des ingrédients pour remplacer \"{name}\".",
-      "is-specified-checkbox": "Use this specific ingredient (ignore varieties as substitutes)"
+      "is-specified-checkbox": "Utiliser cet ingrédient spécifique (ignorer les variétés comme substitut)"
     },
     "base": "Base",
     "is-complex": "L'ingrédient contient d'autres ingrédients",
@@ -73,17 +73,17 @@
     "shelf-user-help": "Les recettes qui correspondent aux ingrédients de votre étagère ne peuvent être gérées que par vous.",
     "bar-shelf-add-success": "Ajout de \"{name}\" à l'étagère du bar",
     "bar-shelf-remove-success": "Supprimer \"{name}\" de l'étagère du bar",
-    "units-help": "Some features work the best if you use common units. Some recommendations for units are: ml, oz, cl, dashes, barspoon, drops, topup, leaves.",
-    "import": "Import ingredients",
-    "attach-calculator": "Attach calculator",
-    "hierarchy": "Hierarchy",
-    "status": "Ingredient status",
-    "hierarchy-description": "This is an overview of the ingredient hierarchy. Depending on the cocktail recipe, if you have any of the variants in the shelf, they can be used as a substitute for the main ingredient when matching recipes.",
-    "show-variants": "Show variants",
+    "units-help": "Certains éléments fonctionnent mieux si vous utilisez les unités de mesure traditionnelles. Voici quelques recommandations : ml, oz, cl, dash, cuillère de bar, goutte.",
+    "import": "Importer les ingrédients",
+    "attach-calculator": "Fixer le calculateur",
+    "hierarchy": "Hiérarchie",
+    "status": "État des ingrédients",
+    "hierarchy-description": "Il s'agit d'un aperçu de l'ordre des ingrédients. En fonction de la recette du cocktail, si vous possédez une variante dans l'étagère vous pouvez l'utiliser en tant qu'ingrédient principal lorsqu'elle correspond à la recette.",
+    "show-variants": "Voir les variantes",
     "show-ancestors": "Show ancestors",
-    "recommended-next": "This bar can make {totalPercent} of available recipes. Add one of the following ingredients to bar shelf to increase cocktail options: {ingredients}",
-    "used-in": "Used in {count} {substituteCount} cocktail recipes",
-    "used-in-substitutes": "+{total} as substitute",
+    "recommended-next": "Ce bar propose {totalPercent} des recettes disponibles. Ajouter l'un des ingrédients suivants à l'étagère du bar pour augmenter les propositions de cocktails : {ingredients}",
+    "used-in": "Utilisé dans {count} {substituteCount} des recettes de cocktails",
+    "used-in-substitutes": "+{total} en substitut",
     "default-units-help": "Used to autofill units when selecting ingredient for cocktail recipe",
     "icicle-graph": "Icicle chart"
   },
@@ -134,7 +134,7 @@
   "latest": {
     "cocktails": "Derniers cocktails",
     "favorites": "Vos favoris récents",
-    "ingredients": "Latest ingredients"
+    "ingredients": "Derniers ingrédients"
   },
   "strength": "Force",
   "rating": "Évaluation",
@@ -181,8 +181,8 @@
     "image-copyright": "URL de la source de l’image ou autre référence...",
     "search-ingredients": "Recherche d’ingrédients...",
     "search-cocktails": "Recherche de cocktails...",
-    "external-image": "Paste image URL",
-    "cocktail-year": "Cocktail recipe release year"
+    "external-image": "Coller l'URL de l'image",
+    "cocktail-year": "Année de lancement de la recette de cocktail"
   },
   "amount": "Quantité",
   "units": "Unités",
@@ -247,7 +247,7 @@
     "delete-success": "Balise supprimée avec succès",
     "add": "Ajouter une balise",
     "edit": "Modifier la balise",
-    "help-text-recommender": "Tags are used to recommend cocktails based on your preferences."
+    "help-text-recommender": "Les tags sont utilisés pour recommander des cocktails en fonction de vos préférences."
   },
   "glass-type": {
     "types": "Types de verre",
@@ -291,7 +291,7 @@
   "clear-filters": "Effacer tous les filtres",
   "rating-removed": "Suppression de la note cocktail",
   "rating-rated": "Cocktail noté avec {rating} étoiles",
-  "shelf-ingredients": "Ingrédients de rayon",
+  "shelf-ingredients": "Ingrédients sur l'étagère",
   "shopping-list-ingredients": "Ingrédients de la liste de courses",
   "notes": "Remarques",
   "collection-shared": "Partagé avec le bar",
@@ -424,13 +424,13 @@
     "activation-success": "Bar activé",
     "members": "Membres du bar",
     "logo": "Logo du bar",
-    "edit-success": "Bar \"{name}\" updated",
+    "edit-success": "Bar \"{name}\" mis à jour",
     "default-data": "Default dataset",
     "no-default": {
       "data": "No default data"
     },
-    "optimization-started": "Started bar optimization",
-    "optimize": "Optimize bar",
+    "optimization-started": "Commencer l'optimisation du bar",
+    "optimize": "Optimiser le bar",
     "confirm-optimization": "This will run bar optimizations"
   },
   "close": "Fermer",
@@ -452,15 +452,17 @@
     "type-json-title": "JSON",
     "type-yaml-title": "YAML",
     "type-collection-title": "Collection",
+    "type-ai-title": "Text",
     "type-url-description": "Importer depuis un site web pris en charge",
     "type-json-description": "Importer à partir du format JSON",
     "type-yaml-description": "Importer à partir du format YAML",
     "type-collection-description": "Importation depuis une collection JSON de Bar Assistant",
-    "notice": "Les ingrédients existants et le verre seront assortis par leur nom (insensible à la casse). Si l’ingrédient ou le verre n’existe pas, il sera créé. Les unités communes sont automatiquement converties en \"ml\".",
-    "type-csv-text-title": "CSV text",
-    "type-csv-text-description": "Import by pasting the CSV structure",
-    "type-csv-file-title": "CSV file",
-    "type-csv-file-description": "Import by uploading CSV file"
+    "type-ai-description": "Import from plain text recipe using AI",
+    "notice": "Existing ingredients, methods and glassware will be matched by their name (case insensitive). If ingredient does not exist, it will be created.",
+    "type-csv-text-title": "Texte CSV",
+    "type-csv-text-description": "Importer en collant le structure CSV",
+    "type-csv-file-title": "Fichier CSV",
+    "type-csv-file-description": "Importer en téléchargeant le fichier CSV"
   },
   "remove-from-bar": "Supprimer du bar",
   "public-shelves": "Étagères publiques",
@@ -555,8 +557,8 @@
   "bar": {
     "url": "URL personnalisée du bar",
     "url-help": "L'URL publique de votre bar sera : {url}",
-    "url-menu-hint": "Used for public menu if enabled.",
-    "default-currency-hint": "Used as default currency suggestion, can be changed anytime.",
+    "url-menu-hint": "Utilisé pour le menu public si cela est autorisé.",
+    "default-currency-hint": "Utilisé comme suggestion de devise par défaut, peut être modifié à tout moment.",
     "default-units-hint": "Used as default units on cocktail details, can be changed anytime."
   },
   "api": {
@@ -628,7 +630,8 @@
     "copy-action": "Dupliquer et modifier",
     "copy-success": "Cocktail dupliqué",
     "source": "Source cocktail",
-    "confirm-copy": "Ceci va créer une copie de \"{name}\""
+    "confirm-copy": "Ceci va créer une copie de \"{name}\"",
+    "randomize": "Show random cocktail"
   },
   "ABV-definition": "Alcool par volume",
   "ingredient-category": {},
@@ -645,8 +648,8 @@
     "select": "Sélectionner le prix",
     "category-delete-success": "Catégorie de prix supprimée",
     "category-confirm-delete": "La catégorie de prix avec le nom \\\"{name}\"\\ sera définitivement supprimé",
-    "missing-cocktail-price-calculator": "There are no prices available for this cocktail. Add prices to ingredients in the recipe to enable price calculation.",
-    "missing-price-categories": "To add ingredient prices, you need to define bar {link} first."
+    "missing-cocktail-price-calculator": "Le tarif de ce cocktail n'est pas disponible. Ajouter le coût aux ingrédients de la recette pour permettre le calcul des tarifs.",
+    "missing-price-categories": "Pour ajouter le coût des ingrédients, vous devez en premier définir le bar {link}."
   },
   "prices": {
     "add": "Ajouter un prix",
@@ -669,46 +672,46 @@
   "in_your_shelf": "Disponible dans votre étagère",
   "is_public": "Possède un lien public",
   "website": "Site web",
-  "uncategorized": "Uncategorized",
+  "uncategorized": "Non classé",
   "calculators": {
-    "title": "Calculators",
-    "calculator": "Calculator",
-    "add": "Create calculator",
-    "information": "Basic information",
+    "title": "Calculateurs",
+    "calculator": "Calculateur",
+    "add": "Créer un calculateur",
+    "information": "Renseignement de base",
     "inputs": "Inputs",
-    "evaluations": "Evaluations",
+    "evaluations": "Évaluations",
     "expression": "Expression",
     "var-name": "Variable name",
     "missing-result": "None, click preview to resolve",
     "add-evaluation": "Add evaluation",
     "add-input": "Add input",
-    "edit": "Edit calculator",
-    "delete-confirm": "This will permanently delete calculator with name \"{name}\".",
-    "delete-success": "Calculator deleted successfully",
-    "empty": "There are no calculators added yet",
+    "edit": "Éditer le calculateur",
+    "delete-confirm": "Le calculateur nommé \"{name}\" va être supprimé définitivement.",
+    "delete-success": "Le calculateur a été supprimé avec succès",
+    "empty": "Aucun calculateur n'a été ajouté pour le moment",
     "confirm-eval-delete": "This will remove selected evaluation",
     "confirm-input-delete": "This will remove selected input",
     "inputs-description": "In this section, you define all your required inputs that will change the result of your evaluations. Each input can be used in all evaluations.",
     "evaluations-description": "In this section, you define your evaluations and their result display settings. Each evaluation can access and use all previously defined inputs and evaluation results in expression using defined variable name.",
     "copy-success": "Calculator copied to clipboard",
-    "import": "Import calculator"
+    "import": "Importer un calculateur"
   },
   "label": "Label",
   "prefix": "Prefix",
   "suffix": "Suffix",
   "default-value": "Default value",
-  "result": "Result",
-  "error": "Error",
+  "result": "Résultat",
+  "error": "Erreur",
   "permissions": {
     "clipboard-error": "Your browser or server config does not support clipboard sharing."
   },
-  "preview": "Preview",
-  "available-variants": "Variants in shelf",
+  "preview": "Prévisualisation",
+  "available-variants": "Variantes sur l'étagère",
   "sso": {
     "profile-providers": "SSO accounts",
     "provider-name": "Provider name",
     "created-date": "Token created at",
-    "delete-account": "Remove account link",
+    "delete-account": "Supprimer le lien du compte",
     "confirm-delete": "This will permanently delete SSO account link from provider \"{name}\".",
     "is-configured": "Server configuration",
     "delete-success": "SSO account link deleted",
@@ -716,23 +719,23 @@
     "provider-disabled": "Disabled",
     "title": "Single Sign-On",
     "auth-error": "Unable to authenticate via Single Sign-On provider",
-    "login-with": "Login with {name}"
+    "login-with": "Connexion avec {name}"
   },
-  "distillery": "Distillery",
+  "distillery": "Distillerie",
   "sweetness": "Sweetness (g/ml)",
-  "acidity": "Acidity (%)",
-  "missing-recommended-cocktails": "Add some cocktails to your favorites to start getting recommendations.",
-  "ui-theme": "Default theme",
-  "theme-dark": "Dark",
-  "theme-light": "Light",
-  "default-currency": "Default currency",
-  "loading": "Loading",
+  "acidity": "Acidité (%)",
+  "missing-recommended-cocktails": "Ajouter quelques-uns de vos cocktails préférés pour obtenir des recommandations.",
+  "ui-theme": "Thème par défaut",
+  "theme-dark": "Sombre",
+  "theme-light": "Clair",
+  "default-currency": "Devise par défaut",
+  "loading": "Chargement",
   "feeds": {
     "title": "Feeds"
   },
   "cocktail-methods": {
     "cocktail-methods": "Cocktail methods",
-    "dilution-percentage": "Dilution percentage",
+    "dilution-percentage": "Pourcentage de dilution",
     "add": "Add method",
     "edit": "Edit method",
     "update-success": "Cocktail method updated",
@@ -741,9 +744,9 @@
     "delete-success": "Cocktail method removed successfully"
   },
   "profile-public-shelf-description": "Other bar members will be able to filter by cocktails you have in your shelf",
-  "sort-random": "In random order",
-  "cocktails-varieties": "Varieties",
+  "sort-random": "Aléatoirement",
+  "cocktails-varieties": "Variétés",
   "cocktail-variety-of": "Cocktail is variety of",
   "cocktail-select-parent": "Select parent cocktail",
-  "year": "Year"
+  "year": "Année"
 }
