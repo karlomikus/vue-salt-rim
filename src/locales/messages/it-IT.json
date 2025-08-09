@@ -630,7 +630,8 @@
     "copy-action": "Duplica e modifica",
     "copy-success": "Cocktail duplicato",
     "source": "Sorgente cocktail",
-    "confirm-copy": "Questo creerà una copia di\"{name}\""
+    "confirm-copy": "Questo creerà una copia di\"{name}\"",
+    "randomize": "Show random cocktail"
   },
   "ABV-definition": "Gradi alcolici",
   "ingredient-category": {},
