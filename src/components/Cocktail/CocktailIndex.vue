@@ -106,7 +106,7 @@
                 </div>
                 <div>
                     <OverlayLoader v-if="isLoading" />
-                    <CocktailGridContainer v-if="cocktails.length > 0" v-slot="observer">
+                    <CocktailGridContainer v-if="cocktails.length > 0" v-slot="{observer}">
                         <CocktailGridItem v-for="cocktail in cocktails" :key="cocktail.id" :cocktail="cocktail" :observer="observer" />
                     </CocktailGridContainer>
                     <EmptyState v-else style="margin-top: 1rem;">
