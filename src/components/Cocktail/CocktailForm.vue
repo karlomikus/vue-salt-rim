@@ -215,6 +215,7 @@ import { useI18n } from 'vue-i18n';
 import { useSaltRimToast } from '@/composables/toast';
 import { useConfirm } from '@/composables/confirm'
 import { jsonSchema } from 'ai'
+import { useImageUpload } from '@/composables/useImageUpload';
 
 type Cocktail = components['schemas']['Cocktail']
 type CocktailRequest = components["schemas"]["CocktailRequest"]
@@ -231,6 +232,7 @@ const { t } = useI18n()
 const toast = useSaltRimToast()
 const prompts = usePrompts()
 const confirm = useConfirm()
+const uploader = useImageUpload()
 const appState = new AppState()
 const showDialogs = ref<boolean[]>([])
 const isLoading = ref<boolean>(false)
@@ -238,7 +240,7 @@ const isLoadingGen = ref<boolean>(false)
 const showVarietyDialog = ref<boolean>(false)
 const showSubstituteDialog = ref<boolean>(false)
 const showGlassSelectorDialog = ref<boolean>(false)
-const imageUpload = useTemplateRef('imagesUpload')
+const imagesUpload = useTemplateRef('imagesUpload')
 const cocktail = ref<Partial<Cocktail>>({
     images: [],
     ingredients: [],
@@ -485,14 +487,9 @@ async function submit() {
             })
     } as CocktailRequest
 
-    if (imageUpload.value) {
-        const imageResources = await imageUpload.value.save().catch(() => {
-            toast.error(`${t('imageupload.error')} ${t('imageupload.error-cocktail')}`)
-        }) || []
-
-        if (imageResources.length > 0) {
-            postData.images = imageResources.map((img: any) => img.id)
-        }
+    if (imagesUpload.value) {
+        const imageResources = await uploader.saveImages(imagesUpload.value)
+        postData.images = imageResources.map((img: any) => img.id)
     }
 
     if (cocktail.value.id) {

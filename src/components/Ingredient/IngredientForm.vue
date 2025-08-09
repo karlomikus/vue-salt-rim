@@ -174,6 +174,7 @@ import usePrompts from '@/composables/usePrompts'
 import ButtonGenerate from '@/components/AI/ButtonGenerate.vue'
 import GenerationLoader from '../AI/GenerationLoader.vue'
 import { jsonSchema } from 'ai'
+import { useImageUpload } from '@/composables/useImageUpload';
 
 type Ingredient = components['schemas']['Ingredient']
 type IngredientPrice = components['schemas']['IngredientPrice']
@@ -186,7 +187,8 @@ const route = useRoute()
 const router = useRouter()
 const { t } = useI18n()
 const toast = useSaltRimToast()
-const imageUpload = useTemplateRef('imagesUpload')
+const uploader = useImageUpload()
+const imagesUpload = useTemplateRef('imagesUpload')
 const isLoading = ref(false)
 const isLoadingGen = ref(false)
 const isParent = ref(false)
@@ -378,14 +380,9 @@ async function submit() {
         })) : [],
     }
 
-    if (imageUpload.value) {
-        const imageResources = await imageUpload.value.save().catch(() => {
-            toast.error(`${t('imageupload.error')} ${t('imageupload.error-ingredient')}`)
-        }) || []
-
-        if (imageResources.length > 0) {
-            postData.images = imageResources.map((img: any) => img.id)
-        }
+    if (imagesUpload.value) {
+        const imageResources = await uploader.saveImages(imagesUpload.value)
+        postData.images = imageResources.map((img: any) => img.id)
     }
 
     if (ingredient.value.id) {
