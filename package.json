@@ -10,7 +10,7 @@
     "test": "vitest",
     "type-check": "vue-tsc --build",
     "gen": "npx openapi-typescript ./spec.yml -o ./src/api/api.d.ts",
-    "vue-i18n-extract": "npx vue-i18n-extract report --vueFiles './src/**/*.?(js|vue|ts)' --languageFiles './src/locales/messages/en-US.json' --exclude='locales.' --exclude='method.' --exclude='bars.status.' --exclude='theme-'"
+    "vue-i18n-extract": "npx vue-i18n-extract report --vueFiles './src/**/*.?(js|vue|ts)' --languageFiles './src/locales/messages/*.json' --exclude='locales.' --exclude='method.' --exclude='bars.status.' --exclude='theme-' --exclude='ingredient.show-ancestors' --exclude='total.title' --exclude='apply-filters' --exclude='search.empty' --exclude='billing.confirm-sub-update-pause' --exclude='billing.confirm-sub-update-resume' --exclude='cocktail.filters'"
   },
   "dependencies": {
     "@ai-sdk/openai-compatible": "^1.0.3",
