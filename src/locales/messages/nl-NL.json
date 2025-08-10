@@ -458,7 +458,7 @@
     "type-yaml-description": "Importeren uit YAML formaat",
     "type-collection-description": "Importeren uit Bar Assistent JSON collectie",
     "type-ai-description": "Import from plain text recipe using AI",
-    "notice": "Existing ingredients, methods and glassware will be matched by their name (case insensitive). If ingredient does not exist, it will be created.",
+    "notice": "Bestaande ingrediënten, methoden en glaswerk worden gekoppeld aan hun naam (hoofdletter ongevoelig). Als het ingrediënt niet bestaat, zal het worden aangemaakt. Veelvoorkomende eenheden worden automatisch omgezet in \"ml\". Afhankelijk van de grootte van de collectie, kan importeren een paar minuten duren.",
     "type-csv-text-title": "CSV tekst",
     "type-csv-text-description": "Importeren door de CSV-structuur te plakken",
     "type-csv-file-title": "CSV bestand",
