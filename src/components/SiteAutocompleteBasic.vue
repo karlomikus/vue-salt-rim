@@ -50,11 +50,13 @@ import AppState from '../AppState'
 import type { SearchResults } from '@/api/SearchResults'
 import { useI18n } from 'vue-i18n'
 import { templateRef } from '@vueuse/core'
+import { useToast } from 'vue-toast-notification'
 
 const maxHits = 5
 const currentQuery = ref<string>('')
 const { t } = useI18n()
 const isLoading = ref(false)
+const toast = useToast()
 const appState = new AppState()
 const emit = defineEmits<{
     closeAutocomplete: []
@@ -100,7 +102,7 @@ async function searchIngredients() {
             units: ing.units,
         }));
     } catch (error) {
-        // toast.error(t('ingredient.dialog.search-fail'))
+        toast.error(t('server-error'))
     } finally {
         isLoading.value = false
     }

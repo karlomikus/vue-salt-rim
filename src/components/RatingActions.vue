@@ -42,7 +42,7 @@ async function rate(rating: number) {
             toast.default(t('rating-rated', { rating: rating }))
         }
     } catch (e) {
-        toast.error(t('rating-error'))
+        toast.error(t('server-error'))
     } finally {
         isLoading.value = false
     }

@@ -503,7 +503,7 @@ fetchShoppingList()
                                     </a>
                                 </template>
                                 <template #dialog>
-                                    <CollectionDialog :cocktails="[cocktail.id]" @collection-dialog-closed="showCollectionDialog = false; fetchCocktail(cocktail.slug)" />
+                                    <CollectionDialog :title="t('collections.add-to')" :cocktails="[cocktail.id]" @collection-dialog-closed="showCollectionDialog = false; fetchCocktail(cocktail.slug)" />
                                 </template>
                             </SaltRimDialog>
                             <SaltRimDialog v-if="cocktail.access && cocktail.access.can_add_note" v-model="showNoteDialog">

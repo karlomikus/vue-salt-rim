@@ -417,9 +417,11 @@
     "delete-success": "Bar supprimé avec succès",
     "join-success": "Nouveau bar rejoint, santé !",
     "activate": "Activer le bar",
-    "status-active": "Bars actifs",
-    "status-deactivated": "Bars désactivés",
-    "status-provisioning": "Provisionnement",
+    "status": {
+      "active": "Bars actifs",
+      "deactivated": "Bars désactivés",
+      "provisioning": "Provisionnement"
+    },
     "confirm-activation": "Êtes-vous sûr de vouloir activer \"{name}\" ? Avec la formule gratuite, vous ne pouvez avoir qu'un seul bar actif, vous ne pourrez pas activer d'autres bars.",
     "activation-success": "Bar activé",
     "members": "Membres du bar",

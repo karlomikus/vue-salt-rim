@@ -42,7 +42,7 @@ function submit() {
     if (category.value.id) {
         BarAssistantClient.updatePriceCategory(category.value.id, postData).then(resp => {
             isLoading.value = false
-            toast.default(t('prices.price-category-update-success'))
+            toast.default(t('price.price-category-update-success'))
             emit('formClosed', resp.data)
         }).catch(e => {
             toast.error(e.message)
@@ -51,7 +51,7 @@ function submit() {
     } else {
         BarAssistantClient.savePriceCategory(postData).then(resp => {
             isLoading.value = false
-            toast.default(t('prices.price-category-add-success'))
+            toast.default(t('price.price-category-add-success'))
             emit('formClosed', resp.data)
         }).catch(e => {
             toast.error(e.message)

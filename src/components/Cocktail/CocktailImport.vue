@@ -16,6 +16,8 @@ import type { CocktailRecipeDraft02 as Draft2Schema } from '@/schema/draft2'
 import type { CocktailRecipe as Draft1Schema } from '@/schema/draft1'
 import { useTitle } from '@/composables/title'
 import AppState from '@/AppState'
+import { useLLM } from '@/composables/useGenerativeAI'
+import { jsonSchema } from 'ai'
 
 interface Ingredient {
     id: string,
@@ -53,6 +55,7 @@ const { t } = useI18n()
 const router = useRouter()
 const route = useRoute()
 const toast = useSaltRimToast()
+const llm = useLLM()
 const isLoading = ref(false)
 const isImporting = ref(false)
 const showIngredientDialog = ref(false)
@@ -101,7 +104,7 @@ function clearImport() {
     result.value = {} as LocalSchema
 }
 
-function importCocktail() {
+async function importCocktail() {
     similarCocktails.value = []
     ingredientEdit.value = null
     result.value = {} as LocalSchema
@@ -113,6 +116,12 @@ function importCocktail() {
 
     if (importType.value == 'json') {
         fromJson()
+    }
+
+    if (importType.value == 'ai') {
+        const prompt = `You are a cocktail expert. Please extract the cocktail recipe from the following text and return it in JSON format compatible with the Draft 2 schema: ${source.value.ai_content}`
+        // await llm.generate(prompt, jsonSchema(importSchemaObject as object))
+        // const res = llm.response.value
     }
 }
 
@@ -458,7 +467,7 @@ init()
                 <div class="import-types">
                     <SaltRimRadio v-model="importType" :title="t('import.type-url-title')" :description="t('import.type-url-description')" value="url"></SaltRimRadio>
                     <SaltRimRadio v-model="importType" :title="t('import.type-json-title')" :description="t('import.type-json-description')" value="json"></SaltRimRadio>
-                    <!-- <SaltRimRadio v-model="importType" :title="t('import.type-ai-title')" :description="t('import.type-ai-description')" value="ai"></SaltRimRadio> -->
+                    <SaltRimRadio v-model="importType" :title="t('import.type-ai-title')" :description="t('import.type-ai-description')" value="ai"></SaltRimRadio>
                 </div>
             </div>
             <div class="alert alert--info" style="margin: 1rem 0;">
@@ -472,7 +481,6 @@ init()
             <!-- <div v-else-if="importType === 'ai'" class="form-group">
                 <label class="form-label form-label--required" for="import-source">{{ t('source') }}:</label>
                 <textarea id="import-source" v-model="source.ai_content" class="form-input" rows="14" required></textarea>
-                <pre>{{importPrompt}}</pre>
             </div> -->
             <div v-else class="form-group">
                 <label class="form-label form-label--required" for="import-source">{{ t('source') }}:</label>

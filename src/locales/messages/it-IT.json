@@ -417,9 +417,11 @@
     "delete-success": "Bar rimosso con successo",
     "join-success": "Ti sei unito a un nuovo bar, ottimo!",
     "activate": "Attiva bar",
-    "status-active": "Bar attivi",
-    "status-deactivated": "Bar disattivati",
-    "status-provisioning": "Provisionamento",
+    "status": {
+      "active": "Bar attivi",
+      "deactivated": "Bar disattivati",
+      "provisioning": "Provisionamento"
+    },
     "confirm-activation": "Sei sicuro di voler attivare \"{name}\"? Sul piano gratuito puoi solo avere un bar attivo, non sarai in grado di attivare altri bar.",
     "activation-success": "Bar attivato",
     "members": "Membri del bar",

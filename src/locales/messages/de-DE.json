@@ -417,7 +417,9 @@
     "delete-success": "Bar erfolgreich gelöscht",
     "join-success": "Einer neuen Bar beigetreten, Prost!",
     "activate": "Bar aktivieren",
-    "status-active": "Aktive Bars",
+    "status": {
+      "active": "Aktive Bars"
+    },
     "status-deactivated": "Deaktivierte Bars",
     "status-provisioning": "Provisioning",
     "confirm-activation": "Are you sure you want to activate \"{name}\"? On free plan you can have only one bar activated, you will not be able to activate any other bars.",

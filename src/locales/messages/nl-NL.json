@@ -417,9 +417,11 @@
     "delete-success": "Bar met succes verwijderd",
     "join-success": "Je bent aangesloten bij een nieuwe bar, cheers!",
     "activate": "Activeer bar",
-    "status-active": "Actieve bars",
-    "status-deactivated": "Gedeactiveerde bars",
-    "status-provisioning": "Inrichting",
+    "status": {
+      "active": "Actieve bars",
+      "deactivated": "Gedeactiveerde bars",
+      "provisioning": "Inrichting"
+    },
     "confirm-activation": "Weet u zeker dat u{name}\"wilt activeren? Met gratis abonnement kunt u slechts één balk activeren, u kunt geen andere balken activeren.",
     "activation-success": "Bar geactiveerd",
     "members": "Bar leden",

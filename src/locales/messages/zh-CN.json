@@ -417,9 +417,11 @@
     "delete-success": "酒吧删除成功",
     "join-success": "成功加入新酒吧！",
     "activate": "激活酒吧",
-    "status-active": "已激活的酒吧",
-    "status-deactivated": "已停用的酒吧",
-    "status-provisioning": "配置中",
+    "status": {
+      "active": "已激活的酒吧",
+      "deactivated": "已停用的酒吧",
+      "provisioning": "配置中"
+    },
     "confirm-activation": "确定激活 \"{name}\"？免费计划仅允许激活一个酒吧，此后无法激活其他酒吧。",
     "activation-success": "酒吧已激活",
     "members": "酒吧成员",

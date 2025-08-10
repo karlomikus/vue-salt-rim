@@ -417,9 +417,11 @@
     "delete-success": "Bar uspješno obrisan",
     "join-success": "Pridružili ste se baru, živjeli!",
     "activate": "Aktiviraj bar",
-    "status-active": "Aktivirani barovi",
-    "status-deactivated": "Deaktivirani barovi",
-    "status-provisioning": "Procesuiranje",
+    "status": {
+      "active": "Aktivirani barovi",
+      "deactivated": "Deaktivirani barovi",
+      "provisioning": "Procesuiranje"
+    },
     "confirm-activation": "Are you sure you want to activate \"{name}\"? On free plan you can have only one bar activated, you will not be able to activate any other bars.",
     "activation-success": "Bar aktiviran",
     "members": "Članovi bara",

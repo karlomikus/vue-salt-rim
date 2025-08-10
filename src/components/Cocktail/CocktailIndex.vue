@@ -97,7 +97,7 @@
                             </button>
                         </template>
                         <template #dialog>
-                            <CollectionDialog title="collections.add-from-query" :cocktails="currentCocktailIds" @collection-dialog-closed="handleCollectionsDialogClosed" />
+                            <CollectionDialog :title="$t('collections.add-from-query')" :cocktails="currentCocktailIds" @collection-dialog-closed="handleCollectionsDialogClosed" />
                         </template>
                     </SaltRimDialog>
                     <button v-show="totalActiveRefinements > 0" type="button" class="button button--outline button--icon" :title="$t('clear-filters')" @click.prevent="clearRefinements">

@@ -94,7 +94,6 @@ async function search() {
             units: ing.units,
         }));
     } catch (error) {
-        toast.error(t('ingredient.dialog.search-fail'))
     } finally {
         isLoading.value = false
     }
@@ -110,7 +109,7 @@ async function newIngredient() {
     };
 
     isLoading.value = true
-    
+
     try {
         const ing = (await BarAssistantClient.saveIngredient(postData))?.data ?? null
         if (!ing) {
@@ -130,7 +129,7 @@ async function newIngredient() {
             units: null,
         })
     } catch (error) {
-        toast.error(t('ingredient.dialog.new-ingredient-fail'))
+        toast.error(t('server-error'))
     } finally {
         isLoading.value = false
     }

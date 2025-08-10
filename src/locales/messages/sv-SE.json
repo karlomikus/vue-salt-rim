@@ -417,9 +417,11 @@
     "delete-success": "Baren har tagits bort",
     "join-success": "Gick med i en ny bar, skål!",
     "activate": "Aktivera bar",
-    "status-active": "Aktiva barer",
-    "status-deactivated": "Avaktiverade barer",
-    "status-provisioning": "Provisionering",
+    "status": {
+      "active": "Aktiva barer",
+      "deactivated": "Avaktiverade barer",
+      "provisioning": "Provisionering"
+    },
     "confirm-activation": "Är du säker på att du vill aktivera baren \"{name}\"? I gratisversionen kan du bara ha en bar aktiverad. Du kommer inte kunna aktivera någon annan bar.",
     "activation-success": "Baren aktiverad",
     "members": "Barens medlemmar",

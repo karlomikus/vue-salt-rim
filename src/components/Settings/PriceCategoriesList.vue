@@ -31,7 +31,7 @@
                     <tbody>
                         <tr v-for="priceCategory in categories" :key="priceCategory.id">
                             <td>
-                                <a href="#" @click.prevent="openDialog($t('prices.edit-category'), priceCategory)">{{ priceCategory.name }}</a>
+                                <a href="#" @click.prevent="openDialog($t('price.edit-category'), priceCategory)">{{ priceCategory.name }}</a>
                                 <br>
                                 <small>{{ priceCategory.description }}</small>
                             </td>

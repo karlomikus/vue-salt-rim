@@ -67,7 +67,7 @@ async function refreshShelf() {
     BarAssistantClient.getRecommendedCocktails().then(resp => {
         recommendedCocktails.value = resp?.data ?? []
     }).catch(() => {
-        // toast.error(t('shelf.toasts.random-cocktail-error'))
+        // toast.error(t('server-error'))
     }).finally(() => {
         loaders.value.recommendedCocktails = false
     })
@@ -75,7 +75,7 @@ async function refreshShelf() {
     BarAssistantClient.getCocktails({ 'filter[favorites]': true, per_page: maxItems.value, sort: '-favorited_at', include: 'ratings,ingredients.ingredient,images' }).then(resp => {
         favoriteCocktails.value = resp?.data ?? []
     }).catch(() => {
-        // toast.error(t('shelf.toasts.favorites-error'))
+        // toast.error(t('server-error'))
     }).finally(() => {
         loaders.value.cocktailFavorites = false
     })
@@ -83,7 +83,7 @@ async function refreshShelf() {
     BarAssistantClient.getCocktails({ per_page: maxItems.value, sort: '-created_at', include: 'ratings,ingredients.ingredient,images' }).then(resp => {
         latestCocktails.value = resp?.data ?? []
     }).catch(() => {
-        // toast.error(t('shelf.toasts.shelf-error'))
+        // toast.error(t('server-error'))
     }).finally(() => {
         loaders.value.cocktailLatest = false
     })
@@ -91,7 +91,7 @@ async function refreshShelf() {
     BarAssistantClient.getIngredients({ 'filter[on_shopping_list]': true, per_page: maxItems.value, include: 'images' }).then(resp => {
         shoppingListIngredients.value = resp?.data ?? []
     }).catch(() => {
-        // toast.error(t('shelf.toasts.list-error'))
+        // toast.error(t('server-error'))
     }).finally(() => {
         loaders.value.shoppingList = false
     })
@@ -99,7 +99,7 @@ async function refreshShelf() {
     BarAssistantClient.getIngredients({ per_page: maxItems.value, sort: '-created_at', include: 'images,ancestors' }).then(resp => {
         latestIngredients.value = resp?.data ?? []
     }).catch(() => {
-        // toast.error(t('shelf.toasts.list-error'))
+        // toast.error(t('server-error'))
     }).finally(() => {
         loaders.value.latestIngredients = false
     })
@@ -107,7 +107,7 @@ async function refreshShelf() {
     BarAssistantClient.getBarStats(appState.bar.id).then(resp => {
         stats.value = resp?.data ?? {} as BarStats
     }).catch(() => {
-        // toast.error(t('shelf.toasts.stats-error'))
+        // toast.error(t('server-error'))
     }).finally(() => {
         loaders.value.barStats = false
     })
@@ -115,7 +115,7 @@ async function refreshShelf() {
     BarAssistantClient.getRecommendedIngredients(appState.user.id).then(resp => {
         recommendedIngredients.value = resp?.data ?? []
     }).catch(() => {
-        // toast.error(t('shelf.toasts.shelf-error'))
+        // toast.error(t('server-error'))
     }).finally(() => {
         loaders.value.recommendedIngredients = false
     })

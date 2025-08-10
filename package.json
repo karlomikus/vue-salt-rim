@@ -9,7 +9,8 @@
     "lint-fix": "eslint --fix src",
     "test": "vitest",
     "type-check": "vue-tsc --build",
-    "gen": "npx openapi-typescript ./spec.yml -o ./src/api/api.d.ts"
+    "gen": "npx openapi-typescript ./spec.yml -o ./src/api/api.d.ts",
+    "vue-i18n-extract": "npx vue-i18n-extract report --vueFiles './src/**/*.?(js|vue|ts)' --languageFiles './src/locales/messages/en-US.json' --exclude='locales.' --exclude='method.' --exclude='bars.status.' --exclude='theme-'"
   },
   "dependencies": {
     "@ai-sdk/openai-compatible": "^1.0.3",
@@ -58,6 +59,7 @@
     "vite-plugin-pwa": "^0.21.1",
     "vite-plugin-vue-devtools": "^7.7.2",
     "vitest": "^3.0.8",
+    "vue-i18n-extract": "^2.0.7",
     "vue-tsc": "^2.2.2"
   }
 }

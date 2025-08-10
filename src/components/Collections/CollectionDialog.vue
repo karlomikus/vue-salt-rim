@@ -1,7 +1,7 @@
 <template>
     <div>
         <OverlayLoader v-if="isLoading" />
-        <div class="dialog-title">{{ $t(title) }}</div>
+        <div class="dialog-title">{{ title }}</div>
         <div class="dialog-content">
             <SubscriptionCheck v-if="collections.length >= 3">Subscribe to "Mixologist" plan to create unlimited collections!</SubscriptionCheck>
             <form action="">
@@ -59,7 +59,7 @@ export default {
         },
         title: {
             type: String,
-            default: 'collections.add-to'
+            required: true
         }
     },
     emits: ['collectionDialogClosed'],
