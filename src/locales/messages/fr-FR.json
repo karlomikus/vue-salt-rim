@@ -13,19 +13,13 @@
   },
   "shelf": {
     "title": "Étagère",
-    "toasts": {
-      "favorites-error": "Une erreur s’est produite lors de la récupération de vos cocktails préférés depuis le serveur",
-      "shelf-error": "Une erreur s’est produite lors de la récupération de cocktails que vous pouvez faire à partir du serveur",
-      "stats-error": "Une erreur s’est produite lors de la récupération des statistiques du serveur",
-      "list-error": "Une erreur s’est produite lors de la récupération des ingrédients de votre liste de courses à partir du serveur"
-    },
     "cocktails": "Cocktails que je peux faire",
     "bar-stats": "Statistiques du bar",
     "recommended-cocktails": "Cocktails conseillés"
   },
+  "server-error": "Unexpected server error",
   "ingredient": {
     "title": "Ingrédient",
-    "categories": "Catégories d’ingrédients",
     "main": "Ingrédient principal",
     "add": "Ajouter un ingrédient",
     "on-shopping-list": "Vous avez cet ingrédient sur la liste de courses",
@@ -36,8 +30,6 @@
     "update-success": "Ingrédient mis à jour avec succès",
     "create-success": "Ingrédient créé avec succès",
     "name-placeholder": "<Non sélectionné>",
-    "in-shelf": "Vous avez cet ingrédient",
-    "cocktail-children": "Utilisé dans {total} cocktails",
     "delete-confirm": "Cela supprimera définitivement l’ingrédient avec le nom \"{name}\". Cette action aura un impact sur {total} cocktails.",
     "shelf-remove-success": "Retiré \"{name}\" de votre étagère",
     "shelf-add-success": "Ajouté \"{name}\" à votre étagère",
@@ -47,7 +39,6 @@
     "is-variety": "L’ingrédient est la variété d’un autre ingrédient",
     "information": "Informations sur les ingrédients",
     "extra-cocktails": "Ajouter à l'étagère et vous pouvez faire",
-    "has-variable-amount": "A une quantité variable",
     "dialog": {
       "select-substitutes": "Sélectionner des ingrédients de substitution",
       "search-not-found": "Vous n’avez pas trouvé ce que vous cherchez?",
@@ -85,7 +76,8 @@
     "used-in": "Utilisé dans {count} {substituteCount} des recettes de cocktails",
     "used-in-substitutes": "+{total} en substitut",
     "default-units-help": "Used to autofill units when selecting ingredient for cocktail recipe",
-    "icicle-graph": "Icicle chart"
+    "icicle-graph": "Icicle chart",
+    "csv-import-started": "CSV import started"
   },
   "share": {
     "title": "Partager",
@@ -93,7 +85,6 @@
     "copy-yaml": "Copier au format YAML",
     "format-copied": "Texte copié",
     "format-copy-failed": "La copie du texte a échoué",
-    "copy-text": "Copier en texte brut",
     "copy-md": "Copier au format Markdown",
     "copy-xml": "Copier au format XML",
     "copy-json-ld": "Copier au format JSON+LD"
@@ -137,7 +128,6 @@
     "ingredients": "Derniers ingrédients"
   },
   "strength": "Force",
-  "rating": "Évaluation",
   "created": "Créé",
   "updated": "Mis à jour",
   "non-alcoholic": "Non alcoolisé",
@@ -146,9 +136,6 @@
   "strong": "Fort",
   "welcome-user": "Bienvenue {name}",
   "your-shopping-list": "Votre liste de courses",
-  "view-all": "Tout voir",
-  "add-to-shelf": "Ajouter à mon étagère",
-  "remove-from-list": "Supprimer de la liste",
   "missing.ingredients": "Les ingrédients qui vous manquent seront affichés ici.",
   "all-ingredients": "Tous les ingrédients",
   "find-cocktails": "Trouver des cocktails",
@@ -195,9 +182,7 @@
     "delete-fail": "Impossible de supprimer l’image.",
     "copyright": "Droit d’auteur sur l’image",
     "error": "Une erreur s’est produite lors du téléchargement des images.",
-    "copyright-notice": "Image © {copyright}",
-    "error-cocktail": "Votre cocktail est toujours conservé.",
-    "error-ingredient": "Votre ingrédient est toujours conservé."
+    "copyright-notice": "Image © {copyright}"
   },
   "confirm-dialog.title": "Êtes-vous sûr ?",
   "confirm": "Confirmer",
@@ -205,33 +190,21 @@
   "or": "Ou",
   "substitutes": "Substituts",
   "no-substitutes": "Aucun substitut sélectionné.",
-  "units-help-text": "Utilisez \"oz\", \"cl\", \"ml\", pour les unités fluides courantes afin d’activer la conversion des unités sur la page cocktail.",
   "servings": "Portions",
   "print-recipe": "Imprimer la recette",
   "create-public-link": "Créer un lien public",
   "avg-rating": "Note moyenne",
   "your-rating": "Votre note",
   "category": {
-    "title": "Catégorie",
-    "add": "Ajouter une catégorie",
-    "add-success": "Catégorie d’ingrédients ajoutée avec succès.",
-    "edit": "Modifier la catégorie",
-    "update-success": "Catégorie d’ingrédients mise à jour avec succès.",
-    "confirm-delete": "Cela supprimera définitivement la catégorie avec le nom \"{name}\".",
-    "delete-success": "Catégorie d’ingrédients supprimée avec succès"
+    "title": "Catégorie"
   },
   "origin": "Origine",
   "sort-asc": "Ascendant",
   "sort-desc": "Descendant",
   "show-more": "Afficher plus",
   "ABV": "% vol",
-  "date-modified": "Date de modification",
   "color": "Couleur",
-  "edit-categories": "Modifier les catégories",
-  "parent-ingredient": "Ingrédient parent",
-  "select-category": "Sélectionnez une catégorie...",
   "alcohol-proof": "Preuve",
-  "see-also": "Voir aussi",
   "email": "Email",
   "password": "Mot de passe",
   "update-password": "Mettre à jour le mot de passe",
@@ -261,7 +234,6 @@
     "volume": "Volume"
   },
   "information": "Informations",
-  "image-url": "URL de l’image",
   "public-dialog": {
     "title": "Lien public cocktail",
     "public_at": "Rendu public le : {date} ",
@@ -281,13 +253,10 @@
   "register": "S’inscrire",
   "login": "Connexion",
   "status": "Statut",
-  "status-available": "Disponible",
-  "status-not-available": "Non disponible",
   "passwords-not-match": "Les mots de passe ne correspondent pas",
   "register-success": "Vous êtes maintenant inscrit, vous pouvez maintenant vous connecter avec vos informations",
   "register-success-email": "Vous êtes maintenant inscrit, vérifiez votre e-mail pour la confirmation de votre compte",
   "apply-filters": "Appliquer des filtres",
-  "show-less": "Montrer moins",
   "clear-filters": "Effacer tous les filtres",
   "rating-removed": "Suppression de la note cocktail",
   "rating-rated": "Cocktail noté avec {rating} étoiles",
@@ -345,9 +314,7 @@
   "user-rating": "Note de l'utilisateur",
   "pagination": {
     "page": "Page",
-    "results": "Affichage de {on_page_results}/{total_results} résultats",
-    "cocktail-prev": "Cocktail précédent",
-    "cocktail-next": "Cocktail suivant"
+    "results": "Affichage de {on_page_results}/{total_results} résultats"
   },
   "search": {
     "title": "Rechercher",
@@ -388,13 +355,12 @@
   "utensils": {
     "title": "Ustensiles",
     "add": "Ajouter un ustensile",
+    "edit": "Edit utensil",
     "confirm-delete": "Cela supprimera définitivement l'ustensile avec le nom \"{name}\".",
     "delete-success": "Ustensile supprimé avec succès",
     "add-success": "Ustensile ajouté",
     "update-success": "Ustensile mis à jour"
   },
-  "your-favorite-ingredients": "Vos ingrédients favoris",
-  "cocktails-top-rated": "Cocktails les mieux notés",
   "bars": {
     "title": "Bars",
     "bar": "Bar",
@@ -406,7 +372,6 @@
     "invite-code": "Code d'invitation",
     "toggle-invite-code": "Afficher le code d'invitation",
     "invite-link-copied": "Lien d'invitation copié dans le presse-papier",
-    "invite-link-error": "Impossible de copier le lien d'invitation dans le presse-papier",
     "confirm-delete": "Cela supprimera définitivement le bar \"{name}\".",
     "confirm-leave": "Vous perdrez toutes les données du bar (\"{name}\") si vous le quittez.",
     "enable-invites": "Permettre de rejoindre avec un code d'invitation",
@@ -417,9 +382,11 @@
     "delete-success": "Bar supprimé avec succès",
     "join-success": "Nouveau bar rejoint, santé !",
     "activate": "Activer le bar",
-    "status-active": "Bars actifs",
-    "status-deactivated": "Bars désactivés",
-    "status-provisioning": "Provisionnement",
+    "status": {
+      "active": "Bars actifs",
+      "deactivated": "Bars désactivés",
+      "provisioning": "Provisionnement"
+    },
     "confirm-activation": "Êtes-vous sûr de vouloir activer \"{name}\" ? Avec la formule gratuite, vous ne pouvez avoir qu'un seul bar actif, vous ne pourrez pas activer d'autres bars.",
     "activation-success": "Bar activé",
     "members": "Membres du bar",
@@ -450,13 +417,9 @@
     "continue": "Continuer l’édition",
     "type-url-title": "URL",
     "type-json-title": "JSON",
-    "type-yaml-title": "YAML",
-    "type-collection-title": "Collection",
     "type-ai-title": "Text",
     "type-url-description": "Importer depuis un site web pris en charge",
     "type-json-description": "Importer à partir du format JSON",
-    "type-yaml-description": "Importer à partir du format YAML",
-    "type-collection-description": "Importation depuis une collection JSON de Bar Assistant",
     "type-ai-description": "Import from plain text recipe using AI",
     "notice": "Les ingrédients existants, les méthodes et la verrerie seront classés en fonction de leur nom (fichier insensible). Si un ingrédient n'existe pas, il sera créé. Les unités de mesures traditionnelles seront converties automatiquement en \"ml\". En fonction de la taille de la collection, l'importation peut prendre quelques minutes.",
     "type-csv-text-title": "Texte CSV",
@@ -467,7 +430,6 @@
   "remove-from-bar": "Supprimer du bar",
   "public-shelves": "Étagères publiques",
   "profile-public-shelf": "Rendre les cocktails de mon étagère accessibles à tous les membres du bar",
-  "profile-use-parent-as-substitute": "Utiliser les ingrédients des parents comme substituts",
   "favorited-cocktails": "Cocktails préférés",
   "created-by": "Créé par",
   "amount-max": "Quantité max",
@@ -487,7 +449,6 @@
     }
   },
   "remember-me": "Souviens-toi de moi",
-  "updated-on-by": "Mis à jour le {date} par {name}",
   "user-recipes": "Recettes par utilisateur",
   "billing": {
     "title": "Facturation",
@@ -543,7 +504,6 @@
     "cocktail-already-added": "Le cocktail \"{name}\" est déjà à la carte",
     "delete-cocktail-confirm": "Cela supprimera le cocktail \"{name}\" de la catégorie",
     "cocktail-removed": "Cocktail retiré de la catégorie",
-    "menu-not-found": "Carte non trouvée",
     "description": "Ici, vous pouvez configurer une carte en ligne simple pour votre bar. Vous pouvez mettre à jour votre lien de bar lors de l'ajout ou de la modification d'un bar. Utilisez l'URL ou le code QR pour partager votre carte avec les invités.",
     "no-cocktails-added": "La carte doit avoir au moins un cocktail",
     "calculate-price": "Calculer le prix",
@@ -629,22 +589,22 @@
     "add": "Ajouter un cocktail",
     "copy-action": "Dupliquer et modifier",
     "copy-success": "Cocktail dupliqué",
-    "source": "Source cocktail",
     "confirm-copy": "Ceci va créer une copie de \"{name}\"",
     "randomize": "Show random cocktail"
   },
   "ABV-definition": "Alcool par volume",
-  "ingredient-category": {},
   "last-used-at": "Dernière utilisation",
-  "user": {},
   "price": {
     "category": "Catégorie de prix",
     "prices": "Prix",
     "price": "Prix",
     "currency": "Devise",
+    "edit-category": "Edit price category",
     "currency-format-notice": "La devise doit être au format ISO 4271 (Alpha3)",
     "price-categories-empty": "Il n'y a pas de catégories de prix",
     "no-matching-units": "Aucun prix unitaire correspondant n'a été trouvé",
+    "price-category-add-success": "Price category added",
+    "price-category-update-success": "Price category updated",
     "select": "Sélectionner le prix",
     "category-delete-success": "Catégorie de prix supprimée",
     "category-confirm-delete": "La catégorie de prix avec le nom \\\"{name}\"\\ sera définitivement supprimé",
