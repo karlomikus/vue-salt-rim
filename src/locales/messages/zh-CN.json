@@ -17,6 +17,7 @@
     "bar-stats": "酒吧统计",
     "recommended-cocktails": "推荐的鸡尾酒"
   },
+  "server-error": "Unexpected server error",
   "ingredient": {
     "title": "配料",
     "main": "主要配料",
@@ -75,7 +76,8 @@
     "used-in": "用于 {count} {substituteCount} 种鸡尾酒配方",
     "used-in-substitutes": "+{total} 作为替补",
     "default-units-help": "用于在选择鸡尾酒配方的配料时自动填充单位",
-    "icicle-graph": "冰柱图"
+    "icicle-graph": "冰柱图",
+    "csv-import-started": "CSV import started"
   },
   "share": {
     "title": "分享",
@@ -353,6 +355,7 @@
   "utensils": {
     "title": "工具",
     "add": "添加工具",
+    "edit": "Edit utensil",
     "confirm-delete": "将永久删除名为 \"{name}\" 的工具。",
     "delete-success": "工具删除成功",
     "add-success": "工具添加成功",
@@ -596,9 +599,12 @@
     "prices": "价格",
     "price": "价格",
     "currency": "货币",
+    "edit-category": "Edit price category",
     "currency-format-notice": "货币必须采用 ISO 4271 (Alpha3) 格式",
     "price-categories-empty": "无价格分类",
     "no-matching-units": "无匹配单位价格",
+    "price-category-add-success": "Price category added",
+    "price-category-update-success": "Price category updated",
     "select": "选择价格",
     "category-delete-success": "价格分类已删除",
     "category-confirm-delete": "将永久删除名为 \\\"{name}\\\" 的价格分类。",

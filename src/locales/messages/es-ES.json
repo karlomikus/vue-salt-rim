@@ -17,6 +17,7 @@
     "bar-stats": "Estadísticas del bar",
     "recommended-cocktails": "Cócteles recomendados"
   },
+  "server-error": "Unexpected server error",
   "ingredient": {
     "title": "Ingrediente",
     "main": "Ingrediente principal",
@@ -75,7 +76,8 @@
     "used-in": "Aparece en {count} recetas de cócteles, y puede sustituir ingredientes en {substituteCount} más",
     "used-in-substitutes": "+{total} como sustituto",
     "default-units-help": "Se usa para autocompletar las unidades al seleccionar un ingrediente para la receta de cóctel",
-    "icicle-graph": "Gráfico icicle"
+    "icicle-graph": "Gráfico icicle",
+    "csv-import-started": "CSV import started"
   },
   "share": {
     "title": "Compartir",
@@ -353,6 +355,7 @@
   "utensils": {
     "title": "Utensils",
     "add": "Add utensil",
+    "edit": "Edit utensil",
     "confirm-delete": "This will permanently delete utensil with name \"{name}\".",
     "delete-success": "Utensil deleted successfully",
     "add-success": "Utensil added",
@@ -380,7 +383,9 @@
     "join-success": "Joined a new bar, cheers!",
     "activate": "Activate bar",
     "status": {
-      "active": "Active bars"
+      "active": "Active bars",
+      "deactivated": "Deactivated bars",
+      "provisioning": "Provisioning"
     },
     "confirm-activation": "Are you sure you want to activate \"{name}\"? On free plan you can have only one bar activated, you will not be able to activate any other bars.",
     "activation-success": "Bar activated",
@@ -416,7 +421,7 @@
     "type-url-description": "Import from a supported website",
     "type-json-description": "Import from JSON format",
     "type-ai-description": "Import from plain text recipe using AI",
-    "notice": "Existing ingredients, methods and glassware will be matched by their name (case insensitive). If ingredient does not exist, it will be created.",
+    "notice": "Existing ingredients, methods and glassware will be matched by their name (case insensitive). If ingredient does not exist, it will be created. Common units are automatically converted to \"ml\". Depending on collection size, importing can take a few minutes.",
     "type-csv-text-title": "CSV text",
     "type-csv-text-description": "Import by pasting the CSV structure",
     "type-csv-file-title": "CSV file",
@@ -594,9 +599,12 @@
     "prices": "Prices",
     "price": "Price",
     "currency": "Currency",
+    "edit-category": "Edit price category",
     "currency-format-notice": "Currency must be in ISO 4271 (Alpha3) format",
     "price-categories-empty": "There is no price categories",
     "no-matching-units": "No matching unit pricing found",
+    "price-category-add-success": "Price category added",
+    "price-category-update-success": "Price category updated",
     "select": "Select price",
     "category-delete-success": "Price category deleted",
     "category-confirm-delete": "This will permanently price category with name \\\"{name}\\\".",

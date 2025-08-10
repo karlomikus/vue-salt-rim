@@ -17,6 +17,7 @@
     "bar-stats": "Bar statistics",
     "recommended-cocktails": "Recommended cocktails"
   },
+  "server-error": "Unexpected server error",
   "ingredient": {
     "title": "Ingredient",
     "main": "Main ingredient",
@@ -75,7 +76,8 @@
     "used-in": "Used in {count} {substituteCount} cocktail recipes",
     "used-in-substitutes": "+{total} as substitute",
     "default-units-help": "Used to autofill units when selecting ingredient for cocktail recipe",
-    "icicle-graph": "Icicle chart"
+    "icicle-graph": "Icicle chart",
+    "csv-import-started": "CSV import started"
   },
   "share": {
     "title": "Share",
@@ -353,6 +355,7 @@
   "utensils": {
     "title": "Utensils",
     "add": "Add utensil",
+    "edit": "Edit utensil",
     "confirm-delete": "This will permanently delete utensil with name \"{name}\".",
     "delete-success": "Utensil deleted successfully",
     "add-success": "Utensil added",
@@ -380,7 +383,9 @@
     "join-success": "Joined a new bar, cheers!",
     "activate": "Activate bar",
     "status": {
-      "active": "Active bars"
+      "active": "Active bars",
+      "deactivated": "Deactivated bars",
+      "provisioning": "Provisioning"
     },
     "confirm-activation": "Are you sure you want to activate \"{name}\"? On free plan you can have only one bar activated, you will not be able to activate any other bars.",
     "activation-success": "Bar activated",
@@ -594,9 +599,12 @@
     "prices": "Prices",
     "price": "Price",
     "currency": "Currency",
+    "edit-category": "Edit price category",
     "currency-format-notice": "Currency must be in ISO 4271 (Alpha3) format",
     "price-categories-empty": "There is no price categories",
     "no-matching-units": "No matching unit pricing found",
+    "price-category-add-success": "Price category added",
+    "price-category-update-success": "Price category updated",
     "select": "Select price",
     "category-delete-success": "Price category deleted",
     "category-confirm-delete": "This will permanently price category with name \\\"{name}\\\".",

@@ -17,6 +17,7 @@
     "bar-stats": "Bar statistics",
     "recommended-cocktails": "Recommended cocktails"
   },
+  "server-error": "Unexpected server error",
   "ingredient": {
     "title": "Ingrediente",
     "main": "Ingrediente principale",
@@ -75,7 +76,8 @@
     "used-in": "Used in {count} {substituteCount} cocktail recipes",
     "used-in-substitutes": "+{total} as substitute",
     "default-units-help": "Used to autofill units when selecting ingredient for cocktail recipe",
-    "icicle-graph": "Icicle chart"
+    "icicle-graph": "Icicle chart",
+    "csv-import-started": "CSV import started"
   },
   "share": {
     "title": "Condividi",
@@ -353,6 +355,7 @@
   "utensils": {
     "title": "Utensili",
     "add": "Aggiungi utensile",
+    "edit": "Edit utensil",
     "confirm-delete": "Questo eliminerà definitivamente l'utensile \"{name}\".",
     "delete-success": "Utensile eliminato con successo",
     "add-success": "Utensile aggiunto",
@@ -418,7 +421,7 @@
     "type-url-description": "Importa da un sito web supportato",
     "type-json-description": "Importa da formato JSON",
     "type-ai-description": "Import from plain text recipe using AI",
-    "notice": "Existing ingredients, methods and glassware will be matched by their name (case insensitive). If ingredient does not exist, it will be created.",
+    "notice": "Existing ingredients, methods and glassware will be matched by their name (case insensitive). If ingredient does not exist, it will be created. Common units are automatically converted to \"ml\". Depending on collection size, importing can take a few minutes.",
     "type-csv-text-title": "CSV text",
     "type-csv-text-description": "Import by pasting the CSV structure",
     "type-csv-file-title": "CSV file",
@@ -596,9 +599,12 @@
     "prices": "Prezzi",
     "price": "Prezzo",
     "currency": "Valuta",
+    "edit-category": "Edit price category",
     "currency-format-notice": "La valuta deve essere nel formato ISO 4271 (Alpha3)",
     "price-categories-empty": "Non ci sono categorie di prezzo",
     "no-matching-units": "Nessun prezzo unitario corrispondente trovato",
+    "price-category-add-success": "Price category added",
+    "price-category-update-success": "Price category updated",
     "select": "Seleziona prezzo",
     "category-delete-success": "Categoria di prezzo eliminata",
     "category-confirm-delete": "Questo stabilirà in modo permanente la categoria di prezzo con il nome \\\"{name}\\\".",
