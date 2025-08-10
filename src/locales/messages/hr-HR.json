@@ -13,19 +13,12 @@
   },
   "shelf": {
     "title": "Polica",
-    "toasts": {
-      "favorites-error": "Greška prilikom dohvaćanja favorita sa servera",
-      "shelf-error": "Greška prilikom dohvaćanja koktela sa servera",
-      "stats-error": "Greška prilikom dohvaćanja statistika sa servera",
-      "list-error": "Greška prilikom dohvaćanja popisa za kupovinu sa servera"
-    },
     "cocktails": "Kokteli koje mogu napraviti",
     "bar-stats": "Bar statistics",
     "recommended-cocktails": "Recommended cocktails"
   },
   "ingredient": {
     "title": "Sastojak",
-    "categories": "Kategorije sastojaka",
     "main": "Glavni sastojak",
     "add": "Dodaj sastojak",
     "on-shopping-list": "Ovaj sastojak je na popisu za kupovinu",
@@ -36,8 +29,6 @@
     "update-success": "Sastojak uspješno uređen",
     "create-success": "Sastojak uspješno dodan",
     "name-placeholder": "<Nije odabran>",
-    "in-shelf": "Ovaj sastojak je na tvojoj polici",
-    "cocktail-children": "Koristi se u {total} koktela",
     "delete-confirm": "Ova akcija će trajno ukloniti \"{name}\". Ovo će utjecati na {total} koktela!",
     "shelf-remove-success": "Sastojak \"{name}\" uklonjen iz tvoje police",
     "shelf-add-success": "Sastojak \"{name}\" dodan na tvoju policu",
@@ -47,7 +38,6 @@
     "is-variety": "Sastojak je podvrsta postojećeg sastojka",
     "information": "Podaci o sastojku",
     "extra-cocktails": "Dodaj u policu da bi mogli napraviti",
-    "has-variable-amount": "Ima varijabilnu količinu",
     "dialog": {
       "select-substitutes": "Odaberite zamjenske sastojke",
       "search-not-found": "Niste pronašli što ste tražili?",
@@ -93,7 +83,6 @@
     "copy-yaml": "Kopiraj u JSON formatu",
     "format-copied": "Tekst je kopiran",
     "format-copy-failed": "Kopiranje teksta nije uspjelo",
-    "copy-text": "Kopiraj kao običan tekst",
     "copy-md": "Kopiraj u Markdown formatu",
     "copy-xml": "Kopiraj kao XML",
     "copy-json-ld": "Kopiraj kao JSON+LD"
@@ -137,7 +126,6 @@
     "ingredients": "Latest ingredients"
   },
   "strength": "Jačina",
-  "rating": "Ocjena",
   "created": "Kreirano",
   "updated": "Ažurirano",
   "non-alcoholic": "Bez alkohola",
@@ -146,9 +134,6 @@
   "strong": "Jaki",
   "welcome-user": "Pozdrav {name}",
   "your-shopping-list": "Your shopping list",
-  "view-all": "Pogledaj sve",
-  "add-to-shelf": "Dodaj na policu",
-  "remove-from-list": "Ukloni s popisa",
   "missing.ingredients": "Sastojci koji ti nedostaju će biti ovdje.",
   "all-ingredients": "Svi sastojci",
   "find-cocktails": "Pronađi koktele",
@@ -195,9 +180,7 @@
     "delete-fail": "Greška kod uklanjanja slike.",
     "copyright": "Izvor slike",
     "error": "Dogodila se greška kod prijenosa slika.",
-    "copyright-notice": "Slika © {copyright}",
-    "error-cocktail": "Vaš koktel je sačuvan.",
-    "error-ingredient": "Vaš sastojak je sačuvan."
+    "copyright-notice": "Slika © {copyright}"
   },
   "confirm-dialog.title": "Jeste li sigurni?",
   "confirm": "Potvrdi",
@@ -205,33 +188,21 @@
   "or": "Ili",
   "substitutes": "Zamjene",
   "no-substitutes": "Nema odabranih zamjena.",
-  "units-help-text": "Koristite \"oz\", \"cl\", \"ml\" za jedinice za tekućinu kako bi ste omogućili konverziju.",
   "servings": "Porcije",
   "print-recipe": "Ispiši recept",
   "create-public-link": "Kreiraj javnu poveznicu",
   "avg-rating": "Pro. ocjena",
   "your-rating": "Tvoja ocjena",
   "category": {
-    "title": "Kategorija",
-    "add": "Dodaj kategoriju",
-    "add-success": "Nova kategorija sastojaka je dodana",
-    "edit": "Uredi kategoriju",
-    "update-success": "Kategorija je uspješno uređena",
-    "confirm-delete": "Ova akcija će trajno ukloniti kategoriju \"{name}\".",
-    "delete-success": "Kategorija uspješno uklonjena"
+    "title": "Kategorija"
   },
   "origin": "Podrijetlo",
   "sort-asc": "Uzlazno",
   "sort-desc": "Silazno",
   "show-more": "Prikaži više",
   "ABV": "Alk.",
-  "date-modified": "Datum uređivanja",
   "color": "Boja",
-  "edit-categories": "Uredi kategorije",
-  "parent-ingredient": "Nadređeni sastojak",
-  "select-category": "Odaberi kategoriju...",
   "alcohol-proof": "Stepen jačine",
-  "see-also": "Povezani sastojci",
   "email": "E-mail",
   "password": "Lozinka",
   "update-password": "Uredi lozinku",
@@ -261,7 +232,6 @@
     "volume": "Volumen"
   },
   "information": "Informacija",
-  "image-url": "URL slike",
   "public-dialog": {
     "title": "Javna poveznica koktela",
     "public_at": "Poveznica stvorena: {date}",
@@ -281,13 +251,10 @@
   "register": "Registracija",
   "login": "Prijava",
   "status": "Status",
-  "status-available": "Dostupan",
-  "status-not-available": "Nije dostupan",
   "passwords-not-match": "Lozinke nisu jednake",
   "register-success": "Registracija je uspješna, sada se možete prijaviti",
   "register-success-email": "Uspješno ste registrirani, potvrdite svoj račun putem email-a",
   "apply-filters": "Primjeni filtere",
-  "show-less": "Prikaži manje",
   "clear-filters": "Poništi filtere",
   "rating-removed": "Ocjena uklonjena",
   "rating-rated": "Koktel ocijenjen sa ocjenom {rating}",
@@ -345,9 +312,7 @@
   "user-rating": "Korisnička ocijena",
   "pagination": {
     "page": "Stranica",
-    "results": "Prikazuje se {on_page_results}/{total_results} rezultata",
-    "cocktail-prev": "Prethodni koktel",
-    "cocktail-next": "Slijedeći koktel"
+    "results": "Prikazuje se {on_page_results}/{total_results} rezultata"
   },
   "search": {
     "title": "Pretraga",
@@ -393,8 +358,6 @@
     "add-success": "Pribor dodan",
     "update-success": "Pribor ažuriran"
   },
-  "your-favorite-ingredients": "Tvoji najdraži sastojci",
-  "cocktails-top-rated": "Najbolje ocijenjeni kokteli",
   "bars": {
     "title": "Barovi",
     "bar": "Bar",
@@ -406,7 +369,6 @@
     "invite-code": "Pozivni kod",
     "toggle-invite-code": "Prikaži pozivni kod",
     "invite-link-copied": "Poveznica za pridruživanje kopirana",
-    "invite-link-error": "Nemoguće je kopirati poveznicu za pridruživanje",
     "confirm-delete": "Ovo će zauvijek obrisati bar s imenom \"{name}\".",
     "confirm-leave": "Izgubit ćete sve svoje podatke u baru \"{name}\" ako ga napustite.",
     "enable-invites": "Dopusti pridruživanje pomoću pozivnog koda",
@@ -452,13 +414,9 @@
     "continue": "Nastavi s uređivanjem",
     "type-url-title": "URL",
     "type-json-title": "JSON",
-    "type-yaml-title": "YAML",
-    "type-collection-title": "Kolekcija",
     "type-ai-title": "Text",
     "type-url-description": "Uvoz iz URL-a",
     "type-json-description": "Uvoz iz JSON formata",
-    "type-yaml-description": "Uvoz iz YAML formata",
-    "type-collection-description": "Uvoz iz Bar Assistant JSON kolekcije",
     "type-ai-description": "Import from plain text recipe using AI",
     "notice": "Existing ingredients, methods and glassware will be matched by their name (case insensitive). If ingredient does not exist, it will be created.",
     "type-csv-text-title": "CSV text",
@@ -469,7 +427,6 @@
   "remove-from-bar": "Ukloni iz bara",
   "public-shelves": "Javne police",
   "profile-public-shelf": "Prikaži koktele koje mogu napraviti svim članovima bara",
-  "profile-use-parent-as-substitute": "Podudaraj roditeljske sastojke kao zamjene",
   "favorited-cocktails": "Omiljeni kokteli",
   "created-by": "Napravio",
   "amount-max": "Maks. količina",
@@ -489,7 +446,6 @@
     }
   },
   "remember-me": "Zapamti me",
-  "updated-on-by": "Updated on {date} by {name}",
   "user-recipes": "Recipes by user",
   "billing": {
     "title": "Naplata",
@@ -545,7 +501,6 @@
     "cocktail-already-added": "Stavka \"{name}\" već je u izborniku",
     "delete-cocktail-confirm": "Ovo će ukloniti stavku \"{name}\" iz kategorije izbornika",
     "cocktail-removed": "Item removed from menu category",
-    "menu-not-found": "Menu not found",
     "description": "Here you can set up a simple web menu for your bar. You can update your bar link when adding or editing a bar. Use the URL or QR code to share your bar menu with the guests.",
     "no-cocktails-added": "Menu needs to have at least one item",
     "calculate-price": "Calculate price",
@@ -631,14 +586,11 @@
     "add": "Dodaj koktel",
     "copy-action": "Udvostruči i uredi",
     "copy-success": "Koktel dupliciran",
-    "source": "Izvor koktela",
     "confirm-copy": "This will create a copy of \"{name}\"",
     "randomize": "Show random cocktail"
   },
   "ABV-definition": "Postotak alkohola",
-  "ingredient-category": {},
   "last-used-at": "Zadnje korišteno",
-  "user": {},
   "price": {
     "category": "Kategorija cijene",
     "prices": "Cijene",

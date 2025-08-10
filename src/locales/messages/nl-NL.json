@@ -13,19 +13,12 @@
   },
   "shelf": {
     "title": "Plank",
-    "toasts": {
-      "favorites-error": "Er is een fout opgetreden tijdens het ophalen van je favoriete cocktails van de server",
-      "shelf-error": "Er is een fout opgetreden bij het ophalen van cocktails die je van de server kan maken",
-      "stats-error": "Er is een fout opgetreden tijdens het ophalen van statistieken van de server",
-      "list-error": "Er is een fout opgetreden tijdens het ophalen van de ingrediënten op de boodschappenlijst van de server"
-    },
     "cocktails": "Cocktails die ik kan maken",
     "bar-stats": "Bar statistieken",
     "recommended-cocktails": "Aanbevolen cocktails"
   },
   "ingredient": {
     "title": "Ingrediënten",
-    "categories": "Ingrediënt categorieën",
     "main": "Hoofdingrediënt",
     "add": "Ingrediënt toevoegen",
     "on-shopping-list": "U heeft dit ingrediënt(e)n op de boodschappenlijst",
@@ -36,8 +29,6 @@
     "update-success": "Ingrediënt succesvol bijgewerkt",
     "create-success": "Ingrediënt succesvol aangemaakt",
     "name-placeholder": "Niet geselecteerd",
-    "in-shelf": "Je hebt dit ingrediënt",
-    "cocktail-children": "Gebruikt in {total} cocktails",
     "delete-confirm": "Dit verwijdert het ingrediënt permanent met de naam \"{name}\". Deze actie wijzigt {total} cocktail recepten.",
     "shelf-remove-success": "Verwijderde \"{name}\" van uw plank",
     "shelf-add-success": "Toegevoegd \"{name}\" aan uw plank",
@@ -47,7 +38,6 @@
     "is-variety": "Ingrediënt is variëteit van een ander ingrediënt",
     "information": "Ingrediënt informatie",
     "extra-cocktails": "Toevoegen aan de plank en je kunt maken",
-    "has-variable-amount": "Heeft variabele bedrag",
     "dialog": {
       "select-substitutes": "Bewerk vervangende ingrediënten",
       "search-not-found": "Niet gevonden wat je zoekt?",
@@ -93,7 +83,6 @@
     "copy-yaml": "Kopiëren als YAML",
     "format-copied": "Tekst gekopieerd",
     "format-copy-failed": "Tekst kopiëren mislukt",
-    "copy-text": "Kopieer als platte tekst",
     "copy-md": "Kopiëren als Markdown",
     "copy-xml": "Kopiëren als XML",
     "copy-json-ld": "Kopieer JSON+LD-schema"
@@ -137,7 +126,6 @@
     "ingredients": "Nieuwste ingrediënten"
   },
   "strength": "Sterkte",
-  "rating": "Beoordeling",
   "created": "Aangemaakt",
   "updated": "Aangepast",
   "non-alcoholic": "Alcohol vrij",
@@ -146,9 +134,6 @@
   "strong": "Hoog",
   "welcome-user": "Welkom {name}",
   "your-shopping-list": "Je boodschappenlijst",
-  "view-all": "Alles bekijken",
-  "add-to-shelf": "Aan mijn plank toevoegen",
-  "remove-from-list": "Verwijder uit de lijst",
   "missing.ingredients": "Ingrediënten die u mist worden hier getoond.",
   "all-ingredients": "Alle ingrediënten",
   "find-cocktails": "Vind cocktails",
@@ -195,9 +180,7 @@
     "delete-fail": "Kan de afbeelding niet verwijderen.",
     "copyright": "Afbeelding auteursrecht",
     "error": "Fout opgetreden tijdens het uploaden van de afbeelding.",
-    "copyright-notice": "Afbeelding ©️ {copyright}",
-    "error-cocktail": "Je cocktail is nog steeds opgeslagen.",
-    "error-ingredient": "Het ingrediënt is nog steeds opgeslagen."
+    "copyright-notice": "Afbeelding ©️ {copyright}"
   },
   "confirm-dialog.title": "Weet je het zeker?",
   "confirm": "Bevestigen",
@@ -205,33 +188,21 @@
   "or": "Of",
   "substitutes": "Vervanging",
   "no-substitutes": "Geen vervangingen geselecteerd.",
-  "units-help-text": "Gebruik \"Oz\", \"cl\", \"ml\" voor veelvoorkomende vloeistofeenheid om de conversie per eenheid op cocktail pagina in te schakelen.",
   "servings": "Porties",
   "print-recipe": "Print recept",
   "create-public-link": "Maak publieke link",
   "avg-rating": "Gemiddelde Rating",
   "your-rating": "Uw beoordeling",
   "category": {
-    "title": "Categorie",
-    "add": "Categorie toevoegen",
-    "add-success": "Ingrediënt categorie succesvol toegevoegd.",
-    "edit": "Wijzig categorie",
-    "update-success": "Ingrediënt categorie succesvol bijgewerkt.",
-    "confirm-delete": "Dit zal de permanent categorie met de naam \"{name}\".",
-    "delete-success": "Ingrediënt categorie succesvol verwijderd"
+    "title": "Categorie"
   },
   "origin": "Herkomst",
   "sort-asc": "Oplopend",
   "sort-desc": "Aflopend",
   "show-more": "Toon meer",
   "ABV": "KvK",
-  "date-modified": "Datum gewijzigd",
   "color": "Kleur",
-  "edit-categories": "Categorieën bewerken",
-  "parent-ingredient": "Bovenliggende ingrediënt",
-  "select-category": "Selecteer een categorie...",
   "alcohol-proof": "Bewijs",
-  "see-also": "Zie ook",
   "email": "Email",
   "password": "Wachtwoord",
   "update-password": "Wachtwoord bijwerken",
@@ -261,7 +232,6 @@
     "volume": "Inhoud"
   },
   "information": "Informatie",
-  "image-url": "URL van de afbeelding",
   "public-dialog": {
     "title": "Cocktail publieke link",
     "public_at": "Openbaar gemaakt op: {date}",
@@ -281,13 +251,10 @@
   "register": "Registreren",
   "login": "Inloggen",
   "status": "Status",
-  "status-available": "Beschikbaar",
-  "status-not-available": "Niet beschikbaar",
   "passwords-not-match": "Wachtwoorden komen niet overeen",
   "register-success": "U bent nu geregistreerd, u kunt nu inloggen met uw gegevens",
   "register-success-email": "Je bent nu geregistreerd, controleer je e-mail voor accountbevestiging",
   "apply-filters": "Filters toepassen",
-  "show-less": "Minder tonen",
   "clear-filters": "Alle filters verwijderen",
   "rating-removed": "Verwijder cocktail beoordeling",
   "rating-rated": "Cocktail met {rating} sterren",
@@ -345,9 +312,7 @@
   "user-rating": "Gebruikerswaardering",
   "pagination": {
     "page": "Pagina",
-    "results": "Resultaten {on_page_results}/{total_results} weergeven",
-    "cocktail-prev": "Vorige cocktail",
-    "cocktail-next": "Volgende cocktail"
+    "results": "Resultaten {on_page_results}/{total_results} weergeven"
   },
   "search": {
     "title": "Zoeken",
@@ -393,8 +358,6 @@
     "add-success": "Keukengerei toegevoegd",
     "update-success": "Keukengerei geupdate"
   },
-  "your-favorite-ingredients": "Jouw favoriete ingrediënten",
-  "cocktails-top-rated": "Best beoordeelde cocktails",
   "bars": {
     "title": "Bars",
     "bar": "Bar",
@@ -406,7 +369,6 @@
     "invite-code": "Uitnodigingscode",
     "toggle-invite-code": "Schakel uitnodigingscode in",
     "invite-link-copied": "Uitnodigingslink gekopieerd naar klembord",
-    "invite-link-error": "Kan uitnodigingslink niet kopiëren naar klembord",
     "confirm-delete": "Dit verwijdert bar met de naam \"{name}\".",
     "confirm-leave": "Je verliest al je gegevens in de bar (\"{name}\") als je deze verlaat.",
     "enable-invites": "Deelnemen via uitnodigingscode inschakelen",
@@ -452,13 +414,9 @@
     "continue": "Doorgaan met bewerken",
     "type-url-title": "URL",
     "type-json-title": "JSON",
-    "type-yaml-title": "YAML",
-    "type-collection-title": "Collectie",
     "type-ai-title": "Text",
     "type-url-description": "Importeren vanaf een ondersteunde website",
     "type-json-description": "Importeren uit JSON formaat",
-    "type-yaml-description": "Importeren uit YAML formaat",
-    "type-collection-description": "Importeren uit Bar Assistent JSON collectie",
     "type-ai-description": "Import from plain text recipe using AI",
     "notice": "Existing ingredients, methods and glassware will be matched by their name (case insensitive). If ingredient does not exist, it will be created.",
     "type-csv-text-title": "CSV tekst",
@@ -469,7 +427,6 @@
   "remove-from-bar": "Verwijder uit bar",
   "public-shelves": "Openbare planken",
   "profile-public-shelf": "Maak cocktails op plank openbaar voor alle bar-leden",
-  "profile-use-parent-as-substitute": "Volg bovenliggende ingrediënten als vervangers",
   "favorited-cocktails": "Favoriete cocktails",
   "created-by": "Gemaakt door",
   "amount-max": "Hoeveelheid max",
@@ -489,7 +446,6 @@
     }
   },
   "remember-me": "Onthoud mij",
-  "updated-on-by": "Bijgewerkt op {date} door {name}",
   "user-recipes": "Recepten van gebruiker",
   "billing": {
     "title": "Rekening",
@@ -545,7 +501,6 @@
     "cocktail-already-added": "Cocktail \"{name}\" is al in het menu",
     "delete-cocktail-confirm": "Dit verwijdert cocktail \"{name}\" uit menu-categorie",
     "cocktail-removed": "Cocktail verwijderd uit menu categorie",
-    "menu-not-found": "Menu niet gevonden",
     "description": "Hier kun je een eenvoudig webmenu instellen voor je balk. Je kunt de link in de balk bijwerken bij het toevoegen of bewerken van een balk. Gebruik de URL of QR-code om je bar te delen met de gasten.",
     "no-cocktails-added": "Menu moet minstens één cocktail hebben",
     "calculate-price": "Bereken prijs",
@@ -631,14 +586,11 @@
     "add": "Voeg cocktail toe",
     "copy-action": "Dupliceren en bewerken",
     "copy-success": "Cocktail gedupliceerd",
-    "source": "Cocktail bron",
     "confirm-copy": "Dit maakt een kopie van \"{name}\"",
     "randomize": "Show random cocktail"
   },
   "ABV-definition": "Alcohol naar volume",
-  "ingredient-category": {},
   "last-used-at": "Laatst gebruikt",
-  "user": {},
   "price": {
     "category": "Prijscategorie",
     "prices": "Prijzen",
