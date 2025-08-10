@@ -2,7 +2,7 @@
     <form class="site-autocomplete" novalidate @keyup.esc="close">
         <div class="dialog-title">{{ $t('search.title') }}</div>
         <OverlayLoader v-if="isLoading"></OverlayLoader>
-        <ais-instant-search v-if="searchClient" :search-client="searchClient" index-name="cocktails">
+        <ais-instant-search v-if="searchClient" :search-client="searchClient" index-name="cocktails" :future="{ preserveSharedStateOnUnmount: true }">
             <ais-configure :hits-per-page.camel="5" :restrict-searchable-attributes.camel="['name']" />
             <ais-search-box autofocus>
                 <template #default="{ currentRefinement, refine }">

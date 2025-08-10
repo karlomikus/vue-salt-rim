@@ -15,7 +15,7 @@
   "dependencies": {
     "@ai-sdk/openai-compatible": "^1.0.3",
     "@floating-ui/vue": "^1.1.5",
-    "@meilisearch/instant-meilisearch": "^0.25.0",
+    "@meilisearch/instant-meilisearch": "^0.27.0",
     "@paddle/paddle-js": "^1.2.1",
     "@sentry/vue": "^8.47.0",
     "@types/sortablejs": "^1.15.8",
@@ -40,8 +40,8 @@
     "thumbhash": "^0.1.1",
     "treeflex": "^2.0.1",
     "vue": "^3.2.40",
-    "vue-i18n": "^10.0.0",
-    "vue-instantsearch": "^4.6.0",
+    "vue-i18n": "^11.0.0",
+    "vue-instantsearch": "^4.21.0",
     "vue-router": "^4.1.5",
     "vue-toast-notification": "^3.0.4"
   },
