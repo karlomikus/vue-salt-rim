@@ -458,7 +458,7 @@
     "type-yaml-description": "Importer à partir du format YAML",
     "type-collection-description": "Importation depuis une collection JSON de Bar Assistant",
     "type-ai-description": "Import from plain text recipe using AI",
-    "notice": "Existing ingredients, methods and glassware will be matched by their name (case insensitive). If ingredient does not exist, it will be created.",
+    "notice": "Les ingrédients existants, les méthodes et la verrerie seront classés en fonction de leur nom (fichier insensible). Si un ingrédient n'existe pas, il sera créé. Les unités de mesures traditionnelles seront converties automatiquement en \"ml\". En fonction de la taille de la collection, l'importation peut prendre quelques minutes.",
     "type-csv-text-title": "Texte CSV",
     "type-csv-text-description": "Importer en collant le structure CSV",
     "type-csv-file-title": "Fichier CSV",
