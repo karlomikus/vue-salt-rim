@@ -31,7 +31,7 @@ import IconClose from '../Icons/IconClose.vue';
 export default {
     props: {
         modelValue: {
-            type: [Object, Array],
+            type: [Object, Array, null],
             default() {
                 return null
             }

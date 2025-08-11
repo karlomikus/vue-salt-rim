@@ -2176,6 +2176,11 @@ export interface components {
             };
             /** @description Images associated with the bar */
             images?: components["schemas"]["Image"][];
+            /**
+             * @default false
+             * @example true
+             */
+            is_public: boolean;
         };
         /** @description Represents a calculator block with basic information */
         CalculatorBlock: {
@@ -3370,6 +3375,8 @@ export interface components {
             options?: components["schemas"]["BarOptionsEnum"] | null;
             /** @description Existing image ids */
             images?: number[];
+            /** @description Allow public access to bar recipes. Default `false`. */
+            is_public?: boolean;
         };
         BarSettings: {
             default_units?: string | null;
@@ -7594,18 +7601,18 @@ export interface operations {
                 page?: number;
                 /** @description Set number of results per page */
                 per_page?: number;
-                /** @description Filter by attributes */
+                /** @description Filter by attributes. You can specify multiple matching filter values by passing a comma separated list of values. */
                 filter?: {
-                    /** @description Filter by ingredient id */
-                    id?: number;
-                    /** @description Filter by ingredient name (fuzzy search) */
+                    /** @description Filter by ingredient id(s) */
+                    id?: string;
+                    /** @description Filter by ingredient name(s) (fuzzy search) */
                     name?: string;
-                    /** @description Filter by ingredient name (exact match) */
+                    /** @description Filter by ingredient name(s) (exact match) */
                     name_exact?: string;
                     /** @description Filter by ingredient origin */
                     origin?: string;
-                    /** @description Filter by user id who created the ingredient */
-                    created_user_id?: number;
+                    /** @description Filter by user(s) who created the ingredient */
+                    created_user_id?: string;
                     /** @description Show only ingredients that are on the shopping list */
                     on_shopping_list?: boolean;
                     /** @description Show only ingredients that are on the shelf */
@@ -7623,13 +7630,13 @@ export interface operations {
                      */
                     strength_max?: number;
                     /** @description Show only ingredients that are used as main ingredients in cocktails */
-                    main_ingredients?: string;
+                    main_ingredients?: boolean;
                     /** @description Show only ingredients that can be made with other ingredients */
                     complex?: boolean;
                     /** @description Show only direct children of given ingredient. Use null as value to get ingredients without parent ingredient */
-                    parent_ingredient_id?: number;
-                    /** @description Show all descendants of given ingredient */
-                    descendants_of?: number;
+                    parent_ingredient_id?: string;
+                    /** @description Show all descendants of given ingredient(s) */
+                    descendants_of?: string;
                 };
                 /** @description Sort by attributes. Available attributes: `name`, `created_at`, `strength`, `total_cocktails`. */
                 sort?: string;
