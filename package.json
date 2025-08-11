@@ -21,7 +21,7 @@
     "@types/sortablejs": "^1.15.8",
     "@vueuse/core": "^11.0.3",
     "ai": "^5.0.8",
-    "ai-sdk-ollama": "^0.4.0",
+    "ai-sdk-ollama": "^0.5.0",
     "cropperjs": "^1.6.1",
     "dayjs": "^1.11.7",
     "entities": "^6.0.0",

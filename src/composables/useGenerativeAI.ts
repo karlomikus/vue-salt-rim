@@ -1,5 +1,5 @@
 import { ref } from "vue";
-// import { ollama } from 'ai-sdk-ollama';
+import { ollama } from 'ai-sdk-ollama';
 import {
     createOpenAICompatible,
     OpenAICompatibleChatLanguageModel,
@@ -33,9 +33,8 @@ export const useLLM = () => {
                 supportsStructuredOutputs: true,
             },
         );
-    // } else if (settings.provider === "ollama") {
-    //     console.log('Ollama is not yet supported in this version.');
-        // model = ollama(settings.model)
+    } else if (settings.provider === "ollama") {
+        model = ollama(settings.model)
     } else {
         model = createOpenAICompatible({
             baseURL: settings.host,
