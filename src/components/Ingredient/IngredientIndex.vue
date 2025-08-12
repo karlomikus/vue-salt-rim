@@ -80,7 +80,7 @@ import OverlayLoader from './../OverlayLoader.vue'
 import IngredientGridContainer from './../Ingredient/IngredientGridContainer.vue'
 import IngredientGridItem from './../Ingredient/IngredientGridItem.vue'
 import PageHeader from './../PageHeader.vue'
-import Refinement from './../Search/SearchRefinement.vue'
+import Refinement, { type RefinementRange } from './../Search/SearchRefinement.vue'
 import Pagination from './../Search/SearchPagination.vue'
 import qs from 'qs'
 import EmptyState from './../EmptyState.vue'
@@ -168,7 +168,7 @@ const refineStrength = computed(() => {
     return availableRefinements.value.strength.map(m => {
         return {
             id: m.id,
-            value: { min: m.min, max: m.max },
+            value: { min: m.min, max: m.max } as RefinementRange,
             name: m.name
         }
     })
