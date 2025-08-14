@@ -527,6 +527,7 @@
     "add": "Create new token",
     "read": "Read",
     "write": "Write",
+    "import": "Import",
     "key-copied": "API Token copied",
     "save-token": "Save your token",
     "add-success": "Token created",

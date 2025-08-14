@@ -24,6 +24,10 @@
                             <input v-model="apiKey.abilities" type="checkbox" value="cocktails.write">
                             <span>{{ $t('api.write') }}</span>
                         </label>
+                        <label class="form-checkbox">
+                            <input v-model="apiKey.abilities" type="checkbox" value="cocktails.import">
+                            <span>{{ $t('api.import') }}</span>
+                        </label>
                     </div>
                 </div>
                 <div class="api-ability">
