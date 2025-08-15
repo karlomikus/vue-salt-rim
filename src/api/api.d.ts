@@ -3336,7 +3336,7 @@ export interface components {
             description: string | null;
         };
         /** @enum {string} */
-        AbilityEnum: "cocktails.read" | "cocktails.write" | "ingredients.read" | "ingredients.write" | "bars.read" | "bars.write";
+        AbilityEnum: "cocktails.read" | "cocktails.write" | "cocktails.import" | "ingredients.read" | "ingredients.write" | "bars.read" | "bars.write";
         /** @enum {string} */
         BarStatusEnum: "provisioning" | "active" | "deactivated";
         /** @enum {string} */
@@ -3834,66 +3834,142 @@ export interface components {
                 /**
                  * Format: slug
                  * @description The unique identifier for a cocktail
+                 * @example margarita
                  */
                 _id: string;
-                /** @description Name of the recipe */
+                /**
+                 * @description Name of the recipe
+                 * @example Margarita
+                 */
                 name: string;
-                /** @description Recipe instructions */
+                /**
+                 * @description Recipe instructions
+                 * @example Shake all ingredients with ice and strain into a chilled glass.
+                 */
                 instructions: string;
                 /**
                  * Format: date-time
                  * @description Date of recipe
+                 * @example 2024-07-21T15:30:00Z
                  */
                 created_at?: string | null;
-                /** @description Recipe description */
+                /**
+                 * @description Recipe description
+                 * @example A refreshing blend of tequila, lime juice, and triple sec.
+                 */
                 description?: string | null;
-                /** @description Source of the recipe, either URL or Book referece */
+                /**
+                 * @description Source of the recipe, either URL or Book referece
+                 * @example https://example.com/margarita-recipe
+                 */
                 source?: string | null;
-                /** @description Cocktail garnish */
+                /**
+                 * @description Cocktail garnish
+                 * @example Lime wheel
+                 */
                 garnish?: string | null;
-                /** @description Total ABV of made cocktail */
+                /**
+                 * @description Total ABV of made cocktail
+                 * @example 12.5
+                 */
                 abv?: number | null;
-                /** @description Short keywords to describe cocktail */
+                /**
+                 * @description Short keywords to describe cocktail
+                 * @example [
+                 *       "refreshing",
+                 *       "citrus",
+                 *       "classic"
+                 *     ]
+                 */
                 tags?: string[];
-                /** @description Glass type */
+                /**
+                 * @description Glass type
+                 * @example Coupe
+                 */
                 glass?: string | null;
-                /** @description Cocktail method */
+                /**
+                 * @description Cocktail method
+                 * @example Shake
+                 */
                 method?: string | null;
-                /** @description Required utensils */
+                /**
+                 * @description Required utensils
+                 * @example [
+                 *       "Shaker",
+                 *       "Strainer"
+                 *     ]
+                 */
                 utensils?: string[];
                 /** @description List of cocktail images */
                 images?: {
-                    /** Format: uri */
+                    /**
+                     * Format: uri
+                     * @example https://example.com/image.jpg
+                     * @example /path/to/image.png
+                     */
                     uri: string;
                     /** @description Control the representation of the image */
                     sort?: number;
                     /** @description Computed placeholder hash, like thumbhash, blurhash and similar */
                     placeholder_hash?: string | null;
-                    /** @description Image copyright information */
+                    /**
+                     * @description Image copyright information
+                     * @example © 2024 Bar Assistant
+                     */
                     copyright: string;
                 }[];
                 /** @description List of cocktail ingredients and substitutes */
                 ingredients?: {
-                    /** @description The unique reference for an ingredient from `ingredients` property */
+                    /**
+                     * @description The unique reference for an ingredient from `ingredients` property
+                     * @example tequila
+                     */
                     _id: string;
-                    /** @description Amount of the ingredient */
+                    /**
+                     * @description Amount of the ingredient
+                     * @example 50
+                     */
                     amount: number;
-                    /** @description Units for the amount */
+                    /**
+                     * @description Units for the amount
+                     * @example ml
+                     */
                     units: string;
-                    /** @description Indicates if the ingredient is optional */
+                    /**
+                     * @description Indicates if the ingredient is optional
+                     * @example false
+                     */
                     optional?: boolean;
-                    /** @description Maximum amount of the ingredient */
+                    /**
+                     * @description Maximum amount of the ingredient
+                     * @example 60
+                     */
                     amount_max?: number | null;
-                    /** @description Additional note related to the cocktail ingredient */
+                    /**
+                     * @description Additional note related to the cocktail ingredient
+                     * @example Preferebly blanco
+                     */
                     note?: string | null;
                     substitutes?: {
-                        /** @description The unique reference for an ingredient from `ingredients` property */
+                        /**
+                         * @description The unique reference for an ingredient from `ingredients` property
+                         * @example mezcal
+                         */
                         _id: string;
-                        /** @description Amount of the substitute ingredient */
+                        /**
+                         * @description Amount of the substitute ingredient
+                         * @example 50
+                         */
                         amount?: number | null;
-                        /** @description Units for the amount */
+                        /**
+                         * @description Units for the amount
+                         * @example ml
+                         */
                         units?: string | null;
-                        /** @description Maximum amount of the substitute ingredient */
+                        /**
+                         * @description Maximum amount of the substitute ingredient
+                         * @example 60
+                         */
                         amount_max?: number | null;
                     }[];
                     /** @description Sort order for the ingredient */
@@ -3902,16 +3978,32 @@ export interface components {
             };
             /** @description List of ingredients */
             ingredients: {
-                /** @description The unique identifier for an ingredient, used as a refrence in cocktail ingredient list */
+                /**
+                 * @description The unique identifier for an ingredient, used as a refrence in cocktail ingredient list
+                 * @example tequila
+                 */
                 _id: string;
+                /** @example Tequila */
                 name: string;
-                /** @description Ingredient ABV */
+                /**
+                 * @description Ingredient ABV
+                 * @example 40
+                 */
                 strength?: number | null;
-                /** @description Additional ingredient information */
+                /**
+                 * @description Additional ingredient information
+                 * @example A Mexican spirit made from the blue agave plant.
+                 */
                 description?: string | null;
-                /** @description Ingredient origin */
+                /**
+                 * @description Ingredient origin
+                 * @example Mexico
+                 */
                 origin?: string | null;
-                /** @description Category ingredient belongs to */
+                /**
+                 * @description Category ingredient belongs to
+                 * @example Spirit
+                 */
                 category?: string | null;
             }[];
         };
@@ -5124,23 +5216,23 @@ export interface operations {
                 page?: number;
                 /** @description Set number of results per page */
                 per_page?: number;
-                /** @description Filter by attributes */
+                /** @description Filter by attributes. You can specify multiple matching filter values by passing a comma separated list of values. */
                 filter?: {
-                    /** @description Filter by cocktail IDs */
+                    /** @description Filter by cocktail ID(s) */
                     id?: string;
-                    /** @description Filter by cocktail names (fuzzy search) */
+                    /** @description Filter by cocktail names(s) (fuzzy search) */
                     name?: string;
-                    /** @description Filter by cocktail ingredient names (fuzzy search) */
+                    /** @description Filter by cocktail ingredient names(s) (fuzzy search) */
                     ingredient_name?: string;
-                    /** @description Filter by tag IDs */
+                    /** @description Filter by tag ID(s) */
                     tag_id?: string;
-                    /** @description Filter by creator IDs */
+                    /** @description Filter by creator ID(s) */
                     created_user_id?: string;
-                    /** @description Filter by glass IDs */
+                    /** @description Filter by glass ID(s) */
                     glass_id?: string;
-                    /** @description Filter by cocktail method IDs */
+                    /** @description Filter by cocktail method ID(s) */
                     cocktail_method_id?: string;
-                    /** @description Filter by collection IDs */
+                    /** @description Filter by collection ID(s) */
                     collection_id?: string;
                     /** @description Show only user favorites */
                     favorites?: boolean;
@@ -5155,28 +5247,28 @@ export interface operations {
                     /** @description Show only cocktails with public links */
                     is_public?: boolean;
                     /** @description Filter by greater than or equal user rating */
-                    user_rating_min?: string;
+                    user_rating_min?: number;
                     /** @description Filter by less than or equal user rating */
-                    user_rating_max?: string;
+                    user_rating_max?: number;
                     /** @description Filter by greater than or equal average rating */
-                    average_rating_min?: string;
+                    average_rating_min?: number;
                     /** @description Filter by less than or equal average rating */
-                    average_rating_max?: string;
+                    average_rating_max?: number;
                     /** @description Filter by greater than or equal ABV */
-                    abv_min?: string;
+                    abv_min?: number;
                     /** @description Filter by less than or equal ABV */
-                    abv_max?: string;
+                    abv_max?: number;
                     /** @description Show only cocktails whose main ingredient is in the given list. Comma separated list of ingredient IDs */
                     main_ingredient_id?: string;
                     /** @description Filter by total number of ingredients */
-                    total_ingredients?: string;
+                    total_ingredients?: number;
                     /** @description Filter by total number of missing ingredients */
-                    missing_ingredients?: string;
+                    missing_ingredients?: number;
                     /** @description Filter by total number of missing bar ingredients */
-                    missing_bar_ingredients?: string;
-                    /** @description Show cocktails that contain given ingredient IDs */
+                    missing_bar_ingredients?: number;
+                    /** @description Show cocktails that contain given ingredient ID(s) */
                     specific_ingredients?: string;
-                    /** @description Show cocktails that do not contain given ingredient IDs */
+                    /** @description Show cocktails that do not contain given ingredient ID(s) */
                     ignore_ingredients?: string;
                 };
                 /** @description Sort by attributes. Available attributes: `name`, `created_at`, `average_rating`, `user_rating`, `abv`, `total_ingredients`, `missing_ingredients`, `missing_bar_ingredients`, `favorited_at`, `random`. */
@@ -7525,6 +7617,8 @@ export interface operations {
                             scraper_meta: {
                                 _id: string;
                                 source: string;
+                                /** @description The HTML content of the scraped page, if available. */
+                                html_content?: string | null;
                             }[];
                         };
                     };

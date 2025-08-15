@@ -16,8 +16,7 @@ import type { CocktailRecipeDraft02 as Draft2Schema } from '@/schema/draft2'
 import type { CocktailRecipe as Draft1Schema } from '@/schema/draft1'
 import { useTitle } from '@/composables/title'
 import AppState from '@/AppState'
-import { useLLM } from '@/composables/useGenerativeAI'
-import { jsonSchema } from 'ai'
+import { createBookmarkletConfig, useBookmarklet } from '@/composables/useBookmarklet'
 
 interface Ingredient {
     id: string,
@@ -55,17 +54,18 @@ const { t } = useI18n()
 const router = useRouter()
 const route = useRoute()
 const toast = useSaltRimToast()
-const llm = useLLM()
+// const llm = useLLM()
 const isLoading = ref(false)
 const isImporting = ref(false)
 const showIngredientDialog = ref(false)
 const ingredientEdit = ref<CocktailIngredient | SubstituteCocktailIngredient | null>(null)
-const importType = ref('url')
+const importType = ref<'url' | 'json' | 'bookmarklet' | 'ai'>('url')
 const similarCocktails = ref([] as Cocktail[])
 const isLoadingSimilar = ref(false)
+const bookmarkletUrl = ref<string | null>(null)
 const bar = ref({} as Bar)
 const appState = new AppState()
-const duplicateAction = ref('none')
+// const duplicateAction = ref('none')
 const source = ref<{
     url: null | string,
     json: null | string,
@@ -451,6 +451,23 @@ async function init()
     }
 }
 
+async function setupBookmarklet() {
+    isLoading.value = true
+    const token = (await BarAssistantClient.saveToken({
+        name: 'bookmarklet',
+        abilities: ['cocktails.import'],
+    }))?.data.token ?? ''
+    isLoading.value = false
+
+    const { generateBookmarkletCode } = useBookmarklet()
+    const config = createBookmarkletConfig(
+        `${window.srConfig.API_URL}/api/import/scrape`,
+        token,
+        appState.bar.id.toString(),
+    )
+    bookmarkletUrl.value = generateBookmarkletCode({ config })
+}
+
 init()
 </script>
 <template>
@@ -468,6 +485,7 @@ init()
                     <SaltRimRadio v-model="importType" :title="t('import.type-url-title')" :description="t('import.type-url-description')" value="url"></SaltRimRadio>
                     <SaltRimRadio v-model="importType" :title="t('import.type-json-title')" :description="t('import.type-json-description')" value="json"></SaltRimRadio>
                     <!-- <SaltRimRadio v-model="importType" :title="t('import.type-ai-title')" :description="t('import.type-ai-description')" value="ai"></SaltRimRadio> -->
+                    <SaltRimRadio v-model="importType" :title="t('import.type-bookmarklet-title')" :description="t('import.type-bookmarklet-description')" value="bookmarklet"></SaltRimRadio>
                 </div>
             </div>
             <div class="alert alert--info" style="margin: 1rem 0;">
@@ -482,6 +500,19 @@ init()
                 <label class="form-label form-label--required" for="import-source">{{ t('source') }}:</label>
                 <textarea id="import-source" v-model="source.ai_content" class="form-input" rows="14" required></textarea>
             </div> -->
+            <div v-else-if="importType === 'bookmarklet'" class="form-group">
+                <h3>Guide</h3>
+                <OverlayLoader v-if="isLoading" />
+                <p>Bookmarklet is a small piece of JavaScript code that you can save as a bookmark in your browser. It allows you to create a JSON object that you can import directly into Bar Assistant. It particulary useful when you want to import recipe from a private page. <strong>Generating a bookmarklet will create a new personal access token.</strong></p>
+                <button class="button button--dark" type="button" @click="setupBookmarklet" :disabled="bookmarkletUrl != null">Generate a new bookmarklet</button>
+                <ol v-if="bookmarkletUrl">
+                    <li>Drag the following link to your bookmarks bar: <a :href="bookmarkletUrl">Copy cocktail JSON</a></li>
+                    <li>Visit the page with cocktail recipe you want to import</li>
+                    <li>Click the bookmarklet in your bookmarks bar</li>
+                    <li>You will get alert that JSON format was copied to clipboard</li>
+                    <li>Select JSON as import type and paste the text</li>
+                </ol>
+            </div>
             <div v-else class="form-group">
                 <label class="form-label form-label--required" for="import-source">{{ t('source') }}:</label>
                 <textarea id="import-source" v-model="source.json" class="form-input" rows="14" required></textarea>
