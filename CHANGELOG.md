@@ -13,6 +13,9 @@
             - Ask to generate tags based on cocktail recipe
         - Ingredient form page
             - Fill in basic ingredient information based on name
+- Added bookmarklet generation
+    - You can now generate draft2 cocktail JSON from from any website using bookmarklet
+- Added support for `cocktails.import` personal access token scope
 
 # v4.6.0
 ## New

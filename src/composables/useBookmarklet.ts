@@ -6,17 +6,10 @@ export interface BookmarkletConfig {
     barId: string;
 }
 
-export interface BookmarkletOptions {
-    config: BookmarkletConfig;
-}
-
 export function useBookmarklet() {
     const isGenerating = ref(false);
 
-    const generateBookmarkletCode = (options: BookmarkletOptions): string => {
-        const { config } = options;
-
-        // Create the JavaScript code that will be executed when the bookmarklet is clicked
+    const generateBookmarkletCode = (config: BookmarkletConfig): string => {
         const bookmarkletScript = `
       (function() {
         try {
@@ -66,18 +59,5 @@ export function useBookmarklet() {
     return {
         isGenerating,
         generateBookmarkletCode,
-    };
-}
-
-// Helper function to create a default config
-export function createBookmarkletConfig(
-    serverUrl: string,
-    authToken: string,
-    barId: string,
-): BookmarkletConfig {
-    return {
-        serverUrl,
-        authToken,
-        barId,
     };
 }

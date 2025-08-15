@@ -16,7 +16,7 @@ import type { CocktailRecipeDraft02 as Draft2Schema } from '@/schema/draft2'
 import type { CocktailRecipe as Draft1Schema } from '@/schema/draft1'
 import { useTitle } from '@/composables/title'
 import AppState from '@/AppState'
-import { createBookmarkletConfig, useBookmarklet } from '@/composables/useBookmarklet'
+import { useBookmarklet } from '@/composables/useBookmarklet'
 
 interface Ingredient {
     id: string,
@@ -460,12 +460,11 @@ async function setupBookmarklet() {
     isLoading.value = false
 
     const { generateBookmarkletCode } = useBookmarklet()
-    const config = createBookmarkletConfig(
-        `${window.srConfig.API_URL}/api/import/scrape`,
-        token,
-        appState.bar.id.toString(),
-    )
-    bookmarkletUrl.value = generateBookmarkletCode({ config })
+    bookmarkletUrl.value = generateBookmarkletCode({
+        serverUrl: `${window.srConfig.API_URL}/api/import/scrape`,
+        authToken: token,
+        barId: appState.bar.id.toString(),
+    })
 }
 
 init()
@@ -477,7 +476,6 @@ init()
         </PageHeader>
         <h3 class="form-section-title">{{ t('import.type') }}</h3>
         <div class="block-container block-container--padded">
-            <!-- <OverlayLoader v-if="isLoading" /> -->
             <SubscriptionCheck>Subscribe to "Mixologist" plan to remove limit of two import actions per minute!</SubscriptionCheck>
             <div class="form-group">
                 <label class="form-label form-label--required">{{ t('type') }}:</label>
