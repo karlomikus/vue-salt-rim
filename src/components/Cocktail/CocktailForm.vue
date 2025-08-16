@@ -433,15 +433,15 @@ function updateSortPosition() {
         return
     }
 
-    const sortedIngredientList = sortable.value.toArray() as number[]
+    const sortedIngredientList = sortable.value.toArray() as string[]
 
     cocktail.value.ingredients.forEach((cIngredient) => {
-        cIngredient.sort = sortedIngredientList.findIndex(sortedId => sortedId === cIngredient.ingredient.id) + 1
+        cIngredient.sort = sortedIngredientList.findIndex(sortedId => parseInt(sortedId) === cIngredient.ingredient.id) + 1
     })
 }
 
 async function submit() {
-    const sortedIngredientList = sortable.value.toArray() as number[]
+    const sortedIngredientList = sortable.value.toArray() as string[]
 
     isLoading.value = true
 
@@ -481,7 +481,7 @@ async function submit() {
                     optional: cIngredient.optional,
                     is_specified: cIngredient.is_specified,
                     note: cIngredient.note,
-                    sort: sortedIngredientList.findIndex(sortedId => sortedId === cIngredient.ingredient.id) + 1,
+                    sort: sortedIngredientList.findIndex(sortedId => parseInt(sortedId) === cIngredient.ingredient.id) + 1,
                     substitutes: substitutes
                 }
             })
