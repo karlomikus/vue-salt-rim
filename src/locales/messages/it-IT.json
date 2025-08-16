@@ -29,7 +29,7 @@
     "remove-from-list": "Rimuovi dalla lista della spesa",
     "update-success": "Ingrediente aggiornato con successo",
     "create-success": "Ingrediente creato con successo",
-    "name-placeholder": "<Not selected>",
+    "name-placeholder": "Not selected",
     "delete-confirm": "Questo eliminerà definitivamente l'ingrediente \"{name}\". Questa azione modificherà {total} ricette cocktail.",
     "shelf-remove-success": "Rimosso \"{name}\" dalla dispensa",
     "shelf-add-success": "Aggiunto \"{name}\" alla dispensa",

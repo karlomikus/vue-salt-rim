@@ -29,7 +29,7 @@
     "remove-from-list": "Remover da lista de compras",
     "update-success": "Ingrediente atualizado com sucesso",
     "create-success": "Ingrediente criado com sucesso",
-    "name-placeholder": "<Not selected>",
+    "name-placeholder": "Not selected",
     "delete-confirm": "Isto irá apagar permanentemente o ingrediente com o nome \"{name}\". Esta ação irá modificar {total} receitas de coquetel.",
     "shelf-remove-success": "\"{name}\" foi removido(a) da sua prateleira",
     "shelf-add-success": "Adicionado \"{name}\" à sua prateleira",

@@ -383,7 +383,7 @@ function addIngredient() {
         ingredient: {
             id: 0,
             slug: '',
-            name: t('ingredient.name-placeholder'),
+            name: `<${t('ingredient.name-placeholder')}>`,
         } as components['schemas']['Ingredient']
     }
 

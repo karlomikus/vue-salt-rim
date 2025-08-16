@@ -29,7 +29,7 @@
     "remove-from-list": "Supprimer de la liste de courses",
     "update-success": "Ingrédient mis à jour avec succès",
     "create-success": "Ingrédient créé avec succès",
-    "name-placeholder": "<Non sélectionné>",
+    "name-placeholder": "Non sélectionné",
     "delete-confirm": "Cela supprimera définitivement l’ingrédient avec le nom \"{name}\". Cette action aura un impact sur {total} cocktails.",
     "shelf-remove-success": "Retiré \"{name}\" de votre étagère",
     "shelf-add-success": "Ajouté \"{name}\" à votre étagère",

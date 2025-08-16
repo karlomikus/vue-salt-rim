@@ -29,7 +29,7 @@
     "remove-from-list": "Ta bort från inköpslista",
     "update-success": "Ingrediens har uppdaterats",
     "create-success": "Ingrediensen har skapats",
-    "name-placeholder": "<Ej vald>",
+    "name-placeholder": "Ej vald",
     "delete-confirm": "Detta kommer permanent ta bort ingrediensen \"{name}\". Denna åtgärd kommer att ändra {total} drinkrecept.",
     "shelf-remove-success": "Tog bort \"{name}\" från din hylla",
     "shelf-add-success": "Lade till \"{name}\" på din hylla",

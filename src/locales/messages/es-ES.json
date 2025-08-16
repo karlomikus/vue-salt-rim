@@ -29,7 +29,7 @@
     "remove-from-list": "Eliminar de la lista de compras",
     "update-success": "Ingrediente actualizado con éxito",
     "create-success": "Ingrediente creado con éxito",
-    "name-placeholder": "<No seleccionado>",
+    "name-placeholder": "No seleccionado",
     "delete-confirm": "Esto eliminará permanentemente el ingrediente con el nombre {name}. Esta acción modificará las recetas de cócteles {total}.",
     "shelf-remove-success": "Eliminado {name} de tu estantería",
     "shelf-add-success": "Añadido {name} a tu estante",

@@ -29,7 +29,7 @@
     "remove-from-list": "Ukloni s popisa za kupovinu",
     "update-success": "Sastojak uspješno uređen",
     "create-success": "Sastojak uspješno dodan",
-    "name-placeholder": "<Nije odabran>",
+    "name-placeholder": "Nije odabran",
     "delete-confirm": "Ova akcija će trajno ukloniti \"{name}\". Ovo će utjecati na {total} koktela!",
     "shelf-remove-success": "Sastojak \"{name}\" uklonjen iz tvoje police",
     "shelf-add-success": "Sastojak \"{name}\" dodan na tvoju policu",

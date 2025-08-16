@@ -29,7 +29,7 @@
     "remove-from-list": "从购物清单移除",
     "update-success": "配料更新成功",
     "create-success": "配料创建成功",
-    "name-placeholder": "<未选择>",
+    "name-placeholder": "未选择",
     "delete-confirm": "将永久删除名为 \"{name}\" 的配料。此操作将修改 {total} 种鸡尾酒配方。",
     "shelf-remove-success": "已将 \"{name}\" 从货架移除",
     "shelf-add-success": "已将 \"{name}\" 添加到货架",

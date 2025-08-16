@@ -29,7 +29,7 @@
     "remove-from-list": "Usuń z listy zakupów",
     "update-success": "Składnik został pomyślnie zaktualizowany",
     "create-success": "Składnik został pomyślnie utworzony",
-    "name-placeholder": "<Nie zaznaczono>",
+    "name-placeholder": "Nie zaznaczono",
     "delete-confirm": "Spowoduje to trwałe usunięcie składnika z nazwą \"{name}\". Ta akcja zmodyfikuje {total} przepisów na koktajl.",
     "shelf-remove-success": "Usuń \"{name}\" z Twojej półki",
     "shelf-add-success": "Dodaj \"{name}\" do Twojej półki",
