@@ -411,8 +411,8 @@ export default class BarAssistantClient {
     return (await client.POST('/collections', { body: data })).data
   }
 
-  static async scrapeCocktail(url: string) {
-    return (await client.POST('/import/scrape', { body: { source: url } })).data
+  static async scrapeCocktail(url: string, content: string | null = null) {
+    return (await client.POST('/import/scrape', { body: { source: url, html_content: content } })).data
   }
 
   static async getGlasses(query = {}) {

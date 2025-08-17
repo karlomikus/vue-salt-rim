@@ -1368,6 +1368,66 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/public/{barId}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Show bar
+         * @description Show public information about a single bar. To access this endpoint the bar must be marked as public.
+         */
+        get: operations["showPublicBar"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/public/{barId}/cocktails": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * List cocktails
+         * @description List and filter bar cocktails. To access this endpoint the bar must be marked as public.
+         */
+        get: operations["listPublicBarCocktails"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/public/{barId}/cocktails/{slugOrPublicId}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Show cocktail
+         * @description Show public information about cocktail. If valid public ID is provided it will used, if not it will use cocktail slug.
+         */
+        get: operations["showPublicBarCocktail"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/cocktails/{id}/ratings": {
         parameters: {
             query?: never;
@@ -3169,6 +3229,199 @@ export interface components {
             oauth_credentials: components["schemas"]["OauthCredential"][];
             settings: components["schemas"]["ProfileSettings"];
         };
+        /** @description Public details about a bar */
+        PublicBarResource: {
+            /**
+             * @description Unique number that can be used to reference a specific bar.
+             * @example 1
+             */
+            id: number;
+            /**
+             * @description Unique string that can be used to reference a specific bar.
+             * @example bar-name-1
+             */
+            slug: string;
+            /**
+             * @description Name of the bar
+             * @example Bar name
+             */
+            name: string;
+            /**
+             * @description Optional short quip about the bar
+             * @example A short subtitle of a bar
+             */
+            subtitle: string | null;
+            /**
+             * @description Description of the bar
+             * @example Bar description
+             */
+            description: string | null;
+            /** @description Images associated with the bar */
+            images: components["schemas"]["PublicImageResource"][];
+        };
+        /** @description Public details about a cocktail */
+        PublicCocktailResource: {
+            /**
+             * @description Unique string that can be used to reference a specific cocktail.
+             * @example cocktail-name-1
+             */
+            slug: string;
+            /**
+             * @description Name of the cocktail
+             * @example Cocktail Name
+             */
+            name: string;
+            /**
+             * @description Instructions for preparing the cocktail
+             * @example Shake well and serve.
+             */
+            instructions: string;
+            /**
+             * @description Garnish for the cocktail
+             * @example Lemon twist
+             */
+            garnish: string | null;
+            /**
+             * @description Description of the cocktail
+             * @example A refreshing cocktail with a twist.
+             */
+            description: string | null;
+            /**
+             * @description Source of the cocktail recipe
+             * @example https://example.com/cocktail-recipe
+             */
+            source: string | null;
+            /**
+             * @description Public identifier (ULID) for the cocktail
+             * @example 12345
+             */
+            public_id: string;
+            /**
+             * Format: date-time
+             * @description Date and time when the cocktail was made public
+             * @example 2023-10-01T12:00:00Z
+             */
+            public_at: string | null;
+            /** @description Images associated with the cocktail */
+            images: components["schemas"]["PublicImageResource"][];
+            /** @description Tags associated with the cocktail */
+            tags: string[];
+            /**
+             * @description Type of glass used for the cocktail
+             * @example Highball glass
+             */
+            glass: string | null;
+            /** @description Utensils used for preparing the cocktail */
+            utensils: string[];
+            /**
+             * @description Method of preparation for the cocktail
+             * @example Shaken
+             */
+            method: string | null;
+            /**
+             * Format: date-time
+             * @description Date and time when the cocktail was created
+             * @example 2023-10-01T12:00:00Z
+             */
+            created_at: string;
+            /**
+             * Format: float
+             * @description Alcohol by volume percentage of the cocktail
+             * @example 0.15
+             */
+            abv: number | null;
+            /**
+             * @description Year the cocktail was created or published
+             * @example 2023
+             */
+            year: number | null;
+            /** @description List of ingredients required to make the cocktail */
+            ingredients: {
+                /**
+                 * @description Name of the ingredient
+                 * @example Gin
+                 */
+                name: string;
+                /**
+                 * Format: float
+                 * @description Amount of the ingredient in the cocktail
+                 * @example 50
+                 */
+                amount: number;
+                /**
+                 * Format: float
+                 * @description Maximum amount of the ingredient that can be used
+                 * @example null
+                 */
+                amount_max: number | null;
+                /**
+                 * @description Units of measurement for the ingredient amount
+                 * @example ml
+                 */
+                units: string;
+                /** @description Formatted units for the ingredient amount */
+                units_formatted: components["schemas"]["AmountFormats"];
+                /**
+                 * @description Indicates if the ingredient is optional
+                 * @example false
+                 */
+                optional: boolean;
+                /**
+                 * @description Additional notes about the ingredient
+                 * @example Use fresh gin for best results.
+                 */
+                note: string | null;
+                /** @description List of substitute ingredients that can be used in place of this ingredient */
+                substitutes: {
+                    /**
+                     * @description Name of the substitute ingredient
+                     * @example Vodka
+                     */
+                    name: string;
+                    /**
+                     * Format: float
+                     * @description Amount of the substitute ingredient
+                     * @example 50
+                     */
+                    amount: number;
+                    /**
+                     * Format: float
+                     * @description Maximum amount of the substitute ingredient that can be used
+                     * @example null
+                     */
+                    amount_max: number | null;
+                    /**
+                     * @description Units of measurement for the substitute ingredient amount
+                     * @example ml
+                     */
+                    units: string;
+                }[];
+            }[];
+        };
+        /** @description Public details about an image */
+        PublicImageResource: {
+            /**
+             * @description Sort order of the image
+             * @example 1
+             */
+            sort: number;
+            /**
+             * @description Placeholder hash for the image, used for lazy loading
+             * @example abc123
+             */
+            placeholder_hash: string;
+            /**
+             * Format: uri
+             * @description URL of the image
+             * @example https://example.com/image.jpg
+             */
+            url: string;
+            /**
+             * @description Copyright information for the image
+             * @example Author name
+             */
+            copyright: string | null;
+        };
         /** @description SSO Provider information */
         SSOProvider: {
             /** @example github */
@@ -3579,7 +3832,7 @@ export interface components {
              * Format: binary
              * @description Image file. Base64 encoded images also supported. Max 50MB
              */
-            image: string | null | Blob;
+            image: string | null;
             /** @description Existing image id, used to update an existing image */
             id?: number | null;
             /** @example 1 */
@@ -7594,7 +7847,9 @@ export interface operations {
             content: {
                 "application/json": {
                     /** @example https://www.example.com/recipe-url */
-                    source?: string;
+                    source: string;
+                    /** @example <p>HTML content</p> */
+                    html_content?: string | null;
                 };
             };
         };
@@ -9243,6 +9498,197 @@ export interface operations {
                 content: {
                     "application/json": {
                         data?: components["schemas"]["APIError"];
+                    };
+                };
+            };
+            /** @description Resource record not found. */
+            404: {
+                headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data?: components["schemas"]["APIError"];
+                    };
+                };
+            };
+        };
+    };
+    showPublicBar: {
+        parameters: {
+            query?: {
+                /** @description Set current page number */
+                page?: number;
+            };
+            header?: never;
+            path: {
+                /** @description Database id of bar */
+                barId: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful response */
+            200: {
+                headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data: components["schemas"]["PublicBarResource"];
+                    };
+                };
+            };
+            /** @description Resource record not found. */
+            404: {
+                headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data?: components["schemas"]["APIError"];
+                    };
+                };
+            };
+        };
+    };
+    listPublicBarCocktails: {
+        parameters: {
+            query?: {
+                /** @description Set current page number */
+                page?: number;
+                /** @description Filter by attributes. You can specify multiple matching filter values by passing a comma separated list of values. */
+                filter?: {
+                    /** @description Filter by cocktail names(s) (fuzzy search) */
+                    name?: string;
+                    /** @description Filter by cocktail ingredient names(s) (fuzzy search) */
+                    ingredient_name?: string;
+                    /** @description Show only cocktails on the bar shelf */
+                    bar_shelf?: boolean;
+                    /** @description Filter by greater than or equal ABV */
+                    abv_min?: number;
+                    /** @description Filter by less than or equal ABV */
+                    abv_max?: number;
+                };
+                /** @description Sort by attributes. Available attributes: `name`, `created_at`, `average_rating`, `user_rating`, `abv`, `total_ingredients`, `missing_ingredients`, `missing_bar_ingredients`, `favorited_at`, `random`. */
+                sort?: string;
+            };
+            header?: never;
+            path: {
+                /** @description Database id of bar */
+                barId: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful response */
+            200: {
+                headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        /** @description The data for the current page */
+                        data?: components["schemas"]["PublicCocktailResource"][];
+                        /** @description Links for pagination */
+                        links?: {
+                            /** @description Link to the first page */
+                            first?: string | null;
+                            /** @description Link to the last page */
+                            last?: string | null;
+                            /** @description Link to the previous page */
+                            prev?: string | null;
+                            /** @description Link to the next page */
+                            next?: string | null;
+                        };
+                        meta?: {
+                            /** @description The current page number */
+                            current_page?: number;
+                            /** @description The starting index of the current page */
+                            from?: number;
+                            /** @description The last page number */
+                            last_page?: number;
+                            links?: {
+                                /** @description The URL of the link */
+                                url?: string | null;
+                                /** @description The label of the link */
+                                label?: string | null;
+                                /** @description Whether the link is active */
+                                active?: boolean | null;
+                            }[];
+                            /** @description The path of the current page */
+                            path?: string;
+                            /** @description The number of items per page */
+                            per_page?: number;
+                            /** @description The ending index of the current page */
+                            to?: number;
+                            /** @description The total number of items */
+                            total?: number;
+                        };
+                    };
+                };
+            };
+            /** @description Resource record not found. */
+            404: {
+                headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data?: components["schemas"]["APIError"];
+                    };
+                };
+            };
+        };
+    };
+    showPublicBarCocktail: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Database id of bar */
+                barId: number;
+                /** @description Cocktail slug or public id (ULID) */
+                slugOrPublicId: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful response */
+            200: {
+                headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data: components["schemas"]["PublicCocktailResource"];
                     };
                 };
             };

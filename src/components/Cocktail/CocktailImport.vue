@@ -59,7 +59,7 @@ const isLoading = ref(false)
 const isImporting = ref(false)
 const showIngredientDialog = ref(false)
 const ingredientEdit = ref<CocktailIngredient | SubstituteCocktailIngredient | null>(null)
-const importType = ref<'url' | 'json' | 'bookmarklet' | 'ai'>('url')
+const importType = ref<'url' | 'json' | 'bookmarklet' | 'ai' | 'html'>('url')
 const similarCocktails = ref([] as Cocktail[])
 const isLoadingSimilar = ref(false)
 const bookmarkletUrl = ref<string | null>(null)
@@ -70,10 +70,12 @@ const source = ref<{
     url: null | string,
     json: null | string,
     ai_content: null | string,
+    html: null | string,
 }>({
     url: null,
     json: null,
     ai_content: null,
+    html: null,
 })
 const result = ref<LocalSchema>({} as LocalSchema)
 const cocktailTags = computed({
@@ -99,6 +101,7 @@ function clearImport() {
         url: null,
         json: null,
         ai_content: null,
+        html: null,
     }
     ingredientEdit.value = null
     result.value = {} as LocalSchema
@@ -122,6 +125,10 @@ async function importCocktail() {
         const prompt = `You are a cocktail expert. Please extract the cocktail recipe from the following text and return it in JSON format compatible with the Draft 2 schema: ${source.value.ai_content}`
         // await llm.generate(prompt, jsonSchema(importSchemaObject as object))
         // const res = llm.response.value
+    }
+
+    if (importType.value == 'html') {
+        fromHtml()
     }
 }
 
@@ -252,6 +259,35 @@ function fromJson() {
         console.error('Unable to parse JSON', e)
     }
     isLoading.value = false
+}
+
+async function fromHtml() {
+    isLoading.value = true
+    const resp = (await BarAssistantClient.scrapeCocktail('http://barassistant.app', source.value.html))?.data ?? null
+    isLoading.value = false
+    if (resp) {
+        const schema = resp.schema
+        if (!schema) {
+            return
+        }
+
+        findSimilarCocktails(schema.recipe.name)
+
+        result.value = {
+            ...schema,
+            recipe: {
+                ...schema.recipe,
+                ingredients: schema.recipe?.ingredients?.map(i => {
+                    return {
+                        ...i,
+                        _source: resp.scraper_meta.find(m => m._id == i._id)?.source,
+                        matchedIngredient: null,
+                        refIngredient: schema.ingredients.find(ing => ing._id == i._id),
+                    }
+                })
+            }
+        } as LocalSchema
+    }
 }
 
 function manuallyMatch(ingredient: CocktailIngredient | SubstituteCocktailIngredient) {
@@ -483,6 +519,7 @@ init()
                     <SaltRimRadio v-model="importType" :title="t('import.type-url-title')" :description="t('import.type-url-description')" value="url"></SaltRimRadio>
                     <SaltRimRadio v-model="importType" :title="t('import.type-json-title')" :description="t('import.type-json-description')" value="json"></SaltRimRadio>
                     <!-- <SaltRimRadio v-model="importType" :title="t('import.type-ai-title')" :description="t('import.type-ai-description')" value="ai"></SaltRimRadio> -->
+                    <SaltRimRadio v-model="importType" :title="t('import.type-html-title')" :description="t('import.type-html-description')" value="html"></SaltRimRadio>
                     <SaltRimRadio v-model="importType" :title="t('import.type-bookmarklet-title')" :description="t('import.type-bookmarklet-description')" value="bookmarklet"></SaltRimRadio>
                 </div>
             </div>
@@ -511,6 +548,10 @@ init()
                     <li>Select JSON as import type and paste the text</li>
                 </ol>
             </div>
+            <div v-else-if="importType === 'html'" class="form-group">
+                <label class="form-label form-label--required" for="import-source">{{ t('source') }}:</label>
+                <textarea id="import-source" v-model="source.html" class="form-input" rows="14" required></textarea>
+            </div>
             <div v-else class="form-group">
                 <label class="form-label form-label--required" for="import-source">{{ t('source') }}:</label>
                 <textarea id="import-source" v-model="source.json" class="form-input" rows="14" required></textarea>
@@ -533,7 +574,7 @@ init()
                     <span>{{ t('duplicate.overwrite') }}</span>
                 </label>
             </div> -->
-            <div style="display: flex; gap: var(--gap-size-2);">
+            <div style="display: flex; gap: var(--gap-size-2);" v-if="importType != 'bookmarklet'">
                 <button type="button" class="button button--outline" @click.prevent="clearImport">{{ t('clear') }}</button>
                 <button type="button" class="button button--dark" @click.prevent="importCocktail" :disabled="isLoading"><OverlayLoader v-if="isLoading" />{{ t('import.start') }}</button>
             </div>
