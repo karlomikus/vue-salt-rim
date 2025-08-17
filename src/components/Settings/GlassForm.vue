@@ -36,6 +36,7 @@ import type { components } from '@/api/api'
 import { ref, useTemplateRef } from 'vue'
 import { useSaltRimToast } from '@/composables/toast'
 import { useI18n } from 'vue-i18n'
+import { useImageUpload } from '@/composables/useImageUpload';
 
 type Glass = components['schemas']['Glass']
 
@@ -52,6 +53,7 @@ const props = defineProps({
 const emit = defineEmits(['glassDialogClosed'])
 const { t } = useI18n()
 const toast = useSaltRimToast()
+const uploader = useImageUpload()
 const isLoading = ref(false)
 const glass = ref<Glass>(props.sourceGlass)
 const imagesUpload = useTemplateRef('imagesUpload')
@@ -68,13 +70,8 @@ async function submit() {
     } as components['schemas']['GlassRequest']
 
     if (imagesUpload.value) {
-        const imageResources = await imagesUpload.value.save().catch(() => {
-            toast.error(`${t('imageupload.error')}`)
-        }) || []
-
-        if (imageResources.length > 0) {
-            postData.images = imageResources.map(img => img.id)
-        }
+        const imageResources = await uploader.saveImages(imagesUpload.value)
+        postData.images = imageResources.map((img: any) => img.id)
     }
 
     if (glass.value.id) {

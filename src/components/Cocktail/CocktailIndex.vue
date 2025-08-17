@@ -34,19 +34,19 @@
                             </template>
                         </SaltRimDialog>
                     </Refinement>
-                    <Refinement v-if="refineCollections.length > 0" id="collection" v-model="activeFilters.collections" :title="$t('collections.title')" :refinements="refineCollections" @change="updateRouterPath"></Refinement>
+                    <Refinement v-if="refineCollections.length > 0" id="collection" v-model="activeFilters.collection_id" :title="$t('collections.title')" :refinements="refineCollections" @change="updateRouterPath"></Refinement>
                     <Refinement v-if="refineUserShelves.length > 0" id="user_shelves" v-model="activeFilters.user_shelves" :title="$t('public-shelves')" :refinements="refineUserShelves" @change="updateRouterPath"></Refinement>
-                    <Refinement id="users" v-model="activeFilters.users" :searchable="true" :title="$t('user-recipes')" :refinements="refineUsers" @change="updateRouterPath"></Refinement>
-                    <Refinement id="main-ingredient" v-model="activeFilters.main_ingredients" :searchable="true" :title="$t('ingredient.main')" :refinements="refineMainIngredients" @change="updateRouterPath"></Refinement>
-                    <Refinement id="method" v-model="activeFilters.methods" :title="$t('method.title')" :refinements="refineMethods" @change="updateRouterPath"></Refinement>
+                    <Refinement id="users" v-model="activeFilters.created_user_id" :searchable="true" :title="$t('user-recipes')" :refinements="refineUsers" @change="updateRouterPath"></Refinement>
+                    <Refinement id="main-ingredient" v-model="activeFilters.main_ingredient_id" :searchable="true" :title="$t('ingredient.main')" :refinements="refineMainIngredients" @change="updateRouterPath"></Refinement>
+                    <Refinement id="method" v-model="activeFilters.cocktail_method_id" :title="$t('method.title')" :refinements="refineMethods" @change="updateRouterPath"></Refinement>
                     <Refinement id="abv" v-model="activeFilters.abv" :title="$t('strength')" :refinements="refineABV" type="radio" @change="updateRouterPath"></Refinement>
-                    <Refinement id="tag" v-model="activeFilters.tags" :searchable="true" :title="$t('tag.tags')" :refinements="refineTags" @change="updateRouterPath"></Refinement>
-                    <Refinement id="glass" v-model="activeFilters.glasses" :title="$t('glass-type.title')" :refinements="refineGlasses" @change="updateRouterPath"></Refinement>
+                    <Refinement id="tag" v-model="activeFilters.tag_id" :searchable="true" :title="$t('tag.tags')" :refinements="refineTags" @change="updateRouterPath"></Refinement>
+                    <Refinement id="glass" v-model="activeFilters.glass_id" :title="$t('glass-type.title')" :refinements="refineGlasses" @change="updateRouterPath"></Refinement>
                     <Refinement id="total-ingredients" v-model="activeFilters.total_ingredients" :title="$t('total.ingredients')" :refinements="refineIngredientsCount" type="radio" @change="updateRouterPath"></Refinement>
                     <Refinement id="missing-bar-ingredients" v-model="activeFilters.missing_bar_ingredients" :title="$t('missing-ingredients') + ' (' + $t('bars.bar') + ')'" :refinements="refineMissingBarIngredients" type="radio" @change="updateRouterPath"></Refinement>
                     <Refinement id="missing-ingredients" v-model="activeFilters.missing_ingredients" :title="$t('missing-ingredients') + ' (' + $t('shelf.title') + ')'" :refinements="refineMissingIngredients" type="radio" @change="updateRouterPath"></Refinement>
-                    <Refinement id="user-rating" v-model="activeFilters.user_rating" :title="$t('your-rating')" :refinements="refineRatings" type="radio" @change="updateRouterPath"></Refinement>
-                    <Refinement id="avg-rating" v-model="activeFilters.average_rating" :title="$t('avg-rating')" :refinements="refineRatings" type="radio" @change="updateRouterPath"></Refinement>
+                    <Refinement id="user-rating" v-model="activeFilters.user_rating_min" :title="$t('your-rating')" :refinements="refineRatings" type="radio" @change="updateRouterPath"></Refinement>
+                    <Refinement id="avg-rating" v-model="activeFilters.average_rating_min" :title="$t('avg-rating')" :refinements="refineRatings" type="radio" @change="updateRouterPath"></Refinement>
                     <button class="button button--dark sm-show" type="button" @click="showRefinements = false">{{ $t('cancel') }}</button>
                 </div>
             </div>
@@ -97,7 +97,7 @@
                             </button>
                         </template>
                         <template #dialog>
-                            <CollectionDialog title="collections.add-from-query" :cocktails="currentCocktailIds" @collection-dialog-closed="handleCollectionsDialogClosed" />
+                            <CollectionDialog :title="$t('collections.add-from-query')" :cocktails="currentCocktailIds" @collection-dialog-closed="handleCollectionsDialogClosed" />
                         </template>
                     </SaltRimDialog>
                     <button v-show="totalActiveRefinements > 0" type="button" class="button button--outline button--icon" :title="$t('clear-filters')" @click.prevent="clearRefinements">
@@ -106,7 +106,7 @@
                 </div>
                 <div>
                     <OverlayLoader v-if="isLoading" />
-                    <CocktailGridContainer v-if="cocktails.length > 0" v-slot="observer">
+                    <CocktailGridContainer v-if="cocktails.length > 0" v-slot="{observer}">
                         <CocktailGridItem v-for="cocktail in cocktails" :key="cocktail.id" :cocktail="cocktail" :observer="observer" />
                     </CocktailGridContainer>
                     <EmptyState v-else style="margin-top: 1rem;">
@@ -211,19 +211,19 @@ export default {
                 bar_shelf: false,
                 favorites: false,
                 is_public: false,
-                tags: [],
-                glasses: [],
-                methods: [],
-                main_ingredients: [],
-                collections: [],
-                user_rating: null,
-                average_rating: null,
+                tag_id: [],
+                glass_id: [],
+                cocktail_method_id: [],
+                main_ingredient_id: [],
+                collection_id: [],
+                user_rating_min: null,
+                average_rating_min: null,
                 abv: null,
                 total_ingredients: null,
                 missing_ingredients: null,
                 missing_bar_ingredients: null,
                 user_shelves: [],
-                users: [],
+                created_user_id: [],
                 ignore_ingredients: [],
                 specific_ingredients: [],
                 ingredient_id: [],
@@ -460,13 +460,13 @@ export default {
         queryToState() {
             const state = qs.parse(this.$route.query)
 
-            this.activeFilters.tags = state.filter && state.filter.tag_id ? String(state.filter.tag_id).split(',') : []
-            this.activeFilters.methods = state.filter && state.filter.cocktail_method_id ? String(state.filter.cocktail_method_id).split(',') : []
-            this.activeFilters.glasses = state.filter && state.filter.glass_id ? String(state.filter.glass_id).split(',') : []
-            this.activeFilters.main_ingredients = state.filter && state.filter.main_ingredient_id ? String(state.filter.main_ingredient_id).split(',') : []
-            this.activeFilters.collections = state.filter && state.filter.collection_id ? String(state.filter.collection_id).split(',') : []
+            this.activeFilters.tag_id = state.filter && state.filter.tag_id ? String(state.filter.tag_id).split(',') : []
+            this.activeFilters.cocktail_method_id = state.filter && state.filter.cocktail_method_id ? String(state.filter.cocktail_method_id).split(',') : []
+            this.activeFilters.glass_id = state.filter && state.filter.glass_id ? String(state.filter.glass_id).split(',') : []
+            this.activeFilters.main_ingredient_id = state.filter && state.filter.main_ingredient_id ? String(state.filter.main_ingredient_id).split(',') : []
+            this.activeFilters.collection_id = state.filter && state.filter.collection_id ? String(state.filter.collection_id).split(',') : []
             this.activeFilters.user_shelves = state.filter && state.filter.user_shelves ? String(state.filter.user_shelves).split(',') : []
-            this.activeFilters.users = state.filter && state.filter.created_user_id ? String(state.filter.created_user_id).split(',') : []
+            this.activeFilters.created_user_id = state.filter && state.filter.created_user_id ? String(state.filter.created_user_id).split(',') : []
             this.activeFilters.on_shelf = state.filter && state.filter.on_shelf ? state.filter.on_shelf : null
             this.activeFilters.bar_shelf = state.filter && state.filter.bar_shelf ? state.filter.bar_shelf : null
             this.activeFilters.favorites = state.filter && state.filter.favorites ? state.filter.favorites : null
@@ -479,8 +479,8 @@ export default {
             this.activeFilters.id = state.filter && state.filter.id ? String(state.filter.id).split(',') : []
             this.activeFilters.ingredient_id = state.filter && state.filter.ingredient_id ? String(state.filter.ingredient_id).split(',') : []
             this.activeFilters.ingredient_substitute_id = state.filter && state.filter.ingredient_substitute_id ? String(state.filter.ingredient_substitute_id).split(',') : []
-            this.activeFilters.user_rating = state.filter && state.filter.user_rating_min ? state.filter.user_rating_min : null
-            this.activeFilters.average_rating = state.filter && state.filter.average_rating_min ? state.filter.average_rating_min : null
+            this.activeFilters.user_rating_min = state.filter && state.filter.user_rating_min ? state.filter.user_rating_min : null
+            this.activeFilters.average_rating_min = state.filter && state.filter.average_rating_min ? state.filter.average_rating_min : null
             this.searchQuery = state.filter && state.filter.name ? state.filter.name : null
             if (state.filter && (state.filter.abv_min || state.filter.abv_max)) {
                 this.activeFilters.abv = { min: state.filter.abv_min ? state.filter.abv_min : null, max: state.filter.abv_max ? state.filter.abv_max : null }
@@ -511,23 +511,23 @@ export default {
                 bar_shelf: this.activeFilters.bar_shelf,
                 favorites: this.activeFilters.favorites,
                 is_public: this.activeFilters.is_public,
-                user_rating_min: this.activeFilters.user_rating ? this.activeFilters.user_rating : null,
-                average_rating_min: this.activeFilters.average_rating ? this.activeFilters.average_rating : null,
+                user_rating_min: this.activeFilters.user_rating_min ? this.activeFilters.user_rating_min : null,
+                average_rating_min: this.activeFilters.average_rating_min ? this.activeFilters.average_rating_min : null,
                 total_ingredients: this.activeFilters.total_ingredients ? this.activeFilters.total_ingredients : null,
                 missing_ingredients: this.activeFilters.missing_ingredients ? this.activeFilters.missing_ingredients : null,
                 missing_bar_ingredients: this.activeFilters.missing_bar_ingredients ? this.activeFilters.missing_bar_ingredients : null,
                 ignore_ingredients: this.activeFilters.ignore_ingredients.length > 0 ? this.activeFilters.ignore_ingredients.join(',') : null,
-                tag_id: this.activeFilters.tags.length > 0 ? this.activeFilters.tags.join(',') : null,
-                glass_id: this.activeFilters.glasses.length > 0 ? this.activeFilters.glasses.join(',') : null,
-                cocktail_method_id: this.activeFilters.methods.length > 0 ? this.activeFilters.methods.join(',') : null,
-                main_ingredient_id: this.activeFilters.main_ingredients.length > 0 ? this.activeFilters.main_ingredients.join(',') : null,
+                tag_id: this.activeFilters.tag_id.length > 0 ? this.activeFilters.tag_id.join(',') : null,
+                glass_id: this.activeFilters.glass_id.length > 0 ? this.activeFilters.glass_id.join(',') : null,
+                cocktail_method_id: this.activeFilters.cocktail_method_id.length > 0 ? this.activeFilters.cocktail_method_id.join(',') : null,
+                main_ingredient_id: this.activeFilters.main_ingredient_id.length > 0 ? this.activeFilters.main_ingredient_id.join(',') : null,
                 specific_ingredients: this.activeFilters.specific_ingredients.length > 0 ? this.activeFilters.specific_ingredients.join(',') : null,
                 ingredient_id: this.activeFilters.ingredient_id.length > 0 ? this.activeFilters.ingredient_id.join(',') : null,
                 ingredient_substitute_id: this.activeFilters.ingredient_substitute_id.length > 0 ? this.activeFilters.ingredient_substitute_id.join(',') : null,
-                collection_id: this.activeFilters.collections.length > 0 ? this.activeFilters.collections.join(',') : null,
+                collection_id: this.activeFilters.collection_id.length > 0 ? this.activeFilters.collection_id.join(',') : null,
                 user_shelves: this.activeFilters.user_shelves.length > 0 ? this.activeFilters.user_shelves.join(',') : null,
                 id: this.activeFilters.id.length > 0 ? this.activeFilters.id.join(',') : null,
-                created_user_id: this.activeFilters.users.length > 0 ? this.activeFilters.users.join(',') : null,
+                created_user_id: this.activeFilters.created_user_id.length > 0 ? this.activeFilters.created_user_id.join(',') : null,
                 abv_min: this.activeFilters.abv ? this.activeFilters.abv.min : null,
                 abv_max: this.activeFilters.abv ? this.activeFilters.abv.max : null,
             }
@@ -571,18 +571,18 @@ export default {
                 bar_shelf: false,
                 favorites: false,
                 is_public: false,
-                tags: [],
-                glasses: [],
-                methods: [],
-                main_ingredients: [],
+                tag_id: [],
+                glass_id: [],
+                cocktail_method_id: [],
+                main_ingredient_id: [],
                 ingredients: [],
-                collections: [],
-                user_rating: null,
-                average_rating: null,
+                collection_id: [],
+                user_rating_min: null,
+                average_rating_min: null,
                 abv: null,
                 total_ingredients: null,
                 user_shelves: [],
-                users: [],
+                created_user_id: [],
                 ignore_ingredients: [],
                 specific_ingredients: [],
                 ingredient_id: [],

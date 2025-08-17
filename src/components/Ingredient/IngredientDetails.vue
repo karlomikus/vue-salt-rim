@@ -39,7 +39,6 @@
                                     <span v-else>{{ $t('ingredient.remove-from-bar-shelf') }}</span>
                                 </template>
                                 <span v-else>{{ $t('loading') }}...</span>
-                                <br>
                                 <small>{{ $t('ingredient.shelf-bar-help') }}</small>
                             </a>
                         </template>
@@ -56,7 +55,6 @@
                                     <span v-else>{{ $t('ingredient.remove-from-shelf') }}</span>
                                 </template>
                                 <span v-else>{{ $t('loading') }}...</span>
-                                <br>
                                 <small>{{ $t('ingredient.shelf-user-help') }}</small>
                             </a>
                         </template>

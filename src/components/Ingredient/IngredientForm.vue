@@ -9,17 +9,23 @@
             <div class="form-group">
                 <label class="form-label form-label--required" for="name">{{ $t('name') }}:</label>
                 <input id="name" v-model="ingredient.name" class="form-input" type="text" required>
+                <div class="form-group-ai" v-if="ingredientPrompt">
+                    <ButtonGenerate :prompt="ingredientPrompt" :format="ingredientStructuredOutput" @before-generation="onBeforePrompt" @after-generation="onAfterPrompt" title="Generate basic ingredient information"></ButtonGenerate>
+                </div>
             </div>
             <div class="form-group">
                 <label class="form-label" for="description">{{ $t('description') }}:</label>
-                <textarea id="description" v-model="ingredient.description" rows="4" class="form-input"></textarea>
+                <textarea id="description" v-model="ingredient.description" rows="10" class="form-input"></textarea>
                 <p class="form-input-hint">{{ $t('field-supports-md') }}</p>
+                <GenerationLoader v-if="isLoadingGen" />
             </div>
             <div class="form-group">
                 <label class="form-label" for="strength">{{ $t('strength') }} ({{ $t('ABV') }} %):</label>
                 <input id="strength" v-model="ingredient.strength" class="form-input" type="text">
+                <GenerationLoader v-if="isLoadingGen" />
             </div>
             <div class="sr-grid sr-grid--3-col">
+                <GenerationLoader v-if="isLoadingGen" />
                 <div class="form-group">
                     <label class="form-label" for="origin">{{ $t('origin') }}:</label>
                     <input id="origin" v-model="ingredient.origin" class="form-input" type="text">
@@ -164,6 +170,11 @@ import { useI18n } from 'vue-i18n'
 import { useSaltRimToast } from '@/composables/toast'
 import { useRoute, useRouter } from 'vue-router'
 import type { SearchResults } from '@/api/SearchResults'
+import usePrompts from '@/composables/usePrompts'
+import ButtonGenerate from '@/components/AI/ButtonGenerate.vue'
+import GenerationLoader from '../AI/GenerationLoader.vue'
+import { jsonSchema } from 'ai'
+import { useImageUpload } from '@/composables/useImageUpload';
 
 type Ingredient = components['schemas']['Ingredient']
 type IngredientPrice = components['schemas']['IngredientPrice']
@@ -176,8 +187,10 @@ const route = useRoute()
 const router = useRouter()
 const { t } = useI18n()
 const toast = useSaltRimToast()
-const imageUpload = useTemplateRef('imagesUpload')
+const uploader = useImageUpload()
+const imagesUpload = useTemplateRef('imagesUpload')
 const isLoading = ref(false)
+const isLoadingGen = ref(false)
 const isParent = ref(false)
 const isComplex = ref(false)
 const ingredient = ref<Ingredient>({
@@ -191,6 +204,61 @@ const calculators = ref<Calculator[]>([])
 const appState = new AppState()
 const bar = appState.bar
 const priceCategories = ref<PriceCategory[]>([])
+const prompts = usePrompts()
+
+const ingredientStructuredOutput = jsonSchema<{
+    description: string
+    color: string
+    origin: string
+    strength: number
+}>({
+    type: 'object',
+    properties: {
+        description: {
+            type: 'string',
+        },
+        color: {
+            type: 'string',
+        },
+        origin: {
+            type: 'string',
+        },
+        strength: {
+            type: 'number',
+        },
+    },
+    required: ['description', 'color', 'origin', 'strength'],
+})
+
+const onBeforePrompt = () => {
+    isLoadingGen.value = true
+}
+
+const onAfterPrompt = (result: any) => {
+    isLoadingGen.value = false
+    ingredient.value.description = ingredient.value.description + '\n\n' + result.description || ''
+    ingredient.value.description = ingredient.value.description.trim()
+
+    if (!ingredient.value.strength) {
+        ingredient.value.strength = result.strength || 0
+    }
+
+    if (!ingredient.value.origin) {
+        ingredient.value.origin = result.origin || ''
+    }
+
+    if (!ingredient.value.color) {
+        ingredient.value.color = result.color || '#ffffff'
+    }
+}
+
+const ingredientPrompt = computed(() => {
+    if (!ingredient.value.name || ingredient.value.name.length < 3) {
+        return null
+    }
+
+    return prompts.buildIngredientPrompt(ingredient.value.name)
+})
 
 async function refreshIngredient(id: string) {
     isLoading.value = true
@@ -312,14 +380,9 @@ async function submit() {
         })) : [],
     }
 
-    if (imageUpload.value) {
-        const imageResources = await imageUpload.value.save().catch(() => {
-            toast.error(`${t('imageupload.error')} ${t('imageupload.error-ingredient')}`)
-        }) || []
-
-        if (imageResources.length > 0) {
-            postData.images = imageResources.map(img => img.id)
-        }
+    if (imagesUpload.value) {
+        const imageResources = await uploader.saveImages(imagesUpload.value)
+        postData.images = imageResources.map((img: any) => img.id)
     }
 
     if (ingredient.value.id) {

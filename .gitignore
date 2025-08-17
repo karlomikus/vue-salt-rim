@@ -3,4 +3,5 @@ node_modules/
 dist/
 public/config.js
 .vscode
+.zed
 spec.yml

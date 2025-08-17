@@ -83,6 +83,7 @@ import BarAssistantClient from '@/api/BarAssistantClient'
 import ImageUpload from '../ImageUpload.vue'
 import { barBus } from '@/composables/eventBus'
 import type { components } from '@/api/api'
+import { useImageUpload } from '@/composables/useImageUpload';
 
 type Bar = components['schemas']['Bar']
 type BarRequest = components['schemas']['BarRequest']
@@ -92,6 +93,7 @@ const toast = useSaltRimToast()
 const { t } = useI18n()
 const route = useRoute()
 const router = useRouter()
+const uploader = useImageUpload()
 const bar = ref<Bar>({
     settings: {}
 } as Bar)
@@ -146,13 +148,8 @@ async function submit() {
     } as BarRequest;
 
     if (imagesUpload.value) {
-        const imageResources = await imagesUpload.value.save().catch(() => {
-            toast.error(`${t('imageupload.error')} ${t('imageupload.error-ingredient')}`)
-        }) || []
-
-        if (imageResources.length > 0) {
-            postData.images = imageResources.map(img => img.id)
-        }
+        const imageResources = await uploader.saveImages(imagesUpload.value)
+        postData.images = imageResources.map((img: any) => img.id)
     }
 
     const appState = new AppState()

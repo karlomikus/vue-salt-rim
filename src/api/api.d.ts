@@ -1368,6 +1368,66 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/public/{barId}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Show bar
+         * @description Show public information about a single bar. To access this endpoint the bar must be marked as public.
+         */
+        get: operations["showPublicBar"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/public/{barId}/cocktails": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * List cocktails
+         * @description List and filter bar cocktails. To access this endpoint the bar must be marked as public.
+         */
+        get: operations["listPublicBarCocktails"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/public/{barId}/cocktails/{slugOrPublicId}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Show cocktail
+         * @description Show public information about cocktail. If valid public ID is provided it will used, if not it will use cocktail slug.
+         */
+        get: operations["showPublicBarCocktail"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/cocktails/{id}/ratings": {
         parameters: {
             query?: never;
@@ -2176,6 +2236,11 @@ export interface components {
             };
             /** @description Images associated with the bar */
             images?: components["schemas"]["Image"][];
+            /**
+             * @default false
+             * @example true
+             */
+            is_public: boolean;
         };
         /** @description Represents a calculator block with basic information */
         CalculatorBlock: {
@@ -2465,12 +2530,12 @@ export interface components {
                  * @description Tag ID
                  * @example 1
                  */
-                id?: number;
+                id: number;
                 /**
                  * @description Tag name
                  * @example Tag name
                  */
-                name?: string;
+                name: string;
             }[];
             rating?: {
                 /**
@@ -3164,6 +3229,199 @@ export interface components {
             oauth_credentials: components["schemas"]["OauthCredential"][];
             settings: components["schemas"]["ProfileSettings"];
         };
+        /** @description Public details about a bar */
+        PublicBarResource: {
+            /**
+             * @description Unique number that can be used to reference a specific bar.
+             * @example 1
+             */
+            id: number;
+            /**
+             * @description Unique string that can be used to reference a specific bar.
+             * @example bar-name-1
+             */
+            slug: string;
+            /**
+             * @description Name of the bar
+             * @example Bar name
+             */
+            name: string;
+            /**
+             * @description Optional short quip about the bar
+             * @example A short subtitle of a bar
+             */
+            subtitle: string | null;
+            /**
+             * @description Description of the bar
+             * @example Bar description
+             */
+            description: string | null;
+            /** @description Images associated with the bar */
+            images: components["schemas"]["PublicImageResource"][];
+        };
+        /** @description Public details about a cocktail */
+        PublicCocktailResource: {
+            /**
+             * @description Unique string that can be used to reference a specific cocktail.
+             * @example cocktail-name-1
+             */
+            slug: string;
+            /**
+             * @description Name of the cocktail
+             * @example Cocktail Name
+             */
+            name: string;
+            /**
+             * @description Instructions for preparing the cocktail
+             * @example Shake well and serve.
+             */
+            instructions: string;
+            /**
+             * @description Garnish for the cocktail
+             * @example Lemon twist
+             */
+            garnish: string | null;
+            /**
+             * @description Description of the cocktail
+             * @example A refreshing cocktail with a twist.
+             */
+            description: string | null;
+            /**
+             * @description Source of the cocktail recipe
+             * @example https://example.com/cocktail-recipe
+             */
+            source: string | null;
+            /**
+             * @description Public identifier (ULID) for the cocktail
+             * @example 12345
+             */
+            public_id: string;
+            /**
+             * Format: date-time
+             * @description Date and time when the cocktail was made public
+             * @example 2023-10-01T12:00:00Z
+             */
+            public_at: string | null;
+            /** @description Images associated with the cocktail */
+            images: components["schemas"]["PublicImageResource"][];
+            /** @description Tags associated with the cocktail */
+            tags: string[];
+            /**
+             * @description Type of glass used for the cocktail
+             * @example Highball glass
+             */
+            glass: string | null;
+            /** @description Utensils used for preparing the cocktail */
+            utensils: string[];
+            /**
+             * @description Method of preparation for the cocktail
+             * @example Shaken
+             */
+            method: string | null;
+            /**
+             * Format: date-time
+             * @description Date and time when the cocktail was created
+             * @example 2023-10-01T12:00:00Z
+             */
+            created_at: string;
+            /**
+             * Format: float
+             * @description Alcohol by volume percentage of the cocktail
+             * @example 0.15
+             */
+            abv: number | null;
+            /**
+             * @description Year the cocktail was created or published
+             * @example 2023
+             */
+            year: number | null;
+            /** @description List of ingredients required to make the cocktail */
+            ingredients: {
+                /**
+                 * @description Name of the ingredient
+                 * @example Gin
+                 */
+                name: string;
+                /**
+                 * Format: float
+                 * @description Amount of the ingredient in the cocktail
+                 * @example 50
+                 */
+                amount: number;
+                /**
+                 * Format: float
+                 * @description Maximum amount of the ingredient that can be used
+                 * @example null
+                 */
+                amount_max: number | null;
+                /**
+                 * @description Units of measurement for the ingredient amount
+                 * @example ml
+                 */
+                units: string;
+                /** @description Formatted units for the ingredient amount */
+                units_formatted: components["schemas"]["AmountFormats"];
+                /**
+                 * @description Indicates if the ingredient is optional
+                 * @example false
+                 */
+                optional: boolean;
+                /**
+                 * @description Additional notes about the ingredient
+                 * @example Use fresh gin for best results.
+                 */
+                note: string | null;
+                /** @description List of substitute ingredients that can be used in place of this ingredient */
+                substitutes: {
+                    /**
+                     * @description Name of the substitute ingredient
+                     * @example Vodka
+                     */
+                    name: string;
+                    /**
+                     * Format: float
+                     * @description Amount of the substitute ingredient
+                     * @example 50
+                     */
+                    amount: number;
+                    /**
+                     * Format: float
+                     * @description Maximum amount of the substitute ingredient that can be used
+                     * @example null
+                     */
+                    amount_max: number | null;
+                    /**
+                     * @description Units of measurement for the substitute ingredient amount
+                     * @example ml
+                     */
+                    units: string;
+                }[];
+            }[];
+        };
+        /** @description Public details about an image */
+        PublicImageResource: {
+            /**
+             * @description Sort order of the image
+             * @example 1
+             */
+            sort: number;
+            /**
+             * @description Placeholder hash for the image, used for lazy loading
+             * @example abc123
+             */
+            placeholder_hash: string;
+            /**
+             * Format: uri
+             * @description URL of the image
+             * @example https://example.com/image.jpg
+             */
+            url: string;
+            /**
+             * @description Copyright information for the image
+             * @example Author name
+             */
+            copyright: string | null;
+        };
         /** @description SSO Provider information */
         SSOProvider: {
             /** @example github */
@@ -3331,7 +3589,7 @@ export interface components {
             description: string | null;
         };
         /** @enum {string} */
-        AbilityEnum: "cocktails.read" | "cocktails.write" | "ingredients.read" | "ingredients.write" | "bars.read" | "bars.write";
+        AbilityEnum: "cocktails.read" | "cocktails.write" | "cocktails.import" | "ingredients.read" | "ingredients.write" | "bars.read" | "bars.write";
         /** @enum {string} */
         BarStatusEnum: "provisioning" | "active" | "deactivated";
         /** @enum {string} */
@@ -3370,6 +3628,8 @@ export interface components {
             options?: components["schemas"]["BarOptionsEnum"] | null;
             /** @description Existing image ids */
             images?: number[];
+            /** @description Allow public access to bar recipes. Default `false`. */
+            is_public?: boolean;
         };
         BarSettings: {
             default_units?: string | null;
@@ -3827,66 +4087,142 @@ export interface components {
                 /**
                  * Format: slug
                  * @description The unique identifier for a cocktail
+                 * @example margarita
                  */
                 _id: string;
-                /** @description Name of the recipe */
+                /**
+                 * @description Name of the recipe
+                 * @example Margarita
+                 */
                 name: string;
-                /** @description Recipe instructions */
+                /**
+                 * @description Recipe instructions
+                 * @example Shake all ingredients with ice and strain into a chilled glass.
+                 */
                 instructions: string;
                 /**
                  * Format: date-time
                  * @description Date of recipe
+                 * @example 2024-07-21T15:30:00Z
                  */
                 created_at?: string | null;
-                /** @description Recipe description */
+                /**
+                 * @description Recipe description
+                 * @example A refreshing blend of tequila, lime juice, and triple sec.
+                 */
                 description?: string | null;
-                /** @description Source of the recipe, either URL or Book referece */
+                /**
+                 * @description Source of the recipe, either URL or Book referece
+                 * @example https://example.com/margarita-recipe
+                 */
                 source?: string | null;
-                /** @description Cocktail garnish */
+                /**
+                 * @description Cocktail garnish
+                 * @example Lime wheel
+                 */
                 garnish?: string | null;
-                /** @description Total ABV of made cocktail */
+                /**
+                 * @description Total ABV of made cocktail
+                 * @example 12.5
+                 */
                 abv?: number | null;
-                /** @description Short keywords to describe cocktail */
+                /**
+                 * @description Short keywords to describe cocktail
+                 * @example [
+                 *       "refreshing",
+                 *       "citrus",
+                 *       "classic"
+                 *     ]
+                 */
                 tags?: string[];
-                /** @description Glass type */
+                /**
+                 * @description Glass type
+                 * @example Coupe
+                 */
                 glass?: string | null;
-                /** @description Cocktail method */
+                /**
+                 * @description Cocktail method
+                 * @example Shake
+                 */
                 method?: string | null;
-                /** @description Required utensils */
+                /**
+                 * @description Required utensils
+                 * @example [
+                 *       "Shaker",
+                 *       "Strainer"
+                 *     ]
+                 */
                 utensils?: string[];
                 /** @description List of cocktail images */
                 images?: {
-                    /** Format: uri */
+                    /**
+                     * Format: uri
+                     * @example https://example.com/image.jpg
+                     * @example /path/to/image.png
+                     */
                     uri: string;
                     /** @description Control the representation of the image */
                     sort?: number;
                     /** @description Computed placeholder hash, like thumbhash, blurhash and similar */
                     placeholder_hash?: string | null;
-                    /** @description Image copyright information */
+                    /**
+                     * @description Image copyright information
+                     * @example © 2024 Bar Assistant
+                     */
                     copyright: string;
                 }[];
                 /** @description List of cocktail ingredients and substitutes */
                 ingredients?: {
-                    /** @description The unique reference for an ingredient from `ingredients` property */
+                    /**
+                     * @description The unique reference for an ingredient from `ingredients` property
+                     * @example tequila
+                     */
                     _id: string;
-                    /** @description Amount of the ingredient */
+                    /**
+                     * @description Amount of the ingredient
+                     * @example 50
+                     */
                     amount: number;
-                    /** @description Units for the amount */
+                    /**
+                     * @description Units for the amount
+                     * @example ml
+                     */
                     units: string;
-                    /** @description Indicates if the ingredient is optional */
+                    /**
+                     * @description Indicates if the ingredient is optional
+                     * @example false
+                     */
                     optional?: boolean;
-                    /** @description Maximum amount of the ingredient */
+                    /**
+                     * @description Maximum amount of the ingredient
+                     * @example 60
+                     */
                     amount_max?: number | null;
-                    /** @description Additional note related to the cocktail ingredient */
+                    /**
+                     * @description Additional note related to the cocktail ingredient
+                     * @example Preferebly blanco
+                     */
                     note?: string | null;
                     substitutes?: {
-                        /** @description The unique reference for an ingredient from `ingredients` property */
+                        /**
+                         * @description The unique reference for an ingredient from `ingredients` property
+                         * @example mezcal
+                         */
                         _id: string;
-                        /** @description Amount of the substitute ingredient */
+                        /**
+                         * @description Amount of the substitute ingredient
+                         * @example 50
+                         */
                         amount?: number | null;
-                        /** @description Units for the amount */
+                        /**
+                         * @description Units for the amount
+                         * @example ml
+                         */
                         units?: string | null;
-                        /** @description Maximum amount of the substitute ingredient */
+                        /**
+                         * @description Maximum amount of the substitute ingredient
+                         * @example 60
+                         */
                         amount_max?: number | null;
                     }[];
                     /** @description Sort order for the ingredient */
@@ -3895,16 +4231,32 @@ export interface components {
             };
             /** @description List of ingredients */
             ingredients: {
-                /** @description The unique identifier for an ingredient, used as a refrence in cocktail ingredient list */
+                /**
+                 * @description The unique identifier for an ingredient, used as a refrence in cocktail ingredient list
+                 * @example tequila
+                 */
                 _id: string;
+                /** @example Tequila */
                 name: string;
-                /** @description Ingredient ABV */
+                /**
+                 * @description Ingredient ABV
+                 * @example 40
+                 */
                 strength?: number | null;
-                /** @description Additional ingredient information */
+                /**
+                 * @description Additional ingredient information
+                 * @example A Mexican spirit made from the blue agave plant.
+                 */
                 description?: string | null;
-                /** @description Ingredient origin */
+                /**
+                 * @description Ingredient origin
+                 * @example Mexico
+                 */
                 origin?: string | null;
-                /** @description Category ingredient belongs to */
+                /**
+                 * @description Category ingredient belongs to
+                 * @example Spirit
+                 */
                 category?: string | null;
             }[];
         };
@@ -5117,23 +5469,23 @@ export interface operations {
                 page?: number;
                 /** @description Set number of results per page */
                 per_page?: number;
-                /** @description Filter by attributes */
+                /** @description Filter by attributes. You can specify multiple matching filter values by passing a comma separated list of values. */
                 filter?: {
-                    /** @description Filter by cocktail IDs */
+                    /** @description Filter by cocktail ID(s) */
                     id?: string;
-                    /** @description Filter by cocktail names (fuzzy search) */
+                    /** @description Filter by cocktail names(s) (fuzzy search) */
                     name?: string;
-                    /** @description Filter by cocktail ingredient names (fuzzy search) */
+                    /** @description Filter by cocktail ingredient names(s) (fuzzy search) */
                     ingredient_name?: string;
-                    /** @description Filter by tag IDs */
+                    /** @description Filter by tag ID(s) */
                     tag_id?: string;
-                    /** @description Filter by creator IDs */
+                    /** @description Filter by creator ID(s) */
                     created_user_id?: string;
-                    /** @description Filter by glass IDs */
+                    /** @description Filter by glass ID(s) */
                     glass_id?: string;
-                    /** @description Filter by cocktail method IDs */
+                    /** @description Filter by cocktail method ID(s) */
                     cocktail_method_id?: string;
-                    /** @description Filter by collection IDs */
+                    /** @description Filter by collection ID(s) */
                     collection_id?: string;
                     /** @description Show only user favorites */
                     favorites?: boolean;
@@ -5148,28 +5500,28 @@ export interface operations {
                     /** @description Show only cocktails with public links */
                     is_public?: boolean;
                     /** @description Filter by greater than or equal user rating */
-                    user_rating_min?: string;
+                    user_rating_min?: number;
                     /** @description Filter by less than or equal user rating */
-                    user_rating_max?: string;
+                    user_rating_max?: number;
                     /** @description Filter by greater than or equal average rating */
-                    average_rating_min?: string;
+                    average_rating_min?: number;
                     /** @description Filter by less than or equal average rating */
-                    average_rating_max?: string;
+                    average_rating_max?: number;
                     /** @description Filter by greater than or equal ABV */
-                    abv_min?: string;
+                    abv_min?: number;
                     /** @description Filter by less than or equal ABV */
-                    abv_max?: string;
+                    abv_max?: number;
                     /** @description Show only cocktails whose main ingredient is in the given list. Comma separated list of ingredient IDs */
                     main_ingredient_id?: string;
                     /** @description Filter by total number of ingredients */
-                    total_ingredients?: string;
+                    total_ingredients?: number;
                     /** @description Filter by total number of missing ingredients */
-                    missing_ingredients?: string;
+                    missing_ingredients?: number;
                     /** @description Filter by total number of missing bar ingredients */
-                    missing_bar_ingredients?: string;
-                    /** @description Show cocktails that contain given ingredient IDs */
+                    missing_bar_ingredients?: number;
+                    /** @description Show cocktails that contain given ingredient ID(s) */
                     specific_ingredients?: string;
-                    /** @description Show cocktails that do not contain given ingredient IDs */
+                    /** @description Show cocktails that do not contain given ingredient ID(s) */
                     ignore_ingredients?: string;
                 };
                 /** @description Sort by attributes. Available attributes: `name`, `created_at`, `average_rating`, `user_rating`, `abv`, `total_ingredients`, `missing_ingredients`, `missing_bar_ingredients`, `favorited_at`, `random`. */
@@ -7495,7 +7847,9 @@ export interface operations {
             content: {
                 "application/json": {
                     /** @example https://www.example.com/recipe-url */
-                    source?: string;
+                    source: string;
+                    /** @example <p>HTML content</p> */
+                    html_content?: string | null;
                 };
             };
         };
@@ -7518,6 +7872,8 @@ export interface operations {
                             scraper_meta: {
                                 _id: string;
                                 source: string;
+                                /** @description The HTML content of the scraped page, if available. */
+                                html_content?: string | null;
                             }[];
                         };
                     };
@@ -7594,18 +7950,18 @@ export interface operations {
                 page?: number;
                 /** @description Set number of results per page */
                 per_page?: number;
-                /** @description Filter by attributes */
+                /** @description Filter by attributes. You can specify multiple matching filter values by passing a comma separated list of values. */
                 filter?: {
-                    /** @description Filter by ingredient id */
-                    id?: number;
-                    /** @description Filter by ingredient name (fuzzy search) */
+                    /** @description Filter by ingredient id(s) */
+                    id?: string;
+                    /** @description Filter by ingredient name(s) (fuzzy search) */
                     name?: string;
-                    /** @description Filter by ingredient name (exact match) */
+                    /** @description Filter by ingredient name(s) (exact match) */
                     name_exact?: string;
                     /** @description Filter by ingredient origin */
                     origin?: string;
-                    /** @description Filter by user id who created the ingredient */
-                    created_user_id?: number;
+                    /** @description Filter by user(s) who created the ingredient */
+                    created_user_id?: string;
                     /** @description Show only ingredients that are on the shopping list */
                     on_shopping_list?: boolean;
                     /** @description Show only ingredients that are on the shelf */
@@ -7623,13 +7979,13 @@ export interface operations {
                      */
                     strength_max?: number;
                     /** @description Show only ingredients that are used as main ingredients in cocktails */
-                    main_ingredients?: string;
+                    main_ingredients?: boolean;
                     /** @description Show only ingredients that can be made with other ingredients */
                     complex?: boolean;
                     /** @description Show only direct children of given ingredient. Use null as value to get ingredients without parent ingredient */
-                    parent_ingredient_id?: number;
-                    /** @description Show all descendants of given ingredient */
-                    descendants_of?: number;
+                    parent_ingredient_id?: string;
+                    /** @description Show all descendants of given ingredient(s) */
+                    descendants_of?: string;
                 };
                 /** @description Sort by attributes. Available attributes: `name`, `created_at`, `strength`, `total_cocktails`. */
                 sort?: string;
@@ -9142,6 +9498,197 @@ export interface operations {
                 content: {
                     "application/json": {
                         data?: components["schemas"]["APIError"];
+                    };
+                };
+            };
+            /** @description Resource record not found. */
+            404: {
+                headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data?: components["schemas"]["APIError"];
+                    };
+                };
+            };
+        };
+    };
+    showPublicBar: {
+        parameters: {
+            query?: {
+                /** @description Set current page number */
+                page?: number;
+            };
+            header?: never;
+            path: {
+                /** @description Database id of bar */
+                barId: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful response */
+            200: {
+                headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data: components["schemas"]["PublicBarResource"];
+                    };
+                };
+            };
+            /** @description Resource record not found. */
+            404: {
+                headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data?: components["schemas"]["APIError"];
+                    };
+                };
+            };
+        };
+    };
+    listPublicBarCocktails: {
+        parameters: {
+            query?: {
+                /** @description Set current page number */
+                page?: number;
+                /** @description Filter by attributes. You can specify multiple matching filter values by passing a comma separated list of values. */
+                filter?: {
+                    /** @description Filter by cocktail names(s) (fuzzy search) */
+                    name?: string;
+                    /** @description Filter by cocktail ingredient names(s) (fuzzy search) */
+                    ingredient_name?: string;
+                    /** @description Show only cocktails on the bar shelf */
+                    bar_shelf?: boolean;
+                    /** @description Filter by greater than or equal ABV */
+                    abv_min?: number;
+                    /** @description Filter by less than or equal ABV */
+                    abv_max?: number;
+                };
+                /** @description Sort by attributes. Available attributes: `name`, `created_at`, `average_rating`, `user_rating`, `abv`, `total_ingredients`, `missing_ingredients`, `missing_bar_ingredients`, `favorited_at`, `random`. */
+                sort?: string;
+            };
+            header?: never;
+            path: {
+                /** @description Database id of bar */
+                barId: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful response */
+            200: {
+                headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        /** @description The data for the current page */
+                        data?: components["schemas"]["PublicCocktailResource"][];
+                        /** @description Links for pagination */
+                        links?: {
+                            /** @description Link to the first page */
+                            first?: string | null;
+                            /** @description Link to the last page */
+                            last?: string | null;
+                            /** @description Link to the previous page */
+                            prev?: string | null;
+                            /** @description Link to the next page */
+                            next?: string | null;
+                        };
+                        meta?: {
+                            /** @description The current page number */
+                            current_page?: number;
+                            /** @description The starting index of the current page */
+                            from?: number;
+                            /** @description The last page number */
+                            last_page?: number;
+                            links?: {
+                                /** @description The URL of the link */
+                                url?: string | null;
+                                /** @description The label of the link */
+                                label?: string | null;
+                                /** @description Whether the link is active */
+                                active?: boolean | null;
+                            }[];
+                            /** @description The path of the current page */
+                            path?: string;
+                            /** @description The number of items per page */
+                            per_page?: number;
+                            /** @description The ending index of the current page */
+                            to?: number;
+                            /** @description The total number of items */
+                            total?: number;
+                        };
+                    };
+                };
+            };
+            /** @description Resource record not found. */
+            404: {
+                headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data?: components["schemas"]["APIError"];
+                    };
+                };
+            };
+        };
+    };
+    showPublicBarCocktail: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Database id of bar */
+                barId: number;
+                /** @description Cocktail slug or public id (ULID) */
+                slugOrPublicId: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful response */
+            200: {
+                headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data: components["schemas"]["PublicCocktailResource"];
                     };
                 };
             };

@@ -254,3 +254,34 @@
 .button-group button:hover {
     background-color: var(--cbg-clr-bg-hover);
 }
+
+@keyframes fadeUp {
+    from {
+        opacity: 0;
+        transform: translateY(5px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.button--ai {
+    background: linear-gradient(135deg, rgb(255, 168, 116), var(--clr-accent-400));
+    color: #4d0724;
+    border: none;
+    padding: 0.25rem;
+    display: inline-flex;
+    box-shadow: var(--shadow-elevation-medium);
+    animation: fadeUp 0.4s cubic-bezier(0.785, 0.135, 0.15, 0.86);
+    z-index: var(--z-gen-ai-button);
+}
+
+.button--ai svg {
+    width: 14px;
+    height: 14px;
+}
+
+.button--ai[disabled] {
+    opacity: 1;
+}

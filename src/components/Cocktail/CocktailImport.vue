@@ -12,68 +12,25 @@ import { useRoute, useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import type { SearchResults } from '@/api/SearchResults'
 import type { components } from '@/api/api'
+import type { CocktailRecipeDraft02 as Draft2Schema } from '@/schema/draft2'
+import type { CocktailRecipe as Draft1Schema } from '@/schema/draft1'
 import { useTitle } from '@/composables/title'
 import AppState from '@/AppState'
+import { useBookmarklet } from '@/composables/useBookmarklet'
+
 interface Ingredient {
     id: string,
     name: string,
     slug: string,
 }
 type SearchResult = SearchResults['ingredient']
-type Draft2Schema = components["schemas"]["cocktail-02.schema"]
-interface Draft1Schema {
-    _id: string;
-    name: string;
-    instructions: string;
-    created_at: string;
-    updated_at: string;
-    description: string;
-    source: string;
-    garnish: string | null;
-    abv: number;
-    tags: string[];
-    glass: string;
-    method: string;
-    utensils: string[];
-    images: {
-        source: string;
-        sort: number;
-        placeholder_hash: string;
-        copyright: string;
-    }[];
-    ingredients: {
-        _id: string;
-        name: string;
-        strength: number;
-        description: string;
-        origin: string | null;
-        category: string;
-        amount: number;
-        units: string;
-        optional: boolean;
-        amount_max: number | null;
-        note: string | null;
-        substitutes: {
-            _id: string;
-            amount?: number | null;
-            units?: string | null;
-            amount_max?: number | null;
-            name: string;
-            strength: number;
-            description: string;
-            origin: string | null;
-            category: string;
-        }[];
-        sort: number;
-    }[];
-}
 type Cocktail = components["schemas"]["Cocktail"]
 type Bar = components["schemas"]["Bar"]
 type Glass = components["schemas"]["Glass"]
 type FullIngredient = components["schemas"]["Ingredient"]
 type CocktailMethod = components["schemas"]["CocktailMethod"]
 type SchemaIngredient = components["schemas"]["cocktail-02.schema"]["ingredients"][0]
-interface SchemaWithExtraIngredientData {
+interface SchemaWithMatchedData {
     recipe: {
         matchedGlass: Glass | null,
         matchedMethodId: number | null,
@@ -89,7 +46,7 @@ interface SchemaWithExtraIngredientData {
     }
 }
 
-type LocalSchema = Draft2Schema & SchemaWithExtraIngredientData
+type LocalSchema = Draft2Schema & SchemaWithMatchedData
 type CocktailIngredient = LocalSchema["recipe"]["ingredients"][0]
 type SubstituteCocktailIngredient = LocalSchema["recipe"]["ingredients"][0]["substitutes"][0]
 
@@ -97,22 +54,28 @@ const { t } = useI18n()
 const router = useRouter()
 const route = useRoute()
 const toast = useSaltRimToast()
+// const llm = useLLM()
 const isLoading = ref(false)
 const isImporting = ref(false)
 const showIngredientDialog = ref(false)
 const ingredientEdit = ref<CocktailIngredient | SubstituteCocktailIngredient | null>(null)
-const importType = ref('url')
+const importType = ref<'url' | 'json' | 'bookmarklet' | 'ai' | 'html'>('url')
 const similarCocktails = ref([] as Cocktail[])
 const isLoadingSimilar = ref(false)
+const bookmarkletUrl = ref<string | null>(null)
 const bar = ref({} as Bar)
 const appState = new AppState()
-const duplicateAction = ref('none')
+// const duplicateAction = ref('none')
 const source = ref<{
     url: null | string,
     json: null | string,
+    ai_content: null | string,
+    html: null | string,
 }>({
     url: null,
     json: null,
+    ai_content: null,
+    html: null,
 })
 const result = ref<LocalSchema>({} as LocalSchema)
 const cocktailTags = computed({
@@ -137,12 +100,14 @@ function clearImport() {
     source.value = {
         url: null,
         json: null,
+        ai_content: null,
+        html: null,
     }
     ingredientEdit.value = null
     result.value = {} as LocalSchema
 }
 
-function importCocktail() {
+async function importCocktail() {
     similarCocktails.value = []
     ingredientEdit.value = null
     result.value = {} as LocalSchema
@@ -154,6 +119,16 @@ function importCocktail() {
 
     if (importType.value == 'json') {
         fromJson()
+    }
+
+    if (importType.value == 'ai') {
+        const prompt = `You are a cocktail expert. Please extract the cocktail recipe from the following text and return it in JSON format compatible with the Draft 2 schema: ${source.value.ai_content}`
+        // await llm.generate(prompt, jsonSchema(importSchemaObject as object))
+        // const res = llm.response.value
+    }
+
+    if (importType.value == 'html') {
+        fromHtml()
     }
 }
 
@@ -218,7 +193,7 @@ function fromJson() {
                         matchedGlass: null,
                         matchedMethodId: null,
                         images: parsedDraft1.images?.map(img => ({file: img.source, uri: img.source, copyright: img.copyright})) ?? [],
-                        ingredients: parsedDraft1.ingredients.map(i => {
+                        ingredients: parsedDraft1.ingredients?.map(i => {
                             return {
                                 _id: i._id,
                                 _source: null,
@@ -284,6 +259,35 @@ function fromJson() {
         console.error('Unable to parse JSON', e)
     }
     isLoading.value = false
+}
+
+async function fromHtml() {
+    isLoading.value = true
+    const resp = (await BarAssistantClient.scrapeCocktail('http://barassistant.app', source.value.html))?.data ?? null
+    isLoading.value = false
+    if (resp) {
+        const schema = resp.schema
+        if (!schema) {
+            return
+        }
+
+        findSimilarCocktails(schema.recipe.name)
+
+        result.value = {
+            ...schema,
+            recipe: {
+                ...schema.recipe,
+                ingredients: schema.recipe?.ingredients?.map(i => {
+                    return {
+                        ...i,
+                        _source: resp.scraper_meta.find(m => m._id == i._id)?.source,
+                        matchedIngredient: null,
+                        refIngredient: schema.ingredients.find(ing => ing._id == i._id),
+                    }
+                })
+            }
+        } as LocalSchema
+    }
 }
 
 function manuallyMatch(ingredient: CocktailIngredient | SubstituteCocktailIngredient) {
@@ -483,6 +487,22 @@ async function init()
     }
 }
 
+async function setupBookmarklet() {
+    isLoading.value = true
+    const token = (await BarAssistantClient.saveToken({
+        name: 'bookmarklet',
+        abilities: ['cocktails.import'],
+    }))?.data.token ?? ''
+    isLoading.value = false
+
+    const { generateBookmarkletCode } = useBookmarklet()
+    bookmarkletUrl.value = generateBookmarkletCode({
+        serverUrl: `${window.srConfig.API_URL}/api/import/scrape`,
+        authToken: token,
+        barId: appState.bar.id.toString(),
+    })
+}
+
 init()
 </script>
 <template>
@@ -492,13 +512,15 @@ init()
         </PageHeader>
         <h3 class="form-section-title">{{ t('import.type') }}</h3>
         <div class="block-container block-container--padded">
-            <!-- <OverlayLoader v-if="isLoading" /> -->
             <SubscriptionCheck>Subscribe to "Mixologist" plan to remove limit of two import actions per minute!</SubscriptionCheck>
             <div class="form-group">
                 <label class="form-label form-label--required">{{ t('type') }}:</label>
                 <div class="import-types">
                     <SaltRimRadio v-model="importType" :title="t('import.type-url-title')" :description="t('import.type-url-description')" value="url"></SaltRimRadio>
                     <SaltRimRadio v-model="importType" :title="t('import.type-json-title')" :description="t('import.type-json-description')" value="json"></SaltRimRadio>
+                    <!-- <SaltRimRadio v-model="importType" :title="t('import.type-ai-title')" :description="t('import.type-ai-description')" value="ai"></SaltRimRadio> -->
+                    <SaltRimRadio v-model="importType" :title="t('import.type-html-title')" :description="t('import.type-html-description')" value="html"></SaltRimRadio>
+                    <SaltRimRadio v-model="importType" :title="t('import.type-bookmarklet-title')" :description="t('import.type-bookmarklet-description')" value="bookmarklet"></SaltRimRadio>
                 </div>
             </div>
             <div class="alert alert--info" style="margin: 1rem 0;">
@@ -508,6 +530,27 @@ init()
             <div v-if="importType === 'url'" class="form-group">
                 <label class="form-label form-label--required" for="import-source">{{ t('source') }}:</label>
                 <input id="import-source" v-model="source.url" type="url" class="form-input" placeholder="https://" required>
+            </div>
+            <!-- <div v-else-if="importType === 'ai'" class="form-group">
+                <label class="form-label form-label--required" for="import-source">{{ t('source') }}:</label>
+                <textarea id="import-source" v-model="source.ai_content" class="form-input" rows="14" required></textarea>
+            </div> -->
+            <div v-else-if="importType === 'bookmarklet'" class="form-group">
+                <h3>Guide</h3>
+                <OverlayLoader v-if="isLoading" />
+                <p>Bookmarklet is a small piece of JavaScript code that you can save as a bookmark in your browser. It allows you to create a JSON object that you can import directly into Bar Assistant. It particulary useful when you want to import recipe from a private page. <strong>Generating a bookmarklet will create a new personal access token.</strong></p>
+                <button class="button button--dark" type="button" @click="setupBookmarklet" :disabled="bookmarkletUrl != null">Generate a new bookmarklet</button>
+                <ol v-if="bookmarkletUrl">
+                    <li>Drag the following link to your bookmarks bar: <a :href="bookmarkletUrl">Copy cocktail JSON</a></li>
+                    <li>Visit the page with cocktail recipe you want to import</li>
+                    <li>Click the bookmarklet in your bookmarks bar</li>
+                    <li>You will get alert that JSON format was copied to clipboard</li>
+                    <li>Select JSON as import type and paste the text</li>
+                </ol>
+            </div>
+            <div v-else-if="importType === 'html'" class="form-group">
+                <label class="form-label form-label--required" for="import-source">{{ t('source') }}:</label>
+                <textarea id="import-source" v-model="source.html" class="form-input" rows="14" required></textarea>
             </div>
             <div v-else class="form-group">
                 <label class="form-label form-label--required" for="import-source">{{ t('source') }}:</label>
@@ -531,7 +574,7 @@ init()
                     <span>{{ t('duplicate.overwrite') }}</span>
                 </label>
             </div> -->
-            <div style="display: flex; gap: var(--gap-size-2);">
+            <div style="display: flex; gap: var(--gap-size-2);" v-if="importType != 'bookmarklet'">
                 <button type="button" class="button button--outline" @click.prevent="clearImport">{{ t('clear') }}</button>
                 <button type="button" class="button button--dark" @click.prevent="importCocktail" :disabled="isLoading"><OverlayLoader v-if="isLoading" />{{ t('import.start') }}</button>
             </div>

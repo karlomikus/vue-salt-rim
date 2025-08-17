@@ -19,5 +19,9 @@ interface Window {
         ALLOW_REGISTRATION: string,
         SENTRY_DSN: string,
         REDIRECT_TO_SSO: boolean,
+        AI_PROVIDER: string,
+        AI_API_KEY: string,
+        AI_HOST: string,
+        AI_MODEL: string,
     }
 }

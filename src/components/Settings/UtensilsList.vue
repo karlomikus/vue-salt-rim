@@ -29,7 +29,7 @@
                     <tbody>
                         <tr v-for="utensil in utensils" :key="utensil.id">
                             <td>
-                                <a href="#" @click.prevent="openDialog($t('category.edit'), utensil)">{{ utensil.name }}</a>
+                                <a href="#" @click.prevent="openDialog($t('utensils.edit'), utensil)">{{ utensil.name }}</a>
                                 <br>
                                 <small>{{ overflowText(utensil.description, 100) }}</small>
                             </td>

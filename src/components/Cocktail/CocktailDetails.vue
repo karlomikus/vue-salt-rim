@@ -34,7 +34,6 @@ import CocktailIngredientView from './CocktailIngredient.vue'
 import CocktailVarieties from './CocktailVarieties.vue'
 
 type Cocktail = components["schemas"]["Cocktail"]
-type CocktailIngredient = components["schemas"]["CocktailIngredient"]
 type Note = components["schemas"]["Note"]
 type ShoppingList = components["schemas"]["ShoppingList"]
 type CocktailBasic = components["schemas"]["CocktailBasic"]
@@ -504,7 +503,7 @@ fetchShoppingList()
                                     </a>
                                 </template>
                                 <template #dialog>
-                                    <CollectionDialog :cocktails="[cocktail.id]" @collection-dialog-closed="showCollectionDialog = false; fetchCocktail(cocktail.slug)" />
+                                    <CollectionDialog :title="t('collections.add-to')" :cocktails="[cocktail.id]" @collection-dialog-closed="showCollectionDialog = false; fetchCocktail(cocktail.slug)" />
                                 </template>
                             </SaltRimDialog>
                             <SaltRimDialog v-if="cocktail.access && cocktail.access.can_add_note" v-model="showNoteDialog">

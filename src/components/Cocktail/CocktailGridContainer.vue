@@ -4,25 +4,18 @@
     </div>
 </template>
 
-<script>
-export default {
-    data() {
-        return {
-            observer: null,
+<script setup lang="ts">
+const observer = new IntersectionObserver((entries: IntersectionObserverEntry[]) => {
+    entries.forEach((entry: IntersectionObserverEntry) => {
+        if (entry.isIntersecting) {
+            const imgElement = entry.target.querySelector('.cocktail-grid-item__graphic__image') as HTMLImageElement
+            if (imgElement && imgElement.dataset.imgSrc) {
+                imgElement.src = imgElement.dataset.imgSrc
+                observer.unobserve(entry.target)
+            }
         }
-    },
-    created() {
-        this.observer = new IntersectionObserver((entries) => {
-            entries.forEach((entry) => {
-                if (entry.isIntersecting) {
-                    const imgElement = entry.target.querySelector('.cocktail-grid-item__graphic__image')
-                    imgElement.src = imgElement.dataset.imgSrc
-                    this.observer.unobserve(entry.target)
-                }
-            })
-        })
-    }
-}
+    })
+})
 </script>
 
 <style scoped>

@@ -18,7 +18,7 @@
         <SubscriptionCheck v-if="bars.length >= 1">Subscribe to "Mixologist" plan to create and manage up to 10 bars!</SubscriptionCheck>
         <div v-if="bars.length > 0" class="bars__groups">
             <template v-for="(barsInGroup, group) in groupedBars" :key="group">
-                <h3 v-if="barsInGroup.length > 0" class="page-subtitle">{{ $t('bars.status-' + group) }}</h3>
+                <h3 v-if="barsInGroup.length > 0" class="page-subtitle">{{ $t('bars.status.' + group) }}</h3>
                 <div class="bars__grid">
                     <div v-for="bar in barsInGroup" :key="bar.id" class="bar block-container block-container--hover" :class="{ 'bar--inactive': bar.status != 'active' }">
                         <span class="bar__role">

@@ -25,105 +25,78 @@
         </template>
     </div>
 </template>
-<script>
+<script setup lang="ts">
+import { computed, ref } from 'vue';
 import IconClose from '../Icons/IconClose.vue';
 
-export default {
-    props: {
-        modelValue: {
-            type: [Object, Array],
-            default() {
-                return null
-            }
-        },
-        title: {
-            type: String,
-            required: true
-        },
-        refinements: {
-            type: Array,
-            default() {
-                return []
-            }
-        },
-        id: {
-            type: String,
-            required: true
-        },
-        type: {
-            type: String,
-            default: 'checkbox'
-        },
-        searchable: {
-            type: Boolean,
-            default: false
-        },
-        collapsable: {
-            type: Boolean,
-            default: true
-        }
-    },
-    components: {
-        IconClose,
-    },
-    emits: ['update:modelValue', 'change'],
-    data() {
-        return {
-            searchTerm: null,
-            collapsed: this.collapsable,
-        }
-    },
-    computed: {
-        model: {
-            get() {
-                return this.modelValue
-            },
-            set(value) {
-                this.$emit('update:modelValue', value)
-                this.$emit('change', value)
-            }
-        },
-        isClearable() {
-            if (this.type == 'radio') {
-                return this.model && this.model != null
-            }
+export interface RefinementRange {
+    min: number;
+    max: number;
+}
 
-            return this.model && this.model.length > 0
-        },
-        totalSelected() {
-            if (!this.model || this.type == 'radio' || this.model.length == 0) {
-                return ''
-            }
+export interface Refinement {
+    id: number | string;
+    name: string;
+    value: string | number | RefinementRange | null;
+}
 
-            return `(${this.model.length})`
-        },
-        refinementsSearched() {
-            if (this.searchTerm == null || this.searchTerm == '') {
-                return this.refinements
-            }
+const {
+    title,
+    id,
+    type = 'checkbox',
+    refinements = [],
+    searchable = false,
+    collapsable = true,
+} = defineProps<{
+    title: string,
+    id: string,
+    type?: 'checkbox' | 'radio',
+    refinements?: Refinement[],
+    searchable?: boolean,
+    collapsable?: boolean,
+}>()
+const model = defineModel<null | object | string[] | number[]>()
+const searchTerm = ref<string>('')
+const collapsed = ref<boolean>(collapsable)
 
-            return this.refinements.filter(r => {
-                return r.name.toLowerCase().includes(this.searchTerm.toLowerCase())
-            })
-        }
-    },
-    created() {
-        if (this.isClearable) {
-            this.collapsed = false
-        }
-    },
-    methods: {
-        clear() {
-            this.searchTerm = null
-            if (this.type == 'checkbox') {
-                this.model = []
-            } else {
-                this.model = null
-            }
-
-            this.$emit('change', this.model)
-        }
+const refinementsSearched = computed(() => {
+    if (!searchTerm.value || searchTerm.value === '') {
+        return refinements
     }
+    return refinements.filter(r => r.name.toLowerCase().includes(searchTerm.value.toLowerCase()))
+});
+
+const isClearable = computed(() => {
+    if (type == 'radio') {
+        return model.value && model.value !== null
+    }
+
+    return model.value && Array.isArray(model.value) && model.value.length > 0
+});
+
+const totalSelected = computed(() => {
+    if (!model.value || type === 'radio' || (Array.isArray(model.value) && model.value.length === 0)) {
+        return ''
+    }
+
+    if (Array.isArray(model.value)) {
+        return `(${model.value.length})`
+    }
+
+    return ''
+});
+
+function clear() {
+    searchTerm.value = ''
+    if (type === 'checkbox') {
+        model.value = []
+    } else {
+        model.value = null
+    }
+}
+
+if (isClearable.value) {
+    collapsed.value = false
 }
 </script>
 <style scoped>

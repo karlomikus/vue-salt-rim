@@ -1,5 +1,5 @@
 <template>
-    <ais-instant-search :search-client="searchClient" :index-name="index" class="ingredient-finder" :initial-ui-state="initialUiState">
+    <ais-instant-search :search-client="searchClient" :index-name="index" class="ingredient-finder" :initial-ui-state="initialUiState" :future="{ preserveSharedStateOnUnmount: true }">
         <ais-configure :hits-per-page="maxHits" />
         <ais-search-box autofocus>
             <template #default="{ refine }">
@@ -87,7 +87,7 @@ async function newIngredient() {
     };
 
     isLoading.value = true
-    
+
     try {
         const ing = (await BarAssistantClient.saveIngredient(postData))?.data ?? null
         if (!ing) {

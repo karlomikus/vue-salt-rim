@@ -15,12 +15,12 @@
                     <h3 class="page-subtitle" style="margin-top: 0">{{ $t('filters') }}</h3>
                     <Refinement id="global" :title="$t('global')" :collapsable="false">
                         <div v-for="filter in availableRefinements.global" :key="filter.id" class="resource-search__refinements__refinement__item">
-                            <input :id="'global-' + filter.id" v-model="activeFilters[filter.id]" type="checkbox" :value="filter.active" @change="updateRouterPath">
+                            <input :id="'global-' + filter.id" v-model="activeFilters.filter[filter.id as keyof typeof activeFilters.filter]" type="checkbox" :value="filter.active" @change="updateRouterPath">
                             <label :for="'global-' + filter.id">{{ filter.name }}</label>
                         </div>
                     </Refinement>
-                    <Refinement id="ingredient-category" v-model="activeFilters.descendants_of" :title="$t('category.title')" :refinements="refineCategories" @change="updateRouterPath" :collapsable="false"></Refinement>
-                    <Refinement id="strength" v-model="activeFilters.strength" :title="$t('strength')" :refinements="refineStrength" type="radio" @change="updateRouterPath"></Refinement>
+                    <Refinement id="ingredient-category" v-model="activeFilters.filter.descendants_of" :title="$t('category.title')" :refinements="refineCategories" @change="updateRouterPath" :collapsable="false"></Refinement>
+                    <Refinement id="strength" v-model="activeFilters.filter.strength" :title="$t('strength')" :refinements="refineStrength" type="radio" @change="updateRouterPath"></Refinement>
                 </div>
             </div>
             <div class="resource-search__content">
@@ -32,20 +32,20 @@
                         </svg>
                         <div v-show="totalActiveRefinements > 0" class="resource-search__content__filter__count">{{ totalActiveRefinements }}</div>
                     </button>
-                    <input v-model="searchQuery" class="form-input" type="text" :placeholder="$t('placeholder.search-ingredients')" @input="debounceIngredientSearch" @keyup.enter="updateRouterPath">
-                    <select v-model="sort" class="form-select" @change="updateRouterPath">
+                    <input v-model="activeFilters.filter.name" class="form-input" type="text" :placeholder="$t('placeholder.search-ingredients')" @input="debounceIngredientSearch" @keyup.enter="updateRouterPath">
+                    <select v-model="activeFilters.sort" class="form-select" @change="updateRouterPath">
                         <option disabled>{{ $t('sort') }}:</option>
                         <option value="name">{{ $t('name') }}</option>
                         <option value="created_at">{{ $t('date-added') }}</option>
                         <option value="strength">{{ $t('strength') }}</option>
                         <option value="total_cocktails">{{ $t('total.cocktails') }}</option>
                     </select>
-                    <select v-model="sort_dir" class="form-select" @change="updateRouterPath">
+                    <select v-model="sortDir" class="form-select" @change="updateRouterPath">
                         <option disabled>{{ $t('sort-direction') }}:</option>
                         <option value="">{{ $t('sort-asc') }}</option>
                         <option value="-">{{ $t('sort-desc') }}</option>
                     </select>
-                    <select v-model="per_page" class="form-select" @change="updateRouterPath">
+                    <select v-model="activeFilters.per_page" class="form-select" @change="updateRouterPath">
                         <option disabled>{{ $t('search.results-per-page') }}:</option>
                         <option value="25">25</option>
                         <option value="50">50</option>
@@ -75,263 +75,245 @@
     </div>
 </template>
 
-<script>
+<script setup lang="ts">
 import OverlayLoader from './../OverlayLoader.vue'
 import IngredientGridContainer from './../Ingredient/IngredientGridContainer.vue'
 import IngredientGridItem from './../Ingredient/IngredientGridItem.vue'
 import PageHeader from './../PageHeader.vue'
-import Refinement from './../Search/SearchRefinement.vue'
+import Refinement, { type RefinementRange } from './../Search/SearchRefinement.vue'
 import Pagination from './../Search/SearchPagination.vue'
 import qs from 'qs'
-import Dropdown from './../SaltRimDropdown.vue'
 import EmptyState from './../EmptyState.vue'
 import AppState from '../../AppState'
 import BarAssistantClient from '@/api/BarAssistantClient'
 import { useTitle } from '@/composables/title'
+import { computed, ref, watch } from 'vue'
+import type { components, operations } from '@/api/api'
+import { useI18n } from 'vue-i18n'
+import { useRoute, useRouter, type LocationQueryRaw } from 'vue-router'
 
-export default {
-    components: {
-        OverlayLoader,
-        IngredientGridItem,
-        IngredientGridContainer,
-        PageHeader,
-        Refinement,
-        Pagination,
-        Dropdown,
-        EmptyState
-    },
-    data() {
-        return {
-            appState: new AppState(),
-            isLoading: false,
-            showRefinements: false,
-            meta: {},
-            sort: 'name',
-            sort_dir: '',
-            per_page: 50,
-            currentPage: 1,
-            searchQuery: null,
-            ingredients: [],
-            availableRefinements: {
-                categories: [],
-                global: [
-                    { name: this.$t('bar-shelf-ingredients'), active: false, id: 'bar_shelf' },
-                    { name: this.$t('shelf-ingredients'), active: false, id: 'on_shelf' },
-                    { name: this.$t('shopping-list-ingredients'), active: false, id: 'on_shopping_list' },
-                    { name: this.$t('used-as-main-ingredient'), active: false, id: 'main_ingredients' },
-                    { name: this.$t('ingredient.complex'), active: false, id: 'complex' },
-                ],
-                strength: [
-                    { name: this.$t('non-alcoholic'), min: 0, max: 0, id: 'strength_non_alcoholic' },
-                    { name: '<= 20%', min: null, max: 20, id: 'strength_weak' },
-                    { name: '20% - 40%', min: 20, max: 40, id: 'strength_medium' },
-                    { name: '>= 40', min: 40, max: null, id: 'strength_strong' },
-                ],
-            },
-            activeFilters: {
-                descendants_of: [],
-                parent_ingredient_id: [],
-                on_shelf: false,
-                bar_shelf: false,
-                main_ingredients: false,
-                on_shopping_list: false,
-                complex: false,
-                strength: null
-            }
-        }
-    },
-    computed: {
-        sortWithDir: {
-            set(val) {
-                if (!val) {
-                    return
-                }
-                if (val.startsWith('-')) {
-                    this.sort_dir = '-'
-                    this.sort = val.substring(1)
-                } else {
-                    this.sort_dir = ''
-                    this.sort = val
-                }
-            },
-            get() {
-                return (this.sort != null && this.sort != '') ? this.sort_dir + this.sort : null
-            }
-        },
-        refineCategories() {
-            return this.availableRefinements.categories.map(c => {
-                return {
-                    id: c.id,
-                    value: c.id,
-                    name: c.name
-                }
-            })
-        },
-        refineStrength() {
-            return this.availableRefinements.strength.map(m => {
-                return {
-                    id: m.id,
-                    value: {min: m.min, max: m.max},
-                    name: m.name
-                }
-            })
-        },
-        totalActiveRefinements() {
-            let total = 0
+type IngredientQuery = operations['listIngredients']['parameters']['query']
+type Ingredient = components['schemas']['Ingredient']
 
-            Object.values(this.activeFilters).forEach(element => {
-                if (Array.isArray(element) && element.length > 0) {
-                    return total++
-                }
+const { t } = useI18n()
+const route = useRoute()
+const router = useRouter()
 
-                if (typeof element == 'boolean' && element == true) {
-                    return total++
-                }
-
-                if (element !== null && !Array.isArray(element) && element !== false) {
-                    return total++
-                }
-            })
-
-            return total
-        },
-    },
-    created() {
-        useTitle(this.$t('ingredient.ingredients'))
-
-        this.fetchRefinements()
-
-        this.$watch(
-            () => this.$route.query,
-            () => {
-                if (this.$route.name == 'ingredients') {
-                    this.queryToState()
-                    this.refreshIngredients()
-                }
-            },
-            { immediate: true }
-        )
-    },
-    methods: {
-        fetchRefinements() {
-            BarAssistantClient.getIngredients({ 'filter[parent_ingredient_id]': 'null' }).then(resp => {
-                this.availableRefinements.categories = resp.data
-            })
-        },
-        queryToState() {
-            const state = qs.parse(this.$route.query)
-
-            this.activeFilters.descendants_of = state.filter && state.filter.descendants_of ? String(state.filter.descendants_of).split(',') : []
-            this.activeFilters.parent_ingredient_id = state.filter && state.filter.parent_ingredient_id ? String(state.filter.parent_ingredient_id).split(',') : []
-            this.activeFilters.on_shelf = state.filter && state.filter.on_shelf ? state.filter.on_shelf : null
-            this.activeFilters.bar_shelf = state.filter && state.filter.bar_shelf ? state.filter.bar_shelf : null
-            this.activeFilters.main_ingredients = state.filter && state.filter.main_ingredients ? state.filter.main_ingredients : null
-            this.activeFilters.on_shopping_list = state.filter && state.filter.on_shopping_list ? state.filter.on_shopping_list : null
-            this.activeFilters.complex = state.filter && state.filter.complex ? state.filter.complex : null
-            this.searchQuery = state.filter && state.filter.name ? state.filter.name : null
-            if (state.filter && (state.filter.strength_min || state.filter.strength_max)) {
-                this.activeFilters.strength = { min: state.filter.strength_min ? state.filter.strength_min : null, max: state.filter.strength_max ? state.filter.strength_max : null }
-            }
-
-            if (state.per_page) {
-                this.per_page = state.per_page
-            }
-
-            if (state.page) {
-                this.currentPage = state.page
-            }
-
-            if (state.sort) {
-                this.sortWithDir = state.sort
-            }
-        },
-        stateToQuery() {
-            const query = {
-                per_page: this.per_page,
-                page: this.currentPage,
-                sort: this.sortWithDir
-            }
-
-            const filters = {
-                name: (this.searchQuery != null && this.searchQuery != '') ? this.searchQuery : null,
-                descendants_of: this.activeFilters.descendants_of.length > 0 ? this.activeFilters.descendants_of.join(',') : null,
-                parent_ingredient_id: this.activeFilters.parent_ingredient_id.length > 0 ? this.activeFilters.parent_ingredient_id.join(',') : null,
-                on_shelf: this.activeFilters.on_shelf,
-                bar_shelf: this.activeFilters.bar_shelf,
-                complex: this.activeFilters.complex,
-                main_ingredients: this.activeFilters.main_ingredients,
-                on_shopping_list: this.activeFilters.on_shopping_list,
-                strength_min: this.activeFilters.strength ? this.activeFilters.strength.min : null,
-                strength_max: this.activeFilters.strength ? this.activeFilters.strength.max : null,
-            }
-
-            // Remove null values
-            // query.filter = Object.fromEntries(Object.entries(filters).filter(([_, v]) => v !== null && v !== false));
-            query.filter = Object.entries(filters).reduce((a,[k,v]) => (v === null || v === false ? a : (a[k]=v, a)), {})
-
-            return query
-        },
-        updateRouterPath() {
-            const query = this.stateToQuery()
-
-            this.$router.push({
-                query: query
-            })
-        },
-        refreshIngredients() {
-            const query = this.stateToQuery()
-            query.include = 'images,ancestors'
-
-            this.isLoading = true
-            BarAssistantClient.getIngredients(query).then(resp => {
-                this.ingredients = resp.data
-                this.meta = resp.meta
-                this.isLoading = false
-            }).catch(e => {
-                this.$toast.error(e.message)
-                this.isLoading = false
-            })
-        },
-        debounceIngredientSearch() {
-            clearTimeout(this.queryTimer)
-
-            this.queryTimer = setTimeout(() => {
-                this.currentPage = 1
-                this.updateRouterPath()
-            }, 300)
-        },
-        handlePageChange(toPage) {
-            this.currentPage = toPage
-            this.updateRouterPath()
-        },
-        clearRefinements() {
-            this.searchQuery = null
-            this.sort = 'name'
-            this.sort_dir = '',
-            this.currentPage = 1,
-            this.per_page = 50,
-            this.activeFilters = {
-                descendants_of: [],
-                parent_ingredient_id: [],
-                on_shelf: false,
-                bar_shelf: false,
-                main_ingredients: false,
-                on_shopping_list: false,
-                complex: false,
-                strength: null
-            }
-
-            this.updateRouterPath()
-        },
-        handleClickAway(e) {
-            if (e && e.target && e.target.classList.contains('resource-search__refinements')) {
-                this.showRefinements = !this.showRefinements
-            }
-        },
+const appState = new AppState()
+const isLoading = ref(false)
+const showRefinements = ref(false)
+const sortDir = ref('')
+const meta = ref({})
+const ingredients = ref<Ingredient[]>([])
+const queryTimer = ref<number | null>(null)
+const availableRefinements = ref({
+    categories: [] as Ingredient[],
+    global: [
+        { name: t('bar-shelf-ingredients'), active: false, id: 'bar_shelf' },
+        { name: t('shelf-ingredients'), active: false, id: 'on_shelf' },
+        { name: t('shopping-list-ingredients'), active: false, id: 'on_shopping_list' },
+        { name: t('used-as-main-ingredient'), active: false, id: 'main_ingredients' },
+        { name: t('ingredient.complex'), active: false, id: 'complex' },
+    ],
+    strength: [
+        { name: t('non-alcoholic'), min: 0, max: 0, id: 'strength_non_alcoholic' },
+        { name: '<= 20%', min: null, max: 20, id: 'strength_weak' },
+        { name: '20% - 40%', min: 20, max: 40, id: 'strength_medium' },
+        { name: '>= 40', min: 40, max: null, id: 'strength_strong' },
+    ],
+})
+const defaultRefinements = {
+    sort: 'name',
+    per_page: 50,
+    page: 1,
+    filter: {
+        name: null as string | null,
+        descendants_of: [] as string[],
+        parent_ingredient_id: null as string[] | null,
+        on_shelf: false,
+        bar_shelf: false,
+        main_ingredients: false,
+        on_shopping_list: false,
+        complex: false,
+        strength: null as {
+            min: number | null,
+            max: number | null
+        } | null
     }
 }
+const activeFilters = ref(defaultRefinements)
+
+watch(
+    () => route.query,
+    () => {
+        if (route.name === 'ingredients') {
+            queryToState()
+            refreshIngredients()
+        }
+    },
+    { immediate: true }
+)
+
+const refineCategories = computed(() => {
+    return availableRefinements.value.categories.map(c => {
+        return {
+            id: c.id,
+            value: c.id,
+            name: c.name
+        }
+    })
+})
+
+const refineStrength = computed(() => {
+    return availableRefinements.value.strength.map(m => {
+        return {
+            id: m.id,
+            value: { min: m.min, max: m.max } as RefinementRange,
+            name: m.name
+        }
+    })
+})
+
+const totalActiveRefinements = computed(() => {
+    let total = 0
+
+    Object.values(activeFilters.value.filter).forEach(element => {
+        if (Array.isArray(element) && element.length > 0) {
+            return total++
+        }
+
+        if (typeof element == 'boolean' && element == true) {
+            return total++
+        }
+
+        if (element !== null && !Array.isArray(element) && element !== false) {
+            Object.values(element).forEach(value => {
+                if (value !== null && value !== false) {
+                    return total++
+                }
+            })
+        }
+    })
+
+    return total
+})
+
+function queryToState() {
+    const queryString = qs.parse(window.location.search.replace(/^\?/, '')) as IngredientQuery
+    if (!queryString) {
+        return
+    }
+
+    if (queryString.sort) {
+        sortDir.value = queryString.sort.startsWith('-') ? '-' : ''
+    }
+
+    activeFilters.value = {
+        sort: queryString.sort?.replace(/^-/, '') || defaultRefinements.sort,
+        per_page: queryString.per_page || defaultRefinements.per_page,
+        page: queryString.page || defaultRefinements.page,
+        filter: {
+            name: queryString.filter?.name || null,
+            descendants_of: queryString.filter?.descendants_of?.split(',') || [],
+            parent_ingredient_id: queryString.filter?.parent_ingredient_id?.split(',') || [],
+            on_shelf: Boolean(queryString.filter?.on_shelf),
+            bar_shelf: Boolean(queryString.filter?.bar_shelf),
+            main_ingredients: Boolean(queryString.filter?.main_ingredients),
+            on_shopping_list: Boolean(queryString.filter?.on_shopping_list),
+            complex: Boolean(queryString.filter?.complex),
+            strength: queryString.filter?.strength_min || queryString.filter?.strength_max
+                ? {
+                    min: queryString.filter.strength_min ? Number(queryString.filter.strength_min) : null,
+                    max: queryString.filter.strength_max ? Number(queryString.filter.strength_max) : null
+                }
+                : null
+        }
+    }
+}
+
+function stateToQuery(): IngredientQuery {
+    const query: IngredientQuery = {}
+
+    query.per_page = activeFilters.value.per_page
+    query.page = activeFilters.value.page
+    query.sort = `${sortDir.value}${activeFilters.value.sort}`
+    query.filter = {
+        name: activeFilters.value.filter.name || undefined,
+        descendants_of: activeFilters.value.filter.descendants_of.length > 0 ? activeFilters.value.filter.descendants_of.join(',') : undefined,
+        parent_ingredient_id: (activeFilters.value.filter.parent_ingredient_id?.length ?? 0) > 0 ? activeFilters.value.filter.parent_ingredient_id?.join(',') : undefined,
+        on_shelf: activeFilters.value.filter.on_shelf || undefined,
+        bar_shelf: activeFilters.value.filter.bar_shelf || undefined,
+        main_ingredients: activeFilters.value.filter.main_ingredients || undefined,
+        on_shopping_list: activeFilters.value.filter.on_shopping_list || undefined,
+        complex: activeFilters.value.filter.complex || undefined,
+        strength_min: activeFilters.value.filter.strength?.min || undefined,
+        strength_max: activeFilters.value.filter.strength?.max || undefined
+    }
+
+    return query
+}
+
+async function refreshIngredients() {
+    const query = {
+        ...stateToQuery(),
+        include: 'images,ancestors'
+    }
+
+    isLoading.value = true
+    const resp = await BarAssistantClient.getIngredients(query)
+    if (resp) {
+        ingredients.value = resp.data ?? []
+        meta.value = resp.meta ?? {}
+    }
+    isLoading.value = false
+}
+
+function handleClickAway(e: any) {
+    if (e && e.target && e.target.classList.contains('resource-search__refinements')) {
+        showRefinements.value = !showRefinements.value
+    }
+}
+
+function updateRouterPath() {
+    const query = stateToQuery()
+
+    router.push({
+        query: query as LocationQueryRaw
+    })
+}
+
+function handlePageChange(toPage: number) {
+    activeFilters.value.page = toPage
+    updateRouterPath()
+}
+
+function debounceIngredientSearch() {
+    if (queryTimer.value) {
+        clearTimeout(queryTimer.value)
+    }
+
+    queryTimer.value = setTimeout(() => {
+        activeFilters.value.page = 1
+        updateRouterPath()
+    }, 300)
+}
+
+function clearRefinements() {
+    activeFilters.value = { ...defaultRefinements }
+    sortDir.value = ''
+    meta.value = {}
+    updateRouterPath()
+}
+
+async function fetchRefinements() {
+    availableRefinements.value.categories = (await BarAssistantClient.getIngredients({ 'filter[parent_ingredient_id]': 'null' }))?.data ?? []
+}
+
+function init() {
+    useTitle(t('ingredient.ingredients'))
+
+    fetchRefinements()
+}
+
+init()
 </script>
-
-<style scoped>
-
-</style>

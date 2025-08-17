@@ -1,5 +1,5 @@
 <template>
-    <RouterLink class="cocktail-grid-item" :to="{ name: 'cocktails.show', params: { id: cocktail.slug } }">
+    <RouterLink class="cocktail-grid-item" :to="{ name: 'cocktails.show', params: { id: cocktail.slug } }" ref="observeElement">
         <div class="cocktail-grid-item__graphic">
             <div class="cocktail-grid-item__badges">
                 <div v-if="cocktail.is_favorited" class="cocktail-badge" :title="$t('is_favorited')">
@@ -19,11 +19,11 @@
         </div>
         <div class="block-container cocktail-grid-item__content">
             <h2 class="cocktail-grid-item__title sr-grid-title">{{ cocktail.name }}</h2>
-            <div class="cocktail-grid-item__rating">
-                <CocktailRating :user-rating="cocktail.rating.user" :average-rating="cocktail.rating.average" />
+            <div class="cocktail-grid-item__rating" v-if="cocktail.rating">
+                <CocktailRating :user-rating="cocktail.rating.user ?? undefined" :average-rating="cocktail.rating.average" />
             </div>
             <p v-if="shortIngredients.length > 0" class="cocktail-grid-item__ingredients">{{ shortIngredients.join(', ') }}</p>
-            <ul class="cocktail-tags">
+            <ul class="cocktail-tags" v-if="cocktail.tags && cocktail.tags.length > 0">
                 <li v-for="tag in cocktail.tags.slice(0, maxTags)" :key="tag.id" class="chip">{{ tag.name }}</li>
                 <li v-if="cocktail.tags.length - maxTags > 0" class="chip" style="opacity: 0.6;">+ {{ cocktail.tags.length - maxTags }} more</li>
             </ul>
@@ -31,7 +31,7 @@
     </RouterLink>
 </template>
 
-<script>
+<script setup lang="ts">
 import BarAssistantClient from '@/api/BarAssistantClient';
 import { thumbHashToDataURL } from 'thumbhash'
 import CocktailRating from './CocktailRating.vue'
@@ -39,74 +39,51 @@ import IconFavorite from '../Icons/IconFavorite.vue';
 import IconBarShelf from '../Icons/IconBarShelf.vue';
 import IconUserShelf from '../Icons/IconUserShelf.vue';
 import IconPublicLink from '../Icons/IconPublicLink.vue';
+import type { components } from '@/api/api';
+import { computed, onMounted, useTemplateRef, type ComponentPublicInstance } from 'vue';
 
-export default {
-    components: {
-        CocktailRating,
-        IconFavorite,
-        IconBarShelf,
-        IconUserShelf,
-        IconPublicLink,
-    },
-    props: {
-        cocktail: {
-            type: Object,
-            default() {
-                return {}
-            }
-        },
-        observer: {
-            type: Object,
-            default() {
-                return {}
-            }
-        }
-    },
-    data() {
-        return {
-            maxTags: 4
-        }
-    },
-    computed: {
-        mainImage() {
-            const images = this.cocktail.images
+type Cocktail = components['schemas']['Cocktail']
 
-            return images.sort((a, b) => a.sort - b.sort)[0]
-        },
-        placeholderImage() {
-            if (this.cocktail.image_hash) {
-                return thumbHashToDataURL(
-                    Uint8Array.from(atob(this.cocktail.image_hash), c => c.charCodeAt(0))
-                )
-            }
+const props = defineProps<{
+    cocktail: Cocktail,
+    observer: IntersectionObserver,
+}>()
+const maxTags = 4
+const el = useTemplateRef<ComponentPublicInstance>('observeElement')
 
-            if (this.cocktail.images && this.cocktail.images.length > 0) {
-                return thumbHashToDataURL(
-                    Uint8Array.from(atob(this.mainImage.placeholder_hash), c => c.charCodeAt(0))
-                )
-            }
+const mainImage = computed(() => {
+    const images = props.cocktail.images ?? []
 
-            return ''
-        },
-        mainCocktailImageUrl() {
-            if (this.cocktail.image_url) {
-                return BarAssistantClient.getImageThumbUrl(this.cocktail.main_image_id)
-            }
+    return images.sort((a, b) => a.sort - b.sort)[0]
+})
 
-            if (this.cocktail.images && this.cocktail.images.length > 0) {
-                return BarAssistantClient.getImageThumbUrl(this.mainImage.id)
-            }
-
-            return '/no-cocktail.jpg'
-        },
-        shortIngredients() {
-            return this.cocktail.ingredients.map(i => i.ingredient.name)
-        }
-    },
-    mounted() {
-        this.observer.observer.observe(this.$el)
+const placeholderImage = computed(() => {
+    if (mainImage.value && mainImage.value.placeholder_hash) {
+        return thumbHashToDataURL(
+            Uint8Array.from(atob(mainImage.value.placeholder_hash), c => c.charCodeAt(0))
+        )
     }
-}
+
+    return ''
+})
+
+const mainCocktailImageUrl = computed(() => {
+    if (mainImage.value) {
+        return BarAssistantClient.getImageThumbUrl(mainImage.value.id)
+    }
+
+    return '/no-cocktail.jpg'
+})
+
+const shortIngredients = computed(() => {
+    return props.cocktail.ingredients?.map(i => i.ingredient.name) ?? []
+})
+
+onMounted(() => {
+    if (el.value) {
+        props.observer.observe(el.value.$el)
+    }
+})
 </script>
 <style scoped>
 .cocktail-grid-item {
