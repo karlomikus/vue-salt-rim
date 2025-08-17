@@ -3832,7 +3832,7 @@ export interface components {
              * Format: binary
              * @description Image file. Base64 encoded images also supported. Max 50MB
              */
-            image: string | null;
+            image: string | null | Blob;
             /** @description Existing image id, used to update an existing image */
             id?: number | null;
             /** @example 1 */
