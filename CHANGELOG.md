@@ -3,8 +3,8 @@
 - Added generative AI support
     - Currently available only as global application configuration via environment variables
     - Added `AI_PROVIDER` env variable. Use it to setup AI provider
-        - Currently only supports local-focused providers, more will be added in the future, although it will fallback to openai-compatibile API
         - Supported values: `ollama`, `lmstudio`
+        - Currently only supports a few providers, more will be added in the future, although it will fallback to openai-compatibile API
     - Added `AI_HOST` env variable. Use it to setup AI host URL
     - Added `AI_MODEL` env variable. Use it to setup AI model
     - Added `AI_API_KEY` env variable. Use it to setup AI API key
@@ -15,6 +15,7 @@
             - Fill in basic ingredient information based on name
 - Added bookmarklet generation
     - You can now generate draft2 cocktail JSON from from any website using bookmarklet
+- Added support for importing via raw HTML content
 - Added support for `cocktails.import` personal access token scope
 
 # v4.6.0
