@@ -593,4 +593,8 @@ export default class BarAssistantClient {
   static async optimizeBar(id: number) {
     return (await client.POST('/bars/{id}/optimize', { params: { path: { id: id } } })).data
   }
+
+  static async datapackSync(id: number) {
+    return (await client.POST('/bars/{id}/sync-datapack', { params: { path: { id: id } } })).data
+  }
 }
