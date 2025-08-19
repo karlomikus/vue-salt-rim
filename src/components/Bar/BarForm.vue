@@ -14,12 +14,17 @@
                 <label class="form-label" for="subtitle">{{ $t('subtitle') }}:</label>
                 <input id="subtitle" v-model="bar.subtitle" class="form-input" type="text">
             </div>
-            <div class="form-group" v-if="!bar.id">
+            <div class="form-group">
                 <label class="form-label" for="bar-default-data">{{ $t('bars.default-data') }}:</label>
-                <select id="bar-default-data" v-model="selectedOptions" class="form-select" required>
-                    <option v-for="option in importOptions" :key="option.value" :value="option.value">{{ option.name }}</option>
-                    <option :value="undefined">{{ $t('bars.no-default.data') }}</option>
-                </select>
+                <template v-if="!bar.id">
+                    <select id="bar-default-data" v-model="selectedOptions" class="form-select" required>
+                        <option v-for="option in importOptions" :key="option.value" :value="option.value">{{ option.name }}</option>
+                        <option :value="undefined">{{ $t('bars.no-default.data') }}</option>
+                    </select>
+                </template>
+                <div v-else>
+                    <button type="button" class="button button--outline" @click="runBarDatapackSync"><OverlayLoader v-if="isDataSyncRunning" />{{ $t('bars.sync-data') }}</button>
+                </div>
             </div>
             <div class="sr-grid sr-grid--2-col">
                 <div class="form-group">
@@ -104,6 +109,7 @@ const skipSlugGenerationFromName = ref(false)
 const selectedOptions = ref<BarOptionsEnum>('cocktails')
 const enableInvites = ref(true)
 const isOptimizationRunning = ref(false)
+const isDataSyncRunning = ref(false)
 const availableUnits = ref([
     { value: 'ml', text: t('unit.ml-full') },
     { value: 'oz', text: t('unit.oz-full') },
@@ -196,6 +202,18 @@ async function runBarOptimize() {
             dialog.close()
             await BarAssistantClient.optimizeBar(bar.value.id)
             isOptimizationRunning.value = false
+        }
+    })
+}
+
+async function runBarDatapackSync() {
+    confirm.show(t('bars.confirm-datapack-sync'), {
+        onResolved: async (dialog: any) => {
+            isDataSyncRunning.value = true
+            toast.default(t('bars.datapack-sync-started', { name: bar.value.name }))
+            dialog.close()
+            await BarAssistantClient.datapackSync(bar.value.id)
+            isDataSyncRunning.value = false
         }
     })
 }

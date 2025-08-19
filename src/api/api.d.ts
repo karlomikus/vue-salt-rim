@@ -300,6 +300,26 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/bars/{id}/sync-datapack": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Sync recipes
+         * @description Triggers synchronization of recipes from the default datapack. Matches data by name, does not overwrite your existing recipes or ingredients.
+         */
+        post: operations["syncBarDatapack"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/calculators": {
         parameters: {
             query?: never;
@@ -5090,6 +5110,68 @@ export interface operations {
         };
     };
     optimizeBar: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Database id of a resource */
+                id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful response */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description You are not authorized for this action. */
+            403: {
+                headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data?: components["schemas"]["APIError"];
+                    };
+                };
+            };
+            /** @description Resource record not found. */
+            404: {
+                headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data?: components["schemas"]["APIError"];
+                    };
+                };
+            };
+            /** @description Reached rate limit. */
+            429: {
+                headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    syncBarDatapack: {
         parameters: {
             query?: never;
             header?: never;
