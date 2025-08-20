@@ -1,3 +1,14 @@
+# v4.9.0
+## New
+- Enabled Czech translations
+
+## Changes
+- Docker image is now rootless
+
+# v4.8.0
+## New
+- Added sync default recipes action in Bars -> Edit Bar -> Synchronize data
+
 # v4.7.0
 ## New
 - Added generative AI support
