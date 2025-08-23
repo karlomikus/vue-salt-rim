@@ -78,7 +78,7 @@
     "used-in-substitutes": "+{total} en substitut",
     "default-units-help": "Utilisé pour remplir automatiquement les unités sélectionnant les ingrédients pour les recettes de cocktail",
     "icicle-graph": "Icicle chart",
-    "csv-import-started": "CSV import started"
+    "csv-import-started": "Importation des fichiers CSV en cours"
   },
   "share": {
     "title": "Partager",
@@ -393,16 +393,16 @@
     "members": "Membres du bar",
     "logo": "Logo du bar",
     "edit-success": "Bar \"{name}\" mis à jour",
-    "default-data": "Default dataset",
+    "default-data": "Fichier de données par défaut",
     "no-default": {
       "data": "Aucune donnée par défaut"
     },
     "optimization-started": "Commencer l'optimisation du bar",
     "optimize": "Optimiser le bar",
-    "confirm-optimization": "This will run bar optimizations",
+    "confirm-optimization": "Cela exécutera les optimisations du bar",
     "sync-data": "Synchroniser les données",
-    "confirm-datapack-sync": "This action will add missing data available in default datapack to this bar. Your existing recipes are not affected, but new data will be added. Please make sure that you have a backup or export of your data.",
-    "bars.datapack-sync-started": "Started default datapack sync in bar \"{name}\""
+    "confirm-datapack-sync": "Cette action ajoutera à ce bar les données manquantes disponibles dans la base de données par défaut. Vos recettes existantes ne seront pas affectées, mais de nouvelles données seront ajoutées. Veuillez vous assurer d'avoir une sauvegarde ou une exportation de vos données.",
+    "bars.datapack-sync-started": "Début de la synchronisation de la base de données par défaut pour le bar \"{name}\""
   },
   "close": "Fermer",
   "save-as": "Enregistrer sous",
@@ -527,7 +527,7 @@
     "url-help": "L'URL publique de votre bar sera : {url}",
     "url-menu-hint": "Utilisé pour le menu public si cela est autorisé.",
     "default-currency-hint": "Utilisé comme suggestion de devise par défaut, peut être modifié à tout moment.",
-    "default-units-hint": "Used as default units on cocktail details, can be changed anytime."
+    "default-units-hint": "Utilisé comme unité par défaut pour les détails du cocktail, peut être modifié à tout moment."
   },
   "api": {
     "tokens": "Jetons d'API",
