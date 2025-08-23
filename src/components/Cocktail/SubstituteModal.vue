@@ -3,7 +3,8 @@
         <OverlayLoader v-if="isLoading" />
         <div class="dialog-title">{{ $t('ingredient.dialog.select-substitutes') }}</div>
         <p style="margin-bottom: 1rem;">{{ $t('ingredient.dialog.select-substitutes-for', {name: cocktailIngredient.ingredient.name}) }}</p>
-        <IngredientFinder :search-token="searchToken" :selected-ingredients="selectedSubstitutes.map(s => s.ingredient.id)" @ingredient-selected="selectIngredient"></IngredientFinder>
+        <IngredientFinderBasic v-if="shouldUseBasicSearch" :selected-ingredients="selectedSubstitutes.map(s => s.ingredient.id)" @ingredient-selected="selectIngredient"></IngredientFinderBasic>
+        <IngredientFinder v-else-if="!shouldUseBasicSearch && appState.bar.search_token" :search-token="appState.bar.search_token" :selected-ingredients="selectedSubstitutes.map(s => s.ingredient.id)" @ingredient-selected="selectIngredient"></IngredientFinder>
         <div class="substitutes">
             <h4>{{ $t('substitutes') }}:</h4>
             <div v-for="(substitute, index) in selectedSubstitutes" :key="substitute.ingredient.id" class="substitutes__substitute">
@@ -56,15 +57,19 @@ import IngredientFinder from './../IngredientFinder.vue'
 import AmountInput from './../AmountInput.vue'
 import type { SearchResults } from '@/api/SearchResults';
 import type { components } from '@/api/api'
+import IngredientFinderBasic from '../IngredientFinderBasic.vue';
+import { useBasicSearch } from '@/composables/useBasicSearch'
+import AppState from '@/AppState';
 
 type CocktailIngredient = components['schemas']['CocktailIngredient']
 type CocktailIngredientSubstitute = components['schemas']['CocktailIngredientSubstitute']
 type IngredientSearchResult = SearchResults['ingredient']
 
+const shouldUseBasicSearch = useBasicSearch()
 const props = defineProps<{
-    searchToken: string;
     value: CocktailIngredient;
 }>()
+const appState = new AppState()
 const isLoading = ref(false)
 const amountDisplayTracker = ref<number[]>([])
 const cocktailIngredient = ref<CocktailIngredient>(props.value)

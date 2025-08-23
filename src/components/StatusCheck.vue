@@ -12,6 +12,10 @@ const appState = new AppState()
 const meilisearchRunning = ref(true)
 
 function testMeilisearch() {
+    if (appState.bar.search_host === '' || appState.bar.search_host === null) {
+        return;
+    }
+
     fetch(`${appState.bar.search_host}/health`)
         .then(res => res.json())
         .then(data => {

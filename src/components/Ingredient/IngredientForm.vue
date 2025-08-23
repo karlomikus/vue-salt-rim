@@ -68,7 +68,8 @@
                 <SaltRimCheckbox id="parent-ingredient-checkbox" v-model="isParent" :label="$t('ingredient.is-variety')" :description="$t('ingredient.variety-note')"></SaltRimCheckbox>
             </div>
             <div v-show="isParent" class="form-group" v-if="bar.search_host">
-                <IngredientFinder v-if="bar.search_token" v-show="ingredient.hierarchy.parent_ingredient?.id == null" :search-token="bar.search_token" @ingredient-selected="selectParentIngredient" :disabled-ingredients="disabledFinderIngredients"></IngredientFinder>
+                <IngredientFinderBasic v-if="shouldUseBasicSearch" v-show="ingredient.hierarchy.parent_ingredient?.id == null" @ingredient-selected="selectParentIngredient" :disabled-ingredients="disabledFinderIngredients"></IngredientFinderBasic>
+                <IngredientFinder v-else-if="!shouldUseBasicSearch && appState.bar.search_token" v-show="ingredient.hierarchy.parent_ingredient?.id == null" :search-token="appState.bar.search_token" @ingredient-selected="selectParentIngredient" :disabled-ingredients="disabledFinderIngredients"></IngredientFinder>
                 <div class="form-input form-input--auto-height" v-if="ingredient.hierarchy.parent_ingredient?.id">
                     {{ ingredient.hierarchy.parent_ingredient.name }} &middot; <a href="#" @click.prevent="ingredient.hierarchy.parent_ingredient = null">{{ $t('remove') }}</a>
                 </div>
@@ -78,7 +79,8 @@
             </div>
             <div v-show="isComplex" class="ingredient-form__complex-ingredients" v-if="bar.search_host && ingredient.ingredient_parts">
                 <div>
-                    <IngredientFinder v-if="bar.search_token" :selected-ingredients="ingredient.ingredient_parts.map(i => i.id)" :search-token="bar.search_token" @ingredient-selected="selectIngredientPart" :disabled-ingredients="disabledFinderIngredients"></IngredientFinder>
+                    <IngredientFinderBasic v-if="shouldUseBasicSearch" :selected-ingredients="ingredient.ingredient_parts.map(i => i.id)" @ingredient-selected="selectIngredientPart" :disabled-ingredients="disabledFinderIngredients"></IngredientFinderBasic>
+                    <IngredientFinder v-else-if="!shouldUseBasicSearch && appState.bar.search_token" :selected-ingredients="ingredient.ingredient_parts.map(i => i.id)" :search-token="appState.bar.search_token" @ingredient-selected="selectIngredientPart" :disabled-ingredients="disabledFinderIngredients"></IngredientFinder>
                 </div>
                 <div>
                     <ul v-if="ingredient.ingredient_parts.length > 0" class="block-container block-container--inset ingredient-form__complex-ingredients__list">
@@ -175,6 +177,8 @@ import ButtonGenerate from '@/components/AI/ButtonGenerate.vue'
 import GenerationLoader from '../AI/GenerationLoader.vue'
 import { jsonSchema } from 'ai'
 import { useImageUpload } from '@/composables/useImageUpload';
+import IngredientFinderBasic from '../IngredientFinderBasic.vue'
+import { useBasicSearch } from '@/composables/useBasicSearch'
 
 type Ingredient = components['schemas']['Ingredient']
 type IngredientPrice = components['schemas']['IngredientPrice']
@@ -183,6 +187,7 @@ type IngredientSearchResult = SearchResults['ingredient']
 type Calculator = components['schemas']['Calculator']
 type PriceCategory = components['schemas']['PriceCategory']
 
+const shouldUseBasicSearch = useBasicSearch()
 const route = useRoute()
 const router = useRouter()
 const { t } = useI18n()

@@ -58,7 +58,7 @@
                                     </a>
                                 </template>
                                 <template #dialog>
-                                    <CocktailIngredientModal v-if="bar.search_token" :search-token="bar.search_token" v-model="cocktail.ingredients[idx]" @close="handleCocktailIngredientModalClose(idx)" />
+                                    <CocktailIngredientModal v-model="cocktail.ingredients[idx]" @close="handleCocktailIngredientModalClose(idx)" />
                                 </template>
                             </SaltRimDialog>
                             &middot;
@@ -82,7 +82,7 @@
                 <span></span>
             </template>
             <template #dialog>
-                <SubstituteModal v-if="bar.search_token" :search-token="bar.search_token" :value="cocktailIngredientForSubstitutes" @close="showSubstituteDialog = false" />
+                <SubstituteModal :value="cocktailIngredientForSubstitutes" @close="showSubstituteDialog = false" />
             </template>
         </SaltRimDialog>
         <h3 class="form-section-title">{{ t('media') }}</h3>
@@ -170,7 +170,8 @@
                         <a v-show="cocktail.parent_cocktail !== null" href="#" @click.prevent="cocktail.parent_cocktail = null">{{ t('remove') }}</a>
                     </template>
                     <template #dialog>
-                        <CocktailFinder @cocktail-selected="selectParentCocktail" @closed="showVarietyDialog = false"></CocktailFinder>
+                        <CocktailFinderBasic v-if="shouldUseBasicSearch" @cocktail-selected="selectParentCocktail" @closed="showVarietyDialog = false"></CocktailFinderBasic>
+                        <CocktailFinder v-else @cocktail-selected="selectParentCocktail" @closed="showVarietyDialog = false"></CocktailFinder>
                     </template>
                 </SaltRimDialog>
             </div>
@@ -216,6 +217,9 @@ import { useSaltRimToast } from '@/composables/toast';
 import { useConfirm } from '@/composables/confirm'
 import { jsonSchema } from 'ai'
 import { useImageUpload } from '@/composables/useImageUpload';
+import CocktailFinderBasic from '../CocktailFinderBasic.vue';
+import { useBasicSearch } from '@/composables/useBasicSearch'
+import type { SearchResults } from '@/api/SearchResults'
 
 type Cocktail = components['schemas']['Cocktail']
 type CocktailRequest = components["schemas"]["CocktailRequest"]
@@ -225,7 +229,9 @@ type CocktailMethod = components['schemas']['CocktailMethod']
 type Tag = components['schemas']['Tag']
 type Utensil = components['schemas']['Utensil']
 type Bar = components['schemas']['Bar']
+type SearchResultCocktail = SearchResults['cocktail']
 
+const shouldUseBasicSearch = useBasicSearch()
 const route = useRoute()
 const router = useRouter()
 const { t } = useI18n()
@@ -402,7 +408,7 @@ function onAfterPrompt(result: string[]) {
     selectedTagNames.value = Array.from(uniqueTags)
 }
 
-function selectParentCocktail(parentCocktail: Cocktail) {
+function selectParentCocktail(parentCocktail: SearchResultCocktail) {
     cocktail.value.parent_cocktail = parentCocktail
     showVarietyDialog.value = false
 }

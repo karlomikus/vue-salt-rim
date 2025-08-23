@@ -3,7 +3,8 @@
         <OverlayLoader v-if="isLoading" />
         <div class="dialog-title">{{ title }}</div>
         <p v-if="description">{{ description }}</p>
-        <IngredientFinder :search-token="searchToken" :selected-ingredients="selectedIngredients.map(s => s.id)" @ingredient-selected="selectIngredient"></IngredientFinder>
+        <IngredientFinderBasic v-if="shouldUseBasicSearch" :selected-ingredients="selectedIngredients.map(s => s.id)" @ingredient-selected="selectIngredient"></IngredientFinderBasic>
+        <IngredientFinder v-else-if="!shouldUseBasicSearch && appState.bar.search_token" :search-token="appState.bar.search_token" :selected-ingredients="selectedIngredients.map(s => s.id)" @ingredient-selected="selectIngredient"></IngredientFinder>
         <div class="search-ingredients-modal-ingredients">
             <div v-for="ing in selectedIngredients" :key="ing.id" class="search-ingredients-modal-ingredients__ingredient">
                 {{ ing.name }} <button type="button" @click.prevent="removeIngredient(ing)"><IconClose></IconClose></button>
@@ -23,19 +24,23 @@ import BarAssistantClient from '@/api/BarAssistantClient';
 import IconClose from './../Icons/IconClose.vue';
 import type { SearchResults } from '@/api/SearchResults';
 import type { components } from '@/api/api'
+import IngredientFinderBasic from '../IngredientFinderBasic.vue';
+import AppState from '@/AppState';
+import { useBasicSearch } from '@/composables/useBasicSearch'
 
 type Ingredient = components['schemas']['Ingredient']
 
 type IngredientSearchResult = SearchResults['ingredient']
 const emit = defineEmits(['close'])
 const props = defineProps<{
-    searchToken: string
     title: string
     value: number[]
     description?: string
 }>()
+const appState = new AppState()
 const isLoading = ref(false)
 const selectedIngredients = ref<IngredientSearchResult[]>([])
+const shouldUseBasicSearch = useBasicSearch()
 
 const matchIngredients = async () => {
     if (props.value.length > 0) {
