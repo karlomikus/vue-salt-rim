@@ -8,8 +8,8 @@
     "it-IT": "Italien",
     "sv-SE": "Suédois",
     "zh-CN": "Chinois (simplifié)",
-    "nl-NL": "Netherlands",
-    "cs-CZ": "Czech",
+    "nl-NL": "Néerlandais",
+    "cs-CZ": "Tchèque",
     "help": "Aide aux traductions"
   },
   "shelf": {
@@ -18,7 +18,7 @@
     "bar-stats": "Statistiques du bar",
     "recommended-cocktails": "Cocktails conseillés"
   },
-  "server-error": "Unexpected server error",
+  "server-error": "Erreur serveur inattendue",
   "ingredient": {
     "title": "Ingrédient",
     "main": "Ingrédient principal",
@@ -76,7 +76,7 @@
     "recommended-next": "Ce bar propose {totalPercent} des recettes disponibles. Ajouter l'un des ingrédients suivants à l'étagère du bar pour augmenter les propositions de cocktails : {ingredients}",
     "used-in": "Utilisé dans {count} {substituteCount} des recettes de cocktails",
     "used-in-substitutes": "+{total} en substitut",
-    "default-units-help": "Used to autofill units when selecting ingredient for cocktail recipe",
+    "default-units-help": "Utilisé pour remplir automatiquement les unités sélectionnant les ingrédients pour les recettes de cocktail",
     "icicle-graph": "Icicle chart",
     "csv-import-started": "CSV import started"
   },
@@ -158,7 +158,7 @@
   "source": "Source",
   "method-and-dilution": "Méthode et dilution",
   "placeholder": {
-    "search": "Enter search term...",
+    "search": "Entrer un terme de recherche...",
     "source": "URL ou livre...",
     "tags": "Des tags pour vous aider à trouver le cocktail...",
     "cocktail-description": "Description du cocktail ou histoire...",
@@ -356,7 +356,7 @@
   "utensils": {
     "title": "Ustensiles",
     "add": "Ajouter un ustensile",
-    "edit": "Edit utensil",
+    "edit": "Éditer l'ustensile",
     "confirm-delete": "Cela supprimera définitivement l'ustensile avec le nom \"{name}\".",
     "delete-success": "Ustensile supprimé avec succès",
     "add-success": "Ustensile ajouté",
@@ -395,12 +395,12 @@
     "edit-success": "Bar \"{name}\" mis à jour",
     "default-data": "Default dataset",
     "no-default": {
-      "data": "No default data"
+      "data": "Aucune donnée par défaut"
     },
     "optimization-started": "Commencer l'optimisation du bar",
     "optimize": "Optimiser le bar",
     "confirm-optimization": "This will run bar optimizations",
-    "sync-data": "Synchronize data",
+    "sync-data": "Synchroniser les données",
     "confirm-datapack-sync": "This action will add missing data available in default datapack to this bar. Your existing recipes are not affected, but new data will be added. Please make sure that you have a backup or export of your data.",
     "bars.datapack-sync-started": "Started default datapack sync in bar \"{name}\""
   },
@@ -421,13 +421,13 @@
     "continue": "Continuer l’édition",
     "type-url-title": "URL",
     "type-json-title": "JSON",
-    "type-ai-title": "Text",
+    "type-ai-title": "Texte",
     "type-bookmarklet-title": "Bookmarklet",
     "type-html-title": "HTML",
     "type-url-description": "Importer depuis un site web pris en charge",
     "type-json-description": "Importer à partir du format JSON",
-    "type-ai-description": "Import from plain text recipe using AI",
-    "type-bookmarklet-description": "Create a bookmarklet to generate JSON format",
+    "type-ai-description": "Importer depuis le texte brut de la recette en utilisant l'IA",
+    "type-bookmarklet-description": "Créer un bookmarklet pour générer au format JSON",
     "type-html-description": "Import from raw HTML format",
     "notice": "Les ingrédients existants, les méthodes et la verrerie seront classés en fonction de leur nom (fichier insensible). Si un ingrédient n'existe pas, il sera créé. Les unités de mesures traditionnelles seront converties automatiquement en \"ml\". En fonction de la taille de la collection, l'importation peut prendre quelques minutes.",
     "type-csv-text-title": "Texte CSV",
@@ -535,7 +535,7 @@
     "add": "Ajouter une clé d'API",
     "read": "Lecture",
     "write": "Écriture",
-    "import": "Import",
+    "import": "Importer",
     "key-copied": "Jeton d'API copiée",
     "save-token": "Enregistrez votre jeton",
     "add-success": "Jeton créé",
