@@ -3,6 +3,7 @@
         {{ $t('cocktail.cocktails') }}
         <template v-if="appState.isAdmin() || appState.isModerator() || appState.isGeneral()" #actions>
             <RouterLink class="button button--outline" :to="{ name: 'cocktails.scrape' }">{{ $t('cocktail.import') }}</RouterLink>
+            <RouterLink class="button button--outline" :to="{ name: 'cocktails.import.bulk' }">Bulk Import</RouterLink>
             <RouterLink class="button button--dark" :to="{ name: 'cocktails.form' }">{{ $t('cocktail.add') }}</RouterLink>
         </template>
     </PageHeader>

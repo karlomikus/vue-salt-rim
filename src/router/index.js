@@ -115,6 +115,12 @@ const router = createRouter({
                     meta: { requiresBar: true },
                 },
                 {
+                    path: '/cocktails/import/bulk',
+                    name: 'cocktails.import.bulk',
+                    component: () => import('../views/CocktailsBulkImportView.vue'),
+                    meta: { requiresBar: true },
+                },
+                {
                     path: '/cocktails/:id',
                     name: 'cocktails.show',
                     component: () => import('../views/CocktailView.vue'),
