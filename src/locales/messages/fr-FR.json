@@ -77,7 +77,7 @@
     "used-in": "Utilisé dans {count} {substituteCount} des recettes de cocktails",
     "used-in-substitutes": "+{total} en substitut",
     "default-units-help": "Utilisé pour remplir automatiquement les unités sélectionnant les ingrédients pour les recettes de cocktail",
-    "icicle-graph": "Icicle chart",
+    "icicle-graph": "Histogramme",
     "csv-import-started": "Importation des fichiers CSV en cours"
   },
   "share": {
