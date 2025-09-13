@@ -8,7 +8,7 @@
     "it-IT": "Italiano",
     "sv-SE": "Svedese",
     "zh-CN": "Chinese (Simplified)",
-    "nl-NL": "Netherlands",
+    "nl-NL": "Paesi Bassi",
     "cs-CZ": "Czech",
     "help": "Aiuta con la traduzione"
   },
@@ -16,7 +16,7 @@
     "title": "Dispensa",
     "cocktails": "Cocktail che posso fare",
     "bar-stats": "Bar statistics",
-    "recommended-cocktails": "Recommended cocktails"
+    "recommended-cocktails": "Cocktail consigliati"
   },
   "server-error": "Unexpected server error",
   "ingredient": {
@@ -421,7 +421,7 @@
     "continue": "Continua con la modifica",
     "type-url-title": "URL",
     "type-json-title": "JSON",
-    "type-ai-title": "Text",
+    "type-ai-title": "Testo",
     "type-bookmarklet-title": "Bookmarklet",
     "type-html-title": "HTML",
     "type-url-description": "Importa da un sito web supportato",
