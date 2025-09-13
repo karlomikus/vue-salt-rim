@@ -9,7 +9,7 @@
     "sv-SE": "Svedese",
     "zh-CN": "Chinese (Simplified)",
     "nl-NL": "Paesi Bassi",
-    "cs-CZ": "Czech",
+    "cs-CZ": "Repubblica Ceca",
     "help": "Aiuta con la traduzione"
   },
   "shelf": {
@@ -18,7 +18,7 @@
     "bar-stats": "Bar statistics",
     "recommended-cocktails": "Cocktail consigliati"
   },
-  "server-error": "Unexpected server error",
+  "server-error": "Errore inatteso del server",
   "ingredient": {
     "title": "Ingrediente",
     "main": "Ingrediente principale",
@@ -30,7 +30,7 @@
     "remove-from-list": "Rimuovi dalla lista della spesa",
     "update-success": "Ingrediente aggiornato con successo",
     "create-success": "Ingrediente creato con successo",
-    "name-placeholder": "Not selected",
+    "name-placeholder": "Non selezionato",
     "delete-confirm": "Questo eliminerà definitivamente l'ingrediente \"{name}\". Questa azione modificherà {total} ricette cocktail.",
     "shelf-remove-success": "Rimosso \"{name}\" dalla dispensa",
     "shelf-add-success": "Aggiunto \"{name}\" alla dispensa",
@@ -391,7 +391,7 @@
     "confirm-activation": "Sei sicuro di voler attivare \"{name}\"? Sul piano gratuito puoi solo avere un bar attivo, non sarai in grado di attivare altri bar.",
     "activation-success": "Bar attivato",
     "members": "Membri del bar",
-    "logo": "Bar logo",
+    "logo": "Logo del bar",
     "edit-success": "Bar \"{name}\" updated",
     "default-data": "Default dataset",
     "no-default": {
@@ -599,7 +599,7 @@
     "copy-action": "Duplica e modifica",
     "copy-success": "Cocktail duplicato",
     "confirm-copy": "Questo creerà una copia di\"{name}\"",
-    "randomize": "Show random cocktail"
+    "randomize": "Mostra un cocktail a caso"
   },
   "ABV-definition": "Gradi alcolici",
   "last-used-at": "Ultimo utilizzo",
@@ -617,7 +617,7 @@
     "select": "Seleziona prezzo",
     "category-delete-success": "Categoria di prezzo eliminata",
     "category-confirm-delete": "Questo stabilirà in modo permanente la categoria di prezzo con il nome \\\"{name}\\\".",
-    "missing-cocktail-price-calculator": "There are no prices available for this cocktail. Add prices to ingredients in the recipe to enable price calculation.",
+    "missing-cocktail-price-calculator": "Non ci sono prezzi disponibili per questo cocktail. Aggiungi i prezzi agli ingredienti della ricetta per abilitare il calcolo del prezzo.",
     "missing-price-categories": "To add ingredient prices, you need to define bar {link} first."
   },
   "prices": {
@@ -636,21 +636,21 @@
   "bar-shelf-ingredients": "Ingredienti per lo scaffale del bar",
   "target-pour-cost": "Costo più basso previsto",
   "target-pour-cost-help": "Percentuale del prezzo di vendita del cocktail che deriva dal costo degli ingredienti.",
-  "is_favorited": "Your favorite cocktail",
+  "is_favorited": "Il tuo cocktail preferito",
   "in_bar_shelf": "Available in bar shelf",
   "in_your_shelf": "Available in your shelf",
   "is_public": "Has public link",
   "website": "Sito web",
-  "uncategorized": "Uncategorized",
+  "uncategorized": "Senza categoria",
   "calculators": {
     "title": "Calculators",
     "calculator": "Calculator",
     "add": "Create calculator",
     "information": "Basic information",
-    "inputs": "Inputs",
+    "inputs": "Input",
     "evaluations": "Evaluations",
     "expression": "Expression",
-    "var-name": "Variable name",
+    "var-name": "Nome variabile",
     "missing-result": "None, click preview to resolve",
     "add-evaluation": "Add evaluation",
     "add-input": "Add input",
@@ -665,7 +665,7 @@
     "copy-success": "Calculator copied to clipboard",
     "import": "Import calculator"
   },
-  "label": "Label",
+  "label": "Etichetta",
   "prefix": "Prefix",
   "suffix": "Suffix",
   "default-value": "Default value",
