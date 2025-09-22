@@ -125,7 +125,7 @@
   },
   "latest": {
     "cocktails": "最新鸡尾酒",
-    "favorites": "您最近的收藏",
+    "favorites": "Recent favorites",
     "ingredients": "最新配料"
   },
   "strength": "酒精度",
@@ -136,7 +136,7 @@
   "medium": "中度",
   "strong": "高度",
   "welcome-user": "欢迎 {name}",
-  "your-shopping-list": "您的购物清单",
+  "your-shopping-list": "Shopping list",
   "missing.ingredients": "此处显示您缺失的配料。",
   "all-ingredients": "所有配料",
   "find-cocktails": "查找鸡尾酒",
@@ -402,7 +402,8 @@
     "confirm-optimization": "此操作将运行酒吧优化程序",
     "sync-data": "Synchronize data",
     "confirm-datapack-sync": "This action will add missing data available in default datapack to this bar. Your existing recipes are not affected, but new data will be added. Please make sure that you have a backup or export of your data.",
-    "bars.datapack-sync-started": "Started default datapack sync in bar \"{name}\""
+    "bars.datapack-sync-started": "Started default datapack sync in bar \"{name}\"",
+    "is-public": "Make bar public. Allows access to public API endpoints."
   },
   "close": "关闭",
   "save-as": "另存为",
