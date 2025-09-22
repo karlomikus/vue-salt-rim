@@ -3941,27 +3941,28 @@ export interface components {
             /** @example My device */
             token_name?: string | null;
         };
+        MenuItemRequest: {
+            /** @example 1 */
+            id: number;
+            type: components["schemas"]["MenuItemTypeEnum"];
+            /** @example Category name */
+            category_name: string;
+            /** @example 1 */
+            sort: number;
+            /**
+             * Format: float
+             * @example 22.52
+             */
+            price: number;
+            /**
+             * Format: ISO 4217
+             * @example EUR
+             */
+            currency: string;
+        };
         MenuRequest: {
             is_enabled: boolean;
-            items: {
-                /** @example 1 */
-                id: number;
-                type: components["schemas"]["MenuItemTypeEnum"];
-                /** @example Category name */
-                category_name: string;
-                /** @example 1 */
-                sort: number;
-                /**
-                 * Format: minor
-                 * @example 2252
-                 */
-                price: number;
-                /**
-                 * Format: ISO 4217
-                 * @example EUR
-                 */
-                currency: string;
-            }[];
+            items: components["schemas"]["MenuItemRequest"][];
         };
         NoteRequest: {
             /** @example Note text */
@@ -9658,14 +9659,18 @@ export interface operations {
                     name?: string;
                     /** @description Filter by cocktail ingredient names(s) (fuzzy search) */
                     ingredient_name?: string;
+                    /** @description Filter by cocktail tag name(s) (fuzzy search) */
+                    tag?: string;
+                    /** @description Filter by cocktail glass type name(s) (fuzzy search) */
+                    glass?: string;
+                    /** @description Filter by cocktail method name(s) (fuzzy search) */
+                    method?: string;
                     /** @description Show only cocktails on the bar shelf */
                     bar_shelf?: boolean;
-                    /** @description Filter by greater than or equal ABV */
-                    abv_min?: number;
-                    /** @description Filter by less than or equal ABV */
-                    abv_max?: number;
+                    /** @description Filter by greater than or equal ABV. Use >=, >, <=, < operators (e.g., `filter[abv]=>=20` to get cocktails with ABV greater than or equal to 20). */
+                    abv?: number;
                 };
-                /** @description Sort by attributes. Available attributes: `name`, `created_at`, `average_rating`, `user_rating`, `abv`, `total_ingredients`, `missing_ingredients`, `missing_bar_ingredients`, `favorited_at`, `random`. */
+                /** @description Sort by attributes. Available attributes: `name`, `created_at`, `abv`, `random`. */
                 sort?: string;
             };
             header?: never;

@@ -274,6 +274,23 @@ const router = createRouter({
                     component: () => import('../views/ShelfShoppingListPrintView.vue'),
                 },
             ]
+        },
+        {
+            path: '/public',
+            component: () => import('../PublicLayout.vue'),
+            meta: { requiresAuth: false },
+            children: [
+                {
+                    path: 'cocktails',
+                    name: 'public.cocktails.index',
+                    component: () => import('../views/PublicCocktailsView.vue'),
+                },
+                {
+                    path: 'cocktails/:slug',
+                    name: 'public.cocktails.show',
+                    component: () => import('../views/PublicCocktailDetailsView.vue'),
+                },
+            ]
         }
     ]
 })

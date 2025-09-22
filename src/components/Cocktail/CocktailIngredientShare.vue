@@ -10,45 +10,57 @@
     </div>
 </template>
 
-<script>
+<script setup lang="ts">
 import { unitHandler } from '@/composables/useUnits'
+import { computed } from 'vue';
 
-export default {
-    props: {
-        cocktailIngredient: {
-            type: Object,
-            default() {
-                return {}
-            }
-        },
-        scaleFactor: {
-            type: Number,
-            default: 1
-        },
-        units: {
-            type: String,
-            default: 'ml'
-        }
+export interface CocktailIngredientShare {
+    ingredient: {
+        name: string,
     },
-    computed: {
-        name() {
-            let name = this.cocktailIngredient.ingredient.name
-            if (this.cocktailIngredient.note) {
-                name += ` · ${this.cocktailIngredient.note}`
-            }
-
-            return name
+    amount: number|string|null;
+    amount_max?: number|string|null;
+    units?: string|null;
+    note: string|null,
+    optional: boolean,
+    substitutes: {
+        ingredient: {
+            name: string,
         },
-        amount() {
-            return unitHandler.print(this.cocktailIngredient, this.units, this.scaleFactor)
-        },
-        substitutes() {
-            return this.cocktailIngredient.substitutes.map(sub => {
-                return new String(sub.ingredient.name + ' ' + unitHandler.print(sub, this.units, this.scaleFactor)).trim()
-            }).join(', ')
-        }
-    }
+        amount: number|null,
+        unit: string|null,
+        note: string|null,
+    }[],
 }
+
+const {
+    cocktailIngredient,
+    scaleFactor = 1,
+    units = 'ml',
+} = defineProps<{
+    cocktailIngredient: CocktailIngredientShare,
+    scaleFactor: number,
+    units: string,
+}>()
+
+const name = computed(() => {
+    let name = cocktailIngredient.ingredient.name
+    if (cocktailIngredient.note) {
+        name += ` · ${cocktailIngredient.note}`
+    }
+
+    return name
+})
+
+const amount = computed(() => {
+    return unitHandler.print(cocktailIngredient, units, scaleFactor)
+})
+
+const substitutes = computed(() => {
+    return cocktailIngredient.substitutes.map(sub => {
+        return new String(sub.ingredient.name + ' ' + unitHandler.print(sub, units, scaleFactor)).trim()
+    }).join(', ')
+})
 </script>
 
 <style scoped>

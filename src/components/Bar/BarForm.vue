@@ -58,6 +58,12 @@
                     <span>{{ $t('bars.enable-invites') }}</span>
                 </label>
             </div>
+            <div class="form-group">
+                <label class="form-checkbox" for="toggle-is-public">
+                    <input id="toggle-is-public" v-model="bar.is_public" type="checkbox" :value="true">
+                    <span>{{ $t('bars.is-public') }}</span>
+                </label>
+            </div>
             <div class="form-group" v-if="bar.id">
                 <div class="alert alert--info">
                     <p>This action helps synchronize your search data with the actual data. It also recalculates all cocktail ABVs and ingredient materialized paths. You can run this action manually, but it is limited to once every 10 minutes. Regular execution is not necessary, you should only run this if you notice problems with incorrect data.</p>
@@ -147,6 +153,7 @@ async function submit() {
         subtitle: bar.value.subtitle,
         description: bar.value.description,
         enable_invites: enableInvites.value,
+        is_public: bar.value.is_public,
         slug: postSlug,
         default_units: bar.value.settings.default_units,
         default_currency: bar.value.settings.default_currency,
