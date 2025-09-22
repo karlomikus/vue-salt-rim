@@ -125,7 +125,7 @@
   },
   "latest": {
     "cocktails": "Derniers cocktails",
-    "favorites": "Vos favoris récents",
+    "favorites": "Recent favorites",
     "ingredients": "Derniers ingrédients"
   },
   "strength": "Force",
@@ -136,7 +136,7 @@
   "medium": "Moyen",
   "strong": "Fort",
   "welcome-user": "Bienvenue {name}",
-  "your-shopping-list": "Votre liste de courses",
+  "your-shopping-list": "Shopping list",
   "missing.ingredients": "Les ingrédients qui vous manquent seront affichés ici.",
   "all-ingredients": "Tous les ingrédients",
   "find-cocktails": "Trouver des cocktails",
@@ -402,7 +402,8 @@
     "confirm-optimization": "Cela exécutera les optimisations du bar",
     "sync-data": "Synchroniser les données",
     "confirm-datapack-sync": "Cette action ajoutera à ce bar les données manquantes disponibles dans la base de données par défaut. Vos recettes existantes ne seront pas affectées, mais de nouvelles données seront ajoutées. Veuillez vous assurer d'avoir une sauvegarde ou une exportation de vos données.",
-    "bars.datapack-sync-started": "Début de la synchronisation de la base de données par défaut pour le bar \"{name}\""
+    "bars.datapack-sync-started": "Début de la synchronisation de la base de données par défaut pour le bar \"{name}\"",
+    "is-public": "Make bar public. Allows access to public API endpoints."
   },
   "close": "Fermer",
   "save-as": "Enregistrer sous",
