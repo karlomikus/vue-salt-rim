@@ -125,7 +125,7 @@
   },
   "latest": {
     "cocktails": "Posljednji kokteli",
-    "favorites": "Posljednji favoriti",
+    "favorites": "Recent favorites",
     "ingredients": "Latest ingredients"
   },
   "strength": "Jačina",
@@ -136,7 +136,7 @@
   "medium": "Srednji",
   "strong": "Jaki",
   "welcome-user": "Pozdrav {name}",
-  "your-shopping-list": "Your shopping list",
+  "your-shopping-list": "Shopping list",
   "missing.ingredients": "Sastojci koji ti nedostaju će biti ovdje.",
   "all-ingredients": "Svi sastojci",
   "find-cocktails": "Pronađi koktele",
@@ -402,7 +402,8 @@
     "confirm-optimization": "This will run bar optimizations",
     "sync-data": "Synchronize data",
     "confirm-datapack-sync": "This action will add missing data available in default datapack to this bar. Your existing recipes are not affected, but new data will be added. Please make sure that you have a backup or export of your data.",
-    "bars.datapack-sync-started": "Started default datapack sync in bar \"{name}\""
+    "bars.datapack-sync-started": "Started default datapack sync in bar \"{name}\"",
+    "is-public": "Make bar public. Allows access to public API endpoints."
   },
   "close": "Zatvori",
   "save-as": "Spremi kao",
