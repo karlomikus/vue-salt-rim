@@ -12,7 +12,9 @@ import { RouterView } from 'vue-router'
             </div>
         </main>
     </div>
-    <RouterView />
+    <div class="public-layout-content">
+        <RouterView />
+    </div>
 </template>
 
 <style>
@@ -30,5 +32,9 @@ import { RouterView } from 'vue-router'
 
 .public-layout-navigation__links a {
     color: #fff;
+}
+
+.public-layout-content {
+    margin: 1rem 0;
 }
 </style>

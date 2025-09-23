@@ -633,7 +633,7 @@ fetchShoppingList()
                             <div class="volume-scaling__water" v-if="waterDilution && targetVolumeDilution > 0">
                                 {{ $t('target-volume-dilution-help', {total: unitHandler.toFixedWithTruncate(parseFloat(waterDilution), 2) + ' ' + currentUnit}) }}
                             </div>
-                            <p class="form-input-hint">Insipired by Jeffrey Morgenthaler's <a href="https://www.batchcalc.com/" target="_blank">The Batch Cocktail Calculator</a></p>
+                            <p class="form-input-hint">Inspired by Jeffrey Morgenthaler's <a href="https://www.batchcalc.com/" target="_blank">The Batch Cocktail Calculator</a></p>
                         </div>
                         <ul class="cocktail-ingredients">
                             <li v-for="ing in cocktail.ingredients" :key="ing.sort">

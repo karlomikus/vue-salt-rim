@@ -19,22 +19,23 @@
         <div class="bar-cocktail-recipe__content block-container block-container--padded">
             <div class="bar-cocktail-recipe__section">
                 <h3>{{ $t('ingredient.ingredients') }}</h3>
+                <div class="public-cocktail-recipe__units">
+                    <button type="button" class="button button--public" :class="{'button--active': currentUnit == 'ml'}" @click="currentUnit = 'ml'">ml</button>
+                    <button type="button" class="button button--public" :class="{'button--active': currentUnit == 'oz'}" @click="currentUnit = 'oz'">oz</button>
+                    <button type="button" class="button button--public" :class="{'button--active': currentUnit == 'cl'}" @click="currentUnit = 'cl'">cl</button>
+                </div>
+                <div>
+                    <button type="button" class="button button--public">Scale</button>
+                </div>
+                <CocktailRecipeScaler v-model="scaleFactor" :cocktail-volume-ml="cocktail.volume_ml" :method-dilution="cocktail.method_dilution_percentage" />
                 <ul class="public-cocktail-recipe__ingredients">
-                    <li class="public-cocktail-recipe__ingredients__ingredient" v-for="ing in cocktail.ingredients" :key="ing.name">
-                        <div class="public-cocktail-recipe__ingredients__ingredient__name">
-                            <div>
-                                {{ ing.name }}
-                                <template v-if="ing.optional">(optional)</template>
-                            </div>
-                            <div v-if="ing.note" class="public-cocktail-recipe__ingredients__secondary">
-                                {{ ing.note }}
-                            </div>
-                            <div v-if="ing.substitutes.length > 0" class="public-cocktail-recipe__ingredients__secondary">
-                                Substitutes: {{ ing.substitutes.map(sub => sub.name + (sub.amount ? ` (${sub.amount} ${sub.units || ''})` : '')).join(', ') }}
-                            </div>
-                        </div>
-                        <div class="public-cocktail-recipe__ingredients__ingredient__amount">{{ ing.amount }} {{ ing.units }}</div>
-                    </li>
+                    <CocktailIngredient
+                        v-for="ing in cocktail.ingredients"
+                        :key="ing.name"
+                        :cocktail-ingredient="ing"
+                        :units="currentUnit"
+                        :scale-factor="scaleFactor"
+                    />
                 </ul>
             </div>
             <div class="bar-cocktail-recipe__section">
@@ -55,6 +56,8 @@ import type { components } from '@/api/api'
 import { useRoute } from 'vue-router';
 import BarAssistantClient from '@/api/BarAssistantClient'
 import { micromark } from 'micromark'
+import CocktailIngredient from './CocktailIngredient.vue';
+import CocktailRecipeScaler from './../Cocktail/CocktailRecipeScaler.vue';
 
 type Cocktail = components['schemas']['PublicCocktailResource']
 type CocktailTag = {
@@ -66,6 +69,7 @@ type CocktailTag = {
 const route = useRoute()
 const cocktail = ref<Cocktail|null>(null)
 const currentUnit = ref<'ml' | 'oz' | 'cl'>('ml')
+const scaleFactor = ref<number>(1)
 
 const fetchCocktail = async () => {
     try {
@@ -103,8 +107,20 @@ const cocktailTags = computed(() => {
     const result: CocktailTag[] = []
 
     result.push(...(cocktail.value?.tags.map(tag => ({ value: tag, type: 'tag', class: 'bar-cocktail-recipe__tag--tag' })) || []))
-    result.push({ value: cocktail.value?.glass || 'Unknown glass', type: 'glass', class: 'bar-cocktail-recipe__tag--glass' })
-    result.push({ value: cocktail.value?.method || 'Unknown method', type: 'method', class: 'bar-cocktail-recipe__tag--method' })
+
+    if (cocktail.value?.glass) {
+        result.push({ value: cocktail.value.glass, type: 'glass', class: 'bar-cocktail-recipe__tag--glass' })
+    }
+
+    if (cocktail.value?.method) {
+        result.push({ value: cocktail.value.method, type: 'method', class: 'bar-cocktail-recipe__tag--method' })
+    }
+
+    if (cocktail.value?.abv) {
+        result.push({ value: cocktail.value.abv.toString() + '% ABV', type: 'abv', class: 'bar-cocktail-recipe__tag--abv' })
+    }
+
+    result.push(...(cocktail.value?.utensils.map(utensil => ({ value: utensil, type: 'utensil', class: 'bar-cocktail-recipe__tag--utensil' })) || []))
 
     return result
 })
@@ -140,7 +156,7 @@ fetchCocktail()
 .bar-cocktail-recipe__info {
     display: flex;
     flex-direction: column;
-    gap: var(--bcr-default-gap);
+    gap: .5rem;
 }
 
 .bar-cocktail-recipe__info h2 {
@@ -149,6 +165,10 @@ fetchCocktail()
     font-weight: bold;
     margin-top: 0;
     line-height: 1.1;
+}
+
+:deep(.bar-cocktail-recipe__info p) {
+    line-height: 1.5;
 }
 
 .bar-cocktail-recipe__image {
@@ -205,24 +225,6 @@ fetchCocktail()
     margin: 0;
 }
 
-.public-cocktail-recipe__ingredients__ingredient {
-    border-bottom: 1px dotted var(--clr-gray-300);
-    display: flex;
-    gap: .25rem;
-    padding: .15rem 0;
-}
-
-.public-cocktail-recipe__ingredients__secondary {
-    font-size: 0.75em;
-    color: var(--clr-gray-500);
-}
-
-.public-cocktail-recipe__ingredients__ingredient__amount {
-    margin-left: auto;
-    font-weight: var(--fw-bold);
-    flex-shrink: 0;
-}
-
 .bar-cocktail-recipe__tags {
     list-style: none;
     padding: 0;
@@ -254,6 +256,16 @@ fetchCocktail()
 .bar-cocktail-recipe__tag--method {
     background-color: oklch(0.950 0.029 304.7);
     color: oklch(0.451 0.235 304.7);
+}
+
+.bar-cocktail-recipe__tag--abv {
+    background-color: oklch(0.931 0.034 28.4);
+    color: oklch(0.431 0.170 28.4);
+}
+
+.bar-cocktail-recipe__tag--utensil {
+    background-color: oklch(0.950 0.009 73.7);
+    color: oklch(0.513 0.025 73.7);
 }
 
 .bar-cocktail-recipe__external-icon {
