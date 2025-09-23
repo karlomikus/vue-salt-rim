@@ -3339,11 +3339,26 @@ export interface components {
              */
             method: string | null;
             /**
+             * @description Dilution percentage associated with the preparation method
+             * @example 12
+             */
+            method_dilution_percentage?: number | null;
+            /**
+             * @description Total volume of the cocktail in milliliters
+             * @example 120
+             */
+            volume_ml?: number | null;
+            /**
              * Format: date-time
              * @description Date and time when the cocktail was created
              * @example 2023-10-01T12:00:00Z
              */
             created_at: string;
+            /**
+             * @description Indicates if the cocktail can be made in the current bar
+             * @example true
+             */
+            in_bar_shelf?: boolean;
             /**
              * Format: float
              * @description Alcohol by volume percentage of the cocktail
