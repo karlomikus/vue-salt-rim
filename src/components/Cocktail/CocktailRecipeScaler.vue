@@ -18,7 +18,7 @@
             </label>
             <div class="scaler-inline-group">
                 <input type="text" class="form-input form-input--small" v-model="targetVolumeToScaleTo" placeholder="Target volume">
-                <input type="text" class="form-input form-input--small" v-model="targetVolumeDilution" placeholder="Optional dilution (%)">
+                <input type="text" class="form-input form-input--small" style="width: 120px;" v-model="targetVolumeDilution" placeholder="Optional dilution (%)">
             </div>
             <div class="volume-scaling__water" v-if="waterDilution && targetVolumeDilution > 0">
                 {{ $t('target-volume-dilution-help', {total: unitHandler.toFixedWithTruncate(parseFloat(waterDilution), 2) + ' ' + currentUnit}) }}
@@ -53,12 +53,6 @@ const model = defineModel<number>({
     default: 1,
 })
 
-watch(quantity, () => {
-    if (scaleType.value === 'quantity') {
-        model.value = parseInt(quantity.value.toString())
-    }
-}, { immediate: true })
-
 const volumeScaleFactor = computed(() => {
     const totalVolume = unitHandler.convertFromTo('ml', cocktailVolumeMl, currentUnit)
 
@@ -71,12 +65,6 @@ const volumeScaleFactor = computed(() => {
 
     return targetVolumeToScaleTo.value / finalTotalVolume
 })
-
-watch(volumeScaleFactor, () => {
-    if (scaleType.value === 'volume') {
-        model.value = volumeScaleFactor.value || 1
-    }
-}, { immediate: true })
 
 const waterDilution = computed(() => {
     const totalVolume = unitHandler.convertFromTo('ml', cocktailVolumeMl, currentUnit)
@@ -98,6 +86,27 @@ const modifyQuantity = (delta: number) => {
         quantity.value = newQuantity
     }
 }
+
+watch(quantity, () => {
+    if (scaleType.value === 'quantity') {
+        model.value = parseInt(quantity.value.toString())
+    }
+}, { immediate: true })
+
+watch(volumeScaleFactor, () => {
+    if (scaleType.value === 'volume') {
+        model.value = volumeScaleFactor.value || 1
+    }
+}, { immediate: true })
+
+// watch(scaleType, (newType) => {
+//     if (newType === 'volume') {
+//         quantity.value = 1
+//     } else {
+//         targetVolumeToScaleTo.value = 0
+//         targetVolumeDilution.value = methodDilution
+//     }
+// })
 </script>
 
 <style scoped>

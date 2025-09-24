@@ -276,7 +276,7 @@ const router = createRouter({
             ]
         },
         {
-            path: '/public',
+            path: '/public/:barId',
             component: () => import('../PublicLayout.vue'),
             meta: { requiresAuth: false },
             children: [

@@ -19,15 +19,17 @@
         <div class="bar-cocktail-recipe__content block-container block-container--padded">
             <div class="bar-cocktail-recipe__section">
                 <h3>{{ $t('ingredient.ingredients') }}</h3>
-                <div class="public-cocktail-recipe__units">
-                    <button type="button" class="button button--public" :class="{'button--active': currentUnit == 'ml'}" @click="currentUnit = 'ml'">ml</button>
-                    <button type="button" class="button button--public" :class="{'button--active': currentUnit == 'oz'}" @click="currentUnit = 'oz'">oz</button>
-                    <button type="button" class="button button--public" :class="{'button--active': currentUnit == 'cl'}" @click="currentUnit = 'cl'">cl</button>
+                <div class="bar-cocktail-recipe__ingredient-actions">
+                    <div>
+                        <button type="button" class="button button--public" @click="showScaler = !showScaler">Scale recipe</button>
+                    </div>
+                    <div>
+                        <button type="button" class="button button--public" :class="{'button--active': currentUnit == 'ml'}" @click="currentUnit = 'ml'">ml</button>
+                        <button type="button" class="button button--public" :class="{'button--active': currentUnit == 'oz'}" @click="currentUnit = 'oz'">oz</button>
+                        <button type="button" class="button button--public" :class="{'button--active': currentUnit == 'cl'}" @click="currentUnit = 'cl'">cl</button>
+                    </div>
                 </div>
-                <div>
-                    <button type="button" class="button button--public">Scale</button>
-                </div>
-                <CocktailRecipeScaler v-model="scaleFactor" :cocktail-volume-ml="cocktail.volume_ml" :method-dilution="cocktail.method_dilution_percentage" />
+                <CocktailRecipeScaler v-if="showScaler" v-model="scaleFactor" :cocktail-volume-ml="cocktail.volume_ml" :method-dilution="cocktail.method_dilution_percentage" :current-unit="currentUnit" />
                 <ul class="public-cocktail-recipe__ingredients">
                     <CocktailIngredient
                         v-for="ing in cocktail.ingredients"
@@ -70,10 +72,12 @@ const route = useRoute()
 const cocktail = ref<Cocktail|null>(null)
 const currentUnit = ref<'ml' | 'oz' | 'cl'>('ml')
 const scaleFactor = ref<number>(1)
+const showScaler = ref<boolean>(false)
+const barId = route.params.barId.toString()
 
 const fetchCocktail = async () => {
     try {
-        const response = await BarAssistantClient.getPublicBarCocktail(502, route.params.slug as string)
+        const response = await BarAssistantClient.getPublicBarCocktail(parseInt(barId), route.params.slug as string)
         cocktail.value = response?.data || null
     } catch (error) {
         console.error('Error fetching cocktails:', error)
@@ -272,5 +276,11 @@ fetchCocktail()
     width: 0.75em;
     height: 0.75em;
     vertical-align: middle;
+}
+
+.bar-cocktail-recipe__ingredient-actions {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: .5rem;
 }
 </style>

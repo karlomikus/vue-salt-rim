@@ -598,6 +598,10 @@ export default class BarAssistantClient {
     return (await client.POST('/bars/{id}/sync-datapack', { params: { path: { id: id } } })).data
   }
 
+  static async getPublicBar(barId: number) {
+    return (await client.GET('/public/{barId}', { params: { path: { barId: barId } } })).data
+  }
+
   static async getPublicBarCocktails(barId: number, query = {}) {
     return (await client.GET('/public/{barId}/cocktails', { params: { path: { barId: barId }, query: query } })).data
   }

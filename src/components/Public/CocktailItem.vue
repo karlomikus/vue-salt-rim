@@ -5,7 +5,7 @@
         </h3>
         <div class="public-cocktail-grid-item__content">
             <div class="public-cocktail-grid-item__title">
-                <RouterLink :to="`/public/cocktails/${cocktail.slug}`">{{ cocktail.name }}</RouterLink>
+                <RouterLink :to="{name: 'public.cocktails.show', params: {barId: cocktail.bar_id, slug: cocktail.slug}}">{{ cocktail.name }}</RouterLink>
             </div>
             <div class="public-cocktail-grid-item__ingredients">{{ cocktail.ingredients.map(i => i.name).join(', ') }}</div>
         </div>

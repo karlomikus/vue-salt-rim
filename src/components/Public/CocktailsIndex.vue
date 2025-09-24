@@ -69,6 +69,7 @@ const availableSorts = [
     { value: 'created_at', label: 'Newest recipes' },
     { value: '-created_at', label: 'Oldest recipes' },
 ]
+const barId = route.params.barId.toString()
 
 const defaultRefinements = {
     sort: 'name',
@@ -110,7 +111,7 @@ const fetchCocktails = async () => {
     }
 
     try {
-        const response = await BarAssistantClient.getPublicBarCocktails(502, query)
+        const response = await BarAssistantClient.getPublicBarCocktails(parseInt(barId), query)
         cocktails.value = response?.data || []
         meta.value = response?.meta || {}
     } catch (error) {
