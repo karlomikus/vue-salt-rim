@@ -33,10 +33,12 @@ fetchBar()
                 <BarInfo v-if="bar" :bar="bar" />
                 <div class="public-layout-navigation__links">
                     <RouterLink :to="{ name: 'public.cocktails.index', params: { barId: barId } }">Cocktails</RouterLink>
+                    <template v-if="bar">
+                        &middot;
+                        <RouterLink :to="`/menu/${bar.slug}`">Menu</RouterLink>
+                    </template>
                     &middot;
-                    <a href="#">Menu</a>
-                    &middot;
-                    <a href="#">Sign up</a>
+                    <a href="/">Sign In</a>
                 </div>
             </div>
         </main>
@@ -46,7 +48,7 @@ fetchBar()
     </div>
     <div class="public-layout-footer">
         <main>
-            Powered by Bar Assistant
+            Powered by <a href="https://barassistant.app/">Bar Assistant</a>
         </main>
     </div>
 </template>

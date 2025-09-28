@@ -29,7 +29,7 @@
                         <button type="button" class="button button--public" :class="{'button--active': currentUnit == 'cl'}" @click="currentUnit = 'cl'">cl</button>
                     </div>
                 </div>
-                <CocktailRecipeScaler v-if="showScaler" v-model="scaleFactor" :cocktail-volume-ml="cocktail.volume_ml" :method-dilution="cocktail.method_dilution_percentage" :current-unit="currentUnit" />
+                <CocktailRecipeScaler v-if="showScaler" v-model="scaleFactor" :cocktail-volume-ml="cocktail.volume_ml ?? 0" :method-dilution="cocktail.method_dilution_percentage ?? 0" :current-unit="currentUnit" />
                 <ul class="public-cocktail-recipe__ingredients">
                     <CocktailIngredient
                         v-for="ing in cocktail.ingredients"
@@ -103,7 +103,7 @@ const mainImage = computed(() => {
 
     return {
         url: '/no-cocktail.jpg',
-        copyright: 'Missing cocktail image',
+        copyright: null,
     }
 })
 
