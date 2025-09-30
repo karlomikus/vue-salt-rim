@@ -125,7 +125,7 @@
   },
   "latest": {
     "cocktails": "Viimeisimmät cocktailit",
-    "favorites": "Recent favorites",
+    "favorites": "Viimeisimmät suosikkisi",
     "ingredients": "Viimeisimmät ainesosat"
   },
   "strength": "Vahvuus",
@@ -136,7 +136,7 @@
   "medium": "Keskivahva",
   "strong": "Vahva",
   "welcome-user": "Tervetuloa {name}",
-  "your-shopping-list": "Shopping list",
+  "your-shopping-list": "Ostoslistasi",
   "missing.ingredients": "Tarvitsemasi ainesosat näytetään täällä.",
   "all-ingredients": "Kaikki ainesosat",
   "find-cocktails": "Löydä cocktaileja",

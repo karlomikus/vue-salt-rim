@@ -125,7 +125,7 @@
   },
   "latest": {
     "cocktails": "Derniers cocktails",
-    "favorites": "Recent favorites",
+    "favorites": "Vos favoris récents",
     "ingredients": "Derniers ingrédients"
   },
   "strength": "Force",
@@ -136,7 +136,7 @@
   "medium": "Moyen",
   "strong": "Fort",
   "welcome-user": "Bienvenue {name}",
-  "your-shopping-list": "Shopping list",
+  "your-shopping-list": "Votre liste de courses",
   "missing.ingredients": "Les ingrédients qui vous manquent seront affichés ici.",
   "all-ingredients": "Tous les ingrédients",
   "find-cocktails": "Trouver des cocktails",
