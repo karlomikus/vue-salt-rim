@@ -26,11 +26,11 @@
                                 </div>
                             </label>
                         </div>
-                        <label class="form-label" for="year">ABV:</label>
+                        <!-- <label class="form-label" for="year">ABV:</label>
                         <div v-for="abv in abvFilters" :key="abv.id">
                             <input :id="abv.id" name="abv-filter" type="radio" value="abv.value">
                             <label :for="abv.id">{{ abv.name }}</label>
-                        </div>
+                        </div> -->
                     </div>
                     <div class="dialog-actions">
                         <button type="submit" class="button button--outline" @click="showFiltersDialog = false">Cancel</button>
@@ -39,12 +39,9 @@
                 </template>
             </SaltRimDialog>
             <input class="form-input" type="search" placeholder="Search cocktails by name..." v-model="activeFilters.filter.name" @input="debounceSearch">
-            <!-- <button class="button button--outline">
-                <svg class="public-cocktail-grid-filter-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M16.1716 10.9999L10.8076 5.63589L12.2218 4.22168L20 11.9999L12.2218 19.778L10.8076 18.3638L16.1716 12.9999H4V10.9999H16.1716Z"></path></svg>
-            </button>
-            <button class="button button--outline">
+            <button class="button button--dark" @click="resetFilters">
                 <svg class="public-cocktail-grid-filter-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M11.9997 10.5865L16.9495 5.63672L18.3637 7.05093L13.4139 12.0007L18.3637 16.9504L16.9495 18.3646L11.9997 13.4149L7.04996 18.3646L5.63574 16.9504L10.5855 12.0007L5.63574 7.05093L7.04996 5.63672L11.9997 10.5865Z"></path></svg>
-            </button> -->
+            </button>
         </div>
         <div class="public-cocktail-grid">
             <CocktailItem v-for="cocktail in cocktails" :key="cocktail.slug" :cocktail="cocktail" :bar="bar"></CocktailItem>
@@ -98,7 +95,7 @@ const defaultRefinements = {
         bar_shelf: false,
     }
 }
-const activeFilters = ref(defaultRefinements)
+const activeFilters = ref({...defaultRefinements})
 
 const stateToQuery = () => {
     const query: any = {}
@@ -158,6 +155,11 @@ const updateRouterPath = () => {
     })
 }
 
+const resetFilters = () => {
+    activeFilters.value = defaultRefinements
+    updateRouterPath()
+}
+
 const handlePageChange = (toPage: number) => {
     activeFilters.value.page = toPage
     updateRouterPath()
@@ -209,5 +211,19 @@ watch(
     display: flex;
     flex-direction: row;
     gap: .5rem;
+}
+
+.form-group-checkbox-content {
+    display: flex;
+    flex-direction: column;
+    gap: .25rem;
+}
+
+.form-group-checkbox-content__label {
+    font-weight: bold;
+}
+
+.form-group-checkbox-content__help {
+    font-size: 0.75em;
 }
 </style>
