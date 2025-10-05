@@ -1388,7 +1388,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/public/{barId}": {
+    "/public/{slugOrId}": {
         parameters: {
             query?: never;
             header?: never;
@@ -1408,7 +1408,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/public/{barId}/cocktails": {
+    "/public/{slugOrId}/cocktails": {
         parameters: {
             query?: never;
             header?: never;
@@ -1428,7 +1428,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/public/{barId}/cocktails/{slugOrPublicId}": {
+    "/public/{slugOrId}/cocktails/{slugOrPublicId}": {
         parameters: {
             query?: never;
             header?: never;
@@ -9625,7 +9625,7 @@ export interface operations {
             header?: never;
             path: {
                 /** @description Database id of bar */
-                barId: number;
+                slugOrId: string;
             };
             cookie?: never;
         };
@@ -9690,8 +9690,8 @@ export interface operations {
             };
             header?: never;
             path: {
-                /** @description Database id of bar */
-                barId: number;
+                /** @description Database id or slug of bar */
+                slugOrId: string;
             };
             cookie?: never;
         };
@@ -9771,7 +9771,7 @@ export interface operations {
             header?: never;
             path: {
                 /** @description Database id of bar */
-                barId: number;
+                slugOrId: string;
                 /** @description Cocktail slug or public id (ULID) */
                 slugOrPublicId: string;
             };

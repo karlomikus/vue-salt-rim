@@ -5,7 +5,7 @@
         </h3>
         <div class="public-cocktail-grid-item__content">
             <div class="public-cocktail-grid-item__title">
-                <RouterLink :to="{name: 'public.cocktails.show', params: {barId: cocktail.bar_id, slug: cocktail.slug}}">{{ cocktail.name }}</RouterLink>
+                <RouterLink :to="{name: 'public.cocktails.show', params: {barId: bar.slug, slug: cocktail.slug}}">{{ cocktail.name }}</RouterLink>
             </div>
             <div class="public-cocktail-grid-item__ingredients">{{ cocktail.ingredients.map(i => i.name).join(', ') }}</div>
         </div>
@@ -17,9 +17,11 @@ import { computed } from 'vue'
 import type { components } from '@/api/api'
 
 type Cocktail = components['schemas']['PublicCocktailResource']
+type Bar = components['schemas']['PublicBarResource']
 
 const props = defineProps<{
-    cocktail: Cocktail
+    cocktail: Cocktail,
+    bar: Bar,
 }>()
 
 const mainImage = computed(() => {

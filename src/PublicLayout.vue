@@ -4,7 +4,8 @@ import { useRoute } from 'vue-router'
 import BarAssistantClient from '@/api/BarAssistantClient'
 import { ref } from 'vue'
 import type { components } from '@/api/api'
-import BarInfo from '@/components/Public/BarInfo.vue'
+import BarInfo from '@/components/Public/PublicBarInfo.vue'
+import BarShow from '@/components/Public/PublicBarShow.vue'
 
 type Bar = components['schemas']['PublicBarResource']
 
@@ -14,7 +15,7 @@ const bar = ref<Bar|null>(null)
 
 const fetchBar = async () => {
     try {
-        const resp = (await BarAssistantClient.getPublicBar(parseInt(barId)))?.data
+        const resp = (await BarAssistantClient.getPublicBar(barId))?.data
         if (resp) {
             bar.value = resp
         }
@@ -44,7 +45,12 @@ fetchBar()
         </main>
     </div>
     <div class="public-layout-content">
-        <RouterView />
+        <!-- <main>
+            <BarShow v-if="bar" :bar="bar" />
+        </main> -->
+        <main v-if="bar">
+            <RouterView :bar="bar" />
+        </main>
     </div>
     <div class="public-layout-footer">
         <main>
@@ -63,7 +69,7 @@ fetchBar()
 
 .public-layout-navigation__links {
     display: flex;
-    gap: 1rem;
+    gap: .5rem;
 }
 
 .public-layout-navigation__links a {
@@ -78,7 +84,6 @@ fetchBar()
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0 1rem;
 }
 
 .public-layout-footer {

@@ -598,15 +598,15 @@ export default class BarAssistantClient {
     return (await client.POST('/bars/{id}/sync-datapack', { params: { path: { id: id } } })).data
   }
 
-  static async getPublicBar(barId: number) {
-    return (await client.GET('/public/{barId}', { params: { path: { barId: barId } } })).data
+  static async getPublicBar(barId: string) {
+    return (await client.GET('/public/{slugOrId}', { params: { path: { slugOrId: barId } } })).data
   }
 
-  static async getPublicBarCocktails(barId: number, query = {}) {
-    return (await client.GET('/public/{barId}/cocktails', { params: { path: { barId: barId }, query: query } })).data
+  static async getPublicBarCocktails(barId: string, query = {}) {
+    return (await client.GET('/public/{slugOrId}/cocktails', { params: { path: { slugOrId: barId }, query: query } })).data
   }
 
-  static async getPublicBarCocktail(barId: number, slug: string) {
-    return (await client.GET('/public/{barId}/cocktails/{slugOrPublicId}', { params: { path: { barId: barId, slugOrPublicId: slug } } })).data
+  static async getPublicBarCocktail(barId: string, slug: string) {
+    return (await client.GET('/public/{slugOrId}/cocktails/{slugOrPublicId}', { params: { path: { slugOrId: barId, slugOrPublicId: slug } } })).data
   }
 }

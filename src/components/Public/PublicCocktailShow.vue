@@ -11,8 +11,9 @@
                     <li v-for="t in cocktailTags" :key="t.value" class="bar-cocktail-recipe__tag" :class="t.class">{{ t.value }}</li>
                 </ul>
                 <div v-show="cocktail.description" itemprop="description" v-html="parsedDescription"></div>
-                <div>
+                <div class="bar-cocktail-recipe__info__source">
                     <a v-if="cocktail.source && isValidURL" :href="cocktail.source">Recipe source <svg class="bar-cocktail-recipe__external-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M10 6V8H5V19H16V14H18V20C18 20.5523 17.5523 21 17 21H4C3.44772 21 3 20.5523 3 20V7C3 6.44772 3.44772 6 4 6H10ZM21 3V11H19L18.9999 6.413L11.2071 14.2071L9.79289 12.7929L17.5849 5H13V3H21Z"></path></svg></a>
+                    <span v-else-if="cocktail.source">{{ cocktail.source }}</span>
                 </div>
             </div>
         </div>
@@ -58,7 +59,7 @@ import type { components } from '@/api/api'
 import { useRoute } from 'vue-router';
 import BarAssistantClient from '@/api/BarAssistantClient'
 import { micromark } from 'micromark'
-import CocktailIngredient from './CocktailIngredient.vue';
+import CocktailIngredient from './PublicCocktailIngredient.vue';
 import CocktailRecipeScaler from './../Cocktail/CocktailRecipeScaler.vue';
 
 type Cocktail = components['schemas']['PublicCocktailResource']
@@ -77,10 +78,10 @@ const barId = route.params.barId.toString()
 
 const fetchCocktail = async () => {
     try {
-        const response = await BarAssistantClient.getPublicBarCocktail(parseInt(barId), route.params.slug as string)
+        const response = await BarAssistantClient.getPublicBarCocktail(barId, route.params.slug.toString())
         cocktail.value = response?.data || null
     } catch (error) {
-        console.error('Error fetching cocktails:', error)
+        cocktail.value = null
     }
 }
 
@@ -175,6 +176,10 @@ fetchCocktail()
     line-height: 1.5;
 }
 
+.bar-cocktail-recipe__info__source {
+    font-size: 0.75em;
+}
+
 .bar-cocktail-recipe__image {
     flex-shrink: 0;
     width: 300px;
@@ -187,6 +192,7 @@ fetchCocktail()
     object-fit: cover;
     width: 100%;
     height: 100%;
+    border-radius: .25rem;
 }
 
 .bar-cocktail-recipe__image__copyright {
@@ -197,6 +203,8 @@ fetchCocktail()
     position: absolute;
     bottom: 0;
     padding: 1px 5px;
+    border-radius: 3px;
+    margin: 4px;
 }
 
 .bar-cocktail-recipe__content {

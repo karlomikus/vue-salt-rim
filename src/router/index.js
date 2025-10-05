@@ -283,12 +283,17 @@ const router = createRouter({
                 {
                     path: 'cocktails',
                     name: 'public.cocktails.index',
-                    component: () => import('../views/PublicCocktailsView.vue'),
+                    component: () => import('../components/Public/PublicCocktailsIndex.vue'),
                 },
                 {
                     path: 'cocktails/:slug',
                     name: 'public.cocktails.show',
-                    component: () => import('../views/PublicCocktailDetailsView.vue'),
+                    component: () => import('../components/Public/PublicCocktailShow.vue'),
+                },
+                {
+                    path: 'menu',
+                    name: 'public.menu.show',
+                    component: () => import('../components/Public/PublicMenuShow.vue'),
                 },
             ]
         }

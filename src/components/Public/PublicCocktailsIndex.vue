@@ -16,11 +16,20 @@
                                 <option v-for="sort in availableSorts" :key="sort.value" :value="sort.value">{{ sort.label }}</option>
                             </select>
                         </div>
-                        <div class="form-group">
+                        <label class="form-label" for="year">Global filters:</label>
+                        <div class="form-group form-group--checkbox">
                             <label class="form-label" for="filter-bar-shelf">
                                 <input id="filter-bar-shelf" type="checkbox" v-model="activeFilters.filter.bar_shelf">
-                                Only show cocktails from bar shelf
+                                <div class="form-group-checkbox-content">
+                                    <div class="form-group-checkbox-content__label">Show bar shelf cocktails</div>
+                                    <div class="form-group-checkbox-content__help">Only shows cocktails that can be made in the bar</div>
+                                </div>
                             </label>
+                        </div>
+                        <label class="form-label" for="year">ABV:</label>
+                        <div v-for="abv in abvFilters" :key="abv.id">
+                            <input :id="abv.id" name="abv-filter" type="radio" value="abv.value">
+                            <label :for="abv.id">{{ abv.name }}</label>
                         </div>
                     </div>
                     <div class="dialog-actions">
@@ -38,7 +47,7 @@
             </button> -->
         </div>
         <div class="public-cocktail-grid">
-            <CocktailItem v-for="cocktail in cocktails" :key="cocktail.slug" :cocktail="cocktail"></CocktailItem>
+            <CocktailItem v-for="cocktail in cocktails" :key="cocktail.slug" :cocktail="cocktail" :bar="bar"></CocktailItem>
         </div>
         <Pagination :meta="meta" @page-changed="handlePageChange"></Pagination>
     </div>
@@ -48,13 +57,18 @@
 import qs from 'qs'
 import { ref, watch } from 'vue'
 import BarAssistantClient from '@/api/BarAssistantClient'
-import CocktailItem from './CocktailItem.vue'
+import CocktailItem from './PublicCocktailGridItem.vue'
 import type { components } from '@/api/api'
 import { useRoute, useRouter, type LocationQueryRaw } from 'vue-router'
 import SaltRimDialog from '../Dialog/SaltRimDialog.vue'
 import Pagination from './../Search/SearchPagination.vue'
 
 type Cocktail = components['schemas']['PublicCocktailResource']
+type Bar = components['schemas']['PublicBarResource']
+
+defineProps<{
+    bar: Bar
+}>()
 
 const showFiltersDialog = ref(false)
 const cocktails = ref<Cocktail[]>([])
@@ -68,6 +82,12 @@ const availableSorts = [
     { value: 'created_at', label: 'Newest recipes' },
     { value: '-created_at', label: 'Oldest recipes' },
 ]
+const abvFilters = [
+    { name: 'Non alcoholic', min: 0, max: 2, id: 'abv_non_alcoholic' },
+    { name: 'Low', min: 2, max: 18, id: 'abv_weak' },
+    { name: 'Medium', min: 18, max: 28, id: 'abv_medium' },
+    { name: 'Strong', min: 28, max: null, id: 'abv_strong' },
+];
 const barId = route.params.barId.toString()
 
 const defaultRefinements = {
@@ -111,7 +131,7 @@ const fetchCocktails = async () => {
     }
 
     try {
-        const response = await BarAssistantClient.getPublicBarCocktails(parseInt(barId), query)
+        const response = await BarAssistantClient.getPublicBarCocktails(barId, query)
         cocktails.value = response?.data || []
         meta.value = response?.meta || {}
     } catch (error) {
@@ -176,5 +196,18 @@ watch(
 .public-cocktail-grid-filter-icon {
     width: 1.5rem;
     height: 1.5rem;
+}
+
+.form-group--checkbox {
+    background: #fff;
+    border: 2px solid #ece6ea;
+    padding: 0.75rem 0.75rem;
+    border-radius: var(--radius-2);
+}
+
+.form-group--checkbox .form-label {
+    display: flex;
+    flex-direction: row;
+    gap: .5rem;
 }
 </style>
