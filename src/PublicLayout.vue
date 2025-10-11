@@ -34,7 +34,7 @@ fetchBar()
                 <BarInfo v-if="bar" :bar="bar" />
                 <div class="public-layout-navigation__links">
                     <RouterLink :to="{ name: 'public.cocktails.index', params: { barId: barId } }">Cocktails</RouterLink>
-                    <template v-if="bar">
+                    <template v-if="bar && bar.is_menu_enabled">
                         &middot;
                         <RouterLink :to="`/menu/${bar.slug}`">Menu</RouterLink>
                     </template>

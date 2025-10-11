@@ -3278,6 +3278,11 @@ export interface components {
             description: string | null;
             /** @description Images associated with the bar */
             images: components["schemas"]["PublicImageResource"][];
+            /**
+             * @description Whether the bar has enabled its menu for public viewing
+             * @example true
+             */
+            is_menu_enabled: boolean;
         };
         /** @description Public details about a cocktail */
         PublicCocktailResource: {
