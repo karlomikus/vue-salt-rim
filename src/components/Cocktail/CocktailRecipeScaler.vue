@@ -87,26 +87,25 @@ const modifyQuantity = (delta: number) => {
     }
 }
 
-watch(quantity, () => {
+const updateScaleFactor = () => {
     if (scaleType.value === 'quantity') {
         model.value = parseInt(quantity.value.toString())
+    } else if (scaleType.value === 'volume') {
+        model.value = volumeScaleFactor.value || 1
     }
+}
+
+watch(quantity, () => {
+    updateScaleFactor()
 }, { immediate: true })
 
 watch(volumeScaleFactor, () => {
-    if (scaleType.value === 'volume') {
-        model.value = volumeScaleFactor.value || 1
-    }
+    updateScaleFactor()
 }, { immediate: true })
 
-// watch(scaleType, (newType) => {
-//     if (newType === 'volume') {
-//         quantity.value = 1
-//     } else {
-//         targetVolumeToScaleTo.value = 0
-//         targetVolumeDilution.value = methodDilution
-//     }
-// })
+watch(scaleType, () => {
+    updateScaleFactor()
+})
 </script>
 
 <style scoped>
