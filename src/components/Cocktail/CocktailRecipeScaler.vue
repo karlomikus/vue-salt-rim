@@ -14,7 +14,7 @@
         <div>
             <input type="radio" name="scale-type" value="volume" id="bar-public-recipe-scale-volume" v-model="scaleType">
             <label for="bar-public-recipe-scale-volume">
-                Scale to target volume
+                Scale to target volume ({{ currentUnit }}) and dilution (%)
             </label>
             <div class="scaler-inline-group">
                 <input type="text" class="form-input form-input--small" v-model="targetVolumeToScaleTo" placeholder="Target volume">
