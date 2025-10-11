@@ -79,12 +79,6 @@ const availableSorts = [
     { value: 'created_at', label: 'Newest recipes' },
     { value: '-created_at', label: 'Oldest recipes' },
 ]
-const abvFilters = [
-    { name: 'Non alcoholic', min: 0, max: 2, id: 'abv_non_alcoholic' },
-    { name: 'Low', min: 2, max: 18, id: 'abv_weak' },
-    { name: 'Medium', min: 18, max: 28, id: 'abv_medium' },
-    { name: 'Strong', min: 28, max: null, id: 'abv_strong' },
-];
 const barId = route.params.barId.toString()
 
 const defaultRefinements = {
@@ -95,7 +89,7 @@ const defaultRefinements = {
         bar_shelf: false,
     }
 }
-const activeFilters = ref({...defaultRefinements})
+const activeFilters = ref({...defaultRefinements, filter: { ...defaultRefinements.filter }})
 
 const stateToQuery = () => {
     const query: any = {}
@@ -156,7 +150,7 @@ const updateRouterPath = () => {
 }
 
 const resetFilters = () => {
-    activeFilters.value = defaultRefinements
+    activeFilters.value = {...defaultRefinements, filter: { ...defaultRefinements.filter }}
     updateRouterPath()
 }
 
