@@ -1448,6 +1448,26 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/public/{slugOrId}/menu": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Show public menu
+         * @description Show a public bar menu details
+         */
+        get: operations["showPublicBarMenu"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/cocktails/{id}/ratings": {
         parameters: {
             query?: never;
@@ -9796,6 +9816,50 @@ export interface operations {
                 content: {
                     "application/json": {
                         data: components["schemas"]["PublicCocktailResource"];
+                    };
+                };
+            };
+            /** @description Resource record not found. */
+            404: {
+                headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data?: components["schemas"]["APIError"];
+                    };
+                };
+            };
+        };
+    };
+    showPublicBarMenu: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Database id or slug of bar */
+                slugOrId: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful response */
+            200: {
+                headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data: components["schemas"]["MenuPublic"];
                     };
                 };
             };

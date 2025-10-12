@@ -36,7 +36,7 @@ fetchBar()
                     <RouterLink :to="{ name: 'public.cocktails.index', params: { barId: barId } }">Cocktails</RouterLink>
                     <template v-if="bar && bar.is_menu_enabled">
                         &middot;
-                        <RouterLink :to="`/menu/${bar.slug}`">Menu</RouterLink>
+                        <RouterLink :to="{name: 'public.menu.show', params: {barId: bar.slug}}">Menu</RouterLink>
                     </template>
                     &middot;
                     <a href="/">Sign In</a>
@@ -88,5 +88,6 @@ fetchBar()
 
 .public-layout-footer {
     text-align: center;
+    padding: 1rem 0 3rem 0;
 }
 </style>
