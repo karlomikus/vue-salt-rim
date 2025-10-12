@@ -3,6 +3,7 @@
         <div class="bar-cocktail-recipe__header">
             <div class="bar-cocktail-recipe__image" itemprop="image" :content="mainImage.url">
                 <img :src="mainImage.url" alt="">
+                <div class="glare"></div>
                 <div v-if="mainImage.copyright" class="bar-cocktail-recipe__image__copyright">{{ $t('imageupload.copyright-notice', { copyright: mainImage.copyright }) }}</div>
             </div>
             <div class="bar-cocktail-recipe__info">
@@ -186,6 +187,7 @@ fetchCocktail()
     flex-shrink: 0;
     width: 300px;
     position: relative;
+    box-shadow: var(--shadow-elevation-medium);
 }
 
 .bar-cocktail-recipe__image img {
@@ -292,5 +294,18 @@ fetchCocktail()
     display: flex;
     justify-content: space-between;
     margin-bottom: .5rem;
+}
+
+.glare {
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    right: 5px;
+    bottom: 5px;
+    pointer-events: none;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.6) 0%, rgba(255, 255, 255, 0) 40%);
+    opacity: 0.6;
+    border-radius: .25rem;
+    box-shadow: inset 1px 1px 1px rgba(255, 255, 255, 0.4);
 }
 </style>

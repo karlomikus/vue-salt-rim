@@ -61,7 +61,7 @@ fetchBar()
 
 <style>
 .public-layout-navigation {
-    background-color: var(--clr-gray-900);
+    background-color: #302735;
     color: #fff;
     padding: 1rem 0;
     margin-bottom: 2rem;
@@ -74,6 +74,12 @@ fetchBar()
 
 .public-layout-navigation__links a {
     color: #fff;
+    font-weight: var(--fw-bold);
+    text-decoration: none;
+}
+
+.public-layout-navigation__links a:hover {
+    text-decoration: underline;
 }
 
 .public-layout-content {
