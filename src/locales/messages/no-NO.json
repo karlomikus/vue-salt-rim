@@ -35,7 +35,7 @@
     "shelf-remove-success": "Removed \"{name}\" from your shelf",
     "shelf-add-success": "Added \"{name}\" to your shelf",
     "list-remove-success": "Removed \"{name}\" from your shopping list",
-    "list-add-success": "Added \"{name}\" to your shopping list",
+    "list-add-success": "La til {name}\" i din handleliste",
     "spotlight": "Ingredient spotlight",
     "is-variety": "Ingredient is variant of another ingredient",
     "information": "Ingredient information",
