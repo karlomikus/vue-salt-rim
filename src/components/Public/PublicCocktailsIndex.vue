@@ -45,6 +45,7 @@
         </div>
         <div class="public-cocktail-grid">
             <CocktailItem v-for="cocktail in cocktails" :key="cocktail.slug" :cocktail="cocktail" :bar="bar"></CocktailItem>
+            <div v-if="cocktails.length === 0">No cocktails found</div>
         </div>
         <Pagination :meta="meta" @page-changed="handlePageChange"></Pagination>
     </div>
@@ -185,7 +186,7 @@ watch(
 
 .public-cocktail-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(175px, 1fr));
     gap: 1rem;
 }
 

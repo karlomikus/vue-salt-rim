@@ -61,10 +61,9 @@ refreshMenu()
 }
 
 .public-page-menu__category h3 {
-    font-size: 1.25em;
+    font-size: 1em;
     color: var(--clr-gray-500);
     font-weight: var(--fw-bold);
-    font-family: var(--font-heading);
 }
 
 .public-page-menu__category__cocktails {
@@ -158,12 +157,7 @@ refreshMenu()
 
 .public-page-menu__cocktail__info p {
     color: var(--clr-gray-500);
-}
-
-@media (max-width: 545px) {
-    .public-page-menu__cocktail__info p {
-        font-size: 0.85rem;
-    }
+    font-size: 0.85em;
 }
 
 .public-page-menu__cocktail__price {

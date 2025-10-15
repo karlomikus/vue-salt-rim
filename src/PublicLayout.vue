@@ -4,7 +4,6 @@ import { useRoute } from 'vue-router'
 import BarAssistantClient from '@/api/BarAssistantClient'
 import { ref } from 'vue'
 import type { components } from '@/api/api'
-import BarInfo from '@/components/Public/PublicBarInfo.vue'
 import BarShow from '@/components/Public/PublicBarShow.vue'
 
 type Bar = components['schemas']['PublicBarResource']
@@ -20,7 +19,7 @@ const fetchBar = async () => {
             bar.value = resp
         }
     } catch (error) {
-        bar.value = null
+        window.location.href = '/'
     }
 }
 
@@ -28,27 +27,9 @@ fetchBar()
 </script>
 
 <template>
-    <div class="public-layout-navigation">
-        <main>
-            <div class="public-layout-navigation__header">
-                <BarInfo v-if="bar" :bar="bar" />
-                <div class="public-layout-navigation__links">
-                    <RouterLink :to="{ name: 'public.cocktails.index', params: { barId: barId } }">Cocktails</RouterLink>
-                    <template v-if="bar && bar.is_menu_enabled">
-                        &middot;
-                        <RouterLink :to="{name: 'public.menu.show', params: {barId: bar.slug}}">Menu</RouterLink>
-                    </template>
-                    &middot;
-                    <a href="/">Sign In</a>
-                </div>
-            </div>
-        </main>
-    </div>
     <div class="public-layout-content">
-        <!-- <main>
-            <BarShow v-if="bar" :bar="bar" />
-        </main> -->
         <main v-if="bar">
+            <BarShow :bar="bar" />
             <RouterView :bar="bar" />
         </main>
     </div>
@@ -59,31 +40,13 @@ fetchBar()
     </div>
 </template>
 
-<style>
-.public-layout-navigation {
-    background-color: #302735;
-    color: #fff;
-    padding: 1rem 0;
-    margin-bottom: 2rem;
-}
-
-.public-layout-navigation__links {
-    display: flex;
-    gap: .5rem;
-}
-
-.public-layout-navigation__links a {
-    color: #fff;
-    font-weight: var(--fw-bold);
-    text-decoration: none;
-}
-
-.public-layout-navigation__links a:hover {
-    text-decoration: underline;
-}
-
+<style scoped>
 .public-layout-content {
     margin: 1rem 0;
+}
+
+.public-layout-content main {
+    max-width: 800px;
 }
 
 .public-layout-navigation__header {

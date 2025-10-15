@@ -1,15 +1,15 @@
 <template>
-    <div class="public-cocktail-grid-item block-container">
+    <RouterLink :to="{name: 'public.cocktails.show', params: {barId: bar.slug, slug: cocktail.slug}}" class="public-cocktail-grid-item block-container">
         <h3 class="public-cocktail-grid-item__thumb">
             <img :src="mainImage.url" :alt="mainImage.copyright ?? cocktail.name" />
         </h3>
         <div class="public-cocktail-grid-item__content">
             <div class="public-cocktail-grid-item__title">
-                <RouterLink :to="{name: 'public.cocktails.show', params: {barId: bar.slug, slug: cocktail.slug}}">{{ cocktail.name }}</RouterLink>
+                {{ cocktail.name }}
             </div>
             <div class="public-cocktail-grid-item__ingredients">{{ cocktail.ingredients.map(i => i.name).join(', ') }}</div>
         </div>
-    </div>
+    </RouterLink>
 </template>
 
 <script setup lang="ts">
@@ -42,6 +42,8 @@ const mainImage = computed(() => {
     flex-direction: column;
     gap: 0.25rem;
     overflow: hidden;
+    border-top: 0;
+    text-decoration: none;
 }
 
 .public-cocktail-grid-item__thumb {
@@ -66,9 +68,6 @@ const mainImage = computed(() => {
 
 .public-cocktail-grid-item__title {
     line-height: 1.2;
-}
-
-.public-cocktail-grid-item__title a {
     font-size: 1.25em;
     font-family: var(--font-heading);
     font-weight: bold;
