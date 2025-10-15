@@ -77,7 +77,9 @@ const router = createRouter({
         {
             path: '/menu/:slug',
             name: 'menu.menu',
-            component: () => import('../views/MenuPublicView.vue'),
+            redirect: (to) => {
+                return { name: 'public.menu.show', params: { barId: to.params.slug } }
+            },
             meta: { requiresAuth: false }
         },
         {
