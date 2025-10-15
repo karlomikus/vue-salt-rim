@@ -13,7 +13,7 @@
             </div>
             <div class="public-bar-details__header__links">
                 <RouterLink :to="{ name: 'public.cocktails.index', params: { barId: bar.slug } }">Cocktails</RouterLink>
-                <template v-if="bar && bar.is_menu_enabled">
+                <template v-if="bar.is_menu_enabled">
                     &middot;
                     <RouterLink :to="{name: 'public.menu.show', params: {barId: bar.slug}}">Menu</RouterLink>
                 </template>
