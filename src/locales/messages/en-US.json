@@ -376,6 +376,7 @@
     "confirm-delete": "This will permanently delete bar with name \"{name}\".",
     "confirm-leave": "You will lose all your data in bar (\"{name}\") if you leave it.",
     "enable-invites": "Enable joining via invite code",
+    "enable-invites-description": "This will allow other users to join your bar using an invite code",
     "import-base-cocktails": "Open bar with base cocktails",
     "import-base-ingredients": "Open bar with base ingredients",
     "join-error": "Unable to join bar",
@@ -403,7 +404,8 @@
     "sync-data": "Synchronize data",
     "confirm-datapack-sync": "This action will add missing data available in default datapack to this bar. Your existing recipes are not affected, but new data will be added. Please make sure that you have a backup or export of your data.",
     "bars.datapack-sync-started": "Started default datapack sync in bar \"{name}\"",
-    "is-public": "Make bar public. Allows access to public API endpoints."
+    "is-public": "Make bar public",
+    "is-public-description": "Allows public access to all your cocktail recipes via your bar URL"
   },
   "close": "Close",
   "save-as": "Save as",
@@ -526,7 +528,7 @@
   "bar": {
     "url": "Custom bar URL",
     "url-help": "Your public bar URL will be: {url}",
-    "url-menu-hint": "Used for public menu if enabled.",
+    "url-menu-hint": "Used for public access if enabled.",
     "default-currency-hint": "Used as default currency suggestion, can be changed anytime.",
     "default-units-hint": "Used as default units on cocktail details, can be changed anytime."
   },
