@@ -190,6 +190,12 @@ watch(
     gap: 1rem;
 }
 
+@media (max-width: 545px) {
+    .public-cocktail-grid {
+        grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    }
+}
+
 .public-cocktail-grid-filter-icon {
     width: 1.5rem;
     height: 1.5rem;

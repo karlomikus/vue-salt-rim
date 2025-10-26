@@ -189,6 +189,11 @@ fetchCocktail()
     position: relative;
     box-shadow: var(--shadow-elevation-medium);
 }
+@media (max-width: 545px) {
+    .bar-cocktail-recipe__image {
+        width: auto;
+    }
+}
 
 .bar-cocktail-recipe__image img {
     display: block;
@@ -230,9 +235,10 @@ fetchCocktail()
     display: flex;
     gap: var(--bcr-default-gap);
 }
-
-.bar-cocktail-recipe__image img {
-    width: 100%;
+@media (max-width: 545px) {
+    .bar-cocktail-recipe__header {
+        flex-direction: column;
+    }
 }
 
 .public-cocktail-recipe__ingredients {

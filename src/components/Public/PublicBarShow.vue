@@ -21,7 +21,10 @@
                 <a href="/">Sign In</a>
             </div>
         </div>
-        <div v-if="bar.description" class="bar-cocktail-recipe__content block-container block-container--padded" v-html="parsedDescription"></div>
+        <div v-if="bar.description" class="public-bar-details__description block-container block-container--padded">
+            <h3>Bar description</h3>
+            <div v-html="parsedDescription"></div>
+        </div>
     </div>
 </template>
 
@@ -90,5 +93,13 @@ const image = computed(() => {
 .public-bar-details__header__logo__image img {
     width: 100%;
     height: auto;
+}
+
+.public-bar-details__description h3 {
+    font-family: var(--font-heading);
+    font-size: 1em;
+    font-weight: bold;
+    color: #8F4277;
+    margin-bottom: .25rem;
 }
 </style>
