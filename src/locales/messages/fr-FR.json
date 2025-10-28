@@ -403,7 +403,7 @@
     "sync-data": "Synchroniser les données",
     "confirm-datapack-sync": "Cette action ajoutera à ce bar les données manquantes disponibles dans la base de données par défaut. Vos recettes existantes ne seront pas affectées, mais de nouvelles données seront ajoutées. Veuillez vous assurer d'avoir une sauvegarde ou une exportation de vos données.",
     "bars.datapack-sync-started": "Début de la synchronisation de la base de données par défaut pour le bar \"{name}\"",
-    "is-public": "Make bar public. Allows access to public API endpoints."
+    "is-public": "Rendre le bar public. Permet d'accéder aux terminaux publics de l'API."
   },
   "close": "Fermer",
   "save-as": "Enregistrer sous",
@@ -662,7 +662,7 @@
     "confirm-eval-delete": "Cela va supprimer l'appréciation sélectionnée",
     "confirm-input-delete": "Ceci supprimera l'entrée sélectionnée",
     "inputs-description": "Dans cette section, vous définissez toutes les entrées nécessaires qui changeront le résultat de vos évaluations. Chaque entrée peut être utilisée dans toutes les évaluations.",
-    "evaluations-description": "In this section, you define your evaluations and their result display settings. Each evaluation can access and use all previously defined inputs and evaluation results in expression using defined variable name.",
+    "evaluations-description": "Dans cette section, vous définissez les évaluations et les paramètres d'affichage de leurs résultats. Chaque évaluation peut avoir accès et utiliser toutes les entrées et résultats d'évaluation dans l'expression en utilisant es nom des différentes variables.",
     "copy-success": "Calculateur copié dans le presse-papier",
     "import": "Importer un calculateur"
   },
@@ -678,17 +678,17 @@
   "preview": "Prévisualisation",
   "available-variants": "Variantes sur l'étagère",
   "sso": {
-    "profile-providers": "SSO accounts",
+    "profile-providers": "Comptes SSO",
     "provider-name": "Nom du fournisseur",
-    "created-date": "Token created at",
+    "created-date": "Jeton créé à",
     "delete-account": "Supprimer le lien du compte",
-    "confirm-delete": "This will permanently delete SSO account link from provider \"{name}\".",
+    "confirm-delete": "Cela supprimera définitivement le lien de compte SSO du fournisseur «{name}».",
     "is-configured": "Configuration serveur",
-    "delete-success": "SSO account link deleted",
+    "delete-success": "Le lien de compte avec le fournisseur de connexion unique a été supprimé",
     "provider-enabled": "Autoriser",
     "provider-disabled": "Désactiver",
-    "title": "Single Sign-On",
-    "auth-error": "Unable to authenticate via Single Sign-On provider",
+    "title": "Authentification unique",
+    "auth-error": "Authentification impossible via le fournisseur de connexion unique",
     "login-with": "Connexion avec {name}"
   },
   "distillery": "Distillerie",
