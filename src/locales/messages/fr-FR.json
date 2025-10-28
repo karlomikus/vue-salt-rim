@@ -376,6 +376,7 @@
     "confirm-delete": "Cela supprimera définitivement le bar \"{name}\".",
     "confirm-leave": "Vous perdrez toutes les données du bar (\"{name}\") si vous le quittez.",
     "enable-invites": "Permettre de rejoindre avec un code d'invitation",
+    "enable-invites-description": "This will allow other users to join your bar using an invite code",
     "import-base-cocktails": "Ouvrir le bar avec les cocktails de base",
     "import-base-ingredients": "Ouvrir le bar avec les ingrédients de base",
     "join-error": "Impossible de rejoindre le bar",
@@ -403,7 +404,8 @@
     "sync-data": "Synchroniser les données",
     "confirm-datapack-sync": "Cette action ajoutera à ce bar les données manquantes disponibles dans la base de données par défaut. Vos recettes existantes ne seront pas affectées, mais de nouvelles données seront ajoutées. Veuillez vous assurer d'avoir une sauvegarde ou une exportation de vos données.",
     "bars.datapack-sync-started": "Début de la synchronisation de la base de données par défaut pour le bar \"{name}\"",
-    "is-public": "Rendre le bar public. Permet d'accéder aux terminaux publics de l'API."
+    "is-public": "Rendre le bar public. Permet d'accéder aux terminaux publics de l'API.",
+    "is-public-description": "Allows public access to all your cocktail recipes via your bar URL"
   },
   "close": "Fermer",
   "save-as": "Enregistrer sous",
