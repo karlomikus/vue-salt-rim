@@ -77,13 +77,13 @@ const router = useRouter()
 const availableSorts = [
     { value: 'name', label: 'Name (A-Z)' },
     { value: '-name', label: 'Name (Z-A)' },
-    { value: 'created_at', label: 'Newest recipes' },
-    { value: '-created_at', label: 'Oldest recipes' },
+    { value: 'created_at', label: 'Oldest recipes' },
+    { value: '-created_at', label: 'Newest recipes' },
 ]
 const barId = route.params.barId.toString()
 
 const defaultRefinements = {
-    sort: 'created_at',
+    sort: '-created_at',
     page: 1,
     filter: {
         name: null as string | null,
