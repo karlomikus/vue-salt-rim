@@ -376,6 +376,7 @@
     "confirm-delete": "将永久删除名为 \"{name}\" 的酒吧。",
     "confirm-leave": "离开酒吧 (\"{name}\") 将丢失所有相关数据。",
     "enable-invites": "启用邀请码加入功能",
+    "enable-invites-description": "This will allow other users to join your bar using an invite code",
     "import-base-cocktails": "导入默认鸡尾酒",
     "import-base-ingredients": "导入默认配料",
     "join-error": "无法加入酒吧",
@@ -403,7 +404,8 @@
     "sync-data": "Synchronize data",
     "confirm-datapack-sync": "This action will add missing data available in default datapack to this bar. Your existing recipes are not affected, but new data will be added. Please make sure that you have a backup or export of your data.",
     "bars.datapack-sync-started": "Started default datapack sync in bar \"{name}\"",
-    "is-public": "Make bar public. Allows access to public API endpoints."
+    "is-public": "Make bar public",
+    "is-public-description": "Allows public access to all your cocktail recipes via your bar URL"
   },
   "close": "关闭",
   "save-as": "另存为",
@@ -526,7 +528,7 @@
   "bar": {
     "url": "自定义酒吧 URL",
     "url-help": "您的公开酒吧 URL 为：{url}",
-    "url-menu-hint": "如果启用，用于公共菜单。",
+    "url-menu-hint": "Used for public access if enabled.",
     "default-currency-hint": "作为默认货币建议，可随时修改。",
     "default-units-hint": "作为鸡尾酒详情的默认单位，可随时修改。"
   },
