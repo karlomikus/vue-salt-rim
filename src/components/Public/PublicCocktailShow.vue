@@ -57,13 +57,14 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { computed, ref, watch } from 'vue'
 import type { components } from '@/api/api'
 import { useRoute } from 'vue-router';
 import BarAssistantClient from '@/api/BarAssistantClient'
 import { micromark } from 'micromark'
 import CocktailIngredient from './PublicCocktailIngredient.vue';
 import CocktailRecipeScaler from './../Cocktail/CocktailRecipeScaler.vue';
+import AppState from '@/AppState';
 
 type Cocktail = components['schemas']['PublicCocktailResource']
 type CocktailTag = {
@@ -72,9 +73,10 @@ type CocktailTag = {
     class: string,
 }
 
+const appState = new AppState()
 const route = useRoute()
 const cocktail = ref<Cocktail|null>(null)
-const currentUnit = ref<'ml' | 'oz' | 'cl'>('ml')
+const currentUnit = ref<'ml' | 'oz' | 'cl'>(appState.defaultUnit)
 const scaleFactor = ref<number>(1)
 const showScaler = ref<boolean>(false)
 const barId = route.params.barId.toString()
@@ -146,6 +148,10 @@ const isValidURL = computed(() => {
     } catch (err) {
         return false;
     }
+})
+
+watch(() => currentUnit.value, () => {
+    appState.setDefaultUnits(currentUnit.value)
 })
 
 fetchCocktail()

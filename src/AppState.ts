@@ -5,7 +5,7 @@ type Profile = components["schemas"]["Profile"]
 
 class AppState {
     theme: string
-    defaultUnit: string
+    defaultUnit: 'ml' | 'oz' | 'cl'
     defaultShelf: string
     language: string
     token: string|null
@@ -77,8 +77,10 @@ class AppState {
     }
 
     setDefaultUnits(unit: string) {
-        this.defaultUnit = unit
-        this._updateState()
+        if (unit == 'ml' || unit == 'oz' || unit == 'cl') {
+            this.defaultUnit = unit
+            this._updateState()
+        }
     }
 
     setDefaultShelf(shelf: string) {
