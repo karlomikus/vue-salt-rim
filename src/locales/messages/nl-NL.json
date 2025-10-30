@@ -376,6 +376,7 @@
     "confirm-delete": "Dit verwijdert bar met de naam \"{name}\".",
     "confirm-leave": "Je verliest al je gegevens in de bar (\"{name}\") als je deze verlaat.",
     "enable-invites": "Deelnemen via uitnodigingscode inschakelen",
+    "enable-invites-description": "This will allow other users to join your bar using an invite code",
     "import-base-cocktails": "Open de bar met standaard cocktails.",
     "import-base-ingredients": "Open de bar met standaard ingrediënten.",
     "join-error": "Het is niet mogelijk om in de bar te komen",
@@ -403,7 +404,8 @@
     "sync-data": "Synchronize data",
     "confirm-datapack-sync": "This action will add missing data available in default datapack to this bar. Your existing recipes are not affected, but new data will be added. Please make sure that you have a backup or export of your data.",
     "bars.datapack-sync-started": "Started default datapack sync in bar \"{name}\"",
-    "is-public": "Make bar public. Allows access to public API endpoints."
+    "is-public": "Make bar public",
+    "is-public-description": "Allows public access to all your cocktail recipes via your bar URL"
   },
   "close": "Sluiten",
   "save-as": "Opslaan als",
@@ -526,7 +528,7 @@
   "bar": {
     "url": "Aangepaste bar URL",
     "url-help": "Uw publieke bar-URL wordt: {url}",
-    "url-menu-hint": "Gebruikt voor publiek menu als dit is ingeschakeld.",
+    "url-menu-hint": "Used for public access if enabled.",
     "default-currency-hint": "Wordt gebruikt als standaard valuta suggestie, kan op elk moment worden gewijzigd.",
     "default-units-hint": "Gebruikt als standaard eenheden op cocktail details, kan op elk moment gewijzigd worden."
   },
