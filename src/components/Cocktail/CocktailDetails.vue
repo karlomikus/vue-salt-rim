@@ -599,7 +599,7 @@ fetchShoppingList()
                     </div>
                     <div class="has-markdown" v-html="parsedDescription"></div>
                 </div>
-                <UnitConverter @unit-changed="(u: string) => currentUnit = u">
+                <UnitConverter @unit-changed="(u: 'ml' | 'oz' | 'cl') => currentUnit = u">
                     <div v-if="cocktail.ingredients && cocktail.ingredients.length > 0" class="block-container block-container--padded">
                         <h3 class="details-block-container__title">{{ t('ingredient.ingredients') }}</h3>
                         <div class="cocktail-ingredients__actions">
