@@ -77,7 +77,9 @@ const router = createRouter({
         {
             path: '/menu/:slug',
             name: 'menu.menu',
-            component: () => import('../views/MenuPublicView.vue'),
+            redirect: (to) => {
+                return { name: 'public.menu.show', params: { barId: to.params.slug } }
+            },
             meta: { requiresAuth: false }
         },
         {
@@ -272,6 +274,28 @@ const router = createRouter({
                     path: 'shopping-list',
                     name: 'print.shopping-list',
                     component: () => import('../views/ShelfShoppingListPrintView.vue'),
+                },
+            ]
+        },
+        {
+            path: '/public/:barId',
+            component: () => import('../PublicLayout.vue'),
+            meta: { requiresAuth: false },
+            children: [
+                {
+                    path: 'cocktails',
+                    name: 'public.cocktails.index',
+                    component: () => import('../components/Public/PublicCocktailsIndex.vue'),
+                },
+                {
+                    path: 'cocktails/:slug',
+                    name: 'public.cocktails.show',
+                    component: () => import('../components/Public/PublicCocktailShow.vue'),
+                },
+                {
+                    path: 'menu',
+                    name: 'public.menu.show',
+                    component: () => import('../components/Public/PublicMenuShow.vue'),
                 },
             ]
         }

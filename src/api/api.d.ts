@@ -1388,7 +1388,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/public/{barId}": {
+    "/public/{slugOrId}": {
         parameters: {
             query?: never;
             header?: never;
@@ -1408,7 +1408,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/public/{barId}/cocktails": {
+    "/public/{slugOrId}/cocktails": {
         parameters: {
             query?: never;
             header?: never;
@@ -1428,7 +1428,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/public/{barId}/cocktails/{slugOrPublicId}": {
+    "/public/{slugOrId}/cocktails/{slugOrPublicId}": {
         parameters: {
             query?: never;
             header?: never;
@@ -1440,6 +1440,26 @@ export interface paths {
          * @description Show public information about cocktail. If valid public ID is provided it will used, if not it will use cocktail slug.
          */
         get: operations["showPublicBarCocktail"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/public/{slugOrId}/menu": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Show public menu
+         * @description Show a public bar menu details
+         */
+        get: operations["showPublicBarMenu"];
         put?: never;
         post?: never;
         delete?: never;
@@ -3278,6 +3298,11 @@ export interface components {
             description: string | null;
             /** @description Images associated with the bar */
             images: components["schemas"]["PublicImageResource"][];
+            /**
+             * @description Whether the bar has enabled its menu for public viewing
+             * @example true
+             */
+            is_menu_enabled: boolean;
         };
         /** @description Public details about a cocktail */
         PublicCocktailResource: {
@@ -3339,11 +3364,26 @@ export interface components {
              */
             method: string | null;
             /**
+             * @description Dilution percentage associated with the preparation method
+             * @example 12
+             */
+            method_dilution_percentage?: number | null;
+            /**
+             * @description Total volume of the cocktail in milliliters
+             * @example 120
+             */
+            volume_ml?: number | null;
+            /**
              * Format: date-time
              * @description Date and time when the cocktail was created
              * @example 2023-10-01T12:00:00Z
              */
             created_at: string;
+            /**
+             * @description Indicates if the cocktail can be made in the current bar
+             * @example true
+             */
+            in_bar_shelf?: boolean;
             /**
              * Format: float
              * @description Alcohol by volume percentage of the cocktail
@@ -3941,27 +3981,28 @@ export interface components {
             /** @example My device */
             token_name?: string | null;
         };
+        MenuItemRequest: {
+            /** @example 1 */
+            id: number;
+            type: components["schemas"]["MenuItemTypeEnum"];
+            /** @example Category name */
+            category_name: string;
+            /** @example 1 */
+            sort: number;
+            /**
+             * Format: float
+             * @example 22.52
+             */
+            price: number;
+            /**
+             * Format: ISO 4217
+             * @example EUR
+             */
+            currency: string;
+        };
         MenuRequest: {
             is_enabled: boolean;
-            items: {
-                /** @example 1 */
-                id: number;
-                type: components["schemas"]["MenuItemTypeEnum"];
-                /** @example Category name */
-                category_name: string;
-                /** @example 1 */
-                sort: number;
-                /**
-                 * Format: minor
-                 * @example 2252
-                 */
-                price: number;
-                /**
-                 * Format: ISO 4217
-                 * @example EUR
-                 */
-                currency: string;
-            }[];
+            items: components["schemas"]["MenuItemRequest"][];
         };
         NoteRequest: {
             /** @example Note text */
@@ -9609,7 +9650,7 @@ export interface operations {
             header?: never;
             path: {
                 /** @description Database id of bar */
-                barId: number;
+                slugOrId: string;
             };
             cookie?: never;
         };
@@ -9658,20 +9699,24 @@ export interface operations {
                     name?: string;
                     /** @description Filter by cocktail ingredient names(s) (fuzzy search) */
                     ingredient_name?: string;
+                    /** @description Filter by cocktail tag name(s) (fuzzy search) */
+                    tag?: string;
+                    /** @description Filter by cocktail glass type name(s) (fuzzy search) */
+                    glass?: string;
+                    /** @description Filter by cocktail method name(s) (fuzzy search) */
+                    method?: string;
                     /** @description Show only cocktails on the bar shelf */
                     bar_shelf?: boolean;
-                    /** @description Filter by greater than or equal ABV */
-                    abv_min?: number;
-                    /** @description Filter by less than or equal ABV */
-                    abv_max?: number;
+                    /** @description Filter by greater than or equal ABV. Use >=, >, <=, < operators (e.g., `filter[abv]=>=20` to get cocktails with ABV greater than or equal to 20). */
+                    abv?: number;
                 };
-                /** @description Sort by attributes. Available attributes: `name`, `created_at`, `average_rating`, `user_rating`, `abv`, `total_ingredients`, `missing_ingredients`, `missing_bar_ingredients`, `favorited_at`, `random`. */
+                /** @description Sort by attributes. Available attributes: `name`, `created_at`, `abv`, `random`. */
                 sort?: string;
             };
             header?: never;
             path: {
-                /** @description Database id of bar */
-                barId: number;
+                /** @description Database id or slug of bar */
+                slugOrId: string;
             };
             cookie?: never;
         };
@@ -9751,7 +9796,7 @@ export interface operations {
             header?: never;
             path: {
                 /** @description Database id of bar */
-                barId: number;
+                slugOrId: string;
                 /** @description Cocktail slug or public id (ULID) */
                 slugOrPublicId: string;
             };
@@ -9771,6 +9816,50 @@ export interface operations {
                 content: {
                     "application/json": {
                         data: components["schemas"]["PublicCocktailResource"];
+                    };
+                };
+            };
+            /** @description Resource record not found. */
+            404: {
+                headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data?: components["schemas"]["APIError"];
+                    };
+                };
+            };
+        };
+    };
+    showPublicBarMenu: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Database id or slug of bar */
+                slugOrId: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful response */
+            200: {
+                headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data: components["schemas"]["MenuPublic"];
                     };
                 };
             };

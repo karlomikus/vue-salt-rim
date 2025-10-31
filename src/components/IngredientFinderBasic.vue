@@ -1,6 +1,7 @@
 <template>
     <div class="ingredient-finder">
-        <input v-model="currentQuery" class="form-input ingredient-finder__search-input" type="search" :placeholder="t('placeholder.search-ingredients')" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" @input="debounceIngredientSearch">
+        {{ focusInput() }}
+        <input v-model="currentQuery" ref="searchInput" class="form-input ingredient-finder__search-input" type="search" :placeholder="t('placeholder.search-ingredients')" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" @keyup.enter="search" @input="debounceIngredientSearch">
         <div class="ingredient-finder__hits">
             <div class="ingredient-finder__options block-container block-container--inset">
                 <OverlayLoader v-if="isLoading"></OverlayLoader>
@@ -23,7 +24,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, useTemplateRef } from 'vue'
 import OverlayLoader from './OverlayLoader.vue'
 import IngredientImage from './Ingredient/IngredientImage.vue'
 import BarAssistantClient from '@/api/BarAssistantClient'
@@ -57,6 +58,7 @@ const { t } = useI18n()
 const isLoading = ref(false)
 const currentQuery = ref(initialQuery)
 const items = ref<SearchResult[]>([])
+const searchInput = useTemplateRef<HTMLInputElement>('searchInput')
 
 let queryTimer: number = 0;
 function debounceIngredientSearch() {
@@ -74,6 +76,10 @@ async function search() {
         return
     }
 
+    await queryIngredients(query)
+}
+
+async function queryIngredients(query: string) {
     isLoading.value = true
 
     try {
@@ -143,7 +149,17 @@ function selectIngredient(ing: SearchResult) {
     emit('ingredientSelected', ing)
 }
 
+function focusInput() {
+    searchInput.value?.focus()
+}
+
 function isSelected(ing: SearchResult) {
     return selectedIngredients.includes(ing.id)
+}
+
+if (currentQuery.value !== null && currentQuery.value !== '') {
+    search()
+} else {
+    queryIngredients('')
 }
 </script>

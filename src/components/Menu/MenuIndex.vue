@@ -89,7 +89,8 @@
                         </a>
                     </template>
                     <template #dialog>
-                        <CocktailFinder @cocktail-selected="cocktail => selectCocktail(cocktail, category, idx)" @closed="showCocktailFinder[idx] = false"></CocktailFinder>
+                        <CocktailFinderBasic v-if="shouldUseBasicSearch" @cocktail-selected="cocktail => selectCocktail(cocktail, category, idx)" @closed="showCocktailFinder[idx] = false"></CocktailFinderBasic>
+                        <CocktailFinder v-else @cocktail-selected="cocktail => selectCocktail(cocktail, category, idx)" @closed="showCocktailFinder[idx] = false"></CocktailFinder>
                     </template>
                 </SaltRimDialog>
                 &middot;
@@ -101,7 +102,8 @@
                     </template>
                     <template #dialog>
                         <div class="dialog-title">{{ t('ingredient.ingredients') }}</div>
-                        <IngredientFinder v-if="appState.bar.search_token" :search-token="appState.bar.search_token" @ingredient-selected="ingredient => selectIngredient(ingredient, category, idx)"></IngredientFinder>
+                        <IngredientFinderBasic v-if="shouldUseBasicSearch" @ingredient-selected="ingredient => selectIngredient(ingredient, category, idx)"></IngredientFinderBasic>
+                        <IngredientFinder v-else-if="!shouldUseBasicSearch && appState.bar.search_token" :search-token="appState.bar.search_token" @ingredient-selected="ingredient => selectIngredient(ingredient, category, idx)"></IngredientFinder>
                         <div class="dialog-actions">
                             <button type="submit" class="button button--dark" @click="showIngredientFinder[idx] = !showIngredientFinder[idx]">{{ t('close') }}</button>
                         </div>
@@ -136,6 +138,9 @@ import { useSaltRimToast } from '@/composables/toast'
 import type { components } from '@/api/api'
 import type { SearchResults } from '@/api/SearchResults'
 import { useConfirm } from '@/composables/confirm'
+import IngredientFinderBasic from '../IngredientFinderBasic.vue'
+import { useBasicSearch } from '@/composables/useBasicSearch'
+import CocktailFinderBasic from '../CocktailFinderBasic.vue'
 
 type Menu = components['schemas']['Menu']
 type MenuRequest = components['schemas']['MenuRequest']
@@ -144,6 +149,7 @@ type MenuItem = components['schemas']['Menu']['categories'][0]['items'][0]
 type CocktailSearchResult = SearchResults['cocktail']
 type IngredientSearchResult = SearchResults['ingredient']
 
+const shouldUseBasicSearch = useBasicSearch()
 const { t } = useI18n()
 const toast = useSaltRimToast()
 const confirm = useConfirm()

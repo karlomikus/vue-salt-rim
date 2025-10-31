@@ -17,6 +17,8 @@ import type { CocktailRecipe as Draft1Schema } from '@/schema/draft1'
 import { useTitle } from '@/composables/title'
 import AppState from '@/AppState'
 import { useBookmarklet } from '@/composables/useBookmarklet'
+import IngredientFinderBasic from '../IngredientFinderBasic.vue'
+import { useBasicSearch } from '@/composables/useBasicSearch'
 
 interface Ingredient {
     id: string,
@@ -54,6 +56,7 @@ const { t } = useI18n()
 const router = useRouter()
 const route = useRoute()
 const toast = useSaltRimToast()
+const shouldUseBasicSearch = useBasicSearch()
 // const llm = useLLM()
 const isLoading = ref(false)
 const isImporting = ref(false)
@@ -703,7 +706,8 @@ init()
                 <template #dialog>
                     <div class="dialog-title">{{ t('import.manually-match') }}</div>
                     <p style="margin-bottom: 1rem;">{{ t('import.manual-match-notice', {name: ingredientEdit.refIngredient.name}) }}</p>
-                    <IngredientFinder v-if="bar.search_token" :search-token="bar.search_token" :initial-query="ingredientEdit.refIngredient.name" @ingredient-selected="handleIngredientEdit"></IngredientFinder>
+                    <IngredientFinderBasic v-if="shouldUseBasicSearch" :initial-query="ingredientEdit.refIngredient.name" @ingredient-selected="handleIngredientEdit"></IngredientFinderBasic>
+                    <IngredientFinder v-else-if="!shouldUseBasicSearch && appState.bar.search_token" :search-token="appState.bar.search_token" :initial-query="ingredientEdit.refIngredient.name" @ingredient-selected="handleIngredientEdit"></IngredientFinder>
                     <div class="dialog-actions">
                         <button type="button" class="button button--outline" @click="showIngredientDialog = false">{{ t('close') }}</button>
                     </div>

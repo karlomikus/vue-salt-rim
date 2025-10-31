@@ -599,7 +599,7 @@ fetchShoppingList()
                     </div>
                     <div class="has-markdown" v-html="parsedDescription"></div>
                 </div>
-                <UnitConverter @unit-changed="(u: string) => currentUnit = u">
+                <UnitConverter @unit-changed="(u: 'ml' | 'oz' | 'cl') => currentUnit = u">
                     <div v-if="cocktail.ingredients && cocktail.ingredients.length > 0" class="block-container block-container--padded">
                         <h3 class="details-block-container__title">{{ t('ingredient.ingredients') }}</h3>
                         <div class="cocktail-ingredients__actions">
@@ -633,7 +633,7 @@ fetchShoppingList()
                             <div class="volume-scaling__water" v-if="waterDilution && targetVolumeDilution > 0">
                                 {{ $t('target-volume-dilution-help', {total: unitHandler.toFixedWithTruncate(parseFloat(waterDilution), 2) + ' ' + currentUnit}) }}
                             </div>
-                            <p class="form-input-hint">Insipired by Jeffrey Morgenthaler's <a href="https://www.batchcalc.com/" target="_blank">The Batch Cocktail Calculator</a></p>
+                            <p class="form-input-hint">Inspired by Jeffrey Morgenthaler's <a href="https://www.batchcalc.com/" target="_blank">The Batch Cocktail Calculator</a></p>
                         </div>
                         <ul class="cocktail-ingredients">
                             <li v-for="ing in cocktail.ingredients" :key="ing.sort">

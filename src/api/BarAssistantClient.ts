@@ -597,4 +597,16 @@ export default class BarAssistantClient {
   static async datapackSync(id: number) {
     return (await client.POST('/bars/{id}/sync-datapack', { params: { path: { id: id } } })).data
   }
+
+  static async getPublicBar(barId: string) {
+    return (await client.GET('/public/{slugOrId}', { params: { path: { slugOrId: barId } } })).data
+  }
+
+  static async getPublicBarCocktails(barId: string, query = {}) {
+    return (await client.GET('/public/{slugOrId}/cocktails', { params: { path: { slugOrId: barId }, query: query } })).data
+  }
+
+  static async getPublicBarCocktail(barId: string, slug: string) {
+    return (await client.GET('/public/{slugOrId}/cocktails/{slugOrPublicId}', { params: { path: { slugOrId: barId, slugOrPublicId: slug } } })).data
+  }
 }

@@ -53,10 +53,14 @@
                 <textarea id="description" v-model="bar.description" rows="5" class="form-input"></textarea>
             </div>
             <div class="form-group">
-                <label class="form-checkbox" for="toggle-invite">
+                <!-- <label class="form-checkbox" for="toggle-invite">
                     <input id="toggle-invite" v-model="enableInvites" type="checkbox" :value="true">
                     <span>{{ $t('bars.enable-invites') }}</span>
-                </label>
+                </label> -->
+                <SaltRimCheckbox id="toggle-invite" v-model="enableInvites" :label="$t('bars.enable-invites')" :description="$t('bars.enable-invites-description')"></SaltRimCheckbox>
+            </div>
+            <div class="form-group">
+                <SaltRimCheckbox id="toggle-is-public" v-model="bar.is_public" :label="$t('bars.is-public')" :description="$t('bars.is-public-description')"></SaltRimCheckbox>
             </div>
             <div class="form-group" v-if="bar.id">
                 <div class="alert alert--info">
@@ -88,7 +92,8 @@ import BarAssistantClient from '@/api/BarAssistantClient'
 import ImageUpload from '../ImageUpload.vue'
 import { barBus } from '@/composables/eventBus'
 import type { components } from '@/api/api'
-import { useImageUpload } from '@/composables/useImageUpload';
+import { useImageUpload } from '@/composables/useImageUpload'
+import SaltRimCheckbox from '../SaltRimCheckbox.vue'
 
 type Bar = components['schemas']['Bar']
 type BarRequest = components['schemas']['BarRequest']
@@ -147,6 +152,7 @@ async function submit() {
         subtitle: bar.value.subtitle,
         description: bar.value.description,
         enable_invites: enableInvites.value,
+        is_public: bar.value.is_public,
         slug: postSlug,
         default_units: bar.value.settings.default_units,
         default_currency: bar.value.settings.default_currency,

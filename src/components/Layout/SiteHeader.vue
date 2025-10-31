@@ -17,7 +17,8 @@
                                 </a>
                             </template>
                             <template #dialog>
-                                <SiteAutocomplete @close-autocomplete="showSearchDialog = false"></SiteAutocomplete>
+                                <SiteAutocompleteBasic v-if="shouldUseBasicSearch" @close-autocomplete="showSearchDialog = false"></SiteAutocompleteBasic>
+                                <SiteAutocomplete v-else @close-autocomplete="showSearchDialog = false"></SiteAutocomplete>
                             </template>
                         </SaltRimDialog>
                     </template>
@@ -72,16 +73,21 @@
 <script>
 import BarAssistantClient from '@/api/BarAssistantClient'
 import SiteAutocomplete from './../SiteAutocomplete.vue'
+import SiteAutocompleteBasic from './../SiteAutocompleteBasic.vue'
 import SaltRimDialog from './../Dialog/SaltRimDialog.vue'
 import SiteLogo from './../Layout/SiteLogo.vue'
 import ThemeToggle from './../ThemeToggle.vue'
 import AppState from '../../AppState'
 import SaltRimDropdown from './../SaltRimDropdown.vue'
 import { useTheme } from '@/composables/useTheme'
+import { useBasicSearch } from '@/composables/useBasicSearch'
+
+const shouldUseBasicSearch = useBasicSearch()
 
 export default {
     components: {
         SiteAutocomplete,
+        SiteAutocompleteBasic,
         SaltRimDialog,
         SiteLogo,
         ThemeToggle,
@@ -91,6 +97,7 @@ export default {
         return {
             appState: new AppState(),
             showSearchDialog: false,
+            shouldUseBasicSearch: shouldUseBasicSearch,
         }
     },
     created() {

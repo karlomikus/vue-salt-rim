@@ -3,14 +3,16 @@ import { ref, provide } from 'vue'
 import { unitHandler } from '../../composables/useUnits'
 import AppState from '../../AppState'
 
-const emit = defineEmits(['unitChanged'])
+const emit = defineEmits<{
+    unitChanged: [unit: 'ml' | 'oz' | 'cl']
+}>()
 const appState = new AppState()
-const currentUnit = ref('ml')
+const currentUnit = ref<'ml' | 'oz' | 'cl'>('ml')
 if (appState.defaultUnit) {
     currentUnit.value = appState.defaultUnit
 }
 
-function updateCurrentUnit(unit: string) {
+function updateCurrentUnit(unit: 'ml' | 'oz' | 'cl') {
     currentUnit.value = unit
     appState.setDefaultUnits(unit)
     emit('unitChanged', currentUnit.value)

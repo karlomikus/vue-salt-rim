@@ -3,7 +3,8 @@
         <div class="dialog-title">{{ $t('cocktail.cocktails') }}</div>
         <div class="cocktail-finder">
             <OverlayLoader v-if="isLoading"></OverlayLoader>
-            <input v-model="currentQuery" class="form-input cocktail-finder__search-input" type="search" :placeholder="t('placeholder.search-cocktails')" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" @input="debounceSearch">
+            {{ focusInput() }}
+            <input v-model="currentQuery" ref="searchInput" class="form-input cocktail-finder__search-input" type="search" :placeholder="t('placeholder.search-cocktails')" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" @input="debounceSearch">
             <div class="cocktail-finder__hits">
                 <a v-for="item in items" :key="item.id" class="cocktail-finder__option block-container block-container--hover" href="#" @click.prevent="select(item)">
                     <CocktailThumb :cocktail="item"></CocktailThumb>
@@ -21,13 +22,12 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, useTemplateRef } from 'vue'
 import OverlayLoader from './OverlayLoader.vue'
 import CocktailThumb from './Cocktail/CocktailThumb.vue'
 import BarAssistantClient from '@/api/BarAssistantClient'
 import AppState from '@/AppState';
 import type { SearchResults } from '@/api/SearchResults'
-import { useSaltRimToast } from '@/composables/toast'
 import { useI18n } from 'vue-i18n'
 
 type SearchResult = SearchResults['cocktail']
@@ -47,7 +47,7 @@ const emit = defineEmits<{
     cocktailSelected: [cocktail: SearchResult],
     closed: []
 }>()
-const toast = useSaltRimToast()
+const searchInput = useTemplateRef<HTMLInputElement>('searchInput')
 const { t } = useI18n()
 const isLoading = ref(false)
 const currentQuery = ref(initialQuery)
@@ -69,6 +69,10 @@ async function search() {
         return
     }
 
+    await queryCocktails(query)
+}
+
+async function queryCocktails(query: string) {
     isLoading.value = true
 
     try {
@@ -97,6 +101,16 @@ async function search() {
 
 function select(cocktail: SearchResult) {
     emit('cocktailSelected', cocktail)
+}
+
+function focusInput() {
+    searchInput.value?.focus()
+}
+
+if (currentQuery.value !== null && currentQuery.value !== '') {
+    search()
+} else {
+    queryCocktails('')
 }
 </script>
 

@@ -38,6 +38,7 @@
                                 {{ bar.invite_code }}
                             </p>
                         </template>
+                        <p v-if="bar.is_public"><RouterLink :to="{name: 'public.cocktails.index', params: {barId: bar.slug}}" target="_blank">Public bar link</RouterLink></p>
                         <p class="bar__subtitle">{{ bar.subtitle }}</p>
                         <p class="bar__description">{{ bar.description }}</p>
                         <div class="bar__actions">

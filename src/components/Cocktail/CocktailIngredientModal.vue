@@ -8,16 +8,16 @@ import { useI18n } from 'vue-i18n'
 import AppState from '@/AppState'
 import type { SearchResults } from '@/api/SearchResults'
 import { unitHandler } from '@/composables/useUnits'
+import { useBasicSearch } from '@/composables/useBasicSearch'
+import IngredientFinderBasic from '../IngredientFinderBasic.vue'
 
+const shouldUseBasicSearch = useBasicSearch()
 const appState = new AppState()
 const { t } = useI18n()
 type CocktailIngredient = components["schemas"]["CocktailIngredient"]
 type SearchResultIngredient = SearchResults['ingredient']
 const isLoading = ref(false)
 const emit = defineEmits(['close'])
-defineProps<{
-    searchToken: string,
-}>()
 const model = defineModel<CocktailIngredient>({
     required: true,
 })
@@ -61,7 +61,8 @@ function selectIngredient(item: SearchResultIngredient): void {
         <p style="margin: 0 0 1rem 0;">
             {{ t('ingredient.units-help') }}
         </p>
-        <IngredientFinder :search-token="searchToken" :selected-ingredients="[localCocktailIngredient.ingredient.id]" @ingredient-selected="selectIngredient"></IngredientFinder>
+        <IngredientFinderBasic v-if="shouldUseBasicSearch" :selected-ingredients="[localCocktailIngredient.ingredient.id]" @ingredient-selected="selectIngredient"></IngredientFinderBasic>
+        <IngredientFinder v-else-if="!shouldUseBasicSearch && appState.bar.search_token" :search-token="appState.bar.search_token" :selected-ingredients="[localCocktailIngredient.ingredient.id]" @ingredient-selected="selectIngredient"></IngredientFinder>
         <div class="selected-ingredient">
             <small>{{ t('ingredient.dialog.current') }}:</small>
             <p>{{ localCocktailIngredient.ingredient.name }}</p>
