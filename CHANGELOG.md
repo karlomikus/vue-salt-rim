@@ -1,3 +1,11 @@
+# v4.10.0
+# New
+- Added "Make bar public" checkbox to bar form
+- Added public cocktails page
+    - Currently has limited list of filters, more to come in future
+- Updated public menu styling
+- Add API based search components
+
 # v4.9.0
 ## New
 - Enabled Czech translations
