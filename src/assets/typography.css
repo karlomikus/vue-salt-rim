@@ -1,0 +1,12 @@
+.block-container__title {
+    font-family: var(--font-heading);
+    font-size: 1.5em;
+    font-weight: var(--fw-bold);
+    margin-bottom: 1rem;
+    line-height: 1;
+    color: var(--clr-accent-800);
+}
+
+.dark-theme .block-container__title {
+    color: var(--clr-accent-200);
+}

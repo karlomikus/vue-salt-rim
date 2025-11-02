@@ -66,7 +66,7 @@ watch(() => parentId, () => {
 
 <template>
     <div v-if="hierarchy">
-        <h2 class="details-block-container__title">{{ t('ingredient.hierarchy') }}</h2>
+        <h2 class="block-container__title">{{ t('ingredient.hierarchy') }}</h2>
         <p>{{ t('ingredient.hierarchy-description') }}</p>
         <a href="#" @click.prevent="currentTab = 'dendogram'">{{ t('ingredient.show-variants') }}</a> &middot; <a href="#" @click.prevent="currentTab = 'icicle'">{{ t('ingredient.icicle-graph') }}</a>
         <div class="ingredient-hierarchy block-container block-container--padded block-container--inset tf-tree tf-gap-sm" v-if="currentTab === 'dendogram'">

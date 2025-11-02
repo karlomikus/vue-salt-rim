@@ -104,7 +104,7 @@
                     </Dropdown>
                 </div>
                 <div class="block-container block-container--padded">
-                    <h2 class="details-block-container__title">{{ $t('description') }}</h2>
+                    <h2 class="block-container__title">{{ $t('description') }}</h2>
                     <div class="item-details__chips">
                         <div class="item-details__chips__group">
                             <div class="item-details__chips__group__title">{{ $t('strength') }}:</div>
@@ -193,12 +193,12 @@
                     <IngredientHierarchy :parent-id="ingredient.id" :root-id="ingredient.hierarchy.root_ingredient_id ?? ingredient.id"></IngredientHierarchy>
                 </div>
                 <div v-if="ingredient.calculator_id" class="block-container block-container--padded">
-                    <h2 class="details-block-container__title">{{ $t('calculators.calculator') }}</h2>
+                    <h2 class="block-container__title">{{ $t('calculators.calculator') }}</h2>
                     <OverlayLoader v-if="isLoadingCalculator" />
                     <CalculatorRender v-if="calculator.id" :calculator="calculator"></CalculatorRender>
                 </div>
                 <div v-if="ingredient.prices && ingredient.prices.length > 0" class="block-container block-container--padded ingredient-details__prices">
-                    <h2 class="details-block-container__title">{{ $t('price.prices') }}</h2>
+                    <h2 class="block-container__title">{{ $t('price.prices') }}</h2>
                     <div class="ingredient-details__prices__list">
                         <div v-for="ingredientPrice in ingredient.prices" :key="ingredientPrice.created_at" class="ingredient-details__prices__list__item">
                             <h5>{{ ingredientPrice.price_category.name }} ({{ ingredientPrice.price_category.currency }})</h5>
