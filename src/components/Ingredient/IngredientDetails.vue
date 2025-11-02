@@ -80,7 +80,7 @@
                 <div v-if="ingredient.access && (ingredient.access.can_edit || ingredient.access.can_delete)" class="ingredient-details__actions">
                     <Dropdown>
                         <template #default="{ toggleDropdown }">
-                            <button type="button" class="button button-circle" @click.prevent="toggleDropdown">
+                            <button type="button" class="button button--icon" @click.prevent="toggleDropdown">
                                 <IconMore></IconMore>
                             </button>
                         </template>
