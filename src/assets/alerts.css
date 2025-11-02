@@ -1,38 +1,35 @@
 .alert {
-    --_clr-text: #000;
-    --_clr-border: #000;
-    --_clr-bg: #fff;
-    background: var(--_clr-bg);
-    border: 2px solid var(--_clr-border);
-    padding: 1rem;
-    border-radius: var(--radius-1);
-    color: var(--_clr-text);
+    --color-alert-text: #000;
+    --color-alert-border: #000;
+    --color-alert-background: #fff;
+    background: var(--color-alert-background);
+    border: 2px solid var(--color-alert-border);
+    padding: var(--gap-size-3);
+    border-radius: var(--radius-2);
+    color: var(--color-alert-text);
 }
 
 .alert h3 {
     font-weight: var(--fw-bold);
-    font-size: 0.7rem;
+    font-size: 0.75em;
     letter-spacing: 1px;
     text-transform: uppercase;
-    margin-bottom: 0.3rem;
 }
 
 .alert.alert--info {
-    --_clr-text: rgb(64, 75, 112);
-    --_clr-border: rgb(64, 75, 112);
-    --_clr-bg: rgb(247, 249, 255);
-    border-color: var(--_clr-border);
+    --color-alert-text: rgb(64, 75, 112);
+    --color-alert-border: rgb(64, 75, 112);
+    --color-alert-background: rgb(247, 249, 255);
 }
 
 .dark-theme .alert.alert--info {
-    --_clr-text: #a8c6f3;
-    --_clr-border: #2c4b79;
-    --_clr-bg: #0e213d;
+    --color-alert-text: #a8c6f3;
+    --color-alert-border: #2c4b79;
+    --color-alert-background: #0e213d;
 }
 
 .alert.alert--warning {
-    --_clr-text: rgb(173, 68, 7);
-    --_clr-border: rgb(173, 68, 7);
-    --_clr-bg: rgb(255, 250, 247);
-    border-color: var(--_clr-border);
+    --color-alert-text: rgb(173, 68, 7);
+    --color-alert-border: rgb(173, 68, 7);
+    --color-alert-background: rgb(255, 250, 247);
 }
