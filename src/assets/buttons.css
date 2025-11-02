@@ -40,13 +40,13 @@
     }
 
     &.button--dark {
-        background-color: var(--clr-gray-700);
+        background-color: #432f53;
         color: var(--clr-gray-50);
         &:hover {
-            background-color: var(--clr-gray-800);
+            background-color: #261733;
         }
         &:active {
-            background-color: var(--clr-gray-900);
+            background-color: #261733;
         }
         .dark-theme & {
             background-color: var(--clr-accent-500);
@@ -61,36 +61,29 @@
     }
 
     &.button--outline {
-        border: 2px solid var(--clr-gray-500);
-        color: var(--clr-gray-700);
-        background: none;
+        color: #463963;
+        background: #ddd6ee;
         &:hover {
-            border-color: var(--clr-gray-800);
-            color: var(--clr-gray-800);
+            background: #d2c8ec;
         }
         &:active {
-            border-color: var(--clr-gray-900);
-            color: var(--clr-gray-900);
+            background: #d2c8ec;
         }
         .dark-theme & {
-            border-color: var(--clr-dark-main-300);
-            color: var(--clr-dark-main-300);
+            color: #ECC17B;
+            background: #4a2b1c;
             &:hover {
-                border-color: var(--clr-dark-main-200);
-                color: var(--clr-dark-main-200);
+                background: #683f2b;
             }
             &:active {
-                border-color: var(--clr-dark-main-100);
-                color: var(--clr-dark-main-100);
+                background: #683f2b;
             }
         }
     }
 
     &.button--icon {
         padding: 0.5rem;
-        display: inline-flex;
         align-content: center;
-        justify-content: center;
         height: 2.85rem;
         width: 2.85rem;
         background-color: #fff;
@@ -104,9 +97,15 @@
         &:active > svg {
             transform: scale(0.90, 0.90);
         }
+        &:hover {
+            border-color: var(--clr-gray-800);
+        }
         .dark-theme & {
             background-color: var(--clr-dark-main-700);
             border-color: var(--clr-dark-main-600);
+            &:hover {
+                border-color: var(--clr-accent-500);
+            }
         }
     }
 

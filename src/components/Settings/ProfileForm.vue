@@ -78,7 +78,7 @@
             </template>
             <h3 class="form-section-title">{{ $t('data') }}</h3>
             <div class="block-container block-container--padded">
-                <button class="button button--outline button--danger" type="button" @click="deleteAccount">{{ $t('delete-my-account') }}</button>
+                <button class="button button--danger" type="button" @click="deleteAccount">{{ $t('delete-my-account') }}</button>
             </div>
             <div class="form-actions">
                 <button class="button button--dark" type="submit">{{ $t('save') }}</button>
