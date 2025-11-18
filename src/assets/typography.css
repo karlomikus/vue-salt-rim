@@ -29,7 +29,7 @@
 }
 
 .sr-grid-title {
-    font-size: 1.7em;
+    font-size: 1.5em;
     font-family: var(--font-heading);
     font-weight: var(--fw-bold);
     line-height: 1.2;
@@ -37,7 +37,7 @@
 
 @media (max-width: 450px) {
     .sr-grid-title {
-        font-size: 1.5em;
+        font-size: 1.25em;
     }
 }
 
