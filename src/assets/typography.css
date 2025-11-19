@@ -54,7 +54,7 @@
     font-weight: var(--fw-bold);
     margin-bottom: 1rem;
     line-height: 1;
-    color: var(--clr-accent-800);
+    color: var(--clr-accent-600);
 }
 
 .dark-theme .block-container__title {

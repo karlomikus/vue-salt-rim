@@ -1,3 +1,7 @@
+# v4.11.0
+## New
+- Updated color palette
+
 # v4.10.0
 # New
 - Added "Make bar public" checkbox to bar form

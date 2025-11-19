@@ -1,41 +1,15 @@
 :root {
-    /* Base color scheme */
-    /* --clr-accent-50: #FAF5F8; */
-    /*--clr-accent-50: #f9f3f6;
-    --clr-accent-100: #F5EAF2;
-    --clr-accent-200: #ECD5E5;
-    --clr-accent-300: #E1BDD5;
-    --clr-accent-400: #D29DC1;
-    --clr-accent-500: #C178AA;
-    --clr-accent-600: #B8659E;
-    --clr-accent-700: #AF5091;
-    --clr-accent-800: #8F4277;
-    --clr-accent-900: #693057;
-    --clr-accent-950: #411632;*/
-
     --clr-accent-950: #260d1e;
     --clr-accent-900: #3d1932;
     --clr-accent-800: #59274a;
     --clr-accent-700: #7e3a69;
-    --clr-accent-600: #8f4277 /* locked */;
+    --clr-accent-600: #8f4277;
     --clr-accent-500: #c464a5;
     --clr-accent-400: #d291bb;
     --clr-accent-300: #dfbcd2;
     --clr-accent-200: #e4cddb;
     --clr-accent-100: #eadce5;
     --clr-accent-50: #f7f3f5;
-
-    /*--clr-gray-50: #F5F4F5;
-    --clr-gray-100: #EBEAEB;
-    --clr-gray-200: #D4D2D6;
-    --clr-gray-300: #B8B4BB;
-    --clr-gray-400: #96929B;
-    --clr-gray-500: #64616A;
-    --clr-gray-600: #5B5860;
-    --clr-gray-700: #4d4752;
-    --clr-gray-800: #343038;
-    --clr-gray-900: #272528;
-    --clr-gray-950: #1A181B;*/
 
     --clr-gray-950: #1d1b1b;
     --clr-gray-900: #353032;
@@ -47,7 +21,7 @@
     --clr-gray-300: #cabfc5;
     --clr-gray-200: #ded6db;
     --clr-gray-100: #f3edf1;
-    --clr-gray-50: #fcf9fb /* locked */;
+    --clr-gray-50: #fcf9fb;
 
     --clr-purple-950: #191327;
     --clr-purple-900: #2a213f;
@@ -60,10 +34,6 @@
     --clr-purple-200: #d7cfed;
     --clr-purple-100: #e3ddf3;
     --clr-purple-50: #f5f3fb;
-
-    --clr-accent-green: #F0EFEB;
-    --clr-accent-purple: #eeeaf7;
-    --clr-accent-purple-dark: #5a516f;
 
     --clr-dark-main-50: #E4E2E9;
     --clr-dark-main-100: #DAD6E0;
@@ -124,7 +94,7 @@
 
     /* Base component color scheme */
     --clr-link-color: var(--clr-gray-800);
-    --clr-link-color-hover: var(--clr-accent-700);
+    --clr-link-color-hover: var(--clr-accent-600);
     --clr-body-font: var(--clr-gray-900);
     --clr-body-bg: var(--clr-accent-50);
 
@@ -137,9 +107,6 @@
 
     --color-site-header: #584b75;
     --color-site-header-subnavigation: #463963;
-    --color-btn-default: #454b60;
-    --color-btn-default-hover: #2b3042;
-    --color-menu-item-hover: #eff7f6;
     --clr-site-footer: #fff;
 
     --site-width: 1440px;
@@ -187,9 +154,6 @@
 
     --color-site-header: var(--clr-dark-main-700);
     --color-site-header-subnavigation: var(--clr-dark-main-800);
-
-    --clr-accent-green: #212d25;
-    --clr-accent-purple: #14101b;
 
     --clr-gray-50: #f9f9fa;
     --clr-gray-100: #f5f4f5;

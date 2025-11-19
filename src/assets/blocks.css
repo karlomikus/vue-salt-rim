@@ -33,9 +33,11 @@
     }
 
     &.block-container--placeholder {
-        background: #d9e3f6;
-        border-top-color: #f5f9ff;
-        border-bottom-color: #a7badd;
+        background: var(--clr-purple-100);
+        opacity: 0.7;
+        color: var(--clr-purple-700);
+        border-top-color: var(--clr-purple-50);
+        border-bottom-color: var(--clr-purple-200);
 
         .dark-theme & {
             background: #ec8703;

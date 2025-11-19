@@ -760,7 +760,7 @@ swiper-container {
 }
 
 .cocktail-ingredients {
-    --ci-clr-list-bg: var(--clr-accent-purple);
+    --ci-clr-list-bg: var(--clr-gray-100);
     list-style: none;
     padding: 0;
     margin: 0;
@@ -775,7 +775,6 @@ swiper-container {
 
 .cocktail-ingredients li {
     background-color: var(--ci-clr-list-bg);
-    color: var(--clr-accent-purple-dark);
     border-radius: var(--radius-2);
     margin-bottom: 0.5rem;
     padding: 0.5rem 0.75rem;

@@ -40,13 +40,13 @@
     }
 
     &.button--dark {
-        background-color: #432f53;
-        color: var(--clr-gray-50);
+        background-color: var(--clr-purple-700);
+        color: var(--clr-purple-100);
         &:hover {
-            background-color: #261733;
+            background-color: var(--clr-purple-900);
         }
         &:active {
-            background-color: #261733;
+            background-color: var(--clr-purple-900);
         }
         .dark-theme & {
             background-color: var(--clr-accent-500);
@@ -61,13 +61,13 @@
     }
 
     &.button--outline {
-        color: #463963;
-        background: #ddd6ee;
+        color: var(--clr-purple-700);
+        background: var(--clr-purple-100);
         &:hover {
-            background: #d2c8ec;
+            background: var(--clr-purple-200);
         }
         &:active {
-            background: #d2c8ec;
+            background: var(--clr-purple-200);
         }
         .dark-theme & {
             color: #ECC17B;

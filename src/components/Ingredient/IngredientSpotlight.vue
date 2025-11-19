@@ -88,6 +88,7 @@ export default {
 
 .ingredient-spotlight-wrapper p {
     line-height: 1.4;
+    color: var(--clr-gray-700);
 }
 
 .ingredient-spotlight__image {
@@ -107,5 +108,6 @@ export default {
     font-size: 0.75rem;
     line-height: 1.4;
     display: inline-block;
+    color: var(--clr-gray-700);
 }
 </style>

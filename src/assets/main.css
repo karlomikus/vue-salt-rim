@@ -69,8 +69,8 @@ mark {
     text-transform: uppercase;
     letter-spacing: 1px;
     display: flex;
-    background: var(--clr-accent-purple);
-    color: #6c6380;
+    background: var(--clr-gray-100);
+    color: var(--clr-gray-800);
 }
 
 .page-subtitle a {
@@ -90,7 +90,7 @@ h3.form-section-title {
 h3.form-section-title::before {
     counter-increment: section;
     content: counter(section);
-    background: var(--clr-accent-800);
+    background: var(--clr-gray-800);
     border-radius: var(--radius-1);
     color: #fff;
     display: flex;
