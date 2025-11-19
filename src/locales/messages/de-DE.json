@@ -356,7 +356,7 @@
   "utensils": {
     "title": "Utensilien",
     "add": "Utensilien hinzufügen",
-    "edit": "",
+    "edit": "Edit utensil",
     "confirm-delete": "Dadurch wird das Utensil mit dem Namen \"{name}\" dauerhaft gelöscht.",
     "delete-success": "Utensil erfolgreich gelöscht",
     "add-success": "Utensil hinzugefügt",
