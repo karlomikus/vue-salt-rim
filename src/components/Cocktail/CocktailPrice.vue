@@ -50,11 +50,11 @@ defineProps<{
 }
 
 .cocktail-price__ingredients small {
-    color: var(--clr-gray-400);
+    color: var(--clr-gray-600);
 }
 
 .cocktail-price__missing-note {
     font-size: 0.85rem;
-    color: var(--clr-red);
+    color: var(--clr-red-600);
 }
 </style>

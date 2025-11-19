@@ -230,7 +230,7 @@ function handleBlur(e) {
 .selected-option__close:hover,
 .selected-option__close:focus,
 .selected-option__close--focused {
-    color: var(--clr-red);
+    color: var(--clr-red-600);
 }
 
 .selected-option__close svg {
