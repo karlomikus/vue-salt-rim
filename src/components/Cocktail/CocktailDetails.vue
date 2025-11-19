@@ -388,7 +388,7 @@ fetchShoppingList()
             </div>
             <div class="cocktail-details__column-content">
                 <div class="cocktail-details__actions">
-                    <button type="button" class="button button--icon" @click="favorite">
+                    <button type="button" class="button button--outline button--has-icon" @click="favorite">
                         <OverlayLoader v-if="isLoadingFavorite" />
                         <svg v-if="!isFavorited" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
                             <path fill="none" d="M0 0H24V24H0z" />
@@ -401,7 +401,7 @@ fetchShoppingList()
                     </button>
                     <Dropdown>
                         <template #default="{ toggleDropdown }">
-                            <button type="button" class="button button--icon" @click="toggleDropdown">
+                            <button type="button" class="button button--outline button--has-icon" @click="toggleDropdown">
                                 <OverlayLoader v-if="isLoadingShare" />
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
                                     <path fill="none" d="M0 0h24v24H0z" />
@@ -476,7 +476,7 @@ fetchShoppingList()
                     </Dropdown>
                     <Dropdown>
                         <template #default="{ toggleDropdown }">
-                            <button type="button" class="button button--icon" @click="toggleDropdown">
+                            <button type="button" class="button button--outline button--has-icon" @click="toggleDropdown">
                                 <IconMore></IconMore>
                             </button>
                         </template>

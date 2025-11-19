@@ -48,9 +48,18 @@
     --clr-dark-main-900: #191422;
     --clr-dark-main-950: #120e1a;
 
+    --clr-red-900: #50060c;
+    --clr-red-800: #72131e;
+    --clr-red-700: #8f2131;
+    --clr-red-600: #ad3142;
+    --clr-red-500: #e15a69;
+    --clr-red-400: #e38c93;
+    --clr-red-300: #e9b6b9;
+    --clr-red-200: #edccce;
+    --clr-red-100: #f1dcdd;
+
     --clr-rating: rgb(235, 133, 0);
     --clr-rating-bg: rgb(255, 238, 216);
-    --clr-red: rgb(153, 10, 41);
 
     --shadow-color: 324deg 10% 71%;
     --shadow-elevation-low:

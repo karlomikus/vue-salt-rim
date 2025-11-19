@@ -81,7 +81,16 @@
         }
     }
 
-    &.button--icon {
+    &.button--has-icon {
+        padding: .5rem;
+        & > svg {
+            width: 24px;
+            height: 24px;
+            fill: currentColor;
+        }
+    }
+
+    &.button--input {
         padding: 0.5rem;
         align-content: center;
         height: 2.85rem;
@@ -111,12 +120,11 @@
     }
 
     &.button--danger {
-        border-color: var(--clr-red);
-        color: var(--clr-red);
+        background-color: var(--clr-red-200);
+        color: var(--clr-red-700);
         &:is(:hover, :active, :focus) {
-            border-color: var(--clr-red);
-            background-color: var(--clr-red);
-            color: #fff;
+            background-color: var(--clr-red-300);
+            color: var(--clr-red-900);
         }
     }
 
@@ -140,7 +148,7 @@
 }
 
 @media (max-width: 450px) {
-    .button.button--icon {
+    .button.button--input {
         padding: 8px;
         height: 2.5rem;
         width: 2.5rem;
