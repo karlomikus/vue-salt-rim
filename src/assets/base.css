@@ -1,7 +1,7 @@
 :root {
     /* Base color scheme */
     /* --clr-accent-50: #FAF5F8; */
-    --clr-accent-50: #f9f3f6;
+    /*--clr-accent-50: #f9f3f6;
     --clr-accent-100: #F5EAF2;
     --clr-accent-200: #ECD5E5;
     --clr-accent-300: #E1BDD5;
@@ -11,9 +11,21 @@
     --clr-accent-700: #AF5091;
     --clr-accent-800: #8F4277;
     --clr-accent-900: #693057;
-    --clr-accent-950: #411632;
+    --clr-accent-950: #411632;*/
 
-    --clr-gray-50: #F5F4F5;
+    --clr-accent-950: #260d1e;
+    --clr-accent-900: #3d1932;
+    --clr-accent-800: #59274a;
+    --clr-accent-700: #7e3a69;
+    --clr-accent-600: #8f4277 /* locked */;
+    --clr-accent-500: #c464a5;
+    --clr-accent-400: #d291bb;
+    --clr-accent-300: #dfbcd2;
+    --clr-accent-200: #e4cddb;
+    --clr-accent-100: #eadce5;
+    --clr-accent-50: #f7f3f5;
+
+    /*--clr-gray-50: #F5F4F5;
     --clr-gray-100: #EBEAEB;
     --clr-gray-200: #D4D2D6;
     --clr-gray-300: #B8B4BB;
@@ -23,7 +35,31 @@
     --clr-gray-700: #4d4752;
     --clr-gray-800: #343038;
     --clr-gray-900: #272528;
-    --clr-gray-950: #1A181B;
+    --clr-gray-950: #1A181B;*/
+
+    --clr-gray-950: #1d1b1b;
+    --clr-gray-900: #353032;
+    --clr-gray-800: #4f474a;
+    --clr-gray-700: #6a5f64;
+    --clr-gray-600: #88787f;
+    --clr-gray-500: #a3949b;
+    --clr-gray-400: #b6a9b0;
+    --clr-gray-300: #cabfc5;
+    --clr-gray-200: #ded6db;
+    --clr-gray-100: #f3edf1;
+    --clr-gray-50: #fcf9fb /* locked */;
+
+    --clr-purple-950: #191327;
+    --clr-purple-900: #2a213f;
+    --clr-purple-800: #3f325c;
+    --clr-purple-700: #473768;
+    --clr-purple-600: #5e488b;
+    --clr-purple-500: #846db7;
+    --clr-purple-400: #ae9fd5;
+    --clr-purple-300: #cbc1e6;
+    --clr-purple-200: #d7cfed;
+    --clr-purple-100: #e3ddf3;
+    --clr-purple-50: #f5f3fb;
 
     --clr-accent-green: #F0EFEB;
     --clr-accent-purple: #eeeaf7;
@@ -89,7 +125,7 @@
     /* Base component color scheme */
     --clr-link-color: var(--clr-gray-800);
     --clr-link-color-hover: var(--clr-accent-700);
-    --clr-body-font: var(--clr-gray-800);
+    --clr-body-font: var(--clr-gray-900);
     --clr-body-bg: var(--clr-accent-50);
 
     --default-scheme: light;
@@ -107,7 +143,6 @@
     --clr-site-footer: #fff;
 
     --site-width: 1440px;
-    --cocktail-list-card-width: 350px;
 
     --radius-1: 3px;
     --radius-2: 5px;

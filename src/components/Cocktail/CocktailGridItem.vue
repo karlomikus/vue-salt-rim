@@ -88,7 +88,7 @@ onMounted(() => {
 <style scoped>
 .cocktail-grid-item {
     --_image-size: 325px;
-    --_clr-content: var(--clr-gray-500);
+    --_clr-content: var(--clr-gray-600);
     text-align: center;
     border-width: 3px;
     cursor: pointer;

@@ -188,7 +188,7 @@
 
 .ingredient-finder__options__content small {
     font-size: 0.75rem;
-    color: var(--clr-gray-500);
+    color: var(--clr-gray-600);
 }
 
 a.ingredient-finder__options__create {

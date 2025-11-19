@@ -379,7 +379,7 @@ refreshShelf()
 <style scoped>
 .shelf-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(var(--cocktail-list-card-width), 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
     gap: var(--gap-size-2);
 }
 

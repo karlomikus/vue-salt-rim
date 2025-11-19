@@ -1,8 +1,8 @@
 .table {
     --table-border-width: 1px;
-    --table-border-color: var(--clr-accent-100);
-    --table-row-hover-clr: var(--clr-accent-50);
-    --table-small-clr: var(--clr-gray-500);
+    --table-border-color: var(--clr-gray-200);
+    --table-row-hover-clr: var(--clr-gray-100);
+    --table-small-clr: var(--clr-gray-600);
     width: 100%;
     caption-side: bottom;
     border-collapse: collapse;
@@ -41,7 +41,7 @@
     font-weight: var(--fw-bold);
     font-size: 0.85rem;
     padding: .5rem;
-    border-bottom: 2px solid var(--clr-accent-200);
+    border-bottom: 2px solid var(--clr-gray-200);
 }
 
 .table tr:hover td {

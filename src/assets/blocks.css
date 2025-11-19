@@ -1,6 +1,6 @@
 .block-container {
     --padding-block-container: 1.5rem;
-    --color-background-block-container: #fcf9fb;
+    --color-background-block-container: var(--clr-gray-50);
     --color-border-bottom-block-container: var(--clr-accent-200);
     --color-border-top-block-container: #fff;
 
@@ -46,7 +46,7 @@
 
     &.block-container--inset {
         border: 0;
-        background-color: #f4edf2;
+        background-color: var(--clr-gray-100);
         border-bottom: 1px solid #fff;
         border-radius: var(--radius-2);
         box-shadow:

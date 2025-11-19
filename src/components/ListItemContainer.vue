@@ -38,7 +38,7 @@ const {
 }
 
 :deep(.salt-rim-list__item__content p) {
-    color: var(--clr-gray-500);
+    color: var(--clr-gray-600);
     font-size: 0.85em;
     line-height: 1.3;
 }

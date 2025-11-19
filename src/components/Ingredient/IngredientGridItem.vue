@@ -88,13 +88,13 @@ const defaultImage = computed(() => {
 .ingredient-grid-item__title small {
     display: block;
     font-size: 0.7rem;
-    color: var(--clr-gray-500);
+    color: var(--clr-gray-600);
     font-family: var(--font-primary);
 }
 
 .ingredient-grid-item__content p {
     text-wrap: balance;
-    color: var(--clr-gray-600);
+    color: var(--clr-gray-700);
 }
 
 .dark-theme .ingredient-grid-item__content p {

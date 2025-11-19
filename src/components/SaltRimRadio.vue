@@ -46,7 +46,7 @@ export default {
 <style scoped>
 .sr-radio {
     --clr-bg: #fff;
-    --clr-description: var(--clr-gray-500);
+    --clr-description: var(--clr-gray-600);
     --clr-border: var(--clr-gray-200);
     --clr-border-hover: var(--clr-gray-800);
     --clr-border-selected: var(--clr-gray-50);
