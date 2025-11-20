@@ -47,7 +47,7 @@
     outline: none;
     pointer-events: auto;
     contain: layout;
-    background-color: #fcf9fb;
+    background-color: var(--clr-gray-50);
     border-top: 2px solid #fff;
     padding: var(--dialog-padding);
     margin: auto;

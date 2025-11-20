@@ -67,7 +67,7 @@ export default {
 }
 .cocktail-finder__hits {
     padding: var(--gap-size-1);
-    background-color: #f4edf2;
+    background-color: var(--clr-gray-100);
     border-radius: var(--radius-2);
     border-bottom: 1px solid #fff;
     box-shadow: inset 0px 0.4px 0.5px hsl(var(--shadow-color) / 0.25), inset 0px 1.1px 1.2px -0.8px hsl(var(--shadow-color) / 0.25), inset 0px 2.6px 2.9px -1.7px hsl(var(--shadow-color) / 0.25), inset 0px 6.3px 7.1px -2.5px hsl(var(--shadow-color) / 0.25);

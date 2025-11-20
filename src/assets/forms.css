@@ -19,10 +19,6 @@
     }
 }
 
-.form-group:last-child {
-    margin-bottom: 0;
-}
-
 .form-label {
     --form-clr-label: var(--clr-gray-800);
     font-size: 1rem;
@@ -38,8 +34,8 @@
 .form-label--required::after {
     content: '•';
     font-size: 1rem;
-    color: rgb(202, 13, 39);
-    text-shadow: 0 0 3px red;
+    color: var(--clr-red-600);
+    text-shadow: 0 0 2px var(--clr-red-600);
 }
 
 @media (max-width: 450px) {

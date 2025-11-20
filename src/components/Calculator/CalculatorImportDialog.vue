@@ -5,6 +5,7 @@
         <div class="form-group">
             <label class="form-label" for="source">{{ $t('source') }}:</label>
             <textarea id="source" v-model="source" rows="8" class="form-input"></textarea>
+            <p class="form-input-hint">Source is a JSON data that you can get by sharing a specific calculator</p>
         </div>
         <div class="dialog-actions">
             <button class="button button--outline" @click.prevent="$emit('closed')">{{ $t('cancel') }}</button>

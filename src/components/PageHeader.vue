@@ -34,7 +34,7 @@
 :deep(.site-page-header__title small) {
     font-family: var(--font-primary);
     font-size: 0.5em;
-    color: var(--clr-gray-500);
+    color: var(--clr-gray-700);
     display: block;
 }
 

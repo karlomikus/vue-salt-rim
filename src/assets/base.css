@@ -27,7 +27,7 @@
     --clr-purple-900: #2a213f;
     --clr-purple-800: #3f325c;
     --clr-purple-700: #473768;
-    --clr-purple-600: #5e488b;
+    --clr-purple-600: #564678;
     --clr-purple-500: #846db7;
     --clr-purple-400: #ae9fd5;
     --clr-purple-300: #cbc1e6;
@@ -114,8 +114,8 @@
     --font-mono: 'Space Mono', Dank Mono, Operator Mono, Inconsolata, Fira Mono, ui-monospace, SF Mono, Monaco, Droid Sans Mono, Source Code Pro, monospace;
     --fw-bold: 700;
 
-    --color-site-header: #584b75;
-    --color-site-header-subnavigation: #463963;
+    --color-site-header: var(--clr-purple-600);
+    --color-site-header-subnavigation: var(--clr-purple-700);
     --clr-site-footer: #fff;
 
     --site-width: 1440px;
