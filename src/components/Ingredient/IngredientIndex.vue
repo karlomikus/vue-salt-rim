@@ -186,6 +186,10 @@ const totalActiveRefinements = computed(() => {
             return total++
         }
 
+        if (typeof element == 'string' && element && element.length > 0) {
+            return total++
+        }
+
         if (element !== null && !Array.isArray(element) && element !== false) {
             Object.values(element).forEach(value => {
                 if (value !== null && value !== false) {
