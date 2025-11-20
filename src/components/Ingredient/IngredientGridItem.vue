@@ -13,8 +13,10 @@
                 <ToggleIngredientBarShelf v-if="ingredient.in_bar_shelf !== undefined" :ingredient="ingredient" v-model="ingredient.in_bar_shelf"></ToggleIngredientBarShelf>
                 &middot;
             </template>
-            <ToggleIngredientShelf v-if="ingredient.in_shelf !== undefined" :ingredient="ingredient" v-model="ingredient.in_shelf"></ToggleIngredientShelf>
-            &middot;
+            <template v-else>
+                <ToggleIngredientShelf v-if="ingredient.in_shelf !== undefined" :ingredient="ingredient" v-model="ingredient.in_shelf"></ToggleIngredientShelf>
+                &middot;
+            </template>
             <ToggleIngredientShoppingCart v-if="ingredient.in_shopping_list !== undefined" :ingredient="ingredient" v-model="ingredient.in_shopping_list"></ToggleIngredientShoppingCart>
         </div>
     </div>
