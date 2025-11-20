@@ -71,6 +71,11 @@ mark {
     display: flex;
     background: var(--clr-gray-100);
     color: var(--clr-gray-800);
+
+    .dark-theme & {
+        background: var(--clr-gray-800);
+        color: var(--clr-gray-100);
+    }
 }
 
 .page-subtitle a {

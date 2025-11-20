@@ -553,6 +553,10 @@ watch(
     height: 32px;
     display: block;
     fill: var(--clr-gray-600);
+
+    .dark-theme & {
+        fill: var(--clr-gray-400);
+    }
 }
 
 .shelf-actions__action svg.shelf-actions__action__active {
@@ -569,6 +573,10 @@ watch(
 .shelf-actions__action small {
     line-height: 1.2;
     color: var(--clr-gray-600);
+
+    .dark-theme & {
+        color: var(--clr-gray-300);
+    }
 }
 
 @media (max-width: 450px) {

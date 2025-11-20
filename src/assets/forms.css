@@ -78,10 +78,10 @@
 .dark-theme .form-input,
 .dark-theme .form-select {
     --form-clr-text: var(--clr-gray-100);
-    --form-clr-bg: var(--clr-dark-main-700);
-    --form-clr-bg-focus: var(--clr-dark-main-700);
-    --form-clr-border: var(--clr-dark-main-600);
-    --form-clr-border-focus: var(--clr-accent-500);
+    --form-clr-bg: var(--clr-gray-700);
+    --form-clr-bg-focus: var(--clr-gray-700);
+    --form-clr-border: var(--clr-gray-600);
+    --form-clr-border-focus: var(--clr-gray-200);
     --form-clr-placeholder: var(--clr-gray-400);
 }
 
@@ -107,7 +107,7 @@
 .dark-theme .form-input.form-input--red,
 .dark-theme .form-select.form-select--red {
     --form-clr-bg: rgba(255, 255, 255, .04);
-    --form-clr-border: var(--clr-dark-main-800);
+    --form-clr-border: var(--clr-gray-800);
 }
 
 .form-input.form-input--small,
@@ -152,7 +152,7 @@ textarea.form-input,
 }
 
 .dark-theme .form-actions {
-    border-color: var(--clr-dark-main-900);
+    border-color: var(--clr-gray-900);
 }
 
 .form-actions .button {

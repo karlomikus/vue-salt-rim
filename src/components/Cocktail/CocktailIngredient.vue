@@ -102,6 +102,7 @@ function buildSubstituteString(sub: CocktailIngredientSubstitute) {
 
 .cocktail-ingredients__ingredient__name {
     font-weight: var(--fw-bold);
+    text-decoration: none;
 }
 
 .cocktail-ingredients__ingredient__name small {
@@ -110,7 +111,6 @@ function buildSubstituteString(sub: CocktailIngredientSubstitute) {
 
 .cocktail-ingredients__ingredient__amount {
     font-weight: var(--fw-bold);
-    font-size: 1.2rem;
     margin-left: auto;
     text-align: right;
 }

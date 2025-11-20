@@ -50,7 +50,7 @@
         }
         .dark-theme & {
             background-color: var(--clr-accent-500);
-            color: var(--clr-dark-main-800);
+            color: var(--clr-gray-800);
             &:hover {
                 background-color: var(--clr-accent-400);
             }
@@ -111,10 +111,11 @@
             border-color: var(--clr-gray-600);
         }
         .dark-theme & {
-            background-color: var(--clr-dark-main-700);
-            border-color: var(--clr-dark-main-600);
+            background-color: var(--clr-gray-700);
+            border-color: var(--clr-gray-600);
+            color: var(--clr-gray-300);
             &:hover {
-                border-color: var(--clr-accent-500);
+                border-color: var(--clr-gray-200);
             }
         }
     }

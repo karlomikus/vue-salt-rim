@@ -11,9 +11,9 @@
     box-shadow: var(--shadow-elevation-medium);
 
     .dark-theme & {
-        --color-background-block-container: var(--clr-dark-main-800);
-        --color-border-bottom-block-container: var(--clr-dark-main-900);
-        --color-border-top-block-container: var(--clr-dark-main-650);
+        --color-background-block-container: var(--clr-gray-800);
+        --color-border-bottom-block-container: var(--clr-gray-900);
+        --color-border-top-block-container: var(--clr-gray-650);
 
         border-width: 1px;
         box-shadow: var(--shadow-elevation-medium-dark);
@@ -27,8 +27,8 @@
         background: rgba(255, 255, 255, .8);
 
         .dark-theme & {
-            background: var(--clr-dark-main-700);
-            border-top-color: var(--clr-dark-main-600);
+            background: var(--clr-gray-700);
+            border-top-color: var(--clr-gray-600);
         }
     }
 

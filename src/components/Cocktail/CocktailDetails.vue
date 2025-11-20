@@ -778,10 +778,11 @@ swiper-container {
     border-radius: var(--radius-2);
     margin-bottom: 0.5rem;
     padding: 0.5rem 0.75rem;
-}
 
-.dark-theme .cocktail-ingredients li {
-    color: var(--clr-gray-300);
+    .dark-theme & {
+        --ci-clr-list-bg: var(--clr-gray-700);
+        color: var(--clr-gray-300);
+    }
 }
 
 .cocktail-details__actions {
