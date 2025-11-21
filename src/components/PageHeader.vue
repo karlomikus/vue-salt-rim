@@ -21,7 +21,7 @@
 }
 
 .dark-theme .site-page-header {
-    --sph-clr-border: var(--clr-dark-main-800)
+    --sph-clr-border: var(--clr-gray-800)
 }
 
 .site-page-header__title h2 {
@@ -63,6 +63,6 @@
 
 .site-page-header :deep(p) {
     font-size: 1rem;
-    color: var(--clr-dark-main-500);
+    color: var(--clr-gray-500);
 }
 </style>

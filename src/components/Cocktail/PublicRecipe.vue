@@ -146,11 +146,11 @@ export default {
 }
 
 .dark-theme .public-cocktail-recipe {
-    --clr-content-bg: linear-gradient(160deg, var(--clr-dark-main-900) -15%, var(--clr-dark-main-950) 80%);
+    --clr-content-bg: linear-gradient(160deg, var(--clr-gray-900) -15%, var(--clr-gray-950) 80%);
     --clr-content: var(--clr-gray-200);
     --shadow-color: 239deg 15% 5%;
     --clr-marker: var(--clr-accent-400);
-    border-top: 1px solid var(--clr-dark-main-800);
+    border-top: 1px solid var(--clr-gray-800);
 }
 
 @media (max-width: 700px) {

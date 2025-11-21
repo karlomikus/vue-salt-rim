@@ -167,7 +167,7 @@ onMounted(() => {
     touch-action: none;
 }
 .dark-theme .node-editor-container {
-    background-image: radial-gradient(var(--clr-dark-main-700) 1px, transparent 1px);
+    background-image: radial-gradient(var(--clr-gray-700) 1px, transparent 1px);
 }
 
 .node-editor-container--is-panning {

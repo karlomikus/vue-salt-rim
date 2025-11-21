@@ -11,9 +11,9 @@
 }
 
 .dark-theme .table {
-    --table-row-hover-clr: var(--clr-dark-main-900);
-    --table-border-color: var(--clr-dark-main-700);
-    --table-small-clr: var(--clr-dark-main-400);
+    --table-row-hover-clr: var(--clr-gray-900);
+    --table-border-color: var(--clr-gray-700);
+    --table-small-clr: var(--clr-gray-400);
 }
 
 .table td {
@@ -41,7 +41,7 @@
     font-weight: var(--fw-bold);
     font-size: 0.85rem;
     padding: .5rem;
-    border-bottom: 2px solid var(--clr-gray-200);
+    border-bottom: 2px solid var(--table-border-color);
 }
 
 .table tr:hover td {

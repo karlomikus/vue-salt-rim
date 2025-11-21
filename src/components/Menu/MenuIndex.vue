@@ -583,6 +583,9 @@ refreshBar()
 .menu-category__cocktail__content p {
     font-size: 0.85rem;
     color: var(--clr-gray-700);
+    .dark-theme & {
+        color: var(--clr-gray-300);
+    }
 }
 
 .dark-theme .menu-category__cocktail__content small {
@@ -608,6 +611,10 @@ refreshBar()
     font-weight: var(--fw-bold);
     border-radius: var(--radius-1);
     width: 100%;
+
+    .dark-theme & {
+        background: var(--clr-gray-900);
+    }
 }
 
 .menu-url a {

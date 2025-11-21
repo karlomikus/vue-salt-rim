@@ -40,9 +40,9 @@
         border-bottom-color: var(--clr-purple-200);
 
         .dark-theme & {
-            background: #ec8703;
-            border-top-color: #ffcc8a;
-            border-bottom-color: #4b2a00;
+            background: var(--clr-accent-800);
+            border-top-color: var(--clr-accent-700);
+            border-bottom-color: var(--clr-accent-900);
         }
     }
 

@@ -189,13 +189,13 @@ checkServerStatus()
 .login-or-separator__line {
     flex: 1;
     height: 1px;
-    background-color: var(--clr-dark-main-200);
+    background-color: var(--clr-gray-200);
 }
 
 .login-or-separator__text {
     margin: 0 1rem;
     text-transform: uppercase;
     font-size: 0.85rem;
-    color: var(--clr-dark-main-500);
+    color: var(--clr-gray-500);
 }
 </style>

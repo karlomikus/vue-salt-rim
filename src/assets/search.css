@@ -98,7 +98,7 @@
     }
 
     .dark-theme .resource-search__refinements__body {
-        background: var(--clr-dark-main-950);
+        background: var(--clr-gray-950);
     }
 }
 
@@ -109,7 +109,7 @@
 }
 
 .dark-theme .resource-search__refinements__refinement {
-    border-color: var(--clr-dark-main-700);
+    border-color: var(--clr-gray-700);
     background-color: rgba(0, 0, 0, .15);
 }
 

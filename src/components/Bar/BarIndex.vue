@@ -310,6 +310,6 @@ export default {
 }
 
 .dark-theme .bar__invite_code {
-    background-color: var(--clr-dark-main-950);
+    background-color: var(--clr-gray-950);
 }
 </style>

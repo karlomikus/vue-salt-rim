@@ -207,7 +207,7 @@ background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/s
 }
 
 .dark-theme .login-page {
-    --clr-lp-form-bg: linear-gradient(160deg, var(--clr-dark-main-800) -30%, var(--clr-dark-main-950) 80%);
+    --clr-lp-form-bg: linear-gradient(160deg, var(--clr-gray-800) -30%, var(--clr-gray-950) 80%);
 }
 
 .login-page form {
@@ -222,7 +222,7 @@ background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/s
 }
 
 .dark-theme .login-page form {
-    border-top: 1px solid var(--clr-dark-main-800);
+    border-top: 1px solid var(--clr-gray-800);
 }
 
 .settings-page {
@@ -253,10 +253,10 @@ background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/s
     background-image: radial-gradient(circle at 1px 1px, var(--clr-handle) 1px, transparent 0);
     background-size: 4px 4px;
     cursor: grab;
-}
 
-.dark-theme .drag-handle {
-    --clr-handle: var(--clr-gray-700);
+    .dark-theme & {
+        --clr-handle: var(--clr-gray-600);
+    }
 }
 
 .image-export-wrapper {

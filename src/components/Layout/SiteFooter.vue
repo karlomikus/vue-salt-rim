@@ -64,7 +64,7 @@ export default {
 }
 
 .dark-theme .site-footer-wrapper {
-    --clr-footer-link: var(--clr-dark-main-400);
+    --clr-footer-link: var(--clr-gray-400);
     --clr-footer-link-hover: var(--clr-accent-300);
 }
 
