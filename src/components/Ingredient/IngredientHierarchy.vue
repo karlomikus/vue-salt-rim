@@ -75,7 +75,7 @@ watch(() => parentId, () => {
                 <IngredientTreeNode :hierarchy-item="onlyVariants" :current-id="parentId.toString()"></IngredientTreeNode>
             </ul>
         </div>
-        <div style="height: 600px;" v-if="currentTab === 'icicle'">
+        <div v-if="currentTab === 'icicle'">
             <IngredientIcicle v-model="hierarchy" :targetIngredientId="parseInt(parentId.toString())"></IngredientIcicle>
         </div>
     </div>
@@ -83,10 +83,14 @@ watch(() => parentId, () => {
 
 <style>
 .ingredient-hierarchy {
-    --border-color: var(--clr-gray-300);
+    --border-color: var(--clr-gray-600);
     --border-width: 2px;
     background-image: radial-gradient(var(--clr-accent-200) 1px, transparent 1px);
     background-size: 20px 20px;
+
+    .dark-theme & {
+        background-image: radial-gradient(var(--clr-gray-700) 1px, transparent 1px);
+    }
 }
 
 .ingredient-hierarchy {
