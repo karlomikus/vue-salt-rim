@@ -379,6 +379,10 @@ function saveState() {
 .cocktail-quantity__cocktail span {
     font-size: 0.85rem;
     color: var(--clr-gray-600);
+
+    .dark-theme & {
+        color: var(--clr-gray-400);
+    }
 }
 
 .cocktail-quantity__header {

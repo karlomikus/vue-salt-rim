@@ -170,7 +170,11 @@ async function shareFromFormat(format: string) {
 }
 
 .shopping-list__item small {
-    color: var(--clr-gray-500);
+    color: var(--clr-gray-600);
+
+    .dark-theme & {
+        color: var(--clr-gray-400);
+    }
 }
 
 .shopping-list__item__prices {
