@@ -37,9 +37,10 @@
     "list-remove-success": "Tog bort \"{name}\" från din inköpslista",
     "list-add-success": "Lade till \"{name}\" till din inköpslista",
     "spotlight": "Ingrediens spotlight",
-    "is-variety": "Ingrediensen är en variation av en annan ingrediens",
+    "is-variety": "Ingredient is variant of another ingredient",
     "information": "Ingrediensinformation",
     "extra-cocktails": "Lägg till på hyllan och du kan skapa",
+    "clone-as-variety": "Duplicate as variant",
     "dialog": {
       "select-substitutes": "Redigera ersättningsingredienser",
       "search-not-found": "Hittade du inte det du letade efter?",
@@ -321,9 +322,9 @@
     "title": "Sök",
     "results-per-page": "Per sida",
     "empty": "Inga resultat för \"{term}\".",
-    "ignore-ingredients": "Ignorera ingrediens",
+    "ignore-ingredients": "Ignored ingredients",
     "select-ingredients-to-ignore": "Välj ingrediens att ignorera",
-    "ingredients": "Specifik ingrediens",
+    "ingredients": "Specified ingredients",
     "select-specific-ingredients": "Väl specifik ingrediens"
   },
   "subtitle": "Undertitel",
@@ -718,7 +719,7 @@
   "profile-public-shelf-description": "Other bar members will be able to filter by cocktails you have in your shelf",
   "sort-random": "In random order",
   "cocktails-varieties": "Varieties",
-  "cocktail-variety-of": "Cocktail is variety of",
+  "cocktail-variety-of": "Cocktail is variant of",
   "cocktail-select-parent": "Select parent cocktail",
   "year": "Year"
 }
