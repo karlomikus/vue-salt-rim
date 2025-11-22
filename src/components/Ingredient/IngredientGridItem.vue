@@ -92,6 +92,10 @@ const defaultImage = computed(() => {
     font-size: 0.7rem;
     color: var(--clr-gray-600);
     font-family: var(--font-primary);
+
+    .dark-theme & {
+        color: var(--clr-gray-400);
+    }
 }
 
 .ingredient-grid-item__content p {

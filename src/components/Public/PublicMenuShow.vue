@@ -62,7 +62,7 @@ refreshMenu()
 
 .public-page-menu__category h3 {
     font-size: 1em;
-    color: var(--clr-gray-500);
+    color: var(--clr-gray-600);
     font-weight: var(--fw-bold);
 }
 
@@ -156,7 +156,7 @@ refreshMenu()
 }
 
 .public-page-menu__cocktail__info p {
-    color: var(--clr-gray-500);
+    color: var(--clr-gray-700);
     font-size: 0.85em;
 }
 

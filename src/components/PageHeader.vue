@@ -36,6 +36,10 @@
     font-size: 0.5em;
     color: var(--clr-gray-700);
     display: block;
+
+    .dark-theme & {
+        color: var(--clr-gray-400);
+    }
 }
 
 .site-page-header__actions {
