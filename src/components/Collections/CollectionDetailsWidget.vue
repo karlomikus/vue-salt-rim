@@ -10,7 +10,7 @@ const props = defineProps<{
 
 <template>
     <div class="block-container block-container--padded">
-        <h2 class="details-block-container__title">{{ props.collection.name }}</h2>
+        <h2 class="block-container__title">{{ props.collection.name }}</h2>
         <p>{{ props.collection.description ?? 'n/a' }}</p>
     </div>
 </template>

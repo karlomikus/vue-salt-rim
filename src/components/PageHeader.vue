@@ -21,7 +21,7 @@
 }
 
 .dark-theme .site-page-header {
-    --sph-clr-border: var(--clr-dark-main-800)
+    --sph-clr-border: var(--clr-gray-800)
 }
 
 .site-page-header__title h2 {
@@ -34,8 +34,12 @@
 :deep(.site-page-header__title small) {
     font-family: var(--font-primary);
     font-size: 0.5em;
-    color: var(--clr-gray-500);
+    color: var(--clr-gray-700);
     display: block;
+
+    .dark-theme & {
+        color: var(--clr-gray-400);
+    }
 }
 
 .site-page-header__actions {
@@ -63,6 +67,6 @@
 
 .site-page-header :deep(p) {
     font-size: 1rem;
-    color: var(--clr-dark-main-500);
+    color: var(--clr-gray-500);
 }
 </style>

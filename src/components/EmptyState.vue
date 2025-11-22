@@ -14,7 +14,7 @@
 .empty-state {
     text-align: center;
     padding: 30px;
-    background-color: #f4edf2;
+    background-color: var(--clr-gray-100);
     border-radius: var(--radius-2);
     border-bottom: 1px solid #fff;
     box-shadow:
@@ -35,7 +35,7 @@
 }
 
 .empty-state svg {
-    fill: var(--clr-gray-500);
+    fill: var(--clr-gray-600);
     width: 32px;
     height: 32px;
 }

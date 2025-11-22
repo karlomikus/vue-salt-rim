@@ -1,50 +1,52 @@
 :root {
-    /* Base color scheme */
-    /* --clr-accent-50: #FAF5F8; */
-    --clr-accent-50: #f9f3f6;
-    --clr-accent-100: #F5EAF2;
-    --clr-accent-200: #ECD5E5;
-    --clr-accent-300: #E1BDD5;
-    --clr-accent-400: #D29DC1;
-    --clr-accent-500: #C178AA;
-    --clr-accent-600: #B8659E;
-    --clr-accent-700: #AF5091;
-    --clr-accent-800: #8F4277;
-    --clr-accent-900: #693057;
-    --clr-accent-950: #411632;
+    --clr-accent-950: #260d1e;
+    --clr-accent-900: #3d1932;
+    --clr-accent-800: #59274a;
+    --clr-accent-700: #7e3a69;
+    --clr-accent-600: #8f4277;
+    --clr-accent-500: #c464a5;
+    --clr-accent-400: #d291bb;
+    --clr-accent-300: #dfbcd2;
+    --clr-accent-200: #e4cddb;
+    --clr-accent-100: #eadce5;
+    --clr-accent-50: #f7f3f5;
 
-    --clr-gray-50: #F5F4F5;
-    --clr-gray-100: #EBEAEB;
-    --clr-gray-200: #D4D2D6;
-    --clr-gray-300: #B8B4BB;
-    --clr-gray-400: #96929B;
-    --clr-gray-500: #64616A;
-    --clr-gray-600: #5B5860;
-    --clr-gray-700: #4d4752;
-    --clr-gray-800: #343038;
-    --clr-gray-900: #272528;
-    --clr-gray-950: #1A181B;
+    --clr-gray-950: #1d1b1b;
+    --clr-gray-900: #353032;
+    --clr-gray-800: #4f474a;
+    --clr-gray-700: #6a5f64;
+    --clr-gray-600: #88787f;
+    --clr-gray-500: #a3949b;
+    --clr-gray-400: #b6a9b0;
+    --clr-gray-300: #cabfc5;
+    --clr-gray-200: #ded6db;
+    --clr-gray-100: #f3edf1;
+    --clr-gray-50: #fcf9fb;
 
-    --clr-accent-green: #F0EFEB;
-    --clr-accent-purple: #eeeaf7;
-    --clr-accent-purple-dark: #5a516f;
+    --clr-purple-950: #191327;
+    --clr-purple-900: #2a213f;
+    --clr-purple-800: #3f325c;
+    --clr-purple-700: #473768;
+    --clr-purple-600: #564678;
+    --clr-purple-500: #846db7;
+    --clr-purple-400: #ae9fd5;
+    --clr-purple-300: #cbc1e6;
+    --clr-purple-200: #d7cfed;
+    --clr-purple-100: #e3ddf3;
+    --clr-purple-50: #f5f3fb;
 
-    --clr-dark-main-50: #E4E2E9;
-    --clr-dark-main-100: #DAD6E0;
-    --clr-dark-main-200: #BFB9CB;
-    --clr-dark-main-300: #A49CB5;
-    --clr-dark-main-400: #8C82A1;
-    --clr-dark-main-500: #726789;
-    --clr-dark-main-600: #5C536F;
-    --clr-dark-main-650: #332c46;
-    --clr-dark-main-700: #282238;
-    --clr-dark-main-800: #201a2d;
-    --clr-dark-main-900: #191422;
-    --clr-dark-main-950: #120e1a;
+    --clr-red-900: #50060c;
+    --clr-red-800: #72131e;
+    --clr-red-700: #8f2131;
+    --clr-red-600: #ad3142;
+    --clr-red-500: #e15a69;
+    --clr-red-400: #e38c93;
+    --clr-red-300: #e9b6b9;
+    --clr-red-200: #edccce;
+    --clr-red-100: #f1dcdd;
 
     --clr-rating: rgb(235, 133, 0);
     --clr-rating-bg: rgb(255, 238, 216);
-    --clr-red: rgb(153, 10, 41);
 
     --shadow-color: 324deg 10% 71%;
     --shadow-elevation-low:
@@ -86,10 +88,9 @@
         1px 45px 50.6px -2.1px hsl(var(--shadow-color-dark) / 0.1),
         1.4px 66.3px 74.6px -2.5px hsl(var(--shadow-color-dark) / 0.1);
 
-    /* Base component color scheme */
     --clr-link-color: var(--clr-gray-800);
-    --clr-link-color-hover: var(--clr-accent-700);
-    --clr-body-font: var(--clr-gray-800);
+    --clr-link-color-hover: var(--clr-accent-600);
+    --clr-body-font: var(--clr-gray-900);
     --clr-body-bg: var(--clr-accent-50);
 
     --default-scheme: light;
@@ -99,15 +100,11 @@
     --font-mono: 'Space Mono', Dank Mono, Operator Mono, Inconsolata, Fira Mono, ui-monospace, SF Mono, Monaco, Droid Sans Mono, Source Code Pro, monospace;
     --fw-bold: 700;
 
-    --color-site-header: #584b75;
-    --color-site-header-subnavigation: #463963;
-    --color-btn-default: #454b60;
-    --color-btn-default-hover: #2b3042;
-    --color-menu-item-hover: #eff7f6;
+    --color-site-header: var(--clr-purple-600);
+    --color-site-header-subnavigation: var(--clr-purple-700);
     --clr-site-footer: #fff;
 
     --site-width: 1440px;
-    --cocktail-list-card-width: 350px;
 
     --radius-1: 3px;
     --radius-2: 5px;
@@ -144,29 +141,27 @@
     --clr-accent-900: #332300;
 
     --clr-link-color: var(--clr-gray-200);
-    --clr-link-color-hover: #ffaf37;
+    --clr-link-color-hover: var(--clr-accent-400);
     --clr-body-font: var(--clr-gray-50);
-    --clr-body-bg: var(--clr-dark-main-900);
+    --clr-body-bg: var(--clr-gray-900);
 
-    --clr-site-footer: var(--clr-dark-main-950);
+    --clr-site-footer: var(--clr-gray-950);
 
-    --color-site-header: var(--clr-dark-main-700);
-    --color-site-header-subnavigation: var(--clr-dark-main-800);
+    --color-site-header: var(--clr-gray-700);
+    --color-site-header-subnavigation: var(--clr-gray-800);
 
-    --clr-accent-green: #212d25;
-    --clr-accent-purple: #14101b;
-
-    --clr-gray-50: #f9f9fa;
-    --clr-gray-100: #f5f4f5;
-    --clr-gray-200: #eaeaeb;
-    --clr-gray-300: #d3d2d6;
-    --clr-gray-400: #b7b4bb;
-    --clr-gray-500: #94929b;
-    --clr-gray-600: #64616a;
-    --clr-gray-700: #5a5860;
-    --clr-gray-800: #4c4950;
-    --clr-gray-900: #413d43;
-    --clr-gray-950: #272528;
+    --clr-gray-50: #E4E2E9;
+    --clr-gray-100: #DAD6E0;
+    --clr-gray-200: #BFB9CB;
+    --clr-gray-300: #A49CB5;
+    --clr-gray-400: #8C82A1;
+    --clr-gray-500: #726789;
+    --clr-gray-600: #5C536F;
+    --clr-gray-650: #332c46;
+    --clr-gray-700: #282238;
+    --clr-gray-800: #201a2d;
+    --clr-gray-900: #191422;
+    --clr-gray-950: #120e1a;
 }
 
 *,
@@ -205,7 +200,6 @@ body {
 }
 
 @media print {
-
     .no-print,
     .no-print * {
         display: none !important;
@@ -252,54 +246,4 @@ hr {
     .sm-show {
         display: block;
     }
-}
-
-.has-markdown h1 {
-    font-size: 2rem;
-    margin: 0.75rem 0 0.25rem 0;
-    font-weight: var(--fw-bold);
-}
-
-.has-markdown h2 {
-    font-size: 1.5rem;
-    margin: 0.70rem 0 0.20rem 0;
-    font-weight: var(--fw-bold);
-}
-
-.has-markdown h2 {
-    font-size: 1.25rem;
-}
-
-.has-markdown ol {
-    padding-left: 30px;
-}
-
-.has-markdown ol li::marker {
-    font-size: 1rem;
-    font-weight: var(--fw-bold);
-}
-
-.has-markdown hr {
-    border: 1px solid var(--clr-gray-300);
-    margin: 0.75rem 0;
-}
-
-.sr-grid-title {
-    font-size: 1.7em;
-    font-family: var(--font-heading);
-    font-weight: var(--fw-bold);
-    line-height: 1.2;
-}
-
-@media (max-width: 450px) {
-    .sr-grid-title {
-        font-size: 1.5em;
-    }
-}
-
-.sr-list-item-title {
-    font-size: 1.25em;
-    font-family: var(--font-heading);
-    font-weight: var(--fw-bold);
-    line-height: 1.2;
 }

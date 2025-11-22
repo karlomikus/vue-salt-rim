@@ -143,9 +143,9 @@ async function shareFromFormat(format: string) {
                 </ul>
             </div>
             <div class="shopping-list__quantity-actions">
-                <button type="button" class="button button--outline button--icon" @click="updateQuantity(shoppingListItem, -1)"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M5 11V13H19V11H5Z"></path></svg></button>
+                <button type="button" class="button button--input" @click="updateQuantity(shoppingListItem, -1)"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M5 11V13H19V11H5Z"></path></svg></button>
                 <input type="text" v-model="shoppingListItem.quantity" class="form-input">
-                <button type="button" class="button button--outline button--icon" @click="updateQuantity(shoppingListItem, +1)"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M11 11V5H13V11H19V13H13V19H11V13H5V11H11Z"></path></svg></button>
+                <button type="button" class="button button--input" @click="updateQuantity(shoppingListItem, +1)"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M11 11V5H13V11H19V13H13V19H11V13H5V11H11Z"></path></svg></button>
             </div>
         </div>
     </div>
@@ -170,7 +170,11 @@ async function shareFromFormat(format: string) {
 }
 
 .shopping-list__item small {
-    color: var(--clr-gray-500);
+    color: var(--clr-gray-600);
+
+    .dark-theme & {
+        color: var(--clr-gray-400);
+    }
 }
 
 .shopping-list__item__prices {

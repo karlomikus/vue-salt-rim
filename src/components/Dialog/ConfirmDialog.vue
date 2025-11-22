@@ -74,7 +74,7 @@ export default {
 
 .dialog-confirm__message {
     font-size: 1rem;
-    color: var(--clr-gray-600);
+    color: var(--clr-gray-700);
 }
 
 .dialog-confirm__actions {

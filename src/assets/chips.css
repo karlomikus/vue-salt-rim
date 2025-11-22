@@ -32,27 +32,23 @@
     display: block;
     padding: 1px 9px;
     font-size: 0.75rem;
-    background-color: #E6DBF0;
-    color: #3a304d;
+    background-color: var(--clr-accent-100);
+    color: var(--clr-accent-700);
     border-radius: var(--radius-1);
     text-decoration: none;
+
+    .dark-theme & {
+        background-color: var(--clr-accent-800);
+        color: var(--clr-accent-300);
+    }
 }
 
-a.chip:hover,
-a.chip:active,
-a.chip:focus {
-    background-color: #c1cef0;
-    color: #1e273b;
-}
+.chip.chip--alternate {
+    background-color: var(--clr-purple-100);
+    color: var(--clr-purple-700);
 
-.dark-theme .chip {
-    background-color: #572d2c;
-    color: #f3dada;
-}
-
-.dark-theme a.chip:hover,
-.dark-theme a.chip:active,
-.dark-theme a.chip:focus {
-    background-color: #743f3e;
-    color: #fff0f0;
+    .dark-theme & {
+        background-color: var(--clr-purple-700);
+        color: var(--clr-purple-300);
+    }
 }

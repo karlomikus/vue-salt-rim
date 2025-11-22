@@ -37,9 +37,10 @@
     "list-remove-success": "Sastojak \"{name}\" uklonjen s popisa za kupovinu",
     "list-add-success": "Sastojak \"{name}\" dodan na popis za kupovinu",
     "spotlight": "Glavni sastojak",
-    "is-variety": "Sastojak je podvrsta postojećeg sastojka",
+    "is-variety": "Ingredient is variant of another ingredient",
     "information": "Podaci o sastojku",
     "extra-cocktails": "Dodaj u policu da bi mogli napraviti",
+    "clone-as-variety": "Duplicate as variant",
     "dialog": {
       "select-substitutes": "Odaberite zamjenske sastojke",
       "search-not-found": "Niste pronašli što ste tražili?",
@@ -321,9 +322,9 @@
     "title": "Pretraga",
     "results-per-page": "Rezultati po stranici",
     "empty": "Nema pronađenih rezultata za \"{term}\".",
-    "ignore-ingredients": "Ignoriraj sastojke",
+    "ignore-ingredients": "Ignored ingredients",
     "select-ingredients-to-ignore": "Odaberite sastojke koje želite ignorirati",
-    "ingredients": "Specifični sastojci",
+    "ingredients": "Specified ingredients",
     "select-specific-ingredients": "Odaberite specifične sastojke"
   },
   "subtitle": "Podnaslov",
@@ -718,7 +719,7 @@
   "profile-public-shelf-description": "Other bar members will be able to filter by cocktails you have in your shelf",
   "sort-random": "In random order",
   "cocktails-varieties": "Varieties",
-  "cocktail-variety-of": "Cocktail is variety of",
+  "cocktail-variety-of": "Cocktail is variant of",
   "cocktail-select-parent": "Select parent cocktail",
   "year": "Year"
 }

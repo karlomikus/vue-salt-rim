@@ -142,7 +142,7 @@ export default {
     width: 50px;
     height: 50px;
     border-radius: var(--radius-2);
-    background-color: #eae4e9;
+    background-color: var(--clr-gray-100);
     background-position: center center;
     background-size: cover;
     background-repeat: no-repeat;

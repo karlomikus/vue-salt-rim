@@ -7,7 +7,7 @@ const manifest = {
     name: 'Bar Assistant',
     short_name: 'Bar Assistant',
     description: 'Bar assistant is a self hosted application for managing your home bar.',
-    theme_color: '#584b75',
+    theme_color: '#564678',
     orientation: "portrait",
     icons: [
         {

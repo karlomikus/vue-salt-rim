@@ -1,3 +1,16 @@
+# v4.11.0
+## New
+- Added "Duplicate as variant" action to ingredient details page
+- Updated color palette
+
+## Changes
+- "Add to user shelf" action is now hidden if user already has permissions to see "Add to bar shelf" action
+    - Basically only one quick action is shown now on ingredients index page
+- "Used in X recipes" action on ingredient details page now uses specific ingredient filter on cocktails page
+
+## Fixes
+- Fixed total refinement count on ingredients page
+
 # v4.10.0
 # New
 - Added "Make bar public" checkbox to bar form

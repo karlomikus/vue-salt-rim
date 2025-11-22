@@ -13,8 +13,10 @@
                 <ToggleIngredientBarShelf v-if="ingredient.in_bar_shelf !== undefined" :ingredient="ingredient" v-model="ingredient.in_bar_shelf"></ToggleIngredientBarShelf>
                 &middot;
             </template>
-            <ToggleIngredientShelf v-if="ingredient.in_shelf !== undefined" :ingredient="ingredient" v-model="ingredient.in_shelf"></ToggleIngredientShelf>
-            &middot;
+            <template v-else>
+                <ToggleIngredientShelf v-if="ingredient.in_shelf !== undefined" :ingredient="ingredient" v-model="ingredient.in_shelf"></ToggleIngredientShelf>
+                &middot;
+            </template>
             <ToggleIngredientShoppingCart v-if="ingredient.in_shopping_list !== undefined" :ingredient="ingredient" v-model="ingredient.in_shopping_list"></ToggleIngredientShoppingCart>
         </div>
     </div>
@@ -88,13 +90,17 @@ const defaultImage = computed(() => {
 .ingredient-grid-item__title small {
     display: block;
     font-size: 0.7rem;
-    color: var(--clr-gray-500);
+    color: var(--clr-gray-600);
     font-family: var(--font-primary);
+
+    .dark-theme & {
+        color: var(--clr-gray-400);
+    }
 }
 
 .ingredient-grid-item__content p {
     text-wrap: balance;
-    color: var(--clr-gray-600);
+    color: var(--clr-gray-700);
 }
 
 .dark-theme .ingredient-grid-item__content p {

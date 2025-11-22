@@ -37,9 +37,10 @@
     "list-remove-success": "\"{name}\" von der Einkaufsliste entfernt",
     "list-add-success": "\"{name}\" zu der Einkaufsliste hinzugefügt",
     "spotlight": "Hauptzutat",
-    "is-variety": "Zutat ist Variation einer anderen Zutat",
+    "is-variety": "Ingredient is variant of another ingredient",
     "information": "Zutateninformationen",
     "extra-cocktails": "Zum Regal hinzufügen um weitere Cocktails mixen zu können",
+    "clone-as-variety": "Duplicate as variant",
     "dialog": {
       "select-substitutes": "Ersatz wählen",
       "search-not-found": "Du hast nicht gefunden, wonach Du suchst?",
@@ -321,9 +322,9 @@
     "title": "Suche",
     "results-per-page": "Per page",
     "empty": "Es wurden keine Ergebnisse für \"{term}\" gefunden.",
-    "ignore-ingredients": "Ignore ingredients",
+    "ignore-ingredients": "Ignored ingredients",
     "select-ingredients-to-ignore": "Select ingredients to ignore",
-    "ingredients": "Bestimmte Zutaten",
+    "ingredients": "Specified ingredients",
     "select-specific-ingredients": "Bestimmte Zutaten auswählen"
   },
   "subtitle": "Untertitel",
@@ -718,7 +719,7 @@
   "profile-public-shelf-description": "Other bar members will be able to filter by cocktails you have in your shelf",
   "sort-random": "In random order",
   "cocktails-varieties": "Varieties",
-  "cocktail-variety-of": "Cocktail is variety of",
+  "cocktail-variety-of": "Cocktail is variant of",
   "cocktail-select-parent": "Select parent cocktail",
   "year": "Year"
 }

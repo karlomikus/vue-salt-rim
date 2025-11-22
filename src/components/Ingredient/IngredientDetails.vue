@@ -80,7 +80,7 @@
                 <div v-if="ingredient.access && (ingredient.access.can_edit || ingredient.access.can_delete)" class="ingredient-details__actions">
                     <Dropdown>
                         <template #default="{ toggleDropdown }">
-                            <button type="button" class="button button-circle" @click.prevent="toggleDropdown">
+                            <button type="button" class="button button--outline button--has-icon" @click.prevent="toggleDropdown">
                                 <IconMore></IconMore>
                             </button>
                         </template>
@@ -91,6 +91,10 @@
                                     <path d="M6.414 16L16.556 5.858l-1.414-1.414L5 14.586V16h1.414zm.829 2H3v-4.243L14.435 2.322a1 1 0 0 1 1.414 0l2.829 2.829a1 1 0 0 1 0 1.414L7.243 18zM3 20h18v2H3v-2z" />
                                 </svg>
                                 {{ $t('edit') }}
+                            </RouterLink>
+                            <RouterLink v-if="ingredient.access.can_edit" class="dropdown-menu__item" :to="{ name: 'ingredients.form', query: { variant: ingredient.id } }">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18"><path d="M6.9998 6V3C6.9998 2.44772 7.44752 2 7.9998 2H19.9998C20.5521 2 20.9998 2.44772 20.9998 3V17C20.9998 17.5523 20.5521 18 19.9998 18H16.9998V20.9991C16.9998 21.5519 16.5499 22 15.993 22H4.00666C3.45059 22 3 21.5554 3 20.9991L3.0026 7.00087C3.0027 6.44811 3.45264 6 4.00942 6H6.9998ZM5.00242 8L5.00019 20H14.9998V8H5.00242ZM8.9998 6H16.9998V16H18.9998V4H8.9998V6Z"></path></svg>
+                                {{ $t('ingredient.clone-as-variety') }}
                             </RouterLink>
                             <hr v-if="ingredient.access.can_delete" class="dropdown-menu__separator">
                             <a v-if="ingredient.access.can_delete" class="dropdown-menu__item" href="javascript:;" @click.prevent="deleteIngredient">
@@ -104,7 +108,7 @@
                     </Dropdown>
                 </div>
                 <div class="block-container block-container--padded">
-                    <h2 class="details-block-container__title">{{ $t('description') }}</h2>
+                    <h2 class="block-container__title">{{ $t('description') }}</h2>
                     <div class="item-details__chips">
                         <div class="item-details__chips__group">
                             <div class="item-details__chips__group__title">{{ $t('strength') }}:</div>
@@ -164,7 +168,7 @@
                             </template>
                         </li>
                         <li>
-                            <RouterLink :to="{name: 'cocktails', query: {'filter[ingredient_id]': ingredient.id}}">
+                            <RouterLink :to="{name: 'cocktails', query: {'filter[specific_ingredients]': ingredient.id}}">
                                 <i18n-t keypath="ingredient.used-in">
                                     <template #count><strong>{{ ingredient.cocktails_count }}</strong></template>
                                     <template v-if="ingredient.cocktails_as_substitute_count && ingredient.cocktails_as_substitute_count > 0" #substituteCount>
@@ -193,12 +197,12 @@
                     <IngredientHierarchy :parent-id="ingredient.id" :root-id="ingredient.hierarchy.root_ingredient_id ?? ingredient.id"></IngredientHierarchy>
                 </div>
                 <div v-if="ingredient.calculator_id" class="block-container block-container--padded">
-                    <h2 class="details-block-container__title">{{ $t('calculators.calculator') }}</h2>
+                    <h2 class="block-container__title">{{ $t('calculators.calculator') }}</h2>
                     <OverlayLoader v-if="isLoadingCalculator" />
                     <CalculatorRender v-if="calculator.id" :calculator="calculator"></CalculatorRender>
                 </div>
                 <div v-if="ingredient.prices && ingredient.prices.length > 0" class="block-container block-container--padded ingredient-details__prices">
-                    <h2 class="details-block-container__title">{{ $t('price.prices') }}</h2>
+                    <h2 class="block-container__title">{{ $t('price.prices') }}</h2>
                     <div class="ingredient-details__prices__list">
                         <div v-for="ingredientPrice in ingredient.prices" :key="ingredientPrice.created_at" class="ingredient-details__prices__list__item">
                             <h5>{{ ingredientPrice.price_category.name }} ({{ ingredientPrice.price_category.currency }})</h5>
@@ -552,7 +556,11 @@ watch(
     width: 32px;
     height: 32px;
     display: block;
-    fill: var(--clr-gray-500);
+    fill: var(--clr-gray-600);
+
+    .dark-theme & {
+        fill: var(--clr-gray-400);
+    }
 }
 
 .shelf-actions__action svg.shelf-actions__action__active {
@@ -568,7 +576,11 @@ watch(
 
 .shelf-actions__action small {
     line-height: 1.2;
-    color: var(--clr-gray-400);
+    color: var(--clr-gray-600);
+
+    .dark-theme & {
+        color: var(--clr-gray-300);
+    }
 }
 
 @media (max-width: 450px) {

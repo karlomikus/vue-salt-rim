@@ -46,7 +46,7 @@ export default {
 <style scoped>
 .sr-radio {
     --clr-bg: #fff;
-    --clr-description: var(--clr-gray-500);
+    --clr-description: var(--clr-gray-600);
     --clr-border: var(--clr-gray-200);
     --clr-border-hover: var(--clr-gray-800);
     --clr-border-selected: var(--clr-gray-50);
@@ -64,12 +64,12 @@ export default {
 }
 
 .dark-theme .sr-radio {
-    --clr-bg: var(--clr-dark-main-700);
-    --clr-description: var(--clr-dark-main-400);
-    --clr-border: var(--clr-dark-main-600);
+    --clr-bg: var(--clr-gray-700);
+    --clr-description: var(--clr-gray-400);
+    --clr-border: var(--clr-gray-600);
     --clr-border-hover: var(--clr-gray-100);
-    --clr-border-selected: var(--clr-dark-main-950);
-    --clr-svg: var(--clr-dark-main-600);
+    --clr-border-selected: var(--clr-gray-950);
+    --clr-svg: var(--clr-gray-600);
     --clr-svg-selected: var(--clr-accent-200);
 }
 

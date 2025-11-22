@@ -70,7 +70,7 @@ onClickOutside(reference, () => {
     display: flex;
     gap: var(--gap-size-1);
     padding: var(--gap-size-1);
-    background: rgba(0, 0, 0, .7);
+    background: var(--clr-gray-600);
     z-index: var(--z-dropdown);
     border-radius: 5px;
 }
@@ -80,7 +80,7 @@ onClickOutside(reference, () => {
     background: var(--clr-gray-200);
     color: var(--clr-gray-800);
     border: 0;
-    border-top: 1px solid rgba(255, 255, 255, .5);
+    border-top: 1px solid var(--clr-gray-50);
     border-radius: 2px;
     font-weight: var(--fw-bold);
     font-size: 0.85rem;

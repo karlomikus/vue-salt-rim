@@ -66,7 +66,7 @@ watch(() => parentId, () => {
 
 <template>
     <div v-if="hierarchy">
-        <h2 class="details-block-container__title">{{ t('ingredient.hierarchy') }}</h2>
+        <h2 class="block-container__title">{{ t('ingredient.hierarchy') }}</h2>
         <p>{{ t('ingredient.hierarchy-description') }}</p>
         <a href="#" @click.prevent="currentTab = 'dendogram'">{{ t('ingredient.show-variants') }}</a> &middot; <a href="#" @click.prevent="currentTab = 'icicle'">{{ t('ingredient.icicle-graph') }}</a>
         <div class="ingredient-hierarchy block-container block-container--padded block-container--inset tf-tree tf-gap-sm" v-if="currentTab === 'dendogram'">
@@ -75,7 +75,7 @@ watch(() => parentId, () => {
                 <IngredientTreeNode :hierarchy-item="onlyVariants" :current-id="parentId.toString()"></IngredientTreeNode>
             </ul>
         </div>
-        <div style="height: 600px;" v-if="currentTab === 'icicle'">
+        <div v-if="currentTab === 'icicle'">
             <IngredientIcicle v-model="hierarchy" :targetIngredientId="parseInt(parentId.toString())"></IngredientIcicle>
         </div>
     </div>
@@ -83,10 +83,14 @@ watch(() => parentId, () => {
 
 <style>
 .ingredient-hierarchy {
-    --border-color: var(--clr-gray-300);
+    --border-color: var(--clr-gray-600);
     --border-width: 2px;
     background-image: radial-gradient(var(--clr-accent-200) 1px, transparent 1px);
     background-size: 20px 20px;
+
+    .dark-theme & {
+        background-image: radial-gradient(var(--clr-gray-700) 1px, transparent 1px);
+    }
 }
 
 .ingredient-hierarchy {

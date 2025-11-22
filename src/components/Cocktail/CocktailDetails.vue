@@ -388,7 +388,7 @@ fetchShoppingList()
             </div>
             <div class="cocktail-details__column-content">
                 <div class="cocktail-details__actions">
-                    <button type="button" class="button button-circle" @click="favorite">
+                    <button type="button" class="button button--outline button--has-icon" @click="favorite">
                         <OverlayLoader v-if="isLoadingFavorite" />
                         <svg v-if="!isFavorited" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
                             <path fill="none" d="M0 0H24V24H0z" />
@@ -401,7 +401,7 @@ fetchShoppingList()
                     </button>
                     <Dropdown>
                         <template #default="{ toggleDropdown }">
-                            <button type="button" class="button button-circle" @click="toggleDropdown">
+                            <button type="button" class="button button--outline button--has-icon" @click="toggleDropdown">
                                 <OverlayLoader v-if="isLoadingShare" />
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
                                     <path fill="none" d="M0 0h24v24H0z" />
@@ -476,7 +476,7 @@ fetchShoppingList()
                     </Dropdown>
                     <Dropdown>
                         <template #default="{ toggleDropdown }">
-                            <button type="button" class="button button-circle" @click="toggleDropdown">
+                            <button type="button" class="button button--outline button--has-icon" @click="toggleDropdown">
                                 <IconMore></IconMore>
                             </button>
                         </template>
@@ -531,7 +531,7 @@ fetchShoppingList()
                     </Dropdown>
                 </div>
                 <div class="block-container block-container--padded">
-                    <h3 class="details-block-container__title">{{ t('description') }}</h3>
+                    <h3 class="block-container__title">{{ t('description') }}</h3>
                     <div class="item-details__chips">
                         <div v-if="cocktail.source || cocktail.year" class="item-details__chips__group">
                             <div class="item-details__chips__group__title">{{ t('source') }}:</div>
@@ -601,7 +601,7 @@ fetchShoppingList()
                 </div>
                 <UnitConverter @unit-changed="(u: 'ml' | 'oz' | 'cl') => currentUnit = u">
                     <div v-if="cocktail.ingredients && cocktail.ingredients.length > 0" class="block-container block-container--padded">
-                        <h3 class="details-block-container__title">{{ t('ingredient.ingredients') }}</h3>
+                        <h3 class="block-container__title">{{ t('ingredient.ingredients') }}</h3>
                         <div class="cocktail-ingredients__actions">
                             Match ingredients to: <a :class="{'bold': currentShelf === 'bar'}" href="#" @click.prevent="currentShelf = 'bar'">Bar shelf</a> &middot; <a href="#" :class="{'bold': currentShelf === 'user'}" @click.prevent="currentShelf = 'user'">My shelf</a>
                             <br>
@@ -646,7 +646,7 @@ fetchShoppingList()
                     </div>
                 </UnitConverter>
                 <div class="block-container block-container--padded has-markdown">
-                    <h3 class="details-block-container__title">{{ t('instructions') }}</h3>
+                    <h3 class="block-container__title">{{ t('instructions') }}</h3>
                     <WakeLockToggle></WakeLockToggle>
                     <div v-html="parsedInstructions"></div>
                     <div v-if="cocktail.utensils && cocktail.utensils.length > 0">
@@ -655,11 +655,11 @@ fetchShoppingList()
                     </div>
                 </div>
                 <div v-if="cocktail.garnish" class="block-container block-container--padded">
-                    <h3 class="details-block-container__title">{{ t('garnish') }}</h3>
+                    <h3 class="block-container__title">{{ t('garnish') }}</h3>
                     <div v-html="parsedGarnish"></div>
                 </div>
                 <div v-if="completeCocktailPrices.length > 0" class="block-container block-container--padded">
-                    <h3 class="details-block-container__title">{{ t('price.prices') }}</h3>
+                    <h3 class="block-container__title">{{ t('price.prices') }}</h3>
                     <p>Prices are categorized by bar price categories. If price category is missing, the ingredients don't have a price in that category. If there are multiple prices in category, the minimum price is used. Keep in mind that the price is just an estimate and might not be accurate.</p>
                     <div class="cocktail-prices">
                         <CocktailPrice v-for="cocktailPrice in completeCocktailPrices" :cocktail-price=cocktailPrice></CocktailPrice>
@@ -667,7 +667,7 @@ fetchShoppingList()
                 </div>
                 <div v-if="userNotes.length > 0" class="block-container block-container--padded">
                     <OverlayLoader v-if="isLoadingNotes" />
-                    <h3 class="details-block-container__title">{{ t('notes') }}</h3>
+                    <h3 class="block-container__title">{{ t('notes') }}</h3>
                     <NoteDetails v-for="note in userNotes" :key="note.id" :note="note" @note-deleted="fetchCocktailUserNotes"></NoteDetails>
                 </div>
             </div>
@@ -760,7 +760,7 @@ swiper-container {
 }
 
 .cocktail-ingredients {
-    --ci-clr-list-bg: var(--clr-accent-purple);
+    --ci-clr-list-bg: var(--clr-gray-100);
     list-style: none;
     padding: 0;
     margin: 0;
@@ -775,14 +775,14 @@ swiper-container {
 
 .cocktail-ingredients li {
     background-color: var(--ci-clr-list-bg);
-    color: var(--clr-accent-purple-dark);
     border-radius: var(--radius-2);
     margin-bottom: 0.5rem;
     padding: 0.5rem 0.75rem;
-}
 
-.dark-theme .cocktail-ingredients li {
-    color: var(--clr-gray-300);
+    .dark-theme & {
+        --ci-clr-list-bg: var(--clr-gray-700);
+        color: var(--clr-gray-300);
+    }
 }
 
 .cocktail-details__actions {

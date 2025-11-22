@@ -34,7 +34,7 @@
             </div>
         </div>
         <div class="menu-categories">
-            <div v-for="(category, idx) in categories" :key="idx" class="menu-category">
+            <div v-for="(category, idx) in categories" :key="idx" class="menu-category block-container block-container--inset">
                 <div class="menu-category__info">
                     <div class="form-group" style="margin-bottom: 0;">
                         <label class="form-label" :for="'menu-category-' + idx">{{ t('menu.category-title') }}:</label>
@@ -52,7 +52,7 @@
                                 <RouterLink :to="{ name: item.type == 'cocktail' ? 'cocktails.show' : 'ingredients.show', params: { id: item.id } }" class="sr-list-item-title">
                                     <h4 class="sr-list-item-title menu-category__cocktail__content__title">{{ item.name }}</h4>
                                 </RouterLink>
-                                <p><span class="menu-item-type" :class="{'menu-item-type--ingredient': item.type == 'ingredient', 'menu-item-type--cocktail': item.type == 'cocktail'}">{{ item.type }}</span> {{ item.description }}</p>
+                                <p><span class="menu-item-type chip" :class="{'chip--alternate': item.type == 'cocktail'}">{{ item.type }}</span> {{ item.description }}</p>
                                 <a href="#" @click.prevent="copyCurrency(item.price.currency)">{{ t('menu.copy-currency') }}</a> &middot;
                                 <template v-if="item.type == 'cocktail'">
                                     <SaltRimDialog v-model="showCurrencyCalculator[cidx + '-' + idx]">
@@ -508,10 +508,6 @@ refreshBar()
 
 .menu-category {
     padding: var(--gap-size-3);
-    background-color: #f4edf2;
-    border-radius: var(--radius-2);
-    border-bottom: 1px solid #fff;
-    box-shadow: inset 0px 0.4px 0.5px hsl(var(--shadow-color) / 0.25), inset 0px 1.1px 1.2px -0.8px hsl(var(--shadow-color) / 0.25), inset 0px 2.6px 2.9px -1.7px hsl(var(--shadow-color) / 0.25), inset 0px 6.3px 7.1px -2.5px hsl(var(--shadow-color) / 0.25);
 }
 
 @media (max-width: 450px) {
@@ -586,7 +582,10 @@ refreshBar()
 
 .menu-category__cocktail__content p {
     font-size: 0.85rem;
-    color: var(--clr-gray-500);
+    color: var(--clr-gray-700);
+    .dark-theme & {
+        color: var(--clr-gray-300);
+    }
 }
 
 .dark-theme .menu-category__cocktail__content small {
@@ -607,11 +606,15 @@ refreshBar()
 }
 
 .menu-url {
-    background: var(--clr-accent-purple);
-    padding: 0.5rem;
+    background: var(--clr-gray-100);
+    padding: var(--gap-size-2);
     font-weight: var(--fw-bold);
     border-radius: var(--radius-1);
     width: 100%;
+
+    .dark-theme & {
+        background: var(--clr-gray-900);
+    }
 }
 
 .menu-url a {
@@ -620,10 +623,10 @@ refreshBar()
 
 .menu-item-type {
     display: inline-block;
-    padding: 1px 4px;
+    /*padding: 1px 4px;
     font-size: 0.75rem;
     border-radius: var(--radius-1);
-    text-decoration: none;
+    text-decoration: none;*/
 }
 
 .menu-item-type.menu-item-type--cocktail {

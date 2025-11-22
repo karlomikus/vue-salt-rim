@@ -37,7 +37,7 @@ export default {
 }
 
 .dark-theme .settings-nav {
-    --sn-clr-bg-hover: var(--clr-dark-main-800);
+    --sn-clr-bg-hover: var(--clr-gray-800);
 }
 
 .settings-nav a {
