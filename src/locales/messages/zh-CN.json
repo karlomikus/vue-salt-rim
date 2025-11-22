@@ -37,9 +37,10 @@
     "list-remove-success": "已将 \"{name}\" 从购物清单移除",
     "list-add-success": "已将 \"{name}\" 添加到购物清单",
     "spotlight": "配料聚焦",
-    "is-variety": "此成分为其他配料的变体",
+    "is-variety": "Ingredient is variant of another ingredient",
     "information": "配料信息",
     "extra-cocktails": "添加到货架后可制作的鸡尾酒",
+    "clone-as-variety": "Duplicate as variant",
     "dialog": {
       "select-substitutes": "编辑替代配料",
       "search-not-found": "找不到您想要的内容？",
@@ -321,9 +322,9 @@
     "title": "搜索",
     "results-per-page": "每页结果数",
     "empty": "未找到与 \"{term}\" 相关的结果。",
-    "ignore-ingredients": "忽略配料",
+    "ignore-ingredients": "Ignored ingredients",
     "select-ingredients-to-ignore": "选择要忽略的配料",
-    "ingredients": "特定配料",
+    "ingredients": "Specified ingredients",
     "select-specific-ingredients": "选择特定配料"
   },
   "subtitle": "副标题",
@@ -718,7 +719,7 @@
   "profile-public-shelf-description": "其他酒吧成员将可以根据您架子上的鸡尾酒进行筛选",
   "sort-random": "随机排序",
   "cocktails-varieties": "种类",
-  "cocktail-variety-of": "Cocktail is variety of",
+  "cocktail-variety-of": "Cocktail is variant of",
   "cocktail-select-parent": "选择父级鸡尾酒",
   "year": "年"
 }

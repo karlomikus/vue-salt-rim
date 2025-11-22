@@ -37,9 +37,10 @@
     "list-remove-success": "\"{name}\" verwijderd van uw boodschappenlijst",
     "list-add-success": "Toegevoegd \"{name}\" aan uw boodschappenlijst",
     "spotlight": "Ingrediënt spotlight",
-    "is-variety": "Ingrediënt is variëteit van een ander ingrediënt",
+    "is-variety": "Ingredient is variant of another ingredient",
     "information": "Ingrediënt informatie",
     "extra-cocktails": "Toevoegen aan de plank en je kunt maken",
+    "clone-as-variety": "Duplicate as variant",
     "dialog": {
       "select-substitutes": "Bewerk vervangende ingrediënten",
       "search-not-found": "Niet gevonden wat je zoekt?",
@@ -321,9 +322,9 @@
     "title": "Zoeken",
     "results-per-page": "Per pagina",
     "empty": "Geen resultaten gevonden voor de term \"{term}\".",
-    "ignore-ingredients": "Negeer ingrediënten",
+    "ignore-ingredients": "Ignored ingredients",
     "select-ingredients-to-ignore": "Selecteer ingrediënten om te negeren",
-    "ingredients": "Specifieke ingrediënten",
+    "ingredients": "Specified ingredients",
     "select-specific-ingredients": "Kies specifieke ingrediënten"
   },
   "subtitle": "Subtitel",
@@ -718,7 +719,7 @@
   "profile-public-shelf-description": "Andere bar kunnen filteren op cocktails die je in je plank hebt",
   "sort-random": "In willekeurige volgorde",
   "cocktails-varieties": "Variëteiten",
-  "cocktail-variety-of": "Cocktail is variëteit van",
+  "cocktail-variety-of": "Cocktail is variant of",
   "cocktail-select-parent": "Selecteer hoofd cocktail",
   "year": "Jaar"
 }
