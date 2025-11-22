@@ -198,6 +198,7 @@ const isLoading = ref(false)
 const isLoadingGen = ref(false)
 const isParent = ref(false)
 const isComplex = ref(false)
+const isDuplicatedAsVariant = ref(false)
 const ingredient = ref<Ingredient>({
     hierarchy: {
         parent_ingredient: {},
@@ -270,6 +271,20 @@ async function refreshIngredient(id: string) {
     const resp = (await BarAssistantClient.getIngredient(id))?.data ?? null
     if (!resp) {
         return
+    }
+
+    if (isDuplicatedAsVariant.value) {
+        resp.hierarchy.parent_ingredient = {
+            id: resp.id,
+            slug: resp.slug,
+            name: resp.name,
+        }
+        /** @ts-ignore */
+        delete resp.id
+        resp.images = []
+        resp.prices = []
+        resp.calculator_id = null
+        resp.name = `${resp.name} (Variant)`
     }
 
     resp.description = useHtmlDecode(resp.description ?? '')
@@ -449,7 +464,10 @@ const groupedPriceCategories = computed(() => {
 
 useTitle(t('ingredient.add'))
 
-const ingredientId = route.query.id || null
+const ingredientId = route.query.id || route.query.variant || null
+if (route.query.variant) {
+    isDuplicatedAsVariant.value = true
+}
 if (ingredientId) {
     refreshIngredient(ingredientId.toString())
 }

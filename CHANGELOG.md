@@ -1,5 +1,6 @@
 # v4.11.0
 ## New
+- Added "Duplicate as variant" action to ingredient details page
 - Updated color palette
 
 ## Changes
