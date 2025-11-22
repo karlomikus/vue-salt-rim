@@ -70,7 +70,7 @@ mark {
     letter-spacing: 1px;
     display: flex;
     background: var(--clr-gray-100);
-    color: var(--clr-gray-800);
+    color: var(--clr-gray-700);
 
     .dark-theme & {
         background: var(--clr-gray-800);

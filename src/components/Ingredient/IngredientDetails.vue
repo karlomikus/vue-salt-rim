@@ -168,7 +168,7 @@
                             </template>
                         </li>
                         <li>
-                            <RouterLink :to="{name: 'cocktails', query: {'filter[ingredient_id]': ingredient.id}}">
+                            <RouterLink :to="{name: 'cocktails', query: {'filter[specific_ingredients]': ingredient.id}}">
                                 <i18n-t keypath="ingredient.used-in">
                                     <template #count><strong>{{ ingredient.cocktails_count }}</strong></template>
                                     <template v-if="ingredient.cocktails_as_substitute_count && ingredient.cocktails_as_substitute_count > 0" #substituteCount>
