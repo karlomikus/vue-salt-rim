@@ -1,3 +1,7 @@
+# v4.11.1
+## Fixes
+- Hide "Add to bar shelf" action if user does not have permission to view bar shelf
+
 # v4.11.0
 ## New
 - Added "Duplicate as variant" action to ingredient details page
