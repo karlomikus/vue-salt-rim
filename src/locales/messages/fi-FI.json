@@ -30,7 +30,7 @@
     "remove-from-list": "Poista ostoslistalta",
     "update-success": "Ainesosa lisätty onnistuneesti",
     "create-success": "Ainesosa luotu onnistuneesti",
-    "name-placeholder": "Ei valittu",
+    "name-placeholder": "<Not selected>",
     "delete-confirm": "Toiminto poistaa lopullisesti ainesosan \"{name}\". Tällä on vaikutusta \"{total}\" cocktail-ohjeeseen.",
     "shelf-remove-success": "Poistettu \"{name}\" hyllystäsi",
     "shelf-add-success": "Lisätty \"{name}\" hyllyysi",
@@ -126,7 +126,7 @@
   },
   "latest": {
     "cocktails": "Viimeisimmät cocktailit",
-    "favorites": "Viimeisimmät suosikkisi",
+    "favorites": "Your recent favorites",
     "ingredients": "Viimeisimmät ainesosat"
   },
   "strength": "Vahvuus",
@@ -137,7 +137,7 @@
   "medium": "Keskivahva",
   "strong": "Vahva",
   "welcome-user": "Tervetuloa {name}",
-  "your-shopping-list": "Ostoslistasi",
+  "your-shopping-list": "Your shopping list",
   "missing.ingredients": "Tarvitsemasi ainesosat näytetään täällä.",
   "all-ingredients": "Kaikki ainesosat",
   "find-cocktails": "Löydä cocktaileja",
@@ -322,9 +322,9 @@
     "title": "Search",
     "results-per-page": "Per page",
     "empty": "No results found for term \"{term}\".",
-    "ignore-ingredients": "Ignored ingredients",
+    "ignore-ingredients": "Ignore ingredients",
     "select-ingredients-to-ignore": "Select ingredients to ignore",
-    "ingredients": "Specified ingredients",
+    "ingredients": "Specific ingredients",
     "select-specific-ingredients": "Select specific ingredients"
   },
   "subtitle": "Subtitle",
@@ -433,7 +433,7 @@
     "type-ai-description": "Import from plain text recipe using AI",
     "type-bookmarklet-description": "Create a bookmarklet to generate JSON format",
     "type-html-description": "Import from raw HTML format",
-    "notice": "Existing ingredients, methods and glassware will be matched by their name (case insensitive). If ingredient does not exist, it will be created.",
+    "notice": "Existing ingredients, methods and glassware will be matched by their name (case insensitive). If ingredient does not exist, it will be created. Common units are automatically converted to \"ml\". Depending on collection size, importing can take a few minutes.",
     "type-csv-text-title": "CSV text",
     "type-csv-text-description": "Import by pasting the CSV structure",
     "type-csv-file-title": "CSV file",
@@ -529,7 +529,7 @@
   "bar": {
     "url": "Custom bar URL",
     "url-help": "Your public bar URL will be: {url}",
-    "url-menu-hint": "Used for public access if enabled.",
+    "url-menu-hint": "Used for public menu if enabled.",
     "default-currency-hint": "Used as default currency suggestion, can be changed anytime.",
     "default-units-hint": "Used as default units on cocktail details, can be changed anytime."
   },
@@ -719,7 +719,7 @@
   "profile-public-shelf-description": "Muut baarin jäsenet voivat suodattaa cocktaileja hyllysi valikoiman perusteella",
   "sort-random": "Satunnaisessa järjestyksessä",
   "cocktails-varieties": "Varieties",
-  "cocktail-variety-of": "Cocktail is variant of",
+  "cocktail-variety-of": "Cocktail is variety of",
   "cocktail-select-parent": "Select parent cocktail",
   "year": "Vuosi"
 }
