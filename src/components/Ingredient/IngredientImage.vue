@@ -47,8 +47,8 @@ const mainIngredientImageUrl = computed(() => {
 
 @media (max-width: 450px) {
     .ingredient__image {
-        width: 100px;
-        height: 100px;
+        width: 60px;
+        height: 60px;
     }
 }
 
