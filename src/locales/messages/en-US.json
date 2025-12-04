@@ -527,7 +527,8 @@
     "added-multiple-cocktails": "Added multiple cocktails",
     "add-to": "Add to menu category",
     "menu-items": "entries",
-    "add-multiple": "Add multiple entries to menu"
+    "add-multiple": "Add entries to menu",
+    "add-single": "Add to menu"
   },
   "bar": {
     "url": "Custom bar URL",
