@@ -450,13 +450,6 @@ async function saveMenu() {
         }))
     })
 
-    if (items.length == 0) {
-        toast.error(t('menu.no-cocktails-added'))
-        isLoading.value = false
-
-        return
-    }
-
     const postData = {
         is_enabled: menu.value.is_enabled,
         items: items
