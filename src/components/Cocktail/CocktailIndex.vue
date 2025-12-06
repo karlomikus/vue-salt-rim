@@ -97,7 +97,12 @@
                             </button>
                         </template>
                         <template #dialog>
-                            <CollectionDialog :title="$t('collections.add-from-query')" :cocktails="currentCocktailIds" @collection-dialog-closed="handleCollectionsDialogClosed" />
+                            <div class="add-to-collection__tabs">
+                                <button @click="currentCollectionStore = 'collection'" class="button" :class="{'button--dark': currentCollectionStore == 'collection', 'button--outline': currentCollectionStore != 'collection'}">Collection</button>
+                                <button @click="currentCollectionStore = 'menu'" class="button" :class="{'button--dark': currentCollectionStore == 'menu', 'button--outline': currentCollectionStore != 'menu'}">Menu</button>
+                            </div>
+                            <CollectionDialog v-if="currentCollectionStore == 'collection'" :title="$t('collections.add-from-query')" :cocktails="currentCocktailIds" @collection-dialog-closed="handleCollectionsDialogClosed" />
+                            <MenuAddDialog v-if="currentCollectionStore == 'menu'" :title="$t('menu.add-multiple')" :items="currentCocktailIds" :menu-item-type="'cocktail'" @menu-add-dialog-closed="handleCollectionsDialogClosed" />
                         </template>
                     </SaltRimDialog>
                     <button v-show="totalActiveRefinements > 0" type="button" class="button button--input" :title="$t('clear-filters')" @click.prevent="clearRefinements">
@@ -131,6 +136,7 @@ import CocktailGridItem from './CocktailGridItem.vue'
 import CocktailGridContainer from './CocktailGridContainer.vue'
 import PageHeader from './../PageHeader.vue'
 import Refinement from './../Search/SearchRefinement.vue'
+import MenuAddDialog from '../Menu/MenuAddDialog.vue'
 import Pagination from './../Search/SearchPagination.vue'
 import CollectionDialog from './../Collections/CollectionDialog.vue'
 import SaltRimDialog from './../Dialog/SaltRimDialog.vue'
@@ -152,6 +158,7 @@ export default {
         Pagination,
         EmptyState,
         FilterIngredientsModal,
+        MenuAddDialog,
     },
     data() {
         return {
@@ -165,6 +172,7 @@ export default {
             favorites: [],
             searchQuery: null,
             sort: 'created_at',
+            currentCollectionStore: 'collection',
             sort_dir: '-',
             meta: {},
             queryTimer: null,
@@ -615,3 +623,15 @@ export default {
     }
 }
 </script>
+<style scoped>
+.add-to-collection__tabs {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+    margin-top: 1rem;
+
+    button {
+        width: 100%;
+    }
+}
+</style>

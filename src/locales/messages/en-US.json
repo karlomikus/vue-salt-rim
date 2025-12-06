@@ -506,7 +506,7 @@
     "add-cocktail": "Add cocktail",
     "price": "Price",
     "currency": "Currency",
-    "copy-currency": "Copy currency to all cocktails",
+    "copy-currency": "Copy currency to all entries",
     "cocktail-added": "Entry \"{name}\" added to menu",
     "category-added": "Menu category added",
     "delete-category-confirm": "This will delete \"{name}\" menu category",
