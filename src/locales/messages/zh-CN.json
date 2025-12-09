@@ -89,7 +89,9 @@
     "format-copy-failed": "文本复制失败",
     "copy-md": "复制为 Markdown",
     "copy-xml": "复制为 XML",
-    "copy-json-ld": "复制 JSON+LD 架构"
+    "copy-json-ld": "复制 JSON+LD 架构",
+    "manual-copy-title": "Copy text manually",
+    "manual-copy-description": "Automatic copying failed. Please copy the text below manually:"
   },
   "settings": "设置",
   "logout": "退出登录",
