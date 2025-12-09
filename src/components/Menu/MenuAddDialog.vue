@@ -92,12 +92,23 @@ const saveAndClose = async () => {
 
     isLoading.value = true
     try {
-        const existingCategory = newCategoryName.value ? findCategoryByName(newCategoryName.value) : null
-        const existingCategoryLastSort = existingCategory ? existingCategory.items.reduce((max, item) => item.sort > max ? item.sort : max, 0) : 0
+        // Determine the target category name
+        const targetCategoryName = newCategoryName.value || existingSelectedCategoryName.value || 'Uncategorized'
+
+        // Find if the target category already exists
+        const targetCategory = findCategoryByName(targetCategoryName)
+
+        // Calculate the starting sort value for new items in the target category
+        const startingSortValue = targetCategory
+            ? targetCategory.items.reduce((max, item) => item.sort > max ? item.sort : max, 0) + 1
+            : 1
+
+        // Guess currency from existing menu items
         const guessedCurrency = menu.value.categories.length > 0 && menu.value.categories[0].items.length > 0
             ? menu.value.categories[0].items[0].price.currency
             : 'EUR'
 
+        // Filter out items that are already in the menu and create new menu item requests
         const newItems = props.items.filter(itemId => {
             // If item is already in menu, skip it
             for (const category of menu.value!.categories) {
@@ -108,12 +119,13 @@ const saveAndClose = async () => {
         }).map((itemId, idx): MenuItemRequest => ({
             id: itemId,
             type: props.menuItemType,
-            category_name: newCategoryName.value || existingSelectedCategoryName.value || 'Uncategorized',
-            sort: existingCategoryLastSort + idx + 1,
+            category_name: targetCategoryName,
+            sort: startingSortValue + idx,
             price: 0.0,
             currency: guessedCurrency,
         }))
 
+        // Map all existing items to preserve their current state
         const existingItems = menu.value.categories.flatMap(cat => {
             return cat.items.map(item => ({
                 id: item.id,
@@ -129,7 +141,6 @@ const saveAndClose = async () => {
             is_enabled: menu.value.is_enabled,
             items: existingItems.concat(newItems),
         } as MenuRequest
-
 
         await BarAssistantClient.updateMenu(postData)
         emits('menuAddDialogClosed')
