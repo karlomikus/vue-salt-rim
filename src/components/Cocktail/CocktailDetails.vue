@@ -32,6 +32,7 @@ import WakeLockToggle from '../WakeLockToggle.vue'
 import IconMore from '../Icons/IconMore.vue'
 import CocktailIngredientView from './CocktailIngredient.vue'
 import CocktailVarieties from './CocktailVarieties.vue'
+import MenuAddDialog from '../Menu/MenuAddDialog.vue'
 
 type Cocktail = components["schemas"]["Cocktail"]
 type Note = components["schemas"]["Note"]
@@ -55,6 +56,7 @@ const isFavorited = ref(false)
 const showNoteDialog = ref(false)
 const showCollectionDialog = ref(false)
 const showPublicDialog = ref(false)
+const showAddToMenuDialog = ref(false)
 const targetVolumeToScaleTo = ref<null|number>(null)
 const targetVolumeDilution = ref(0)
 const currentBatchType = ref('servings')
@@ -504,6 +506,20 @@ fetchShoppingList()
                                 </template>
                                 <template #dialog>
                                     <CollectionDialog :title="t('collections.add-to')" :cocktails="[cocktail.id]" @collection-dialog-closed="showCollectionDialog = false; fetchCocktail(cocktail.slug)" />
+                                </template>
+                            </SaltRimDialog>
+                            <SaltRimDialog v-model="showAddToMenuDialog">
+                                <template #trigger>
+                                    <a class="dropdown-menu__item" href="#" @click.prevent="showAddToMenuDialog = !showAddToMenuDialog">
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18">
+                                            <path fill="none" d="M0 0h24v24H0z" />
+                                            <path d="M12.414 5H21a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h7.414l2 2zM4 5v14h16V7h-8.414l-2-2H4zm7 7V9h2v3h3v2h-3v3h-2v-3H8v-2h3z" />
+                                        </svg>
+                                        {{ t('menu.add-single') }}
+                                    </a>
+                                </template>
+                                <template #dialog>
+                                    <MenuAddDialog :title="$t('menu.add-multiple')" :items="[cocktail.id]" :menu-item-type="'cocktail'" @menu-add-dialog-closed="showAddToMenuDialog = false" />
                                 </template>
                             </SaltRimDialog>
                             <SaltRimDialog v-if="cocktail.access && cocktail.access.can_add_note" v-model="showNoteDialog">

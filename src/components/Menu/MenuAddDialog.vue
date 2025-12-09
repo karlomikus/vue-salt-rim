@@ -5,24 +5,24 @@
         <div class="dialog-content">
             <form action="">
                 <div class="form-group">
-                    <label class="form-label" for="dialog-collection-id">{{ $t('menu.category-title') }}:</label>
+                    <label class="form-label" for="dialog-collection-id">{{ t('menu.category-title') }}:</label>
                     <select id="dialog-collection-id" v-model="existingSelectedCategoryName" class="form-select">
-                        <option :value="null"> - {{ $t('menu.add-category') }} - </option>
+                        <option :value="null"> - {{ t('menu.add-category') }} - </option>
                         <option v-for="category in menuCategories" :key="category.name" :value="category.name">{{ category.name }}</option>
                     </select>
                 </div>
                 <template v-if="!existingSelectedCategoryName">
                     <div class="form-group">
-                        <label class="form-label" for="dialog-collection-name">{{ $t('name') }}:</label>
+                        <label class="form-label" for="dialog-collection-name">{{ t('name') }}:</label>
                         <input id="dialog-collection-name" v-model="newCategoryName" class="form-input" type="text" ref="collectionName">
                     </div>
                 </template>
             </form>
         </div>
         <div class="dialog-actions" style="margin-top: 1rem;">
-            <button type="button" class="button button--outline" @click="$emit('menuAddDialogClosed')">{{ $t('cancel') }}</button>
-            <button type="button" class="button button--dark" @click="saveAndClose">
-                {{ $t('menu.add-to') }} <template v-if="items.length > 1">({{ items.length }} {{ $t('menu.menu-items') }})</template>
+            <button type="button" class="button button--outline" @click="$emit('menuAddDialogClosed')">{{ t('cancel') }}</button>
+            <button type="button" class="button button--dark" @click="saveAndClose" :disabled="isLoading || (!existingSelectedCategoryName && !newCategoryName)">
+                {{ t('menu.add-to') }} <template v-if="items.length > 1">({{ items.length }} {{ t('menu.menu-items') }})</template>
             </button>
         </div>
     </div>
@@ -33,11 +33,16 @@ import BarAssistantClient from '@/api/BarAssistantClient';
 import OverlayLoader from './../OverlayLoader.vue'
 import { computed, ref } from 'vue';
 import type { components } from '@/api/api'
+import { useI18n } from 'vue-i18n';
+import { useSaltRimToast } from '@/composables/toast'
 
 type Menu = components['schemas']['Menu']
 type MenuRequest = components['schemas']['MenuRequest']
 type MenuItemRequest = components['schemas']['MenuRequest']['items'][0]
 type MenuCategories = components['schemas']['Menu']['categories']
+
+const { t } = useI18n()
+const toast = useSaltRimToast()
 
 const props = defineProps<{
     items: number[],
@@ -128,8 +133,9 @@ const saveAndClose = async () => {
 
         await BarAssistantClient.updateMenu(postData)
         emits('menuAddDialogClosed')
+        toast.default(t('menu.saved'))
     } catch (e: any) {
-        console.error(e.message)
+        toast.error(e.message)
     } finally {
         isLoading.value = false
     }
