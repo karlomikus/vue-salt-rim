@@ -89,7 +89,9 @@
     "format-copy-failed": "Kunde inte kopiera",
     "copy-md": "Kopiera som Markdown",
     "copy-xml": "Kopiera som XML",
-    "copy-json-ld": "Kopiera JSON+LD schema"
+    "copy-json-ld": "Kopiera JSON+LD schema",
+    "manual-copy-title": "Copy text manually",
+    "manual-copy-description": "Automatic copying failed. Please copy the text below manually:"
   },
   "settings": "Inställningar",
   "logout": "Logga ut",
