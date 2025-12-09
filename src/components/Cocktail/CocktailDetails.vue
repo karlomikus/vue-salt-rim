@@ -57,6 +57,8 @@ const showNoteDialog = ref(false)
 const showCollectionDialog = ref(false)
 const showPublicDialog = ref(false)
 const showAddToMenuDialog = ref(false)
+const showManualCopyDialog = ref(false)
+const manualCopyText = ref('')
 const targetVolumeToScaleTo = ref<null|number>(null)
 const targetVolumeDilution = ref(0)
 const currentBatchType = ref('servings')
@@ -294,10 +296,13 @@ function shareFromFormat(format: string) {
     isLoadingShare.value = true
     BarAssistantClient.shareCocktail(cocktail.value.slug, { type: format, units: currentUnit.value }).then(resp => {
         isLoadingShare.value = false
-        navigator.clipboard.writeText(resp?.data?.content ?? '').then(() => {
+        const content = resp?.data?.content ?? ''
+        navigator.clipboard.writeText(content).then(() => {
             toast.default(t('share.format-copied'))
         }, () => {
-            toast.error(t('share.format-copy-failed'))
+            // Show manual copy dialog when clipboard fails
+            manualCopyText.value = content
+            showManualCopyDialog.value = true
         })
     })
 }
@@ -688,6 +693,22 @@ fetchShoppingList()
                 </div>
             </div>
         </article>
+        <SaltRimDialog v-model="showManualCopyDialog">
+            <template #trigger>
+                <span></span>
+            </template>
+            <template #dialog>
+                <div class="dialog-title">{{ t('share.manual-copy-title') }}</div>
+                <p>{{ t('share.manual-copy-description') }}</p>
+                <textarea
+                    class="form-input"
+                    :value="manualCopyText"
+                    readonly
+                    autofocus
+                    style="height: 300px;"
+                ></textarea>
+            </template>
+        </SaltRimDialog>
     </div>
 </template>
 

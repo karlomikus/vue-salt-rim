@@ -89,7 +89,9 @@
     "format-copy-failed": "Copia del testo non riuscita",
     "copy-md": "Copia come Markdown",
     "copy-xml": "Copia come XML",
-    "copy-json-ld": "Copia schema JSON+LD"
+    "copy-json-ld": "Copia schema JSON+LD",
+    "manual-copy-title": "Copia il testo manualmente",
+    "manual-copy-description": "La copia automatica non è riuscita. Si prega di copiare manualmente il testo qui sotto:"
   },
   "settings": "Impostazioni",
   "logout": "Esci",

@@ -89,7 +89,9 @@
     "format-copy-failed": "Error al copiar texto",
     "copy-md": "Copiar como Markdown",
     "copy-xml": "Copiar como XML",
-    "copy-json-ld": "Copiar esquema JSON+LD"
+    "copy-json-ld": "Copiar esquema JSON+LD",
+    "manual-copy-title": "Copiar texto manualmente",
+    "manual-copy-description": "El copiado automático falló. Por favor, copie el texto a continuación manualmente:"
   },
   "settings": "Ajustes",
   "logout": "Cerrar sesión",

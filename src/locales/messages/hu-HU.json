@@ -89,7 +89,9 @@
     "format-copy-failed": "Text copy failed",
     "copy-md": "Copy as Markdown",
     "copy-xml": "Copy as XML",
-    "copy-json-ld": "Copy JSON+LD schema"
+    "copy-json-ld": "Copy JSON+LD schema",
+    "manual-copy-title": "Szöveg kézi másolása",
+    "manual-copy-description": "Az automatikus másolás sikertelen. Kérjük, másolja ki az alábbi szöveget kézzel:"
   },
   "settings": "Settings",
   "logout": "Logout",

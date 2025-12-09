@@ -89,7 +89,9 @@
     "format-copy-failed": "Tekst kopiëren mislukt",
     "copy-md": "Kopiëren als Markdown",
     "copy-xml": "Kopiëren als XML",
-    "copy-json-ld": "Kopieer JSON+LD-schema"
+    "copy-json-ld": "Kopieer JSON+LD-schema",
+    "manual-copy-title": "Tekst handmatig kopiëren",
+    "manual-copy-description": "Automatisch kopiëren is mislukt. Kopieer de onderstaande tekst handmatig:"
   },
   "settings": "Instellingen",
   "logout": "Uitloggen",
