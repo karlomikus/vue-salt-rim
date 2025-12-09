@@ -89,7 +89,9 @@
     "format-copy-failed": "Text copy failed",
     "copy-md": "Copy as Markdown",
     "copy-xml": "Copy as XML",
-    "copy-json-ld": "Copy JSON+LD schema"
+    "copy-json-ld": "Copy JSON+LD schema",
+    "manual-copy-title": "Αντιγραφή κειμένου χειροκίνητα",
+    "manual-copy-description": "Η αυτόματη αντιγραφή απέτυχε. Παρακαλώ αντιγράψτε το παρακάτω κείμενο χειροκίνητα:"
   },
   "settings": "Settings",
   "logout": "Logout",

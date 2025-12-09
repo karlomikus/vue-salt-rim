@@ -89,7 +89,9 @@
     "format-copy-failed": "Kopiranje teksta nije uspjelo",
     "copy-md": "Kopiraj u Markdown formatu",
     "copy-xml": "Kopiraj kao XML",
-    "copy-json-ld": "Kopiraj kao JSON+LD"
+    "copy-json-ld": "Kopiraj kao JSON+LD",
+    "manual-copy-title": "Kopiraj tekst ručno",
+    "manual-copy-description": "Automatsko kopiranje nije uspjelo. Molimo kopirajte tekst ispod ručno:"
   },
   "settings": "Postavke",
   "logout": "Odjava",

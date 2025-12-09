@@ -89,7 +89,9 @@
     "format-copy-failed": "Kopírování textu se nezdařilo",
     "copy-md": "Kopírovat jako Markdown",
     "copy-xml": "Kopírovat jako XML",
-    "copy-json-ld": "KOpírovaz JSON+LD schéma"
+    "copy-json-ld": "KOpírovaz JSON+LD schéma",
+    "manual-copy-title": "Zkopírovat text ručně",
+    "manual-copy-description": "Automatické kopírování se nezdařilo. Zkopírujte prosím text níže ručně:"
   },
   "settings": "Nastavení",
   "logout": "Odhlásit se",
