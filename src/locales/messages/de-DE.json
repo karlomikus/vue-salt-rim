@@ -79,7 +79,8 @@
     "used-in-substitutes": "+{total} als Ersatzprodukt",
     "default-units-help": "Wird zum automatischen Ausfüllen von Einheiten bei der Auswahl von Zutaten für Cocktailrezepte verwendet",
     "icicle-graph": "Hierarchisches Balkendiagramm",
-    "csv-import-started": "CSV-Import gestartet"
+    "csv-import-started": "CSV-Import gestartet",
+    "potential-bar-shelf-cocktails": "Potential bar cocktails"
   },
   "share": {
     "title": "Teilen",
@@ -641,7 +642,8 @@
   "scale-recipe": "Rezeptmengen anpassen",
   "target-volume-dilution-help": "Mit {total} Wasser verdünnen",
   "bar_shelf": {
-    "cocktails": "Bar-Regal Cocktails"
+    "cocktails": "Bar cocktails",
+    "locked_cocktails": "Locked bar cocktails"
   },
   "bar-shelf-ingredients": "Bar-Regal Zutaten",
   "target-pour-cost": "Angestrebte Kosten",
