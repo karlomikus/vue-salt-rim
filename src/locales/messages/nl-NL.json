@@ -79,7 +79,8 @@
     "used-in-substitutes": "+{total} als vervanging",
     "default-units-help": "Wordt gebruikt om eenheden automatisch in te vullen bij het selecteren van ingrediënt voor cocktail recept",
     "icicle-graph": "Ijspegel schema",
-    "csv-import-started": "CSV import started"
+    "csv-import-started": "CSV import started",
+    "potential-bar-shelf-cocktails": "Potential bar cocktails"
   },
   "share": {
     "title": "Delen",
@@ -641,7 +642,8 @@
   "scale-recipe": "Recept schalen",
   "target-volume-dilution-help": "Verdun met {total} water",
   "bar_shelf": {
-    "cocktails": "Bar plank cocktails"
+    "cocktails": "Bar cocktails",
+    "locked_cocktails": "Locked bar cocktails"
   },
   "bar-shelf-ingredients": "Bar plank ingrediënten",
   "target-pour-cost": "Doel voor kosten",
