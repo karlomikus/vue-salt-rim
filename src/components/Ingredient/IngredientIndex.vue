@@ -39,6 +39,7 @@
                         <option value="created_at">{{ $t('date-added') }}</option>
                         <option value="strength">{{ $t('strength') }}</option>
                         <option value="total_cocktails">{{ $t('total.cocktails') }}</option>
+                        <option value="potential_bar_shelf_cocktails">{{ $t('ingredient.potential-bar-shelf-cocktails') }}</option>
                     </select>
                     <select v-model="sortDir" class="form-select" @change="updateRouterPath">
                         <option disabled>{{ $t('sort-direction') }}:</option>
