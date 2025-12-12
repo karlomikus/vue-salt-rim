@@ -79,7 +79,8 @@
     "used-in-substitutes": "+{total} 作为替补",
     "default-units-help": "用于在选择鸡尾酒配方的配料时自动填充单位",
     "icicle-graph": "冰柱图",
-    "csv-import-started": "CSV 导入已开始"
+    "csv-import-started": "CSV 导入已开始",
+    "potential-bar-shelf-cocktails": "Potential bar cocktails"
   },
   "share": {
     "title": "分享",
@@ -641,7 +642,8 @@
   "scale-recipe": "缩放配方",
   "target-volume-dilution-help": "加水稀释 {total}",
   "bar_shelf": {
-    "cocktails": "酒吧货架鸡尾酒"
+    "cocktails": "Bar cocktails",
+    "locked_cocktails": "Locked bar cocktails"
   },
   "bar-shelf-ingredients": "酒吧货架配料",
   "target-pour-cost": "目标倒酒成本",
