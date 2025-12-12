@@ -181,6 +181,7 @@ export default {
             availableRefinements: {
                 global: [
                     { name: this.$t('bar_shelf.cocktails'), active: false, id: 'bar_shelf' },
+                    { name: this.$t('bar_shelf.locked_cocktails'), active: false, id: 'locked_bar_cocktails' },
                     { name: this.$t('shelf.cocktails'), active: false, id: 'on_shelf' },
                     { name: this.$t('my-favorites'), active: false, id: 'favorites' },
                     { name: this.$t('cocktail.shared'), active: false, id: 'is_public' },
@@ -477,6 +478,7 @@ export default {
             this.activeFilters.created_user_id = state.filter && state.filter.created_user_id ? String(state.filter.created_user_id).split(',') : []
             this.activeFilters.on_shelf = state.filter && state.filter.on_shelf ? state.filter.on_shelf : null
             this.activeFilters.bar_shelf = state.filter && state.filter.bar_shelf ? state.filter.bar_shelf : null
+            this.activeFilters.locked_bar_cocktails = state.filter && state.filter.locked_bar_cocktails ? state.filter.locked_bar_cocktails : null
             this.activeFilters.favorites = state.filter && state.filter.favorites ? state.filter.favorites : null
             this.activeFilters.is_public = state.filter && state.filter.is_public ? state.filter.is_public : null
             this.activeFilters.total_ingredients = state.filter && state.filter.total_ingredients ? state.filter.total_ingredients : null
@@ -517,6 +519,7 @@ export default {
                 name: (this.searchQuery != null && this.searchQuery != '') ? this.searchQuery : null,
                 on_shelf: this.activeFilters.on_shelf,
                 bar_shelf: this.activeFilters.bar_shelf,
+                locked_bar_cocktails: this.activeFilters.locked_bar_cocktails,
                 favorites: this.activeFilters.favorites,
                 is_public: this.activeFilters.is_public,
                 user_rating_min: this.activeFilters.user_rating_min ? this.activeFilters.user_rating_min : null,
@@ -577,6 +580,7 @@ export default {
             this.activeFilters = {
                 on_shelf: false,
                 bar_shelf: false,
+                locked_bar_cocktails: false,
                 favorites: false,
                 is_public: false,
                 tag_id: [],
