@@ -16,7 +16,8 @@
     "title": "Dispensa",
     "cocktails": "Cocktail che posso fare",
     "bar-stats": "Bar statistics",
-    "recommended-cocktails": "Cocktail consigliati"
+    "recommended-cocktails": "Cocktail consigliati",
+    "locked_cocktails": "Cocktails I can't make"
   },
   "server-error": "Errore inatteso del server",
   "ingredient": {
