@@ -25,19 +25,19 @@
     "add": "Ingrediënt toevoegen",
     "on-shopping-list": "U heeft dit ingrediënt(e)n op de boodschappenlijst",
     "add-to-shelf": "Toevoegen aan plank",
-    "remove-from-shelf": "Verwijder van plank",
+    "remove-from-shelf": "Verwijderen van uw plank",
     "add-to-list": "Toevoegen aan boodschappenlijst",
     "remove-from-list": "Verwijder uit boodschappenlijst",
     "update-success": "Ingrediënt succesvol bijgewerkt",
     "create-success": "Ingrediënt succesvol aangemaakt",
-    "name-placeholder": "Not selected",
+    "name-placeholder": "Niet geselecteerd",
     "delete-confirm": "Dit verwijdert het ingrediënt permanent met de naam \"{name}\". Deze actie wijzigt {total} cocktail recepten.",
     "shelf-remove-success": "Verwijderde \"{name}\" van uw plank",
     "shelf-add-success": "Toegevoegd \"{name}\" aan uw plank",
     "list-remove-success": "\"{name}\" verwijderd van uw boodschappenlijst",
     "list-add-success": "Toegevoegd \"{name}\" aan uw boodschappenlijst",
     "spotlight": "Ingrediënt spotlight",
-    "is-variety": "Ingredient is variant of another ingredient",
+    "is-variety": "Ingrediënt is variëteit van een ander ingrediënt",
     "information": "Ingrediënt informatie",
     "extra-cocktails": "Toevoegen aan de plank en je kunt maken",
     "clone-as-variety": "Duplicate as variant",
@@ -79,7 +79,8 @@
     "used-in-substitutes": "+{total} als vervanging",
     "default-units-help": "Wordt gebruikt om eenheden automatisch in te vullen bij het selecteren van ingrediënt voor cocktail recept",
     "icicle-graph": "Ijspegel schema",
-    "csv-import-started": "CSV import started"
+    "csv-import-started": "CSV import started",
+    "potential-bar-shelf-cocktails": "Potential bar cocktails"
   },
   "share": {
     "title": "Delen",
@@ -128,7 +129,7 @@
   },
   "latest": {
     "cocktails": "Nieuwste cocktails",
-    "favorites": "Recent favorites",
+    "favorites": "Uw recente favorieten",
     "ingredients": "Nieuwste ingrediënten"
   },
   "strength": "Sterkte",
@@ -139,7 +140,7 @@
   "medium": "Middel",
   "strong": "Hoog",
   "welcome-user": "Welkom {name}",
-  "your-shopping-list": "Shopping list",
+  "your-shopping-list": "Je boodschappenlijst",
   "missing.ingredients": "Ingrediënten die u mist worden hier getoond.",
   "all-ingredients": "Alle ingrediënten",
   "find-cocktails": "Vind cocktails",
@@ -264,7 +265,7 @@
   "clear-filters": "Alle filters verwijderen",
   "rating-removed": "Verwijder cocktail beoordeling",
   "rating-rated": "Cocktail met {rating} sterren",
-  "shelf-ingredients": "Bar plank ingrediënten",
+  "shelf-ingredients": "Mijn plank ingrediënten",
   "shopping-list-ingredients": "Winkelwagen met ingrediënten",
   "notes": "Notities",
   "collection-shared": "Gedeeld met bar",
@@ -324,9 +325,9 @@
     "title": "Zoeken",
     "results-per-page": "Per pagina",
     "empty": "Geen resultaten gevonden voor de term \"{term}\".",
-    "ignore-ingredients": "Ignored ingredients",
+    "ignore-ingredients": "Negeer ingrediënten",
     "select-ingredients-to-ignore": "Selecteer ingrediënten om te negeren",
-    "ingredients": "Specified ingredients",
+    "ingredients": "Specifieke ingrediënten",
     "select-specific-ingredients": "Kies specifieke ingrediënten"
   },
   "subtitle": "Subtitel",
@@ -435,7 +436,7 @@
     "type-ai-description": "Import from plain text recipe using AI",
     "type-bookmarklet-description": "Create a bookmarklet to generate JSON format",
     "type-html-description": "Import from raw HTML format",
-    "notice": "Bestaande ingrediënten, methoden en glaswerk worden gekoppeld aan hun naam (hoofdletter ongevoelig). Als het ingrediënt niet bestaat, zal het worden aangemaakt. Veelvoorkomende eenheden worden automatisch omgezet in \"ml\". Afhankelijk van de grootte van de collectie, kan importeren een paar minuten duren.",
+    "notice": "Bestaande ingrediënten, methoden en glaswerk worden op naam gevonden (hoofdlettergevoelig). Als een ingrediënt niet bestaat, wordt het aangemaakt.",
     "type-csv-text-title": "CSV tekst",
     "type-csv-text-description": "Importeren door de CSV-structuur te plakken",
     "type-csv-file-title": "CSV bestand",
@@ -526,12 +527,16 @@
     "clear-category": "Categorie leegmaken",
     "add-shelf-cocktails": "Voeg ontbrekende cocktails toe aan bar plank",
     "export": "Exporteer als csv",
-    "added-multiple-cocktails": "Meerdere cocktails toegevoegd"
+    "added-multiple-cocktails": "Meerdere cocktails toegevoegd",
+    "add-to": "Add to menu category",
+    "menu-items": "entries",
+    "add-multiple": "Add entries to menu",
+    "add-single": "Add to menu"
   },
   "bar": {
     "url": "Aangepaste bar URL",
     "url-help": "Uw publieke bar-URL wordt: {url}",
-    "url-menu-hint": "Used for public access if enabled.",
+    "url-menu-hint": "Gebruikt voor publiek menu als dit is ingeschakeld.",
     "default-currency-hint": "Wordt gebruikt als standaard valuta suggestie, kan op elk moment worden gewijzigd.",
     "default-units-hint": "Gebruikt als standaard eenheden op cocktail details, kan op elk moment gewijzigd worden."
   },
@@ -637,7 +642,8 @@
   "scale-recipe": "Recept schalen",
   "target-volume-dilution-help": "Verdun met {total} water",
   "bar_shelf": {
-    "cocktails": "Bar plank cocktails"
+    "cocktails": "Bar cocktails",
+    "locked_cocktails": "Locked bar cocktails"
   },
   "bar-shelf-ingredients": "Bar plank ingrediënten",
   "target-pour-cost": "Doel voor kosten",
@@ -721,7 +727,7 @@
   "profile-public-shelf-description": "Andere bar kunnen filteren op cocktails die je in je plank hebt",
   "sort-random": "In willekeurige volgorde",
   "cocktails-varieties": "Variëteiten",
-  "cocktail-variety-of": "Cocktail is variant of",
+  "cocktail-variety-of": "Cocktail is variëteit van",
   "cocktail-select-parent": "Selecteer hoofd cocktail",
   "year": "Jaar"
 }

@@ -30,7 +30,7 @@
     "remove-from-list": "Odstranit z nákupního seznamu",
     "update-success": "Surovina byla úspěšně aktualizována",
     "create-success": "Surovina byla úspěšně vytvořena",
-    "name-placeholder": "Nevybrané",
+    "name-placeholder": "<Not selected>",
     "delete-confirm": "Toto nenávratně odstraní ingredienci s názvem \"{name}\". Tento krok upraví {total} koktejlových receptů.",
     "shelf-remove-success": "Odstraněno \"{name}\" z Vaší poličky",
     "shelf-add-success": "Přidáno \"{name}\" do Vaší poličky",
@@ -79,7 +79,8 @@
     "used-in-substitutes": "+{total} jako náhrada",
     "default-units-help": "Používá se pro automatické vyplňování jednotek při výběru ingredience pro recept na koktejl",
     "icicle-graph": "Icicle chart",
-    "csv-import-started": "Import CSV byl spuštěn"
+    "csv-import-started": "Import CSV byl spuštěn",
+    "potential-bar-shelf-cocktails": "Potential bar cocktails"
   },
   "share": {
     "title": "Sdílet",
@@ -128,7 +129,7 @@
   },
   "latest": {
     "cocktails": "Poslední koktejly",
-    "favorites": "Recent favorites",
+    "favorites": "Vaše nedávné oblíbené",
     "ingredients": "Poslední ingredience"
   },
   "strength": "Síla",
@@ -139,7 +140,7 @@
   "medium": "Střední",
   "strong": "Silné",
   "welcome-user": "Vítejte {name}",
-  "your-shopping-list": "Shopping list",
+  "your-shopping-list": "Váš nákupní seznam",
   "missing.ingredients": "Zde budou zobrazeny ingredience, které Vám chybí.",
   "all-ingredients": "Všechny suroviny",
   "find-cocktails": "Najít koktejly",
@@ -324,9 +325,9 @@
     "title": "Search",
     "results-per-page": "Per page",
     "empty": "No results found for term \"{term}\".",
-    "ignore-ingredients": "Ignored ingredients",
+    "ignore-ingredients": "Ignore ingredients",
     "select-ingredients-to-ignore": "Select ingredients to ignore",
-    "ingredients": "Specified ingredients",
+    "ingredients": "Specific ingredients",
     "select-specific-ingredients": "Select specific ingredients"
   },
   "subtitle": "Subtitle",
@@ -435,7 +436,7 @@
     "type-ai-description": "Import from plain text recipe using AI",
     "type-bookmarklet-description": "Create a bookmarklet to generate JSON format",
     "type-html-description": "Import from raw HTML format",
-    "notice": "Existing ingredients, methods and glassware will be matched by their name (case insensitive). If ingredient does not exist, it will be created.",
+    "notice": "Existing ingredients, methods and glassware will be matched by their name (case insensitive). If ingredient does not exist, it will be created. Common units are automatically converted to \"ml\". Depending on collection size, importing can take a few minutes.",
     "type-csv-text-title": "CSV text",
     "type-csv-text-description": "Import by pasting the CSV structure",
     "type-csv-file-title": "CSV file",
@@ -526,12 +527,16 @@
     "clear-category": "Clear category",
     "add-shelf-cocktails": "Add missing cocktails from bar shelf",
     "export": "Export as csv",
-    "added-multiple-cocktails": "Added multiple cocktails"
+    "added-multiple-cocktails": "Added multiple cocktails",
+    "add-to": "Add to menu category",
+    "menu-items": "entries",
+    "add-multiple": "Add entries to menu",
+    "add-single": "Add to menu"
   },
   "bar": {
     "url": "Custom bar URL",
     "url-help": "Your public bar URL will be: {url}",
-    "url-menu-hint": "Used for public access if enabled.",
+    "url-menu-hint": "Used for public menu if enabled.",
     "default-currency-hint": "Used as default currency suggestion, can be changed anytime.",
     "default-units-hint": "Used as default units on cocktail details, can be changed anytime."
   },
@@ -637,7 +642,8 @@
   "scale-recipe": "Scale recipe",
   "target-volume-dilution-help": "Dilute with {total} of water",
   "bar_shelf": {
-    "cocktails": "Bar shelf cocktails"
+    "cocktails": "Bar cocktails",
+    "locked_cocktails": "Locked bar cocktails"
   },
   "bar-shelf-ingredients": "Bar shelf ingredients",
   "target-pour-cost": "Target pour cost",
@@ -721,7 +727,7 @@
   "profile-public-shelf-description": "Other bar members will be able to filter by cocktails you have in your shelf",
   "sort-random": "In random order",
   "cocktails-varieties": "Varieties",
-  "cocktail-variety-of": "Cocktail is variant of",
+  "cocktail-variety-of": "Cocktail is variety of",
   "cocktail-select-parent": "Select parent cocktail",
   "year": "Year"
 }

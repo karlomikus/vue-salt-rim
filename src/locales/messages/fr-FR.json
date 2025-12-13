@@ -24,20 +24,20 @@
     "main": "Ingrédient principal",
     "add": "Ajouter un ingrédient",
     "on-shopping-list": "Vous avez cet ingrédient sur la liste de courses",
-    "add-to-shelf": "Ajouter à l'étagère",
-    "remove-from-shelf": "Enlever de l'étagère",
+    "add-to-shelf": "Ajouter à l’étagère",
+    "remove-from-shelf": "Retirer de l’étagère",
     "add-to-list": "Ajouter à la liste de courses",
     "remove-from-list": "Supprimer de la liste de courses",
     "update-success": "Ingrédient mis à jour avec succès",
     "create-success": "Ingrédient créé avec succès",
-    "name-placeholder": "Non sélectionné",
+    "name-placeholder": "<Non sélectionné>",
     "delete-confirm": "Cela supprimera définitivement l’ingrédient avec le nom \"{name}\". Cette action aura un impact sur {total} cocktails.",
     "shelf-remove-success": "Retiré \"{name}\" de votre étagère",
     "shelf-add-success": "Ajouté \"{name}\" à votre étagère",
     "list-remove-success": "Supprimé \"{name}\" de votre liste de courses",
     "list-add-success": "Ajout de \"{name}\" à votre liste de courses",
     "spotlight": "Ingrédient principal",
-    "is-variety": "Ingredient is variant of another ingredient",
+    "is-variety": "L’ingrédient est la variété d’un autre ingrédient",
     "information": "Informations sur les ingrédients",
     "extra-cocktails": "Ajouter à l'étagère et vous pouvez faire",
     "clone-as-variety": "Duplicate as variant",
@@ -79,7 +79,8 @@
     "used-in-substitutes": "+{total} en substitut",
     "default-units-help": "Utilisé pour remplir automatiquement les unités sélectionnant les ingrédients pour les recettes de cocktail",
     "icicle-graph": "Histogramme",
-    "csv-import-started": "Importation des fichiers CSV en cours"
+    "csv-import-started": "Importation des fichiers CSV en cours",
+    "potential-bar-shelf-cocktails": "Potential bar cocktails"
   },
   "share": {
     "title": "Partager",
@@ -264,7 +265,7 @@
   "clear-filters": "Effacer tous les filtres",
   "rating-removed": "Suppression de la note cocktail",
   "rating-rated": "Cocktail noté avec {rating} étoiles",
-  "shelf-ingredients": "Ingrédients sur l'étagère",
+  "shelf-ingredients": "Ingrédients de rayon",
   "shopping-list-ingredients": "Ingrédients de la liste de courses",
   "notes": "Remarques",
   "collection-shared": "Partagé avec le bar",
@@ -324,9 +325,9 @@
     "title": "Rechercher",
     "results-per-page": "Par page",
     "empty": "Aucun résultat trouvé pour le terme \"{term}\".",
-    "ignore-ingredients": "Ignored ingredients",
+    "ignore-ingredients": "Ignorer les ingrédients",
     "select-ingredients-to-ignore": "Sélectionnez les ingrédients à ignorer",
-    "ingredients": "Specified ingredients",
+    "ingredients": "Ingrédients spécifiques",
     "select-specific-ingredients": "Sélectionner des ingrédients spécifiques"
   },
   "subtitle": "Sous-titre",
@@ -435,7 +436,7 @@
     "type-ai-description": "Importer depuis le texte brut de la recette en utilisant l'IA",
     "type-bookmarklet-description": "Créer un bookmarklet pour générer au format JSON",
     "type-html-description": "Importer à partir du format HTML",
-    "notice": "Les ingrédients existants, les méthodes et la verrerie seront classés en fonction de leur nom (fichier insensible). Si un ingrédient n'existe pas, il sera créé. Les unités de mesures traditionnelles seront converties automatiquement en \"ml\". En fonction de la taille de la collection, l'importation peut prendre quelques minutes.",
+    "notice": "Les ingrédients existants et le verre seront assortis par leur nom (insensible à la casse). Si l’ingrédient ou le verre n’existe pas, il sera créé. Les unités communes sont automatiquement converties en \"ml\".",
     "type-csv-text-title": "Texte CSV",
     "type-csv-text-description": "Importer en collant le structure CSV",
     "type-csv-file-title": "Fichier CSV",
@@ -526,12 +527,16 @@
     "clear-category": "Vider la catégorie",
     "add-shelf-cocktails": "Ajouter les cocktails manquants depuis l'étagère du bar",
     "export": "Exporter en CSV",
-    "added-multiple-cocktails": "Ajouté plusieurs cocktails"
+    "added-multiple-cocktails": "Ajouté plusieurs cocktails",
+    "add-to": "Add to menu category",
+    "menu-items": "entries",
+    "add-multiple": "Add entries to menu",
+    "add-single": "Add to menu"
   },
   "bar": {
     "url": "URL personnalisée du bar",
     "url-help": "L'URL publique de votre bar sera : {url}",
-    "url-menu-hint": "Utilisé pour le menu public si cela est autorisé.",
+    "url-menu-hint": "Used for public menu if enabled.",
     "default-currency-hint": "Utilisé comme suggestion de devise par défaut, peut être modifié à tout moment.",
     "default-units-hint": "Utilisé comme unité par défaut pour les détails du cocktail, peut être modifié à tout moment."
   },
@@ -637,7 +642,8 @@
   "scale-recipe": "Échelle de la recette",
   "target-volume-dilution-help": "Dilué avec {total} d'eau",
   "bar_shelf": {
-    "cocktails": "Étagère de cocktails du bar"
+    "cocktails": "Bar cocktails",
+    "locked_cocktails": "Locked bar cocktails"
   },
   "bar-shelf-ingredients": "Étagères d'ingrédient du bar",
   "target-pour-cost": "Cible pour cout",
@@ -721,7 +727,7 @@
   "profile-public-shelf-description": "Les autres membres du bar pourront filtrer en fonction des cocktails disponibles sur votre étagère",
   "sort-random": "Aléatoirement",
   "cocktails-varieties": "Variétés",
-  "cocktail-variety-of": "Cocktail is variant of",
+  "cocktail-variety-of": "Le cocktail est une variété de",
   "cocktail-select-parent": "Sélectionner un cocktail parent",
   "year": "Année"
 }
