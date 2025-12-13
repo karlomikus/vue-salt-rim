@@ -16,7 +16,8 @@
     "title": "货架",
     "cocktails": "我可以制作的鸡尾酒",
     "bar-stats": "酒吧统计",
-    "recommended-cocktails": "推荐的鸡尾酒"
+    "recommended-cocktails": "推荐的鸡尾酒",
+    "locked_cocktails": "Cocktails I can't make"
   },
   "server-error": "预期外的服务器错误",
   "ingredient": {
