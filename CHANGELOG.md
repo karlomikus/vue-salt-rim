@@ -2,6 +2,7 @@
 ## New
 - Show text dialog when environment does not support clipboard API
     - This will show the text to be copied in a dialog so user can manually copy it
+- You can now add multiple cocktails/ingredients to menu from the index page
 
 ## Changes
 - Random cocktail action now uses selected cocktail filters from cocktails page
