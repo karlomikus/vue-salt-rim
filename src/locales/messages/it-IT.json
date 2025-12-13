@@ -642,7 +642,7 @@
   "scale-recipe": "Ricetta in scala",
   "target-volume-dilution-help": "Diluito con {total} di acqua",
   "bar_shelf": {
-    "cocktails": "Bar cocktails",
+    "cocktails": "Cocktail sullo scaffale del bar",
     "locked_cocktails": "Locked bar cocktails"
   },
   "bar-shelf-ingredients": "Ingredienti per lo scaffale del bar",
