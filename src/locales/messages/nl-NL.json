@@ -16,7 +16,8 @@
     "title": "Plank",
     "cocktails": "Cocktails die ik kan maken",
     "bar-stats": "Bar statistieken",
-    "recommended-cocktails": "Aanbevolen cocktails"
+    "recommended-cocktails": "Aanbevolen cocktails",
+    "locked_cocktails": "Cocktails I can't make"
   },
   "server-error": "Unexpected server error",
   "ingredient": {
