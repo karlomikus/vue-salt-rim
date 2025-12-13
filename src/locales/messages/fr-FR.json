@@ -16,7 +16,8 @@
     "title": "Étagère",
     "cocktails": "Cocktails que je peux faire",
     "bar-stats": "Statistiques du bar",
-    "recommended-cocktails": "Cocktails conseillés"
+    "recommended-cocktails": "Cocktails conseillés",
+    "locked_cocktails": "Cocktails I can't make"
   },
   "server-error": "Erreur serveur inattendue",
   "ingredient": {
