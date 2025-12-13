@@ -16,7 +16,8 @@
     "title": "Police",
     "cocktails": "Koktejly, které mohu vyrobit",
     "bar-stats": "Statistiky baru",
-    "recommended-cocktails": "Doporučené koktejly"
+    "recommended-cocktails": "Doporučené koktejly",
+    "locked_cocktails": "Cocktails I can't make"
   },
   "server-error": "Neočekávaná chyba serveru",
   "ingredient": {
