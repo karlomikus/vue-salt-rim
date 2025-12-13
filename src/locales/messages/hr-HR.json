@@ -16,7 +16,8 @@
     "title": "Polica",
     "cocktails": "Kokteli koje mogu napraviti",
     "bar-stats": "Statistike bara",
-    "recommended-cocktails": "Preporučani kokteli"
+    "recommended-cocktails": "Preporučani kokteli",
+    "locked_cocktails": "Cocktails I can't make"
   },
   "server-error": "Unexpected server error",
   "ingredient": {
