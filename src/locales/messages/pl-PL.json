@@ -16,7 +16,8 @@
     "title": "Półka",
     "cocktails": "Koktajle, które mogę zrobić",
     "bar-stats": "Bar statistics",
-    "recommended-cocktails": "Polecane koktajle"
+    "recommended-cocktails": "Polecane koktajle",
+    "locked_cocktails": "Cocktails I can't make"
   },
   "server-error": "Unexpected server error",
   "ingredient": {
