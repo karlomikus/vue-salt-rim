@@ -16,7 +16,8 @@
     "title": "Barra",
     "cocktails": "Cócteles que puedo preparar",
     "bar-stats": "Estadísticas del bar",
-    "recommended-cocktails": "Cócteles recomendados"
+    "recommended-cocktails": "Cócteles recomendados",
+    "locked_cocktails": "Cocktails I can't make"
   },
   "server-error": "Unexpected server error",
   "ingredient": {
