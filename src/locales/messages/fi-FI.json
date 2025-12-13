@@ -16,7 +16,8 @@
     "title": "Hylly",
     "cocktails": "Cocktailit joita voin tehdä",
     "bar-stats": "Baarin tilastot",
-    "recommended-cocktails": "Suositellut cocktailit"
+    "recommended-cocktails": "Suositellut cocktailit",
+    "locked_cocktails": "Cocktails I can't make"
   },
   "server-error": "Odottamaton palvelinvirhe",
   "ingredient": {
