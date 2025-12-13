@@ -16,7 +16,8 @@
     "title": "Regal",
     "cocktails": "Cocktails, die ich mixen kann",
     "bar-stats": "Bar Statistiken",
-    "recommended-cocktails": "Cocktail Empfehlungen"
+    "recommended-cocktails": "Cocktail Empfehlungen",
+    "locked_cocktails": "Cocktails I can't make"
   },
   "server-error": "Unerwarteter Serverfehler",
   "ingredient": {
