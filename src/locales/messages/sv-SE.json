@@ -16,7 +16,8 @@
     "title": "Hylla",
     "cocktails": "Drinkar jag kan skapa",
     "bar-stats": "Bar statistics",
-    "recommended-cocktails": "Recommended cocktails"
+    "recommended-cocktails": "Recommended cocktails",
+    "locked_cocktails": "Cocktails I can't make"
   },
   "server-error": "Unexpected server error",
   "ingredient": {
