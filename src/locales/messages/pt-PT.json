@@ -16,7 +16,8 @@
     "title": "Prateleira",
     "cocktails": "Coquetéis que eu posso fazer",
     "bar-stats": "Estatísticas do Bar",
-    "recommended-cocktails": "Coquetéis recomendados"
+    "recommended-cocktails": "Coquetéis recomendados",
+    "locked_cocktails": "Cocktails I can't make"
   },
   "server-error": "Unexpected server error",
   "ingredient": {
