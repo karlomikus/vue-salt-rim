@@ -1,3 +1,11 @@
+# v4.12.0
+## New
+- Show text dialog when environment does not support clipboard API
+    - This will show the text to be copied in a dialog so user can manually copy it
+
+## Changes
+- Random cocktail action now uses selected cocktail filters from cocktails page
+
 # v4.11.1
 ## Fixes
 - Hide "Add to bar shelf" action if user does not have permission to view bar shelf

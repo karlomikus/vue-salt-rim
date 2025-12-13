@@ -612,8 +612,16 @@ export default {
             }
         },
         goToRandomCocktail() {
+            const query = this.stateToQuery()
+            query.per_page = 1;
+            query.sort = 'random';
+
             this.isLoading = true
-            BarAssistantClient.getCocktails({sort: 'random', per_page: 1}).then(async resp => {
+            BarAssistantClient.getCocktails(query).then(async resp => {
+                if (resp.data.length == 0) {
+                    this.isLoading = false
+                    return
+                }
                 this.$router.push({
                     name: 'cocktails.show',
                     params: { id: resp.data[0].slug }
