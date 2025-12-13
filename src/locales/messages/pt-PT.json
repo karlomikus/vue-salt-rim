@@ -26,12 +26,12 @@
     "add": "Adicionar ingrediente",
     "on-shopping-list": "Você tem este ingrediente na lista de compras",
     "add-to-shelf": "Add to shelf",
-    "remove-from-shelf": "Remover da prateleira",
+    "remove-from-shelf": "Remove from shelf",
     "add-to-list": "Adicionar à lista de compras",
     "remove-from-list": "Remover da lista de compras",
     "update-success": "Ingrediente atualizado com sucesso",
     "create-success": "Ingrediente criado com sucesso",
-    "name-placeholder": "<Not selected>",
+    "name-placeholder": "Not selected",
     "delete-confirm": "Isto irá apagar permanentemente o ingrediente com o nome \"{name}\". Esta ação irá modificar {total} receitas de coquetel.",
     "shelf-remove-success": "\"{name}\" foi removido(a) da sua prateleira",
     "shelf-add-success": "Adicionado \"{name}\" à sua prateleira",
@@ -130,7 +130,7 @@
   },
   "latest": {
     "cocktails": "Latest cocktails",
-    "favorites": "Your recent favorites",
+    "favorites": "Recent favorites",
     "ingredients": "Latest ingredients"
   },
   "strength": "Strength",
@@ -141,7 +141,7 @@
   "medium": "Medium",
   "strong": "Strong",
   "welcome-user": "Bem-vindo {name}",
-  "your-shopping-list": "Your shopping list",
+  "your-shopping-list": "Shopping list",
   "missing.ingredients": "Os ingredientes que faltam serão mostrados aqui.",
   "all-ingredients": "Todos os ingredientes",
   "find-cocktails": "Encontrar coquetéis",
@@ -326,9 +326,9 @@
     "title": "Pesquisar",
     "results-per-page": "Per page",
     "empty": "No results found for term \"{term}\".",
-    "ignore-ingredients": "Ignore ingredients",
+    "ignore-ingredients": "Ignored ingredients",
     "select-ingredients-to-ignore": "Select ingredients to ignore",
-    "ingredients": "Specific ingredients",
+    "ingredients": "Specified ingredients",
     "select-specific-ingredients": "Select specific ingredients"
   },
   "subtitle": "Subtítulo",
@@ -537,7 +537,7 @@
   "bar": {
     "url": "Custom bar URL",
     "url-help": "Your public bar URL will be: {url}",
-    "url-menu-hint": "Used for public menu if enabled.",
+    "url-menu-hint": "Used for public access if enabled.",
     "default-currency-hint": "Used as default currency suggestion, can be changed anytime.",
     "default-units-hint": "Used as default units on cocktail details, can be changed anytime."
   },
@@ -728,7 +728,7 @@
   "profile-public-shelf-description": "Other bar members will be able to filter by cocktails you have in your shelf",
   "sort-random": "In random order",
   "cocktails-varieties": "Varieties",
-  "cocktail-variety-of": "Cocktail is variety of",
+  "cocktail-variety-of": "Cocktail is variant of",
   "cocktail-select-parent": "Select parent cocktail",
   "year": "Year"
 }
