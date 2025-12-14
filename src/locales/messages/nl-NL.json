@@ -16,7 +16,8 @@
     "title": "Plank",
     "cocktails": "Cocktails die ik kan maken",
     "bar-stats": "Bar statistieken",
-    "recommended-cocktails": "Aanbevolen cocktails"
+    "recommended-cocktails": "Aanbevolen cocktails",
+    "locked_cocktails": "Cocktails I can't make"
   },
   "server-error": "Unexpected server error",
   "ingredient": {
@@ -24,8 +25,8 @@
     "main": "Hoofdingrediënt",
     "add": "Ingrediënt toevoegen",
     "on-shopping-list": "U heeft dit ingrediënt(e)n op de boodschappenlijst",
-    "add-to-shelf": "Toevoegen aan plank",
-    "remove-from-shelf": "Verwijder van plank",
+    "add-to-shelf": "Add to shelf",
+    "remove-from-shelf": "Remove from shelf",
     "add-to-list": "Toevoegen aan boodschappenlijst",
     "remove-from-list": "Verwijder uit boodschappenlijst",
     "update-success": "Ingrediënt succesvol bijgewerkt",
@@ -66,20 +67,21 @@
     "shelf-user-help": "Recepten die overeenkomen met ingrediënten in uw plank kunnen alleen door u worden beheerd.",
     "bar-shelf-add-success": "Toegevoegd \"{name}\" aan de bar plank",
     "bar-shelf-remove-success": "Verwijderd \"{name}\" van de bar plank",
-    "units-help": "Optionele ingrediënten zullen niet worden gebruikt in recept matching. Sommige functies werken de beste als je veelgebruikte eenheden gebruikt. Sommige aanbevelingen voor eenheden zijn: ml, Oz, cl, streepjes, barlepel, drops, aanvulling en bladeren.",
+    "units-help": "Some features work the best if you use common units. Some recommendations for units are: ml, oz, cl, dashes, barspoon, drops, topup, leaves.",
     "import": "Importeer ingrediënten",
     "attach-calculator": "Rekenmachine toevoegen",
     "hierarchy": "Rangorde",
     "status": "Ingrediënt status",
     "hierarchy-description": "Dit is een overzicht van de rangorde van de ingrediënten. Afhankelijk van het cocktailrecept",
-    "show-variants": "Toon Varianten",
+    "show-variants": "Show variants",
     "show-ancestors": "Toon voorouders",
     "recommended-next": "Deze balk kan {totalPercent} beschikbare recepten maken. Voeg een van de volgende ingrediënten toe aan de staaf om de cocktail opties te verhogen: {ingredients}",
     "used-in": "Gebruikt in {count} {substituteCount} cocktail recepten",
     "used-in-substitutes": "+{total} als vervanging",
     "default-units-help": "Wordt gebruikt om eenheden automatisch in te vullen bij het selecteren van ingrediënt voor cocktail recept",
     "icicle-graph": "Ijspegel schema",
-    "csv-import-started": "CSV import started"
+    "csv-import-started": "CSV import started",
+    "potential-bar-shelf-cocktails": "Potential bar cocktails"
   },
   "share": {
     "title": "Delen",
@@ -89,7 +91,9 @@
     "format-copy-failed": "Tekst kopiëren mislukt",
     "copy-md": "Kopiëren als Markdown",
     "copy-xml": "Kopiëren als XML",
-    "copy-json-ld": "Kopieer JSON+LD-schema"
+    "copy-json-ld": "Kopieer JSON+LD-schema",
+    "manual-copy-title": "Tekst handmatig kopiëren",
+    "manual-copy-description": "Automatisch kopiëren is mislukt. Kopieer de onderstaande tekst handmatig:"
   },
   "settings": "Instellingen",
   "logout": "Uitloggen",
@@ -262,7 +266,7 @@
   "clear-filters": "Alle filters verwijderen",
   "rating-removed": "Verwijder cocktail beoordeling",
   "rating-rated": "Cocktail met {rating} sterren",
-  "shelf-ingredients": "Bar plank ingrediënten",
+  "shelf-ingredients": "Shelf ingredients",
   "shopping-list-ingredients": "Winkelwagen met ingrediënten",
   "notes": "Notities",
   "collection-shared": "Gedeeld met bar",
@@ -433,7 +437,7 @@
     "type-ai-description": "Import from plain text recipe using AI",
     "type-bookmarklet-description": "Create a bookmarklet to generate JSON format",
     "type-html-description": "Import from raw HTML format",
-    "notice": "Bestaande ingrediënten, methoden en glaswerk worden gekoppeld aan hun naam (hoofdletter ongevoelig). Als het ingrediënt niet bestaat, zal het worden aangemaakt. Veelvoorkomende eenheden worden automatisch omgezet in \"ml\". Afhankelijk van de grootte van de collectie, kan importeren een paar minuten duren.",
+    "notice": "Bestaande ingrediënten, methoden en glaswerk worden op naam gevonden (hoofdlettergevoelig). Als een ingrediënt niet bestaat, wordt het aangemaakt.",
     "type-csv-text-title": "CSV tekst",
     "type-csv-text-description": "Importeren door de CSV-structuur te plakken",
     "type-csv-file-title": "CSV bestand",
@@ -524,7 +528,11 @@
     "clear-category": "Categorie leegmaken",
     "add-shelf-cocktails": "Voeg ontbrekende cocktails toe aan bar plank",
     "export": "Exporteer als csv",
-    "added-multiple-cocktails": "Meerdere cocktails toegevoegd"
+    "added-multiple-cocktails": "Meerdere cocktails toegevoegd",
+    "add-to": "Add to menu category",
+    "menu-items": "entries",
+    "add-multiple": "Add entries to menu",
+    "add-single": "Add to menu"
   },
   "bar": {
     "url": "Aangepaste bar URL",
@@ -635,7 +643,8 @@
   "scale-recipe": "Recept schalen",
   "target-volume-dilution-help": "Verdun met {total} water",
   "bar_shelf": {
-    "cocktails": "Bar plank cocktails"
+    "cocktails": "Bar plank cocktails",
+    "locked_cocktails": "Locked bar cocktails"
   },
   "bar-shelf-ingredients": "Bar plank ingrediënten",
   "target-pour-cost": "Doel voor kosten",

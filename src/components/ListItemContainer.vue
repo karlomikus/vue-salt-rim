@@ -23,7 +23,6 @@ const {
     display: flex;
     flex-direction: row;
     gap: var(--gap-size-2);
-    align-items: center;
     text-decoration: none;
 }
 

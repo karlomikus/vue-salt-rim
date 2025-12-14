@@ -16,7 +16,8 @@
     "title": "Police",
     "cocktails": "Koktejly, které mohu vyrobit",
     "bar-stats": "Statistiky baru",
-    "recommended-cocktails": "Doporučené koktejly"
+    "recommended-cocktails": "Doporučené koktejly",
+    "locked_cocktails": "Cocktails I can't make"
   },
   "server-error": "Neočekávaná chyba serveru",
   "ingredient": {
@@ -24,13 +25,13 @@
     "main": "Hlavní složka",
     "add": "Přidat přísadu",
     "on-shopping-list": "Tuto surovinu máte v nákupním seznamu",
-    "add-to-shelf": "Přidat na poličku",
-    "remove-from-shelf": "Odebrat z poličky",
+    "add-to-shelf": "Add to shelf",
+    "remove-from-shelf": "Remove from shelf",
     "add-to-list": "Přidat do nákupního seznamu",
     "remove-from-list": "Odstranit z nákupního seznamu",
     "update-success": "Surovina byla úspěšně aktualizována",
     "create-success": "Surovina byla úspěšně vytvořena",
-    "name-placeholder": "Nevybrané",
+    "name-placeholder": "Not selected",
     "delete-confirm": "Toto nenávratně odstraní ingredienci s názvem \"{name}\". Tento krok upraví {total} koktejlových receptů.",
     "shelf-remove-success": "Odstraněno \"{name}\" z Vaší poličky",
     "shelf-add-success": "Přidáno \"{name}\" do Vaší poličky",
@@ -66,20 +67,21 @@
     "shelf-user-help": "Recepty odpovídající ingrediencím ve vaší poličce mohou být spravovány pouze vámi.",
     "bar-shelf-add-success": "Přidáno \"{name}\" do baru",
     "bar-shelf-remove-success": "Odstraněno \"{name}\" z baru",
-    "units-help": "Některé funkce fungují nejlépe, pokud používáte společné jednotky. Některá doporučení pro jednotky jsou: ml, oz, střet, pomlčky, barspoon, kapky, listy.",
+    "units-help": "Some features work the best if you use common units. Some recommendations for units are: ml, oz, cl, dashes, barspoon, drops, topup, leaves.",
     "import": "Importovat suroviny",
     "attach-calculator": "Připojit kalkulačku",
     "hierarchy": "Hierarchie",
     "status": "Stav ingredience",
     "hierarchy-description": "Toto je přehled hierarchie přísad. V závislosti na receptu koktejlů, pokud máte některou z variant v poličce, mohou být použity jako náhrada za hlavní přísadu při porovnávání receptů.",
-    "show-variants": "Zobrazit varianty",
+    "show-variants": "Show variants",
     "show-ancestors": "Zobrazovat předky",
     "recommended-next": "Tento bar může vytvořit {totalPercent} dostupných receptů. Přidejte jednu z následujících ingrediencí do baru pro zvýšení možnosti koktejlů: {ingredients}",
     "used-in": "Používá se v {count} {substituteCount} receptech koktejlů",
     "used-in-substitutes": "+{total} jako náhrada",
     "default-units-help": "Používá se pro automatické vyplňování jednotek při výběru ingredience pro recept na koktejl",
     "icicle-graph": "Icicle chart",
-    "csv-import-started": "Import CSV byl spuštěn"
+    "csv-import-started": "Import CSV byl spuštěn",
+    "potential-bar-shelf-cocktails": "Potential bar cocktails"
   },
   "share": {
     "title": "Sdílet",
@@ -89,7 +91,9 @@
     "format-copy-failed": "Kopírování textu se nezdařilo",
     "copy-md": "Kopírovat jako Markdown",
     "copy-xml": "Kopírovat jako XML",
-    "copy-json-ld": "KOpírovaz JSON+LD schéma"
+    "copy-json-ld": "KOpírovaz JSON+LD schéma",
+    "manual-copy-title": "Zkopírovat text ručně",
+    "manual-copy-description": "Automatické kopírování se nezdařilo. Zkopírujte prosím text níže ručně:"
   },
   "settings": "Nastavení",
   "logout": "Odhlásit se",
@@ -433,7 +437,7 @@
     "type-ai-description": "Import from plain text recipe using AI",
     "type-bookmarklet-description": "Create a bookmarklet to generate JSON format",
     "type-html-description": "Import from raw HTML format",
-    "notice": "Existing ingredients, methods and glassware will be matched by their name (case insensitive). If ingredient does not exist, it will be created.",
+    "notice": "Existing ingredients, methods and glassware will be matched by their name (case insensitive). If ingredient does not exist, it will be created. Common units are automatically converted to \"ml\". Depending on collection size, importing can take a few minutes.",
     "type-csv-text-title": "CSV text",
     "type-csv-text-description": "Import by pasting the CSV structure",
     "type-csv-file-title": "CSV file",
@@ -524,7 +528,11 @@
     "clear-category": "Clear category",
     "add-shelf-cocktails": "Add missing cocktails from bar shelf",
     "export": "Export as csv",
-    "added-multiple-cocktails": "Added multiple cocktails"
+    "added-multiple-cocktails": "Added multiple cocktails",
+    "add-to": "Add to menu category",
+    "menu-items": "entries",
+    "add-multiple": "Add entries to menu",
+    "add-single": "Add to menu"
   },
   "bar": {
     "url": "Custom bar URL",
@@ -635,7 +643,8 @@
   "scale-recipe": "Scale recipe",
   "target-volume-dilution-help": "Dilute with {total} of water",
   "bar_shelf": {
-    "cocktails": "Bar shelf cocktails"
+    "cocktails": "Bar shelf cocktails",
+    "locked_cocktails": "Locked bar cocktails"
   },
   "bar-shelf-ingredients": "Bar shelf ingredients",
   "target-pour-cost": "Target pour cost",

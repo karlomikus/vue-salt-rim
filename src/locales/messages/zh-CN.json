@@ -16,7 +16,8 @@
     "title": "货架",
     "cocktails": "我可以制作的鸡尾酒",
     "bar-stats": "酒吧统计",
-    "recommended-cocktails": "推荐的鸡尾酒"
+    "recommended-cocktails": "推荐的鸡尾酒",
+    "locked_cocktails": "Cocktails I can't make"
   },
   "server-error": "预期外的服务器错误",
   "ingredient": {
@@ -24,13 +25,13 @@
     "main": "主要配料",
     "add": "添加配料",
     "on-shopping-list": "您的购物清单上有这种配料",
-    "add-to-shelf": "添加到货架",
-    "remove-from-shelf": "从货架移除",
+    "add-to-shelf": "Add to shelf",
+    "remove-from-shelf": "Remove from shelf",
     "add-to-list": "添加到购物清单",
     "remove-from-list": "从购物清单移除",
     "update-success": "配料更新成功",
     "create-success": "配料创建成功",
-    "name-placeholder": "未选择",
+    "name-placeholder": "Not selected",
     "delete-confirm": "将永久删除名为 \"{name}\" 的配料。此操作将修改 {total} 种鸡尾酒配方。",
     "shelf-remove-success": "已将 \"{name}\" 从货架移除",
     "shelf-add-success": "已将 \"{name}\" 添加到货架",
@@ -66,20 +67,21 @@
     "shelf-user-help": "您货架中的配料匹配的配方仅由您管理。",
     "bar-shelf-add-success": "已将 \"{name}\" 添加到酒吧货架",
     "bar-shelf-remove-success": "已将 \"{name}\" 从酒吧货架移除",
-    "units-help": "可选原料不会用于配方匹配。如果使用通用单位，某些功能的效果会更好。建议使用的单位有：毫升、盎司、克朗、毫升、巴勺、滴、上量、叶。",
+    "units-help": "Some features work the best if you use common units. Some recommendations for units are: ml, oz, cl, dashes, barspoon, drops, topup, leaves.",
     "import": "导入配料",
     "attach-calculator": "附加计算器",
     "hierarchy": "层级结构",
     "status": "配料状态",
     "hierarchy-description": "此为配料层级概览。若货架中有任意变体，配方匹配时可将其作为主配料的替代。",
-    "show-variants": "显示变体",
+    "show-variants": "Show variants",
     "show-ancestors": "显示父级",
     "recommended-next": "这家酒吧可以制作 {totalPercent} 种可用配方。请将以下配料之一添加到吧台货架，以增加鸡尾酒选择：{ingredients}",
     "used-in": "用于 {count} {substituteCount} 种鸡尾酒配方",
     "used-in-substitutes": "+{total} 作为替补",
     "default-units-help": "用于在选择鸡尾酒配方的配料时自动填充单位",
     "icicle-graph": "冰柱图",
-    "csv-import-started": "CSV 导入已开始"
+    "csv-import-started": "CSV 导入已开始",
+    "potential-bar-shelf-cocktails": "Potential bar cocktails"
   },
   "share": {
     "title": "分享",
@@ -89,7 +91,9 @@
     "format-copy-failed": "文本复制失败",
     "copy-md": "复制为 Markdown",
     "copy-xml": "复制为 XML",
-    "copy-json-ld": "复制 JSON+LD 架构"
+    "copy-json-ld": "复制 JSON+LD 架构",
+    "manual-copy-title": "Copy text manually",
+    "manual-copy-description": "Automatic copying failed. Please copy the text below manually:"
   },
   "settings": "设置",
   "logout": "退出登录",
@@ -262,7 +266,7 @@
   "clear-filters": "清除所有筛选",
   "rating-removed": "已移除鸡尾酒评分",
   "rating-rated": "鸡尾酒评分：{rating} 星",
-  "shelf-ingredients": "货架配料",
+  "shelf-ingredients": "Shelf ingredients",
   "shopping-list-ingredients": "购物清单中的配料",
   "notes": "备注",
   "collection-shared": "与酒吧共享",
@@ -433,7 +437,7 @@
     "type-ai-description": "使用 AI 从纯文本导入配方",
     "type-bookmarklet-description": "Create a bookmarklet to generate JSON format",
     "type-html-description": "从原始的 HTML 格式导入",
-    "notice": "现有配料、方法和酒杯类型将根据名称匹配（不区分大小写）。若配料不存在，将自动创建。",
+    "notice": "现有成分、方法和酒杯类型将根据名称匹配（不区分大小写）。若成分不存在，将自动创建。常用单位将自动转换为 \"ml\"。根据合集大小，导入可能需要几分钟。",
     "type-csv-text-title": "CSV 文本",
     "type-csv-text-description": "通过粘贴 CSV 结构导入",
     "type-csv-file-title": "CSV 文件",
@@ -524,7 +528,11 @@
     "clear-category": "清空分类",
     "add-shelf-cocktails": "从酒吧货架添加缺失的鸡尾酒",
     "export": "导出为 csv",
-    "added-multiple-cocktails": "已添加多个鸡尾酒"
+    "added-multiple-cocktails": "已添加多个鸡尾酒",
+    "add-to": "Add to menu category",
+    "menu-items": "entries",
+    "add-multiple": "Add entries to menu",
+    "add-single": "Add to menu"
   },
   "bar": {
     "url": "自定义酒吧 URL",
@@ -635,7 +643,8 @@
   "scale-recipe": "缩放配方",
   "target-volume-dilution-help": "加水稀释 {total}",
   "bar_shelf": {
-    "cocktails": "酒吧货架鸡尾酒"
+    "cocktails": "酒吧货架鸡尾酒",
+    "locked_cocktails": "Locked bar cocktails"
   },
   "bar-shelf-ingredients": "酒吧货架配料",
   "target-pour-cost": "目标倒酒成本",

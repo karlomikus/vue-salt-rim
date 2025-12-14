@@ -7,16 +7,17 @@
     "pl-PL": "Poljski",
     "it-IT": "Talijanski",
     "sv-SE": "Švedski",
-    "zh-CN": "Chinese (Simplified)",
-    "nl-NL": "Netherlands",
-    "cs-CZ": "Czech",
+    "zh-CN": "Kineski (pojednostavljen)",
+    "nl-NL": "Nizozemski",
+    "cs-CZ": "Češki",
     "help": "Pomozi sa prijevodima"
   },
   "shelf": {
     "title": "Polica",
     "cocktails": "Kokteli koje mogu napraviti",
-    "bar-stats": "Bar statistics",
-    "recommended-cocktails": "Recommended cocktails"
+    "bar-stats": "Statistike bara",
+    "recommended-cocktails": "Preporučani kokteli",
+    "locked_cocktails": "Cocktails I can't make"
   },
   "server-error": "Unexpected server error",
   "ingredient": {
@@ -30,7 +31,7 @@
     "remove-from-list": "Ukloni s popisa za kupovinu",
     "update-success": "Sastojak uspješno uređen",
     "create-success": "Sastojak uspješno dodan",
-    "name-placeholder": "Nije odabran",
+    "name-placeholder": "Not selected",
     "delete-confirm": "Ova akcija će trajno ukloniti \"{name}\". Ovo će utjecati na {total} koktela!",
     "shelf-remove-success": "Sastojak \"{name}\" uklonjen iz tvoje police",
     "shelf-add-success": "Sastojak \"{name}\" dodan na tvoju policu",
@@ -40,7 +41,7 @@
     "is-variety": "Ingredient is variant of another ingredient",
     "information": "Podaci o sastojku",
     "extra-cocktails": "Dodaj u policu da bi mogli napraviti",
-    "clone-as-variety": "Duplicate as variant",
+    "clone-as-variety": "Dupliciraj kao podvrstu",
     "dialog": {
       "select-substitutes": "Odaberite zamjenske sastojke",
       "search-not-found": "Niste pronašli što ste tražili?",
@@ -60,8 +61,8 @@
     "ingredients": "Sastojci",
     "used_as_substitute_for": "Koristi se kao zamjena za",
     "can_be_substituted_with": "Može se zamijeniti sa",
-    "add-to-bar-shelf": "Add to bar shelf",
-    "remove-from-bar-shelf": "Remove from bar shelf",
+    "add-to-bar-shelf": "Dodaj u barsku policu",
+    "remove-from-bar-shelf": "Ukloni iz barske police",
     "shelf-bar-help": "Recipes matching ingredients in bar shelf will be shown to all bar members.",
     "shelf-user-help": "Recipes matching ingredients in your shelf can only be managed by you.",
     "bar-shelf-add-success": "Added \"{name}\" to bar shelf",
@@ -69,7 +70,7 @@
     "units-help": "Some features work the best if you use common units. Some recommendations for units are: ml, oz, cl, dashes, barspoon, drops, topup, leaves.",
     "import": "Import ingredients",
     "attach-calculator": "Attach calculator",
-    "hierarchy": "Hierarchy",
+    "hierarchy": "Hijerarhija",
     "status": "Ingredient status",
     "hierarchy-description": "This is an overview of the ingredient hierarchy. Depending on the cocktail recipe, if you have any of the variants in the shelf, they can be used as a substitute for the main ingredient when matching recipes.",
     "show-variants": "Show variants",
@@ -79,7 +80,8 @@
     "used-in-substitutes": "+{total} as substitute",
     "default-units-help": "Used to autofill units when selecting ingredient for cocktail recipe",
     "icicle-graph": "Icicle chart",
-    "csv-import-started": "CSV import started"
+    "csv-import-started": "CSV import started",
+    "potential-bar-shelf-cocktails": "Potential bar cocktails"
   },
   "share": {
     "title": "Podijeli",
@@ -89,7 +91,9 @@
     "format-copy-failed": "Kopiranje teksta nije uspjelo",
     "copy-md": "Kopiraj u Markdown formatu",
     "copy-xml": "Kopiraj kao XML",
-    "copy-json-ld": "Kopiraj kao JSON+LD"
+    "copy-json-ld": "Kopiraj kao JSON+LD",
+    "manual-copy-title": "Kopiraj tekst ručno",
+    "manual-copy-description": "Automatsko kopiranje nije uspjelo. Molimo kopirajte tekst ispod ručno:"
   },
   "settings": "Postavke",
   "logout": "Odjava",
@@ -400,7 +404,7 @@
       "data": "No default data"
     },
     "optimization-started": "Started bar optimization",
-    "optimize": "Optimize bar",
+    "optimize": "Optimiziraj bar",
     "confirm-optimization": "This will run bar optimizations",
     "sync-data": "Synchronize data",
     "confirm-datapack-sync": "This action will add missing data available in default datapack to this bar. Your existing recipes are not affected, but new data will be added. Please make sure that you have a backup or export of your data.",
@@ -433,10 +437,10 @@
     "type-ai-description": "Import from plain text recipe using AI",
     "type-bookmarklet-description": "Create a bookmarklet to generate JSON format",
     "type-html-description": "Import from raw HTML format",
-    "notice": "Existing ingredients, methods and glassware will be matched by their name (case insensitive). If ingredient does not exist, it will be created. Common units are automatically converted to \"ml\". Depending on collection size, importing can take a few minutes.",
-    "type-csv-text-title": "CSV text",
+    "notice": "Postojeći podaci će biti spojeni ako se imena podudaraju (neovisno o velikim i malim slovima). Ako sastojak ili čaša ne postoje, nove će biti kreirane. Najčešće jedinice se automatski pretvaraju u \"ml\".",
+    "type-csv-text-title": "CSV tekst",
     "type-csv-text-description": "Import by pasting the CSV structure",
-    "type-csv-file-title": "CSV file",
+    "type-csv-file-title": "CSV datoteka",
     "type-csv-file-description": "Import by uploading CSV file"
   },
   "remove-from-bar": "Ukloni iz bara",
@@ -518,13 +522,17 @@
     "cocktail-removed": "Item removed from menu category",
     "description": "Here you can set up a simple web menu for your bar. You can update your bar link when adding or editing a bar. Use the URL or QR code to share your bar menu with the guests.",
     "no-cocktails-added": "Menu needs to have at least one item",
-    "calculate-price": "Calculate price",
+    "calculate-price": "Izračunaj cijenu",
     "clear-category-confirm": "This will remove all cocktails from category \"{name}\"",
     "category-cleared": "Category cleared",
     "clear-category": "Clear category",
     "add-shelf-cocktails": "Add missing cocktails from bar shelf",
     "export": "Export as csv",
-    "added-multiple-cocktails": "Added multiple cocktails"
+    "added-multiple-cocktails": "Added multiple cocktails",
+    "add-to": "Add to menu category",
+    "menu-items": "entries",
+    "add-multiple": "Add entries to menu",
+    "add-single": "Add to menu"
   },
   "bar": {
     "url": "Custom bar URL",
@@ -635,7 +643,8 @@
   "scale-recipe": "Scale recipe",
   "target-volume-dilution-help": "Dilute with {total} of water",
   "bar_shelf": {
-    "cocktails": "Bar shelf cocktails"
+    "cocktails": "Bar shelf cocktails",
+    "locked_cocktails": "Locked bar cocktails"
   },
   "bar-shelf-ingredients": "Bar shelf ingredients",
   "target-pour-cost": "Target pour cost",

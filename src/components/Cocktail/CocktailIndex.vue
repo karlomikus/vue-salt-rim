@@ -97,7 +97,12 @@
                             </button>
                         </template>
                         <template #dialog>
-                            <CollectionDialog :title="$t('collections.add-from-query')" :cocktails="currentCocktailIds" @collection-dialog-closed="handleCollectionsDialogClosed" />
+                            <div class="add-to-collection__tabs">
+                                <button @click="currentCollectionStore = 'collection'" class="button" :class="{'button--dark': currentCollectionStore == 'collection', 'button--outline': currentCollectionStore != 'collection'}">Collection</button>
+                                <button @click="currentCollectionStore = 'menu'" class="button" :class="{'button--dark': currentCollectionStore == 'menu', 'button--outline': currentCollectionStore != 'menu'}">Menu</button>
+                            </div>
+                            <CollectionDialog v-if="currentCollectionStore == 'collection'" :title="$t('collections.add-from-query')" :cocktails="currentCocktailIds" @collection-dialog-closed="handleCollectionsDialogClosed" />
+                            <MenuAddDialog v-if="currentCollectionStore == 'menu'" :title="$t('menu.add-multiple')" :items="currentCocktailIds" :menu-item-type="'cocktail'" @menu-add-dialog-closed="handleCollectionsDialogClosed" />
                         </template>
                     </SaltRimDialog>
                     <button v-show="totalActiveRefinements > 0" type="button" class="button button--input" :title="$t('clear-filters')" @click.prevent="clearRefinements">
@@ -131,6 +136,7 @@ import CocktailGridItem from './CocktailGridItem.vue'
 import CocktailGridContainer from './CocktailGridContainer.vue'
 import PageHeader from './../PageHeader.vue'
 import Refinement from './../Search/SearchRefinement.vue'
+import MenuAddDialog from '../Menu/MenuAddDialog.vue'
 import Pagination from './../Search/SearchPagination.vue'
 import CollectionDialog from './../Collections/CollectionDialog.vue'
 import SaltRimDialog from './../Dialog/SaltRimDialog.vue'
@@ -152,6 +158,7 @@ export default {
         Pagination,
         EmptyState,
         FilterIngredientsModal,
+        MenuAddDialog,
     },
     data() {
         return {
@@ -165,6 +172,7 @@ export default {
             favorites: [],
             searchQuery: null,
             sort: 'created_at',
+            currentCollectionStore: 'collection',
             sort_dir: '-',
             meta: {},
             queryTimer: null,
@@ -173,9 +181,11 @@ export default {
             availableRefinements: {
                 global: [
                     { name: this.$t('bar_shelf.cocktails'), active: false, id: 'bar_shelf' },
+                    { name: this.$t('bar_shelf.locked_cocktails'), active: false, id: 'locked_bar_cocktails' },
                     { name: this.$t('shelf.cocktails'), active: false, id: 'on_shelf' },
                     { name: this.$t('my-favorites'), active: false, id: 'favorites' },
                     { name: this.$t('cocktail.shared'), active: false, id: 'is_public' },
+                    { name: this.$t('shelf.locked_cocktails'), active: false, id: 'locked_user_cocktails' },
                 ],
                 abv: [
                     { name: this.$t('non-alcoholic'), min: null, max: 2, id: 'abv_non_alcoholic' },
@@ -469,6 +479,8 @@ export default {
             this.activeFilters.created_user_id = state.filter && state.filter.created_user_id ? String(state.filter.created_user_id).split(',') : []
             this.activeFilters.on_shelf = state.filter && state.filter.on_shelf ? state.filter.on_shelf : null
             this.activeFilters.bar_shelf = state.filter && state.filter.bar_shelf ? state.filter.bar_shelf : null
+            this.activeFilters.locked_bar_cocktails = state.filter && state.filter.locked_bar_cocktails ? state.filter.locked_bar_cocktails : null
+            this.activeFilters.locked_user_cocktails = state.filter && state.filter.locked_user_cocktails ? state.filter.locked_user_cocktails : null
             this.activeFilters.favorites = state.filter && state.filter.favorites ? state.filter.favorites : null
             this.activeFilters.is_public = state.filter && state.filter.is_public ? state.filter.is_public : null
             this.activeFilters.total_ingredients = state.filter && state.filter.total_ingredients ? state.filter.total_ingredients : null
@@ -509,6 +521,8 @@ export default {
                 name: (this.searchQuery != null && this.searchQuery != '') ? this.searchQuery : null,
                 on_shelf: this.activeFilters.on_shelf,
                 bar_shelf: this.activeFilters.bar_shelf,
+                locked_bar_cocktails: this.activeFilters.locked_bar_cocktails,
+                locked_user_cocktails: this.activeFilters.locked_user_cocktails,
                 favorites: this.activeFilters.favorites,
                 is_public: this.activeFilters.is_public,
                 user_rating_min: this.activeFilters.user_rating_min ? this.activeFilters.user_rating_min : null,
@@ -569,6 +583,8 @@ export default {
             this.activeFilters = {
                 on_shelf: false,
                 bar_shelf: false,
+                locked_bar_cocktails: false,
+                locked_user_cocktails: false,
                 favorites: false,
                 is_public: false,
                 tag_id: [],
@@ -600,8 +616,16 @@ export default {
             }
         },
         goToRandomCocktail() {
+            const query = this.stateToQuery()
+            query.per_page = 1;
+            query.sort = 'random';
+
             this.isLoading = true
-            BarAssistantClient.getCocktails({sort: 'random', per_page: 1}).then(async resp => {
+            BarAssistantClient.getCocktails(query).then(async resp => {
+                if (resp.data.length == 0) {
+                    this.isLoading = false
+                    return
+                }
                 this.$router.push({
                     name: 'cocktails.show',
                     params: { id: resp.data[0].slug }
@@ -615,3 +639,15 @@ export default {
     }
 }
 </script>
+<style scoped>
+.add-to-collection__tabs {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+    margin-top: 1rem;
+
+    button {
+        width: 100%;
+    }
+}
+</style>

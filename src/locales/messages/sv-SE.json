@@ -16,7 +16,8 @@
     "title": "Hylla",
     "cocktails": "Drinkar jag kan skapa",
     "bar-stats": "Bar statistics",
-    "recommended-cocktails": "Recommended cocktails"
+    "recommended-cocktails": "Recommended cocktails",
+    "locked_cocktails": "Cocktails I can't make"
   },
   "server-error": "Unexpected server error",
   "ingredient": {
@@ -30,7 +31,7 @@
     "remove-from-list": "Ta bort från inköpslista",
     "update-success": "Ingrediens har uppdaterats",
     "create-success": "Ingrediensen har skapats",
-    "name-placeholder": "Ej vald",
+    "name-placeholder": "Not selected",
     "delete-confirm": "Detta kommer permanent ta bort ingrediensen \"{name}\". Denna åtgärd kommer att ändra {total} drinkrecept.",
     "shelf-remove-success": "Tog bort \"{name}\" från din hylla",
     "shelf-add-success": "Lade till \"{name}\" på din hylla",
@@ -79,7 +80,8 @@
     "used-in-substitutes": "+{total} as substitute",
     "default-units-help": "Used to autofill units when selecting ingredient for cocktail recipe",
     "icicle-graph": "Icicle chart",
-    "csv-import-started": "CSV import started"
+    "csv-import-started": "CSV import started",
+    "potential-bar-shelf-cocktails": "Potential bar cocktails"
   },
   "share": {
     "title": "Dela",
@@ -89,7 +91,9 @@
     "format-copy-failed": "Kunde inte kopiera",
     "copy-md": "Kopiera som Markdown",
     "copy-xml": "Kopiera som XML",
-    "copy-json-ld": "Kopiera JSON+LD schema"
+    "copy-json-ld": "Kopiera JSON+LD schema",
+    "manual-copy-title": "Copy text manually",
+    "manual-copy-description": "Automatic copying failed. Please copy the text below manually:"
   },
   "settings": "Inställningar",
   "logout": "Logga ut",
@@ -524,7 +528,11 @@
     "clear-category": "Clear category",
     "add-shelf-cocktails": "Add missing cocktails from bar shelf",
     "export": "Export as csv",
-    "added-multiple-cocktails": "Added multiple cocktails"
+    "added-multiple-cocktails": "Added multiple cocktails",
+    "add-to": "Add to menu category",
+    "menu-items": "entries",
+    "add-multiple": "Add entries to menu",
+    "add-single": "Add to menu"
   },
   "bar": {
     "url": "Anpassad bar-URL",
@@ -635,7 +643,8 @@
   "scale-recipe": "Skala receptet",
   "target-volume-dilution-help": "Späd ut med {total} mängd vatten",
   "bar_shelf": {
-    "cocktails": "Bar shelf cocktails"
+    "cocktails": "Bar shelf cocktails",
+    "locked_cocktails": "Locked bar cocktails"
   },
   "bar-shelf-ingredients": "Bar shelf ingredients",
   "target-pour-cost": "Target pour cost",

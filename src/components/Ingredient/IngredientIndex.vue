@@ -39,6 +39,7 @@
                         <option value="created_at">{{ $t('date-added') }}</option>
                         <option value="strength">{{ $t('strength') }}</option>
                         <option value="total_cocktails">{{ $t('total.cocktails') }}</option>
+                        <option value="potential_bar_shelf_cocktails">{{ $t('ingredient.potential-bar-shelf-cocktails') }}</option>
                     </select>
                     <select v-model="sortDir" class="form-select" @change="updateRouterPath">
                         <option disabled>{{ $t('sort-direction') }}:</option>
@@ -51,6 +52,19 @@
                         <option value="50">50</option>
                         <option value="100">100</option>
                     </select>
+                    <SaltRimDialog v-model="showAddToMenuDialog">
+                        <template #trigger>
+                            <button type="button" class="button button--input" :title="$t('collections.add')" @click.prevent="showAddToMenuDialog = !showAddToMenuDialog">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+                                    <path fill="none" d="M0 0h24v24H0z" />
+                                    <path d="M12.414 5H21a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h7.414l2 2zM4 5v14h16V7h-8.414l-2-2H4zm7 7V9h2v3h3v2h-3v3h-2v-3H8v-2h3z" />
+                                </svg>
+                            </button>
+                        </template>
+                        <template #dialog>
+                            <MenuAddDialog :title="$t('menu.add-multiple')" :items="menuItems" :menu-item-type="'ingredient'" @menu-add-dialog-closed="showAddToMenuDialog = false" />
+                        </template>
+                    </SaltRimDialog>
                     <button v-show="totalActiveRefinements > 0" type="button" class="button button--input" :title="$t('clear-filters')" @click.prevent="clearRefinements">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path d="M12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22ZM12 20C16.4183 20 20 16.4183 20 12C20 7.58172 16.4183 4 12 4C7.58172 4 4 7.58172 4 12C4 16.4183 7.58172 20 12 20ZM12 10.5858L14.8284 7.75736L16.2426 9.17157L13.4142 12L16.2426 14.8284L14.8284 16.2426L12 13.4142L9.17157 16.2426L7.75736 14.8284L10.5858 12L7.75736 9.17157L9.17157 7.75736L12 10.5858Z"></path></svg>
                     </button>
@@ -76,6 +90,8 @@
 </template>
 
 <script setup lang="ts">
+import SaltRimDialog from './../Dialog/SaltRimDialog.vue'
+import MenuAddDialog from '../Menu/MenuAddDialog.vue'
 import OverlayLoader from './../OverlayLoader.vue'
 import IngredientGridContainer from './../Ingredient/IngredientGridContainer.vue'
 import IngredientGridItem from './../Ingredient/IngredientGridItem.vue'
@@ -102,6 +118,7 @@ const router = useRouter()
 const appState = new AppState()
 const isLoading = ref(false)
 const showRefinements = ref(false)
+const showAddToMenuDialog = ref(false)
 const sortDir = ref('')
 const meta = ref({})
 const ingredients = ref<Ingredient[]>([])
@@ -200,6 +217,12 @@ const totalActiveRefinements = computed(() => {
     })
 
     return total
+})
+
+const menuItems = computed(() => {
+    return ingredients.value.map(ingredient => {
+        return ingredient.id
+    })
 })
 
 function queryToState() {

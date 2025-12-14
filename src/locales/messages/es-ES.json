@@ -16,7 +16,8 @@
     "title": "Barra",
     "cocktails": "Cócteles que puedo preparar",
     "bar-stats": "Estadísticas del bar",
-    "recommended-cocktails": "Cócteles recomendados"
+    "recommended-cocktails": "Cócteles recomendados",
+    "locked_cocktails": "Cocktails I can't make"
   },
   "server-error": "Unexpected server error",
   "ingredient": {
@@ -30,7 +31,7 @@
     "remove-from-list": "Eliminar de la lista de compras",
     "update-success": "Ingrediente actualizado con éxito",
     "create-success": "Ingrediente creado con éxito",
-    "name-placeholder": "No seleccionado",
+    "name-placeholder": "Not selected",
     "delete-confirm": "Esto eliminará permanentemente el ingrediente con el nombre {name}. Esta acción modificará las recetas de cócteles {total}.",
     "shelf-remove-success": "Eliminado {name} de tu estantería",
     "shelf-add-success": "Añadido {name} a tu estante",
@@ -79,7 +80,8 @@
     "used-in-substitutes": "+{total} como sustituto",
     "default-units-help": "Se usa para autocompletar las unidades al seleccionar un ingrediente para la receta de cóctel",
     "icicle-graph": "Gráfico icicle",
-    "csv-import-started": "CSV import started"
+    "csv-import-started": "CSV import started",
+    "potential-bar-shelf-cocktails": "Potential bar cocktails"
   },
   "share": {
     "title": "Compartir",
@@ -89,7 +91,9 @@
     "format-copy-failed": "Error al copiar texto",
     "copy-md": "Copiar como Markdown",
     "copy-xml": "Copiar como XML",
-    "copy-json-ld": "Copiar esquema JSON+LD"
+    "copy-json-ld": "Copiar esquema JSON+LD",
+    "manual-copy-title": "Copiar texto manualmente",
+    "manual-copy-description": "El copiado automático falló. Por favor, copie el texto a continuación manualmente:"
   },
   "settings": "Ajustes",
   "logout": "Cerrar sesión",
@@ -433,7 +437,7 @@
     "type-ai-description": "Import from plain text recipe using AI",
     "type-bookmarklet-description": "Create a bookmarklet to generate JSON format",
     "type-html-description": "Import from raw HTML format",
-    "notice": "Existing ingredients, methods and glassware will be matched by their name (case insensitive). If ingredient does not exist, it will be created. Common units are automatically converted to \"ml\". Depending on collection size, importing can take a few minutes.",
+    "notice": "Los ingredientes, métodos y cristalería existentes se emparejarán por su nombre (sin distinguir mayúsculas o minúsculas). Si un ingrediente no existe, se creará automáticamente. Las unidades comunes se convierten automáticamente a 'ml'. Dependiendo del tamaño de la colección, la importación puede tardar algunos minutos.",
     "type-csv-text-title": "CSV text",
     "type-csv-text-description": "Import by pasting the CSV structure",
     "type-csv-file-title": "CSV file",
@@ -524,7 +528,11 @@
     "clear-category": "Clear category",
     "add-shelf-cocktails": "Add missing cocktails from bar shelf",
     "export": "Export as csv",
-    "added-multiple-cocktails": "Added multiple cocktails"
+    "added-multiple-cocktails": "Added multiple cocktails",
+    "add-to": "Add to menu category",
+    "menu-items": "entries",
+    "add-multiple": "Add entries to menu",
+    "add-single": "Add to menu"
   },
   "bar": {
     "url": "Custom bar URL",
@@ -635,7 +643,8 @@
   "scale-recipe": "Scale recipe",
   "target-volume-dilution-help": "Dilute with {total} of water",
   "bar_shelf": {
-    "cocktails": "Bar shelf cocktails"
+    "cocktails": "Bar shelf cocktails",
+    "locked_cocktails": "Locked bar cocktails"
   },
   "bar-shelf-ingredients": "Bar shelf ingredients",
   "target-pour-cost": "Target pour cost",
