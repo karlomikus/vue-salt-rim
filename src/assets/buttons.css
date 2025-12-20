@@ -227,8 +227,6 @@
         font-weight: var(--fw-bold);
         margin: 0;
         padding: 0.15rem 0.5rem;
-        text-transform: uppercase;
-        letter-spacing: 1px;
         cursor: pointer;
         color: var(--cbg-clr-content);
         background-color: var(--cbg-clr-bg);

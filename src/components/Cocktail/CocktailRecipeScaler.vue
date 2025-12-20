@@ -65,6 +65,18 @@ const model = defineModel<number>({
     default: 1,
 })
 
+const waterDilutionModel = defineModel<string | null>('waterDilution', {
+    type: [String, null],
+    required: false,
+    default: null,
+})
+
+const targetVolumeModel = defineModel<number | null>('targetVolume', {
+    type: [Number, null],
+    required: false,
+    default: null,
+})
+
 const volumeScaleFactor = computed(() => {
     const totalVolume = unitHandler.convertFromTo('ml', cocktailVolumeMl, currentUnit)
 
@@ -100,6 +112,14 @@ const scaleFactor = computed(() => {
 
 watchEffect(() => {
     model.value = scaleFactor.value
+})
+
+watchEffect(() => {
+    waterDilutionModel.value = waterDilution.value
+})
+
+watchEffect(() => {
+    targetVolumeModel.value = Number(targetVolumeToScaleTo.value)
 })
 
 const modifyQuantity = (delta: number) => {

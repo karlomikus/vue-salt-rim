@@ -11,3 +11,11 @@ const { currentUnit, updateCurrentUnit } = inject('currentUnit')
         <button type="button" :class="{ 'is-active': currentUnit == 'cl' }" @click="updateCurrentUnit('cl')">cl</button>
     </div>
 </template>
+<style scoped>
+.button-group {
+    & button {
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+}
+ </style>
