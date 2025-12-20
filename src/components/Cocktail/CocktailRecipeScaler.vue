@@ -29,7 +29,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch } from 'vue';
+import { ref, computed, watchEffect } from 'vue';
 import { unitHandler } from '@/composables/useUnits'
 
 const {
@@ -78,34 +78,22 @@ const waterDilution = computed(() => {
     return unitHandler.print({ amount: dilutionVolume * volumeScaleFactor.value }, currentUnit, 1)
 })
 
-const modifyQuantity = (delta: number) => {
-    const newQuantity = parseInt(quantity.value.toString()) + delta
-    if (newQuantity < 1) {
-        quantity.value = 1
-    } else {
-        quantity.value = newQuantity
-    }
-}
-
-const updateScaleFactor = () => {
+const scaleFactor = computed(() => {
     if (scaleType.value === 'quantity') {
-        model.value = parseInt(quantity.value.toString())
-    } else if (scaleType.value === 'volume') {
-        model.value = volumeScaleFactor.value || 1
+        return Number(quantity.value) || 1
+    } else {
+        return volumeScaleFactor.value || 1
     }
-}
-
-watch(quantity, () => {
-    updateScaleFactor()
-}, { immediate: true })
-
-watch(volumeScaleFactor, () => {
-    updateScaleFactor()
-}, { immediate: true })
-
-watch(scaleType, () => {
-    updateScaleFactor()
 })
+
+watchEffect(() => {
+    model.value = scaleFactor.value
+})
+
+const modifyQuantity = (delta: number) => {
+    const newQuantity = Number(quantity.value) + delta
+    quantity.value = Math.max(1, newQuantity)
+}
 </script>
 
 <style scoped>
