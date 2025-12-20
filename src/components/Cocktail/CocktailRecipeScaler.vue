@@ -29,7 +29,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watchEffect } from 'vue';
+import { ref, computed, watchEffect, watch } from 'vue';
 import { unitHandler } from '@/composables/useUnits'
 
 const {
@@ -46,6 +46,18 @@ const quantity = ref(1);
 const targetVolumeDilution = ref(methodDilution);
 const targetVolumeToScaleTo = ref(0);
 const scaleType = ref<'quantity' | 'volume'>('quantity');
+
+// Reset state when cocktail changes (detected by volume change)
+watch(() => cocktailVolumeMl, () => {
+    quantity.value = 1;
+    targetVolumeToScaleTo.value = 0;
+    scaleType.value = 'quantity';
+});
+
+// Update dilution when method dilution changes
+watch(() => methodDilution, (newDilution) => {
+    targetVolumeDilution.value = newDilution;
+});
 
 const model = defineModel<number>({
     type: Number,
