@@ -15,9 +15,9 @@
   "shelf": {
     "title": "Regal",
     "cocktails": "Cocktails, die ich mixen kann",
-    "bar-stats": "Bar Statistiken",
+    "bar-stats": "Barstatistiken",
     "recommended-cocktails": "Cocktail Empfehlungen",
-    "locked_cocktails": "Cocktails I can't make"
+    "locked_cocktails": "Cocktails, die ich nicht machen kann"
   },
   "server-error": "Unerwarteter Serverfehler",
   "ingredient": {
@@ -81,7 +81,7 @@
     "default-units-help": "Wird zum automatischen Ausfüllen von Einheiten bei der Auswahl von Zutaten für Cocktailrezepte verwendet",
     "icicle-graph": "Hierarchisches Balkendiagramm",
     "csv-import-started": "CSV-Import gestartet",
-    "potential-bar-shelf-cocktails": "Potential bar cocktails"
+    "potential-bar-shelf-cocktails": "Mögliche Barcocktails"
   },
   "share": {
     "title": "Teilen",
@@ -529,7 +529,7 @@
     "add-shelf-cocktails": "Fehlende Cocktails aus Barregal hinzufügen",
     "export": "Exportieren als csv",
     "added-multiple-cocktails": "Mehrere Cocktails hinzugefügt",
-    "add-to": "Add to menu category",
+    "add-to": "Zur Menükategorie hinzufügen",
     "menu-items": "entries",
     "add-multiple": "Add entries to menu",
     "add-single": "Add to menu"
