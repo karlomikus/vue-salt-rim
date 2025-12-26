@@ -25,13 +25,13 @@
     "main": "Główny składnik",
     "add": "Dodaj składnik",
     "on-shopping-list": "Masz ten składnik na liście zakupów",
-    "add-to-shelf": "Add to shelf",
-    "remove-from-shelf": "Remove from shelf",
+    "add-to-shelf": "Dodaj do półki",
+    "remove-from-shelf": "Usuń z półki",
     "add-to-list": "Dodaj do listy zakupów",
     "remove-from-list": "Usuń z listy zakupów",
     "update-success": "Składnik został pomyślnie zaktualizowany",
     "create-success": "Składnik został pomyślnie utworzony",
-    "name-placeholder": "Not selected",
+    "name-placeholder": "<Nie zaznaczono>",
     "delete-confirm": "Spowoduje to trwałe usunięcie składnika z nazwą \"{name}\". Ta akcja zmodyfikuje {total} przepisów na koktajl.",
     "shelf-remove-success": "Usuń \"{name}\" z Twojej półki",
     "shelf-add-success": "Dodaj \"{name}\" do Twojej półki",
@@ -130,7 +130,7 @@
   },
   "latest": {
     "cocktails": "Najnowsze koktajle",
-    "favorites": "Recent favorites",
+    "favorites": "Twoje ostatnie ulubione",
     "ingredients": "Latest ingredients"
   },
   "strength": "Siła",
@@ -141,7 +141,7 @@
   "medium": "Średni",
   "strong": "Mocny",
   "welcome-user": "Witaj {name}",
-  "your-shopping-list": "Shopping list",
+  "your-shopping-list": "Your shopping list",
   "missing.ingredients": "Tutaj zostaną wyświetlone brakujące składniki.",
   "all-ingredients": "Wszystkie składniki",
   "find-cocktails": "Znajdź koktajle",
@@ -266,7 +266,7 @@
   "clear-filters": "Wyczyść wszystkie filtry",
   "rating-removed": "Usunięto ocenę koktajlu",
   "rating-rated": "Koktajl z oceną {rating} gwiazdek",
-  "shelf-ingredients": "Shelf ingredients",
+  "shelf-ingredients": "Półka ze składnikami",
   "shopping-list-ingredients": "Lista zakupów składników",
   "notes": "Notatki",
   "collection-shared": "Wspólnie z barem",
@@ -326,9 +326,9 @@
     "title": "Szukaj",
     "results-per-page": "Per page",
     "empty": "No results found for term \"{term}\".",
-    "ignore-ingredients": "Ignored ingredients",
+    "ignore-ingredients": "Ignore ingredients",
     "select-ingredients-to-ignore": "Select ingredients to ignore",
-    "ingredients": "Specified ingredients",
+    "ingredients": "Specific ingredients",
     "select-specific-ingredients": "Select specific ingredients"
   },
   "subtitle": "Subtitle",
@@ -537,7 +537,7 @@
   "bar": {
     "url": "Custom bar URL",
     "url-help": "Your public bar URL will be: {url}",
-    "url-menu-hint": "Used for public access if enabled.",
+    "url-menu-hint": "Used for public menu if enabled.",
     "default-currency-hint": "Used as default currency suggestion, can be changed anytime.",
     "default-units-hint": "Used as default units on cocktail details, can be changed anytime."
   },
@@ -728,7 +728,7 @@
   "profile-public-shelf-description": "Other bar members will be able to filter by cocktails you have in your shelf",
   "sort-random": "In random order",
   "cocktails-varieties": "Varieties",
-  "cocktail-variety-of": "Cocktail is variant of",
+  "cocktail-variety-of": "Cocktail is variety of",
   "cocktail-select-parent": "Select parent cocktail",
   "year": "Year"
 }

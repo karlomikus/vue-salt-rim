@@ -15,9 +15,9 @@
   "shelf": {
     "title": "Regal",
     "cocktails": "Cocktails, die ich mixen kann",
-    "bar-stats": "Bar Statistiken",
+    "bar-stats": "Barstatistiken",
     "recommended-cocktails": "Cocktail Empfehlungen",
-    "locked_cocktails": "Cocktails I can't make"
+    "locked_cocktails": "Cocktails, die ich nicht machen kann"
   },
   "server-error": "Unerwarteter Serverfehler",
   "ingredient": {
@@ -25,20 +25,20 @@
     "main": "Hauptzutaten",
     "add": "Zutat hinzufügen",
     "on-shopping-list": "Du hast diese auf deiner Einkaufsliste",
-    "add-to-shelf": "Add to shelf",
-    "remove-from-shelf": "Remove from shelf",
+    "add-to-shelf": "Zum Regal hinzufügen",
+    "remove-from-shelf": "Aus dem Regal löschen",
     "add-to-list": "Zur Einkaufsliste hinzufügen",
     "remove-from-list": "Von der Einkaufsliste entfernen",
     "update-success": "Zutat aktualisiert",
     "create-success": "Zutat erstellt",
-    "name-placeholder": "Not selected",
+    "name-placeholder": "<Not selected>",
     "delete-confirm": "Dies löscht Zutat \"{name}\". Diese Aktion betrifft {total} Cocktails.",
     "shelf-remove-success": "\"{name}\" wurde erfolgreich aus deiner Bar entfernt",
     "shelf-add-success": "\"{name}\" wurde zu deinem Regal hinzugefügt",
     "list-remove-success": "\"{name}\" von der Einkaufsliste entfernt",
     "list-add-success": "\"{name}\" zu der Einkaufsliste hinzugefügt",
     "spotlight": "Hauptzutat",
-    "is-variety": "Ingredient is variant of another ingredient",
+    "is-variety": "Zutat ist Variation einer anderen Zutat",
     "information": "Zutateninformationen",
     "extra-cocktails": "Zum Regal hinzufügen um weitere Cocktails mixen zu können",
     "clone-as-variety": "Als Sorte duplizieren",
@@ -67,13 +67,13 @@
     "shelf-user-help": "Rezepte für passende Zutaten in deinem Regal können nur von dir verwaltet werden.",
     "bar-shelf-add-success": "\"{name}\" wurde zum Barregal hinzugefügt",
     "bar-shelf-remove-success": "\"{name}\" aus Barregal entfernt",
-    "units-help": "Some features work the best if you use common units. Some recommendations for units are: ml, oz, cl, dashes, barspoon, drops, topup, leaves.",
+    "units-help": "Einige Funktionen funktionieren am besten, wenn Sie gängige Einheiten verwenden. Einige Empfehlungen für Einheiten sind: ml, oz, cl, Spritzer, Barlöffel, Tropfen, Nachfüllung, Blätter.",
     "import": "Zutaten importieren",
     "attach-calculator": "Rechner anhängen",
     "hierarchy": "Hierarchie",
     "status": "Zutaten-Status",
     "hierarchy-description": "Dies ist eine Übersicht der Zutaten-Hierarchie. Je nach Cocktailrezept können Varianten, die du im Regal hast, als Ersatz für die Hauptzutat verwendet werden, wenn geprüft wird, welche Rezepte zu deinen vorhandenen Zutaten passen.",
-    "show-variants": "Show variants",
+    "show-variants": "Zeige Varianten",
     "show-ancestors": "Zeige übergeordnete Elemente",
     "recommended-next": "Diese Bar kann {totalPercent} der verfügbaren Rezepte zubereiten. Füge eine der folgenden Zutaten zum Bar-Regal hinzu, um die Auswahl an Cocktails zu erweitern: {ingredients}",
     "used-in": "Wird in {count} {substituteCount} Cocktailrezepten verwendet",
@@ -81,7 +81,7 @@
     "default-units-help": "Wird zum automatischen Ausfüllen von Einheiten bei der Auswahl von Zutaten für Cocktailrezepte verwendet",
     "icicle-graph": "Hierarchisches Balkendiagramm",
     "csv-import-started": "CSV-Import gestartet",
-    "potential-bar-shelf-cocktails": "Potential bar cocktails"
+    "potential-bar-shelf-cocktails": "Mögliche Barcocktails"
   },
   "share": {
     "title": "Teilen",
@@ -130,7 +130,7 @@
   },
   "latest": {
     "cocktails": "Deine neuesten Cocktails",
-    "favorites": "Recent favorites",
+    "favorites": "Deine neuesten Favoriten",
     "ingredients": "Neueste Zutaten"
   },
   "strength": "Stärke",
@@ -141,7 +141,7 @@
   "medium": "Mittel",
   "strong": "Stark",
   "welcome-user": "Willkommen ‪{name}‬",
-  "your-shopping-list": "Shopping list",
+  "your-shopping-list": "Your shopping list",
   "missing.ingredients": "Fehlende Zutaten werden hier angezeigt.",
   "all-ingredients": "Alle Zutaten",
   "find-cocktails": "Finde Cocktails",
@@ -266,7 +266,7 @@
   "clear-filters": "Filter zurücksetzen",
   "rating-removed": "Bewertung zurücksetzen",
   "rating-rated": "Cocktails mit {rating} Sternen bewertet",
-  "shelf-ingredients": "Shelf ingredients",
+  "shelf-ingredients": "Zutaten im Regal",
   "shopping-list-ingredients": "Zutaten auf der Einkaufsliste",
   "notes": "Notizen",
   "collection-shared": "Mit Bar geteilt",
@@ -326,9 +326,9 @@
     "title": "Suche",
     "results-per-page": "Pro Seite",
     "empty": "Es wurden keine Ergebnisse für \"{term}\" gefunden.",
-    "ignore-ingredients": "Ignored ingredients",
+    "ignore-ingredients": "Ignorierte Zutaten",
     "select-ingredients-to-ignore": "Zu ignorierende Zutaten auswählen",
-    "ingredients": "Specified ingredients",
+    "ingredients": "Bestimmte Zutaten",
     "select-specific-ingredients": "Bestimmte Zutaten auswählen"
   },
   "subtitle": "Untertitel",
@@ -529,7 +529,7 @@
     "add-shelf-cocktails": "Fehlende Cocktails aus Barregal hinzufügen",
     "export": "Exportieren als csv",
     "added-multiple-cocktails": "Mehrere Cocktails hinzugefügt",
-    "add-to": "Add to menu category",
+    "add-to": "Zur Menükategorie hinzufügen",
     "menu-items": "entries",
     "add-multiple": "Add entries to menu",
     "add-single": "Add to menu"
@@ -537,7 +537,7 @@
   "bar": {
     "url": "Benutzerdefinierte Bar-URL",
     "url-help": "Deine öffentliche Bar-URL lautet: {url}",
-    "url-menu-hint": "Used for public access if enabled.",
+    "url-menu-hint": "Wird für öffentlichen Zugriff verwendet, wenn aktiviert.",
     "default-currency-hint": "Wird als Standardwährungsvorschlag verwendet, kann jederzeit geändert werden.",
     "default-units-hint": "Wird als Standardeinheit für Cocktail-Details verwendet, kann jederzeit geändert werden."
   },
@@ -728,7 +728,7 @@
   "profile-public-shelf-description": "Andere Bar-Mitglieder können nach den Cocktails filtern, die Sie im Angebot haben",
   "sort-random": "In zufälliger Reihenfolge",
   "cocktails-varieties": "Sorten",
-  "cocktail-variety-of": "Cocktail is variant of",
+  "cocktail-variety-of": "Cocktail ist eine Variante von",
   "cocktail-select-parent": "Basis-Cocktail auswählen",
   "year": "Jahr"
 }
