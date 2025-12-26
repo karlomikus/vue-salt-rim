@@ -64,6 +64,10 @@ refreshMenu()
     font-size: 1em;
     color: var(--clr-gray-600);
     font-weight: var(--fw-bold);
+
+    .dark-theme & {
+        color: var(--clr-gray-400);
+    }
 }
 
 .public-page-menu__category__cocktails {
@@ -140,24 +144,32 @@ refreshMenu()
 
 .public-page-menu__cocktail__info {
     margin-right: auto;
-}
 
-.public-page-menu__cocktail__info h4 {
-    font-size: 1.25rem;
-    font-weight: var(--fw-bold);
-    font-family: var(--font-heading);
-    color: var(--clr-gray-800);
+    h4 {
+        font-size: 1.25rem;
+        font-weight: var(--fw-bold);
+        font-family: var(--font-heading);
+        color: var(--clr-gray-800);
+
+        .dark-theme & {
+            color: var(--clr-gray-200);
+        }
+    }
+
+    p {
+        color: var(--clr-gray-700);
+        font-size: 0.85em;
+
+        .dark-theme & {
+            color: var(--clr-gray-300);
+        }
+    }
 }
 
 @media (max-width: 545px) {
     .public-page-menu__cocktail__info h4 {
         font-size: 1rem;
     }
-}
-
-.public-page-menu__cocktail__info p {
-    color: var(--clr-gray-700);
-    font-size: 0.85em;
 }
 
 .public-page-menu__cocktail__price {

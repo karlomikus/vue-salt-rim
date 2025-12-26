@@ -1428,7 +1428,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/public/{slugOrId}/cocktails/{slugOrPublicId}": {
+    "/public/{slugOrId}/cocktails/{cocktailSlug}": {
         parameters: {
             query?: never;
             header?: never;
@@ -1437,7 +1437,7 @@ export interface paths {
         };
         /**
          * Show cocktail
-         * @description Show public information about cocktail. If valid public ID is provided it will used, if not it will use cocktail slug.
+         * @description Show public information about cocktail.
          */
         get: operations["showPublicBarCocktail"];
         put?: never;
@@ -1457,7 +1457,7 @@ export interface paths {
         };
         /**
          * Show public menu
-         * @description Show a public bar menu details
+         * @description Show a public bar menu details. The bar must have menu enabled.
          */
         get: operations["showPublicBarMenu"];
         put?: never;
@@ -3184,12 +3184,14 @@ export interface components {
             id: number;
             /** @example user_generated */
             name: string;
-            /** @example [
+            /**
+             * @example [
              *       "cocktails.read",
              *       "cocktails.write",
              *       "ingredients.read",
              *       "ingredients.write"
-             *     ] */
+             *     ]
+             */
             abilities: string[];
             /**
              * Format: date-time
@@ -9797,8 +9799,8 @@ export interface operations {
             path: {
                 /** @description Database id of bar */
                 slugOrId: string;
-                /** @description Cocktail slug or public id (ULID) */
-                slugOrPublicId: string;
+                /** @description Cocktail slug */
+                cocktailSlug: string;
             };
             cookie?: never;
         };

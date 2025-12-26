@@ -429,7 +429,7 @@ async function finishImporting() {
             copyright: img.copyright,
             sort: img.sort,
         })) ?? [],
-        tags: result.value.recipe.tags,
+        tags: result.value.recipe.tags?.map(tag => ({ name: tag })),
         ingredients: result.value.recipe.ingredients.map(i => {
             const ing = i as CocktailIngredient
 

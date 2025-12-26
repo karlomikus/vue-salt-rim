@@ -33,6 +33,7 @@ import IconMore from '../Icons/IconMore.vue'
 import CocktailIngredientView from './CocktailIngredient.vue'
 import CocktailVarieties from './CocktailVarieties.vue'
 import MenuAddDialog from '../Menu/MenuAddDialog.vue'
+import CocktailRecipeScaler from './../Cocktail/CocktailRecipeScaler.vue';
 
 type Cocktail = components["schemas"]["Cocktail"]
 type Note = components["schemas"]["Note"]
@@ -53,6 +54,7 @@ const isLoadingShoppingList = ref(false)
 const isLoadingShare = ref(false)
 const isLoadingFavorite = ref(false)
 const isFavorited = ref(false)
+const showScaler = ref(false)
 const showNoteDialog = ref(false)
 const showCollectionDialog = ref(false)
 const showPublicDialog = ref(false)
@@ -61,7 +63,6 @@ const showManualCopyDialog = ref(false)
 const manualCopyText = ref('')
 const targetVolumeToScaleTo = ref<null|number>(null)
 const targetVolumeDilution = ref(0)
-const currentBatchType = ref('servings')
 const showDownloadImageDialog = ref(false)
 const cocktail = ref({} as Cocktail)
 const userNotes = ref([] as Note[])
@@ -70,30 +71,16 @@ const userShoppingListIngredients = ref([] as ShoppingList[])
 const ingredientScaleFactor = ref(1)
 const currentUnit = ref(appState.defaultUnit)
 const currentShelf = ref(appState.defaultShelf ?? 'bar')
+const waterDilution = ref<string | null>(null)
 
 watch(() => route.params.id as string, fetchCocktail, { immediate: true })
-
-// Reset scale factor when changing batch type
-watch(currentBatchType, (newType, oldType) => {
-    if (newType === 'servings') {
-        ingredientScaleFactor.value = 1
-        targetVolumeToScaleTo.value = null
-        targetVolumeDilution.value = 0
-    }
-    if (newType === 'volume') {
-        ingredientScaleFactor.value = 1
-        if (cocktail.value.method) {
-            targetVolumeDilution.value = cocktail.value.method.dilution_percentage
-        }
-    }
-})
 
 watch(currentShelf, (newState, oldType) => {
     appState.setDefaultShelf(newState)
 })
 
 const printUrl = computed(() => {
-    return router.resolve({ name: 'print.cocktail', params: { id: cocktail.value.slug }, query: { scaleFactor: (volumeScaleFactor.value ?? ingredientScaleFactor.value).toFixed(4), targetVolumeToScaleTo: targetVolumeToScaleTo.value, targetVolumeDilution: targetVolumeDilution.value, waterDilution: waterDilution.value } })
+    return router.resolve({ name: 'print.cocktail', params: { id: cocktail.value.slug }, query: { scaleFactor: (ingredientScaleFactor.value).toFixed(4), targetVolumeToScaleTo: targetVolumeToScaleTo.value, targetVolumeDilution: targetVolumeDilution.value, waterDilution: waterDilution.value } })
 })
 
 useEventListener(document, 'keydown', (e) => {
@@ -113,35 +100,6 @@ const sortedImages = computed(() => {
 
 const completeCocktailPrices = computed(() => {
     return cocktailPrices.value.filter(price => price.prices_per_ingredient.length > 0)
-})
-
-// Ingredient amount scale factor when batch type is volume
-const volumeScaleFactor = computed(() => {
-    const volInMl = parseFloat(cocktail.value?.volume_ml?.toString() ?? '')
-    const totalVolume = unitHandler.convertFromTo('ml', volInMl, currentUnit.value)
-
-    if (!targetVolumeToScaleTo.value) {
-        return null
-    }
-
-    const dilutionVolume = (targetVolumeDilution.value / 100) * totalVolume;
-    const finalTotalVolume = totalVolume + dilutionVolume;
-
-    return targetVolumeToScaleTo.value / finalTotalVolume
-})
-
-// Extra required water dilution when batch type is volume and dilution is set
-const waterDilution = computed(() => {
-    const volInMl = parseFloat(cocktail.value?.volume_ml?.toString() ?? '')
-    const totalVolume = unitHandler.convertFromTo('ml', volInMl, currentUnit.value)
-
-    if (!targetVolumeToScaleTo.value || !totalVolume || !volumeScaleFactor.value) {
-        return null
-    }
-
-    const dilutionVolume = (targetVolumeDilution.value / 100) * totalVolume
-
-    return unitHandler.print({ amount: dilutionVolume * volumeScaleFactor.value }, currentUnit.value, ingredientScaleFactor.value)
 })
 
 const parsedInstructions = computed(() => {
@@ -173,7 +131,7 @@ const calculatedCalories = computed(() => {
         return 0
     }
 
-    return cocktail.value.calories * (volumeScaleFactor.value ?? ingredientScaleFactor.value)
+    return cocktail.value.calories * ingredientScaleFactor.value
 })
 
 const calculatedAlcUnits = computed(() => {
@@ -181,13 +139,13 @@ const calculatedAlcUnits = computed(() => {
         return 0
     }
 
-    return cocktail.value.alcohol_units * (volumeScaleFactor.value ?? ingredientScaleFactor.value)
+    return cocktail.value.alcohol_units * ingredientScaleFactor.value
 })
 
 const totalLiquidConverted = computed(() => {
     const amount = parseFloat(cocktail.value?.volume_ml?.toString() ?? '')
 
-    return unitHandler.print({ amount: amount, units: 'ml' }, currentUnit.value, volumeScaleFactor.value ?? ingredientScaleFactor.value)
+    return unitHandler.print({ amount: amount, units: 'ml' }, currentUnit.value, ingredientScaleFactor.value)
 })
 
 const missingIngredientIds = computed(() => {
@@ -212,7 +170,9 @@ async function fetchCocktail(idOrSlug: string) {
     isLoading.value = false
 
     // Automatic target volume dilution
+    ingredientScaleFactor.value = 1
     targetVolumeDilution.value = 0
+    showScaler.value = false
     if (cocktail.value.method) {
         targetVolumeDilution.value = cocktail.value.method.dilution_percentage
     }
@@ -630,35 +590,15 @@ fetchShoppingList()
                         </div>
                         <div style="display: grid; grid-template-columns: 1fr 1fr; margin-bottom: 1rem;">
                             <div class="button-group">
-                                <h4><a :class="{'bold': currentBatchType === 'servings'}" href="#" @click.prevent="currentBatchType = 'servings'">{{ $t('servings') }}</a> &middot; <a :class="{'bold': currentBatchType === 'volume'}" href="#" @click.prevent="currentBatchType = 'volume'">{{ $t('volume') }}</a>:</h4>
-                                <template v-if="currentBatchType === 'servings'">
-                                    <button @click="ingredientScaleFactor <= 1 ? ingredientScaleFactor = 1 : ingredientScaleFactor--">-</button>
-                                    <button class="is-active">{{ ingredientScaleFactor }}</button>
-                                    <button @click="ingredientScaleFactor++">+</button>
-                                </template>
-                                <template v-else>
-                                    <h3>{{ $t('scale-recipe') }}:</h3>
-                                </template>
+                                <h4>{{ $t('scale-recipe') }}:</h4>
+                                <button type="button" @click="showScaler = !showScaler">Scaled: x{{ unitHandler.toFixedWithTruncate(ingredientScaleFactor, 2) }}</button>
                             </div>
                             <UnitPicker></UnitPicker>
                         </div>
-                        <div class="block-container block-container--inset volume-scaling-container" v-if="currentBatchType === 'volume'">
-                            <div class="form-group">
-                                <label class="form-label form-label--required" for="cocktail-target-volume">{{ $t('target-volume') }} ({{ currentUnit }}):</label>
-                                <input class="form-input" id="cocktail-target-volume" type="text" v-model="targetVolumeToScaleTo">
-                            </div>
-                            <div class="form-group">
-                                <label class="form-label" for="cocktail-target-volume-dilution">{{ $t('target-volume-dilution') }} (%):</label>
-                                <input class="form-input" id="cocktail-target-volume-dilution" type="text" v-model="targetVolumeDilution">
-                            </div>
-                            <div class="volume-scaling__water" v-if="waterDilution && targetVolumeDilution > 0">
-                                {{ $t('target-volume-dilution-help', {total: unitHandler.toFixedWithTruncate(parseFloat(waterDilution), 2) + ' ' + currentUnit}) }}
-                            </div>
-                            <p class="form-input-hint">Inspired by Jeffrey Morgenthaler's <a href="https://www.batchcalc.com/" target="_blank">The Batch Cocktail Calculator</a></p>
-                        </div>
+                        <CocktailRecipeScaler class="volume-scaling-container" v-show="showScaler" v-model="ingredientScaleFactor" v-model:waterDilution="waterDilution" v-model:targetVolume="targetVolumeToScaleTo" :cocktail-volume-ml="cocktail.volume_ml ?? 0" :method-dilution="targetVolumeDilution" :current-unit="currentUnit" />
                         <ul class="cocktail-ingredients">
                             <li v-for="ing in cocktail.ingredients" :key="ing.sort">
-                                <CocktailIngredientView :cocktail-ingredient="ing" :shopping-list="userShoppingListIngredients" :current-shelf="currentShelf" :scale-factor="volumeScaleFactor ?? ingredientScaleFactor" :units="currentUnit"></CocktailIngredientView>
+                                <CocktailIngredientView :cocktail-ingredient="ing" :shopping-list="userShoppingListIngredients" :current-shelf="currentShelf" :scale-factor="ingredientScaleFactor" :units="currentUnit"></CocktailIngredientView>
                             </li>
                         </ul>
                         <div v-if="cocktail.volume_ml" class="cocktail-ingredients__total-amount">
@@ -841,12 +781,6 @@ swiper-container {
 
 .volume-scaling-container {
     padding: var(--gap-size-3);
-    margin-bottom: var(--gap-size-2);
-}
-
-.volume-scaling__water {
-    font-weight: var(--fw-bold);
-    font-size: 1.25rem;
     margin-bottom: var(--gap-size-2);
 }
 

@@ -419,7 +419,7 @@ function checkForImportData() {
         sessionStorage.removeItem('scrapeResult')
         const parsedScrapeResult = JSON.parse(scraped)
 
-        cocktail.value = parsedScrapeResult
+        setupExistingCocktail(parsedScrapeResult)
     }
 }
 

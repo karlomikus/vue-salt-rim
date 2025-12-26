@@ -1,3 +1,8 @@
+# v4.12.1
+## Fixes
+- Fixed missing glass and tags on imported cocktails
+- Fixed public menu dark theme styling
+
 # v4.12.0
 ## New
 - Show text dialog when environment does not support clipboard API
