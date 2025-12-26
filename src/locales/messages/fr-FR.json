@@ -537,7 +537,7 @@
   "bar": {
     "url": "URL personnalisée du bar",
     "url-help": "L'URL publique de votre bar sera : {url}",
-    "url-menu-hint": "Used for public menu if enabled.",
+    "url-menu-hint": "Used for public access if enabled.",
     "default-currency-hint": "Utilisé comme suggestion de devise par défaut, peut être modifié à tout moment.",
     "default-units-hint": "Utilisé comme unité par défaut pour les détails du cocktail, peut être modifié à tout moment."
   },

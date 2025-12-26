@@ -141,7 +141,7 @@
   "medium": "Mellan",
   "strong": "Stark",
   "welcome-user": "Välkommen {name}",
-  "your-shopping-list": "Your shopping list",
+  "your-shopping-list": "Shopping list",
   "missing.ingredients": "Ingredienser du saknar kommer visas här",
   "all-ingredients": "Alla ingredienser",
   "find-cocktails": "Hitta drinkar",
@@ -537,7 +537,7 @@
   "bar": {
     "url": "Anpassad bar-URL",
     "url-help": "Din publika bar-URL kommer vara: {url}",
-    "url-menu-hint": "Used for public menu if enabled.",
+    "url-menu-hint": "Used for public access if enabled.",
     "default-currency-hint": "Used as default currency suggestion, can be changed anytime.",
     "default-units-hint": "Used as default units on cocktail details, can be changed anytime."
   },
@@ -728,7 +728,7 @@
   "profile-public-shelf-description": "Other bar members will be able to filter by cocktails you have in your shelf",
   "sort-random": "In random order",
   "cocktails-varieties": "Varieties",
-  "cocktail-variety-of": "Cocktail is variety of",
+  "cocktail-variety-of": "Cocktail is variant of",
   "cocktail-select-parent": "Select parent cocktail",
   "year": "Year"
 }

@@ -31,7 +31,7 @@
     "remove-from-list": "Remove from shopping list",
     "update-success": "Ingredient updated successfully",
     "create-success": "Ingredient created successfully",
-    "name-placeholder": "<Not selected>",
+    "name-placeholder": "Not selected",
     "delete-confirm": "This will permanently delete ingredient with name \"{name}\". This action will modify {total} cocktail recipes.",
     "shelf-remove-success": "Removed \"{name}\" from your shelf",
     "shelf-add-success": "Added \"{name}\" to your shelf",
@@ -130,7 +130,7 @@
   },
   "latest": {
     "cocktails": "Latest cocktails",
-    "favorites": "Your recent favorites",
+    "favorites": "Recent favorites",
     "ingredients": "Latest ingredients"
   },
   "strength": "Strength",
@@ -141,7 +141,7 @@
   "medium": "Medium",
   "strong": "Strong",
   "welcome-user": "Welcome {name}",
-  "your-shopping-list": "Your shopping list",
+  "your-shopping-list": "Shopping list",
   "missing.ingredients": "Ingredients you are missing will be shown here.",
   "all-ingredients": "All ingredients",
   "find-cocktails": "Find cocktails",
@@ -326,9 +326,9 @@
     "title": "Search",
     "results-per-page": "Per page",
     "empty": "No results found for term \"{term}\".",
-    "ignore-ingredients": "Ignore ingredients",
+    "ignore-ingredients": "Ignored ingredients",
     "select-ingredients-to-ignore": "Select ingredients to ignore",
-    "ingredients": "Specific ingredients",
+    "ingredients": "Specified ingredients",
     "select-specific-ingredients": "Select specific ingredients"
   },
   "subtitle": "Subtitle",
@@ -537,7 +537,7 @@
   "bar": {
     "url": "Custom bar URL",
     "url-help": "Your public bar URL will be: {url}",
-    "url-menu-hint": "Used for public menu if enabled.",
+    "url-menu-hint": "Used for public access if enabled.",
     "default-currency-hint": "Used as default currency suggestion, can be changed anytime.",
     "default-units-hint": "Used as default units on cocktail details, can be changed anytime."
   },
@@ -728,7 +728,7 @@
   "profile-public-shelf-description": "Other bar members will be able to filter by cocktails you have in your shelf",
   "sort-random": "In random order",
   "cocktails-varieties": "Varieties",
-  "cocktail-variety-of": "Cocktail is variety of",
+  "cocktail-variety-of": "Cocktail is variant of",
   "cocktail-select-parent": "Select parent cocktail",
   "year": "Year"
 }

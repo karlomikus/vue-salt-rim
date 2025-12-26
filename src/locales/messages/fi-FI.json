@@ -130,7 +130,7 @@
   },
   "latest": {
     "cocktails": "Viimeisimmät cocktailit",
-    "favorites": "Your recent favorites",
+    "favorites": "Recent favorites",
     "ingredients": "Viimeisimmät ainesosat"
   },
   "strength": "Vahvuus",
@@ -141,7 +141,7 @@
   "medium": "Keskivahva",
   "strong": "Vahva",
   "welcome-user": "Tervetuloa {name}",
-  "your-shopping-list": "Your shopping list",
+  "your-shopping-list": "Shopping list",
   "missing.ingredients": "Tarvitsemasi ainesosat näytetään täällä.",
   "all-ingredients": "Kaikki ainesosat",
   "find-cocktails": "Löydä cocktaileja",
@@ -326,9 +326,9 @@
     "title": "Search",
     "results-per-page": "Per page",
     "empty": "No results found for term \"{term}\".",
-    "ignore-ingredients": "Ignore ingredients",
+    "ignore-ingredients": "Ignored ingredients",
     "select-ingredients-to-ignore": "Select ingredients to ignore",
-    "ingredients": "Specific ingredients",
+    "ingredients": "Specified ingredients",
     "select-specific-ingredients": "Select specific ingredients"
   },
   "subtitle": "Subtitle",
@@ -537,7 +537,7 @@
   "bar": {
     "url": "Custom bar URL",
     "url-help": "Your public bar URL will be: {url}",
-    "url-menu-hint": "Used for public menu if enabled.",
+    "url-menu-hint": "Used for public access if enabled.",
     "default-currency-hint": "Used as default currency suggestion, can be changed anytime.",
     "default-units-hint": "Used as default units on cocktail details, can be changed anytime."
   },
@@ -728,7 +728,7 @@
   "profile-public-shelf-description": "Muut baarin jäsenet voivat suodattaa cocktaileja hyllysi valikoiman perusteella",
   "sort-random": "Satunnaisessa järjestyksessä",
   "cocktails-varieties": "Varieties",
-  "cocktail-variety-of": "Cocktail is variety of",
+  "cocktail-variety-of": "Cocktail is variant of",
   "cocktail-select-parent": "Select parent cocktail",
   "year": "Vuosi"
 }
