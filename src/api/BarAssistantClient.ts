@@ -607,6 +607,6 @@ export default class BarAssistantClient {
   }
 
   static async getPublicBarCocktail(barId: string, slug: string) {
-    return (await client.GET('/public/{slugOrId}/cocktails/{slugOrPublicId}', { params: { path: { slugOrId: barId, slugOrPublicId: slug } } })).data
+    return (await client.GET('/public/{slugOrId}/cocktails/{cocktailSlug}', { params: { path: { slugOrId: barId, cocktailSlug: slug } } })).data
   }
 }
