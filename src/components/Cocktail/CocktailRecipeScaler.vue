@@ -29,7 +29,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch } from 'vue';
+import { ref, computed, watchEffect, watch } from 'vue';
 import { unitHandler } from '@/composables/useUnits'
 
 const {
@@ -47,10 +47,34 @@ const targetVolumeDilution = ref(methodDilution);
 const targetVolumeToScaleTo = ref(0);
 const scaleType = ref<'quantity' | 'volume'>('quantity');
 
+// Reset state when cocktail changes (detected by volume change)
+watch(() => cocktailVolumeMl, () => {
+    quantity.value = 1;
+    targetVolumeToScaleTo.value = 0;
+    scaleType.value = 'quantity';
+});
+
+// Update dilution when method dilution changes
+watch(() => methodDilution, (newDilution) => {
+    targetVolumeDilution.value = newDilution;
+});
+
 const model = defineModel<number>({
     type: Number,
     required: false,
     default: 1,
+})
+
+const waterDilutionModel = defineModel<string | null>('waterDilution', {
+    type: [String, null],
+    required: false,
+    default: null,
+})
+
+const targetVolumeModel = defineModel<number | null>('targetVolume', {
+    type: [Number, null],
+    required: false,
+    default: null,
 })
 
 const volumeScaleFactor = computed(() => {
@@ -78,34 +102,30 @@ const waterDilution = computed(() => {
     return unitHandler.print({ amount: dilutionVolume * volumeScaleFactor.value }, currentUnit, 1)
 })
 
-const modifyQuantity = (delta: number) => {
-    const newQuantity = parseInt(quantity.value.toString()) + delta
-    if (newQuantity < 1) {
-        quantity.value = 1
-    } else {
-        quantity.value = newQuantity
-    }
-}
-
-const updateScaleFactor = () => {
+const scaleFactor = computed(() => {
     if (scaleType.value === 'quantity') {
-        model.value = parseInt(quantity.value.toString())
-    } else if (scaleType.value === 'volume') {
-        model.value = volumeScaleFactor.value || 1
+        return Number(quantity.value) || 1
+    } else {
+        return volumeScaleFactor.value || 1
     }
-}
-
-watch(quantity, () => {
-    updateScaleFactor()
-}, { immediate: true })
-
-watch(volumeScaleFactor, () => {
-    updateScaleFactor()
-}, { immediate: true })
-
-watch(scaleType, () => {
-    updateScaleFactor()
 })
+
+watchEffect(() => {
+    model.value = scaleFactor.value
+})
+
+watchEffect(() => {
+    waterDilutionModel.value = waterDilution.value
+})
+
+watchEffect(() => {
+    targetVolumeModel.value = Number(targetVolumeToScaleTo.value)
+})
+
+const modifyQuantity = (delta: number) => {
+    const newQuantity = Number(quantity.value) + delta
+    quantity.value = Math.max(1, newQuantity)
+}
 </script>
 
 <style scoped>
