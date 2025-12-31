@@ -17,7 +17,7 @@
     "cocktails": "Cocktailit joita voin tehdä",
     "bar-stats": "Baarin tilastot",
     "recommended-cocktails": "Suositellut cocktailit",
-    "locked_cocktails": "Cocktails I can't make"
+    "locked_cocktails": "Cocktailit joita en voi tehdä"
   },
   "server-error": "Odottamaton palvelinvirhe",
   "ingredient": {
@@ -84,12 +84,12 @@
     "potential-bar-shelf-cocktails": "Potential bar cocktails"
   },
   "share": {
-    "title": "Share",
-    "copy-json": "Copy as JSON",
-    "copy-yaml": "Copy as YAML",
-    "format-copied": "Text copied",
-    "format-copy-failed": "Text copy failed",
-    "copy-md": "Copy as Markdown",
+    "title": "Jaa",
+    "copy-json": "Kopioi JSON-muodossa",
+    "copy-yaml": "Kopioi YAML-muodossa",
+    "format-copied": "Teksti kopioitu",
+    "format-copy-failed": "Tekstin kopiointi epäonnistui",
+    "copy-md": "Kopioi Markdown-muodossa",
     "copy-xml": "Copy as XML",
     "copy-json-ld": "Copy JSON+LD schema",
     "manual-copy-title": "Kopioi teksti manuaalisesti",
@@ -130,7 +130,7 @@
   },
   "latest": {
     "cocktails": "Viimeisimmät cocktailit",
-    "favorites": "Recent favorites",
+    "favorites": "Viimeisimmät suosikit",
     "ingredients": "Viimeisimmät ainesosat"
   },
   "strength": "Vahvuus",
@@ -141,7 +141,7 @@
   "medium": "Keskivahva",
   "strong": "Vahva",
   "welcome-user": "Tervetuloa {name}",
-  "your-shopping-list": "Shopping list",
+  "your-shopping-list": "Your shopping list",
   "missing.ingredients": "Tarvitsemasi ainesosat näytetään täällä.",
   "all-ingredients": "Kaikki ainesosat",
   "find-cocktails": "Löydä cocktaileja",
@@ -262,11 +262,11 @@
   "passwords-not-match": "Passwords do not match",
   "register-success": "You are now registered, you can now login with your information",
   "register-success-email": "You are now registered, check your email for account confirmation",
-  "apply-filters": "Apply filters",
-  "clear-filters": "Clear all filters",
-  "rating-removed": "Removed cocktail rating",
+  "apply-filters": "Käytä suodattimia",
+  "clear-filters": "Nollaa suodattimet",
+  "rating-removed": "Cocktailin arvio poistettu",
   "rating-rated": "Cocktail rated with {rating} stars",
-  "shelf-ingredients": "Shelf ingredients",
+  "shelf-ingredients": "Ainesosat hyllyssä",
   "shopping-list-ingredients": "Shopping list ingredients",
   "notes": "Notes",
   "collection-shared": "Shared with bar",
@@ -283,28 +283,28 @@
   "note-added": "Note added successfully",
   "generate-image": "Generate recipe image",
   "generate-image-dialog": {
-    "preview": "Image preview",
+    "preview": "Esikatsele kuva",
     "generation-failed": "Error occured trying to generate an image"
   },
   "download": "Download",
   "type": "Type",
   "cocktails-similar": "Similar cocktails",
   "collections": {
-    "add-to": "Add to collection",
-    "collection": "Collection",
-    "create": "Create a new collection",
-    "title": "Collections",
-    "add": "Create collection",
-    "edit": "Edit collection",
+    "add-to": "Lisää kokoelmaan",
+    "collection": "Kokoelma",
+    "create": "Luo uusi kokoelma",
+    "title": "Kokoelmat",
+    "add": "Luo kokoelma",
+    "edit": "Muokkaa kokoelmaa",
     "confirm-delete": "This will permanently delete collection with name \"{name}\".",
     "delete-success": "Collection successfully removed",
     "update-success": "Collection updated successfully",
     "add-success": "Collection added successfully",
     "confirm-remove-cocktail": "Are you sure you want to remove cocktail from collection?",
     "add-from-query": "Add to collection from current filters",
-    "cocktail-remove-success": "Cocktail removed from collection",
-    "cocktail-add-success": "Cocktail added to collection",
-    "share-in-bar": "Share collection with all bar members",
+    "cocktail-remove-success": "Cocktail poistettu kokoelmasta",
+    "cocktail-add-success": "Cocktail lisätty kokoelmaan",
+    "share-in-bar": "Jaa kokoelma kaikille baarin jäsenille",
     "quantitiy-calculator": "Quantity calculator",
     "cocktail-quantities": "Cocktail quantities",
     "ingredient-breakdown": "Ingredient breakdown for {total} cocktails"
@@ -313,22 +313,22 @@
   "global": "Global",
   "none": "None",
   "clear": "Clear",
-  "date-added": "Date added",
+  "date-added": "Lisäyspäivä",
   "date-favorited": "Date favorited",
   "average-rating": "Average rating",
   "missing-ingredients": "Missing ingredients",
-  "user-rating": "User rating",
+  "user-rating": "Käyttäjien arvio",
   "pagination": {
-    "page": "Page",
-    "results": "Showing {on_page_results}/{total_results} results"
+    "page": "Sivu",
+    "results": "Näytetään {on_page_results}/{total_results} tulosta"
   },
   "search": {
-    "title": "Search",
-    "results-per-page": "Per page",
+    "title": "Haku",
+    "results-per-page": "Tulosta sivulla",
     "empty": "No results found for term \"{term}\".",
-    "ignore-ingredients": "Ignored ingredients",
+    "ignore-ingredients": "Ignore ingredients",
     "select-ingredients-to-ignore": "Select ingredients to ignore",
-    "ingredients": "Specified ingredients",
+    "ingredients": "Specific ingredients",
     "select-specific-ingredients": "Select specific ingredients"
   },
   "subtitle": "Subtitle",
@@ -368,11 +368,11 @@
     "update-success": "Utensil updated"
   },
   "bars": {
-    "title": "Bars",
-    "bar": "Bar",
-    "join": "Join a bar",
-    "add": "Create bar",
-    "add-success": "Bar \"{name}\" succesfully created",
+    "title": "Baarit",
+    "bar": "Baari",
+    "join": "Liity baariin",
+    "add": "Luo baari",
+    "add-success": "Baari \"{name}\" luotu onnistuneesti",
     "empty": "You don't have any bars. To start adding recipes and ingredients you need to create or join at least one bar.",
     "join-notice": "To join existing bar you need an invite code. Ask the bar owner to send you one and paste it in the input below.",
     "invite-code": "Invite code",
@@ -385,18 +385,18 @@
     "import-base-cocktails": "Luo baari sisällyttäen peruscocktailit",
     "import-base-ingredients": "Luo baari sisällyttäen perusainesosat",
     "join-error": "Unable to join bar",
-    "select-bar": "Select bar",
+    "select-bar": "Valitse baari",
     "delete-success": "Bar successfully removed",
     "join-success": "Joined a new bar, cheers!",
     "activate": "Activate bar",
     "status": {
-      "active": "Active bars",
+      "active": "Aktiiviset baarit",
       "deactivated": "Deactivated bars",
       "provisioning": "Provisioning"
     },
     "confirm-activation": "Are you sure you want to activate \"{name}\"? On free plan you can have only one bar activated, you will not be able to activate any other bars.",
     "activation-success": "Bar activated",
-    "members": "Bar members",
+    "members": "Baarin jäseniä",
     "logo": "Bar logo",
     "edit-success": "Bar \"{name}\" updated",
     "default-data": "Default dataset",
@@ -452,7 +452,7 @@
   "edit-amounts": "Edit amounts",
   "roles": {
     "name": {
-      "Admin": "Admin",
+      "Admin": "Ylläpitäjä",
       "Moderator": "Moderator",
       "General": "General",
       "Guest": "Guest"
@@ -537,7 +537,7 @@
   "bar": {
     "url": "Custom bar URL",
     "url-help": "Your public bar URL will be: {url}",
-    "url-menu-hint": "Used for public access if enabled.",
+    "url-menu-hint": "Used for public menu if enabled.",
     "default-currency-hint": "Used as default currency suggestion, can be changed anytime.",
     "default-units-hint": "Used as default units on cocktail details, can be changed anytime."
   },
@@ -592,7 +592,7 @@
   "cocktail": {
     "title": "Cocktail",
     "import": "Import cocktail",
-    "cocktails": "Cocktails",
+    "cocktails": "Cocktailit",
     "confirm-delete": "This will permanently delete cocktail with name \"{name}\".",
     "create-success": "Cocktail created successfully",
     "delete-success": "Cocktail \"{name}\" successfully removed",
@@ -646,7 +646,7 @@
     "cocktails": "Bar shelf cocktails",
     "locked_cocktails": "Locked bar cocktails"
   },
-  "bar-shelf-ingredients": "Bar shelf ingredients",
+  "bar-shelf-ingredients": "Ainesosat baarin hyllyssä",
   "target-pour-cost": "Target pour cost",
   "target-pour-cost-help": "Percentage of the cocktail's selling price that comes from the cost of the ingredients.",
   "is_favorited": "Your favorite cocktail",
@@ -656,11 +656,11 @@
   "website": "Verkkosivusto",
   "uncategorized": "Uncategorized",
   "calculators": {
-    "title": "Calculators",
-    "calculator": "Calculator",
-    "add": "Create calculator",
-    "information": "Basic information",
-    "inputs": "Inputs",
+    "title": "Laskurit",
+    "calculator": "Laskuri",
+    "add": "Luo laskuri",
+    "information": "Perustiedot",
+    "inputs": "Syötteet",
     "evaluations": "Evaluations",
     "expression": "Expression",
     "var-name": "Variable name",
@@ -687,7 +687,7 @@
   "permissions": {
     "clipboard-error": "Your browser or server config does not support clipboard sharing."
   },
-  "preview": "Preview",
+  "preview": "Esikatsele",
   "available-variants": "Variants in shelf",
   "sso": {
     "profile-providers": "SSO accounts",
@@ -728,7 +728,7 @@
   "profile-public-shelf-description": "Muut baarin jäsenet voivat suodattaa cocktaileja hyllysi valikoiman perusteella",
   "sort-random": "Satunnaisessa järjestyksessä",
   "cocktails-varieties": "Varieties",
-  "cocktail-variety-of": "Cocktail is variant of",
+  "cocktail-variety-of": "Cocktail is variety of",
   "cocktail-select-parent": "Select parent cocktail",
   "year": "Vuosi"
 }
