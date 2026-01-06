@@ -64,14 +64,14 @@
     "add-to-bar-shelf": "Lisää baarin hyllyyn",
     "remove-from-bar-shelf": "Poista baarin hyllystä",
     "shelf-bar-help": "Baarin hyllystä löytyvillä ainesosilla valmistettavissa olevat juomaohjeet näytetään kaikille baarin jäsenille.",
-    "shelf-user-help": "Recipes matching ingredients in your shelf can only be managed by you.",
+    "shelf-user-help": "Vain sinä voit lisätä tai poistaa hyllystäsi löytyviä ainesosia.",
     "bar-shelf-add-success": "Lisätty \"{name}\" baarin hyllyyn",
     "bar-shelf-remove-success": "Poistettu \"{name}\" baarin hyllystä",
     "units-help": "Jotkin ominaisuudet toimivat parhaiten käyttämällä yleisiä yksikköjä. Joitakin suosituksia yksiköiksi: ml, oz, cl, dashes, barspoon, drops, topup, leaves.",
     "import": "Tuo ainesosat",
     "attach-calculator": "Liitä laskuri",
     "hierarchy": "Hierarkia",
-    "status": "Ainesosan tilanne",
+    "status": "Ainesosan saatavuus",
     "hierarchy-description": "Tässä näet yleiskuvan ainesosan hierarkiasta. Ainesosan puuttuessa hyllystä voidaan se korvata jollakin alalajeista juomaohjeita käsiteltäessä, mikäli juomaohje sallii korvaamisen.",
     "show-variants": "Näytä alalajit",
     "show-ancestors": "Näytä ylälajit",
@@ -116,10 +116,10 @@
   "method": {
     "title": "Valmistusmenetelmä",
     "Shake": "Ravista",
-    "Stir": "Stir",
+    "Stir": "Sekoita",
     "Build": "Kokoa",
-    "Blend": "Blend",
-    "Muddle": "Muddle",
+    "Blend": "Tehosekoita",
+    "Muddle": "Muussaa",
     "Layer": "Kerrosta"
   },
   "total": {
@@ -208,7 +208,7 @@
   "sort-asc": "Nouseva",
   "sort-desc": "Laskeva",
   "show-more": "Näytä lisää",
-  "ABV": "Til-%",
+  "ABV": "Alk. til.",
   "color": "Väri",
   "alcohol-proof": "Proof-luku",
   "email": "Sähköposti",
@@ -239,7 +239,7 @@
     "add-success": "Lasityyppi luotu",
     "volume": "Tilavuus"
   },
-  "information": "Information",
+  "information": "Yleistä tietoa",
   "public-dialog": {
     "title": "Juoman julkinen linkki",
     "public_at": "Tehty julkiseksi: {date}",
@@ -248,12 +248,12 @@
     "action-delete": "Poista linkki",
     "action-generate": "Luo linkki",
     "toasts": {
-      "copy-success": "Cocktail public URL copied",
-      "copy-fail": "Unable to write link to clipboard"
+      "copy-success": "Juoman julkinen osoite kopioitu",
+      "copy-fail": "Linkin kopiointi leikepöydälle ei onnistunut"
     }
   },
   "public-link": "Public at",
-  "click-here": "Click here",
+  "click-here": "Paina tästä",
   "ui-language": "Kieli",
   "print": "Tulosta",
   "register": "Rekisteröidy",
@@ -269,7 +269,7 @@
   "shelf-ingredients": "Ainesosat hyllyssä",
   "shopping-list-ingredients": "Ostoslistan ainesosat",
   "notes": "Muistiinpanot",
-  "collection-shared": "Shared with bar",
+  "collection-shared": "Jaettu baarin jäsenten kesken",
   "note": {
     "title": "Muistiinpano",
     "add": "Lisää muistiinpano",
@@ -287,7 +287,7 @@
     "generation-failed": "Error occured trying to generate an image"
   },
   "download": "Lataa",
-  "type": "Type",
+  "type": "Tyyppi",
   "cocktails-similar": "Samanlaiset juomat",
   "collections": {
     "add-to": "Lisää kokoelmaan",
@@ -301,7 +301,7 @@
     "update-success": "Kokoelma päivitetty onnistuneesti",
     "add-success": "Kokoelma lisätty onnistuneesti",
     "confirm-remove-cocktail": "Haluatko varmasti poistaa juoman kokoelmasta?",
-    "add-from-query": "Add to collection from current filters",
+    "add-from-query": "Lisää kokoelmaan nykyisellä suodatuksella",
     "cocktail-remove-success": "Juoma poistettu kokoelmasta",
     "cocktail-add-success": "Juoma lisätty kokoelmaan",
     "share-in-bar": "Jaa kokoelma kaikille baarin jäsenille",
@@ -423,10 +423,10 @@
   },
   "import": {
     "manually-match": "Match ingredient manually",
-    "manual-match-notice": "Select ingredient that best matches \"{ name }\", or create a new one.",
-    "start": "Start import",
-    "type": "Import format",
-    "continue": "Continue with editing",
+    "manual-match-notice": "Valitse parhaiten ainesosaa \"{ name }\" vastaava ainesosa, tai luo uusi.",
+    "start": "Aloita tuonti",
+    "type": "Tuotavan sisällön muoto",
+    "continue": "Jatka muokkaamista",
     "type-url-title": "URL",
     "type-json-title": "JSON",
     "type-ai-title": "Text",
@@ -438,9 +438,9 @@
     "type-bookmarklet-description": "Create a bookmarklet to generate JSON format",
     "type-html-description": "Import from raw HTML format",
     "notice": "Olemassaolevia ainesosia, valmistusmenetelmiä ja lasityyppejä käytetään automaattisesti nimen perusteella (välittämättä pien- tai suuraakkosista). Puuttuvat ainesosat lisätään. Yleiset yksiköt muunnetaan automaattisesti millilitroiksi. Kokoelman koosta riippuen tuonti voi kestää joitakin minuutteja.",
-    "type-csv-text-title": "CSV text",
-    "type-csv-text-description": "Import by pasting the CSV structure",
-    "type-csv-file-title": "CSV file",
+    "type-csv-text-title": "CSV tekstinä",
+    "type-csv-text-description": "Tuo liittämällä CSV-tietueet",
+    "type-csv-file-title": "CSV tiedostona",
     "type-csv-file-description": "Import by uploading CSV file"
   },
   "remove-from-bar": "Poista baarista",
@@ -448,8 +448,8 @@
   "profile-public-shelf": "Näytä hyllyni juomat muille baarin jäsenille",
   "favorited-cocktails": "Suosikkijuomasi",
   "created-by": "Luonut",
-  "amount-max": "Amount max",
-  "edit-amounts": "Edit amounts",
+  "amount-max": "Enimmäismäärä",
+  "edit-amounts": "Muokkaa määriä",
   "roles": {
     "name": {
       "Admin": "Ylläpitäjä",
@@ -469,16 +469,16 @@
   "billing": {
     "title": "Laskutus",
     "inactive-title": "Upgrade to \"{name}\" plan today!",
-    "is_active": "Your subscription for \"{name}\" plan is currently active",
-    "next_bill_at": "Your next payment will be on",
+    "is_active": "Tilauksesi palvelutasoon \"{name}\" on voimassa",
+    "next_bill_at": "Sinua laskutetaan seuraavan kerran",
     "end_at": "You ended your subscription, you will have access to your current plan until",
-    "confirm-sub-update-pause": "This action will end your subscription which you can resume at any time. You will have full access to your plan until the end of the current subscription.",
-    "confirm-sub-update-resume": "This action will resume your subscription. If your subscription is not active anymore you will be charged as per plan pricing.",
-    "pause": "Pause subscription",
-    "resume": "Resume subscription",
+    "confirm-sub-update-pause": "Tämä toiminto päättää tilauksesi. Voit jatkaa sitä myöhemmin. Voit käyttää nykyistä palvelutasoa nykyisen sopimuskauden loppuun asti.",
+    "confirm-sub-update-resume": "Tämä toiminto jatkaa tilaustasi. Jos tilauksesi ei ole enää voimassa, sinua laskutetaan palveluhinnaston mukaisesti.",
+    "pause": "Keskeytä tilaus",
+    "resume": "Jatka tilausta",
     "billed_at": "Billed at",
-    "amount": "Amount",
-    "currency": "Currency",
+    "amount": "Määrä",
+    "currency": "Valuutta",
     "invoice-number": "Laskun numero",
     "transactions": "Laskutustapahtumat",
     "subscribed-on": "Subscribed on",
@@ -530,8 +530,8 @@
     "export": "Vie CSV-muodossa",
     "added-multiple-cocktails": "Lisätty useita juomia",
     "add-to": "Lisää juomalistan osioon",
-    "menu-items": "entries",
-    "add-multiple": "Add entries to menu",
+    "menu-items": "ainesosaa",
+    "add-multiple": "Lisää ainesosat juomalistaan",
     "add-single": "Lisää juomalistalle"
   },
   "bar": {
@@ -573,7 +573,7 @@
     "types-hint": "Lue lisää vientien tyypeistä täältä",
     "force-units": "Muunna yksiköt"
   },
-  "start": "Start",
+  "start": "Aloita",
   "filter": "Suodata",
   "default-units": "Oletusyksikkö",
   "volume": "Tilavuus",
@@ -587,7 +587,7 @@
   "wakelock-toggle": "Estä näytön sammuminen",
   "ingredients-not-selected": "Ei valittuja ainesosia",
   "contains-ingredients": "Sisältää ainesosia",
-  "recipe-matching": "Recipe matching",
+  "recipe-matching": "Täsmäävyys juomaohjeisiin",
   "suggestions": "Ehdotukset",
   "cocktail": {
     "title": "Juoma",
@@ -600,10 +600,10 @@
     "filters": "Juomien suodattimet",
     "ingredient-remove": "Tämä poistaa ainesosan \"{name}\" juomaohjeesta.",
     "ingredients-added-success": "Lisätty {total} ainesosaa ostoslistallesi.",
-    "missing-ing": "You are missing this ingredient",
+    "missing-ing": "Sinulta puuttuu tämä ainesosa",
     "missing-ing-action": "Lisää puuttuvat ainesosat ostoslistalleni",
-    "missing-ing-complex": "Missing, but you can make it with ingredients in your shelf",
-    "missing-ing-sub-available": "Missing, but you have substitutes available",
+    "missing-ing-complex": "Puuttuu, mutta voit valmistaa tätä saatavilla olevista ainesosista",
+    "missing-ing-sub-available": "Puuttuu, mutta korvaavia ainesosia on saatavilla",
     "shared": "Julkiset juomat",
     "unfavorited": "Poistettu \"{name}\" suosikeista",
     "update-success": "Juoma päivitetty onnistuneesti",
@@ -628,7 +628,7 @@
     "price-category-update-success": "Hintaluokka päivitetty",
     "select": "Valitse hinta",
     "category-delete-success": "Hintaluokka poistettu",
-    "category-confirm-delete": "This will permanently price category with name \\\"{name}\\\".",
+    "category-confirm-delete": "Tämä poistaa lopullisesti hintaluokan \"{name}\".",
     "missing-cocktail-price-calculator": "Tälle juomalle ei ole saatavilla hintatietoja. Lisää ainesosille hinnat nähdäksesi raaka-ainekustannukset.",
     "missing-price-categories": "To add ingredient prices, you need to define bar {link} first."
   },
@@ -641,20 +641,20 @@
   "target-volume": "Tavoitetilavuus",
   "target-volume-dilution": "Optional dilution",
   "scale-recipe": "Skaalaa ohjetta",
-  "target-volume-dilution-help": "Dilute with {total} of water",
+  "target-volume-dilution-help": "Laimenna {total} määrällä vettä",
   "bar_shelf": {
     "cocktails": "Baarin hyllyn juomat",
-    "locked_cocktails": "Locked bar cocktails"
+    "locked_cocktails": "Ei pysty tekemään baarin ainesosista"
   },
   "bar-shelf-ingredients": "Ainesosat baarin hyllyssä",
-  "target-pour-cost": "Target pour cost",
-  "target-pour-cost-help": "Percentage of the cocktail's selling price that comes from the cost of the ingredients.",
+  "target-pour-cost": "Tavoiteltu kaatohinta",
+  "target-pour-cost-help": "Myyntihinnan raaka-ainekustannuksista muodostuva osuus.",
   "is_favorited": "Suosikkijuomasi",
   "in_bar_shelf": "Available in bar shelf",
   "in_your_shelf": "Available in your shelf",
-  "is_public": "Has public link",
+  "is_public": "On julkinen",
   "website": "Verkkosivusto",
-  "uncategorized": "Uncategorized",
+  "uncategorized": "Luokittelematon",
   "calculators": {
     "title": "Laskurit",
     "calculator": "Laskuri",
@@ -711,9 +711,9 @@
   "theme-dark": "Tumma",
   "theme-light": "Vaalea",
   "default-currency": "Oletusvaluutta",
-  "loading": "Loading",
+  "loading": "Ladataan",
   "feeds": {
-    "title": "Feeds"
+    "title": "Syötteet"
   },
   "cocktail-methods": {
     "cocktail-methods": "Juomien valmistusmenetelmät",
@@ -729,6 +729,6 @@
   "sort-random": "Satunnainen järjestys",
   "cocktails-varieties": "Alalajit",
   "cocktail-variety-of": "Juoma on muunnelma juomasta",
-  "cocktail-select-parent": "Select parent cocktail",
+  "cocktail-select-parent": "Valitse juoma jonka muunnelma tämä on",
   "year": "Vuosi"
 }
