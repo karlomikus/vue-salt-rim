@@ -260,8 +260,8 @@
   "login": "Kirjaudu",
   "status": "Tila",
   "passwords-not-match": "Salasanat poikkeavat toisistaan",
-  "register-success": "You are now registered, you can now login with your information",
-  "register-success-email": "You are now registered, check your email for account confirmation",
+  "register-success": "Olet nyt rekisteröitynyt, voit kirjautua tunnuksellasi",
+  "register-success-email": "Olet nyt rekisteröitynyt, vahvistus on lähetetty sähköpostiisi",
   "apply-filters": "Käytä suodattimia",
   "clear-filters": "Nollaa suodattimet",
   "rating-removed": "Juoman arvio poistettu",
@@ -281,10 +281,10 @@
   },
   "content": "Sisältö",
   "note-added": "Muistiinpano lisätty onnistuneesti",
-  "generate-image": "Generate recipe image",
+  "generate-image": "Luo ohjeesta kuva",
   "generate-image-dialog": {
     "preview": "Esikatsele kuva",
-    "generation-failed": "Error occured trying to generate an image"
+    "generation-failed": "Kuvaa luodessa tapahtui virhe"
   },
   "download": "Lataa",
   "type": "Tyyppi",
@@ -296,7 +296,7 @@
     "title": "Kokoelmat",
     "add": "Luo kokoelma",
     "edit": "Muokkaa kokoelmaa",
-    "confirm-delete": "This will permanently delete collection with name \"{name}\".",
+    "confirm-delete": "Tämä poistaa lopullisesti kokoelman \"{name}\".",
     "delete-success": "Kokoelma poistettu onnistuneesti",
     "update-success": "Kokoelma päivitetty onnistuneesti",
     "add-success": "Kokoelma lisätty onnistuneesti",
@@ -305,9 +305,9 @@
     "cocktail-remove-success": "Juoma poistettu kokoelmasta",
     "cocktail-add-success": "Juoma lisätty kokoelmaan",
     "share-in-bar": "Jaa kokoelma kaikille baarin jäsenille",
-    "quantitiy-calculator": "Quantity calculator",
-    "cocktail-quantities": "Cocktail quantities",
-    "ingredient-breakdown": "Ingredient breakdown for {total} cocktails"
+    "quantitiy-calculator": "Määrälaskuri",
+    "cocktail-quantities": "Juomien määrät",
+    "ingredient-breakdown": "Ainesosaerittely {total} juomalle"
   },
   "no-cocktails": "Juomia ei löytynyt",
   "global": "Yleiset",
@@ -339,7 +339,7 @@
   "cocktail-collections": "Juomakokoelmat",
   "cocktails-not-found": "Juomia ei löytynyt",
   "ingredients-not-found": "Ainesosia ei löytynyt",
-  "empty-state-default": "No items found",
+  "empty-state-default": "Ei mitään näytettävää",
   "view": "Näytä",
   "missing-collections": "Sinulla ei ole kokoelmia",
   "sort-direction": "Järjestys",
@@ -399,18 +399,18 @@
     "members": "Baarin jäseniä",
     "logo": "Baarin tunnuskuva",
     "edit-success": "Baari \"{name}\" päivitetty",
-    "default-data": "Default dataset",
+    "default-data": "Alustettavat tiedot",
     "no-default": {
-      "data": "No default data"
+      "data": "Aloita tyhjältä pöydältä"
     },
     "optimization-started": "Aloitettu baarin optimointi",
     "optimize": "Optimoi baari",
     "confirm-optimization": "Tämä suorittaa baarin tietojen optimoinnin",
     "sync-data": "Synkronoi tiedot",
-    "confirm-datapack-sync": "This action will add missing data available in default datapack to this bar. Your existing recipes are not affected, but new data will be added. Please make sure that you have a backup or export of your data.",
-    "bars.datapack-sync-started": "Started default datapack sync in bar \"{name}\"",
+    "confirm-datapack-sync": "Tämä toiminto lisää baarista puuttuvat oletustietopaketin tiedot baariin. Olemassaolevat juomaohjeet eivät muutu, mutta uutta tietoa lisätään. Teethän ensin varmuuskopion tai viennin tiedoistasi.",
+    "bars.datapack-sync-started": "Aloitettu oletustietopaketin synkronointi baarissa \"{name}\"",
     "is-public": "Muuta baari julkiseksi",
-    "is-public-description": "Allows public access to all your cocktail recipes via your bar URL"
+    "is-public-description": "Sallii julkisen pääsyn kaikkiin juomaohjeisiin baarin osoitteen kautta"
   },
   "close": "Sulje",
   "save-as": "Tallenna nimellä",
@@ -535,10 +535,10 @@
     "add-single": "Lisää juomalistalle"
   },
   "bar": {
-    "url": "Custom bar URL",
-    "url-help": "Your public bar URL will be: {url}",
+    "url": "Mukautettu baarin osoite",
+    "url-help": "Baarisi julkinen osoite on: {url}",
     "url-menu-hint": "Used for public menu if enabled.",
-    "default-currency-hint": "Used as default currency suggestion, can be changed anytime.",
+    "default-currency-hint": "Käytetään oletusvaluuttana hinnoissa. Voidaan muuttaa myöhemmin.",
     "default-units-hint": "Käytetään oletusyksikkönä juoman tiedoissa. Voidaan vaihtaa myöhemmin."
   },
   "api": {
@@ -565,7 +565,7 @@
     "start": "Aloita vienti",
     "bar-select": "Valitse baari",
     "dialog-title": "Vie baarin juomaohjeet",
-    "empty": "You don't have any available exports",
+    "empty": "Ei vientejä saatavilla",
     "export-notice": "Huomaathan palvelimen suorituskyvyn ja valitun baarin koon vaikuttavan kestoon. Vienti voi kestää useita minuutteja.",
     "start-success": "Aloitettu baarin vienti",
     "confirm-delete": "Tämä poistaa valitun vientitiedoston",
