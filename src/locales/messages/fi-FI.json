@@ -43,7 +43,7 @@
     "extra-cocktails": "Lisää hyllyyn jotta voit tehdä",
     "clone-as-variety": "Kahdenna alalajina",
     "dialog": {
-      "select-substitutes": "Muokkaa vaihtoehtoisia ainesosia",
+      "select-substitutes": "Muokkaa korvaavia ainesosia",
       "search-not-found": "Etkö löytänyt etsimääsi?",
       "create-ingredient": "Luo ainesosa: \"{name}\"",
       "current": "Valittu ainesosa",
@@ -91,9 +91,9 @@
     "format-copy-failed": "Tekstin kopiointi epäonnistui",
     "copy-md": "Kopioi Markdown-muodossa",
     "copy-xml": "Kopioi XML-muodossa",
-    "copy-json-ld": "Copy JSON+LD schema",
-    "manual-copy-title": "Kopioi teksti manuaalisesti",
-    "manual-copy-description": "Automaattinen kopiointi epäonnistui. Kopioi alla oleva teksti manuaalisesti:"
+    "copy-json-ld": "Kopioi JSON+LD -muotoisena",
+    "manual-copy-title": "Kopioi teksti käsin",
+    "manual-copy-description": "Automaattinen kopiointi ei onnistunut. Kopioi alla oleva teksti käsin:"
   },
   "settings": "Asetukset",
   "logout": "Kirjaudu ulos",
@@ -141,7 +141,7 @@
   "medium": "Keskivahva",
   "strong": "Vahva",
   "welcome-user": "Tervetuloa {name}",
-  "your-shopping-list": "Your shopping list",
+  "your-shopping-list": "Ostoslistasi",
   "missing.ingredients": "Tarvitsemasi ainesosat näytetään täällä.",
   "all-ingredients": "Kaikki ainesosat",
   "find-cocktails": "Löydä juomia",
@@ -252,7 +252,7 @@
       "copy-fail": "Linkin kopiointi leikepöydälle ei onnistunut"
     }
   },
-  "public-link": "Public at",
+  "public-link": "Julkisesti nähtävänä",
   "click-here": "Paina tästä",
   "ui-language": "Kieli",
   "print": "Tulosta",
@@ -326,14 +326,14 @@
     "title": "Haku",
     "results-per-page": "Tulosta sivulla",
     "empty": "Ei tuloksia haulla \"{term}\".",
-    "ignore-ingredients": "Ignore ingredients",
+    "ignore-ingredients": "Ei sisällä ainesosia",
     "select-ingredients-to-ignore": "Valitse huomiotta jätettävät ainesosat",
-    "ingredients": "Specific ingredients",
+    "ingredients": "Sisältää ainesosia",
     "select-specific-ingredients": "Valitse tietyt ainesosat"
   },
   "subtitle": "Iskulause",
   "delete-my-account": "Poista tilini ja tietoni",
-  "data": "Data",
+  "data": "Tietosi",
   "profile-information": "Käyttäjätilin tiedot",
   "remove-cocktail-from-collection": "Poista juoma kokoelmasta",
   "cocktail-collections": "Juomakokoelmat",
@@ -376,7 +376,7 @@
     "empty": "Sinulla ei ole baareja. Voidaksesi lisätä juomaohjeita tai ainesosia sinun on luotava tai liityttävä vähintään yhteen baariin.",
     "join-notice": "Liittyäksesi baarin jäseneksi tarvitset liittymiskoodin. Pyydä koodia baarin omistajalta ja liitä se allaolevaan kenttään.",
     "invite-code": "Liittymiskoodi",
-    "toggle-invite-code": "Toggle invite code",
+    "toggle-invite-code": "Näytä liittymiskoodi",
     "invite-link-copied": "Liittymiskoodi kopioitu leikepöydälle",
     "confirm-delete": "Tämä poistaa pysyvästi baarin \"{name}\".",
     "confirm-leave": "Menetät kaikki tietosi baarissa (\"{name}\") jos poistut siitä.",
@@ -471,7 +471,7 @@
     "inactive-title": "Korota palvelutasoksesi \"{name}\" jo tänään!",
     "is_active": "Tilauksesi palvelutasoon \"{name}\" on voimassa",
     "next_bill_at": "Sinua laskutetaan seuraavan kerran",
-    "end_at": "You ended your subscription, you will have access to your current plan until",
+    "end_at": "Päätit tilauksesi, voit jatkaa nykyisen palvelutasosi käyttöä kunnes tilauksesi päättyy",
     "confirm-sub-update-pause": "Tämä toiminto päättää tilauksesi. Voit jatkaa sitä myöhemmin. Voit käyttää nykyistä palvelutasoa nykyisen sopimuskauden loppuun asti.",
     "confirm-sub-update-resume": "Tämä toiminto jatkaa tilaustasi. Jos tilauksesi ei ole enää voimassa, sinua laskutetaan palveluhinnaston mukaisesti.",
     "pause": "Keskeytä tilaus",
@@ -537,7 +537,7 @@
   "bar": {
     "url": "Mukautettu baarin osoite",
     "url-help": "Baarisi julkinen osoite on: {url}",
-    "url-menu-hint": "Used for public menu if enabled.",
+    "url-menu-hint": "Käytetään julkisesti jaettujen tietojen osoitteen osana.",
     "default-currency-hint": "Käytetään oletusvaluuttana hinnoissa. Voidaan muuttaa myöhemmin.",
     "default-units-hint": "Käytetään oletusyksikkönä juoman tiedoissa. Voidaan vaihtaa myöhemmin."
   },
@@ -630,7 +630,7 @@
     "category-delete-success": "Hintaluokka poistettu",
     "category-confirm-delete": "Tämä poistaa pysyvästi hintaluokan \"{name}\".",
     "missing-cocktail-price-calculator": "Tälle juomalle ei ole saatavilla hintatietoja. Lisää ainesosille hinnat nähdäksesi raaka-ainekustannukset.",
-    "missing-price-categories": "To add ingredient prices, you need to define bar {link} first."
+    "missing-price-categories": "Lisätäksesi ainesosille hintoja, määritä ensin baari {link}."
   },
   "prices": {
     "add": "Lisää hinta",
@@ -678,30 +678,30 @@
     "copy-success": "Laskuri kopioitu leikepöydälle",
     "import": "Tuo laskuri"
   },
-  "label": "Label",
+  "label": "Nimike",
   "prefix": "Etuliite",
   "suffix": "Pääte",
   "default-value": "Oletusarvo",
   "result": "Tulos",
   "error": "Virhe",
   "permissions": {
-    "clipboard-error": "Your browser or server config does not support clipboard sharing."
+    "clipboard-error": "Selaimesi tai palvelimen asetukset estävät leikepöydän käytön."
   },
   "preview": "Esikatsele",
   "available-variants": "Alalajit hyllyssä",
   "sso": {
-    "profile-providers": "SSO accounts",
-    "provider-name": "Provider name",
-    "created-date": "Token created at",
-    "delete-account": "Remove account link",
-    "confirm-delete": "This will permanently delete SSO account link from provider \"{name}\".",
-    "is-configured": "Server configuration",
-    "delete-success": "SSO account link deleted",
+    "profile-providers": "SSO-liitokset",
+    "provider-name": "Tarjoaja",
+    "created-date": "Luotu",
+    "delete-account": "Poista liitos käyttäjätiliin",
+    "confirm-delete": "Tämä poistaa pysyvästi käyttäjätilin tarjoajaan \"{name}\" liitetyn kertakirjautumisen käytöstä.",
+    "is-configured": "Tila",
+    "delete-success": "Käyttäjätilin SSO-liitos poistettu",
     "provider-enabled": "Käytössä",
     "provider-disabled": "Ei käytössä",
     "title": "Kertakirjautuminen (SSO)",
-    "auth-error": "Unable to authenticate via Single Sign-On provider",
-    "login-with": "Login with {name}"
+    "auth-error": "Tunnistautuminen kertakirjautumisen tarjoajan kautta ei onnistunut",
+    "login-with": "Kirjaudu käyttäen: {name}"
   },
   "distillery": "Tislaamo",
   "sweetness": "Makeus (g/ml)",
