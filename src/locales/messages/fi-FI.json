@@ -15,7 +15,7 @@
   "shelf": {
     "title": "Hylly",
     "cocktails": "Juomat joita voin tehdä",
-    "bar-stats": "Baarin tilastot",
+    "bar-stats": "Baari lukuina",
     "recommended-cocktails": "Suositellut juomat",
     "locked_cocktails": "Juomat joita en voi tehdä"
   },
@@ -35,7 +35,7 @@
     "delete-confirm": "Tämä poistaa pysyvästi ainesosan \"{name}\". Toiminnolla on vaikutusta {total} juoman ohjeeseen.",
     "shelf-remove-success": "Poistettu \"{name}\" hyllystäsi",
     "shelf-add-success": "Lisätty \"{name}\" hyllyysi",
-    "list-remove-success": "Poistettu \"{name}\" ostoslistastasi",
+    "list-remove-success": "Poistettu \"{name}\" ostoslistaltasi",
     "list-add-success": "Lisätty \"{name}\" ostoslistallesi",
     "spotlight": "Ainesosa esittelyssä",
     "is-variety": "Ainesosa on toisen alalaji",
@@ -47,8 +47,8 @@
       "search-not-found": "Etkö löytänyt etsimääsi?",
       "create-ingredient": "Luo ainesosa: \"{name}\"",
       "current": "Valittu ainesosa",
-      "optional-checkbox": "Muuta ainesosa valinnaiseksi.",
-      "new-ingredient-success": "Luotu ainesosa \"{name}\".",
+      "optional-checkbox": "Ainesosa on valinnainen.",
+      "new-ingredient-success": "Luotu luokittelematon ainesosa \"{name}\".",
       "new-ingredient-fail": "Ainesosan luonti ei onnistunut.",
       "select-substitutes-for": "Valitse ainesosan \"{name}\" korvaavat ainesosat.",
       "is-specified-checkbox": "Käytä vain tätä ainesosaa (jätä alalajit ja korvaavat ainesosat huomioimatta)"
@@ -68,7 +68,7 @@
     "bar-shelf-add-success": "Lisätty \"{name}\" baarin hyllyyn",
     "bar-shelf-remove-success": "Poistettu \"{name}\" baarin hyllystä",
     "units-help": "Jotkin ominaisuudet toimivat parhaiten käyttämällä yleisiä yksikköjä. Joitakin suosituksia yksiköiksi: ml, oz, cl, dashes, barspoon, drops, topup, leaves.",
-    "import": "Tuo ainesosat",
+    "import": "Tuo ainesosia",
     "attach-calculator": "Liitä laskuri",
     "hierarchy": "Hierarkia",
     "status": "Ainesosan saatavuus",
@@ -142,7 +142,7 @@
   "strong": "Vahva",
   "welcome-user": "Tervetuloa {name}",
   "your-shopping-list": "Ostoslistasi",
-  "missing.ingredients": "Tarvitsemasi ainesosat näytetään täällä.",
+  "missing.ingredients": "Sinulta puuttuvat ainesosat näytetään täällä.",
   "all-ingredients": "Kaikki ainesosat",
   "find-cocktails": "Löydä juomia",
   "missing-favorites": "Suosikkijuomasi näytetään tässä.",
@@ -401,7 +401,7 @@
     "edit-success": "Baari \"{name}\" päivitetty",
     "default-data": "Alustettavat tiedot",
     "no-default": {
-      "data": "Aloita tyhjältä pöydältä"
+      "data": "Aloita puhtaalta pöydältä"
     },
     "optimization-started": "Aloitettu baarin optimointi",
     "optimize": "Optimoi baari",
