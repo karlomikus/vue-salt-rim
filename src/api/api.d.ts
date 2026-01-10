@@ -9771,6 +9771,12 @@ export interface operations {
                             to?: number;
                             /** @description The total number of items */
                             total?: number;
+                            filters?: {
+                                collections: {
+                                    id?: number;
+                                    name?: string;
+                                }[];
+                            };
                         };
                     };
                 };

@@ -1,4 +1,11 @@
+# v4.13.0
+## New
+- Added collection filters to public cocktails page
+
 # v4.12.1
+## Changes
+- Reused recipe scaler component from public recipe page
+
 ## Fixes
 - Fixed missing glass and tags on imported cocktails
 - Fixed public menu dark theme styling

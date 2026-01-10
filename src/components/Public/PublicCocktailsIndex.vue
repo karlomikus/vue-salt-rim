@@ -26,11 +26,15 @@
                                 </div>
                             </label>
                         </div>
-                        <!-- <label class="form-label" for="year">ABV:</label>
-                        <div v-for="abv in abvFilters" :key="abv.id">
-                            <input :id="abv.id" name="abv-filter" type="radio" value="abv.value">
-                            <label :for="abv.id">{{ abv.name }}</label>
-                        </div> -->
+                        <label class="form-label" for="year">Collections:</label>
+                        <div class="form-group form-group--checkbox">
+                            <label class="form-label" :for="'filter-bar-collections-' + collection.id" v-for="collection in meta?.filters?.collections || []" :key="collection.id">
+                                <input :id="'filter-bar-collections-' + collection.id" type="checkbox" :name="'filter-bar-collections-' + collection.id" v-model="activeFilters.filter.collection_id" :value="collection.id">
+                                <div class="form-group-checkbox-content">
+                                    <div class="form-group-checkbox-content__label">{{ collection.name }}</div>
+                                </div>
+                            </label>
+                        </div>
                     </div>
                     <div class="dialog-actions">
                         <button type="submit" class="button button--outline" @click="showFiltersDialog = false">Cancel</button>
@@ -56,13 +60,14 @@ import qs from 'qs'
 import { ref, watch } from 'vue'
 import BarAssistantClient from '@/api/BarAssistantClient'
 import CocktailItem from './PublicCocktailGridItem.vue'
-import type { components } from '@/api/api'
+import type { components, operations } from '@/api/api'
 import { useRoute, useRouter, type LocationQueryRaw } from 'vue-router'
 import SaltRimDialog from '../Dialog/SaltRimDialog.vue'
 import Pagination from './../Search/SearchPagination.vue'
 
 type Cocktail = components['schemas']['PublicCocktailResource']
 type Bar = components['schemas']['PublicBarResource']
+type Meta = operations['listPublicBarCocktails']['responses']['200']['content']['application/json']['meta'];
 
 defineProps<{
     bar: Bar
@@ -72,7 +77,7 @@ const showFiltersDialog = ref(false)
 const cocktails = ref<Cocktail[]>([])
 const queryTimer = ref<number | null>(null)
 const route = useRoute()
-const meta = ref({})
+const meta = ref({} as Meta)
 const router = useRouter()
 const availableSorts = [
     { value: 'name', label: 'Name (A-Z)' },
@@ -88,6 +93,7 @@ const defaultRefinements = {
     filter: {
         name: null as string | null,
         bar_shelf: false,
+        collection_id: [] as number[],
     }
 }
 const activeFilters = ref({...defaultRefinements, filter: { ...defaultRefinements.filter }})
@@ -100,6 +106,7 @@ const stateToQuery = () => {
     query.filter = {
         name: activeFilters.value.filter.name || undefined,
         bar_shelf: activeFilters.value.filter.bar_shelf || undefined,
+        collection_id: activeFilters.value.filter.collection_id.length > 0 ? activeFilters.value.filter.collection_id.join(',') : undefined,
     }
 
     return query
@@ -115,6 +122,7 @@ const queryToState = () => {
     activeFilters.value.sort = route.query.sort ? (route.query.sort as string) : defaultRefinements.sort
     activeFilters.value.filter.name = (queryString.filter as any)?.name || defaultRefinements.filter.name
     activeFilters.value.filter.bar_shelf = (queryString.filter as any)?.bar_shelf || defaultRefinements.filter.bar_shelf
+    activeFilters.value.filter.collection_id = (queryString.filter as any)?.collection_id ? String((queryString.filter as any)?.collection_id).split(',').map((id: string) => parseInt(id)) : defaultRefinements.filter.collection_id
 }
 
 const fetchCocktails = async () => {
