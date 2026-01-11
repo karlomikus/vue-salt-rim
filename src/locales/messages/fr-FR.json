@@ -17,7 +17,7 @@
     "cocktails": "Cocktails que je peux faire",
     "bar-stats": "Statistiques du bar",
     "recommended-cocktails": "Cocktails conseillés",
-    "locked_cocktails": "Cocktails I can't make"
+    "locked_cocktails": "Cocktails que je ne peux pas faire"
   },
   "server-error": "Erreur serveur inattendue",
   "ingredient": {
@@ -41,7 +41,7 @@
     "is-variety": "L’ingrédient est la variété d’un autre ingrédient",
     "information": "Informations sur les ingrédients",
     "extra-cocktails": "Ajouter à l'étagère et vous pouvez faire",
-    "clone-as-variety": "Duplicate as variant",
+    "clone-as-variety": "Dupliquer comme variante",
     "dialog": {
       "select-substitutes": "Sélectionner des ingrédients de substitution",
       "search-not-found": "Vous n’avez pas trouvé ce que vous cherchez?",
@@ -61,7 +61,7 @@
     "ingredients": "Ingrédients",
     "used_as_substitute_for": "Utilisé pour remplacer",
     "can_be_substituted_with": "Peut être remplacée par",
-    "add-to-bar-shelf": "Ajouter à l'étagère de barre",
+    "add-to-bar-shelf": "Ajouter à l'étagère de bar",
     "remove-from-bar-shelf": "Retirer de l'étagère du bar",
     "shelf-bar-help": "Les recettes correspondant aux ingrédients contenus dans les étagères du bar seront affichées à tous les membres du bar.",
     "shelf-user-help": "Les recettes qui correspondent aux ingrédients de votre étagère ne peuvent être gérées que par vous.",
@@ -81,7 +81,7 @@
     "default-units-help": "Utilisé pour remplir automatiquement les unités sélectionnant les ingrédients pour les recettes de cocktail",
     "icicle-graph": "Histogramme",
     "csv-import-started": "Importation des fichiers CSV en cours",
-    "potential-bar-shelf-cocktails": "Potential bar cocktails"
+    "potential-bar-shelf-cocktails": "Cocktails de bar potentiels"
   },
   "share": {
     "title": "Partager",
@@ -381,7 +381,7 @@
     "confirm-delete": "Cela supprimera définitivement le bar \"{name}\".",
     "confirm-leave": "Vous perdrez toutes les données du bar (\"{name}\") si vous le quittez.",
     "enable-invites": "Permettre de rejoindre avec un code d'invitation",
-    "enable-invites-description": "This will allow other users to join your bar using an invite code",
+    "enable-invites-description": "Cela permettra à d'autres utilisateurs de rejoindre votre bar à l'aide d'un code d'invitation",
     "import-base-cocktails": "Ouvrir le bar avec les cocktails de base",
     "import-base-ingredients": "Ouvrir le bar avec les ingrédients de base",
     "join-error": "Impossible de rejoindre le bar",
@@ -410,7 +410,7 @@
     "confirm-datapack-sync": "Cette action ajoutera à ce bar les données manquantes disponibles dans la base de données par défaut. Vos recettes existantes ne seront pas affectées, mais de nouvelles données seront ajoutées. Veuillez vous assurer d'avoir une sauvegarde ou une exportation de vos données.",
     "bars.datapack-sync-started": "Début de la synchronisation de la base de données par défaut pour le bar \"{name}\"",
     "is-public": "Rendre le bar public. Permet d'accéder aux terminaux publics de l'API.",
-    "is-public-description": "Allows public access to all your cocktail recipes via your bar URL"
+    "is-public-description": "Permet au public d'accéder à toutes vos recettes de cocktails via l'URL de votre bar"
   },
   "close": "Fermer",
   "save-as": "Enregistrer sous",
@@ -529,10 +529,10 @@
     "add-shelf-cocktails": "Ajouter les cocktails manquants depuis l'étagère du bar",
     "export": "Exporter en CSV",
     "added-multiple-cocktails": "Ajouté plusieurs cocktails",
-    "add-to": "Add to menu category",
-    "menu-items": "entries",
-    "add-multiple": "Add entries to menu",
-    "add-single": "Add to menu"
+    "add-to": "Ajouter à la catégorie de menu",
+    "menu-items": "entrées",
+    "add-multiple": "Ajouter des entrées au menu",
+    "add-single": "Ajouter au menu"
   },
   "bar": {
     "url": "URL personnalisée du bar",
@@ -644,7 +644,7 @@
   "target-volume-dilution-help": "Dilué avec {total} d'eau",
   "bar_shelf": {
     "cocktails": "Étagère de cocktails du bar",
-    "locked_cocktails": "Locked bar cocktails"
+    "locked_cocktails": "Cocktails de bar verrouillés"
   },
   "bar-shelf-ingredients": "Étagères d'ingrédient du bar",
   "target-pour-cost": "Cible pour cout",
