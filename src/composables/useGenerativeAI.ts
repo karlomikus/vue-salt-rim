@@ -52,7 +52,6 @@ export const useLLM = () => {
                 system: `You are an AI assistant in cocktail recipe application.`,
                 model: model,
                 prompt: prompt,
-                mode: "json",
                 schema: schema,
             })
             response.value = object;
