@@ -371,7 +371,7 @@
     "title": "Bars",
     "bar": "Bar",
     "join": "Rejoindre un bar",
-    "add": "Créer une barre",
+    "add": "Créer un bar",
     "add-success": "Bar \"{name}\" créé avec succès",
     "empty": "Vous n'avez pas de bar. Pour commencer à ajouter des recettes et des ingrédients, vous devez créer ou rejoindre au moins un bar.",
     "join-notice": "Pour rejoindre un bar existant, vous avez besoin d'un code d'invitation. Demandez au propriétaire du bar de vous en envoyer un et collez-le dans le champ ci-dessous.",
@@ -385,7 +385,7 @@
     "import-base-cocktails": "Ouvrir le bar avec les cocktails de base",
     "import-base-ingredients": "Ouvrir le bar avec les ingrédients de base",
     "join-error": "Impossible de rejoindre le bar",
-    "select-bar": "Sélectionnez la barre",
+    "select-bar": "Sélectionnez le bar",
     "delete-success": "Bar supprimé avec succès",
     "join-success": "Nouveau bar rejoint, santé !",
     "activate": "Activer le bar",
@@ -537,7 +537,7 @@
   "bar": {
     "url": "URL personnalisée du bar",
     "url-help": "L'URL publique de votre bar sera : {url}",
-    "url-menu-hint": "Used for public access if enabled.",
+    "url-menu-hint": "Used for public menu if enabled.",
     "default-currency-hint": "Utilisé comme suggestion de devise par défaut, peut être modifié à tout moment.",
     "default-units-hint": "Utilisé comme unité par défaut pour les détails du cocktail, peut être modifié à tout moment."
   },
@@ -713,7 +713,7 @@
   "default-currency": "Devise par défaut",
   "loading": "Chargement",
   "feeds": {
-    "title": "Feeds"
+    "title": "Flux"
   },
   "cocktail-methods": {
     "cocktail-methods": "Techniques de préparation de cocktail",
