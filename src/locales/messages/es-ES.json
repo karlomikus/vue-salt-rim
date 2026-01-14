@@ -141,7 +141,7 @@
   "medium": "Intermedio",
   "strong": "Fuerte",
   "welcome-user": "Bienvenido/a {name}",
-  "your-shopping-list": "Shopping list",
+  "your-shopping-list": "Your shopping list",
   "missing.ingredients": "Los ingredientes que te faltan se mostrarán aquí.",
   "all-ingredients": "Todos los ingredientes",
   "find-cocktails": "Buscar cócteles",
@@ -326,9 +326,9 @@
     "title": "Search",
     "results-per-page": "Per page",
     "empty": "No results found for term \"{term}\".",
-    "ignore-ingredients": "Ignored ingredients",
+    "ignore-ingredients": "Ignore ingredients",
     "select-ingredients-to-ignore": "Select ingredients to ignore",
-    "ingredients": "Specified ingredients",
+    "ingredients": "Specific ingredients",
     "select-specific-ingredients": "Select specific ingredients"
   },
   "subtitle": "Subtitle",
@@ -537,7 +537,7 @@
   "bar": {
     "url": "Custom bar URL",
     "url-help": "Your public bar URL will be: {url}",
-    "url-menu-hint": "Used for public access if enabled.",
+    "url-menu-hint": "Used for public menu if enabled.",
     "default-currency-hint": "Used as default currency suggestion, can be changed anytime.",
     "default-units-hint": "Used as default units on cocktail details, can be changed anytime."
   },
@@ -728,7 +728,7 @@
   "profile-public-shelf-description": "Other bar members will be able to filter by cocktails you have in your shelf",
   "sort-random": "In random order",
   "cocktails-varieties": "Varieties",
-  "cocktail-variety-of": "Cocktail is variant of",
+  "cocktail-variety-of": "Cocktail is variety of",
   "cocktail-select-parent": "Select parent cocktail",
   "year": "Year"
 }
