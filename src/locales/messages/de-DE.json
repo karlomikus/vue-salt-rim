@@ -31,7 +31,7 @@
     "remove-from-list": "Von der Einkaufsliste entfernen",
     "update-success": "Zutat aktualisiert",
     "create-success": "Zutat erstellt",
-    "name-placeholder": "Not selected",
+    "name-placeholder": "<Not selected>",
     "delete-confirm": "Dies löscht Zutat \"{name}\". Diese Aktion betrifft {total} Cocktails.",
     "shelf-remove-success": "\"{name}\" wurde erfolgreich aus deiner Bar entfernt",
     "shelf-add-success": "\"{name}\" wurde zu deinem Regal hinzugefügt",
@@ -141,7 +141,7 @@
   "medium": "Mittel",
   "strong": "Stark",
   "welcome-user": "Willkommen ‪{name}‬",
-  "your-shopping-list": "Shopping list",
+  "your-shopping-list": "Your shopping list",
   "missing.ingredients": "Fehlende Zutaten werden hier angezeigt.",
   "all-ingredients": "Alle Zutaten",
   "find-cocktails": "Finde Cocktails",
@@ -530,9 +530,9 @@
     "export": "Exportieren als csv",
     "added-multiple-cocktails": "Mehrere Cocktails hinzugefügt",
     "add-to": "Zur Menükategorie hinzufügen",
-    "menu-items": "entries",
-    "add-multiple": "Add entries to menu",
-    "add-single": "Add to menu"
+    "menu-items": "Einträge",
+    "add-multiple": "Einträge zum Menü hinzufügen",
+    "add-single": "Zum Menü hinzufügen"
   },
   "bar": {
     "url": "Benutzerdefinierte Bar-URL",
@@ -644,7 +644,7 @@
   "target-volume-dilution-help": "Mit {total} Wasser verdünnen",
   "bar_shelf": {
     "cocktails": "Bar-Regal Cocktails",
-    "locked_cocktails": "Locked bar cocktails"
+    "locked_cocktails": "Gesperrte Barcocktails"
   },
   "bar-shelf-ingredients": "Bar-Regal Zutaten",
   "target-pour-cost": "Angestrebte Kosten",
