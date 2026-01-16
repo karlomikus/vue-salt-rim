@@ -63,7 +63,7 @@ refreshMenu()
                             <p>
                                 {{ item.description }}
                             </p>
-                            <a v-if="item.public_id" :href="publicUrl(item)">View recipe</a>
+                            <a v-if="item.public_id" :href="publicUrl(item)">{{ $t('public-bar.view-recipe') }}</a>
                         </div>
                         <div v-if="item.price.price > 0" class="public-page-menu__cocktail__price">
                             {{ unitHandler.formatPrice(item.price.price, item.price.currency) }}
