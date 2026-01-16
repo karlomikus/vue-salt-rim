@@ -20,7 +20,7 @@ class AppState {
         this.theme = 'light'
         this.defaultUnit = 'ml'
         this.defaultShelf = 'bar'
-        this.language = 'en-US'
+        this.language = null
         this.token = null
         this.rememberMe = false
         this.isFeedsEnabled = false
