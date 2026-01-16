@@ -8,21 +8,21 @@
                 </div>
                 <div class="public-bar-details__header__logo__text">
                     <h2>{{ bar.name }}</h2>
-                    <h3>{{ bar.subtitle || 'Your personal bar assistant' }}</h3>
+                    <h3>{{ bar.subtitle || $t('public-bar.default-subtitle') }}</h3>
                 </div>
             </div>
             <div class="public-bar-details__header__links">
-                <RouterLink :to="{ name: 'public.cocktails.index', params: { barId: bar.slug } }">Cocktails</RouterLink>
+                <RouterLink :to="{ name: 'public.cocktails.index', params: { barId: bar.slug } }">{{ $t('cocktail.cocktails') }}</RouterLink>
                 <template v-if="bar.is_menu_enabled">
                     &middot;
-                    <RouterLink :to="{name: 'public.menu.show', params: {barId: bar.slug}}">Menu</RouterLink>
+                    <RouterLink :to="{name: 'public.menu.show', params: {barId: bar.slug}}">{{ $t('menu.title') }}</RouterLink>
                 </template>
                 &middot;
-                <a href="/">Sign In</a>
+                <a href="/">{{ $t('public-bar.signin') }}</a>
             </div>
         </div>
         <div v-if="bar.description" class="public-bar-details__description block-container block-container--padded">
-            <h3>Bar description</h3>
+            <h3>{{ $t('public-bar.description-title') }}</h3>
             <div v-html="parsedDescription"></div>
         </div>
     </div>

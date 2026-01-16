@@ -730,5 +730,23 @@
   "cocktails-varieties": "Varieties",
   "cocktail-variety-of": "Cocktail is variant of",
   "cocktail-select-parent": "Select parent cocktail",
-  "year": "Year"
+  "year": "Year",
+  "public-bar": {
+    "signin": "Sign In",
+    "default-subtitle": "Your personal bar assistant",
+    "description-title": "Bar description",
+    "filter-title": "Filter cocktails",
+    "filters-sort-label": "Sort",
+    "filters-global-label": "Global filters",
+    "filters-bar-shelf-label": "Show bar shelf cocktails",
+    "filters-bar-shelf-help": "Only shows cocktails that can be made in the bar",
+    "filters-collections-label": "Collections",
+    "filters-search-placeholder": "Search cocktails by name...",
+    "sort-name-asc": "Name (A-Z)",
+    "sort-name-desc": "Name (Z-A)",
+    "sort-created-asc": "Oldest recipes",
+    "sort-created-desc": "Newest recipes",
+    "recipe-source": "Recipe source",
+    "view-recipe": "View recipe"
+  }
 }
