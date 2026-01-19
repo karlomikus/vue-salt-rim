@@ -25,8 +25,8 @@
     "main": "Ingrédient principal",
     "add": "Ajouter un ingrédient",
     "on-shopping-list": "Vous avez cet ingrédient sur la liste de courses",
-    "add-to-shelf": "Ajouter à l’étagère",
-    "remove-from-shelf": "Retirer de l’étagère",
+    "add-to-shelf": "Ajouter à l'étagère",
+    "remove-from-shelf": "Enlever de l'étagère",
     "add-to-list": "Ajouter à la liste de courses",
     "remove-from-list": "Supprimer de la liste de courses",
     "update-success": "Ingrédient mis à jour avec succès",
@@ -266,7 +266,7 @@
   "clear-filters": "Effacer tous les filtres",
   "rating-removed": "Suppression de la note cocktail",
   "rating-rated": "Cocktail noté avec {rating} étoiles",
-  "shelf-ingredients": "Ingrédients de rayon",
+  "shelf-ingredients": "Ingrédients sur l'étagère",
   "shopping-list-ingredients": "Ingrédients de la liste de courses",
   "notes": "Remarques",
   "collection-shared": "Partagé avec le bar",
@@ -537,7 +537,7 @@
   "bar": {
     "url": "URL personnalisée du bar",
     "url-help": "L'URL publique de votre bar sera : {url}",
-    "url-menu-hint": "Used for public menu if enabled.",
+    "url-menu-hint": "Utilisé pour le menu public si cela est autorisé.",
     "default-currency-hint": "Utilisé comme suggestion de devise par défaut, peut être modifié à tout moment.",
     "default-units-hint": "Utilisé comme unité par défaut pour les détails du cocktail, peut être modifié à tout moment."
   },
@@ -728,7 +728,25 @@
   "profile-public-shelf-description": "Les autres membres du bar pourront filtrer en fonction des cocktails disponibles sur votre étagère",
   "sort-random": "Aléatoirement",
   "cocktails-varieties": "Variétés",
-  "cocktail-variety-of": "Le cocktail est une variété de",
+  "cocktail-variety-of": "Cocktail is variety of",
   "cocktail-select-parent": "Sélectionner un cocktail parent",
-  "year": "Année"
+  "year": "Année",
+  "public-bar": {
+    "signin": "Sign In",
+    "default-subtitle": "Your personal bar assistant",
+    "description-title": "Bar description",
+    "filter-title": "Filter cocktails",
+    "filters-sort-label": "Sort",
+    "filters-global-label": "Global filters",
+    "filters-bar-shelf-label": "Show bar shelf cocktails",
+    "filters-bar-shelf-help": "Only shows cocktails that can be made in the bar",
+    "filters-collections-label": "Collections",
+    "filters-search-placeholder": "Search cocktails by name...",
+    "sort-name-asc": "Name (A-Z)",
+    "sort-name-desc": "Name (Z-A)",
+    "sort-created-asc": "Oldest recipes",
+    "sort-created-desc": "Newest recipes",
+    "recipe-source": "Recipe source",
+    "view-recipe": "View recipe"
+  }
 }
