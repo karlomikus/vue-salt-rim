@@ -730,5 +730,23 @@
   "cocktails-varieties": "Sorten",
   "cocktail-variety-of": "Cocktail ist eine Variante von",
   "cocktail-select-parent": "Basis-Cocktail auswählen",
-  "year": "Jahr"
+  "year": "Jahr",
+  "public-bar": {
+    "signin": "Anmelden",
+    "default-subtitle": "Dein persönlicher Bar-Assistent",
+    "description-title": "Beschreibung der Bar",
+    "filter-title": "Cocktails filtern",
+    "filters-sort-label": "Sortierung",
+    "filters-global-label": "Globale Filter",
+    "filters-bar-shelf-label": "Zeige Barregal Cocktails",
+    "filters-bar-shelf-help": "Nur Cocktails anzeigen, die in der Bar zubereitet werden können",
+    "filters-collections-label": "Sammlungen",
+    "filters-search-placeholder": "Suche nach Cocktailname...",
+    "sort-name-asc": "Name (A-Z)",
+    "sort-name-desc": "Name (Z-A)",
+    "sort-created-asc": "Älteste Rezepte",
+    "sort-created-desc": "Neueste Rezepte",
+    "recipe-source": "Rezeptquelle",
+    "view-recipe": "Rezept anzeigen"
+  }
 }
