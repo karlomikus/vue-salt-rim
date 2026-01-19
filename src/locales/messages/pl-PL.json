@@ -141,7 +141,7 @@
   "medium": "Średni",
   "strong": "Mocny",
   "welcome-user": "Witaj {name}",
-  "your-shopping-list": "Shopping list",
+  "your-shopping-list": "Your shopping list",
   "missing.ingredients": "Tutaj zostaną wyświetlone brakujące składniki.",
   "all-ingredients": "Wszystkie składniki",
   "find-cocktails": "Znajdź koktajle",
@@ -326,9 +326,9 @@
     "title": "Szukaj",
     "results-per-page": "Per page",
     "empty": "No results found for term \"{term}\".",
-    "ignore-ingredients": "Ignored ingredients",
+    "ignore-ingredients": "Ignore ingredients",
     "select-ingredients-to-ignore": "Select ingredients to ignore",
-    "ingredients": "Specified ingredients",
+    "ingredients": "Specific ingredients",
     "select-specific-ingredients": "Select specific ingredients"
   },
   "subtitle": "Subtitle",
@@ -537,7 +537,7 @@
   "bar": {
     "url": "Custom bar URL",
     "url-help": "Your public bar URL will be: {url}",
-    "url-menu-hint": "Used for public access if enabled.",
+    "url-menu-hint": "Used for public menu if enabled.",
     "default-currency-hint": "Used as default currency suggestion, can be changed anytime.",
     "default-units-hint": "Used as default units on cocktail details, can be changed anytime."
   },
@@ -728,7 +728,25 @@
   "profile-public-shelf-description": "Other bar members will be able to filter by cocktails you have in your shelf",
   "sort-random": "In random order",
   "cocktails-varieties": "Varieties",
-  "cocktail-variety-of": "Cocktail is variant of",
+  "cocktail-variety-of": "Cocktail is variety of",
   "cocktail-select-parent": "Select parent cocktail",
-  "year": "Year"
+  "year": "Year",
+  "public-bar": {
+    "signin": "Sign In",
+    "default-subtitle": "Your personal bar assistant",
+    "description-title": "Bar description",
+    "filter-title": "Filter cocktails",
+    "filters-sort-label": "Sort",
+    "filters-global-label": "Global filters",
+    "filters-bar-shelf-label": "Show bar shelf cocktails",
+    "filters-bar-shelf-help": "Only shows cocktails that can be made in the bar",
+    "filters-collections-label": "Collections",
+    "filters-search-placeholder": "Search cocktails by name...",
+    "sort-name-asc": "Name (A-Z)",
+    "sort-name-desc": "Name (Z-A)",
+    "sort-created-asc": "Oldest recipes",
+    "sort-created-desc": "Newest recipes",
+    "recipe-source": "Recipe source",
+    "view-recipe": "View recipe"
+  }
 }
