@@ -4,7 +4,7 @@
         <PageHeader>
             {{ $t('bars.bar') }}
         </PageHeader>
-        <h3 class="form-section-title">{{ $t('information') }}</h3>
+        <h3 class="form-section-title">{{ $t('bars.information') }}</h3>
         <div class="block-container block-container--padded">
             <div class="form-group">
                 <label class="form-label form-label--required" for="name">{{ $t('name') }}:</label>
@@ -64,7 +64,7 @@
             </div>
             <div class="form-group" v-if="bar.id">
                 <div class="alert alert--info">
-                    <p>This action helps synchronize your search data with the actual data. It also recalculates all cocktail ABVs and ingredient materialized paths. You can run this action manually, but it is limited to once every 10 minutes. Regular execution is not necessary, you should only run this if you notice problems with incorrect data.</p>
+                    <p>{{ $t('bars.optimization-description') }}</p>
                     <button type="button" class="button button--dark" @click="runBarOptimize"><OverlayLoader v-if="isOptimizationRunning" />{{ $t('bars.optimize') }}</button>
                 </div>
             </div>

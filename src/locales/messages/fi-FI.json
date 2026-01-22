@@ -10,6 +10,7 @@
     "zh-CN": "Kiina (yksinkertaistettu)",
     "nl-NL": "Hollanti",
     "cs-CZ": "Tšekki",
+    "fi-FI": "Suomi",
     "help": "Auta käännöksissä"
   },
   "shelf": {
@@ -370,6 +371,7 @@
   "bars": {
     "title": "Baarit",
     "bar": "Baari",
+    "information": "Tiedot",
     "join": "Liity baariin",
     "add": "Luo baari",
     "add-success": "Baari \"{name}\" luotu onnistuneesti",
@@ -404,6 +406,7 @@
       "data": "Aloita puhtaalta pöydältä"
     },
     "optimization-started": "Aloitettu baarin optimointi",
+    "optimization-description": "Tämä toiminto synkronoi hakupalveluun ajantasaiset tiedot tietokannasta. Se myös laskee uudelleen kaikkien juomien alkoholipitoisuudet sekä päivittää ainesosien keskinäiset suhteet. Voit aloittaa toiminnon suorittamisen käsin, mutta suoritus on rajattu yhteen kertaan 10 minuutissa. Toiminnon säännöllinen suorittaminen ei ole tarpeellista. Tee se vain jos törmäät ongelmiin tiedoissa.",
     "optimize": "Optimoi baari",
     "confirm-optimization": "Tämä suorittaa baarin tietojen optimoinnin",
     "sync-data": "Synkronoi tiedot",
@@ -498,6 +501,7 @@
   "top-rated-cocktails": "Parhaan arvion saaneet juomat",
   "most-popular-ingredients": "Paljon käytetyt ainesosat",
   "votes": "Arvioita",
+  "n-cocktails": "Ei juomia | {n} juoma | {n} juomaa",
   "recommended-ingredients": "Suositellut ainesosat",
   "menu": {
     "title": "Juomalista",

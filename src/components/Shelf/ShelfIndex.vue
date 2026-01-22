@@ -346,7 +346,7 @@ refreshShelf()
                 <ListItemContainer tag="RouterLink" v-for="ingredient in stats.most_popular_ingredients" :key="ingredient.id" :to="{ name: 'ingredients.show', params: { id: ingredient.slug } }">
                     <template #content>
                         <h5 class="sr-list-item-title">{{ ingredient.name }}</h5>
-                        <p>{{ ingredient.cocktails_count }} {{ $t('cocktail.cocktails') }}</p>
+                        <p>{{ $t('n-cocktails', ingredient.cocktails_count) }}</p>
                     </template>
                 </ListItemContainer>
             </div>

@@ -10,6 +10,7 @@
     "zh-CN": "Chinese (Simplified)",
     "nl-NL": "Netherlands",
     "cs-CZ": "Czech",
+    "fi-FI": "Finnish",
     "help": "Help with translations"
   },
   "shelf": {
@@ -370,6 +371,7 @@
   "bars": {
     "title": "Bars",
     "bar": "Bar",
+    "information": "Information",
     "join": "Join a bar",
     "add": "Create bar",
     "add-success": "Bar \"{name}\" succesfully created",
@@ -404,6 +406,7 @@
       "data": "No default data"
     },
     "optimization-started": "Started bar optimization",
+    "optimization-description": "This action helps synchronize your search data with the actual data. It also recalculates all cocktail ABVs and ingredient materialized paths. You can run this action manually, but it is limited to once every 10 minutes. Regular execution is not necessary, you should only run this if you notice problems with incorrect data.",
     "optimize": "Optimize bar",
     "confirm-optimization": "This will run bar optimizations",
     "sync-data": "Synchronize data",
@@ -498,6 +501,7 @@
   "top-rated-cocktails": "Top rated cocktails",
   "most-popular-ingredients": "Popular ingredients",
   "votes": "Votes",
+  "n-cocktails": "No cocktails | {n} cocktail | {n} cocktails",
   "recommended-ingredients": "Recommended ingredients",
   "menu": {
     "title": "Menu",
