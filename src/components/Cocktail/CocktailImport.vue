@@ -57,7 +57,6 @@ const router = useRouter()
 const route = useRoute()
 const toast = useSaltRimToast()
 const shouldUseBasicSearch = useBasicSearch()
-// const llm = useLLM()
 const isLoading = ref(false)
 const isImporting = ref(false)
 const showIngredientDialog = ref(false)
@@ -125,9 +124,7 @@ async function importCocktail() {
     }
 
     if (importType.value == 'ai') {
-        const prompt = `You are a cocktail expert. Please extract the cocktail recipe from the following text and return it in JSON format compatible with the Draft 2 schema: ${source.value.ai_content}`
-        // await llm.generate(prompt, jsonSchema(importSchemaObject as object))
-        // const res = llm.response.value
+        fromAi()
     }
 
     if (importType.value == 'html') {
@@ -161,6 +158,58 @@ function fromUrl() {
                         refIngredient: schema.ingredients.find(ing => ing._id == i._id),
                     }
                 })
+            }
+        } as LocalSchema
+
+        isLoading.value = false
+    }).catch(e => {
+        toast.error(e.message)
+        isLoading.value = false
+    })
+}
+
+function fromAi() {
+    if (!source.value.ai_content) {
+        return
+    }
+
+    isLoading.value = true
+    BarAssistantClient.aiGenerateCocktailRecipe(source.value.ai_content).then(resp => {
+        const schema = resp?.data
+        if (!schema) {
+            return
+        }
+
+        findSimilarCocktails(schema.name)
+
+        result.value = {
+            ingredients: [],
+            recipe: {
+                _id: 'ai-generated',
+                matchedGlass: null,
+                matchedMethodId: null,
+                name: schema.name,
+                method: schema.method,
+                source: 'Raw text input',
+                description: schema.description,
+                instructions: schema.instructions,
+                garnish: schema.garnish,
+                ingredients: schema.ingredients.map((ing, idx) => {
+                    return {
+                        _id: idx.toString(),
+                        _source: null,
+                        amount: ing.amount,
+                        amount_max: ing.amount_max,
+                        note: ing.note,
+                        units: ing.units,
+                        substitutes: [],
+                        matchedIngredient: null,
+                        refIngredient: {
+                            _id: idx.toString(),
+                            name: ing.name,
+                        } as SchemaIngredient,
+                    } as CocktailIngredient
+                }),
             }
         } as LocalSchema
 
@@ -521,9 +570,9 @@ init()
                 <div class="import-types">
                     <SaltRimRadio v-model="importType" :title="t('import.type-url-title')" :description="t('import.type-url-description')" value="url"></SaltRimRadio>
                     <SaltRimRadio v-model="importType" :title="t('import.type-json-title')" :description="t('import.type-json-description')" value="json"></SaltRimRadio>
-                    <!-- <SaltRimRadio v-model="importType" :title="t('import.type-ai-title')" :description="t('import.type-ai-description')" value="ai"></SaltRimRadio> -->
                     <SaltRimRadio v-model="importType" :title="t('import.type-html-title')" :description="t('import.type-html-description')" value="html"></SaltRimRadio>
                     <SaltRimRadio v-model="importType" :title="t('import.type-bookmarklet-title')" :description="t('import.type-bookmarklet-description')" value="bookmarklet"></SaltRimRadio>
+                    <SaltRimRadio v-model="importType" :title="t('import.type-ai-title')" :description="t('import.type-ai-description')" value="ai"></SaltRimRadio>
                 </div>
             </div>
             <div class="alert alert--info" style="margin: 1rem 0;">
@@ -534,10 +583,10 @@ init()
                 <label class="form-label form-label--required" for="import-source">{{ t('source') }}:</label>
                 <input id="import-source" v-model="source.url" type="url" class="form-input" placeholder="https://" required>
             </div>
-            <!-- <div v-else-if="importType === 'ai'" class="form-group">
+            <div v-else-if="importType === 'ai'" class="form-group">
                 <label class="form-label form-label--required" for="import-source">{{ t('source') }}:</label>
                 <textarea id="import-source" v-model="source.ai_content" class="form-input" rows="14" required></textarea>
-            </div> -->
+            </div>
             <div v-else-if="importType === 'bookmarklet'" class="form-group">
                 <h3>Guide</h3>
                 <OverlayLoader v-if="isLoading" />

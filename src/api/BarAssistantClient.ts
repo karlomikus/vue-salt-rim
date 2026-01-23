@@ -609,4 +609,16 @@ export default class BarAssistantClient {
   static async getPublicBarCocktail(barId: string, slug: string) {
     return (await client.GET('/public/{slugOrId}/cocktails/{cocktailSlug}', { params: { path: { slugOrId: barId, cocktailSlug: slug } } })).data
   }
+
+  static async aiGenerateIngredient(name: string) {
+    return (await client.POST('/generate/ingredient', { body: { name: name } })).data
+  }
+
+  static async aiGenerateCocktailTags(id: string) {
+    return (await client.POST('/generate/cocktail-tags', { body: { cocktail_id: id } })).data
+  }
+
+  static async aiGenerateCocktailRecipe(recipe: string) {
+    return (await client.POST('/generate/cocktail-recipe-from-text', { body: { recipe: recipe } })).data
+  }
 }

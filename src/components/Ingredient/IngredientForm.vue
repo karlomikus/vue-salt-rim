@@ -10,7 +10,7 @@
                 <label class="form-label form-label--required" for="name">{{ $t('name') }}:</label>
                 <input id="name" v-model="ingredient.name" class="form-input" type="text" required>
                 <div class="form-group-ai" v-if="ingredientPrompt">
-                    <ButtonGenerate :prompt="ingredientPrompt" :format="ingredientStructuredOutput" @before-generation="onBeforePrompt" @after-generation="onAfterPrompt" title="Generate basic ingredient information"></ButtonGenerate>
+                    <ButtonGenerate :callFn="generateBasicIngredientInfo" @before-generation="isLoadingGen=true" @after-generation="isLoadingGen=false" title="Generate basic ingredient information"></ButtonGenerate>
                 </div>
             </div>
             <div class="form-group">
@@ -236,28 +236,6 @@ const ingredientStructuredOutput = jsonSchema<{
     required: ['description', 'color', 'origin', 'strength'],
 })
 
-const onBeforePrompt = () => {
-    isLoadingGen.value = true
-}
-
-const onAfterPrompt = (result: any) => {
-    isLoadingGen.value = false
-    ingredient.value.description = ingredient.value.description + '\n\n' + result.description || ''
-    ingredient.value.description = ingredient.value.description.trim()
-
-    if (!ingredient.value.strength) {
-        ingredient.value.strength = result.strength || 0
-    }
-
-    if (!ingredient.value.origin) {
-        ingredient.value.origin = result.origin || ''
-    }
-
-    if (!ingredient.value.color) {
-        ingredient.value.color = result.color || '#ffffff'
-    }
-}
-
 const ingredientPrompt = computed(() => {
     if (!ingredient.value.name || ingredient.value.name.length < 3) {
         return null
@@ -449,6 +427,39 @@ const disabledFinderIngredients = computed(() => {
 
     return [ingredient.value.id].concat(descendantIngredientIds.value)
 })
+
+const generateBasicIngredientInfo = async () => {
+    if (!ingredient.value.name) {
+        return null
+    }
+
+    const resp = await BarAssistantClient.aiGenerateIngredient(ingredient.value.name);
+    if (!resp || !resp.data) {
+        toast.error(t('server-error'))
+        return
+    }
+
+    const result = resp.data
+
+    ingredient.value.description = ingredient.value.description + '\n\n' + result.description || ''
+    ingredient.value.description = ingredient.value.description.trim()
+
+    if (!ingredient.value.strength) {
+        ingredient.value.strength = result.strength || 0
+    }
+
+    if (!ingredient.value.origin) {
+        ingredient.value.origin = result.origin || ''
+    }
+
+    if (!ingredient.value.color) {
+        ingredient.value.color = result.color || '#ffffff'
+    }
+
+    if (!ingredient.value.distillery) {
+        ingredient.value.distillery = result.distillery || ''
+    }
+}
 
 const groupedPriceCategories = computed(() => {
     return priceCategories.value.reduce((acc: Record<string, PriceCategory[]>, obj) => {
