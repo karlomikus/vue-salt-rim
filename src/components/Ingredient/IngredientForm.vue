@@ -9,7 +9,7 @@
             <div class="form-group">
                 <label class="form-label form-label--required" for="name">{{ $t('name') }}:</label>
                 <input id="name" v-model="ingredient.name" class="form-input" type="text" required>
-                <div class="form-group-ai" v-if="ingredientPrompt">
+                <div class="form-group-ai" v-if="ingredient.name && ingredient.name.length >= 3">
                     <ButtonGenerate :callFn="generateBasicIngredientInfo" @before-generation="isLoadingGen=true" @after-generation="isLoadingGen=false" title="Generate basic ingredient information"></ButtonGenerate>
                 </div>
             </div>
@@ -172,7 +172,6 @@ import { useI18n } from 'vue-i18n'
 import { useSaltRimToast } from '@/composables/toast'
 import { useRoute, useRouter } from 'vue-router'
 import type { SearchResults } from '@/api/SearchResults'
-import usePrompts from '@/composables/usePrompts'
 import ButtonGenerate from '@/components/AI/ButtonGenerate.vue'
 import GenerationLoader from '../AI/GenerationLoader.vue'
 import { jsonSchema } from 'ai'
@@ -210,39 +209,6 @@ const calculators = ref<Calculator[]>([])
 const appState = new AppState()
 const bar = appState.bar
 const priceCategories = ref<PriceCategory[]>([])
-const prompts = usePrompts()
-
-const ingredientStructuredOutput = jsonSchema<{
-    description: string
-    color: string
-    origin: string
-    strength: number
-}>({
-    type: 'object',
-    properties: {
-        description: {
-            type: 'string',
-        },
-        color: {
-            type: 'string',
-        },
-        origin: {
-            type: 'string',
-        },
-        strength: {
-            type: 'number',
-        },
-    },
-    required: ['description', 'color', 'origin', 'strength'],
-})
-
-const ingredientPrompt = computed(() => {
-    if (!ingredient.value.name || ingredient.value.name.length < 3) {
-        return null
-    }
-
-    return prompts.buildIngredientPrompt(ingredient.value.name)
-})
 
 async function refreshIngredient(id: string) {
     isLoading.value = true
