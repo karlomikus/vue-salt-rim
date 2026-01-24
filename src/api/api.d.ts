@@ -4266,6 +4266,11 @@ export interface components {
              * @example true
              */
             is_password_login_enabled: boolean;
+            /**
+             * @description Whether AI features are enabled
+             * @example true
+             */
+            is_ai_enabled: boolean;
         };
         ShoppingListRequest: {
             ingredients: {

@@ -97,6 +97,10 @@ const cocktailTags = computed({
     }
 })
 
+const isAiEnabled = computed(() => {
+    return appState.isAiEnabled
+})
+
 function clearImport() {
     similarCocktails.value = []
     source.value = {
@@ -572,7 +576,7 @@ init()
                     <SaltRimRadio v-model="importType" :title="t('import.type-json-title')" :description="t('import.type-json-description')" value="json"></SaltRimRadio>
                     <SaltRimRadio v-model="importType" :title="t('import.type-html-title')" :description="t('import.type-html-description')" value="html"></SaltRimRadio>
                     <SaltRimRadio v-model="importType" :title="t('import.type-bookmarklet-title')" :description="t('import.type-bookmarklet-description')" value="bookmarklet"></SaltRimRadio>
-                    <SaltRimRadio v-model="importType" :title="t('import.type-ai-title')" :description="t('import.type-ai-description')" value="ai"></SaltRimRadio>
+                    <SaltRimRadio v-if="isAiEnabled" v-model="importType" :title="t('import.type-ai-title')" :description="t('import.type-ai-description')" value="ai"></SaltRimRadio>
                 </div>
             </div>
             <div class="alert alert--info" style="margin: 1rem 0;">

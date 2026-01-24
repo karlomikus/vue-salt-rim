@@ -145,7 +145,7 @@
                 <TagSelector id="cocktail-tags" v-model="selectedTagNames" :options="tags" label-key="name" :placeholder="t('placeholder.tags')"></TagSelector>
                 <p class="form-input-hint">{{ t('tag.help-text') }} {{ t('tag.help-text-recommender') }}</p>
                 <GenerationLoader v-if="isLoadingGen"></GenerationLoader>
-                <div class="form-group-ai">
+                <div class="form-group-ai" v-if="cocktail.id">
                     <ButtonGenerate :callFn="generateTags" @before-generation="isLoadingGen=true" @after-generation="isLoadingGen=false"></ButtonGenerate>
                 </div>
             </div>
