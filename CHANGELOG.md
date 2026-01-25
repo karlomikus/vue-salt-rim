@@ -1,12 +1,15 @@
-# x.x.x
+# 4.14.0
 ## New
-- Removed AI env variables
+- Removed client AI features
     - Setup is now done via Bar Assistant API
     - Removed `AI_PROVIDER`, `AI_API_KEY`, `AI_HOST`, `AI_MODEL`
-    - Please refer to Bar Assistant API x.x.x changelog for more info
+    - Please refer to Bar Assistant API v5.13.0 changelog for more info
 - Added new import option: "Import from text"
     - This allows you to paste raw unstructured text and let AI parse it into a cocktail recipe
     - This requires generative AI to be setup in Bar Assistant API
+
+## Changes
+- Removed feeds view
 
 # v4.13.0
 ## New
