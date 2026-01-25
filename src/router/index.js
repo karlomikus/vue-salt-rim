@@ -254,11 +254,6 @@ const router = createRouter({
                     name: 'calculators.form',
                     component: () => import('../views/CalculatorFormView.vue'),
                 },
-                {
-                    path: '/feeds',
-                    name: 'feeds.index',
-                    component: () => import('../views/FeedsView.vue'),
-                },
             ]
         },
         {
