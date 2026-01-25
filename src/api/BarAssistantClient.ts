@@ -586,10 +586,6 @@ export default class BarAssistantClient {
     return (await client.GET('/recommender/cocktails')).data
   }
 
-  static async getFeeds() {
-    return (await client.GET('/feeds')).data
-  }
-
   static async optimizeBar(id: number) {
     return (await client.POST('/bars/{id}/optimize', { params: { path: { id: id } } })).data
   }
@@ -608,5 +604,17 @@ export default class BarAssistantClient {
 
   static async getPublicBarCocktail(barId: string, slug: string) {
     return (await client.GET('/public/{slugOrId}/cocktails/{cocktailSlug}', { params: { path: { slugOrId: barId, cocktailSlug: slug } } })).data
+  }
+
+  static async aiGenerateIngredient(name: string) {
+    return (await client.POST('/generate/ingredient', { body: { name: name } })).data
+  }
+
+  static async aiGenerateCocktailTags(id: string) {
+    return (await client.POST('/generate/cocktail-tags', { body: { cocktail_id: id } })).data
+  }
+
+  static async aiGenerateCocktailRecipe(recipe: string) {
+    return (await client.POST('/generate/cocktail-recipe-from-text', { body: { recipe: recipe } })).data
   }
 }

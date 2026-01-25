@@ -77,7 +77,7 @@ async function login() {
 
         if (token) {
             if (server.value) {
-                appState.setServerSettings(server.value.is_feeds_enabled, server.value.is_password_login_enabled)
+                appState.setServerSettings(server.value.is_password_login_enabled, server.value.is_ai_enabled)
             }
             const redirectUrl = await useAuth(token)
             router.push(redirectUrl)

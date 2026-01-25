@@ -12,8 +12,8 @@ class AppState {
     bar: Bar
     user: Profile
     rememberMe: boolean
-    isFeedsEnabled: boolean
     isPasswordLoginEnabled: boolean
+    isAiEnabled: boolean
     _key: string
 
     constructor() {
@@ -23,8 +23,8 @@ class AppState {
         this.language = null
         this.token = null
         this.rememberMe = false
-        this.isFeedsEnabled = false
         this.isPasswordLoginEnabled = true
+        this.isAiEnabled = false
         this.bar = {} as Bar
         this.user = {} as Profile
 
@@ -98,9 +98,9 @@ class AppState {
         this._updateState()
     }
 
-    setServerSettings(isFeedsEnabled: boolean, isPasswordLoginEnabled: boolean) {
-        this.isFeedsEnabled = isFeedsEnabled
+    setServerSettings(isPasswordLoginEnabled: boolean, isAiEnabled: boolean) {
         this.isPasswordLoginEnabled = isPasswordLoginEnabled
+        this.isAiEnabled = isAiEnabled
         this._updateState()
     }
 
@@ -175,8 +175,8 @@ class AppState {
             this.rememberMe = newState.rememberMe
             this.bar = newState.bar
             this.user = newState.user
-            this.isFeedsEnabled = newState.isFeedsEnabled
             this.isPasswordLoginEnabled = newState.isPasswordLoginEnabled
+            this.isAiEnabled = newState.isAiEnabled
         }
     }
 }
