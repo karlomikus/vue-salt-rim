@@ -7,7 +7,7 @@ class AppState {
     theme: string
     defaultUnit: 'ml' | 'oz' | 'cl'
     defaultShelf: string
-    language: string
+    language: string|null
     token: string|null
     bar: Bar
     user: Profile
