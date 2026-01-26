@@ -238,7 +238,7 @@ refreshShelf()
                 </template>
                 <template #default>
                     {{ $t('missing-recommended-cocktails') }}<br>
-                    <RouterLink :to="{ name: 'ingredients' }">{{ $t('all-ingredients') }}</RouterLink>
+                    <RouterLink :to="{ name: 'cocktails' }">{{ $t('find-cocktails') }}</RouterLink>
                 </template>
             </EmptyState>
         </div>
