@@ -176,7 +176,8 @@
     "search-ingredients": "Etsi ainesosia...",
     "search-cocktails": "Etsi juomia...",
     "external-image": "Liitä kuvan URL",
-    "cocktail-year": "Juomaohjeen julkaisuvuosi"
+    "cocktail-year": "Juomaohjeen julkaisuvuosi",
+    "filter-refinement": "Suodata vaihtoehtoja..."
   },
   "amount": "Määrä",
   "units": "Yksikkö",
@@ -502,6 +503,7 @@
   "most-popular-ingredients": "Paljon käytetyt ainesosat",
   "votes": "Arvioita",
   "n-cocktails": "Ei juomia | {n} juoma | {n} juomaa",
+  "n-ingredients": "Ei ainesosia | {n} ainesosa | {n} ainesosaa",
   "recommended-ingredients": "Suositellut ainesosat",
   "menu": {
     "title": "Juomalista",
@@ -615,7 +617,16 @@
     "copy-action": "Kahdenna ja muokkaa",
     "copy-success": "Juoma kahdennettu",
     "confirm-copy": "Tämä luo kopion juomasta \"{name}\"",
-    "randomize": "Näytä satunnainen juoma"
+    "randomize": "Näytä satunnainen juoma",
+    "availability": {
+      "match-to": "Näytä saatavuustiedot",
+      "bar-shelf": "Baarin hylly",
+      "my-shelf": "Oma hylly"
+    },
+    "totals": {
+      "amount-approx": "Yhteensä",
+      "alcohol-units": "yksikköä"
+    }
   },
   "ABV-definition": "Alkoholia tilavuudesta",
   "last-used-at": "Viimeksi käytetty",
@@ -634,7 +645,10 @@
     "category-delete-success": "Hintaluokka poistettu",
     "category-confirm-delete": "Tämä poistaa pysyvästi hintaluokan \"{name}\".",
     "missing-cocktail-price-calculator": "Tälle juomalle ei ole saatavilla hintatietoja. Lisää ainesosille hinnat nähdäksesi raaka-ainekustannukset.",
-    "missing-price-categories": "Lisätäksesi ainesosille hintoja, määritä ensin baari {link}."
+    "missing-price-categories": "Lisätäksesi ainesosille hintoja, määritä ensin baari {link}.",
+    "per-use": "käyttökerta",
+    "missing-prices": "Osalta ainesosista puuttuu hinta",
+    "categories-explained": "Hinnat ryhmitellään baarin hintaluokkien mukaisesti. Jos hintaluokkaa ei ole listattu, yhdelläkään ainesosalla ei ole kyseisen hintaluokan hintatietoja saatavilla. Jos hintaluokkaan on merkitty useita hintoja, käytetään pienintä hintaa. Huomaathan, että hinta on vain arvio eikä ole pakosti tarkka."
   },
   "prices": {
     "add": "Lisää hinta",
@@ -644,7 +658,13 @@
   "shopping-list-empty": "Ostoslistasi on tyhjä",
   "target-volume": "Tavoitetilavuus",
   "target-volume-dilution": "Laimennus, valinnainen",
-  "scale-recipe": "Skaalaa ohjetta",
+  "scale-recipe": "Säädä määrää",
+  "scale": {
+    "scaled": "Kerroin",
+    "to-quantity": "Säädä kertoimella",
+    "to-volume": "Säädä tavoitetilavuuteen ({unit}) ja laimennusasteeseen (%)",
+    "inspired-by": "Inspiraation lähteenä Jeffrey Morgenthalerin"
+  },
   "target-volume-dilution-help": "Laimenna {total} määrällä vettä",
   "bar_shelf": {
     "cocktails": "Baarin hyllyn juomat",
