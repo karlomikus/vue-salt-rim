@@ -21,7 +21,7 @@ const props = defineProps<{
 function toggle() {
     isLoading.value = true
     const postData = {
-        ingredients: [{id: props.ingredient.id, qunatity: 1}]
+        ingredients: [{id: props.ingredient.id, quantity: 1}]
     }
 
     if (model.value) {

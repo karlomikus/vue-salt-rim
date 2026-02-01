@@ -10,6 +10,7 @@
     "zh-CN": "Chinese (Simplified)",
     "nl-NL": "Netherlands",
     "cs-CZ": "Czech",
+    "fi-FI": "Finnish",
     "help": "Help with translations"
   },
   "shelf": {
@@ -175,7 +176,8 @@
     "search-ingredients": "Search for ingredients...",
     "search-cocktails": "Search for cocktails...",
     "external-image": "Paste image URL",
-    "cocktail-year": "Cocktail recipe release year"
+    "cocktail-year": "Cocktail recipe release year",
+    "filter-refinement": "Filter refinement..."
   },
   "amount": "Amount",
   "units": "Units",
@@ -370,6 +372,7 @@
   "bars": {
     "title": "Bars",
     "bar": "Bar",
+    "information": "Information",
     "join": "Join a bar",
     "add": "Create bar",
     "add-success": "Bar \"{name}\" succesfully created",
@@ -404,6 +407,7 @@
       "data": "No default data"
     },
     "optimization-started": "Started bar optimization",
+    "optimization-description": "This action helps synchronize your search data with the actual data. It also recalculates all cocktail ABVs and ingredient materialized paths. You can run this action manually, but it is limited to once every 10 minutes. Regular execution is not necessary, you should only run this if you notice problems with incorrect data.",
     "optimize": "Optimize bar",
     "confirm-optimization": "This will run bar optimizations",
     "sync-data": "Synchronize data",
@@ -498,6 +502,8 @@
   "top-rated-cocktails": "Top rated cocktails",
   "most-popular-ingredients": "Popular ingredients",
   "votes": "Votes",
+  "n-cocktails": "No cocktails | {n} cocktail | {n} cocktails",
+  "n-ingredients": "No ingredients | {n} ingredient | {n} ingredients",
   "recommended-ingredients": "Recommended ingredients",
   "menu": {
     "title": "Menu",
@@ -611,7 +617,16 @@
     "copy-action": "Duplicate and edit",
     "copy-success": "Cocktail duplicated",
     "confirm-copy": "This will create a copy of \"{name}\"",
-    "randomize": "Show random cocktail"
+    "randomize": "Show random cocktail",
+    "availability": {
+      "match-to": "Match ingredients to",
+      "bar-shelf": "Bar shelf",
+      "my-shelf": "My shelf"
+    },
+    "totals": {
+      "amount-approx": "Approx",
+      "alcohol-units": "units"
+    }
   },
   "ABV-definition": "Alcohol by volume",
   "last-used-at": "Last used",
@@ -630,7 +645,10 @@
     "category-delete-success": "Price category deleted",
     "category-confirm-delete": "This will permanently price category with name \\\"{name}\\\".",
     "missing-cocktail-price-calculator": "There are no prices available for this cocktail. Add prices to ingredients in the recipe to enable price calculation.",
-    "missing-price-categories": "To add ingredient prices, you need to define bar {link} first."
+    "missing-price-categories": "To add ingredient prices, you need to define bar {link} first.",
+    "per-use": "per use",
+    "missing-prices": "Some ingredients are missing prices",
+    "categories-explained": "Prices are categorized by bar price categories. If price category is missing, the ingredients don't have a price in that category. If there are multiple prices in category, the minimum price is used. Keep in mind that the price is just an estimate and might not be accurate."
   },
   "prices": {
     "add": "Add price",
@@ -641,6 +659,12 @@
   "target-volume": "Target volume",
   "target-volume-dilution": "Optional dilution",
   "scale-recipe": "Scale recipe",
+  "scale": {
+    "scaled": "Scaled",
+    "to-quantity": "Scale to target quantity",
+    "to-volume": "Scale to target volume ({unit}) and dilution (%)",
+    "inspired-by": "Inspired by Jeffrey Morgenthaler's"
+  },
   "target-volume-dilution-help": "Dilute with {total} of water",
   "bar_shelf": {
     "cocktails": "Bar shelf cocktails",
@@ -730,5 +754,23 @@
   "cocktails-varieties": "Varieties",
   "cocktail-variety-of": "Cocktail is variant of",
   "cocktail-select-parent": "Select parent cocktail",
-  "year": "Year"
+  "year": "Year",
+  "public-bar": {
+    "signin": "Sign In",
+    "default-subtitle": "Your personal bar assistant",
+    "description-title": "Bar description",
+    "filter-title": "Filter cocktails",
+    "filters-sort-label": "Sort",
+    "filters-global-label": "Global filters",
+    "filters-bar-shelf-label": "Show bar shelf cocktails",
+    "filters-bar-shelf-help": "Only shows cocktails that can be made in the bar",
+    "filters-collections-label": "Collections",
+    "filters-search-placeholder": "Search cocktails by name...",
+    "sort-name-asc": "Name (A-Z)",
+    "sort-name-desc": "Name (Z-A)",
+    "sort-created-asc": "Oldest recipes",
+    "sort-created-desc": "Newest recipes",
+    "recipe-source": "Recipe source",
+    "view-recipe": "View recipe"
+  }
 }

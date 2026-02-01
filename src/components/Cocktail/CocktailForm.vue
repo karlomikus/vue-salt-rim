@@ -145,8 +145,8 @@
                 <TagSelector id="cocktail-tags" v-model="selectedTagNames" :options="tags" label-key="name" :placeholder="t('placeholder.tags')"></TagSelector>
                 <p class="form-input-hint">{{ t('tag.help-text') }} {{ t('tag.help-text-recommender') }}</p>
                 <GenerationLoader v-if="isLoadingGen"></GenerationLoader>
-                <div class="form-group-ai" v-if="cocktailTagsPrompt">
-                    <ButtonGenerate :prompt="cocktailTagsPrompt" :format="structuredOutputTags" @before-generation="onBeforePrompt" @after-generation="onAfterPrompt"></ButtonGenerate>
+                <div class="form-group-ai" v-if="cocktail.id">
+                    <ButtonGenerate :callFn="generateTags" @before-generation="isLoadingGen=true" @after-generation="isLoadingGen=false"></ButtonGenerate>
                 </div>
             </div>
             <div v-show="utensils.length > 0" class="form-group">
@@ -206,7 +206,6 @@ import TimeStamps from '../TimeStamps.vue'
 import TagSelector from '../TagSelector.vue'
 import GlassSelector from '../GlassSelector.vue';
 import CocktailFinder from '../CocktailFinder.vue';
-import usePrompts from '@/composables/usePrompts';
 import ButtonGenerate from '../AI/ButtonGenerate.vue';
 import GenerationLoader from '../AI/GenerationLoader.vue'
 import type { components } from '@/api/api'
@@ -215,7 +214,6 @@ import { useRoute, useRouter } from 'vue-router';
 import { useI18n } from 'vue-i18n';
 import { useSaltRimToast } from '@/composables/toast';
 import { useConfirm } from '@/composables/confirm'
-import { jsonSchema } from 'ai'
 import { useImageUpload } from '@/composables/useImageUpload';
 import CocktailFinderBasic from '../CocktailFinderBasic.vue';
 import { useBasicSearch } from '@/composables/useBasicSearch'
@@ -236,7 +234,6 @@ const route = useRoute()
 const router = useRouter()
 const { t } = useI18n()
 const toast = useSaltRimToast()
-const prompts = usePrompts()
 const confirm = useConfirm()
 const uploader = useImageUpload()
 const appState = new AppState()
@@ -268,13 +265,6 @@ const cocktailIngredientForSubstitutes = ref<CocktailIngredient>({} as CocktailI
 const bar = ref<Partial<Bar>>({
     search_token: null,
 })
-const structuredOutputTags = jsonSchema<string[]>({
-    type: 'array',
-    description: 'List of tags for the cocktail, each tag is a string.',
-    items: {
-        type: 'string',
-    },
-})
 
 const translatableMethods = computed(() => {
     const methodsWithTranslations = ['Shake', 'Stir', 'Build', 'Blend', 'Muddle', 'Layer'];
@@ -289,24 +279,6 @@ const translatableMethods = computed(() => {
 
         return method
     })
-})
-
-const cocktailTagsPrompt = computed(() => {
-    if (!cocktail.value.name || cocktail.value.name.length < 2 || cocktail.value.ingredients?.length === 0) {
-        return ''
-    }
-
-    const promptText = `
-        Name: ${cocktail.value.name}
-        Garnish: ${cocktail.value.garnish || ''}
-        Description: ${cocktail.value.description || ''}
-        Preparation method: ${cocktail.value.instructions || ''}
-        Method and dilution: ${cocktail.value.method?.name || ''} ${cocktail.value.method?.dilution_percentage || ''}%
-        ABV: ${cocktail.value.abv}
-        Ingredients: ${cocktail.value.ingredients?.map(i => `${i.ingredient.name} - ${i.amount} ${i.units}`).join(', ')}
-    `;
-
-    return prompts.buildCocktailTagsPrompt(promptText, tags.value.map(t => t.name))
 })
 
 function printIngredientAmount(ing: UnitIngredient) {
@@ -397,15 +369,15 @@ function addIngredient() {
     showDialogs.value[(cocktail.value.ingredients?.length ?? 0) - 1] = true
 }
 
-function onBeforePrompt() {
-    isLoadingGen.value = true
-}
+async function generateTags() {
+    if (!cocktail.value.id) {
+        return
+    }
 
-function onAfterPrompt(result: string[]) {
-    isLoadingGen.value = false
-    const newTags = Array.from(result).map((tag: string) => tag.trim()).filter(tag => tag.length > 0)
-    const uniqueTags = new Set([...selectedTagNames.value, ...newTags])
-    selectedTagNames.value = Array.from(uniqueTags)
+    const resp = await BarAssistantClient.aiGenerateCocktailTags(cocktail.value.id.toString())
+    if (resp && resp.data.tags) {
+        selectedTagNames.value = Array.from(new Set([...selectedTagNames.value, ...resp.data.tags]))
+    }
 }
 
 function selectParentCocktail(parentCocktail: SearchResultCocktail) {

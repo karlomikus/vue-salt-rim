@@ -3,13 +3,13 @@
         <div class="public-cocktail-recipe__ingredients__ingredient__name">
             <div>
                 {{ cocktailIngredient.name }}
-                <template v-if="cocktailIngredient.optional">(optional)</template>
+                <template v-if="cocktailIngredient.optional">({{ $t('optional') }})</template>
             </div>
             <div v-if="cocktailIngredient.note" class="public-cocktail-recipe__ingredients__secondary">
                 {{ cocktailIngredient.note }}
             </div>
             <div v-if="cocktailIngredient.substitutes.length > 0" class="public-cocktail-recipe__ingredients__secondary">
-                Substitutes: {{ substitutes }}
+                {{ $t('substitutes') }}: {{ substitutes }}
             </div>
         </div>
         <div class="public-cocktail-recipe__ingredients__ingredient__amount">{{ amount }}</div>

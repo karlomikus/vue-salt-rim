@@ -238,7 +238,7 @@ refreshShelf()
                 </template>
                 <template #default>
                     {{ $t('missing-recommended-cocktails') }}<br>
-                    <RouterLink :to="{ name: 'ingredients' }">{{ $t('all-ingredients') }}</RouterLink>
+                    <RouterLink :to="{ name: 'cocktails' }">{{ $t('find-cocktails') }}</RouterLink>
                 </template>
             </EmptyState>
         </div>
@@ -346,7 +346,7 @@ refreshShelf()
                 <ListItemContainer tag="RouterLink" v-for="ingredient in stats.most_popular_ingredients" :key="ingredient.id" :to="{ name: 'ingredients.show', params: { id: ingredient.slug } }">
                     <template #content>
                         <h5 class="sr-list-item-title">{{ ingredient.name }}</h5>
-                        <p>{{ ingredient.cocktails_count }} {{ $t('cocktail.cocktails') }}</p>
+                        <p>{{ $t('n-cocktails', ingredient.cocktails_count) }}</p>
                     </template>
                 </ListItemContainer>
             </div>

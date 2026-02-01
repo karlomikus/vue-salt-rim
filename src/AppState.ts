@@ -7,24 +7,24 @@ class AppState {
     theme: string
     defaultUnit: 'ml' | 'oz' | 'cl'
     defaultShelf: string
-    language: string
+    language: string|null
     token: string|null
     bar: Bar
     user: Profile
     rememberMe: boolean
-    isFeedsEnabled: boolean
     isPasswordLoginEnabled: boolean
+    isAiEnabled: boolean
     _key: string
 
     constructor() {
         this.theme = 'light'
         this.defaultUnit = 'ml'
         this.defaultShelf = 'bar'
-        this.language = 'en-US'
+        this.language = null
         this.token = null
         this.rememberMe = false
-        this.isFeedsEnabled = false
         this.isPasswordLoginEnabled = true
+        this.isAiEnabled = false
         this.bar = {} as Bar
         this.user = {} as Profile
 
@@ -98,9 +98,9 @@ class AppState {
         this._updateState()
     }
 
-    setServerSettings(isFeedsEnabled: boolean, isPasswordLoginEnabled: boolean) {
-        this.isFeedsEnabled = isFeedsEnabled
+    setServerSettings(isPasswordLoginEnabled: boolean, isAiEnabled: boolean) {
         this.isPasswordLoginEnabled = isPasswordLoginEnabled
+        this.isAiEnabled = isAiEnabled
         this._updateState()
     }
 
@@ -175,8 +175,8 @@ class AppState {
             this.rememberMe = newState.rememberMe
             this.bar = newState.bar
             this.user = newState.user
-            this.isFeedsEnabled = newState.isFeedsEnabled
             this.isPasswordLoginEnabled = newState.isPasswordLoginEnabled
+            this.isAiEnabled = newState.isAiEnabled
         }
     }
 }

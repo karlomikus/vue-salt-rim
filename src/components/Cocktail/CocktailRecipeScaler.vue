@@ -1,9 +1,9 @@
 <template>
     <div class="block-container block-container--inset block-container--padded">
         <div>
-            <input type="radio" name="scale-type" value="quantity" id="bar-public-recipe-scale-quantity" v-model="scaleType">
+            <input type="radio" class="labeled-radio" name="scale-type" value="quantity" id="bar-public-recipe-scale-quantity" v-model="scaleType">
             <label for="bar-public-recipe-scale-quantity">
-                Scale to target quantity
+                {{ $t('scale.to-quantity') }}
             </label>
             <div class="scaler-inline-group">
                 <button class="button button--dark" @click="modifyQuantity(-1)">-</button>
@@ -12,9 +12,9 @@
             </div>
         </div>
         <div>
-            <input type="radio" name="scale-type" value="volume" id="bar-public-recipe-scale-volume" v-model="scaleType">
+            <input type="radio" class="labeled-radio" name="scale-type" value="volume" id="bar-public-recipe-scale-volume" v-model="scaleType">
             <label for="bar-public-recipe-scale-volume">
-                Scale to target volume ({{ currentUnit }}) and dilution (%)
+                {{ $t('scale.to-volume', { unit: currentUnit }) }}
             </label>
             <div class="scaler-inline-group">
                 <input type="text" class="form-input form-input--small" v-model="targetVolumeToScaleTo" placeholder="Target volume">
@@ -23,7 +23,7 @@
             <div class="volume-scaling__water" v-if="waterDilution && targetVolumeDilution > 0">
                 {{ $t('target-volume-dilution-help', {total: unitHandler.toFixedWithTruncate(parseFloat(waterDilution), 2) + ' ' + currentUnit}) }}
             </div>
-            <p class="form-input-hint">Inspired by Jeffrey Morgenthaler's <a href="https://www.batchcalc.com/" target="_blank">The Batch Cocktail Calculator</a></p>
+            <p class="form-input-hint">{{ $t('scale.inspired-by') }} <a href="https://www.batchcalc.com/" target="_blank">The Batch Cocktail Calculator</a></p>
         </div>
     </div>
 </template>
@@ -133,5 +133,8 @@ const modifyQuantity = (delta: number) => {
     display: flex;
     gap: .5rem;
     align-items: center
+}
+input.labeled-radio[type=radio] {
+    margin-right: 0.25rem;
 }
 </style>
