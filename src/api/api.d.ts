@@ -4013,7 +4013,7 @@ export interface components {
              * Format: binary
              * @description Image file. Base64 encoded images also supported. Max 50MB
              */
-            image: string | null | Blob;
+            image: string | null;
             /** @description Existing image id, used to update an existing image */
             id?: number | null;
             /** @example 1 */
@@ -4102,12 +4102,18 @@ export interface components {
             /** @example My device */
             token_name?: string | null;
         };
+        MenuCategoryRequest: {
+            /** @example 1 */
+            id: number;
+            /** @example 1 */
+            sort?: number;
+            name: string;
+            items: components["schemas"]["MenuItemRequest"][];
+        };
         MenuItemRequest: {
             /** @example 1 */
             id: number;
             type: components["schemas"]["MenuItemTypeEnum"];
-            /** @example Category name */
-            category_name: string;
             /** @example 1 */
             sort: number;
             /**
@@ -4123,7 +4129,7 @@ export interface components {
         };
         MenuRequest: {
             is_enabled: boolean;
-            items: components["schemas"]["MenuItemRequest"][];
+            categories: components["schemas"]["MenuCategoryRequest"][];
         };
         NoteRequest: {
             /** @example Note text */

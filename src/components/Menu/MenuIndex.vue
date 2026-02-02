@@ -439,20 +439,26 @@ async function saveMenu() {
     isLoading.value = true
 
     const sortedCocktails = sortableInstances.value.flatMap(sortableInstance => sortableInstance.toArray())
-    const items = categories.value.flatMap(cat => {
-        return cat.items.map(item => ({
-            id: item.id,
-            type: item.type,
-            category_name: cat.name,
-            sort: sortedCocktails.findIndex(sortedId => sortedId == item.id) + 1,
-            price: item.price.price,
-            currency: item.price.currency,
-        }))
+    const cats = categories.value.flatMap(cat => {
+        return {
+            id: 0,
+            sort: 0,
+            name: cat.name,
+            items: cat.items.map(item => {
+                return {
+                    id: item.id,
+                    type: item.type,
+                    sort: sortedCocktails.findIndex(sortedId => sortedId == item.id) + 1,
+                    price: item.price.price,
+                    currency: item.price.currency,
+                }
+            })
+        }
     })
 
     const postData = {
         is_enabled: menu.value.is_enabled,
-        items: items
+        categories: cats
     } as MenuRequest
 
     try {
