@@ -13,7 +13,7 @@
             </div>
         </div>
         <template v-if="!collapsed">
-            <input v-show="searchable" v-model="searchTerm" class="form-input form-input--refinement" type="text" placeholder="Filter refinement...">
+            <input v-show="searchable" v-model="searchTerm" class="form-input form-input--refinement" type="text" :placeholder="$t('placeholder.filter-refinement')">
             <div class="resource-search__refinements__refinement__body">
                 <slot>
                     <div v-for="refinement in refinementsSearched" :key="refinement.id" class="resource-search__refinements__refinement__item">

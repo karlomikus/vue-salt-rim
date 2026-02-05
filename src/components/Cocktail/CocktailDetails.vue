@@ -584,14 +584,17 @@ fetchShoppingList()
                     <div v-if="cocktail.ingredients && cocktail.ingredients.length > 0" class="block-container block-container--padded">
                         <h3 class="block-container__title">{{ t('ingredient.ingredients') }}</h3>
                         <div class="cocktail-ingredients__actions">
-                            Match ingredients to: <a :class="{'bold': currentShelf === 'bar'}" href="#" @click.prevent="currentShelf = 'bar'">Bar shelf</a> &middot; <a href="#" :class="{'bold': currentShelf === 'user'}" @click.prevent="currentShelf = 'user'">My shelf</a>
+                            {{ $t('cocktail.availability.match-to') }}:
+                            <a :class="{'bold': currentShelf === 'bar'}" href="#" @click.prevent="currentShelf = 'bar'">{{ $t('cocktail.availability.bar-shelf') }}</a>
+                            &middot;
+                            <a href="#" :class="{'bold': currentShelf === 'user'}" @click.prevent="currentShelf = 'user'">{{ $t('cocktail.availability.my-shelf') }}</a>
                             <br>
                             <a v-show="missingIngredientIds.length > 0" href="#" @click.prevent="addMissingIngredients">{{ t('cocktail.missing-ing-action') }}</a>
                         </div>
                         <div style="display: grid; grid-template-columns: 1fr 1fr; margin-bottom: 1rem;">
                             <div class="button-group">
                                 <h4>{{ $t('scale-recipe') }}:</h4>
-                                <button type="button" @click="showScaler = !showScaler">Scaled: x{{ unitHandler.toFixedWithTruncate(ingredientScaleFactor, 2) }}</button>
+                                <button type="button" @click="showScaler = !showScaler">{{ $t('scale.scaled') }}: x{{ unitHandler.toFixedWithTruncate(ingredientScaleFactor, 2) }}</button>
                             </div>
                             <UnitPicker></UnitPicker>
                         </div>
@@ -602,7 +605,7 @@ fetchShoppingList()
                             </li>
                         </ul>
                         <div v-if="cocktail.volume_ml" class="cocktail-ingredients__total-amount">
-                            Approx: {{ totalLiquidConverted }} <span v-if="cocktail.glass && cocktail.glass.volume">({{ t('glass-type.title') }}: {{ cocktail.glass.volume }} {{ cocktail.glass.volume_units }})</span> <span v-show="(cocktail?.calories ?? 0) > 0">&middot; {{ calculatedCalories.toFixed(0) }} kcal</span> <span v-show="(cocktail?.alcohol_units ?? 0) > 0">&middot; {{ calculatedAlcUnits.toFixed(2) }} units</span>
+                            {{ t('cocktail.totals.amount-approx') }}: {{ totalLiquidConverted }} <span v-if="cocktail.glass && cocktail.glass.volume">({{ t('glass-type.title') }}: {{ cocktail.glass.volume }} {{ cocktail.glass.volume_units }})</span> <span v-show="(cocktail?.calories ?? 0) > 0">&middot; {{ calculatedCalories.toFixed(0) }} kcal</span> <span v-show="(cocktail?.alcohol_units ?? 0) > 0">&middot; {{ calculatedAlcUnits.toFixed(2) }} {{ t('cocktail.totals.alcohol-units') }}</span>
                         </div>
                     </div>
                 </UnitConverter>
@@ -621,7 +624,7 @@ fetchShoppingList()
                 </div>
                 <div v-if="completeCocktailPrices.length > 0" class="block-container block-container--padded">
                     <h3 class="block-container__title">{{ t('price.prices') }}</h3>
-                    <p>Prices are categorized by bar price categories. If price category is missing, the ingredients don't have a price in that category. If there are multiple prices in category, the minimum price is used. Keep in mind that the price is just an estimate and might not be accurate.</p>
+                    <p>{{ t('price.categories-explained') }}</p>
                     <div class="cocktail-prices">
                         <CocktailPrice v-for="cocktailPrice in completeCocktailPrices" :cocktail-price=cocktailPrice></CocktailPrice>
                     </div>
