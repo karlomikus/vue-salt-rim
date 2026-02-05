@@ -250,6 +250,7 @@ function addCategory(name: string) {
 
     const category = {
         name: name,
+        sort: categories.value.length + 1,
         items: []
     };
 
@@ -439,10 +440,10 @@ async function saveMenu() {
     isLoading.value = true
 
     const sortedCocktails = sortableInstances.value.flatMap(sortableInstance => sortableInstance.toArray())
-    const cats = categories.value.flatMap(cat => {
+    const cats = categories.value.map((cat, catIdx) => {
         return {
             id: 0,
-            sort: 0,
+            sort: catIdx + 1,
             name: cat.name,
             items: cat.items.map(item => {
                 return {

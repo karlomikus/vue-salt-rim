@@ -949,11 +949,7 @@ export interface paths {
          */
         get: operations["showImage"];
         put?: never;
-        /**
-         * Update image
-         * @description Update a specific image
-         */
-        post: operations["updateImage"];
+        post?: never;
         /**
          * Delete image
          * @description Delete a specific image
@@ -3183,6 +3179,28 @@ export interface components {
             /** @description Recursive list of child ingredients */
             children: components["schemas"]["IngredientTree"][];
         };
+        /** @description Menu Category resource */
+        MenuCategory: {
+            /** @example Category name */
+            name: string;
+            /** @example 1 */
+            sort: number;
+            items: {
+                /** @example 1 */
+                id: number;
+                type: components["schemas"]["MenuItemTypeEnum"];
+                /** @example 1 */
+                sort: number;
+                price: components["schemas"]["Price"];
+                /**
+                 * @description Cocktail name
+                 * @example Cocktail name
+                 */
+                name: string;
+                /** @example Cocktail description */
+                description: string | null;
+            }[];
+        };
         /** @description Menu resource */
         MenuPublic: {
             /** @description Bar information */
@@ -3245,25 +3263,8 @@ export interface components {
              * @description Last update date
              */
             updated_at: string | null;
-            categories: {
-                /** @example Category name */
-                name: string;
-                items: {
-                    /** @example 1 */
-                    id: number;
-                    type: components["schemas"]["MenuItemTypeEnum"];
-                    /** @example 1 */
-                    sort: number;
-                    price: components["schemas"]["Price"];
-                    /**
-                     * @description Cocktail name
-                     * @example Cocktail name
-                     */
-                    name: string;
-                    /** @example Cocktail description */
-                    description: string | null;
-                }[];
-            }[];
+            /** @description Menu categories */
+            categories: components["schemas"]["MenuCategory"][];
         };
         /** @description Note resource */
         Note: {
@@ -4036,6 +4037,7 @@ export interface components {
         };
         IngredientPriceRequest: {
             price_category_id: number;
+            /** Format: float */
             price: number;
             /** Format: float */
             amount: number;
@@ -4104,9 +4106,7 @@ export interface components {
         };
         MenuCategoryRequest: {
             /** @example 1 */
-            id: number;
-            /** @example 1 */
-            sort?: number;
+            sort: number;
             name: string;
             items: components["schemas"]["MenuItemRequest"][];
         };
@@ -7954,54 +7954,6 @@ export interface operations {
             };
             /** @description Resource record not found. */
             404: {
-                headers: {
-                    /** @description Max number of attempts. */
-                    "x-ratelimit-limit"?: number;
-                    /** @description Remaining number of attempts. */
-                    "x-ratelimit-remaining"?: number;
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": {
-                        data?: components["schemas"]["APIError"];
-                    };
-                };
-            };
-        };
-    };
-    updateImage: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                /** @description Database id of a resource */
-                id: number;
-            };
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "multipart/form-data": components["schemas"]["ImageRequest"];
-            };
-        };
-        responses: {
-            /** @description Successful response */
-            200: {
-                headers: {
-                    /** @description Max number of attempts. */
-                    "x-ratelimit-limit"?: number;
-                    /** @description Remaining number of attempts. */
-                    "x-ratelimit-remaining"?: number;
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": {
-                        data: components["schemas"]["Image"];
-                    };
-                };
-            };
-            /** @description You are not authorized for this action. */
-            403: {
                 headers: {
                     /** @description Max number of attempts. */
                     "x-ratelimit-limit"?: number;
