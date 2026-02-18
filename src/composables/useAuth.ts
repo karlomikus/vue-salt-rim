@@ -27,10 +27,17 @@ const useAuth = async (token: string): Promise<string> => {
         return '/login'
     }
 
-    const bars = (await BarAssistantClient.getBars())?.data
+    const [bars, serverInfo] = await Promise.all([
+        BarAssistantClient.getBars(),
+        BarAssistantClient.getServerVersion()
+    ]);
 
-    if (bars?.length == 1) {
-        appState.setBar(bars[0])
+    if (serverInfo?.data) {
+        appState.setServerSettings(serverInfo.data.is_password_login_enabled, serverInfo.data.is_ai_enabled)
+    }
+
+    if (bars?.data?.length == 1) {
+        appState.setBar(bars.data[0])
 
         return '/'
     } else {
