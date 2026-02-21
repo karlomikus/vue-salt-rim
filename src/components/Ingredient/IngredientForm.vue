@@ -174,7 +174,6 @@ import { useRoute, useRouter } from 'vue-router'
 import type { SearchResults } from '@/api/SearchResults'
 import ButtonGenerate from '@/components/AI/ButtonGenerate.vue'
 import GenerationLoader from '../AI/GenerationLoader.vue'
-import { jsonSchema } from 'ai'
 import { useImageUpload } from '@/composables/useImageUpload';
 import IngredientFinderBasic from '../IngredientFinderBasic.vue'
 import { useBasicSearch } from '@/composables/useBasicSearch'
