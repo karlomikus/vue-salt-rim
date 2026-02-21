@@ -68,6 +68,10 @@
                                     &middot;
                                 </template>
                                 <a href="#" @click.prevent="removeItem(category, item)">{{ t('remove') }}</a>
+                                <label class="form-checkbox" :for="'bar-inventory-aware' + idx + '-' + cidx">
+                                    <input :id="'bar-inventory-aware' + idx + '-' + cidx" v-model="item.is_bar_inventory_aware" type="checkbox" :value="true">
+                                    <span>Hide when not in bar shelf</span>
+                                </label>
                             </div>
                             <div class="menu-category__cocktail__content__price">
                                 <div class="form-group">
@@ -187,7 +191,14 @@ const guessCurrency = computed(() => {
     return uniqueCurrencies[0]
 })
 
+function renumberCategoryItems(category: MenuCategories[0]) {
+    category.items.forEach((item, index) => {
+        item.sort = index + 1
+    })
+}
+
 function addItemToCategory(item: MenuItem, category: MenuCategories[0]) {
+    item.sort = category.items.length + 1
     category.items.push(item)
 }
 
@@ -311,6 +322,7 @@ function removeItem(category: MenuCategories[0], item: MenuItem) {
                 category.items.findIndex(i => i == item),
                 1
             )
+            renumberCategoryItems(category)
         }
     })
 }
@@ -387,6 +399,14 @@ function refreshSortable() {
 
                 // Add to new cat
                 targetCategory.items.splice(evt.newIndex, 0, sourceItem)
+
+                fromCategory.items.forEach((item, index) => {
+                    item.sort = index + 1
+                })
+
+                targetCategory.items.forEach((item, index) => {
+                    item.sort = index + 1
+                })
             },
         }))
     })
@@ -439,8 +459,16 @@ function quickAddShelf() {
 async function saveMenu() {
     isLoading.value = true
 
-    const sortedCocktails = sortableInstances.value.flatMap(sortableInstance => sortableInstance.toArray())
+    const categorySortOrders = new Map<number, string[]>()
+    sortableInstances.value.forEach(sortableInstance => {
+        const categoryIdx = Number(sortableInstance.el?.dataset?.categoryIdx)
+        if (!Number.isNaN(categoryIdx)) {
+            categorySortOrders.set(categoryIdx, sortableInstance.toArray())
+        }
+    })
+
     const cats = categories.value.map((cat, catIdx) => {
+        const categoryOrder = categorySortOrders.get(catIdx) ?? cat.items.map(item => String(item.id))
         return {
             id: 0,
             sort: catIdx + 1,
@@ -449,9 +477,10 @@ async function saveMenu() {
                 return {
                     id: item.id,
                     type: item.type,
-                    sort: sortedCocktails.findIndex(sortedId => sortedId == item.id) + 1,
+                    sort: categoryOrder.findIndex(sortedId => sortedId == String(item.id)) + 1,
                     price: item.price.price,
                     currency: item.price.currency,
+                    is_bar_inventory_aware: item.is_bar_inventory_aware ?? false,
                 }
             })
         }
