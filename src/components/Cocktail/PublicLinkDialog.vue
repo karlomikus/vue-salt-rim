@@ -17,7 +17,6 @@
 <script>
 import BarAssistantClient from '@/api/BarAssistantClient'
 import OverlayLoader from './../OverlayLoader.vue'
-import dayjs from 'dayjs'
 import SubscriptionCheck from '../SubscriptionCheck.vue'
 
 export default {
@@ -58,7 +57,7 @@ export default {
                 return null
             }
 
-            const date = dayjs(this.publicData.public_at).toDate()
+            const date = new Date(this.publicData.public_at)
 
             return this.$d(date, 'long')
         }
