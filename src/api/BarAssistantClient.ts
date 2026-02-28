@@ -139,8 +139,14 @@ export default class BarAssistantClient {
     return (await client.DELETE('/cocktails/{id}/public-link', { params: { path: { id: id } } })).data
   }
 
-  static async saveCocktail(body: components["schemas"]["CocktailRequest"]) {
-    return (await client.POST('/cocktails', { body: body })).data
+  static async saveCocktail(body: components["schemas"]["CocktailRequest"]): Promise<string> {
+    const { response } = await client.POST('/cocktails', { body: body, parseAs: 'stream' })
+    const location = response.headers.get('location')
+    if (!location) {
+        throw new Error('Location header not found in response')
+    }
+
+    return location.substring(location.lastIndexOf('/') + 1)
   }
 
   static async updateCocktail(id: number, body: components["schemas"]["CocktailRequest"]) {
