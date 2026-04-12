@@ -4,7 +4,7 @@ ARG BUILD_VERSION
 ENV BUILD_VERSION=${BUILD_VERSION:-develop}
 
 WORKDIR /app
-COPY package*.json .
+COPY package*.json ./
 RUN npm install
 COPY . .
 
@@ -32,16 +32,16 @@ RUN chmod +x /usr/local/bin/entrypoint
 
 CMD [ "/usr/local/bin/entrypoint" ]
 
-FROM node:latest AS dev
-
-WORKDIR /app
-
-COPY package*.json ./
-
-RUN npm install
-
-COPY . .
-
-EXPOSE 5173
-
-CMD ["npm", "run", "dev"]
+#FROM node:latest AS dev
+#
+#WORKDIR /app
+#
+#COPY package*.json ./
+#
+#RUN npm install
+#
+#COPY . .
+#
+#EXPOSE 5173
+#
+#CMD ["npm", "run", "dev"]
