@@ -1,0 +1,10 @@
+{
+  "version": 1,
+  "skills": {
+    "vue-best-practices": {
+      "source": "antfu/skills",
+      "sourceType": "github",
+      "computedHash": "eef7ee82688c9541f91b3f1050e79a5c978ddcc2c776a4bf31a11ba37c7901e8"
+    }
+  }
+}

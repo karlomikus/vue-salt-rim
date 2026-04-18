@@ -478,7 +478,7 @@ async function submit() {
 
             isLoading.value = false
             toast.default(t('cocktail.update-success'))
-            router.push({ name: 'cocktails.show', params: { id: resp.data.slug } })
+            router.push({ name: 'cocktails.show', params: { id: cocktail.value.slug } })
         }).catch(e => {
             toast.error(e.message)
             isLoading.value = false

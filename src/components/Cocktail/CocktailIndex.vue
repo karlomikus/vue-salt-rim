@@ -434,7 +434,7 @@ export default {
                 this.availableRefinements.collections = resp.data
             })
 
-            BarAssistantClient.getBarMembers(this.appState.bar.id).then(resp => {
+            BarAssistantClient.getBarMembers().then(resp => {
                 this.availableRefinements.members = resp.data
             })
 

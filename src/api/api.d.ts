@@ -15,7 +15,7 @@ export interface paths {
         put?: never;
         /**
          * Authenticate user
-         * @description Authenticate user and get auth token
+         * @description Authenticate user and get bearer token. Depending on server settings user might also require verified email.
          */
         post: operations["authenticate"];
         delete?: never;
@@ -35,7 +35,7 @@ export interface paths {
         put?: never;
         /**
          * Logout
-         * @description Logout currently authenticated user
+         * @description Logout currently authenticated user. This will delete and disable bearer token.
          */
         post: operations["logout"];
         delete?: never;
@@ -55,7 +55,7 @@ export interface paths {
         put?: never;
         /**
          * Register
-         * @description Register a new user
+         * @description Register a new user account. If server has disabled registrations this will return 404 not found.
          */
         post: operations["register"];
         delete?: never;
@@ -75,7 +75,7 @@ export interface paths {
         put?: never;
         /**
          * Request password reset
-         * @description Request a new password reset link
+         * @description Send a new password reset link to users email address.
          */
         post: operations["passwordForgot"];
         delete?: never;
@@ -95,7 +95,7 @@ export interface paths {
         put?: never;
         /**
          * Reset password
-         * @description Reset user password
+         * @description Reset user password with data from password reset request.
          */
         post: operations["passwordReset"];
         delete?: never;
@@ -113,7 +113,7 @@ export interface paths {
         };
         /**
          * Confirm account
-         * @description Confirm user account, if applicable
+         * @description Verify user email. This will return 404 if email verifications is disabled.
          */
         get: operations["confirmAccount"];
         put?: never;
@@ -133,13 +133,13 @@ export interface paths {
         };
         /**
          * List bars
-         * @description Show a list of bars user has access to. Includes bars that user has made and bars he is a member of.
+         * @description Show a list of bars current authenticated user has access to. Includes bars he is a member of.
          */
         get: operations["listBars"];
         put?: never;
         /**
          * Create bar
-         * @description Create a new bar
+         * @description Create a new bar with optional default data included. Assigns current authenticated user as a member with admin role.
          */
         post: operations["saveBar"];
         delete?: never;
@@ -157,18 +157,18 @@ export interface paths {
         };
         /**
          * Show bar
-         * @description Show information about a specific bar
+         * @description Show information about a specific bar.
          */
         get: operations["showBar"];
         /**
          * Update bar
-         * @description Update a specific bar
+         * @description Update a specific bar.
          */
         put: operations["updateBar"];
         post?: never;
         /**
          * Delete bar
-         * @description Delete a specific bar
+         * @description Delete a specific bar.
          */
         delete: operations["deleteBar"];
         options?: never;
@@ -187,54 +187,10 @@ export interface paths {
         put?: never;
         /**
          * Join a bar
-         * @description Join a bar via invite code
+         * @description Join a bar as a guest role via invite code. Target bar must be active and have invite code enabled.
          */
         post: operations["joinBar"];
         delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/bars/{id}/memberships": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * List members
-         * @description List all bar members
-         */
-        get: operations["listBarMembership"];
-        put?: never;
-        post?: never;
-        /**
-         * Leave a bar
-         * @description Deletes a user's membership to a bar
-         */
-        delete: operations["leaveBar"];
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/bars/{id}/memberships/{userId}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        post?: never;
-        /**
-         * Remove member
-         * @description Removes a specific user's membership from a bar
-         */
-        delete: operations["removeBarMembership"];
         options?: never;
         head?: never;
         patch?: never;
@@ -251,7 +207,7 @@ export interface paths {
         put?: never;
         /**
          * Transfer ownership
-         * @description Transfer a bar to another user.
+         * @description Transfer a bar to another user. Gives another use complete access of a bar. Only bar owners can start bar transfer.
          */
         post: operations["transferBarOwnership"];
         delete?: never;
@@ -702,7 +658,7 @@ export interface paths {
         get?: never;
         /**
          * Sync cocktails in a collection
-         * @description Used to updated/add/delete cocktails in a collection. To delete all cocktails pass an empty array.
+         * @description Used to add and remove cocktails in a collection. To delete all cocktails pass an empty array.
          */
         put: operations["syncCocktailsInCollection"];
         post?: never;
@@ -1172,6 +1128,58 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/members": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * List members
+         * @description Show a list of all members in the bar. This endpoint is only accessible for bar admins and moderators.
+         */
+        get: operations["listMembers"];
+        put?: never;
+        /**
+         * Create member
+         * @description Create a new member
+         */
+        post: operations["saveMember"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/members/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Show member
+         * @description Show member information
+         */
+        get: operations["showMember"];
+        /**
+         * Update member
+         * @description Update a single member
+         */
+        put: operations["updateMember"];
+        post?: never;
+        /**
+         * Remove member
+         * @description Removes a specific user's membership from a bar
+         */
+        delete: operations["removeMember"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/menu": {
         parameters: {
             query?: never;
@@ -1398,7 +1406,11 @@ export interface paths {
          * @description Update user profile
          */
         post: operations["updateProfile"];
-        delete?: never;
+        /**
+         * Delete profile
+         * @description Delete your profile and account
+         */
+        delete: operations["deleteProfile"];
         options?: never;
         head?: never;
         patch?: never;
@@ -1557,7 +1569,7 @@ export interface paths {
         };
         /**
          * SSO redirect
-         * @description Redirect to SSO authentication
+         * @description Redirect to SSO authentication.
          */
         get: operations["ssoRedirect"];
         put?: never;
@@ -1577,7 +1589,7 @@ export interface paths {
         };
         /**
          * SSO callback
-         * @description Callback for SSO login
+         * @description Callback for SSO login.
          */
         get: operations["ssoCallback"];
         put?: never;
@@ -1597,7 +1609,7 @@ export interface paths {
         };
         /**
          * SSO providers
-         * @description Configured SSO providers
+         * @description List of server supported and configured SSO providers.
          */
         get: operations["ssoProviders"];
         put?: never;
@@ -1628,7 +1640,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/users/{id}/ingredients": {
+    "/members/{id}/ingredients": {
         parameters: {
             query?: never;
             header?: never;
@@ -1648,7 +1660,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/users/{id}/cocktails": {
+    "/members/{id}/cocktails": {
         parameters: {
             query?: never;
             header?: never;
@@ -1668,7 +1680,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/users/{id}/cocktails/favorites": {
+    "/members/{id}/cocktails/favorites": {
         parameters: {
             query?: never;
             header?: never;
@@ -1688,7 +1700,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/users/{id}/ingredients/batch-store": {
+    "/members/{id}/ingredients/batch-store": {
         parameters: {
             query?: never;
             header?: never;
@@ -1708,7 +1720,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/users/{id}/ingredients/batch-delete": {
+    "/members/{id}/ingredients/batch-delete": {
         parameters: {
             query?: never;
             header?: never;
@@ -1728,7 +1740,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/users/{id}/ingredients/recommend": {
+    "/members/{id}/ingredients/recommend": {
         parameters: {
             query?: never;
             header?: never;
@@ -1848,7 +1860,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/users/{id}/shopping-list": {
+    "/members/{id}/shopping-list": {
         parameters: {
             query?: never;
             header?: never;
@@ -1868,7 +1880,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/users/{id}/shopping-list/batch-store": {
+    "/members/{id}/shopping-list/batch-store": {
         parameters: {
             query?: never;
             header?: never;
@@ -1888,7 +1900,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/users/{id}/shopping-list/batch-delete": {
+    "/members/{id}/shopping-list/batch-delete": {
         parameters: {
             query?: never;
             header?: never;
@@ -1908,7 +1920,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/users/{id}/shopping-list/share": {
+    "/members/{id}/shopping-list/share": {
         parameters: {
             query?: never;
             header?: never;
@@ -2019,58 +2031,6 @@ export interface paths {
          * @description Delete a single tag
          */
         delete: operations["deleteTag"];
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/users": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * List users
-         * @description Show a list of all users in a bar
-         */
-        get: operations["listUsers"];
-        put?: never;
-        /**
-         * Create user
-         * @description Create a new user
-         */
-        post: operations["saveUser"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/users/{id}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * Show user
-         * @description Show a single user
-         */
-        get: operations["showUser"];
-        /**
-         * Update user
-         * @description Update a single user
-         */
-        put: operations["updateUser"];
-        post?: never;
-        /**
-         * Delete user
-         * @description Delete a single user
-         */
-        delete: operations["deleteUser"];
         options?: never;
         head?: never;
         patch?: never;
@@ -3199,6 +3159,11 @@ export interface components {
                 name: string;
                 /** @example Cocktail description */
                 description: string | null;
+                /**
+                 * @description Indicates if the item is in the bar inventory
+                 * @example false
+                 */
+                is_bar_inventory_aware: boolean;
             }[];
         };
         /** @description Menu resource */
@@ -3889,7 +3854,7 @@ export interface components {
         CalculatorBlockSettings: {
             suffix?: string | null;
             prefix?: string | null;
-            decimal_places?: string | null;
+            decimal_places?: number | null;
         };
         CalculatorRequest: {
             name: string;
@@ -3941,8 +3906,13 @@ export interface components {
         CocktailMethodRequest: {
             /** @example Shake */
             name: string;
-            /** @example 20 */
+            /**
+             * Format: float
+             * @example 20
+             */
             dilution_percentage: number;
+            /** @example Shake with ice to chill and dilute */
+            description?: string | null;
         };
         CocktailRequest: {
             /** @example Cocktail name */
@@ -3971,11 +3941,29 @@ export interface components {
             year?: number | null;
         };
         CollectionRequest: {
-            /** @example Collection name */
+            /**
+             * @description Name of the collection
+             * @example My summer cocktails
+             */
             name: string;
-            /** @example Collection description */
+            /**
+             * @description A short description of the collection
+             * @example Refreshing cocktails for a hot summer day.
+             */
             description?: string | null;
+            /**
+             * @description Whether the collection should be shared with the bar. Shared collections are visible to all bar members. Default `false`.
+             * @example false
+             */
             is_bar_shared?: boolean;
+            /**
+             * @description List of cocktail ids that belong to this collection
+             * @example [
+             *       1,
+             *       2,
+             *       3
+             *     ]
+             */
             cocktails?: number[];
         };
         ExportRequest: {
@@ -4126,6 +4114,7 @@ export interface components {
              * @example EUR
              */
             currency: string;
+            is_bar_inventory_aware: boolean;
         };
         MenuRequest: {
             is_enabled: boolean;
@@ -4526,19 +4515,17 @@ export interface operations {
         };
         responses: {
             /** @description Successful response */
-            200: {
+            201: {
                 headers: {
                     /** @description Max number of attempts. */
                     "x-ratelimit-limit"?: number;
                     /** @description Remaining number of attempts. */
                     "x-ratelimit-remaining"?: number;
+                    /** @description URL of the new resource */
+                    Location?: string;
                     [name: string]: unknown;
                 };
-                content: {
-                    "application/json": {
-                        data: components["schemas"]["Profile"];
-                    };
-                };
+                content?: never;
             };
             /** @description Resource record not found. */
             404: {
@@ -4726,11 +4713,7 @@ export interface operations {
                     Location?: string;
                     [name: string]: unknown;
                 };
-                content: {
-                    "application/json": {
-                        data: components["schemas"]["Bar"];
-                    };
-                };
+                content?: never;
             };
             /** @description You are not authorized for this action. */
             403: {
@@ -4978,154 +4961,6 @@ export interface operations {
                         data: components["schemas"]["Bar"];
                     };
                 };
-            };
-            /** @description You are not authorized for this action. */
-            403: {
-                headers: {
-                    /** @description Max number of attempts. */
-                    "x-ratelimit-limit"?: number;
-                    /** @description Remaining number of attempts. */
-                    "x-ratelimit-remaining"?: number;
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": {
-                        data?: components["schemas"]["APIError"];
-                    };
-                };
-            };
-            /** @description Resource record not found. */
-            404: {
-                headers: {
-                    /** @description Max number of attempts. */
-                    "x-ratelimit-limit"?: number;
-                    /** @description Remaining number of attempts. */
-                    "x-ratelimit-remaining"?: number;
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": {
-                        data?: components["schemas"]["APIError"];
-                    };
-                };
-            };
-        };
-    };
-    listBarMembership: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                /** @description Database id of a resource */
-                id: number;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description Successful response */
-            200: {
-                headers: {
-                    /** @description Max number of attempts. */
-                    "x-ratelimit-limit"?: number;
-                    /** @description Remaining number of attempts. */
-                    "x-ratelimit-remaining"?: number;
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": {
-                        data: components["schemas"]["BarMembership"];
-                    };
-                };
-            };
-            /** @description You are not authorized for this action. */
-            403: {
-                headers: {
-                    /** @description Max number of attempts. */
-                    "x-ratelimit-limit"?: number;
-                    /** @description Remaining number of attempts. */
-                    "x-ratelimit-remaining"?: number;
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": {
-                        data?: components["schemas"]["APIError"];
-                    };
-                };
-            };
-            /** @description Resource record not found. */
-            404: {
-                headers: {
-                    /** @description Max number of attempts. */
-                    "x-ratelimit-limit"?: number;
-                    /** @description Remaining number of attempts. */
-                    "x-ratelimit-remaining"?: number;
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": {
-                        data?: components["schemas"]["APIError"];
-                    };
-                };
-            };
-        };
-    };
-    leaveBar: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                /** @description Database id of a resource */
-                id: number;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description Successful response */
-            204: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-            /** @description Resource record not found. */
-            404: {
-                headers: {
-                    /** @description Max number of attempts. */
-                    "x-ratelimit-limit"?: number;
-                    /** @description Remaining number of attempts. */
-                    "x-ratelimit-remaining"?: number;
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": {
-                        data?: components["schemas"]["APIError"];
-                    };
-                };
-            };
-        };
-    };
-    removeBarMembership: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                /** @description Database id of a resource */
-                id: number;
-                /** @description Database id of a user */
-                userId: number;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description Successful response */
-            204: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
             };
             /** @description You are not authorized for this action. */
             403: {
@@ -5453,11 +5288,7 @@ export interface operations {
                     Location?: string;
                     [name: string]: unknown;
                 };
-                content: {
-                    "application/json": {
-                        data: components["schemas"]["Calculator"];
-                    };
-                };
+                content?: never;
             };
             /** @description You are not authorized for this action. */
             403: {
@@ -5552,19 +5383,11 @@ export interface operations {
         };
         responses: {
             /** @description Successful response */
-            200: {
+            204: {
                 headers: {
-                    /** @description Max number of attempts. */
-                    "x-ratelimit-limit"?: number;
-                    /** @description Remaining number of attempts. */
-                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
-                content: {
-                    "application/json": {
-                        data: components["schemas"]["Calculator"];
-                    };
-                };
+                content?: never;
             };
             /** @description You are not authorized for this action. */
             403: {
@@ -6418,11 +6241,7 @@ export interface operations {
                     Location?: string;
                     [name: string]: unknown;
                 };
-                content: {
-                    "application/json": {
-                        data: components["schemas"]["Cocktail"];
-                    };
-                };
+                content?: never;
             };
             /** @description You are not authorized for this action. */
             403: {
@@ -6557,11 +6376,7 @@ export interface operations {
                     Location?: string;
                     [name: string]: unknown;
                 };
-                content: {
-                    "application/json": {
-                        data: components["schemas"]["CocktailMethod"];
-                    };
-                };
+                content?: never;
             };
             /** @description You are not authorized for this action. */
             403: {
@@ -6656,19 +6471,11 @@ export interface operations {
         };
         responses: {
             /** @description Successful response */
-            200: {
+            204: {
                 headers: {
-                    /** @description Max number of attempts. */
-                    "x-ratelimit-limit"?: number;
-                    /** @description Remaining number of attempts. */
-                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
-                content: {
-                    "application/json": {
-                        data: components["schemas"]["CocktailMethod"];
-                    };
-                };
+                content?: never;
             };
             /** @description You are not authorized for this action. */
             403: {
@@ -6816,11 +6623,7 @@ export interface operations {
                     Location?: string;
                     [name: string]: unknown;
                 };
-                content: {
-                    "application/json": {
-                        data: components["schemas"]["Collection"];
-                    };
-                };
+                content?: never;
             };
             /** @description You are not authorized for this action. */
             403: {
@@ -6974,19 +6777,11 @@ export interface operations {
         };
         responses: {
             /** @description Successful response */
-            200: {
+            204: {
                 headers: {
-                    /** @description Max number of attempts. */
-                    "x-ratelimit-limit"?: number;
-                    /** @description Remaining number of attempts. */
-                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
-                content: {
-                    "application/json": {
-                        data: components["schemas"]["Collection"];
-                    };
-                };
+                content?: never;
             };
             /** @description You are not authorized for this action. */
             403: {
@@ -7090,19 +6885,11 @@ export interface operations {
         };
         responses: {
             /** @description Successful response */
-            200: {
+            204: {
                 headers: {
-                    /** @description Max number of attempts. */
-                    "x-ratelimit-limit"?: number;
-                    /** @description Remaining number of attempts. */
-                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
-                content: {
-                    "application/json": {
-                        data: components["schemas"]["Collection"];
-                    };
-                };
+                content?: never;
             };
             /** @description You are not authorized for this action. */
             403: {
@@ -7205,19 +6992,11 @@ export interface operations {
         };
         responses: {
             /** @description Successful response */
-            200: {
+            202: {
                 headers: {
-                    /** @description Max number of attempts. */
-                    "x-ratelimit-limit"?: number;
-                    /** @description Remaining number of attempts. */
-                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
-                content: {
-                    "application/json": {
-                        data: components["schemas"]["Export"];
-                    };
-                };
+                content?: never;
             };
             /** @description You are not authorized for this action. */
             403: {
@@ -7581,11 +7360,7 @@ export interface operations {
                     Location?: string;
                     [name: string]: unknown;
                 };
-                content: {
-                    "application/json": {
-                        data: components["schemas"]["Glass"];
-                    };
-                };
+                content?: never;
             };
             /** @description You are not authorized for this action. */
             403: {
@@ -7680,19 +7455,11 @@ export interface operations {
         };
         responses: {
             /** @description Successful response */
-            200: {
+            204: {
                 headers: {
-                    /** @description Max number of attempts. */
-                    "x-ratelimit-limit"?: number;
-                    /** @description Remaining number of attempts. */
-                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
-                content: {
-                    "application/json": {
-                        data: components["schemas"]["Glass"];
-                    };
-                };
+                content?: never;
             };
             /** @description You are not authorized for this action. */
             403: {
@@ -8381,11 +8148,7 @@ export interface operations {
                     Location?: string;
                     [name: string]: unknown;
                 };
-                content: {
-                    "application/json": {
-                        data: components["schemas"]["Ingredient"];
-                    };
-                };
+                content?: never;
             };
             /** @description You are not authorized for this action. */
             403: {
@@ -8480,19 +8243,11 @@ export interface operations {
         };
         responses: {
             /** @description Successful response */
-            200: {
+            204: {
                 headers: {
-                    /** @description Max number of attempts. */
-                    "x-ratelimit-limit"?: number;
-                    /** @description Remaining number of attempts. */
-                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
-                content: {
-                    "application/json": {
-                        data: components["schemas"]["Ingredient"];
-                    };
-                };
+                content?: never;
             };
             /** @description You are not authorized for this action. */
             403: {
@@ -8862,6 +8617,248 @@ export interface operations {
                         data: components["schemas"]["IngredientTree"];
                     };
                 };
+            };
+            /** @description You are not authorized for this action. */
+            403: {
+                headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data?: components["schemas"]["APIError"];
+                    };
+                };
+            };
+            /** @description Resource record not found. */
+            404: {
+                headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data?: components["schemas"]["APIError"];
+                    };
+                };
+            };
+        };
+    };
+    listMembers: {
+        parameters: {
+            query?: never;
+            header?: {
+                /** @description Database id of a bar. */
+                "Bar-Assistant-Bar-Id"?: number;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful response */
+            200: {
+                headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data: components["schemas"]["User"][];
+                    };
+                };
+            };
+        };
+    };
+    saveMember: {
+        parameters: {
+            query?: never;
+            header?: {
+                /** @description Database id of a bar. */
+                "Bar-Assistant-Bar-Id"?: number;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["UserRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful response */
+            201: {
+                headers: {
+                    /** @description URL of the new resource */
+                    Location?: string;
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description You are not authorized for this action. */
+            403: {
+                headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data?: components["schemas"]["APIError"];
+                    };
+                };
+            };
+        };
+    };
+    showMember: {
+        parameters: {
+            query?: never;
+            header?: {
+                /** @description Database id of a bar. */
+                "Bar-Assistant-Bar-Id"?: number;
+            };
+            path: {
+                /** @description Database id of a resource */
+                id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful response */
+            200: {
+                headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data: components["schemas"]["User"];
+                    };
+                };
+            };
+            /** @description You are not authorized for this action. */
+            403: {
+                headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data?: components["schemas"]["APIError"];
+                    };
+                };
+            };
+            /** @description Resource record not found. */
+            404: {
+                headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data?: components["schemas"]["APIError"];
+                    };
+                };
+            };
+        };
+    };
+    updateMember: {
+        parameters: {
+            query?: never;
+            header?: {
+                /** @description Database id of a bar. */
+                "Bar-Assistant-Bar-Id"?: number;
+            };
+            path: {
+                /** @description Database id of a resource */
+                id: number;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["UserRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful response */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description You are not authorized for this action. */
+            403: {
+                headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data?: components["schemas"]["APIError"];
+                    };
+                };
+            };
+            /** @description Resource record not found. */
+            404: {
+                headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data?: components["schemas"]["APIError"];
+                    };
+                };
+            };
+        };
+    };
+    removeMember: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Database id of a resource */
+                id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful response */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
             };
             /** @description You are not authorized for this action. */
             403: {
@@ -9478,11 +9475,7 @@ export interface operations {
                     Location?: string;
                     [name: string]: unknown;
                 };
-                content: {
-                    "application/json": {
-                        data: components["schemas"]["PriceCategory"];
-                    };
-                };
+                content?: never;
             };
             /** @description You are not authorized for this action. */
             403: {
@@ -9577,19 +9570,11 @@ export interface operations {
         };
         responses: {
             /** @description Successful response */
-            200: {
+            204: {
                 headers: {
-                    /** @description Max number of attempts. */
-                    "x-ratelimit-limit"?: number;
-                    /** @description Remaining number of attempts. */
-                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
-                content: {
-                    "application/json": {
-                        data: components["schemas"]["PriceCategory"];
-                    };
-                };
+                content?: never;
             };
             /** @description You are not authorized for this action. */
             403: {
@@ -9729,18 +9714,65 @@ export interface operations {
         };
         responses: {
             /** @description Successful response */
-            201: {
+            204: {
                 headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description You are not authorized for this action. */
+            403: {
+                headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content: {
                     "application/json": {
-                        data: components["schemas"]["Profile"];
+                        data?: components["schemas"]["APIError"];
                     };
                 };
             };
+        };
+    };
+    deleteProfile: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Database id of a resource */
+                id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful response */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
             /** @description You are not authorized for this action. */
             403: {
+                headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data?: components["schemas"]["APIError"];
+                    };
+                };
+            };
+            /** @description Resource record not found. */
+            404: {
                 headers: {
                     /** @description Max number of attempts. */
                     "x-ratelimit-limit"?: number;
@@ -11707,260 +11739,6 @@ export interface operations {
             };
         };
     };
-    listUsers: {
-        parameters: {
-            query?: never;
-            header?: {
-                /** @description Database id of a bar. */
-                "Bar-Assistant-Bar-Id"?: number;
-            };
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description Successful response */
-            200: {
-                headers: {
-                    /** @description Max number of attempts. */
-                    "x-ratelimit-limit"?: number;
-                    /** @description Remaining number of attempts. */
-                    "x-ratelimit-remaining"?: number;
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": {
-                        data: components["schemas"]["User"][];
-                    };
-                };
-            };
-        };
-    };
-    saveUser: {
-        parameters: {
-            query?: never;
-            header?: {
-                /** @description Database id of a bar. */
-                "Bar-Assistant-Bar-Id"?: number;
-            };
-            path?: never;
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["UserRequest"];
-            };
-        };
-        responses: {
-            /** @description Successful response */
-            201: {
-                headers: {
-                    /** @description URL of the new resource */
-                    Location?: string;
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": {
-                        data: components["schemas"]["User"];
-                    };
-                };
-            };
-            /** @description You are not authorized for this action. */
-            403: {
-                headers: {
-                    /** @description Max number of attempts. */
-                    "x-ratelimit-limit"?: number;
-                    /** @description Remaining number of attempts. */
-                    "x-ratelimit-remaining"?: number;
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": {
-                        data?: components["schemas"]["APIError"];
-                    };
-                };
-            };
-        };
-    };
-    showUser: {
-        parameters: {
-            query?: never;
-            header?: {
-                /** @description Database id of a bar. */
-                "Bar-Assistant-Bar-Id"?: number;
-            };
-            path: {
-                /** @description Database id of a resource */
-                id: number;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description Successful response */
-            200: {
-                headers: {
-                    /** @description Max number of attempts. */
-                    "x-ratelimit-limit"?: number;
-                    /** @description Remaining number of attempts. */
-                    "x-ratelimit-remaining"?: number;
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": {
-                        data: components["schemas"]["User"];
-                    };
-                };
-            };
-            /** @description You are not authorized for this action. */
-            403: {
-                headers: {
-                    /** @description Max number of attempts. */
-                    "x-ratelimit-limit"?: number;
-                    /** @description Remaining number of attempts. */
-                    "x-ratelimit-remaining"?: number;
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": {
-                        data?: components["schemas"]["APIError"];
-                    };
-                };
-            };
-            /** @description Resource record not found. */
-            404: {
-                headers: {
-                    /** @description Max number of attempts. */
-                    "x-ratelimit-limit"?: number;
-                    /** @description Remaining number of attempts. */
-                    "x-ratelimit-remaining"?: number;
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": {
-                        data?: components["schemas"]["APIError"];
-                    };
-                };
-            };
-        };
-    };
-    updateUser: {
-        parameters: {
-            query?: never;
-            header?: {
-                /** @description Database id of a bar. */
-                "Bar-Assistant-Bar-Id"?: number;
-            };
-            path: {
-                /** @description Database id of a resource */
-                id: number;
-            };
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["UserRequest"];
-            };
-        };
-        responses: {
-            /** @description Successful response */
-            200: {
-                headers: {
-                    /** @description Max number of attempts. */
-                    "x-ratelimit-limit"?: number;
-                    /** @description Remaining number of attempts. */
-                    "x-ratelimit-remaining"?: number;
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": {
-                        data: components["schemas"]["User"];
-                    };
-                };
-            };
-            /** @description You are not authorized for this action. */
-            403: {
-                headers: {
-                    /** @description Max number of attempts. */
-                    "x-ratelimit-limit"?: number;
-                    /** @description Remaining number of attempts. */
-                    "x-ratelimit-remaining"?: number;
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": {
-                        data?: components["schemas"]["APIError"];
-                    };
-                };
-            };
-            /** @description Resource record not found. */
-            404: {
-                headers: {
-                    /** @description Max number of attempts. */
-                    "x-ratelimit-limit"?: number;
-                    /** @description Remaining number of attempts. */
-                    "x-ratelimit-remaining"?: number;
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": {
-                        data?: components["schemas"]["APIError"];
-                    };
-                };
-            };
-        };
-    };
-    deleteUser: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                /** @description Database id of a resource */
-                id: number;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description Successful response */
-            204: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-            /** @description You are not authorized for this action. */
-            403: {
-                headers: {
-                    /** @description Max number of attempts. */
-                    "x-ratelimit-limit"?: number;
-                    /** @description Remaining number of attempts. */
-                    "x-ratelimit-remaining"?: number;
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": {
-                        data?: components["schemas"]["APIError"];
-                    };
-                };
-            };
-            /** @description Resource record not found. */
-            404: {
-                headers: {
-                    /** @description Max number of attempts. */
-                    "x-ratelimit-limit"?: number;
-                    /** @description Remaining number of attempts. */
-                    "x-ratelimit-remaining"?: number;
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": {
-                        data?: components["schemas"]["APIError"];
-                    };
-                };
-            };
-        };
-    };
     listUtensils: {
         parameters: {
             query?: never;
@@ -12112,19 +11890,11 @@ export interface operations {
         };
         responses: {
             /** @description Successful response */
-            200: {
+            204: {
                 headers: {
-                    /** @description Max number of attempts. */
-                    "x-ratelimit-limit"?: number;
-                    /** @description Remaining number of attempts. */
-                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
-                content: {
-                    "application/json": {
-                        data: components["schemas"]["Utensil"];
-                    };
-                };
+                content?: never;
             };
             /** @description You are not authorized for this action. */
             403: {

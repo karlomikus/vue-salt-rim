@@ -55,7 +55,8 @@
     </div>
 </template>
 
-<script>
+<script setup lang="ts">
+import { ref, computed, onMounted } from 'vue'
 import BarAssistantClient from '@/api/BarAssistantClient'
 import OverlayLoader from '@/components/OverlayLoader.vue'
 import PageHeader from '@/components/PageHeader.vue'
@@ -66,69 +67,63 @@ import EmptyState from '../EmptyState.vue'
 import { useTitle } from '@/composables/title'
 import SubscriptionCheck from '../SubscriptionCheck.vue'
 import AppState from '@/AppState'
+import { useI18n } from 'vue-i18n'
+import { useSaltRimToast } from '@/composables/toast'
+import { useConfirm } from '@/composables/confirm'
+import type { components } from '@/api/api'
 
-export default {
-    components: {
-        OverlayLoader,
-        Navigation,
-        PageHeader,
-        PriceCategoryForm,
-        SaltRimDialog,
-        EmptyState,
-        SubscriptionCheck,
-    },
-    data() {
-        return {
-            appState: new AppState(),
-            isLoading: false,
-            showDialog: false,
-            dialogTitle: 'Price category data',
-            editPriceCategory: {},
-            categories: [],
-        }
-    },
-    computed: {
-        showCreateAction() {
-            return this.appState.isSubscribed() || (!this.appState.isSubscribed() && this.categories.length < 1)
-        }
-    },
-    created() {
-        useTitle(this.$t('prices.price-categories'))
+const appState = new AppState()
+const { t } = useI18n()
+const toast = useSaltRimToast()
+const confirm = useConfirm()
 
-        this.refreshCategories()
-    },
-    methods: {
-        refreshCategories() {
-            this.showDialog = false
-            this.isLoading = true
-            BarAssistantClient.getPriceCategories().then(resp => {
-                this.categories = resp.data
-                this.isLoading = false
+const isLoading = ref(false)
+const showDialog = ref(false)
+const dialogTitle = ref('')
+const editPriceCategory = ref<components['schemas']['PriceCategory']>({} as components['schemas']['PriceCategory'])
+const categories = ref<components['schemas']['PriceCategory'][]>([])
+
+const showCreateAction = computed(() => {
+    return appState.isSubscribed() || (!appState.isSubscribed() && categories.value.length < 1)
+})
+
+useTitle(t('prices.price-categories'))
+
+onMounted(() => {
+    refreshCategories()
+})
+
+function refreshCategories() {
+    showDialog.value = false
+    isLoading.value = true
+    BarAssistantClient.getPriceCategories().then(resp => {
+        categories.value = resp.data
+        isLoading.value = false
+    }).catch(e => {
+        toast.error(e.message)
+    })
+}
+
+function openDialog(title: string, obj: components['schemas']['PriceCategory']) {
+    dialogTitle.value = title
+    editPriceCategory.value = obj
+    showDialog.value = true
+}
+
+function deletePriceCategory(category: components['schemas']['PriceCategory']) {
+    confirm.show(t('price.category-confirm-delete', { name: category.name }), {
+        onResolved: (dialog: any) => {
+            isLoading.value = true
+            dialog.close()
+            BarAssistantClient.deletePriceCategory(category.id).then(() => {
+                isLoading.value = false
+                toast.default(t('price.category-delete-success'))
+                refreshCategories()
             }).catch(e => {
-                this.$toast.error(e.message)
-            })
-        },
-        openDialog(title, obj) {
-            this.dialogTitle = title
-            this.editPriceCategory = obj
-            this.showDialog = true
-        },
-        deletePriceCategory(category) {
-            this.$confirm(this.$t('price.category-confirm-delete', {name: category.name}), {
-                onResolved: (dialog) => {
-                    this.isLoading = true
-                    dialog.close()
-                    BarAssistantClient.deletePriceCategory(category.id).then(() => {
-                        this.isLoading = false
-                        this.$toast.default(this.$t('price.category-delete-success'))
-                        this.refreshCategories()
-                    }).catch(e => {
-                        this.$toast.error(e.message)
-                        this.isLoading = false
-                    })
-                }
+                toast.error(e.message)
+                isLoading.value = false
             })
         }
-    }
+    })
 }
 </script>

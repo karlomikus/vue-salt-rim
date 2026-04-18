@@ -108,7 +108,7 @@ export default {
                 onResolved: (dialog) => {
                     this.isLoading = true
                     dialog.close()
-                    BarAssistantClient.removeUserFromBar(appState.bar.id, user.id).then(() => {
+                    BarAssistantClient.removeUserFromBar(user.id).then(() => {
                         this.isLoading = false
                         this.$toast.default(this.$t('users.delete-success'))
                         this.refreshUsers()

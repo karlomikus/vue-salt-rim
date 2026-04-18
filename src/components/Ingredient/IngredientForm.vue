@@ -356,20 +356,16 @@ async function submit() {
             }
 
             toast.default(t('ingredient.update-success'))
-            router.push({ name: 'ingredients.show', params: { id: resp.data.slug } })
+            router.push({ name: 'ingredients.show', params: { id: ingredient.value.id } })
         }).catch(e => {
             toast.error(e.message)
         }).finally(() => {
             isLoading.value = false
         })
     } else {
-        BarAssistantClient.saveIngredient(postData).then(resp => {
-            if (!resp) {
-                return
-            }
-
+        BarAssistantClient.saveIngredient(postData).then(newId => {
             toast.default(t('ingredient.create-success'))
-            router.push({ name: 'ingredients.show', params: { id: resp.data.slug } })
+            router.push({ name: 'ingredients.show', params: { id: newId } })
         }).catch(e => {
             toast.error(e.message)
         }).finally(() => {

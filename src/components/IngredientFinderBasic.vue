@@ -117,7 +117,8 @@ async function newIngredient() {
     isLoading.value = true
 
     try {
-        const ing = (await BarAssistantClient.saveIngredient(postData))?.data ?? null
+        const ingId = (await BarAssistantClient.saveIngredient(postData))
+        const ing = (await BarAssistantClient.getIngredient(ingId))?.data ?? null
         if (!ing) {
             isLoading.value = false
             return
