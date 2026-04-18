@@ -241,7 +241,6 @@ import { unitHandler } from '@/composables/useUnits'
 import CalculatorRender from '../Calculator/CalculatorRender.vue'
 import OverlayLoader from '@/components/OverlayLoader.vue'
 import { micromark } from 'micromark'
-import dayjs from 'dayjs'
 import PageHeader from '../PageHeader.vue'
 import BarAssistantClient from '@/api/BarAssistantClient'
 import ToggleIngredientShoppingCart from '@/components/ToggleIngredientShoppingCart.vue'
@@ -264,6 +263,7 @@ import { useI18n } from 'vue-i18n'
 import AppState from '@/AppState'
 import SaltRimDialog from '../Dialog/SaltRimDialog.vue'
 import MenuAddDialog from '../Menu/MenuAddDialog.vue'
+import { useDateFormat } from '@vueuse/core'
 
 type Ingredient = components['schemas']['Ingredient']
 type CocktailBasic = components['schemas']['CocktailBasic']
@@ -353,9 +353,9 @@ const parsedDescription = computed(() => {
 })
 
 const createdDate = computed(() => {
-    const date = dayjs(ingredient.value.created_at).toDate()
+    const date = useDateFormat(ingredient.value.created_at, 'YYYY-MM-DD')
 
-    return date.toLocaleDateString()
+    return date.value
 })
 
 const extraCocktailsIds = computed(() => {

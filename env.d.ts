@@ -16,6 +16,7 @@ interface Window {
         BILLING_ENABLED: boolean,
         BILLING_ENV: string,
         ANALYTICS_HOST: string,
+        ANALYTICS_DOMAIN: string,
         ALLOW_REGISTRATION: string,
         SENTRY_DSN: string,
         REDIRECT_TO_SSO: boolean,

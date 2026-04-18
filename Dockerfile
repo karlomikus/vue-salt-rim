@@ -4,7 +4,7 @@ ARG BUILD_VERSION
 ENV BUILD_VERSION=${BUILD_VERSION:-develop}
 
 WORKDIR /app
-COPY package*.json .
+COPY package*.json ./
 RUN npm install
 COPY . .
 
