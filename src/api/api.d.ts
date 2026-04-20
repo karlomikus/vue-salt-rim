@@ -947,7 +947,7 @@ export interface paths {
         put?: never;
         /**
          * Import recipe
-         * @description Import a recipe from a JSON structure that follows Bar Assistant recipe JSON schema. Supported schemas include [Draft 2](https://barassistant.app/cocktail-02.schema.json) and [Draft 1](https://barassistant.app/cocktail-01.schema.json).
+         * @description Import a recipe from a JSON structure that follows Bar Assistant recipe JSON schema v4: https://barassistant.app/cocktail-04.schema.json
          */
         post: operations["importCocktail"];
         delete?: never;
@@ -1940,7 +1940,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/bars/{id}/stats": {
+    "/bars/{id}/stats/taste": {
         parameters: {
             query?: never;
             header?: never;
@@ -1948,10 +1948,70 @@ export interface paths {
             cookie?: never;
         };
         /**
-         * Show bar stats
-         * @description Show detailed stats about a single bar
+         * Taste profile
+         * @description Returns taste profile derived from bar member favorites and ratings.
          */
-        get: operations["showBarStats"];
+        get: operations["getMemberTaste"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/bars/{id}/stats/totals": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Bar totals
+         * @description Get total stats for a bar
+         */
+        get: operations["getBarTotals"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/bars/{id}/stats/ingredient-distribution": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Ingredient distribution
+         * @description Get ingredient distribution for a bar
+         */
+        get: operations["getBarIngredientDistribution"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/bars/{id}/stats/top": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Top stats
+         * @description Get top rated cocktails and user favorite ingredients for a bar
+         */
+        get: operations["getBarTopRated"];
         put?: never;
         post?: never;
         delete?: never;
@@ -3717,6 +3777,48 @@ export interface components {
             };
             subscription: components["schemas"]["Subscription"] | null;
         };
+        /** @description Represents a user taste profile with favorite and negative tags, and favorite ingredients */
+        UserTasteProfile: {
+            favorite_tags: {
+                /** @example Tropical */
+                name?: string;
+                /**
+                 * Format: float
+                 * @example 1
+                 */
+                weight: number;
+            }[];
+            favorite_ingredients: {
+                /** @example 3 */
+                ingredient_id?: number;
+                /**
+                 * Format: float
+                 * @example 0.75
+                 */
+                weight: number;
+            }[];
+            abv_distribution: {
+                /**
+                 * @description low: 0–10%, medium: >10–20%, high: >20%
+                 * @example medium
+                 * @enum {string}
+                 */
+                bucket: "low" | "medium" | "high";
+                /** @example 4 */
+                count: number;
+                /**
+                 * Format: float
+                 * @example 0.5714
+                 */
+                ratio: number;
+            }[];
+            /**
+             * Format: float
+             * @description Average ABV of preferred cocktails; null when no preference data exists
+             * @example 18.5
+             */
+            average_abv: number | null;
+        };
         /** @description Represents a utensil with basic information */
         Utensil: {
             /**
@@ -3748,6 +3850,58 @@ export interface components {
             type: string;
             /** @example Resource record not found. */
             message: string;
+        };
+        BarIngredientDistribution: {
+            main_category_ingredient_distribution: {
+                /** @example 1 */
+                id: number;
+                /** @example spirits */
+                slug: string;
+                /** @example Spirits */
+                name: string;
+                /** @example 12 */
+                ingredients_count: number;
+            }[];
+            favorite_tags: {
+                /** @example 31 */
+                id: number;
+                /** @example Tag name */
+                name: string;
+                /** @example 12 */
+                cocktails_count: number;
+            }[];
+            your_top_ingredients: {
+                /** @example 1 */
+                id: number;
+                /** @example gin */
+                slug: string;
+                /** @example Gin */
+                name: string;
+                /** @example 1 */
+                cocktails_count: number;
+            }[];
+            most_popular_ingredients: {
+                /** @example 1 */
+                id: number;
+                /** @example gin */
+                slug: string;
+                /** @example Gin */
+                name: string;
+                /** @example 1 */
+                cocktails_count: number;
+            }[];
+            top_rated_cocktails: {
+                /** @example 1 */
+                id: number;
+                /** @example old-fashioned */
+                slug: string;
+                /** @example Old Fashioned */
+                name: string;
+                /** @example 3 */
+                avg_rating: number;
+                /** @example 42 */
+                votes: number;
+            }[];
         };
         BarRequest: {
             /** @example Bar name */
@@ -3782,11 +3936,45 @@ export interface components {
             default_units?: string | null;
             default_currency?: string | null;
         };
-        BarStats: {
+        BarTopStats: {
+            your_top_ingredients: {
+                /** @example 1 */
+                id: number;
+                /** @example gin */
+                slug: string;
+                /** @example Gin */
+                name: string;
+                /** @example 1 */
+                cocktails_count: number;
+            }[];
+            top_rated_cocktails: {
+                /** @example 1 */
+                id: number;
+                /** @example old-fashioned */
+                slug: string;
+                /** @example Old Fashioned */
+                name: string;
+                /** @example 3 */
+                avg_rating: number;
+                /** @example 42 */
+                votes: number;
+            }[];
+        };
+        BarTotals: {
             /** @example 1 */
             total_cocktails: number;
             /** @example 1 */
             total_ingredients: number;
+            main_category_ingredient_distribution: {
+                /** @example 1 */
+                id: number;
+                /** @example spirits */
+                slug: string;
+                /** @example Spirits */
+                name: string;
+                /** @example 12 */
+                ingredients_count: number;
+            }[];
             /** @example 1 */
             total_favorited_cocktails: number;
             /** @example 1 */
@@ -4567,13 +4755,6 @@ export interface operations {
                 };
                 content?: never;
             };
-            /** @description Unable to send password reset link */
-            400: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
         };
     };
     passwordReset: {
@@ -4598,7 +4779,7 @@ export interface operations {
             };
         };
         responses: {
-            /** @description Password succssfully reset */
+            /** @description Password succesfully reset */
             204: {
                 headers: {
                     [name: string]: unknown;
@@ -7847,19 +8028,13 @@ export interface operations {
         };
         responses: {
             /** @description Successful response */
-            200: {
+            201: {
                 headers: {
-                    /** @description Max number of attempts. */
-                    "x-ratelimit-limit"?: number;
-                    /** @description Remaining number of attempts. */
-                    "x-ratelimit-remaining"?: number;
+                    /** @description URL of the new resource */
+                    Location?: string;
                     [name: string]: unknown;
                 };
-                content: {
-                    "application/json": {
-                        data: components["schemas"]["Cocktail"];
-                    };
-                };
+                content?: never;
             };
             /** @description You are not authorized for this action. */
             403: {
@@ -7922,7 +8097,7 @@ export interface operations {
                 content: {
                     "application/json": {
                         data: {
-                            /** @example draft2 */
+                            /** @example schema4 */
                             schema_version: string;
                             schema: components["schemas"]["cocktail-02.schema"];
                             scraper_meta: {
@@ -11337,7 +11512,7 @@ export interface operations {
             };
         };
     };
-    showBarStats: {
+    getMemberTaste: {
         parameters: {
             query?: never;
             header?: never;
@@ -11360,7 +11535,184 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        data: components["schemas"]["BarStats"];
+                        data: components["schemas"]["UserTasteProfile"];
+                    };
+                };
+            };
+            /** @description You are not authorized for this action. */
+            403: {
+                headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data?: components["schemas"]["APIError"];
+                    };
+                };
+            };
+            /** @description Resource record not found. */
+            404: {
+                headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data?: components["schemas"]["APIError"];
+                    };
+                };
+            };
+        };
+    };
+    getBarTotals: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Database id of a resource */
+                id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful response */
+            200: {
+                headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data: components["schemas"]["BarTotals"];
+                    };
+                };
+            };
+            /** @description You are not authorized for this action. */
+            403: {
+                headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data?: components["schemas"]["APIError"];
+                    };
+                };
+            };
+            /** @description Resource record not found. */
+            404: {
+                headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data?: components["schemas"]["APIError"];
+                    };
+                };
+            };
+        };
+    };
+    getBarIngredientDistribution: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Database id of a resource */
+                id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful response */
+            200: {
+                headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data: components["schemas"]["BarIngredientDistribution"];
+                    };
+                };
+            };
+            /** @description You are not authorized for this action. */
+            403: {
+                headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data?: components["schemas"]["APIError"];
+                    };
+                };
+            };
+            /** @description Resource record not found. */
+            404: {
+                headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data?: components["schemas"]["APIError"];
+                    };
+                };
+            };
+        };
+    };
+    getBarTopRated: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Database id of a resource */
+                id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful response */
+            200: {
+                headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data: components["schemas"]["BarTopStats"];
                     };
                 };
             };

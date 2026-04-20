@@ -349,11 +349,7 @@ async function submit() {
     }
 
     if (ingredient.value.id) {
-        BarAssistantClient.updateIngredient(ingredient.value.id, postData).then(resp => {
-            if (!resp) {
-                return
-            }
-
+        BarAssistantClient.updateIngredient(ingredient.value.id, postData).then(() => {
             toast.default(t('ingredient.update-success'))
             router.push({ name: 'ingredients.show', params: { id: ingredient.value.id } })
         }).catch(e => {

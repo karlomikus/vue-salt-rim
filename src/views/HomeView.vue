@@ -1,5 +1,5 @@
 <script setup>
-import Index from '../components/Shelf/ShelfIndex.vue'
+import Index from '../components/Shelf/Shelf2Index.vue'
 </script>
 
 <template>

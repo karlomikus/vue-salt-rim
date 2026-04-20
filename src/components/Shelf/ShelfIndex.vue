@@ -104,7 +104,7 @@ async function refreshShelf() {
         loaders.value.latestIngredients = false
     })
 
-    BarAssistantClient.getBarStats(appState.bar.id).then(resp => {
+    BarAssistantClient.getBarTotals(appState.bar.id).then(resp => {
         stats.value = resp?.data ?? {} as BarStats
     }).catch(() => {
         // toast.error(t('server-error'))
@@ -435,10 +435,6 @@ refreshShelf()
 
 .shelf-stats-count small {
     color: var(--clr-gray-500);
-}
-
-.block-recommended {
-    padding: var(--gap-size-3);
 }
 
 .dark-theme .shelf-stats-count small {

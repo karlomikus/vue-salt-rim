@@ -159,7 +159,7 @@ export default class BarAssistantClient {
   }
 
   static async updateCocktail(id: number, body: components["schemas"]["CocktailRequest"]) {
-    return (await client.PUT('/cocktails/{id}', { params: { path: { id: id } }, body: body })).data
+    return (await client.PUT('/cocktails/{id}', { params: { path: { id: id } }, body: body }))
   }
 
   static async shareCocktail(id: string, query = {}) {
@@ -316,8 +316,16 @@ export default class BarAssistantClient {
     return (await client.POST('/bars/{id}/status', { params: { path: { id: id } }, body: { status: status} })).data
   }
 
-  static async getBarStats(id: number) {
-    return (await client.GET('/bars/{id}/stats', { params: { path: { id: id } } })).data
+  static async getBarTotals(id: number) {
+    return (await client.GET('/bars/{id}/stats/totals', { params: { path: { id: id } } })).data
+  }
+
+  static async getMemberTasteProfile(id: number) {
+    return (await client.GET('/bars/{id}/stats/taste', { params: { path: { id: id } } })).data
+  }
+
+  static async getIngredientDistribution(id: number) {
+    return (await client.GET('/bars/{id}/stats/ingredient-distribution', { params: { path: { id: id } } })).data
   }
 
   static async getUserIngredientShelf(id: number) {

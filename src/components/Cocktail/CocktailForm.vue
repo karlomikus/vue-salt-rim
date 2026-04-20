@@ -471,11 +471,7 @@ async function submit() {
     }
 
     if (cocktail.value.id) {
-        BarAssistantClient.updateCocktail(cocktail.value.id, postData).then(resp => {
-            if (!resp) {
-                return
-            }
-
+        BarAssistantClient.updateCocktail(cocktail.value.id, postData).then(() => {
             isLoading.value = false
             toast.default(t('cocktail.update-success'))
             router.push({ name: 'cocktails.show', params: { id: cocktail.value.slug } })
