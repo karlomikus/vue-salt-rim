@@ -44,7 +44,7 @@ async function fetchRecommendedIngredients() {
         <OverlayLoader v-if="isLoading"></OverlayLoader>
         <div>
             <h2>{{ shelfPercent }}</h2>
-            <small>Bar cocktail availability ({{ stats.total_bar_shelf_cocktails }}/{{ stats.total_cocktails }})</small>
+            Bar cocktail availability
         </div>
         <div
             class="recommended-progress"
@@ -105,7 +105,7 @@ async function fetchRecommendedIngredients() {
 
 .recommended-progress__value {
     height: 100%;
-    background: linear-gradient(90deg, var(--clr-chart-2) 0%, var(--clr-chart-4) 100%);
+    background: linear-gradient(90deg, var(--clr-chart-1) 0%, var(--clr-chart-7) 100%);
     border-radius: 999px;
 }
 </style>

@@ -12,7 +12,18 @@ const props = defineProps<{
 const isLoading = ref(false)
 const minRelevantPercent = 3
 
-const distributionColors = ["#797d62","#9b9b7a","#baa587","#d9ae94","#f1dca7","#ffcb69","#e8ac65","#d08c60","#b58463","#997b66"]
+const distributionColors = [
+    'var(--clr-chart-1)',
+    'var(--clr-chart-2)',
+    'var(--clr-chart-3)',
+    'var(--clr-chart-4)',
+    'var(--clr-chart-5)',
+    'var(--clr-chart-6)',
+    'var(--clr-chart-7)',
+    'var(--clr-chart-8)',
+    'var(--clr-chart-9)',
+    'var(--clr-chart-10)',
+]
 
 const distribution = computed(() => {
     const items = [...(props.stats.main_category_ingredient_distribution ?? [])]
@@ -72,7 +83,7 @@ function getSegmentColor(index: number) {
     <div class="block-container block-distribution">
         <OverlayLoader v-if="isLoading"></OverlayLoader>
         <p class="distribution-description">
-            This chart shows the distribution of ingredients across different main categories. Categories with less than {{ minRelevantPercent }}% contribution are grouped into "Other" for clarity.
+            This chart shows the distribution of bar shelf ingredients across different main categories. Categories with less than {{ minRelevantPercent }}% contribution are grouped into "Other" for clarity.
         </p>
         <div
             v-if="distribution.length"

@@ -59,9 +59,13 @@ const radarSeries = computed(() => {
         }
     })
 
+    // Find max weight to normalize for radar chart display (0-1 scale)
+    const maxWeight = Math.max(...Array.from(positiveMap.values()), 1)
+
     return {
         labels: labels.map(formatRadarLabel),
-        positiveData: labels.map(label => positiveMap.get(label) ?? 0),
+        positiveData: labels.map(label => (positiveMap.get(label) ?? 0) / maxWeight),
+        rawData: labels.map(label => positiveMap.get(label) ?? 0),
     }
 })
 
@@ -86,7 +90,7 @@ function renderRadarChart() {
         return
     }
 
-    const { labels, positiveData } = radarSeries.value
+    const { labels, rawData } = radarSeries.value
 
     if (!labels.length) {
         radarChart.value?.destroy()
@@ -94,17 +98,20 @@ function renderRadarChart() {
         return
     }
 
+    const maxCount = Math.max(...rawData, 1)
+
     const data: ChartData<'radar'> = {
         labels,
         datasets: [
             {
                 label: 'Favorite tags',
-                data: positiveData,
-                backgroundColor: 'rgba(86, 70, 120, 0.3)',
-                pointBackgroundColor: 'rgba(86, 70, 120, 1)',
-                pointBorderColor: '#ffffff',
+                data: rawData,
+                backgroundColor: 'rgba(86, 70, 120, 0)',
+                // pointBackgroundColor: 'rgba(86, 70, 120, 1)',
+                // pointBorderColor: '#ffffff',
+                borderColor: '#8f4277',
                 pointRadius: 0,
-                borderWidth: 0,
+                borderWidth: 3,
             },
         ],
     }
@@ -115,11 +122,10 @@ function renderRadarChart() {
         scales: {
             r: {
                 min: 0,
-                max: 1,
+                max: maxCount,
                 ticks: {
-                    stepSize: 0.2,
                     callback(value) {
-                        return `${Number(value) * 100}%`
+                        return String(Number(value))
                     },
                 },
                 pointLabels: {
@@ -134,6 +140,9 @@ function renderRadarChart() {
         plugins: {
             legend: {
                 display: false,
+            },
+            tooltip: {
+                enabled: false,
             },
         },
     }
@@ -166,7 +175,7 @@ onBeforeUnmount(() => {
         <OverlayLoader v-if="isLoading"></OverlayLoader>
 
         <div class="taste-header">
-            <p class="taste-subtitle">A snapshot of your preferred tags, ingredients, and alcohol strength mix.</p>
+            <p class="taste-subtitle">A snapshot of your preferred tags and alcohol strength mix.</p>
         </div>
 
         <section class="taste-section">
@@ -177,9 +186,9 @@ onBeforeUnmount(() => {
         </section>
 
         <section class="taste-section">
-            <div>
+            <div class="taste-section__stat">
                 <h2>{{ averageAbv.toFixed(1) }}%</h2>
-                <small>ABV Distribution</small>
+                ABV Distribution
             </div>
             <h4 class="taste-section__title"></h4>
             <div v-if="abvDistribution.length" class="abv-bar" role="img" aria-label="ABV distribution">
@@ -300,5 +309,11 @@ onBeforeUnmount(() => {
 .distribution-value {
     font-weight: 600;
     font-variant-numeric: tabular-nums;
+}
+
+.taste-section__stat h2 {
+    font-family: var(--font-heading);
+    line-height: 1;
+    font-size: 2.25rem;
 }
 </style>
