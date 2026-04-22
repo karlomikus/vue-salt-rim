@@ -3,18 +3,16 @@ import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import type { components } from '@/api/api'
 import OverlayLoader from '../OverlayLoader.vue'
 import {
+    ArcElement,
     Chart,
-    Filler,
     Legend,
-    LineElement,
-    PointElement,
+    PolarAreaController,
     RadialLinearScale,
-    RadarController,
     type ChartData,
     type ChartOptions,
 } from 'chart.js'
 
-Chart.register(RadialLinearScale, RadarController, PointElement, LineElement, Filler, Legend)
+Chart.register(RadialLinearScale, PolarAreaController, ArcElement, Legend)
 
 type UserTasteProfile = components["schemas"]["UserTasteProfile"]
 
@@ -24,11 +22,12 @@ const props = defineProps<{
 
 const isLoading = ref(false)
 
-const favoriteTags = computed(() => [...(props.profile?.favorite_tags ?? [])].sort((a, b) => b.weight - a.weight))
+const favoriteTags = computed(() => [...(props.profile?.favorite_tags ?? [])])
+const dislikedTags = computed(() => [...(props.profile?.disliked_tags ?? [])])
 
 const averageAbv = computed(() => props.profile?.average_abv ?? 0)
 const radarCanvas = ref<HTMLCanvasElement | null>(null)
-const radarChart = ref<Chart<'radar'> | null>(null)
+const radarChart = ref<Chart<'polarArea'> | null>(null)
 
 const abvDistribution = computed(() => {
     const buckets = props.profile?.abv_distribution ?? []
@@ -44,28 +43,25 @@ const abvDistribution = computed(() => {
 
 const radarSeries = computed(() => {
     const positive = favoriteTags.value
+    const negative = dislikedTags.value
     const formatRadarLabel = (label: string) => (label.length > 14 ? `${label.slice(0, 14)}...` : label)
 
-    const labels = Array.from(new Set(
-        positive
-            .map(item => item.name)
-            .filter((name): name is string => typeof name === 'string' && name.length > 0),
-    ))
-
-    const positiveMap = new Map<string, number>()
-    positive.forEach((item) => {
-        if (typeof item.name === 'string' && item.name.length > 0) {
-            positiveMap.set(item.name, item.weight)
-        }
-    })
-
-    // Find max weight to normalize for radar chart display (0-1 scale)
-    const maxWeight = Math.max(...Array.from(positiveMap.values()), 1)
+    const positiveItems = positive.filter((item) => typeof item.name === 'string' && item.name.length > 0)
+    const negativeItems = negative.filter((item) => typeof item.name === 'string' && item.name.length > 0)
 
     return {
-        labels: labels.map(formatRadarLabel),
-        positiveData: labels.map(label => (positiveMap.get(label) ?? 0) / maxWeight),
-        rawData: labels.map(label => positiveMap.get(label) ?? 0),
+        labels: [
+            ...positiveItems.map((item) => formatRadarLabel(item.name)),
+            ...negativeItems.map((item) => formatRadarLabel(item.name)),
+        ],
+        rawData: [
+            ...positiveItems.map((item) => item.weight),
+            ...negativeItems.map((item) => item.weight),
+        ],
+        backgroundColors: [
+            ...positiveItems.map(() => '#2a9d8fff'),
+            ...negativeItems.map(() => '#e76f51ff'),
+        ],
     }
 })
 
@@ -75,9 +71,9 @@ function formatPercent(ratio: number) {
 
 function bucketColor(bucket: string) {
     const palette: Record<string, string> = {
-        low: 'var(--clr-chart-2, #2b9348)',
-        medium: 'var(--clr-chart-6, #f8961e)',
-        high: 'var(--clr-chart-8, #d00000)',
+        low: 'var(--clr-chart-3)',
+        medium: 'var(--clr-chart-6)',
+        high: 'var(--clr-chart-9)',
     }
 
     return palette[bucket] ?? 'var(--clr-gray-500, #7a869a)'
@@ -90,7 +86,7 @@ function renderRadarChart() {
         return
     }
 
-    const { labels, rawData } = radarSeries.value
+    const { labels, rawData, backgroundColors } = radarSeries.value
 
     if (!labels.length) {
         radarChart.value?.destroy()
@@ -98,52 +94,28 @@ function renderRadarChart() {
         return
     }
 
-    const maxCount = Math.max(...rawData, 1)
-
-    const data: ChartData<'radar'> = {
+    const data: ChartData<'polarArea'> = {
         labels,
         datasets: [
             {
-                label: 'Favorite tags',
+                label: 'Taste tags',
                 data: rawData,
-                backgroundColor: 'rgba(86, 70, 120, 0)',
-                // pointBackgroundColor: 'rgba(86, 70, 120, 1)',
-                // pointBorderColor: '#ffffff',
-                borderColor: '#8f4277',
-                pointRadius: 0,
-                borderWidth: 3,
-                tension: .1
+                backgroundColor: backgroundColors,
+                borderColor: '#ffffff',
+                borderWidth: 2,
             },
         ],
     }
 
-    const shadowPlugin = {
-        id: 'radarLineShadow',
-        beforeDatasetDraw(chart: Chart) {
-            chart.ctx.save()
-            chart.ctx.shadowColor = 'rgba(143, 66, 119, 0.45)'
-            chart.ctx.shadowBlur = 10
-            chart.ctx.shadowOffsetX = 0
-            chart.ctx.shadowOffsetY = 4
-        },
-        afterDatasetDraw(chart: Chart) {
-            chart.ctx.restore()
-        },
-    }
-
-    const options: ChartOptions<'radar'> = {
+    const options: ChartOptions<'polarArea'> = {
         responsive: true,
         maintainAspectRatio: false,
         scales: {
             r: {
-                min: 0,
-                max: maxCount,
-                ticks: {
-                    callback(value) {
-                        return String(Number(value))
-                    },
-                },
+                beginAtZero: true,
                 pointLabels: {
+                    centerPointLabels: true,
+                    display: true,
                     color: '#2a213f',
                     font: {
                         size: 14,
@@ -164,10 +136,9 @@ function renderRadarChart() {
 
     radarChart.value?.destroy()
     radarChart.value = new Chart(canvas, {
-        type: 'radar',
+        type: 'polarArea',
         data,
         options,
-        plugins: [shadowPlugin],
     })
 }
 
@@ -196,9 +167,9 @@ onBeforeUnmount(() => {
 
         <section class="taste-section">
             <div class="radar-chart-wrapper">
-                <canvas ref="radarCanvas" aria-label="Taste profile tags radar" role="img"></canvas>
+                <canvas ref="radarCanvas" aria-label="Taste profile tags polar chart" role="img"></canvas>
             </div>
-            <small v-if="!radarSeries.labels.length" class="taste-empty">No tag data available for radar chart.</small>
+            <small v-if="!radarSeries.labels.length" class="taste-empty">No tag data available for polar chart.</small>
         </section>
 
         <section class="taste-section">

@@ -105,7 +105,7 @@ async function fetchRecommendedIngredients() {
 
 .recommended-progress__value {
     height: 100%;
-    background: linear-gradient(90deg, var(--clr-chart-1) 0%, var(--clr-chart-7) 100%);
+    background: linear-gradient(90deg, var(--clr-chart-10) 0%, var(--clr-chart-7) 100%);
     border-radius: 999px;
 }
 </style>
