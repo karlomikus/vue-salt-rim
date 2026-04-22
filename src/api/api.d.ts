@@ -3781,19 +3781,19 @@ export interface components {
         UserTasteProfile: {
             favorite_tags: {
                 /** @example Tropical */
-                name?: string;
+                name: string;
                 /**
                  * Format: float
                  * @example 1
                  */
                 weight: number;
             }[];
-            favorite_ingredients: {
-                /** @example 3 */
-                ingredient_id?: number;
+            disliked_tags?: {
+                /** @example Tropical */
+                name: string;
                 /**
                  * Format: float
-                 * @example 0.75
+                 * @example 1
                  */
                 weight: number;
             }[];
@@ -3862,46 +3862,6 @@ export interface components {
                 /** @example 12 */
                 ingredients_count: number;
             }[];
-            favorite_tags: {
-                /** @example 31 */
-                id: number;
-                /** @example Tag name */
-                name: string;
-                /** @example 12 */
-                cocktails_count: number;
-            }[];
-            your_top_ingredients: {
-                /** @example 1 */
-                id: number;
-                /** @example gin */
-                slug: string;
-                /** @example Gin */
-                name: string;
-                /** @example 1 */
-                cocktails_count: number;
-            }[];
-            most_popular_ingredients: {
-                /** @example 1 */
-                id: number;
-                /** @example gin */
-                slug: string;
-                /** @example Gin */
-                name: string;
-                /** @example 1 */
-                cocktails_count: number;
-            }[];
-            top_rated_cocktails: {
-                /** @example 1 */
-                id: number;
-                /** @example old-fashioned */
-                slug: string;
-                /** @example Old Fashioned */
-                name: string;
-                /** @example 3 */
-                avg_rating: number;
-                /** @example 42 */
-                votes: number;
-            }[];
         };
         BarRequest: {
             /** @example Bar name */
@@ -3965,16 +3925,6 @@ export interface components {
             total_cocktails: number;
             /** @example 1 */
             total_ingredients: number;
-            main_category_ingredient_distribution: {
-                /** @example 1 */
-                id: number;
-                /** @example spirits */
-                slug: string;
-                /** @example Spirits */
-                name: string;
-                /** @example 12 */
-                ingredients_count: number;
-            }[];
             /** @example 1 */
             total_favorited_cocktails: number;
             /** @example 1 */
@@ -3989,46 +3939,6 @@ export interface components {
             total_bar_members: number;
             /** @example 1 */
             total_collections: number;
-            favorite_tags: {
-                /** @example 31 */
-                id: number;
-                /** @example Tag name */
-                name: string;
-                /** @example 12 */
-                cocktails_count: number;
-            }[];
-            your_top_ingredients: {
-                /** @example 1 */
-                id: number;
-                /** @example gin */
-                slug: string;
-                /** @example Gin */
-                name: string;
-                /** @example 1 */
-                cocktails_count: number;
-            }[];
-            most_popular_ingredients: {
-                /** @example 1 */
-                id: number;
-                /** @example gin */
-                slug: string;
-                /** @example Gin */
-                name: string;
-                /** @example 1 */
-                cocktails_count: number;
-            }[];
-            top_rated_cocktails: {
-                /** @example 1 */
-                id: number;
-                /** @example old-fashioned */
-                slug: string;
-                /** @example Old Fashioned */
-                name: string;
-                /** @example 3 */
-                avg_rating: number;
-                /** @example 42 */
-                votes: number;
-            }[];
         };
         CalculatorBlockRequest: {
             label: string;

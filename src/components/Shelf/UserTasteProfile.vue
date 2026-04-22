@@ -112,8 +112,23 @@ function renderRadarChart() {
                 borderColor: '#8f4277',
                 pointRadius: 0,
                 borderWidth: 3,
+                tension: .1
             },
         ],
+    }
+
+    const shadowPlugin = {
+        id: 'radarLineShadow',
+        beforeDatasetDraw(chart: Chart) {
+            chart.ctx.save()
+            chart.ctx.shadowColor = 'rgba(143, 66, 119, 0.45)'
+            chart.ctx.shadowBlur = 10
+            chart.ctx.shadowOffsetX = 0
+            chart.ctx.shadowOffsetY = 4
+        },
+        afterDatasetDraw(chart: Chart) {
+            chart.ctx.restore()
+        },
     }
 
     const options: ChartOptions<'radar'> = {
@@ -152,6 +167,7 @@ function renderRadarChart() {
         type: 'radar',
         data,
         options,
+        plugins: [shadowPlugin],
     })
 }
 
