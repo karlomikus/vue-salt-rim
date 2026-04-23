@@ -162,7 +162,7 @@ onBeforeUnmount(() => {
         <OverlayLoader v-if="isLoading"></OverlayLoader>
 
         <div class="taste-header">
-            <p class="taste-subtitle">A snapshot of your preferred tags and alcohol strength mix.</p>
+            <p class="taste-subtitle">A snapshot of your disliked tags, preferred tags and alcohol strength mix.</p>
         </div>
 
         <section class="taste-section">

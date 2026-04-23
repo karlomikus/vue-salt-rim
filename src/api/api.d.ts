@@ -2009,7 +2009,7 @@ export interface paths {
         };
         /**
          * Top stats
-         * @description Get top rated cocktails and user favorite ingredients for a bar
+         * @description Get top rated resources for a bar
          */
         get: operations["getBarTopRated"];
         put?: never;
@@ -2234,6 +2234,19 @@ export interface components {
              */
             subtitle: string | null;
         };
+        /** @description Resource representing total stats for a bar */
+        BarIngredientDistributionResource: {
+            main_category_ingredient_distribution: {
+                /** @example 1 */
+                id: number;
+                /** @example spirits */
+                slug: string;
+                /** @example Spirits */
+                name: string;
+                /** @example 12 */
+                ingredients_count: number;
+            }[];
+        };
         /** @description Represents a bar membership */
         BarMembership: {
             /**
@@ -2337,6 +2350,52 @@ export interface components {
              * @example true
              */
             is_public: boolean;
+        };
+        /** @description Resource representing total stats for a bar */
+        BarTopStatsResource: {
+            top_bar_cocktails?: {
+                /** @example 1 */
+                id: number;
+                /** @example gin */
+                slug: string;
+                /** @example Gin */
+                name: string;
+                /** @example 1 */
+                avg_rating: number;
+                /** @example 1 */
+                votes: number;
+            }[];
+            top_member_ingredients?: {
+                /** @example 1 */
+                id: number;
+                /** @example old-fashioned */
+                slug: string;
+                /** @example Old Fashioned */
+                name: string;
+                /** @example 3 */
+                count: number;
+            }[];
+        };
+        /** @description Resource representing total stats for a bar */
+        BarTotalStatsResource: {
+            /** @example 1 */
+            total_cocktails: number;
+            /** @example 1 */
+            total_ingredients: number;
+            /** @example 1 */
+            total_favorited_cocktails: number;
+            /** @example 1 */
+            total_shelf_cocktails: number;
+            /** @example 1 */
+            total_bar_shelf_ingredients: number;
+            /** @example 1 */
+            total_bar_shelf_cocktails: number;
+            /** @example 1 */
+            total_shelf_ingredients: number;
+            /** @example 1 */
+            total_collections: number;
+            /** @example 1 */
+            total_bar_members: number;
         };
         /** @description Represents a calculator block with basic information */
         CalculatorBlock: {
@@ -3851,18 +3910,6 @@ export interface components {
             /** @example Resource record not found. */
             message: string;
         };
-        BarIngredientDistribution: {
-            main_category_ingredient_distribution: {
-                /** @example 1 */
-                id: number;
-                /** @example spirits */
-                slug: string;
-                /** @example Spirits */
-                name: string;
-                /** @example 12 */
-                ingredients_count: number;
-            }[];
-        };
         BarRequest: {
             /** @example Bar name */
             name: string;
@@ -3895,50 +3942,6 @@ export interface components {
         BarSettings: {
             default_units?: string | null;
             default_currency?: string | null;
-        };
-        BarTopStats: {
-            your_top_ingredients: {
-                /** @example 1 */
-                id: number;
-                /** @example gin */
-                slug: string;
-                /** @example Gin */
-                name: string;
-                /** @example 1 */
-                cocktails_count: number;
-            }[];
-            top_rated_cocktails: {
-                /** @example 1 */
-                id: number;
-                /** @example old-fashioned */
-                slug: string;
-                /** @example Old Fashioned */
-                name: string;
-                /** @example 3 */
-                avg_rating: number;
-                /** @example 42 */
-                votes: number;
-            }[];
-        };
-        BarTotals: {
-            /** @example 1 */
-            total_cocktails: number;
-            /** @example 1 */
-            total_ingredients: number;
-            /** @example 1 */
-            total_favorited_cocktails: number;
-            /** @example 1 */
-            total_shelf_cocktails: number;
-            /** @example 1 */
-            total_shelf_ingredients: number;
-            /** @example 1 */
-            total_bar_shelf_ingredients: number;
-            /** @example 1 */
-            total_bar_shelf_cocktails: number;
-            /** @example 1 */
-            total_bar_members: number;
-            /** @example 1 */
-            total_collections: number;
         };
         CalculatorBlockRequest: {
             label: string;
@@ -11504,7 +11507,7 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        data: components["schemas"]["BarTotals"];
+                        data: components["schemas"]["BarTotalStatsResource"];
                     };
                 };
             };
@@ -11563,7 +11566,7 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        data: components["schemas"]["BarIngredientDistribution"];
+                        data: components["schemas"]["BarIngredientDistributionResource"];
                     };
                 };
             };
@@ -11622,7 +11625,7 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        data: components["schemas"]["BarTopStats"];
+                        data: components["schemas"]["BarTopStatsResource"];
                     };
                 };
             };

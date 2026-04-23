@@ -8,7 +8,7 @@ import type { components } from '@/api/api'
 type IngredientRecommend = components["schemas"]["IngredientRecommend"]
 
 const props = defineProps<{
-    stats: components["schemas"]["BarTotals"]
+    stats: components["schemas"]["BarTotalStatsResource"]
 }>()
 const isLoading = ref(false)
 const appState = new AppState()
@@ -57,27 +57,13 @@ async function fetchRecommendedIngredients() {
             <div class="recommended-progress__value" :style="{ width: `${shelfProgressValue}%` }"></div>
         </div>
         <div>
-            You are a few bottles away from unlocking extra recipes.
+            This bar is a few ingredients away from unlocking extra recipes:
             <br>
             <template v-for="(ing, index) in recommendedIngredients" :key="ing.id">
                 <RouterLink :to="{ name: 'ingredients.show', params: { id: ing.slug } }">{{ ing.name }} (+{{ ing.potential_cocktails }})</RouterLink>
                 <template v-if="index + 1 !== recommendedIngredients.length"> &middot; </template>
             </template>
         </div>
-        <!--<template v-if="stats.total_cocktails > 0">
-            <i18n-t keypath="ingredient.recommended-next">
-                <template #totalPercent>
-                    <strong>{{ shelfPercent }}</strong>
-                </template>
-                <template #ingredients>
-                    <template v-for="(ing, index) in recommendedIngredients" :key="ing.id">
-                        <RouterLink :to="{ name: 'ingredients.show', params: { id: ing.slug } }">{{ ing.name }} (+{{ ing.potential_cocktails }})</RouterLink>
-                        <template v-if="index + 1 !== recommendedIngredients.length"> &middot; </template>
-                    </template>
-                </template>
-            </i18n-t>
-        </template>
-        -->
     </div>
 </template>
 

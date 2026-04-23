@@ -320,6 +320,10 @@ export default class BarAssistantClient {
     return (await client.GET('/bars/{id}/stats/totals', { params: { path: { id: id } } })).data
   }
 
+  static async getBarTopStats(id: number) {
+    return (await client.GET('/bars/{id}/stats/top', { params: { path: { id: id } } })).data
+  }
+
   static async getMemberTasteProfile(id: number) {
     return (await client.GET('/bars/{id}/stats/taste', { params: { path: { id: id } } })).data
   }

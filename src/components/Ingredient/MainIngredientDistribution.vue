@@ -3,7 +3,7 @@ import { computed, ref } from 'vue'
 import OverlayLoader from '../OverlayLoader.vue'
 import type { components } from '@/api/api'
 
-type BarIngredientDistribution = components["schemas"]["BarIngredientDistribution"]
+type BarIngredientDistribution = components["schemas"]["BarIngredientDistributionResource"]
 
 const props = defineProps<{
     stats: BarIngredientDistribution;

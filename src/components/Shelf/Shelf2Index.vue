@@ -17,7 +17,6 @@ import IconFavorite from '../Icons/IconFavorite.vue'
 import IconCocktail from '../Icons/IconCocktail.vue'
 import IconJigger from '../Icons/IconJigger.vue'
 import IconRecommender from '../Icons/IconRecommender.vue'
-import IconStar from '../Icons/IconStar.vue'
 import IconMedal from '../Icons/IconMedal.vue'
 import ListItemContainer from '../ListItemContainer.vue'
 import MiniRating from '@/components/MiniRating.vue'
@@ -26,13 +25,14 @@ import ImageThumb from '../ImageThumb.vue'
 import MainIngredientDistribution from '../Ingredient/MainIngredientDistribution.vue'
 import UserTasteProfile from './UserTasteProfile.vue'
 
-type BarTotals = components["schemas"]["BarTotals"]
+type BarTotals = components["schemas"]["BarTotalStatsResource"]
 type Cocktail = components["schemas"]["Cocktail"]
 type CocktailBasic = components["schemas"]["CocktailBasic"]
 type Ingredient = components["schemas"]["Ingredient"]
 type IngredientRecommend = components["schemas"]["IngredientRecommend"]
 type UserTasteProfile = components["schemas"]["UserTasteProfile"]
-type BarIngredientDistribution = components["schemas"]["BarIngredientDistribution"]
+type BarIngredientDistribution = components["schemas"]["BarIngredientDistributionResource"]
+type BarTopStats = components["schemas"]["BarTopStatsResource"]
 
 const { t } = useI18n()
 
@@ -45,10 +45,11 @@ const shoppingListIngredients = ref<Ingredient[]>([])
 const latestIngredients = ref<Ingredient[]>([])
 const recommendedIngredients = ref<IngredientRecommend[]>([])
 const recommendedCocktails = ref<CocktailBasic[]>([])
-const tasteProfile = ref<UserTasteProfile>()
+const tasteProfile = ref<UserTasteProfile|null>(null)
 const maxItems = ref(8)
-const stats = ref<BarTotals>({} as BarTotals)
-const ingredientDistribution = ref<BarIngredientDistribution>({} as BarIngredientDistribution)
+const stats = ref<BarTotals|null>(null)
+const ingredientDistribution = ref<BarIngredientDistribution|null>(null)
+const topRated = ref<BarTopStats|null>(null)
 
 const loaders = ref({
     cocktailFavorites: false,
@@ -59,6 +60,9 @@ const loaders = ref({
     latestIngredients: false,
     recommendedIngredients: false,
     recommendedCocktails: false,
+    userTasteProfile: false,
+    ingredientDistribution: false,
+    topStats: false,
 })
 
 async function refreshShelf() {
@@ -72,74 +76,62 @@ async function refreshShelf() {
 
     BarAssistantClient.getRecommendedCocktails().then(resp => {
         recommendedCocktails.value = resp?.data ?? []
-    }).catch(() => {
-        // toast.error(t('server-error'))
     }).finally(() => {
         loaders.value.recommendedCocktails = false
     })
 
     BarAssistantClient.getCocktails({ 'filter[favorites]': true, per_page: maxItems.value, sort: '-favorited_at', include: 'ratings,ingredients.ingredient,images' }).then(resp => {
         favoriteCocktails.value = resp?.data ?? []
-    }).catch(() => {
-        // toast.error(t('server-error'))
     }).finally(() => {
         loaders.value.cocktailFavorites = false
     })
 
     BarAssistantClient.getCocktails({ per_page: maxItems.value, sort: '-created_at', include: 'ratings,ingredients.ingredient,images' }).then(resp => {
         latestCocktails.value = resp?.data ?? []
-    }).catch(() => {
-        // toast.error(t('server-error'))
     }).finally(() => {
         loaders.value.cocktailLatest = false
     })
 
     BarAssistantClient.getIngredients({ 'filter[on_shopping_list]': true, per_page: maxItems.value, include: 'images' }).then(resp => {
         shoppingListIngredients.value = resp?.data ?? []
-    }).catch(() => {
-        // toast.error(t('server-error'))
     }).finally(() => {
         loaders.value.shoppingList = false
     })
 
     BarAssistantClient.getIngredients({ per_page: maxItems.value, sort: '-created_at', include: 'images,ancestors' }).then(resp => {
         latestIngredients.value = resp?.data ?? []
-    }).catch(() => {
-        // toast.error(t('server-error'))
     }).finally(() => {
         loaders.value.latestIngredients = false
     })
 
     BarAssistantClient.getBarTotals(appState.bar.id).then(resp => {
-        stats.value = resp?.data ?? {} as BarTotals
-    }).catch(() => {
-        // toast.error(t('server-error'))
+        stats.value = resp?.data ?? null
     }).finally(() => {
         loaders.value.barStats = false
     })
 
     BarAssistantClient.getRecommendedIngredients(appState.user.id).then(resp => {
         recommendedIngredients.value = resp?.data ?? []
-    }).catch(() => {
-        // toast.error(t('server-error'))
     }).finally(() => {
         loaders.value.recommendedIngredients = false
     })
 
     BarAssistantClient.getMemberTasteProfile(appState.bar.id).then(resp => {
-        tasteProfile.value = resp?.data
-    }).catch(() => {
-        // toast.error(t('server-error'))
+        tasteProfile.value = resp?.data ?? null
     }).finally(() => {
-        loaders.value.recommendedIngredients = false
+        loaders.value.userTasteProfile = false
     })
 
     BarAssistantClient.getIngredientDistribution(appState.bar.id).then(resp => {
-        ingredientDistribution.value = resp?.data ?? {} as BarIngredientDistribution
-    }).catch(() => {
-        // toast.error(t('server-error'))
+        ingredientDistribution.value = resp?.data ?? null
     }).finally(() => {
-        loaders.value.recommendedIngredients = false
+        loaders.value.ingredientDistribution = false
+    })
+
+    BarAssistantClient.getBarTopStats(appState.bar.id).then(resp => {
+        topRated.value = resp?.data ?? null
+    }).finally(() => {
+        loaders.value.topStats = false
     })
 }
 
@@ -161,7 +153,7 @@ refreshShelf()
             <div class="shelf-grid__col">
                 <OverlayLoader v-if="loaders.barStats"></OverlayLoader>
                 <h3 class="page-subtitle">{{ $t('shelf.bar-stats') }}</h3>
-                <div class="stats">
+                <div class="stats" v-if="stats">
                     <div class="block-container stats__stat">
                         <h3>{{ stats.total_cocktails }}</h3>
                         <p>
@@ -197,18 +189,18 @@ refreshShelf()
         </div>
         <div class="shelf-grid">
             <div class="shelf-grid__col">
+                <OverlayLoader v-if="loaders.barStats"></OverlayLoader>
                 <h3 class="page-subtitle">Ingredient statistics</h3>
-                <RecommendedIngredients v-if="stats?.total_cocktails > 0" :stats="stats"></RecommendedIngredients>
+                <RecommendedIngredients v-if="stats?.total_cocktails" :stats="stats"></RecommendedIngredients>
                 <EmptyState v-else>
                     <template #icon>
                         <IconRecommender></IconRecommender>
                     </template>
                     <template #default>
-                        {{ $t('ingredients-not-found') }}.<br>
-                        <RouterLink :to="{ name: 'ingredients.form' }">{{ $t('ingredient.add') }}</RouterLink>
+                        {{ $t('ingredients-not-found') }}.
                     </template>
                 </EmptyState>
-                <MainIngredientDistribution :stats="ingredientDistribution"></MainIngredientDistribution>
+                <MainIngredientDistribution v-if="ingredientDistribution" :stats="ingredientDistribution"></MainIngredientDistribution>
             </div>
             <div class="shelf-grid__col" v-if="tasteProfile">
                 <h3 class="page-subtitle">Your taste profile</h3>
@@ -237,8 +229,7 @@ refreshShelf()
                         <IconRecommender></IconRecommender>
                     </template>
                     <template #default>
-                        {{ $t('missing-recommended-cocktails') }}<br>
-                        <RouterLink :to="{ name: 'cocktails' }">{{ $t('find-cocktails') }}</RouterLink>
+                        {{ $t('missing-recommended-cocktails') }}
                     </template>
                 </EmptyState>
             </div>
@@ -265,19 +256,18 @@ refreshShelf()
                         <IconShoppingCart></IconShoppingCart>
                     </template>
                     <template #default>
-                        {{ $t('missing.ingredients') }}<br>
-                        <RouterLink :to="{ name: 'ingredients' }">{{ $t('all-ingredients') }}</RouterLink>
+                        {{ $t('missing.ingredients') }}
                     </template>
                 </EmptyState>
             </div>
             <div class="shelf-grid__col">
-                <OverlayLoader v-if="loaders.barStats"></OverlayLoader>
-                <h3 class="page-subtitle">{{ $t('most-popular-ingredients') }}</h3>
-                <div class="salt-rim-list" v-if="stats.most_popular_ingredients && stats.most_popular_ingredients.length > 0">
-                    <ListItemContainer tag="RouterLink" v-for="ingredient in stats.most_popular_ingredients" :key="ingredient.id" :to="{ name: 'ingredients.show', params: { id: ingredient.slug } }">
+                <OverlayLoader v-if="loaders.topStats"></OverlayLoader>
+                <h3 class="page-subtitle">Preferred ingredients</h3>
+                <div class="salt-rim-list" v-if="topRated">
+                    <ListItemContainer tag="RouterLink" v-for="ingredient in topRated.top_member_ingredients" :key="ingredient.id" :to="{ name: 'ingredients.show', params: { id: ingredient.slug } }">
                         <template #content>
                             <h5 class="sr-list-item-title">{{ ingredient.name }}</h5>
-                            <p>{{ $t('n-cocktails', ingredient.cocktails_count) }}</p>
+                            <p>Present in {{ $t('n-cocktails', ingredient.count) }}</p>
                         </template>
                     </ListItemContainer>
                 </div>
@@ -286,8 +276,7 @@ refreshShelf()
                         <IconMedal></IconMedal>
                     </template>
                     <template #default>
-                        {{ $t('ingredients-not-found') }}.<br>
-                        <RouterLink :to="{ name: 'ingredients' }">{{ $t('all-ingredients') }}</RouterLink>
+                        {{ $t('ingredients-not-found') }}.
                     </template>
                 </EmptyState>
             </div>
@@ -314,8 +303,7 @@ refreshShelf()
                         <IconCocktail></IconCocktail>
                     </template>
                     <template #default>
-                        {{ $t('missing-cocktails') }}<br>
-                        <RouterLink :to="{ name: 'cocktails.form' }">{{ $t('cocktail.add') }}</RouterLink>
+                        {{ $t('missing-cocktails') }}
                     </template>
                 </EmptyState>
             </div>
@@ -338,8 +326,7 @@ refreshShelf()
                         <IconJigger></IconJigger>
                     </template>
                     <template #default>
-                        {{ $t('ingredients-not-found') }}.<br>
-                        <RouterLink :to="{ name: 'ingredients' }">{{ $t('all-ingredients') }}</RouterLink>
+                        {{ $t('ingredients-not-found') }}.
                     </template>
                 </EmptyState>
             </div>
@@ -362,39 +349,11 @@ refreshShelf()
                         <IconFavorite></IconFavorite>
                     </template>
                     <template #default>
-                        {{ $t('missing-favorites') }}<br>
-                        <RouterLink :to="{ name: 'cocktails' }">{{ $t('find-cocktails') }}</RouterLink>
+                        {{ $t('missing-favorites') }}
                     </template>
                 </EmptyState>
             </div>
         </div>
-        <!--
-        <div class="shelf-grid">
-            <div class="shelf-grid__col">
-                <OverlayLoader v-if="loaders.barStats"></OverlayLoader>
-                <h3 class="page-subtitle">{{ $t('top-rated-cocktails') }}</h3>
-                <div class="salt-rim-list" v-if="stats.top_rated_cocktails && stats.top_rated_cocktails.length > 0">
-                    <ListItemContainer tag="RouterLink" v-for="cocktail in stats.top_rated_cocktails" :key="cocktail.id" :to="{ name: 'cocktails.show', params: { id: cocktail.slug } }">
-                        <template #content>
-                            <h5 class="sr-list-item-title">{{ cocktail.name }}</h5>
-                            <p>{{ $t('avg-rating') }}: {{ cocktail.avg_rating }} &middot; {{ $t('votes') }}: {{ cocktail.votes }}</p>
-                        </template>
-                    </ListItemContainer>
-                </div>
-                <EmptyState v-else>
-                    <template #icon>
-                        <IconStar></IconStar>
-                    </template>
-                    <template #default>
-                        {{ $t('no-cocktails') }}.<br>
-                        <RouterLink :to="{ name: 'cocktails.form' }">{{ $t('cocktail.add') }}</RouterLink>
-                    </template>
-                </EmptyState>
-            </div>
-            <div class="shelf-grid__col">
-                <UserTasteProfile :profile="tasfa"></UserTasteProfile>
-            </div>
-        </div>-->
     </div>
 </template>
 
