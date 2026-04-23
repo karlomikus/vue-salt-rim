@@ -4218,6 +4218,11 @@ export interface components {
              * @example true
              */
             is_ai_enabled: boolean;
+            /**
+             * @description Whether the per-user shelf feature is enabled
+             * @example true
+             */
+            is_user_shelf_enabled: boolean;
         };
         ShoppingListRequest: {
             ingredients: {

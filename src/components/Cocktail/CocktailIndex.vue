@@ -35,7 +35,7 @@
                         </SaltRimDialog>
                     </Refinement>
                     <Refinement v-if="refineCollections.length > 0" id="collection" v-model="activeFilters.collection_id" :title="$t('collections.title')" :refinements="refineCollections" @change="updateRouterPath"></Refinement>
-                    <Refinement v-if="refineUserShelves.length > 0" id="user_shelves" v-model="activeFilters.user_shelves" :title="$t('public-shelves')" :refinements="refineUserShelves" @change="updateRouterPath"></Refinement>
+                    <Refinement v-if="refineUserShelves.length > 0 && appState.isUserShelfEnabled" id="user_shelves" v-model="activeFilters.user_shelves" :title="$t('public-shelves')" :refinements="refineUserShelves" @change="updateRouterPath"></Refinement>
                     <Refinement id="users" v-model="activeFilters.created_user_id" :searchable="true" :title="$t('user-recipes')" :refinements="refineUsers" @change="updateRouterPath"></Refinement>
                     <Refinement id="main-ingredient" v-model="activeFilters.main_ingredient_id" :searchable="true" :title="$t('ingredient.main')" :refinements="refineMainIngredients" @change="updateRouterPath"></Refinement>
                     <Refinement id="method" v-model="activeFilters.cocktail_method_id" :title="$t('method.title')" :refinements="refineMethods" @change="updateRouterPath"></Refinement>
@@ -44,7 +44,7 @@
                     <Refinement id="glass" v-model="activeFilters.glass_id" :title="$t('glass-type.title')" :refinements="refineGlasses" @change="updateRouterPath"></Refinement>
                     <Refinement id="total-ingredients" v-model="activeFilters.total_ingredients" :title="$t('total.ingredients')" :refinements="refineIngredientsCount" type="radio" @change="updateRouterPath"></Refinement>
                     <Refinement id="missing-bar-ingredients" v-model="activeFilters.missing_bar_ingredients" :title="$t('missing-ingredients') + ' (' + $t('bars.bar') + ')'" :refinements="refineMissingBarIngredients" type="radio" @change="updateRouterPath"></Refinement>
-                    <Refinement id="missing-ingredients" v-model="activeFilters.missing_ingredients" :title="$t('missing-ingredients') + ' (' + $t('shelf.title') + ')'" :refinements="refineMissingIngredients" type="radio" @change="updateRouterPath"></Refinement>
+                    <Refinement v-if="appState.isUserShelfEnabled" id="missing-ingredients" v-model="activeFilters.missing_ingredients" :title="$t('missing-ingredients') + ' (' + $t('shelf.title') + ')'" :refinements="refineMissingIngredients" type="radio" @change="updateRouterPath"></Refinement>
                     <Refinement id="user-rating" v-model="activeFilters.user_rating_min" :title="$t('your-rating')" :refinements="refineRatings" type="radio" @change="updateRouterPath"></Refinement>
                     <Refinement id="avg-rating" v-model="activeFilters.average_rating_min" :title="$t('avg-rating')" :refinements="refineRatings" type="radio" @change="updateRouterPath"></Refinement>
                     <button class="button button--dark sm-show" type="button" @click="showRefinements = false">{{ $t('cancel') }}</button>
@@ -161,8 +161,9 @@ export default {
         MenuAddDialog,
     },
     data() {
+        const appState = new AppState()
         return {
-            appState: new AppState(),
+            appState,
             showCreateNewCollectionDialog: false,
             isLoading: false,
             showRefinements: false,
@@ -182,10 +183,14 @@ export default {
                 global: [
                     { name: this.$t('bar_shelf.cocktails'), active: false, id: 'bar_shelf' },
                     { name: this.$t('bar_shelf.locked_cocktails'), active: false, id: 'locked_bar_cocktails' },
-                    { name: this.$t('shelf.cocktails'), active: false, id: 'on_shelf' },
+                    ...(appState.isUserShelfEnabled
+                        ? [{ name: this.$t('shelf.cocktails'), active: false, id: 'on_shelf' }]
+                        : []),
                     { name: this.$t('my-favorites'), active: false, id: 'favorites' },
                     { name: this.$t('cocktail.shared'), active: false, id: 'is_public' },
-                    { name: this.$t('shelf.locked_cocktails'), active: false, id: 'locked_user_cocktails' },
+                    ...(appState.isUserShelfEnabled
+                        ? [{ name: this.$t('shelf.locked_cocktails'), active: false, id: 'locked_user_cocktails' }]
+                        : []),
                 ],
                 abv: [
                     { name: this.$t('non-alcoholic'), min: null, max: 2, id: 'abv_non_alcoholic' },

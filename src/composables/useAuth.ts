@@ -33,7 +33,7 @@ const useAuth = async (token: string): Promise<string> => {
     ]);
 
     if (serverInfo?.data) {
-        appState.setServerSettings(serverInfo.data.is_password_login_enabled, serverInfo.data.is_ai_enabled)
+        appState.setServerSettings(serverInfo.data.is_password_login_enabled, serverInfo.data.is_ai_enabled, serverInfo.data.is_user_shelf_enabled)
     }
 
     if (bars?.data?.length == 1) {

@@ -146,7 +146,7 @@ refreshShelf()
                         <RouterLink :to="{ name: 'ingredients' }">{{ $t('total.ingredients') }}</RouterLink>
                     </p>
                 </div>
-                <div class="block-container stats__stat">
+                <div v-if="appState.isUserShelfEnabled" class="block-container stats__stat">
                     <h3>{{ stats.total_shelf_ingredients }}</h3>
                     <p>
                         <RouterLink :to="{ name: 'ingredients', query: { 'filter[on_shelf]': 'true' } }">{{ $t('shelf-ingredients') }}</RouterLink>
@@ -164,7 +164,7 @@ refreshShelf()
                         <RouterLink :to="{ name: 'cocktails', query: { 'filter[favorites]': 'true' } }">{{ $t('favorited-cocktails') }}</RouterLink>
                     </p>
                 </div>
-                <div class="block-container stats__stat">
+                <div v-if="appState.isUserShelfEnabled" class="block-container stats__stat">
                     <h3>{{ stats.total_shelf_cocktails }}</h3>
                     <p>
                         <RouterLink :to="{ name: 'cocktails', query: { 'filter[on_shelf]': 'true' } }">{{ $t('shelf.cocktails') }}</RouterLink>
@@ -216,7 +216,7 @@ refreshShelf()
                 </template>
             </EmptyState>
         </div>
-        <div class="shelf-grid__col">
+        <div v-if="appState.isUserShelfEnabled" class="shelf-grid__col">
             <OverlayLoader v-if="loaders.recommendedCocktails"></OverlayLoader>
             <h3 class="page-subtitle">{{ $t('shelf.recommended-cocktails') }}</h3>
             <div class="salt-rim-list" v-if="recommendedCocktails.length > 0">
@@ -301,8 +301,10 @@ refreshShelf()
                     <template #content>
                         <h5 class="sr-list-item-title">{{ ingredient.name }}</h5>
                         <p>
-                            <ToggleIngredientShelf v-if="ingredient.in_shelf !== undefined" :ingredient="ingredient" v-model="ingredient.in_shelf"></ToggleIngredientShelf>
-                            &middot;
+                            <template v-if="appState.isUserShelfEnabled">
+                                <ToggleIngredientShelf v-if="ingredient.in_shelf !== undefined" :ingredient="ingredient" v-model="ingredient.in_shelf"></ToggleIngredientShelf>
+                                &middot;
+                            </template>
                             <ToggleIngredientShoppingCart v-if="ingredient.in_shopping_list !== undefined" :ingredient="ingredient" v-model="ingredient.in_shopping_list"></ToggleIngredientShoppingCart>
                         </p>
                     </template>
@@ -360,7 +362,7 @@ refreshShelf()
                 </template>
             </EmptyState>
         </div>
-        <div class="shelf-grid__col">
+        <div v-if="appState.isUserShelfEnabled" class="shelf-grid__col">
             <h3 class="page-subtitle">{{ $t('recommended-ingredients') }}</h3>
             <RecommendedIngredients v-if="stats?.total_cocktails > 0" :stats="stats"></RecommendedIngredients>
             <EmptyState v-else>

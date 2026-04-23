@@ -127,7 +127,9 @@ const availableRefinements = ref({
     categories: [] as Ingredient[],
     global: [
         { name: t('bar-shelf-ingredients'), active: false, id: 'bar_shelf' },
-        { name: t('shelf-ingredients'), active: false, id: 'on_shelf' },
+        ...(appState.isUserShelfEnabled
+            ? [{ name: t('shelf-ingredients'), active: false, id: 'on_shelf' }]
+            : []),
         { name: t('shopping-list-ingredients'), active: false, id: 'on_shopping_list' },
         { name: t('used-as-main-ingredient'), active: false, id: 'main_ingredients' },
         { name: t('ingredient.complex'), active: false, id: 'complex' },

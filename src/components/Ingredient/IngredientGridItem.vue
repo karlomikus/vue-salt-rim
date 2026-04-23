@@ -13,7 +13,7 @@
                 <ToggleIngredientBarShelf v-if="ingredient.in_bar_shelf !== undefined" :ingredient="ingredient" v-model="ingredient.in_bar_shelf"></ToggleIngredientBarShelf>
                 &middot;
             </template>
-            <template v-else>
+            <template v-else-if="appState.isUserShelfEnabled">
                 <ToggleIngredientShelf v-if="ingredient.in_shelf !== undefined" :ingredient="ingredient" v-model="ingredient.in_shelf"></ToggleIngredientShelf>
                 &middot;
             </template>
@@ -38,9 +38,9 @@ const props = defineProps<{
     ingredient: Ingredient
 }>()
 
-const showBarShelf = computed(() => {
-    const appState = new AppState();
+const appState = new AppState()
 
+const showBarShelf = computed(() => {
     return appState.isAdmin() || appState.isModerator()
 })
 

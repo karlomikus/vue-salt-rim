@@ -8,7 +8,7 @@
                 <div v-if="cocktail.in_bar_shelf" class="cocktail-badge" :title="$t('in_bar_shelf')">
                     <IconBarShelf></IconBarShelf>
                 </div>
-                <div v-if="cocktail.in_shelf" class="cocktail-badge" :title="$t('in_your_shelf')">
+                <div v-if="cocktail.in_shelf && appState.isUserShelfEnabled" class="cocktail-badge" :title="$t('in_your_shelf')">
                     <IconUserShelf></IconUserShelf>
                 </div>
                 <div v-if="cocktail.public_id" class="cocktail-badge" :title="$t('is_public')">
@@ -39,10 +39,13 @@ import IconFavorite from '../Icons/IconFavorite.vue';
 import IconBarShelf from '../Icons/IconBarShelf.vue';
 import IconUserShelf from '../Icons/IconUserShelf.vue';
 import IconPublicLink from '../Icons/IconPublicLink.vue';
+import AppState from '@/AppState';
 import type { components } from '@/api/api';
 import { computed, onMounted, useTemplateRef, type ComponentPublicInstance } from 'vue';
 
 type Cocktail = components['schemas']['Cocktail']
+
+const appState = new AppState()
 
 const props = defineProps<{
     cocktail: Cocktail,

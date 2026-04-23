@@ -43,7 +43,7 @@
                             </a>
                         </template>
                     </ToggleIngredientBarShelf>
-                    <ToggleIngredientShelf v-if="ingredient.in_shelf !== undefined" :ingredient="ingredient" v-model="ingredient.in_shelf">
+                    <ToggleIngredientShelf v-if="ingredient.in_shelf !== undefined && appState.isUserShelfEnabled" :ingredient="ingredient" v-model="ingredient.in_shelf">
                         <template v-slot="{ isLoading, inList, toggle }">
                             <a href="#" class="block-container block-container--hover shelf-actions__action" @click.prevent="toggle">
                                 <div>

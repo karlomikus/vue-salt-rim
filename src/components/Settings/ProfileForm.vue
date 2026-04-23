@@ -68,7 +68,7 @@
                     </table>
                 </div>
             </template>
-            <template v-if="appState.bar.id">
+            <template v-if="appState.bar.id && appState.isUserShelfEnabled">
                 <h3 class="form-section-title">{{ $t('bars.bar') }}</h3>
                 <div class="block-container block-container--padded">
                     <div class="form-group">
