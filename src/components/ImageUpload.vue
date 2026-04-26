@@ -10,10 +10,10 @@ import SaltRimDialog from './Dialog/SaltRimDialog.vue';
 import ImageEditor from './ImageEditor.vue';
 import IconAI from './Icons/IconAI.vue'
 import SaltRimSpinner from './SaltRimSpinner.vue'
-import { thumbHashToDataURL } from 'thumbhash'
 
 import type { components } from '@/api/api'
 import BarAssistantClient from '@/api/BarAssistantClient';
+import AppState from '@/AppState';
 type Image = components["schemas"]["Image"]
 type ImageRequest = components["schemas"]["ImageRequest"]
 type ImageWithBase64ImportFile = Image & { file?: string | null }
@@ -50,6 +50,7 @@ const emit = defineEmits<{
     generate: []
 }>()
 
+const appState = new AppState()
 const externalImageUrl = ref('')
 const toast = useSaltRimToast()
 const confirm = useConfirm()
@@ -262,7 +263,7 @@ async function save() {
         </div>
         <div class="image-upload__actions">
             <template v-if="!hasMaxImages">
-                <template v-if="showGenerateButton">
+                <template v-if="showGenerateButton && appState.isAiImageEnabled">
                     <div>
                         <button type="button" class="button button--dark image-upload__generate-button" :disabled="isGenerateDisabled || isGenerateLoading" @click="emitGenerate">
                             <IconAI v-if="!isGenerateLoading" />

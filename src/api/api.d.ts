@@ -4238,6 +4238,11 @@ export interface components {
              * @example true
              */
             is_ai_enabled: boolean;
+            /**
+             * @description Whether image AI features are enabled
+             * @example true
+             */
+            is_ai_image_enabled: boolean;
         };
         ShoppingListRequest: {
             ingredients: {

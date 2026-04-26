@@ -9,8 +9,10 @@
 import IconAI from '../Icons/IconAI.vue'
 import { computed, ref } from 'vue'
 import SaltRimSpinner from '../SaltRimSpinner.vue';
+import AppState from '@/AppState';
 
 const isLoading = ref(false)
+const appState = new AppState()
 
 const {
     callFn,
@@ -28,7 +30,7 @@ const emit = defineEmits<{
 }>()
 
 const shouldShowButton = computed(() => {
-    return showButton && callFn
+    return appState.isAiEnabled && showButton && callFn
 })
 
 const startGenerate = async () => {
