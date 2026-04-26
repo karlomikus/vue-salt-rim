@@ -860,6 +860,26 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/generate/cocktail-image": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Cocktail image
+         * @description Generate a cocktail image using an image model and return it as an unassigned image.
+         */
+        post: operations["generateCocktailImage"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/glasses": {
         parameters: {
             query?: never;
@@ -7515,6 +7535,50 @@ export interface operations {
                 content: {
                     "application/json": {
                         data: components["schemas"]["GeneratedCocktailFromTextResource"];
+                    };
+                };
+            };
+        };
+    };
+    generateCocktailImage: {
+        parameters: {
+            query?: never;
+            header?: {
+                /** @description Database id of a bar. */
+                "Bar-Assistant-Bar-Id"?: number;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": {
+                    /**
+                     * @description Id or slug of the cocktail to generate an image for
+                     * @example negroni
+                     */
+                    cocktail_id: string;
+                    /**
+                     * @description Optional visual style hint for the generated image
+                     * @example editorial studio photo
+                     */
+                    style?: string | null;
+                };
+            };
+        };
+        responses: {
+            /** @description Successful response */
+            200: {
+                headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data: components["schemas"]["Image"];
                     };
                 };
             };

@@ -617,4 +617,8 @@ export default class BarAssistantClient {
   static async aiGenerateCocktailRecipe(recipe: string) {
     return (await client.POST('/generate/cocktail-recipe-from-text', { body: { recipe: recipe } })).data
   }
+
+  static async aiGenerateCocktailImage(cocktailId: string) {
+    return (await client.POST('/generate/cocktail-image', { body: { cocktail_id: cocktailId } })).data
+  }
 }

@@ -8,6 +8,8 @@ import { useFileDialog } from '@vueuse/core';
 import OverlayLoader from './OverlayLoader.vue'
 import SaltRimDialog from './Dialog/SaltRimDialog.vue';
 import ImageEditor from './ImageEditor.vue';
+import IconAI from './Icons/IconAI.vue'
+import SaltRimSpinner from './SaltRimSpinner.vue'
 import { thumbHashToDataURL } from 'thumbhash'
 
 import type { components } from '@/api/api'
@@ -26,9 +28,27 @@ interface ImageViewModel {
     hash?: string | null;
 }
 
+function toImageViewModel(img: ImageWithBase64ImportFile): ImageViewModel {
+    return {
+        id: img.id,
+        file: img.file ?? null,
+        preview: img.url ?? '',
+        fileName: img.file_path,
+        copyright: img.copyright,
+        sort: img.sort,
+        hash: img.placeholder_hash,
+    }
+}
+
 defineExpose({
-    save
+    save,
+    appendImage,
+    hasMaxImages: () => hasMaxImages.value,
 })
+
+const emit = defineEmits<{
+    generate: []
+}>()
 
 const externalImageUrl = ref('')
 const toast = useSaltRimToast()
@@ -45,22 +65,20 @@ const images = ref([] as ImageViewModel[])
 const props = withDefaults(defineProps<{
     maxImages: number;
     images: ImageWithBase64ImportFile[];
+    showGenerateButton?: boolean;
+    isGenerateLoading?: boolean;
+    isGenerateDisabled?: boolean;
 }>(), {
     maxImages: 10,
+    showGenerateButton: false,
+    isGenerateLoading: false,
+    isGenerateDisabled: false,
 })
 const hasMaxImages = computed(() => images.value.length >= props.maxImages)
 
 watch(() => props.images, () => {
     for (const img of props.images) {
-        images.value.push({
-            id: img.id,
-            file: img.file ?? null,
-            preview: img.url ?? '',
-            fileName: img.file_path,
-            copyright: img.copyright,
-            sort: img.sort,
-            hash: img.placeholder_hash,
-        })
+        images.value.push(toImageViewModel(img))
     }
 }, { immediate: true })
 
@@ -128,14 +146,6 @@ function removeImage(image: ImageViewModel) {
     })
 }
 
-function getHashAsImage(img: ImageViewModel): string {
-    if (!img.hash) {
-        return ''
-    }
-
-    return thumbHashToDataURL(Uint8Array.from(atob(img.hash), c => c.charCodeAt(0)))
-}
-
 function handleDrop(e: DragEvent): void {
     e.preventDefault()
     isDragover.value = false
@@ -175,6 +185,20 @@ function addExternalImage() {
     })
 
     externalImageUrl.value = ''
+}
+
+function emitGenerate() {
+    emit('generate')
+}
+
+function appendImage(image: ImageWithBase64ImportFile) {
+    if (hasMaxImages.value) {
+        return false
+    }
+
+    images.value.push(toImageViewModel(image))
+
+    return true
 }
 
 async function save() {
@@ -238,6 +262,18 @@ async function save() {
         </div>
         <div class="image-upload__actions">
             <template v-if="!hasMaxImages">
+                <template v-if="showGenerateButton">
+                    <div>
+                        <button type="button" class="button button--dark image-upload__generate-button" :disabled="isGenerateDisabled || isGenerateLoading" @click="emitGenerate">
+                            <IconAI v-if="!isGenerateLoading" />
+                            <SaltRimSpinner v-else fill="currentColor" />
+                            {{ t('imageupload.generate') }}
+                        </button>
+                    </div>
+                    <div>
+                        &mdash; {{ t('or') }} &mdash;
+                    </div>
+                </template>
                 <div>
                     <button :disabled="hasMaxImages" type="button" @click="open()" class="button button--dark">{{ t('imageupload.browse') }}</button>
                 </div>
@@ -297,6 +333,12 @@ async function save() {
     display: flex;
     flex-direction: column;
     gap: var(--gap-size-2);
+}
+
+.image-upload__generate-button svg {
+    width: 16px;
+    height: 16px;
+    margin-right: 5px;
 }
 
 .image-upload__images__onboard {
