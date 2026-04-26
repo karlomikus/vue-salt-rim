@@ -87,7 +87,16 @@
         </SaltRimDialog>
         <h3 class="form-section-title">{{ t('media') }}</h3>
         <SubscriptionCheck>Subscribe to "Mixologist" plan to upload more than one cocktail recipe image!</SubscriptionCheck>
-        <ImageUpload v-if="cocktail.images" ref="imagesUpload" :images="cocktail.images" :max-images="maxImages" />
+        <ImageUpload
+            v-if="cocktail.images"
+            ref="imagesUpload"
+            :images="cocktail.images"
+            :max-images="maxImages"
+            :show-generate-button="!!cocktail.id"
+            :is-generate-loading="isLoadingImageGen"
+            :is-generate-disabled="isLoadingImageGen"
+            @generate="generateImage"
+        />
         <h3 class="form-section-title">{{ t('additional-information') }}</h3>
         <div class="block-container block-container--padded">
             <div class="form-group">
@@ -227,6 +236,7 @@ type CocktailMethod = components['schemas']['CocktailMethod']
 type Tag = components['schemas']['Tag']
 type Utensil = components['schemas']['Utensil']
 type Bar = components['schemas']['Bar']
+type Image = components['schemas']['Image']
 type SearchResultCocktail = SearchResults['cocktail']
 
 const shouldUseBasicSearch = useBasicSearch()
@@ -240,10 +250,11 @@ const appState = new AppState()
 const showDialogs = ref<boolean[]>([])
 const isLoading = ref<boolean>(false)
 const isLoadingGen = ref<boolean>(false)
+const isLoadingImageGen = ref<boolean>(false)
 const showVarietyDialog = ref<boolean>(false)
 const showSubstituteDialog = ref<boolean>(false)
 const showGlassSelectorDialog = ref<boolean>(false)
-const imagesUpload = useTemplateRef('imagesUpload')
+const imagesUpload = useTemplateRef<InstanceType<typeof ImageUpload>>('imagesUpload')
 const cocktail = ref<Partial<Cocktail>>({
     images: [],
     ingredients: [],
@@ -377,6 +388,41 @@ async function generateTags() {
     const resp = await BarAssistantClient.aiGenerateCocktailTags(cocktail.value.id.toString())
     if (resp && resp.data.tags) {
         selectedTagNames.value = Array.from(new Set([...selectedTagNames.value, ...resp.data.tags]))
+    }
+}
+
+async function generateImage() {
+    if (!cocktail.value.id || !imagesUpload.value) {
+        return
+    }
+
+    if (imagesUpload.value.hasMaxImages()) {
+        toast.error(t('imageupload.generate-limit'))
+        return
+    }
+
+    isLoadingImageGen.value = true
+
+    try {
+        const resp = await BarAssistantClient.aiGenerateCocktailImage(cocktail.value.id.toString())
+
+        if (!resp?.data) {
+            toast.error(t('server-error'))
+            return
+        }
+
+        const wasAdded = imagesUpload.value.appendImage(resp.data as Image)
+
+        if (!wasAdded) {
+            toast.error(t('imageupload.generate-limit'))
+            return
+        }
+
+        toast.default(t('imageupload.generate-success'))
+    } catch (error: any) {
+        toast.error(error?.message ?? t('server-error'))
+    } finally {
+        isLoadingImageGen.value = false
     }
 }
 

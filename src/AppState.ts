@@ -14,6 +14,7 @@ class AppState {
     rememberMe: boolean
     isPasswordLoginEnabled: boolean
     isAiEnabled: boolean
+    isAiImageEnabled: boolean
     _key: string
 
     constructor() {
@@ -25,6 +26,7 @@ class AppState {
         this.rememberMe = false
         this.isPasswordLoginEnabled = true
         this.isAiEnabled = false
+        this.isAiImageEnabled = false
         this.bar = {} as Bar
         this.user = {} as Profile
 
@@ -98,9 +100,10 @@ class AppState {
         this._updateState()
     }
 
-    setServerSettings(isPasswordLoginEnabled: boolean, isAiEnabled: boolean) {
+    setServerSettings(isPasswordLoginEnabled: boolean, isAiEnabled: boolean, isAiImageEnabled: boolean) {
         this.isPasswordLoginEnabled = isPasswordLoginEnabled
         this.isAiEnabled = isAiEnabled
+        this.isAiImageEnabled = isAiImageEnabled
         this._updateState()
     }
 
@@ -177,6 +180,7 @@ class AppState {
             this.user = newState.user
             this.isPasswordLoginEnabled = newState.isPasswordLoginEnabled
             this.isAiEnabled = newState.isAiEnabled
+            this.isAiImageEnabled = newState.isAiImageEnabled
         }
     }
 }

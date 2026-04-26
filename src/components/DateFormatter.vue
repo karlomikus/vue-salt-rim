@@ -1,11 +1,10 @@
 <script setup lang="ts">
-import dayjs from 'dayjs'
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 const { d } = useI18n()
 const {
-    date = dayjs().toString(),
+    date,
     format = 'short'
 } = defineProps<{
     date: string;
@@ -13,7 +12,7 @@ const {
 }>()
 
 const formattedDate = computed(() => {
-    const parsedDate = dayjs(date).toDate()
+    const parsedDate = new Date(date)
 
     return d(parsedDate, format)
 })

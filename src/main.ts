@@ -8,7 +8,7 @@ import router from './router'
 import dialog from './components/Dialog/plugin'
 import './assets/main.css'
 import AppState from './AppState'
-import Plausible from 'plausible-tracker'
+import { init } from '@plausible-analytics/tracker'
 import { registerSW } from 'virtual:pwa-register'
 import { register as registerSwiperElements } from 'swiper/element/bundle'
 import * as Sentry from "@sentry/vue";
@@ -28,13 +28,11 @@ import fi_FI from './locales/fi-FI'
 registerSW({ immediate: true })
 registerSwiperElements()
 
-if (window.srConfig.ANALYTICS_HOST && window.srConfig.ANALYTICS_HOST != '') {
-    const { enableAutoPageviews, enableAutoOutboundTracking } = Plausible({
-        apiHost: window.srConfig.ANALYTICS_HOST
+if (window.srConfig.ANALYTICS_DOMAIN && window.srConfig.ANALYTICS_DOMAIN != '') {
+    init({
+        domain: window.srConfig.ANALYTICS_DOMAIN,
+        outboundLinks: true,
     })
-
-    enableAutoPageviews()
-    enableAutoOutboundTracking()
 }
 
 const appState = new AppState()

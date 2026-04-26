@@ -1,3 +1,17 @@
+# 4.15.0
+## New
+- Env variables `ANALYTICS_DOMAIN` no longer used
+    - Moved to `ANALYTICS_HOST`
+- Added support for ai cocktail image generation
+- Added /api to PWA fallback deny list
+
+# 4.14.1
+## Fixes
+- Fixed AI features missing in OAuth enabled environments
+
+## Changes
+- Added cache busting for config file
+
 # 4.14.0
 ## New
 - Removed client AI features
