@@ -240,10 +240,10 @@ async function copy() {
         onResolved: (dialog: any) => {
             dialog.close()
             isLoading.value = true
-            BarAssistantClient.copyCocktail(cocktail.value.slug).then(resp => {
+            BarAssistantClient.copyCocktail(cocktail.value.slug).then(id => {
                 isLoading.value = false
                 toast.default(t('cocktail.copy-success'))
-                router.push({ name: 'cocktails.form', query: { id: resp?.data?.id } })
+                router.push({ name: 'cocktails.form', query: { id: id } })
             }).catch(e => {
                 isLoading.value = false
                 toast.error(e.message)

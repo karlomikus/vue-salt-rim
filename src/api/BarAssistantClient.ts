@@ -175,7 +175,9 @@ export default class BarAssistantClient {
   }
 
   static async copyCocktail(id: string) {
-    return (await client.POST('/cocktails/{id}/copy', { params: { path: { id: id } } })).data
+    const { response } = await client.POST('/cocktails/{id}/copy', { params: { path: { id: id } }, parseAs: 'stream' })
+
+    return extractIdFromLocationHeader(response)
   }
 
   static async rateCocktail(id: number, data: object = {}) {
