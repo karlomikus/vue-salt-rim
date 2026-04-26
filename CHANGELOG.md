@@ -2,6 +2,8 @@
 ## New
 - Env variables `ANALYTICS_DOMAIN` no longer used
     - Moved to `ANALYTICS_HOST`
+- Added support for ai cocktail image generation
+- Added /api to PWA fallback deny list
 
 # 4.14.1
 ## Fixes
