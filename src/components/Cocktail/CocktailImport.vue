@@ -12,8 +12,6 @@ import { useRoute, useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import type { SearchResults } from '@/api/SearchResults'
 import type { components } from '@/api/api'
-import type { CocktailRecipeDraft02 as Draft2Schema } from '@/schema/draft2'
-import type { CocktailRecipe as Draft1Schema } from '@/schema/draft1'
 import { useTitle } from '@/composables/title'
 import AppState from '@/AppState'
 import { useBookmarklet } from '@/composables/useBookmarklet'
@@ -21,40 +19,21 @@ import IngredientFinderBasic from '../IngredientFinderBasic.vue'
 import { useBasicSearch } from '@/composables/useBasicSearch'
 import type { ImportResult } from '@/schema/ImportResult'
 import { useUrlImport } from '@/composables/useUrlImport'
+import { useJsonImport } from '@/composables/useJsonImport'
+import { useAiImport } from '@/composables/useAiImport'
+import { useHtmlImport } from '@/composables/useHtmlImport'
 
-interface Ingredient {
-    id: string,
-    name: string,
-    slug: string,
-}
 type SearchResult = SearchResults['ingredient']
 type Cocktail = components["schemas"]["Cocktail"]
 type Bar = components["schemas"]["Bar"]
 type Glass = components["schemas"]["Glass"]
 type FullIngredient = components["schemas"]["Ingredient"]
 type CocktailMethod = components["schemas"]["CocktailMethod"]
-type SchemaIngredient = components["schemas"]["cocktail-02.schema"]["ingredients"][0]
-interface SchemaWithMatchedData {
-    recipe: {
-        matchedGlass: Glass | null,
-        matchedMethodId: number | null,
-        ingredients: {
-            _source: string | null,
-            matchedIngredient: Ingredient | null,
-            refIngredient: SchemaIngredient,
-            substitutes: {
-                matchedIngredient: Ingredient | null,
-                refIngredient: SchemaIngredient,
-            }[]
-        }[]
-    }
-}
 
-type LocalSchema = Draft2Schema & SchemaWithMatchedData
-type CocktailIngredient = LocalSchema["recipe"]["ingredients"][0]
-type SubstituteCocktailIngredient = LocalSchema["recipe"]["ingredients"][0]["substitutes"][0]
-
-const urlImporter = useUrlImport();
+const urlImporter = useUrlImport()
+const jsonImporter = useJsonImport()
+const aiImporter = useAiImport()
+const htmlImporter = useHtmlImport()
 const { t } = useI18n()
 const router = useRouter()
 const route = useRoute()
@@ -63,14 +42,13 @@ const shouldUseBasicSearch = useBasicSearch()
 const isLoading = ref(false)
 const isImporting = ref(false)
 const showIngredientDialog = ref(false)
-const ingredientNameMatch = ref<ImportResult['ingredients'][0] | null>(null)
+const ingredientNameMatch = ref<ImportResult['ingredients'][0]|ImportResult['ingredients'][0]['substitutes'][0] | null>(null)
 const importType = ref<'url' | 'json' | 'bookmarklet' | 'ai' | 'html'>('url')
 const similarCocktails = ref([] as Cocktail[])
 const isLoadingSimilar = ref(false)
 const bookmarkletUrl = ref<string | null>(null)
 const bar = ref({} as Bar)
 const appState = new AppState()
-// const duplicateAction = ref('none')
 const source = ref<{
     url: null | string,
     json: null | string,
@@ -85,17 +63,21 @@ const source = ref<{
 const result = ref<ImportResult|null>(null)
 const cocktailTags = computed({
     get() {
-        return result.value.recipe?.tags?.join(',')
+        return result.value?.tags?.join(',')
     },
     set(newVal) {
+        if (!result.value) {
+            return
+        }
+
         if (Array.isArray(newVal)) {
             newVal = newVal.join(',')
         }
 
         if (newVal == '' || newVal == null || newVal == undefined) {
-            result.value.recipe.tags = []
+            result.value.tags = []
         } else {
-            result.value.recipe.tags = Array.from(new Set(newVal.split(',').filter(t => t != '')))
+            result.value.tags = Array.from(new Set(newVal.split(',').filter(t => t != '')))
         }
     }
 })
@@ -113,13 +95,13 @@ function clearImport() {
         html: null,
     }
     ingredientNameMatch.value = null
-    result.value = {} as LocalSchema
+    result.value = null
 }
 
 async function importCocktail() {
     similarCocktails.value = []
     ingredientNameMatch.value = null
-    // result.value = {} as LocalSchema
+    result.value = null
     similarCocktails.value = []
 
     if (importType.value == 'url') {
@@ -146,13 +128,13 @@ function fromUrl() {
 
     isLoading.value = true
     urlImporter.scrapeCocktail(source.value.url).then(() => {
-        // findSimilarCocktails(schema.recipe.name)
-
         result.value = urlImporter.result.value
-
-        isLoading.value = false
+        if (result.value) {
+            findSimilarCocktails(result.value.name)
+        }
     }).catch(e => {
         toast.error(e.message)
+    }).finally(() => {
         isLoading.value = false
     })
 }
@@ -163,175 +145,49 @@ function fromAi() {
     }
 
     isLoading.value = true
-    BarAssistantClient.aiGenerateCocktailRecipe(source.value.ai_content).then(resp => {
-        const schema = resp?.data
-        if (!schema) {
-            return
+    aiImporter.generateFromAi(source.value.ai_content).then(() => {
+        result.value = aiImporter.result.value
+        if (result.value) {
+            findSimilarCocktails(result.value.name)
         }
-
-        findSimilarCocktails(schema.name)
-
-        result.value = {
-            ingredients: [],
-            recipe: {
-                _id: 'ai-generated',
-                matchedGlass: null,
-                matchedMethodId: null,
-                name: schema.name,
-                method: schema.method,
-                source: 'Raw text input',
-                description: schema.description,
-                instructions: schema.instructions,
-                garnish: schema.garnish,
-                ingredients: schema.ingredients.map((ing, idx) => {
-                    return {
-                        _id: idx.toString(),
-                        _source: null,
-                        amount: ing.amount,
-                        amount_max: ing.amount_max,
-                        note: ing.note,
-                        units: ing.units,
-                        substitutes: [],
-                        matchedIngredient: null,
-                        refIngredient: {
-                            _id: idx.toString(),
-                            name: ing.name,
-                        } as SchemaIngredient,
-                    } as CocktailIngredient
-                }),
-            }
-        } as LocalSchema
-
-        isLoading.value = false
     }).catch(e => {
         toast.error(e.message)
+    }).finally(() => {
         isLoading.value = false
     })
 }
 
 function fromJson() {
-    isLoading.value = true
-    try {
-        if (source.value.json != null) {
-            const parsed = JSON.parse(source.value.json) as Draft2Schema
-
-            // Draft 1 schema
-            if (!parsed.recipe) {
-                const parsedDraft1 = JSON.parse(source.value.json) as Draft1Schema
-
-                result.value = {
-                    ingredients: [],
-                    recipe: {
-                        _id: parsedDraft1._id,
-                        name: parsedDraft1.name,
-                        description: parsedDraft1.description,
-                        instructions: parsedDraft1.instructions,
-                        garnish: parsedDraft1.garnish,
-                        source: parsedDraft1.source,
-                        method: parsedDraft1.method,
-                        glass: parsedDraft1.glass,
-                        tags: parsedDraft1.tags,
-                        matchedGlass: null,
-                        matchedMethodId: null,
-                        images: parsedDraft1.images?.map(img => ({file: img.source, uri: img.source, copyright: img.copyright})) ?? [],
-                        ingredients: parsedDraft1.ingredients?.map(i => {
-                            return {
-                                _id: i._id,
-                                _source: null,
-                                amount: i.amount,
-                                amount_max: i.amount_max,
-                                units: i.units,
-                                note: i.note,
-                                matchedIngredient: null,
-                                substitutes: i.substitutes?.map(sub => {
-                                    return {
-                                        _id: sub._id,
-                                        amount: sub.amount,
-                                        amount_max: sub.amount_max,
-                                        units: sub.units,
-                                        matchedIngredient: null,
-                                        refIngredient: {
-                                            _id: sub._id,
-                                            name: sub.name,
-                                            strength: sub.strength,
-                                            description: sub.description,
-                                            origin: sub.origin,
-                                            category: sub.category,
-                                        } as SchemaIngredient,
-                                    } as SubstituteCocktailIngredient
-                                }),
-                                refIngredient: {
-                                    _id: i._id,
-                                    name: i.name,
-                                    strength: i.strength,
-                                    description: i.description,
-                                    origin: i.origin,
-                                    category: i.category,
-                                } as SchemaIngredient,
-                            } as CocktailIngredient
-                        })
-                    }
-                } as LocalSchema
-            } else {
-                result.value = {
-                    ...parsed,
-                    recipe: {
-                        ...parsed.recipe,
-                        ingredients: parsed.recipe?.ingredients?.map(i => {
-                            return {
-                                ...i,
-                                _source: null,
-                                matchedIngredient: null,
-                                refIngredient: parsed.ingredients.find(ing => ing._id == i._id),
-                                substitutes: i.substitutes?.map(sub => {
-                                    return {
-                                        ...sub,
-                                        matchedIngredient: null,
-                                        refIngredient: parsed.ingredients.find(ing => ing._id == sub._id),
-                                    }
-                                })
-                            }
-                        })
-                    }
-                } as LocalSchema
-            }
-        }
-    } catch (e) {
-        console.error('Unable to parse JSON', e)
+    if (!source.value.json) {
+        return
     }
-    isLoading.value = false
+
+    jsonImporter.importFromJson(source.value.json)
+    result.value = jsonImporter.result.value
+    if (result.value) {
+        findSimilarCocktails(result.value.name)
+    }
 }
 
 async function fromHtml() {
-    isLoading.value = true
-    const resp = (await BarAssistantClient.scrapeCocktail('http://barassistant.app', source.value.html))?.data ?? null
-    isLoading.value = false
-    if (resp) {
-        const schema = resp.schema
-        if (!schema) {
-            return
-        }
-
-        findSimilarCocktails(schema.recipe.name)
-
-        result.value = {
-            ...schema,
-            recipe: {
-                ...schema.recipe,
-                ingredients: schema.recipe?.ingredients?.map(i => {
-                    return {
-                        ...i,
-                        _source: resp.scraper_meta.find(m => m._id == i._id)?.source,
-                        matchedIngredient: null,
-                        refIngredient: schema.ingredients.find(ing => ing._id == i._id),
-                    }
-                })
-            }
-        } as LocalSchema
+    if (!source.value.html) {
+        return
     }
+
+    isLoading.value = true
+    htmlImporter.scrapeFromHtml(source.value.html).then(() => {
+        result.value = htmlImporter.result.value
+        if (result.value) {
+            findSimilarCocktails(result.value.name)
+        }
+    }).catch(e => {
+        toast.error(e.message)
+    }).finally(() => {
+        isLoading.value = false
+    })
 }
 
-function manuallyMatch(ing: ImportResult['ingredients'][0]) {
+function manuallyMatch(ing: ImportResult['ingredients'][0]|ImportResult['ingredients'][0]['substitutes'][0]) {
     showIngredientDialog.value = true
     ingredientNameMatch.value = ing
 }
@@ -347,9 +203,9 @@ function removeIngredient(ingredient: ImportResult['ingredients'][0]) {
     )
 }
 
-function removeSubIngredient(parentIngredient: CocktailIngredient, ingredient: string) {
-    parentIngredient?.substitutes?.splice(
-        parentIngredient?.substitutes?.findIndex(i => i._id == ingredient),
+function removeSubIngredient(parentIngredient: ImportResult['ingredients'][0], ingredient: ImportResult['ingredients'][0]['substitutes'][0]) {
+    parentIngredient.substitutes?.splice(
+        parentIngredient?.substitutes?.findIndex(i => i.name == ingredient.name),
         1
     )
 }
@@ -398,16 +254,16 @@ async function getMethod(methodName: string): Promise<CocktailMethod | null> {
     }
 }
 
-async function getOrCreateIngredient(ingredient: SchemaIngredient): Promise<FullIngredient | null> {
+async function getOrCreateIngredient(ingredientName: string): Promise<FullIngredient | null> {
     try {
-        const response = await BarAssistantClient.getIngredients({ 'filter[name_exact]': ingredient.name.toLowerCase(), per_page: 1 })
+        const response = await BarAssistantClient.getIngredients({ 'filter[name_exact]': ingredientName.toLowerCase(), per_page: 1 })
         const dbIngredient = response?.data?.[0] ?? null
 
         if (dbIngredient) {
             return dbIngredient
         }
 
-        const newIngredientId = await BarAssistantClient.saveIngredient({name: ingredient.name, description: ingredient.description, origin: ingredient.origin, strength: ingredient.strength ?? 0.0})
+        const newIngredientId = await BarAssistantClient.saveIngredient({name: ingredientName})
         const newIngredient = await BarAssistantClient.getIngredient(newIngredientId)
 
         return newIngredient?.data ?? null
@@ -422,23 +278,25 @@ async function finishImporting() {
         return
     }
 
-    if (result.value.recipe.glass) {
-        result.value.recipe.matchedGlass = (await getGlass(result.value.recipe.glass)) ?? null
+    let matchedGlass = null
+    if (result.value.glassName) {
+        matchedGlass = (await getGlass(result.value.glassName)) ?? null
     }
 
-    if (result.value.recipe.method) {
-        result.value.recipe.matchedMethodId = (await getMethod(result.value.recipe.method))?.id ?? null
+    let matchedMethod = null
+    if (result.value.methodName) {
+        matchedMethod = (await getMethod(result.value.methodName)) ?? null
     }
 
-    for (const ingredient of result.value.recipe.ingredients) {
+    for (const ingredient of result.value.ingredients) {
         if (ingredient.matchedIngredient) {
             continue
         }
 
-        const foundIngredient = await getOrCreateIngredient(ingredient.refIngredient)
+        const foundIngredient = await getOrCreateIngredient(ingredient.name)
         if (foundIngredient) {
             ingredient.matchedIngredient = {
-                id: foundIngredient.id.toString(),
+                id: foundIngredient.id,
                 slug: foundIngredient.slug,
                 name: foundIngredient.name,
             }
@@ -450,10 +308,10 @@ async function finishImporting() {
                     continue
                 }
 
-                const foundIngredient = await getOrCreateIngredient(substitute.refIngredient)
+                const foundIngredient = await getOrCreateIngredient(substitute.name)
                 if (foundIngredient) {
                     substitute.matchedIngredient = {
-                        id: foundIngredient.id.toString(),
+                        id: foundIngredient.id,
                         slug: foundIngredient.slug,
                         name: foundIngredient.name,
                     }
@@ -468,8 +326,8 @@ async function finishImporting() {
         instructions: result.value.instructions,
         garnish: result.value.garnish,
         source: result.value.source,
-        method: {id: result.value.matchedMethodId},
-        glass: result.value.matchedGlass,
+        method: {id: matchedMethod?.id},
+        glass: matchedGlass,
         images: result.value.images?.map((img, idx) => ({
             url: img.uri,
             file: img.uri,
@@ -737,11 +595,11 @@ init()
                     <div v-if="sub.matchedIngredient != null" class="scraper-ingredients__ingredient__existing">
                         <span style="letter-spacing: -4px;">&boxur;&rtrif;</span> {{ t('save-as') }} "{{ sub.matchedIngredient.name }}" &middot; <a href="#" @click.prevent="sub.matchedIngredient = null">{{ t('cancel') }}</a>
                     </div>
-                    <!-- <div class="scraper-ingredients__ingredient__actions">
+                    <div class="scraper-ingredients__ingredient__actions">
                         <a href="#" @click.prevent="manuallyMatch(sub)">{{ t('import.manually-match') }}</a>
                         &middot;
-                        <a href="#" @click.prevent="removeSubIngredient(ingredient, ingredient._id)">{{ t('remove') }}</a>
-                    </div> -->
+                        <a href="#" @click.prevent="removeSubIngredient(ingredient, sub)">{{ t('remove') }}</a>
+                    </div>
                 </div>
             </template>
             <SaltRimDialog v-if="ingredientNameMatch" v-model="showIngredientDialog">
