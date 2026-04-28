@@ -404,7 +404,7 @@ export default class BarAssistantClient {
     return (await client.GET('/members/{id}', { params: { path: { id: id } } })).data
   }
 
-  static async saveUser(data: components["schemas"]["UserRequest"]) {
+  static async saveMember(data: components["schemas"]["UserRequest"]) {
     return (await client.POST('/members', { body: data })).data
   }
 

@@ -3,23 +3,8 @@
         <OverlayLoader v-if="isLoading" />
         <div class="dialog-title">{{ dialogTitle }}</div>
         <div class="form-group">
-            <label class="form-label form-label--required" for="name">{{ $t('users.display-name') }}:</label>
-            <input id="name" v-model="user.name" class="form-input" type="text" required>
-        </div>
-        <div class="form-group">
             <label class="form-label form-label--required" for="email">{{ $t('email') }}:</label>
             <input id="email" v-model="user.email" class="form-input" type="email" required>
-        </div>
-        <div class="form-group">
-            <label class="form-label" :class="{ 'form-label--required': !user.id }" for="password">
-                <template v-if="!user.id">
-                    {{ $t('password') }}:
-                </template>
-                <template v-else>
-                    {{ $t('update-password') }}:
-                </template>
-            </label>
-            <input id="password" v-model="user.password" class="form-input" type="password" :required="!user.id">
         </div>
         <div class="form-group">
             <label class="form-label">{{ $t('users.role') }}:</label>
@@ -76,35 +61,18 @@ export default {
             this.isLoading = true
 
             const postData = {
-                name: this.user.name,
                 email: this.user.email,
                 role_id: this.user.role.role_id,
             }
 
-            if (this.user.id) {
-                if (this.user.password) {
-                    postData.password = this.user.password
-                }
-
-                BarAssistantClient.updateUser(this.user.id, postData).then(() => {
-                    this.isLoading = false
-                    this.$toast.default(this.$t('users.update-success'))
-                    this.$emit('userDialogClosed')
-                }).catch(e => {
-                    this.$toast.error(e.message)
-                    this.isLoading = false
-                })
-            } else {
-                postData.password = this.user.password
-                BarAssistantClient.saveUser(postData).then(() => {
-                    this.isLoading = false
-                    this.$toast.default(this.$t('users.add-success'))
-                    this.$emit('userDialogClosed')
-                }).catch(e => {
-                    this.$toast.error(e.message)
-                    this.isLoading = false
-                })
-            }
+            BarAssistantClient.saveMember(postData).then(() => {
+                this.$toast.default(this.$t('users.add-success'))
+                this.$emit('userDialogClosed')
+            }).catch(e => {
+                this.$toast.error('Unable to add a member. Make sure the user exists and is not already a member.')
+            }).finally(() => {
+                this.isLoading = false
+            })
         }
     }
 }

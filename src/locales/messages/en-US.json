@@ -101,15 +101,15 @@
   "profile": "Profile",
   "filename": "File name",
   "users": {
-    "title": "Users",
-    "add": "Add user",
-    "confirm-delete": "This will permanently delete user with name \"{name}\".",
-    "delete-success": "User deleted successfully",
-    "edit": "Edit user",
-    "update-success": "User updated successfully.",
-    "role": "Bar role",
+    "title": "Members",
+    "add": "Add member",
+    "confirm-delete": "This will permanently delete member with name \"{name}\".",
+    "delete-success": "Member deleted successfully",
+    "edit": "Edit member",
+    "update-success": "Member updated successfully.",
+    "role": "Role",
     "display-name": "Display name",
-    "add-success": "User added successfully."
+    "add-success": "Member added successfully."
   },
   "filters": "Filters",
   "sort": "Sort by",

@@ -169,7 +169,8 @@ async function submit() {
     isLoading.value = true
     if (bar.value.id) {
         try {
-            const data = (await BarAssistantClient.updateBar(bar.value.id, postData))?.data ?? null
+            await BarAssistantClient.updateBar(bar.value.id, postData)
+            const data = (await BarAssistantClient.getBar(bar.value.id))?.data
             if (data) {
                 appState.setBar(data)
                 toast.default(t('bars.edit-success', { name: data.name }))
