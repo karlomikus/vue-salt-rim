@@ -4442,7 +4442,7 @@ export interface components {
                  * @example https://example.com/image.jpg
                  * @example /path/to/image.png
                  */
-                uri: string;
+                uri: string | unknown | unknown;
                 /** @description Computed placeholder hash, like thumbhash, blurhash and similar */
                 placeholder_hash?: string | null;
                 /**
@@ -5649,6 +5649,10 @@ export interface operations {
                     abv_max?: number;
                     /** @description Show only cocktails whose main ingredient is in the given list. Comma separated list of ingredient IDs */
                     main_ingredient_id?: string;
+                    /** @description Show only cocktails that contain this ingredient. Comma separated list of ingredient IDs */
+                    ingredient_id?: string;
+                    /** @description Show only cocktails that contain this substitute. Comma separated list of ingredient IDs */
+                    ingredient_substitute_id?: string;
                     /** @description Filter by total number of ingredients */
                     total_ingredients?: number;
                     /** @description Filter by total number of missing ingredients */
@@ -5659,6 +5663,10 @@ export interface operations {
                     specific_ingredients?: string;
                     /** @description Show cocktails that do not contain given ingredient ID(s) */
                     ignore_ingredients?: string;
+                    /** @description Show only cocktails that user can't make */
+                    locked_user_cocktails?: boolean;
+                    /** @description Show only cocktails that bar can't make */
+                    locked_bar_cocktails?: boolean;
                 };
                 /** @description Sort by attributes. Available attributes: `name`, `created_at`, `average_rating`, `user_rating`, `abv`, `total_ingredients`, `missing_ingredients`, `missing_bar_ingredients`, `favorited_at`, `random`. */
                 sort?: string;

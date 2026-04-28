@@ -43,7 +43,15 @@ export function useHtmlImport() {
                         amount: i.amount ?? null,
                         amount_max: i.amount_max ?? null,
                         note: i.note ?? null,
-                        substitutes: [],
+                        substitutes: i.substitutes?.map(s => {
+                            return {
+                                matchedIngredient: null,
+                                name: s.name,
+                                units: s.units ?? null,
+                                amount: s.amount ?? null,
+                                amount_max: s.amount_max ?? null,
+                            }
+                        }) ?? [],
                     }
                 }) ?? []
             }
