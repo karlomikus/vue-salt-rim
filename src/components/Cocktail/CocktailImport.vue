@@ -19,6 +19,8 @@ import AppState from '@/AppState'
 import { useBookmarklet } from '@/composables/useBookmarklet'
 import IngredientFinderBasic from '../IngredientFinderBasic.vue'
 import { useBasicSearch } from '@/composables/useBasicSearch'
+import type { ImportResult } from '@/schema/ImportResult'
+import { useUrlImport } from '@/composables/useUrlImport'
 
 interface Ingredient {
     id: string,
@@ -52,6 +54,7 @@ type LocalSchema = Draft2Schema & SchemaWithMatchedData
 type CocktailIngredient = LocalSchema["recipe"]["ingredients"][0]
 type SubstituteCocktailIngredient = LocalSchema["recipe"]["ingredients"][0]["substitutes"][0]
 
+const urlImporter = useUrlImport();
 const { t } = useI18n()
 const router = useRouter()
 const route = useRoute()
@@ -60,7 +63,7 @@ const shouldUseBasicSearch = useBasicSearch()
 const isLoading = ref(false)
 const isImporting = ref(false)
 const showIngredientDialog = ref(false)
-const ingredientEdit = ref<CocktailIngredient | SubstituteCocktailIngredient | null>(null)
+const ingredientNameMatch = ref<ImportResult['ingredients'][0] | null>(null)
 const importType = ref<'url' | 'json' | 'bookmarklet' | 'ai' | 'html'>('url')
 const similarCocktails = ref([] as Cocktail[])
 const isLoadingSimilar = ref(false)
@@ -79,7 +82,7 @@ const source = ref<{
     ai_content: null,
     html: null,
 })
-const result = ref<LocalSchema>({} as LocalSchema)
+const result = ref<ImportResult|null>(null)
 const cocktailTags = computed({
     get() {
         return result.value.recipe?.tags?.join(',')
@@ -109,14 +112,14 @@ function clearImport() {
         ai_content: null,
         html: null,
     }
-    ingredientEdit.value = null
+    ingredientNameMatch.value = null
     result.value = {} as LocalSchema
 }
 
 async function importCocktail() {
     similarCocktails.value = []
-    ingredientEdit.value = null
-    result.value = {} as LocalSchema
+    ingredientNameMatch.value = null
+    // result.value = {} as LocalSchema
     similarCocktails.value = []
 
     if (importType.value == 'url') {
@@ -142,28 +145,10 @@ function fromUrl() {
     }
 
     isLoading.value = true
-    BarAssistantClient.scrapeCocktail(source.value.url).then(resp => {
-        const schema = resp?.data.schema
-        if (!schema) {
-            return
-        }
+    urlImporter.scrapeCocktail(source.value.url).then(() => {
+        // findSimilarCocktails(schema.recipe.name)
 
-        findSimilarCocktails(schema.recipe.name)
-
-        result.value = {
-            ...schema,
-            recipe: {
-                ...schema.recipe,
-                ingredients: schema.recipe?.ingredients?.map(i => {
-                    return {
-                        ...i,
-                        _source: resp?.data.scraper_meta.find(m => m._id == i._id)?.source,
-                        matchedIngredient: null,
-                        refIngredient: schema.ingredients.find(ing => ing._id == i._id),
-                    }
-                })
-            }
-        } as LocalSchema
+        result.value = urlImporter.result.value
 
         isLoading.value = false
     }).catch(e => {
@@ -346,14 +331,18 @@ async function fromHtml() {
     }
 }
 
-function manuallyMatch(ingredient: CocktailIngredient | SubstituteCocktailIngredient) {
+function manuallyMatch(ing: ImportResult['ingredients'][0]) {
     showIngredientDialog.value = true
-    ingredientEdit.value = ingredient
+    ingredientNameMatch.value = ing
 }
 
-function removeIngredient(ingredient: string) {
-    result.value.recipe?.ingredients?.splice(
-        result.value.recipe?.ingredients?.findIndex(i => i._id == ingredient),
+function removeIngredient(ingredient: ImportResult['ingredients'][0]) {
+    if (!result.value) {
+        return
+    }
+
+    result.value.ingredients?.splice(
+        result.value.ingredients?.findIndex(i => i.name == ingredient.name),
         1
     )
 }
@@ -366,12 +355,12 @@ function removeSubIngredient(parentIngredient: CocktailIngredient, ingredient: s
 }
 
 function handleIngredientEdit(selectedIngredient: SearchResult) {
-    if (ingredientEdit.value == null) {
+    if (ingredientNameMatch.value == null) {
         return
     }
 
-    ingredientEdit.value.matchedIngredient = {
-        id: selectedIngredient.id.toString(),
+    ingredientNameMatch.value.matchedIngredient = {
+        id: selectedIngredient.id,
         slug: selectedIngredient.slug,
         name: selectedIngredient.name,
     }
@@ -429,6 +418,10 @@ async function getOrCreateIngredient(ingredient: SchemaIngredient): Promise<Full
 
 async function finishImporting() {
     isImporting.value = true
+    if (!result.value) {
+        return
+    }
+
     if (result.value.recipe.glass) {
         result.value.recipe.matchedGlass = (await getGlass(result.value.recipe.glass)) ?? null
     }
@@ -470,34 +463,30 @@ async function finishImporting() {
     }
 
     const cocktail = {
-        name: result.value.recipe.name,
-        description: result.value.recipe.description,
-        instructions: result.value.recipe.instructions,
-        garnish: result.value.recipe.garnish,
-        source: result.value.recipe.source,
-        method: {id: result.value.recipe.matchedMethodId},
-        glass: result.value.recipe.matchedGlass,
-        images: result.value.recipe.images?.map(img => ({
+        name: result.value.name,
+        description: result.value.description,
+        instructions: result.value.instructions,
+        garnish: result.value.garnish,
+        source: result.value.source,
+        method: {id: result.value.matchedMethodId},
+        glass: result.value.matchedGlass,
+        images: result.value.images?.map((img, idx) => ({
             url: img.uri,
             file: img.uri,
-            file_path: 'Image from: ' + result.value.recipe.source,
+            file_path: 'Image from: ' + result.value?.source,
             copyright: img.copyright,
-            sort: img.sort,
+            sort: idx + 1,
         })) ?? [],
-        tags: result.value.recipe.tags?.map(tag => ({ name: tag })),
-        ingredients: result.value.recipe.ingredients.map(i => {
-            const ing = i as CocktailIngredient
-
+        tags: result.value.tags?.map(tag => ({ name: tag })),
+        ingredients: result.value.ingredients.map((ing, idx) => {
             return {
                 units: ing.units,
                 amount: ing.amount,
                 amount_max: ing.amount_max,
-                optional: ing.optional,
-                sort: ing.sort,
+                optional: false,
+                sort: idx + 1,
                 note: ing.note,
-                substitutes: ing.substitutes?.map(s => {
-                    const sub = s as SubstituteCocktailIngredient
-
+                substitutes: ing.substitutes?.map(sub => {
                     return {
                         units: sub.units,
                         amount: sub.amount,
@@ -644,41 +633,40 @@ init()
                 <RouterLink :to="{name: 'cocktails.show', params: { id: cocktail.slug }}" v-for="cocktail in similarCocktails" :key="cocktail.id">{{ cocktail.name }}</RouterLink>
             </div>
         </div>
-        <div v-if="result.recipe" class="scraper-form">
+        <div v-if="result" class="scraper-form">
             <h3 class="form-section-title">{{ t('recipe-information') }}</h3>
             <div class="block-container block-container--padded">
                 <div class="form-group">
                     <label class="form-label form-label--required" for="name">{{ t('name') }}</label>
-                    <input id="name" v-model="result.recipe.name" type="text" class="form-input" required>
+                    <input id="name" v-model="result.name" type="text" class="form-input" required>
                 </div>
                 <div class="form-group">
                     <label class="form-label" for="description">{{ t('description') }}</label>
-                    <textarea id="description" v-model="result.recipe.description" class="form-input" rows="4"></textarea>
+                    <textarea id="description" v-model="result.description" class="form-input" rows="4"></textarea>
                 </div>
                 <div class="form-group">
                     <label class="form-label" for="source">{{ t('source') }}</label>
-                    <input id="source" v-model="result.recipe.source" type="text" class="form-input">
+                    <input id="source" v-model="result.source" type="text" class="form-input">
                 </div>
                 <div class="form-group">
                     <label class="form-label" for="glass">{{ t('glass-type.title') }}</label>
-                    <input id="glass" v-model="result.recipe.glass" type="text" class="form-input">
+                    <input id="glass" v-model="result.glassName" type="text" class="form-input">
                 </div>
                 <div class="form-group">
                     <label class="form-label form-label--required" for="instructions">{{ t('instructions') }}</label>
-                    <textarea id="instructions" v-model="result.recipe.instructions" class="form-input" rows="4" required></textarea>
+                    <textarea id="instructions" v-model="result.instructions" class="form-input" rows="4" required></textarea>
                 </div>
                 <div class="form-group">
                     <label class="form-label" for="garnish">{{ t('garnish') }}</label>
-                    <textarea id="garnish" v-model="result.recipe.garnish" class="form-input" rows="3"></textarea>
+                    <textarea id="garnish" v-model="result.garnish" class="form-input" rows="3"></textarea>
                 </div>
                 <div class="form-group">
                     <label class="form-label" for="method">{{ t('method.title') }}</label>
-                    <input id="method" v-model="result.recipe.method" type="text" class="form-input">
+                    <input id="method" v-model="result.methodName" type="text" class="form-input">
                 </div>
-                <template v-for="image in result.recipe.images" :key="image.uri">
+                <template v-for="image in result.images" :key="image.uri">
                     <div class="form-group">
                         <label class="form-label" for="image_url">{{ t('generate-image-dialog.preview') }}</label>
-                        <!-- <input id="image_url" v-model="image.uri" type="text" class="form-input"> -->
                         <img class="import-image-preview" :src="image.uri" alt="Preview image of cocktail from the scraped URL">
                     </div>
                     <div class="form-group">
@@ -692,13 +680,13 @@ init()
                 </div>
             </div>
             <h3 class="form-section-title">{{ t('ingredient.ingredients') }}</h3>
-            <template v-for="(ingredient, idx) in result.recipe.ingredients" :key="idx">
+            <template v-for="(ingredient, idx) in result.ingredients" :key="idx">
                 <div class="block-container block-container--padded scraper-ingredients__ingredient">
-                    <p v-if="ingredient._source"><strong>{{ t('source') }}:</strong> {{ ingredient._source }}</p>
+                    <p v-if="ingredient.source"><strong>{{ t('source') }}:</strong> {{ ingredient.source }}</p>
                     <div class="scraper-ingredients__ingredient__inputs">
                         <div class="form-group">
                             <label class="form-label form-label--required" :for="'ingredient_name_' + idx">{{ t('name') }}</label>
-                            <input :id="'ingredient_name_' + idx" v-model="ingredient.refIngredient.name" type="text" class="form-input" :disabled="ingredient.matchedIngredient != null" required>
+                            <input :id="'ingredient_name_' + idx" v-model="ingredient.name" type="text" class="form-input" :disabled="ingredient.matchedIngredient != null" required>
                         </div>
                         <div class="form-group">
                             <label class="form-label form-label--required" :for="'ingredient_amount_' + idx">{{ t('amount') }}</label>
@@ -723,15 +711,15 @@ init()
                     <div class="scraper-ingredients__ingredient__actions">
                         <a href="#" @click.prevent="manuallyMatch(ingredient)">{{ t('import.manually-match') }}</a>
                         &middot;
-                        <a href="#" @click.prevent="removeIngredient(ingredient._id)">{{ t('remove') }}</a>
+                        <a href="#" @click.prevent="removeIngredient(ingredient)">{{ t('remove') }}</a>
                     </div>
                 </div>
-                <div v-for="(sub, sidx) in ingredient.substitutes" :key="sub._id" class="block-container block-container--padded scraper-ingredients__ingredient" style="margin-left: 3rem;">
+                <div v-for="(sub, sidx) in ingredient.substitutes" :key="sidx" class="block-container block-container--padded scraper-ingredients__ingredient" style="margin-left: 3rem;">
                     <p><strong>{{ t('substitutes') }}:</strong></p>
                     <div class="scraper-ingredients__ingredient__inputs">
                         <div class="form-group">
                             <label class="form-label" :for="'sub_ingredient_name_' + idx">{{ t('name') }}</label>
-                            <input :id="'sub_ingredient_name_' + idx" v-model="sub.refIngredient.name" type="text" class="form-input" :disabled="sub.matchedIngredient != null">
+                            <input :id="'sub_ingredient_name_' + idx" v-model="sub.name" type="text" class="form-input" :disabled="sub.matchedIngredient != null">
                         </div>
                         <div class="form-group">
                             <label class="form-label" :for="'sub_ingredient_amount_' + sidx">{{ t('amount') }}</label>
@@ -749,20 +737,20 @@ init()
                     <div v-if="sub.matchedIngredient != null" class="scraper-ingredients__ingredient__existing">
                         <span style="letter-spacing: -4px;">&boxur;&rtrif;</span> {{ t('save-as') }} "{{ sub.matchedIngredient.name }}" &middot; <a href="#" @click.prevent="sub.matchedIngredient = null">{{ t('cancel') }}</a>
                     </div>
-                    <div class="scraper-ingredients__ingredient__actions">
+                    <!-- <div class="scraper-ingredients__ingredient__actions">
                         <a href="#" @click.prevent="manuallyMatch(sub)">{{ t('import.manually-match') }}</a>
                         &middot;
                         <a href="#" @click.prevent="removeSubIngredient(ingredient, ingredient._id)">{{ t('remove') }}</a>
-                    </div>
+                    </div> -->
                 </div>
             </template>
-            <SaltRimDialog v-if="ingredientEdit" v-model="showIngredientDialog">
+            <SaltRimDialog v-if="ingredientNameMatch" v-model="showIngredientDialog">
                 <template #trigger><span></span></template>
                 <template #dialog>
                     <div class="dialog-title">{{ t('import.manually-match') }}</div>
-                    <p style="margin-bottom: 1rem;">{{ t('import.manual-match-notice', {name: ingredientEdit.refIngredient.name}) }}</p>
-                    <IngredientFinderBasic v-if="shouldUseBasicSearch" :initial-query="ingredientEdit.refIngredient.name" @ingredient-selected="handleIngredientEdit"></IngredientFinderBasic>
-                    <IngredientFinder v-else-if="!shouldUseBasicSearch && appState.bar.search_token" :search-token="appState.bar.search_token" :initial-query="ingredientEdit.refIngredient.name" @ingredient-selected="handleIngredientEdit"></IngredientFinder>
+                    <p style="margin-bottom: 1rem;">{{ t('import.manual-match-notice', {name: ingredientNameMatch.name}) }}</p>
+                    <IngredientFinderBasic v-if="shouldUseBasicSearch" :initial-query="ingredientNameMatch.name" @ingredient-selected="handleIngredientEdit"></IngredientFinderBasic>
+                    <IngredientFinder v-else-if="!shouldUseBasicSearch && appState.bar.search_token" :search-token="appState.bar.search_token" :initial-query="ingredientNameMatch.name" @ingredient-selected="handleIngredientEdit"></IngredientFinder>
                     <div class="dialog-actions">
                         <button type="button" class="button button--outline" @click="showIngredientDialog = false">{{ t('close') }}</button>
                     </div>

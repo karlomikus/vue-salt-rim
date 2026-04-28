@@ -1580,6 +1580,26 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/bars/{id}/ingredients/recommend": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Recommend bar ingredients
+         * @description Shows a list of ingredients that will increase total bar shelf cocktails when added to bar shef
+         */
+        get: operations["recommendBarIngredients"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/auth/sso/{provider}/redirect": {
         parameters: {
             query?: never;
@@ -1852,26 +1872,6 @@ export interface paths {
          * @description Cocktails that the bar can make with ingredients on their shelf
          */
         get: operations["listBarShelfCocktails"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/bars/{id}/ingredients/recommend": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * Recommend bar ingredients
-         * @description Shows a list of ingredients that will increase total bar shelf cocktails when added to bar shef
-         */
-        get: operations["recommendBarIngredients"];
         put?: never;
         post?: never;
         delete?: never;
@@ -4355,13 +4355,6 @@ export interface components {
             role_id: number;
             /** @example admin@example.com */
             email: string;
-            /** @example Bar Tender */
-            name: string;
-            /**
-             * Format: password
-             * @example password
-             */
-            password: string;
         };
         UtensilRequest: {
             /** @example Shaker */
@@ -4382,185 +4375,136 @@ export interface components {
          */
         OauthProvider: "github" | "google" | "gitlab" | "authentik" | "authelia" | "kanidm" | "keycloak" | "pocketid" | "zitadel";
         /**
-         * Cocktail recipe - Draft 02
-         * @description Schema for a cocktail recipe including detailed ingredient data. Draft 02 splits ingredients and recipe data.
+         * Cocktail recipe - Draft 04
+         * @description Schema for a cocktail recipe.
          */
-        "cocktail-02.schema": {
-            recipe: {
+        "cocktail-04.schema": {
+            /**
+             * @description Name of the recipe
+             * @example Margarita
+             */
+            name: string;
+            /**
+             * @description Recipe instructions
+             * @example Shake all ingredients with ice and strain into a chilled glass.
+             */
+            instructions: string;
+            /**
+             * Format: date-time
+             * @description Date of recipe
+             * @example 2024-07-21T15:30:00Z
+             */
+            created_at?: string | null;
+            /**
+             * @description Source of the recipe, either URL, author or book reference
+             * @example https://example.com/margarita-recipe
+             * @example John Doe
+             * @example Death&Co
+             */
+            source?: string | null;
+            /**
+             * @description Recipe description
+             * @example A refreshing blend of tequila, lime juice, and triple sec.
+             */
+            description?: string | null;
+            /**
+             * @description Cocktail garnish
+             * @example Lime wheel
+             */
+            garnish?: string | null;
+            /**
+             * @description Total ABV of made cocktail
+             * @example 12.5
+             */
+            abv?: number | null;
+            /**
+             * @description Short keywords to describe cocktail
+             * @example [
+             *       "refreshing",
+             *       "citrus",
+             *       "classic"
+             *     ]
+             */
+            tags?: string[];
+            /**
+             * @description Glassware type, like 'Coupe', 'Highball', etc.
+             * @example Coupe
+             */
+            glass?: string | null;
+            /**
+             * @description Cocktail method
+             * @example Shake
+             */
+            method?: string | null;
+            /** @description List of cocktail images */
+            images?: {
                 /**
-                 * Format: slug
-                 * @description The unique identifier for a cocktail
-                 * @example margarita
+                 * @example https://example.com/image.jpg
+                 * @example /path/to/image.png
                  */
-                _id: string;
+                uri: string;
+                /** @description Computed placeholder hash, like thumbhash, blurhash and similar */
+                placeholder_hash?: string | null;
                 /**
-                 * @description Name of the recipe
-                 * @example Margarita
+                 * @description Image copyright information
+                 * @example © 2024 Bar Assistant
+                 */
+                copyright: string;
+            }[];
+            /** @description List of cocktail ingredients and substitutes (can be empty) */
+            ingredients?: {
+                /**
+                 * @description Name of the ingredient
+                 * @example Tequila
                  */
                 name: string;
                 /**
-                 * @description Recipe instructions
-                 * @example Shake all ingredients with ice and strain into a chilled glass.
+                 * @description Amount of the ingredient
+                 * @example 50
                  */
-                instructions: string;
+                amount: number;
                 /**
-                 * Format: date-time
-                 * @description Date of recipe
-                 * @example 2024-07-21T15:30:00Z
+                 * @description Units for the amount
+                 * @example ml
                  */
-                created_at?: string | null;
+                units: string;
                 /**
-                 * @description Recipe description
-                 * @example A refreshing blend of tequila, lime juice, and triple sec.
+                 * @description Indicates if the ingredient is optional
+                 * @example false
                  */
-                description?: string | null;
+                optional?: boolean;
                 /**
-                 * @description Source of the recipe, either URL or Book referece
-                 * @example https://example.com/margarita-recipe
+                 * @description Maximum amount of the ingredient
+                 * @example 60
                  */
-                source?: string | null;
+                amount_max?: number | null;
                 /**
-                 * @description Cocktail garnish
-                 * @example Lime wheel
+                 * @description Additional note related to the cocktail ingredient
+                 * @example Preferably blanco
                  */
-                garnish?: string | null;
-                /**
-                 * @description Total ABV of made cocktail
-                 * @example 12.5
-                 */
-                abv?: number | null;
-                /**
-                 * @description Short keywords to describe cocktail
-                 * @example [
-                 *       "refreshing",
-                 *       "citrus",
-                 *       "classic"
-                 *     ]
-                 */
-                tags?: string[];
-                /**
-                 * @description Glass type
-                 * @example Coupe
-                 */
-                glass?: string | null;
-                /**
-                 * @description Cocktail method
-                 * @example Shake
-                 */
-                method?: string | null;
-                /**
-                 * @description Required utensils
-                 * @example [
-                 *       "Shaker",
-                 *       "Strainer"
-                 *     ]
-                 */
-                utensils?: string[];
-                /** @description List of cocktail images */
-                images?: {
+                note?: string | null;
+                substitutes?: {
                     /**
-                     * Format: uri
-                     * @example https://example.com/image.jpg
-                     * @example /path/to/image.png
+                     * @description Name of the substitute ingredient
+                     * @example Mezcal
                      */
-                    uri: string;
-                    /** @description Control the representation of the image */
-                    sort?: number;
-                    /** @description Computed placeholder hash, like thumbhash, blurhash and similar */
-                    placeholder_hash?: string | null;
+                    name: string;
                     /**
-                     * @description Image copyright information
-                     * @example © 2024 Bar Assistant
-                     */
-                    copyright: string;
-                }[];
-                /** @description List of cocktail ingredients and substitutes */
-                ingredients?: {
-                    /**
-                     * @description The unique reference for an ingredient from `ingredients` property
-                     * @example tequila
-                     */
-                    _id: string;
-                    /**
-                     * @description Amount of the ingredient
+                     * @description Amount of the substitute ingredient
                      * @example 50
                      */
-                    amount: number;
+                    amount?: number | null;
                     /**
                      * @description Units for the amount
                      * @example ml
                      */
-                    units: string;
+                    units?: string | null;
                     /**
-                     * @description Indicates if the ingredient is optional
-                     * @example false
-                     */
-                    optional?: boolean;
-                    /**
-                     * @description Maximum amount of the ingredient
+                     * @description Maximum amount of the substitute ingredient
                      * @example 60
                      */
                     amount_max?: number | null;
-                    /**
-                     * @description Additional note related to the cocktail ingredient
-                     * @example Preferebly blanco
-                     */
-                    note?: string | null;
-                    substitutes?: {
-                        /**
-                         * @description The unique reference for an ingredient from `ingredients` property
-                         * @example mezcal
-                         */
-                        _id: string;
-                        /**
-                         * @description Amount of the substitute ingredient
-                         * @example 50
-                         */
-                        amount?: number | null;
-                        /**
-                         * @description Units for the amount
-                         * @example ml
-                         */
-                        units?: string | null;
-                        /**
-                         * @description Maximum amount of the substitute ingredient
-                         * @example 60
-                         */
-                        amount_max?: number | null;
-                    }[];
-                    /** @description Sort order for the ingredient */
-                    sort?: number;
                 }[];
-            };
-            /** @description List of ingredients */
-            ingredients: {
-                /**
-                 * @description The unique identifier for an ingredient, used as a refrence in cocktail ingredient list
-                 * @example tequila
-                 */
-                _id: string;
-                /** @example Tequila */
-                name: string;
-                /**
-                 * @description Ingredient ABV
-                 * @example 40
-                 */
-                strength?: number | null;
-                /**
-                 * @description Additional ingredient information
-                 * @example A Mexican spirit made from the blue agave plant.
-                 */
-                description?: string | null;
-                /**
-                 * @description Ingredient origin
-                 * @example Mexico
-                 */
-                origin?: string | null;
-                /**
-                 * @description Category ingredient belongs to
-                 * @example Spirit
-                 */
-                category?: string | null;
             }[];
         };
     };
@@ -8081,12 +8025,10 @@ export interface operations {
                         data: {
                             /** @example schema4 */
                             schema_version: string;
-                            schema: components["schemas"]["cocktail-02.schema"];
+                            schema: components["schemas"]["cocktail-04.schema"];
                             scraper_meta: {
-                                _id: string;
+                                ingredient_name: string;
                                 source: string;
-                                /** @description The HTML content of the scraped page, if available. */
-                                html_content?: string | null;
                             }[];
                         };
                     };
@@ -10408,6 +10350,65 @@ export interface operations {
             };
         };
     };
+    recommendBarIngredients: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Database id of a resource */
+                id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful response */
+            200: {
+                headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data: components["schemas"]["IngredientRecommend"][];
+                    };
+                };
+            };
+            /** @description You are not authorized for this action. */
+            403: {
+                headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data?: components["schemas"]["APIError"];
+                    };
+                };
+            };
+            /** @description Resource record not found. */
+            404: {
+                headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data?: components["schemas"]["APIError"];
+                    };
+                };
+            };
+        };
+    };
     ssoRedirect: {
         parameters: {
             query?: never;
@@ -11208,65 +11209,6 @@ export interface operations {
                             /** @description The total number of items */
                             total?: number;
                         };
-                    };
-                };
-            };
-        };
-    };
-    recommendBarIngredients: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                /** @description Database id of a resource */
-                id: number;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description Successful response */
-            200: {
-                headers: {
-                    /** @description Max number of attempts. */
-                    "x-ratelimit-limit"?: number;
-                    /** @description Remaining number of attempts. */
-                    "x-ratelimit-remaining"?: number;
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": {
-                        data: components["schemas"]["IngredientRecommend"][];
-                    };
-                };
-            };
-            /** @description You are not authorized for this action. */
-            403: {
-                headers: {
-                    /** @description Max number of attempts. */
-                    "x-ratelimit-limit"?: number;
-                    /** @description Remaining number of attempts. */
-                    "x-ratelimit-remaining"?: number;
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": {
-                        data?: components["schemas"]["APIError"];
-                    };
-                };
-            };
-            /** @description Resource record not found. */
-            404: {
-                headers: {
-                    /** @description Max number of attempts. */
-                    "x-ratelimit-limit"?: number;
-                    /** @description Remaining number of attempts. */
-                    "x-ratelimit-remaining"?: number;
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": {
-                        data?: components["schemas"]["APIError"];
                     };
                 };
             };
