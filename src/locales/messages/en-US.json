@@ -221,6 +221,8 @@
   "update-password": "Update password",
   "new-password": "New password",
   "repeat-password": "Repeat password",
+  "change-password": "Change password",
+  "current-password": "Current password",
   "profile-updated": "Your profile is updated",
   "tag": {
     "tags": "Tags",

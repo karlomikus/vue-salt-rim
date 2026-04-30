@@ -31,17 +31,30 @@
                         <option v-for="theme in themes" :key="theme" :value="theme">{{ $t('theme-' + theme) }}</option>
                     </select>
                 </div>
-            </div>
-            <h3 class="form-section-title">{{ $t('password') }}</h3>
-            <div class="block-container block-container--padded">
-                <div class="form-group">
-                    <label class="form-label" for="new-password">{{ $t('new-password') }}:</label>
-                    <input id="new-password" v-model="user.password" class="form-input" type="password">
-                </div>
-                <div class="form-group">
-                    <label class="form-label" for="repeat-new-password">{{ $t('repeat-password') }}:</label>
-                    <input id="repeat-new-password" v-model="user.repeatPassword" class="form-input" type="password">
-                </div>
+                <SaltRimDialog v-model="showPasswordDialog">
+                    <template #trigger>
+                        <button type="button" class="button button--dark" @click.prevent="showPasswordDialog = true">{{ $t('change-password') }}</button>
+                    </template>
+                    <template #dialog>
+                        <div class="dialog-title">{{ $t('password') }}</div>
+                        <div class="form-group">
+                            <label class="form-label" for="new-password">{{ $t('current-password') }}:</label>
+                            <input id="new-password" v-model="currentPassword" class="form-input" type="password">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="new-password">{{ $t('new-password') }}:</label>
+                            <input id="new-password" v-model="user.password" class="form-input" type="password">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="repeat-new-password">{{ $t('repeat-password') }}:</label>
+                            <input id="repeat-new-password" v-model="user.repeatPassword" class="form-input" type="password">
+                        </div>
+                        <div class="dialog-actions">
+                            <button class="button button--outline" @click.prevent="showPasswordDialog = false">{{ $t('cancel') }}</button>
+                            <button class="button button--dark" type="button" @click="submitPaswordChange">{{ $t('save') }}</button>
+                        </div>
+                    </template>
+                </SaltRimDialog>
             </div>
             <template v-if="user.oauth_credentials && user.oauth_credentials.length > 0">
                 <h3 class="form-section-title">{{ $t('sso.profile-providers') }}</h3>
@@ -95,13 +108,15 @@ import Navigation from '@/components/Settings/SettingsNavigation.vue'
 import AppState from '../../AppState'
 import SaltRimCheckbox from '../SaltRimCheckbox.vue'
 import { useTitle } from '@/composables/title'
+import SaltRimDialog from '../Dialog/SaltRimDialog.vue'
 
 export default {
     components: {
         OverlayLoader,
         Navigation,
         PageHeader,
-        SaltRimCheckbox
+        SaltRimCheckbox,
+        SaltRimDialog,
     },
     data() {
         return {
@@ -111,7 +126,9 @@ export default {
                 is_shelf_public: false,
             },
             themes: ['light', 'dark'],
+            showPasswordDialog: false,
             currentTheme: null,
+            currentPassword: null,
             currentLocale: this.$i18n.locale
         }
     },
@@ -162,8 +179,6 @@ export default {
             const postData = {
                 email: this.user.email,
                 name: this.user.name,
-                password: this.user.password,
-                password_confirmation: this.user.repeatPassword,
                 settings: {
                     theme: this.currentTheme,
                     language: null,
@@ -187,11 +202,41 @@ export default {
                 appState.setUser(resp.data)
                 this.isLoading = false
                 this.$toast.default(this.$t('profile-updated'))
-                this.user.password = null
-                this.user.repeatPassword = null
             }).catch(e => {
                 this.isLoading = false
                 this.$toast.error(e.message)
+            })
+        },
+        submitPaswordChange() {
+            if (!this.currentPassword) {
+                this.$toast.error(this.$t('profile.current-password-required'))
+                return
+            }
+
+            if (!this.user.password) {
+                this.$toast.error(this.$t('profile.new-password-required'))
+                return
+            }
+
+            if (this.user.password !== this.user.repeatPassword) {
+                this.$toast.error(this.$t('profile.passwords-do-not-match'))
+                return
+            }
+
+            BarAssistantClient.changePassword({
+                current_password: this.currentPassword,
+                new_password: this.user.password,
+                new_password_confirmation: this.user.repeatPassword,
+            }).then(resp => {
+                this.$toast.default(this.$t('profile-updated'))
+                this.user.password = null
+                this.user.repeatPassword = null
+                this.currentPassword = null
+                this.showPasswordDialog = false
+            }).catch(e => {
+                this.$toast.error(e.message)
+            }).finally(() => {
+                this.isLoading = false
             })
         },
         deleteSSOAccount(cred) {

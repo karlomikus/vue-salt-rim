@@ -92,6 +92,10 @@ export default class BarAssistantClient {
     return (await client.POST('/profile', { body: body })).data
   }
 
+  static async changePassword(body: components["schemas"]["ChangePasswordRequest"]) {
+    return (await client.POST('/profile/change-password', { body: body })).data
+  }
+
   static async requestPasswordResetEmail(email: string) {
     return (await client.POST('/auth/forgot-password', { body: { email: email } })).data
   }

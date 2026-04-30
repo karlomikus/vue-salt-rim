@@ -1436,6 +1436,26 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/profile/change-password": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Change password
+         * @description Change user password
+         */
+        post: operations["changePassword"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/profile/sso/{provider}": {
         parameters: {
             query?: never;
@@ -3987,6 +4007,18 @@ export interface components {
                 [key: string]: string;
             };
         };
+        ChangePasswordRequest: {
+            /**
+             * Format: password
+             * @example newpassword
+             */
+            password: string | null;
+            /**
+             * Format: password
+             * @example current
+             */
+            current_password: string | null;
+        };
         CocktailIngredientRequest: {
             ingredient_id: number;
             name?: string | null;
@@ -4274,11 +4306,6 @@ export interface components {
             email: string;
             settings?: components["schemas"]["ProfileSettings"] | null;
             bar_id?: number | null;
-            /**
-             * Format: password
-             * @example newpassword
-             */
-            password?: string | null;
             is_shelf_public?: boolean;
         };
         ProfileSettings: {
@@ -9880,6 +9907,43 @@ export interface operations {
             };
             /** @description Resource record not found. */
             404: {
+                headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data?: components["schemas"]["APIError"];
+                    };
+                };
+            };
+        };
+    };
+    changePassword: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ChangePasswordRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful response */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description You are not authorized for this action. */
+            403: {
                 headers: {
                     /** @description Max number of attempts. */
                     "x-ratelimit-limit"?: number;
