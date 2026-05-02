@@ -81,14 +81,6 @@
                     </table>
                 </div>
             </template>
-            <template v-if="appState.bar.id">
-                <h3 class="form-section-title">{{ $t('bars.bar') }}</h3>
-                <div class="block-container block-container--padded">
-                    <div class="form-group">
-                        <SaltRimCheckbox id="parent-ingredient-checkbox" v-model="user.is_shelf_public" :label="$t('profile-public-shelf')" :description="$t('profile-public-shelf-description')"></SaltRimCheckbox>
-                    </div>
-                </div>
-            </template>
             <h3 class="form-section-title">{{ $t('data') }}</h3>
             <div class="block-container block-container--padded">
                 <button class="button button--danger" type="button" @click="deleteAccount">{{ $t('delete-my-account') }}</button>
@@ -122,9 +114,7 @@ export default {
         return {
             appState: new AppState(),
             isLoading: false,
-            user: {
-                is_shelf_public: false,
-            },
+            user: {},
             themes: ['light', 'dark'],
             showPasswordDialog: false,
             currentTheme: null,
@@ -150,10 +140,6 @@ export default {
 
             BarAssistantClient.getProfile().then(resp => {
                 this.user = resp.data
-                if (this.appState.bar.id) {
-                    const barMembership = resp.data.memberships.filter(m => m.bar_id == this.appState.bar.id)
-                    this.user.is_shelf_public = barMembership.length > 0 ? barMembership[0].is_shelf_public : false
-                }
 
                 if (resp.data.settings && resp.data.settings.theme) {
                     this.currentTheme = resp.data.settings.theme
@@ -191,11 +177,6 @@ export default {
                 appState.setLanguage(this.currentLocale)
                 this.$i18n.locale = this.currentLocale
                 postData.settings.language = this.currentLocale
-            }
-
-            if (appState.bar.id) {
-                postData.bar_id = appState.bar.id
-                postData.is_shelf_public = this.user.is_shelf_public
             }
 
             BarAssistantClient.updateProfile(postData).then(resp => {

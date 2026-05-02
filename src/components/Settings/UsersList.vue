@@ -36,7 +36,7 @@
                                 <small>{{ user.email }}</small>
                             </td>
                             <td>
-                                {{ $t('roles.name.' + user.role.role_name) }}
+                                {{ $t('roles.name.' + user.role.name) }}
                             </td>
                             <td style="text-align: right;">
                                 <a v-if="user.id != appState.user.id" class="list-group__action" href="#" @click.prevent="deleteUser(user)">{{ $t('remove-from-bar') }}</a>

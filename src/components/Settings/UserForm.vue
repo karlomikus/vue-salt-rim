@@ -4,12 +4,12 @@
         <div class="dialog-title">{{ dialogTitle }}</div>
         <div class="form-group">
             <label class="form-label form-label--required" for="email">{{ $t('email') }}:</label>
-            <input id="email" v-model="user.email" class="form-input" type="email" required>
+            <input id="email" v-model="user.email" class="form-input" type="email" :disabled="user.id != null" required>
         </div>
         <div class="form-group">
             <label class="form-label">{{ $t('users.role') }}:</label>
             <div class="user-roles">
-                <SaltRimRadio v-for="role in roles" :key="role.id" v-model="user.role.role_id" :value="role.id" :title="role.name" :description="role.description"></SaltRimRadio>
+                <SaltRimRadio v-for="role in roles" :key="role.id" v-model="user.role.id" :value="role.id" :title="role.name" :description="role.description"></SaltRimRadio>
             </div>
         </div>
         <div class="dialog-actions">
@@ -60,19 +60,35 @@ export default {
         submit() {
             this.isLoading = true
 
-            const postData = {
-                email: this.user.email,
-                role_id: this.user.role.role_id,
-            }
+            if (this.user.id) {
+                const postData = {
+                    email: this.user.email,
+                    role_id: this.user.role.id,
+                }
 
-            BarAssistantClient.saveMember(postData).then(() => {
-                this.$toast.default(this.$t('users.add-success'))
-                this.$emit('userDialogClosed')
-            }).catch(e => {
-                this.$toast.error('Unable to add a member. Make sure the user exists and is not already a member.')
-            }).finally(() => {
-                this.isLoading = false
-            })
+                BarAssistantClient.updateMember(this.user.id, postData).then(() => {
+                    this.$toast.default(this.$t('users.update-success'))
+                    this.$emit('userDialogClosed')
+                }).catch(e => {
+                    this.$toast.error('Unable to update a member.')
+                }).finally(() => {
+                    this.isLoading = false
+                })
+            } else {
+                const postData = {
+                    email: this.user.email,
+                    role_id: this.user.role.id,
+                }
+
+                BarAssistantClient.saveMember(postData).then(() => {
+                    this.$toast.default(this.$t('users.add-success'))
+                    this.$emit('userDialogClosed')
+                }).catch(e => {
+                    this.$toast.error('Unable to add a member. Make sure the user exists and is not already a member.')
+                }).finally(() => {
+                    this.isLoading = false
+                })
+            }
         }
     }
 }

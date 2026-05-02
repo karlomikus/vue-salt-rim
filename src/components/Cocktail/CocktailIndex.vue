@@ -35,7 +35,6 @@
                         </SaltRimDialog>
                     </Refinement>
                     <Refinement v-if="refineCollections.length > 0" id="collection" v-model="activeFilters.collection_id" :title="$t('collections.title')" :refinements="refineCollections" @change="updateRouterPath"></Refinement>
-                    <Refinement v-if="refineUserShelves.length > 0" id="user_shelves" v-model="activeFilters.user_shelves" :title="$t('public-shelves')" :refinements="refineUserShelves" @change="updateRouterPath"></Refinement>
                     <Refinement id="users" v-model="activeFilters.created_user_id" :searchable="true" :title="$t('user-recipes')" :refinements="refineUsers" @change="updateRouterPath"></Refinement>
                     <Refinement id="main-ingredient" v-model="activeFilters.main_ingredient_id" :searchable="true" :title="$t('ingredient.main')" :refinements="refineMainIngredients" @change="updateRouterPath"></Refinement>
                     <Refinement id="method" v-model="activeFilters.cocktail_method_id" :title="$t('method.title')" :refinements="refineMethods" @change="updateRouterPath"></Refinement>
@@ -370,17 +369,9 @@ const refineMissingBarIngredients = computed(() => {
 
 const refineUsers = computed(() => {
     return availableRefinements.value.members.map((m: any) => ({
-        id: m.user_id,
-        value: m.user_id,
-        name: m.user_name
-    }))
-})
-
-const refineUserShelves = computed(() => {
-    return availableRefinements.value.members.filter((us: any) => us.is_shelf_public == true && us.user_id != appState.user.id).map((m: any) => ({
-        id: m.user_id,
-        value: m.user_id,
-        name: m.user_name
+        id: m.id,
+        value: m.id,
+        name: m.name
     }))
 })
 

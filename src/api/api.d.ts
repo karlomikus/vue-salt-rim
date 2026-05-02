@@ -276,6 +276,106 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/bars/{id}/inventory/ingredients": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * List bar inventory ingredients
+         * @description Ingredients that bar has in it's inventory
+         */
+        get: operations["listBarInventoryIngredients"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/bars/{id}/inventory/ingredients/batch-store": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Save bar ingredients
+         * @description Save multiple ingredients to bar inventory
+         */
+        post: operations["batchStoreBarInventoryIngredients"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/bars/{id}/inventory/ingredients/batch-delete": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Delete bar ingredients
+         * @description Delete multiple ingredients from bar inventory
+         */
+        post: operations["batchDeleteBarInventoryIngredients"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/bars/{id}/inventory/cocktails": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * List bar inventory cocktails
+         * @description Cocktails that the bar can make with ingredients in stock
+         */
+        get: operations["listBarInventoryCocktails"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/bars/{id}/inventory/ingredients/recommend": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Recommend bar ingredients
+         * @description Shows a list of ingredients that will increase total bar shelf cocktails when added to bar shef
+         */
+        get: operations["recommendBarIngredients"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/calculators": {
         parameters: {
             query?: never;
@@ -1600,26 +1700,6 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/bars/{id}/ingredients/recommend": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * Recommend bar ingredients
-         * @description Shows a list of ingredients that will increase total bar shelf cocktails when added to bar shef
-         */
-        get: operations["recommendBarIngredients"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
     "/auth/sso/{provider}/redirect": {
         parameters: {
             query?: never;
@@ -1700,7 +1780,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/members/{id}/ingredients": {
+    "/members/{id}/inventories": {
         parameters: {
             query?: never;
             header?: never;
@@ -1708,10 +1788,58 @@ export interface paths {
             cookie?: never;
         };
         /**
-         * List user ingredients
-         * @description Ingredients that user saved to their shelf
+         * List member inventories
+         * @description List all inventories owned by the current member
          */
-        get: operations["listUserIngredients"];
+        get: operations["listMemberInventories"];
+        put?: never;
+        /**
+         * Create member inventory
+         * @description Create a new inventory for the current member
+         */
+        post: operations["createMemberInventory"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/members/{id}/inventories/{inventoryId}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        /**
+         * Delete member inventory
+         * @description Delete a member inventory
+         */
+        delete: operations["deleteMemberInventory"];
+        options?: never;
+        head?: never;
+        /**
+         * Update member inventory
+         * @description Rename a member inventory
+         */
+        patch: operations["updateMemberInventory"];
+        trace?: never;
+    };
+    "/members/{id}/inventories/{inventoryId}/ingredients": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * List member inventory ingredients
+         * @description List ingredients stored in a member inventory
+         */
+        get: operations["listMemberInventoryIngredients"];
         put?: never;
         post?: never;
         delete?: never;
@@ -1720,7 +1848,47 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/members/{id}/cocktails": {
+    "/members/{id}/inventories/{inventoryId}/ingredients/batch-store": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Save member inventory ingredients
+         * @description Save multiple ingredients to a member inventory
+         */
+        post: operations["batchStoreMemberInventoryIngredients"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/members/{id}/inventories/{inventoryId}/ingredients/batch-delete": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Delete member inventory ingredients
+         * @description Delete multiple ingredients from a member inventory
+         */
+        post: operations["batchDeleteMemberInventoryIngredients"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/members/{id}/inventories/{inventoryId}/cocktails": {
         parameters: {
             query?: never;
             header?: never;
@@ -1728,10 +1896,10 @@ export interface paths {
             cookie?: never;
         };
         /**
-         * List shelf cocktails
-         * @description Cocktails that the user can make with ingredients on their shelf
+         * List member inventory cocktails
+         * @description List cocktails makeable from a member inventory
          */
-        get: operations["listUserShelfCocktails"];
+        get: operations["listMemberInventoryCocktails"];
         put?: never;
         post?: never;
         delete?: never;
@@ -1740,7 +1908,27 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/members/{id}/cocktails/favorites": {
+    "/members/{id}/inventories/{inventoryId}/recommend": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Recommend member inventory ingredients
+         * @description Recommend ingredients for a member inventory
+         */
+        get: operations["recommendMemberInventoryIngredients"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/members/{id}/cocktail-favorites": {
         parameters: {
             query?: never;
             header?: never;
@@ -1752,146 +1940,6 @@ export interface paths {
          * @description Show a list of cocktails user has favorited
          */
         get: operations["listUserFavoriteCocktails"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/members/{id}/ingredients/batch-store": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /**
-         * Save user ingredients
-         * @description Save multiple ingredients to user shelf
-         */
-        post: operations["batchStoreUserIngredients"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/members/{id}/ingredients/batch-delete": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /**
-         * Delete user ingredients
-         * @description Delete multiple ingredients from user shelf
-         */
-        post: operations["batchDeleteUserIngredients"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/members/{id}/ingredients/recommend": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * Recommend user ingredients
-         * @description Shows a list of ingredients that will increase total shelf cocktails when added to user shef
-         */
-        get: operations["recommendIngredients"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/bars/{id}/ingredients": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * List bar shelf ingredients
-         * @description Ingredients that bar has in it's shelf
-         */
-        get: operations["listBarShelfIngredients"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/bars/{id}/ingredients/batch-store": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /**
-         * Save bar ingredients
-         * @description Save multiple ingredients to bar shelf
-         */
-        post: operations["batchStoreBarShelfIngredients"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/bars/{id}/ingredients/batch-delete": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /**
-         * Delete bar ingredients
-         * @description Delete multiple ingredients from bar shelf
-         */
-        post: operations["batchDeleteBarShelfIngredients"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/bars/{id}/cocktails": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * List bar shelf cocktails
-         * @description Cocktails that the bar can make with ingredients on their shelf
-         */
-        get: operations["listBarShelfCocktails"];
         put?: never;
         post?: never;
         delete?: never;
@@ -3298,6 +3346,19 @@ export interface components {
             /** @description Recursive list of child ingredients */
             children: components["schemas"]["IngredientTree"][];
         };
+        /** @description Represents a member-owned inventory */
+        MemberInventory: {
+            /** @example 1 */
+            id: number;
+            /** @example My Shelf */
+            name: string;
+            /** @example 24 */
+            ingredient_count: number;
+            /** Format: date-time */
+            created_at: string;
+            /** Format: date-time */
+            updated_at?: string | null;
+        };
         /** @description Menu Category resource */
         MenuCategory: {
             /** @example Category name */
@@ -4306,7 +4367,6 @@ export interface components {
             email: string;
             settings?: components["schemas"]["ProfileSettings"] | null;
             bar_id?: number | null;
-            is_shelf_public?: boolean;
         };
         ProfileSettings: {
             language?: string | null;
@@ -5323,6 +5383,319 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content?: never;
+            };
+        };
+    };
+    listBarInventoryIngredients: {
+        parameters: {
+            query?: {
+                /** @description Set current page number */
+                page?: number;
+                /** @description Set number of results per page */
+                per_page?: number;
+            };
+            header?: never;
+            path: {
+                /** @description Database id of a resource */
+                id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful response */
+            200: {
+                headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        /** @description The data for the current page */
+                        data?: components["schemas"]["IngredientBasic"][];
+                        /** @description Links for pagination */
+                        links?: {
+                            /** @description Link to the first page */
+                            first?: string | null;
+                            /** @description Link to the last page */
+                            last?: string | null;
+                            /** @description Link to the previous page */
+                            prev?: string | null;
+                            /** @description Link to the next page */
+                            next?: string | null;
+                        };
+                        meta?: {
+                            /** @description The current page number */
+                            current_page?: number;
+                            /** @description The starting index of the current page */
+                            from?: number;
+                            /** @description The last page number */
+                            last_page?: number;
+                            links?: {
+                                /** @description The URL of the link */
+                                url?: string | null;
+                                /** @description The label of the link */
+                                label?: string | null;
+                                /** @description Whether the link is active */
+                                active?: boolean | null;
+                            }[];
+                            /** @description The path of the current page */
+                            path?: string;
+                            /** @description The number of items per page */
+                            per_page?: number;
+                            /** @description The ending index of the current page */
+                            to?: number;
+                            /** @description The total number of items */
+                            total?: number;
+                        };
+                    };
+                };
+            };
+        };
+    };
+    batchStoreBarInventoryIngredients: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Database id of a resource */
+                id: number;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": {
+                    ingredients?: number[];
+                };
+            };
+        };
+        responses: {
+            /** @description Successful response */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description You are not authorized for this action. */
+            403: {
+                headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data?: components["schemas"]["APIError"];
+                    };
+                };
+            };
+            /** @description Resource record not found. */
+            404: {
+                headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data?: components["schemas"]["APIError"];
+                    };
+                };
+            };
+        };
+    };
+    batchDeleteBarInventoryIngredients: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Database id of a resource */
+                id: number;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": {
+                    ingredients?: number[];
+                };
+            };
+        };
+        responses: {
+            /** @description Successful response */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description You are not authorized for this action. */
+            403: {
+                headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data?: components["schemas"]["APIError"];
+                    };
+                };
+            };
+            /** @description Resource record not found. */
+            404: {
+                headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data?: components["schemas"]["APIError"];
+                    };
+                };
+            };
+        };
+    };
+    listBarInventoryCocktails: {
+        parameters: {
+            query?: {
+                /** @description Set current page number */
+                page?: number;
+                /** @description Set number of results per page */
+                per_page?: number;
+            };
+            header?: never;
+            path: {
+                /** @description Database id of a resource */
+                id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful response */
+            200: {
+                headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        /** @description The data for the current page */
+                        data?: components["schemas"]["CocktailBasic"][];
+                        /** @description Links for pagination */
+                        links?: {
+                            /** @description Link to the first page */
+                            first?: string | null;
+                            /** @description Link to the last page */
+                            last?: string | null;
+                            /** @description Link to the previous page */
+                            prev?: string | null;
+                            /** @description Link to the next page */
+                            next?: string | null;
+                        };
+                        meta?: {
+                            /** @description The current page number */
+                            current_page?: number;
+                            /** @description The starting index of the current page */
+                            from?: number;
+                            /** @description The last page number */
+                            last_page?: number;
+                            links?: {
+                                /** @description The URL of the link */
+                                url?: string | null;
+                                /** @description The label of the link */
+                                label?: string | null;
+                                /** @description Whether the link is active */
+                                active?: boolean | null;
+                            }[];
+                            /** @description The path of the current page */
+                            path?: string;
+                            /** @description The number of items per page */
+                            per_page?: number;
+                            /** @description The ending index of the current page */
+                            to?: number;
+                            /** @description The total number of items */
+                            total?: number;
+                        };
+                    };
+                };
+            };
+        };
+    };
+    recommendBarIngredients: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Database id of a resource */
+                id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful response */
+            200: {
+                headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data: components["schemas"]["IngredientRecommend"][];
+                    };
+                };
+            };
+            /** @description You are not authorized for this action. */
+            403: {
+                headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data?: components["schemas"]["APIError"];
+                    };
+                };
+            };
+            /** @description Resource record not found. */
+            404: {
+                headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data?: components["schemas"]["APIError"];
+                    };
+                };
             };
         };
     };
@@ -10422,65 +10795,6 @@ export interface operations {
             };
         };
     };
-    recommendBarIngredients: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                /** @description Database id of a resource */
-                id: number;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description Successful response */
-            200: {
-                headers: {
-                    /** @description Max number of attempts. */
-                    "x-ratelimit-limit"?: number;
-                    /** @description Remaining number of attempts. */
-                    "x-ratelimit-remaining"?: number;
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": {
-                        data: components["schemas"]["IngredientRecommend"][];
-                    };
-                };
-            };
-            /** @description You are not authorized for this action. */
-            403: {
-                headers: {
-                    /** @description Max number of attempts. */
-                    "x-ratelimit-limit"?: number;
-                    /** @description Remaining number of attempts. */
-                    "x-ratelimit-remaining"?: number;
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": {
-                        data?: components["schemas"]["APIError"];
-                    };
-                };
-            };
-            /** @description Resource record not found. */
-            404: {
-                headers: {
-                    /** @description Max number of attempts. */
-                    "x-ratelimit-limit"?: number;
-                    /** @description Remaining number of attempts. */
-                    "x-ratelimit-remaining"?: number;
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": {
-                        data?: components["schemas"]["APIError"];
-                    };
-                };
-            };
-        };
-    };
     ssoRedirect: {
         parameters: {
             query?: never;
@@ -10631,7 +10945,249 @@ export interface operations {
             };
         };
     };
-    listUserIngredients: {
+    listMemberInventories: {
+        parameters: {
+            query?: never;
+            header?: {
+                /** @description Database id of a bar. */
+                "Bar-Assistant-Bar-Id"?: number;
+            };
+            path: {
+                /** @description Database id of a resource */
+                id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful response */
+            200: {
+                headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data: components["schemas"]["MemberInventory"][];
+                    };
+                };
+            };
+            /** @description You are not authorized for this action. */
+            403: {
+                headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data?: components["schemas"]["APIError"];
+                    };
+                };
+            };
+            /** @description Resource record not found. */
+            404: {
+                headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data?: components["schemas"]["APIError"];
+                    };
+                };
+            };
+        };
+    };
+    createMemberInventory: {
+        parameters: {
+            query?: never;
+            header?: {
+                /** @description Database id of a bar. */
+                "Bar-Assistant-Bar-Id"?: number;
+            };
+            path: {
+                /** @description Database id of a resource */
+                id: number;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": {
+                    /** @example Back Bar */
+                    name: string;
+                };
+            };
+        };
+        responses: {
+            /** @description Successful response */
+            201: {
+                headers: {
+                    /** @description URL of the inventories collection */
+                    Location?: string;
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description You are not authorized for this action. */
+            403: {
+                headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data?: components["schemas"]["APIError"];
+                    };
+                };
+            };
+            /** @description Resource record not found. */
+            404: {
+                headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data?: components["schemas"]["APIError"];
+                    };
+                };
+            };
+        };
+    };
+    deleteMemberInventory: {
+        parameters: {
+            query?: never;
+            header?: {
+                /** @description Database id of a bar. */
+                "Bar-Assistant-Bar-Id"?: number;
+            };
+            path: {
+                /** @description Database id of a resource */
+                id: number;
+                inventoryId: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful response */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description You are not authorized for this action. */
+            403: {
+                headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data?: components["schemas"]["APIError"];
+                    };
+                };
+            };
+            /** @description Resource record not found. */
+            404: {
+                headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data?: components["schemas"]["APIError"];
+                    };
+                };
+            };
+        };
+    };
+    updateMemberInventory: {
+        parameters: {
+            query?: never;
+            header?: {
+                /** @description Database id of a bar. */
+                "Bar-Assistant-Bar-Id"?: number;
+            };
+            path: {
+                /** @description Database id of a resource */
+                id: number;
+                inventoryId: number;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": {
+                    /** @example Back Bar */
+                    name: string;
+                };
+            };
+        };
+        responses: {
+            /** @description Successful response */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description You are not authorized for this action. */
+            403: {
+                headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data?: components["schemas"]["APIError"];
+                    };
+                };
+            };
+            /** @description Resource record not found. */
+            404: {
+                headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data?: components["schemas"]["APIError"];
+                    };
+                };
+            };
+        };
+    };
+    listMemberInventoryIngredients: {
         parameters: {
             query?: {
                 /** @description Set current page number */
@@ -10646,6 +11202,7 @@ export interface operations {
             path: {
                 /** @description Database id of a resource */
                 id: number;
+                inventoryId: number;
             };
             cookie?: never;
         };
@@ -10702,9 +11259,161 @@ export interface operations {
                     };
                 };
             };
+            /** @description You are not authorized for this action. */
+            403: {
+                headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data?: components["schemas"]["APIError"];
+                    };
+                };
+            };
+            /** @description Resource record not found. */
+            404: {
+                headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data?: components["schemas"]["APIError"];
+                    };
+                };
+            };
         };
     };
-    listUserShelfCocktails: {
+    batchStoreMemberInventoryIngredients: {
+        parameters: {
+            query?: never;
+            header?: {
+                /** @description Database id of a bar. */
+                "Bar-Assistant-Bar-Id"?: number;
+            };
+            path: {
+                /** @description Database id of a resource */
+                id: number;
+                inventoryId: number;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": {
+                    ingredients?: number[];
+                };
+            };
+        };
+        responses: {
+            /** @description Successful response */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description You are not authorized for this action. */
+            403: {
+                headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data?: components["schemas"]["APIError"];
+                    };
+                };
+            };
+            /** @description Resource record not found. */
+            404: {
+                headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data?: components["schemas"]["APIError"];
+                    };
+                };
+            };
+        };
+    };
+    batchDeleteMemberInventoryIngredients: {
+        parameters: {
+            query?: never;
+            header?: {
+                /** @description Database id of a bar. */
+                "Bar-Assistant-Bar-Id"?: number;
+            };
+            path: {
+                /** @description Database id of a resource */
+                id: number;
+                inventoryId: number;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": {
+                    ingredients?: number[];
+                };
+            };
+        };
+        responses: {
+            /** @description Successful response */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description You are not authorized for this action. */
+            403: {
+                headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data?: components["schemas"]["APIError"];
+                    };
+                };
+            };
+            /** @description Resource record not found. */
+            404: {
+                headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data?: components["schemas"]["APIError"];
+                    };
+                };
+            };
+        };
+    };
+    listMemberInventoryCocktails: {
         parameters: {
             query?: {
                 /** @description Set current page number */
@@ -10719,6 +11428,7 @@ export interface operations {
             path: {
                 /** @description Database id of a resource */
                 id: number;
+                inventoryId: number;
             };
             cookie?: never;
         };
@@ -10775,109 +11485,6 @@ export interface operations {
                     };
                 };
             };
-        };
-    };
-    listUserFavoriteCocktails: {
-        parameters: {
-            query?: {
-                /** @description Set current page number */
-                page?: number;
-                /** @description Set number of results per page */
-                per_page?: number;
-            };
-            header?: {
-                /** @description Database id of a bar. */
-                "Bar-Assistant-Bar-Id"?: number;
-            };
-            path: {
-                /** @description Database id of a resource */
-                id: number;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description Successful response */
-            200: {
-                headers: {
-                    /** @description Max number of attempts. */
-                    "x-ratelimit-limit"?: number;
-                    /** @description Remaining number of attempts. */
-                    "x-ratelimit-remaining"?: number;
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": {
-                        /** @description The data for the current page */
-                        data?: components["schemas"]["CocktailBasic"][];
-                        /** @description Links for pagination */
-                        links?: {
-                            /** @description Link to the first page */
-                            first?: string | null;
-                            /** @description Link to the last page */
-                            last?: string | null;
-                            /** @description Link to the previous page */
-                            prev?: string | null;
-                            /** @description Link to the next page */
-                            next?: string | null;
-                        };
-                        meta?: {
-                            /** @description The current page number */
-                            current_page?: number;
-                            /** @description The starting index of the current page */
-                            from?: number;
-                            /** @description The last page number */
-                            last_page?: number;
-                            links?: {
-                                /** @description The URL of the link */
-                                url?: string | null;
-                                /** @description The label of the link */
-                                label?: string | null;
-                                /** @description Whether the link is active */
-                                active?: boolean | null;
-                            }[];
-                            /** @description The path of the current page */
-                            path?: string;
-                            /** @description The number of items per page */
-                            per_page?: number;
-                            /** @description The ending index of the current page */
-                            to?: number;
-                            /** @description The total number of items */
-                            total?: number;
-                        };
-                    };
-                };
-            };
-        };
-    };
-    batchStoreUserIngredients: {
-        parameters: {
-            query?: never;
-            header?: {
-                /** @description Database id of a bar. */
-                "Bar-Assistant-Bar-Id"?: number;
-            };
-            path: {
-                /** @description Database id of a resource */
-                id: number;
-            };
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": {
-                    ingredients?: number[];
-                };
-            };
-        };
-        responses: {
-            /** @description Successful response */
-            204: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
             /** @description You are not authorized for this action. */
             403: {
                 headers: {
@@ -10910,7 +11517,7 @@ export interface operations {
             };
         };
     };
-    batchDeleteUserIngredients: {
+    recommendMemberInventoryIngredients: {
         parameters: {
             query?: never;
             header?: {
@@ -10920,66 +11527,7 @@ export interface operations {
             path: {
                 /** @description Database id of a resource */
                 id: number;
-            };
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": {
-                    ingredients?: number[];
-                };
-            };
-        };
-        responses: {
-            /** @description Successful response */
-            204: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-            /** @description You are not authorized for this action. */
-            403: {
-                headers: {
-                    /** @description Max number of attempts. */
-                    "x-ratelimit-limit"?: number;
-                    /** @description Remaining number of attempts. */
-                    "x-ratelimit-remaining"?: number;
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": {
-                        data?: components["schemas"]["APIError"];
-                    };
-                };
-            };
-            /** @description Resource record not found. */
-            404: {
-                headers: {
-                    /** @description Max number of attempts. */
-                    "x-ratelimit-limit"?: number;
-                    /** @description Remaining number of attempts. */
-                    "x-ratelimit-remaining"?: number;
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": {
-                        data?: components["schemas"]["APIError"];
-                    };
-                };
-            };
-        };
-    };
-    recommendIngredients: {
-        parameters: {
-            query?: never;
-            header?: {
-                /** @description Database id of a bar. */
-                "Bar-Assistant-Bar-Id"?: number;
-            };
-            path: {
-                /** @description Database id of a resource */
-                id: number;
+                inventoryId: number;
             };
             cookie?: never;
         };
@@ -11032,7 +11580,7 @@ export interface operations {
             };
         };
     };
-    listBarShelfIngredients: {
+    listUserFavoriteCocktails: {
         parameters: {
             query?: {
                 /** @description Set current page number */
@@ -11040,191 +11588,10 @@ export interface operations {
                 /** @description Set number of results per page */
                 per_page?: number;
             };
-            header?: never;
-            path: {
-                /** @description Database id of a resource */
-                id: number;
+            header?: {
+                /** @description Database id of a bar. */
+                "Bar-Assistant-Bar-Id"?: number;
             };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description Successful response */
-            200: {
-                headers: {
-                    /** @description Max number of attempts. */
-                    "x-ratelimit-limit"?: number;
-                    /** @description Remaining number of attempts. */
-                    "x-ratelimit-remaining"?: number;
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": {
-                        /** @description The data for the current page */
-                        data?: components["schemas"]["IngredientBasic"][];
-                        /** @description Links for pagination */
-                        links?: {
-                            /** @description Link to the first page */
-                            first?: string | null;
-                            /** @description Link to the last page */
-                            last?: string | null;
-                            /** @description Link to the previous page */
-                            prev?: string | null;
-                            /** @description Link to the next page */
-                            next?: string | null;
-                        };
-                        meta?: {
-                            /** @description The current page number */
-                            current_page?: number;
-                            /** @description The starting index of the current page */
-                            from?: number;
-                            /** @description The last page number */
-                            last_page?: number;
-                            links?: {
-                                /** @description The URL of the link */
-                                url?: string | null;
-                                /** @description The label of the link */
-                                label?: string | null;
-                                /** @description Whether the link is active */
-                                active?: boolean | null;
-                            }[];
-                            /** @description The path of the current page */
-                            path?: string;
-                            /** @description The number of items per page */
-                            per_page?: number;
-                            /** @description The ending index of the current page */
-                            to?: number;
-                            /** @description The total number of items */
-                            total?: number;
-                        };
-                    };
-                };
-            };
-        };
-    };
-    batchStoreBarShelfIngredients: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                /** @description Database id of a resource */
-                id: number;
-            };
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": {
-                    ingredients?: number[];
-                };
-            };
-        };
-        responses: {
-            /** @description Successful response */
-            204: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-            /** @description You are not authorized for this action. */
-            403: {
-                headers: {
-                    /** @description Max number of attempts. */
-                    "x-ratelimit-limit"?: number;
-                    /** @description Remaining number of attempts. */
-                    "x-ratelimit-remaining"?: number;
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": {
-                        data?: components["schemas"]["APIError"];
-                    };
-                };
-            };
-            /** @description Resource record not found. */
-            404: {
-                headers: {
-                    /** @description Max number of attempts. */
-                    "x-ratelimit-limit"?: number;
-                    /** @description Remaining number of attempts. */
-                    "x-ratelimit-remaining"?: number;
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": {
-                        data?: components["schemas"]["APIError"];
-                    };
-                };
-            };
-        };
-    };
-    batchDeleteBarShelfIngredients: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                /** @description Database id of a resource */
-                id: number;
-            };
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": {
-                    ingredients?: number[];
-                };
-            };
-        };
-        responses: {
-            /** @description Successful response */
-            204: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-            /** @description You are not authorized for this action. */
-            403: {
-                headers: {
-                    /** @description Max number of attempts. */
-                    "x-ratelimit-limit"?: number;
-                    /** @description Remaining number of attempts. */
-                    "x-ratelimit-remaining"?: number;
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": {
-                        data?: components["schemas"]["APIError"];
-                    };
-                };
-            };
-            /** @description Resource record not found. */
-            404: {
-                headers: {
-                    /** @description Max number of attempts. */
-                    "x-ratelimit-limit"?: number;
-                    /** @description Remaining number of attempts. */
-                    "x-ratelimit-remaining"?: number;
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": {
-                        data?: components["schemas"]["APIError"];
-                    };
-                };
-            };
-        };
-    };
-    listBarShelfCocktails: {
-        parameters: {
-            query?: {
-                /** @description Set current page number */
-                page?: number;
-                /** @description Set number of results per page */
-                per_page?: number;
-            };
-            header?: never;
             path: {
                 /** @description Database id of a resource */
                 id: number;

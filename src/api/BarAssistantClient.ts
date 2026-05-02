@@ -193,7 +193,7 @@ export default class BarAssistantClient {
   }
 
   static async getUserCocktailFavorites(id: number) {
-    return (await client.GET('/members/{id}/cocktails/favorites', { params: { path: { id: id }, query: { per_page: 500 } } })).data
+    return (await client.GET('/members/{id}/cocktail-favorites', { params: { path: { id: id }, query: { per_page: 500 } } })).data
   }
 
   static async getUserCocktailShelf(id: number) {
@@ -277,7 +277,7 @@ export default class BarAssistantClient {
   }
 
   static async getBarRecommendedIngredients(id: number) {
-    return (await client.GET('/bars/{id}/ingredients/recommend', { params: { path: { id: id } } })).data
+    return (await client.GET('/bars/{id}/inventory/ingredients/recommend', { params: { path: { id: id } } })).data
   }
 
   static async getBars() {
@@ -412,7 +412,7 @@ export default class BarAssistantClient {
     return (await client.POST('/members', { body: data })).data
   }
 
-  static async updateUser(id: number, data: components["schemas"]["UserRequest"]) {
+  static async updateMember(id: number, data: components["schemas"]["UserRequest"]) {
     return (await client.PUT('/members/{id}', { params: { path: { id: id } }, body: data })).data
   }
 
@@ -554,11 +554,11 @@ export default class BarAssistantClient {
   }
 
   static async addToBarShelf(id: number, data: object = {}) {
-    return (await client.POST('/bars/{id}/ingredients/batch-store', { params: { path: { id: id } }, body: data })).data
+    return (await client.POST('/bars/{id}/inventory/ingredients/batch-store', { params: { path: { id: id } }, body: data })).data
   }
 
   static async removeFromBarShelf(id: number, data: object = {}) {
-    return (await client.POST('/bars/{id}/ingredients/batch-delete', { params: { path: { id: id } }, body: data })).data
+    return (await client.POST('/bars/{id}/inventory/ingredients/batch-delete', { params: { path: { id: id } }, body: data })).data
   }
 
   static async getCocktailPrices(id: string) {
@@ -566,7 +566,7 @@ export default class BarAssistantClient {
   }
 
   static async getBarShelfCocktails(id: number) {
-    return (await client.GET('/bars/{id}/cocktails', { params: { path: { id: id }, query: { per_page: 500 } } })).data
+    return (await client.GET('/bars/{id}/inventory/cocktails', { params: { path: { id: id }, query: { per_page: 500 } } })).data
   }
 
   static async getMenuExport() {
