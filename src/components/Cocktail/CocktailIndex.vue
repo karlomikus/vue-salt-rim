@@ -21,7 +21,7 @@
                                 <a href="#" @click.prevent="showSpecificIngredientsModal = true">{{ $t('search.ingredients') }} ({{ activeFilters.specific_ingredients.length }})</a>
                             </template>
                             <template #dialog>
-                                <FilterIngredientsModal :search-token="appState.bar.search_token" :title="$t('search.select-specific-ingredients')" description="Shows recipes that contain all of the selected ingredients." :value="activeFilters.specific_ingredients" @close="updateSpecificIngredients"></FilterIngredientsModal>
+                                <FilterIngredientsModal :search-token="appState.bar.search_token" :title="$t('search.select-specific-ingredients')" description="Shows recipes that contain all of the selected ingredients." :value="activeFilters.specific_ingredients as any" @close="updateSpecificIngredients"></FilterIngredientsModal>
                             </template>
                         </SaltRimDialog>
                         <br>
@@ -30,7 +30,7 @@
                                 <a href="#" @click.prevent="showIgnoreIngredientsModal = true">{{ $t('search.ignore-ingredients') }} ({{ activeFilters.ignore_ingredients.length }})</a>
                             </template>
                             <template #dialog>
-                                <FilterIngredientsModal :search-token="appState.bar.search_token" :title="$t('search.select-ingredients-to-ignore')" description="Shows recipes that do not contain all of the selected ingredients." :value="activeFilters.ignore_ingredients" @close="updateIgnoredIngredients"></FilterIngredientsModal>
+                                <FilterIngredientsModal :search-token="appState.bar.search_token" :title="$t('search.select-ingredients-to-ignore')" description="Shows recipes that do not contain all of the selected ingredients." :value="activeFilters.ignore_ingredients as any" @close="updateIgnoredIngredients"></FilterIngredientsModal>
                             </template>
                         </SaltRimDialog>
                     </Refinement>
@@ -38,14 +38,14 @@
                     <Refinement id="users" v-model="activeFilters.created_user_id" :searchable="true" :title="$t('user-recipes')" :refinements="refineUsers" @change="updateRouterPath"></Refinement>
                     <Refinement id="main-ingredient" v-model="activeFilters.main_ingredient_id" :searchable="true" :title="$t('ingredient.main')" :refinements="refineMainIngredients" @change="updateRouterPath"></Refinement>
                     <Refinement id="method" v-model="activeFilters.cocktail_method_id" :title="$t('method.title')" :refinements="refineMethods" @change="updateRouterPath"></Refinement>
-                    <Refinement id="abv" v-model="activeFilters.abv" :title="$t('strength')" :refinements="refineABV" type="radio" @change="updateRouterPath"></Refinement>
+                    <Refinement id="abv" v-model="activeFilters.abv as any" :title="$t('strength')" :refinements="refineABV" type="radio" @change="updateRouterPath"></Refinement>
                     <Refinement id="tag" v-model="activeFilters.tag_id" :searchable="true" :title="$t('tag.tags')" :refinements="refineTags" @change="updateRouterPath"></Refinement>
                     <Refinement id="glass" v-model="activeFilters.glass_id" :title="$t('glass-type.title')" :refinements="refineGlasses" @change="updateRouterPath"></Refinement>
-                    <Refinement id="total-ingredients" v-model="activeFilters.total_ingredients" :title="$t('total.ingredients')" :refinements="refineIngredientsCount" type="radio" @change="updateRouterPath"></Refinement>
-                    <Refinement id="missing-bar-ingredients" v-model="activeFilters.missing_bar_ingredients" :title="$t('missing-ingredients') + ' (' + $t('bars.bar') + ')'" :refinements="refineMissingBarIngredients" type="radio" @change="updateRouterPath"></Refinement>
-                    <Refinement id="missing-ingredients" v-model="activeFilters.missing_ingredients" :title="$t('missing-ingredients') + ' (' + $t('shelf.title') + ')'" :refinements="refineMissingIngredients" type="radio" @change="updateRouterPath"></Refinement>
-                    <Refinement id="user-rating" v-model="activeFilters.user_rating_min" :title="$t('your-rating')" :refinements="refineRatings" type="radio" @change="updateRouterPath"></Refinement>
-                    <Refinement id="avg-rating" v-model="activeFilters.average_rating_min" :title="$t('avg-rating')" :refinements="refineRatings" type="radio" @change="updateRouterPath"></Refinement>
+                    <Refinement id="total-ingredients" v-model="activeFilters.total_ingredients as any" :title="$t('total.ingredients')" :refinements="refineIngredientsCount" type="radio" @change="updateRouterPath"></Refinement>
+                    <Refinement id="missing-bar-ingredients" v-model="activeFilters.missing_bar_ingredients as any" :title="$t('missing-ingredients') + ' (' + $t('bars.bar') + ')'" :refinements="refineMissingBarIngredients" type="radio" @change="updateRouterPath"></Refinement>
+                    <Refinement id="missing-ingredients" v-model="activeFilters.missing_ingredients as any" :title="$t('missing-ingredients') + ' (' + $t('shelf.title') + ')'" :refinements="refineMissingIngredients" type="radio" @change="updateRouterPath"></Refinement>
+                    <Refinement id="user-rating" v-model="activeFilters.user_rating_min as any" :title="$t('your-rating')" :refinements="refineRatings" type="radio" @change="updateRouterPath"></Refinement>
+                    <Refinement id="avg-rating" v-model="activeFilters.average_rating_min as any" :title="$t('avg-rating')" :refinements="refineRatings" type="radio" @change="updateRouterPath"></Refinement>
                     <button class="button button--dark sm-show" type="button" @click="showRefinements = false">{{ $t('cancel') }}</button>
                 </div>
             </div>
@@ -184,6 +184,7 @@ interface ActiveFilters {
     ingredient_id: string[]
     ingredient_substitute_id: string[]
     id: string[]
+    [key: string]: any
 }
 
 interface AvailableRefinements {
@@ -574,7 +575,7 @@ function stateToQuery() {
         abv_max: activeFilters.value.abv ? activeFilters.value.abv.max : null,
     }
 
-    query.filter = Object.entries(filters).reduce((a, [k, v]) => (v === null || v === false ? a : (a[k] = v, a)), {})
+    query.filter = Object.entries(filters).reduce((a: any, [k, v]) => (v === null || v === false ? a : (a[k] = v, a)), {})
 
     return query
 }
