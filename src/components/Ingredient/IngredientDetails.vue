@@ -43,22 +43,6 @@
                             </a>
                         </template>
                     </ToggleIngredientBarShelf>
-                    <ToggleIngredientShelf v-if="ingredient.in_shelf !== undefined" :ingredient="ingredient" v-model="ingredient.in_shelf">
-                        <template v-slot="{ isLoading, inList, toggle }">
-                            <a href="#" class="block-container block-container--hover shelf-actions__action" @click.prevent="toggle">
-                                <div>
-                                    <IconUserShelf></IconUserShelf>
-                                    <IconCheck v-if="inList" class="shelf-actions__action__active"></IconCheck>
-                                </div>
-                                <template v-if="!isLoading">
-                                    <span v-if="!inList">{{ $t('ingredient.add-to-shelf') }}</span>
-                                    <span v-else>{{ $t('ingredient.remove-from-shelf') }}</span>
-                                </template>
-                                <span v-else>{{ $t('loading') }}...</span>
-                                <small>{{ $t('ingredient.shelf-user-help') }}</small>
-                            </a>
-                        </template>
-                    </ToggleIngredientShelf>
                     <ToggleIngredientShoppingCart v-if="ingredient.in_shopping_list !== undefined" :ingredient="ingredient" v-model="ingredient.in_shopping_list">
                         <template v-slot="{ isLoading, inList, toggle }">
                             <a href="#" class="block-container block-container--hover shelf-actions__action" @click.prevent="toggle">
@@ -244,7 +228,6 @@ import { micromark } from 'micromark'
 import PageHeader from '../PageHeader.vue'
 import BarAssistantClient from '@/api/BarAssistantClient'
 import ToggleIngredientShoppingCart from '@/components/ToggleIngredientShoppingCart.vue'
-import ToggleIngredientShelf from '@/components/ToggleIngredientShelf.vue'
 import ToggleIngredientBarShelf from '../ToggleIngredientBarShelf.vue'
 import Dropdown from '@/components/SaltRimDropdown.vue'
 import { useTitle } from '@/composables/title'
@@ -300,7 +283,7 @@ async function refreshIngredient() {
     isLoadingIngredient.value = false
 
     isLoadingExtra.value = true
-    extraIfAddedToShelf.value = (await BarAssistantClient.getExtraCocktailsWithIngredient(ingredient.value.id))?.data ?? []
+    extraIfAddedToShelf.value = (await BarAssistantClient.getExtraBarCocktailsWithIngredient(appState.bar.id, ingredient.value.id))?.data ?? []
     isLoadingExtra.value = false
 }
 

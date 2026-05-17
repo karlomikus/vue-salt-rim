@@ -196,10 +196,6 @@ export default class BarAssistantClient {
     return (await client.GET('/members/{id}/cocktail-favorites', { params: { path: { id: id }, query: { per_page: 500 } } })).data
   }
 
-  static async getUserCocktailShelf(id: number) {
-    return (await client.GET('/members/{id}/cocktails', { params: { path: { id: id }, query: { per_page: 500 } } })).data
-  }
-
   static async getNotes(query = {}) {
     return (await client.GET('/notes', { params: { query: query } })).data
   }
@@ -272,10 +268,6 @@ export default class BarAssistantClient {
     return (await client.POST('/exports/{id}/download', { params: { path: { id: id } } })).data
   }
 
-  static async getRecommendedIngredients(id: number) {
-    return (await client.GET('/members/{id}/ingredients/recommend', { params: { path: { id: id } } })).data
-  }
-
   static async getBarRecommendedIngredients(id: number) {
     return (await client.GET('/bars/{id}/inventory/ingredients/recommend', { params: { path: { id: id } } })).data
   }
@@ -338,18 +330,6 @@ export default class BarAssistantClient {
     return (await client.GET('/bars/{id}/stats/ingredient-distribution', { params: { path: { id: id } } })).data
   }
 
-  static async getUserIngredientShelf(id: number) {
-    return (await client.GET('/members/{id}/ingredients', { params: { path: { id: id } } })).data
-  }
-
-  static async addToUserShelf(id: number, data: object = {}) {
-    return (await client.POST('/members/{id}/ingredients/batch-store', { params: { path: { id: id } }, body: data })).data
-  }
-
-  static async removeFromUserShelf(id: number, data: object = {}) {
-    return (await client.POST('/members/{id}/ingredients/batch-delete', { params: { path: { id: id } }, body: data })).data
-  }
-
   static async getIngredient(id: string) {
     return (await client.GET('/ingredients/{id}', { params: { path: { id: id } } })).data
   }
@@ -358,8 +338,8 @@ export default class BarAssistantClient {
     return (await client.GET('/ingredients/{id}/tree', { params: { path: { id: id } } })).data
   }
 
-  static async getExtraCocktailsWithIngredient(id: number) {
-    return (await client.GET('/ingredients/{id}/extra', { params: { path: { id: id } } })).data
+  static async getExtraBarCocktailsWithIngredient(barId: number, id: number) {
+    return (await client.GET('/bars/{id}/inventory/ingredients/{idOrSlug}/extra', { params: { path: { id: barId, idOrSlug: id } } })).data
   }
 
   static async getUtensils() {

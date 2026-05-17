@@ -9,7 +9,6 @@ import EmptyState from './../EmptyState.vue'
 import BarAssistantClient from '@/api/BarAssistantClient'
 import { useTitle } from '@/composables/title'
 import ToggleIngredientShoppingCart from '../ToggleIngredientShoppingCart.vue'
-import ToggleIngredientShelf from '../ToggleIngredientShelf.vue'
 import RecommendedIngredients from '../Ingredient/RecommendedIngredients.vue'
 import StatusCheck from '../StatusCheck.vue'
 import IconShoppingCart from '../Icons/IconShoppingCart.vue'
@@ -29,7 +28,6 @@ type BarTotals = components["schemas"]["BarTotalStatsResource"]
 type Cocktail = components["schemas"]["Cocktail"]
 type CocktailBasic = components["schemas"]["CocktailBasic"]
 type Ingredient = components["schemas"]["Ingredient"]
-type IngredientRecommend = components["schemas"]["IngredientRecommend"]
 type UserTasteProfile = components["schemas"]["UserTasteProfile"]
 type BarIngredientDistribution = components["schemas"]["BarIngredientDistributionResource"]
 type BarTopStats = components["schemas"]["BarTopStatsResource"]
@@ -43,7 +41,6 @@ const favoriteCocktails = ref<Cocktail[]>([])
 const latestCocktails = ref<Cocktail[]>([])
 const shoppingListIngredients = ref<Ingredient[]>([])
 const latestIngredients = ref<Ingredient[]>([])
-const recommendedIngredients = ref<IngredientRecommend[]>([])
 const recommendedCocktails = ref<CocktailBasic[]>([])
 const tasteProfile = ref<UserTasteProfile|null>(null)
 const maxItems = ref(8)
@@ -108,12 +105,6 @@ async function refreshShelf() {
         stats.value = resp?.data ?? null
     }).finally(() => {
         loaders.value.barStats = false
-    })
-
-    BarAssistantClient.getRecommendedIngredients(appState.user.id).then(resp => {
-        recommendedIngredients.value = resp?.data ?? []
-    }).finally(() => {
-        loaders.value.recommendedIngredients = false
     })
 
     BarAssistantClient.getMemberTasteProfile(appState.bar.id).then(resp => {
@@ -244,8 +235,6 @@ refreshShelf()
                         <template #content>
                             <h5 class="sr-list-item-title">{{ ingredient.name }}</h5>
                             <p>
-                                <ToggleIngredientShelf v-if="ingredient.in_shelf !== undefined" :ingredient="ingredient" v-model="ingredient.in_shelf"></ToggleIngredientShelf>
-                                &middot;
                                 <ToggleIngredientShoppingCart v-if="ingredient.in_shopping_list !== undefined" :ingredient="ingredient" v-model="ingredient.in_shopping_list"></ToggleIngredientShoppingCart>
                             </p>
                         </template>
@@ -267,7 +256,7 @@ refreshShelf()
                     <ListItemContainer tag="RouterLink" v-for="ingredient in topRated.top_member_ingredients" :key="ingredient.id" :to="{ name: 'ingredients.show', params: { id: ingredient.slug } }">
                         <template #content>
                             <h5 class="sr-list-item-title">{{ ingredient.name }}</h5>
-                            <p>Present in {{ $t('n-cocktails', ingredient.count) }}</p>
+                            <p>Present in {{ $t('n-cocktails', ingredient.cocktails_count) }}</p>
                         </template>
                     </ListItemContainer>
                 </div>

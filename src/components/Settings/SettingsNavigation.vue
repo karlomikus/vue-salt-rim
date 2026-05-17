@@ -7,6 +7,7 @@
             <RouterLink :to="{name: 'settings.billing'}">{{ $t('billing.title') }}</RouterLink>
         </template>
         <template v-if="appState.isAdmin() || appState.isModerator()">
+            <h3 class="page-subtitle">{{ appState.bar.name }}</h3>
             <RouterLink :to="{name: 'settings.users'}">{{ $t('users.title') }}</RouterLink>
             <RouterLink :to="{name: 'settings.glasses'}">{{ $t('glass-type.types') }}</RouterLink>
             <RouterLink :to="{name: 'settings.tags'}">{{ $t('tag.tags') }}</RouterLink>

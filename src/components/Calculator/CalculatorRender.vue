@@ -52,7 +52,7 @@ function resolveCalculation(evaluation: CalculatorBlock): string {
 
     mathParser.set(evaluation.variable_name, result)
 
-    return parseFloat(result).toFixed(parseInt(evaluation.settings.decimal_places ?? '0'))
+    return parseFloat(result).toFixed(evaluation.settings.decimal_places ?? 0)
 }
 </script>
 

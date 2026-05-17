@@ -15,28 +15,18 @@ type CocktailIngredient = components['schemas']['CocktailIngredient'];
 
 const props = defineProps<{
     ingredient: CocktailIngredient,
-    currentShelf: string,
 }>();
 
 const inShelf = computed(() => {
-    if (props.currentShelf === 'bar') {
-        return props.ingredient.in_bar_shelf;
-    }
-    return props.ingredient.in_shelf;
+    return props.ingredient.in_bar_shelf;
 });
 
 const inShelfAsSubstitute = computed(() => {
-    if (props.currentShelf === 'bar') {
-        return !props.ingredient.in_bar_shelf && (props.ingredient.in_bar_shelf_as_substitute || props.ingredient.in_bar_shelf_as_variant);
-    }
-    return !props.ingredient.in_shelf && (props.ingredient.in_shelf_as_substitute || props.ingredient.in_shelf_as_variant);
+    return !props.ingredient.in_bar_shelf && (props.ingredient.in_bar_shelf_as_substitute || props.ingredient.in_bar_shelf_as_variant);
 });
 
 const inShelfAsComplex = computed(() => {
-    if (props.currentShelf === 'bar') {
-        return !props.ingredient.in_bar_shelf && props.ingredient.in_bar_shelf_as_complex_ingredient;
-    }
-    return !props.ingredient.in_shelf && props.ingredient.in_shelf_as_complex_ingredient;
+    return !props.ingredient.in_bar_shelf && props.ingredient.in_bar_shelf_as_complex_ingredient;
 });
 
 const statusClass = computed(() => {

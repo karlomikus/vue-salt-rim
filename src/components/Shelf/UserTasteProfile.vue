@@ -166,10 +166,10 @@ onBeforeUnmount(() => {
         </div>
 
         <section class="taste-section">
-            <div class="radar-chart-wrapper">
+            <div class="radar-chart-wrapper" v-if="radarSeries.labels.length > 0">
                 <canvas ref="radarCanvas" aria-label="Taste profile tags polar chart" role="img"></canvas>
             </div>
-            <small v-if="!radarSeries.labels.length" class="taste-empty">No tag data available for polar chart.</small>
+            <small class="taste-empty" v-else>No tag data available for polar chart.</small>
         </section>
 
         <section class="taste-section">

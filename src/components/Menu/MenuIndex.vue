@@ -171,17 +171,14 @@ const sortableInstances = ref<any[]>([])
 const cocktailMenuItems = computed(() => {
     return categories.value.flatMap(c => c.items).filter(c => c.type == 'cocktail').sort((a, b) => a.sort - b.sort)
 })
+
 const ingredientMenuItems = computed(() => {
     return categories.value.flatMap(c => c.items).filter(c => c.type == 'ingredient').sort((a, b) => a.sort - b.sort)
 })
+
 const guessCurrency = computed(() => {
-    // Use map() to create a new array with just the currencies
     const currencyArray = cocktailMenuItems.value.map(item => item.price.currency)
-
-    // Convert it into a Set, which will automatically remove any duplicates
     const uniqueCurrencySet = new Set(currencyArray)
-
-    // Now convert back into an Array using Array.from()
     const uniqueCurrencies = Array.from(uniqueCurrencySet)
 
     if (uniqueCurrencies.length == 0) {
@@ -217,6 +214,7 @@ function selectCocktail(cocktail: CocktailSearchResult, category: MenuCategories
         type: 'cocktail',
         sort: 0,
         description: cocktail.short_ingredients.join(', '),
+        is_bar_inventory_aware: false,
         price: {
             price: 0,
             price_minor: 0,
@@ -243,6 +241,7 @@ function selectIngredient(ingredient: IngredientSearchResult, category: MenuCate
         type: 'ingredient',
         sort: 0,
         description: ingredient.category ?? '',
+        is_bar_inventory_aware: false,
         price: {
             price: 0,
             price_minor: 0,
@@ -441,6 +440,7 @@ function quickAddShelf() {
                 type: 'cocktail',
                 sort: 0,
                 description: cocktail?.short_ingredients?.join(', ') ?? '',
+                is_bar_inventory_aware: true,
                 price: {
                     price: 0,
                     price_minor: 0,

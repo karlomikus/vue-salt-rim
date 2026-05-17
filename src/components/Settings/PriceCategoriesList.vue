@@ -4,7 +4,7 @@
         <template v-if="showCreateAction" #actions>
             <SaltRimDialog v-model="showDialog">
                 <template #trigger>
-                    <button type="button" class="button button--dark" @click.prevent="openDialog($t('prices.add-price-category'), {})">{{ $t('prices.add-price-category') }}</button>
+                    <button type="button" class="button button--dark" @click.prevent="openDialog($t('prices.add-price-category'), null)">{{ $t('prices.add-price-category') }}</button>
                 </template>
                 <template #dialog>
                     <PriceCategoryForm :source-category="editPriceCategory" :dialog-title="dialogTitle" @form-closed="refreshCategories" />
@@ -97,6 +97,9 @@ function refreshCategories() {
     showDialog.value = false
     isLoading.value = true
     BarAssistantClient.getPriceCategories().then(resp => {
+        if (!resp) {
+            return
+        }
         categories.value = resp.data
         isLoading.value = false
     }).catch(e => {
@@ -104,9 +107,9 @@ function refreshCategories() {
     })
 }
 
-function openDialog(title: string, obj: components['schemas']['PriceCategory']) {
+function openDialog(title: string, obj: components['schemas']['PriceCategory']|null) {
     dialogTitle.value = title
-    editPriceCategory.value = obj
+    editPriceCategory.value = obj ?? {} as components['schemas']['PriceCategory']
     showDialog.value = true
 }
 
