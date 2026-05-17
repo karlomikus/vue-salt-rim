@@ -32,7 +32,7 @@
                         <tr v-for="glass in glasses" :key="glass.id">
                             <td>
                                 <div class="glass-with-image">
-                                    <img v-if="glass.images.length > 0" :src="glass.images[0].url" :alt="glass.images[0].copyright ?? 'Image of glassware'" />
+                                    <img v-if="glass.images && glass.images.length > 0" :src="glass.images[0].url || undefined" :alt="glass.images[0].copyright ?? 'Image of glassware'" />
                                     <div>
                                         <a href="#" @click.prevent="openDialog($t('glass-type.edit'), glass)">{{ glass.name }}</a>
                                         <br>
