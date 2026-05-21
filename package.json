@@ -14,10 +14,10 @@
   },
   "dependencies": {
     "@floating-ui/vue": "^1.1.11",
-    "@meilisearch/instant-meilisearch": "^0.31.1",
+    "@meilisearch/instant-meilisearch": "^0.30.0",
     "@paddle/paddle-js": "^1.6.4",
     "@plausible-analytics/tracker": "^0.4.5",
-    "@sentry/vue": "^10.53.1",
+    "@sentry/vue": "^8.55.2",
     "@types/sortablejs": "^1.15.9",
     "@vueuse/core": "^11.3.0",
     "chart.js": "^4.5.1",
