@@ -3,20 +3,20 @@
 ## Build & Development Commands
 
 ```bash
-npm run dev          # Start development server (Vite)
-npm run build        # Build for production
-npm run preview      # Preview production build on port 4173
-npm run lint         # Run ESLint on src/
-npm run lint-fix     # Run ESLint with auto-fix
-npm run type-check   # Run TypeScript type checking
-npm run gen          # Generate API types from spec.yml
+bun run dev          # Start development server (Vite)
+bun run build        # Build for production
+bun run preview      # Preview production build on port 4173
+bun run lint         # Run ESLint on src/
+bun run lint-fix     # Run ESLint with auto-fix
+bun run type-check   # Run TypeScript type checking
+bun run gen          # Generate API types from spec.yml
 ```
 
 ### Running Single Tests
 
 ```bash
-npm run test src/composables/__tests__/useUnits.test.ts
-npm run test -- --run src/composables/__tests__/useUnits.test.ts
+bun run test src/composables/__tests__/useUnits.test.ts
+bun run test -- --run src/composables/__tests__/useUnits.test.ts
 ```
 
 Vitest supports filtering by filename pattern. Use `--run` flag to run once without watch mode.
@@ -101,7 +101,7 @@ const model = defineModel<string | number | null>({ required: true })
 
 ### API Client
 - Uses `openapi-fetch` for type-safe API calls
-- Generated types in `src/api/api.d.ts` (run `npm run gen` to regenerate)
+- Generated types in `src/api/api.d.ts` (run `bun run gen` to regenerate)
 - Import types: `import type { components } from '@/api/api'`
 
 ### CSS/Styling

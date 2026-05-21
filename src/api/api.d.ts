@@ -2457,7 +2457,7 @@ export interface components {
                 /** @example Old Fashioned */
                 name: string;
                 /** @example 3 */
-                cocktails_count: number;
+                count: number;
             }[];
         };
         /** @description Resource representing total stats for a bar */
@@ -4175,7 +4175,7 @@ export interface components {
              * Format: binary
              * @description Image file. Base64 encoded images also supported. Max 50MB
              */
-            image: string | null | Blob;
+            image: string | null;
             /** @description Existing image id, used to update an existing image */
             id?: number | null;
             /** @example 1 */
@@ -4488,7 +4488,7 @@ export interface components {
                  * @example https://example.com/image.jpg
                  * @example /path/to/image.png
                  */
-                uri: string;
+                uri: string | unknown | unknown;
                 /** @description Computed placeholder hash, like thumbhash, blurhash and similar */
                 placeholder_hash?: string | null;
                 /**

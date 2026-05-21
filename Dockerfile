@@ -1,16 +1,16 @@
-FROM node:current-alpine3.20 AS build
+FROM oven/bun:1-alpine AS build
 
 ARG BUILD_VERSION
 ENV BUILD_VERSION=${BUILD_VERSION:-develop}
 
 WORKDIR /app
 COPY package*.json ./
-RUN npm install
+RUN bun install
 COPY . .
 
 RUN sed -i "s/{{VERSION}}/$BUILD_VERSION/g" ./docker/config.js
 
-RUN npm run build
+RUN bun run build
 
 FROM docker.io/nginxinc/nginx-unprivileged:stable AS prod
 
@@ -32,16 +32,16 @@ RUN chmod +x /usr/local/bin/entrypoint
 
 CMD [ "/usr/local/bin/entrypoint" ]
 
-FROM node:latest AS dev
+FROM oven/bun:1 AS dev
 
 WORKDIR /app
 
 COPY package*.json ./
 
-RUN npm install
+RUN bun install
 
 COPY . .
 
 EXPOSE 5173
 
-CMD ["npm", "run", "dev"]
+CMD ["bun", "run", "dev"]
