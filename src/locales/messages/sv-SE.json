@@ -454,13 +454,11 @@
   "roles": {
     "name": {
       "Admin": "Administratör",
-      "Moderator": "Moderator",
       "General": "General",
       "Guest": "Gäst"
     },
     "description": {
       "Admin": "Fullständig tillgång till alla barens inställningar",
-      "Moderator": "Kan administrera drinkar, ingredienser och vissa barinställningar",
       "General": "Kan skapa drinkar och ingredienser",
       "Guest": "Kan visa, betygsätta och favoritmarkera drinkar"
     }

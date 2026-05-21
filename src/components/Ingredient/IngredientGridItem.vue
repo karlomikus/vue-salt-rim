@@ -36,7 +36,7 @@ const props = defineProps<{
 const showBarShelf = computed(() => {
     const appState = new AppState();
 
-    return appState.isAdmin() || appState.isModerator()
+    return appState.isAdmin()
 })
 
 const cleanDescription = computed(() => {

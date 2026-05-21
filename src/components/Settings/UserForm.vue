@@ -50,7 +50,6 @@ export default {
             user: this.sourceUser,
             roles: [
                 { id: 1, name: this.$t('roles.name.Admin'), description: this.$t('roles.description.Admin') },
-                { id: 2, name: this.$t('roles.name.Moderator'), description: this.$t('roles.description.Moderator') },
                 { id: 3, name: this.$t('roles.name.General'), description: this.$t('roles.description.General') },
                 { id: 4, name: this.$t('roles.name.Guest'), description: this.$t('roles.description.Guest') },
             ]

@@ -453,13 +453,11 @@
   "roles": {
     "name": {
       "Admin": "Administrator",
-      "Moderator": "Moderator",
       "General": "Generalni",
       "Guest": "Gost"
     },
     "description": {
       "Admin": "Kompletan pristup svim postavkama bara",
-      "Moderator": "Can manage cocktails, ingredients and some bar settings",
       "General": "Can create cocktails and ingredients",
       "Guest": "Can view, rate and favorite cocktails"
     }

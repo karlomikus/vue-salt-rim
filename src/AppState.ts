@@ -123,10 +123,6 @@ class AppState {
         return this.bar && this.bar.id && this.bar.access.role_id == 1
     }
 
-    isModerator() {
-        return this.bar && this.bar.id && this.bar.access.role_id == 2
-    }
-
     isGeneral() {
         return this.bar && this.bar.id && this.bar.access.role_id == 3
     }

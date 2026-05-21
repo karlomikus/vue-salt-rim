@@ -27,7 +27,7 @@
             <div class="ingredient-details__column-sidebar">
                 <h3 class="page-subtitle" style="margin-top: 0;">{{ $t('ingredient.status') }}</h3>
                 <div class="block-container block-container--inset shelf-actions">
-                    <ToggleIngredientBarShelf v-if="ingredient.in_bar_shelf !== undefined && (appState.isAdmin() || appState.isModerator())" :ingredient="ingredient" v-model="ingredient.in_bar_shelf">
+                    <ToggleIngredientBarShelf v-if="ingredient.in_bar_shelf !== undefined && appState.isAdmin()" :ingredient="ingredient" v-model="ingredient.in_bar_shelf">
                         <template v-slot="{ isLoading, inList, toggle }">
                             <a href="#" class="block-container block-container--hover shelf-actions__action" @click.prevent="toggle">
                                 <div>

@@ -453,13 +453,11 @@
   "roles": {
     "name": {
       "Admin": "Admin",
-      "Moderator": "Moderator",
       "General": "General",
       "Guest": "Guest"
     },
     "description": {
       "Admin": "Complete access to all bar settings",
-      "Moderator": "Can manage cocktails, ingredients and some bar settings",
       "General": "Can create cocktails and ingredients",
       "Guest": "Can view, rate and favorite cocktails"
     }

@@ -3,7 +3,7 @@
         {{ $t('ingredient.ingredients') }}
         <template #actions>
             <RouterLink class="button button--outline" :to="{ name: 'ingredients.import' }">{{ $t('ingredient.import') }}</RouterLink>
-            <template v-if="appState.isAdmin() || appState.isModerator() || appState.isGeneral()">
+            <template v-if="appState.isAdmin() || appState.isGeneral()">
                 <RouterLink class="button button--dark" :to="{ name: 'ingredients.form' }">{{ $t('ingredient.add') }}</RouterLink>
             </template>
         </template>

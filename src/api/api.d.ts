@@ -1253,7 +1253,7 @@ export interface paths {
         };
         /**
          * List members
-         * @description Show a list of all members in the bar. This endpoint is only accessible for bar admins and moderators.
+         * @description Show a list of all members in the bar. This endpoint is only accessible for bar admins.
          */
         get: operations["listMembers"];
         put?: never;

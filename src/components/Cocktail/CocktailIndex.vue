@@ -1,7 +1,7 @@
 <template>
     <PageHeader>
         {{ $t('cocktail.cocktails') }}
-        <template v-if="appState.isAdmin() || appState.isModerator() || appState.isGeneral()" #actions>
+        <template v-if="appState.isAdmin() || appState.isGeneral()" #actions>
             <RouterLink class="button button--outline" :to="{ name: 'cocktails.scrape' }">{{ $t('cocktail.import') }}</RouterLink>
             <RouterLink class="button button--dark" :to="{ name: 'cocktails.form' }">{{ $t('cocktail.add') }}</RouterLink>
         </template>
@@ -147,6 +147,7 @@ import EmptyState from './../EmptyState.vue'
 import FilterIngredientsModal from '../Search/FilterIngredientsModal.vue'
 import { useTitle } from '@/composables/title'
 import type { operations } from '@/api/api'
+import qs from 'qs'
 
 type ServerQueryFilters = NonNullable<operations['listCocktails']['parameters']['query']>
 
@@ -496,7 +497,7 @@ function handlePageChange(toPage: number) {
 }
 
 function queryToState() {
-    const state = route.query as ServerQueryFilters
+    const state = qs.parse(window.location.search.replace(/^\?/, '')) as ServerQueryFilters
 
     activeFilters.value.tag_id = state.filter && state.filter.tag_id ? String(state.filter.tag_id).split(',') : []
     activeFilters.value.cocktail_method_id = state.filter && state.filter.cocktail_method_id ? String(state.filter.cocktail_method_id).split(',') : []
