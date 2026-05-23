@@ -84,12 +84,34 @@
                 </div>
                 <div>
                     <ul v-if="ingredient.ingredient_parts.length > 0" class="block-container block-container--inset ingredient-form__complex-ingredients__list">
-                        <li v-for="part in ingredient.ingredient_parts" :key="part.ingredient.id">
-                            {{ part.ingredient.name }} &middot; <a href="#" @click.prevent="removeIngredientPart(part)">{{ $t('remove') }}</a>
-                            <input type="text" v-model="part.amount" class="form-input form-input--small" placeholder="Amount" style="width: 100px; display: inline-block; margin-left: 1rem;">
-                            <input type="text" v-model="part.amount_max" class="form-input form-input--small" placeholder="Amount" style="width: 100px; display: inline-block; margin-left: 1rem;">
-                            <input type="text" v-model="part.units" class="form-input form-input--small" placeholder="Amount" style="width: 100px; display: inline-block; margin-left: 1rem;">
-                            <input type="text" v-model="part.note" class="form-input form-input--small" placeholder="Amount" style="width: 100px; display: inline-block; margin-left: 1rem;">
+                        <li v-for="part in ingredient.ingredient_parts" :key="part.ingredient.id" class="block-container">
+                            <div>
+                                {{ part.ingredient.name }} &middot; <a href="#" @click.prevent="removeIngredientPart(part)">{{ $t('remove') }}</a> &middot; <a href="#" @click.prevent="removeIngredientPart(part)">Edit amounts</a>
+                            </div>
+                            <div class="ingredient-form-group">
+                                <div class="form-group">
+                                    <label class="form-label form-label--required" for="ingredient-amount">{{ t('amount') }}:</label>
+                                    <AmountInput id="ingredient-amount" v-model="part.amount" required></AmountInput>
+                                </div>
+                                <div class="form-group" v-if="part.amount_max !== undefined">
+                                    <label class="form-label" for="ingredient-amount-max">{{ t('amount') }} max:</label>
+                                    <AmountInput id="ingredient-amount-max" v-model="part.amount_max"></AmountInput>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label form-label--required" for="ingredient-units">{{ t('units') }}:</label>
+                                    <input id="ingredient-units" v-model="part.units" class="form-input" type="text" list="common-units" required>
+                                    <datalist id="common-units">
+                                        <option>ml</option>
+                                        <option>oz</option>
+                                        <option>cl</option>
+                                        <option>dashes</option>
+                                        <option>barspoon</option>
+                                        <option>drops</option>
+                                        <option>topup</option>
+                                        <option>leaves</option>
+                                    </datalist>
+                                </div>
+                            </div>
                         </li>
                     </ul>
                     <EmptyState v-else>{{ $t('ingredients-not-selected') }}</EmptyState>
@@ -183,6 +205,7 @@ import GenerationLoader from '../AI/GenerationLoader.vue'
 import { useImageUpload } from '@/composables/useImageUpload';
 import IngredientFinderBasic from '../IngredientFinderBasic.vue'
 import { useBasicSearch } from '@/composables/useBasicSearch'
+import AmountInput from '../AmountInput.vue'
 
 type Ingredient = components['schemas']['Ingredient']
 type IngredientPart = components["schemas"]["IngredientPart"]
@@ -350,7 +373,13 @@ async function submit() {
         units: ingredient.value.units,
         parent_ingredient_id: isParent.value && ingredient.value.hierarchy.parent_ingredient ? ingredient.value.hierarchy.parent_ingredient.id : null,
         images: [] as number[],
-        complex_ingredient_part_ids: ingredient.value.ingredient_parts ? [...new Set(ingredient.value.ingredient_parts.map(i => i.id))] : [],
+        complex_ingredient_part_ids: ingredient.value.ingredient_parts ? ingredient.value.ingredient_parts.map(part => ({
+            ingredient_id: part.ingredient.id,
+            amount: part.amount,
+            amount_max: part.amount_max,
+            units: part.units,
+            note: part.note,
+        })) : [],
         prices: ingredient.value.prices ? ingredient.value.prices.filter(p => p.price_category.id != null).map(p => ({
             price_category_id: p.price_category.id,
             price: p.price.price,
@@ -358,7 +387,7 @@ async function submit() {
             units: p.units,
             description: p.description,
         })) : [],
-    }
+    } as components['schemas']['IngredientRequest']
 
     if (imagesUpload.value) {
         const imageResources = await uploader.saveImages(imagesUpload.value)
@@ -512,5 +541,27 @@ refreshPriceCategories()
 .ingredient-prices__onboard svg {
     height: 64px;
     fill: var(--clr-gray-700);
+}
+
+.ingredient-form-group {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--gap-size-1);
+}
+
+.ingredient-form-group .form-group {
+    flex-basis: 150px;
+    margin: 0;
+}
+
+.ingredient-form-group .form-group:last-child {
+    flex-basis: 100px;
+    flex-grow: 1;
+}
+
+.ingredient-form-group input {
+    width: 100%;
 }
 </style>

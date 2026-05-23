@@ -161,8 +161,8 @@
                         <OverlayLoader v-if="isLoadingExtra" />
                         <li v-if="ingredient.ingredient_parts?.length">
                             {{ $t('contains-ingredients') }}:
-                            <template v-for="(part, index) in ingredient.ingredient_parts" :key="part.id">
-                                <RouterLink :to="{name: 'ingredients.show', params: {id: part.slug}}">{{ part.name }}</RouterLink><template v-if="index + 1 !== ingredient.ingredient_parts.length">, </template>
+                            <template v-for="(part, index) in ingredient.ingredient_parts" :key="part.ingredient.id">
+                                <RouterLink :to="{name: 'ingredients.show', params: {id: part.ingredient.slug}}">{{ part.ingredient.name }}</RouterLink><template v-if="index + 1 !== ingredient.ingredient_parts.length">, </template>
                             </template>
                         </li>
                         <li>
