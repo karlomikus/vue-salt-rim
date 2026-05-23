@@ -84,7 +84,13 @@
                 </div>
                 <div>
                     <ul v-if="ingredient.ingredient_parts.length > 0" class="block-container block-container--inset ingredient-form__complex-ingredients__list">
-                        <li v-for="part in ingredient.ingredient_parts" :key="part.id">{{ part.name }} &middot; <a href="#" @click.prevent="removeIngredientPart(part)">{{ $t('remove') }}</a></li>
+                        <li v-for="part in ingredient.ingredient_parts" :key="part.ingredient.id">
+                            {{ part.ingredient.name }} &middot; <a href="#" @click.prevent="removeIngredientPart(part)">{{ $t('remove') }}</a>
+                            <input type="text" v-model="part.amount" class="form-input form-input--small" placeholder="Amount" style="width: 100px; display: inline-block; margin-left: 1rem;">
+                            <input type="text" v-model="part.amount_max" class="form-input form-input--small" placeholder="Amount" style="width: 100px; display: inline-block; margin-left: 1rem;">
+                            <input type="text" v-model="part.units" class="form-input form-input--small" placeholder="Amount" style="width: 100px; display: inline-block; margin-left: 1rem;">
+                            <input type="text" v-model="part.note" class="form-input form-input--small" placeholder="Amount" style="width: 100px; display: inline-block; margin-left: 1rem;">
+                        </li>
                     </ul>
                     <EmptyState v-else>{{ $t('ingredients-not-selected') }}</EmptyState>
                 </div>
@@ -179,6 +185,7 @@ import IngredientFinderBasic from '../IngredientFinderBasic.vue'
 import { useBasicSearch } from '@/composables/useBasicSearch'
 
 type Ingredient = components['schemas']['Ingredient']
+type IngredientPart = components["schemas"]["IngredientPart"]
 type IngredientPrice = components['schemas']['IngredientPrice']
 type IngredientBasic = components['schemas']['IngredientBasic']
 type IngredientSearchResult = SearchResults['ingredient']
@@ -197,13 +204,13 @@ const isLoadingGen = ref(false)
 const isParent = ref(false)
 const isComplex = ref(false)
 const isDuplicatedAsVariant = ref(false)
-const ingredient = ref<Ingredient>({
+const ingredient = ref<Partial<Ingredient>>({
     hierarchy: {
-        parent_ingredient: {},
+        parent_ingredient: null,
     },
-    prices: [] as IngredientPrice[],
-    ingredient_parts: [] as IngredientBasic[],
-} as Ingredient)
+    prices: [],
+    ingredient_parts: [],
+})
 const calculators = ref<Calculator[]>([])
 const appState = new AppState()
 const bar = appState.bar
@@ -257,14 +264,24 @@ function selectIngredientPart(ingredientPart: IngredientSearchResult) {
         return
     }
 
-    ingredient.value?.ingredient_parts?.push(ingredientPart)
+    ingredient.value?.ingredient_parts?.push({
+        ingredient: {
+            id: ingredientPart.id,
+            name: ingredientPart.name,
+            slug: ingredientPart.slug,
+        },
+        amount: 0,
+        amount_max: null,
+        units: '',
+        note: '',
+    })
 }
 
 function selectParentIngredient(parent: IngredientSearchResult) {
     ingredient.value.hierarchy.parent_ingredient = parent
 }
 
-function removeIngredientPart(ingredientPart: IngredientBasic) {
+function removeIngredientPart(ingredientPart: IngredientPart) {
     if (!ingredient.value.ingredient_parts) {
         return
     }

@@ -10,7 +10,7 @@ const props = defineProps<{
 }>()
 
 const isLoading = ref(false)
-const minRelevantPercent = 3
+const minRelevantPercent = 4
 
 const distributionColors = [
     'var(--clr-chart-1)',

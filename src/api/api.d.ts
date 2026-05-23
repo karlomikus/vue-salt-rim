@@ -2457,7 +2457,7 @@ export interface components {
                 /** @example Old Fashioned */
                 name: string;
                 /** @example 3 */
-                count: number;
+                cocktails_count?: number;
             }[];
         };
         /** @description Resource representing total stats for a bar */
@@ -2474,8 +2474,6 @@ export interface components {
             total_bar_shelf_ingredients: number;
             /** @example 1 */
             total_bar_shelf_cocktails: number;
-            /** @example 1 */
-            total_shelf_ingredients: number;
             /** @example 1 */
             total_collections: number;
             /** @example 1 */
@@ -3147,6 +3145,33 @@ export interface components {
             /** @description Main resource image */
             image?: components["schemas"]["Image"];
         };
+        /** @description Represents a part of a complex ingredient with amount */
+        IngredientPart: {
+            /**
+             * Format: float
+             * @description The amount of this part
+             * @example 200
+             */
+            amount: number;
+            /**
+             * Format: float
+             * @description The maximum amount range
+             * @example null
+             */
+            amount_max?: number | null;
+            /**
+             * @description The units of measurement
+             * @example ml
+             */
+            units: string;
+            /**
+             * @description Optional note for this part
+             * @example freshly squeezed
+             */
+            note: string | null;
+            /** @description The ingredient used in this part */
+            ingredient: components["schemas"]["IngredientBasic"];
+        };
         /** @description Ingredient price */
         IngredientPrice: {
             price_category: components["schemas"]["PriceCategory"];
@@ -3273,7 +3298,7 @@ export interface components {
             /** @description Ingredients that can be substituted with this ingredient */
             can_be_substituted_with?: components["schemas"]["IngredientBasic"][];
             /** @description Parts of this ingredient */
-            ingredient_parts?: components["schemas"]["IngredientBasic"][];
+            ingredient_parts?: components["schemas"]["IngredientPart"][];
             /** @description Prices of the ingredient */
             prices?: components["schemas"]["IngredientPrice"][];
             /**
@@ -4139,6 +4164,24 @@ export interface components {
              */
             cocktails?: number[];
         };
+        ComplexIngredientPartRequest: {
+            /** @example 1 */
+            ingredient_id: number;
+            /**
+             * Format: float
+             * @example 200
+             */
+            amount: number;
+            /**
+             * Format: float
+             * @example null
+             */
+            amount_max?: number | null;
+            /** @example ml */
+            units: string;
+            /** @example freshly squeezed */
+            note?: string | null;
+        };
         ExportRequest: {
             type?: components["schemas"]["ExportTypeEnum"];
             units?: components["schemas"]["ForceUnitConvertEnum"];
@@ -4228,8 +4271,8 @@ export interface components {
             parent_ingredient_id?: number | null;
             /** @description Existing image ids */
             images?: number[];
-            /** @description Existing ingredient ids */
-            complex_ingredient_part_ids?: number[];
+            /** @description Parts that make up this complex ingredient */
+            complex_ingredient_parts?: components["schemas"]["ComplexIngredientPartRequest"][];
             prices?: components["schemas"]["IngredientPriceRequest"][];
             /**
              * @description Calculator you want to attach to this ingredient
