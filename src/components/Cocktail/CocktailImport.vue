@@ -12,46 +12,28 @@ import { useRoute, useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import type { SearchResults } from '@/api/SearchResults'
 import type { components } from '@/api/api'
-import type { CocktailRecipeDraft02 as Draft2Schema } from '@/schema/draft2'
-import type { CocktailRecipe as Draft1Schema } from '@/schema/draft1'
 import { useTitle } from '@/composables/title'
 import AppState from '@/AppState'
 import { useBookmarklet } from '@/composables/useBookmarklet'
 import IngredientFinderBasic from '../IngredientFinderBasic.vue'
 import { useBasicSearch } from '@/composables/useBasicSearch'
+import type { ImportResult } from '@/schema/ImportResult'
+import { useUrlImport } from '@/composables/useUrlImport'
+import { useJsonImport } from '@/composables/useJsonImport'
+import { useAiImport } from '@/composables/useAiImport'
+import { useHtmlImport } from '@/composables/useHtmlImport'
 
-interface Ingredient {
-    id: string,
-    name: string,
-    slug: string,
-}
 type SearchResult = SearchResults['ingredient']
 type Cocktail = components["schemas"]["Cocktail"]
 type Bar = components["schemas"]["Bar"]
 type Glass = components["schemas"]["Glass"]
 type FullIngredient = components["schemas"]["Ingredient"]
 type CocktailMethod = components["schemas"]["CocktailMethod"]
-type SchemaIngredient = components["schemas"]["cocktail-02.schema"]["ingredients"][0]
-interface SchemaWithMatchedData {
-    recipe: {
-        matchedGlass: Glass | null,
-        matchedMethodId: number | null,
-        ingredients: {
-            _source: string | null,
-            matchedIngredient: Ingredient | null,
-            refIngredient: SchemaIngredient,
-            substitutes: {
-                matchedIngredient: Ingredient | null,
-                refIngredient: SchemaIngredient,
-            }[]
-        }[]
-    }
-}
 
-type LocalSchema = Draft2Schema & SchemaWithMatchedData
-type CocktailIngredient = LocalSchema["recipe"]["ingredients"][0]
-type SubstituteCocktailIngredient = LocalSchema["recipe"]["ingredients"][0]["substitutes"][0]
-
+const urlImporter = useUrlImport()
+const jsonImporter = useJsonImport()
+const aiImporter = useAiImport()
+const htmlImporter = useHtmlImport()
 const { t } = useI18n()
 const router = useRouter()
 const route = useRoute()
@@ -60,14 +42,13 @@ const shouldUseBasicSearch = useBasicSearch()
 const isLoading = ref(false)
 const isImporting = ref(false)
 const showIngredientDialog = ref(false)
-const ingredientEdit = ref<CocktailIngredient | SubstituteCocktailIngredient | null>(null)
+const ingredientNameMatch = ref<ImportResult['ingredients'][0]|ImportResult['ingredients'][0]['substitutes'][0] | null>(null)
 const importType = ref<'url' | 'json' | 'bookmarklet' | 'ai' | 'html'>('url')
 const similarCocktails = ref([] as Cocktail[])
 const isLoadingSimilar = ref(false)
 const bookmarkletUrl = ref<string | null>(null)
 const bar = ref({} as Bar)
 const appState = new AppState()
-// const duplicateAction = ref('none')
 const source = ref<{
     url: null | string,
     json: null | string,
@@ -79,20 +60,24 @@ const source = ref<{
     ai_content: null,
     html: null,
 })
-const result = ref<LocalSchema>({} as LocalSchema)
+const result = ref<ImportResult|null>(null)
 const cocktailTags = computed({
     get() {
-        return result.value.recipe?.tags?.join(',')
+        return result.value?.tags?.join(',')
     },
     set(newVal) {
+        if (!result.value) {
+            return
+        }
+
         if (Array.isArray(newVal)) {
             newVal = newVal.join(',')
         }
 
         if (newVal == '' || newVal == null || newVal == undefined) {
-            result.value.recipe.tags = []
+            result.value.tags = []
         } else {
-            result.value.recipe.tags = Array.from(new Set(newVal.split(',').filter(t => t != '')))
+            result.value.tags = Array.from(new Set(newVal.split(',').filter(t => t != '')))
         }
     }
 })
@@ -109,14 +94,14 @@ function clearImport() {
         ai_content: null,
         html: null,
     }
-    ingredientEdit.value = null
-    result.value = {} as LocalSchema
+    ingredientNameMatch.value = null
+    result.value = null
 }
 
 async function importCocktail() {
     similarCocktails.value = []
-    ingredientEdit.value = null
-    result.value = {} as LocalSchema
+    ingredientNameMatch.value = null
+    result.value = null
     similarCocktails.value = []
 
     if (importType.value == 'url') {
@@ -142,32 +127,14 @@ function fromUrl() {
     }
 
     isLoading.value = true
-    BarAssistantClient.scrapeCocktail(source.value.url).then(resp => {
-        const schema = resp?.data.schema
-        if (!schema) {
-            return
+    urlImporter.scrapeCocktail(source.value.url).then(() => {
+        result.value = urlImporter.result.value
+        if (result.value) {
+            findSimilarCocktails(result.value.name)
         }
-
-        findSimilarCocktails(schema.recipe.name)
-
-        result.value = {
-            ...schema,
-            recipe: {
-                ...schema.recipe,
-                ingredients: schema.recipe?.ingredients?.map(i => {
-                    return {
-                        ...i,
-                        _source: resp?.data.scraper_meta.find(m => m._id == i._id)?.source,
-                        matchedIngredient: null,
-                        refIngredient: schema.ingredients.find(ing => ing._id == i._id),
-                    }
-                })
-            }
-        } as LocalSchema
-
-        isLoading.value = false
     }).catch(e => {
         toast.error(e.message)
+    }).finally(() => {
         isLoading.value = false
     })
 }
@@ -178,200 +145,78 @@ function fromAi() {
     }
 
     isLoading.value = true
-    BarAssistantClient.aiGenerateCocktailRecipe(source.value.ai_content).then(resp => {
-        const schema = resp?.data
-        if (!schema) {
-            return
+    aiImporter.generateFromAi(source.value.ai_content).then(() => {
+        result.value = aiImporter.result.value
+        if (result.value) {
+            findSimilarCocktails(result.value.name)
         }
-
-        findSimilarCocktails(schema.name)
-
-        result.value = {
-            ingredients: [],
-            recipe: {
-                _id: 'ai-generated',
-                matchedGlass: null,
-                matchedMethodId: null,
-                name: schema.name,
-                method: schema.method,
-                source: 'Raw text input',
-                description: schema.description,
-                instructions: schema.instructions,
-                garnish: schema.garnish,
-                ingredients: schema.ingredients.map((ing, idx) => {
-                    return {
-                        _id: idx.toString(),
-                        _source: null,
-                        amount: ing.amount,
-                        amount_max: ing.amount_max,
-                        note: ing.note,
-                        units: ing.units,
-                        substitutes: [],
-                        matchedIngredient: null,
-                        refIngredient: {
-                            _id: idx.toString(),
-                            name: ing.name,
-                        } as SchemaIngredient,
-                    } as CocktailIngredient
-                }),
-            }
-        } as LocalSchema
-
-        isLoading.value = false
     }).catch(e => {
         toast.error(e.message)
+    }).finally(() => {
         isLoading.value = false
     })
 }
 
 function fromJson() {
-    isLoading.value = true
-    try {
-        if (source.value.json != null) {
-            const parsed = JSON.parse(source.value.json) as Draft2Schema
-
-            // Draft 1 schema
-            if (!parsed.recipe) {
-                const parsedDraft1 = JSON.parse(source.value.json) as Draft1Schema
-
-                result.value = {
-                    ingredients: [],
-                    recipe: {
-                        _id: parsedDraft1._id,
-                        name: parsedDraft1.name,
-                        description: parsedDraft1.description,
-                        instructions: parsedDraft1.instructions,
-                        garnish: parsedDraft1.garnish,
-                        source: parsedDraft1.source,
-                        method: parsedDraft1.method,
-                        glass: parsedDraft1.glass,
-                        tags: parsedDraft1.tags,
-                        matchedGlass: null,
-                        matchedMethodId: null,
-                        images: parsedDraft1.images?.map(img => ({file: img.source, uri: img.source, copyright: img.copyright})) ?? [],
-                        ingredients: parsedDraft1.ingredients?.map(i => {
-                            return {
-                                _id: i._id,
-                                _source: null,
-                                amount: i.amount,
-                                amount_max: i.amount_max,
-                                units: i.units,
-                                note: i.note,
-                                matchedIngredient: null,
-                                substitutes: i.substitutes?.map(sub => {
-                                    return {
-                                        _id: sub._id,
-                                        amount: sub.amount,
-                                        amount_max: sub.amount_max,
-                                        units: sub.units,
-                                        matchedIngredient: null,
-                                        refIngredient: {
-                                            _id: sub._id,
-                                            name: sub.name,
-                                            strength: sub.strength,
-                                            description: sub.description,
-                                            origin: sub.origin,
-                                            category: sub.category,
-                                        } as SchemaIngredient,
-                                    } as SubstituteCocktailIngredient
-                                }),
-                                refIngredient: {
-                                    _id: i._id,
-                                    name: i.name,
-                                    strength: i.strength,
-                                    description: i.description,
-                                    origin: i.origin,
-                                    category: i.category,
-                                } as SchemaIngredient,
-                            } as CocktailIngredient
-                        })
-                    }
-                } as LocalSchema
-            } else {
-                result.value = {
-                    ...parsed,
-                    recipe: {
-                        ...parsed.recipe,
-                        ingredients: parsed.recipe?.ingredients?.map(i => {
-                            return {
-                                ...i,
-                                _source: null,
-                                matchedIngredient: null,
-                                refIngredient: parsed.ingredients.find(ing => ing._id == i._id),
-                                substitutes: i.substitutes?.map(sub => {
-                                    return {
-                                        ...sub,
-                                        matchedIngredient: null,
-                                        refIngredient: parsed.ingredients.find(ing => ing._id == sub._id),
-                                    }
-                                })
-                            }
-                        })
-                    }
-                } as LocalSchema
-            }
-        }
-    } catch (e) {
-        console.error('Unable to parse JSON', e)
+    if (!source.value.json) {
+        return
     }
-    isLoading.value = false
+
+    jsonImporter.importFromJson(source.value.json)
+    result.value = jsonImporter.result.value
+    if (result.value) {
+        findSimilarCocktails(result.value.name)
+    }
 }
 
 async function fromHtml() {
-    isLoading.value = true
-    const resp = (await BarAssistantClient.scrapeCocktail('http://barassistant.app', source.value.html))?.data ?? null
-    isLoading.value = false
-    if (resp) {
-        const schema = resp.schema
-        if (!schema) {
-            return
-        }
-
-        findSimilarCocktails(schema.recipe.name)
-
-        result.value = {
-            ...schema,
-            recipe: {
-                ...schema.recipe,
-                ingredients: schema.recipe?.ingredients?.map(i => {
-                    return {
-                        ...i,
-                        _source: resp.scraper_meta.find(m => m._id == i._id)?.source,
-                        matchedIngredient: null,
-                        refIngredient: schema.ingredients.find(ing => ing._id == i._id),
-                    }
-                })
-            }
-        } as LocalSchema
+    if (!source.value.html) {
+        return
     }
+
+    isLoading.value = true
+    htmlImporter.scrapeFromHtml(source.value.html).then(() => {
+        result.value = htmlImporter.result.value
+        if (result.value) {
+            findSimilarCocktails(result.value.name)
+        }
+    }).catch(e => {
+        toast.error(e.message)
+    }).finally(() => {
+        isLoading.value = false
+    })
 }
 
-function manuallyMatch(ingredient: CocktailIngredient | SubstituteCocktailIngredient) {
+function manuallyMatch(ing: ImportResult['ingredients'][0]|ImportResult['ingredients'][0]['substitutes'][0]) {
     showIngredientDialog.value = true
-    ingredientEdit.value = ingredient
+    ingredientNameMatch.value = ing
 }
 
-function removeIngredient(ingredient: string) {
-    result.value.recipe?.ingredients?.splice(
-        result.value.recipe?.ingredients?.findIndex(i => i._id == ingredient),
+function removeIngredient(ingredient: ImportResult['ingredients'][0]) {
+    if (!result.value) {
+        return
+    }
+
+    result.value.ingredients?.splice(
+        result.value.ingredients?.findIndex(i => i.name == ingredient.name),
         1
     )
 }
 
-function removeSubIngredient(parentIngredient: CocktailIngredient, ingredient: string) {
-    parentIngredient?.substitutes?.splice(
-        parentIngredient?.substitutes?.findIndex(i => i._id == ingredient),
+function removeSubIngredient(parentIngredient: ImportResult['ingredients'][0], ingredient: ImportResult['ingredients'][0]['substitutes'][0]) {
+    parentIngredient.substitutes?.splice(
+        parentIngredient?.substitutes?.findIndex(i => i.name == ingredient.name),
         1
     )
 }
 
 function handleIngredientEdit(selectedIngredient: SearchResult) {
-    if (ingredientEdit.value == null) {
+    if (ingredientNameMatch.value == null) {
         return
     }
 
-    ingredientEdit.value.matchedIngredient = {
-        id: selectedIngredient.id.toString(),
+    ingredientNameMatch.value.matchedIngredient = {
+        id: selectedIngredient.id,
         slug: selectedIngredient.slug,
         name: selectedIngredient.name,
     }
@@ -409,16 +254,18 @@ async function getMethod(methodName: string): Promise<CocktailMethod | null> {
     }
 }
 
-async function getOrCreateIngredient(ingredient: SchemaIngredient): Promise<FullIngredient | null> {
+async function getOrCreateIngredient(ingredientName: string): Promise<FullIngredient | null> {
     try {
-        const response = await BarAssistantClient.getIngredients({ 'filter[name_exact]': ingredient.name.toLowerCase(), per_page: 1 })
+        const response = await BarAssistantClient.getIngredients({ 'filter[name_exact]': ingredientName.toLowerCase(), per_page: 1 })
         const dbIngredient = response?.data?.[0] ?? null
 
         if (dbIngredient) {
             return dbIngredient
         }
 
-        const newIngredient = await BarAssistantClient.saveIngredient({name: ingredient.name, description: ingredient.description, origin: ingredient.origin, strength: ingredient.strength ?? 0.0})
+        const newIngredientId = await BarAssistantClient.saveIngredient({name: ingredientName})
+        const newIngredient = await BarAssistantClient.getIngredient(newIngredientId)
+
         return newIngredient?.data ?? null
     } catch (error) {
         return null;
@@ -427,23 +274,29 @@ async function getOrCreateIngredient(ingredient: SchemaIngredient): Promise<Full
 
 async function finishImporting() {
     isImporting.value = true
-    if (result.value.recipe.glass) {
-        result.value.recipe.matchedGlass = (await getGlass(result.value.recipe.glass)) ?? null
+    if (!result.value) {
+        return
     }
 
-    if (result.value.recipe.method) {
-        result.value.recipe.matchedMethodId = (await getMethod(result.value.recipe.method))?.id ?? null
+    let matchedGlass = null
+    if (result.value.glassName) {
+        matchedGlass = (await getGlass(result.value.glassName)) ?? null
     }
 
-    for (const ingredient of result.value.recipe.ingredients) {
+    let matchedMethod = null
+    if (result.value.methodName) {
+        matchedMethod = (await getMethod(result.value.methodName)) ?? null
+    }
+
+    for (const ingredient of result.value.ingredients) {
         if (ingredient.matchedIngredient) {
             continue
         }
 
-        const foundIngredient = await getOrCreateIngredient(ingredient.refIngredient)
+        const foundIngredient = await getOrCreateIngredient(ingredient.name)
         if (foundIngredient) {
             ingredient.matchedIngredient = {
-                id: foundIngredient.id.toString(),
+                id: foundIngredient.id,
                 slug: foundIngredient.slug,
                 name: foundIngredient.name,
             }
@@ -455,10 +308,10 @@ async function finishImporting() {
                     continue
                 }
 
-                const foundIngredient = await getOrCreateIngredient(substitute.refIngredient)
+                const foundIngredient = await getOrCreateIngredient(substitute.name)
                 if (foundIngredient) {
                     substitute.matchedIngredient = {
-                        id: foundIngredient.id.toString(),
+                        id: foundIngredient.id,
                         slug: foundIngredient.slug,
                         name: foundIngredient.name,
                     }
@@ -468,34 +321,30 @@ async function finishImporting() {
     }
 
     const cocktail = {
-        name: result.value.recipe.name,
-        description: result.value.recipe.description,
-        instructions: result.value.recipe.instructions,
-        garnish: result.value.recipe.garnish,
-        source: result.value.recipe.source,
-        method: {id: result.value.recipe.matchedMethodId},
-        glass: result.value.recipe.matchedGlass,
-        images: result.value.recipe.images?.map(img => ({
+        name: result.value.name,
+        description: result.value.description,
+        instructions: result.value.instructions,
+        garnish: result.value.garnish,
+        source: result.value.source,
+        method: {id: matchedMethod?.id},
+        glass: matchedGlass,
+        images: result.value.images?.map((img, idx) => ({
             url: img.uri,
             file: img.uri,
-            file_path: 'Image from: ' + result.value.recipe.source,
+            file_path: 'Image from: ' + result.value?.source,
             copyright: img.copyright,
-            sort: img.sort,
+            sort: idx + 1,
         })) ?? [],
-        tags: result.value.recipe.tags?.map(tag => ({ name: tag })),
-        ingredients: result.value.recipe.ingredients.map(i => {
-            const ing = i as CocktailIngredient
-
+        tags: result.value.tags?.map(tag => ({ name: tag })),
+        ingredients: result.value.ingredients.map((ing, idx) => {
             return {
                 units: ing.units,
                 amount: ing.amount,
                 amount_max: ing.amount_max,
-                optional: ing.optional,
-                sort: ing.sort,
+                optional: false,
+                sort: idx + 1,
                 note: ing.note,
-                substitutes: ing.substitutes?.map(s => {
-                    const sub = s as SubstituteCocktailIngredient
-
+                substitutes: ing.substitutes?.map(sub => {
                     return {
                         units: sub.units,
                         amount: sub.amount,
@@ -642,41 +491,40 @@ init()
                 <RouterLink :to="{name: 'cocktails.show', params: { id: cocktail.slug }}" v-for="cocktail in similarCocktails" :key="cocktail.id">{{ cocktail.name }}</RouterLink>
             </div>
         </div>
-        <div v-if="result.recipe" class="scraper-form">
+        <div v-if="result" class="scraper-form">
             <h3 class="form-section-title">{{ t('recipe-information') }}</h3>
             <div class="block-container block-container--padded">
                 <div class="form-group">
                     <label class="form-label form-label--required" for="name">{{ t('name') }}</label>
-                    <input id="name" v-model="result.recipe.name" type="text" class="form-input" required>
+                    <input id="name" v-model="result.name" type="text" class="form-input" required>
                 </div>
                 <div class="form-group">
                     <label class="form-label" for="description">{{ t('description') }}</label>
-                    <textarea id="description" v-model="result.recipe.description" class="form-input" rows="4"></textarea>
+                    <textarea id="description" v-model="result.description" class="form-input" rows="4"></textarea>
                 </div>
                 <div class="form-group">
                     <label class="form-label" for="source">{{ t('source') }}</label>
-                    <input id="source" v-model="result.recipe.source" type="text" class="form-input">
+                    <input id="source" v-model="result.source" type="text" class="form-input">
                 </div>
                 <div class="form-group">
                     <label class="form-label" for="glass">{{ t('glass-type.title') }}</label>
-                    <input id="glass" v-model="result.recipe.glass" type="text" class="form-input">
+                    <input id="glass" v-model="result.glassName" type="text" class="form-input">
                 </div>
                 <div class="form-group">
                     <label class="form-label form-label--required" for="instructions">{{ t('instructions') }}</label>
-                    <textarea id="instructions" v-model="result.recipe.instructions" class="form-input" rows="4" required></textarea>
+                    <textarea id="instructions" v-model="result.instructions" class="form-input" rows="4" required></textarea>
                 </div>
                 <div class="form-group">
                     <label class="form-label" for="garnish">{{ t('garnish') }}</label>
-                    <textarea id="garnish" v-model="result.recipe.garnish" class="form-input" rows="3"></textarea>
+                    <textarea id="garnish" v-model="result.garnish" class="form-input" rows="3"></textarea>
                 </div>
                 <div class="form-group">
                     <label class="form-label" for="method">{{ t('method.title') }}</label>
-                    <input id="method" v-model="result.recipe.method" type="text" class="form-input">
+                    <input id="method" v-model="result.methodName" type="text" class="form-input">
                 </div>
-                <template v-for="image in result.recipe.images" :key="image.uri">
+                <template v-for="image in result.images" :key="image.uri">
                     <div class="form-group">
                         <label class="form-label" for="image_url">{{ t('generate-image-dialog.preview') }}</label>
-                        <!-- <input id="image_url" v-model="image.uri" type="text" class="form-input"> -->
                         <img class="import-image-preview" :src="image.uri" alt="Preview image of cocktail from the scraped URL">
                     </div>
                     <div class="form-group">
@@ -690,13 +538,13 @@ init()
                 </div>
             </div>
             <h3 class="form-section-title">{{ t('ingredient.ingredients') }}</h3>
-            <template v-for="(ingredient, idx) in result.recipe.ingredients" :key="idx">
+            <template v-for="(ingredient, idx) in result.ingredients" :key="idx">
                 <div class="block-container block-container--padded scraper-ingredients__ingredient">
-                    <p v-if="ingredient._source"><strong>{{ t('source') }}:</strong> {{ ingredient._source }}</p>
+                    <p v-if="ingredient.source"><strong>{{ t('source') }}:</strong> {{ ingredient.source }}</p>
                     <div class="scraper-ingredients__ingredient__inputs">
                         <div class="form-group">
                             <label class="form-label form-label--required" :for="'ingredient_name_' + idx">{{ t('name') }}</label>
-                            <input :id="'ingredient_name_' + idx" v-model="ingredient.refIngredient.name" type="text" class="form-input" :disabled="ingredient.matchedIngredient != null" required>
+                            <input :id="'ingredient_name_' + idx" v-model="ingredient.name" type="text" class="form-input" :disabled="ingredient.matchedIngredient != null" required>
                         </div>
                         <div class="form-group">
                             <label class="form-label form-label--required" :for="'ingredient_amount_' + idx">{{ t('amount') }}</label>
@@ -721,15 +569,15 @@ init()
                     <div class="scraper-ingredients__ingredient__actions">
                         <a href="#" @click.prevent="manuallyMatch(ingredient)">{{ t('import.manually-match') }}</a>
                         &middot;
-                        <a href="#" @click.prevent="removeIngredient(ingredient._id)">{{ t('remove') }}</a>
+                        <a href="#" @click.prevent="removeIngredient(ingredient)">{{ t('remove') }}</a>
                     </div>
                 </div>
-                <div v-for="(sub, sidx) in ingredient.substitutes" :key="sub._id" class="block-container block-container--padded scraper-ingredients__ingredient" style="margin-left: 3rem;">
+                <div v-for="(sub, sidx) in ingredient.substitutes" :key="sidx" class="block-container block-container--padded scraper-ingredients__ingredient" style="margin-left: 3rem;">
                     <p><strong>{{ t('substitutes') }}:</strong></p>
                     <div class="scraper-ingredients__ingredient__inputs">
                         <div class="form-group">
                             <label class="form-label" :for="'sub_ingredient_name_' + idx">{{ t('name') }}</label>
-                            <input :id="'sub_ingredient_name_' + idx" v-model="sub.refIngredient.name" type="text" class="form-input" :disabled="sub.matchedIngredient != null">
+                            <input :id="'sub_ingredient_name_' + idx" v-model="sub.name" type="text" class="form-input" :disabled="sub.matchedIngredient != null">
                         </div>
                         <div class="form-group">
                             <label class="form-label" :for="'sub_ingredient_amount_' + sidx">{{ t('amount') }}</label>
@@ -750,17 +598,17 @@ init()
                     <div class="scraper-ingredients__ingredient__actions">
                         <a href="#" @click.prevent="manuallyMatch(sub)">{{ t('import.manually-match') }}</a>
                         &middot;
-                        <a href="#" @click.prevent="removeSubIngredient(ingredient, ingredient._id)">{{ t('remove') }}</a>
+                        <a href="#" @click.prevent="removeSubIngredient(ingredient, sub)">{{ t('remove') }}</a>
                     </div>
                 </div>
             </template>
-            <SaltRimDialog v-if="ingredientEdit" v-model="showIngredientDialog">
+            <SaltRimDialog v-if="ingredientNameMatch" v-model="showIngredientDialog">
                 <template #trigger><span></span></template>
                 <template #dialog>
                     <div class="dialog-title">{{ t('import.manually-match') }}</div>
-                    <p style="margin-bottom: 1rem;">{{ t('import.manual-match-notice', {name: ingredientEdit.refIngredient.name}) }}</p>
-                    <IngredientFinderBasic v-if="shouldUseBasicSearch" :initial-query="ingredientEdit.refIngredient.name" @ingredient-selected="handleIngredientEdit"></IngredientFinderBasic>
-                    <IngredientFinder v-else-if="!shouldUseBasicSearch && appState.bar.search_token" :search-token="appState.bar.search_token" :initial-query="ingredientEdit.refIngredient.name" @ingredient-selected="handleIngredientEdit"></IngredientFinder>
+                    <p style="margin-bottom: 1rem;">{{ t('import.manual-match-notice', {name: ingredientNameMatch.name}) }}</p>
+                    <IngredientFinderBasic v-if="shouldUseBasicSearch" :initial-query="ingredientNameMatch.name" @ingredient-selected="handleIngredientEdit"></IngredientFinderBasic>
+                    <IngredientFinder v-else-if="!shouldUseBasicSearch && appState.bar.search_token" :search-token="appState.bar.search_token" :initial-query="ingredientNameMatch.name" @ingredient-selected="handleIngredientEdit"></IngredientFinder>
                     <div class="dialog-actions">
                         <button type="button" class="button button--outline" @click="showIngredientDialog = false">{{ t('close') }}</button>
                     </div>

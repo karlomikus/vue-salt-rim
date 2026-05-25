@@ -1,30 +1,32 @@
-<script setup>
+<script setup lang="ts">
 import { ref } from 'vue'
 import { useSaltRimToast } from '../../composables/toast'
 import BarAssistantClient from '@/api/BarAssistantClient'
 import OverlayLoader from '@/components/OverlayLoader.vue'
 import { useI18n } from 'vue-i18n'
 import AppState from '../../AppState'
+import type { components } from '@/api/api'
+
+interface Props {
+    sourceCategory?: components['schemas']['PriceCategory']
+    dialogTitle?: string
+}
+
+interface Emits {
+    (e: 'formClosed'): void
+}
 
 const appState = new AppState()
 const { t } = useI18n()
-const emit = defineEmits(['formClosed'])
+const emit = defineEmits<Emits>()
 const toast = useSaltRimToast()
-const props = defineProps({
-    sourceCategory: {
-        type: Object,
-        default() {
-            return {}
-        }
-    },
-    dialogTitle: {
-        type: String,
-        default: ''
-    },
+const props = withDefaults(defineProps<Props>(), {
+    sourceCategory: () => ({} as components['schemas']['PriceCategory']),
+    dialogTitle: '',
 })
 
 const isLoading = ref(false)
-const category = ref(props.sourceCategory)
+const category = ref<components['schemas']['PriceCategory']>({ ...props.sourceCategory })
 
 if (appState.bar.settings && appState.bar.settings.default_currency) {
     category.value.currency = appState.bar.settings.default_currency
@@ -33,7 +35,7 @@ if (appState.bar.settings && appState.bar.settings.default_currency) {
 function submit() {
     isLoading.value = true
 
-    const postData = {
+    const postData: components['schemas']['PriceCategoryRequest'] = {
         name: category.value.name,
         currency: category.value.currency,
         description: category.value.description,
@@ -43,7 +45,7 @@ function submit() {
         BarAssistantClient.updatePriceCategory(category.value.id, postData).then(resp => {
             isLoading.value = false
             toast.default(t('price.price-category-update-success'))
-            emit('formClosed', resp.data)
+            emit('formClosed')
         }).catch(e => {
             toast.error(e.message)
             isLoading.value = false
@@ -52,7 +54,7 @@ function submit() {
         BarAssistantClient.savePriceCategory(postData).then(resp => {
             isLoading.value = false
             toast.default(t('price.price-category-add-success'))
-            emit('formClosed', resp.data)
+            emit('formClosed')
         }).catch(e => {
             toast.error(e.message)
             isLoading.value = false

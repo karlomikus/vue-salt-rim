@@ -10,7 +10,6 @@ type ShoppingList = components['schemas']['ShoppingList'];
 
 interface Props {
     cocktailIngredient: CocktailIngredient;
-    currentShelf: string;
     scaleFactor: number;
     units: string;
     shoppingList: ShoppingList[];
@@ -19,34 +18,21 @@ interface Props {
 const { t } = useI18n()
 const {
     cocktailIngredient,
-    currentShelf = 'bar',
     scaleFactor = 1,
     units = 'ml',
     shoppingList = [],
 } = defineProps<Props>();
 
 function showComplexStatus(ing: CocktailIngredient) {
-    if (currentShelf === 'bar') {
-        return !ing.in_bar_shelf && !ing.in_bar_shelf_as_substitute && !ing.in_bar_shelf_as_complex_ingredient
-    }
-
-    return !ing.in_shelf && !ing.in_shelf_as_substitute && !ing.in_shelf_as_complex_ingredient
+    return !ing.in_bar_shelf && !ing.in_bar_shelf_as_substitute && !ing.in_bar_shelf_as_complex_ingredient
 }
 
 function showSubstituteStatus(ing: CocktailIngredient) {
-    if (currentShelf === 'bar') {
-        return !ing.in_bar_shelf && ing.in_bar_shelf_as_substitute
-    }
-
-    return !ing.in_shelf && ing.in_shelf_as_substitute
+    return !ing.in_bar_shelf && ing.in_bar_shelf_as_substitute
 }
 
 function showComplexCanBeMadeStatus(ing: CocktailIngredient) {
-    if (currentShelf === 'bar') {
-        return !ing.in_bar_shelf && ing.in_bar_shelf_as_complex_ingredient
-    }
-
-    return !ing.in_shelf && ing.in_shelf_as_complex_ingredient
+    return !ing.in_bar_shelf && ing.in_bar_shelf_as_complex_ingredient
 }
 
 function buildSubstituteString(sub: CocktailIngredientSubstitute) {
@@ -57,7 +43,7 @@ function buildSubstituteString(sub: CocktailIngredientSubstitute) {
 <template>
     <div>
         <div class="cocktail-ingredients__ingredient">
-            <CocktailIngredientStatus :ingredient="cocktailIngredient" :currentShelf="currentShelf" />
+            <CocktailIngredientStatus :ingredient="cocktailIngredient" />
             <RouterLink class="cocktail-ingredients__ingredient__name" :to="{ name: 'ingredients.show', params: { id: cocktailIngredient.ingredient.slug } }" data-ingredient="preferred">
                 {{ cocktailIngredient.ingredient.name }} <span v-if="cocktailIngredient.note" class="cocktail-ingredients__flags__flag">&ndash; {{ cocktailIngredient.note }}</span> <small v-if="cocktailIngredient.optional">({{ t('optional') }})</small>
             </RouterLink>
@@ -68,7 +54,7 @@ function buildSubstituteString(sub: CocktailIngredientSubstitute) {
                 <div v-if="showSubstituteStatus(cocktailIngredient)" class="cocktail-ingredients__flags__flag">&middot; {{ t('cocktail.missing-ing-sub-available') }}</div>
                 &middot; {{ t('substitutes') }}:
                 <template v-for="(sub, index) in cocktailIngredient.substitutes" :key="index">
-                    <RouterLink :style="{'font-weight': (currentShelf === 'bar' ? sub.in_bar_shelf : sub.in_shelf) ? 'bold' : 'normal'}" :to="{ name: 'ingredients.show', params: { id: sub.ingredient.slug } }" data-ingredient="substitute">
+                    <RouterLink :style="{'font-weight': sub.in_bar_shelf ? 'bold' : 'normal'}" :to="{ name: 'ingredients.show', params: { id: sub.ingredient.slug } }" data-ingredient="substitute">
                         {{ buildSubstituteString(sub) }}
                     </RouterLink>
                     <template v-if="index + 1 !== cocktailIngredient.substitutes.length">, </template>

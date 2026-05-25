@@ -13,10 +13,6 @@
                 <ToggleIngredientBarShelf v-if="ingredient.in_bar_shelf !== undefined" :ingredient="ingredient" v-model="ingredient.in_bar_shelf"></ToggleIngredientBarShelf>
                 &middot;
             </template>
-            <template v-else>
-                <ToggleIngredientShelf v-if="ingredient.in_shelf !== undefined" :ingredient="ingredient" v-model="ingredient.in_shelf"></ToggleIngredientShelf>
-                &middot;
-            </template>
             <ToggleIngredientShoppingCart v-if="ingredient.in_shopping_list !== undefined" :ingredient="ingredient" v-model="ingredient.in_shopping_list"></ToggleIngredientShoppingCart>
         </div>
     </div>
@@ -27,7 +23,6 @@ import { computed } from 'vue'
 import IngredientImage from './IngredientImage.vue'
 import removeMd from 'remove-markdown'
 import ToggleIngredientShoppingCart from '@/components/ToggleIngredientShoppingCart.vue'
-import ToggleIngredientShelf from '@/components/ToggleIngredientShelf.vue'
 import ToggleIngredientBarShelf from '@/components/ToggleIngredientBarShelf.vue'
 import AppState from '@/AppState'
 import type { components } from '@/api/api'
@@ -41,7 +36,7 @@ const props = defineProps<{
 const showBarShelf = computed(() => {
     const appState = new AppState();
 
-    return appState.isAdmin() || appState.isModerator()
+    return appState.isAdmin()
 })
 
 const cleanDescription = computed(() => {
@@ -51,7 +46,7 @@ const cleanDescription = computed(() => {
 
     const text = removeMd(props.ingredient.description)
 
-    return text.length > 100 ? text.substring(0, 100) : text
+    return text.length > 100 ? text.substring(0, 100) + '...' : text
 })
 
 const defaultImage = computed(() => {

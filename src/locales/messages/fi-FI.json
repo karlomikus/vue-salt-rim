@@ -457,13 +457,11 @@
   "roles": {
     "name": {
       "Admin": "Ylläpitäjä",
-      "Moderator": "Valvoja",
       "General": "Yleinen",
       "Guest": "Vierailija"
     },
     "description": {
       "Admin": "Rajoittamattomat oikeudet baarin asetuksissa",
-      "Moderator": "Voi hallita juomia, ainesosia ja joitakin baarin asetuksia",
       "General": "Voi luoda juomia ja ainesosia",
       "Guest": "Voi katsella, arvioida ja merkitä juomia suosikeiksi"
     }

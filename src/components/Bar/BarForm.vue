@@ -169,7 +169,8 @@ async function submit() {
     isLoading.value = true
     if (bar.value.id) {
         try {
-            const data = (await BarAssistantClient.updateBar(bar.value.id, postData))?.data ?? null
+            await BarAssistantClient.updateBar(bar.value.id, postData)
+            const data = (await BarAssistantClient.getBar(bar.value.id))?.data
             if (data) {
                 appState.setBar(data)
                 toast.default(t('bars.edit-success', { name: data.name }))
@@ -187,9 +188,9 @@ async function submit() {
         }
 
         try {
-            const data = (await BarAssistantClient.saveBar(postData))?.data ?? null
-            if (data) {
-                toast.default(t('bars.add-success', { name: data.name }))
+            const barId = (await BarAssistantClient.saveBar(postData)) ?? null
+            if (barId) {
+                toast.default(t('bars.add-success', { name: 'TODO' }))
                 router.push({ name: 'bars' })
             }
         } catch (e: any) {

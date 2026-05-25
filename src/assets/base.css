@@ -48,6 +48,17 @@
     --clr-rating: rgb(235, 133, 0);
     --clr-rating-bg: rgb(255, 238, 216);
 
+    --clr-chart-1: #264653ff;
+    --clr-chart-2: #287271ff;
+    --clr-chart-3: #2a9d8fff;
+    --clr-chart-4: #8ab17dff;
+    --clr-chart-5: #babb74ff;
+    --clr-chart-6: #e9c46aff;
+    --clr-chart-7: #efb366ff;
+    --clr-chart-8: #f4a261ff;
+    --clr-chart-9: #ee8959ff;
+    --clr-chart-10: #e76f51ff;
+
     --shadow-color: 324deg 10% 71%;
     --shadow-elevation-low:
         0px -1px 4px hsl(var(--shadow-color) / 0.1),

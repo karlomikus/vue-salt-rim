@@ -54,6 +54,15 @@ const rejectOnError: Middleware = {
   },
 };
 
+const extractIdFromLocationHeader = (response: Response): string => {
+    const location = response.headers.get('location')
+    if (!location) {
+        throw new Error('Location header not found in response')
+    }
+
+    return location.substring(location.lastIndexOf('/') + 1)
+};
+
 const apiBaseUrl = window.srConfig.API_URL + '/api'
 const client = createClient<paths>({ baseUrl: apiBaseUrl, headers: { "Accept": "application/json" } });
 client.use(authMiddleware);
@@ -83,6 +92,10 @@ export default class BarAssistantClient {
     return (await client.POST('/profile', { body: body })).data
   }
 
+  static async changePassword(body: components["schemas"]["ChangePasswordRequest"]) {
+    return (await client.POST('/profile/change-password', { body: body })).data
+  }
+
   static async requestPasswordResetEmail(email: string) {
     return (await client.POST('/auth/forgot-password', { body: { email: email } })).data
   }
@@ -104,7 +117,9 @@ export default class BarAssistantClient {
   }
 
   static async saveIngredient(data: components["schemas"]["IngredientRequest"]) {
-    return (await client.POST('/ingredients', { body: data })).data
+    const { response } = (await client.POST('/ingredients', { body: data, parseAs: 'stream' }))
+
+    return extractIdFromLocationHeader(response)
   }
 
   static async updateIngredient(id: number, body: components["schemas"]["IngredientRequest"]) {
@@ -132,19 +147,23 @@ export default class BarAssistantClient {
   }
 
   static async savePublicCocktailLink(id: number) {
-    return (await client.POST('/cocktails/{id}/public-link', { params: { path: { id: id } } })).data
+    const { response } = await client.POST('/cocktails/{id}/public-link', { params: { path: { id: id } }, parseAs: 'stream' })
+
+    return extractIdFromLocationHeader(response)
   }
 
   static async deletePublicCocktailLink(id: number) {
     return (await client.DELETE('/cocktails/{id}/public-link', { params: { path: { id: id } } })).data
   }
 
-  static async saveCocktail(body: components["schemas"]["CocktailRequest"]) {
-    return (await client.POST('/cocktails', { body: body })).data
+  static async saveCocktail(body: components["schemas"]["CocktailRequest"]): Promise<string> {
+    const { response } = await client.POST('/cocktails', { body: body, parseAs: 'stream' })
+
+    return extractIdFromLocationHeader(response)
   }
 
   static async updateCocktail(id: number, body: components["schemas"]["CocktailRequest"]) {
-    return (await client.PUT('/cocktails/{id}', { params: { path: { id: id } }, body: body })).data
+    return (await client.PUT('/cocktails/{id}', { params: { path: { id: id } }, body: body }))
   }
 
   static async shareCocktail(id: string, query = {}) {
@@ -160,7 +179,9 @@ export default class BarAssistantClient {
   }
 
   static async copyCocktail(id: string) {
-    return (await client.POST('/cocktails/{id}/copy', { params: { path: { id: id } } })).data
+    const { response } = await client.POST('/cocktails/{id}/copy', { params: { path: { id: id } }, parseAs: 'stream' })
+
+    return extractIdFromLocationHeader(response)
   }
 
   static async rateCocktail(id: number, data: object = {}) {
@@ -172,11 +193,7 @@ export default class BarAssistantClient {
   }
 
   static async getUserCocktailFavorites(id: number) {
-    return (await client.GET('/users/{id}/cocktails/favorites', { params: { path: { id: id }, query: { per_page: 500 } } })).data
-  }
-
-  static async getUserCocktailShelf(id: number) {
-    return (await client.GET('/users/{id}/cocktails', { params: { path: { id: id }, query: { per_page: 500 } } })).data
+    return (await client.GET('/members/{id}/cocktail-favorites', { params: { path: { id: id }, query: { per_page: 500 } } })).data
   }
 
   static async getNotes(query = {}) {
@@ -232,31 +249,27 @@ export default class BarAssistantClient {
   }
 
   static async getShoppingList(id: number) {
-    return (await client.GET('/users/{id}/shopping-list', { params: { path: { id: id } } })).data
+    return (await client.GET('/members/{id}/shopping-list', { params: { path: { id: id } } })).data
   }
 
   static async addToShoppingList(id: number, data: components["schemas"]["ShoppingListRequest"]) {
-    return (await client.POST('/users/{id}/shopping-list/batch-store', { params: { path: { id: id } }, body: data })).data
+    return (await client.POST('/members/{id}/shopping-list/batch-store', { params: { path: { id: id } }, body: data })).data
   }
 
   static async removeFromShoppingList(id: number, data: components["schemas"]["ShoppingListRequest"]) {
-    return (await client.POST('/users/{id}/shopping-list/batch-delete', { params: { path: { id: id } }, body: data })).data
+    return (await client.POST('/members/{id}/shopping-list/batch-delete', { params: { path: { id: id } }, body: data })).data
   }
 
   static async shareShoppingList(id: number) {
-    return (await client.GET('/users/{id}/shopping-list/share', { params: { path: { id: id } } })).data
+    return (await client.GET('/members/{id}/shopping-list/share', { params: { path: { id: id } } })).data
   }
 
   static async generateExportDownloadURL(id: number) {
     return (await client.POST('/exports/{id}/download', { params: { path: { id: id } } })).data
   }
 
-  static async getRecommendedIngredients(id: number) {
-    return (await client.GET('/users/{id}/ingredients/recommend', { params: { path: { id: id } } })).data
-  }
-
   static async getBarRecommendedIngredients(id: number) {
-    return (await client.GET('/bars/{id}/ingredients/recommend', { params: { path: { id: id } } })).data
+    return (await client.GET('/bars/{id}/inventory/ingredients/recommend', { params: { path: { id: id } } })).data
   }
 
   static async getBars() {
@@ -272,7 +285,9 @@ export default class BarAssistantClient {
   }
 
   static async saveBar(data: components["schemas"]["BarRequest"]) {
-    return (await client.POST('/bars', { body: data })).data
+    const { response } = (await client.POST('/bars', { body: data, parseAs: 'stream' }))
+
+    return extractIdFromLocationHeader(response)
   }
 
   static async deleteBar(id: number) {
@@ -284,11 +299,11 @@ export default class BarAssistantClient {
   }
 
   static async leaveBar(id: number) {
-    return (await client.DELETE('/bars/{id}/memberships', { params: { path: { id: id } } })).data
+    return (await client.DELETE('/members/{id}', { params: { path: { id: id } } })).data
   }
 
-  static async getBarMembers(id: number) {
-    return (await client.GET('/bars/{id}/memberships', { params: { path: { id: id } } })).data
+  static async getBarMembers() {
+    return (await client.GET('/members')).data
   }
 
   static async getSharedCollections(id: number) {
@@ -299,20 +314,20 @@ export default class BarAssistantClient {
     return (await client.POST('/bars/{id}/status', { params: { path: { id: id } }, body: { status: status} })).data
   }
 
-  static async getBarStats(id: number) {
-    return (await client.GET('/bars/{id}/stats', { params: { path: { id: id } } })).data
+  static async getBarTotals(id: number) {
+    return (await client.GET('/bars/{id}/stats/totals', { params: { path: { id: id } } })).data
   }
 
-  static async getUserIngredientShelf(id: number) {
-    return (await client.GET('/users/{id}/ingredients', { params: { path: { id: id } } })).data
+  static async getBarTopStats(id: number) {
+    return (await client.GET('/bars/{id}/stats/top', { params: { path: { id: id } } })).data
   }
 
-  static async addToUserShelf(id: number, data: object = {}) {
-    return (await client.POST('/users/{id}/ingredients/batch-store', { params: { path: { id: id } }, body: data })).data
+  static async getMemberTasteProfile(id: number) {
+    return (await client.GET('/bars/{id}/stats/taste', { params: { path: { id: id } } })).data
   }
 
-  static async removeFromUserShelf(id: number, data: object = {}) {
-    return (await client.POST('/users/{id}/ingredients/batch-delete', { params: { path: { id: id } }, body: data })).data
+  static async getIngredientDistribution(id: number) {
+    return (await client.GET('/bars/{id}/stats/ingredient-distribution', { params: { path: { id: id } } })).data
   }
 
   static async getIngredient(id: string) {
@@ -323,8 +338,8 @@ export default class BarAssistantClient {
     return (await client.GET('/ingredients/{id}/tree', { params: { path: { id: id } } })).data
   }
 
-  static async getExtraCocktailsWithIngredient(id: number) {
-    return (await client.GET('/ingredients/{id}/extra', { params: { path: { id: id } } })).data
+  static async getExtraBarCocktailsWithIngredient(barId: number, id: number) {
+    return (await client.GET('/bars/{id}/inventory/ingredients/{idOrSlug}/extra', { params: { path: { id: barId, idOrSlug: id } } })).data
   }
 
   static async getUtensils() {
@@ -352,11 +367,13 @@ export default class BarAssistantClient {
   }
 
   static async savePriceCategory(data: components["schemas"]["PriceCategoryRequest"]) {
-    return (await client.POST('/price-categories', { body: data })).data
+    const { response } = (await client.POST('/price-categories', { body: data, parseAs: 'stream' }))
+
+    return extractIdFromLocationHeader(response)
   }
 
   static async updatePriceCategory(id: number, data: components["schemas"]["PriceCategoryRequest"]) {
-    return (await client.PUT('/price-categories/{id}', { params: { path: { id: id } }, body: data })).data
+    await client.PUT('/price-categories/{id}', { params: { path: { id: id } }, body: data })
   }
 
   static async deletePriceCategory(id: number) {
@@ -364,27 +381,27 @@ export default class BarAssistantClient {
   }
 
   static async getUsers() {
-    return (await client.GET('/users')).data
+    return (await client.GET('/members')).data
   }
 
   static async getUser(id: number) {
-    return (await client.GET('/users/{id}', { params: { path: { id: id } } })).data
+    return (await client.GET('/members/{id}', { params: { path: { id: id } } })).data
   }
 
-  static async saveUser(data: components["schemas"]["UserRequest"]) {
-    return (await client.POST('/users', { body: data })).data
+  static async saveMember(data: components["schemas"]["UserRequest"]) {
+    return (await client.POST('/members', { body: data })).data
   }
 
-  static async updateUser(id: number, data: components["schemas"]["UserRequest"]) {
-    return (await client.PUT('/users/{id}', { params: { path: { id: id } }, body: data })).data
+  static async updateMember(id: number, data: components["schemas"]["UserRequest"]) {
+    return (await client.PUT('/members/{id}', { params: { path: { id: id } }, body: data })).data
   }
 
-  static async deleteUser(id: number) {
-    return (await client.DELETE('/users/{id}', { params: { path: { id: id } } })).data
-  }
+  // static async deleteUser(id: number) {
+  //   return (await client.DELETE('/members/{id}', { params: { path: { id: id } } })).data
+  // }
 
-  static async removeUserFromBar(barId: number, userId: number) {
-    return (await client.DELETE('/bars/{id}/memberships/{userId}', { params: { path: { id: barId, userId: userId } } })).data
+  static async removeUserFromBar(id: number) {
+    return (await client.DELETE('/members/{id}', { params: { path: { id: id } } })).data
   }
 
   static async getCollections(query = {}) {
@@ -408,7 +425,7 @@ export default class BarAssistantClient {
   }
 
   static async saveCollection(data: components["schemas"]["CollectionRequest"]) {
-    return (await client.POST('/collections', { body: data })).data
+    return (await client.POST('/collections', { body: data, parseAs: 'stream' }))
   }
 
   static async scrapeCocktail(url: string, content: string | null = null) {
@@ -423,8 +440,10 @@ export default class BarAssistantClient {
     return (await client.GET('/glasses/{id}', { params: { path: { id: id } } })).data
   }
 
-  static async saveGlass(data: components["schemas"]["GlassRequest"]) {
-    return (await client.POST('/glasses', { body: data })).data
+  static async saveGlass(data: components["schemas"]["GlassRequest"]): Promise<string> {
+    const { response } = (await client.POST('/glasses', { body: data, parseAs: 'stream' }))
+
+    return extractIdFromLocationHeader(response)
   }
 
   static async updateGlass(id: number, data: components["schemas"]["GlassRequest"]) {
@@ -515,11 +534,11 @@ export default class BarAssistantClient {
   }
 
   static async addToBarShelf(id: number, data: object = {}) {
-    return (await client.POST('/bars/{id}/ingredients/batch-store', { params: { path: { id: id } }, body: data })).data
+    return (await client.POST('/bars/{id}/inventory/ingredients/batch-store', { params: { path: { id: id } }, body: data })).data
   }
 
   static async removeFromBarShelf(id: number, data: object = {}) {
-    return (await client.POST('/bars/{id}/ingredients/batch-delete', { params: { path: { id: id } }, body: data })).data
+    return (await client.POST('/bars/{id}/inventory/ingredients/batch-delete', { params: { path: { id: id } }, body: data })).data
   }
 
   static async getCocktailPrices(id: string) {
@@ -527,7 +546,7 @@ export default class BarAssistantClient {
   }
 
   static async getBarShelfCocktails(id: number) {
-    return (await client.GET('/bars/{id}/cocktails', { params: { path: { id: id }, query: { per_page: 500 } } })).data
+    return (await client.GET('/bars/{id}/inventory/cocktails', { params: { path: { id: id }, query: { per_page: 500 } } })).data
   }
 
   static async getMenuExport() {
@@ -559,7 +578,9 @@ export default class BarAssistantClient {
   }
 
   static async saveCalculator(data: components["schemas"]["CalculatorRequest"]) {
-    return (await client.POST('/calculators', { body: data })).data
+    const { response } = (await client.POST('/calculators', { body: data, parseAs: 'stream' }))
+
+    return extractIdFromLocationHeader(response)
   }
 
   static async updateCalculator(id: number, data: components["schemas"]["CalculatorRequest"]) {

@@ -93,7 +93,6 @@ function selectIngredient(item: IngredientSearchResult) {
         amount_max: null,
         units: null,
         in_bar_shelf: false,
-        in_shelf: false,
     })
 }
 

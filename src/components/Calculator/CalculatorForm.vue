@@ -134,7 +134,7 @@ function addEvaluation() {
             settings: {
                 prefix: null,
                 suffix: null,
-                decimal_places: '2',
+                decimal_places: 2,
             }
         },
         result: null,
@@ -175,7 +175,7 @@ function resolveAll(): void {
             continue
         }
 
-        evaluation.result = unitHandler.toFixedWithTruncate(result, parseFloat(evaluation.block.settings.decimal_places ?? '0')).toString()
+        evaluation.result = unitHandler.toFixedWithTruncate(result, evaluation.block.settings.decimal_places ?? 0).toString()
 
         mathParser.set(evaluation.block.variable_name, result)
     }

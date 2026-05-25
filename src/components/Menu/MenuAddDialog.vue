@@ -29,42 +29,50 @@
 </template>
 
 <script setup lang="ts">
-import BarAssistantClient from '@/api/BarAssistantClient';
-import OverlayLoader from './../OverlayLoader.vue'
-import { computed, ref } from 'vue';
+import { computed, onMounted, ref } from 'vue'
+import { useI18n } from 'vue-i18n'
+
 import type { components } from '@/api/api'
-import { useI18n } from 'vue-i18n';
+import BarAssistantClient from '@/api/BarAssistantClient'
 import { useSaltRimToast } from '@/composables/toast'
+import OverlayLoader from './../OverlayLoader.vue'
 
 type Menu = components['schemas']['Menu']
 type MenuRequest = components['schemas']['MenuRequest']
-type MenuItemRequest = components['schemas']['MenuRequest']['items'][0]
+type MenuCategoryRequest = components['schemas']['MenuCategoryRequest']
+type MenuItemRequest = components['schemas']['MenuItemRequest']
 type MenuCategories = components['schemas']['Menu']['categories']
 
 const { t } = useI18n()
 const toast = useSaltRimToast()
 
 const props = defineProps<{
-    items: number[],
-    menuItemType: 'cocktail' | 'ingredient',
+    items: number[]
+    menuItemType: 'cocktail' | 'ingredient'
     title: string
 }>()
 
-const emits = defineEmits<{
-    (e: 'menuAddDialogClosed'): void
+const emit = defineEmits<{
+    (event: 'menuAddDialogClosed'): void
 }>()
 
 const isLoading = ref(false)
 const existingSelectedCategoryName = ref<string | null>(null)
 const newCategoryName = ref<string | null>(null)
 const menu = ref<Menu | null>(null)
+const collectionName = ref<HTMLInputElement | null>(null)
 
-const getMenu = async () => {
+const menuCategories = computed((): MenuCategories => menu.value?.categories ?? [])
+
+async function getMenu() {
     isLoading.value = true
+
     try {
         const resp = await BarAssistantClient.getMenu()
-        if (resp)
+
+        if (resp) {
             menu.value = resp.data
+        }
     } catch (e: any) {
         console.error(e.message)
     } finally {
@@ -72,78 +80,71 @@ const getMenu = async () => {
     }
 }
 
-const menuCategories = computed((): MenuCategories => {
-    return menu.value ? menu.value.categories : []
-})
+function getGuessedCurrency(): string {
+    const firstCategoryWithItems = menu.value?.categories.find((category) => category.items.length > 0)
 
-const findCategoryByName = (name: string): MenuCategories[0] | null => {
-    if (!menu.value)
-        return null
-    for (const category of menu.value.categories) {
-        if (category.name === name)
-            return category
-    }
-    return null
+    return firstCategoryWithItems?.items[0].price.currency ?? 'EUR'
 }
 
-const saveAndClose = async () => {
-    if (menu.value == null)
+async function saveAndClose() {
+    if (!menu.value) {
         return
+    }
 
     isLoading.value = true
+
     try {
-        // Determine the target category name
-        const targetCategoryName = newCategoryName.value || existingSelectedCategoryName.value || 'Uncategorized'
+        const targetCategoryName = newCategoryName.value?.trim() || existingSelectedCategoryName.value || 'Uncategorized'
+        const existingMenuItemIds = new Set(
+            menu.value.categories.flatMap((category) => category.items.map((item) => item.id))
+        )
 
-        // Find if the target category already exists
-        const targetCategory = findCategoryByName(targetCategoryName)
-
-        // Calculate the starting sort value for new items in the target category
-        const startingSortValue = targetCategory
-            ? targetCategory.items.reduce((max, item) => item.sort > max ? item.sort : max, 0) + 1
-            : 1
-
-        // Guess currency from existing menu items
-        const guessedCurrency = menu.value.categories.length > 0 && menu.value.categories[0].items.length > 0
-            ? menu.value.categories[0].items[0].price.currency
-            : 'EUR'
-
-        // Filter out items that are already in the menu and create new menu item requests
-        const newItems = props.items.filter(itemId => {
-            // If item is already in menu, skip it
-            for (const category of menu.value!.categories) {
-                if (category.items.some(item => item.id === itemId))
-                    return false
-            }
-            return true
-        }).map((itemId, idx): MenuItemRequest => ({
-            id: itemId,
-            type: props.menuItemType,
-            category_name: targetCategoryName,
-            sort: startingSortValue + idx,
-            price: 0.0,
-            currency: guessedCurrency,
-        }))
-
-        // Map all existing items to preserve their current state
-        const existingItems = menu.value.categories.flatMap(cat => {
-            return cat.items.map(item => ({
+        const categories: MenuCategoryRequest[] = menu.value.categories.map((category, categoryIdx) => ({
+            sort: category.sort || categoryIdx + 1,
+            name: category.name,
+            items: category.items.map((item) => ({
                 id: item.id,
                 type: item.type,
-                category_name: cat.name,
                 sort: item.sort,
                 price: item.price.price,
                 currency: item.price.currency,
-            }))
-        })
+                is_bar_inventory_aware: item.is_bar_inventory_aware ?? false,
+            })),
+        }))
 
-        const postData = {
+        let targetCategory = categories.find((category) => category.name === targetCategoryName)
+
+        if (!targetCategory) {
+            const nextCategorySort = categories.reduce((maxSort, category) => Math.max(maxSort, category.sort), 0) + 1
+            targetCategory = {
+                sort: nextCategorySort,
+                name: targetCategoryName,
+                items: [],
+            }
+            categories.push(targetCategory)
+        }
+
+        const startingSortValue = targetCategory.items.reduce((maxSort, item) => Math.max(maxSort, item.sort), 0) + 1
+        const newItems = props.items
+            .filter((itemId) => !existingMenuItemIds.has(itemId))
+            .map((itemId, idx): MenuItemRequest => ({
+                id: itemId,
+                type: props.menuItemType,
+                sort: startingSortValue + idx,
+                price: 0,
+                currency: getGuessedCurrency(),
+                is_bar_inventory_aware: false,
+            }))
+
+        targetCategory.items.push(...newItems)
+
+        const postData: MenuRequest = {
             is_enabled: menu.value.is_enabled,
-            items: existingItems.concat(newItems),
-        } as MenuRequest
+            categories,
+        }
 
         await BarAssistantClient.updateMenu(postData)
-        emits('menuAddDialogClosed')
+        emit('menuAddDialogClosed')
         toast.default(t('menu.saved'))
     } catch (e: any) {
         toast.error(e.message)
@@ -152,5 +153,8 @@ const saveAndClose = async () => {
     }
 }
 
-getMenu()
+onMounted(() => {
+    collectionName.value?.focus()
+    getMenu()
+})
 </script>

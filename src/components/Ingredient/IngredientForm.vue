@@ -68,10 +68,10 @@
                 <SaltRimCheckbox id="parent-ingredient-checkbox" v-model="isParent" :label="$t('ingredient.is-variety')" :description="$t('ingredient.variety-note')"></SaltRimCheckbox>
             </div>
             <div v-show="isParent" class="form-group" v-if="bar.search_host">
-                <IngredientFinderBasic v-if="shouldUseBasicSearch" v-show="ingredient.hierarchy.parent_ingredient?.id == null" @ingredient-selected="selectParentIngredient" :disabled-ingredients="disabledFinderIngredients"></IngredientFinderBasic>
-                <IngredientFinder v-else-if="!shouldUseBasicSearch && appState.bar.search_token" v-show="ingredient.hierarchy.parent_ingredient?.id == null" :search-token="appState.bar.search_token" @ingredient-selected="selectParentIngredient" :disabled-ingredients="disabledFinderIngredients"></IngredientFinder>
-                <div class="form-input form-input--auto-height" v-if="ingredient.hierarchy.parent_ingredient?.id">
-                    {{ ingredient.hierarchy.parent_ingredient.name }} &middot; <a href="#" @click.prevent="ingredient.hierarchy.parent_ingredient = null">{{ $t('remove') }}</a>
+                <IngredientFinderBasic v-if="shouldUseBasicSearch" v-show="ingredient.hierarchy?.parent_ingredient?.id == null" @ingredient-selected="selectParentIngredient" :disabled-ingredients="disabledFinderIngredients"></IngredientFinderBasic>
+                <IngredientFinder v-else-if="!shouldUseBasicSearch && appState.bar.search_token" v-show="ingredient.hierarchy?.parent_ingredient?.id == null" :search-token="appState.bar.search_token" @ingredient-selected="selectParentIngredient" :disabled-ingredients="disabledFinderIngredients"></IngredientFinder>
+                <div class="form-input form-input--auto-height" v-if="ingredient.hierarchy?.parent_ingredient?.id">
+                    {{ ingredient.hierarchy?.parent_ingredient?.name }} &middot; <a href="#" @click.prevent="clearParentIngredient()">{{ $t('remove') }}</a>
                 </div>
             </div>
             <div class="form-group">
@@ -79,12 +79,34 @@
             </div>
             <div v-show="isComplex" class="ingredient-form__complex-ingredients" v-if="bar.search_host && ingredient.ingredient_parts">
                 <div>
-                    <IngredientFinderBasic v-if="shouldUseBasicSearch" :selected-ingredients="ingredient.ingredient_parts.map(i => i.id)" @ingredient-selected="selectIngredientPart" :disabled-ingredients="disabledFinderIngredients"></IngredientFinderBasic>
-                    <IngredientFinder v-else-if="!shouldUseBasicSearch && appState.bar.search_token" :selected-ingredients="ingredient.ingredient_parts.map(i => i.id)" :search-token="appState.bar.search_token" @ingredient-selected="selectIngredientPart" :disabled-ingredients="disabledFinderIngredients"></IngredientFinder>
+                    <IngredientFinderBasic v-if="shouldUseBasicSearch" :selected-ingredients="ingredient.ingredient_parts.map(i => i.ingredient.id)" @ingredient-selected="selectIngredientPart" :disabled-ingredients="disabledFinderIngredients"></IngredientFinderBasic>
+                    <IngredientFinder v-else-if="!shouldUseBasicSearch && appState.bar.search_token" :selected-ingredients="ingredient.ingredient_parts.map(i => i.ingredient.id)" :search-token="appState.bar.search_token" @ingredient-selected="selectIngredientPart" :disabled-ingredients="disabledFinderIngredients"></IngredientFinder>
                 </div>
                 <div>
                     <ul v-if="ingredient.ingredient_parts.length > 0" class="block-container block-container--inset ingredient-form__complex-ingredients__list">
-                        <li v-for="part in ingredient.ingredient_parts" :key="part.id">{{ part.name }} &middot; <a href="#" @click.prevent="removeIngredientPart(part)">{{ $t('remove') }}</a></li>
+                        <li v-for="(part, idx) in ingredient.ingredient_parts" :key="part.ingredient.id" class="block-container complex-ingredient-part">
+                            <div>
+                                {{ part.ingredient.name }}
+                                <template v-if="part.amount || part.amount === 0">
+                                    &middot; {{ part.amount }}{{ part.amount_max ? '-' + part.amount_max : '' }} {{ part.units }}
+                                </template>
+                                <template v-if="part.note">
+                                    &middot; {{ part.note }}
+                                </template>
+                            </div>
+                            <div>
+                                <SaltRimDialog v-model="showPartDialogs[idx]" @dialog-closed="handlePartModalClose(idx)">
+                                    <template #trigger>
+                                        <a href="#" @click.prevent="showPartDialogs[idx] = true">{{ $t('edit') }}</a>
+                                    </template>
+                                    <template #dialog>
+                                        <IngredientPartModal v-model="ingredient.ingredient_parts[idx]" @close="handlePartModalClose(idx)" />
+                                    </template>
+                                </SaltRimDialog>
+                                &middot;
+                                <a href="#" @click.prevent="removeIngredientPart(part)">{{ $t('remove') }}</a>
+                            </div>
+                        </li>
                     </ul>
                     <EmptyState v-else>{{ $t('ingredients-not-selected') }}</EmptyState>
                 </div>
@@ -177,10 +199,12 @@ import GenerationLoader from '../AI/GenerationLoader.vue'
 import { useImageUpload } from '@/composables/useImageUpload';
 import IngredientFinderBasic from '../IngredientFinderBasic.vue'
 import { useBasicSearch } from '@/composables/useBasicSearch'
+import SaltRimDialog from '../Dialog/SaltRimDialog.vue'
+import IngredientPartModal from './IngredientPartModal.vue'
 
 type Ingredient = components['schemas']['Ingredient']
+type IngredientPart = components["schemas"]["IngredientPart"]
 type IngredientPrice = components['schemas']['IngredientPrice']
-type IngredientBasic = components['schemas']['IngredientBasic']
 type IngredientSearchResult = SearchResults['ingredient']
 type Calculator = components['schemas']['Calculator']
 type PriceCategory = components['schemas']['PriceCategory']
@@ -197,17 +221,22 @@ const isLoadingGen = ref(false)
 const isParent = ref(false)
 const isComplex = ref(false)
 const isDuplicatedAsVariant = ref(false)
-const ingredient = ref<Ingredient>({
+const ingredient = ref<Partial<Ingredient>>({
     hierarchy: {
-        parent_ingredient: {},
+        parent_ingredient: null,
     },
-    prices: [] as IngredientPrice[],
-    ingredient_parts: [] as IngredientBasic[],
-} as Ingredient)
+    prices: [],
+    ingredient_parts: [],
+})
 const calculators = ref<Calculator[]>([])
 const appState = new AppState()
 const bar = appState.bar
 const priceCategories = ref<PriceCategory[]>([])
+const showPartDialogs = ref<boolean[]>([])
+
+function handlePartModalClose(idx: number) {
+    showPartDialogs.value[idx] = false
+}
 
 async function refreshIngredient(id: string) {
     isLoading.value = true
@@ -253,18 +282,36 @@ function refreshPriceCategories() {
 }
 
 function selectIngredientPart(ingredientPart: IngredientSearchResult) {
-    if (ingredient.value.ingredient_parts && ingredient.value.ingredient_parts.some(ing => ing.id == ingredientPart.id)) {
+    if (ingredient.value.ingredient_parts && ingredient.value.ingredient_parts.some(ing => ing.ingredient.id == ingredientPart.id)) {
         return
     }
 
-    ingredient.value?.ingredient_parts?.push(ingredientPart)
+    ingredient.value?.ingredient_parts?.push({
+        ingredient: {
+            id: ingredientPart.id,
+            name: ingredientPart.name,
+            slug: ingredientPart.slug,
+        },
+        amount: 0,
+        amount_max: null,
+        units: '',
+        note: '',
+    })
+}
+
+function clearParentIngredient() {
+    if (ingredient.value.hierarchy) {
+        ingredient.value.hierarchy.parent_ingredient = null
+    }
 }
 
 function selectParentIngredient(parent: IngredientSearchResult) {
-    ingredient.value.hierarchy.parent_ingredient = parent
+    if (ingredient.value.hierarchy) {
+        ingredient.value.hierarchy.parent_ingredient = parent
+    }
 }
 
-function removeIngredientPart(ingredientPart: IngredientBasic) {
+function removeIngredientPart(ingredientPart: IngredientPart) {
     if (!ingredient.value.ingredient_parts) {
         return
     }
@@ -331,9 +378,15 @@ async function submit() {
         distillery: ingredient.value.distillery,
         calculator_id: ingredient.value.calculator_id,
         units: ingredient.value.units,
-        parent_ingredient_id: isParent.value && ingredient.value.hierarchy.parent_ingredient ? ingredient.value.hierarchy.parent_ingredient.id : null,
+        parent_ingredient_id: isParent.value && ingredient.value.hierarchy?.parent_ingredient ? ingredient.value.hierarchy.parent_ingredient.id : null,
         images: [] as number[],
-        complex_ingredient_part_ids: ingredient.value.ingredient_parts ? [...new Set(ingredient.value.ingredient_parts.map(i => i.id))] : [],
+        complex_ingredient_parts: ingredient.value.ingredient_parts ? ingredient.value.ingredient_parts.map(part => ({
+            ingredient_id: part.ingredient.id,
+            amount: part.amount,
+            amount_max: part.amount_max,
+            units: part.units,
+            note: part.note,
+        })) : [],
         prices: ingredient.value.prices ? ingredient.value.prices.filter(p => p.price_category.id != null).map(p => ({
             price_category_id: p.price_category.id,
             price: p.price.price,
@@ -341,7 +394,7 @@ async function submit() {
             units: p.units,
             description: p.description,
         })) : [],
-    }
+    } as components['schemas']['IngredientRequest']
 
     if (imagesUpload.value) {
         const imageResources = await uploader.saveImages(imagesUpload.value)
@@ -349,26 +402,18 @@ async function submit() {
     }
 
     if (ingredient.value.id) {
-        BarAssistantClient.updateIngredient(ingredient.value.id, postData).then(resp => {
-            if (!resp) {
-                return
-            }
-
+        BarAssistantClient.updateIngredient(ingredient.value.id, postData).then(() => {
             toast.default(t('ingredient.update-success'))
-            router.push({ name: 'ingredients.show', params: { id: resp.data.slug } })
+            router.push({ name: 'ingredients.show', params: { id: ingredient.value.id } })
         }).catch(e => {
             toast.error(e.message)
         }).finally(() => {
             isLoading.value = false
         })
     } else {
-        BarAssistantClient.saveIngredient(postData).then(resp => {
-            if (!resp) {
-                return
-            }
-
+        BarAssistantClient.saveIngredient(postData).then(newId => {
             toast.default(t('ingredient.create-success'))
-            router.push({ name: 'ingredients.show', params: { id: resp.data.slug } })
+            router.push({ name: 'ingredients.show', params: { id: newId } })
         }).catch(e => {
             toast.error(e.message)
         }).finally(() => {
@@ -378,7 +423,7 @@ async function submit() {
 }
 
 const descendantIngredientIds = computed(() => {
-    if (!ingredient.value.hierarchy.descendants) {
+    if (!ingredient.value.hierarchy?.descendants) {
         return []
     }
 
@@ -469,7 +514,6 @@ refreshPriceCategories()
     list-style: none;
     margin: 0;
     overflow-y: auto;
-    max-height: 14rem;
     padding: 0.5rem;
 }
 
@@ -503,5 +547,9 @@ refreshPriceCategories()
 .ingredient-prices__onboard svg {
     height: 64px;
     fill: var(--clr-gray-700);
+}
+
+.complex-ingredient-part {
+    padding: var(--gap-size-2);
 }
 </style>

@@ -3,28 +3,13 @@
         <OverlayLoader v-if="isLoading" />
         <div class="dialog-title">{{ dialogTitle }}</div>
         <div class="form-group">
-            <label class="form-label form-label--required" for="name">{{ $t('users.display-name') }}:</label>
-            <input id="name" v-model="user.name" class="form-input" type="text" required>
-        </div>
-        <div class="form-group">
             <label class="form-label form-label--required" for="email">{{ $t('email') }}:</label>
-            <input id="email" v-model="user.email" class="form-input" type="email" required>
-        </div>
-        <div class="form-group">
-            <label class="form-label" :class="{ 'form-label--required': !user.id }" for="password">
-                <template v-if="!user.id">
-                    {{ $t('password') }}:
-                </template>
-                <template v-else>
-                    {{ $t('update-password') }}:
-                </template>
-            </label>
-            <input id="password" v-model="user.password" class="form-input" type="password" :required="!user.id">
+            <input id="email" v-model="user.email" class="form-input" type="email" :disabled="user.id != null" required>
         </div>
         <div class="form-group">
             <label class="form-label">{{ $t('users.role') }}:</label>
             <div class="user-roles">
-                <SaltRimRadio v-for="role in roles" :key="role.id" v-model="user.role.role_id" :value="role.id" :title="role.name" :description="role.description"></SaltRimRadio>
+                <SaltRimRadio v-for="role in roles" :key="role.id" v-model="user.role.id" :value="role.id" :title="role.name" :description="role.description"></SaltRimRadio>
             </div>
         </div>
         <div class="dialog-actions">
@@ -65,7 +50,6 @@ export default {
             user: this.sourceUser,
             roles: [
                 { id: 1, name: this.$t('roles.name.Admin'), description: this.$t('roles.description.Admin') },
-                { id: 2, name: this.$t('roles.name.Moderator'), description: this.$t('roles.description.Moderator') },
                 { id: 3, name: this.$t('roles.name.General'), description: this.$t('roles.description.General') },
                 { id: 4, name: this.$t('roles.name.Guest'), description: this.$t('roles.description.Guest') },
             ]
@@ -75,33 +59,32 @@ export default {
         submit() {
             this.isLoading = true
 
-            const postData = {
-                name: this.user.name,
-                email: this.user.email,
-                role_id: this.user.role.role_id,
-            }
-
             if (this.user.id) {
-                if (this.user.password) {
-                    postData.password = this.user.password
+                const postData = {
+                    email: this.user.email,
+                    role_id: this.user.role.id,
                 }
 
-                BarAssistantClient.updateUser(this.user.id, postData).then(() => {
-                    this.isLoading = false
+                BarAssistantClient.updateMember(this.user.id, postData).then(() => {
                     this.$toast.default(this.$t('users.update-success'))
                     this.$emit('userDialogClosed')
                 }).catch(e => {
-                    this.$toast.error(e.message)
+                    this.$toast.error('Unable to update a member.')
+                }).finally(() => {
                     this.isLoading = false
                 })
             } else {
-                postData.password = this.user.password
-                BarAssistantClient.saveUser(postData).then(() => {
-                    this.isLoading = false
+                const postData = {
+                    email: this.user.email,
+                    role_id: this.user.role.id,
+                }
+
+                BarAssistantClient.saveMember(postData).then(() => {
                     this.$toast.default(this.$t('users.add-success'))
                     this.$emit('userDialogClosed')
                 }).catch(e => {
-                    this.$toast.error(e.message)
+                    this.$toast.error('Unable to add a member. Make sure the user exists and is not already a member.')
+                }).finally(() => {
                     this.isLoading = false
                 })
             }

@@ -8,9 +8,6 @@
                 <div v-if="cocktail.in_bar_shelf" class="cocktail-badge" :title="$t('in_bar_shelf')">
                     <IconBarShelf></IconBarShelf>
                 </div>
-                <div v-if="cocktail.in_shelf" class="cocktail-badge" :title="$t('in_your_shelf')">
-                    <IconUserShelf></IconUserShelf>
-                </div>
                 <div v-if="cocktail.public_id" class="cocktail-badge" :title="$t('is_public')">
                     <IconPublicLink></IconPublicLink>
                 </div>

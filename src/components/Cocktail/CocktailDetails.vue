@@ -70,14 +70,9 @@ const cocktailPrices = ref([] as CocktailPrice[])
 const userShoppingListIngredients = ref([] as ShoppingList[])
 const ingredientScaleFactor = ref(1)
 const currentUnit = ref(appState.defaultUnit)
-const currentShelf = ref(appState.defaultShelf ?? 'bar')
 const waterDilution = ref<string | null>(null)
 
 watch(() => route.params.id as string, fetchCocktail, { immediate: true })
-
-watch(currentShelf, (newState, oldType) => {
-    appState.setDefaultShelf(newState)
-})
 
 const printUrl = computed(() => {
     return router.resolve({ name: 'print.cocktail', params: { id: cocktail.value.slug }, query: { scaleFactor: (ingredientScaleFactor.value).toFixed(4), targetVolumeToScaleTo: targetVolumeToScaleTo.value, targetVolumeDilution: targetVolumeDilution.value, waterDilution: waterDilution.value } })
@@ -150,7 +145,7 @@ const totalLiquidConverted = computed(() => {
 
 const missingIngredientIds = computed(() => {
     return cocktail.value?.ingredients?.filter(cocktailIngredient => {
-        return !(currentShelf.value === 'bar' ? cocktailIngredient.in_bar_shelf : cocktailIngredient.in_shelf)
+        return !cocktailIngredient.in_bar_shelf
             && !userShoppingListIngredients.value.map(i => i.ingredient.id).includes(cocktailIngredient.ingredient.id)
     }).map(cocktailIngredient => cocktailIngredient.ingredient.id) ?? []
 })
@@ -240,10 +235,10 @@ async function copy() {
         onResolved: (dialog: any) => {
             dialog.close()
             isLoading.value = true
-            BarAssistantClient.copyCocktail(cocktail.value.slug).then(resp => {
+            BarAssistantClient.copyCocktail(cocktail.value.slug).then(id => {
                 isLoading.value = false
                 toast.default(t('cocktail.copy-success'))
-                router.push({ name: 'cocktails.form', query: { id: resp?.data?.id } })
+                router.push({ name: 'cocktails.form', query: { id: id } })
             }).catch(e => {
                 isLoading.value = false
                 toast.error(e.message)
@@ -584,11 +579,6 @@ fetchShoppingList()
                     <div v-if="cocktail.ingredients && cocktail.ingredients.length > 0" class="block-container block-container--padded">
                         <h3 class="block-container__title">{{ t('ingredient.ingredients') }}</h3>
                         <div class="cocktail-ingredients__actions">
-                            {{ $t('cocktail.availability.match-to') }}:
-                            <a :class="{'bold': currentShelf === 'bar'}" href="#" @click.prevent="currentShelf = 'bar'">{{ $t('cocktail.availability.bar-shelf') }}</a>
-                            &middot;
-                            <a href="#" :class="{'bold': currentShelf === 'user'}" @click.prevent="currentShelf = 'user'">{{ $t('cocktail.availability.my-shelf') }}</a>
-                            <br>
                             <a v-show="missingIngredientIds.length > 0" href="#" @click.prevent="addMissingIngredients">{{ t('cocktail.missing-ing-action') }}</a>
                         </div>
                         <div style="display: grid; grid-template-columns: 1fr 1fr; margin-bottom: 1rem;">
@@ -601,7 +591,7 @@ fetchShoppingList()
                         <CocktailRecipeScaler class="volume-scaling-container" v-show="showScaler" v-model="ingredientScaleFactor" v-model:waterDilution="waterDilution" v-model:targetVolume="targetVolumeToScaleTo" :cocktail-volume-ml="cocktail.volume_ml ?? 0" :method-dilution="targetVolumeDilution" :current-unit="currentUnit" />
                         <ul class="cocktail-ingredients">
                             <li v-for="ing in cocktail.ingredients" :key="ing.sort">
-                                <CocktailIngredientView :cocktail-ingredient="ing" :shopping-list="userShoppingListIngredients" :current-shelf="currentShelf" :scale-factor="ingredientScaleFactor" :units="currentUnit"></CocktailIngredientView>
+                                <CocktailIngredientView :cocktail-ingredient="ing" :shopping-list="userShoppingListIngredients" :scale-factor="ingredientScaleFactor" :units="currentUnit"></CocktailIngredientView>
                             </li>
                         </ul>
                         <div v-if="cocktail.volume_ml" class="cocktail-ingredients__total-amount">

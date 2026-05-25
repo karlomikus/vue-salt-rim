@@ -40,117 +40,159 @@
     </div>
 </template>
 
-<script>
-import BarAssistantClient from '@/api/BarAssistantClient';
+<script setup lang="ts">
+import { computed, onMounted, ref } from 'vue'
+import { useI18n } from 'vue-i18n'
+
+import type { components } from '@/api/api'
+import BarAssistantClient from '@/api/BarAssistantClient'
+import { useConfirm } from '@/composables/confirm'
+import { useSaltRimToast } from '@/composables/toast'
 import OverlayLoader from './../OverlayLoader.vue'
 import SubscriptionCheck from '../SubscriptionCheck.vue'
 
-export default {
-    components: {
-        OverlayLoader,
-        SubscriptionCheck,
-    },
-    props: {
-        cocktails: {
-            type: Array,
-            default() {
-                return []
-            }
-        },
-        title: {
-            type: String,
-            required: true
-        }
-    },
-    emits: ['collectionDialogClosed'],
-    data() {
-        return {
-            isLoading: false,
-            collections: [],
-            newCollection: {},
-            collectionId: null
-        }
-    },
-    computed: {
-        isPartOfCollection() {
-            if (!this.collectionId || !this.isManagingSingleCocktail) {
-                return false
-            }
+type Collection = components['schemas']['Collection']
+type CollectionRequest = components['schemas']['CollectionRequest']
 
-            return this.cocktailCollections.find((val) => val.id == this.collectionId)
-        },
-        cocktailCollections() {
-            if (this.isManagingSingleCocktail) {
-                return this.collections.filter(collection => collection.cocktails.some(cocktail => cocktail.id == this.cocktails[0]))
-            }
+const props = withDefaults(defineProps<{
+    cocktails?: number[]
+    title: string
+}>(), {
+    cocktails: () => [],
+})
 
-            return this.collections
-        },
-        isManagingSingleCocktail() {
-            return this.cocktails.length == 1
-        }
-    },
-    mounted() {
-        this.$refs.collectionName.focus()
-        this.fetchCollections()
-    },
-    methods: {
-        fetchCollections() {
-            this.isLoading = true
-            BarAssistantClient.getCollections({include: 'cocktails'}).then(resp => {
-                this.isLoading = false
-                this.collections = resp.data
-            })
-        },
-        removeCocktailFromCollection() {
-            if (!this.isManagingSingleCocktail) {
-                return false
-            }
+const emit = defineEmits<{
+    (event: 'collectionDialogClosed'): void
+}>()
 
-            this.$confirm(this.$t('collections.confirm-remove-cocktail'), {
-                onResolved: (dialog) => {
-                    this.isLoading = true
-                    dialog.close()
-                    const existingCollectionCocktailIds = this.collections.find(c => c.id == this.collectionId).cocktails.map(c => c.id)
-                    existingCollectionCocktailIds.splice(existingCollectionCocktailIds.indexOf(this.cocktails[0]), 1)
-                    BarAssistantClient.syncCollectionCocktails(this.collectionId, existingCollectionCocktailIds).then(() => {
-                        this.$toast.default(this.$t('collections.cocktail-remove-success'))
-                        this.$emit('collectionDialogClosed')
-                        this.isLoading = false
-                    }).catch(e => {
-                        this.$toast.error(e.message)
-                        this.isLoading = false
-                    })
-                }
-            })
-        },
-        saveAndClose() {
-            if (this.collectionId) {
-                const existingCollectionCocktailIds = this.collections.find(c => c.id == this.collectionId).cocktails.map(c => c.id)
-                const newCocktailCollections = existingCollectionCocktailIds.concat(this.cocktails)
-                this.isLoading = true
-                BarAssistantClient.syncCollectionCocktails(this.collectionId, newCocktailCollections).then(() => {
-                    this.isLoading = false
-                    this.$toast.default(this.$t('collections.cocktail-add-success'))
-                    this.$emit('collectionDialogClosed')
-                }).catch(e => {
-                    this.$toast.error(e.message)
-                    this.isLoading = false
-                })
-            } else {
-                this.isLoading = true
-                this.newCollection.cocktails = this.cocktails
-                BarAssistantClient.saveCollection(this.newCollection).then(resp => {
-                    this.isLoading = false
-                    this.$toast.default(this.$t('collections.cocktail-add-success'))
-                    this.collectionId = resp.data.id
-                    this.$emit('collectionDialogClosed')
-                }).catch(e => {
-                    this.$toast.error(e.message)
-                    this.isLoading = false
-                })
-            }
-        }
+const { t } = useI18n()
+const confirm = useConfirm()
+const toast = useSaltRimToast()
+
+const isLoading = ref(false)
+const collections = ref<Collection[]>([])
+const newCollection = ref<CollectionRequest>({
+    name: '',
+    description: null,
+    is_bar_shared: false,
+})
+const collectionId = ref<number | null>(null)
+const collectionName = ref<HTMLInputElement | null>(null)
+
+const isManagingSingleCocktail = computed(() => props.cocktails.length === 1)
+
+const cocktailCollections = computed(() => {
+    if (isManagingSingleCocktail.value) {
+        return collections.value.filter((collection) => collection.cocktails?.some((cocktail) => cocktail.id === props.cocktails[0]))
+    }
+
+    return collections.value
+})
+
+const isPartOfCollection = computed(() => {
+    if (!collectionId.value || !isManagingSingleCocktail.value) {
+        return false
+    }
+
+    return cocktailCollections.value.find((collection) => collection.id === collectionId.value)
+})
+
+function getSelectedCollection() {
+    return collections.value.find((collection) => collection.id === collectionId.value)
+}
+
+async function fetchCollections() {
+    isLoading.value = true
+
+    try {
+        const resp = await BarAssistantClient.getCollections({ include: 'cocktails' })
+        collections.value = resp?.data ?? []
+    } finally {
+        isLoading.value = false
     }
 }
+
+function removeCocktailFromCollection() {
+    if (!isManagingSingleCocktail.value || !collectionId.value) {
+        return
+    }
+
+    const selectedCollectionId = collectionId.value
+
+    confirm.show(t('collections.confirm-remove-cocktail'), {
+        onResolved: async (dialog: { close: () => void }) => {
+            const selectedCollection = getSelectedCollection()
+
+            if (!selectedCollection?.cocktails) {
+                return
+            }
+
+            isLoading.value = true
+            dialog.close()
+
+            const existingCollectionCocktailIds = selectedCollection.cocktails.map((cocktail) => cocktail.id)
+            existingCollectionCocktailIds.splice(existingCollectionCocktailIds.indexOf(props.cocktails[0]), 1)
+
+            try {
+                await BarAssistantClient.syncCollectionCocktails(selectedCollectionId, existingCollectionCocktailIds)
+                toast.default(t('collections.cocktail-remove-success'))
+                emit('collectionDialogClosed')
+            } catch (e) {
+                toast.error((e as Error).message)
+            } finally {
+                isLoading.value = false
+            }
+        },
+    })
+}
+
+async function saveAndClose() {
+    if (collectionId.value) {
+        const selectedCollection = getSelectedCollection()
+
+        if (!selectedCollection?.cocktails) {
+            return
+        }
+
+        const existingCollectionCocktailIds = selectedCollection.cocktails.map((cocktail) => cocktail.id)
+        const newCocktailCollections = existingCollectionCocktailIds.concat(props.cocktails)
+        isLoading.value = true
+
+        try {
+            await BarAssistantClient.syncCollectionCocktails(collectionId.value, newCocktailCollections)
+            toast.default(t('collections.cocktail-add-success'))
+            emit('collectionDialogClosed')
+        } catch (e) {
+            toast.error((e as Error).message)
+        } finally {
+            isLoading.value = false
+        }
+
+        return
+    }
+
+    isLoading.value = true
+    newCollection.value.cocktails = props.cocktails
+
+    try {
+        const resp = await BarAssistantClient.saveCollection(newCollection.value)
+        toast.default(t('collections.cocktail-add-success'))
+        const location = resp.response.headers.get('location')
+
+        if (location) {
+            collectionId.value = Number(location.substring(location.lastIndexOf('/') + 1))
+        }
+
+        emit('collectionDialogClosed')
+    } catch (e) {
+        toast.error((e as Error).message)
+    } finally {
+        isLoading.value = false
+    }
+}
+
+onMounted(() => {
+    collectionName.value?.focus()
+    void fetchCollections()
+})
 </script>

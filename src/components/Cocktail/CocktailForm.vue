@@ -517,33 +517,26 @@ async function submit() {
     }
 
     if (cocktail.value.id) {
-        BarAssistantClient.updateCocktail(cocktail.value.id, postData).then(resp => {
-            if (!resp) {
-                return
-            }
-
+        BarAssistantClient.updateCocktail(cocktail.value.id, postData).then(() => {
             isLoading.value = false
             toast.default(t('cocktail.update-success'))
-            router.push({ name: 'cocktails.show', params: { id: resp.data.slug } })
+            router.push({ name: 'cocktails.show', params: { id: cocktail.value.slug } })
         }).catch(e => {
             toast.error(e.message)
             isLoading.value = false
         })
     } else {
-        BarAssistantClient.saveCocktail(postData).then(resp => {
-            if (!resp) {
-                return
-            }
+        const slug = await BarAssistantClient.saveCocktail(postData)
+        if (!slug) {
+            return
+        }
 
-            isLoading.value = false
-            toast.open({
-                message: t('cocktail.create-success')
-            })
-            router.push({ name: 'cocktails.show', params: { id: resp.data.slug } })
-        }).catch(e => {
-            toast.error(e.message)
-            isLoading.value = false
+        isLoading.value = false
+        toast.open({
+            message: t('cocktail.create-success')
         })
+
+        router.push({ name: 'cocktails.show', params: { id: slug } })
     }
 }
 

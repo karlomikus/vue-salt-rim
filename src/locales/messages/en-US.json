@@ -101,15 +101,15 @@
   "profile": "Profile",
   "filename": "File name",
   "users": {
-    "title": "Users",
-    "add": "Add user",
-    "confirm-delete": "This will permanently delete user with name \"{name}\".",
-    "delete-success": "User deleted successfully",
-    "edit": "Edit user",
-    "update-success": "User updated successfully.",
-    "role": "Bar role",
+    "title": "Members",
+    "add": "Add member",
+    "confirm-delete": "This will permanently delete member with name \"{name}\".",
+    "delete-success": "Member deleted successfully",
+    "edit": "Edit member",
+    "update-success": "Member updated successfully.",
+    "role": "Role",
     "display-name": "Display name",
-    "add-success": "User added successfully."
+    "add-success": "Member added successfully."
   },
   "filters": "Filters",
   "sort": "Sort by",
@@ -221,6 +221,8 @@
   "update-password": "Update password",
   "new-password": "New password",
   "repeat-password": "Repeat password",
+  "change-password": "Change password",
+  "current-password": "Current password",
   "profile-updated": "Your profile is updated",
   "tag": {
     "tags": "Tags",
@@ -460,13 +462,11 @@
   "roles": {
     "name": {
       "Admin": "Admin",
-      "Moderator": "Moderator",
       "General": "General",
       "Guest": "Guest"
     },
     "description": {
       "Admin": "Complete access to all bar settings",
-      "Moderator": "Can manage cocktails, ingredients and some bar settings",
       "General": "Can create cocktails and ingredients",
       "Guest": "Can view, rate and favorite cocktails"
     }
@@ -646,7 +646,7 @@
     "price-category-update-success": "Price category updated",
     "select": "Select price",
     "category-delete-success": "Price category deleted",
-    "category-confirm-delete": "This will permanently price category with name \\\"{name}\\\".",
+    "category-confirm-delete": "This will permanently price category with name \"{name}\".",
     "missing-cocktail-price-calculator": "There are no prices available for this cocktail. Add prices to ingredients in the recipe to enable price calculation.",
     "missing-price-categories": "To add ingredient prices, you need to define bar {link} first.",
     "per-use": "per use",

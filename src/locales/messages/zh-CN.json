@@ -453,13 +453,11 @@
   "roles": {
     "name": {
       "Admin": "管理员",
-      "Moderator": "版主",
       "General": "普通成员",
       "Guest": "访客"
     },
     "description": {
       "Admin": "拥有所有酒吧设置的完全访问权限",
-      "Moderator": "可管理鸡尾酒、配料及部分酒吧设置",
       "General": "可创建鸡尾酒和配料",
       "Guest": "可查看、评分和收藏鸡尾酒"
     }
