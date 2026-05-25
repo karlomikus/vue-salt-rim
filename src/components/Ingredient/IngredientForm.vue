@@ -68,10 +68,10 @@
                 <SaltRimCheckbox id="parent-ingredient-checkbox" v-model="isParent" :label="$t('ingredient.is-variety')" :description="$t('ingredient.variety-note')"></SaltRimCheckbox>
             </div>
             <div v-show="isParent" class="form-group" v-if="bar.search_host">
-                <IngredientFinderBasic v-if="shouldUseBasicSearch" v-show="ingredient.hierarchy.parent_ingredient?.id == null" @ingredient-selected="selectParentIngredient" :disabled-ingredients="disabledFinderIngredients"></IngredientFinderBasic>
-                <IngredientFinder v-else-if="!shouldUseBasicSearch && appState.bar.search_token" v-show="ingredient.hierarchy.parent_ingredient?.id == null" :search-token="appState.bar.search_token" @ingredient-selected="selectParentIngredient" :disabled-ingredients="disabledFinderIngredients"></IngredientFinder>
-                <div class="form-input form-input--auto-height" v-if="ingredient.hierarchy.parent_ingredient?.id">
-                    {{ ingredient.hierarchy.parent_ingredient.name }} &middot; <a href="#" @click.prevent="ingredient.hierarchy.parent_ingredient = null">{{ $t('remove') }}</a>
+                <IngredientFinderBasic v-if="shouldUseBasicSearch" v-show="ingredient.hierarchy?.parent_ingredient?.id == null" @ingredient-selected="selectParentIngredient" :disabled-ingredients="disabledFinderIngredients"></IngredientFinderBasic>
+                <IngredientFinder v-else-if="!shouldUseBasicSearch && appState.bar.search_token" v-show="ingredient.hierarchy?.parent_ingredient?.id == null" :search-token="appState.bar.search_token" @ingredient-selected="selectParentIngredient" :disabled-ingredients="disabledFinderIngredients"></IngredientFinder>
+                <div class="form-input form-input--auto-height" v-if="ingredient.hierarchy?.parent_ingredient?.id">
+                    {{ ingredient.hierarchy?.parent_ingredient?.name }} &middot; <a href="#" @click.prevent="clearParentIngredient()">{{ $t('remove') }}</a>
                 </div>
             </div>
             <div class="form-group">
@@ -84,7 +84,7 @@
                 </div>
                 <div>
                     <ul v-if="ingredient.ingredient_parts.length > 0" class="block-container block-container--inset ingredient-form__complex-ingredients__list">
-                        <li v-for="(part, idx) in ingredient.ingredient_parts" :key="part.ingredient.id" class="block-container">
+                        <li v-for="(part, idx) in ingredient.ingredient_parts" :key="part.ingredient.id" class="block-container complex-ingredient-part">
                             <div>
                                 {{ part.ingredient.name }}
                                 <template v-if="part.amount || part.amount === 0">
@@ -299,8 +299,16 @@ function selectIngredientPart(ingredientPart: IngredientSearchResult) {
     })
 }
 
+function clearParentIngredient() {
+    if (ingredient.value.hierarchy) {
+        ingredient.value.hierarchy.parent_ingredient = null
+    }
+}
+
 function selectParentIngredient(parent: IngredientSearchResult) {
-    ingredient.value.hierarchy.parent_ingredient = parent
+    if (ingredient.value.hierarchy) {
+        ingredient.value.hierarchy.parent_ingredient = parent
+    }
 }
 
 function removeIngredientPart(ingredientPart: IngredientPart) {
@@ -370,7 +378,7 @@ async function submit() {
         distillery: ingredient.value.distillery,
         calculator_id: ingredient.value.calculator_id,
         units: ingredient.value.units,
-        parent_ingredient_id: isParent.value && ingredient.value.hierarchy.parent_ingredient ? ingredient.value.hierarchy.parent_ingredient.id : null,
+        parent_ingredient_id: isParent.value && ingredient.value.hierarchy?.parent_ingredient ? ingredient.value.hierarchy.parent_ingredient.id : null,
         images: [] as number[],
         complex_ingredient_parts: ingredient.value.ingredient_parts ? ingredient.value.ingredient_parts.map(part => ({
             ingredient_id: part.ingredient.id,
@@ -415,7 +423,7 @@ async function submit() {
 }
 
 const descendantIngredientIds = computed(() => {
-    if (!ingredient.value.hierarchy.descendants) {
+    if (!ingredient.value.hierarchy?.descendants) {
         return []
     }
 
@@ -506,7 +514,6 @@ refreshPriceCategories()
     list-style: none;
     margin: 0;
     overflow-y: auto;
-    max-height: 14rem;
     padding: 0.5rem;
 }
 
@@ -542,5 +549,7 @@ refreshPriceCategories()
     fill: var(--clr-gray-700);
 }
 
-
+.complex-ingredient-part {
+    padding: var(--gap-size-2);
+}
 </style>

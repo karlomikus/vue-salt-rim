@@ -133,10 +133,6 @@ refreshShelf()
     <PageHeader>
         {{ $t('welcome-user', { 'name': appState.user.name }) }} 👋
         <small>Your member role in this bar is TODO</small>
-        <template v-if="appState.isAdmin() || appState.isGeneral()" #actions>
-            <RouterLink class="button button--outline" :to="{ name: 'ingredients.form' }">{{ $t('ingredient.add') }}</RouterLink>
-            <RouterLink class="button button--outline" :to="{ name: 'cocktails.form' }">{{ $t('cocktail.add') }}</RouterLink>
-        </template>
     </PageHeader>
     <StatusCheck></StatusCheck>
     <div class="shelf-container">
