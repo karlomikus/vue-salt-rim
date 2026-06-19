@@ -42,13 +42,13 @@
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18">
                                     <path d="M21 19H23V21H1V19H3V4C3 3.44772 3.44772 3 4 3H14C14.5523 3 15 3.44772 15 4V19H19V11H17V9H20C20.5523 9 21 9.44772 21 10V19ZM5 5V19H13V5H5ZM7 11H11V13H7V11ZM7 7H11V9H7V7Z"></path>
                                 </svg>
-                                {{ $t('bars.title') }}
+                                {{ t('bars.title') }}
                             </RouterLink>
                             <a class="dropdown-menu__item" href="#logout" @click.prevent="logout">
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18">
                                     <path d="M5 11H13V13H5V16L0 12L5 8V11ZM3.99927 18H6.70835C8.11862 19.2447 9.97111 20 12 20C16.4183 20 20 16.4183 20 12C20 7.58172 16.4183 4 12 4C9.97111 4 8.11862 4.75527 6.70835 6H3.99927C5.82368 3.57111 8.72836 2 12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22C8.72836 22 5.82368 20.4289 3.99927 18Z"></path>
                                 </svg>
-                                {{ $t('logout') }}
+                                {{ t('logout') }}
                             </a>
                         </template>
                     </SaltRimDropdown>
@@ -57,73 +57,74 @@
         </header>
         <nav v-if="appState.bar.id" class="subnavigation-bar">
             <div class="subnavigation-bar__nav">
-                <RouterLink :to="{ name: 'home' }" exact-active-class="current-nav">{{ $t('shelf.title') }}</RouterLink>
-                <RouterLink :to="{ name: 'cocktails' }" :class="{ 'current-nav': $route.path.startsWith('/cocktails') }">{{ $t('cocktail.cocktails') }}</RouterLink>
-                <RouterLink :to="{ name: 'ingredients' }" :class="{ 'current-nav': $route.path.startsWith('/ingredients') }">{{ $t('ingredient.ingredients') }}</RouterLink>
-                <RouterLink :to="{ name: 'shopping-list.index' }" :class="{ 'current-nav': $route.path.startsWith('/shopping-list') }">{{ $t('your-shopping-list') }}</RouterLink>
-                <RouterLink :to="{ name: 'collections.cocktails' }" :class="{ 'current-nav': $route.path.startsWith('/collections') }">{{ $t('collections.title') }}</RouterLink>
-                <RouterLink v-if="appState.isAdmin()" :to="{ name: 'menu' }" :class="{ 'current-nav': $route.path.startsWith('/menu') }">{{ $t('menu.title') }}</RouterLink>
-                <RouterLink :to="{ name: 'calculators.index' }" :class="{ 'current-nav': $route.path.startsWith('/calculators') }">{{ $t('calculators.title') }}</RouterLink>
-                <RouterLink :to="{ name: 'settings' }" :class="{ 'current-nav': $route.path.startsWith('/settings') }">{{ $t('settings') }}</RouterLink>
+                <RouterLink :to="{ name: 'home' }" exact-active-class="current-nav">{{ t('shelf.title') }}</RouterLink>
+                <RouterLink :to="{ name: 'cocktails' }" :class="{ 'current-nav': route.path.startsWith('/cocktails') }">{{ t('cocktail.cocktails') }}</RouterLink>
+                <RouterLink :to="{ name: 'ingredients' }" :class="{ 'current-nav': route.path.startsWith('/ingredients') }">{{ t('ingredient.ingredients') }}</RouterLink>
+                <RouterLink :to="{ name: 'shopping-list.index' }" :class="{ 'current-nav': route.path.startsWith('/shopping-list') }">{{ t('your-shopping-list') }}</RouterLink>
+                <RouterLink :to="{ name: 'collections.cocktails' }" :class="{ 'current-nav': route.path.startsWith('/collections') }">{{ t('collections.title') }}</RouterLink>
+                <RouterLink v-if="appState.isAdmin()" :to="{ name: 'menu' }" :class="{ 'current-nav': route.path.startsWith('/menu') }">{{ t('menu.title') }}</RouterLink>
+                <RouterLink :to="{ name: 'calculators.index' }" :class="{ 'current-nav': route.path.startsWith('/calculators') }">{{ t('calculators.title') }}</RouterLink>
+                <RouterLink :to="{ name: 'settings' }" :class="{ 'current-nav': route.path.startsWith('/settings') }">{{ t('settings') }}</RouterLink>
             </div>
         </nav>
     </div>
 </template>
-<script>
-import BarAssistantClient from '@/api/BarAssistantClient'
-import SiteAutocomplete from './../SiteAutocomplete.vue'
-import SiteAutocompleteBasic from './../SiteAutocompleteBasic.vue'
-import SaltRimDialog from './../Dialog/SaltRimDialog.vue'
-import SiteLogo from './../Layout/SiteLogo.vue'
-import ThemeToggle from './../ThemeToggle.vue'
-import AppState from '../../AppState'
-import SaltRimDropdown from './../SaltRimDropdown.vue'
-import { useTheme } from '@/composables/useTheme'
-import { useBasicSearch } from '@/composables/useBasicSearch'
 
-const shouldUseBasicSearch = useBasicSearch()
+<script setup lang="ts">
+import { ref, onMounted, onUnmounted } from 'vue';
+import { useI18n } from 'vue-i18n';
+import { useRouter, useRoute } from 'vue-router';
+import BarAssistantClient from '@/api/BarAssistantClient';
+import AppState from '@/AppState';
+import { dialogBus } from '@/composables/eventBus';
+import { useTheme } from '@/composables/useTheme';
+import { useBasicSearch } from '@/composables/useBasicSearch';
+import SaltRimDialog from '@/components/Dialog/SaltRimDialog.vue';
+import SiteLogo from '@/components/Layout/SiteLogo.vue';
+import SaltRimDropdown from '@/components/SaltRimDropdown.vue';
+import SiteAutocomplete from '@/components/SiteAutocomplete.vue';
+import SiteAutocompleteBasic from '@/components/SiteAutocompleteBasic.vue';
+import ThemeToggle from '@/components/ThemeToggle.vue';
 
-export default {
-    components: {
-        SiteAutocomplete,
-        SiteAutocompleteBasic,
-        SaltRimDialog,
-        SiteLogo,
-        ThemeToggle,
-        SaltRimDropdown,
-    },
-    data() {
-        return {
-            appState: new AppState(),
-            showSearchDialog: false,
-            shouldUseBasicSearch: shouldUseBasicSearch,
-        }
-    },
-    created() {
-        document.addEventListener('keydown', evt => {
-            if (evt.ctrlKey && evt.key === 'k') {
-                evt.preventDefault()
-                this.showSearchDialog = !this.showSearchDialog
-            }
-        })
-    },
-    methods: {
-        logout() {
-            this.$confirm(this.$t('auth.confirm-logout'), {
-                onResolved: (dialog) => {
-                    dialog.close()
-                    BarAssistantClient.logout().then(() => {
-                        useTheme('light')
-                        const appState = new AppState()
-                        appState.clear()
-                        this.$router.push({ name: 'login' })
-                    })
-                }
-            })
-        }
+const { t } = useI18n();
+const router = useRouter();
+const route = useRoute();
+
+const appState = new AppState();
+const showSearchDialog = ref(false);
+const shouldUseBasicSearch = useBasicSearch();
+
+function logout() {
+    dialogBus.emit('requestConfirm', {
+        body: t('auth.confirm-logout'),
+        onResolved: (dialog: { close: () => void }) => {
+            dialog.close();
+            BarAssistantClient.logout().then(() => {
+                useTheme('light');
+                const appState = new AppState();
+                appState.clear();
+                router.push({ name: 'login' });
+            });
+        },
+    });
+}
+
+function onKeydown(evt: KeyboardEvent) {
+    if (evt.ctrlKey && evt.key === 'k') {
+        evt.preventDefault();
+        showSearchDialog.value = !showSearchDialog.value;
     }
 }
+
+onMounted(() => {
+    document.addEventListener('keydown', onKeydown);
+});
+
+onUnmounted(() => {
+    document.removeEventListener('keydown', onKeydown);
+});
 </script>
+
 <style scoped>
 .site-header-wrapper {
     margin-bottom: 1rem;
