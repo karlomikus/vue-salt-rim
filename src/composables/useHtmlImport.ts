@@ -30,7 +30,7 @@ export function useHtmlImport() {
                 methodName: data.schema.method ?? null,
                 images: data.schema.images?.map(img => {
                     return {
-                        uri: img.uri,
+                        uri: img.uri as string,
                         copyright: img.copyright,
                     }
                 }) ?? [],
