@@ -10,37 +10,21 @@
         </div>
     </button>
 </template>
-<script>
-export default {
-    props: {
-        modelValue: {
-            type: [Number, String],
-            default: null,
-        },
-        value: {
-            type: [Number, String],
-            default: null,
-        },
-        title: {
-            type: String,
-            default: ''
-        },
-        description: {
-            type: String,
-            default: ''
-        }
-    },
-    emits: ['update:modelValue'],
-    computed: {
-        isSelected() {
-            return this.value == this.modelValue
-        }
-    },
-    methods: {
-        select() {
-            this.$emit('update:modelValue', this.value)
-        }
-    }
+<script setup lang="ts">
+import { computed } from 'vue';
+
+const model = defineModel<string | number | null>({ default: null });
+
+const props = defineProps<{
+    value: string | number | null;
+    title?: string;
+    description?: string;
+}>();
+
+const isSelected = computed(() => props.value == model.value);
+
+function select(): void {
+    model.value = props.value;
 }
 </script>
 <style scoped>

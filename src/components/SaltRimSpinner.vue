@@ -5,19 +5,14 @@
     </svg>
 </template>
 
-<script>
-export default {
-    props: {
-        color: {
-            type: String,
-            default: '#693057'
-        },
-        size: {
-            type: Number,
-            default: 32
-        }
-    }
-}
+<script setup lang="ts">
+withDefaults(defineProps<{
+    color?: string;
+    size?: number;
+}>(), {
+    color: '#693057',
+    size: 32,
+});
 </script>
 
 <style scoped>

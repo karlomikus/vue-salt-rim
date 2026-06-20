@@ -9,44 +9,36 @@
     </a>
 </template>
 
-<script>
-import AppState from '../AppState'
-import { useTheme } from './../composables/useTheme'
+<script setup lang="ts">
+import { onMounted, ref } from 'vue';
+import AppState from '../AppState';
+import { useTheme } from './../composables/useTheme';
 
-export default {
-    data() {
-        return {
-            current: 'light',
-            metaThemeColor: {
-                dark: '#282238',
-                light: '#584b75',
-            }
-        }
-    },
-    mounted() {
-        const appState = new AppState()
-        if (appState.theme) {
-            useTheme(appState.theme)
-            this.current = appState.theme
-        }
-    },
-    methods: {
-        toggleTheme() {
-            if (this.current == 'dark') {
-                useTheme('light')
-                this.current = 'light'
-            } else if (this.current == 'light') {
-                useTheme('dark')
-                this.current = 'dark'
-            }
+const current = ref<string>('light');
 
-            this.rememberTheme()
-        },
-        rememberTheme() {
-            const appState = new AppState()
-            appState.setTheme(this.current)
-        }
+onMounted(() => {
+    const appState = new AppState();
+    if (appState.theme) {
+        useTheme(appState.theme);
+        current.value = appState.theme;
     }
+});
+
+function toggleTheme(): void {
+    if (current.value === 'dark') {
+        useTheme('light');
+        current.value = 'light';
+    } else if (current.value === 'light') {
+        useTheme('dark');
+        current.value = 'dark';
+    }
+
+    rememberTheme();
+}
+
+function rememberTheme(): void {
+    const appState = new AppState();
+    appState.setTheme(current.value);
 }
 </script>
 

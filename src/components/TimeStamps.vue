@@ -8,25 +8,31 @@
     </div>
 </template>
 
-<script>
-import DateFormatter from './DateFormatter.vue'
+<script setup lang="ts">
+import { useI18n } from 'vue-i18n';
+import DateFormatter from './DateFormatter.vue';
 
-export default {
-    components: {
-        DateFormatter
-    },
-    props: {
-        resource: {
-            type: Object,
-            default() {
-                return {
-                    created_user: {},
-                    updated_user: {},
-                }
-            }
-        }
-    },
+interface Resource {
+    created_user?: {
+        name?: string;
+    };
+    updated_user?: {
+        name?: string;
+    };
+    created_at?: string;
+    updated_at?: string;
 }
+
+const props = withDefaults(defineProps<{
+    resource?: Resource;
+}>(), {
+    resource: () => ({
+        created_user: {},
+        updated_user: {},
+    }),
+});
+
+const { t } = useI18n();
 </script>
 <style scoped>
 .timestamps {
