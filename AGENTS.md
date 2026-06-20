@@ -2,24 +2,17 @@
 
 ## Build & Development Commands
 
-```bash
-bun run dev          # Start development server (Vite)
-bun run build        # Build for production
-bun run preview      # Preview production build on port 4173
-bun run lint         # Run ESLint on src/
-bun run lint-fix     # Run ESLint with auto-fix
-bun run type-check   # Run TypeScript type checking
-bun run gen          # Generate API types from spec.yml
-```
-
-### Running Single Tests
+Application is run in a docker container with Bun as the runtime. Use the following commands to manage the application:
 
 ```bash
-bun run test src/composables/__tests__/useUnits.test.ts
-bun run test -- --run src/composables/__tests__/useUnits.test.ts
+docker compose exec app bun run dev          # Start development server (Vite)
+docker compose exec app bun run build        # Build for production
+docker compose exec app bun run preview      # Preview production build on port 4173
+docker compose exec app bun run lint         # Run ESLint on src/
+docker compose exec app bun run lint-fix     # Run ESLint with auto-fix
+docker compose exec app bun run type-check   # Run TypeScript type checking
+docker compose exec app bun run gen          # Generate API types from spec.yml
 ```
-
-Vitest supports filtering by filename pattern. Use `--run` flag to run once without watch mode.
 
 ## Code Style Guidelines
 
@@ -29,20 +22,8 @@ Vitest supports filtering by filename pattern. Use `--run` flag to run once with
 - Use `@/` alias for imports from `src/` directory
 - Path aliases defined in `tsconfig.json`: `@/*` → `./src/*`
 
-### Imports
-- Order: Vue/VueUse → Libraries → Local composables → Components → Types
-- Group imports by source (external, internal, relative)
-- Use named imports over default imports when possible
-
-```typescript
-import { ref, computed } from 'vue'
-import { useFloating, offset, flip } from '@floating-ui/vue'
-import { unitHandler } from '@/composables/useUnits'
-import type { components } from '@/api/api'
-```
-
 ### Formatting
-- **Indentation**: 4 spaces (enforced by ESLint via `.zed/settings.json` and `eslint.config.js`)
+- **Indentation**: 4 spaces (enforced by ESLint via `eslint.config.js`)
 - **Quotes**: Single quotes for strings
 - **Semicolons**: Required
 - **Trailing commas**: Follow ESLint rules
