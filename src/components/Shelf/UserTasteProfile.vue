@@ -50,7 +50,7 @@ const maxWeight = computed(() => {
 })
 
 function barWidth(weight: number | undefined): string {
-    return `${((weight ?? 0) / maxWeight.value).toFixed(3) * 100}%`
+    return `${((weight ?? 0) / maxWeight.value) * 100}%`
 }
 
 function formatPercent(ratio: number) {

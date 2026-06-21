@@ -788,26 +788,6 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/explore/cocktails/{public_id}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * Show cocktail
-         * @description Show details from a cocktail using a public id
-         */
-        get: operations["showPublicCocktail"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
     "/exports": {
         parameters: {
             query?: never;
@@ -1482,26 +1462,6 @@ export interface paths {
          * @description Update bar menu
          */
         post: operations["updateMenu"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/explore/menus/{slug}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /**
-         * Show public menu
-         * @description Show a public bar menu details
-         */
-        get: operations["publicMenu"];
-        put?: never;
-        post?: never;
         delete?: never;
         options?: never;
         head?: never;
@@ -2437,7 +2397,7 @@ export interface components {
         };
         /** @description Resource representing total stats for a bar */
         BarTopStatsResource: {
-            top_bar_cocktails?: {
+            top_bar_cocktails: {
                 /** @example 1 */
                 id: number;
                 /** @example gin */
@@ -2449,7 +2409,7 @@ export interface components {
                 /** @example 1 */
                 votes: number;
             }[];
-            top_member_ingredients?: {
+            top_member_ingredients: {
                 /** @example 1 */
                 id: number;
                 /** @example old-fashioned */
@@ -2457,7 +2417,7 @@ export interface components {
                 /** @example Old Fashioned */
                 name: string;
                 /** @example 3 */
-                cocktails_count?: number;
+                cocktails_count: number;
             }[];
         };
         /** @description Resource representing total stats for a bar */
@@ -3343,10 +3303,6 @@ export interface components {
             name: string;
             /** @example 24 */
             ingredient_count: number;
-            /** Format: date-time */
-            created_at: string;
-            /** Format: date-time */
-            updated_at?: string | null;
         };
         /** @description Represents a user in current bar */
         User: {
@@ -7442,50 +7398,6 @@ export interface operations {
             };
         };
     };
-    showPublicCocktail: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                /** @description Public cocktail id */
-                public_id: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description Successful response */
-            200: {
-                headers: {
-                    /** @description Max number of attempts. */
-                    "x-ratelimit-limit"?: number;
-                    /** @description Remaining number of attempts. */
-                    "x-ratelimit-remaining"?: number;
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": {
-                        data: components["schemas"]["CocktailExplore"];
-                    };
-                };
-            };
-            /** @description Resource record not found. */
-            404: {
-                headers: {
-                    /** @description Max number of attempts. */
-                    "x-ratelimit-limit"?: number;
-                    /** @description Remaining number of attempts. */
-                    "x-ratelimit-remaining"?: number;
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": {
-                        data?: components["schemas"]["APIError"];
-                    };
-                };
-            };
-        };
-    };
     listExports: {
         parameters: {
             query?: never;
@@ -10091,50 +10003,6 @@ export interface operations {
             };
             /** @description You are not authorized for this action. */
             403: {
-                headers: {
-                    /** @description Max number of attempts. */
-                    "x-ratelimit-limit"?: number;
-                    /** @description Remaining number of attempts. */
-                    "x-ratelimit-remaining"?: number;
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": {
-                        data?: components["schemas"]["APIError"];
-                    };
-                };
-            };
-        };
-    };
-    publicMenu: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                /** @description Bar database slug */
-                slug: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description Successful response */
-            200: {
-                headers: {
-                    /** @description Max number of attempts. */
-                    "x-ratelimit-limit"?: number;
-                    /** @description Remaining number of attempts. */
-                    "x-ratelimit-remaining"?: number;
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": {
-                        data: components["schemas"]["MenuPublic"];
-                    };
-                };
-            };
-            /** @description Resource record not found. */
-            404: {
                 headers: {
                     /** @description Max number of attempts. */
                     "x-ratelimit-limit"?: number;
