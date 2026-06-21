@@ -20,7 +20,6 @@
     "@sentry/vue": "8.55.2",
     "@types/sortablejs": "1.15.9",
     "@vueuse/core": "14.3.0",
-    "chart.js": "4.5.1",
     "cropperjs": "1.6.2",
     "entities": "7.0.1",
     "format-quantity": "3.1.0",

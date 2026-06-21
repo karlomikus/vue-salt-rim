@@ -1,20 +1,9 @@
 <script setup lang="ts">
-import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue'
+import { computed, ref } from 'vue'
 import type { components } from '@/api/api'
 import OverlayLoader from '../OverlayLoader.vue'
-import {
-    ArcElement,
-    Chart,
-    Legend,
-    PolarAreaController,
-    RadialLinearScale,
-    type ChartData,
-    type ChartOptions,
-} from 'chart.js'
 
-Chart.register(RadialLinearScale, PolarAreaController, ArcElement, Legend)
-
-type UserTasteProfile = components["schemas"]["UserTasteProfile"]
+type UserTasteProfile = components['schemas']['UserTasteProfile']
 
 const props = defineProps<{
     profile: UserTasteProfile | null;
@@ -26,8 +15,6 @@ const favoriteTags = computed(() => [...(props.profile?.favorite_tags ?? [])])
 const dislikedTags = computed(() => [...(props.profile?.disliked_tags ?? [])])
 
 const averageAbv = computed(() => props.profile?.average_abv ?? 0)
-const radarCanvas = ref<HTMLCanvasElement | null>(null)
-const radarChart = ref<Chart<'polarArea'> | null>(null)
 
 const abvDistribution = computed(() => {
     const buckets = props.profile?.abv_distribution ?? []
@@ -41,29 +28,30 @@ const abvDistribution = computed(() => {
     })
 })
 
-const radarSeries = computed(() => {
-    const positive = favoriteTags.value
-    const negative = dislikedTags.value
-    const formatRadarLabel = (label: string) => (label.length > 14 ? `${label.slice(0, 14)}...` : label)
-
-    const positiveItems = positive.filter((item) => typeof item.name === 'string' && item.name.length > 0)
-    const negativeItems = negative.filter((item) => typeof item.name === 'string' && item.name.length > 0)
-
-    return {
-        labels: [
-            ...positiveItems.map((item) => formatRadarLabel(item.name)),
-            ...negativeItems.map((item) => formatRadarLabel(item.name)),
-        ],
-        rawData: [
-            ...positiveItems.map((item) => item.weight),
-            ...negativeItems.map((item) => item.weight),
-        ],
-        backgroundColors: [
-            ...positiveItems.map(() => '#2a9d8fff'),
-            ...negativeItems.map(() => '#e76f51ff'),
-        ],
-    }
+const sortedDislikedTags = computed(() => {
+    return dislikedTags.value
+        .filter((item) => typeof item.name === 'string' && item.name.length > 0)
+        .sort((a, b) => (b.weight ?? 0) - (a.weight ?? 0))
 })
+
+const sortedFavoriteTags = computed(() => {
+    return favoriteTags.value
+        .filter((item) => typeof item.name === 'string' && item.name.length > 0)
+        .sort((a, b) => (b.weight ?? 0) - (a.weight ?? 0))
+})
+
+const maxWeight = computed(() => {
+    const allWeights = [
+        ...sortedDislikedTags.value.map((t) => t.weight ?? 0),
+        ...sortedFavoriteTags.value.map((t) => t.weight ?? 0),
+    ]
+
+    return allWeights.length > 0 ? Math.max(...allWeights) : 1
+})
+
+function barWidth(weight: number | undefined): string {
+    return `${((weight ?? 0) / maxWeight.value) * 100}%`
+}
 
 function formatPercent(ratio: number) {
     return `${(ratio * 100).toFixed(1)}%`
@@ -78,83 +66,6 @@ function bucketColor(bucket: string) {
 
     return palette[bucket] ?? 'var(--clr-gray-500, #7a869a)'
 }
-
-function renderRadarChart() {
-    const canvas = radarCanvas.value
-
-    if (!canvas) {
-        return
-    }
-
-    const { labels, rawData, backgroundColors } = radarSeries.value
-
-    if (!labels.length) {
-        radarChart.value?.destroy()
-        radarChart.value = null
-        return
-    }
-
-    const data: ChartData<'polarArea'> = {
-        labels,
-        datasets: [
-            {
-                label: 'Taste tags',
-                data: rawData,
-                backgroundColor: backgroundColors,
-                borderColor: '#ffffff',
-                borderWidth: 2,
-            },
-        ],
-    }
-
-    const options: ChartOptions<'polarArea'> = {
-        responsive: true,
-        maintainAspectRatio: false,
-        scales: {
-            r: {
-                beginAtZero: true,
-                pointLabels: {
-                    centerPointLabels: true,
-                    display: true,
-                    color: '#2a213f',
-                    font: {
-                        size: 14,
-                        family: 'Inter, sans-serif',
-                    },
-                },
-            },
-        },
-        plugins: {
-            legend: {
-                display: false,
-            },
-            tooltip: {
-                enabled: true,
-            },
-        },
-    }
-
-    radarChart.value?.destroy()
-    radarChart.value = new Chart(canvas, {
-        type: 'polarArea',
-        data,
-        options,
-    })
-}
-
-watch(radarSeries, () => {
-    renderRadarChart()
-}, { deep: true })
-
-onMounted(() => {
-    renderRadarChart()
-})
-
-onBeforeUnmount(() => {
-    radarChart.value?.destroy()
-    radarChart.value = null
-})
-
 </script>
 
 <template>
@@ -166,16 +77,47 @@ onBeforeUnmount(() => {
         </div>
 
         <section class="taste-section">
-            <div class="radar-chart-wrapper" v-if="radarSeries.labels.length > 0">
-                <canvas ref="radarCanvas" aria-label="Taste profile tags polar chart" role="img"></canvas>
+            <div
+                v-if="sortedDislikedTags.length > 0 || sortedFavoriteTags.length > 0"
+                class="bar-chart"
+                role="img"
+                aria-label="Taste profile tags bar chart"
+            >
+                <div class="bar-chart__negative">
+                    <div
+                        v-for="tag in sortedDislikedTags"
+                        :key="tag.name"
+                        class="bar-row"
+                    >
+                        <span class="bar-row__label bar-row__label--negative">{{ tag.name }} ({{ tag.weight ?? 0 }})</span>
+                        <div
+                            class="bar-row__bar bar-row__bar--negative"
+                            :style="{ width: barWidth(tag.weight) }"
+                        ></div>
+                    </div>
+                </div>
+                <div class="bar-chart__divider"></div>
+                <div class="bar-chart__positive">
+                    <div
+                        v-for="tag in sortedFavoriteTags"
+                        :key="tag.name"
+                        class="bar-row"
+                    >
+                        <span class="bar-row__label bar-row__label--positive">{{ tag.name }} ({{ tag.weight ?? 0 }})</span>
+                        <div
+                            class="bar-row__bar bar-row__bar--positive"
+                            :style="{ width: barWidth(tag.weight) }"
+                        ></div>
+                    </div>
+                </div>
             </div>
-            <small class="taste-empty" v-else>No tag data available for polar chart.</small>
+            <small class="taste-empty" v-else>No tag data available.</small>
         </section>
 
         <section class="taste-section">
             <div class="taste-section__stat">
                 <h2>{{ averageAbv.toFixed(1) }}%</h2>
-                ABV Distribution
+                Preferred ABV
             </div>
             <h4 class="taste-section__title"></h4>
             <div v-if="abvDistribution.length" class="abv-bar" role="img" aria-label="ABV distribution">
@@ -248,10 +190,64 @@ onBeforeUnmount(() => {
     color: var(--clr-gray-700);
 }
 
-.radar-chart-wrapper {
-    position: relative;
-    height: 330px;
-    width: 100%;
+.bar-chart {
+    display: flex;
+    align-items: stretch;
+    gap: 0;
+}
+
+.bar-chart__negative,
+.bar-chart__positive {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    min-width: 0;
+}
+
+.bar-chart__divider {
+    width: 2px;
+    background: var(--clr-gray-400, #b0b8c4);
+    border-radius: 1px;
+    margin: 0 var(--gap-size-2);
+    flex-shrink: 0;
+}
+
+.bar-row {
+    display: flex;
+    flex-direction: column;
+    gap: var(--gap-size-1);
+}
+
+.bar-row__label {
+    font-size: 0.75rem;
+    line-height: 1.2;
+    color: var(--clr-gray-800, #3a3541);
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+.bar-row__label--negative {
+    text-align: right;
+    order: -1;
+}
+
+.bar-row__bar {
+    height: 1.25rem;
+    border-radius: 0 3px 3px 0;
+    transition: width 0.3s ease;
+    min-width: 0;
+}
+
+.bar-chart__negative .bar-row__bar,
+.bar-row__bar--negative {
+    border-radius: 3px 0 0 3px;
+    background: #e76f51;
+    align-self: flex-end;
+}
+
+.bar-row__bar--positive {
+    background: #2a9d8f;
 }
 
 .abv-bar {
