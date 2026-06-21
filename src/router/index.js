@@ -270,6 +270,12 @@ const router = createRouter({
                     name: 'print.shopping-list',
                     component: () => import('../views/ShelfShoppingListPrintView.vue'),
                 },
+                {
+                    path: 'public/cocktail/:barId/:slug',
+                    name: 'print.public.cocktail',
+                    component: () => import('../views/PublicCocktailPrintView.vue'),
+                    meta: { requiresAuth: false },
+                },
             ]
         },
         {

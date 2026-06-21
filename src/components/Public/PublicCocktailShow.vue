@@ -13,6 +13,7 @@
                 </ul>
                 <div v-show="cocktail.description" itemprop="description" v-html="parsedDescription"></div>
                 <div class="bar-cocktail-recipe__info__source">
+                    <a :href="printUrl.href" target="_blank" :title="$t('print-recipe')">{{ $t('print-recipe') }}</a>
                     <a v-if="cocktail.source && isValidURL" :href="cocktail.source">{{ $t('public-bar.recipe-source') }} <svg class="bar-cocktail-recipe__external-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M10 6V8H5V19H16V14H18V20C18 20.5523 17.5523 21 17 21H4C3.44772 21 3 20.5523 3 20V7C3 6.44772 3.44772 6 4 6H10ZM21 3V11H19L18.9999 6.413L11.2071 14.2071L9.79289 12.7929L17.5849 5H13V3H21Z"></path></svg></a>
                     <span v-else-if="cocktail.source">
                         {{ $t('public-bar.recipe-source') }}: {{ cocktail.source }} <template v-if="cocktail.year">({{ cocktail.year }})</template>
@@ -33,7 +34,7 @@
                         <button type="button" class="button button--public" :class="{'button--active': currentUnit == 'cl'}" @click="currentUnit = 'cl'">cl</button>
                     </div>
                 </div>
-                <CocktailRecipeScaler v-if="showScaler" v-model="scaleFactor" :cocktail-volume-ml="cocktail.volume_ml ?? 0" :method-dilution="cocktail.method_dilution_percentage ?? 0" :current-unit="currentUnit" />
+                <CocktailRecipeScaler v-if="showScaler" v-model="scaleFactor" v-model:waterDilution="waterDilution" v-model:targetVolume="targetVolumeToScaleTo" :cocktail-volume-ml="cocktail.volume_ml ?? 0" :method-dilution="cocktail.method_dilution_percentage ?? 0" :current-unit="currentUnit" />
                 <ul class="public-cocktail-recipe__ingredients">
                     <CocktailIngredient
                         v-for="ing in cocktail.ingredients"
@@ -59,7 +60,7 @@
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue'
 import type { components } from '@/api/api'
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 import BarAssistantClient from '@/api/BarAssistantClient'
 import { micromark } from 'micromark'
 import CocktailIngredient from './PublicCocktailIngredient.vue';
@@ -75,9 +76,12 @@ type CocktailTag = {
 
 const appState = new AppState()
 const route = useRoute()
+const router = useRouter()
 const cocktail = ref<Cocktail|null>(null)
 const currentUnit = ref<'ml' | 'oz' | 'cl'>(appState.defaultUnit)
 const scaleFactor = ref<number>(1)
+const waterDilution = ref<string | null>(null)
+const targetVolumeToScaleTo = ref<null | number>(null)
 const showScaler = ref<boolean>(false)
 const barId = route.params.barId.toString()
 
@@ -150,6 +154,23 @@ const isValidURL = computed(() => {
     }
 })
 
+const printUrl = computed(() => {
+    if (!cocktail.value) {
+        return ''
+    }
+    return router.resolve({
+        name: 'print.public.cocktail',
+        params: { barId: barId, slug: cocktail.value.slug },
+        query: {
+            scaleFactor: scaleFactor.value.toFixed(4),
+            units: currentUnit.value,
+            targetVolumeToScaleTo: targetVolumeToScaleTo.value,
+            targetVolumeDilution: cocktail.value?.method_dilution_percentage ?? 0,
+            waterDilution: waterDilution.value,
+        },
+    })
+})
+
 watch(() => currentUnit.value, () => {
     appState.setDefaultUnits(currentUnit.value)
 })
@@ -187,6 +208,9 @@ fetchCocktail()
 
 .bar-cocktail-recipe__info__source {
     font-size: 0.75em;
+    display: flex;
+    gap: .5rem;
+    flex-wrap: wrap;
 }
 
 .bar-cocktail-recipe__image {
