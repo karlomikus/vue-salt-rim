@@ -1,9 +1,9 @@
 <template>
     <div class="cocktail-print-container">
         <div class="print-first-row">
-            <div v-if="cocktail.images && cocktail.images.length > 0" class="cocktail-print-image">
-                <img :src="cocktail.images[0].url" :alt="cocktail.images[0].copyright">
-                <span>© {{ cocktail.images[0].copyright }}</span>
+            <div v-if="cocktail.images.length > 0" class="cocktail-print-image">
+                <img :src="cocktail.images[0].url" :alt="cocktail.images[0].copyright ?? ''">
+                <span v-if="cocktail.images[0].copyright">© {{ cocktail.images[0].copyright }}</span>
             </div>
             <div class="cocktail-main-info">
                 <h1>{{ cocktail.name }}</h1>
@@ -15,17 +15,25 @@
         </div>
         <div class="print-second-row">
             <div class="print-ingredients">
-                <p class="print-ingredients-batch" v-if="targetVolumeToScaleTo">
-                    Batch size {{ targetVolumeToScaleTo }} {{ appState.defaultUnit }} ({{ targetVolumeDilution }}% dilution).
-                    <template v-if="waterDilution > 0">
+                <p v-if="targetVolumeToScaleTo" class="print-ingredients-batch">
+                    Batch size {{ targetVolumeToScaleTo }} {{ units }} ({{ targetVolumeDilution }}% dilution).
+                    <template v-if="waterDilution">
                         <br>
-                        {{ $t('target-volume-dilution-help', {total: waterDilution + ' ' + appState.defaultUnit}) }}
+                        {{ $t('target-volume-dilution-help', { total: waterDilution + ' ' + units }) }}
                     </template>
                 </p>
                 <h2>{{ $t('ingredient.ingredients') }}:</h2>
                 <ul>
-                    <li v-for="ingredient in cocktail.ingredients" :key="ingredient.id">
-                        <CocktailIngredientShare :cocktail-ingredient="ingredient" :units="appState.defaultUnit" :scale-factor="scaleFactor"></CocktailIngredientShare>
+                    <li v-for="(ingredient, index) in cocktail.ingredients" :key="index">
+                        <div class="cocktail-ingredient-share" itemprop="recipeIngredient" :content="ingredient.name + ' - ' + ingredientAmount(ingredient)">
+                            <div class="cocktail-ingredient-share__ingredient-name">
+                                <span>{{ ingredient.name }}<template v-if="ingredient.optional"> ({{ $t('optional') }})</template></span>
+                                <span v-if="ingredient.substitutes.length > 0" class="cocktail-ingredient-share__ingredient-substitutes">
+                                    {{ $t('substitutes') }}: {{ substitutes(ingredient) }}
+                                </span>
+                            </div>
+                            <div class="cocktail-ingredient-share__ingredient-amount">{{ ingredientAmount(ingredient) }}</div>
+                        </div>
                     </li>
                 </ul>
             </div>
@@ -43,78 +51,67 @@
         </div>
     </div>
 </template>
-<script>
-import {micromark} from 'micromark'
-import BarAssistantClient from '@/api/BarAssistantClient'
-import AppState from '../../AppState'
-import { unitHandler } from '@/composables/useUnits'
-import CocktailIngredientShare from '../Cocktail/CocktailIngredientShare.vue'
 
-export default {
-    components: {CocktailIngredientShare},
-    data() {
-        return {
-            appState: new AppState(),
-            cocktail: {},
-            scaleFactor: 1,
-            targetVolumeToScaleTo: null,
-            targetVolumeDilution: 0,
-            waterDilution: 0,
-            printReady: false
-        }
-    },
-    computed: {
-        parsedDescription() {
-            if (!this.cocktail.description) {
-                return null
-            }
+<script setup lang="ts">
+import { computed } from 'vue';
+import { micromark } from 'micromark';
+import { unitHandler } from '@/composables/useUnits';
+import type { CocktailPrintModel, CocktailPrintIngredient } from './types';
 
-            return micromark(this.cocktail.description)
-        },
-        parsedInstructions() {
-            if (!this.cocktail.instructions) {
-                return null
-            }
+const props = withDefaults(defineProps<{
+    cocktail: CocktailPrintModel;
+    units?: string;
+    scaleFactor?: number;
+    targetVolumeToScaleTo?: number | null;
+    targetVolumeDilution?: number;
+    waterDilution?: number | null;
+}>(), {
+    units: 'ml',
+    scaleFactor: 1,
+    targetVolumeToScaleTo: null,
+    targetVolumeDilution: 0,
+    waterDilution: null,
+});
 
-            return micromark(this.cocktail.instructions)
-        },
-        parsedGarnish() {
-            if (!this.cocktail.garnish) {
-                return null
-            }
-
-            return micromark(this.cocktail.garnish)
-        },
-    },
-    created() {
-        this.scaleFactor = this.$route.query.scaleFactor ?? 1
-        this.targetVolumeToScaleTo = this.$route.query.targetVolumeToScaleTo ?? null
-        this.targetVolumeDilution = this.$route.query.targetVolumeDilution ?? 0
-        this.waterDilution = this.$route.query.waterDilution ?? 0
-        BarAssistantClient.getCocktail(this.$route.params.id).then(resp => {
-            this.cocktail = resp.data
-            this.printReady = true
-            this.$nextTick(() => {
-                window.print();
-            })
-
-            window.addEventListener('afterprint', () => {
-                this.$nextTick(() => {
-                    window.close();
-                })
-            })
-        }).catch(e => {
-            this.$toast.error(e.message)
-        })
-    },
-    methods: {
-        ingredientAmount(ing) {
-            const appState = new AppState()
-            const defaultUnit = appState.defaultUnit
-
-            return unitHandler.print(ing, defaultUnit)
-        }
+const parsedDescription = computed(() => {
+    if (!props.cocktail.description) {
+        return null;
     }
+    return micromark(props.cocktail.description);
+});
+
+const parsedInstructions = computed(() => {
+    if (!props.cocktail.instructions) {
+        return null;
+    }
+    return micromark(props.cocktail.instructions);
+});
+
+const parsedGarnish = computed(() => {
+    if (!props.cocktail.garnish) {
+        return null;
+    }
+    return micromark(props.cocktail.garnish);
+});
+
+function ingredientAmount(ing: CocktailPrintIngredient): string {
+    return unitHandler.print(
+        { amount: ing.amount, amount_max: ing.amount_max, units: ing.units },
+        props.units,
+        props.scaleFactor,
+    );
+}
+
+function substitutes(ing: CocktailPrintIngredient): string {
+    return ing.substitutes
+        .map((sub) =>
+            `${sub.name} ${unitHandler.print(
+                { amount: sub.amount, amount_max: sub.amount_max, units: sub.units },
+                props.units,
+                props.scaleFactor,
+            )}`.trim(),
+        )
+        .join(', ');
 }
 </script>
 
@@ -126,7 +123,6 @@ export default {
     padding: 10px;
     background-color: #fff;
     margin: 20px auto;
-    /* max-width: 500px; */
 }
 
 .print-first-row {
@@ -146,7 +142,8 @@ h2 {
     font-weight: var(--fw-bold);
 }
 
-ul, ol {
+ul,
+ol {
     padding-left: 15px;
 }
 
@@ -173,10 +170,6 @@ ul, ol {
     padding: 0;
 }
 
-.print-ingredients .cocktail-ingredient-share__ingredient-substitutes {
-    font-size: 0.5rem;
-}
-
 .cocktail-print-image {
     display: flex;
     align-items: center;
@@ -201,5 +194,29 @@ ul, ol {
 .print-ingredients-batch {
     border: 1px dashed #000;
     padding: 10px;
+}
+
+.cocktail-ingredient-share {
+    padding: var(--gap-size-1, 4px) 0;
+    border-bottom: 1px dotted var(--clr-gray-300, #ccc);
+    margin-bottom: var(--gap-size-1, 4px);
+    display: flex;
+}
+
+.cocktail-ingredient-share__ingredient-name {
+    display: flex;
+    flex-direction: column;
+}
+
+.cocktail-ingredient-share__ingredient-substitutes {
+    font-size: 0.5rem;
+    color: var(--clr-gray-500, #666);
+}
+
+.cocktail-ingredient-share__ingredient-amount {
+    font-weight: var(--fw-bold);
+    margin-left: auto;
+    flex-shrink: 0;
+    text-align: right;
 }
 </style>
