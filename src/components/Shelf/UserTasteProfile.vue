@@ -50,7 +50,7 @@ const maxWeight = computed(() => {
 })
 
 function barWidth(weight: number | undefined): string {
-    return `${((weight ?? 0) / maxWeight.value) * 100}%`
+    return `${((weight ?? 0) / maxWeight.value).toFixed(3) * 100}%`
 }
 
 function formatPercent(ratio: number) {
@@ -84,12 +84,13 @@ function bucketColor(bucket: string) {
                 aria-label="Taste profile tags bar chart"
             >
                 <div class="bar-chart__negative">
+                    <h4 class="bar-chart__title">Disliked tags</h4>
                     <div
                         v-for="tag in sortedDislikedTags"
                         :key="tag.name"
                         class="bar-row"
                     >
-                        <span class="bar-row__label bar-row__label--negative">{{ tag.name }} ({{ tag.weight ?? 0 }})</span>
+                        <span class="bar-row__label bar-row__label--negative">{{ tag.name }}</span>
                         <div
                             class="bar-row__bar bar-row__bar--negative"
                             :style="{ width: barWidth(tag.weight) }"
@@ -98,12 +99,13 @@ function bucketColor(bucket: string) {
                 </div>
                 <div class="bar-chart__divider"></div>
                 <div class="bar-chart__positive">
+                    <h4 class="bar-chart__title">Liked tags</h4>
                     <div
                         v-for="tag in sortedFavoriteTags"
                         :key="tag.name"
                         class="bar-row"
                     >
-                        <span class="bar-row__label bar-row__label--positive">{{ tag.name }} ({{ tag.weight ?? 0 }})</span>
+                        <span class="bar-row__label bar-row__label--positive">{{ tag.name }}</span>
                         <div
                             class="bar-row__bar bar-row__bar--positive"
                             :style="{ width: barWidth(tag.weight) }"
@@ -203,6 +205,21 @@ function bucketColor(bucket: string) {
     flex-direction: column;
     gap: 0.5rem;
     min-width: 0;
+}
+
+.bar-chart__title {
+    margin: 0 0 0.25rem;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--clr-gray-700, #5e6a7a);
+}
+
+.bar-chart__negative .bar-chart__title {
+    text-align: right;
+}
+
+.bar-chart__positive .bar-chart__title {
+    text-align: left;
 }
 
 .bar-chart__divider {
