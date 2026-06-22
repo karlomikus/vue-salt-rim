@@ -210,9 +210,6 @@
                         </div>
                     </div>
                 </div>
-                <div style="margin-top: var(--gap-size-2);">
-                    <TimeStamps v-if="ingredient.id" :resource="ingredient"></TimeStamps>
-                </div>
             </div>
         </div>
     </div>
@@ -232,13 +229,11 @@ import ToggleIngredientBarShelf from '../ToggleIngredientBarShelf.vue'
 import Dropdown from '@/components/SaltRimDropdown.vue'
 import { useTitle } from '@/composables/title'
 import IconBarShelf from '../Icons/IconBarShelf.vue'
-import IconUserShelf from '../Icons/IconUserShelf.vue'
 import IconShoppingCart from '../Icons/IconShoppingCart.vue'
 import IconMore from '../Icons/IconMore.vue'
 import IngredientHierarchy from './IngredientHierarchy.vue'
 import IconCheck from '../Icons/IconCheck.vue'
 import { useIngredientBg } from '@/composables/ingredientBg'
-import TimeStamps from '@/components/TimeStamps.vue'
 import type { components } from '@/api/api'
 import { useSaltRimToast } from '@/composables/toast'
 import { useConfirm } from '@/composables/confirm'

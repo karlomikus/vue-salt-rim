@@ -1,38 +1,28 @@
 <template>
-    <div v-if="resource.created_user" class="timestamps">
-        {{ $t('created') }}: <DateFormatter :date="resource.created_at" format="long" /> &middot; {{ resource.created_user.name }}
-        <br>
-        <span v-if="resource.updated_user">
-            {{ $t('updated') }}: <DateFormatter :date="resource.updated_at" format="long" /> &middot; {{ resource.updated_user.name }}
-        </span>
+    <div class="timestamps">
+        {{ $t('created') }}: <DateFormatter :date="resource.created_at" format="long" /> &middot; {{ resource.created_user }}
+        <template v-if="resource.updated_user">
+            <br>
+            <span>
+                {{ $t('updated') }}: <DateFormatter v-if="resource.updated_at" :date="resource.updated_at" format="long" /> &middot; {{ resource.updated_user }}
+            </span>
+        </template>
     </div>
 </template>
 
 <script setup lang="ts">
-import { useI18n } from 'vue-i18n';
 import DateFormatter from './DateFormatter.vue';
 
 interface Resource {
-    created_user?: {
-        name?: string;
-    };
-    updated_user?: {
-        name?: string;
-    };
-    created_at?: string;
-    updated_at?: string;
+    created_user: string;
+    updated_user: string | null;
+    created_at: string;
+    updated_at: string | null;
 }
 
-const props = withDefaults(defineProps<{
-    resource?: Resource;
-}>(), {
-    resource: () => ({
-        created_user: {},
-        updated_user: {},
-    }),
-});
-
-const { t } = useI18n();
+const props = defineProps<{
+    resource: Resource;
+}>();
 </script>
 <style scoped>
 .timestamps {

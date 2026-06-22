@@ -186,7 +186,7 @@
             </div>
         </div>
         <div class="form-actions form-actions--timestamps">
-            <TimeStamps v-if="cocktail.id" :resource="cocktail"></TimeStamps>
+            <TimeStamps v-if="timestamps" :resource="timestamps"></TimeStamps>
             <div class="form-actions__buttons">
                 <RouterLink v-if="cocktail.id" class="button button--outline" :to="{ name: 'cocktails.show', params: { id: cocktail.id } }">{{ t('cancel') }}</RouterLink>
                 <RouterLink v-else class="button button--outline" :to="{ name: 'cocktails' }">{{ t('cancel') }}</RouterLink>
@@ -290,6 +290,19 @@ const translatableMethods = computed(() => {
 
         return method
     })
+})
+
+const timestamps = computed(() => {
+    if (!cocktail.value.created_at) {
+        return null
+    }
+
+    return {
+        created_user: cocktail.value.created_user?.name ?? '',
+        updated_user: cocktail.value.updated_user?.name ?? null,
+        created_at: cocktail.value.created_at,
+        updated_at: cocktail.value.updated_at ?? null,
+    }
 })
 
 function printIngredientAmount(ing: UnitIngredient) {

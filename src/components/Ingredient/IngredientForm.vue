@@ -165,7 +165,7 @@
             </div>
         </div>
         <div class="form-actions form-actions--timestamps">
-            <TimeStamps v-if="ingredient.id" :resource="ingredient"></TimeStamps>
+            <TimeStamps v-if="timestamps" :resource="timestamps"></TimeStamps>
             <div class="form-actions__buttons">
                 <RouterLink v-if="ingredient.id" class="button button--outline" :to="{ name: 'ingredients.show', params: { id: ingredient.id } }">{{ $t('cancel') }}</RouterLink>
                 <RouterLink v-else class="button button--outline" :to="{ name: 'ingredients' }">{{ $t('cancel') }}</RouterLink>
@@ -233,6 +233,19 @@ const appState = new AppState()
 const bar = appState.bar
 const priceCategories = ref<PriceCategory[]>([])
 const showPartDialogs = ref<boolean[]>([])
+
+const timestamps = computed(() => {
+    if (!ingredient.value.created_at) {
+        return null
+    }
+
+    return {
+        created_user: ingredient.value.created_user?.name ?? '',
+        updated_user: ingredient.value.updated_user?.name ?? null,
+        created_at: ingredient.value.created_at,
+        updated_at: ingredient.value.updated_at ?? null,
+    }
+})
 
 function handlePartModalClose(idx: number) {
     showPartDialogs.value[idx] = false
