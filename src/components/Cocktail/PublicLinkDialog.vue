@@ -1,95 +1,107 @@
 <template>
     <div>
         <OverlayLoader v-if="isLoading" />
-        <div class="dialog-title">{{ $t('public-dialog.title') }}</div>
+        <div class="dialog-title">{{ t('public-dialog.title') }}</div>
         <SubscriptionCheck>Subscribe to "Mixologist" plan to share your cocktail recipes!</SubscriptionCheck>
         <p class="public-url">{{ publicUrl }}</p>
-        <p v-show="publicData.public_at != null">{{ $t('public-dialog.public_at', { date: createdDate }) }}</p>
+        <p v-show="publicData.public_at != null">{{ t('public-dialog.public_at', { date: createdDate }) }}</p>
         <div class="dialog-actions" style="margin-top: 1rem;">
-            <button type="button" class="button button--outline" @click="$emit('publicDialogClosed')">{{ $t('close') }}</button>
-            <button v-if="publicData.public_id" type="button" class="button button--outline" @click="deletePublicLink">{{ $t('public-dialog.action-delete') }}</button>
-            <button v-else type="button" class="button button--outline" @click="generatePublicLink">{{ $t('public-dialog.action-generate') }}</button>
-            <button type="button" class="button button--dark" :disabled="!publicData.public_at" @click="copyLink">{{ $t('public-dialog.action-copy') }}</button>
+            <button type="button" class="button button--outline" @click="emit('publicDialogClosed')">{{ t('close') }}</button>
+            <button v-if="publicData.public_id" type="button" class="button button--outline" @click="deletePublicLink">{{ t('public-dialog.action-delete') }}</button>
+            <button v-else type="button" class="button button--outline" @click="generatePublicLink">{{ t('public-dialog.action-generate') }}</button>
+            <button type="button" class="button button--dark" :disabled="!publicData.public_at" @click="copyLink">{{ t('public-dialog.action-copy') }}</button>
         </div>
     </div>
 </template>
 
-<script>
-import BarAssistantClient from '@/api/BarAssistantClient'
-import OverlayLoader from './../OverlayLoader.vue'
-import SubscriptionCheck from '../SubscriptionCheck.vue'
+<script setup lang="ts">
+import { ref, computed } from 'vue';
+import { useI18n } from 'vue-i18n';
+import { useSaltRimToast } from '@/composables/toast';
+import BarAssistantClient from '@/api/BarAssistantClient';
+import OverlayLoader from './../OverlayLoader.vue';
+import SubscriptionCheck from '../SubscriptionCheck.vue';
+import type { components } from '@/api/api';
 
-export default {
-    components: {
-        OverlayLoader,
-        SubscriptionCheck,
-    },
-    props: {
-        cocktail: {
-            type: Object,
-            default() {
-                return {}
-            }
-        },
-    },
-    emits: ['publicDialogClosed'],
-    data() {
-        return {
-            isLoading: false,
-            publicData: {
-                public_id: this.cocktail.public_id,
-                public_at: this.cocktail.public_at,
-            },
-            host: window.location.host,
-            protocol: window.location.protocol
+type Cocktail = components['schemas']['Cocktail'];
+
+const props = defineProps<{
+    cocktail: Cocktail;
+}>();
+
+const emit = defineEmits<{
+    publicDialogClosed: [];
+}>();
+
+const { t, d } = useI18n();
+const toast = useSaltRimToast();
+
+const isLoading = ref(false);
+const publicData = ref<{ public_id: string | null; public_at: string | null }>({
+    public_id: props.cocktail.public_id,
+    public_at: props.cocktail.public_at,
+});
+
+const host = window.location.host;
+const protocol = window.location.protocol;
+
+const publicUrl = computed(() => {
+    if (!publicData.value.public_id) {
+        return t('public-dialog.missing');
+    }
+
+    return `${protocol}//${host}/e/cocktail/${publicData.value.public_id}/${props.cocktail.slug}`;
+});
+
+const createdDate = computed(() => {
+    if (!publicData.value.public_at) {
+        return null;
+    }
+
+    const date = new Date(publicData.value.public_at);
+
+    return d(date, 'long');
+});
+
+async function generatePublicLink() {
+    isLoading.value = true;
+    try {
+        await BarAssistantClient.savePublicCocktailLink(props.cocktail.id);
+        const cocktail = await BarAssistantClient.getCocktail(props.cocktail.id.toString());
+        if (cocktail) {
+            publicData.value = {
+                public_id: cocktail.data.public_id,
+                public_at: cocktail.data.public_at,
+            };
         }
-    },
-    computed: {
-        publicUrl() {
-            if (!this.publicData.public_id) {
-                return this.$t('public-dialog.missing')
-            }
+    } catch (e) {
+        toast.error((e as Error).message);
+    } finally {
+        isLoading.value = false;
+    }
+}
 
-            return `${this.protocol}//${this.host}/e/cocktail/${this.publicData.public_id}/${this.cocktail.slug}`
-        },
-        createdDate() {
-            if (!this.publicData.public_at) {
-                return null
-            }
+async function deletePublicLink() {
+    isLoading.value = true;
+    try {
+        await BarAssistantClient.deletePublicCocktailLink(props.cocktail.id);
+        publicData.value = {
+            public_id: null,
+            public_at: null,
+        };
+    } catch (e) {
+        toast.error((e as Error).message);
+    } finally {
+        isLoading.value = false;
+    }
+}
 
-            const date = new Date(this.publicData.public_at)
-
-            return this.$d(date, 'long')
-        }
-    },
-    methods: {
-        generatePublicLink() {
-            this.isLoading = true
-            BarAssistantClient.savePublicCocktailLink(this.cocktail.id).then(resp => {
-                this.publicData = resp.data || {}
-                this.isLoading = false
-            }).catch(e => {
-                this.$toast.error(e.message)
-                this.isLoading = false
-            })
-        },
-        deletePublicLink() {
-            this.isLoading = true
-            BarAssistantClient.deletePublicCocktailLink(this.cocktail.id).then(resp => {
-                this.publicData = resp.data || {}
-                this.isLoading = false
-            }).catch(e => {
-                this.$toast.error(e.message)
-                this.isLoading = false
-            })
-        },
-        copyLink() {
-            navigator.clipboard.writeText(this.publicUrl).then(() => {
-                this.$toast.default(this.$t('public-dialog.toasts.copy-success'))
-            }, () => {
-                this.$toast.error(this.$t('public-dialog.toasts.copy-fail'))
-            })
-        }
+async function copyLink() {
+    try {
+        await navigator.clipboard.writeText(publicUrl.value);
+        toast.default(t('public-dialog.toasts.copy-success'));
+    } catch {
+        toast.error(t('public-dialog.toasts.copy-fail'));
     }
 }
 </script>
