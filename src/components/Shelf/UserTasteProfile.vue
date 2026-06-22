@@ -29,15 +29,11 @@ const abvDistribution = computed(() => {
 })
 
 const sortedDislikedTags = computed(() => {
-    return dislikedTags.value
-        .filter((item) => typeof item.name === 'string' && item.name.length > 0)
-        .sort((a, b) => (b.weight ?? 0) - (a.weight ?? 0))
+    return dislikedTags.value.sort((a, b) => (b.weight ?? 0) - (a.weight ?? 0))
 })
 
 const sortedFavoriteTags = computed(() => {
-    return favoriteTags.value
-        .filter((item) => typeof item.name === 'string' && item.name.length > 0)
-        .sort((a, b) => (b.weight ?? 0) - (a.weight ?? 0))
+    return favoriteTags.value.sort((a, b) => (b.weight ?? 0) - (a.weight ?? 0))
 })
 
 const maxWeight = computed(() => {
@@ -64,7 +60,7 @@ function bucketColor(bucket: string) {
         high: 'var(--clr-chart-9)',
     }
 
-    return palette[bucket] ?? 'var(--clr-gray-500, #7a869a)'
+    return palette[bucket] ?? 'var(--clr-gray-500)'
 }
 </script>
 
@@ -223,8 +219,8 @@ function bucketColor(bucket: string) {
 }
 
 .bar-chart__divider {
-    width: 2px;
-    background: var(--clr-gray-400, #b0b8c4);
+    width: 1px;
+    background: var(--clr-gray-300);
     border-radius: 1px;
     margin: 0 var(--gap-size-2);
     flex-shrink: 0;
