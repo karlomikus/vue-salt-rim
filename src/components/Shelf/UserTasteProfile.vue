@@ -36,17 +36,19 @@ const sortedFavoriteTags = computed(() => {
     return favoriteTags.value.sort((a, b) => (b.weight ?? 0) - (a.weight ?? 0))
 })
 
-const maxWeight = computed(() => {
-    const allWeights = [
-        ...sortedDislikedTags.value.map((t) => t.weight ?? 0),
-        ...sortedFavoriteTags.value.map((t) => t.weight ?? 0),
-    ]
-
-    return allWeights.length > 0 ? Math.max(...allWeights) : 1
+const maxDislikedWeight = computed(() => {
+    const weights = sortedDislikedTags.value.map((t) => t.weight ?? 0)
+    return weights.length > 0 ? Math.max(...weights) : 1
 })
 
-function barWidth(weight: number | undefined): string {
-    return `${((weight ?? 0) / maxWeight.value) * 100}%`
+const maxFavoriteWeight = computed(() => {
+    const weights = sortedFavoriteTags.value.map((t) => t.weight ?? 0)
+    return weights.length > 0 ? Math.max(...weights) : 1
+})
+
+function barWidth(weight: number | undefined, side: 'negative' | 'positive'): string {
+    const max = side === 'negative' ? maxDislikedWeight.value : maxFavoriteWeight.value
+    return `${((weight ?? 0) / max) * 100}%`
 }
 
 function formatPercent(ratio: number) {
@@ -69,7 +71,7 @@ function bucketColor(bucket: string) {
         <OverlayLoader v-if="isLoading"></OverlayLoader>
 
         <div class="taste-header">
-            <p class="taste-subtitle">A snapshot of your disliked tags, preferred tags and alcohol strength mix.</p>
+            <p class="taste-subtitle">A snapshot of total cocktails in your disliked tags, favorite tags and alcohol strength mix.</p>
         </div>
 
         <section class="taste-section">
@@ -86,10 +88,10 @@ function bucketColor(bucket: string) {
                         :key="tag.name"
                         class="bar-row"
                     >
-                        <span class="bar-row__label bar-row__label--negative">{{ tag.name }}</span>
+                        <span class="bar-row__label bar-row__label--negative">{{ tag.name }} ({{ tag.weight }})</span>
                         <div
                             class="bar-row__bar bar-row__bar--negative"
-                            :style="{ width: barWidth(tag.weight) }"
+                            :style="{ width: barWidth(tag.weight, 'negative') }"
                         ></div>
                     </div>
                 </div>
@@ -101,10 +103,10 @@ function bucketColor(bucket: string) {
                         :key="tag.name"
                         class="bar-row"
                     >
-                        <span class="bar-row__label bar-row__label--positive">{{ tag.name }}</span>
+                        <span class="bar-row__label bar-row__label--positive">{{ tag.name }} ({{ tag.weight }})</span>
                         <div
                             class="bar-row__bar bar-row__bar--positive"
-                            :style="{ width: barWidth(tag.weight) }"
+                            :style="{ width: barWidth(tag.weight, 'positive') }"
                         ></div>
                     </div>
                 </div>
