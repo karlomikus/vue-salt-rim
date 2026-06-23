@@ -139,10 +139,14 @@
                     <SaltRimRadio v-for="method in translatableMethods" :key="method.id" v-model="cocktail.method.id" :value="method.id" :title="method.name" :description="method.dilution_percentage + '%'"></SaltRimRadio>
                 </div>
             </div>
-            <div class="sr-grid sr-grid--2-col">
+            <div class="sr-grid sr-grid--3-col">
                 <div class="form-group">
                     <label class="form-label" for="source">{{ t('source') }}:</label>
                     <input id="source" v-model="cocktail.source" class="form-input" type="text" :placeholder="t('placeholder.source')">
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="author">{{ t('author') }}:</label>
+                    <input id="author" v-model="cocktail.author" class="form-input" type="text" :placeholder="t('placeholder.author')">
                 </div>
                 <div class="form-group">
                     <label class="form-label" for="year">{{ t('year') }}:</label>
@@ -488,6 +492,7 @@ async function submit() {
         instructions: cocktail.value.instructions,
         garnish: cocktail.value.garnish,
         source: cocktail.value.source,
+        author: cocktail.value.author,
         cocktail_method_id: cocktail.value.method?.id,
         utensils: selectedUtensilIds.value,
         parent_cocktail_id: cocktail.value.parent_cocktail ? cocktail.value.parent_cocktail.id : null,

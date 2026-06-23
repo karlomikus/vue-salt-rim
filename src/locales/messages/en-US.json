@@ -177,7 +177,8 @@
     "search-cocktails": "Search for cocktails...",
     "external-image": "Paste image URL",
     "cocktail-year": "Cocktail recipe release year",
-    "filter-refinement": "Filter refinement..."
+    "filter-refinement": "Filter refinement...",
+    "author": "Historical recipe author"
   },
   "amount": "Amount",
   "units": "Units",
@@ -775,5 +776,6 @@
     "sort-created-desc": "Newest recipes",
     "recipe-source": "Recipe source",
     "view-recipe": "View recipe"
-  }
+  },
+  "author": "Author"
 }
