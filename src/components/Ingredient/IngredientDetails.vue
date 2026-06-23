@@ -11,7 +11,7 @@
         <PageHeader>
             {{ ingredient.name }}
             <small :title="$t('added-on-by', { date: createdDate, name: ingredient.created_user?.name })">
-                <template v-for="(ancestor, index) in ingredient.hierarchy.ancestors" :key="ancestor.id">
+                <template v-if="ingredient.hierarchy" v-for="(ancestor, index) in ingredient.hierarchy.ancestors" :key="ancestor.id">
                     <RouterLink :to="{ name: 'ingredients', query: { 'filter[descendants_of]': ancestor.id } }">{{ ancestor.name }}</RouterLink>
                     <template v-if="index + 1 !== ingredient.hierarchy?.ancestors?.length"> > </template>
                 </template>
@@ -110,7 +110,7 @@
                     <div class="item-details__chips">
                         <div class="item-details__chips__group">
                             <div class="item-details__chips__group__title">{{ $t('strength') }}:</div>
-                            <ul v-if="ingredient.strength > 0" class="chips-list">
+                            <ul v-if="ingredient.strength && ingredient.strength > 0" class="chips-list">
                                 <li>
                                     <span><abbr :title="$t('ABV-definition')">{{ $t('ABV') }}</abbr>: {{ ingredient.strength + '%' }}</span>
                                 </li>
@@ -191,7 +191,7 @@
                     </ul>
                     <div v-html="parsedDescription" class="has-markdown"></div>
                 </div>
-                <div class="block-container block-container--padded">
+                <div class="block-container block-container--padded" v-if="ingredient.hierarchy">
                     <IngredientHierarchy :parent-id="ingredient.id" :root-id="ingredient.hierarchy.root_ingredient_id ?? ingredient.id"></IngredientHierarchy>
                 </div>
                 <div v-if="ingredient.calculator_id" class="block-container block-container--padded">
@@ -258,17 +258,20 @@ const isLoadingCalculator = ref(false)
 const showAddToMenuDialog = ref(false)
 const isLoadingExtra = ref(false)
 const extraIfAddedToShelf = ref<CocktailBasic[]>([])
-const ingredient = ref<Ingredient>({
-    prices: [] as components['schemas']['IngredientPrice'][],
-    ingredient_parts: [] as components['schemas']['IngredientBasic'][],
-} as Ingredient)
+const ingredient = ref<Partial<Ingredient>>({
+    hierarchy: {
+        root_ingredient_id: null,
+    } as Partial<Ingredient['hierarchy']>,
+    prices: [],
+    ingredient_parts: [],
+})
 const calculator = ref<Calculator>({} as Calculator)
 
 async function refreshIngredient() {
     isLoadingIngredient.value = true
     try {
         ingredient.value = (await BarAssistantClient.getIngredient(route.params.id.toString()))?.data ?? {} as Ingredient
-        useTitle(ingredient.value.name)
+        useTitle(ingredient.value.name ?? '')
     } catch (e: any) {
         toast.default(e.message)
         isLoadingIngredient.value = false

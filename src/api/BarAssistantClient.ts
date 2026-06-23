@@ -142,10 +142,6 @@ export default class BarAssistantClient {
     return (await client.GET('/cocktails/{id}/similar', { params: { path: { id: id } } })).data
   }
 
-  static async getPublicCocktail(id: string) {
-    return (await client.GET('/explore/cocktails/{public_id}', { params: { path: { public_id: id } } })).data
-  }
-
   static async savePublicCocktailLink(id: number) {
     const { response } = await client.POST('/cocktails/{id}/public-link', { params: { path: { id: id } }, parseAs: 'stream' })
 
@@ -469,10 +465,10 @@ export default class BarAssistantClient {
           const fd = new FormData();
           let i = 1
           for (const image of body.images) {
-            if (image.id && image.id) {
+            if (image.id) {
               fd.append('images[' + i + '][id]', image.id?.toString() ?? '')
             }
-            if (image.image && image.image) {
+            if (image.image) {
               fd.append('images[' + i + '][image]', image.image ?? '')
             }
             fd.append('images[' + i + '][copyright]', image.copyright ?? '')

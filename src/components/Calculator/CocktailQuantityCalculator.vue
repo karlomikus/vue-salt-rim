@@ -218,7 +218,7 @@ async function refreshCollection(id: number) {
     isLoading.value = true
     collection.value = (await BarAssistantClient.getCollection(id))?.data ?? {} as Collection
     const existingState = localStorage.getItem('collection_' + collection.value.id)
-    if (collection.value.cocktails?.length ?? 0 > 0) {
+    if ((collection.value.cocktails?.length ?? 0) > 0) {
         cocktails.value = (await BarAssistantClient.getCocktails({ 'filter[id]': collection.value?.cocktails?.map(c => c.id).join(','), include: 'ingredients.ingredient' }))?.data as CocktailWithCount[] ?? []
     } else {
         cocktails.value = []
