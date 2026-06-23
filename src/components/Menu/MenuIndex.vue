@@ -43,6 +43,10 @@
                     <a href="#" @click.prevent="removeCategory(category)">{{ t('menu.remove-category') }}</a>
                     &middot;
                     <a href="#" @click.prevent="clearCategory(category)">{{ t('menu.clear-category') }}</a>
+                    <label class="form-checkbox" :for="'toggle-menu-category-display-' + idx">
+                        <input :id="'toggle-menu-category-display-' + idx" v-model="category.is_enabled" type="checkbox" :value="true">
+                        <span>Show category</span>
+                    </label>
                 </div>
                 <div ref="cocktailsList" class="menu-category-cocktails" :data-category-idx="idx">
                     <div v-for="(item, cidx) in category.items" :key="item.id" class="block-container menu-category__cocktail" :data-id="item.id" :data-type="item.type">
@@ -261,6 +265,7 @@ function addCategory(name: string) {
     const category = {
         name: name,
         sort: categories.value.length + 1,
+        is_enabled: true,
         items: []
     };
 
@@ -473,6 +478,7 @@ async function saveMenu() {
             id: 0,
             sort: catIdx + 1,
             name: cat.name,
+            is_enabled: cat.is_enabled ?? true,
             items: cat.items.map(item => {
                 return {
                     id: item.id,

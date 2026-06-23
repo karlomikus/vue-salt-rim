@@ -2816,6 +2816,11 @@ export interface components {
              * @example 2023
              */
             year?: number | null;
+            /**
+             * @description Historical author of the cocktail recipe
+             * @example Jerry Thomas
+             */
+            author?: string | null;
         };
         /** @description Collection resource */
         Collection: {
@@ -3345,6 +3350,8 @@ export interface components {
             name: string;
             /** @example 1 */
             sort: number;
+            /** @example true */
+            is_enabled?: boolean;
             items: {
                 /** @example 1 */
                 id: number;
@@ -3682,6 +3689,11 @@ export interface components {
              * @example 2023
              */
             year: number | null;
+            /**
+             * @description Historical author of the cocktail recipe
+             * @example Jerry Thomas
+             */
+            author?: string | null;
             /** @description List of ingredients required to make the cocktail */
             ingredients: {
                 /**
@@ -4093,6 +4105,8 @@ export interface components {
             parent_cocktail_id?: number | null;
             /** @example 2023 */
             year?: number | null;
+            /** @example Jerry Thomas */
+            author?: string | null;
         };
         CollectionRequest: {
             /**
@@ -4269,6 +4283,7 @@ export interface components {
             sort: number;
             name: string;
             items: components["schemas"]["MenuItemRequest"][];
+            isEnabled?: boolean;
         };
         MenuItemRequest: {
             /** @example 1 */
