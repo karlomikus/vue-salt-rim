@@ -303,6 +303,10 @@ async function fetchCalculator() {
 function deleteIngredient() {
     confirm.show(t('ingredient.delete-confirm', { name: ingredient.value.name, total: ingredient.value.cocktails_count }), {
         onResolved: (dialog: any) => {
+            if (!ingredient.value.id) {
+                return
+            }
+
             dialog.close()
             isLoadingIngredient.value = true
             BarAssistantClient.deleteIngredient(ingredient.value.id).then(() => {
