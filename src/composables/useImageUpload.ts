@@ -1,3 +1,4 @@
+// @ts-ignore
 import ImageUpload from "@/components/ImageUpload.vue";
 import { useSaltRimToast } from "@/composables/toast";
 import { useI18n } from "vue-i18n";

@@ -1,4 +1,5 @@
 import { createApp } from 'vue'
+// @ts-ignore
 import App from './App.vue'
 import { createI18n } from 'vue-i18n'
 import ToastPlugin from 'vue-toast-notification'
