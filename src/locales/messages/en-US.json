@@ -525,6 +525,8 @@
     "category-added": "Menu category added",
     "delete-category-confirm": "This will delete \"{name}\" menu category",
     "category-removed": "Menu category removed",
+    "move-category-up": "Move up",
+    "move-category-down": "Move down",
     "saved": "Menu updated",
     "update-error": "Unable to update bar menu",
     "cocktail-already-added": "Entry \"{name}\" is already in the menu",
