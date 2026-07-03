@@ -746,5 +746,15 @@
     "sort-created-desc": "Neueste Rezepte",
     "recipe-source": "Rezeptquelle",
     "view-recipe": "Rezept anzeigen"
-  }
+  },
+  "about.title": "About",
+  "about.version": "Version",
+  "about.update-available": "Update available",
+  "about.up-to-date": "You are up to date",
+  "about.dev-version": "Development version",
+  "about.check-updates": "Check for updates",
+  "about.changelog": "Changelog",
+  "about.no-release-notes": "No release notes available for this version",
+  "about.update-error": "Unable to check for updates. Please try again later.",
+  "about.latest-version": "Latest version"
 }

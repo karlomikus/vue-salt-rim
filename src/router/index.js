@@ -220,6 +220,11 @@ const router = createRouter({
                     component: () => import('../views/SettingsExportsView.vue'),
                 },
                 {
+                    path: '/settings/about',
+                    name: 'settings.about',
+                    component: () => import('../views/SettingsAboutView.vue'),
+                },
+                {
                     path: '/bars',
                     name: 'bars',
                     component: () => import('../views/BarsView.vue'),
