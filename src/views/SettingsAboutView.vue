@@ -1,25 +1,42 @@
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue';
-import { micromark } from 'micromark';
 import { useI18n } from 'vue-i18n';
+import BarAssistantClient from '@/api/BarAssistantClient';
+import { useGitHubReleases } from '@/composables/useGitHubReleases';
+import type { components } from '@/api/api';
+
+type ServerVersion = components['schemas']['ServerVersion'];
 
 const { t } = useI18n();
 
-interface GitHubRelease {
-    tag_name: string;
-    name: string;
-    html_url: string;
-    body: string;
-    published_at: string;
-}
-
 const currentVersion = ref<string>(window.srConfig.VERSION ?? '');
-const latestRelease = ref<GitHubRelease | null>(null);
-const isChecking = ref<boolean>(false);
-const fetchError = ref<string>('');
 const isDev = computed<boolean>(() => {
     return !currentVersion.value || currentVersion.value === 'dev';
 });
+
+// Frontend client release (vue-salt-rim)
+const {
+    release: frontendRelease,
+    isLoading: frontendLoading,
+    error: frontendError,
+    changelogHtml: frontendChangelogHtml,
+    fetch: fetchFrontendRelease,
+} = useGitHubReleases('karlomikus/vue-salt-rim');
+
+// Backend API release notes (bar-assistant)
+const {
+    release: backendRelease,
+    isLoading: backendReleaseLoading,
+    error: backendReleaseError,
+    changelogHtml: backendChangelogHtml,
+    fetch: fetchBackendRelease,
+} = useGitHubReleases('karlomikus/bar-assistant');
+
+// Connected backend version (from the API)
+const backendVersion = ref<ServerVersion | null>(null);
+const backendVersionError = ref<string>('');
+
+const isChecking = ref<boolean>(false);
 
 function parseSemver(version: string): number[] | null {
     const cleaned = version.replace(/^v/, '');
@@ -30,14 +47,14 @@ function parseSemver(version: string): number[] | null {
     return nums;
 }
 
-const updateStatus = computed<'newer' | 'current' | 'dev' | 'error' | 'checking'>(() => {
+const frontendUpdateStatus = computed<'newer' | 'current' | 'dev' | 'error' | 'checking'>(() => {
     if (isChecking.value) return 'checking';
-    if (fetchError.value) return 'error';
+    if (frontendError.value && !frontendRelease.value) return 'error';
     if (isDev.value) return 'dev';
-    if (!latestRelease.value) return 'error';
+    if (!frontendRelease.value) return 'error';
 
     const running = parseSemver(currentVersion.value);
-    const latest = parseSemver(latestRelease.value.tag_name);
+    const latest = parseSemver(frontendRelease.value.tag_name);
 
     if (!running || !latest) return 'dev';
 
@@ -50,34 +67,36 @@ const updateStatus = computed<'newer' | 'current' | 'dev' | 'error' | 'checking'
     return 'current';
 });
 
-const changelogHtml = computed<string>(() => {
-    if (!latestRelease.value?.body) return '';
-    return micromark(latestRelease.value.body);
+const backendUpdateStatus = computed<'up-to-date' | 'update-available' | 'unknown' | 'error' | 'checking'>(() => {
+    if (isChecking.value && !backendVersion.value && !backendVersionError.value) return 'checking';
+    if (backendVersionError.value && !backendVersion.value) return 'error';
+    if (!backendVersion.value) return 'unknown';
+    if (backendVersion.value.is_latest) return 'up-to-date';
+    if (backendVersion.value.latest_version) return 'update-available';
+    return 'unknown';
 });
+
+const BACKEND_RELEASES_URL = 'https://github.com/karlomikus/bar-assistant/releases';
+
+async function fetchBackendVersion(): Promise<void> {
+    backendVersionError.value = '';
+    try {
+        const response = await BarAssistantClient.getServerVersion();
+        backendVersion.value = response?.data ?? null;
+    } catch {
+        backendVersion.value = null;
+        backendVersionError.value = 'fetch-error';
+    }
+}
 
 async function checkForUpdates(): Promise<void> {
     isChecking.value = true;
-    fetchError.value = '';
-
     try {
-        const response = await fetch(
-            'https://api.github.com/repos/karlomikus/vue-salt-rim/releases?per_page=1',
-        );
-
-        if (!response.ok) {
-            throw new Error(`GitHub API returned ${response.status}`);
-        }
-
-        const releases: GitHubRelease[] = await response.json();
-
-        if (releases.length === 0) {
-            fetchError.value = t('about.update-error');
-            return;
-        }
-
-        latestRelease.value = releases[0];
-    } catch {
-        fetchError.value = t('about.update-error');
+        await Promise.allSettled([
+            fetchFrontendRelease(),
+            fetchBackendVersion(),
+            fetchBackendRelease(),
+        ]);
     } finally {
         isChecking.value = false;
     }
@@ -109,26 +128,26 @@ onMounted(() => {
                 {{ t('loading') }}
             </div>
 
-            <div v-else-if="updateStatus === 'error' && !latestRelease" class="about-page__status">
-                {{ fetchError }}
+            <div v-else-if="frontendUpdateStatus === 'error' && !frontendRelease" class="about-page__status">
+                {{ t('about.update-error') }}
             </div>
 
-            <div v-else-if="updateStatus === 'newer'" class="about-page__status about-page__status--update">
+            <div v-else-if="frontendUpdateStatus === 'newer'" class="about-page__status about-page__status--update">
                 {{ t('about.update-available') }}:
-                <a :href="latestRelease!.html_url" target="_blank" rel="noopener noreferrer">
-                    {{ latestRelease!.tag_name }}
+                <a :href="frontendRelease!.html_url" target="_blank" rel="noopener noreferrer">
+                    {{ frontendRelease!.tag_name }}
                 </a>
             </div>
 
-            <div v-else-if="updateStatus === 'current'" class="about-page__status">
+            <div v-else-if="frontendUpdateStatus === 'current'" class="about-page__status">
                 {{ t('about.up-to-date') }}
             </div>
 
-            <div v-else-if="updateStatus === 'dev'" class="about-page__status">
-                <template v-if="latestRelease">
+            <div v-else-if="frontendUpdateStatus === 'dev'" class="about-page__status">
+                <template v-if="frontendRelease">
                     {{ t('about.latest-version') }}:
-                    <a :href="latestRelease.html_url" target="_blank" rel="noopener noreferrer">
-                        {{ latestRelease.tag_name }}
+                    <a :href="frontendRelease.html_url" target="_blank" rel="noopener noreferrer">
+                        {{ frontendRelease.tag_name }}
                     </a>
                 </template>
             </div>
@@ -142,17 +161,72 @@ onMounted(() => {
             </button>
         </section>
 
-        <section v-if="latestRelease" class="about-page__changelog">
+        <section class="about-page__version about-page__backend">
+            <h2 class="page-subtitle">{{ t('about.backend-version') }}</h2>
+
+            <div class="about-page__current">
+                <span class="about-page__label">{{ t('about.version') }}</span>
+                <span class="about-page__value">
+                    <template v-if="backendVersion">
+                        {{ backendVersion.version }}
+                    </template>
+                    <template v-else>
+                        {{ t('about.backend-version-unknown') }}
+                    </template>
+                </span>
+            </div>
+
+            <div v-if="isChecking && backendUpdateStatus === 'checking'" class="about-page__status about-page__status--checking">
+                {{ t('loading') }}
+            </div>
+
+            <div v-else-if="backendUpdateStatus === 'error'" class="about-page__status">
+                {{ t('about.backend-update-error') }}
+            </div>
+
+            <div v-else-if="backendUpdateStatus === 'update-available'" class="about-page__status about-page__status--update">
+                {{ t('about.backend-update-available') }}:
+                <a :href="BACKEND_RELEASES_URL" target="_blank" rel="noopener noreferrer">
+                    {{ backendVersion!.latest_version }}
+                </a>
+            </div>
+
+            <div v-else-if="backendUpdateStatus === 'up-to-date'" class="about-page__status">
+                {{ t('about.backend-up-to-date') }}
+            </div>
+
+            <div v-else-if="backendUpdateStatus === 'unknown'" class="about-page__status">
+                {{ t('about.backend-version-unknown') }}
+            </div>
+        </section>
+
+        <section v-if="frontendRelease" class="about-page__changelog">
             <h3 class="page-subtitle">{{ t('about.changelog') }}</h3>
             <div
-                v-if="changelogHtml"
+                v-if="frontendChangelogHtml"
                 class="about-page__changelog-content"
-                v-html="changelogHtml"
+                v-html="frontendChangelogHtml"
             ></div>
             <p v-else class="about-page__no-notes">
                 {{ t('about.no-release-notes') }}
             </p>
         </section>
+
+        <section v-if="backendRelease" class="about-page__changelog">
+            <h3 class="page-subtitle">{{ t('about.backend-changelog') }}</h3>
+            <div
+                v-if="backendChangelogHtml"
+                class="about-page__changelog-content"
+                v-html="backendChangelogHtml"
+            ></div>
+            <p v-else class="about-page__no-notes">
+                {{ t('about.backend-no-release-notes') }}
+            </p>
+        </section>
+
+        <p v-else-if="!isChecking && backendReleaseError" class="about-page__no-notes">
+            {{ t('about.backend-update-error') }}
+        </p>
     </main>
 </template>
 
