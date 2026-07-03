@@ -3,11 +3,16 @@ import { ref, computed, onMounted } from 'vue';
 import { useI18n } from 'vue-i18n';
 import BarAssistantClient from '@/api/BarAssistantClient';
 import { useGitHubReleases } from '@/composables/useGitHubReleases';
+import { useTitle } from '@/composables/title';
 import type { components } from '@/api/api';
+import PageHeader from '@/components/PageHeader.vue';
+import Navigation from '@/components/Settings/SettingsNavigation.vue';
 
 type ServerVersion = components['schemas']['ServerVersion'];
 
 const { t } = useI18n();
+
+useTitle(t('about.title'));
 
 const currentVersion = ref<string>(window.srConfig.VERSION ?? '');
 const isDev = computed<boolean>(() => {
@@ -108,10 +113,15 @@ onMounted(() => {
 </script>
 
 <template>
-    <div class="about-info">
+    <PageHeader>
+        {{ t('about.title') }}
+    </PageHeader>
+    <div class="settings-page">
+        <div class="settings-page__nav">
+            <Navigation />
+        </div>
+        <div class="settings-page__content about-info">
         <section class="about-info__version">
-            <h2 class="page-subtitle">{{ t('about.title') }}</h2>
-
             <div class="about-info__current">
                 <span class="about-info__label">{{ t('about.version') }}</span>
                 <span class="about-info__value">
@@ -227,6 +237,7 @@ onMounted(() => {
         <p v-else-if="!isChecking && backendReleaseError" class="about-info__no-notes">
             {{ t('about.backend-update-error') }}
         </p>
+        </div>
     </div>
 </template>
 
