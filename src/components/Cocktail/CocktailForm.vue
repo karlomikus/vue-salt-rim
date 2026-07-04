@@ -1,60 +1,63 @@
 <template>
     <PageHeader>
-        {{ t('cocktail.title') }}
+        {{ t("cocktail.title") }}
     </PageHeader>
     <form @submit.prevent="submit" v-if="cocktail">
         <OverlayLoader v-if="isLoading" />
-        <h3 class="form-section-title">{{ t('recipe-information') }}</h3>
+        <h3 class="form-section-title">{{ t("recipe-information") }}</h3>
         <div class="block-container block-container--padded">
             <div class="form-group">
-                <label class="form-label form-label--required" for="name">{{ t('name') }}:</label>
-                <input id="name" v-model="cocktail.name" class="form-input" type="text" required :placeholder="t('placeholder.cocktail-name')">
+                <label class="form-label form-label--required" for="name">{{ t("name") }}:</label>
+                <input id="name" v-model="cocktail.name" class="form-input" type="text" required :placeholder="t('placeholder.cocktail-name')" />
             </div>
             <div class="form-group">
-                <label class="form-label form-label--required" for="instructions">{{ t('instructions') }}:</label>
+                <label class="form-label form-label--required" for="instructions">{{ t("instructions") }}:</label>
                 <textarea id="instructions" v-model="cocktail.instructions" rows="8" class="form-input" required :placeholder="t('placeholder.cocktail-instructions')"></textarea>
-                <p class="form-input-hint">{{ t('field-supports-md') }}</p>
+                <p class="form-input-hint">{{ t("field-supports-md") }}</p>
             </div>
             <div class="form-group">
-                <label class="form-label" for="garnish">{{ t('garnish') }}:</label>
+                <label class="form-label" for="garnish">{{ t("garnish") }}:</label>
                 <textarea id="garnish" v-model="cocktail.garnish" rows="3" class="form-input" :placeholder="t('placeholder.cocktail-garnish')"></textarea>
-                <p class="form-input-hint">{{ t('field-supports-md') }}</p>
+                <p class="form-input-hint">{{ t("field-supports-md") }}</p>
             </div>
         </div>
-        <h3 class="form-section-title">{{ t('ingredient.ingredients') }}</h3>
+        <h3 class="form-section-title">{{ t("ingredient.ingredients") }}</h3>
         <div class="block-container block-container--padded block-container--inset">
             <div v-show="cocktail.ingredients?.length === 0" class="cocktail-form__ingredients__onboard">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48">
-                    <path d="m15.139 7.813 4.638 18.29h8.446l4.638-18.29ZM19.723 29.861l-4.7 10.674 8.977-.02 8.977.02-4.7-10.674-3.619.002h-1.316zM18.88 26.61v2.997h10.24V26.61z" style="fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round" />
+                    <path
+                        d="m15.139 7.813 4.638 18.29h8.446l4.638-18.29ZM19.723 29.861l-4.7 10.674 8.977-.02 8.977.02-4.7-10.674-3.619.002h-1.316zM18.88 26.61v2.997h10.24V26.61z"
+                        style="fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round"
+                    />
                 </svg>
                 <p>Here you can manage this cocktail's ingredients and amounts. Start by adding your first ingredient.</p>
             </div>
-            <ul v-show="(cocktail.ingredients?.length ?? 0) > 0" class="cocktail-form__ingredients" style="margin-bottom: 20px;">
+            <ul v-show="(cocktail.ingredients?.length ?? 0) > 0" class="cocktail-form__ingredients" style="margin-bottom: 20px">
                 <li v-for="(ing, idx) in cocktail.ingredients" :key="ing.ingredient.id" class="block-container" :data-id="ing.ingredient.id">
                     <div class="drag-handle"></div>
                     <div class="cocktail-form__ingredients__content">
                         <div class="form-group">
-                            <label class="form-label">{{ t('ingredient.title') }}<template v-if="ing.sort <= 1"> ({{ t('ingredient.base') }})</template>:</label>
+                            <label class="form-label"
+                                >{{ t("ingredient.title") }}<template v-if="ing.sort <= 1"> ({{ t("ingredient.base") }})</template>:</label
+                            >
                             <p>
                                 {{ ing.ingredient.name }}
                                 <span v-if="ing.note">&middot; {{ ing.note }}</span>
-                                <small v-show="ing.optional">({{ ing.optional ? t('optional') : '' }})</small>
+                                <small v-show="ing.optional">({{ ing.optional ? t("optional") : "" }})</small>
                             </p>
                             <p v-if="ing.substitutes && ing.substitutes.length > 0" class="substitutes">
-                                <template v-for="sub in ing.substitutes">
-                                    {{ t('or').toLowerCase() }} {{ sub.ingredient.name }}&nbsp;
-                                </template>
+                                <template v-for="sub in ing.substitutes"> {{ t("or").toLowerCase() }} {{ sub.ingredient.name }}&nbsp; </template>
                             </p>
                         </div>
                         <div class="form-group">
-                            <label class="form-label">{{ t('amount') }}:</label>
+                            <label class="form-label">{{ t("amount") }}:</label>
                             <p :title="ing.amount + ' ' + ing.units">{{ printIngredientAmount(ing) }}</p>
                         </div>
                         <div class="cocktail-form__ingredients__actions" v-if="cocktail.ingredients">
                             <SaltRimDialog v-model="showDialogs[idx]" @dialog-closed="handleCocktailIngredientModalClose(idx)">
                                 <template #trigger>
                                     <a href="#" @click.prevent="showDialogs[idx] = true">
-                                        {{ t('edit') }}
+                                        {{ t("edit") }}
                                     </a>
                                 </template>
                                 <template #dialog>
@@ -63,18 +66,18 @@
                             </SaltRimDialog>
                             &middot;
                             <a href="#" @click.prevent="editIngredientSubstitutes(ing)">
-                                {{ t('ingredient.dialog.select-substitutes') }}
+                                {{ t("ingredient.dialog.select-substitutes") }}
                             </a>
                             &middot;
                             <a href="#" @click.prevent="removeIngredient(ing)">
-                                {{ t('remove') }}
+                                {{ t("remove") }}
                             </a>
                         </div>
                     </div>
                 </li>
             </ul>
-            <div style="text-align: center;">
-                <button class="button button--dark" type="button" @click="addIngredient">{{ t('ingredient.add') }}</button>
+            <div style="text-align: center">
+                <button class="button button--dark" type="button" @click="addIngredient">{{ t("ingredient.add") }}</button>
             </div>
         </div>
         <SaltRimDialog v-model="showSubstituteDialog">
@@ -85,7 +88,7 @@
                 <SubstituteModal :value="cocktailIngredientForSubstitutes" @close="showSubstituteDialog = false" />
             </template>
         </SaltRimDialog>
-        <h3 class="form-section-title">{{ t('media') }}</h3>
+        <h3 class="form-section-title">{{ t("media") }}</h3>
         <SubscriptionCheck>Subscribe to "Mixologist" plan to upload more than one cocktail recipe image!</SubscriptionCheck>
         <ImageUpload
             v-if="cocktail.images"
@@ -97,90 +100,95 @@
             :is-generate-disabled="isLoadingImageGen"
             @generate="generateImage"
         />
-        <h3 class="form-section-title">{{ t('additional-information') }}</h3>
+        <h3 class="form-section-title">{{ t("additional-information") }}</h3>
         <div class="block-container block-container--padded">
             <div class="form-group">
-                <label class="form-label" for="description">{{ t('description') }}:</label>
+                <label class="form-label" for="description">{{ t("description") }}:</label>
                 <textarea id="description" v-model="cocktail.description" rows="5" class="form-input" :placeholder="t('placeholder.cocktail-description')"></textarea>
-                <p class="form-input-hint">{{ t('field-supports-md') }}</p>
+                <p class="form-input-hint">{{ t("field-supports-md") }}</p>
             </div>
             <div class="form-group" v-if="cocktail.glass">
-                <label class="form-label" for="glass">{{ t('glass-type.title') }}:</label>
+                <label class="form-label" for="glass">{{ t("glass-type.title") }}:</label>
                 <SaltRimDialog v-model="showGlassSelectorDialog">
                     <template #trigger>
                         <button type="button" class="form-input form-input--auto-height form-input--button" @click="showGlassSelectorDialog = !showGlassSelectorDialog">
-                            <template v-if="!cocktail.glass || !cocktail.glass.id">
-                                Select a glass type...
-                            </template>
+                            <template v-if="!cocktail.glass || !cocktail.glass.id"> Select a glass type... </template>
                             <div class="cocktail-selected-glass" v-else>
                                 <div v-if="cocktail.glass.images && cocktail.glass.images.length > 0" class="cocktail-selected-glass__image">
-                                    <img :src="cocktail.glass.images[0].url ?? undefined" :alt="cocktail.glass.images[0].copyright ?? undefined">
+                                    <img :src="cocktail.glass.images[0].url ?? undefined" :alt="cocktail.glass.images[0].copyright ?? undefined" />
                                 </div>
                                 <div>
                                     <h4>{{ cocktail.glass.name }}</h4>
                                     <p>{{ cocktail.glass.description }}</p>
-                                    <p v-if="cocktail.glass.volume">{{ t('volume') }}: {{ cocktail.glass.volume }} {{ cocktail.glass.volume_units }}</p>
+                                    <p v-if="cocktail.glass.volume">{{ t("volume") }}: {{ cocktail.glass.volume }} {{ cocktail.glass.volume_units }}</p>
                                 </div>
                             </div>
                         </button>
                     </template>
                     <template #dialog>
-                        <div class="dialog-title">{{ t('glass-type.title') }}</div>
+                        <div class="dialog-title">{{ t("glass-type.title") }}</div>
                         <GlassSelector v-model="cocktail.glass" :options="glasses" @glass-selected="showGlassSelectorDialog = false"></GlassSelector>
                         <div class="dialog-actions">
-                            <button class="button button--outline" @click.prevent="showGlassSelectorDialog = false">{{ t('cancel') }}</button>
+                            <button class="button button--outline" @click.prevent="showGlassSelectorDialog = false">{{ t("cancel") }}</button>
                         </div>
                     </template>
                 </SaltRimDialog>
             </div>
-            <div style="margin-bottom: 2rem;" v-if="cocktail.method">
-                <label class="form-label">{{ t('method-and-dilution') }}:</label>
+            <div style="margin-bottom: 2rem" v-if="cocktail.method">
+                <label class="form-label">{{ t("method-and-dilution") }}:</label>
                 <div class="cocktail-methods">
-                    <SaltRimRadio v-for="method in translatableMethods" :key="method.id" v-model="cocktail.method.id" :value="method.id" :title="method.name" :description="method.dilution_percentage + '%'"></SaltRimRadio>
+                    <SaltRimRadio
+                        v-for="method in translatableMethods"
+                        :key="method.id"
+                        v-model="cocktail.method.id"
+                        :value="method.id"
+                        :title="method.name"
+                        :description="method.dilution_percentage + '%'"
+                    ></SaltRimRadio>
                 </div>
             </div>
             <div class="sr-grid sr-grid--3-col">
                 <div class="form-group">
-                    <label class="form-label" for="source">{{ t('source') }}:</label>
-                    <input id="source" v-model="cocktail.source" class="form-input" type="text" :placeholder="t('placeholder.source')">
+                    <label class="form-label" for="source">{{ t("source") }}:</label>
+                    <input id="source" v-model="cocktail.source" class="form-input" type="text" :placeholder="t('placeholder.source')" />
                 </div>
                 <div class="form-group">
-                    <label class="form-label" for="author">{{ t('author') }}:</label>
-                    <input id="author" v-model="cocktail.author" class="form-input" type="text" :placeholder="t('placeholder.author')">
+                    <label class="form-label" for="author">{{ t("author") }}:</label>
+                    <input id="author" v-model="cocktail.author" class="form-input" type="text" :placeholder="t('placeholder.author')" />
                 </div>
                 <div class="form-group">
-                    <label class="form-label" for="year">{{ t('year') }}:</label>
-                    <input id="year" v-model="cocktail.year" class="form-input" type="text" :placeholder="t('placeholder.cocktail-year')">
+                    <label class="form-label" for="year">{{ t("year") }}:</label>
+                    <input id="year" v-model="cocktail.year" class="form-input" type="text" :placeholder="t('placeholder.cocktail-year')" />
                 </div>
             </div>
             <div class="form-group">
-                <label class="form-label" for="cocktail-tags">{{ t('tag.tags') }}:</label>
+                <label class="form-label" for="cocktail-tags">{{ t("tag.tags") }}:</label>
                 <TagSelector id="cocktail-tags" v-model="selectedTagNames" :options="tags" label-key="name" :placeholder="t('placeholder.tags')"></TagSelector>
-                <p class="form-input-hint">{{ t('tag.help-text') }} {{ t('tag.help-text-recommender') }}</p>
+                <p class="form-input-hint">{{ t("tag.help-text") }} {{ t("tag.help-text-recommender") }}</p>
                 <GenerationLoader v-if="isLoadingGen"></GenerationLoader>
                 <div class="form-group-ai" v-if="cocktail.id">
-                    <ButtonGenerate :callFn="generateTags" @before-generation="isLoadingGen=true" @after-generation="isLoadingGen=false"></ButtonGenerate>
+                    <ButtonGenerate :callFn="generateTags" @before-generation="isLoadingGen = true" @after-generation="isLoadingGen = false"></ButtonGenerate>
                 </div>
             </div>
             <div v-show="utensils.length > 0" class="form-group">
-                <label class="form-label" for="utensil">{{ t('utensils.title') }}:</label>
-                <select id="utensil" v-model="selectedUtensilIds" class="form-select" multiple style="height: 200px;">
+                <label class="form-label" for="utensil">{{ t("utensils.title") }}:</label>
+                <select id="utensil" v-model="selectedUtensilIds" class="form-select" multiple style="height: 200px">
                     <option v-for="utensil in utensils" :key="utensil.id" :value="utensil.id">{{ utensil.name }}</option>
                 </select>
             </div>
             <div class="form-group">
-                <label class="form-label" for="cocktail-parent-id">{{ t('cocktail-variety-of') }}:</label>
+                <label class="form-label" for="cocktail-parent-id">{{ t("cocktail-variety-of") }}:</label>
                 <SaltRimDialog v-model="showVarietyDialog">
                     <template #trigger>
                         <button type="button" class="form-input form-input--auto-height form-input--button" @click="showVarietyDialog = !showVarietyDialog">
                             <template v-if="!cocktail.parent_cocktail">
-                                {{ t('cocktail-select-parent') }}
+                                {{ t("cocktail-select-parent") }}
                             </template>
                             <div v-else>
                                 {{ cocktail.parent_cocktail.name }}
                             </div>
                         </button>
-                        <a v-show="cocktail.parent_cocktail !== null" href="#" @click.prevent="cocktail.parent_cocktail = null">{{ t('remove') }}</a>
+                        <a v-show="cocktail.parent_cocktail !== null" href="#" @click.prevent="cocktail.parent_cocktail = null">{{ t("remove") }}</a>
                     </template>
                     <template #dialog>
                         <CocktailFinderBasic v-if="shouldUseBasicSearch" @cocktail-selected="selectParentCocktail" @closed="showVarietyDialog = false"></CocktailFinderBasic>
@@ -192,73 +200,73 @@
         <div class="form-actions form-actions--timestamps">
             <TimeStamps v-if="timestamps" :resource="timestamps"></TimeStamps>
             <div class="form-actions__buttons">
-                <RouterLink v-if="cocktail.id" class="button button--outline" :to="{ name: 'cocktails.show', params: { id: cocktail.id } }">{{ t('cancel') }}</RouterLink>
-                <RouterLink v-else class="button button--outline" :to="{ name: 'cocktails' }">{{ t('cancel') }}</RouterLink>
-                <button class="button button--dark" type="submit">{{ t('save') }}</button>
+                <RouterLink v-if="cocktail.id" class="button button--outline" :to="{ name: 'cocktails.show', params: { id: cocktail.id } }">{{ t("cancel") }}</RouterLink>
+                <RouterLink v-else class="button button--outline" :to="{ name: 'cocktails' }">{{ t("cancel") }}</RouterLink>
+                <button class="button button--dark" type="submit">{{ t("save") }}</button>
             </div>
         </div>
     </form>
 </template>
 
 <script setup lang="ts">
-import { useTitle } from '@/composables/title'
-import { useHtmlDecode } from './../../composables/useHtmlDecode';
-import { unitHandler, type UnitIngredient } from '@/composables/useUnits'
-import BarAssistantClient from '@/api/BarAssistantClient';
-import OverlayLoader from './../OverlayLoader.vue'
-import CocktailIngredientModal from './CocktailIngredientModal.vue';
-import ImageUpload from './../ImageUpload.vue'
-import PageHeader from './../PageHeader.vue'
-import Sortable from 'sortablejs'
-import SaltRimDialog from './../Dialog/SaltRimDialog.vue'
-import SaltRimRadio from '../SaltRimRadio.vue'
-import AppState from '../../AppState'
-import SubstituteModal from './SubstituteModal.vue'
-import SubscriptionCheck from '../SubscriptionCheck.vue'
-import TimeStamps from '../TimeStamps.vue'
-import TagSelector from '../TagSelector.vue'
-import GlassSelector from '../GlassSelector.vue';
-import CocktailFinder from '../CocktailFinder.vue';
-import ButtonGenerate from '../AI/ButtonGenerate.vue';
-import GenerationLoader from '../AI/GenerationLoader.vue'
-import type { components } from '@/api/api'
-import { ref, computed, watch, useTemplateRef, nextTick } from 'vue';
-import { useRoute, useRouter } from 'vue-router';
-import { useI18n } from 'vue-i18n';
-import { useSaltRimToast } from '@/composables/toast';
-import { useConfirm } from '@/composables/confirm'
-import { useImageUpload } from '@/composables/useImageUpload';
-import CocktailFinderBasic from '../CocktailFinderBasic.vue';
-import { useBasicSearch } from '@/composables/useBasicSearch'
-import type { SearchResults } from '@/api/SearchResults'
+import { useTitle } from "@/composables/title";
+import { useHtmlDecode } from "./../../composables/useHtmlDecode";
+import { unitHandler, type UnitIngredient } from "@/composables/useUnits";
+import BarAssistantClient from "@/api/BarAssistantClient";
+import OverlayLoader from "./../OverlayLoader.vue";
+import CocktailIngredientModal from "./CocktailIngredientModal.vue";
+import ImageUpload from "./../ImageUpload.vue";
+import PageHeader from "./../PageHeader.vue";
+import Sortable from "sortablejs";
+import SaltRimDialog from "./../Dialog/SaltRimDialog.vue";
+import SaltRimRadio from "../SaltRimRadio.vue";
+import AppState from "../../AppState";
+import SubstituteModal from "./SubstituteModal.vue";
+import SubscriptionCheck from "../SubscriptionCheck.vue";
+import TimeStamps from "../TimeStamps.vue";
+import TagSelector from "../TagSelector.vue";
+import GlassSelector from "../GlassSelector.vue";
+import CocktailFinder from "../CocktailFinder.vue";
+import ButtonGenerate from "../AI/ButtonGenerate.vue";
+import GenerationLoader from "../AI/GenerationLoader.vue";
+import type { components } from "@/api/api";
+import { ref, computed, watch, useTemplateRef, nextTick } from "vue";
+import { useRoute, useRouter } from "vue-router";
+import { useI18n } from "vue-i18n";
+import { useSaltRimToast } from "@/composables/toast";
+import { useConfirm } from "@/composables/confirm";
+import { useImageUpload } from "@/composables/useImageUpload";
+import CocktailFinderBasic from "../CocktailFinderBasic.vue";
+import { useBasicSearch } from "@/composables/useBasicSearch";
+import type { SearchResults } from "@/api/SearchResults";
 
-type Cocktail = components['schemas']['Cocktail']
-type CocktailRequest = components["schemas"]["CocktailRequest"]
-type CocktailIngredient = components['schemas']['CocktailIngredient']
-type Glass = components['schemas']['Glass']
-type CocktailMethod = components['schemas']['CocktailMethod']
-type Tag = components['schemas']['Tag']
-type Utensil = components['schemas']['Utensil']
-type Bar = components['schemas']['Bar']
-type Image = components['schemas']['Image']
-type SearchResultCocktail = SearchResults['cocktail']
+type Cocktail = components["schemas"]["Cocktail"];
+type CocktailRequest = components["schemas"]["CocktailRequest"];
+type CocktailIngredient = components["schemas"]["CocktailIngredient"];
+type Glass = components["schemas"]["Glass"];
+type CocktailMethod = components["schemas"]["CocktailMethod"];
+type Tag = components["schemas"]["Tag"];
+type Utensil = components["schemas"]["Utensil"];
+type Bar = components["schemas"]["Bar"];
+type Image = components["schemas"]["Image"];
+type SearchResultCocktail = SearchResults["cocktail"];
 
-const shouldUseBasicSearch = useBasicSearch()
-const route = useRoute()
-const router = useRouter()
-const { t } = useI18n()
-const toast = useSaltRimToast()
-const confirm = useConfirm()
-const uploader = useImageUpload()
-const appState = new AppState()
-const showDialogs = ref<boolean[]>([])
-const isLoading = ref<boolean>(false)
-const isLoadingGen = ref<boolean>(false)
-const isLoadingImageGen = ref<boolean>(false)
-const showVarietyDialog = ref<boolean>(false)
-const showSubstituteDialog = ref<boolean>(false)
-const showGlassSelectorDialog = ref<boolean>(false)
-const imagesUpload = useTemplateRef<InstanceType<typeof ImageUpload>>('imagesUpload')
+const shouldUseBasicSearch = useBasicSearch();
+const route = useRoute();
+const router = useRouter();
+const { t } = useI18n();
+const toast = useSaltRimToast();
+const confirm = useConfirm();
+const uploader = useImageUpload();
+const appState = new AppState();
+const showDialogs = ref<boolean[]>([]);
+const isLoading = ref<boolean>(false);
+const isLoadingGen = ref<boolean>(false);
+const isLoadingImageGen = ref<boolean>(false);
+const showVarietyDialog = ref<boolean>(false);
+const showSubstituteDialog = ref<boolean>(false);
+const showGlassSelectorDialog = ref<boolean>(false);
+const imagesUpload = useTemplateRef<InstanceType<typeof ImageUpload>>("imagesUpload");
 const cocktail = ref<Partial<Cocktail>>({
     images: [],
     ingredients: [],
@@ -267,114 +275,114 @@ const cocktail = ref<Partial<Cocktail>>({
     parent_cocktail: null,
     glass: {} as Glass,
     method: {} as CocktailMethod,
-})
-const maxImages = appState.isSubscribed() ? 10 : 1
-const glasses = ref<Glass[]>([])
-const methods = ref<CocktailMethod[]>([])
-const tags = ref<Tag[]>([])
-const utensils = ref<Utensil[]>([])
-const sortable = ref<any>(null)
-const selectedUtensilIds = ref<number[]>([])
-const selectedTagNames = ref<string[]>([])
-const cocktailIngredientForSubstitutes = ref<CocktailIngredient>({} as CocktailIngredient)
+});
+const maxImages = appState.isSubscribed() ? 10 : 1;
+const glasses = ref<Glass[]>([]);
+const methods = ref<CocktailMethod[]>([]);
+const tags = ref<Tag[]>([]);
+const utensils = ref<Utensil[]>([]);
+const sortable = ref<any>(null);
+const selectedUtensilIds = ref<number[]>([]);
+const selectedTagNames = ref<string[]>([]);
+const cocktailIngredientForSubstitutes = ref<CocktailIngredient>({} as CocktailIngredient);
 const bar = ref<Partial<Bar>>({
     search_token: null,
-})
+});
 
 const translatableMethods = computed(() => {
-    const methodsWithTranslations = ['Shake', 'Stir', 'Build', 'Blend', 'Muddle', 'Layer'];
+    const methodsWithTranslations = ["Shake", "Stir", "Build", "Blend", "Muddle", "Layer"];
 
-    return methods.value.map(method => {
+    return methods.value.map((method) => {
         if (methodsWithTranslations.includes(method.name)) {
             return {
                 ...method,
-                name: t('method.' + method.name)
-            }
+                name: t("method." + method.name),
+            };
         }
 
-        return method
-    })
-})
+        return method;
+    });
+});
 
 const timestamps = computed(() => {
     if (!cocktail.value.created_at) {
-        return null
+        return null;
     }
 
     return {
-        created_user: cocktail.value.created_user?.name ?? '',
+        created_user: cocktail.value.created_user?.name ?? "",
         updated_user: cocktail.value.updated_user?.name ?? null,
         created_at: cocktail.value.created_at,
         updated_at: cocktail.value.updated_at ?? null,
-    }
-})
+    };
+});
 
 function printIngredientAmount(ing: UnitIngredient) {
-    const defaultUnit = appState.defaultUnit
+    const defaultUnit = appState.defaultUnit;
 
-    return unitHandler.print(ing, defaultUnit)
+    return unitHandler.print(ing, defaultUnit);
 }
 
 function isValidIngredient(ingredient: CocktailIngredient): boolean {
-    return ingredient.ingredient.id != null && ingredient.ingredient.id !== 0 && !!ingredient.units
+    return ingredient.ingredient.id != null && ingredient.ingredient.id !== 0 && !!ingredient.units;
 }
 
 function handleCocktailIngredientModalClose(idx: number) {
     if (!cocktail.value.ingredients) {
-        return
+        return;
     }
 
-    showDialogs.value[idx] = false
+    showDialogs.value[idx] = false;
     // Remove empty ingredients (ie: <not selected>)
-    const emptyIngredient = cocktail.value.ingredients.findIndex(i => (i.ingredient.id == null || i.ingredient.id === 0))
+    const emptyIngredient = cocktail.value.ingredients.findIndex((i) => i.ingredient.id == null || i.ingredient.id === 0);
     if (emptyIngredient != -1) {
-        cocktail.value.ingredients.splice(emptyIngredient, 1)
+        cocktail.value.ingredients.splice(emptyIngredient, 1);
     }
 }
 
 function editIngredientSubstitutes(ing: CocktailIngredient) {
-    cocktailIngredientForSubstitutes.value = ing
-    showSubstituteDialog.value = true
+    cocktailIngredientForSubstitutes.value = ing;
+    showSubstituteDialog.value = true;
 }
 
 function removeIngredient(ing: CocktailIngredient) {
     if (!cocktail.value.ingredients) {
-        return
+        return;
     }
 
     if (!ing.ingredient.id) {
         cocktail.value.ingredients.splice(
-            cocktail.value.ingredients.findIndex(i => i == ing),
-            1
-        )
+            cocktail.value.ingredients.findIndex((i) => i == ing),
+            1,
+        );
 
-        return
+        return;
     }
 
-    confirm.show(t('cocktail.ingredient-remove', { name: ing.ingredient.name }), {
+    confirm.show(t("cocktail.ingredient-remove", { name: ing.ingredient.name }), {
         onResolved: (dialog: any) => {
             if (!cocktail.value.ingredients) {
-                return
+                return;
             }
 
-            dialog.close()
+            dialog.close();
             cocktail.value.ingredients.splice(
-                cocktail.value.ingredients.findIndex(i => i == ing),
-                1
-            )
-        }
-    })
+                cocktail.value.ingredients.findIndex((i) => i == ing),
+                1,
+            );
+        },
+    });
 }
 
 function addIngredient() {
-    const userUnit = appState.defaultUnit
+    const userUnit = appState.defaultUnit;
     const DEFAULT_AMOUNTS = {
-        ml: { amount: 30, units: 'ml' },
-        oz: { amount: 1, units: 'oz' },
-        cl: { amount: 3, units: 'cl' }
-    }
+        ml: { amount: 30, units: "ml" },
+        oz: { amount: 1, units: "oz" },
+        cl: { amount: 3, units: "cl" },
+    };
 
-    const defaultValues = DEFAULT_AMOUNTS[userUnit as keyof typeof DEFAULT_AMOUNTS] || DEFAULT_AMOUNTS.ml
+    const defaultValues = DEFAULT_AMOUNTS[userUnit as keyof typeof DEFAULT_AMOUNTS] || DEFAULT_AMOUNTS.ml;
 
     const placeholderData: CocktailIngredient = {
         sort: (cocktail.value.ingredients?.length ?? 0) + 1,
@@ -388,103 +396,103 @@ function addIngredient() {
         formatted: {} as components["schemas"]["AmountFormats"],
         ingredient: {
             id: 0,
-            slug: '',
-            name: `<${t('ingredient.name-placeholder')}>`,
-        } as components['schemas']['Ingredient']
-    }
+            slug: "",
+            name: `<${t("ingredient.name-placeholder")}>`,
+        } as components["schemas"]["Ingredient"],
+    };
 
-    cocktail.value.ingredients?.push(placeholderData)
-    showDialogs.value[(cocktail.value.ingredients?.length ?? 0) - 1] = true
+    cocktail.value.ingredients?.push(placeholderData);
+    showDialogs.value[(cocktail.value.ingredients?.length ?? 0) - 1] = true;
 }
 
 async function generateTags() {
     if (!cocktail.value.id) {
-        return
+        return;
     }
 
-    const resp = await BarAssistantClient.aiGenerateCocktailTags(cocktail.value.id.toString())
+    const resp = await BarAssistantClient.aiGenerateCocktailTags(cocktail.value.id.toString());
     if (resp && resp.data.tags) {
-        selectedTagNames.value = Array.from(new Set([...selectedTagNames.value, ...resp.data.tags]))
+        selectedTagNames.value = Array.from(new Set([...selectedTagNames.value, ...resp.data.tags]));
     }
 }
 
 async function generateImage() {
     if (!cocktail.value.id || !imagesUpload.value) {
-        return
+        return;
     }
 
     if (imagesUpload.value.hasMaxImages()) {
-        toast.error(t('imageupload.generate-limit'))
-        return
+        toast.error(t("imageupload.generate-limit"));
+        return;
     }
 
-    isLoadingImageGen.value = true
+    isLoadingImageGen.value = true;
 
     try {
-        const resp = await BarAssistantClient.aiGenerateCocktailImage(cocktail.value.id.toString())
+        const resp = await BarAssistantClient.aiGenerateCocktailImage(cocktail.value.id.toString());
 
         if (!resp?.data) {
-            toast.error(t('server-error'))
-            return
+            toast.error(t("server-error"));
+            return;
         }
 
-        const wasAdded = imagesUpload.value.appendImage(resp.data as Image)
+        const wasAdded = imagesUpload.value.appendImage(resp.data as Image);
 
         if (!wasAdded) {
-            toast.error(t('imageupload.generate-limit'))
-            return
+            toast.error(t("imageupload.generate-limit"));
+            return;
         }
 
-        toast.default(t('imageupload.generate-success'))
+        toast.default(t("imageupload.generate-success"));
     } catch (error: any) {
-        toast.error(error?.message ?? t('server-error'))
+        toast.error(error?.message ?? t("server-error"));
     } finally {
-        isLoadingImageGen.value = false
+        isLoadingImageGen.value = false;
     }
 }
 
 function selectParentCocktail(parentCocktail: SearchResultCocktail) {
-    cocktail.value.parent_cocktail = parentCocktail
-    showVarietyDialog.value = false
+    cocktail.value.parent_cocktail = parentCocktail;
+    showVarietyDialog.value = false;
 }
 
 function checkForImportData() {
-    const scraped = sessionStorage.getItem('scrapeResult')
+    const scraped = sessionStorage.getItem("scrapeResult");
     if (scraped) {
-        sessionStorage.removeItem('scrapeResult')
-        const parsedScrapeResult = JSON.parse(scraped)
+        sessionStorage.removeItem("scrapeResult");
+        const parsedScrapeResult = JSON.parse(scraped);
 
-        setupExistingCocktail(parsedScrapeResult)
+        setupExistingCocktail(parsedScrapeResult);
     }
 }
 
 function initSortable() {
     nextTick(() => {
-        sortable.value = Sortable.create(document.querySelector('.cocktail-form__ingredients'), {
-            handle: '.drag-handle',
-            ghostClass: 'block-container--placeholder',
+        sortable.value = Sortable.create(document.querySelector(".cocktail-form__ingredients"), {
+            handle: ".drag-handle",
+            ghostClass: "block-container--placeholder",
             animation: 150,
             onEnd: updateSortPosition,
-        })
-    })
+        });
+    });
 }
 
 function updateSortPosition() {
     if (!sortable.value || !cocktail.value.ingredients) {
-        return
+        return;
     }
 
-    const sortedIngredientList = sortable.value.toArray() as string[]
+    const sortedIngredientList = sortable.value.toArray() as string[];
 
     cocktail.value.ingredients.forEach((cIngredient) => {
-        cIngredient.sort = sortedIngredientList.findIndex(sortedId => parseInt(sortedId) === cIngredient.ingredient.id) + 1
-    })
+        cIngredient.sort = sortedIngredientList.findIndex((sortedId) => parseInt(sortedId) === cIngredient.ingredient.id) + 1;
+    });
 }
 
 async function submit() {
-    const sortedIngredientList = sortable.value.toArray() as string[]
+    const sortedIngredientList = sortable.value.toArray() as string[];
 
-    isLoading.value = true
+    isLoading.value = true;
 
     const postData = {
         name: cocktail.value.name,
@@ -500,77 +508,77 @@ async function submit() {
         tags: selectedTagNames.value,
         glass_id: cocktail.value.glass ? cocktail.value.glass.id : null,
         year: cocktail.value.year,
-        ingredients: (cocktail.value.ingredients ?? [])
-            .filter(isValidIngredient)
-            .map((cIngredient) => {
-                const substitutes = (cIngredient.substitutes ?? [])
-                    .filter(sub => sub.ingredient.id != null && sub.ingredient.id !== 0)
-                    .map(sub => {
-                        return {
-                            ingredient_id: sub.ingredient.id,
-                            amount: sub.amount ? unitHandler.asDecimal(sub.amount.toString()) : null,
-                            amount_max: sub.amount_max ? unitHandler.asDecimal(sub.amount_max.toString()) : null,
-                            units: sub.units,
-                        }
-                    })
+        ingredients: (cocktail.value.ingredients ?? []).filter(isValidIngredient).map((cIngredient) => {
+            const substitutes = (cIngredient.substitutes ?? [])
+                .filter((sub) => sub.ingredient.id != null && sub.ingredient.id !== 0)
+                .map((sub) => {
+                    return {
+                        ingredient_id: sub.ingredient.id,
+                        amount: sub.amount ? unitHandler.asDecimal(sub.amount.toString()) : null,
+                        amount_max: sub.amount_max ? unitHandler.asDecimal(sub.amount_max.toString()) : null,
+                        units: sub.units,
+                    };
+                });
 
-                return {
-                    ingredient_id: cIngredient.ingredient.id,
-                    name: cIngredient.ingredient.name,
-                    amount: unitHandler.asDecimal(cIngredient.amount.toString()),
-                    units: cIngredient.units,
-                    amount_max: cIngredient.amount_max ? unitHandler.asDecimal(cIngredient.amount_max.toString()) : null,
-                    optional: cIngredient.optional,
-                    is_specified: cIngredient.is_specified,
-                    note: cIngredient.note,
-                    sort: sortedIngredientList.findIndex(sortedId => parseInt(sortedId) === cIngredient.ingredient.id) + 1,
-                    substitutes: substitutes
-                }
-            })
-    } as CocktailRequest
+            return {
+                ingredient_id: cIngredient.ingredient.id,
+                name: cIngredient.ingredient.name,
+                amount: unitHandler.asDecimal(cIngredient.amount.toString()),
+                units: cIngredient.units,
+                amount_max: cIngredient.amount_max ? unitHandler.asDecimal(cIngredient.amount_max.toString()) : null,
+                optional: cIngredient.optional,
+                is_specified: cIngredient.is_specified,
+                note: cIngredient.note,
+                sort: sortedIngredientList.findIndex((sortedId) => parseInt(sortedId) === cIngredient.ingredient.id) + 1,
+                substitutes: substitutes,
+            };
+        }),
+    } as CocktailRequest;
 
     if (imagesUpload.value) {
-        const imageResources = await uploader.saveImages(imagesUpload.value)
-        postData.images = imageResources.map((img: any) => img.id)
+        const imageResources = await uploader.saveImages(imagesUpload.value);
+        postData.images = imageResources.map((img: any) => img.id);
     }
 
     if (cocktail.value.id) {
-        BarAssistantClient.updateCocktail(cocktail.value.id, postData).then(() => {
-            isLoading.value = false
-            toast.default(t('cocktail.update-success'))
-            router.push({ name: 'cocktails.show', params: { id: cocktail.value.slug } })
-        }).catch(e => {
-            toast.error(e.message)
-            isLoading.value = false
-        })
+        BarAssistantClient.updateCocktail(cocktail.value.id, postData)
+            .then(() => {
+                isLoading.value = false;
+                toast.default(t("cocktail.update-success"));
+                router.push({ name: "cocktails.show", params: { id: cocktail.value.slug } });
+            })
+            .catch((e) => {
+                toast.error(e.message);
+                isLoading.value = false;
+            });
     } else {
-        const slug = await BarAssistantClient.saveCocktail(postData)
+        const slug = await BarAssistantClient.saveCocktail(postData);
         if (!slug) {
-            return
+            return;
         }
 
-        isLoading.value = false
+        isLoading.value = false;
         toast.open({
-            message: t('cocktail.create-success')
-        })
+            message: t("cocktail.create-success"),
+        });
 
-        router.push({ name: 'cocktails.show', params: { id: slug } })
+        router.push({ name: "cocktails.show", params: { id: slug } });
     }
 }
 
 async function init() {
-    useTitle(t('cocktail.add'))
+    useTitle(t("cocktail.add"));
 
-    isLoading.value = true
+    isLoading.value = true;
 
     try {
-        await loadInitialData()
-        await loadCocktailData()
-        initSortable()
+        await loadInitialData();
+        await loadCocktailData();
+        initSortable();
     } catch (error) {
-        console.error('Initialization error')
+        console.error("Initialization error");
     } finally {
-        isLoading.value = false
+        isLoading.value = false;
     }
 }
 
@@ -580,60 +588,61 @@ async function loadInitialData() {
         BarAssistantClient.getCocktailMethods(),
         BarAssistantClient.getTags(),
         BarAssistantClient.getUtensils(),
-        BarAssistantClient.getBar(appState.bar.id)
-    ])
+        BarAssistantClient.getBar(appState.bar.id),
+    ]);
 
-    glasses.value = glassesData?.data ?? []
-    methods.value = methodsData?.data ?? []
-    tags.value = tagsData?.data ?? []
-    utensils.value = utensilsData?.data ?? []
-    bar.value = barData?.data ?? {}
+    glasses.value = glassesData?.data ?? [];
+    methods.value = methodsData?.data ?? [];
+    tags.value = tagsData?.data ?? [];
+    utensils.value = utensilsData?.data ?? [];
+    bar.value = barData?.data ?? {};
 }
 
 async function loadCocktailData() {
-    const cocktailId = route.query.id || null
+    const cocktailId = route.query.id || null;
 
     if (cocktailId) {
-        const existingCocktail = (await BarAssistantClient.getCocktail(cocktailId.toString()))?.data ?? {} as Cocktail
-        setupExistingCocktail(existingCocktail)
+        const existingCocktail = (await BarAssistantClient.getCocktail(cocktailId.toString()))?.data ?? ({} as Cocktail);
+        setupExistingCocktail(existingCocktail);
     } else {
-        checkForImportData()
+        checkForImportData();
     }
 }
 
 function setupExistingCocktail(existingCocktail: Cocktail) {
-    existingCocktail.description = useHtmlDecode(existingCocktail.description ?? '')
-    existingCocktail.instructions = useHtmlDecode(existingCocktail.instructions ?? '')
-    existingCocktail.garnish = useHtmlDecode(existingCocktail.garnish ?? '')
+    existingCocktail.description = useHtmlDecode(existingCocktail.description ?? "");
+    existingCocktail.instructions = useHtmlDecode(existingCocktail.instructions ?? "");
+    existingCocktail.garnish = useHtmlDecode(existingCocktail.garnish ?? "");
 
     if (!existingCocktail.method) {
-        existingCocktail.method = {} as CocktailMethod
+        existingCocktail.method = {} as CocktailMethod;
     }
     if (!existingCocktail.glass) {
-        existingCocktail.glass = {} as Glass
+        existingCocktail.glass = {} as Glass;
     }
 
-    cocktail.value = existingCocktail
-    selectedUtensilIds.value = existingCocktail.utensils?.map(ut => ut.id) ?? []
-    selectedTagNames.value = existingCocktail.tags?.map(t => t.name) ?? []
+    cocktail.value = existingCocktail;
+    selectedUtensilIds.value = existingCocktail.utensils?.map((ut) => ut.id) ?? [];
+    selectedTagNames.value = existingCocktail.tags?.map((t) => t.name) ?? [];
 
-    useTitle(`${t('cocktail.title')} \u22C5 ${cocktail.value.name}`)
+    useTitle(`${t("cocktail.title")} \u22C5 ${cocktail.value.name}`);
 }
 
-init()
+init();
 
 // Watch for changes in the cocktail's instructions to auto-detect method
-watch(() => cocktail.value.instructions, (newVal) => {
-    if (cocktail.value.method && !cocktail.value.method.id && newVal) {
-        const matchedMethod = methods.value.find(method =>
-            newVal.toLowerCase().includes(method.name.toLowerCase())
-        )
+watch(
+    () => cocktail.value.instructions,
+    (newVal) => {
+        if (cocktail.value.method && !cocktail.value.method.id && newVal) {
+            const matchedMethod = methods.value.find((method) => newVal.toLowerCase().includes(method.name.toLowerCase()));
 
-        if (matchedMethod) {
-            cocktail.value.method.id = matchedMethod.id;
+            if (matchedMethod) {
+                cocktail.value.method.id = matchedMethod.id;
+            }
         }
-    }
-})
+    },
+);
 </script>
 
 <style scoped>
@@ -642,7 +651,7 @@ watch(() => cocktail.value.instructions, (newVal) => {
     margin: 0;
     padding: 0;
     display: grid;
-    row-gap: var(--gap-size-1)
+    row-gap: var(--gap-size-1);
 }
 
 .cocktail-form__ingredients li {
@@ -706,7 +715,7 @@ watch(() => cocktail.value.instructions, (newVal) => {
 .cocktail-selected-glass {
     display: flex;
     flex-direction: row;
-    gap: .5rem;
+    gap: 0.5rem;
 }
 
 .cocktail-selected-glass__image {

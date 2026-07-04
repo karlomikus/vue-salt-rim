@@ -1,5 +1,5 @@
-<script setup>
-import PriceCategoriesList from '../components/Settings/PriceCategoriesList.vue'
+<script setup lang="ts">
+import PriceCategoriesList from "../components/Settings/PriceCategoriesList.vue";
 </script>
 
 <template>

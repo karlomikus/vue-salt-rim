@@ -1,13 +1,11 @@
 <template>
-    <div v-if="!appState.isSubscribed()" class="subscription-check">
-        📢 <slot></slot> &middot; <RouterLink :to="{name: 'settings.billing'}">Find out more!</RouterLink>
-    </div>
+    <div v-if="!appState.isSubscribed()" class="subscription-check">📢 <slot></slot> &middot; <RouterLink :to="{ name: 'settings.billing' }">Find out more!</RouterLink></div>
 </template>
 
 <script setup lang="ts">
-import AppState from '../AppState'
+import AppState from "../AppState";
 
-const appState = new AppState()
+const appState = new AppState();
 </script>
 
 <style scoped>

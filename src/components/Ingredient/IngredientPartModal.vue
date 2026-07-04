@@ -1,53 +1,53 @@
 <script setup lang="ts">
-import OverlayLoader from './../OverlayLoader.vue'
-import AmountInput from './../AmountInput.vue'
-import { ref } from 'vue'
-import type { components } from '@/api/api'
-import { useI18n } from 'vue-i18n'
+import OverlayLoader from "./../OverlayLoader.vue";
+import AmountInput from "./../AmountInput.vue";
+import { ref } from "vue";
+import type { components } from "@/api/api";
+import { useI18n } from "vue-i18n";
 
-const { t } = useI18n()
-type IngredientPart = components["schemas"]["IngredientPart"]
-const isLoading = ref(false)
-const emit = defineEmits(['close'])
+const { t } = useI18n();
+type IngredientPart = components["schemas"]["IngredientPart"];
+const isLoading = ref(false);
+const emit = defineEmits(["close"]);
 const model = defineModel<IngredientPart>({
     required: true,
-})
+});
 
-const localPart = ref({...model.value})
+const localPart = ref({ ...model.value });
 if (!localPart.value.amount_max) {
-    localPart.value.amount_max = null
+    localPart.value.amount_max = null;
 }
 
 function save(): void {
-    model.value = localPart.value
-    emit('close')
+    model.value = localPart.value;
+    emit("close");
 }
 
 function cancel(): void {
-    emit('close')
+    emit("close");
 }
 </script>
 
 <template>
     <form @submit.prevent="save">
         <OverlayLoader v-if="isLoading" />
-        <div class="dialog-title">{{ t('ingredient.title') }}</div>
+        <div class="dialog-title">{{ t("ingredient.title") }}</div>
         <div class="selected-ingredient">
-            <small>{{ t('ingredient.dialog.current') }}:</small>
+            <small>{{ t("ingredient.dialog.current") }}:</small>
             <p>{{ localPart.ingredient.name }}</p>
         </div>
         <div class="ingredient-form-group">
             <div class="form-group">
-                <label class="form-label form-label--required" for="part-amount">{{ t('amount') }}:</label>
+                <label class="form-label form-label--required" for="part-amount">{{ t("amount") }}:</label>
                 <AmountInput id="part-amount" v-model="localPart.amount" required></AmountInput>
             </div>
             <div class="form-group" v-if="localPart.amount_max !== undefined">
-                <label class="form-label" for="part-amount-max">{{ t('amount') }} max:</label>
+                <label class="form-label" for="part-amount-max">{{ t("amount") }} max:</label>
                 <AmountInput id="part-amount-max" v-model="localPart.amount_max"></AmountInput>
             </div>
             <div class="form-group">
-                <label class="form-label form-label--required" for="part-units">{{ t('units') }}:</label>
-                <input id="part-units" v-model="localPart.units" class="form-input" type="text" list="common-units" required>
+                <label class="form-label form-label--required" for="part-units">{{ t("units") }}:</label>
+                <input id="part-units" v-model="localPart.units" class="form-input" type="text" list="common-units" required />
                 <datalist id="common-units">
                     <option>ml</option>
                     <option>oz</option>
@@ -61,12 +61,12 @@ function cancel(): void {
             </div>
         </div>
         <div class="form-group">
-            <label class="form-label" for="part-note">{{ t('note.title') }}:</label>
-            <input id="part-note" v-model="localPart.note" class="form-input" type="text">
+            <label class="form-label" for="part-note">{{ t("note.title") }}:</label>
+            <input id="part-note" v-model="localPart.note" class="form-input" type="text" />
         </div>
         <div class="dialog-actions">
-            <button type="button" class="button button--outline" @click="cancel">{{ t('cancel') }}</button>
-            <button type="submit" class="button button--dark" :disabled="isLoading">{{ t('save') }}</button>
+            <button type="button" class="button button--outline" @click="cancel">{{ t("cancel") }}</button>
+            <button type="submit" class="button button--dark" :disabled="isLoading">{{ t("save") }}</button>
         </div>
     </form>
 </template>

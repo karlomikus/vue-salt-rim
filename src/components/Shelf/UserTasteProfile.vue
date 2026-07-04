@@ -1,68 +1,68 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue'
-import type { components } from '@/api/api'
-import OverlayLoader from '../OverlayLoader.vue'
+import { computed, ref } from "vue";
+import type { components } from "@/api/api";
+import OverlayLoader from "../OverlayLoader.vue";
 
-type UserTasteProfile = components['schemas']['UserTasteProfile']
+type UserTasteProfile = components["schemas"]["UserTasteProfile"];
 
 const props = defineProps<{
     profile: UserTasteProfile | null;
-}>()
+}>();
 
-const isLoading = ref(false)
+const isLoading = ref(false);
 
-const favoriteTags = computed(() => [...(props.profile?.favorite_tags ?? [])])
-const dislikedTags = computed(() => [...(props.profile?.disliked_tags ?? [])])
+const favoriteTags = computed(() => [...(props.profile?.favorite_tags ?? [])]);
+const dislikedTags = computed(() => [...(props.profile?.disliked_tags ?? [])]);
 
-const averageAbv = computed(() => props.profile?.average_abv ?? 0)
+const averageAbv = computed(() => props.profile?.average_abv ?? 0);
 
 const abvDistribution = computed(() => {
-    const buckets = props.profile?.abv_distribution ?? []
-    const order = { low: 0, medium: 1, high: 2 }
+    const buckets = props.profile?.abv_distribution ?? [];
+    const order = { low: 0, medium: 1, high: 2 };
 
     return [...buckets].sort((a, b) => {
-        const aOrder = order[a.bucket as keyof typeof order] ?? 99
-        const bOrder = order[b.bucket as keyof typeof order] ?? 99
+        const aOrder = order[a.bucket as keyof typeof order] ?? 99;
+        const bOrder = order[b.bucket as keyof typeof order] ?? 99;
 
-        return aOrder - bOrder
-    })
-})
+        return aOrder - bOrder;
+    });
+});
 
 const sortedDislikedTags = computed(() => {
-    return dislikedTags.value.sort((a, b) => (b.weight ?? 0) - (a.weight ?? 0))
-})
+    return dislikedTags.value.sort((a, b) => (b.weight ?? 0) - (a.weight ?? 0));
+});
 
 const sortedFavoriteTags = computed(() => {
-    return favoriteTags.value.sort((a, b) => (b.weight ?? 0) - (a.weight ?? 0))
-})
+    return favoriteTags.value.sort((a, b) => (b.weight ?? 0) - (a.weight ?? 0));
+});
 
 const maxDislikedWeight = computed(() => {
-    const weights = sortedDislikedTags.value.map((t) => t.weight ?? 0)
-    return weights.length > 0 ? Math.max(...weights) : 1
-})
+    const weights = sortedDislikedTags.value.map((t) => t.weight ?? 0);
+    return weights.length > 0 ? Math.max(...weights) : 1;
+});
 
 const maxFavoriteWeight = computed(() => {
-    const weights = sortedFavoriteTags.value.map((t) => t.weight ?? 0)
-    return weights.length > 0 ? Math.max(...weights) : 1
-})
+    const weights = sortedFavoriteTags.value.map((t) => t.weight ?? 0);
+    return weights.length > 0 ? Math.max(...weights) : 1;
+});
 
-function barWidth(weight: number | undefined, side: 'negative' | 'positive'): string {
-    const max = side === 'negative' ? maxDislikedWeight.value : maxFavoriteWeight.value
-    return `${((weight ?? 0) / max) * 100}%`
+function barWidth(weight: number | undefined, side: "negative" | "positive"): string {
+    const max = side === "negative" ? maxDislikedWeight.value : maxFavoriteWeight.value;
+    return `${((weight ?? 0) / max) * 100}%`;
 }
 
 function formatPercent(ratio: number) {
-    return `${(ratio * 100).toFixed(1)}%`
+    return `${(ratio * 100).toFixed(1)}%`;
 }
 
 function bucketColor(bucket: string) {
     const palette: Record<string, string> = {
-        low: 'var(--clr-chart-3)',
-        medium: 'var(--clr-chart-6)',
-        high: 'var(--clr-chart-9)',
-    }
+        low: "var(--clr-chart-3)",
+        medium: "var(--clr-chart-6)",
+        high: "var(--clr-chart-9)",
+    };
 
-    return palette[bucket] ?? 'var(--clr-gray-500)'
+    return palette[bucket] ?? "var(--clr-gray-500)";
 }
 </script>
 
@@ -75,39 +75,20 @@ function bucketColor(bucket: string) {
         </div>
 
         <section class="taste-section">
-            <div
-                v-if="sortedDislikedTags.length > 0 || sortedFavoriteTags.length > 0"
-                class="bar-chart"
-                role="img"
-                aria-label="Taste profile tags bar chart"
-            >
+            <div v-if="sortedDislikedTags.length > 0 || sortedFavoriteTags.length > 0" class="bar-chart" role="img" aria-label="Taste profile tags bar chart">
                 <div class="bar-chart__negative">
                     <h4 class="bar-chart__title">Disliked tags</h4>
-                    <div
-                        v-for="tag in sortedDislikedTags"
-                        :key="tag.name"
-                        class="bar-row"
-                    >
+                    <div v-for="tag in sortedDislikedTags" :key="tag.name" class="bar-row">
                         <span class="bar-row__label bar-row__label--negative">{{ tag.name }} ({{ tag.weight }})</span>
-                        <div
-                            class="bar-row__bar bar-row__bar--negative"
-                            :style="{ width: barWidth(tag.weight, 'negative') }"
-                        ></div>
+                        <div class="bar-row__bar bar-row__bar--negative" :style="{ width: barWidth(tag.weight, 'negative') }"></div>
                     </div>
                 </div>
                 <div class="bar-chart__divider"></div>
                 <div class="bar-chart__positive">
                     <h4 class="bar-chart__title">Liked tags</h4>
-                    <div
-                        v-for="tag in sortedFavoriteTags"
-                        :key="tag.name"
-                        class="bar-row"
-                    >
+                    <div v-for="tag in sortedFavoriteTags" :key="tag.name" class="bar-row">
                         <span class="bar-row__label bar-row__label--positive">{{ tag.name }} ({{ tag.weight }})</span>
-                        <div
-                            class="bar-row__bar bar-row__bar--positive"
-                            :style="{ width: barWidth(tag.weight, 'positive') }"
-                        ></div>
+                        <div class="bar-row__bar bar-row__bar--positive" :style="{ width: barWidth(tag.weight, 'positive') }"></div>
                     </div>
                 </div>
             </div>
@@ -137,7 +118,6 @@ function bucketColor(bucket: string) {
                 </li>
             </ul>
         </section>
-
     </div>
 </template>
 

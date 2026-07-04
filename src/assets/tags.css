@@ -5,7 +5,7 @@
 }
 
 .tag {
-    --color-tag: #DFE7FD;
+    --color-tag: #dfe7fd;
     --color-text: var(--clr-gray-800);
 
     text-decoration: none;
@@ -29,7 +29,7 @@
 .tag.tag--link:hover,
 .tag.tag--link:focus,
 .tag.tag--link:active {
-  background-color: #fff;
+    background-color: #fff;
 }
 
 .tag.tag--link.tag--is-selected {

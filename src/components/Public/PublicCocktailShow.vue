@@ -2,9 +2,11 @@
     <div class="bar-cocktail-recipe" itemscope itemtype="http://schema.org/Recipe" v-if="cocktail">
         <div class="bar-cocktail-recipe__header">
             <div class="bar-cocktail-recipe__image" itemprop="image" :content="mainImage.url">
-                <img :src="mainImage.url" alt="">
+                <img :src="mainImage.url" alt="" />
                 <div class="glare"></div>
-                <div v-if="mainImage.copyright" class="bar-cocktail-recipe__image__copyright">{{ $t('imageupload.copyright-notice', { copyright: mainImage.copyright }) }}</div>
+                <div v-if="mainImage.copyright" class="bar-cocktail-recipe__image__copyright">
+                    {{ $t("imageupload.copyright-notice", { copyright: mainImage.copyright }) }}
+                </div>
             </div>
             <div class="bar-cocktail-recipe__info">
                 <h2 itemprop="name">{{ cocktail.name }}</h2>
@@ -13,44 +15,52 @@
                 </ul>
                 <div v-show="cocktail.description" itemprop="description" v-html="parsedDescription"></div>
                 <div class="bar-cocktail-recipe__info__source">
-                    <a :href="printUrl" target="_blank" :title="$t('print-recipe')">{{ $t('print-recipe') }}</a>
-                    <a v-if="cocktail.source && isValidURL" :href="cocktail.source">{{ $t('public-bar.recipe-source') }} <svg class="bar-cocktail-recipe__external-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M10 6V8H5V19H16V14H18V20C18 20.5523 17.5523 21 17 21H4C3.44772 21 3 20.5523 3 20V7C3 6.44772 3.44772 6 4 6H10ZM21 3V11H19L18.9999 6.413L11.2071 14.2071L9.79289 12.7929L17.5849 5H13V3H21Z"></path></svg></a>
+                    <a :href="printUrl" target="_blank" :title="$t('print-recipe')">{{ $t("print-recipe") }}</a>
+                    <a v-if="cocktail.source && isValidURL" :href="cocktail.source"
+                        >{{ $t("public-bar.recipe-source") }}
+                        <svg class="bar-cocktail-recipe__external-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                            <path
+                                d="M10 6V8H5V19H16V14H18V20C18 20.5523 17.5523 21 17 21H4C3.44772 21 3 20.5523 3 20V7C3 6.44772 3.44772 6 4 6H10ZM21 3V11H19L18.9999 6.413L11.2071 14.2071L9.79289 12.7929L17.5849 5H13V3H21Z"
+                            ></path></svg
+                    ></a>
                     <span v-else-if="cocktail.source">
-                        {{ $t('public-bar.recipe-source') }}: {{ cocktail.source }} <template v-if="cocktail.year">({{ cocktail.year }})</template>
+                        {{ $t("public-bar.recipe-source") }}: {{ cocktail.source }} <template v-if="cocktail.year">({{ cocktail.year }})</template>
                     </span>
                 </div>
             </div>
         </div>
         <div class="bar-cocktail-recipe__content block-container block-container--padded">
             <div class="bar-cocktail-recipe__section">
-                <h3>{{ $t('ingredient.ingredients') }}</h3>
+                <h3>{{ $t("ingredient.ingredients") }}</h3>
                 <div class="bar-cocktail-recipe__ingredient-actions">
                     <div>
                         <button type="button" class="button button--public" @click="showScaler = !showScaler">Scale recipe</button>
                     </div>
                     <div>
-                        <button type="button" class="button button--public" :class="{'button--active': currentUnit == 'ml'}" @click="currentUnit = 'ml'">ml</button>
-                        <button type="button" class="button button--public" :class="{'button--active': currentUnit == 'oz'}" @click="currentUnit = 'oz'">oz</button>
-                        <button type="button" class="button button--public" :class="{'button--active': currentUnit == 'cl'}" @click="currentUnit = 'cl'">cl</button>
+                        <button type="button" class="button button--public" :class="{ 'button--active': currentUnit == 'ml' }" @click="currentUnit = 'ml'">ml</button>
+                        <button type="button" class="button button--public" :class="{ 'button--active': currentUnit == 'oz' }" @click="currentUnit = 'oz'">oz</button>
+                        <button type="button" class="button button--public" :class="{ 'button--active': currentUnit == 'cl' }" @click="currentUnit = 'cl'">cl</button>
                     </div>
                 </div>
-                <CocktailRecipeScaler v-if="showScaler" v-model="scaleFactor" v-model:waterDilution="waterDilution" v-model:targetVolume="targetVolumeToScaleTo" :cocktail-volume-ml="cocktail.volume_ml ?? 0" :method-dilution="cocktail.method_dilution_percentage ?? 0" :current-unit="currentUnit" />
+                <CocktailRecipeScaler
+                    v-if="showScaler"
+                    v-model="scaleFactor"
+                    v-model:waterDilution="waterDilution"
+                    v-model:targetVolume="targetVolumeToScaleTo"
+                    :cocktail-volume-ml="cocktail.volume_ml ?? 0"
+                    :method-dilution="cocktail.method_dilution_percentage ?? 0"
+                    :current-unit="currentUnit"
+                />
                 <ul class="public-cocktail-recipe__ingredients">
-                    <CocktailIngredient
-                        v-for="ing in cocktail.ingredients"
-                        :key="ing.name"
-                        :cocktail-ingredient="ing"
-                        :units="currentUnit"
-                        :scale-factor="scaleFactor"
-                    />
+                    <CocktailIngredient v-for="ing in cocktail.ingredients" :key="ing.name" :cocktail-ingredient="ing" :units="currentUnit" :scale-factor="scaleFactor" />
                 </ul>
             </div>
             <div class="bar-cocktail-recipe__section">
-                <h3>{{ $t('instructions') }}</h3>
+                <h3>{{ $t("instructions") }}</h3>
                 <div itemprop="recipeInstructions" class="public-cocktail-recipe__content" v-html="parsedInstructions"></div>
             </div>
             <div v-show="cocktail.garnish" class="bar-cocktail-recipe__section">
-                <h3>{{ $t('garnish') }}</h3>
+                <h3>{{ $t("garnish") }}</h3>
                 <div class="public-cocktail-recipe__content" v-html="parsedGarnish"></div>
             </div>
         </div>
@@ -58,109 +68,109 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref, watch } from 'vue'
-import type { components } from '@/api/api'
-import { useRoute, useRouter } from 'vue-router';
-import BarAssistantClient from '@/api/BarAssistantClient'
-import { micromark } from 'micromark'
-import CocktailIngredient from './PublicCocktailIngredient.vue';
-import CocktailRecipeScaler from './../Cocktail/CocktailRecipeScaler.vue';
-import AppState from '@/AppState';
+import { computed, ref, watch } from "vue";
+import type { components } from "@/api/api";
+import { useRoute, useRouter } from "vue-router";
+import BarAssistantClient from "@/api/BarAssistantClient";
+import { micromark } from "micromark";
+import CocktailIngredient from "./PublicCocktailIngredient.vue";
+import CocktailRecipeScaler from "./../Cocktail/CocktailRecipeScaler.vue";
+import AppState from "@/AppState";
 
-type Cocktail = components['schemas']['PublicCocktailResource']
+type Cocktail = components["schemas"]["PublicCocktailResource"];
 type CocktailTag = {
-    value: string,
-    type: string,
-    class: string,
-}
+    value: string;
+    type: string;
+    class: string;
+};
 
-const appState = new AppState()
-const route = useRoute()
-const router = useRouter()
-const cocktail = ref<Cocktail|null>(null)
-const currentUnit = ref<'ml' | 'oz' | 'cl'>(appState.defaultUnit)
-const scaleFactor = ref<number>(1)
-const waterDilution = ref<string | null>(null)
-const targetVolumeToScaleTo = ref<null | number>(null)
-const showScaler = ref<boolean>(false)
-const barId = route.params.barId.toString()
+const appState = new AppState();
+const route = useRoute();
+const router = useRouter();
+const cocktail = ref<Cocktail | null>(null);
+const currentUnit = ref<"ml" | "oz" | "cl">(appState.defaultUnit);
+const scaleFactor = ref<number>(1);
+const waterDilution = ref<string | null>(null);
+const targetVolumeToScaleTo = ref<null | number>(null);
+const showScaler = ref<boolean>(false);
+const barId = route.params.barId.toString();
 
 const fetchCocktail = async () => {
     try {
-        const response = await BarAssistantClient.getPublicBarCocktail(barId, route.params.slug.toString())
-        cocktail.value = response?.data || null
+        const response = await BarAssistantClient.getPublicBarCocktail(barId, route.params.slug.toString());
+        cocktail.value = response?.data || null;
     } catch (error) {
-        cocktail.value = null
+        cocktail.value = null;
     }
-}
+};
 
 const parsedDescription = computed(() => {
-    return cocktail.value?.description ? micromark(cocktail.value.description) : ''
-})
+    return cocktail.value?.description ? micromark(cocktail.value.description) : "";
+});
 
 const parsedInstructions = computed(() => {
-    return cocktail.value?.instructions ? micromark(cocktail.value.instructions) : ''
-})
+    return cocktail.value?.instructions ? micromark(cocktail.value.instructions) : "";
+});
 
 const parsedGarnish = computed(() => {
-    return cocktail.value?.garnish ? micromark(cocktail.value.garnish) : ''
-})
+    return cocktail.value?.garnish ? micromark(cocktail.value.garnish) : "";
+});
 
 const mainImage = computed(() => {
     if (cocktail.value && cocktail.value.images && cocktail.value.images.length > 0) {
-        return  cocktail.value.images[0]
+        return cocktail.value.images[0];
     }
 
     return {
-        url: '/no-cocktail.jpg',
+        url: "/no-cocktail.jpg",
         copyright: null,
-    }
-})
+    };
+});
 
 const cocktailTags = computed(() => {
-    const result: CocktailTag[] = []
+    const result: CocktailTag[] = [];
 
-    result.push(...(cocktail.value?.tags.map(tag => ({ value: tag, type: 'tag', class: 'bar-cocktail-recipe__tag--tag' })) || []))
+    result.push(...(cocktail.value?.tags.map((tag) => ({ value: tag, type: "tag", class: "bar-cocktail-recipe__tag--tag" })) || []));
 
     if (cocktail.value?.glass) {
-        result.push({ value: cocktail.value.glass, type: 'glass', class: 'bar-cocktail-recipe__tag--glass' })
+        result.push({ value: cocktail.value.glass, type: "glass", class: "bar-cocktail-recipe__tag--glass" });
     }
 
     if (cocktail.value?.method) {
-        result.push({ value: cocktail.value.method, type: 'method', class: 'bar-cocktail-recipe__tag--method' })
+        result.push({ value: cocktail.value.method, type: "method", class: "bar-cocktail-recipe__tag--method" });
     }
 
     if (cocktail.value?.abv) {
-        result.push({ value: cocktail.value.abv.toString() + '% ABV', type: 'abv', class: 'bar-cocktail-recipe__tag--abv' })
+        result.push({ value: cocktail.value.abv.toString() + "% ABV", type: "abv", class: "bar-cocktail-recipe__tag--abv" });
     }
 
-    result.push(...(cocktail.value?.utensils.map(utensil => ({ value: utensil, type: 'utensil', class: 'bar-cocktail-recipe__tag--utensil' })) || []))
+    result.push(...(cocktail.value?.utensils.map((utensil) => ({ value: utensil, type: "utensil", class: "bar-cocktail-recipe__tag--utensil" })) || []));
 
-    return result
-})
+    return result;
+});
 
 const isValidURL = computed(() => {
     if (!cocktail.value?.source) {
         return false;
     }
 
-    const source = cocktail.value.source || ''
+    const source = cocktail.value.source || "";
 
     try {
-        new URL(source.startsWith('http') ? source : `https://${source}`);
+        new URL(source.startsWith("http") ? source : `https://${source}`);
         return true;
     } catch (err) {
         return false;
     }
-})
+});
 
 const printUrl = computed(() => {
     if (!cocktail.value) {
-        return ''
+        return "";
     }
 
     return router.resolve({
-        name: 'print.public.cocktail',
+        name: "print.public.cocktail",
         params: { barId: barId, slug: cocktail.value.slug },
         query: {
             scaleFactor: scaleFactor.value.toFixed(4),
@@ -169,14 +179,17 @@ const printUrl = computed(() => {
             targetVolumeDilution: cocktail.value?.method_dilution_percentage ?? 0,
             waterDilution: waterDilution.value,
         },
-    }).href
-})
+    }).href;
+});
 
-watch(() => currentUnit.value, () => {
-    appState.setDefaultUnits(currentUnit.value)
-})
+watch(
+    () => currentUnit.value,
+    () => {
+        appState.setDefaultUnits(currentUnit.value);
+    },
+);
 
-fetchCocktail()
+fetchCocktail();
 </script>
 
 <style scoped>
@@ -192,7 +205,7 @@ fetchCocktail()
 .bar-cocktail-recipe__info {
     display: flex;
     flex-direction: column;
-    gap: .5rem;
+    gap: 0.5rem;
 }
 
 .bar-cocktail-recipe__info h2 {
@@ -210,7 +223,7 @@ fetchCocktail()
 .bar-cocktail-recipe__info__source {
     font-size: 0.75em;
     display: flex;
-    gap: .5rem;
+    gap: 0.5rem;
     flex-wrap: wrap;
 }
 
@@ -232,7 +245,7 @@ fetchCocktail()
     object-fit: cover;
     width: 100%;
     height: 100%;
-    border-radius: .25rem;
+    border-radius: 0.25rem;
 }
 
 .bar-cocktail-recipe__image__copyright {
@@ -258,8 +271,8 @@ fetchCocktail()
     font-family: var(--font-heading);
     font-size: 1em;
     font-weight: bold;
-    color: #8F4277;
-    margin-bottom: .25rem;
+    color: #8f4277;
+    margin-bottom: 0.25rem;
 }
 
 .bar-cocktail-recipe__header {
@@ -283,12 +296,12 @@ fetchCocktail()
     padding: 0;
     margin: 0;
     display: flex;
-    gap: .25rem;
+    gap: 0.25rem;
     flex-wrap: wrap;
 }
 
 .bar-cocktail-recipe__tag {
-    padding: .15rem .5rem;
+    padding: 0.15rem 0.5rem;
     font-size: 0.75rem;
     font-weight: var(--fw-bold);
     color: white;
@@ -302,22 +315,22 @@ fetchCocktail()
 }
 
 .bar-cocktail-recipe__tag--glass {
-    background-color: oklch(0.950 0.029 231.6);
-    color: oklch(0.550 0.112 231.6);
+    background-color: oklch(0.95 0.029 231.6);
+    color: oklch(0.55 0.112 231.6);
 }
 
 .bar-cocktail-recipe__tag--method {
-    background-color: oklch(0.950 0.029 304.7);
+    background-color: oklch(0.95 0.029 304.7);
     color: oklch(0.451 0.235 304.7);
 }
 
 .bar-cocktail-recipe__tag--abv {
     background-color: oklch(0.931 0.034 28.4);
-    color: oklch(0.431 0.170 28.4);
+    color: oklch(0.431 0.17 28.4);
 }
 
 .bar-cocktail-recipe__tag--utensil {
-    background-color: oklch(0.950 0.009 73.7);
+    background-color: oklch(0.95 0.009 73.7);
     color: oklch(0.513 0.025 73.7);
 }
 
@@ -330,7 +343,7 @@ fetchCocktail()
 .bar-cocktail-recipe__ingredient-actions {
     display: flex;
     justify-content: space-between;
-    margin-bottom: .5rem;
+    margin-bottom: 0.5rem;
 }
 
 .glare {
@@ -342,7 +355,7 @@ fetchCocktail()
     pointer-events: none;
     background: linear-gradient(135deg, rgba(255, 255, 255, 0.6) 0%, rgba(255, 255, 255, 0) 40%);
     opacity: 0.6;
-    border-radius: .25rem;
+    border-radius: 0.25rem;
     box-shadow: inset 1px 1px 1px rgba(255, 255, 255, 0.4);
 }
 </style>

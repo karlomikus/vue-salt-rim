@@ -1,4 +1,4 @@
-import type { components } from '@/api/api';
+import type { components } from "@/api/api";
 
 /** Flattened ingredient shape used for print rendering. */
 export interface CocktailPrintIngredient {
@@ -34,16 +34,14 @@ export interface CocktailPrintModel {
 }
 
 /** Map an authenticated Cocktail API response to the print model. */
-export function mapCocktailToPrintModel(
-    cocktail: components['schemas']['Cocktail'],
-): CocktailPrintModel {
+export function mapCocktailToPrintModel(cocktail: components["schemas"]["Cocktail"]): CocktailPrintModel {
     return {
         name: cocktail.name,
         description: cocktail.description ?? null,
         instructions: cocktail.instructions,
         garnish: cocktail.garnish ?? null,
         images: (cocktail.images ?? []).map((img) => ({
-            url: img.url ?? '',
+            url: img.url ?? "",
             copyright: img.copyright ?? null,
         })),
         ingredients: (cocktail.ingredients ?? []).map((ing) => ({
@@ -64,9 +62,7 @@ export function mapCocktailToPrintModel(
 }
 
 /** Map a PublicCocktailResource API response to the print model. */
-export function mapPublicCocktailToPrintModel(
-    cocktail: components['schemas']['PublicCocktailResource'],
-): CocktailPrintModel {
+export function mapPublicCocktailToPrintModel(cocktail: components["schemas"]["PublicCocktailResource"]): CocktailPrintModel {
     return {
         name: cocktail.name,
         description: cocktail.description ?? null,

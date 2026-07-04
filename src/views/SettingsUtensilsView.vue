@@ -1,5 +1,5 @@
-<script setup>
-import UtensilsList from '../components/Settings/UtensilsList.vue'
+<script setup lang="ts">
+import UtensilsList from "../components/Settings/UtensilsList.vue";
 </script>
 
 <template>

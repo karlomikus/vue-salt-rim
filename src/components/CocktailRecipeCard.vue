@@ -1,26 +1,29 @@
 <script setup lang="ts">
-import { computed } from 'vue';
+import { computed } from "vue";
 
-const props = withDefaults(defineProps<{
-    name: string;
-    imageUrl: string;
-    ingredients?: string[];
-}>(), {
-    ingredients: () => [],
-});
+const props = withDefaults(
+    defineProps<{
+        name: string;
+        imageUrl: string;
+        ingredients?: string[];
+    }>(),
+    {
+        ingredients: () => [],
+    },
+);
 
 const ingredientsText = computed(() => {
     if (props.ingredients.length <= 8) {
-        return props.ingredients.join(', ');
+        return props.ingredients.join(", ");
     }
 
-    return `${props.ingredients.slice(0, 8).join(', ')}...`;
+    return `${props.ingredients.slice(0, 8).join(", ")}...`;
 });
 </script>
 
 <template>
     <article class="cocktail-recipe-card">
-        <img class="cocktail-recipe-card__image" :src="imageUrl" :alt="`${props.name} cocktail`" loading="lazy">
+        <img class="cocktail-recipe-card__image" :src="imageUrl" :alt="`${props.name} cocktail`" loading="lazy" />
         <div class="cocktail-recipe-card__gradient" aria-hidden="true"></div>
 
         <div class="cocktail-recipe-card__content">

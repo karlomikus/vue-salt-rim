@@ -1,5 +1,5 @@
-<script setup>
-import TagsList from '../components/Settings/TagsList.vue'
+<script setup lang="ts">
+import TagsList from "../components/Settings/TagsList.vue";
 </script>
 
 <template>

@@ -1,39 +1,39 @@
 <script setup lang="ts">
-import { ref, onUnmounted } from 'vue'
-import { useRoute, useRouter } from 'vue-router'
-import BarAssistantClient from '@/api/BarAssistantClient'
-import SiteLogo from '@/components/Layout/SiteLogo.vue'
-import { unitHandler } from '@/composables/useUnits'
-import type { components } from '@/api/api'
+import { ref, onUnmounted } from "vue";
+import { useRoute, useRouter } from "vue-router";
+import BarAssistantClient from "@/api/BarAssistantClient";
+import SiteLogo from "@/components/Layout/SiteLogo.vue";
+import { unitHandler } from "@/composables/useUnits";
+import type { components } from "@/api/api";
 
-type MenuPublic = components["schemas"]["MenuPublic"]
+type MenuPublic = components["schemas"]["MenuPublic"];
 
-document.body.classList.add('public-body')
+document.body.classList.add("public-body");
 onUnmounted(() => {
-    document.body.classList.remove('public-body')
-})
+    document.body.classList.remove("public-body");
+});
 
-const route = useRoute()
-const router = useRouter()
-const host = window.location.host
-const protocol = window.location.protocol
-const menu = ref<MenuPublic>()
+const route = useRoute();
+const router = useRouter();
+const host = window.location.host;
+const protocol = window.location.protocol;
+const menu = ref<MenuPublic>();
 
 async function refreshMenu() {
     try {
-        const resp = (await BarAssistantClient.getPublicMenu(route.params.slug.toString()))?.data
-        menu.value = resp
+        const resp = (await BarAssistantClient.getPublicMenu(route.params.slug.toString()))?.data;
+        menu.value = resp;
     } catch (e) {
-        router.push('/')
-        return
+        router.push("/");
+        return;
     }
 }
 
 function publicUrl(cocktail: components["schemas"]["MenuPublic"]["categories"][0]["items"][0]) {
-    return `${protocol}//${host}/e/cocktail/${cocktail.public_id}/cocktail`
+    return `${protocol}//${host}/e/cocktail/${cocktail.public_id}/cocktail`;
 }
 
-refreshMenu()
+refreshMenu();
 </script>
 
 <template>
@@ -43,7 +43,7 @@ refreshMenu()
         </div>
         <div class="public-page-menu" v-if="menu">
             <div class="public-page-menu__bar">
-                <img v-if="menu.bar.images && menu.bar.images.length > 0" :src="menu.bar.images[0]" :alt="menu.bar.name">
+                <img v-if="menu.bar.images && menu.bar.images.length > 0" :src="menu.bar.images[0]" :alt="menu.bar.name" />
                 <div class="public-page-menu__bar__info">
                     <h2>{{ menu.bar.name }}</h2>
                     <h4 v-show="menu.bar.subtitle">{{ menu.bar.subtitle }}</h4>
@@ -54,16 +54,21 @@ refreshMenu()
                 <h3>{{ category.name }}</h3>
                 <div class="public-page-menu__category__cocktails">
                     <div v-for="item in category.items" :key="item.sort" class="public-page-menu__cocktail">
-                        <div :class="{'public-page-menu__cocktail__image': item.type === 'cocktail', 'public-page-menu__ingredient__image': item.type === 'ingredient'}">
-                            <img v-if="item.image" :src="item.image" alt="">
-                            <img v-else src="/no-cocktail.jpg" alt="">
+                        <div
+                            :class="{
+                                'public-page-menu__cocktail__image': item.type === 'cocktail',
+                                'public-page-menu__ingredient__image': item.type === 'ingredient',
+                            }"
+                        >
+                            <img v-if="item.image" :src="item.image" alt="" />
+                            <img v-else src="/no-cocktail.jpg" alt="" />
                         </div>
                         <div class="public-page-menu__cocktail__info">
                             <h4>{{ item.name }}</h4>
                             <p>
                                 {{ item.description }}
                             </p>
-                            <a v-if="item.public_id" :href="publicUrl(item)">{{ $t('public-bar.view-recipe') }}</a>
+                            <a v-if="item.public_id" :href="publicUrl(item)">{{ $t("public-bar.view-recipe") }}</a>
                         </div>
                         <div v-if="item.price.price > 0" class="public-page-menu__cocktail__price">
                             {{ unitHandler.formatPrice(item.price.price, item.price.currency) }}
@@ -72,9 +77,7 @@ refreshMenu()
                 </div>
             </div>
         </div>
-        <div class="public-footer">
-            Powered by <a href="https://barassistant.app">Bar Assistant</a>
-        </div>
+        <div class="public-footer">Powered by <a href="https://barassistant.app">Bar Assistant</a></div>
     </div>
 </template>
 <style scoped>

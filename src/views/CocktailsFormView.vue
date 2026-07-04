@@ -1,5 +1,5 @@
-<script setup>
-import CocktailForm from '../components/Cocktail/CocktailForm.vue'
+<script setup lang="ts">
+import CocktailForm from "../components/Cocktail/CocktailForm.vue";
 </script>
 
 <template>

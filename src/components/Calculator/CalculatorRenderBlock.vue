@@ -1,16 +1,16 @@
 <script setup lang="ts">
-import type { components } from '@/api/api'
+import type { components } from "@/api/api";
 
-type CalculatorBlock = components["schemas"]["CalculatorBlock"]
+type CalculatorBlock = components["schemas"]["CalculatorBlock"];
 
 interface CalculatorFormulaEvaluation {
     block: CalculatorBlock;
-    result: string|null;
+    result: string | null;
 }
 
 defineProps<{
-    evaluatedBlock: CalculatorFormulaEvaluation,
-}>()
+    evaluatedBlock: CalculatorFormulaEvaluation;
+}>();
 </script>
 
 <template>

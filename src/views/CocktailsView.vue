@@ -1,5 +1,5 @@
-<script setup>
-import CocktailIndex from '../components/Cocktail/CocktailIndex.vue'
+<script setup lang="ts">
+import CocktailIndex from "../components/Cocktail/CocktailIndex.vue";
 </script>
 
 <template>

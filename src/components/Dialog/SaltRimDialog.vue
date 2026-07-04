@@ -20,7 +20,7 @@
 </template>
 
 <script>
-import CloseButton from '../CloseButton.vue'
+import CloseButton from "../CloseButton.vue";
 
 export default {
     components: {
@@ -30,38 +30,38 @@ export default {
     props: {
         modelValue: {
             type: Boolean,
-            default: false
+            default: false,
         },
         closeOnEsc: {
             type: Boolean,
-            default: true
-        }
+            default: true,
+        },
     },
-    emits: ['update:modelValue', 'dialogOpened', 'dialogClosed'],
+    emits: ["update:modelValue", "dialogOpened", "dialogClosed"],
     watch: {
         modelValue(val) {
             if (val) {
-                this.$emit('dialogOpened')
-                document.body.style.overflow = 'hidden'
+                this.$emit("dialogOpened");
+                document.body.style.overflow = "hidden";
             } else {
-                this.$emit('dialogClosed')
-                document.body.style.overflow = 'auto'
+                this.$emit("dialogClosed");
+                document.body.style.overflow = "auto";
             }
-        }
+        },
     },
     unmounted() {
-        this.$emit('dialogClosed')
-        document.body.style.overflow = 'auto'
+        this.$emit("dialogClosed");
+        document.body.style.overflow = "auto";
     },
     methods: {
         toggleDialog() {
-            this.$emit('update:modelValue', !this.modelValue)
+            this.$emit("update:modelValue", !this.modelValue);
         },
         handleEsc() {
             if (this.closeOnEsc) {
-                this.$emit('update:modelValue', false)
+                this.$emit("update:modelValue", false);
             }
-        }
-    }
-}
+        },
+    },
+};
 </script>

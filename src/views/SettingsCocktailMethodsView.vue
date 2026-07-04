@@ -1,5 +1,5 @@
-<script setup>
-import CocktailMethodsList from '../components/Settings/CocktailMethodsList.vue'
+<script setup lang="ts">
+import CocktailMethodsList from "../components/Settings/CocktailMethodsList.vue";
 </script>
 
 <template>

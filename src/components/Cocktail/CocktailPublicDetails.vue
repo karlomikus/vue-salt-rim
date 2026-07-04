@@ -6,85 +6,85 @@
         <PublicRecipe :cocktail="cocktail"></PublicRecipe>
         <div class="public-footer">
             Powered by <a href="https://barassistant.app">Bar Assistant</a>
-            <template v-if="cocktail.source">
-                &middot; <SourcePresenter :source="cocktail.source"></SourcePresenter>
-            </template>
+            <template v-if="cocktail.source"> &middot; <SourcePresenter :source="cocktail.source"></SourcePresenter> </template>
             <!-- &middot; <a href="#">Add to your bar</a> &middot; <a href="#">Print</a> -->
         </div>
     </div>
 </template>
 
 <script>
-import BarAssistantClient from '@/api/BarAssistantClient'
-import SiteLogo from '@/components/Layout/SiteLogo.vue'
-import PublicRecipe from '@/components/Cocktail/PublicRecipe.vue'
-import SourcePresenter from '../SourcePresenter.vue'
-import { useTitle } from '@/composables/title';
+import BarAssistantClient from "@/api/BarAssistantClient";
+import SiteLogo from "@/components/Layout/SiteLogo.vue";
+import PublicRecipe from "@/components/Cocktail/PublicRecipe.vue";
+import SourcePresenter from "../SourcePresenter.vue";
+import { useTitle } from "@/composables/title";
 
 export default {
     components: {
         SiteLogo,
         PublicRecipe,
-        SourcePresenter
+        SourcePresenter,
     },
     data() {
         return {
             isLoading: false,
             cocktail: {},
-        }
+        };
     },
     computed: {
         barName() {
             if (this.cocktail.bar) {
-                return this.cocktail.bar.name
+                return this.cocktail.bar.name;
             }
 
-            return null
+            return null;
         },
         barSubtitle() {
             if (this.cocktail.bar) {
-                return this.cocktail.bar.subtitle
+                return this.cocktail.bar.subtitle;
             }
 
-            return null
-        }
+            return null;
+        },
     },
     watch: {
         cocktail(val) {
-            useTitle(val.name)
-        }
+            useTitle(val.name);
+        },
     },
     created() {
-        useTitle('Cocktail')
+        useTitle("Cocktail");
         this.$watch(
             () => this.$route.params,
             () => {
-                if (this.$route.name == 'e.cocktail') {
-                    this.getCocktail(this.$route.params.ulid)
+                if (this.$route.name == "e.cocktail") {
+                    this.getCocktail(this.$route.params.ulid);
                 }
             },
-            { immediate: true }
-        )
+            { immediate: true },
+        );
     },
     mounted() {
-        document.body.classList.add('public-body')
+        document.body.classList.add("public-body");
     },
     unmounted() {
-        document.body.classList.remove('public-body')
+        document.body.classList.remove("public-body");
     },
     methods: {
         getCocktail(ulid) {
-            this.isLoading = true
-            BarAssistantClient.getPublicCocktail(ulid).then(resp => {
-                this.cocktail = resp.data
-                this.isLoading = false
-            }).catch(e => {
-                this.$toast.error(e.message)
-                this.isLoading = false
-            })
+            this.isLoading = true;
+            BarAssistantClient.getPublicCocktail(ulid)
+                .then((resp) => {
+                    this.cocktail = resp.data;
+                    this.isLoading = false;
+                })
+                .catch((e) => {
+                    this.$toast.error(e.message);
+                    this.isLoading = false;
+                });
         },
-    }
-}
+    },
+};
 </script>
 
 <style scoped>

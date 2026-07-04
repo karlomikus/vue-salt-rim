@@ -1,21 +1,21 @@
 <template>
     <form @submit.prevent="submit">
         <OverlayLoader v-if="isLoading" />
-        <div class="dialog-title">{{ $t('note-dialog.title') }}</div>
+        <div class="dialog-title">{{ $t("note-dialog.title") }}</div>
         <div class="form-group">
-            <label class="form-label" for="note">{{ $t('content') }}:</label>
+            <label class="form-label" for="note">{{ $t("content") }}:</label>
             <textarea id="note" v-model="note.note" rows="5" class="form-input" ref="note"></textarea>
         </div>
         <div class="dialog-actions">
-            <button class="button button--outline" @click.prevent="$emit('noteDialogClosed')">{{ $t('cancel') }}</button>
-            <button class="button button--dark" type="submit">{{ $t('save') }}</button>
+            <button class="button button--outline" @click.prevent="$emit('noteDialogClosed')">{{ $t("cancel") }}</button>
+            <button class="button button--dark" type="submit">{{ $t("save") }}</button>
         </div>
     </form>
 </template>
 
 <script>
-import BarAssistantClient from '@/api/BarAssistantClient'
-import OverlayLoader from './../OverlayLoader.vue'
+import BarAssistantClient from "@/api/BarAssistantClient";
+import OverlayLoader from "./../OverlayLoader.vue";
 
 export default {
     components: {
@@ -24,39 +24,41 @@ export default {
     props: {
         resourceId: {
             type: Number,
-            default: 0
+            default: 0,
         },
         resource: {
             type: String,
-            default: ''
-        }
+            default: "",
+        },
     },
-    emits: ['noteDialogClosed'],
+    emits: ["noteDialogClosed"],
     data() {
         return {
             isLoading: false,
             note: {},
-        }
+        };
     },
     mounted() {
-        this.$refs.note.focus()
+        this.$refs.note.focus();
     },
     methods: {
         submit() {
-            this.isLoading = true
+            this.isLoading = true;
             BarAssistantClient.saveNote({
                 note: this.note.note,
                 resource_id: this.resourceId,
                 resource: this.resource,
-            }).then(() => {
-                this.$toast.default(this.$t('note-added'))
-                this.isLoading = false
-                this.$emit('noteDialogClosed')
-            }).catch(e => {
-                this.$toast.error(e.message)
-                this.isLoading = false
             })
+                .then(() => {
+                    this.$toast.default(this.$t("note-added"));
+                    this.isLoading = false;
+                    this.$emit("noteDialogClosed");
+                })
+                .catch((e) => {
+                    this.$toast.error(e.message);
+                    this.isLoading = false;
+                });
         },
-    }
-}
+    },
+};
 </script>

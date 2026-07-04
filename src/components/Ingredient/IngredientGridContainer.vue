@@ -9,9 +9,9 @@ export default {
     data() {
         return {
             observer: null,
-        }
+        };
     },
-}
+};
 </script>
 
 <style scoped>

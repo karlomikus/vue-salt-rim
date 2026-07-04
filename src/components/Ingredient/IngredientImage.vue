@@ -1,36 +1,33 @@
 <template>
     <div class="ingredient__image" :style="{ 'background-color': backgroundColor }">
-        <img :src="mainIngredientImageUrl" alt="Image of an ingredient">
+        <img :src="mainIngredientImageUrl" alt="Image of an ingredient" />
     </div>
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'
-import { useIngredientBg } from '@/composables/ingredientBg';
+import { computed } from "vue";
+import { useIngredientBg } from "@/composables/ingredientBg";
 
-const {
-    imageUrl = null,
-    color = null,
-} = defineProps<{
-    imageUrl: string|null;
-    color?: string|null;
-}>()
+const { imageUrl = null, color = null } = defineProps<{
+    imageUrl: string | null;
+    color?: string | null;
+}>();
 
 const backgroundColor = computed(() => {
     if (!color) {
-        return useIngredientBg('#fff')
+        return useIngredientBg("#fff");
     }
 
-    return useIngredientBg(color)
-})
+    return useIngredientBg(color);
+});
 
 const mainIngredientImageUrl = computed(() => {
     if (imageUrl) {
-        return imageUrl
+        return imageUrl;
     }
 
-    return '/no-ingredient.png'
-})
+    return "/no-ingredient.png";
+});
 </script>
 <style scoped>
 .ingredient__image {
@@ -61,7 +58,7 @@ const mainIngredientImageUrl = computed(() => {
     height: 100px;
     position: absolute;
     top: 10px;
-    transition: top ease-in-out .2s;
+    transition: top ease-in-out 0.2s;
 }
 
 .ingredient__image.ingredient__image--small {

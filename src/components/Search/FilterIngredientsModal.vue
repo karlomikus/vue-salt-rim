@@ -3,50 +3,59 @@
         <OverlayLoader v-if="isLoading" />
         <div class="dialog-title">{{ title }}</div>
         <p v-if="description">{{ description }}</p>
-        <IngredientFinderBasic v-if="shouldUseBasicSearch" :selected-ingredients="selectedIngredients.map(s => s.id)" @ingredient-selected="selectIngredient"></IngredientFinderBasic>
-        <IngredientFinder v-else-if="!shouldUseBasicSearch && appState.bar.search_token" :search-token="appState.bar.search_token" :selected-ingredients="selectedIngredients.map(s => s.id)" @ingredient-selected="selectIngredient"></IngredientFinder>
+        <IngredientFinderBasic
+            v-if="shouldUseBasicSearch"
+            :selected-ingredients="selectedIngredients.map((s) => s.id)"
+            @ingredient-selected="selectIngredient"
+        ></IngredientFinderBasic>
+        <IngredientFinder
+            v-else-if="!shouldUseBasicSearch && appState.bar.search_token"
+            :search-token="appState.bar.search_token"
+            :selected-ingredients="selectedIngredients.map((s) => s.id)"
+            @ingredient-selected="selectIngredient"
+        ></IngredientFinder>
         <div class="search-ingredients-modal-ingredients">
             <div v-for="ing in selectedIngredients" :key="ing.id" class="search-ingredients-modal-ingredients__ingredient">
                 {{ ing.name }} <button type="button" @click.prevent="removeIngredient(ing)"><IconClose></IconClose></button>
             </div>
         </div>
         <div class="dialog-actions">
-            <button type="submit" class="button button--dark" :disabled="isLoading">{{ $t('filter') }}</button>
+            <button type="submit" class="button button--dark" :disabled="isLoading">{{ $t("filter") }}</button>
         </div>
     </form>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
-import OverlayLoader from './../OverlayLoader.vue'
-import IngredientFinder from './../IngredientFinder.vue'
-import BarAssistantClient from '@/api/BarAssistantClient';
-import IconClose from './../Icons/IconClose.vue';
-import type { SearchResults } from '@/api/SearchResults';
-import type { components } from '@/api/api'
-import IngredientFinderBasic from '../IngredientFinderBasic.vue';
-import AppState from '@/AppState';
-import { useBasicSearch } from '@/composables/useBasicSearch'
+import { ref } from "vue";
+import OverlayLoader from "./../OverlayLoader.vue";
+import IngredientFinder from "./../IngredientFinder.vue";
+import BarAssistantClient from "@/api/BarAssistantClient";
+import IconClose from "./../Icons/IconClose.vue";
+import type { SearchResults } from "@/api/SearchResults";
+import type { components } from "@/api/api";
+import IngredientFinderBasic from "../IngredientFinderBasic.vue";
+import AppState from "@/AppState";
+import { useBasicSearch } from "@/composables/useBasicSearch";
 
-type Ingredient = components['schemas']['Ingredient']
+type Ingredient = components["schemas"]["Ingredient"];
 
-type IngredientSearchResult = SearchResults['ingredient']
-const emit = defineEmits(['close'])
+type IngredientSearchResult = SearchResults["ingredient"];
+const emit = defineEmits(["close"]);
 const props = defineProps<{
-    title: string
-    value: number[]
-    description?: string
-}>()
-const appState = new AppState()
-const isLoading = ref(false)
-const selectedIngredients = ref<IngredientSearchResult[]>([])
-const shouldUseBasicSearch = useBasicSearch()
+    title: string;
+    value: number[];
+    description?: string;
+}>();
+const appState = new AppState();
+const isLoading = ref(false);
+const selectedIngredients = ref<IngredientSearchResult[]>([]);
+const shouldUseBasicSearch = useBasicSearch();
 
 const matchIngredients = async () => {
     if (props.value.length > 0) {
-        isLoading.value = true
+        isLoading.value = true;
         try {
-            const resp = (await BarAssistantClient.getIngredients({'filter[id]': props.value.join(',')}))?.data ?? []
+            const resp = (await BarAssistantClient.getIngredients({ "filter[id]": props.value.join(",") }))?.data ?? [];
             selectedIngredients.value = resp.map((i: Ingredient) => {
                 return {
                     id: i.id,
@@ -56,34 +65,34 @@ const matchIngredients = async () => {
                     description: null,
                     category: null,
                     bar_id: 0,
-                }
-            })
+                };
+            });
         } catch (error) {
-            selectedIngredients.value = []
+            selectedIngredients.value = [];
         } finally {
-            isLoading.value = false
+            isLoading.value = false;
         }
     }
-}
+};
 
 const selectIngredient = (item: IngredientSearchResult) => {
-    if (!selectedIngredients.value.some(sub => sub.id == item.id)) {
-        selectedIngredients.value.push(item)
+    if (!selectedIngredients.value.some((sub) => sub.id == item.id)) {
+        selectedIngredients.value.push(item);
     }
-}
+};
 
 const removeIngredient = (item: IngredientSearchResult) => {
     selectedIngredients.value.splice(
-        selectedIngredients.value.findIndex(i => i == item),
-        1
-    )
-}
+        selectedIngredients.value.findIndex((i) => i == item),
+        1,
+    );
+};
 
 const filter = () => {
-    emit('close', { newFilters: selectedIngredients.value.map(i => i.id) })
-}
+    emit("close", { newFilters: selectedIngredients.value.map((i) => i.id) });
+};
 
-matchIngredients()
+matchIngredients();
 </script>
 
 <style scoped>

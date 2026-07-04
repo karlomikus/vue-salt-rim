@@ -8,73 +8,75 @@
             <small v-if="ingredient.hierarchy && ingredient.hierarchy.path_to_self">{{ ingredient.hierarchy.path_to_self }}</small>
             <h4 class="sr-list-item-title">{{ ingredient.name }}</h4>
             <p>{{ truncatedDescription }}</p>
-            <RouterLink :to="{name: 'ingredients.show', params: { id: ingredient.slug }}">{{ $t('show-more') }}</RouterLink>
+            <RouterLink :to="{ name: 'ingredients.show', params: { id: ingredient.slug } }">{{ $t("show-more") }}</RouterLink>
         </div>
     </div>
 </template>
 <script>
-import BarAssistantClient from '@/api/BarAssistantClient';
-import OverlayLoader from '@/components/OverlayLoader.vue'
-import removeMd from 'remove-markdown'
+import BarAssistantClient from "@/api/BarAssistantClient";
+import OverlayLoader from "@/components/OverlayLoader.vue";
+import removeMd from "remove-markdown";
 
 export default {
     components: {
-        OverlayLoader
+        OverlayLoader,
     },
     props: {
         id: {
             type: Number,
-            default: 0
-        }
+            default: 0,
+        },
     },
     data() {
         return {
             isLoading: false,
             ingredient: {},
-        }
+        };
     },
     computed: {
         truncatedDescription() {
             if (!this.ingredient.description) {
-                return this.ingredient.description
+                return this.ingredient.description;
             }
 
             const doc = new DOMParser().parseFromString(this.ingredient.description, "text/html");
-            const description = removeMd(doc.documentElement.textContent)
+            const description = removeMd(doc.documentElement.textContent);
 
-            return description.length > 200 ? `${description.substring(0, 200)}...` : description
+            return description.length > 200 ? `${description.substring(0, 200)}...` : description;
         },
         mainIngredientImageUrl() {
             if (!this.ingredient.images || this.ingredient.images.length == 0) {
-                return '/no-ingredient.png'
+                return "/no-ingredient.png";
             }
 
-            return this.ingredient.images.find(i => i.sort <= 1).url
-        }
+            return this.ingredient.images.find((i) => i.sort <= 1).url;
+        },
     },
     watch: {
         id(newVal, oldVal) {
             if (newVal != oldVal) {
-                this.fetchIngredient()
+                this.fetchIngredient();
             }
-        }
+        },
     },
     created() {
-        this.fetchIngredient()
+        this.fetchIngredient();
     },
     methods: {
         fetchIngredient() {
-            this.isLoading = true
-            BarAssistantClient.getIngredient(this.id).then(resp => {
-                this.ingredient = resp.data
-                this.isLoading = false
-            }).catch(() => {
-                this.ingredient = {}
-                this.isLoading = false
-            })
+            this.isLoading = true;
+            BarAssistantClient.getIngredient(this.id)
+                .then((resp) => {
+                    this.ingredient = resp.data;
+                    this.isLoading = false;
+                })
+                .catch(() => {
+                    this.ingredient = {};
+                    this.isLoading = false;
+                });
         },
-    }
-}
+    },
+};
 </script>
 <style scoped>
 .ingredient-spotlight-wrapper {

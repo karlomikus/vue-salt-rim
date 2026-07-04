@@ -11,9 +11,7 @@ export function useImageUpload() {
     const toast = useSaltRimToast();
     const { t } = useI18n();
 
-    const saveImages = async (
-        imageUpload: ImageUploadComponent,
-    ): Promise<Image[]> => {
+    const saveImages = async (imageUpload: ImageUploadComponent): Promise<Image[]> => {
         try {
             const imageResources =
                 (await imageUpload.save().catch(() => {

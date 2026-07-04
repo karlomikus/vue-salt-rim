@@ -52,9 +52,7 @@ function parseSemver(version: string): number[] | null {
     return nums;
 }
 
-const frontendUpdateStatus = computed<
-    "newer" | "current" | "dev" | "error" | "checking"
->(() => {
+const frontendUpdateStatus = computed<"newer" | "current" | "dev" | "error" | "checking">(() => {
     if (isChecking.value) return "checking";
     if (frontendError.value && !frontendRelease.value) return "error";
     if (isDev.value) return "dev";
@@ -82,11 +80,8 @@ interface TileData {
     error: boolean;
 }
 
-const backendUpdateStatus = computed<
-    "up-to-date" | "update-available" | "unknown" | "error" | "checking"
->(() => {
-    if (isChecking.value && !backendVersion.value && !backendVersionError.value)
-        return "checking";
+const backendUpdateStatus = computed<"up-to-date" | "update-available" | "unknown" | "error" | "checking">(() => {
+    if (isChecking.value && !backendVersion.value && !backendVersionError.value) return "checking";
     if (backendVersionError.value && !backendVersion.value) return "error";
     if (!backendVersion.value) return "unknown";
     if (backendVersion.value.is_latest) return "up-to-date";
@@ -98,9 +93,7 @@ const clientTileData = computed<TileData>(() => {
     const latestTag = frontendRelease.value?.tag_name ?? "";
 
     return {
-        currentVersion: isDev.value
-            ? t("about.dev-version")
-            : currentVersion.value,
+        currentVersion: isDev.value ? t("about.dev-version") : currentVersion.value,
         latestVersion: latestTag || t("about.backend-version-unknown"),
         isUpToDate: frontendUpdateStatus.value === "current",
         isLoading: isChecking.value,
@@ -113,23 +106,14 @@ const apiTileData = computed<TileData>(() => {
 
     return {
         currentVersion: bv?.version ?? t("about.backend-version-unknown"),
-        latestVersion:
-            bv?.latest_version ??
-            bv?.version ??
-            t("about.backend-version-unknown"),
+        latestVersion: bv?.latest_version ?? bv?.version ?? t("about.backend-version-unknown"),
         isUpToDate: backendUpdateStatus.value === "up-to-date",
-        isLoading:
-            isChecking.value &&
-            !backendVersion.value &&
-            !backendVersionError.value,
-        error:
-            backendUpdateStatus.value === "error" ||
-            backendUpdateStatus.value === "unknown",
+        isLoading: isChecking.value && !backendVersion.value && !backendVersionError.value,
+        error: backendUpdateStatus.value === "error" || backendUpdateStatus.value === "unknown",
     };
 });
 
-const BACKEND_RELEASES_URL =
-    "https://github.com/karlomikus/bar-assistant/releases";
+const BACKEND_RELEASES_URL = "https://github.com/karlomikus/bar-assistant/releases";
 
 async function fetchBackendVersion(): Promise<void> {
     backendVersionError.value = "";
@@ -145,11 +129,7 @@ async function fetchBackendVersion(): Promise<void> {
 async function checkForUpdates(): Promise<void> {
     isChecking.value = true;
     try {
-        await Promise.allSettled([
-            fetchFrontendRelease(),
-            fetchBackendVersion(),
-            fetchBackendRelease(),
-        ]);
+        await Promise.allSettled([fetchFrontendRelease(), fetchBackendVersion(), fetchBackendRelease()]);
     } finally {
         isChecking.value = false;
     }
@@ -179,96 +159,64 @@ onMounted(() => {
                         <div v-else class="about-info__tile-body">
                             <div class="about-info__tile-row">
                                 <span class="about-info__tile-label">{{ t("about.current") }}</span>
-                                <span class="about-info__tile-value"
+                                <span
+                                    class="about-info__tile-value"
                                     :class="{
-                                        'about-info__tile-value--muted':
-                                            clientTileData.currentVersion ===
-                                            '...',
+                                        'about-info__tile-value--muted': clientTileData.currentVersion === '...',
                                     }"
                                     >{{ clientTileData.currentVersion }}</span
                                 >
                             </div>
                             <div class="about-info__tile-row">
-                                <span class="about-info__tile-label">{{
-                                    t("about.latest")
-                                }}</span>
+                                <span class="about-info__tile-label">{{ t("about.latest") }}</span>
                                 <span
                                     class="about-info__tile-value"
                                     :class="{
-                                        'about-info__tile-value--muted':
-                                            clientTileData.latestVersion ===
-                                            t('about.backend-version-unknown'),
+                                        'about-info__tile-value--muted': clientTileData.latestVersion === t('about.backend-version-unknown'),
                                     }"
                                     >{{ clientTileData.latestVersion }}</span
                                 >
                             </div>
-                            <div
-                                v-if="clientTileData.isUpToDate"
-                                class="about-info__tile-check"
-                            >
-                                <span class="about-info__tile-checkmark"
-                                    >&#10003;</span
-                                >
+                            <div v-if="clientTileData.isUpToDate" class="about-info__tile-check">
+                                <span class="about-info__tile-checkmark">&#10003;</span>
                                 {{ t("about.up-to-date") }}
                             </div>
-                            <div
-                                v-else-if="clientTileData.error"
-                                class="about-info__tile-error"
-                            >
+                            <div v-else-if="clientTileData.error" class="about-info__tile-error">
                                 {{ t("about.update-error") }}
                             </div>
                         </div>
                     </div>
                     <div class="block-container about-info__versions__tile">
                         <h3>{{ t("about.api") }}</h3>
-                        <div
-                            v-if="apiTileData.isLoading"
-                            class="about-info__tile-checking"
-                        >
+                        <div v-if="apiTileData.isLoading" class="about-info__tile-checking">
                             {{ t("loading") }}
                         </div>
                         <div v-else class="about-info__tile-body">
                             <div class="about-info__tile-row">
-                                <span class="about-info__tile-label">{{
-                                    t("about.current")
-                                }}</span>
+                                <span class="about-info__tile-label">{{ t("about.current") }}</span>
                                 <span
                                     class="about-info__tile-value"
                                     :class="{
-                                        'about-info__tile-value--muted':
-                                            apiTileData.currentVersion ===
-                                            t('about.backend-version-unknown'),
+                                        'about-info__tile-value--muted': apiTileData.currentVersion === t('about.backend-version-unknown'),
                                     }"
                                     >{{ apiTileData.currentVersion }}</span
                                 >
                             </div>
                             <div class="about-info__tile-row">
-                                <span class="about-info__tile-label">{{
-                                    t("about.latest")
-                                }}</span>
+                                <span class="about-info__tile-label">{{ t("about.latest") }}</span>
                                 <span
                                     class="about-info__tile-value"
                                     :class="{
-                                        'about-info__tile-value--muted':
-                                            apiTileData.latestVersion ===
-                                            t('about.backend-version-unknown'),
+                                        'about-info__tile-value--muted': apiTileData.latestVersion === t('about.backend-version-unknown'),
                                     }"
                                     >{{ apiTileData.latestVersion }}</span
                                 >
                             </div>
-                            <div
-                                v-if="apiTileData.isUpToDate"
-                                class="about-info__tile-check"
-                            >
-                                <span class="about-info__tile-checkmark"
-                                    >&#10003;</span
-                                >
+                            <div v-if="apiTileData.isUpToDate" class="about-info__tile-check">
+                                <span class="about-info__tile-checkmark">&#10003;</span>
                                 {{ t("about.up-to-date") }}
                             </div>
-                            <div
-                                v-else-if="apiTileData.error"
-                                class="about-info__tile-error"
-                            >
+                            <div v-else-if="apiTileData.error" class="about-info__tile-error">
                                 {{ t("about.backend-update-error") }}
                             </div>
                         </div>
@@ -278,11 +226,7 @@ onMounted(() => {
 
             <section v-if="frontendRelease" class="about-info__changelog">
                 <h3 class="page-subtitle">{{ t("about.changelog") }}</h3>
-                <div
-                    v-if="frontendChangelogHtml"
-                    class="about-info__changelog-content"
-                    v-html="frontendChangelogHtml"
-                ></div>
+                <div v-if="frontendChangelogHtml" class="about-info__changelog-content" v-html="frontendChangelogHtml"></div>
                 <p v-else class="about-info__no-notes">
                     {{ t("about.no-release-notes") }}
                 </p>
@@ -292,20 +236,13 @@ onMounted(() => {
                 <h3 class="page-subtitle">
                     {{ t("about.backend-changelog") }}
                 </h3>
-                <div
-                    v-if="backendChangelogHtml"
-                    class="about-info__changelog-content"
-                    v-html="backendChangelogHtml"
-                ></div>
+                <div v-if="backendChangelogHtml" class="about-info__changelog-content" v-html="backendChangelogHtml"></div>
                 <p v-else class="about-info__no-notes">
                     {{ t("about.backend-no-release-notes") }}
                 </p>
             </section>
 
-            <p
-                v-else-if="!isChecking && backendReleaseError"
-                class="about-info__no-notes"
-            >
+            <p v-else-if="!isChecking && backendReleaseError" class="about-info__no-notes">
                 {{ t("about.backend-update-error") }}
             </p>
         </div>

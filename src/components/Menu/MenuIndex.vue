@@ -1,53 +1,67 @@
 <template>
     <form @submit.prevent="saveMenu">
         <PageHeader>
-            {{ t('menu.bar-title-menu', { name: appState.bar.name }) }}
+            {{ t("menu.bar-title-menu", { name: appState.bar.name }) }}
         </PageHeader>
         <div class="menu-details">
             <OverlayLoader v-if="isLoading" />
-            <div class="block-container block-container--padded" style="width: 100%;">
-                <p style="margin-bottom: 1rem;">{{ t('menu.description') }}</p>
+            <div class="block-container block-container--padded" style="width: 100%">
+                <p style="margin-bottom: 1rem">{{ t("menu.description") }}</p>
                 <div class="form-group">
-                    <label class="form-label" for="menu-is-active">{{ t('menu.url') }}:</label>
-                    <p class="menu-url"><a :href="menuUrl">{{ menuUrl }}</a></p>
+                    <label class="form-label" for="menu-is-active">{{ t("menu.url") }}:</label>
+                    <p class="menu-url">
+                        <a :href="menuUrl">{{ menuUrl }}</a>
+                    </p>
                 </div>
-                <div style="margin: 1rem 0;">
+                <div style="margin: 1rem 0">
                     <label class="form-checkbox">
-                        <input v-model="menu.is_enabled" :value="true" type="checkbox">
-                        <span>{{ t('menu.is-active') }}</span>
+                        <input v-model="menu.is_enabled" :value="true" type="checkbox" />
+                        <span>{{ t("menu.is-active") }}</span>
                     </label>
                 </div>
                 <p>
-                    <a href="#" @click.prevent="quickAddShelf">{{ t('menu.add-shelf-cocktails') }}</a>
+                    <a href="#" @click.prevent="quickAddShelf">{{ t("menu.add-shelf-cocktails") }}</a>
                     &middot;
-                    <a href="#" @click.prevent="exportMenu">{{ t('menu.export') }}</a>
+                    <a href="#" @click.prevent="exportMenu">{{ t("menu.export") }}</a>
                 </p>
             </div>
             <div class="block-container block-container--padded menu-qr-code">
                 <QRCodeVue3
                     v-if="menuUrl"
-                    :width="200" :height="200" :value="menuUrl" :image-options="{ hideBackgroundDots: true, imageSize: 0.5, margin: 6 }" :dots-options="{
+                    :width="200"
+                    :height="200"
+                    :value="menuUrl"
+                    :image-options="{ hideBackgroundDots: true, imageSize: 0.5, margin: 6 }"
+                    :dots-options="{
                         type: 'square',
-                        color: '#000000'
-                    }" image="/logo-black.png" :background-options="{ color: '#ffffff' }" :corners-square-options="{ color: '#000000' }" :corners-dot-options="{ color: '#000000' }" file-ext="png" :download="false" download-button="button button--outline" :download-options="{ name: 'bar-menu-qr', extension: 'png' }"
+                        color: '#000000',
+                    }"
+                    image="/logo-black.png"
+                    :background-options="{ color: '#ffffff' }"
+                    :corners-square-options="{ color: '#000000' }"
+                    :corners-dot-options="{ color: '#000000' }"
+                    file-ext="png"
+                    :download="false"
+                    download-button="button button--outline"
+                    :download-options="{ name: 'bar-menu-qr', extension: 'png' }"
                 ></QRCodeVue3>
             </div>
         </div>
         <div class="menu-categories">
             <div v-for="(category, idx) in categories" :key="idx" class="menu-category block-container block-container--inset">
                 <div class="menu-category__info">
-                    <div class="form-group" style="margin-bottom: 0;">
-                        <label class="form-label" :for="'menu-category-' + idx">{{ t('menu.category-title') }}:</label>
-                        <input :id="'menu-category-' + idx" v-model="category.name" class="form-input" type="text">
+                    <div class="form-group" style="margin-bottom: 0">
+                        <label class="form-label" :for="'menu-category-' + idx">{{ t("menu.category-title") }}:</label>
+                        <input :id="'menu-category-' + idx" v-model="category.name" class="form-input" type="text" />
                     </div>
-                    <a href="#" @click.prevent="removeCategory(category)">{{ t('menu.remove-category') }}</a>
+                    <a href="#" @click.prevent="removeCategory(category)">{{ t("menu.remove-category") }}</a>
                     &middot;
-                    <a href="#" @click.prevent="clearCategory(category)">{{ t('menu.clear-category') }}</a>
+                    <a href="#" @click.prevent="clearCategory(category)">{{ t("menu.clear-category") }}</a>
                     &middot;
-                    <a v-if="idx > 0" href="#" @click.prevent="moveCategoryUp(idx)">{{ t('menu.move-category-up') }}</a>
-                    <a v-if="idx < categories.length - 1" href="#" @click.prevent="moveCategoryDown(idx)">{{ t('menu.move-category-down') }}</a>
+                    <a v-if="idx > 0" href="#" @click.prevent="moveCategoryUp(idx)">{{ t("menu.move-category-up") }}</a>
+                    <a v-if="idx < categories.length - 1" href="#" @click.prevent="moveCategoryDown(idx)">{{ t("menu.move-category-down") }}</a>
                     <label class="form-checkbox" :for="'toggle-menu-category-display-' + idx">
-                        <input :id="'toggle-menu-category-display-' + idx" v-model="category.is_enabled" type="checkbox" :value="true">
+                        <input :id="'toggle-menu-category-display-' + idx" v-model="category.is_enabled" type="checkbox" :value="true" />
                         <span>Show category</span>
                     </label>
                 </div>
@@ -59,35 +73,46 @@
                                 <RouterLink :to="{ name: item.type == 'cocktail' ? 'cocktails.show' : 'ingredients.show', params: { id: item.id } }" class="sr-list-item-title">
                                     <h4 class="sr-list-item-title menu-category__cocktail__content__title">{{ item.name }}</h4>
                                 </RouterLink>
-                                <p><span class="menu-item-type chip" :class="{'chip--alternate': item.type == 'cocktail'}">{{ item.type }}</span> {{ item.description }}</p>
-                                <a href="#" @click.prevent="copyCurrency(item.price.currency)">{{ t('menu.copy-currency') }}</a> &middot;
+                                <p>
+                                    <span class="menu-item-type chip" :class="{ 'chip--alternate': item.type == 'cocktail' }">{{ item.type }}</span>
+                                    {{ item.description }}
+                                </p>
+                                <a href="#" @click.prevent="copyCurrency(item.price.currency)">{{ t("menu.copy-currency") }}</a> &middot;
                                 <template v-if="item.type == 'cocktail'">
                                     <SaltRimDialog v-model="showCurrencyCalculator[cidx + '-' + idx]">
                                         <template #trigger>
-                                            <a style="margin-top: 0.5rem; display: inline-block;" href="#addcocktail" @click.prevent="showCurrencyCalculator[cidx + '-' + idx] = !showCurrencyCalculator[cidx + '-' + idx]">
-                                                {{ t('menu.calculate-price') }}
+                                            <a
+                                                style="margin-top: 0.5rem; display: inline-block"
+                                                href="#addcocktail"
+                                                @click.prevent="showCurrencyCalculator[cidx + '-' + idx] = !showCurrencyCalculator[cidx + '-' + idx]"
+                                            >
+                                                {{ t("menu.calculate-price") }}
                                             </a>
                                         </template>
                                         <template #dialog>
-                                            <CocktailPriceCalculator :cocktail="{...item, slug: ''}" @selected-price="price => handleCalculatedPrice(item, price)" @closed="showCurrencyCalculator[cidx + '-' + idx] = false"></CocktailPriceCalculator>
+                                            <CocktailPriceCalculator
+                                                :cocktail="{ ...item, slug: '' }"
+                                                @selected-price="(price) => handleCalculatedPrice(item, price)"
+                                                @closed="showCurrencyCalculator[cidx + '-' + idx] = false"
+                                            ></CocktailPriceCalculator>
                                         </template>
                                     </SaltRimDialog>
                                     &middot;
                                 </template>
-                                <a href="#" @click.prevent="removeItem(category, item)">{{ t('remove') }}</a>
+                                <a href="#" @click.prevent="removeItem(category, item)">{{ t("remove") }}</a>
                                 <label class="form-checkbox" :for="'bar-inventory-aware' + idx + '-' + cidx">
-                                    <input :id="'bar-inventory-aware' + idx + '-' + cidx" v-model="item.is_bar_inventory_aware" type="checkbox" :value="true">
+                                    <input :id="'bar-inventory-aware' + idx + '-' + cidx" v-model="item.is_bar_inventory_aware" type="checkbox" :value="true" />
                                     <span>Hide when not in bar shelf</span>
                                 </label>
                             </div>
                             <div class="menu-category__cocktail__content__price">
                                 <div class="form-group">
-                                    <label class="form-label" :for="'cocktail-category-price-' + idx + '-' + cidx">{{ t('menu.price') }}:</label>
-                                    <input :id="'cocktail-category-price-' + idx + '-' + cidx" v-model="item.price.price" class="form-input" type="text">
+                                    <label class="form-label" :for="'cocktail-category-price-' + idx + '-' + cidx">{{ t("menu.price") }}:</label>
+                                    <input :id="'cocktail-category-price-' + idx + '-' + cidx" v-model="item.price.price" class="form-input" type="text" />
                                 </div>
                                 <div class="form-group">
-                                    <label class="form-label" :for="'cocktail-category-currency-' + idx + '-' + cidx">{{ t('menu.currency') }}:</label>
-                                    <input :id="'cocktail-category-currency-' + idx + '-' + cidx" v-model="item.price.currency" class="form-input" type="text">
+                                    <label class="form-label" :for="'cocktail-category-currency-' + idx + '-' + cidx">{{ t("menu.currency") }}:</label>
+                                    <input :id="'cocktail-category-currency-' + idx + '-' + cidx" v-model="item.price.currency" class="form-input" type="text" />
                                 </div>
                             </div>
                         </div>
@@ -95,290 +120,319 @@
                 </div>
                 <SaltRimDialog v-model="showCocktailFinder[idx]">
                     <template #trigger>
-                        <a style="margin-top: 0.5rem; display: inline-block;" href="#addcocktail" @click.prevent="showCocktailFinder[idx] = !showCocktailFinder[idx]">
-                            {{ t('menu.add-cocktail') }}
+                        <a style="margin-top: 0.5rem; display: inline-block" href="#addcocktail" @click.prevent="showCocktailFinder[idx] = !showCocktailFinder[idx]">
+                            {{ t("menu.add-cocktail") }}
                         </a>
                     </template>
                     <template #dialog>
-                        <CocktailFinderBasic v-if="shouldUseBasicSearch" @cocktail-selected="cocktail => selectCocktail(cocktail, category, idx)" @closed="showCocktailFinder[idx] = false"></CocktailFinderBasic>
-                        <CocktailFinder v-else @cocktail-selected="cocktail => selectCocktail(cocktail, category, idx)" @closed="showCocktailFinder[idx] = false"></CocktailFinder>
+                        <CocktailFinderBasic
+                            v-if="shouldUseBasicSearch"
+                            @cocktail-selected="(cocktail) => selectCocktail(cocktail, category, idx)"
+                            @closed="showCocktailFinder[idx] = false"
+                        ></CocktailFinderBasic>
+                        <CocktailFinder
+                            v-else
+                            @cocktail-selected="(cocktail) => selectCocktail(cocktail, category, idx)"
+                            @closed="showCocktailFinder[idx] = false"
+                        ></CocktailFinder>
                     </template>
                 </SaltRimDialog>
                 &middot;
                 <SaltRimDialog v-model="showIngredientFinder[idx]">
                     <template #trigger>
-                        <a style="margin-top: 0.5rem; display: inline-block;" href="#addingredient" @click.prevent="showIngredientFinder[idx] = !showIngredientFinder[idx]">
-                            {{ t('ingredient.add') }}
+                        <a style="margin-top: 0.5rem; display: inline-block" href="#addingredient" @click.prevent="showIngredientFinder[idx] = !showIngredientFinder[idx]">
+                            {{ t("ingredient.add") }}
                         </a>
                     </template>
                     <template #dialog>
-                        <div class="dialog-title">{{ t('ingredient.ingredients') }}</div>
-                        <IngredientFinderBasic v-if="shouldUseBasicSearch" @ingredient-selected="ingredient => selectIngredient(ingredient, category, idx)"></IngredientFinderBasic>
-                        <IngredientFinder v-else-if="!shouldUseBasicSearch && appState.bar.search_token" :search-token="appState.bar.search_token" @ingredient-selected="ingredient => selectIngredient(ingredient, category, idx)"></IngredientFinder>
+                        <div class="dialog-title">{{ t("ingredient.ingredients") }}</div>
+                        <IngredientFinderBasic
+                            v-if="shouldUseBasicSearch"
+                            @ingredient-selected="(ingredient) => selectIngredient(ingredient, category, idx)"
+                        ></IngredientFinderBasic>
+                        <IngredientFinder
+                            v-else-if="!shouldUseBasicSearch && appState.bar.search_token"
+                            :search-token="appState.bar.search_token"
+                            @ingredient-selected="(ingredient) => selectIngredient(ingredient, category, idx)"
+                        ></IngredientFinder>
                         <div class="dialog-actions">
-                            <button type="submit" class="button button--dark" @click="showIngredientFinder[idx] = !showIngredientFinder[idx]">{{ t('close') }}</button>
+                            <button type="submit" class="button button--dark" @click="showIngredientFinder[idx] = !showIngredientFinder[idx]">
+                                {{ t("close") }}
+                            </button>
                         </div>
                     </template>
                 </SaltRimDialog>
             </div>
         </div>
-        <div style="margin: 1rem 0; text-align: center;">
-            <button type="button" class="button button--outline" @click="addCategory('')">{{ t('menu.add-category') }}</button>
+        <div style="margin: 1rem 0; text-align: center">
+            <button type="button" class="button button--outline" @click="addCategory('')">{{ t("menu.add-category") }}</button>
         </div>
         <div class="form-actions">
-            <button type="submit" class="button button--dark">{{ t('save') }}</button>
+            <button type="submit" class="button button--dark">{{ t("save") }}</button>
         </div>
     </form>
 </template>
 
 <script setup lang="ts">
-import { ref, nextTick, computed } from 'vue'
-import PageHeader from '../PageHeader.vue'
-import Sortable from 'sortablejs'
-import SaltRimDialog from './../Dialog/SaltRimDialog.vue'
-import CocktailFinder from './../CocktailFinder.vue'
-import IngredientFinder from './../IngredientFinder.vue'
-import CocktailPriceCalculator from './../Calculator/CocktailPriceCalculator.vue'
-import AppState from '../../AppState'
-import QRCodeVue3 from 'qrcode-vue3'
-import OverlayLoader from '../OverlayLoader.vue'
-import { useTitle } from '@/composables/title'
-import BarAssistantClient from '@/api/BarAssistantClient'
-import { useI18n } from 'vue-i18n'
-import { useSaltRimToast } from '@/composables/toast'
-import type { components } from '@/api/api'
-import type { SearchResults } from '@/api/SearchResults'
-import { useConfirm } from '@/composables/confirm'
-import IngredientFinderBasic from '../IngredientFinderBasic.vue'
-import { useBasicSearch } from '@/composables/useBasicSearch'
-import CocktailFinderBasic from '../CocktailFinderBasic.vue'
+import { ref, nextTick, computed } from "vue";
+import PageHeader from "../PageHeader.vue";
+import Sortable from "sortablejs";
+import SaltRimDialog from "./../Dialog/SaltRimDialog.vue";
+import CocktailFinder from "./../CocktailFinder.vue";
+import IngredientFinder from "./../IngredientFinder.vue";
+import CocktailPriceCalculator from "./../Calculator/CocktailPriceCalculator.vue";
+import AppState from "../../AppState";
+import QRCodeVue3 from "qrcode-vue3";
+import OverlayLoader from "../OverlayLoader.vue";
+import { useTitle } from "@/composables/title";
+import BarAssistantClient from "@/api/BarAssistantClient";
+import { useI18n } from "vue-i18n";
+import { useSaltRimToast } from "@/composables/toast";
+import type { components } from "@/api/api";
+import type { SearchResults } from "@/api/SearchResults";
+import { useConfirm } from "@/composables/confirm";
+import IngredientFinderBasic from "../IngredientFinderBasic.vue";
+import { useBasicSearch } from "@/composables/useBasicSearch";
+import CocktailFinderBasic from "../CocktailFinderBasic.vue";
 
-type Menu = components['schemas']['Menu']
-type MenuRequest = components['schemas']['MenuRequest']
-type MenuCategories = components['schemas']['Menu']['categories']
-type MenuItem = components['schemas']['Menu']['categories'][0]['items'][0]
-type CocktailSearchResult = SearchResults['cocktail']
-type IngredientSearchResult = SearchResults['ingredient']
+type Menu = components["schemas"]["Menu"];
+type MenuRequest = components["schemas"]["MenuRequest"];
+type MenuCategories = components["schemas"]["Menu"]["categories"];
+type MenuItem = components["schemas"]["Menu"]["categories"][0]["items"][0];
+type CocktailSearchResult = SearchResults["cocktail"];
+type IngredientSearchResult = SearchResults["ingredient"];
 
-const shouldUseBasicSearch = useBasicSearch()
-const { t } = useI18n()
-const toast = useSaltRimToast()
-const confirm = useConfirm()
-const isLoading = ref(false)
-const showCocktailFinder = ref<boolean[]>([])
-const showIngredientFinder = ref<boolean[]>([])
-const showCurrencyCalculator = ref<Record<string, boolean>>({})
-const appState = new AppState()
-const categories = ref<MenuCategories>([])
-const bar = ref()
-const menuUrl = ref('')
-const menu = ref<Menu>({} as Menu)
-const sortableInstances = ref<any[]>([])
+const shouldUseBasicSearch = useBasicSearch();
+const { t } = useI18n();
+const toast = useSaltRimToast();
+const confirm = useConfirm();
+const isLoading = ref(false);
+const showCocktailFinder = ref<boolean[]>([]);
+const showIngredientFinder = ref<boolean[]>([]);
+const showCurrencyCalculator = ref<Record<string, boolean>>({});
+const appState = new AppState();
+const categories = ref<MenuCategories>([]);
+const bar = ref();
+const menuUrl = ref("");
+const menu = ref<Menu>({} as Menu);
+const sortableInstances = ref<any[]>([]);
 
 const cocktailMenuItems = computed(() => {
-    return categories.value.flatMap(c => c.items).filter(c => c.type == 'cocktail').sort((a, b) => a.sort - b.sort)
-})
+    return categories.value
+        .flatMap((c) => c.items)
+        .filter((c) => c.type == "cocktail")
+        .sort((a, b) => a.sort - b.sort);
+});
 
 const ingredientMenuItems = computed(() => {
-    return categories.value.flatMap(c => c.items).filter(c => c.type == 'ingredient').sort((a, b) => a.sort - b.sort)
-})
+    return categories.value
+        .flatMap((c) => c.items)
+        .filter((c) => c.type == "ingredient")
+        .sort((a, b) => a.sort - b.sort);
+});
 
 const guessCurrency = computed(() => {
-    const currencyArray = cocktailMenuItems.value.map(item => item.price.currency)
-    const uniqueCurrencySet = new Set(currencyArray)
-    const uniqueCurrencies = Array.from(uniqueCurrencySet)
+    const currencyArray = cocktailMenuItems.value.map((item) => item.price.currency);
+    const uniqueCurrencySet = new Set(currencyArray);
+    const uniqueCurrencies = Array.from(uniqueCurrencySet);
 
     if (uniqueCurrencies.length == 0) {
-        return appState.bar.settings.default_currency ?? null
+        return appState.bar.settings.default_currency ?? null;
     }
 
-    return uniqueCurrencies[0]
-})
+    return uniqueCurrencies[0];
+});
 
 function renumberCategoryItems(category: MenuCategories[0]) {
     category.items.forEach((item, index) => {
-        item.sort = index + 1
-    })
+        item.sort = index + 1;
+    });
 }
 
 function addItemToCategory(item: MenuItem, category: MenuCategories[0]) {
-    item.sort = category.items.length + 1
-    category.items.push(item)
+    item.sort = category.items.length + 1;
+    category.items.push(item);
 }
 
 function selectCocktail(cocktail: CocktailSearchResult, category: MenuCategories[0], finderIdx: number) {
-    if (cocktailMenuItems.value.findIndex(c => c.id == cocktail.id) >= 0) {
-        toast.default(t('menu.cocktail-already-added', {name: cocktail.name}))
+    if (cocktailMenuItems.value.findIndex((c) => c.id == cocktail.id) >= 0) {
+        toast.default(t("menu.cocktail-already-added", { name: cocktail.name }));
 
-        return
+        return;
     }
 
-    showCocktailFinder.value[finderIdx] = false
+    showCocktailFinder.value[finderIdx] = false;
 
-    addItemToCategory({
-        id: cocktail.id,
-        name: cocktail.name,
-        type: 'cocktail',
-        sort: 0,
-        description: cocktail.short_ingredients.join(', '),
-        is_bar_inventory_aware: false,
-        price: {
-            price: 0,
-            price_minor: 0,
-            formatted_price: '0.00',
-            currency: guessCurrency.value ?? '',
+    addItemToCategory(
+        {
+            id: cocktail.id,
+            name: cocktail.name,
+            type: "cocktail",
+            sort: 0,
+            description: cocktail.short_ingredients.join(", "),
+            is_bar_inventory_aware: false,
+            price: {
+                price: 0,
+                price_minor: 0,
+                formatted_price: "0.00",
+                currency: guessCurrency.value ?? "",
+            },
         },
-    }, category)
+        category,
+    );
 
-    toast.default(t('menu.cocktail-added', {name: cocktail.name}))
+    toast.default(t("menu.cocktail-added", { name: cocktail.name }));
 }
 
 function selectIngredient(ingredient: IngredientSearchResult, category: MenuCategories[0], finderIdx: number) {
-    if (ingredientMenuItems.value.findIndex(c => c.id == ingredient.id) >= 0) {
-        toast.default(t('menu.cocktail-already-added', {name: ingredient.name}))
+    if (ingredientMenuItems.value.findIndex((c) => c.id == ingredient.id) >= 0) {
+        toast.default(t("menu.cocktail-already-added", { name: ingredient.name }));
 
-        return
+        return;
     }
 
-    showIngredientFinder.value[finderIdx] = false
+    showIngredientFinder.value[finderIdx] = false;
 
-    addItemToCategory({
-        id: ingredient.id,
-        name: ingredient.name,
-        type: 'ingredient',
-        sort: 0,
-        description: ingredient.category ?? '',
-        is_bar_inventory_aware: false,
-        price: {
-            price: 0,
-            price_minor: 0,
-            formatted_price: '0.00',
-            currency: guessCurrency.value ?? '',
+    addItemToCategory(
+        {
+            id: ingredient.id,
+            name: ingredient.name,
+            type: "ingredient",
+            sort: 0,
+            description: ingredient.category ?? "",
+            is_bar_inventory_aware: false,
+            price: {
+                price: 0,
+                price_minor: 0,
+                formatted_price: "0.00",
+                currency: guessCurrency.value ?? "",
+            },
         },
-    }, category)
+        category,
+    );
 
-    toast.default(t('menu.cocktail-added', {name: ingredient.name}))
+    toast.default(t("menu.cocktail-added", { name: ingredient.name }));
 }
 
 function addCategory(name: string) {
     if (!name) {
-        name = 'Category name ' + (categories.value.length + 1)
+        name = "Category name " + (categories.value.length + 1);
     }
 
     const category = {
         name: name,
         sort: categories.value.length + 1,
         is_enabled: true,
-        items: []
+        items: [],
     };
 
-    categories.value.push(category)
+    categories.value.push(category);
 
-    toast.default(t('menu.category-added'))
+    toast.default(t("menu.category-added"));
 
     nextTick(() => {
-        refreshSortable()
-        document.querySelector(`[data-category-idx="${categories.value.length - 1}"]`)?.scrollIntoView(true)
-    })
+        refreshSortable();
+        document.querySelector(`[data-category-idx="${categories.value.length - 1}"]`)?.scrollIntoView(true);
+    });
 
-    return category
+    return category;
 }
 
 function removeCategory(category: MenuCategories[0]) {
     if (category.items.length > 0) {
-        confirm.show(t('menu.delete-category-confirm', {name: category.name}), {
+        confirm.show(t("menu.delete-category-confirm", { name: category.name }), {
             onResolved: (dialog: any) => {
-                dialog.close()
-                toast.default(t('menu.category-removed'))
+                dialog.close();
+                toast.default(t("menu.category-removed"));
                 categories.value.splice(
-                    categories.value.findIndex(i => i == category),
-                    1
-                )
-            }
-        })
+                    categories.value.findIndex((i) => i == category),
+                    1,
+                );
+            },
+        });
 
-        return
+        return;
     }
 
     categories.value.splice(
-        categories.value.findIndex(i => i == category),
-        1
-    )
+        categories.value.findIndex((i) => i == category),
+        1,
+    );
 }
 
 function clearCategory(category: MenuCategories[0]) {
     if (category.items.length == 0) {
-        return
+        return;
     }
 
-    confirm.show(t('menu.clear-category-confirm', {name: category.name}), {
+    confirm.show(t("menu.clear-category-confirm", { name: category.name }), {
         onResolved: (dialog: any) => {
-            dialog.close()
-            toast.default(t('menu.category-cleared'))
-            category.items = []
-        }
-    })
+            dialog.close();
+            toast.default(t("menu.category-cleared"));
+            category.items = [];
+        },
+    });
 }
 
 function moveCategoryUp(idx: number) {
     if (idx <= 0) {
-        return
+        return;
     }
-    [categories.value[idx - 1], categories.value[idx]] = [categories.value[idx], categories.value[idx - 1]]
+    [categories.value[idx - 1], categories.value[idx]] = [categories.value[idx], categories.value[idx - 1]];
 }
 
 function moveCategoryDown(idx: number) {
     if (idx >= categories.value.length - 1) {
-        return
+        return;
     }
-    [categories.value[idx], categories.value[idx + 1]] = [categories.value[idx + 1], categories.value[idx]]
+    [categories.value[idx], categories.value[idx + 1]] = [categories.value[idx + 1], categories.value[idx]];
 }
 
 function removeItem(category: MenuCategories[0], item: MenuItem) {
-    confirm.show(t('menu.delete-cocktail-confirm', {name: item.name}), {
+    confirm.show(t("menu.delete-cocktail-confirm", { name: item.name }), {
         onResolved: (dialog: any) => {
-            dialog.close()
-            toast.default(t('menu.cocktail-removed'))
+            dialog.close();
+            toast.default(t("menu.cocktail-removed"));
             category.items.splice(
-                category.items.findIndex(i => i == item),
-                1
-            )
-            renumberCategoryItems(category)
-        }
-    })
+                category.items.findIndex((i) => i == item),
+                1,
+            );
+            renumberCategoryItems(category);
+        },
+    });
 }
 
 async function refreshMenu() {
-    isLoading.value = true
-    menu.value = (await BarAssistantClient.getMenu())?.data ?? {} as Menu
+    isLoading.value = true;
+    menu.value = (await BarAssistantClient.getMenu())?.data ?? ({} as Menu);
 
-    isLoading.value = false
+    isLoading.value = false;
 
     nextTick(() => {
-        refreshSortable()
-    })
+        refreshSortable();
+    });
 
-    categories.value = menu.value.categories ?? []
+    categories.value = menu.value.categories ?? [];
 }
 
 async function refreshBar() {
-    bar.value = (await BarAssistantClient.getBar(appState.bar.id))?.data
+    bar.value = (await BarAssistantClient.getBar(appState.bar.id))?.data;
 
-    menuUrl.value = `${window.location.origin}/menu/${bar.value.slug}`
+    menuUrl.value = `${window.location.origin}/menu/${bar.value.slug}`;
 }
 
 async function exportMenu() {
-    const csv = await BarAssistantClient.getMenuExport()
+    const csv = await BarAssistantClient.getMenuExport();
     if (!csv) {
-        return
+        return;
     }
 
-    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+    const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
 
     const url = window?.URL.createObjectURL(blob);
-    const link = document.createElement('a');
+    const link = document.createElement("a");
     link.href = url;
-    link.setAttribute('download', appState.bar.slug + '-menu.csv');
+    link.setAttribute("download", appState.bar.slug + "-menu.csv");
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -386,149 +440,156 @@ async function exportMenu() {
 }
 
 function refreshSortable() {
-    sortableInstances.value = []
-    document.querySelectorAll('.menu-category-cocktails').forEach(el => {
-        sortableInstances.value.push(Sortable.create(el, {
-            group: 'nested',
-            handle: '.drag-handle',
-            ghostClass: 'block-container--placeholder',
-            animation: 150,
-            fallbackOnBody: true,
-            swapThreshold: 0.65,
-            onAdd: function (evt: any) {
-                const datasetId = evt.item.dataset.id
-                let sourceItem = null
-                if (evt.item.dataset.type == 'cocktail') {
-                    sourceItem = cocktailMenuItems.value.find(c => c.id == datasetId)
-                } else {
-                    sourceItem = ingredientMenuItems.value.find(c => c.id == datasetId)
-                }
-                if (!sourceItem) {
-                    return
-                }
+    sortableInstances.value = [];
+    document.querySelectorAll(".menu-category-cocktails").forEach((el) => {
+        sortableInstances.value.push(
+            Sortable.create(el, {
+                group: "nested",
+                handle: ".drag-handle",
+                ghostClass: "block-container--placeholder",
+                animation: 150,
+                fallbackOnBody: true,
+                swapThreshold: 0.65,
+                onAdd: function (evt: any) {
+                    const datasetId = evt.item.dataset.id;
+                    let sourceItem = null;
+                    if (evt.item.dataset.type == "cocktail") {
+                        sourceItem = cocktailMenuItems.value.find((c) => c.id == datasetId);
+                    } else {
+                        sourceItem = ingredientMenuItems.value.find((c) => c.id == datasetId);
+                    }
+                    if (!sourceItem) {
+                        return;
+                    }
 
-                const fromCategory = categories.value[evt.from.dataset.categoryIdx]
-                const targetCategory = categories.value[evt.to.dataset.categoryIdx]
+                    const fromCategory = categories.value[evt.from.dataset.categoryIdx];
+                    const targetCategory = categories.value[evt.to.dataset.categoryIdx];
 
-                // Remove from old cat
-                fromCategory.items.splice(
-                    fromCategory.items.findIndex(i => i == sourceItem),
-                    1
-                )
+                    // Remove from old cat
+                    fromCategory.items.splice(
+                        fromCategory.items.findIndex((i) => i == sourceItem),
+                        1,
+                    );
 
-                sourceItem.sort = evt.newIndex + 1
+                    sourceItem.sort = evt.newIndex + 1;
 
-                // Add to new cat
-                targetCategory.items.splice(evt.newIndex, 0, sourceItem)
+                    // Add to new cat
+                    targetCategory.items.splice(evt.newIndex, 0, sourceItem);
 
-                fromCategory.items.forEach((item, index) => {
-                    item.sort = index + 1
-                })
+                    fromCategory.items.forEach((item, index) => {
+                        item.sort = index + 1;
+                    });
 
-                targetCategory.items.forEach((item, index) => {
-                    item.sort = index + 1
-                })
-            },
-        }))
-    })
+                    targetCategory.items.forEach((item, index) => {
+                        item.sort = index + 1;
+                    });
+                },
+            }),
+        );
+    });
 }
 
 function copyCurrency(currency: string) {
-    categories.value.forEach(cat => {
-        cat.items.forEach(item => {
-            item.price.currency = currency
-        })
-    })
+    categories.value.forEach((cat) => {
+        cat.items.forEach((item) => {
+            item.price.currency = currency;
+        });
+    });
 }
 
 function handleCalculatedPrice(item: MenuItem, e: any) {
-    item.price.price = e.price
-    item.price.currency = e.currency
+    item.price.price = e.price;
+    item.price.currency = e.currency;
 }
 
 function quickAddShelf() {
-    isLoading.value = true
-    BarAssistantClient.getBarShelfCocktails(appState.bar.id).then((resp) => {
-        if (!resp || !resp.data || resp.data.length == 0) {
-            isLoading.value = false
-            return
-        }
+    isLoading.value = true;
+    BarAssistantClient.getBarShelfCocktails(appState.bar.id)
+        .then((resp) => {
+            if (!resp || !resp.data || resp.data.length == 0) {
+                isLoading.value = false;
+                return;
+            }
 
-        const cat = addCategory('Bar shelf')
-        resp.data.forEach(cocktail => {
-            addItemToCategory({
-                id: cocktail.id,
-                name: cocktail.name,
-                type: 'cocktail',
-                sort: 0,
-                description: cocktail?.short_ingredients?.join(', ') ?? '',
-                is_bar_inventory_aware: true,
-                price: {
-                    price: 0,
-                    price_minor: 0,
-                    formatted_price: '0.00',
-                    currency: guessCurrency.value ?? '',
-                },
-            }, cat)
+            const cat = addCategory("Bar shelf");
+            resp.data.forEach((cocktail) => {
+                addItemToCategory(
+                    {
+                        id: cocktail.id,
+                        name: cocktail.name,
+                        type: "cocktail",
+                        sort: 0,
+                        description: cocktail?.short_ingredients?.join(", ") ?? "",
+                        is_bar_inventory_aware: true,
+                        price: {
+                            price: 0,
+                            price_minor: 0,
+                            formatted_price: "0.00",
+                            currency: guessCurrency.value ?? "",
+                        },
+                    },
+                    cat,
+                );
+            });
+            isLoading.value = false;
+            toast.default(t("menu.added-multiple-cocktails"));
         })
-        isLoading.value = false
-        toast.default(t('menu.added-multiple-cocktails'))
-    }).catch(() => {
-        isLoading.value = false
-    })
+        .catch(() => {
+            isLoading.value = false;
+        });
 }
 
 async function saveMenu() {
-    isLoading.value = true
+    isLoading.value = true;
 
-    const categorySortOrders = new Map<number, string[]>()
-    sortableInstances.value.forEach(sortableInstance => {
-        const categoryIdx = Number(sortableInstance.el?.dataset?.categoryIdx)
+    const categorySortOrders = new Map<number, string[]>();
+    sortableInstances.value.forEach((sortableInstance) => {
+        const categoryIdx = Number(sortableInstance.el?.dataset?.categoryIdx);
         if (!Number.isNaN(categoryIdx)) {
-            categorySortOrders.set(categoryIdx, sortableInstance.toArray())
+            categorySortOrders.set(categoryIdx, sortableInstance.toArray());
         }
-    })
+    });
 
     const cats = categories.value.map((cat, catIdx) => {
-        const categoryOrder = categorySortOrders.get(catIdx) ?? cat.items.map(item => String(item.id))
+        const categoryOrder = categorySortOrders.get(catIdx) ?? cat.items.map((item) => String(item.id));
         return {
             id: 0,
             sort: catIdx + 1,
             name: cat.name,
             is_enabled: cat.is_enabled ?? true,
-            items: cat.items.map(item => {
+            items: cat.items.map((item) => {
                 return {
                     id: item.id,
                     type: item.type,
-                    sort: categoryOrder.findIndex(sortedId => sortedId == String(item.id)) + 1,
+                    sort: categoryOrder.findIndex((sortedId) => sortedId == String(item.id)) + 1,
                     price: item.price.price,
                     currency: item.price.currency,
                     is_bar_inventory_aware: item.is_bar_inventory_aware ?? false,
-                }
-            })
-        }
-    })
+                };
+            }),
+        };
+    });
 
     const postData = {
         is_enabled: menu.value.is_enabled,
-        categories: cats
-    } as MenuRequest
+        categories: cats,
+    } as MenuRequest;
 
     try {
-        await BarAssistantClient.updateMenu(postData)
-        refreshMenu()
-        toast.default(t('menu.saved'))
+        await BarAssistantClient.updateMenu(postData);
+        refreshMenu();
+        toast.default(t("menu.saved"));
     } catch (e: any) {
-        toast.error(t('menu.update-error') + ': ' + e.message)
-        return
+        toast.error(t("menu.update-error") + ": " + e.message);
+        return;
     } finally {
-        isLoading.value = false
+        isLoading.value = false;
     }
 }
 
-useTitle(t('menu.title'))
-refreshMenu()
-refreshBar()
+useTitle(t("menu.title"));
+refreshMenu();
+refreshBar();
 </script>
 
 <style scoped>
@@ -569,8 +630,8 @@ refreshBar()
 }
 
 .dark-theme .menu-category {
-    background-color: rgba(0, 0, 0, .15);
-    border-bottom: 1px solid rgba(255, 255, 255, .1);
+    background-color: rgba(0, 0, 0, 0.15);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     box-shadow:
         inset 0px 0.4px 0.5px hsl(var(--shadow-color-dark) / 0.25),
         inset 0px 1.1px 1.2px -0.8px hsl(var(--shadow-color-dark) / 0.25),
@@ -682,7 +743,7 @@ refreshBar()
 }
 
 .menu-item-type.menu-item-type--cocktail {
-    background-color: #E6DBF0;
+    background-color: #e6dbf0;
     color: #3a304d;
 }
 
@@ -693,7 +754,7 @@ refreshBar()
 
 .dark-theme .menu-item-type.menu-item-type--cocktail {
     background-color: #3a304d;
-    color: #E6DBF0;
+    color: #e6dbf0;
 }
 
 .dark-theme .menu-item-type.menu-item-type--ingredient {

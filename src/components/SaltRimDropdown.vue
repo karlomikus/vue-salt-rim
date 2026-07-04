@@ -1,25 +1,25 @@
 <script setup lang="ts">
-import {ref} from 'vue'
-import { onClickOutside } from '@vueuse/core'
-import {useFloating, offset, flip, shift, autoUpdate} from '@floating-ui/vue'
+import { ref } from "vue";
+import { onClickOutside } from "@vueuse/core";
+import { useFloating, offset, flip, shift, autoUpdate } from "@floating-ui/vue";
 
-const isShown = ref(false)
-const reference = ref(null)
-const content = ref(null)
+const isShown = ref(false);
+const reference = ref(null);
+const content = ref(null);
 
 const toggleDropdown = function () {
-    isShown.value = !isShown.value
-}
+    isShown.value = !isShown.value;
+};
 
 const { floatingStyles } = useFloating(reference, content, {
-    placement: 'bottom-end',
+    placement: "bottom-end",
     middleware: [offset(5), flip(), shift()],
     whileElementsMounted: autoUpdate,
-})
+});
 
 onClickOutside(reference, () => {
-    isShown.value = false
-})
+    isShown.value = false;
+});
 </script>
 
 <template>

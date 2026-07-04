@@ -13,76 +13,45 @@
                     "type": "string",
                     "format": "slug",
                     "minLength": 1,
-                    "examples": [
-                        "margarita"
-                    ]
+                    "examples": ["margarita"]
                 },
                 "name": {
                     "description": "Name of the recipe",
                     "type": "string",
                     "minLength": 1,
-                    "examples": [
-                        "Margarita"
-                    ]
+                    "examples": ["Margarita"]
                 },
                 "instructions": {
                     "description": "Recipe instructions",
                     "type": "string",
-                    "examples": [
-                        "Shake all ingredients with ice and strain into a chilled glass."
-                    ]
+                    "examples": ["Shake all ingredients with ice and strain into a chilled glass."]
                 },
                 "created_at": {
                     "description": "Date of recipe",
-                    "type": [
-                        "string",
-                        "null"
-                    ],
+                    "type": ["string", "null"],
                     "format": "date-time",
-                    "examples": [
-                        "2024-07-21T15:30:00Z"
-                    ]
+                    "examples": ["2024-07-21T15:30:00Z"]
                 },
                 "description": {
                     "description": "Recipe description",
-                    "type": [
-                        "string",
-                        "null"
-                    ],
-                    "examples": [
-                        "A refreshing blend of tequila, lime juice, and triple sec."
-                    ]
+                    "type": ["string", "null"],
+                    "examples": ["A refreshing blend of tequila, lime juice, and triple sec."]
                 },
                 "source": {
                     "description": "Source of the recipe, either URL or Book referece",
-                    "type": [
-                        "string",
-                        "null"
-                    ],
-                    "examples": [
-                        "https://example.com/margarita-recipe"
-                    ]
+                    "type": ["string", "null"],
+                    "examples": ["https://example.com/margarita-recipe"]
                 },
                 "garnish": {
                     "description": "Cocktail garnish",
-                    "type": [
-                        "string",
-                        "null"
-                    ],
-                    "examples": [
-                        "Lime wheel"
-                    ]
+                    "type": ["string", "null"],
+                    "examples": ["Lime wheel"]
                 },
                 "abv": {
                     "description": "Total ABV of made cocktail",
-                    "type": [
-                        "number",
-                        "null"
-                    ],
+                    "type": ["number", "null"],
                     "minimum": 0,
-                    "examples": [
-                        12.5
-                    ]
+                    "examples": [12.5]
                 },
                 "tags": {
                     "description": "Short keywords to describe cocktail",
@@ -91,33 +60,17 @@
                     "items": {
                         "type": "string"
                     },
-                    "examples": [
-                        [
-                            "refreshing",
-                            "citrus",
-                            "classic"
-                        ]
-                    ]
+                    "examples": [["refreshing", "citrus", "classic"]]
                 },
                 "glass": {
                     "description": "Glass type",
-                    "type": [
-                        "string",
-                        "null"
-                    ],
-                    "examples": [
-                        "Coupe"
-                    ]
+                    "type": ["string", "null"],
+                    "examples": ["Coupe"]
                 },
                 "method": {
                     "description": "Cocktail method",
-                    "type": [
-                        "string",
-                        "null"
-                    ],
-                    "examples": [
-                        "Shake"
-                    ]
+                    "type": ["string", "null"],
+                    "examples": ["Shake"]
                 },
                 "utensils": {
                     "description": "Required utensils",
@@ -126,12 +79,7 @@
                     "items": {
                         "type": "string"
                     },
-                    "examples": [
-                        [
-                            "Shaker",
-                            "Strainer"
-                        ]
-                    ]
+                    "examples": [["Shaker", "Strainer"]]
                 },
                 "images": {
                     "description": "List of cocktail images",
@@ -143,10 +91,7 @@
                             "uri": {
                                 "type": "string",
                                 "format": "uri",
-                                "examples": [
-                                    "https://example.com/image.jpg",
-                                    "/path/to/image.png"
-                                ]
+                                "examples": ["https://example.com/image.jpg", "/path/to/image.png"]
                             },
                             "sort": {
                                 "description": "Control the representation of the image",
@@ -155,23 +100,15 @@
                             },
                             "placeholder_hash": {
                                 "description": "Computed placeholder hash, like thumbhash, blurhash and similar",
-                                "type": [
-                                    "string",
-                                    "null"
-                                ]
+                                "type": ["string", "null"]
                             },
                             "copyright": {
                                 "description": "Image copyright information",
                                 "type": "string",
-                                "examples": [
-                                    "© 2024 Bar Assistant"
-                                ]
+                                "examples": ["© 2024 Bar Assistant"]
                             }
                         },
-                        "required": [
-                            "uri",
-                            "copyright"
-                        ]
+                        "required": ["uri", "copyright"]
                     }
                 },
                 "ingredients": {
@@ -185,55 +122,37 @@
                                 "description": "The unique reference for an ingredient from `ingredients` property",
                                 "type": "string",
                                 "minLength": 1,
-                                "examples": [
-                                    "tequila"
-                                ]
+                                "examples": ["tequila"]
                             },
                             "amount": {
                                 "description": "Amount of the ingredient",
                                 "type": "number",
                                 "minimum": 0,
                                 "maximum": 99999,
-                                "examples": [
-                                    50
-                                ]
+                                "examples": [50]
                             },
                             "units": {
                                 "description": "Units for the amount",
                                 "type": "string",
                                 "minLength": 1,
-                                "examples": [
-                                    "ml"
-                                ]
+                                "examples": ["ml"]
                             },
                             "optional": {
                                 "description": "Indicates if the ingredient is optional",
                                 "type": "boolean",
-                                "examples": [
-                                    false
-                                ]
+                                "examples": [false]
                             },
                             "amount_max": {
                                 "description": "Maximum amount of the ingredient",
-                                "type": [
-                                    "number",
-                                    "null"
-                                ],
+                                "type": ["number", "null"],
                                 "minimum": 0,
                                 "maximum": 99999,
-                                "examples": [
-                                    60
-                                ]
+                                "examples": [60]
                             },
                             "note": {
                                 "description": "Additional note related to the cocktail ingredient",
-                                "type": [
-                                    "string",
-                                    "null"
-                                ],
-                                "examples": [
-                                    "Preferebly blanco"
-                                ]
+                                "type": ["string", "null"],
+                                "examples": ["Preferebly blanco"]
                             },
                             "substitutes": {
                                 "type": "array",
@@ -245,44 +164,25 @@
                                             "description": "The unique reference for an ingredient from `ingredients` property",
                                             "type": "string",
                                             "minLength": 1,
-                                            "examples": [
-                                                "mezcal"
-                                            ]
+                                            "examples": ["mezcal"]
                                         },
                                         "amount": {
                                             "description": "Amount of the substitute ingredient",
-                                            "type": [
-                                                "number",
-                                                "null"
-                                            ],
-                                            "examples": [
-                                                50
-                                            ]
+                                            "type": ["number", "null"],
+                                            "examples": [50]
                                         },
                                         "units": {
                                             "description": "Units for the amount",
-                                            "type": [
-                                                "string",
-                                                "null"
-                                            ],
-                                            "examples": [
-                                                "ml"
-                                            ]
+                                            "type": ["string", "null"],
+                                            "examples": ["ml"]
                                         },
                                         "amount_max": {
                                             "description": "Maximum amount of the substitute ingredient",
-                                            "type": [
-                                                "number",
-                                                "null"
-                                            ],
-                                            "examples": [
-                                                60
-                                            ]
+                                            "type": ["number", "null"],
+                                            "examples": [60]
                                         }
                                     },
-                                    "required": [
-                                        "_id"
-                                    ]
+                                    "required": ["_id"]
                                 }
                             },
                             "sort": {
@@ -291,19 +191,11 @@
                                 "minimum": 0
                             }
                         },
-                        "required": [
-                            "_id",
-                            "amount",
-                            "units"
-                        ]
+                        "required": ["_id", "amount", "units"]
                     }
                 }
             },
-            "required": [
-                "_id",
-                "name",
-                "instructions"
-            ]
+            "required": ["_id", "name", "instructions"]
         },
         "ingredients": {
             "type": "array",
@@ -316,68 +208,38 @@
                         "description": "The unique identifier for an ingredient, used as a refrence in cocktail ingredient list",
                         "type": "string",
                         "minLength": 1,
-                        "examples": [
-                            "tequila"
-                        ]
+                        "examples": ["tequila"]
                     },
                     "name": {
                         "type": "string",
                         "minLength": 1,
-                        "examples": [
-                            "Tequila"
-                        ]
+                        "examples": ["Tequila"]
                     },
                     "strength": {
                         "description": "Ingredient ABV",
-                        "type": [
-                            "number",
-                            "null"
-                        ],
+                        "type": ["number", "null"],
                         "minimum": 0,
-                        "examples": [
-                            40
-                        ]
+                        "examples": [40]
                     },
                     "description": {
                         "description": "Additional ingredient information",
-                        "type": [
-                            "string",
-                            "null"
-                        ],
-                        "examples": [
-                            "A Mexican spirit made from the blue agave plant."
-                        ]
+                        "type": ["string", "null"],
+                        "examples": ["A Mexican spirit made from the blue agave plant."]
                     },
                     "origin": {
                         "description": "Ingredient origin",
-                        "type": [
-                            "string",
-                            "null"
-                        ],
-                        "examples": [
-                            "Mexico"
-                        ]
+                        "type": ["string", "null"],
+                        "examples": ["Mexico"]
                     },
                     "category": {
                         "description": "Category ingredient belongs to",
-                        "type": [
-                            "string",
-                            "null"
-                        ],
-                        "examples": [
-                            "Spirit"
-                        ]
+                        "type": ["string", "null"],
+                        "examples": ["Spirit"]
                     }
                 },
-                "required": [
-                    "_id",
-                    "name"
-                ]
+                "required": ["_id", "name"]
             }
         }
     },
-    "required": [
-        "recipe",
-        "ingredients"
-    ]
+    "required": ["recipe", "ingredients"]
 }

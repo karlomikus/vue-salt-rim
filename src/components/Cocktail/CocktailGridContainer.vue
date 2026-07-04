@@ -8,14 +8,14 @@
 const observer = new IntersectionObserver((entries: IntersectionObserverEntry[]) => {
     entries.forEach((entry: IntersectionObserverEntry) => {
         if (entry.isIntersecting) {
-            const imgElement = entry.target.querySelector('.cocktail-grid-item__graphic__image') as HTMLImageElement
+            const imgElement = entry.target.querySelector(".cocktail-grid-item__graphic__image") as HTMLImageElement;
             if (imgElement && imgElement.dataset.imgSrc) {
-                imgElement.src = imgElement.dataset.imgSrc
-                observer.unobserve(entry.target)
+                imgElement.src = imgElement.dataset.imgSrc;
+                observer.unobserve(entry.target);
             }
         }
-    })
-})
+    });
+});
 </script>
 
 <style scoped>

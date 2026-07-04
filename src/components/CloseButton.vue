@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import IconClose from './Icons/IconClose.vue';
+import IconClose from "./Icons/IconClose.vue";
 
-const emit = defineEmits(['closed'])
+const emit = defineEmits(["closed"]);
 </script>
 
 <template>

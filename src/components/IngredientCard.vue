@@ -1,29 +1,32 @@
 <script setup lang="ts">
-import { computed } from 'vue';
-import { useIngredientBg } from '@/composables/ingredientBg';
+import { computed } from "vue";
+import { useIngredientBg } from "@/composables/ingredientBg";
 
-const props = withDefaults(defineProps<{
-    name: string;
-    imageUrl?: string | null;
-    color?: string | null;
-    subtitle?: string | null;
-    imageAlt?: string;
-}>(), {
-    imageUrl: null,
-    color: null,
-    subtitle: null,
-    imageAlt: undefined,
-});
+const props = withDefaults(
+    defineProps<{
+        name: string;
+        imageUrl?: string | null;
+        color?: string | null;
+        subtitle?: string | null;
+        imageAlt?: string;
+    }>(),
+    {
+        imageUrl: null,
+        color: null,
+        subtitle: null,
+        imageAlt: undefined,
+    },
+);
 
-const backgroundColor = computed(() => useIngredientBg(props.color ?? '#ffffff'));
-const resolvedImageUrl = computed(() => props.imageUrl ?? '/no-ingredient.png');
+const backgroundColor = computed(() => useIngredientBg(props.color ?? "#ffffff"));
+const resolvedImageUrl = computed(() => props.imageUrl ?? "/no-ingredient.png");
 const resolvedImageAlt = computed(() => props.imageAlt ?? `${props.name} ingredient`);
 </script>
 
 <template>
     <article class="ingredient-card" :style="{ '--ingredient-card-bg': backgroundColor }">
         <div class="ingredient-card__backdrop" aria-hidden="true"></div>
-        <img class="ingredient-card__image" :src="resolvedImageUrl" :alt="resolvedImageAlt" loading="lazy">
+        <img class="ingredient-card__image" :src="resolvedImageUrl" :alt="resolvedImageAlt" loading="lazy" />
 
         <div class="ingredient-card__content">
             <h3 class="ingredient-card__title">{{ name }}</h3>

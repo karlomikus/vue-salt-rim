@@ -1,25 +1,25 @@
 <template>
     <div>
         <OverlayLoader v-if="isLoading" />
-        <div class="dialog-title">{{ $t('generate-image-dialog.preview') }}</div>
+        <div class="dialog-title">{{ $t("generate-image-dialog.preview") }}</div>
         <div class="image-download-preview">
-            <img v-if="imagePayload" :src="imagePayload" alt="">
+            <img v-if="imagePayload" :src="imagePayload" alt="" />
             <div v-else ref="exportElement" class="image-export-wrapper">
                 <PublicRecipe :cocktail="cocktail" :hide-units="true" :hide-header="features.hideHeader" :hide-footer="features.hideFooter"></PublicRecipe>
             </div>
         </div>
         <div class="dialog-actions">
-            <button type="button" class="button button--outline" @click="$emit('generateImageDialogClosed')">{{ $t('close') }}</button>
-            <button v-if="shareEnabled" type="button" class="button button--outline" @click="shareAction">{{ $t('share.title') }}</button>
-            <a v-if="imagePayload" :href="imagePayload" :download="fileName" class="button button--dark">{{ $t('download') }}</a>
+            <button type="button" class="button button--outline" @click="$emit('generateImageDialogClosed')">{{ $t("close") }}</button>
+            <button v-if="shareEnabled" type="button" class="button button--outline" @click="shareAction">{{ $t("share.title") }}</button>
+            <a v-if="imagePayload" :href="imagePayload" :download="fileName" class="button button--dark">{{ $t("download") }}</a>
         </div>
     </div>
 </template>
 
 <script>
-import * as htmlToImage from 'html-to-image'
-import OverlayLoader from './../OverlayLoader.vue'
-import PublicRecipe from './PublicRecipe.vue'
+import * as htmlToImage from "html-to-image";
+import OverlayLoader from "./../OverlayLoader.vue";
+import PublicRecipe from "./PublicRecipe.vue";
 
 export default {
     components: {
@@ -30,11 +30,11 @@ export default {
         cocktail: {
             type: Object,
             default() {
-                return {}
-            }
+                return {};
+            },
         },
     },
-    emits: ['generateImageDialogClosed'],
+    emits: ["generateImageDialogClosed"],
     data() {
         return {
             isLoading: false,
@@ -43,54 +43,57 @@ export default {
             features: {
                 hideHeader: true,
                 hideFooter: false,
-            }
-        }
+            },
+        };
     },
     computed: {
         fileName() {
-            return this.cocktail.slug + '.png'
-        }
+            return this.cocktail.slug + ".png";
+        },
     },
     mounted() {
-        if ('share' in navigator) {
-            this.shareEnabled = true
+        if ("share" in navigator) {
+            this.shareEnabled = true;
         }
 
-        this.generateImage()
+        this.generateImage();
     },
     methods: {
         generateImage() {
-            this.isLoading = true
-            htmlToImage.toPng(this.$refs.exportElement, {
-                pixelRatio: 1,
-                cacheBust: true,
-                fetchRequestInit: {
-                    cache: 'no-cache',
-                },
-            }).then((dataUrl) => {
-                this.isLoading = false
-                this.imagePayload = dataUrl
-            }).catch(() => {
-                this.isLoading = false
-                this.$toast.error(this.$t('generate-image-dialog.generation-failed'))
-            })
+            this.isLoading = true;
+            htmlToImage
+                .toPng(this.$refs.exportElement, {
+                    pixelRatio: 1,
+                    cacheBust: true,
+                    fetchRequestInit: {
+                        cache: "no-cache",
+                    },
+                })
+                .then((dataUrl) => {
+                    this.isLoading = false;
+                    this.imagePayload = dataUrl;
+                })
+                .catch(() => {
+                    this.isLoading = false;
+                    this.$toast.error(this.$t("generate-image-dialog.generation-failed"));
+                });
         },
         async shareAction() {
-            const blobData = await (await fetch(this.imagePayload)).blob()
-            const file = new File([blobData], this.fileName, {type: 'image/png'})
+            const blobData = await (await fetch(this.imagePayload)).blob();
+            const file = new File([blobData], this.fileName, { type: "image/png" });
 
             try {
                 await navigator.share({
                     title: this.cocktail.name,
                     text: this.cocktail.description,
-                    files: [file]
-                })
+                    files: [file],
+                });
             } catch {
                 // Do nothing
             }
-        }
-    }
-}
+        },
+    },
+};
 </script>
 
 <style scoped>

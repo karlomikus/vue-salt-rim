@@ -1,41 +1,44 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue'
-import OverlayLoader from '../OverlayLoader.vue';
-import BarAssistantClient from '@/api/BarAssistantClient';
-import AppState from '@/AppState';
-import type { components } from '@/api/api'
+import { ref, computed } from "vue";
+import OverlayLoader from "../OverlayLoader.vue";
+import BarAssistantClient from "@/api/BarAssistantClient";
+import AppState from "@/AppState";
+import type { components } from "@/api/api";
 
-type IngredientRecommend = components["schemas"]["IngredientRecommend"]
+type IngredientRecommend = components["schemas"]["IngredientRecommend"];
 
 const props = defineProps<{
-    stats: components["schemas"]["BarTotalStatsResource"]
-}>()
-const isLoading = ref(false)
-const appState = new AppState()
-const recommendedIngredients = ref<IngredientRecommend[]>([])
+    stats: components["schemas"]["BarTotalStatsResource"];
+}>();
+const isLoading = ref(false);
+const appState = new AppState();
+const recommendedIngredients = ref<IngredientRecommend[]>([]);
 
-fetchRecommendedIngredients()
+fetchRecommendedIngredients();
 
 const shelfPercent = computed(() => {
     if (!props.stats.total_cocktails) {
-        return Number(0).toLocaleString(undefined, {style: 'percent', minimumFractionDigits:2})
+        return Number(0).toLocaleString(undefined, { style: "percent", minimumFractionDigits: 2 });
     }
 
-    return Number(props.stats.total_bar_shelf_cocktails / props.stats.total_cocktails).toLocaleString(undefined, {style: 'percent', minimumFractionDigits:2})
-})
+    return Number(props.stats.total_bar_shelf_cocktails / props.stats.total_cocktails).toLocaleString(undefined, {
+        style: "percent",
+        minimumFractionDigits: 2,
+    });
+});
 
 const shelfProgressValue = computed(() => {
     if (!props.stats.total_cocktails) {
-        return 0
+        return 0;
     }
 
-    return Math.round((props.stats.total_bar_shelf_cocktails / props.stats.total_cocktails) * 100)
-})
+    return Math.round((props.stats.total_bar_shelf_cocktails / props.stats.total_cocktails) * 100);
+});
 
 async function fetchRecommendedIngredients() {
-    isLoading.value = true
-    recommendedIngredients.value = (await BarAssistantClient.getBarRecommendedIngredients(appState.bar.id))?.data ?? []
-    isLoading.value = false
+    isLoading.value = true;
+    recommendedIngredients.value = (await BarAssistantClient.getBarRecommendedIngredients(appState.bar.id))?.data ?? [];
+    isLoading.value = false;
 }
 </script>
 
@@ -46,19 +49,12 @@ async function fetchRecommendedIngredients() {
             <h2>{{ shelfPercent }}</h2>
             Bar cocktail availability
         </div>
-        <div
-            class="recommended-progress"
-            role="progressbar"
-            aria-label="Bar shelf completeness"
-            :aria-valuenow="shelfProgressValue"
-            aria-valuemin="0"
-            aria-valuemax="100"
-        >
+        <div class="recommended-progress" role="progressbar" aria-label="Bar shelf completeness" :aria-valuenow="shelfProgressValue" aria-valuemin="0" aria-valuemax="100">
             <div class="recommended-progress__value" :style="{ width: `${shelfProgressValue}%` }"></div>
         </div>
         <div>
             This bar is a few ingredients away from unlocking extra recipes:
-            <br>
+            <br />
             <template v-for="(ing, index) in recommendedIngredients" :key="ing.id">
                 <RouterLink :to="{ name: 'ingredients.show', params: { id: ing.slug } }">{{ ing.name }} (+{{ ing.potential_cocktails }})</RouterLink>
                 <template v-if="index + 1 !== recommendedIngredients.length"> &middot; </template>

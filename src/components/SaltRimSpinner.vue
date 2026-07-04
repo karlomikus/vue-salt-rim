@@ -6,19 +6,22 @@
 </template>
 
 <script setup lang="ts">
-withDefaults(defineProps<{
-    color?: string;
-    size?: number;
-}>(), {
-    color: '#693057',
-    size: 32,
-});
+withDefaults(
+    defineProps<{
+        color?: string;
+        size?: number;
+    }>(),
+    {
+        color: "#693057",
+        size: 32,
+    },
+);
 </script>
 
 <style scoped>
 .spinner {
     animation-name: rotation;
-    animation-duration: .4s;
+    animation-duration: 0.4s;
     animation-iteration-count: infinite;
     transform-origin: 50% 50%;
     animation-timing-function: linear;

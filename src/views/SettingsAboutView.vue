@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import AboutInfo from '@/components/Settings/AboutInfo.vue';
+import AboutInfo from "@/components/Settings/AboutInfo.vue";
 </script>
 
 <template>

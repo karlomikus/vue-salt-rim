@@ -25,7 +25,7 @@
     justify-content: center;
     z-index: var(--z-overlay-loader);
     backdrop-filter: blur(1px);
-    opacity: .5;
+    opacity: 0.5;
     filter: blur(10px);
 }
 
@@ -39,7 +39,7 @@
     top: 0;
     transform: translateX(-100%);
     z-index: 1;
-    background: linear-gradient(90deg,rgba(255, 166, 255, 0),rgba(255, 166, 255, 0.7),rgba(166, 222, 255, 0.7),rgba(255, 166, 255, 0));
+    background: linear-gradient(90deg, rgba(255, 166, 255, 0), rgba(255, 166, 255, 0.7), rgba(166, 222, 255, 0.7), rgba(255, 166, 255, 0));
 }
 
 .dark-theme .gen-loader {

@@ -1,34 +1,32 @@
 <template>
-    <div v-if="!meilisearchRunning" class="status-check">
-        Unable to connect to the Meilisearch server at "{{ appState.bar.search_host }}". Some features will be missing.
-    </div>
+    <div v-if="!meilisearchRunning" class="status-check">Unable to connect to the Meilisearch server at "{{ appState.bar.search_host }}". Some features will be missing.</div>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
-import AppState from '../AppState'
+import { ref } from "vue";
+import AppState from "../AppState";
 
-const appState = new AppState()
-const meilisearchRunning = ref(true)
+const appState = new AppState();
+const meilisearchRunning = ref(true);
 
 function testMeilisearch() {
-    if (appState.bar.search_host === '' || appState.bar.search_host === null) {
+    if (appState.bar.search_host === "" || appState.bar.search_host === null) {
         return;
     }
 
     fetch(`${appState.bar.search_host}/health`)
-        .then(res => res.json())
-        .then(data => {
-            if (data.status !== 'available') {
-                meilisearchRunning.value = false
+        .then((res) => res.json())
+        .then((data) => {
+            if (data.status !== "available") {
+                meilisearchRunning.value = false;
             }
         })
         .catch(() => {
-            meilisearchRunning.value = false
-        })
+            meilisearchRunning.value = false;
+        });
 }
 
-testMeilisearch()
+testMeilisearch();
 </script>
 
 <style scoped>

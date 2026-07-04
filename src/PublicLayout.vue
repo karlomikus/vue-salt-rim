@@ -1,29 +1,29 @@
 <script setup lang="ts">
-import { RouterView } from 'vue-router'
-import { useRoute } from 'vue-router'
-import BarAssistantClient from '@/api/BarAssistantClient'
-import { ref } from 'vue'
-import type { components } from '@/api/api'
-import BarShow from '@/components/Public/PublicBarShow.vue'
+import { RouterView } from "vue-router";
+import { useRoute } from "vue-router";
+import BarAssistantClient from "@/api/BarAssistantClient";
+import { ref } from "vue";
+import type { components } from "@/api/api";
+import BarShow from "@/components/Public/PublicBarShow.vue";
 
-type Bar = components['schemas']['PublicBarResource']
+type Bar = components["schemas"]["PublicBarResource"];
 
-const route = useRoute()
-const barId = route.params.barId.toString()
-const bar = ref<Bar|null>(null)
+const route = useRoute();
+const barId = route.params.barId.toString();
+const bar = ref<Bar | null>(null);
 
 const fetchBar = async () => {
     try {
-        const resp = (await BarAssistantClient.getPublicBar(barId))?.data
+        const resp = (await BarAssistantClient.getPublicBar(barId))?.data;
         if (resp) {
-            bar.value = resp
+            bar.value = resp;
         }
     } catch (error) {
-        window.location.href = '/'
+        window.location.href = "/";
     }
-}
+};
 
-fetchBar()
+fetchBar();
 </script>
 
 <template>
@@ -34,9 +34,7 @@ fetchBar()
         </main>
     </div>
     <div class="public-layout-footer">
-        <main>
-            Powered by <a href="https://barassistant.app/">Bar Assistant</a>
-        </main>
+        <main>Powered by <a href="https://barassistant.app/">Bar Assistant</a></main>
     </div>
 </template>
 

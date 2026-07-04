@@ -1,5 +1,5 @@
-<script setup>
-import Bars from '../components/Bar/BarIndex.vue'
+<script setup lang="ts">
+import Bars from "../components/Bar/BarIndex.vue";
 </script>
 
 <template>

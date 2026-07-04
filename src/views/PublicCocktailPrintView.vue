@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import { ref, onMounted, nextTick } from 'vue';
-import { useRoute } from 'vue-router';
-import BarAssistantClient from '@/api/BarAssistantClient';
-import AppState from '@/AppState';
-import PrintCocktail from '@/components/Print/PrintCocktail.vue';
-import { mapPublicCocktailToPrintModel, type CocktailPrintModel } from '@/components/Print/types';
+import { ref, onMounted, nextTick } from "vue";
+import { useRoute } from "vue-router";
+import BarAssistantClient from "@/api/BarAssistantClient";
+import AppState from "@/AppState";
+import PrintCocktail from "@/components/Print/PrintCocktail.vue";
+import { mapPublicCocktailToPrintModel, type CocktailPrintModel } from "@/components/Print/types";
 
 const route = useRoute();
 const appState = new AppState();
@@ -37,11 +37,11 @@ onMounted(async () => {
             window.print();
         });
 
-        window.addEventListener('afterprint', () => {
+        window.addEventListener("afterprint", () => {
             window.close();
         });
     } catch (e: unknown) {
-        console.error('Failed to fetch cocktail for print:', e);
+        console.error("Failed to fetch cocktail for print:", e);
     }
 });
 </script>

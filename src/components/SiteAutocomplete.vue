@@ -1,32 +1,44 @@
 <template>
     <form class="site-autocomplete" novalidate @keyup.esc="close">
-        <div class="dialog-title">{{ $t('search.title') }}</div>
+        <div class="dialog-title">{{ $t("search.title") }}</div>
         <OverlayLoader v-if="isLoading"></OverlayLoader>
         <ais-instant-search v-if="searchClient" :search-client="searchClient" index-name="cocktails" :future="{ preserveSharedStateOnUnmount: true }">
             <ais-configure :hits-per-page.camel="5" :restrict-searchable-attributes.camel="['name']" />
             <ais-search-box autofocus>
                 <template #default="{ currentRefinement, refine }">
                     {{ doFocus() }}
-                    <input ref="siteSearchInput" class="form-input" type="search" :placeholder="$t('placeholder.site-search')" :value="currentRefinement" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" maxlength="512" @input="refine($event.currentTarget.value)">
+                    <input
+                        ref="siteSearchInput"
+                        class="form-input"
+                        type="search"
+                        :placeholder="$t('placeholder.site-search')"
+                        :value="currentRefinement"
+                        autocomplete="off"
+                        autocorrect="off"
+                        autocapitalize="off"
+                        spellcheck="false"
+                        maxlength="512"
+                        @input="refine($event.currentTarget.value)"
+                    />
                 </template>
             </ais-search-box>
             <ais-index index-name="cocktails">
                 <ais-hits>
                     <template #default="{ items }">
-                        <h4 class="site-autocomplete__index-name">&mdash; {{ $t('cocktail.cocktails') }} ({{ items.length }})</h4>
+                        <h4 class="site-autocomplete__index-name">&mdash; {{ $t("cocktail.cocktails") }} ({{ items.length }})</h4>
                         <ul v-show="items.length > 0" class="site-autocomplete__results block-container block-container--inset">
                             <li v-for="hit in items" :key="hit.slug">
                                 <RouterLink class="block-container block-container--hover" :to="{ name: 'cocktails.show', params: { id: hit.slug } }" @click="close">
                                     <div class="site-autocomplete__results__image" :style="{ 'background-image': 'url(' + getImageUrl(hit, 'cocktail') + ')' }"></div>
                                     <div class="site-autocomplete__results__content">
                                         <ais-highlight attribute="name" :hit="hit" />
-                                        <small>{{ hit.short_ingredients.join(', ') }}</small>
+                                        <small>{{ hit.short_ingredients.join(", ") }}</small>
                                     </div>
                                 </RouterLink>
                             </li>
                         </ul>
                         <div v-show="items.length <= 0" class="block-container block-container--padded block-container--inset">
-                            {{ $t('cocktails-not-found') }}
+                            {{ $t("cocktails-not-found") }}
                         </div>
                     </template>
                 </ais-hits>
@@ -34,7 +46,7 @@
             <ais-index index-name="ingredients">
                 <ais-hits>
                     <template #default="{ items }">
-                        <h4 class="site-autocomplete__index-name">&mdash; {{ $t('ingredient.ingredients') }} ({{ items.length }})</h4>
+                        <h4 class="site-autocomplete__index-name">&mdash; {{ $t("ingredient.ingredients") }} ({{ items.length }})</h4>
                         <ul v-show="items.length > 0" class="site-autocomplete__results block-container block-container--inset">
                             <li v-for="hit in items" :key="hit.slug">
                                 <RouterLink class="block-container block-container--hover" :to="{ name: 'ingredients.show', params: { id: hit.slug } }" @click="close">
@@ -47,26 +59,24 @@
                             </li>
                         </ul>
                         <div v-show="items.length <= 0" class="block-container block-container--padded block-container--inset">
-                            {{ $t('ingredients-not-found') }}
+                            {{ $t("ingredients-not-found") }}
                         </div>
                     </template>
                 </ais-hits>
             </ais-index>
         </ais-instant-search>
-        <footer class="site-autocomplete__footer block-container block-container--inset">
-            <span>Esc</span> to close, <span>CTRL+K</span> to toggle
-        </footer>
+        <footer class="site-autocomplete__footer block-container block-container--inset"><span>Esc</span> to close, <span>CTRL+K</span> to toggle</footer>
     </form>
 </template>
 
 <script>
-import { instantMeiliSearch } from '@meilisearch/instant-meilisearch'
-import BarAssistantClient from '@/api/BarAssistantClient'
-import OverlayLoader from './OverlayLoader.vue'
-import AppState from '../AppState'
+import { instantMeiliSearch } from "@meilisearch/instant-meilisearch";
+import BarAssistantClient from "@/api/BarAssistantClient";
+import OverlayLoader from "./OverlayLoader.vue";
+import AppState from "../AppState";
 
 export default {
-    emits: ['closeAutocomplete'],
+    emits: ["closeAutocomplete"],
     components: {
         OverlayLoader,
     },
@@ -74,47 +84,46 @@ export default {
         return {
             searchClient: null,
             isLoading: false,
-        }
+        };
     },
     created() {
-        const appState = new AppState()
+        const appState = new AppState();
 
-        this.isLoading = true
-        BarAssistantClient.getBar(appState.bar.id).then(resp => {
-            this.isLoading = false
-            this.searchClient = instantMeiliSearch(
-                appState.bar.search_host,
-                resp.data.search_token,
-            ).searchClient
-        }).catch(e => {
-            this.isLoading = false
-            this.$toast.error(e.message)
-        })
+        this.isLoading = true;
+        BarAssistantClient.getBar(appState.bar.id)
+            .then((resp) => {
+                this.isLoading = false;
+                this.searchClient = instantMeiliSearch(appState.bar.search_host, resp.data.search_token).searchClient;
+            })
+            .catch((e) => {
+                this.isLoading = false;
+                this.$toast.error(e.message);
+            });
     },
     methods: {
         close() {
-            this.$emit('closeAutocomplete')
+            this.$emit("closeAutocomplete");
         },
         getImageUrl(hit, type) {
             if (!hit.image_url) {
-                if (type == 'cocktail') {
-                    return '/no-cocktail.jpg'
+                if (type == "cocktail") {
+                    return "/no-cocktail.jpg";
                 }
 
-                return '/no-ingredient.png'
+                return "/no-ingredient.png";
             }
 
-            return hit.image_url
+            return hit.image_url;
         },
         doFocus() {
             this.$nextTick(() => {
                 if (this.$refs.siteSearchInput) {
-                    this.$refs.siteSearchInput.focus()
+                    this.$refs.siteSearchInput.focus();
                 }
-            })
-        }
-    }
-}
+            });
+        },
+    },
+};
 </script>
 
 <style scoped>

@@ -3,9 +3,9 @@
         <OverlayLoader v-if="isLoading" />
         <EmptyState v-if="collections.length == 0">
             <template #icon><span></span></template>
-            {{ $t('cocktail-no-collection') }}
-            <br>
-            <a href="#" @click.prevent="$emit('addToCollection')">{{ $t('collections.add-to') }}</a>
+            {{ $t("cocktail-no-collection") }}
+            <br />
+            <a href="#" @click.prevent="$emit('addToCollection')">{{ $t("collections.add-to") }}</a>
         </EmptyState>
         <template v-else>
             <div class="block-container block-container--inset" style="padding: 0.5rem">
@@ -13,83 +13,87 @@
                     <h3>{{ collection.name }}</h3>
                     <div class="cocktail-collections__item__actions">
                         <RouterLink :to="{ name: 'cocktails', query: { 'filter[collection_id]': collection.id } }">
-                            {{ $t('view') }}
+                            {{ $t("view") }}
                         </RouterLink>
                         &middot;
                         <a href="#" @click.prevent="removeCocktailFromCollection(collection.id)">
-                            {{ $t('remove-cocktail-from-collection') }}
+                            {{ $t("remove-cocktail-from-collection") }}
                         </a>
                     </div>
                 </div>
-                <a href="#" @click.prevent="$emit('addToCollection')">{{ $t('collections.add-to') }}</a>
+                <a href="#" @click.prevent="$emit('addToCollection')">{{ $t("collections.add-to") }}</a>
             </div>
         </template>
     </div>
 </template>
 <script>
-import BarAssistantClient from '@/api/BarAssistantClient';
-import OverlayLoader from './../OverlayLoader.vue'
-import EmptyState from '../EmptyState.vue'
+import BarAssistantClient from "@/api/BarAssistantClient";
+import OverlayLoader from "./../OverlayLoader.vue";
+import EmptyState from "../EmptyState.vue";
 
 export default {
     components: {
         OverlayLoader,
-        EmptyState
+        EmptyState,
     },
     props: {
         cocktail: {
             type: Object,
             default() {
-                return {}
-            }
-        }
+                return {};
+            },
+        },
     },
-    emits: ['cocktailRemovedFromCollection', 'addToCollection'],
+    emits: ["cocktailRemovedFromCollection", "addToCollection"],
     data() {
         return {
             isLoading: false,
-            collections: []
-        }
+            collections: [],
+        };
     },
     watch: {
         cocktail() {
-            this.fetchCocktailCollections()
-        }
+            this.fetchCocktailCollections();
+        },
     },
     created() {
-        this.fetchCocktailCollections()
+        this.fetchCocktailCollections();
     },
     methods: {
         fetchCocktailCollections() {
-            this.isLoading = true
-            BarAssistantClient.getCollections({ 'filter[cocktail_id]': this.cocktail.id, include: 'cocktails' }).then(resp => {
-                this.collections = resp.data
-                this.isLoading = false
-            }).catch(() => {
-                this.collections = []
-                this.isLoading = false
-            })
+            this.isLoading = true;
+            BarAssistantClient.getCollections({ "filter[cocktail_id]": this.cocktail.id, include: "cocktails" })
+                .then((resp) => {
+                    this.collections = resp.data;
+                    this.isLoading = false;
+                })
+                .catch(() => {
+                    this.collections = [];
+                    this.isLoading = false;
+                });
         },
         removeCocktailFromCollection(collectionId) {
-            this.$confirm(this.$t('collections.confirm-remove-cocktail'), {
+            this.$confirm(this.$t("collections.confirm-remove-cocktail"), {
                 onResolved: (dialog) => {
-                    this.isLoading = true
-                    dialog.close()
-                    const existingCollectionCocktailIds = this.collections.find(c => c.id == collectionId).cocktails.map(c => c.id)
-                    existingCollectionCocktailIds.splice(existingCollectionCocktailIds.indexOf(this.cocktail.id), 1)
-                    BarAssistantClient.syncCollectionCocktails(collectionId, existingCollectionCocktailIds).then(() => {
-                        this.$toast.default(this.$t('collections.cocktail-remove-success'))
-                        this.$emit('cocktailRemovedFromCollection', this.cocktail.slug)
-                        this.isLoading = false
-                    }).catch(e => {
-                        this.$toast.error(e.message)
-                        this.isLoading = false
-                    })
-                }
-            })
+                    this.isLoading = true;
+                    dialog.close();
+                    const existingCollectionCocktailIds = this.collections.find((c) => c.id == collectionId).cocktails.map((c) => c.id);
+                    existingCollectionCocktailIds.splice(existingCollectionCocktailIds.indexOf(this.cocktail.id), 1);
+                    BarAssistantClient.syncCollectionCocktails(collectionId, existingCollectionCocktailIds)
+                        .then(() => {
+                            this.$toast.default(this.$t("collections.cocktail-remove-success"));
+                            this.$emit("cocktailRemovedFromCollection", this.cocktail.slug);
+                            this.isLoading = false;
+                        })
+                        .catch((e) => {
+                            this.$toast.error(e.message);
+                            this.isLoading = false;
+                        });
+                },
+            });
         },
-    }
-}
+    },
+};
 </script>
 <style scoped>
 .cocktail-collections__item {

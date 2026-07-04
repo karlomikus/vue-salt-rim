@@ -1,10 +1,10 @@
 <template>
     <PageHeader>
-        {{ $t('users.title') }}
+        {{ $t("users.title") }}
         <template v-if="appState.isSubscribed()" #actions>
             <SaltRimDialog v-model="showDialog">
                 <template #trigger>
-                    <button type="button" class="button button--dark" @click.prevent="openDialog($t('users.add'), {role: {}})">{{ $t('users.add') }}</button>
+                    <button type="button" class="button button--dark" @click.prevent="openDialog($t('users.add'), { role: {} })">{{ $t("users.add") }}</button>
                 </template>
                 <template #dialog>
                     <UserForm :source-user="editUser" :dialog-title="dialogTitle" @user-dialog-closed="refreshUsers" />
@@ -23,8 +23,8 @@
                 <table class="table">
                     <thead>
                         <tr>
-                            <th>{{ $t('users.display-name') }} / {{ $t('email') }}</th>
-                            <th>{{ $t('users.role') }}</th>
+                            <th>{{ $t("users.display-name") }} / {{ $t("email") }}</th>
+                            <th>{{ $t("users.role") }}</th>
                             <th></th>
                         </tr>
                     </thead>
@@ -32,14 +32,14 @@
                         <tr v-for="user in users" :key="user.id">
                             <td>
                                 <a href="#" @click.prevent="openDialog($t('users.edit'), user)">{{ user.name }}</a>
-                                <br>
+                                <br />
                                 <small>{{ user.email }}</small>
                             </td>
                             <td>
-                                {{ $t('roles.name.' + user.role.name) }}
+                                {{ $t("roles.name." + user.role.name) }}
                             </td>
-                            <td style="text-align: right;">
-                                <a v-if="user.id != appState.user.id" class="list-group__action" href="#" @click.prevent="deleteUser(user)">{{ $t('remove-from-bar') }}</a>
+                            <td style="text-align: right">
+                                <a v-if="user.id != appState.user.id" class="list-group__action" href="#" @click.prevent="deleteUser(user)">{{ $t("remove-from-bar") }}</a>
                             </td>
                         </tr>
                     </tbody>
@@ -50,15 +50,15 @@
 </template>
 
 <script>
-import BarAssistantClient from '@/api/BarAssistantClient'
-import OverlayLoader from '@/components/OverlayLoader.vue'
-import PageHeader from '@/components/PageHeader.vue'
-import Navigation from '@/components/Settings/SettingsNavigation.vue'
-import SaltRimDialog from '@/components/Dialog/SaltRimDialog.vue'
-import UserForm from '@/components/Settings/UserForm.vue'
-import AppState from '../../AppState'
-import SubscriptionCheck from '../SubscriptionCheck.vue'
-import { useTitle } from '@/composables/title'
+import BarAssistantClient from "@/api/BarAssistantClient";
+import OverlayLoader from "@/components/OverlayLoader.vue";
+import PageHeader from "@/components/PageHeader.vue";
+import Navigation from "@/components/Settings/SettingsNavigation.vue";
+import SaltRimDialog from "@/components/Dialog/SaltRimDialog.vue";
+import UserForm from "@/components/Settings/UserForm.vue";
+import AppState from "../../AppState";
+import SubscriptionCheck from "../SubscriptionCheck.vue";
+import { useTitle } from "@/composables/title";
 
 export default {
     components: {
@@ -67,58 +67,62 @@ export default {
         PageHeader,
         SaltRimDialog,
         UserForm,
-        SubscriptionCheck
+        SubscriptionCheck,
     },
     data() {
         return {
             appState: new AppState(),
             isLoading: false,
             showDialog: false,
-            dialogTitle: 'User data',
+            dialogTitle: "User data",
             editUser: {
-                role: {}
+                role: {},
             },
             users: [],
-        }
+        };
     },
     created() {
-        useTitle(this.$t('users.title'))
+        useTitle(this.$t("users.title"));
 
-        this.refreshUsers()
+        this.refreshUsers();
     },
     methods: {
         refreshUsers() {
-            this.showDialog = false
-            this.isLoading = true
-            BarAssistantClient.getUsers().then(resp => {
-                this.users = resp.data
-                this.isLoading = false
-            }).catch(e => {
-                this.$toast.error(e.message)
-            })
+            this.showDialog = false;
+            this.isLoading = true;
+            BarAssistantClient.getUsers()
+                .then((resp) => {
+                    this.users = resp.data;
+                    this.isLoading = false;
+                })
+                .catch((e) => {
+                    this.$toast.error(e.message);
+                });
         },
         openDialog(title, obj) {
-            this.dialogTitle = title
-            this.editUser = obj
-            this.showDialog = true
+            this.dialogTitle = title;
+            this.editUser = obj;
+            this.showDialog = true;
         },
         deleteUser(user) {
-            const appState = new AppState()
-            this.$confirm(this.$t('users.confirm-delete', {name: user.name}), {
+            const appState = new AppState();
+            this.$confirm(this.$t("users.confirm-delete", { name: user.name }), {
                 onResolved: (dialog) => {
-                    this.isLoading = true
-                    dialog.close()
-                    BarAssistantClient.removeUserFromBar(user.id).then(() => {
-                        this.isLoading = false
-                        this.$toast.default(this.$t('users.delete-success'))
-                        this.refreshUsers()
-                    }).catch(e => {
-                        this.$toast.error(e.message)
-                        this.isLoading = false
-                    })
-                }
-            })
-        }
-    }
-}
+                    this.isLoading = true;
+                    dialog.close();
+                    BarAssistantClient.removeUserFromBar(user.id)
+                        .then(() => {
+                            this.isLoading = false;
+                            this.$toast.default(this.$t("users.delete-success"));
+                            this.refreshUsers();
+                        })
+                        .catch((e) => {
+                            this.$toast.error(e.message);
+                            this.isLoading = false;
+                        });
+                },
+            });
+        },
+    },
+};
 </script>

@@ -13,49 +13,53 @@
                 <ToggleIngredientBarShelf v-if="ingredient.in_bar_shelf !== undefined" :ingredient="ingredient" v-model="ingredient.in_bar_shelf"></ToggleIngredientBarShelf>
                 &middot;
             </template>
-            <ToggleIngredientShoppingCart v-if="ingredient.in_shopping_list !== undefined" :ingredient="ingredient" v-model="ingredient.in_shopping_list"></ToggleIngredientShoppingCart>
+            <ToggleIngredientShoppingCart
+                v-if="ingredient.in_shopping_list !== undefined"
+                :ingredient="ingredient"
+                v-model="ingredient.in_shopping_list"
+            ></ToggleIngredientShoppingCart>
         </div>
     </div>
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'
-import IngredientImage from './IngredientImage.vue'
-import removeMd from 'remove-markdown'
-import ToggleIngredientShoppingCart from '@/components/ToggleIngredientShoppingCart.vue'
-import ToggleIngredientBarShelf from '@/components/ToggleIngredientBarShelf.vue'
-import AppState from '@/AppState'
-import type { components } from '@/api/api'
+import { computed } from "vue";
+import IngredientImage from "./IngredientImage.vue";
+import removeMd from "remove-markdown";
+import ToggleIngredientShoppingCart from "@/components/ToggleIngredientShoppingCart.vue";
+import ToggleIngredientBarShelf from "@/components/ToggleIngredientBarShelf.vue";
+import AppState from "@/AppState";
+import type { components } from "@/api/api";
 
-type Ingredient = components['schemas']['Ingredient']
+type Ingredient = components["schemas"]["Ingredient"];
 
 const props = defineProps<{
-    ingredient: Ingredient
-}>()
+    ingredient: Ingredient;
+}>();
 
 const showBarShelf = computed(() => {
     const appState = new AppState();
 
-    return appState.isAdmin()
-})
+    return appState.isAdmin();
+});
 
 const cleanDescription = computed(() => {
     if (!props.ingredient.description) {
-        return ''
+        return "";
     }
 
-    const text = removeMd(props.ingredient.description)
+    const text = removeMd(props.ingredient.description);
 
-    return text.length > 100 ? text.substring(0, 100) + '...' : text
-})
+    return text.length > 100 ? text.substring(0, 100) + "..." : text;
+});
 
 const defaultImage = computed(() => {
     if (!props.ingredient.images || props.ingredient.images.length === 0) {
-        return null
+        return null;
     }
 
-    return props.ingredient.images[0]?.url ?? null
-})
+    return props.ingredient.images[0]?.url ?? null;
+});
 </script>
 
 <style scoped>

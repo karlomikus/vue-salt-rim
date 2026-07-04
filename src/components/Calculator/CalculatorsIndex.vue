@@ -1,93 +1,98 @@
 <script setup lang="ts">
-import { ref } from 'vue'
-import type { components } from '@/api/api'
-import BarAssistantClient from '@/api/BarAssistantClient';
-import PageHeader from '../PageHeader.vue';
-import CalculatorRender from './CalculatorRender.vue';
-import OverlayLoader from './../OverlayLoader.vue'
-import { useConfirm } from '@/composables/confirm';
-import { useTitle } from '@/composables/title'
-import { useI18n } from 'vue-i18n';
-import { RouterLink } from 'vue-router';
-import { useSaltRimToast } from '@/composables/toast'
-import EmptyState from './../EmptyState.vue'
-import IconCalculator from '../Icons/IconCalculator.vue';
-import { useClipboard } from '@vueuse/core'
-import CalculatorImportDialog from './CalculatorImportDialog.vue';
-import SaltRimDialog from './../Dialog/SaltRimDialog.vue'
+import { ref } from "vue";
+import type { components } from "@/api/api";
+import BarAssistantClient from "@/api/BarAssistantClient";
+import PageHeader from "../PageHeader.vue";
+import CalculatorRender from "./CalculatorRender.vue";
+import OverlayLoader from "./../OverlayLoader.vue";
+import { useConfirm } from "@/composables/confirm";
+import { useTitle } from "@/composables/title";
+import { useI18n } from "vue-i18n";
+import { RouterLink } from "vue-router";
+import { useSaltRimToast } from "@/composables/toast";
+import EmptyState from "./../EmptyState.vue";
+import IconCalculator from "../Icons/IconCalculator.vue";
+import { useClipboard } from "@vueuse/core";
+import CalculatorImportDialog from "./CalculatorImportDialog.vue";
+import SaltRimDialog from "./../Dialog/SaltRimDialog.vue";
 
-type Calculator = components["schemas"]["Calculator"]
+type Calculator = components["schemas"]["Calculator"];
 
-const { t } = useI18n()
-const toast = useSaltRimToast()
-const confirm = useConfirm()
-const calculators = ref<Calculator[]>([])
-const isLoading = ref<boolean>(false)
-const showImportDialog = ref<boolean>(false)
-const { copy, copied, isSupported } = useClipboard()
+const { t } = useI18n();
+const toast = useSaltRimToast();
+const confirm = useConfirm();
+const calculators = ref<Calculator[]>([]);
+const isLoading = ref<boolean>(false);
+const showImportDialog = ref<boolean>(false);
+const { copy, copied, isSupported } = useClipboard();
 
-useTitle(t('calculators.title'))
+useTitle(t("calculators.title"));
 
 async function fetchCalculators() {
-    isLoading.value = true
+    isLoading.value = true;
     try {
-        calculators.value = (await BarAssistantClient.getCalculators())?.data ?? [] as Calculator[]
+        calculators.value = (await BarAssistantClient.getCalculators())?.data ?? ([] as Calculator[]);
     } catch (e: any) {
-        return
+        return;
     } finally {
-        isLoading.value = false
+        isLoading.value = false;
     }
 }
 
 async function removeCalculator(calc: Calculator) {
-    confirm.show(t('calculators.delete-confirm', {name: calc.name}), {
+    confirm.show(t("calculators.delete-confirm", { name: calc.name }), {
         onResolved: (dialog: any) => {
-            dialog.close()
-            isLoading.value = true
-            BarAssistantClient.deleteCalculator(calc.id).then(() => {
-                toast.default(t('calculators.delete-success'))
-                fetchCalculators()
-            }).catch((e: any) => {
-                toast.error(e.message)
-            }).finally(() => {
-                isLoading.value = false
-            })
-        }
-    })
+            dialog.close();
+            isLoading.value = true;
+            BarAssistantClient.deleteCalculator(calc.id)
+                .then(() => {
+                    toast.default(t("calculators.delete-success"));
+                    fetchCalculators();
+                })
+                .catch((e: any) => {
+                    toast.error(e.message);
+                })
+                .finally(() => {
+                    isLoading.value = false;
+                });
+        },
+    });
 }
 
 async function share(calc: Calculator) {
     if (!isSupported.value) {
-        toast.error(t('permissions.clipboard-error'))
-        return
+        toast.error(t("permissions.clipboard-error"));
+        return;
     }
 
     const { id, ...withoutId } = calc;
 
-    const source = JSON.stringify(withoutId)
-    await copy(source)
+    const source = JSON.stringify(withoutId);
+    await copy(source);
 
     if (copied.value) {
-        toast.default(t('calculators.copy-success'))
+        toast.default(t("calculators.copy-success"));
     }
 }
 
-fetchCalculators()
+fetchCalculators();
 </script>
 
 <template>
     <PageHeader>
-        {{ t('calculators.title') }}
+        {{ t("calculators.title") }}
         <template #actions>
             <SaltRimDialog v-model="showImportDialog">
                 <template #trigger>
-                    <button type="button" class="button button--outline" @click.prevent="showImportDialog = !showImportDialog">{{ $t('calculators.import') }}</button>
+                    <button type="button" class="button button--outline" @click.prevent="showImportDialog = !showImportDialog">
+                        {{ $t("calculators.import") }}
+                    </button>
                 </template>
                 <template #dialog>
                     <CalculatorImportDialog @closed="showImportDialog = false" @imported="fetchCalculators" />
                 </template>
             </SaltRimDialog>
-            <RouterLink class="button button--dark" :to="{ name: 'calculators.form' }">{{ t('calculators.add') }}</RouterLink>
+            <RouterLink class="button button--dark" :to="{ name: 'calculators.form' }">{{ t("calculators.add") }}</RouterLink>
         </template>
     </PageHeader>
     <div>
@@ -96,7 +101,9 @@ fetchCalculators()
             <div v-for="calc in calculators" :key="calc.id" class="block-container block-container--padded calculators__calculator">
                 <CalculatorRender :calculator="calc"></CalculatorRender>
                 <div class="calculators__calculator__actions">
-                    <RouterLink :to="{ name: 'calculators.form', query: { id: calc.id } }">{{ t('edit') }}</RouterLink> &middot; <a href="#" @click.prevent="share(calc)">{{ t('share.title') }}</a> &middot; <a href="#" @click.prevent="removeCalculator(calc)">{{ t('remove') }}</a>
+                    <RouterLink :to="{ name: 'calculators.form', query: { id: calc.id } }">{{ t("edit") }}</RouterLink> &middot;
+                    <a href="#" @click.prevent="share(calc)">{{ t("share.title") }}</a> &middot;
+                    <a href="#" @click.prevent="removeCalculator(calc)">{{ t("remove") }}</a>
                 </div>
             </div>
         </div>
@@ -105,7 +112,7 @@ fetchCalculators()
                 <IconCalculator />
             </template>
             <template #default>
-                {{ $t('calculators.empty') }}
+                {{ $t("calculators.empty") }}
             </template>
         </EmptyState>
     </div>

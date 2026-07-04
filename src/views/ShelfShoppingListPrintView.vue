@@ -1,5 +1,5 @@
-<script setup>
-import ShoppingList from '../components/Print/PrintShoppingList.vue'
+<script setup lang="ts">
+import ShoppingList from "../components/Print/PrintShoppingList.vue";
 </script>
 
 <template>

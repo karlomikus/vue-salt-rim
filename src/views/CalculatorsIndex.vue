@@ -1,5 +1,5 @@
-<script setup>
-import CalculatorsIndex from '../components/Calculator/CalculatorsIndex.vue'
+<script setup lang="ts">
+import CalculatorsIndex from "../components/Calculator/CalculatorsIndex.vue";
 </script>
 
 <template>

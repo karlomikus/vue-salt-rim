@@ -1,9 +1,9 @@
 export function useBasicSearch() {
-    const currentDriver = window.srConfig.MEILISEARCH_URL
+    const currentDriver = window.srConfig.MEILISEARCH_URL;
 
-    if (currentDriver == '' || currentDriver == null) {
-        return true
+    if (currentDriver == "" || currentDriver == null) {
+        return true;
     }
 
-    return false
+    return false;
 }

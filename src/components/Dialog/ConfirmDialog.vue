@@ -1,16 +1,16 @@
 <template>
     <Teleport to="body">
         <Transition name="dialog-animation">
-            <div v-if="shown" class="dialog" style="z-index: 6;">
+            <div v-if="shown" class="dialog" style="z-index: 6">
                 <div class="dialog__overlay"></div>
                 <div class="dialog__container">
                     <div class="dialog__content">
                         <div class="dialog-confirm">
-                            <h6 class="dialog-confirm__title">{{ $t('confirm-dialog.title') }}</h6>
+                            <h6 class="dialog-confirm__title">{{ $t("confirm-dialog.title") }}</h6>
                             <p class="dialog-confirm__message">{{ body }}</p>
                             <div class="dialog-confirm__actions">
-                                <button class="button button--outline" @click.prevent="cancel">{{ $t('cancel') }}</button>
-                                <button class="button button--dark" @click.prevent="confirm">{{ $t('confirm') }}</button>
+                                <button class="button button--outline" @click.prevent="cancel">{{ $t("cancel") }}</button>
+                                <button class="button button--dark" @click.prevent="confirm">{{ $t("confirm") }}</button>
                             </div>
                         </div>
                     </div>
@@ -21,48 +21,48 @@
 </template>
 
 <script>
-import { dialogBus } from '@/composables/eventBus'
+import { dialogBus } from "@/composables/eventBus";
 
 export default {
     data() {
         return {
             shown: false,
-            resolve: null
-        }
+            resolve: null,
+        };
     },
     watch: {
         shown(val) {
             if (val) {
-                document.body.style.overflow = 'hidden'
+                document.body.style.overflow = "hidden";
             } else {
-                document.body.style.overflow = 'auto'
+                document.body.style.overflow = "auto";
             }
-        }
+        },
     },
     mounted() {
         dialogBus.on((e, payload) => {
-            if (e === 'requestConfirm') {
-                this.show(payload)
+            if (e === "requestConfirm") {
+                this.show(payload);
             }
-        })
+        });
     },
     methods: {
         show(payload) {
-            this.body = payload.body
-            this.resolve = payload.onResolved
-            this.shown = true
+            this.body = payload.body;
+            this.resolve = payload.onResolved;
+            this.shown = true;
         },
         confirm() {
-            this.resolve(this)
+            this.resolve(this);
         },
         cancel() {
-            this.close()
+            this.close();
         },
         close() {
-            this.shown = false
-        }
-    }
-}
+            this.shown = false;
+        },
+    },
+};
 </script>
 
 <style scoped>

@@ -3,7 +3,9 @@
     --dialog-padding: 1.5rem;
     inset: 0;
     position: fixed;
-    transition: opacity 250ms ease, backdrop-filter 250ms ease;
+    transition:
+        opacity 250ms ease,
+        backdrop-filter 250ms ease;
     z-index: var(--z-dialog);
 }
 
@@ -28,7 +30,7 @@
 .dialog-animation-enter-from,
 .dialog-animation-leave-to {
     opacity: 0;
-    backdrop-filter: blur(0)
+    backdrop-filter: blur(0);
 }
 
 .dialog__overlay {

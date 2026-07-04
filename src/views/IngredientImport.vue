@@ -1,5 +1,5 @@
-<script setup>
-import IngredientImport from '../components/Ingredient/IngredientImport.vue'
+<script setup lang="ts">
+import IngredientImport from "../components/Ingredient/IngredientImport.vue";
 </script>
 
 <template>

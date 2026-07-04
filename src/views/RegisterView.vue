@@ -1,5 +1,5 @@
-<script setup>
-import AuthRegister from '../components/Auth/AuthRegister.vue'
+<script setup lang="ts">
+import AuthRegister from "../components/Auth/AuthRegister.vue";
 </script>
 
 <template>

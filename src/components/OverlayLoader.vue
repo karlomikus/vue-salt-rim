@@ -37,7 +37,7 @@
     top: 0;
     transform: translateX(-100%);
     z-index: 1;
-    background: linear-gradient(90deg,rgba(243, 236, 243,0),rgba(243, 236, 243,0.7),rgba(243, 236, 243,0));
+    background: linear-gradient(90deg, rgba(243, 236, 243, 0), rgba(243, 236, 243, 0.7), rgba(243, 236, 243, 0));
 }
 
 .dark-theme .overlay-loader {
@@ -45,6 +45,6 @@
 }
 
 .dark-theme .overlay-loader:after {
-    background: linear-gradient(90deg,rgba(30, 23, 36, 0),rgba(94, 89, 99, 0.9),rgba(30, 23, 36, 0));
+    background: linear-gradient(90deg, rgba(30, 23, 36, 0), rgba(94, 89, 99, 0.9), rgba(30, 23, 36, 0));
 }
 </style>

@@ -1,29 +1,31 @@
 <template>
     <div>
         <OverlayLoader v-if="isLoading" />
-        <div class="dialog-title">{{ t('public-dialog.title') }}</div>
+        <div class="dialog-title">{{ t("public-dialog.title") }}</div>
         <SubscriptionCheck>Subscribe to "Mixologist" plan to share your cocktail recipes!</SubscriptionCheck>
         <p class="public-url">{{ publicUrl }}</p>
-        <p v-show="publicData.public_at != null">{{ t('public-dialog.public_at', { date: createdDate }) }}</p>
-        <div class="dialog-actions" style="margin-top: 1rem;">
-            <button type="button" class="button button--outline" @click="emit('publicDialogClosed')">{{ t('close') }}</button>
-            <button v-if="publicData.public_id" type="button" class="button button--outline" @click="deletePublicLink">{{ t('public-dialog.action-delete') }}</button>
-            <button v-else type="button" class="button button--outline" @click="generatePublicLink">{{ t('public-dialog.action-generate') }}</button>
-            <button type="button" class="button button--dark" :disabled="!publicData.public_at" @click="copyLink">{{ t('public-dialog.action-copy') }}</button>
+        <p v-show="publicData.public_at != null">{{ t("public-dialog.public_at", { date: createdDate }) }}</p>
+        <div class="dialog-actions" style="margin-top: 1rem">
+            <button type="button" class="button button--outline" @click="emit('publicDialogClosed')">{{ t("close") }}</button>
+            <button v-if="publicData.public_id" type="button" class="button button--outline" @click="deletePublicLink">
+                {{ t("public-dialog.action-delete") }}
+            </button>
+            <button v-else type="button" class="button button--outline" @click="generatePublicLink">{{ t("public-dialog.action-generate") }}</button>
+            <button type="button" class="button button--dark" :disabled="!publicData.public_at" @click="copyLink">{{ t("public-dialog.action-copy") }}</button>
         </div>
     </div>
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue';
-import { useI18n } from 'vue-i18n';
-import { useSaltRimToast } from '@/composables/toast';
-import BarAssistantClient from '@/api/BarAssistantClient';
-import OverlayLoader from './../OverlayLoader.vue';
-import SubscriptionCheck from '../SubscriptionCheck.vue';
-import type { components } from '@/api/api';
+import { ref, computed } from "vue";
+import { useI18n } from "vue-i18n";
+import { useSaltRimToast } from "@/composables/toast";
+import BarAssistantClient from "@/api/BarAssistantClient";
+import OverlayLoader from "./../OverlayLoader.vue";
+import SubscriptionCheck from "../SubscriptionCheck.vue";
+import type { components } from "@/api/api";
 
-type Cocktail = components['schemas']['Cocktail'];
+type Cocktail = components["schemas"]["Cocktail"];
 
 const props = defineProps<{
     cocktail: Cocktail;
@@ -47,7 +49,7 @@ const protocol = window.location.protocol;
 
 const publicUrl = computed(() => {
     if (!publicData.value.public_id) {
-        return t('public-dialog.missing');
+        return t("public-dialog.missing");
     }
 
     return `${protocol}//${host}/e/cocktail/${publicData.value.public_id}/${props.cocktail.slug}`;
@@ -60,7 +62,7 @@ const createdDate = computed(() => {
 
     const date = new Date(publicData.value.public_at);
 
-    return d(date, 'long');
+    return d(date, "long");
 });
 
 async function generatePublicLink() {
@@ -99,9 +101,9 @@ async function deletePublicLink() {
 async function copyLink() {
     try {
         await navigator.clipboard.writeText(publicUrl.value);
-        toast.default(t('public-dialog.toasts.copy-success'));
+        toast.default(t("public-dialog.toasts.copy-success"));
     } catch {
-        toast.error(t('public-dialog.toasts.copy-fail'));
+        toast.error(t("public-dialog.toasts.copy-fail"));
     }
 }
 </script>
