@@ -113,8 +113,6 @@ const apiTileData = computed<TileData>(() => {
     };
 });
 
-const BACKEND_RELEASES_URL = "https://github.com/karlomikus/bar-assistant/releases";
-
 async function fetchBackendVersion(): Promise<void> {
     backendVersionError.value = "";
     try {
