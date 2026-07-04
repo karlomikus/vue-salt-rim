@@ -74,6 +74,14 @@ const frontendUpdateStatus = computed<
     return "current";
 });
 
+interface TileData {
+    currentVersion: string;
+    latestVersion: string;
+    isUpToDate: boolean;
+    isLoading: boolean;
+    error: boolean;
+}
+
 const backendUpdateStatus = computed<
     "up-to-date" | "update-available" | "unknown" | "error" | "checking"
 >(() => {
@@ -84,6 +92,40 @@ const backendUpdateStatus = computed<
     if (backendVersion.value.is_latest) return "up-to-date";
     if (backendVersion.value.latest_version) return "update-available";
     return "unknown";
+});
+
+const clientTileData = computed<TileData>(() => {
+    const latestTag = frontendRelease.value?.tag_name ?? "";
+
+    return {
+        currentVersion: isDev.value
+            ? t("about.dev-version")
+            : currentVersion.value,
+        latestVersion: latestTag || t("about.backend-version-unknown"),
+        isUpToDate: frontendUpdateStatus.value === "current",
+        isLoading: isChecking.value,
+        error: frontendUpdateStatus.value === "error" && !frontendRelease.value,
+    };
+});
+
+const apiTileData = computed<TileData>(() => {
+    const bv = backendVersion.value;
+
+    return {
+        currentVersion: bv?.version ?? t("about.backend-version-unknown"),
+        latestVersion:
+            bv?.latest_version ??
+            bv?.version ??
+            t("about.backend-version-unknown"),
+        isUpToDate: backendUpdateStatus.value === "up-to-date",
+        isLoading:
+            isChecking.value &&
+            !backendVersion.value &&
+            !backendVersionError.value,
+        error:
+            backendUpdateStatus.value === "error" ||
+            backendUpdateStatus.value === "unknown",
+    };
 });
 
 const BACKEND_RELEASES_URL =
@@ -128,143 +170,109 @@ onMounted(() => {
         </div>
         <div class="settings-page__content about-info">
             <section class="about-info__version">
-                <div class="about-info__current">
-                    <span class="about-info__label">{{
-                        t("about.version")
-                    }}</span>
-                    <span class="about-info__value">
-                        <template v-if="isDev">
-                            {{ t("about.dev-version") }}
-                        </template>
-                        <template v-else>
-                            {{ currentVersion }}
-                        </template>
-                    </span>
-                </div>
-
-                <div
-                    v-if="isChecking"
-                    class="about-info__status about-info__status--checking"
-                >
-                    {{ t("loading") }}
-                </div>
-
-                <div
-                    v-else-if="
-                        frontendUpdateStatus === 'error' && !frontendRelease
-                    "
-                    class="about-info__status"
-                >
-                    {{ t("about.update-error") }}
-                </div>
-
-                <div
-                    v-else-if="frontendUpdateStatus === 'newer'"
-                    class="about-info__status about-info__status--update"
-                >
-                    {{ t("about.update-available") }}:
-                    <a
-                        :href="frontendRelease!.html_url"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                    >
-                        {{ frontendRelease!.tag_name }}
-                    </a>
-                </div>
-
-                <div
-                    v-else-if="frontendUpdateStatus === 'current'"
-                    class="about-info__status"
-                >
-                    {{ t("about.up-to-date") }}
-                </div>
-
-                <div
-                    v-else-if="frontendUpdateStatus === 'dev'"
-                    class="about-info__status"
-                >
-                    <template v-if="frontendRelease">
-                        {{ t("about.latest-version") }}:
-                        <a
-                            :href="frontendRelease.html_url"
-                            target="_blank"
-                            rel="noopener noreferrer"
+                <div class="about-info__versions">
+                    <div class="block-container about-info__versions__tile">
+                        <h3>{{ t("about.client") }}</h3>
+                        <div v-if="clientTileData.isLoading" class="about-info__tile-checking">
+                            {{ t("loading") }}
+                        </div>
+                        <div v-else class="about-info__tile-body">
+                            <div class="about-info__tile-row">
+                                <span class="about-info__tile-label">{{ t("about.current") }}</span>
+                                <span class="about-info__tile-value"
+                                    :class="{
+                                        'about-info__tile-value--muted':
+                                            clientTileData.currentVersion ===
+                                            '...',
+                                    }"
+                                    >{{ clientTileData.currentVersion }}</span
+                                >
+                            </div>
+                            <div class="about-info__tile-row">
+                                <span class="about-info__tile-label">{{
+                                    t("about.latest")
+                                }}</span>
+                                <span
+                                    class="about-info__tile-value"
+                                    :class="{
+                                        'about-info__tile-value--muted':
+                                            clientTileData.latestVersion ===
+                                            t('about.backend-version-unknown'),
+                                    }"
+                                    >{{ clientTileData.latestVersion }}</span
+                                >
+                            </div>
+                            <div
+                                v-if="clientTileData.isUpToDate"
+                                class="about-info__tile-check"
+                            >
+                                <span class="about-info__tile-checkmark"
+                                    >&#10003;</span
+                                >
+                                {{ t("about.up-to-date") }}
+                            </div>
+                            <div
+                                v-else-if="clientTileData.error"
+                                class="about-info__tile-error"
+                            >
+                                {{ t("about.update-error") }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="block-container about-info__versions__tile">
+                        <h3>{{ t("about.api") }}</h3>
+                        <div
+                            v-if="apiTileData.isLoading"
+                            class="about-info__tile-checking"
                         >
-                            {{ frontendRelease.tag_name }}
-                        </a>
-                    </template>
-                </div>
-
-                <button
-                    class="btn about-info__check-btn"
-                    :disabled="isChecking"
-                    @click="checkForUpdates"
-                >
-                    {{
-                        isChecking
-                            ? t("loading") + "..."
-                            : t("about.check-updates")
-                    }}
-                </button>
-            </section>
-
-            <section class="about-info__version about-info__backend">
-                <h2 class="page-subtitle">{{ t("about.backend-version") }}</h2>
-
-                <div class="about-info__current">
-                    <span class="about-info__label">{{
-                        t("about.version")
-                    }}</span>
-                    <span class="about-info__value">
-                        <template v-if="backendVersion">
-                            {{ backendVersion.version }}
-                        </template>
-                        <template v-else>
-                            {{ t("about.backend-version-unknown") }}
-                        </template>
-                    </span>
-                </div>
-
-                <div
-                    v-if="isChecking && backendUpdateStatus === 'checking'"
-                    class="about-info__status about-info__status--checking"
-                >
-                    {{ t("loading") }}
-                </div>
-
-                <div
-                    v-else-if="backendUpdateStatus === 'error'"
-                    class="about-info__status"
-                >
-                    {{ t("about.backend-update-error") }}
-                </div>
-
-                <div
-                    v-else-if="backendUpdateStatus === 'update-available'"
-                    class="about-info__status about-info__status--update"
-                >
-                    {{ t("about.backend-update-available") }}:
-                    <a
-                        :href="BACKEND_RELEASES_URL"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                    >
-                        {{ backendVersion!.latest_version }}
-                    </a>
-                </div>
-
-                <div
-                    v-else-if="backendUpdateStatus === 'up-to-date'"
-                    class="about-info__status"
-                >
-                    {{ t("about.backend-up-to-date") }}
-                </div>
-
-                <div
-                    v-else-if="backendUpdateStatus === 'unknown'"
-                    class="about-info__status"
-                >
-                    {{ t("about.backend-version-unknown") }}
+                            {{ t("loading") }}
+                        </div>
+                        <div v-else class="about-info__tile-body">
+                            <div class="about-info__tile-row">
+                                <span class="about-info__tile-label">{{
+                                    t("about.current")
+                                }}</span>
+                                <span
+                                    class="about-info__tile-value"
+                                    :class="{
+                                        'about-info__tile-value--muted':
+                                            apiTileData.currentVersion ===
+                                            t('about.backend-version-unknown'),
+                                    }"
+                                    >{{ apiTileData.currentVersion }}</span
+                                >
+                            </div>
+                            <div class="about-info__tile-row">
+                                <span class="about-info__tile-label">{{
+                                    t("about.latest")
+                                }}</span>
+                                <span
+                                    class="about-info__tile-value"
+                                    :class="{
+                                        'about-info__tile-value--muted':
+                                            apiTileData.latestVersion ===
+                                            t('about.backend-version-unknown'),
+                                    }"
+                                    >{{ apiTileData.latestVersion }}</span
+                                >
+                            </div>
+                            <div
+                                v-if="apiTileData.isUpToDate"
+                                class="about-info__tile-check"
+                            >
+                                <span class="about-info__tile-checkmark"
+                                    >&#10003;</span
+                                >
+                                {{ t("about.up-to-date") }}
+                            </div>
+                            <div
+                                v-else-if="apiTileData.error"
+                                class="about-info__tile-error"
+                            >
+                                {{ t("about.backend-update-error") }}
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </section>
 
@@ -315,6 +323,82 @@ onMounted(() => {
     display: flex;
     flex-direction: column;
     gap: var(--gap-size-3);
+}
+
+.about-info__versions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--gap-size-4);
+}
+
+.about-info__versions__tile {
+    display: flex;
+    flex-direction: column;
+    gap: var(--gap-size-3);
+    padding: var(--gap-size-3);
+}
+
+@media (max-width: 600px) {
+    .about-info__versions {
+        grid-template-columns: 1fr;
+    }
+}
+
+.about-info__tile-body {
+    display: flex;
+    flex-direction: column;
+    gap: var(--gap-size-2);
+}
+
+.about-info__tile-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: var(--gap-size-2);
+}
+
+.about-info__tile-label {
+    color: var(--clr-text-muted);
+    font-size: 0.9em;
+}
+
+.about-info__tile-value {
+    font-weight: 600;
+    font-size: 1.05em;
+}
+
+.about-info__tile-value--muted {
+    font-weight: 400;
+    color: var(--clr-text-muted);
+    font-style: italic;
+}
+
+.about-info__tile-check {
+    display: flex;
+    align-items: center;
+    gap: var(--gap-size-1);
+    padding-top: var(--gap-size-1);
+    color: var(--clr-accent, #4a9eff);
+    font-size: 0.9em;
+    font-weight: 500;
+}
+
+.about-info__tile-checkmark {
+    font-size: 1.2em;
+    line-height: 0;
+    color: var(--clr-accent, #4a9eff);
+}
+
+.about-info__tile-checking {
+    color: var(--clr-text-muted);
+    font-style: italic;
+    font-size: 0.9em;
+}
+
+.about-info__tile-error {
+    color: var(--clr-text-muted);
+    font-style: italic;
+    font-size: 0.9em;
 }
 
 .about-info__current {

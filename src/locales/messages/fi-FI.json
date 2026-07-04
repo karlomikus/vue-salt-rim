@@ -769,5 +769,9 @@
   "about.backend-update-available": "Backend update available",
   "about.backend-changelog": "Backend changelog",
   "about.backend-no-release-notes": "No release notes available for this version",
-  "about.backend-update-error": "Unable to retrieve backend version information."
+  "about.backend-update-error": "Unable to retrieve backend version information.",
+  "about.client": "Client",
+  "about.api": "API",
+  "about.current": "Current",
+  "about.latest": "Latest"
 }
