@@ -45,7 +45,7 @@ watch(
     () => props.meta,
     (newVal) => {
         currentPage.value = newVal.current_page;
-    }
+    },
 );
 
 function changePage(dir: "prev" | "next") {

@@ -11,9 +11,11 @@
         <PageHeader>
             {{ ingredient.name }}
             <small :title="$t('added-on-by', { date: createdDate, name: ingredient.created_user?.name })">
-                <template v-if="ingredient.hierarchy" v-for="(ancestor, index) in ingredient.hierarchy.ancestors" :key="ancestor.id">
-                    <RouterLink :to="{ name: 'ingredients', query: { 'filter[descendants_of]': ancestor.id } }">{{ ancestor.name }}</RouterLink>
-                    <template v-if="index + 1 !== ingredient.hierarchy?.ancestors?.length"> > </template>
+                <template v-if="ingredient.hierarchy">
+                    <template v-for="(ancestor, index) in ingredient.hierarchy.ancestors" :key="ancestor.id">
+                        <RouterLink :to="{ name: 'ingredients', query: { 'filter[descendants_of]': ancestor.id } }">{{ ancestor.name }}</RouterLink>
+                        <template v-if="index + 1 !== ingredient.hierarchy?.ancestors?.length"> > </template>
+                    </template>
                 </template>
             </small>
         </PageHeader>

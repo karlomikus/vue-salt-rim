@@ -17,7 +17,6 @@
 <script setup lang="ts">
 import type { components } from "@/api/api";
 import { computed } from "vue";
-import { useI18n } from "vue-i18n";
 type IngredientTree = components["schemas"]["IngredientTree"];
 
 const props = defineProps<{
@@ -25,10 +24,8 @@ const props = defineProps<{
     level: number;
 }>();
 
-const { t } = useI18n();
-
 const childrenSortedByName = computed(() => {
-    return props.node.children?.sort((a, b) => a.ingredient.name.localeCompare(b.ingredient.name)) || [];
+    return [...props.node.children].sort((a, b) => a.ingredient.name.localeCompare(b.ingredient.name)) || [];
 });
 </script>
 

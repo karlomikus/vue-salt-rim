@@ -43,7 +43,7 @@ watch(
     () => cocktail.value,
     (val) => {
         useTitle(val.name ?? "Cocktail");
-    }
+    },
 );
 
 useTitle("Cocktail");
@@ -55,7 +55,7 @@ watch(
             getCocktail(route.params.ulid as string);
         }
     },
-    { immediate: true }
+    { immediate: true },
 );
 
 onMounted(() => {

@@ -280,7 +280,7 @@ async function save(): Promise<void> {
             <h3 class="form-section-title">{{ t("calculators.evaluations") }}</h3>
             <p class="calculator-form__section-info">{{ t("calculators.evaluations-description") }}</p>
             <div class="calculator-form-group block-container block-container--inset block-container--padded" ref="evalList">
-                <div class="block-container calculator-evaluation-group" v-for="evaluation in evaluations" :data-id="evaluation.block.sort">
+                <div class="block-container calculator-evaluation-group" v-for="evaluation in evaluations" :key="evaluation.block.sort" :data-id="evaluation.block.sort">
                     <div class="drag-handle"></div>
                     <div>
                         <div class="form-row-group">

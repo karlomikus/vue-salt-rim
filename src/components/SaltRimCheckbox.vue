@@ -1,14 +1,11 @@
-<script setup>
-defineProps({
-    label: {
-        type: String,
-        required: true,
-    },
-    description: {
-        type: String,
-        default: null,
-    },
-});
+<script setup lang="ts">
+withDefaults(
+    defineProps<{
+        label: string;
+        description: string | null;
+    }>(),
+    { description: null },
+);
 
 defineOptions({
     inheritAttrs: false,

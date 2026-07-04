@@ -1,7 +1,10 @@
-<script setup>
+<script setup lang="ts">
 import { inject } from "vue";
 
-const { currentUnit, updateCurrentUnit } = inject("currentUnit");
+const { currentUnit, updateCurrentUnit } = inject("currentUnit") as {
+    currentUnit: "ml" | "oz" | "cl";
+    updateCurrentUnit: (unit: "ml" | "oz" | "cl") => void;
+};
 </script>
 <template>
     <div class="button-group" style="text-align: right">

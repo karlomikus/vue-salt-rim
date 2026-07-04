@@ -29,11 +29,11 @@ const abvDistribution = computed(() => {
 });
 
 const sortedDislikedTags = computed(() => {
-    return dislikedTags.value.sort((a, b) => (b.weight ?? 0) - (a.weight ?? 0));
+    return [...dislikedTags.value].sort((a, b) => (b.weight ?? 0) - (a.weight ?? 0));
 });
 
 const sortedFavoriteTags = computed(() => {
-    return favoriteTags.value.sort((a, b) => (b.weight ?? 0) - (a.weight ?? 0));
+    return [...favoriteTags.value].sort((a, b) => (b.weight ?? 0) - (a.weight ?? 0));
 });
 
 const maxDislikedWeight = computed(() => {

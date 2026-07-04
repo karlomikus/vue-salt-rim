@@ -4,7 +4,7 @@
         <OverlayLoader v-if="isLoadingPrices"></OverlayLoader>
         <SubscriptionCheck>Subscribe to "Mixologist" plan to unlock automatic price calculation!</SubscriptionCheck>
         <div class="cocktail-price-calculator__prices" v-if="nonZeroPrices.length > 0">
-            <div v-for="cocktailPrice in nonZeroPrices">
+            <div v-for="cocktailPrice in nonZeroPrices" :key="cocktailPrice.price_category.id">
                 <CocktailPrice :cocktail-price="cocktailPrice"></CocktailPrice>
                 <a href="#" @click.prevent="selectedCocktailPrice = cocktailPrice"><span style="letter-spacing: -4px">&boxur;&rtrif;</span> {{ $t("price.select") }}</a>
             </div>

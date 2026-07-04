@@ -734,7 +734,7 @@ fetchShoppingList();
                     <h3 class="block-container__title">{{ t("price.prices") }}</h3>
                     <p>{{ t("price.categories-explained") }}</p>
                     <div class="cocktail-prices">
-                        <CocktailPrice v-for="cocktailPrice in completeCocktailPrices" :cocktail-price="cocktailPrice"></CocktailPrice>
+                        <CocktailPrice v-for="cocktailPrice in completeCocktailPrices" :key="cocktailPrice.price_category.id" :cocktail-price="cocktailPrice"></CocktailPrice>
                     </div>
                 </div>
                 <div v-if="userNotes.length > 0" class="block-container block-container--padded">

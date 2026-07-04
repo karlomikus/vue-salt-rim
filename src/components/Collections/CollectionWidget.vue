@@ -55,16 +55,14 @@ watch(
     () => props.cocktail,
     () => {
         fetchCocktailCollections();
-    }
+    },
 );
 
 fetchCocktailCollections();
 
 function fetchCocktailCollections() {
     isLoading.value = true;
-    BarAssistantClient.getCollections(
-        { "filter[cocktail_id]": props.cocktail.id, include: "cocktails" } as unknown as Parameters<typeof BarAssistantClient.getCollections>[0]
-    )
+    BarAssistantClient.getCollections({ "filter[cocktail_id]": props.cocktail.id, include: "cocktails" } as unknown as Parameters<typeof BarAssistantClient.getCollections>[0])
         .then((resp) => {
             collections.value = resp.data ?? [];
             isLoading.value = false;

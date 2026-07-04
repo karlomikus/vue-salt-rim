@@ -53,7 +53,7 @@ watch(
         if (newVal != oldVal) {
             fetchIngredient();
         }
-    }
+    },
 );
 
 fetchIngredient();

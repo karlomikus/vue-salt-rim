@@ -42,18 +42,15 @@ function handleEsc() {
     }
 }
 
-watch(
-    model,
-    (val) => {
-        if (val) {
-            emit("dialogOpened");
-            document.body.style.overflow = "hidden";
-        } else {
-            emit("dialogClosed");
-            document.body.style.overflow = "auto";
-        }
+watch(model, (val) => {
+    if (val) {
+        emit("dialogOpened");
+        document.body.style.overflow = "hidden";
+    } else {
+        emit("dialogClosed");
+        document.body.style.overflow = "auto";
     }
-);
+});
 
 onUnmounted(() => {
     emit("dialogClosed");

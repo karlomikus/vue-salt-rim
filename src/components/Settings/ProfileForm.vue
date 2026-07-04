@@ -159,7 +159,7 @@ async function refreshProfile() {
         } else {
             currentLocale.value = appState.language;
         }
-    } catch(e: any) {
+    } catch (e: any) {
         toast.error(e.message);
     } finally {
         isLoading.value = false;

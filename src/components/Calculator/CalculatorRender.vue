@@ -60,7 +60,7 @@ function resolveCalculation(evaluation: CalculatorBlock): string {
         <h3 class="calculator__title">{{ calculator.name }}</h3>
         <div v-html="parsedDescription"></div>
         <div class="calculator__inputs">
-            <div class="form-group" v-for="input in inputs">
+            <div class="form-group" v-for="input in inputs" :key="input.sort">
                 <label class="form-label form-label--required" :for="'calculator-render-' + calculator.id + '-' + input.sort"
                     >{{ input.settings.prefix }} {{ input.label }} {{ input.settings.suffix }}</label
                 >
@@ -68,7 +68,7 @@ function resolveCalculation(evaluation: CalculatorBlock): string {
             </div>
         </div>
         <div class="calculator__evaluations">
-            <CalculatorRenderBlock v-for="evl in resolvedCalculations" :evaluated-block="evl"></CalculatorRenderBlock>
+            <CalculatorRenderBlock v-for="evl in resolvedCalculations" :key="evl.block.sort" :evaluated-block="evl"></CalculatorRenderBlock>
         </div>
     </div>
 </template>

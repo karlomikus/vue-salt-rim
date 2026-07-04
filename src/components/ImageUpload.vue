@@ -62,7 +62,7 @@ const sortable = ref(null);
 const imageDialogs = ref<{
     [key: number]: boolean;
 }>({});
-const images = ref([] as ImageViewModel[]);
+const localImages = ref([] as ImageViewModel[]);
 const props = withDefaults(
     defineProps<{
         maxImages: number;
@@ -78,13 +78,13 @@ const props = withDefaults(
         isGenerateDisabled: false,
     },
 );
-const hasMaxImages = computed(() => images.value.length >= props.maxImages);
+const hasMaxImages = computed(() => localImages.value.length >= props.maxImages);
 
 watch(
     () => props.images,
     () => {
         for (const img of props.images) {
-            images.value.push(toImageViewModel(img));
+            localImages.value.push(toImageViewModel(img));
         }
     },
     { immediate: true },
@@ -112,7 +112,7 @@ function handleFiles(files: FileList | null) {
 
         const previewUrl = URL.createObjectURL(file);
 
-        images.value.push({
+        localImages.value.push({
             id: null,
             file: file,
             preview: previewUrl,
@@ -136,8 +136,8 @@ function removeImage(image: ImageViewModel) {
         onResolved: (dialog: any) => {
             if (!image.id) {
                 dialog.close();
-                images.value.splice(
-                    images.value.findIndex((i) => i == image),
+                localImages.value.splice(
+                    localImages.value.findIndex((i) => i == image),
                     1,
                 );
                 return;
@@ -149,8 +149,8 @@ function removeImage(image: ImageViewModel) {
                 .then(() => {
                     isLoading.value = false;
                     toast.default(t("imageupload.delete-success"));
-                    images.value.splice(
-                        images.value.findIndex((i) => i == image),
+                    localImages.value.splice(
+                        localImages.value.findIndex((i) => i == image),
                         1,
                     );
                 })
@@ -191,13 +191,13 @@ function addExternalImage() {
         return;
     }
 
-    images.value.push({
+    localImages.value.push({
         id: null,
         file: externalImageUrl.value,
         preview: externalImageUrl.value,
         fileName: url.pathname.split("/").pop() ?? "unknown external image",
         copyright: url.hostname,
-        sort: images.value.length + 1,
+        sort: localImages.value.length + 1,
     });
 
     externalImageUrl.value = "";
@@ -212,7 +212,7 @@ function appendImage(image: ImageWithBase64ImportFile) {
         return false;
     }
 
-    images.value.push(toImageViewModel(image));
+    localImages.value.push(toImageViewModel(image));
 
     return true;
 }
@@ -225,7 +225,7 @@ async function save() {
     const request = [] as ImageRequest[];
 
     const sortedImageList = (sortable.value as any).toArray();
-    for (const img of images.value) {
+    for (const img of localImages.value) {
         const newSort = sortedImageList.findIndex((sortedId: string) => sortedId == img.fileName) + 1;
         const imageRequest = {
             id: img.id ?? null,
@@ -252,7 +252,7 @@ async function save() {
     >
         <OverlayLoader v-if="isLoading" />
         <div class="image-upload__images" ref="imageList">
-            <div v-if="images.length == 0" class="image-upload__images__onboard">
+            <div v-if="localImages.length == 0" class="image-upload__images__onboard">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256">
                     <path
                         d="M216,40H72A16,16,0,0,0,56,56V72H40A16,16,0,0,0,24,88V200a16,16,0,0,0,16,16H184a16,16,0,0,0,16-16V184h16a16,16,0,0,0,16-16V56A16,16,0,0,0,216,40ZM72,56H216v62.75l-10.07-10.06a16,16,0,0,0-22.63,0l-20,20-44-44a16,16,0,0,0-22.62,0L72,109.37ZM184,200H40V88H56v80a16,16,0,0,0,16,16H184Zm32-32H72V132l36-36,49.66,49.66a8,8,0,0,0,11.31,0L194.63,120,216,141.38V168ZM160,84a12,12,0,1,1,12,12A12,12,0,0,1,160,84Z"
@@ -260,7 +260,7 @@ async function save() {
                 </svg>
                 <p>No images attached. Start by uploading your first image.</p>
             </div>
-            <div class="block-container block-container--padded image-upload__images__item" v-for="(img, idx) in images" :key="idx" :data-id="img.fileName">
+            <div class="block-container block-container--padded image-upload__images__item" v-for="(img, idx) in localImages" :key="idx" :data-id="img.fileName">
                 <div class="drag-handle"></div>
                 <div class="image-upload__images__item__container">
                     <div class="image-upload__images__item__image">
@@ -279,7 +279,7 @@ async function save() {
                                     <a href="#" @click.prevent="imageDialogs[idx] = !imageDialogs[idx]">{{ t("image-editor.edit-image") }}</a>
                                 </template>
                                 <template #dialog>
-                                    <ImageEditor v-model="images[idx]" @image-dialog-closed="imageDialogs[idx] = false"></ImageEditor>
+                                    <ImageEditor v-model="localImages[idx]" @image-dialog-closed="imageDialogs[idx] = false"></ImageEditor>
                                 </template>
                             </SaltRimDialog>
                         </div>
@@ -312,7 +312,7 @@ async function save() {
                     </button>
                 </div>
             </template>
-            <div>{{ t("imageupload.validation", { max: "50MB" }) }} &middot; {{ t("imageupload.status", { current: images.length, max: maxImages }) }}</div>
+            <div>{{ t("imageupload.validation", { max: "50MB" }) }} &middot; {{ t("imageupload.status", { current: localImages.length, max: maxImages }) }}</div>
         </div>
     </div>
 </template>

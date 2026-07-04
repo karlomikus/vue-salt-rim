@@ -1,80 +1,75 @@
-<script setup>
+<script setup lang="ts">
 import { ref, computed } from "vue";
 import { useFloating, offset, flip, shift, autoUpdate } from "@floating-ui/vue";
+
+interface TagOption {
+    name: string;
+    [key: string]: unknown;
+}
 
 defineOptions({
     inheritAttrs: false,
 });
 
-const props = defineProps({
-    options: {
-        type: Array,
-        default() {
-            return [];
-        },
-        required: true,
+const props = withDefaults(
+    defineProps<{
+        options: TagOption[];
+        labelKey: string;
+        maxShownOptions?: number;
+    }>(),
+    {
+        maxShownOptions: 7,
     },
-    labelKey: {
-        type: String,
-        required: true,
-    },
-    maxShownOptions: {
-        type: Number,
-        default: 7,
-    },
-});
+);
 
-const reference = ref(null);
-const content = ref(null);
-const currentOption = ref("");
+const reference = ref<HTMLInputElement | null>(null);
+const content = ref<HTMLElement | null>(null);
+const currentOption = ref<string>("");
 const showDropdown = ref(false);
-const currentFocusedDropdownOption = ref(null);
-const currentFocusedDeleteOption = ref(null);
-const model = defineModel({ required: true, type: Array });
+const currentFocusedDropdownOption = ref<TagOption | null>(null);
+const currentFocusedDeleteOption = ref<string | null>(null);
+const model = defineModel<string[]>({ required: true });
 const { floatingStyles } = useFloating(reference, content, {
     placement: "bottom-start",
     middleware: [offset(5), flip(), shift()],
     whileElementsMounted: autoUpdate,
 });
 const isFocused = ref(false);
-const filteredOptions = computed(() => {
+
+const filteredOptions = computed<TagOption[]>(() => {
     if (!currentOption.value) {
         return [];
     }
 
     return props.options
-        .filter((option) => {
-            return !model.value.includes(option.name);
-        })
-        .filter((option) => {
-            return option.name.toLowerCase().includes(currentOption.value.toLowerCase());
-        })
+        .filter((option) => !model.value.includes(option.name))
+        .filter((option) => option.name.toLowerCase().includes(currentOption.value.toLowerCase()))
         .slice(0, props.maxShownOptions);
 });
 
-function focusInput() {
+function focusInput(): void {
     showDropdown.value = true;
-    reference.value.focus();
+    reference.value?.focus();
 }
 
-function selectOption(option) {
+function selectOption(option: string): void {
     if (model.value.includes(option)) {
         return;
     }
 
     model.value.push(option);
-    currentOption.value = null;
+    currentOption.value = "";
 }
 
-function removeSelectedOption(option) {
-    model.value.splice(
-        model.value.findIndex((i) => i == option),
-        1,
-    );
+function removeSelectedOption(option: string): void {
+    const index = model.value.findIndex((i) => i === option);
+    if (index !== -1) {
+        model.value.splice(index, 1);
+    }
 }
 
-function checkLastOptionRemoval() {
-    if (!currentFocusedDeleteOption.value && (currentOption.value == "" || !currentOption.value)) {
+function checkLastOptionRemoval(): void {
+    if (!currentFocusedDeleteOption.value && (!currentOption.value || currentOption.value === "")) {
         currentFocusedDeleteOption.value = model.value[model.value.length - 1];
         return;
     }
@@ -85,17 +80,18 @@ function checkLastOptionRemoval() {
     }
 }
 
-function checkDelimiter(e) {
+function checkDelimiter(e: Event): void {
+    const target = e.target as HTMLInputElement;
     currentFocusedDeleteOption.value = null;
     currentFocusedDropdownOption.value = null;
-    if (e.target.value && e.target.value.endsWith(",")) {
-        selectOption(e.target.value.slice(0, -1).trim());
-        currentOption.value = null;
+    if (target.value && target.value.endsWith(",")) {
+        selectOption(target.value.slice(0, -1).trim());
+        currentOption.value = "";
     }
 }
 
-function addSelectedOption() {
-    if (filteredOptions.value.length == 0) {
+function addSelectedOption(): void {
+    if (filteredOptions.value.length === 0) {
         return;
     }
 
@@ -106,8 +102,8 @@ function addSelectedOption() {
     }
 }
 
-function navigateOptions(dir) {
-    if (filteredOptions.value.length == 0) {
+function navigateOptions(dir: "up" | "down"): void {
+    if (filteredOptions.value.length === 0) {
         return;
     }
 
@@ -116,21 +112,22 @@ function navigateOptions(dir) {
         return;
     }
 
+    const currentIndex = filteredOptions.value.indexOf(currentFocusedDropdownOption.value);
     if (dir === "down") {
-        currentFocusedDropdownOption.value = filteredOptions.value[filteredOptions.value.indexOf(currentFocusedDropdownOption.value) + 1];
+        currentFocusedDropdownOption.value = filteredOptions.value[currentIndex + 1];
     } else {
-        currentFocusedDropdownOption.value = filteredOptions.value[filteredOptions.value.indexOf(currentFocusedDropdownOption.value) - 1];
+        currentFocusedDropdownOption.value = filteredOptions.value[currentIndex - 1];
     }
 }
 
-function handleFocus() {
+function handleFocus(): void {
     isFocused.value = true;
 }
 
-function handleBlur(e) {
-    const relatedTarget = e.relatedTarget;
+function handleBlur(e: FocusEvent): void {
+    const relatedTarget = e.relatedTarget as Node | null;
     if (showDropdown.value) {
-        if (relatedTarget === null || !content.value.contains(relatedTarget)) {
+        if (relatedTarget === null || !content.value?.contains(relatedTarget)) {
             showDropdown.value = false;
         }
         currentFocusedDeleteOption.value = null;

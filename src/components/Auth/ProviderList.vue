@@ -43,7 +43,7 @@ const icons: Record<string, string> = {
 
 <template>
     <div class="sso-providers">
-        <a v-for="provider in providers" href="#" class="button button--outline" :title="provider.display_name" @click.prevent="startSSOFlow(provider)">
+        <a v-for="provider in providers" :key="provider.name" href="#" class="button button--outline" :title="provider.display_name" @click.prevent="startSSOFlow(provider)">
             <span class="sso-provider__icon" v-html="icons[provider.name]"></span> {{ t("sso.login-with", { name: provider.display_name }) }}
         </a>
     </div>
