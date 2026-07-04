@@ -84,174 +84,177 @@
         </EmptyState>
     </div>
 </template>
-<script>
-import { useTitle } from "@/composables/title";
+<script setup lang="ts">
+import { ref, computed, onMounted } from "vue";
+import { useRoute } from "vue-router";
+import { useI18n } from "vue-i18n";
 import { useClipboard } from "@vueuse/core";
-import OverlayLoader from "./../OverlayLoader.vue";
-import SaltRimDialog from "./../Dialog/SaltRimDialog.vue";
-import PageHeader from "./../PageHeader.vue";
-import BarJoinDialog from "./BarJoinDialog.vue";
-import AppState from "../../AppState";
-import DateFormatter from "./../DateFormatter.vue";
-import { getRoleName } from "./../../composables/useGetRoleName";
-import EmptyState from "./../EmptyState.vue";
-import SubscriptionCheck from "../SubscriptionCheck.vue";
+import { useTitle } from "@/composables/title";
+import OverlayLoader from "@/components/OverlayLoader.vue";
+import SaltRimDialog from "@/components/Dialog/SaltRimDialog.vue";
+import PageHeader from "@/components/PageHeader.vue";
+import BarJoinDialog from "@/components/Bar/BarJoinDialog.vue";
+import AppState from "@/AppState";
+import DateFormatter from "@/components/DateFormatter.vue";
+import { getRoleName } from "@/composables/useGetRoleName";
+import EmptyState from "@/components/EmptyState.vue";
+import SubscriptionCheck from "@/components/SubscriptionCheck.vue";
 import BarAssistantClient from "@/api/BarAssistantClient";
+import { useSaltRimToast } from "@/composables/toast";
+import { useConfirm } from "@/composables/confirm";
+import type { components } from "@/api/api";
 
-export default {
-    components: {
-        OverlayLoader,
-        PageHeader,
-        SaltRimDialog,
-        BarJoinDialog,
-        DateFormatter,
-        EmptyState,
-        SubscriptionCheck,
-    },
-    data() {
-        return {
-            isLoading: false,
-            bars: [],
-            showJoinDialog: this.$route.name == "bars.join", // If the route is bars.join then show the join dialog, otherwise don't
-            showCreateDialog: false,
-            appState: new AppState(),
-        };
-    },
-    computed: {
-        groupedBars() {
-            const res = {
-                active: [],
-                provisioning: [],
-                deactivated: [],
-            };
+type Bar = Omit<components["schemas"]["Bar"], "created_user"> & {
+    created_user: components["schemas"]["UserBasic"];
+    show_invite_code?: boolean;
+};
 
-            this.bars.forEach((bar) => {
-                res[bar.status].push(bar);
+const route = useRoute();
+const appState = new AppState();
+const { t } = useI18n();
+const toast = useSaltRimToast();
+const confirm = useConfirm();
+
+const isLoading = ref(false);
+const bars = ref<Bar[]>([]);
+const showJoinDialog = ref(route.name == "bars.join"); // If the route is bars.join then show the join dialog, otherwise don't
+const showCreateDialog = ref(false);
+
+const groupedBars = computed<Record<string, Bar[]>>(() => {
+    const res: Record<string, Bar[]> = {
+        active: [],
+        provisioning: [],
+        deactivated: [],
+    };
+
+    bars.value.forEach((bar) => {
+        res[bar.status].push(bar);
+    });
+
+    return res;
+});
+
+const ownedBars = computed(() => {
+    return bars.value.filter((bar) => {
+        return bar.created_user.id == appState.user.id;
+    });
+});
+
+const showCreateAction = computed(() => {
+    if (appState.isSubscribed()) {
+        return ownedBars.value.length < 10;
+    }
+
+    return ownedBars.value.length < 1 && !appState.isSubscribed();
+});
+
+useTitle(t("bars.title"));
+
+onMounted(() => {
+    refreshBars();
+});
+
+function copyInviteLinkToClipboard(invite_code: string | null) {
+    const { copy, copied, isSupported } = useClipboard();
+
+    if (!isSupported.value) {
+        toast.error(t("permissions.clipboard-error"));
+        return;
+    }
+
+    copy(`${window.location.origin}/bars/join/${invite_code ?? ""}`);
+
+    if (copied.value) {
+        toast.default(t("bars.invite-link-copied"));
+    }
+}
+
+function refreshBars() {
+    isLoading.value = true;
+    BarAssistantClient.getBars()
+        .then((resp) => {
+            bars.value = (resp.data ?? []).map((bar) => {
+                (bar as Bar).show_invite_code = false;
+
+                return bar as Bar;
             });
+            isLoading.value = false;
+        })
+        .catch((e) => {
+            toast.error(e.message);
+            isLoading.value = false;
+        });
+}
 
-            return res;
-        },
-        ownedBars() {
-            return this.bars.filter((bar) => {
-                return bar.created_user.id == this.appState.user.id;
-            });
-        },
-        showCreateAction() {
-            if (this.appState.isSubscribed()) {
-                return this.ownedBars.length < 10;
-            }
+function selectBar(bar: Bar) {
+    appState.setBar(bar);
+    window.location.replace("/");
+}
 
-            return this.ownedBars.length < 1 && !this.appState.isSubscribed();
-        },
-    },
-    created() {
-        useTitle(this.$t("bars.title"));
-    },
-    mounted() {
-        this.refreshBars();
-    },
-    methods: {
-        copyInviteLinkToClipboard(invite_code) {
-            const { copy, copied, isSupported } = useClipboard();
-
-            if (!isSupported.value) {
-                this.$toast.error(this.$t("permissions.clipboard-error"));
-                return;
-            }
-
-            copy(`${window.location.origin}/bars/join/${invite_code}`);
-
-            if (copied.value) {
-                this.$toast.default(this.$t("bars.invite-link-copied"));
-            }
-        },
-        refreshBars() {
-            this.isLoading = true;
-            BarAssistantClient.getBars()
-                .then((resp) => {
-                    this.bars = resp.data.map((bar) => {
-                        bar.show_invite_code = false;
-
-                        return bar;
-                    });
-                    this.isLoading = false;
+function deleteBar(bar: Bar) {
+    confirm.show(t("bars.confirm-delete", { name: bar.name }), {
+        onResolved: (dialog: { close: () => void }) => {
+            isLoading.value = true;
+            dialog.close();
+            BarAssistantClient.deleteBar(bar.id)
+                .then(() => {
+                    isLoading.value = false;
+                    if (appState.bar.id == bar.id) {
+                        appState.forgetBar();
+                        window.location.reload();
+                    }
+                    toast.default(t("bars.delete-success"));
+                    refreshBars();
                 })
                 .catch((e) => {
-                    this.$toast.error(e.message);
-                    this.isLoading = false;
+                    toast.error(e.message);
+                    isLoading.value = false;
                 });
         },
-        selectBar(bar) {
-            this.appState.setBar(bar);
-            window.location.replace("/");
+    });
+}
+
+function leaveBar(bar: Bar) {
+    confirm.show(t("bars.confirm-leave", { name: bar.name }), {
+        onResolved: (dialog: { close: () => void }) => {
+            isLoading.value = true;
+            dialog.close();
+            BarAssistantClient.leaveBar(bar.id)
+                .then(() => {
+                    isLoading.value = false;
+                    if (appState.bar.id == bar.id) {
+                        appState.forgetBar();
+                        window.location.reload();
+                    }
+                    toast.default(t("bars.delete-success"));
+                    refreshBars();
+                })
+                .catch((e) => {
+                    toast.error(e.message);
+                    isLoading.value = false;
+                });
         },
-        getRoleName(roleId) {
-            return getRoleName(roleId);
+    });
+}
+
+function activateBar(bar: Bar) {
+    confirm.show(t("bars.confirm-activation", { name: bar.name }), {
+        onResolved: (dialog: { close: () => void }) => {
+            isLoading.value = true;
+            dialog.close();
+            BarAssistantClient.updateBarStatus(bar.id, "active")
+                .then(() => {
+                    isLoading.value = false;
+                    toast.default(t("bars.activation-success"));
+                    refreshBars();
+                })
+                .catch((e) => {
+                    toast.error(e.message);
+                    isLoading.value = false;
+                });
         },
-        deleteBar(bar) {
-            this.$confirm(this.$t("bars.confirm-delete", { name: bar.name }), {
-                onResolved: (dialog) => {
-                    this.isLoading = true;
-                    dialog.close();
-                    BarAssistantClient.deleteBar(bar.id)
-                        .then(() => {
-                            this.isLoading = false;
-                            if (this.appState.bar.id == bar.id) {
-                                this.appState.forgetBar();
-                                window.location.reload();
-                            }
-                            this.$toast.default(this.$t("bars.delete-success"));
-                            this.refreshBars();
-                        })
-                        .catch((e) => {
-                            this.$toast.error(e.message);
-                            this.isLoading = false;
-                        });
-                },
-            });
-        },
-        leaveBar(bar) {
-            this.$confirm(this.$t("bars.confirm-leave", { name: bar.name }), {
-                onResolved: (dialog) => {
-                    this.isLoading = true;
-                    dialog.close();
-                    BarAssistantClient.leaveBar(bar.id)
-                        .then(() => {
-                            this.isLoading = false;
-                            if (this.appState.bar.id == bar.id) {
-                                this.appState.forgetBar();
-                                window.location.reload();
-                            }
-                            this.$toast.default(this.$t("bars.delete-success"));
-                            this.refreshBars();
-                        })
-                        .catch((e) => {
-                            this.$toast.error(e.message);
-                            this.isLoading = false;
-                        });
-                },
-            });
-        },
-        activateBar(bar) {
-            this.$confirm(this.$t("bars.confirm-activation", { name: bar.name }), {
-                onResolved: (dialog) => {
-                    this.isLoading = true;
-                    dialog.close();
-                    BarAssistantClient.updateBarStatus(bar.id, "active")
-                        .then(() => {
-                            this.isLoading = false;
-                            this.$toast.default(this.$t("bars.activation-success"));
-                            this.refreshBars();
-                        })
-                        .catch((e) => {
-                            this.$toast.error(e.message);
-                            this.isLoading = false;
-                        });
-                },
-            });
-        },
-    },
-};
+    });
+}
 </script>
 <style scoped>
 .bars__grid {

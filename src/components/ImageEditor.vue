@@ -25,71 +25,75 @@
         </div>
     </div>
 </template>
-<script>
+<script setup lang="ts">
+import { ref, computed, onMounted } from "vue";
+import { useI18n } from "vue-i18n";
 import Cropper from "cropperjs";
-import OverlayLoader from "./OverlayLoader.vue";
-import SubscriptionCheck from "./SubscriptionCheck.vue";
-import AppState from "../AppState";
+import OverlayLoader from "@/components/OverlayLoader.vue";
+import SubscriptionCheck from "@/components/SubscriptionCheck.vue";
+import AppState from "@/AppState";
+import { useSaltRimToast } from "@/composables/toast";
 
-export default {
-    components: {
-        OverlayLoader,
-        SubscriptionCheck,
-    },
-    props: {
-        modelValue: {
-            type: Object,
-            default() {
-                return {};
-            },
-        },
-    },
-    emits: ["update:modelValue", "imageDialogClosed"],
-    data() {
-        return {
-            cropper: null,
-        };
-    },
-    computed: {
-        canEdit() {
-            const appState = new AppState();
-            if (!appState.isSubscribed()) {
-                return false;
-            }
-
-            return true;
-        },
-    },
-    mounted() {
-        this.cropper = new Cropper(this.$refs.image, {
-            viewMode: 1,
-        });
-    },
-    methods: {
-        save() {
-            if (!this.canEdit) {
-                return;
-            }
-
-            const croppedImage = this.cropper.getCroppedCanvas();
-
-            this.$toast.default(this.$t("image-editor.edit-success"));
-
-            croppedImage.toBlob((blob) => {
-                const newImage = {
-                    id: this.modelValue.id,
-                    file: blob,
-                    preview: croppedImage.toDataURL(),
-                    fileName: this.modelValue.fileName,
-                    copyright: this.modelValue.copyright,
-                    sort: this.modelValue.sort,
-                };
-                this.$emit("update:modelValue", newImage);
-                this.$emit("imageDialogClosed");
-            });
-        },
-    },
+type ImageModel = {
+    id?: number;
+    file?: File | Blob | null;
+    preview?: string;
+    fileName?: string;
+    copyright?: string;
+    sort?: number;
 };
+
+const props = withDefaults(defineProps<{ modelValue?: ImageModel }>(), {
+    modelValue: () => ({}),
+});
+const { t } = useI18n();
+const toast = useSaltRimToast();
+
+const emit = defineEmits<{ "update:modelValue": [value: ImageModel]; imageDialogClosed: [] }>();
+
+const image = ref<HTMLImageElement>();
+const cropper = ref<Cropper>(null as unknown as Cropper);
+
+const canEdit = computed(() => {
+    const appState = new AppState();
+    if (!appState.isSubscribed()) {
+        return false;
+    }
+
+    return true;
+});
+
+onMounted(() => {
+    cropper.value = new Cropper(image.value as HTMLImageElement, {
+        viewMode: 1,
+    });
+});
+
+function save() {
+    if (!canEdit.value) {
+        return;
+    }
+
+    const croppedImage = cropper.value.getCroppedCanvas();
+    if (!croppedImage) {
+        return;
+    }
+
+    toast.default(t("image-editor.edit-success"));
+
+    croppedImage.toBlob((blob) => {
+        const newImage: ImageModel = {
+            id: props.modelValue.id,
+            file: blob,
+            preview: croppedImage.toDataURL(),
+            fileName: props.modelValue.fileName,
+            copyright: props.modelValue.copyright,
+            sort: props.modelValue.sort,
+        };
+        emit("update:modelValue", newImage);
+        emit("imageDialogClosed");
+    });
+}
 </script>
 <style>
 .image-editor-container img {

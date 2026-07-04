@@ -55,73 +55,68 @@
     </div>
 </template>
 
-<script>
+<script setup lang="ts">
+import { ref } from "vue";
+import { useI18n } from "vue-i18n";
 import BarAssistantClient from "@/api/BarAssistantClient";
-import OverlayLoader from "../OverlayLoader.vue";
-import PageHeader from "../PageHeader.vue";
-import SettingsNavigation from "./SettingsNavigation.vue";
-import SaltRimDialog from "../Dialog/SaltRimDialog.vue";
-import DateFormatter from "../DateFormatter.vue";
-import APIForm from "./APIForm.vue";
-import SubscriptionCheck from "../SubscriptionCheck.vue";
+import OverlayLoader from "@/components/OverlayLoader.vue";
+import PageHeader from "@/components/PageHeader.vue";
+import SettingsNavigation from "@/components/Settings/SettingsNavigation.vue";
+import SaltRimDialog from "@/components/Dialog/SaltRimDialog.vue";
+import DateFormatter from "@/components/DateFormatter.vue";
+import APIForm from "@/components/Settings/APIForm.vue";
+import SubscriptionCheck from "@/components/SubscriptionCheck.vue";
 import { useTitle } from "@/composables/title";
-import AppState from "../../AppState";
+import AppState from "@/AppState";
+import { useSaltRimToast } from "@/composables/toast";
+import { useConfirm } from "@/composables/confirm";
+import type { components } from "@/api/api";
 
-export default {
-    components: {
-        OverlayLoader,
-        SettingsNavigation,
-        PageHeader,
-        SaltRimDialog,
-        DateFormatter,
-        APIForm,
-        SubscriptionCheck,
-    },
-    data() {
-        return {
-            appState: new AppState(),
-            isLoading: false,
-            showDialog: false,
-            tokens: [],
-        };
-    },
-    created() {
-        useTitle(this.$t("api.tokens"));
+type Token = components["schemas"]["PersonalAccessToken"];
 
-        this.refreshTokens();
-    },
-    methods: {
-        refreshTokens() {
-            this.showDialog = false;
+const appState = new AppState();
+const { t } = useI18n();
+const toast = useSaltRimToast();
+const confirm = useConfirm();
 
-            this.isLoading = true;
-            BarAssistantClient.getTokens()
-                .then((resp) => {
-                    this.tokens = resp.data;
-                    this.isLoading = false;
+const isLoading = ref(false);
+const showDialog = ref(false);
+const tokens = ref<Token[]>([]);
+
+useTitle(t("api.tokens"));
+
+refreshTokens();
+
+function refreshTokens() {
+    showDialog.value = false;
+
+    isLoading.value = true;
+    BarAssistantClient.getTokens()
+        .then((resp) => {
+            tokens.value = resp.data ?? [];
+            isLoading.value = false;
+        })
+        .catch((e) => {
+            toast.error(e.message);
+        });
+}
+
+function deleteToken(token: Token) {
+    confirm.show(t("api.confirm-revoke", { name: token.name }), {
+        onResolved: (dialog: { close: () => void }) => {
+            isLoading.value = true;
+            dialog.close();
+            BarAssistantClient.deleteToken(token.id)
+                .then(() => {
+                    isLoading.value = false;
+                    toast.default(t("api.revoke-success"));
+                    refreshTokens();
                 })
                 .catch((e) => {
-                    this.$toast.error(e.message);
+                    toast.error(e.message);
+                    isLoading.value = false;
                 });
         },
-        deleteToken(token) {
-            this.$confirm(this.$t("api.confirm-revoke", { name: token.name }), {
-                onResolved: (dialog) => {
-                    this.isLoading = true;
-                    dialog.close();
-                    BarAssistantClient.deleteToken(token.id)
-                        .then(() => {
-                            this.isLoading = false;
-                            this.$toast.default(this.$t("api.revoke-success"));
-                            this.refreshTokens();
-                        })
-                        .catch((e) => {
-                            this.$toast.error(e.message);
-                            this.isLoading = false;
-                        });
-                },
-            });
-        },
-    },
-};
+    });
+}
 </script>

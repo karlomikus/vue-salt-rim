@@ -12,79 +12,73 @@
     </div>
 </template>
 
-<script>
+<script setup lang="ts">
+import { ref, computed, watch, onMounted, onUnmounted } from "vue";
+import { useRoute } from "vue-router";
+import { useI18n } from "vue-i18n";
 import BarAssistantClient from "@/api/BarAssistantClient";
 import SiteLogo from "@/components/Layout/SiteLogo.vue";
 import PublicRecipe from "@/components/Cocktail/PublicRecipe.vue";
-import SourcePresenter from "../SourcePresenter.vue";
+import SourcePresenter from "@/components/SourcePresenter.vue";
 import { useTitle } from "@/composables/title";
+import { useSaltRimToast } from "@/composables/toast";
 
-export default {
-    components: {
-        SiteLogo,
-        PublicRecipe,
-        SourcePresenter,
-    },
-    data() {
-        return {
-            isLoading: false,
-            cocktail: {},
-        };
-    },
-    computed: {
-        barName() {
-            if (this.cocktail.bar) {
-                return this.cocktail.bar.name;
-            }
-
-            return null;
-        },
-        barSubtitle() {
-            if (this.cocktail.bar) {
-                return this.cocktail.bar.subtitle;
-            }
-
-            return null;
-        },
-    },
-    watch: {
-        cocktail(val) {
-            useTitle(val.name);
-        },
-    },
-    created() {
-        useTitle("Cocktail");
-        this.$watch(
-            () => this.$route.params,
-            () => {
-                if (this.$route.name == "e.cocktail") {
-                    this.getCocktail(this.$route.params.ulid);
-                }
-            },
-            { immediate: true },
-        );
-    },
-    mounted() {
-        document.body.classList.add("public-body");
-    },
-    unmounted() {
-        document.body.classList.remove("public-body");
-    },
-    methods: {
-        getCocktail(ulid) {
-            this.isLoading = true;
-            BarAssistantClient.getPublicCocktail(ulid)
-                .then((resp) => {
-                    this.cocktail = resp.data;
-                    this.isLoading = false;
-                })
-                .catch((e) => {
-                    this.$toast.error(e.message);
-                    this.isLoading = false;
-                });
-        },
-    },
+type PublicCocktail = {
+    name?: string;
+    source?: string | null;
+    bar?: { name?: string | null; subtitle?: string | null } | null;
 };
+
+const route = useRoute();
+const { t } = useI18n();
+const toast = useSaltRimToast();
+
+const isLoading = ref(false);
+const cocktail = ref<PublicCocktail>({});
+
+const barName = computed(() => cocktail.value.bar?.name ?? null);
+const barSubtitle = computed(() => cocktail.value.bar?.subtitle ?? null);
+
+watch(
+    () => cocktail.value,
+    (val) => {
+        useTitle(val.name ?? "Cocktail");
+    }
+);
+
+useTitle("Cocktail");
+
+watch(
+    () => route.params,
+    () => {
+        if (route.name == "e.cocktail") {
+            getCocktail(route.params.ulid as string);
+        }
+    },
+    { immediate: true }
+);
+
+onMounted(() => {
+    document.body.classList.add("public-body");
+});
+
+onUnmounted(() => {
+    document.body.classList.remove("public-body");
+});
+
+function getCocktail(ulid: string) {
+    isLoading.value = true;
+    (BarAssistantClient as unknown as { getPublicCocktail: (ulid: string) => Promise<{ data: PublicCocktail }> })
+        .getPublicCocktail(ulid)
+        .then((resp) => {
+            cocktail.value = resp.data;
+            isLoading.value = false;
+        })
+        .catch((e) => {
+            toast.error(e.message);
+            isLoading.value = false;
+        });
+}
 </script>
 
 <style scoped>

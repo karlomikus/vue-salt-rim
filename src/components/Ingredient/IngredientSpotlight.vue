@@ -12,71 +12,64 @@
         </div>
     </div>
 </template>
-<script>
+<script setup lang="ts">
+import { ref, computed, watch } from "vue";
 import BarAssistantClient from "@/api/BarAssistantClient";
 import OverlayLoader from "@/components/OverlayLoader.vue";
 import removeMd from "remove-markdown";
+import type { components } from "@/api/api";
 
-export default {
-    components: {
-        OverlayLoader,
-    },
-    props: {
-        id: {
-            type: Number,
-            default: 0,
-        },
-    },
-    data() {
-        return {
-            isLoading: false,
-            ingredient: {},
-        };
-    },
-    computed: {
-        truncatedDescription() {
-            if (!this.ingredient.description) {
-                return this.ingredient.description;
-            }
+type Ingredient = components["schemas"]["Ingredient"];
 
-            const doc = new DOMParser().parseFromString(this.ingredient.description, "text/html");
-            const description = removeMd(doc.documentElement.textContent);
+const props = withDefaults(defineProps<{ id?: number }>(), {
+    id: 0,
+});
 
-            return description.length > 200 ? `${description.substring(0, 200)}...` : description;
-        },
-        mainIngredientImageUrl() {
-            if (!this.ingredient.images || this.ingredient.images.length == 0) {
-                return "/no-ingredient.png";
-            }
+const isLoading = ref(false);
+const ingredient = ref<Partial<Ingredient>>({});
 
-            return this.ingredient.images.find((i) => i.sort <= 1).url;
-        },
-    },
-    watch: {
-        id(newVal, oldVal) {
-            if (newVal != oldVal) {
-                this.fetchIngredient();
-            }
-        },
-    },
-    created() {
-        this.fetchIngredient();
-    },
-    methods: {
-        fetchIngredient() {
-            this.isLoading = true;
-            BarAssistantClient.getIngredient(this.id)
-                .then((resp) => {
-                    this.ingredient = resp.data;
-                    this.isLoading = false;
-                })
-                .catch(() => {
-                    this.ingredient = {};
-                    this.isLoading = false;
-                });
-        },
-    },
-};
+const truncatedDescription = computed(() => {
+    if (!ingredient.value.description) {
+        return ingredient.value.description;
+    }
+
+    const doc = new DOMParser().parseFromString(ingredient.value.description, "text/html");
+    const description = removeMd(doc.documentElement?.textContent ?? "");
+
+    return description.length > 200 ? `${description.substring(0, 200)}...` : description;
+});
+
+const mainIngredientImageUrl = computed(() => {
+    if (!ingredient.value.images || ingredient.value.images.length == 0) {
+        return "/no-ingredient.png";
+    }
+
+    return ingredient.value.images.find((i) => i.sort <= 1)?.url ?? "/no-ingredient.png";
+});
+
+watch(
+    () => props.id,
+    (newVal, oldVal) => {
+        if (newVal != oldVal) {
+            fetchIngredient();
+        }
+    }
+);
+
+fetchIngredient();
+
+function fetchIngredient() {
+    isLoading.value = true;
+    BarAssistantClient.getIngredient(String(props.id))
+        .then((resp) => {
+            ingredient.value = resp.data as Ingredient;
+            isLoading.value = false;
+        })
+        .catch(() => {
+            ingredient.value = {};
+            isLoading.value = false;
+        });
+}
 </script>
 <style scoped>
 .ingredient-spotlight-wrapper {

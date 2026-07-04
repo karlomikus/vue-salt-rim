@@ -18,13 +18,13 @@
                         autocapitalize="off"
                         spellcheck="false"
                         maxlength="512"
-                        @input="refine($event.currentTarget.value)"
+                        @input="refine(($event.currentTarget as HTMLInputElement).value)"
                     />
                 </template>
             </ais-search-box>
             <ais-index index-name="cocktails">
                 <ais-hits>
-                    <template #default="{ items }">
+                    <template #default="{ items }: { items: Hit[] }">
                         <h4 class="site-autocomplete__index-name">&mdash; {{ $t("cocktail.cocktails") }} ({{ items.length }})</h4>
                         <ul v-show="items.length > 0" class="site-autocomplete__results block-container block-container--inset">
                             <li v-for="hit in items" :key="hit.slug">
@@ -32,7 +32,7 @@
                                     <div class="site-autocomplete__results__image" :style="{ 'background-image': 'url(' + getImageUrl(hit, 'cocktail') + ')' }"></div>
                                     <div class="site-autocomplete__results__content">
                                         <ais-highlight attribute="name" :hit="hit" />
-                                        <small>{{ hit.short_ingredients.join(", ") }}</small>
+                                        <small>{{ hit.short_ingredients?.join(", ") }}</small>
                                     </div>
                                 </RouterLink>
                             </li>
@@ -45,7 +45,7 @@
             </ais-index>
             <ais-index index-name="ingredients">
                 <ais-hits>
-                    <template #default="{ items }">
+                    <template #default="{ items }: { items: Hit[] }">
                         <h4 class="site-autocomplete__index-name">&mdash; {{ $t("ingredient.ingredients") }} ({{ items.length }})</h4>
                         <ul v-show="items.length > 0" class="site-autocomplete__results block-container block-container--inset">
                             <li v-for="hit in items" :key="hit.slug">
@@ -69,61 +69,70 @@
     </form>
 </template>
 
-<script>
+<script setup lang="ts">
+import { ref, nextTick } from "vue";
+import { useI18n } from "vue-i18n";
 import { instantMeiliSearch } from "@meilisearch/instant-meilisearch";
 import BarAssistantClient from "@/api/BarAssistantClient";
-import OverlayLoader from "./OverlayLoader.vue";
-import AppState from "../AppState";
+import OverlayLoader from "@/components/OverlayLoader.vue";
+import AppState from "@/AppState";
+import { useSaltRimToast } from "@/composables/toast";
 
-export default {
-    emits: ["closeAutocomplete"],
-    components: {
-        OverlayLoader,
-    },
-    data() {
-        return {
-            searchClient: null,
-            isLoading: false,
-        };
-    },
-    created() {
-        const appState = new AppState();
-
-        this.isLoading = true;
-        BarAssistantClient.getBar(appState.bar.id)
-            .then((resp) => {
-                this.isLoading = false;
-                this.searchClient = instantMeiliSearch(appState.bar.search_host, resp.data.search_token).searchClient;
-            })
-            .catch((e) => {
-                this.isLoading = false;
-                this.$toast.error(e.message);
-            });
-    },
-    methods: {
-        close() {
-            this.$emit("closeAutocomplete");
-        },
-        getImageUrl(hit, type) {
-            if (!hit.image_url) {
-                if (type == "cocktail") {
-                    return "/no-cocktail.jpg";
-                }
-
-                return "/no-ingredient.png";
-            }
-
-            return hit.image_url;
-        },
-        doFocus() {
-            this.$nextTick(() => {
-                if (this.$refs.siteSearchInput) {
-                    this.$refs.siteSearchInput.focus();
-                }
-            });
-        },
-    },
+type Hit = {
+    slug: string;
+    image_url?: string;
+    short_ingredients?: string[];
+    category?: string;
+    name?: string;
 };
+
+type SearchClient = ReturnType<typeof instantMeiliSearch>["searchClient"];
+
+const { t } = useI18n();
+const toast = useSaltRimToast();
+
+const emit = defineEmits<{ closeAutocomplete: [] }>();
+
+const searchClient = ref<SearchClient | null>(null);
+const isLoading = ref(false);
+const siteSearchInput = ref<HTMLInputElement>();
+
+const appState = new AppState();
+
+isLoading.value = true;
+BarAssistantClient.getBar(appState.bar.id)
+    .then((resp) => {
+        isLoading.value = false;
+        searchClient.value = instantMeiliSearch(appState.bar.search_host ?? "", resp.data?.search_token ?? "").searchClient;
+    })
+    .catch((e) => {
+        isLoading.value = false;
+        toast.error(e.message);
+    });
+
+function close() {
+    emit("closeAutocomplete");
+}
+
+function getImageUrl(hit: Hit, type: "cocktail" | "ingredient") {
+    if (!hit.image_url) {
+        if (type == "cocktail") {
+            return "/no-cocktail.jpg";
+        }
+
+        return "/no-ingredient.png";
+    }
+
+    return hit.image_url;
+}
+
+function doFocus() {
+    nextTick(() => {
+        if (siteSearchInput.value) {
+            siteSearchInput.value.focus();
+        }
+    });
+}
 </script>
 
 <style scoped>

@@ -4,14 +4,10 @@
     </div>
 </template>
 
-<script>
-export default {
-    data() {
-        return {
-            observer: null,
-        };
-    },
-};
+<script setup lang="ts">
+import { ref } from "vue";
+
+const observer = ref<IntersectionObserver | null>(null);
 </script>
 
 <style scoped>

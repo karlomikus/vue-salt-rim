@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div ref="rootEl">
         <div class="dialog-title">{{ $t("cocktail.cocktails") }}</div>
         <ais-instant-search :search-client="searchClient" index-name="cocktails" class="cocktail-finder" :future="{ preserveSharedStateOnUnmount: true }">
             <ais-configure :hits-per-page.camel="8" />
@@ -16,62 +16,64 @@
                         autocapitalize="off"
                         spellcheck="false"
                         maxlength="512"
-                        @input="refine($event.currentTarget.value)"
+                        @input="refine(($event.currentTarget as HTMLInputElement).value)"
                     />
                 </template>
             </ais-search-box>
             <ais-hits class="cocktail-finder__hits">
-                <template #default="{ items }">
+                <template #default="{ items }: { items: Hit[] }">
                     <a
                         v-for="item in items"
                         :key="item.id"
                         class="cocktail-finder__option block-container block-container--hover"
                         href="#"
-                        @click.prevent="$emit('cocktailSelected', item)"
+                        @click.prevent="emit('cocktailSelected', item)"
                     >
                         <CocktailThumb :cocktail="item"></CocktailThumb>
                         <div>
                             <h4 class="sr-list-item-title">{{ item.name }}</h4>
-                            <p>{{ item.short_ingredients.join(", ") }}</p>
+                            <p>{{ item.short_ingredients?.join(", ") }}</p>
                         </div>
                     </a>
                 </template>
             </ais-hits>
         </ais-instant-search>
         <div class="dialog-actions">
-            <button type="submit" class="button button--dark" @click="$emit('closed')">{{ $t("close") }}</button>
+            <button type="submit" class="button button--dark" @click="emit('closed')">{{ $t("close") }}</button>
         </div>
     </div>
 </template>
 
-<script>
+<script setup lang="ts">
+import { ref, nextTick } from "vue";
 import { instantMeiliSearch } from "@meilisearch/instant-meilisearch";
-import AppState from "../AppState";
-import CocktailThumb from "./Cocktail/CocktailThumb.vue";
+import AppState from "@/AppState";
+import CocktailThumb from "@/components/Cocktail/CocktailThumb.vue";
+
+type Hit = {
+    id: number;
+    name: string;
+    slug: string;
+    short_ingredients?: string[];
+    image_url?: string;
+};
 
 const appState = new AppState();
 
-export default {
-    components: {
-        CocktailThumb,
-    },
-    emits: ["cocktailSelected", "closed"],
-    data() {
-        return {
-            searchClient: instantMeiliSearch(appState.bar.search_host, appState.bar.search_token).searchClient,
-        };
-    },
-    methods: {
-        doFocus() {
-            this.$nextTick(() => {
-                if (this.$refs.search) {
-                    this.$el.scrollIntoView(true);
-                    this.$refs.search.focus();
-                }
-            });
-        },
-    },
-};
+const emit = defineEmits<{ cocktailSelected: [item: Hit]; closed: [] }>();
+
+const searchClient = instantMeiliSearch(appState.bar.search_host ?? "", appState.bar.search_token ?? "").searchClient;
+const search = ref<HTMLInputElement>();
+const rootEl = ref<HTMLElement>();
+
+function doFocus() {
+    nextTick(() => {
+        if (search.value) {
+            rootEl.value?.scrollIntoView(true);
+            search.value.focus();
+        }
+    });
+}
 </script>
 
 <style scoped>

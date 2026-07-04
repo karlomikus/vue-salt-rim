@@ -18,36 +18,35 @@
         </div>
     </form>
 </template>
-<script>
-import OverlayLoader from "./../OverlayLoader.vue";
+<script setup lang="ts">
+import { ref } from "vue";
+import { useRoute } from "vue-router";
+import { useI18n } from "vue-i18n";
+import OverlayLoader from "@/components/OverlayLoader.vue";
 import BarAssistantClient from "@/api/BarAssistantClient";
+import { useSaltRimToast } from "@/composables/toast";
 
-export default {
-    components: {
-        OverlayLoader,
-    },
-    emits: ["dialogClosed", "barJoined"],
-    data() {
-        return {
-            isLoading: false,
-            inviteCode: this.$route.params.invite || null,
-        };
-    },
-    methods: {
-        submit() {
-            this.isLoading = true;
-            BarAssistantClient.joinBar(this.inviteCode)
-                .then((resp) => {
-                    this.isLoading = false;
-                    this.$toast.default(this.$t("bars.join-success", { name: resp.data.name }));
-                    this.$emit("dialogClosed");
-                    this.$emit("barJoined");
-                })
-                .catch(() => {
-                    this.isLoading = false;
-                    this.$toast.error(this.$t("bars.join-error"));
-                });
-        },
-    },
-};
+const route = useRoute();
+const { t } = useI18n();
+const toast = useSaltRimToast();
+
+const emit = defineEmits<{ dialogClosed: []; barJoined: [] }>();
+
+const isLoading = ref(false);
+const inviteCode = ref<string | null>((route.params.invite as string) || null);
+
+function submit() {
+    isLoading.value = true;
+    BarAssistantClient.joinBar(inviteCode.value ?? "")
+        .then((resp) => {
+            isLoading.value = false;
+            toast.default(t("bars.join-success", { name: resp.data.name }));
+            emit("dialogClosed");
+            emit("barJoined");
+        })
+        .catch(() => {
+            isLoading.value = false;
+            toast.error(t("bars.join-error"));
+        });
+}
 </script>

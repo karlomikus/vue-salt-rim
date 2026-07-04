@@ -65,87 +65,77 @@
     </div>
 </template>
 
-<script>
+<script setup lang="ts">
+import { ref } from "vue";
+import { useI18n } from "vue-i18n";
 import BarAssistantClient from "@/api/BarAssistantClient";
-import OverlayLoader from "./../OverlayLoader.vue";
-import PageHeader from "./../PageHeader.vue";
-import SaltRimDialog from "./../Dialog/SaltRimDialog.vue";
-import CollectionForm from "./CollectionForm.vue";
-import EmptyState from "./../EmptyState.vue";
-import SubscriptionCheck from "../SubscriptionCheck.vue";
-import AppState from "../../AppState";
+import OverlayLoader from "@/components/OverlayLoader.vue";
+import PageHeader from "@/components/PageHeader.vue";
+import SaltRimDialog from "@/components/Dialog/SaltRimDialog.vue";
+import CollectionForm from "@/components/Collections/CollectionForm.vue";
+import EmptyState from "@/components/EmptyState.vue";
+import SubscriptionCheck from "@/components/SubscriptionCheck.vue";
+import AppState from "@/AppState";
 import { useTitle } from "@/composables/title";
+import { useSaltRimToast } from "@/composables/toast";
+import { useConfirm } from "@/composables/confirm";
+import type { components } from "@/api/api";
 
-export default {
-    components: {
-        OverlayLoader,
-        PageHeader,
-        SaltRimDialog,
-        CollectionForm,
-        EmptyState,
-        SubscriptionCheck,
-    },
-    data() {
-        return {
-            isLoading: false,
-            showDialog: false,
-            appState: new AppState(),
-            dialogTitle: "Collection data",
-            editCollection: {},
-            collections: [],
-        };
-    },
-    created() {
-        useTitle(this.$t("collections.title"));
+type Collection = Omit<components["schemas"]["Collection"], "cocktails"> & { cocktails: components["schemas"]["CocktailBasic"][] };
 
-        this.refreshCollections();
-    },
-    methods: {
-        refreshCollections() {
-            this.showDialog = false;
-            this.isLoading = true;
-            BarAssistantClient.getCollections({ include: "cocktails" })
-                .then((resp) => {
-                    this.collections = resp.data;
-                    this.isLoading = false;
+const appState = new AppState();
+const { t } = useI18n();
+const toast = useSaltRimToast();
+const confirm = useConfirm();
+
+const isLoading = ref(false);
+const showDialog = ref(false);
+const dialogTitle = ref("Collection data");
+const editCollection = ref<Partial<Collection>>({});
+const collections = ref<Collection[]>([]);
+
+useTitle(t("collections.title"));
+
+refreshCollections();
+
+function refreshCollections() {
+    showDialog.value = false;
+    isLoading.value = true;
+    BarAssistantClient.getCollections({ include: "cocktails" })
+        .then((resp) => {
+            collections.value = (resp.data as Collection[]) ?? [];
+            isLoading.value = false;
+        })
+        .catch((e) => {
+            toast.error(e.message);
+        });
+}
+
+function openDialog(title: string, obj: Partial<Collection>) {
+    dialogTitle.value = title;
+    editCollection.value = obj;
+    showDialog.value = true;
+}
+
+function deleteCollection(collection: Collection) {
+    confirm.show(t("collections.confirm-delete", { name: collection.name }), {
+        onResolved: (dialog: { close: () => void }) => {
+            isLoading.value = true;
+            dialog.close();
+            BarAssistantClient.deleteCollection(collection.id)
+                .then(() => {
+                    isLoading.value = false;
+                    localStorage.removeItem("collection_" + collection.id);
+                    toast.default(t("collections.delete-success"));
+                    refreshCollections();
                 })
                 .catch((e) => {
-                    this.$toast.error(e.message);
+                    toast.error(e.message);
+                    isLoading.value = false;
                 });
         },
-        openDialog(title, obj) {
-            this.dialogTitle = title;
-            this.editCollection = obj;
-            this.showDialog = true;
-        },
-        deleteCollection(collection) {
-            this.$confirm(this.$t("collections.confirm-delete", { name: collection.name }), {
-                onResolved: (dialog) => {
-                    this.isLoading = true;
-                    dialog.close();
-                    BarAssistantClient.deleteCollection(collection.id)
-                        .then(() => {
-                            this.isLoading = false;
-                            localStorage.removeItem("collection_" + collection.id);
-                            this.$toast.default(this.$t("collections.delete-success"));
-                            this.refreshCollections();
-                        })
-                        .catch((e) => {
-                            this.$toast.error(e.message);
-                            this.isLoading = false;
-                        });
-                },
-            });
-        },
-        overflowText(input, len) {
-            if (!input) {
-                return input;
-            }
-
-            return input.length > len ? `${input.substring(0, len)}...` : input;
-        },
-    },
-};
+    });
+}
 </script>
 <style scoped>
 .collections {

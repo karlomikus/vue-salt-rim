@@ -49,80 +49,75 @@
     </div>
 </template>
 
-<script>
+<script setup lang="ts">
+import { ref } from "vue";
+import { useI18n } from "vue-i18n";
 import BarAssistantClient from "@/api/BarAssistantClient";
 import OverlayLoader from "@/components/OverlayLoader.vue";
 import PageHeader from "@/components/PageHeader.vue";
 import Navigation from "@/components/Settings/SettingsNavigation.vue";
 import SaltRimDialog from "@/components/Dialog/SaltRimDialog.vue";
 import UserForm from "@/components/Settings/UserForm.vue";
-import AppState from "../../AppState";
-import SubscriptionCheck from "../SubscriptionCheck.vue";
+import AppState from "@/AppState";
+import SubscriptionCheck from "@/components/SubscriptionCheck.vue";
 import { useTitle } from "@/composables/title";
+import { useSaltRimToast } from "@/composables/toast";
+import { useConfirm } from "@/composables/confirm";
+import type { components } from "@/api/api";
 
-export default {
-    components: {
-        OverlayLoader,
-        Navigation,
-        PageHeader,
-        SaltRimDialog,
-        UserForm,
-        SubscriptionCheck,
-    },
-    data() {
-        return {
-            appState: new AppState(),
-            isLoading: false,
-            showDialog: false,
-            dialogTitle: "User data",
-            editUser: {
-                role: {},
-            },
-            users: [],
-        };
-    },
-    created() {
-        useTitle(this.$t("users.title"));
+type User = components["schemas"]["User"];
+type EditUser = { id?: number; email?: string; name?: string; role?: { id?: number | null; name?: string | null } };
 
-        this.refreshUsers();
-    },
-    methods: {
-        refreshUsers() {
-            this.showDialog = false;
-            this.isLoading = true;
-            BarAssistantClient.getUsers()
-                .then((resp) => {
-                    this.users = resp.data;
-                    this.isLoading = false;
+const appState = new AppState();
+const { t } = useI18n();
+const toast = useSaltRimToast();
+const confirm = useConfirm();
+
+const isLoading = ref(false);
+const showDialog = ref(false);
+const dialogTitle = ref("User data");
+const editUser = ref<EditUser>({ role: {} });
+const users = ref<User[]>([]);
+
+useTitle(t("users.title"));
+
+refreshUsers();
+
+function refreshUsers() {
+    showDialog.value = false;
+    isLoading.value = true;
+    BarAssistantClient.getUsers()
+        .then((resp) => {
+            users.value = resp.data ?? [];
+            isLoading.value = false;
+        })
+        .catch((e) => {
+            toast.error(e.message);
+        });
+}
+
+function openDialog(title: string, obj: EditUser) {
+    dialogTitle.value = title;
+    editUser.value = obj;
+    showDialog.value = true;
+}
+
+function deleteUser(user: User) {
+    confirm.show(t("users.confirm-delete", { name: user.name }), {
+        onResolved: (dialog: { close: () => void }) => {
+            isLoading.value = true;
+            dialog.close();
+            BarAssistantClient.removeUserFromBar(user.id)
+                .then(() => {
+                    isLoading.value = false;
+                    toast.default(t("users.delete-success"));
+                    refreshUsers();
                 })
                 .catch((e) => {
-                    this.$toast.error(e.message);
+                    toast.error(e.message);
+                    isLoading.value = false;
                 });
         },
-        openDialog(title, obj) {
-            this.dialogTitle = title;
-            this.editUser = obj;
-            this.showDialog = true;
-        },
-        deleteUser(user) {
-            const appState = new AppState();
-            this.$confirm(this.$t("users.confirm-delete", { name: user.name }), {
-                onResolved: (dialog) => {
-                    this.isLoading = true;
-                    dialog.close();
-                    BarAssistantClient.removeUserFromBar(user.id)
-                        .then(() => {
-                            this.isLoading = false;
-                            this.$toast.default(this.$t("users.delete-success"));
-                            this.refreshUsers();
-                        })
-                        .catch((e) => {
-                            this.$toast.error(e.message);
-                            this.isLoading = false;
-                        });
-                },
-            });
-        },
-    },
-};
+    });
+}
 </script>

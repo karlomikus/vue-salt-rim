@@ -19,84 +19,72 @@
     </form>
 </template>
 
-<script>
+<script setup lang="ts">
+import { ref } from "vue";
+import { useI18n } from "vue-i18n";
 import BarAssistantClient from "@/api/BarAssistantClient";
-import OverlayLoader from "./../OverlayLoader.vue";
-import SaltRimRadio from "./../SaltRimRadio.vue";
+import OverlayLoader from "@/components/OverlayLoader.vue";
+import SaltRimRadio from "@/components/SaltRimRadio.vue";
+import { useSaltRimToast } from "@/composables/toast";
 
-export default {
-    components: {
-        OverlayLoader,
-        SaltRimRadio,
-    },
-    props: {
-        sourceUser: {
-            type: Object,
-            default() {
-                return {
-                    role: {},
-                };
-            },
-        },
-        dialogTitle: {
-            type: String,
-            default: "",
-        },
-    },
-    emits: ["userDialogClosed"],
-    data() {
-        return {
-            isLoading: false,
-            user: this.sourceUser,
-            roles: [
-                { id: 1, name: this.$t("roles.name.Admin"), description: this.$t("roles.description.Admin") },
-                { id: 3, name: this.$t("roles.name.General"), description: this.$t("roles.description.General") },
-                { id: 4, name: this.$t("roles.name.Guest"), description: this.$t("roles.description.Guest") },
-            ],
+type User = { id?: number; email?: string; role?: { id?: number } };
+
+const props = withDefaults(defineProps<{ sourceUser?: User; dialogTitle?: string }>(), {
+    sourceUser: () => ({ role: {} }),
+    dialogTitle: "",
+});
+const { t } = useI18n();
+const toast = useSaltRimToast();
+
+const emit = defineEmits<{ userDialogClosed: [] }>();
+
+const isLoading = ref(false);
+const user = ref<User>(props.sourceUser);
+const roles = [
+    { id: 1, name: t("roles.name.Admin"), description: t("roles.description.Admin") },
+    { id: 3, name: t("roles.name.General"), description: t("roles.description.General") },
+    { id: 4, name: t("roles.name.Guest"), description: t("roles.description.Guest") },
+];
+
+function submit() {
+    isLoading.value = true;
+
+    if (user.value.id) {
+        const postData = {
+            email: user.value.email ?? "",
+            role_id: user.value.role?.id ?? 0,
         };
-    },
-    methods: {
-        submit() {
-            this.isLoading = true;
 
-            if (this.user.id) {
-                const postData = {
-                    email: this.user.email,
-                    role_id: this.user.role.id,
-                };
+        BarAssistantClient.updateMember(user.value.id, postData)
+            .then(() => {
+                toast.default(t("users.update-success"));
+                emit("userDialogClosed");
+            })
+            .catch(() => {
+                toast.error("Unable to update a member.");
+            })
+            .finally(() => {
+                isLoading.value = false;
+            });
+    } else {
+        const postData = {
+            email: user.value.email ?? "",
+            role_id: user.value.role?.id ?? 0,
+        };
 
-                BarAssistantClient.updateMember(this.user.id, postData)
-                    .then(() => {
-                        this.$toast.default(this.$t("users.update-success"));
-                        this.$emit("userDialogClosed");
-                    })
-                    .catch((e) => {
-                        this.$toast.error("Unable to update a member.");
-                    })
-                    .finally(() => {
-                        this.isLoading = false;
-                    });
-            } else {
-                const postData = {
-                    email: this.user.email,
-                    role_id: this.user.role.id,
-                };
-
-                BarAssistantClient.saveMember(postData)
-                    .then(() => {
-                        this.$toast.default(this.$t("users.add-success"));
-                        this.$emit("userDialogClosed");
-                    })
-                    .catch((e) => {
-                        this.$toast.error("Unable to add a member. Make sure the user exists and is not already a member.");
-                    })
-                    .finally(() => {
-                        this.isLoading = false;
-                    });
-            }
-        },
-    },
-};
+        BarAssistantClient.saveMember(postData)
+            .then(() => {
+                toast.default(t("users.add-success"));
+                emit("userDialogClosed");
+            })
+            .catch(() => {
+                toast.error("Unable to add a member. Make sure the user exists and is not already a member.");
+            })
+            .finally(() => {
+                isLoading.value = false;
+            });
+    }
+}
 </script>
 
 <style scoped>

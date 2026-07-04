@@ -23,67 +23,58 @@
     </form>
 </template>
 
-<script>
+<script setup lang="ts">
+import { ref } from "vue";
+import { useI18n } from "vue-i18n";
 import BarAssistantClient from "@/api/BarAssistantClient";
-import OverlayLoader from "./../OverlayLoader.vue";
+import OverlayLoader from "@/components/OverlayLoader.vue";
+import { useSaltRimToast } from "@/composables/toast";
 
-export default {
-    components: {
-        OverlayLoader,
-    },
-    props: {
-        dialogTitle: {
-            type: String,
-            default: "",
-        },
-        sourceCollection: {
-            type: Object,
-            default() {
-                return {};
-            },
-        },
-    },
-    emits: ["collectionDialogClosed"],
-    data() {
-        return {
-            isLoading: false,
-            collection: this.sourceCollection,
-        };
-    },
-    methods: {
-        submit() {
-            this.isLoading = true;
+type Collection = { id?: number; name?: string; description?: string; is_bar_shared?: boolean };
 
-            const postData = {
-                name: this.collection.name,
-                description: this.collection.description,
-                is_bar_shared: this.collection.is_bar_shared,
-            };
+const props = withDefaults(defineProps<{ dialogTitle?: string; sourceCollection?: Collection }>(), {
+    dialogTitle: "",
+    sourceCollection: () => ({}),
+});
+const { t } = useI18n();
+const toast = useSaltRimToast();
 
-            if (this.collection.id) {
-                BarAssistantClient.updateCollection(this.collection.id, postData)
-                    .then(() => {
-                        this.isLoading = false;
-                        this.$toast.default(this.$t("collections.update-success"));
-                        this.$emit("collectionDialogClosed");
-                    })
-                    .catch((e) => {
-                        this.$toast.error(e.message);
-                        this.isLoading = false;
-                    });
-            } else {
-                BarAssistantClient.saveCollection(postData)
-                    .then(() => {
-                        this.isLoading = false;
-                        this.$toast.default(this.$t("collections.add-success"));
-                        this.$emit("collectionDialogClosed");
-                    })
-                    .catch((e) => {
-                        this.$toast.error(e.message);
-                        this.isLoading = false;
-                    });
-            }
-        },
-    },
-};
+const emit = defineEmits<{ collectionDialogClosed: [] }>();
+
+const isLoading = ref(false);
+const collection = ref<Collection>(props.sourceCollection);
+
+function submit() {
+    isLoading.value = true;
+
+    const postData = {
+        name: collection.value.name ?? "",
+        description: collection.value.description,
+        is_bar_shared: collection.value.is_bar_shared,
+    };
+
+    if (collection.value.id) {
+        BarAssistantClient.updateCollection(collection.value.id, postData)
+            .then(() => {
+                isLoading.value = false;
+                toast.default(t("collections.update-success"));
+                emit("collectionDialogClosed");
+            })
+            .catch((e) => {
+                toast.error(e.message);
+                isLoading.value = false;
+            });
+    } else {
+        BarAssistantClient.saveCollection(postData)
+            .then(() => {
+                isLoading.value = false;
+                toast.default(t("collections.add-success"));
+                emit("collectionDialogClosed");
+            })
+            .catch((e) => {
+                toast.error(e.message);
+                isLoading.value = false;
+            });
+    }
+}
 </script>

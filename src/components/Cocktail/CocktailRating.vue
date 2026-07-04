@@ -19,19 +19,11 @@
         <span v-if="userRating" class="resource-rating__alt" :title="$t('your-rating')">{{ userRating }}</span>
     </div>
 </template>
-<script>
-export default {
-    props: {
-        userRating: {
-            type: Number,
-            default: null,
-        },
-        averageRating: {
-            type: Number,
-            default: null,
-        },
-    },
-};
+<script setup lang="ts">
+withDefaults(defineProps<{ userRating?: number | null; averageRating?: number | null }>(), {
+    userRating: null,
+    averageRating: null,
+});
 </script>
 <style scoped>
 .resource-rating {

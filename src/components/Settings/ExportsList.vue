@@ -63,83 +63,79 @@
     </div>
 </template>
 
-<script>
+<script setup lang="ts">
+import { ref } from "vue";
+import { useI18n } from "vue-i18n";
 import BarAssistantClient from "@/api/BarAssistantClient";
-import OverlayLoader from "../OverlayLoader.vue";
-import PageHeader from "../PageHeader.vue";
-import SettingsNavigation from "./SettingsNavigation.vue";
-import SaltRimDialog from "../Dialog/SaltRimDialog.vue";
-import DateFormatter from "../DateFormatter.vue";
-import ExportForm from "./ExportForm.vue";
-import EmptyState from "../EmptyState.vue";
+import OverlayLoader from "@/components/OverlayLoader.vue";
+import PageHeader from "@/components/PageHeader.vue";
+import SettingsNavigation from "@/components/Settings/SettingsNavigation.vue";
+import SaltRimDialog from "@/components/Dialog/SaltRimDialog.vue";
+import DateFormatter from "@/components/DateFormatter.vue";
+import ExportForm from "@/components/Settings/ExportForm.vue";
+import EmptyState from "@/components/EmptyState.vue";
 import { useTitle } from "@/composables/title";
+import { useSaltRimToast } from "@/composables/toast";
+import { useConfirm } from "@/composables/confirm";
+import type { components } from "@/api/api";
 
-export default {
-    components: {
-        OverlayLoader,
-        SettingsNavigation,
-        PageHeader,
-        SaltRimDialog,
-        DateFormatter,
-        ExportForm,
-        EmptyState,
-    },
-    data() {
-        return {
-            isLoading: false,
-            showDialog: false,
-            barExports: [],
-        };
-    },
-    created() {
-        useTitle(this.$t("exports.title"));
+type Export = components["schemas"]["Export"];
 
-        this.refreshExports();
-    },
-    methods: {
-        refreshExports() {
-            this.showDialog = false;
+const { t } = useI18n();
+const toast = useSaltRimToast();
+const confirm = useConfirm();
 
-            this.isLoading = true;
-            BarAssistantClient.getExports()
-                .then((resp) => {
-                    this.barExports = resp.data;
-                    this.isLoading = false;
+const isLoading = ref(false);
+const showDialog = ref(false);
+const barExports = ref<Export[]>([]);
+
+useTitle(t("exports.title"));
+
+refreshExports();
+
+function refreshExports() {
+    showDialog.value = false;
+
+    isLoading.value = true;
+    BarAssistantClient.getExports()
+        .then((resp) => {
+            barExports.value = resp.data ?? [];
+            isLoading.value = false;
+        })
+        .catch((e) => {
+            toast.error(e.message);
+        });
+}
+
+function deleteExport(ex: Export) {
+    confirm.show(t("exports.confirm-delete"), {
+        onResolved: (dialog: { close: () => void }) => {
+            isLoading.value = true;
+            dialog.close();
+            BarAssistantClient.deleteExport(ex.id!)
+                .then(() => {
+                    isLoading.value = false;
+                    toast.default(t("exports.delete-success"));
+                    refreshExports();
                 })
                 .catch((e) => {
-                    this.$toast.error(e.message);
+                    toast.error(e.message);
+                    isLoading.value = false;
                 });
         },
-        deleteExport(ex) {
-            this.$confirm(this.$t("exports.confirm-delete"), {
-                onResolved: (dialog) => {
-                    this.isLoading = true;
-                    dialog.close();
-                    BarAssistantClient.deleteExport(ex.id)
-                        .then(() => {
-                            this.isLoading = false;
-                            this.$toast.default(this.$t("exports.delete-success"));
-                            this.refreshExports();
-                        })
-                        .catch((e) => {
-                            this.$toast.error(e.message);
-                            this.isLoading = false;
-                        });
-                },
-            });
-        },
-        downloadExport(ex) {
-            this.isLoading = true;
-            BarAssistantClient.generateExportDownloadURL(ex.id)
-                .then((resp) => {
-                    this.isLoading = false;
-                    window.open(window.srConfig.API_URL + resp.data.url, "_blank").focus();
-                })
-                .catch((e) => {
-                    this.$toast.error(e.message);
-                    this.isLoading = false;
-                });
-        },
-    },
-};
+    });
+}
+
+function downloadExport(ex: Export) {
+    isLoading.value = true;
+    BarAssistantClient.generateExportDownloadURL(ex.id!)
+        .then((resp) => {
+            isLoading.value = false;
+            window.open(window.srConfig.API_URL + resp.data?.url, "_blank")?.focus();
+        })
+        .catch((e) => {
+            toast.error(e.message);
+            isLoading.value = false;
+        });
+}
 </script>

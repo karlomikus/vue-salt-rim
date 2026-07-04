@@ -32,107 +32,78 @@
     </form>
 </template>
 
-<script>
+<script setup lang="ts">
+import { ref } from "vue";
+import { useI18n } from "vue-i18n";
 import BarAssistantClient from "@/api/BarAssistantClient";
 import OverlayLoader from "@/components/OverlayLoader.vue";
+import { useSaltRimToast } from "@/composables/toast";
+import type { components } from "@/api/api";
 
-export default {
-    components: {
-        OverlayLoader,
-    },
-    emits: ["exportDialogClosed"],
-    data() {
-        return {
-            isLoading: false,
-            exportModel: {
-                type: "schema",
-                units: "none",
-            },
-            types: [
-                {
-                    id: "datapack",
-                    name: "Bar Assistant Datapack",
-                },
-                {
-                    id: "schema",
-                    name: "JSON (Schema draft 2)",
-                },
-                {
-                    id: "xml",
-                    name: "XML",
-                },
-                {
-                    id: "md",
-                    name: "Markdown",
-                },
-                {
-                    id: "json-ld",
-                    name: "Schema.org Recipe (JSON-LD)",
-                },
-                {
-                    id: "yaml",
-                    name: "YAML",
-                },
-            ],
-            units: [
-                {
-                    id: "none",
-                    name: this.$t("unit.original"),
-                },
-                {
-                    id: "ml",
-                    name: this.$t("unit.ml-full"),
-                },
-                {
-                    id: "oz",
-                    name: this.$t("unit.oz-full"),
-                },
-                {
-                    id: "cl",
-                    name: this.$t("unit.cl-full"),
-                },
-            ],
-        };
-    },
-    created() {
-        this.refreshBars();
-    },
-    methods: {
-        refreshBars() {
-            this.isLoading = true;
-            BarAssistantClient.getBars()
-                .then((resp) => {
-                    this.bars = resp.data.filter((bar) => {
-                        // Show only owned bars
-                        return bar.access.can_delete;
-                    });
-                    this.isLoading = false;
-                })
-                .catch((e) => {
-                    this.$toast.error(e.message);
-                    this.isLoading = false;
-                });
-        },
-        submit() {
-            this.isLoading = true;
+type Bar = components["schemas"]["Bar"];
 
-            const postData = {
-                bar_id: this.exportModel.bar_id,
-                type: this.exportModel.type,
-                units: this.exportModel.units,
-            };
+const { t } = useI18n();
+const toast = useSaltRimToast();
 
-            BarAssistantClient.saveExport(postData)
-                .then(() => {
-                    this.isLoading = false;
-                    this.$toast.default(this.$t("exports.start-success"));
-                    this.$emit("exportDialogClosed");
-                })
-                .catch((e) => {
-                    this.$toast.error(e.message);
-                    this.isLoading = false;
-                });
-        },
-    },
-};
+const emit = defineEmits<{ exportDialogClosed: [] }>();
+
+const isLoading = ref(false);
+const exportModel = ref<{ type: string; units: string; bar_id?: number }>({
+    type: "schema",
+    units: "none",
+});
+const bars = ref<Bar[]>([]);
+const types = [
+    { id: "datapack", name: "Bar Assistant Datapack" },
+    { id: "schema", name: "JSON (Schema draft 2)" },
+    { id: "xml", name: "XML" },
+    { id: "md", name: "Markdown" },
+    { id: "json-ld", name: "Schema.org Recipe (JSON-LD)" },
+    { id: "yaml", name: "YAML" },
+];
+const units = [
+    { id: "none", name: t("unit.original") },
+    { id: "ml", name: t("unit.ml-full") },
+    { id: "oz", name: t("unit.oz-full") },
+    { id: "cl", name: t("unit.cl-full") },
+];
+
+refreshBars();
+
+function refreshBars() {
+    isLoading.value = true;
+    BarAssistantClient.getBars()
+        .then((resp) => {
+            bars.value = (resp.data ?? []).filter((bar) => {
+                // Show only owned bars
+                return bar.access.can_delete;
+            });
+            isLoading.value = false;
+        })
+        .catch((e) => {
+            toast.error(e.message);
+            isLoading.value = false;
+        });
+}
+
+function submit() {
+    isLoading.value = true;
+
+    const postData = {
+        bar_id: exportModel.value.bar_id,
+        type: exportModel.value.type as components["schemas"]["ExportTypeEnum"],
+        units: exportModel.value.units as components["schemas"]["ForceUnitConvertEnum"],
+    };
+
+    BarAssistantClient.saveExport(postData)
+        .then(() => {
+            isLoading.value = false;
+            toast.default(t("exports.start-success"));
+            emit("exportDialogClosed");
+        })
+        .catch((e) => {
+            toast.error(e.message);
+            isLoading.value = false;
+        });
+}
 </script>

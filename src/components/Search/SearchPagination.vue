@@ -18,48 +18,49 @@
         </div>
     </div>
 </template>
-<script>
-export default {
-    props: {
-        meta: {
-            type: Object,
-            default() {
-                return {
-                    current_page: 1,
-                    last_page: 1,
-                    to: 0,
-                    total: 0,
-                };
-            },
-        },
-    },
-    emits: ["pageChanged"],
-    data() {
-        return {
-            currentPage: this.meta.current_page,
-        };
-    },
-    watch: {
-        meta(newVal) {
-            this.currentPage = newVal.current_page;
-        },
-    },
-    methods: {
-        changePage(dir) {
-            if (dir == "prev") {
-                if (this.currentPage > 1) {
-                    this.currentPage--;
-                }
-            }
+<script setup lang="ts">
+import { ref, watch } from "vue";
 
-            if (dir == "next") {
-                if (this.currentPage < this.meta.last_page) {
-                    this.currentPage++;
-                }
-            }
-
-            this.$emit("pageChanged", this.currentPage);
-        },
-    },
+type PaginationMeta = {
+    current_page: number;
+    last_page: number;
+    to: number;
+    total: number;
 };
+
+const props = withDefaults(defineProps<{ meta?: PaginationMeta }>(), {
+    meta: () => ({
+        current_page: 1,
+        last_page: 1,
+        to: 0,
+        total: 0,
+    }),
+});
+
+const emit = defineEmits<{ pageChanged: [page: number] }>();
+
+const currentPage = ref(props.meta.current_page);
+
+watch(
+    () => props.meta,
+    (newVal) => {
+        currentPage.value = newVal.current_page;
+    }
+);
+
+function changePage(dir: "prev" | "next") {
+    if (dir == "prev") {
+        if (currentPage.value > 1) {
+            currentPage.value--;
+        }
+    }
+
+    if (dir == "next") {
+        if (currentPage.value < props.meta.last_page) {
+            currentPage.value++;
+        }
+    }
+
+    emit("pageChanged", currentPage.value);
+}
 </script>

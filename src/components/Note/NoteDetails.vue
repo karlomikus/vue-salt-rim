@@ -7,41 +7,38 @@
     </div>
 </template>
 
-<script>
+<script setup lang="ts">
+import { useI18n } from "vue-i18n";
 import BarAssistantClient from "@/api/BarAssistantClient";
-import DateFormatter from "../DateFormatter.vue";
+import DateFormatter from "@/components/DateFormatter.vue";
+import { useSaltRimToast } from "@/composables/toast";
+import { useConfirm } from "@/composables/confirm";
+import type { components } from "@/api/api";
 
-export default {
-    components: {
-        DateFormatter,
-    },
-    props: {
-        note: {
-            type: Object,
-            default() {
-                return {};
-            },
+const props = withDefaults(defineProps<{ note?: Partial<components["schemas"]["Note"]> }>(), {
+    note: () => ({}),
+});
+const { t } = useI18n();
+const toast = useSaltRimToast();
+const confirm = useConfirm();
+
+const emit = defineEmits<{ noteDeleted: [] }>();
+
+function deleteNote() {
+    confirm.show(t("note.confirm-delete"), {
+        onResolved: (dialog: { close: () => void }) => {
+            dialog.close();
+            BarAssistantClient.deleteNote(props.note!.id!)
+                .then(() => {
+                    toast.default(t("note.delete-success"));
+                    emit("noteDeleted");
+                })
+                .catch((e) => {
+                    toast.error(e.message);
+                });
         },
-    },
-    emits: ["noteDeleted"],
-    methods: {
-        deleteNote() {
-            this.$confirm(this.$t("note.confirm-delete"), {
-                onResolved: (dialog) => {
-                    dialog.close();
-                    BarAssistantClient.deleteNote(this.note.id)
-                        .then(() => {
-                            this.$toast.default(this.$t("note.delete-success"));
-                            this.$emit("noteDeleted");
-                        })
-                        .catch((e) => {
-                            this.$toast.error(e.message);
-                        });
-                },
-            });
-        },
-    },
-};
+    });
+}
 </script>
 
 <style scoped>

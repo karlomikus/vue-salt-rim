@@ -24,44 +24,42 @@
     </div>
 </template>
 
-<script>
+<script setup lang="ts">
+import { ref } from "vue";
+import { useRoute, useRouter } from "vue-router";
+import { useI18n } from "vue-i18n";
 import BarAssistantClient from "@/api/BarAssistantClient";
-import OverlayLoader from "./../OverlayLoader.vue";
-import SiteLogo from "./../Layout/SiteLogo.vue";
+import OverlayLoader from "@/components/OverlayLoader.vue";
+import SiteLogo from "@/components/Layout/SiteLogo.vue";
+import { useSaltRimToast } from "@/composables/toast";
 
-export default {
-    components: {
-        OverlayLoader,
-        SiteLogo,
-    },
-    data() {
-        return {
-            isLoading: false,
-            reset: {},
-        };
-    },
-    methods: {
-        requestPasswordReset() {
-            const token = this.$route.query.token || null;
+const route = useRoute();
+const router = useRouter();
+const { t } = useI18n();
+const toast = useSaltRimToast();
 
-            const postData = {
-                token: token,
-                email: this.reset.email,
-                password: this.reset.password,
-                password_confirmation: this.reset.passwordRepeat,
-            };
+const isLoading = ref(false);
+const reset = ref<{ email?: string; password?: string; passwordRepeat?: string }>({});
 
-            this.isLoading = true;
-            BarAssistantClient.resetPassword(postData)
-                .then(() => {
-                    this.$toast.default(this.$t("auth.password-reset-success"));
-                    this.$router.push("/login");
-                })
-                .catch(() => {
-                    this.isLoading = false;
-                    this.$toast.error(this.$t("auth.password-reset-error"));
-                });
-        },
-    },
-};
+function requestPasswordReset() {
+    const token = (route.query.token as string) || null;
+
+    const postData = {
+        token: token,
+        email: reset.value.email,
+        password: reset.value.password,
+        password_confirmation: reset.value.passwordRepeat,
+    };
+
+    isLoading.value = true;
+    BarAssistantClient.resetPassword(postData)
+        .then(() => {
+            toast.default(t("auth.password-reset-success"));
+            router.push("/login");
+        })
+        .catch(() => {
+            isLoading.value = false;
+            toast.error(t("auth.password-reset-error"));
+        });
+}
 </script>
