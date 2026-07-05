@@ -58,7 +58,7 @@
                     &middot;
                     <a href="#" @click.prevent="clearCategory(category)">{{ t("menu.clear-category") }}</a>
                     &middot;
-                    <a v-if="idx > 0" href="#" @click.prevent="moveCategoryUp(idx)">{{ t("menu.move-category-up") }}</a>
+                    <a v-if="idx > 0" href="#" @click.prevent="moveCategoryUp(idx)">{{ t("menu.move-category-up") }}</a> <template v-if="idx > 0 && idx < categories.length - 1"> &middot; </template>
                     <a v-if="idx < categories.length - 1" href="#" @click.prevent="moveCategoryDown(idx)">{{ t("menu.move-category-down") }}</a>
                     <label class="form-checkbox" :for="'toggle-menu-category-display-' + idx">
                         <input :id="'toggle-menu-category-display-' + idx" v-model="category.is_enabled" type="checkbox" :value="true" />
