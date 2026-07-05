@@ -1,0 +1,8 @@
+.has-markdown-content {
+    & code {
+        padding: 1px 4px;
+        border-radius: 3px;
+        font-size: 0.9em;
+        background-color: var(--clr-gray-200);
+    }
+}

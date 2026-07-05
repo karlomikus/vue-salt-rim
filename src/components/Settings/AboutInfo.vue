@@ -224,20 +224,24 @@ onMounted(() => {
 
             <section v-if="frontendRelease" class="about-info__changelog">
                 <h3 class="page-subtitle">{{ t("about.changelog") }}</h3>
-                <div v-if="frontendChangelogHtml" class="about-info__changelog-content" v-html="frontendChangelogHtml"></div>
-                <p v-else class="about-info__no-notes">
-                    {{ t("about.no-release-notes") }}
-                </p>
+                <div class="block-container block-container--padded">
+                    <div v-if="frontendChangelogHtml" class="about-info__changelog-content has-markdown-content" v-html="frontendChangelogHtml"></div>
+                    <p v-else class="about-info__no-notes">
+                        {{ t("about.no-release-notes") }}
+                    </p>
+                </div>
             </section>
 
             <section v-if="backendRelease" class="about-info__changelog">
                 <h3 class="page-subtitle">
                     {{ t("about.backend-changelog") }}
                 </h3>
-                <div v-if="backendChangelogHtml" class="about-info__changelog-content" v-html="backendChangelogHtml"></div>
-                <p v-else class="about-info__no-notes">
-                    {{ t("about.backend-no-release-notes") }}
-                </p>
+                <div class="block-container block-container--padded">
+                    <div v-if="backendChangelogHtml" class="about-info__changelog-content has-markdown-content" v-html="backendChangelogHtml"></div>
+                    <p v-else class="about-info__no-notes">
+                        {{ t("about.backend-no-release-notes") }}
+                    </p>
+                </div>
             </section>
 
             <p v-else-if="!isChecking && backendReleaseError" class="about-info__no-notes">
@@ -388,68 +392,6 @@ onMounted(() => {
 .about-info__changelog-content {
     line-height: 1.6;
     font-size: 0.95em;
-}
-
-.about-info__changelog-content :deep(h1),
-.about-info__changelog-content :deep(h2),
-.about-info__changelog-content :deep(h3),
-.about-info__changelog-content :deep(h4) {
-    margin-top: 1.2em;
-    margin-bottom: 0.4em;
-    font-size: 1rem;
-    font-weight: 600;
-}
-
-.about-info__changelog-content :deep(h1) {
-    font-size: 1.2rem;
-}
-.about-info__changelog-content :deep(h2) {
-    font-size: 1.1rem;
-}
-
-.about-info__changelog-content :deep(ul),
-.about-info__changelog-content :deep(ol) {
-    padding-left: 1.5em;
-    margin: 0.5em 0;
-}
-
-.about-info__changelog-content :deep(li) {
-    margin-bottom: 0.25em;
-}
-
-.about-info__changelog-content :deep(code) {
-    background-color: var(--clr-gray-700);
-    padding: 1px 4px;
-    border-radius: 3px;
-    font-size: 0.9em;
-}
-
-.about-info__changelog-content :deep(pre) {
-    background-color: var(--clr-gray-700);
-    padding: 10px;
-    border-radius: var(--radius-2);
-    overflow-x: auto;
-    margin: 0.5em 0;
-}
-
-.about-info__changelog-content :deep(pre code) {
-    background: none;
-    padding: 0;
-}
-
-.about-info__changelog-content :deep(a) {
-    color: var(--clr-accent, #4a9eff);
-}
-
-.about-info__changelog-content :deep(blockquote) {
-    border-left: 2px solid var(--clr-gray-600);
-    padding-left: 1em;
-    margin: 0.5em 0;
-    color: var(--clr-text-muted);
-}
-
-.about-info__changelog-content :deep(p) {
-    margin: 0.5em 0;
 }
 
 .about-info__no-notes {
