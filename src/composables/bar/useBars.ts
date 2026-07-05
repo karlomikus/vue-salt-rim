@@ -25,7 +25,7 @@ export function useBars() {
         isLoading.value = true;
         try {
             await BarAssistantClient.deleteBar(barId);
-            bars.value = bars.value.filter(bar => bar.id !== barId);
+            bars.value = bars.value.filter((bar) => bar.id !== barId);
             toast.default(t("bars.delete-success"));
         } catch (e: any) {
             toast.error(e.message);
@@ -38,7 +38,7 @@ export function useBars() {
         isLoading.value = true;
         try {
             await BarAssistantClient.leaveBar(barId);
-            bars.value = bars.value.filter(bar => bar.id !== barId);
+            bars.value = bars.value.filter((bar) => bar.id !== barId);
             toast.default(t("bars.leave-success"));
         } catch (e: any) {
             toast.error(e.message);
