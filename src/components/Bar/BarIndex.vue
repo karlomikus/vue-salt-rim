@@ -7,7 +7,7 @@
                     <button type="button" class="button button--outline" @click.prevent="showJoinDialog = !showJoinDialog">{{ $t("bars.join") }}</button>
                 </template>
                 <template #dialog>
-                    <BarJoinDialog @dialog-closed="showJoinDialog = false" @bar-joined="refreshBars" />
+                    <BarJoinDialog @dialog-closed="showJoinDialog = false" @bar-joined="fetchBars" />
                 </template>
             </SaltRimDialog>
             <RouterLink v-if="showCreateAction" class="button button--dark" :to="{ name: 'bars.form' }">{{ $t("bars.add") }}</RouterLink>
@@ -23,16 +23,16 @@
                     <div v-for="bar in barsInGroup" :key="bar.id" class="bar block-container block-container--hover" :class="{ 'bar--inactive': bar.status != 'active' }">
                         <span class="bar__role">
                             {{ getRoleName(bar.access.role_id) }}
-                            <template v-if="bar.created_user.id == appState.user.id">&middot; Owner</template>
+                            <template v-if="bar.created_user?.id == appState.user.id">&middot; Owner</template>
                         </span>
                         <a href="#" @click.prevent="selectBar(bar)"
                             ><h4 class="bar__title">{{ bar.name }}</h4></a
                         >
                         <p class="bar__owner">
-                            Bar ID: {{ bar.id }} &middot; {{ $t("created-by") }} {{ bar.created_user.name }} &middot;
+                            Bar ID: {{ bar.id }} &middot; {{ $t("created-by") }} {{ bar.created_user?.name }} &middot;
                             <DateFormatter :date="bar.created_at" />
                         </p>
-                        <template v-if="bar.show_invite_code && bar.access.can_edit">
+                        <template v-if="bar.invite_code && bar.access.can_edit">
                             <div class="bar__invite_label_container">
                                 <label class="form-label">{{ $t("bars.invite-code") }}:</label>
                                 <a href="#" @click.prevent="copyInviteLinkToClipboard(bar.invite_code)">Copy invite link</a>
@@ -48,23 +48,19 @@
                         <p class="bar__description">{{ bar.description }}</p>
                         <div class="bar__actions">
                             <template v-if="bar.access.can_delete">
-                                <a href="#" @click.prevent="deleteBar(bar)">{{ $t("remove") }}</a>
+                                <a href="#" @click.prevent="confirmDeleteBar(bar)">{{ $t("remove") }}</a>
                                 &middot;
                             </template>
                             <template v-if="!bar.access.can_delete">
-                                <a href="#" @click.prevent="leaveBar(bar)">{{ $t("leave") }}</a>
+                                <a href="#" @click.prevent="confirmLeaveBar(bar)">{{ $t("leave") }}</a>
                                 &middot;
                             </template>
                             <template v-if="bar.access.can_edit">
                                 <RouterLink v-if="bar.access.can_edit" :to="{ name: 'bars.form', query: { id: bar.id } }">{{ $t("edit") }}</RouterLink>
                                 &middot;
                             </template>
-                            <template v-if="bar.invite_code && bar.access.can_edit">
-                                <a href="#" @click.prevent="bar.show_invite_code = !bar.show_invite_code">{{ $t("bars.toggle-invite-code") }}</a>
-                                &middot;
-                            </template>
                             <a v-if="bar.status == 'active'" href="#" @click.prevent="selectBar(bar)">{{ $t("bars.select-bar") }}</a>
-                            <a v-if="bar.status == 'deactivated' && bar.access.can_activate" href="#" @click.prevent="activateBar(bar)">{{ $t("bars.activate") }}</a>
+                            <a v-if="bar.status == 'deactivated' && bar.access.can_activate" href="#" @click.prevent="confirmActivateBar(bar)">{{ $t("bars.activate") }}</a>
                         </div>
                     </div>
                 </div>
@@ -99,44 +95,22 @@ import DateFormatter from "@/components/DateFormatter.vue";
 import { getRoleName } from "@/composables/useGetRoleName";
 import EmptyState from "@/components/EmptyState.vue";
 import SubscriptionCheck from "@/components/SubscriptionCheck.vue";
-import BarAssistantClient from "@/api/BarAssistantClient";
 import { useSaltRimToast } from "@/composables/toast";
 import { useConfirm } from "@/composables/confirm";
-import type { components } from "@/api/api";
-
-type Bar = Omit<components["schemas"]["Bar"], "created_user"> & {
-    created_user: components["schemas"]["UserBasic"];
-    show_invite_code?: boolean;
-};
+import { useBars, type Bar } from "@/composables/bar/useBars";
 
 const route = useRoute();
 const appState = new AppState();
 const { t } = useI18n();
 const toast = useSaltRimToast();
 const confirm = useConfirm();
+const { bars, isLoading, fetchBars, groupedBars, deleteBar, leaveBar, activateBar } = useBars();
 
-const isLoading = ref(false);
-const bars = ref<Bar[]>([]);
-const showJoinDialog = ref(route.name == "bars.join"); // If the route is bars.join then show the join dialog, otherwise don't
-const showCreateDialog = ref(false);
-
-const groupedBars = computed<Record<string, Bar[]>>(() => {
-    const res: Record<string, Bar[]> = {
-        active: [],
-        provisioning: [],
-        deactivated: [],
-    };
-
-    bars.value.forEach((bar) => {
-        res[bar.status].push(bar);
-    });
-
-    return res;
-});
+const showJoinDialog = ref(route.name == "bars.join");
 
 const ownedBars = computed(() => {
     return bars.value.filter((bar) => {
-        return bar.created_user.id == appState.user.id;
+        return bar.created_user?.id == appState.user.id;
     });
 });
 
@@ -151,7 +125,7 @@ const showCreateAction = computed(() => {
 useTitle(t("bars.title"));
 
 onMounted(() => {
-    refreshBars();
+    fetchBars();
 });
 
 function copyInviteLinkToClipboard(invite_code: string | null) {
@@ -169,89 +143,47 @@ function copyInviteLinkToClipboard(invite_code: string | null) {
     }
 }
 
-function refreshBars() {
-    isLoading.value = true;
-    BarAssistantClient.getBars()
-        .then((resp) => {
-            bars.value = (resp.data ?? []).map((bar) => {
-                (bar as Bar).show_invite_code = false;
-
-                return bar as Bar;
-            });
-            isLoading.value = false;
-        })
-        .catch((e) => {
-            toast.error(e.message);
-            isLoading.value = false;
-        });
-}
-
 function selectBar(bar: Bar) {
     appState.setBar(bar);
     window.location.replace("/");
 }
 
-function deleteBar(bar: Bar) {
+function confirmDeleteBar(bar: Bar) {
     confirm.show(t("bars.confirm-delete", { name: bar.name }), {
-        onResolved: (dialog: { close: () => void }) => {
-            isLoading.value = true;
+        onResolved: async (dialog: { close: () => void }) => {
+            await deleteBar(bar.id);
+
             dialog.close();
-            BarAssistantClient.deleteBar(bar.id)
-                .then(() => {
-                    isLoading.value = false;
-                    if (appState.bar.id == bar.id) {
-                        appState.forgetBar();
-                        window.location.reload();
-                    }
-                    toast.default(t("bars.delete-success"));
-                    refreshBars();
-                })
-                .catch((e) => {
-                    toast.error(e.message);
-                    isLoading.value = false;
-                });
+
+            if (appState.bar.id == bar.id) {
+                appState.forgetBar();
+                window.location.reload();
+            }
         },
     });
 }
 
-function leaveBar(bar: Bar) {
+function confirmLeaveBar(bar: Bar) {
     confirm.show(t("bars.confirm-leave", { name: bar.name }), {
-        onResolved: (dialog: { close: () => void }) => {
-            isLoading.value = true;
+        onResolved: async (dialog: { close: () => void }) => {
+            await leaveBar(bar.id);
+
             dialog.close();
-            BarAssistantClient.leaveBar(bar.id)
-                .then(() => {
-                    isLoading.value = false;
-                    if (appState.bar.id == bar.id) {
-                        appState.forgetBar();
-                        window.location.reload();
-                    }
-                    toast.default(t("bars.delete-success"));
-                    refreshBars();
-                })
-                .catch((e) => {
-                    toast.error(e.message);
-                    isLoading.value = false;
-                });
+
+            if (appState.bar.id == bar.id) {
+                appState.forgetBar();
+                window.location.reload();
+            }
         },
     });
 }
 
-function activateBar(bar: Bar) {
+function confirmActivateBar(bar: Bar) {
     confirm.show(t("bars.confirm-activation", { name: bar.name }), {
-        onResolved: (dialog: { close: () => void }) => {
-            isLoading.value = true;
+        onResolved: async (dialog: { close: () => void }) => {
+            await activateBar(bar.id);
             dialog.close();
-            BarAssistantClient.updateBarStatus(bar.id, "active")
-                .then(() => {
-                    isLoading.value = false;
-                    toast.default(t("bars.activation-success"));
-                    refreshBars();
-                })
-                .catch((e) => {
-                    toast.error(e.message);
-                    isLoading.value = false;
-                });
+            fetchBars();
         },
     });
 }

@@ -392,10 +392,6 @@ export default class BarAssistantClient {
         return (await client.PUT("/members/{id}", { params: { path: { id: id } }, body: data })).data;
     }
 
-    // static async deleteUser(id: number) {
-    //   return (await client.DELETE('/members/{id}', { params: { path: { id: id } } })).data
-    // }
-
     static async removeUserFromBar(id: number) {
         return (await client.DELETE("/members/{id}", { params: { path: { id: id } } })).data;
     }

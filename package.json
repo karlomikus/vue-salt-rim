@@ -12,6 +12,7 @@
     "lint": "run-s \"lint:*\"",
     "lint:oxlint": "oxlint . --fix",
     "lint:eslint": "eslint . --fix --cache",
+    "style": "prettier src --write",
     "gen": "bunx openapi-typescript ./spec.yml -o ./src/api/api.d.ts"
   },
   "dependencies": {

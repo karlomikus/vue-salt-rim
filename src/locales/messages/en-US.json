@@ -396,6 +396,7 @@
         "join-error": "Unable to join bar",
         "select-bar": "Select bar",
         "delete-success": "Bar successfully removed",
+        "leave-success": "You have left the bar",
         "join-success": "Joined a new bar, cheers!",
         "activate": "Activate bar",
         "status": {
