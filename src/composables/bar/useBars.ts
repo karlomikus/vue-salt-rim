@@ -59,6 +59,21 @@ export function useBars() {
         }
     }
 
+    async function joinBar(inviteCode: string) {
+        isLoading.value = true;
+        try {
+            const resp = await BarAssistantClient.joinBar(inviteCode);
+            if (resp) {
+                toast.default(t("bars.join-success", { name: resp.data.name }));
+            }
+            return resp;
+        } catch {
+            toast.error(t("bars.join-error"));
+        } finally {
+            isLoading.value = false;
+        }
+    }
+
     const groupedBars = computed<Record<string, Bar[]>>(() => {
         const res: Record<string, Bar[]> = {
             active: [],
@@ -86,5 +101,6 @@ export function useBars() {
         deleteBar,
         leaveBar,
         activateBar,
+        joinBar,
     };
 }

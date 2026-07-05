@@ -21,32 +21,21 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import { useRoute } from "vue-router";
-import { useI18n } from "vue-i18n";
 import OverlayLoader from "@/components/OverlayLoader.vue";
-import BarAssistantClient from "@/api/BarAssistantClient";
-import { useSaltRimToast } from "@/composables/toast";
+import { useBars } from "@/composables/bar/useBars";
 
 const route = useRoute();
-const { t } = useI18n();
-const toast = useSaltRimToast();
+const { joinBar, isLoading } = useBars();
 
 const emit = defineEmits<{ dialogClosed: []; barJoined: [] }>();
 
-const isLoading = ref(false);
 const inviteCode = ref<string | null>((route.params.invite as string) || null);
 
-function submit() {
-    isLoading.value = true;
-    BarAssistantClient.joinBar(inviteCode.value ?? "")
-        .then((resp) => {
-            isLoading.value = false;
-            toast.default(t("bars.join-success", { name: resp.data.name }));
-            emit("dialogClosed");
-            emit("barJoined");
-        })
-        .catch(() => {
-            isLoading.value = false;
-            toast.error(t("bars.join-error"));
-        });
+async function submit() {
+    const result = await joinBar(inviteCode.value ?? "");
+    if (result) {
+        emit("dialogClosed");
+        emit("barJoined");
+    }
 }
 </script>
