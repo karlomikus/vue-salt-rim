@@ -2309,10 +2309,10 @@ export interface components {
              */
             bar_id: number;
             /**
-             * @description Indicates if the shelf is public
-             * @example true
+             * @description The ID of the role
+             * @example 1
              */
-            is_shelf_public: boolean;
+            user_role_id: number;
         };
         /** @description Details about a bar */
         Bar: {
@@ -4188,7 +4188,7 @@ export interface components {
              * Format: binary
              * @description Image file. Base64 encoded images also supported. Max 50MB
              */
-            image: string | null | Blob;
+            image: string | null;
             /** @description Existing image id, used to update an existing image */
             id?: number | null;
             /** @example 1 */

@@ -47,6 +47,7 @@ const maxItems = ref(8);
 const stats = ref<BarTotals | null>(null);
 const ingredientDistribution = ref<BarIngredientDistribution | null>(null);
 const topRated = ref<BarTopStats | null>(null);
+const userBarRole = appState.isAdmin() ? "admin" : appState.isGeneral() ? "general" : "guest";
 
 const loaders = ref({
     cocktailFavorites: false,
@@ -155,7 +156,7 @@ refreshShelf();
 <template>
     <PageHeader>
         {{ $t("welcome-user", { name: appState.user.name }) }} 👋
-        <small>Your member role in this bar is TODO</small>
+        <small>Your member role in this bar is {{ userBarRole }}</small>
     </PageHeader>
     <StatusCheck></StatusCheck>
     <div class="shelf-container">
