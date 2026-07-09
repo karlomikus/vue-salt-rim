@@ -110,4 +110,10 @@ const image = computed(() => {
     color: #8f4277;
     margin-bottom: 0.25rem;
 }
+
+@media print {
+    .public-bar-details {
+        display: none;
+    }
+}
 </style>

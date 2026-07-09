@@ -1,7 +1,4 @@
 <template>
-    <div v-show="!hideHeader" class="generate-image-header">
-        <SiteLogo></SiteLogo>
-    </div>
     <div ref="recipe" class="public-cocktail-recipe" itemscope itemtype="http://schema.org/Recipe">
         <div class="public-cocktail-recipe__image" itemprop="image" :content="mainImage.url" :style="{ 'background-image': 'url(' + mainImage.url + ')' }">
             <div v-if="mainImage.copyright" class="public-cocktail-recipe__image__copyright">
@@ -40,7 +37,6 @@
 <script setup lang="ts">
 import { ref, computed } from "vue";
 import { micromark } from "micromark";
-import SiteLogo from "@/components/Layout/SiteLogo.vue";
 import AppState from "@/AppState";
 import CocktailIngredientShare from "@/components/Cocktail/CocktailIngredientShare.vue";
 
@@ -66,9 +62,7 @@ const props = withDefaults(defineProps<{ cocktail?: RecipeCocktail; hideUnits?: 
 });
 
 const appState = new AppState();
-const isLoading = ref(false);
 const currentUnit = ref<string>("ml");
-const recipe = ref<HTMLElement>();
 
 currentUnit.value = appState.defaultUnit;
 

@@ -69,7 +69,7 @@ const router = createRouter({
         {
             path: "/e/cocktail/:ulid/:slug",
             name: "e.cocktail",
-            component: () => import("../views/PublicCocktailView.vue"),
+            component: () => import("../components/Public/PublicCocktailView.vue"),
             meta: { requiresAuth: false },
         },
         // This new route allows bars with custom links such as 'form' or 'join' (which are already reserved routes) to be seen by the user.
@@ -275,12 +275,6 @@ const router = createRouter({
                     name: "print.shopping-list",
                     component: () => import("../views/ShelfShoppingListPrintView.vue"),
                 },
-                {
-                    path: "public/cocktail/:barId/:slug",
-                    name: "print.public.cocktail",
-                    component: () => import("../views/PublicCocktailPrintView.vue"),
-                    meta: { requiresAuth: false },
-                },
             ],
         },
         {
@@ -296,7 +290,7 @@ const router = createRouter({
                 {
                     path: "cocktails/:slug",
                     name: "public.cocktails.show",
-                    component: () => import("../components/Public/PublicCocktailShow.vue"),
+                    component: () => import("../components/Public/PublicCocktailView.vue"),
                 },
                 {
                     path: "menu",

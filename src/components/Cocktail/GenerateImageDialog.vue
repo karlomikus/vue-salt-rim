@@ -5,7 +5,7 @@
         <div class="image-download-preview">
             <img v-if="imagePayload" :src="imagePayload" alt="" />
             <div v-else ref="exportElement" class="image-export-wrapper">
-                <PublicRecipe :cocktail="cocktail" :hide-units="true" :hide-header="features.hideHeader" :hide-footer="features.hideFooter"></PublicRecipe>
+                <CocktailRecipeImage :cocktail="cocktail" :hide-units="true" :hide-header="features.hideHeader" :hide-footer="features.hideFooter"></CocktailRecipeImage>
             </div>
         </div>
         <div class="dialog-actions">
@@ -21,7 +21,7 @@ import { ref, computed, onMounted, reactive } from "vue";
 import { useI18n } from "vue-i18n";
 import * as htmlToImage from "html-to-image";
 import OverlayLoader from "@/components/OverlayLoader.vue";
-import PublicRecipe from "@/components/Cocktail/PublicRecipe.vue";
+import CocktailRecipeImage from "@/components/Cocktail/CocktailRecipeImage.vue";
 import { useSaltRimToast } from "@/composables/toast";
 
 type ImageCocktail = {

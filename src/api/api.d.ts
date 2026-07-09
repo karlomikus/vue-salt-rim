@@ -1700,7 +1700,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/public/{slugOrId}": {
+    "/public/bars/{slugOrId}": {
         parameters: {
             query?: never;
             header?: never;
@@ -1720,7 +1720,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/public/{slugOrId}/cocktails": {
+    "/public/bars/{slugOrId}/cocktails": {
         parameters: {
             query?: never;
             header?: never;
@@ -1740,7 +1740,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/public/{slugOrId}/cocktails/{cocktailSlug}": {
+    "/public/bars/{slugOrId}/cocktails/{cocktailSlug}": {
         parameters: {
             query?: never;
             header?: never;
@@ -1760,7 +1760,27 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/public/{slugOrId}/menu": {
+    "/public/links/cocktails/{publicId}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Show public cocktail
+         * @description Show public information about cocktail via it's public ID.
+         */
+        get: operations["showPublicCocktail"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/public/bars/{slugOrId}/menu": {
         parameters: {
             query?: never;
             header?: never;
@@ -11043,8 +11063,52 @@ export interface operations {
             path: {
                 /** @description Database id of bar */
                 slugOrId: string;
-                /** @description Cocktail slug */
+                /** @description Cocktail slug or public ID */
                 cocktailSlug: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful response */
+            200: {
+                headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data: components["schemas"]["PublicCocktailResource"];
+                    };
+                };
+            };
+            /** @description Resource record not found. */
+            404: {
+                headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data?: components["schemas"]["APIError"];
+                    };
+                };
+            };
+        };
+    };
+    showPublicCocktail: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Public ID of cocktail */
+                publicId: string;
             };
             cookie?: never;
         };

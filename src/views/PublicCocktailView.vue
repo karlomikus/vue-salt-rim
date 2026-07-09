@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import CocktailPublicDetails from "../components/Cocktail/CocktailPublicDetails.vue";
+import PublicCocktailShow from "../components/Public/PublicCocktailShow.vue";
 </script>
 
 <template>
-    <CocktailPublicDetails />
+    <PublicCocktailShow />
 </template>

@@ -282,6 +282,7 @@ export default class BarAssistantClient {
 
     static async saveBar(data: components["schemas"]["BarRequest"]) {
         const { response } = await client.POST("/bars", { body: data, parseAs: "stream" });
+        console.log(response);
 
         return extractIdFromLocationHeader(response);
     }
@@ -487,7 +488,7 @@ export default class BarAssistantClient {
     }
 
     static async getPublicMenu(slug: string) {
-        return (await client.GET("/public/{slugOrId}/menu", { params: { path: { slugOrId: slug } } })).data;
+        return (await client.GET("/public/bars/{slugOrId}/menu", { params: { path: { slugOrId: slug } } })).data;
     }
 
     static async updateMenu(data: components["schemas"]["MenuRequest"]) {
@@ -619,15 +620,19 @@ export default class BarAssistantClient {
     }
 
     static async getPublicBar(barId: string) {
-        return (await client.GET("/public/{slugOrId}", { params: { path: { slugOrId: barId } } })).data;
+        return (await client.GET("/public/bars/{slugOrId}", { params: { path: { slugOrId: barId } } })).data;
     }
 
     static async getPublicBarCocktails(barId: string, query = {}) {
-        return (await client.GET("/public/{slugOrId}/cocktails", { params: { path: { slugOrId: barId }, query: query } })).data;
+        return (await client.GET("/public/bars/{slugOrId}/cocktails", { params: { path: { slugOrId: barId }, query: query } })).data;
     }
 
     static async getPublicBarCocktail(barId: string, slug: string) {
-        return (await client.GET("/public/{slugOrId}/cocktails/{cocktailSlug}", { params: { path: { slugOrId: barId, cocktailSlug: slug } } })).data;
+        return (await client.GET("/public/bars/{slugOrId}/cocktails/{cocktailSlug}", { params: { path: { slugOrId: barId, cocktailSlug: slug } } })).data;
+    }
+
+    static async getPublicLinkCocktail(publicId: string) {
+        return (await client.GET("/public/links/cocktails/{publicId}", { params: { path: { publicId: publicId } } })).data;
     }
 
     static async aiGenerateIngredient(name: string) {
