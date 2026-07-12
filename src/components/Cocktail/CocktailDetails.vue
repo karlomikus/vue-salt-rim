@@ -615,6 +615,12 @@ fetchShoppingList();
                                 </li>
                             </ul>
                         </div>
+                        <div v-if="cocktail.author" class="item-details__chips__group">
+                            <div class="item-details__chips__group__title">{{ t("author") }}:</div>
+                            <ul class="chips-list">
+                                <li>{{ cocktail.author }}</li>
+                            </ul>
+                        </div>
                         <div v-if="cocktail.tags && cocktail.tags.length > 0" class="item-details__chips__group">
                             <div class="item-details__chips__group__title">{{ t("tag.tags") }}:</div>
                             <ul class="chips-list">

@@ -125,8 +125,8 @@ if (isClearable.value) {
 }
 
 .resource-search__refinements__refinement__title__actions button svg {
-    width: 16px;
-    height: 16px;
+    width: 20px;
+    height: 20px;
 }
 
 .resource-search__refinements__refinement__title__actions svg {

@@ -127,9 +127,7 @@
     color: var(--clr-header-title);
     font-weight: var(--fw-bold);
     text-transform: uppercase;
-    /* letter-spacing: 1px; */
-    font-size: 0.715rem;
-    /* margin-bottom: 0.5rem; */
+    font-size: 0.8em;
 }
 
 .resource-search__refinements__refinement__title__actions {
