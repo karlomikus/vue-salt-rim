@@ -23,7 +23,6 @@ import PublicLinkDialog from "@/components/Cocktail/PublicLinkDialog.vue";
 import GenerateImageDialog from "@/components/Cocktail/GenerateImageDialog.vue";
 import Dropdown from "@/components/SaltRimDropdown.vue";
 import type { components } from "@/api/api";
-import Rating from "@/components/RatingActions.vue";
 import DateFormatter from "@/components/DateFormatter.vue";
 import AppState from "@/AppState";
 import UnitConverter from "@/components/Units/UnitConverter.vue";
@@ -34,6 +33,7 @@ import CocktailIngredientView from "./CocktailIngredient.vue";
 import CocktailVarieties from "./CocktailVarieties.vue";
 import MenuAddDialog from "../Menu/MenuAddDialog.vue";
 import CocktailRecipeScaler from "./../Cocktail/CocktailRecipeScaler.vue";
+import CocktailDetailsFacts from "./CocktailDetailsFacts.vue";
 
 type Cocktail = components["schemas"]["Cocktail"];
 type Note = components["schemas"]["Note"];
@@ -307,15 +307,6 @@ async function addMissingIngredients() {
             toast.error(e.message);
             isLoading.value = false;
         });
-}
-
-function isValidUrl(input: string) {
-    try {
-        new URL(input.startsWith("http") ? input : `https://${input}`);
-        return true;
-    } catch (err) {
-        return false;
-    }
 }
 
 fetchShoppingList();
@@ -601,82 +592,9 @@ fetchShoppingList();
                     </Dropdown>
                 </div>
                 <div class="block-container block-container--padded">
+                    <h3 class="block-container__title">{{ t("facts") }}</h3>
+                    <CocktailDetailsFacts v-if="cocktail" :cocktail="cocktail"></CocktailDetailsFacts>
                     <h3 class="block-container__title">{{ t("description") }}</h3>
-                    <div class="item-details__chips">
-                        <div v-if="cocktail.source || cocktail.year" class="item-details__chips__group">
-                            <div class="item-details__chips__group__title">{{ t("source") }}:</div>
-                            <ul class="chips-list">
-                                <li v-if="cocktail.source">
-                                    <a v-if="isValidUrl(cocktail.source)" :href="cocktail.source" target="_blank">{{ t("website") }}</a>
-                                    <span v-else>{{ cocktail.source }}</span>
-                                </li>
-                                <li v-if="cocktail.year">
-                                    <span>{{ cocktail.year }}.</span>
-                                </li>
-                            </ul>
-                        </div>
-                        <div v-if="cocktail.author" class="item-details__chips__group">
-                            <div class="item-details__chips__group__title">{{ t("author") }}:</div>
-                            <ul class="chips-list">
-                                <li>{{ cocktail.author }}</li>
-                            </ul>
-                        </div>
-                        <div v-if="cocktail.tags && cocktail.tags.length > 0" class="item-details__chips__group">
-                            <div class="item-details__chips__group__title">{{ t("tag.tags") }}:</div>
-                            <ul class="chips-list">
-                                <li>
-                                    <template v-for="(tag, index) in cocktail.tags" :key="tag.id">
-                                        <RouterLink :to="{ name: 'cocktails', query: { 'filter[tag_id]': tag.id } }">{{ tag.name }}</RouterLink>
-                                        <template v-if="index + 1 !== cocktail.tags.length">, </template>
-                                    </template>
-                                </li>
-                            </ul>
-                        </div>
-                        <div v-if="cocktail.glass" class="item-details__chips__group">
-                            <div class="item-details__chips__group__title">{{ t("glass-type.title") }}:</div>
-                            <ul class="chips-list">
-                                <li>
-                                    <RouterLink :to="{ name: 'cocktails', query: { 'filter[glass_id]': cocktail.glass.id } }">{{ cocktail.glass.name }}</RouterLink>
-                                </li>
-                            </ul>
-                        </div>
-                        <div v-if="cocktail.method" class="item-details__chips__group">
-                            <div class="item-details__chips__group__title">{{ t("method.title") }}:</div>
-                            <ul class="chips-list">
-                                <li>
-                                    <RouterLink :to="{ name: 'cocktails', query: { 'filter[cocktail_method_id]': cocktail.method.id } }">{{
-                                        t("method." + cocktail.method.name)
-                                    }}</RouterLink>
-                                </li>
-                            </ul>
-                        </div>
-                        <div v-if="cocktail.abv && cocktail.abv > 0" class="item-details__chips__group">
-                            <div class="item-details__chips__group__title">{{ t("ABV") }}:</div>
-                            <ul class="chips-list">
-                                <li>
-                                    <RouterLink :to="{ name: 'cocktails', query: { 'filter[abv_min]': cocktail.abv } }">{{ cocktail.abv }}%</RouterLink>
-                                </li>
-                            </ul>
-                        </div>
-                        <div v-if="cocktail.rating" class="item-details__chips__group">
-                            <div class="item-details__chips__group__title">{{ t("avg-rating") }}:</div>
-                            <ul class="chips-list">
-                                <li>
-                                    <RouterLink :to="{ name: 'cocktails', query: { 'filter[user_rating_min]': cocktail.rating.average } }"
-                                        >{{ cocktail.rating.average }} ★</RouterLink
-                                    >
-                                </li>
-                            </ul>
-                        </div>
-                        <div class="item-details__chips__group">
-                            <div class="item-details__chips__group__title">{{ t("your-rating") }}:</div>
-                            <Rating :id="cocktail.id" :rating="(cocktail.rating && cocktail.rating.user) ?? 0" type="cocktail"></Rating>
-                        </div>
-                        <div v-if="cocktail.public_id" class="item-details__chips__group">
-                            <div class="item-details__chips__group__title">{{ t("public-link") }}:</div>
-                            <RouterLink :to="{ name: 'e.cocktail', params: { ulid: cocktail.public_id, slug: cocktail.slug } }" target="_blank">{{ t("click-here") }}</RouterLink>
-                        </div>
-                    </div>
                     <div class="has-markdown" v-html="parsedDescription"></div>
                 </div>
                 <UnitConverter @unit-changed="(u: 'ml' | 'oz' | 'cl') => (currentUnit = u)">

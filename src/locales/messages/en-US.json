@@ -803,5 +803,6 @@
         "api": "API",
         "current": "Current",
         "latest": "Latest"
-    }
+    },
+    "facts": "Quick facts"
 }
