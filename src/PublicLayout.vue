@@ -9,10 +9,13 @@ import BarShow from "@/components/Public/PublicBarShow.vue";
 type Bar = components["schemas"]["PublicBarResource"];
 
 const route = useRoute();
-const barId = route.params.barId.toString();
+const barId = route.params.barId?.toString();
 const bar = ref<Bar | null>(null);
 
 const fetchBar = async () => {
+    if (!barId) {
+        return;
+    }
     try {
         const resp = (await BarAssistantClient.getPublicBar(barId))?.data;
         if (resp) {
@@ -31,6 +34,9 @@ fetchBar();
         <main v-if="bar">
             <BarShow :bar="bar" />
             <RouterView :bar="bar" />
+        </main>
+        <main v-else>
+            <RouterView />
         </main>
     </div>
     <div class="public-layout-footer">

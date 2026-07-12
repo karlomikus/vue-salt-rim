@@ -67,10 +67,16 @@ const router = createRouter({
             meta: { requiresAuth: false },
         },
         {
-            path: "/e/cocktail/:ulid/:slug",
-            name: "e.cocktail",
-            component: () => import("../components/Public/PublicCocktailView.vue"),
+            path: "/e",
+            component: () => import("../PublicLayout.vue"),
             meta: { requiresAuth: false },
+            children: [
+                {
+                    path: "cocktail/:ulid/:slug",
+                    name: "e.cocktail",
+                    component: () => import("../components/Public/PublicCocktailView.vue"),
+                },
+            ],
         },
         // This new route allows bars with custom links such as 'form' or 'join' (which are already reserved routes) to be seen by the user.
         // This is the new default route that is displayed with a public menu, but the user can still access the legacy route as to not break the QR codes.
