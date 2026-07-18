@@ -122,6 +122,9 @@ function getSegmentColor(index: number) {
 
 .distribution-empty {
     color: var(--clr-gray-700);
+    .dark-theme & {
+        color: var(--clr-gray-300);
+    }
 }
 
 .distribution-bar {

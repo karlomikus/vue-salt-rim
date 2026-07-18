@@ -56,7 +56,7 @@ async function fetchRecommendedIngredients() {
             This bar is a few ingredients away from unlocking extra recipes:
             <br />
             <template v-for="(ing, index) in recommendedIngredients" :key="ing.id">
-                <RouterLink :to="{ name: 'ingredients.show', params: { id: ing.slug } }">{{ ing.name }} (+{{ ing.potential_cocktails }})</RouterLink>
+                <RouterLink :to="{ name: 'ingredients.show', params: { id: ing.slug } }">{{ ing.name }} <span class="recommended-ingredient-potential">+{{ ing.potential_cocktails }}</span></RouterLink>
                 <template v-if="index + 1 !== recommendedIngredients.length"> &middot; </template>
             </template>
         </div>
@@ -89,5 +89,18 @@ async function fetchRecommendedIngredients() {
     height: 100%;
     background: linear-gradient(90deg, var(--clr-chart-10) 0%, var(--clr-chart-7) 100%);
     border-radius: 999px;
+}
+
+.recommended-ingredient-potential {
+    color: var(--clr-accent-800);
+    background-color: var(--clr-accent-100);
+    font-size: 0.8em;
+    padding: 0 0.25em;
+    border-radius: var(--radius-2);
+    display: inline-block;
+    .dark-theme & {
+        color: var(--clr-accent-300);
+        background-color: var(--clr-accent-800);
+    }
 }
 </style>
