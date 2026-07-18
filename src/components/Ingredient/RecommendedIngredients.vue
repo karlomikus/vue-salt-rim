@@ -53,10 +53,10 @@ async function fetchRecommendedIngredients() {
             <div class="recommended-progress__value" :style="{ width: `${shelfProgressValue}%` }"></div>
         </div>
         <div>
-            This bar is a few ingredients away from unlocking extra recipes:
+            Ingredients with most potential to increase cocktail recipes:
             <br />
             <template v-for="(ing, index) in recommendedIngredients" :key="ing.id">
-                <RouterLink :to="{ name: 'ingredients.show', params: { id: ing.slug } }">{{ ing.name }} <span class="recommended-ingredient-potential">+{{ ing.potential_cocktails }}</span></RouterLink>
+                <RouterLink :to="{ name: 'ingredients.show', params: { id: ing.slug } }">{{ ing.name }}</RouterLink>
                 <template v-if="index + 1 !== recommendedIngredients.length"> &middot; </template>
             </template>
         </div>

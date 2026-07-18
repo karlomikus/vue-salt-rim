@@ -81,7 +81,7 @@ function getSegmentColor(index: number) {
     <div class="block-container block-distribution">
         <OverlayLoader v-if="isLoading"></OverlayLoader>
         <p class="distribution-description">
-            This chart shows the distribution of bar shelf ingredients across different main categories. Categories with less than {{ minRelevantPercent }}% contribution are
+            These color bars show the distribution of bar shelf ingredients across different main categories. Categories with less than {{ minRelevantPercent }}% contribution are
             grouped into "Other" for clarity.
         </p>
         <div v-if="distribution.length" class="distribution-bar" role="img" aria-label="Ingredient distribution by category">

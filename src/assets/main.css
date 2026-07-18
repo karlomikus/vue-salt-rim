@@ -63,18 +63,14 @@ mark {
 }
 
 .page-subtitle {
-    padding: 0.5rem 1rem;
-    border-radius: var(--radius-2);
-    font-size: 0.85rem;
+    padding: 0.25rem 0;
+    font-size: 0.85em;
     font-weight: var(--fw-bold);
     text-transform: uppercase;
     letter-spacing: 1px;
-    display: flex;
-    background: var(--clr-gray-100);
     color: var(--clr-gray-700);
 
     .dark-theme & {
-        background: var(--clr-gray-800);
         color: var(--clr-gray-100);
     }
 }
