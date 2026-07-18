@@ -1,17 +1,39 @@
 <template>
     <div class="cocktail-facts">
         <dl>
+            <dt>{{ t("your-rating") }}</dt>
+            <dd>
+                <div>
+                    <Rating :id="cocktail.id" :rating="(cocktail.rating && cocktail.rating.user) ?? 0" type="cocktail"></Rating>
+                </div>
+            </dd>
+            <template v-if="cocktail.rating">
+                <dt>{{ t("avg-rating") }}</dt>
+                <dd>
+                    <RouterLink :to="{ name: 'cocktails', query: { 'filter[user_rating_min]': cocktail.rating.average } }">{{ cocktail.rating.average }} ★</RouterLink>
+                </dd>
+            </template>
+            <template v-if="cocktail.public_id">
+                <dt>{{ t("public-link") }}</dt>
+                <dd>
+                    <RouterLink :to="{ name: 'e.cocktail', params: { ulid: cocktail.public_id, slug: cocktail.slug } }" class="external-link" target="_blank">{{ t("click-here") }} <IconExternal /></RouterLink>
+                </dd>
+            </template>
             <template v-if="cocktail.source">
                 <dt>{{ t("source") }}</dt>
                 <dd>
-                    <a v-if="isValidUrl(cocktail.source)" :href="cocktail.source" target="_blank">{{ t("website") }}</a>
+                    <a class="external-link" v-if="isValidUrl(cocktail.source)" :href="cocktail.source" target="_blank">{{ t("website") }} <IconExternal /></a>
                     <span v-else>{{ cocktail.source }}</span>
                 </dd>
             </template>
-            <dt>{{ t("year") }}</dt>
-            <dd>{{ cocktail.year }}</dd>
-            <dt>{{ t("author") }}</dt>
-            <dd>{{ cocktail.author }}</dd>
+            <template v-if="cocktail.year">
+                <dt>{{ t("year") }}</dt>
+                <dd>{{ cocktail.year }}</dd>
+            </template>
+            <template v-if="cocktail.author">
+                <dt>{{ t("author") }}</dt>
+                <dd>{{ cocktail.author }}</dd>
+            </template>
             <template v-if="cocktail.abv && cocktail.abv > 0">
                 <dt>{{ t("ABV") }}</dt>
                 <dd>
@@ -41,24 +63,6 @@
                     <RouterLink :to="{ name: 'cocktails', query: { 'filter[cocktail_method_id]': cocktail.method.id } }">{{ t("method." + cocktail.method.name) }}</RouterLink>
                 </dd>
             </template>
-            <template v-if="cocktail.rating">
-                <dt>{{ t("avg-rating") }}</dt>
-                <dd>
-                    <RouterLink :to="{ name: 'cocktails', query: { 'filter[user_rating_min]': cocktail.rating.average } }">{{ cocktail.rating.average }} ★</RouterLink>
-                </dd>
-            </template>
-            <dt>{{ t("your-rating") }}</dt>
-            <dd>
-                <div>
-                    <Rating :id="cocktail.id" :rating="(cocktail.rating && cocktail.rating.user) ?? 0" type="cocktail"></Rating>
-                </div>
-            </dd>
-            <template v-if="cocktail.public_id">
-                <dt>{{ t("public-link") }}</dt>
-                <dd>
-                    <RouterLink :to="{ name: 'e.cocktail', params: { ulid: cocktail.public_id, slug: cocktail.slug } }" target="_blank">{{ t("click-here") }}</RouterLink>
-                </dd>
-            </template>
         </dl>
     </div>
 </template>
@@ -67,6 +71,7 @@
 import type { components } from "@/api/api";
 import Rating from "@/components/RatingActions.vue";
 import { useI18n } from "vue-i18n";
+import IconExternal from "@/components/Icons/IconExternal.vue";
 
 type Cocktail = components["schemas"]["Cocktail"];
 
@@ -87,9 +92,7 @@ function isValidUrl(input: string) {
 
 <style scoped>
 .cocktail-facts {
-    border: 1px solid var(--clr-gray-200);
     font-size: 0.85em;
-    border-radius: var(--radius-2);
     margin-bottom: var(--gap-size-3);
     & dl {
         display: grid;
@@ -100,10 +103,9 @@ function isValidUrl(input: string) {
             }
         }
         & dt, dd {
-            padding: 0.25rem 0.5rem;
+            padding: 0.25rem 0;
             display: flex;
             align-items: center;
-            border-bottom: 1px solid var(--clr-gray-100);
         }
         & dt {
             font-weight: var(--fw-bold);
@@ -111,7 +113,20 @@ function isValidUrl(input: string) {
             &:after {
                 content: ":";
             }
+            .dark-theme & {
+                color: var(--clr-gray-400);
+            }
         }
+    }
+}
+
+.external-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    & svg {
+        width: 1rem;
+        height: 1rem;
     }
 }
 </style>

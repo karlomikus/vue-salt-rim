@@ -8,11 +8,13 @@ Application is run in a docker container with Bun as the runtime. Use the follow
 docker compose exec app bun run dev          # Start development server (Vite)
 docker compose exec app bun run build        # Build for production
 docker compose exec app bun run preview      # Preview production build on port 4173
-docker compose exec app bun run lint         # Run ESLint on src/
-docker compose exec app bun run lint-fix     # Run ESLint with auto-fix
+docker compose exec app bun run lint         # Run oxlint + ESLint (both include --fix)
 docker compose exec app bun run type-check   # Run TypeScript type checking
 docker compose exec app bun run gen          # Generate API types from spec.yml
+docker compose exec app bun run test:unit    # Run Vitest unit tests
 ```
+
+**Note:** There is no `lint-fix` script — the `lint` script already applies fixes. CI runs `bun run test` but the package.json only defines `test:unit`.
 
 ## Code Style Guidelines
 

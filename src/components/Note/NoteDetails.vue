@@ -44,13 +44,7 @@ function deleteNote() {
 <style scoped>
 .note {
     margin-bottom: 1rem;
-    background-color: rgba(255, 255, 255, 0.3);
-    padding: 1rem;
     border-radius: var(--radius-1);
-}
-
-.dark-theme .note {
-    background-color: rgba(0, 0, 0, 0.2);
 }
 
 .note:last-child {
