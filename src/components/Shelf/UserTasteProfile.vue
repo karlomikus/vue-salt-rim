@@ -189,7 +189,10 @@ function bucketColor(bucket: string) {
     margin: 0 0 0.25rem;
     font-size: 0.85rem;
     font-weight: 600;
-    color: var(--clr-gray-700, #5e6a7a);
+    color: var(--clr-gray-700);
+    .dark-theme & {
+        color: var(--clr-gray-300);
+    }
 }
 
 .bar-chart__negative .bar-chart__title {
@@ -217,9 +220,12 @@ function bucketColor(bucket: string) {
 .bar-row__label {
     font-size: 0.75rem;
     line-height: 1.2;
-    color: var(--clr-gray-800, #3a3541);
+    color: var(--clr-gray-800);
     white-space: nowrap;
     flex-shrink: 0;
+    .dark-theme & {
+        color: var(--clr-gray-200);
+    }
 }
 
 .bar-row__label--negative {
