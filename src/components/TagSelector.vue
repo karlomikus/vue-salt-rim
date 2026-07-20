@@ -84,7 +84,7 @@ function checkDelimiter(e: Event): void {
     const target = e.target as HTMLInputElement;
     currentFocusedDeleteOption.value = null;
     currentFocusedDropdownOption.value = null;
-    if (target.value && target.value.endsWith(",")) {
+    if (target.value && target.value.endsWith(",") && target.value.length > 1) {
         selectOption(target.value.slice(0, -1).trim());
         currentOption.value = "";
     }
