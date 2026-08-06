@@ -274,7 +274,7 @@ refreshShelf();
             <div class="shelf-grid__col">
                 <OverlayLoader v-if="loaders.topStats"></OverlayLoader>
                 <h3 class="page-subtitle">Preferred ingredients</h3>
-                <div class="salt-rim-list" v-if="topRated">
+                <div class="salt-rim-list" v-if="topRated && topRated.top_member_ingredients.length > 0">
                     <ListItemContainer
                         tag="RouterLink"
                         v-for="ingredient in topRated.top_member_ingredients"
