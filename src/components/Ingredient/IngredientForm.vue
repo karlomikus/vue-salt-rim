@@ -347,7 +347,7 @@ function selectIngredientPart(ingredientPart: IngredientSearchResult) {
         },
         amount: 0,
         amount_max: null,
-        units: "",
+        units: appState.defaultUnit,
         note: "",
     });
 }

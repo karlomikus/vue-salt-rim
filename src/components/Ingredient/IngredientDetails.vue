@@ -182,7 +182,8 @@
                         <li v-if="ingredient.ingredient_parts?.length">
                             {{ $t("contains-ingredients") }}:
                             <template v-for="(part, index) in ingredient.ingredient_parts" :key="part.ingredient.id">
-                                <RouterLink :to="{ name: 'ingredients.show', params: { id: part.ingredient.slug } }">{{ part.ingredient.name }}</RouterLink
+                                <RouterLink :to="{ name: 'ingredients.show', params: { id: part.ingredient.slug } }"
+                                    >{{ part.ingredient.name }}{{ formatPartUnits(part) }}</RouterLink
                                 ><template v-if="index + 1 !== ingredient.ingredient_parts.length">, </template>
                             </template>
                         </li>
@@ -353,6 +354,24 @@ function deleteIngredient() {
                 });
         },
     });
+}
+
+function formatPartUnits(part: components["schemas"]["IngredientPart"]) {
+    if (!part.amount || !part.units || part.amount <= 0) {
+        return "";
+    }
+
+    return (
+        " " +
+        unitHandler.print(
+            {
+                amount: part.amount,
+                amount_max: part.amount_max,
+                units: part.units,
+            },
+            appState.defaultUnit,
+        )
+    );
 }
 
 const mainIngredientImage = computed(() => {

@@ -16,7 +16,9 @@
             <template v-if="cocktail.public_id">
                 <dt>{{ t("public-link") }}</dt>
                 <dd>
-                    <RouterLink :to="{ name: 'e.cocktail', params: { ulid: cocktail.public_id, slug: cocktail.slug } }" class="external-link" target="_blank">{{ t("click-here") }} <IconExternal /></RouterLink>
+                    <RouterLink :to="{ name: 'e.cocktail', params: { ulid: cocktail.public_id, slug: cocktail.slug } }" class="external-link" target="_blank"
+                        >{{ t("click-here") }} <IconExternal
+                    /></RouterLink>
                 </dd>
             </template>
             <template v-if="cocktail.source">
@@ -102,7 +104,8 @@ function isValidUrl(input: string) {
                 grid-template-columns: 120px 1fr;
             }
         }
-        & dt, dd {
+        & dt,
+        dd {
             padding: 0.25rem 0;
             display: flex;
             align-items: center;

@@ -4,7 +4,9 @@ import AmountInput from "./../AmountInput.vue";
 import { ref } from "vue";
 import type { components } from "@/api/api";
 import { useI18n } from "vue-i18n";
+import AppState from "@/AppState";
 
+const appState = new AppState();
 const { t } = useI18n();
 type IngredientPart = components["schemas"]["IngredientPart"];
 const isLoading = ref(false);
@@ -16,6 +18,10 @@ const model = defineModel<IngredientPart>({
 const localPart = ref({ ...model.value });
 if (!localPart.value.amount_max) {
     localPart.value.amount_max = null;
+}
+
+if (!localPart.value.units) {
+    localPart.value.units = appState.defaultUnit;
 }
 
 function save(): void {
