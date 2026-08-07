@@ -102,6 +102,10 @@ const appState = new AppState();
 isLoading.value = true;
 BarAssistantClient.getBar(appState.bar.id)
     .then((resp) => {
+        if (!resp) {
+            toast.error(t("error.unknown"));
+            return;
+        }
         isLoading.value = false;
         searchClient.value = instantMeiliSearch(appState.bar.search_host ?? "", resp.data?.search_token ?? "").searchClient;
     })

@@ -103,7 +103,7 @@ function refreshCollections() {
     isLoading.value = true;
     BarAssistantClient.getCollections({ include: "cocktails" })
         .then((resp) => {
-            collections.value = (resp.data as Collection[]) ?? [];
+            collections.value = (resp?.data as Collection[]) ?? [];
             isLoading.value = false;
         })
         .catch((e) => {

@@ -17,10 +17,10 @@ const model = defineModel({ required: true, type: null });
 <template>
     <div class="sr-checkbox">
         <div class="sr-checkbox__input">
-            <input :id="$attrs.id" v-model="model" type="checkbox" />
+            <input :id="$attrs.id as string" v-model="model" type="checkbox" />
         </div>
         <div class="sr-checkbox__text">
-            <label :for="$attrs.id">{{ label }}</label>
+            <label :for="$attrs.id as string">{{ label }}</label>
             <p class="form-input-hint">{{ description }}</p>
         </div>
     </div>

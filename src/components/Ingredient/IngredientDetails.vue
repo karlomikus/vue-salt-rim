@@ -303,7 +303,11 @@ const calculator = ref<Calculator>({} as Calculator);
 async function refreshIngredient() {
     isLoadingIngredient.value = true;
     try {
-        ingredient.value = (await BarAssistantClient.getIngredient(route.params.id.toString()))?.data ?? ({} as Ingredient);
+        const resp = (await BarAssistantClient.getIngredient(route.params.id.toString()))
+        if (!resp || !resp.data) {
+            throw new Error(t("ingredient.not-found"));
+        }
+        ingredient.value = resp.data;
         useTitle(ingredient.value.name ?? "");
     } catch (e: any) {
         toast.default(e.message);
@@ -314,7 +318,9 @@ async function refreshIngredient() {
     isLoadingIngredient.value = false;
 
     isLoadingExtra.value = true;
-    extraIfAddedToShelf.value = (await BarAssistantClient.getExtraBarCocktailsWithIngredient(appState.bar.id, ingredient.value.id))?.data ?? [];
+    if (ingredient.value.id) {
+        extraIfAddedToShelf.value = (await BarAssistantClient.getExtraBarCocktailsWithIngredient(appState.bar.id, ingredient.value.id))?.data ?? [];
+    }
     isLoadingExtra.value = false;
 }
 

@@ -157,10 +157,10 @@ function handleBlur(e: FocusEvent): void {
             </div>
             <div class="form-multiselect__input">
                 <input
-                    :id="$attrs.id"
+                    :id="$attrs.id as string"
                     ref="reference"
                     v-model="currentOption"
-                    :placeholder="$attrs.placeholder"
+                    :placeholder="$attrs.placeholder as string"
                     type="text"
                     class="form-input"
                     @focus="handleFocus"
@@ -182,7 +182,7 @@ function handleBlur(e: FocusEvent): void {
                             tabindex="0"
                             :class="{ 'dropdown-menu__item--focused': currentFocusedDropdownOption == option }"
                             href="#"
-                            @click.prevent="selectOption(option[props.labelKey])"
+                            @click.prevent="selectOption(option[props.labelKey] as string)"
                             @mouseover="currentFocusedDropdownOption = option"
                         >
                             {{ option.name }}

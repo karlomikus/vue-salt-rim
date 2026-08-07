@@ -1,5 +1,6 @@
 # 5.0.0
 ## New
+- Moved from Node runtime to Bun
 - Added support for Bar Assistant v6.0
     - Removed user shelf actions
 - Updated menu

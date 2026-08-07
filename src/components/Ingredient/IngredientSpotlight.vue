@@ -62,6 +62,11 @@ function fetchIngredient() {
     isLoading.value = true;
     BarAssistantClient.getIngredient(String(props.id))
         .then((resp) => {
+            if (!resp) {
+                ingredient.value = {};
+                isLoading.value = false;
+                return;
+            }
             ingredient.value = resp.data as Ingredient;
             isLoading.value = false;
         })

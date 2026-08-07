@@ -74,7 +74,7 @@ function refreshBars() {
     isLoading.value = true;
     BarAssistantClient.getBars()
         .then((resp) => {
-            bars.value = (resp.data ?? []).filter((bar) => {
+            bars.value = (resp?.data ?? []).filter((bar) => {
                 // Show only owned bars
                 return bar.access.can_delete;
             });

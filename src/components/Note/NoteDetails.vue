@@ -15,9 +15,7 @@ import { useSaltRimToast } from "@/composables/toast";
 import { useConfirm } from "@/composables/confirm";
 import type { components } from "@/api/api";
 
-const props = withDefaults(defineProps<{ note?: Partial<components["schemas"]["Note"]> }>(), {
-    note: () => ({}),
-});
+const props = defineProps<{ note: components["schemas"]["Note"] }>();
 const { t } = useI18n();
 const toast = useSaltRimToast();
 const confirm = useConfirm();

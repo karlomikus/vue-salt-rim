@@ -93,7 +93,7 @@ function refreshTokens() {
     isLoading.value = true;
     BarAssistantClient.getTokens()
         .then((resp) => {
-            tokens.value = resp.data ?? [];
+            tokens.value = resp?.data ?? [];
             isLoading.value = false;
         })
         .catch((e) => {
