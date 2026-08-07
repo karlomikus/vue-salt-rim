@@ -24,7 +24,7 @@ import BarAssistantClient from "@/api/BarAssistantClient";
 import OverlayLoader from "@/components/OverlayLoader.vue";
 import { useSaltRimToast } from "@/composables/toast";
 
-type Utensil = { id?: number; name?: string; description?: string };
+type Utensil = { id?: number; name?: string; description?: string | null };
 
 const props = withDefaults(defineProps<{ sourceData?: Utensil; dialogTitle?: string }>(), {
     sourceData: () => ({}),

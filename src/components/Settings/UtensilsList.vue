@@ -79,7 +79,7 @@ function refreshUtensils() {
     isLoading.value = true;
     BarAssistantClient.getUtensils()
         .then((resp) => {
-            utensils.value = resp.data ?? [];
+            utensils.value = resp?.data ?? [];
             isLoading.value = false;
         })
         .catch((e) => {
