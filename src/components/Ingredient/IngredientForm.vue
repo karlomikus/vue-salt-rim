@@ -124,15 +124,15 @@
                         <li v-for="(part, idx) in ingredient.ingredient_parts" :key="part.ingredient.id" class="block-container complex-ingredient-part">
                             <div>
                                 {{ part.ingredient.name }}
-                                <template v-if="part.amount || part.amount === 0">
-                                    &middot; {{ part.amount }}{{ part.amount_max ? "-" + part.amount_max : "" }} {{ part.units }}
+                                <template v-if="unitHandler.asDecimal(part.amount.toString()) > 0">
+                                    &middot; {{ unitHandler.print({amount: part.amount, amount_max: part.amount_max, units: part.units}, appState.defaultUnit) }}
                                 </template>
                                 <template v-if="part.note"> &middot; {{ part.note }} </template>
                             </div>
                             <div>
                                 <SaltRimDialog v-model="showPartDialogs[idx]" @dialog-closed="handlePartModalClose(idx)">
                                     <template #trigger>
-                                        <a href="#" @click.prevent="showPartDialogs[idx] = true">{{ $t("edit") }}</a>
+                                        <a href="#" @click.prevent="showPartDialogs[idx] = true">{{ $t("edit") }} {{ $t("amount") }}</a>
                                     </template>
                                     <template #dialog>
                                         <IngredientPartModal v-model="ingredient.ingredient_parts[idx]" @close="handlePartModalClose(idx)" />
@@ -241,6 +241,7 @@ import IngredientFinderBasic from "../IngredientFinderBasic.vue";
 import { useBasicSearch } from "@/composables/useBasicSearch";
 import SaltRimDialog from "../Dialog/SaltRimDialog.vue";
 import IngredientPartModal from "./IngredientPartModal.vue";
+import { unitHandler } from "@/composables/useUnits";
 
 type Ingredient = components["schemas"]["Ingredient"];
 type IngredientPart = components["schemas"]["IngredientPart"];
@@ -436,8 +437,8 @@ async function submit() {
         complex_ingredient_parts: ingredient.value.ingredient_parts
             ? ingredient.value.ingredient_parts.map((part) => ({
                   ingredient_id: part.ingredient.id,
-                  amount: part.amount,
-                  amount_max: part.amount_max,
+                  amount: unitHandler.asDecimal(part.amount.toString()),
+                  amount_max: part.amount_max ? unitHandler.asDecimal(part.amount_max.toString()) : null,
                   units: part.units,
                   note: part.note,
               }))
