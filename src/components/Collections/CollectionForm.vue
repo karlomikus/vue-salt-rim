@@ -29,12 +29,12 @@ import { useI18n } from "vue-i18n";
 import BarAssistantClient from "@/api/BarAssistantClient";
 import OverlayLoader from "@/components/OverlayLoader.vue";
 import { useSaltRimToast } from "@/composables/toast";
+import type { components } from "@/api/api";
 
-type Collection = { id?: number; name?: string; description?: string; is_bar_shared?: boolean };
+type Collection = components["schemas"]["Collection"];
 
-const props = withDefaults(defineProps<{ dialogTitle?: string; sourceCollection?: Collection }>(), {
+const props = withDefaults(defineProps<{ dialogTitle?: string; sourceCollection: Collection }>(), {
     dialogTitle: "",
-    sourceCollection: () => ({}),
 });
 const { t } = useI18n();
 const toast = useSaltRimToast();

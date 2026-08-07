@@ -187,10 +187,9 @@ function submit() {
     }
 
     BarAssistantClient.updateProfile(postData)
-        .then((resp) => {
-            appState.setUser(resp.data);
-            isLoading.value = false;
+        .then(() => {
             toast.default(t("profile-updated"));
+            isLoading.value = false;
         })
         .catch((e) => {
             isLoading.value = false;

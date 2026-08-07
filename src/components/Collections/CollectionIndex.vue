@@ -15,7 +15,7 @@
                     <div v-else></div>
                 </template>
                 <template #dialog>
-                    <CollectionForm :source-collection="editCollection" :dialog-title="dialogTitle" @collection-dialog-closed="refreshCollections" />
+                    <CollectionForm v-if="editCollection" :source-collection="editCollection" :dialog-title="dialogTitle" @collection-dialog-closed="refreshCollections" />
                 </template>
             </SaltRimDialog>
         </template>
@@ -91,7 +91,7 @@ const confirm = useConfirm();
 const isLoading = ref(false);
 const showDialog = ref(false);
 const dialogTitle = ref("Collection data");
-const editCollection = ref<Partial<Collection>>({});
+const editCollection = ref<Collection | null>(null);
 const collections = ref<Collection[]>([]);
 
 useTitle(t("collections.title"));
@@ -111,7 +111,7 @@ function refreshCollections() {
         });
 }
 
-function openDialog(title: string, obj: Partial<Collection>) {
+function openDialog(title: string, obj: Collection) {
     dialogTitle.value = title;
     editCollection.value = obj;
     showDialog.value = true;

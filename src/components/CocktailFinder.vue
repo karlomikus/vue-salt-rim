@@ -54,8 +54,11 @@ type Hit = {
     id: number;
     name: string;
     slug: string;
-    short_ingredients?: string[];
-    image_url?: string;
+    description: string | null;
+    image_url: string | null;
+    short_ingredients: string[];
+    tags: string[];
+    bar_id: number;
 };
 
 const appState = new AppState();

@@ -30,7 +30,7 @@
                     <tbody>
                         <tr v-for="ex in barExports" :key="ex.id">
                             <td>
-                                <DateFormatter :date="ex.created_at" format="long"></DateFormatter>
+                                <DateFormatter v-if="ex.created_at" :date="ex.created_at" format="long"></DateFormatter>
                                 <br />
                                 <small>{{ ex.bar_name }}</small>
                             </td>
@@ -99,7 +99,7 @@ function refreshExports() {
     isLoading.value = true;
     BarAssistantClient.getExports()
         .then((resp) => {
-            barExports.value = resp.data ?? [];
+            barExports.value = resp?.data ?? [];
             isLoading.value = false;
         })
         .catch((e) => {
@@ -131,7 +131,7 @@ function downloadExport(ex: Export) {
     BarAssistantClient.generateExportDownloadURL(ex.id!)
         .then((resp) => {
             isLoading.value = false;
-            window.open(window.srConfig.API_URL + resp.data?.url, "_blank")?.focus();
+            window.open(window.srConfig.API_URL + resp?.data?.url, "_blank")?.focus();
         })
         .catch((e) => {
             toast.error(e.message);

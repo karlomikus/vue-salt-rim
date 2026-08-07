@@ -1,6 +1,5 @@
 <template>
     <div>
-        <OverlayLoader v-if="isLoading" />
         <SubscriptionCheck>Subscribe to "Mixologist" plan to enable image editing!</SubscriptionCheck>
         <div class="dialog-title">{{ $t("image-editor.title") }}</div>
         <div class="image-editor-container">
@@ -29,17 +28,16 @@
 import { ref, computed, onMounted } from "vue";
 import { useI18n } from "vue-i18n";
 import Cropper from "cropperjs";
-import OverlayLoader from "@/components/OverlayLoader.vue";
 import SubscriptionCheck from "@/components/SubscriptionCheck.vue";
 import AppState from "@/AppState";
 import { useSaltRimToast } from "@/composables/toast";
 
 type ImageModel = {
-    id?: number;
-    file?: File | Blob | null;
+    id?: number | null;
+    file?: File | Blob | string | null;
     preview?: string;
     fileName?: string;
-    copyright?: string;
+    copyright?: string | null;
     sort?: number;
 };
 

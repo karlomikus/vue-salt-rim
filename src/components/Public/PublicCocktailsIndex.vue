@@ -65,7 +65,7 @@
             <CocktailItem v-for="cocktail in cocktails" :key="cocktail.slug" :cocktail="cocktail" :bar="bar"></CocktailItem>
             <div v-if="cocktails.length === 0">{{ $t("no-cocktails") }}</div>
         </div>
-        <Pagination :meta="meta" @page-changed="handlePageChange"></Pagination>
+        <Pagination v-if="paginationMeta" :meta="paginationMeta" @page-changed="handlePageChange"></Pagination>
     </div>
 </template>
 
@@ -77,7 +77,7 @@ import CocktailItem from "./PublicCocktailGridItem.vue";
 import type { components, operations } from "@/api/api";
 import { useRoute, useRouter, type LocationQueryRaw } from "vue-router";
 import SaltRimDialog from "../Dialog/SaltRimDialog.vue";
-import Pagination from "./../Search/SearchPagination.vue";
+import Pagination, { type PaginationMeta } from "./../Search/SearchPagination.vue";
 import { useI18n } from "vue-i18n";
 
 type Cocktail = components["schemas"]["PublicCocktailResource"];
@@ -92,7 +92,8 @@ const showFiltersDialog = ref(false);
 const cocktails = ref<Cocktail[]>([]);
 const queryTimer = ref<number | null>(null);
 const route = useRoute();
-const meta = ref({} as Meta);
+const meta = ref<Meta | null>(null);
+const paginationMeta = ref<PaginationMeta | null>(null);
 const router = useRouter();
 const { t } = useI18n();
 const availableSorts = computed(() => [
@@ -153,6 +154,12 @@ const fetchCocktails = async () => {
     try {
         const response = await BarAssistantClient.getPublicBarCocktails(barId, query);
         cocktails.value = response?.data || [];
+        paginationMeta.value = {
+            current_page: response?.meta?.current_page || 1,
+            last_page: response?.meta?.last_page || 1,
+            to: response?.meta?.to || 0,
+            total: response?.meta?.total || 0,
+        };
         meta.value = response?.meta || {};
     } catch (error) {
         console.error("Error fetching cocktails:", error);

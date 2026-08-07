@@ -2275,29 +2275,6 @@ export interface components {
                 full_text: string;
             };
         };
-        /** @description Represents a bar with basic information */
-        BarBasic: {
-            /**
-             * @description The ID of the bar
-             * @example 1
-             */
-            id: number;
-            /**
-             * @description The slug of the bar
-             * @example bar-name-1
-             */
-            slug: string;
-            /**
-             * @description The name of the bar
-             * @example Bar name
-             */
-            name: string;
-            /**
-             * @description The subtitle of the bar
-             * @example Bar subtitle
-             */
-            subtitle: string | null;
-        };
         /** @description Resource representing total stats for a bar */
         BarIngredientDistributionResource: {
             main_category_ingredient_distribution: {
@@ -2858,68 +2835,6 @@ export interface components {
             created_at: unknown;
             created_user?: components["schemas"]["UserBasic"];
             cocktails?: components["schemas"]["CocktailBasic"][];
-        };
-        /** @description Cocktail explore resource */
-        CocktailExplore: {
-            bar: components["schemas"]["BarBasic"];
-            /** @example Cocktail name */
-            name: string;
-            /** @example Step by step instructions */
-            instructions: string;
-            /** @example Garnish */
-            garnish: string | null;
-            /** @example Cocktail description */
-            description: string | null;
-            /** @example Source of the recipe */
-            source: string | null;
-            tags: string[];
-            glass: string | null;
-            utensils: string[];
-            method: string | null;
-            images: {
-                /** @example 1 */
-                sort?: number;
-                /** @example a1b2c3d4e5f6g7h8i9j0 */
-                placeholder_hash?: string;
-                /** @example https://example.com/image.jpg */
-                url?: string;
-                /** @example Image copyright */
-                copyright?: string;
-            }[];
-            ingredients: {
-                ingredient?: {
-                    /** @example Ingredient name */
-                    name?: string;
-                };
-                /** @example 30 */
-                amount?: number;
-                /** @example 45 */
-                amount_max?: number | null;
-                /** @example ml */
-                units?: string;
-                /** @example true */
-                optional?: boolean;
-                /** @example Ingredient note */
-                note?: string | null;
-                substitutes?: {
-                    ingredient?: {
-                        /** @example Ingredient name */
-                        name?: string;
-                    };
-                    /** @example 30 */
-                    amount?: number | null;
-                    /** @example 45 */
-                    amount_max?: number | null;
-                    /** @example ml */
-                    units?: string | null;
-                }[];
-            }[];
-            /**
-             * Format: float
-             * @description Alcohol by volume (ABV) percentage
-             * @example 0.5
-             */
-            abv?: number | null;
         };
         /** @description Export resource */
         Export: {
@@ -4208,7 +4123,7 @@ export interface components {
              * Format: binary
              * @description Image file. Base64 encoded images also supported. Max 50MB
              */
-            image: string | null;
+            image: string | null | Blob;
             /** @description Existing image id, used to update an existing image */
             id?: number | null;
             /** @example 1 */
@@ -4453,7 +4368,7 @@ export interface components {
          * @description Provides a list of supported SSO providers.
          * @enum {string}
          */
-        OauthProvider: "github" | "google" | "gitlab" | "authentik" | "authelia" | "kanidm" | "keycloak" | "pocketid" | "zitadel";
+        OauthProvider: "github" | "google" | "gitlab" | "authentik" | "authelia" | "kanidm" | "keycloak" | "pocketid" | "zitadel" | "OpenIDConnect";
         /**
          * Cocktail recipe - Draft 04
          * @description Schema for a cocktail recipe.
@@ -10766,10 +10681,7 @@ export interface operations {
         parameters: {
             query?: never;
             header?: never;
-            path: {
-                /** @description Database id of a resource */
-                id: number;
-            };
+            path?: never;
             cookie?: never;
         };
         requestBody?: never;

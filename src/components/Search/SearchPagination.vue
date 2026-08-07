@@ -21,7 +21,7 @@
 <script setup lang="ts">
 import { ref, watch } from "vue";
 
-type PaginationMeta = {
+export type PaginationMeta = {
     current_page: number;
     last_page: number;
     to: number;
