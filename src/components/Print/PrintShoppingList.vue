@@ -2,7 +2,7 @@
     <div class="list-print-container">
         <h3>{{ $t("your-shopping-list") }}</h3>
         <ul>
-            <li v-for="ingredient in list" :key="ingredient.id">
+            <li v-for="ingredient in list" :key="ingredient.ingredient.id">
                 <div class="checkbox"></div>
                 <div class="name">{{ ingredient.ingredient.name }} x{{ ingredient.quantity }}</div>
             </li>
@@ -12,19 +12,14 @@
 </template>
 <script setup lang="ts">
 import { ref, nextTick } from "vue";
-import { useI18n } from "vue-i18n";
 import AppState from "@/AppState";
 import BarAssistantClient from "@/api/BarAssistantClient";
 import { useSaltRimToast } from "@/composables/toast";
+import type { components } from "@/api/api";
 
-type ShoppingListItem = {
-    id: number;
-    ingredient: { name: string };
-    quantity: number;
-};
+type ShoppingListItem = components["schemas"]["ShoppingList"];
 
 const appState = new AppState();
-const { t } = useI18n();
 const toast = useSaltRimToast();
 
 const list = ref<ShoppingListItem[]>([]);
@@ -32,7 +27,7 @@ const printReady = ref(false);
 
 BarAssistantClient.getShoppingList(appState.user.id as number)
     .then((response) => {
-        list.value = response.data as unknown as ShoppingListItem[];
+        list.value = response?.data ?? [];
         printReady.value = true;
 
         nextTick(() => {
