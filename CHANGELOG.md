@@ -1,3 +1,20 @@
+# 5.0.0
+## New
+- Added support for Bar Assistant v6.0
+    - Removed user shelf actions
+- Updated menu
+    - Added menu category sorting
+    - Added menu category hide/show action
+    - Added hide when not in bar shelf option to menu category item
+- Updated shelf
+    - Added ingredient statistics widget
+    - Added user taste profile widget
+    - Rearranged shelf layout
+- Added quick facts to cocktail details
+- Added ingredient part amount editing for complex ingredients
+- Added about page to settings
+- Grouped settings by bar/general settings
+
 # 4.15.0
 ## New
 - Env variables `ANALYTICS_DOMAIN` no longer used
