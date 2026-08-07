@@ -88,7 +88,7 @@ function refreshUsers() {
     isLoading.value = true;
     BarAssistantClient.getUsers()
         .then((resp) => {
-            users.value = resp.data ?? [];
+            users.value = resp?.data ?? [];
             isLoading.value = false;
         })
         .catch((e) => {

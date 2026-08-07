@@ -27,7 +27,8 @@ import OverlayLoader from "@/components/OverlayLoader.vue";
 import SaltRimRadio from "@/components/SaltRimRadio.vue";
 import { useSaltRimToast } from "@/composables/toast";
 
-type User = { id?: number; email?: string; role?: { id?: number } };
+type User = { id?: number; email?: string; role?: { id?: number | null } };
+type UserState = { id?: number; email?: string; role: { id?: number | null } };
 
 const props = withDefaults(defineProps<{ sourceUser?: User; dialogTitle?: string }>(), {
     sourceUser: () => ({ role: {} }),
@@ -39,7 +40,7 @@ const toast = useSaltRimToast();
 const emit = defineEmits<{ userDialogClosed: [] }>();
 
 const isLoading = ref(false);
-const user = ref<User>(props.sourceUser);
+const user = ref<UserState>({ ...props.sourceUser, role: props.sourceUser?.role ?? {} });
 const roles = [
     { id: 1, name: t("roles.name.Admin"), description: t("roles.description.Admin") },
     { id: 3, name: t("roles.name.General"), description: t("roles.description.General") },
