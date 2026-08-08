@@ -8,7 +8,7 @@
                         v-if="(!appState.isSubscribed() && collections.length >= 3) == false"
                         type="button"
                         class="button button--dark"
-                        @click.prevent="openDialog($t('collections.add'), {})"
+                        @click.prevent="openDialog($t('collections.add'), {} as Collection)"
                     >
                         {{ $t("collections.add") }}
                     </button>

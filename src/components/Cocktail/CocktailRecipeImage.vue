@@ -16,8 +16,8 @@
             <div class="public-cocktail-recipe__summary__section">
                 <h3>{{ $t("ingredient.ingredients") }}</h3>
                 <ul>
-                    <li v-for="ing in cocktail.ingredients" :key="ing.id">
-                        <CocktailIngredientShare :cocktail-ingredient="ing" :units="currentUnit"></CocktailIngredientShare>
+                    <li v-for="ing in cocktail.ingredients" :key="ing.ingredient.id">
+                        <CocktailIngredientShare :cocktail-ingredient="ing" :units="currentUnit" :scale-factor="1"></CocktailIngredientShare>
                     </li>
                 </ul>
             </div>
@@ -39,23 +39,11 @@ import { ref, computed } from "vue";
 import { micromark } from "micromark";
 import AppState from "@/AppState";
 import CocktailIngredientShare from "@/components/Cocktail/CocktailIngredientShare.vue";
+import type { components } from "@/api/api";
 
-type RecipeImage = { url?: string | null; copyright?: string | null };
-type RecipeCocktail = {
-    name?: string;
-    description?: string | null;
-    instructions?: string | null;
-    garnish?: string | null;
-    images?: RecipeImage[];
-    ingredients?: unknown[];
-    bar?: Record<string, unknown>;
-};
+type Cocktail = components["schemas"]["Cocktail"];
 
-const props = withDefaults(defineProps<{ cocktail?: RecipeCocktail; hideUnits?: boolean; hideHeader?: boolean; hideFooter?: boolean }>(), {
-    cocktail: () => ({
-        bar: {},
-        images: [],
-    }),
+const props = withDefaults(defineProps<{ cocktail: Cocktail; hideUnits?: boolean; hideHeader?: boolean; hideFooter?: boolean }>(), {
     hideUnits: false,
     hideHeader: true,
     hideFooter: true,
@@ -66,7 +54,7 @@ const currentUnit = ref<string>("ml");
 
 currentUnit.value = appState.defaultUnit;
 
-const mainImage = computed<RecipeImage>(() => {
+const mainImage = computed(() => {
     if (props.cocktail && props.cocktail.images && props.cocktail.images.length > 0) {
         return props.cocktail.images[0];
     }

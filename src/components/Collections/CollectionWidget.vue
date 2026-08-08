@@ -46,7 +46,7 @@ const { t } = useI18n();
 const toast = useSaltRimToast();
 const confirm = useConfirm();
 
-const emit = defineEmits<{ cocktailRemovedFromCollection: [slug: string | undefined]; addToCollection: [] }>();
+const emit = defineEmits<{ cocktailRemovedFromCollection: [slug: string]; addToCollection: [] }>();
 
 const isLoading = ref(false);
 const collections = ref<Collection[]>([]);
@@ -64,7 +64,7 @@ function fetchCocktailCollections() {
     isLoading.value = true;
     BarAssistantClient.getCollections({ "filter[cocktail_id]": props.cocktail.id, include: "cocktails" } as unknown as Parameters<typeof BarAssistantClient.getCollections>[0])
         .then((resp) => {
-            collections.value = resp.data ?? [];
+            collections.value = resp?.data ?? [];
             isLoading.value = false;
         })
         .catch(() => {
@@ -84,7 +84,7 @@ function removeCocktailFromCollection(collectionId: number) {
             BarAssistantClient.syncCollectionCocktails(collectionId, existingCollectionCocktailIds)
                 .then(() => {
                     toast.default(t("collections.cocktail-remove-success"));
-                    emit("cocktailRemovedFromCollection", props.cocktail.slug);
+                    emit("cocktailRemovedFromCollection", props.cocktail.slug ?? '');
                     isLoading.value = false;
                 })
                 .catch((e) => {

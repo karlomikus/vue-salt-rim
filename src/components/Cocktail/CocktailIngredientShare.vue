@@ -4,7 +4,7 @@
             <span
                 >{{ name }} <template v-if="cocktailIngredient.optional">({{ $t("optional") }})</template></span
             >
-            <span v-if="cocktailIngredient.substitutes.length > 0" class="cocktail-ingredient-share__ingredient-substitutes"> {{ $t("substitutes") }}: {{ substitutes }} </span>
+            <span v-if="cocktailIngredient.substitutes && cocktailIngredient.substitutes.length > 0" class="cocktail-ingredient-share__ingredient-substitutes"> {{ $t("substitutes") }}: {{ substitutes }} </span>
         </div>
         <div class="cocktail-ingredient-share__ingredient-amount">{{ amount }}</div>
     </div>
@@ -13,32 +13,16 @@
 <script setup lang="ts">
 import { unitHandler } from "@/composables/useUnits";
 import { computed } from "vue";
+import type { components } from "@/api/api";
 
-export interface CocktailIngredientShare {
-    ingredient: {
-        name: string;
-    };
-    amount: number | string | null;
-    amount_max?: number | string | null;
-    units?: string | null;
-    note: string | null;
-    optional: boolean;
-    substitutes: {
-        ingredient: {
-            name: string;
-        };
-        amount: number | null;
-        unit: string | null;
-        note: string | null;
-    }[];
-}
+type CocktailIngredient = components["schemas"]["CocktailIngredient"];
 
 const {
     cocktailIngredient,
     scaleFactor = 1,
     units = "ml",
 } = defineProps<{
-    cocktailIngredient: CocktailIngredientShare;
+    cocktailIngredient: CocktailIngredient;
     scaleFactor: number;
     units: string;
 }>();
@@ -57,6 +41,10 @@ const amount = computed(() => {
 });
 
 const substitutes = computed(() => {
+    if (!cocktailIngredient.substitutes || cocktailIngredient.substitutes.length === 0) {
+        return null;
+    }
+
     return cocktailIngredient.substitutes
         .map((sub) => {
             return new String(sub.ingredient.name + " " + unitHandler.print(sub, units, scaleFactor)).trim();

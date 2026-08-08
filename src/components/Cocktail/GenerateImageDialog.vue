@@ -23,16 +23,11 @@ import * as htmlToImage from "html-to-image";
 import OverlayLoader from "@/components/OverlayLoader.vue";
 import CocktailRecipeImage from "@/components/Cocktail/CocktailRecipeImage.vue";
 import { useSaltRimToast } from "@/composables/toast";
+import type { components } from "@/api/api";
 
-type ImageCocktail = {
-    slug?: string;
-    name?: string;
-    description?: string;
-};
+type Cocktail = components["schemas"]["Cocktail"];
 
-const props = withDefaults(defineProps<{ cocktail?: Partial<ImageCocktail> }>(), {
-    cocktail: () => ({}),
-});
+const props = defineProps<{ cocktail: Cocktail }>();
 const { t } = useI18n();
 const toast = useSaltRimToast();
 
@@ -76,7 +71,7 @@ async function shareAction() {
     try {
         await navigator.share({
             title: props.cocktail.name,
-            text: props.cocktail.description,
+            text: props.cocktail.description ?? '',
             files: [file],
         });
     } catch {
