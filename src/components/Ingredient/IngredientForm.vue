@@ -125,7 +125,7 @@
                             <div>
                                 {{ part.ingredient.name }}
                                 <template v-if="unitHandler.asDecimal(part.amount.toString()) > 0">
-                                    &middot; {{ unitHandler.print({amount: part.amount, amount_max: part.amount_max, units: part.units}, appState.defaultUnit) }}
+                                    &middot; {{ unitHandler.print({ amount: part.amount, amount_max: part.amount_max, units: part.units }, appState.defaultUnit) }}
                                 </template>
                                 <template v-if="part.note"> &middot; {{ part.note }} </template>
                             </div>

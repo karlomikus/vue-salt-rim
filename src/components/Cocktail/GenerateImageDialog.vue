@@ -71,7 +71,7 @@ async function shareAction() {
     try {
         await navigator.share({
             title: props.cocktail.name,
-            text: props.cocktail.description ?? '',
+            text: props.cocktail.description ?? "",
             files: [file],
         });
     } catch {

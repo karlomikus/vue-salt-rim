@@ -84,7 +84,7 @@ function removeCocktailFromCollection(collectionId: number) {
             BarAssistantClient.syncCollectionCocktails(collectionId, existingCollectionCocktailIds)
                 .then(() => {
                     toast.default(t("collections.cocktail-remove-success"));
-                    emit("cocktailRemovedFromCollection", props.cocktail.slug ?? '');
+                    emit("cocktailRemovedFromCollection", props.cocktail.slug ?? "");
                     isLoading.value = false;
                 })
                 .catch((e) => {

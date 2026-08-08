@@ -31,7 +31,11 @@
             <div class="ingredient-details__column-sidebar">
                 <h3 class="page-subtitle" style="margin-top: 0">{{ $t("ingredient.status") }}</h3>
                 <div class="block-container block-container--inset shelf-actions">
-                    <ToggleIngredientBarShelf v-if="ingredient.in_bar_shelf !== undefined && appState.isAdmin()" :ingredient="ingredient as Ingredient" v-model="ingredient.in_bar_shelf">
+                    <ToggleIngredientBarShelf
+                        v-if="ingredient.in_bar_shelf !== undefined && appState.isAdmin()"
+                        :ingredient="ingredient as Ingredient"
+                        v-model="ingredient.in_bar_shelf"
+                    >
                         <template v-slot="{ isLoading, inList, toggle }">
                             <a href="#" class="block-container block-container--hover shelf-actions__action" @click.prevent="toggle">
                                 <div>
@@ -303,7 +307,7 @@ const calculator = ref<Calculator>({} as Calculator);
 async function refreshIngredient() {
     isLoadingIngredient.value = true;
     try {
-        const resp = (await BarAssistantClient.getIngredient(route.params.id.toString()))
+        const resp = await BarAssistantClient.getIngredient(route.params.id.toString());
         if (!resp || !resp.data) {
             throw new Error(t("ingredient.not-found"));
         }
