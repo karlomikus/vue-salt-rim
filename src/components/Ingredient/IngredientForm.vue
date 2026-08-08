@@ -165,8 +165,8 @@
                     <div class="form-group" style="width: 100%; max-width: 300px">
                         <label class="form-label form-label--required" :for="'ingredient-price-category-' + idx">{{ $t("price.category") }}</label>
                         <select :id="'ingredient-price-category-' + idx" v-model="price.price_category.id" class="form-select" required>
-                            <option :value="0" disabled>Select price category</option>
-                            <hr />
+                            <!-- <option :value="0" disabled>Select price category</option>
+                            <hr /> -->
                             <optgroup v-for="(priceCategoriesPerCurrency, currency) in groupedPriceCategories" :key="currency" :label="currency">
                                 <option v-for="pc in priceCategoriesPerCurrency" :key="pc.id" :value="pc.id">{{ pc.name }}</option>
                             </optgroup>
