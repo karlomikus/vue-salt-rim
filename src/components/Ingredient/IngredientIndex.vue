@@ -125,7 +125,7 @@
                         {{ $t("ingredients-not-found") }}
                     </EmptyState>
                 </div>
-                <Pagination :meta="meta" @page-changed="handlePageChange"></Pagination>
+                <Pagination v-if="meta" :meta="meta" @page-changed="handlePageChange"></Pagination>
             </div>
         </div>
     </div>
@@ -139,7 +139,7 @@ import IngredientGridContainer from "./../Ingredient/IngredientGridContainer.vue
 import IngredientGridItem from "./../Ingredient/IngredientGridItem.vue";
 import PageHeader from "./../PageHeader.vue";
 import Refinement, { type RefinementRange } from "./../Search/SearchRefinement.vue";
-import Pagination from "./../Search/SearchPagination.vue";
+import Pagination, { type PaginationMeta } from "./../Search/SearchPagination.vue";
 import qs from "qs";
 import EmptyState from "./../EmptyState.vue";
 import AppState from "../../AppState";
@@ -162,7 +162,7 @@ const isLoading = ref(false);
 const showRefinements = ref(false);
 const showAddToMenuDialog = ref(false);
 const sortDir = ref("");
-const meta = ref({});
+const meta = ref<PaginationMeta | null>(null);
 const ingredients = ref<Ingredient[]>([]);
 const queryTimer = ref<number | null>(null);
 const availableRefinements = ref({
@@ -333,7 +333,12 @@ async function refreshIngredients() {
     const resp = await BarAssistantClient.getIngredients(query);
     if (resp) {
         ingredients.value = resp.data ?? [];
-        meta.value = resp.meta ?? {};
+        meta.value = {
+            current_page: resp?.meta?.current_page || 1,
+            last_page: resp?.meta?.last_page || 1,
+            to: resp?.meta?.to || 0,
+            total: resp?.meta?.total || 0,
+        };
     }
     isLoading.value = false;
 }
@@ -371,7 +376,7 @@ function debounceIngredientSearch() {
 function clearRefinements() {
     activeFilters.value = { ...defaultRefinements };
     sortDir.value = "";
-    meta.value = {};
+    meta.value = null;
     updateRouterPath();
 }
 
