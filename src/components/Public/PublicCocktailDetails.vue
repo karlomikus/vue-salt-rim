@@ -72,7 +72,7 @@
 import { computed, ref, watch } from "vue";
 import type { components } from "@/api/api";
 import { useRouter } from "vue-router";
-import { micromark } from "micromark";
+import { useMarkdown } from "@/composables/useMarkdown";
 import CocktailIngredient from "./PublicCocktailIngredient.vue";
 import CocktailRecipeScaler from "./../Cocktail/CocktailRecipeScaler.vue";
 import AppState from "@/AppState";
@@ -97,15 +97,15 @@ const props = defineProps<{
 }>();
 
 const parsedDescription = computed(() => {
-    return props.cocktail.description ? micromark(props.cocktail.description) : "";
+    return props.cocktail.description ? useMarkdown(props.cocktail.description) : "";
 });
 
 const parsedInstructions = computed(() => {
-    return props.cocktail.instructions ? micromark(props.cocktail.instructions) : "";
+    return props.cocktail.instructions ? useMarkdown(props.cocktail.instructions) : "";
 });
 
 const parsedGarnish = computed(() => {
-    return props.cocktail.garnish ? micromark(props.cocktail.garnish) : "";
+    return props.cocktail.garnish ? useMarkdown(props.cocktail.garnish) : "";
 });
 
 const mainImage = computed(() => {

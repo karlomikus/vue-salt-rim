@@ -36,7 +36,7 @@
 
 <script setup lang="ts">
 import { ref, computed } from "vue";
-import { micromark } from "micromark";
+import { useMarkdown } from "@/composables/useMarkdown";
 import AppState from "@/AppState";
 import CocktailIngredientShare from "@/components/Cocktail/CocktailIngredientShare.vue";
 import type { components } from "@/api/api";
@@ -70,7 +70,7 @@ const parsedDescription = computed(() => {
         return null;
     }
 
-    return micromark(props.cocktail.description);
+    return useMarkdown(props.cocktail.description);
 });
 
 const parsedInstructions = computed(() => {
@@ -78,7 +78,7 @@ const parsedInstructions = computed(() => {
         return null;
     }
 
-    return micromark(props.cocktail.instructions);
+    return useMarkdown(props.cocktail.instructions);
 });
 
 const parsedGarnish = computed(() => {
@@ -86,7 +86,7 @@ const parsedGarnish = computed(() => {
         return null;
     }
 
-    return micromark(props.cocktail.garnish);
+    return useMarkdown(props.cocktail.garnish);
 });
 </script>
 

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, computed, watch } from "vue";
 import { useEventListener } from "@vueuse/core";
-import { micromark } from "micromark";
+import { useMarkdown } from "@/composables/useMarkdown";
 import { useRoute, useRouter } from "vue-router";
 import { useI18n } from "vue-i18n";
 import { useTitle } from "@/composables/title";
@@ -111,7 +111,7 @@ const parsedInstructions = computed(() => {
         return null;
     }
 
-    return micromark(cocktail.value.instructions);
+    return useMarkdown(cocktail.value.instructions);
 });
 
 const parsedDescription = computed(() => {
@@ -119,7 +119,7 @@ const parsedDescription = computed(() => {
         return null;
     }
 
-    return micromark(cocktail.value.description);
+    return useMarkdown(cocktail.value.description);
 });
 
 const parsedGarnish = computed(() => {
@@ -127,7 +127,7 @@ const parsedGarnish = computed(() => {
         return null;
     }
 
-    return micromark(cocktail.value.garnish);
+    return useMarkdown(cocktail.value.garnish);
 });
 
 const calculatedCalories = computed(() => {

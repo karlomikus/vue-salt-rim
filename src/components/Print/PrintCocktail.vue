@@ -54,7 +54,7 @@
 
 <script setup lang="ts">
 import { computed } from "vue";
-import { micromark } from "micromark";
+import { useMarkdown } from "@/composables/useMarkdown";
 import { unitHandler } from "@/composables/useUnits";
 import type { CocktailPrintModel, CocktailPrintIngredient } from "./types";
 
@@ -80,21 +80,21 @@ const parsedDescription = computed(() => {
     if (!props.cocktail.description) {
         return null;
     }
-    return micromark(props.cocktail.description);
+    return useMarkdown(props.cocktail.description);
 });
 
 const parsedInstructions = computed(() => {
     if (!props.cocktail.instructions) {
         return null;
     }
-    return micromark(props.cocktail.instructions);
+    return useMarkdown(props.cocktail.instructions);
 });
 
 const parsedGarnish = computed(() => {
     if (!props.cocktail.garnish) {
         return null;
     }
-    return micromark(props.cocktail.garnish);
+    return useMarkdown(props.cocktail.garnish);
 });
 
 function ingredientAmount(ing: CocktailPrintIngredient): string {

@@ -258,7 +258,7 @@ import { useRoute, useRouter } from "vue-router";
 import { unitHandler } from "@/composables/useUnits";
 import CalculatorRender from "../Calculator/CalculatorRender.vue";
 import OverlayLoader from "@/components/OverlayLoader.vue";
-import { micromark } from "micromark";
+import { useMarkdown } from "@/composables/useMarkdown";
 import PageHeader from "../PageHeader.vue";
 import BarAssistantClient from "@/api/BarAssistantClient";
 import ToggleIngredientShoppingCart from "@/components/ToggleIngredientShoppingCart.vue";
@@ -397,7 +397,7 @@ const parsedDescription = computed(() => {
         return null;
     }
 
-    return micromark(ingredient.value.description);
+    return useMarkdown(ingredient.value.description);
 });
 
 const createdDate = computed(() => {
