@@ -228,7 +228,6 @@ import SaltRimCheckbox from "../SaltRimCheckbox.vue";
 import CloseButton from "../CloseButton.vue";
 import { useTitle } from "@/composables/title";
 import AppState from "@/AppState";
-import { useHtmlDecode } from "./../../composables/useHtmlDecode";
 import type { components } from "@/api/api";
 import { useI18n } from "vue-i18n";
 import { useSaltRimToast } from "@/composables/toast";
@@ -313,7 +312,7 @@ async function refreshIngredient(id: string) {
         resp.name = `${resp.name} (Variant)`;
     }
 
-    resp.description = useHtmlDecode(resp.description ?? "");
+    resp.description = resp.description ?? "";
     isParent.value = resp.hierarchy.parent_ingredient != null;
     isComplex.value = (resp.ingredient_parts && resp.ingredient_parts.length > 0) || false;
     ingredient.value = resp;

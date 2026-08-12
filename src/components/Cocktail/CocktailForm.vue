@@ -210,7 +210,6 @@
 
 <script setup lang="ts">
 import { useTitle } from "@/composables/title";
-import { useHtmlDecode } from "./../../composables/useHtmlDecode";
 import { unitHandler, type UnitIngredient } from "@/composables/useUnits";
 import BarAssistantClient from "@/api/BarAssistantClient";
 import OverlayLoader from "./../OverlayLoader.vue";
@@ -610,9 +609,9 @@ async function loadCocktailData() {
 }
 
 function setupExistingCocktail(existingCocktail: Cocktail) {
-    existingCocktail.description = useHtmlDecode(existingCocktail.description ?? "");
-    existingCocktail.instructions = useHtmlDecode(existingCocktail.instructions ?? "");
-    existingCocktail.garnish = useHtmlDecode(existingCocktail.garnish ?? "");
+    existingCocktail.description = existingCocktail.description ?? "";
+    existingCocktail.instructions = existingCocktail.instructions ?? "";
+    existingCocktail.garnish = existingCocktail.garnish ?? "";
 
     if (!existingCocktail.method) {
         existingCocktail.method = {} as CocktailMethod;

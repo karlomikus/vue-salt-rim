@@ -24,7 +24,6 @@
     "@types/sortablejs": "1.15.9",
     "@vueuse/core": "14.3.0",
     "cropperjs": "1.6.2",
-    "entities": "7.0.1",
     "format-quantity": "3.1.0",
     "html-to-image": "1.11.13",
     "mathjs": "15.2.0",
