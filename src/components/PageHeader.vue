@@ -21,7 +21,7 @@
 }
 
 .dark-theme .site-page-header {
-    --sph-clr-border: var(--clr-gray-800)
+    --sph-clr-border: var(--clr-gray-800);
 }
 
 .site-page-header__title h2 {

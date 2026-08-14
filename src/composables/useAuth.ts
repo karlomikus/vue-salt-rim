@@ -1,48 +1,45 @@
-import BarAssistantClient from '@/api/BarAssistantClient'
-import AppState from '@/AppState'
+import BarAssistantClient from "@/api/BarAssistantClient";
+import AppState from "@/AppState";
 
 const useAuth = async (token: string): Promise<string> => {
-    const appState = new AppState()
-    appState.setToken(token)
+    const appState = new AppState();
+    appState.setToken(token);
 
     try {
-        const profile = (await BarAssistantClient.getProfile())?.data
+        const profile = (await BarAssistantClient.getProfile())?.data;
         if (!profile) {
-            appState.forgetUser()
-            return '/login'
+            appState.forgetUser();
+            return "/login";
         }
 
-        appState.setUser(profile)
+        appState.setUser(profile);
 
         if (profile.settings?.language) {
-            appState.setLanguage(profile.settings.language)
+            appState.setLanguage(profile.settings.language);
         }
 
         if (profile.settings?.theme) {
-            appState.setTheme(profile.settings.theme)
+            appState.setTheme(profile.settings.theme);
         }
     } catch (e: any) {
-        appState.forgetUser()
+        appState.forgetUser();
 
-        return '/login'
+        return "/login";
     }
 
-    const [bars, serverInfo] = await Promise.all([
-        BarAssistantClient.getBars(),
-        BarAssistantClient.getServerVersion()
-    ]);
+    const [bars, serverInfo] = await Promise.all([BarAssistantClient.getBars(), BarAssistantClient.getServerVersion()]);
 
     if (serverInfo?.data) {
-        appState.setServerSettings(serverInfo.data.is_password_login_enabled, serverInfo.data.is_ai_enabled, serverInfo.data.is_ai_image_enabled)
+        appState.setServerSettings(serverInfo.data.is_password_login_enabled, serverInfo.data.is_ai_enabled, serverInfo.data.is_ai_image_enabled);
     }
 
     if (bars?.data?.length == 1) {
-        appState.setBar(bars.data[0])
+        appState.setBar(bars.data[0]);
 
-        return '/'
+        return "/";
     } else {
-        return '/bars'
+        return "/bars";
     }
-}
+};
 
-export { useAuth }
+export { useAuth };

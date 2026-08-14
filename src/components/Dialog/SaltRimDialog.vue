@@ -5,7 +5,7 @@
         </slot>
         <Teleport to="body">
             <Transition name="dialog-animation">
-                <div v-if="modelValue" class="dialog" :class="$attrs.class">
+                <div v-if="model" class="dialog" :class="attrs.class">
                     <div class="dialog__overlay"></div>
                     <div class="dialog__container">
                         <div class="dialog__content">
@@ -19,49 +19,41 @@
     </span>
 </template>
 
-<script>
-import CloseButton from '../CloseButton.vue'
+<script setup lang="ts">
+import { watch, onUnmounted, useAttrs } from "vue";
+import CloseButton from "../CloseButton.vue";
 
-export default {
-    components: {
-        CloseButton,
-    },
-    inheritAttrs: false,
-    props: {
-        modelValue: {
-            type: Boolean,
-            default: false
-        },
-        closeOnEsc: {
-            type: Boolean,
-            default: true
-        }
-    },
-    emits: ['update:modelValue', 'dialogOpened', 'dialogClosed'],
-    watch: {
-        modelValue(val) {
-            if (val) {
-                this.$emit('dialogOpened')
-                document.body.style.overflow = 'hidden'
-            } else {
-                this.$emit('dialogClosed')
-                document.body.style.overflow = 'auto'
-            }
-        }
-    },
-    unmounted() {
-        this.$emit('dialogClosed')
-        document.body.style.overflow = 'auto'
-    },
-    methods: {
-        toggleDialog() {
-            this.$emit('update:modelValue', !this.modelValue)
-        },
-        handleEsc() {
-            if (this.closeOnEsc) {
-                this.$emit('update:modelValue', false)
-            }
-        }
+defineOptions({ inheritAttrs: false });
+
+const model = defineModel<boolean>({ default: false });
+const props = withDefaults(defineProps<{ closeOnEsc?: boolean }>(), {
+    closeOnEsc: true,
+});
+const emit = defineEmits<{ dialogOpened: []; dialogClosed: [] }>();
+const attrs = useAttrs();
+
+function toggleDialog() {
+    model.value = !model.value;
+}
+
+function handleEsc() {
+    if (props.closeOnEsc) {
+        model.value = false;
     }
 }
+
+watch(model, (val) => {
+    if (val) {
+        emit("dialogOpened");
+        document.body.style.overflow = "hidden";
+    } else {
+        emit("dialogClosed");
+        document.body.style.overflow = "auto";
+    }
+});
+
+onUnmounted(() => {
+    emit("dialogClosed");
+    document.body.style.overflow = "auto";
+});
 </script>

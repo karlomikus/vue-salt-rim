@@ -1,62 +1,58 @@
 <template>
     <form @submit.prevent="submit">
         <OverlayLoader v-if="isLoading" />
-        <div class="dialog-title">{{ $t('note-dialog.title') }}</div>
+        <div class="dialog-title">{{ $t("note-dialog.title") }}</div>
         <div class="form-group">
-            <label class="form-label" for="note">{{ $t('content') }}:</label>
-            <textarea id="note" v-model="note.note" rows="5" class="form-input" ref="note"></textarea>
+            <label class="form-label" for="note">{{ $t("content") }}:</label>
+            <textarea id="note" v-model="note.note" rows="5" class="form-input" ref="noteInput"></textarea>
         </div>
         <div class="dialog-actions">
-            <button class="button button--outline" @click.prevent="$emit('noteDialogClosed')">{{ $t('cancel') }}</button>
-            <button class="button button--dark" type="submit">{{ $t('save') }}</button>
+            <button class="button button--outline" @click.prevent="$emit('noteDialogClosed')">{{ $t("cancel") }}</button>
+            <button class="button button--dark" type="submit">{{ $t("save") }}</button>
         </div>
     </form>
 </template>
 
-<script>
-import BarAssistantClient from '@/api/BarAssistantClient'
-import OverlayLoader from './../OverlayLoader.vue'
+<script setup lang="ts">
+import { ref, onMounted } from "vue";
+import { useI18n } from "vue-i18n";
+import BarAssistantClient from "@/api/BarAssistantClient";
+import OverlayLoader from "@/components/OverlayLoader.vue";
+import { useSaltRimToast } from "@/composables/toast";
+import type { components } from "@/api/api";
 
-export default {
-    components: {
-        OverlayLoader,
-    },
-    props: {
-        resourceId: {
-            type: Number,
-            default: 0
-        },
-        resource: {
-            type: String,
-            default: ''
-        }
-    },
-    emits: ['noteDialogClosed'],
-    data() {
-        return {
-            isLoading: false,
-            note: {},
-        }
-    },
-    mounted() {
-        this.$refs.note.focus()
-    },
-    methods: {
-        submit() {
-            this.isLoading = true
-            BarAssistantClient.saveNote({
-                note: this.note.note,
-                resource_id: this.resourceId,
-                resource: this.resource,
-            }).then(() => {
-                this.$toast.default(this.$t('note-added'))
-                this.isLoading = false
-                this.$emit('noteDialogClosed')
-            }).catch(e => {
-                this.$toast.error(e.message)
-                this.isLoading = false
-            })
-        },
-    }
+const props = withDefaults(defineProps<{ resourceId?: number; resource?: string }>(), {
+    resourceId: 0,
+    resource: "",
+});
+const { t } = useI18n();
+const toast = useSaltRimToast();
+
+const emit = defineEmits<{ noteDialogClosed: [] }>();
+
+const isLoading = ref(false);
+const note = ref<Partial<components["schemas"]["Note"]>>({ note: "" });
+const noteInput = ref<HTMLTextAreaElement>();
+
+onMounted(() => {
+    noteInput.value?.focus();
+});
+
+function submit() {
+    isLoading.value = true;
+    BarAssistantClient.saveNote({
+        note: note.value.note ?? "",
+        resource_id: props.resourceId,
+        resource: props.resource,
+    })
+        .then(() => {
+            toast.default(t("note-added"));
+            isLoading.value = false;
+            emit("noteDialogClosed");
+        })
+        .catch((e) => {
+            toast.error(e.message);
+            isLoading.value = false;
+        });
 }
 </script>

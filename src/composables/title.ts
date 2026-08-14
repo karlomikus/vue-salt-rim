@@ -1,10 +1,10 @@
-import { useTitle as useVueTitle } from '@vueuse/core'
-import AppState from '@/AppState'
+import { useTitle as useVueTitle } from "@vueuse/core";
+import AppState from "@/AppState";
 
 const useTitle = (title: string) => {
-    const appState = new AppState()
+    const appState = new AppState();
 
-    useVueTitle(`${title} \u22C5 ${appState.bar.name ?? 'Bar Assistant'}`)
-}
+    useVueTitle(`${title} \u22C5 ${appState.bar.name ?? "Bar Assistant"}`);
+};
 
-export { useTitle }
+export { useTitle };

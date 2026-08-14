@@ -1,29 +1,26 @@
-<script setup>
-defineProps({
-    label: {
-        type: String,
-        required: true
-    },
-    description: {
-        type: String,
-        default: null
-    }
-})
+<script setup lang="ts">
+withDefaults(
+    defineProps<{
+        label: string;
+        description: string | null;
+    }>(),
+    { description: null },
+);
 
 defineOptions({
-    inheritAttrs: false
-})
+    inheritAttrs: false,
+});
 
-const model = defineModel({ required: true, type: null })
+const model = defineModel({ required: true, type: null });
 </script>
 
 <template>
     <div class="sr-checkbox">
         <div class="sr-checkbox__input">
-            <input :id="$attrs.id" v-model="model" type="checkbox">
+            <input :id="$attrs.id as string" v-model="model" type="checkbox" />
         </div>
         <div class="sr-checkbox__text">
-            <label :for="$attrs.id">{{ label }}</label>
+            <label :for="$attrs.id as string">{{ label }}</label>
             <p class="form-input-hint">{{ description }}</p>
         </div>
     </div>

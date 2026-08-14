@@ -1,62 +1,81 @@
 <template>
-    <div>
-        <div class="dialog-title">{{ $t('cocktail.cocktails') }}</div>
+    <div ref="rootEl">
+        <div class="dialog-title">{{ $t("cocktail.cocktails") }}</div>
         <ais-instant-search :search-client="searchClient" index-name="cocktails" class="cocktail-finder" :future="{ preserveSharedStateOnUnmount: true }">
             <ais-configure :hits-per-page.camel="8" />
             <ais-search-box>
                 <template #default="{ refine }">
                     {{ doFocus() }}
-                    <input ref="search" class="form-input cocktail-finder__search-input" type="search" :placeholder="$t('placeholder.search-cocktails')" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" maxlength="512" @input="refine($event.currentTarget.value)">
+                    <input
+                        ref="search"
+                        class="form-input cocktail-finder__search-input"
+                        type="search"
+                        :placeholder="$t('placeholder.search-cocktails')"
+                        autocomplete="off"
+                        autocorrect="off"
+                        autocapitalize="off"
+                        spellcheck="false"
+                        maxlength="512"
+                        @input="refine(($event.currentTarget as HTMLInputElement).value)"
+                    />
                 </template>
             </ais-search-box>
             <ais-hits class="cocktail-finder__hits">
-                <template #default="{ items }">
-                    <a v-for="item in items" :key="item.id" class="cocktail-finder__option block-container block-container--hover" href="#" @click.prevent="$emit('cocktailSelected', item)">
+                <template #default="{ items }: { items: Hit[] }">
+                    <a
+                        v-for="item in items"
+                        :key="item.id"
+                        class="cocktail-finder__option block-container block-container--hover"
+                        href="#"
+                        @click.prevent="emit('cocktailSelected', item)"
+                    >
                         <CocktailThumb :cocktail="item"></CocktailThumb>
                         <div>
                             <h4 class="sr-list-item-title">{{ item.name }}</h4>
-                            <p>{{ item.short_ingredients.join(', ') }}</p>
+                            <p>{{ item.short_ingredients?.join(", ") }}</p>
                         </div>
                     </a>
                 </template>
             </ais-hits>
         </ais-instant-search>
         <div class="dialog-actions">
-            <button type="submit" class="button button--dark" @click="$emit('closed')">{{ $t('close') }}</button>
+            <button type="submit" class="button button--dark" @click="emit('closed')">{{ $t("close") }}</button>
         </div>
     </div>
 </template>
 
-<script>
-import { instantMeiliSearch } from '@meilisearch/instant-meilisearch'
-import AppState from '../AppState'
-import CocktailThumb from './Cocktail/CocktailThumb.vue'
+<script setup lang="ts">
+import { ref, nextTick } from "vue";
+import { instantMeiliSearch } from "@meilisearch/instant-meilisearch";
+import AppState from "@/AppState";
+import CocktailThumb from "@/components/Cocktail/CocktailThumb.vue";
 
-const appState = new AppState()
+type Hit = {
+    id: number;
+    name: string;
+    slug: string;
+    description: string | null;
+    image_url: string | null;
+    short_ingredients: string[];
+    tags: string[];
+    bar_id: number;
+};
 
-export default {
-    components: {
-        CocktailThumb,
-    },
-    emits: ['cocktailSelected', 'closed'],
-    data() {
-        return {
-            searchClient: instantMeiliSearch(
-                appState.bar.search_host,
-                appState.bar.search_token,
-            ).searchClient,
+const appState = new AppState();
+
+const emit = defineEmits<{ cocktailSelected: [item: Hit]; closed: [] }>();
+
+const searchClient = instantMeiliSearch(appState.bar.search_host ?? "", appState.bar.search_token ?? "").searchClient;
+const search = ref<HTMLInputElement>();
+const rootEl = ref<HTMLElement>();
+
+function doFocus() {
+    nextTick(() => {
+        if (search.value) {
+            rootEl.value?.scrollIntoView(true);
+            search.value.focus();
         }
-    },
-    methods: {
-        doFocus() {
-            this.$nextTick(() => {
-                if (this.$refs.search) {
-                    this.$el.scrollIntoView(true)
-                    this.$refs.search.focus()
-                }
-            })
-        }
-    }
+    });
 }
 </script>
 
@@ -70,7 +89,11 @@ export default {
     background-color: var(--clr-gray-100);
     border-radius: var(--radius-2);
     border-bottom: 1px solid #fff;
-    box-shadow: inset 0px 0.4px 0.5px hsl(var(--shadow-color) / 0.25), inset 0px 1.1px 1.2px -0.8px hsl(var(--shadow-color) / 0.25), inset 0px 2.6px 2.9px -1.7px hsl(var(--shadow-color) / 0.25), inset 0px 6.3px 7.1px -2.5px hsl(var(--shadow-color) / 0.25);
+    box-shadow:
+        inset 0px 0.4px 0.5px hsl(var(--shadow-color) / 0.25),
+        inset 0px 1.1px 1.2px -0.8px hsl(var(--shadow-color) / 0.25),
+        inset 0px 2.6px 2.9px -1.7px hsl(var(--shadow-color) / 0.25),
+        inset 0px 6.3px 7.1px -2.5px hsl(var(--shadow-color) / 0.25);
     display: flex;
     flex-direction: column;
     gap: var(--gap-size-1);
@@ -79,8 +102,8 @@ export default {
 }
 
 .dark-theme .cocktail-finder__hits {
-    background-color: rgba(0, 0, 0, .15);
-    border-bottom: 1px solid rgba(255, 255, 255, .1);
+    background-color: rgba(0, 0, 0, 0.15);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     box-shadow:
         inset 0px 0.4px 0.5px hsl(var(--shadow-color-dark) / 0.25),
         inset 0px 1.1px 1.2px -0.8px hsl(var(--shadow-color-dark) / 0.25),

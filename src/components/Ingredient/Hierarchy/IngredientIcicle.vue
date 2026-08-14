@@ -9,14 +9,14 @@
 </template>
 
 <script setup lang="ts">
-import type { components } from '@/api/api'
-import IngredientIcicleNode from './IngredientIcicleNode.vue';
+import type { components } from "@/api/api";
+import IngredientIcicleNode from "./IngredientIcicleNode.vue";
 
-type IngredientTree = components['schemas']['IngredientTree'];
+type IngredientTree = components["schemas"]["IngredientTree"];
 
 const ingredientTree = defineModel<IngredientTree>({
     required: true,
-})
+});
 </script>
 
 <style scoped>

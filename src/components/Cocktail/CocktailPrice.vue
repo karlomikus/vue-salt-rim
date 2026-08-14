@@ -8,22 +8,23 @@
         </div>
         <ul class="cocktail-price__ingredients">
             <li v-for="ingredient in cocktailPrice.prices_per_ingredient" :key="ingredient.ingredient.id">
-                {{ ingredient.ingredient.name }} &middot; {{ unitHandler.formatPrice(ingredient.price_per_use.price, ingredient.price_per_use.currency) }} <small>/{{ $t('price.per-use')}} ({{ ingredient.units }})</small>
+                {{ ingredient.ingredient.name }} &middot; {{ unitHandler.formatPrice(ingredient.price_per_use.price, ingredient.price_per_use.currency) }}
+                <small>/{{ $t("price.per-use") }} ({{ ingredient.units }})</small>
             </li>
-            <li class="cocktail-price__missing-note" v-if="cocktailPrice.missing_prices_count > 0">{{ $t('price.missing-prices') }}</li>
+            <li class="cocktail-price__missing-note" v-if="cocktailPrice.missing_prices_count > 0">{{ $t("price.missing-prices") }}</li>
         </ul>
     </div>
 </template>
 
 <script setup lang="ts">
-import { unitHandler } from '@/composables/useUnits'
-import type { components } from '@/api/api'
+import { unitHandler } from "@/composables/useUnits";
+import type { components } from "@/api/api";
 
-type CocktailPrice = components["schemas"]["CocktailPrice"]
+type CocktailPrice = components["schemas"]["CocktailPrice"];
 
 defineProps<{
-    cocktailPrice: CocktailPrice
-}>()
+    cocktailPrice: CocktailPrice;
+}>();
 </script>
 
 <style scoped>

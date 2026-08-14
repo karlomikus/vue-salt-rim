@@ -1,5 +1,5 @@
-<script setup>
-import CocktailDetails from '../components/Cocktail/CocktailDetails.vue'
+<script setup lang="ts">
+import CocktailDetails from "../components/Cocktail/CocktailDetails.vue";
 </script>
 
 <template>

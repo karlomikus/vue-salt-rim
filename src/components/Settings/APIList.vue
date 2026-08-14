@@ -1,10 +1,10 @@
 <template>
     <PageHeader>
-        {{ $t('api.tokens') }}
+        {{ $t("api.tokens") }}
         <template v-if="appState.isSubscribed()" #actions>
             <SaltRimDialog v-model="showDialog">
                 <template #trigger>
-                    <button type="button" class="button button--dark" @click.prevent="showDialog = true">{{ $t('api.add') }}</button>
+                    <button type="button" class="button button--dark" @click.prevent="showDialog = true">{{ $t("api.add") }}</button>
                 </template>
                 <template #dialog>
                     <APIForm @api-key-dialog-closed="refreshTokens" />
@@ -19,14 +19,14 @@
         <div class="settings-page__content">
             <OverlayLoader v-if="isLoading" />
             <SubscriptionCheck>Subscribe to "Mixologist" plan to gain access to API token management!</SubscriptionCheck>
-            <div class="block-container block-container--padded" style="overflow: scroll;">
+            <div class="block-container block-container--padded" style="overflow: scroll">
                 <table class="table">
                     <thead>
                         <tr>
-                            <th>{{ $t('name') }} / {{ $t('created') }}</th>
-                            <th>{{ $t('api.abilities') }}</th>
-                            <th>{{ $t('last-used-at') }}</th>
-                            <th>{{ $t('expires_at') }}</th>
+                            <th>{{ $t("name") }} / {{ $t("created") }}</th>
+                            <th>{{ $t("api.abilities") }}</th>
+                            <th>{{ $t("last-used-at") }}</th>
+                            <th>{{ $t("expires_at") }}</th>
                             <th></th>
                         </tr>
                     </thead>
@@ -34,7 +34,7 @@
                         <tr v-for="token in tokens" :key="token.id">
                             <td>
                                 {{ token.name }}
-                                <br>
+                                <br />
                                 <small><DateFormatter :date="token.created_at"></DateFormatter></small>
                             </td>
                             <td>
@@ -44,8 +44,8 @@
                             </td>
                             <td><DateFormatter v-if="token.last_used_at" :date="token.last_used_at"></DateFormatter></td>
                             <td><DateFormatter v-if="token.expires_at" :date="token.expires_at"></DateFormatter></td>
-                            <td style="text-align: right;">
-                                <a class="list-group__action" href="#" @click.prevent="deleteToken(token)">{{ $t('revoke') }}</a>
+                            <td style="text-align: right">
+                                <a class="list-group__action" href="#" @click.prevent="deleteToken(token)">{{ $t("revoke") }}</a>
                             </td>
                         </tr>
                     </tbody>
@@ -55,69 +55,68 @@
     </div>
 </template>
 
-<script>
-import BarAssistantClient from '@/api/BarAssistantClient'
-import OverlayLoader from '../OverlayLoader.vue'
-import PageHeader from '../PageHeader.vue'
-import SettingsNavigation from './SettingsNavigation.vue'
-import SaltRimDialog from '../Dialog/SaltRimDialog.vue'
-import DateFormatter from '../DateFormatter.vue'
-import APIForm from './APIForm.vue'
-import SubscriptionCheck from '../SubscriptionCheck.vue'
-import { useTitle } from '@/composables/title'
-import AppState from '../../AppState'
+<script setup lang="ts">
+import { ref } from "vue";
+import { useI18n } from "vue-i18n";
+import BarAssistantClient from "@/api/BarAssistantClient";
+import OverlayLoader from "@/components/OverlayLoader.vue";
+import PageHeader from "@/components/PageHeader.vue";
+import SettingsNavigation from "@/components/Settings/SettingsNavigation.vue";
+import SaltRimDialog from "@/components/Dialog/SaltRimDialog.vue";
+import DateFormatter from "@/components/DateFormatter.vue";
+import APIForm from "@/components/Settings/APIForm.vue";
+import SubscriptionCheck from "@/components/SubscriptionCheck.vue";
+import { useTitle } from "@/composables/title";
+import AppState from "@/AppState";
+import { useSaltRimToast } from "@/composables/toast";
+import { useConfirm } from "@/composables/confirm";
+import type { components } from "@/api/api";
 
-export default {
-    components: {
-        OverlayLoader,
-        SettingsNavigation,
-        PageHeader,
-        SaltRimDialog,
-        DateFormatter,
-        APIForm,
-        SubscriptionCheck,
-    },
-    data() {
-        return {
-            appState: new AppState(),
-            isLoading: false,
-            showDialog: false,
-            tokens: [],
-        }
-    },
-    created() {
-        useTitle(this.$t('api.tokens'))
+type Token = components["schemas"]["PersonalAccessToken"];
 
-        this.refreshTokens()
-    },
-    methods: {
-        refreshTokens() {
-            this.showDialog = false
+const appState = new AppState();
+const { t } = useI18n();
+const toast = useSaltRimToast();
+const confirm = useConfirm();
 
-            this.isLoading = true
-            BarAssistantClient.getTokens().then(resp => {
-                this.tokens = resp.data
-                this.isLoading = false
-            }).catch(e => {
-                this.$toast.error(e.message)
-            })
+const isLoading = ref(false);
+const showDialog = ref(false);
+const tokens = ref<Token[]>([]);
+
+useTitle(t("api.tokens"));
+
+refreshTokens();
+
+function refreshTokens() {
+    showDialog.value = false;
+
+    isLoading.value = true;
+    BarAssistantClient.getTokens()
+        .then((resp) => {
+            tokens.value = resp?.data ?? [];
+            isLoading.value = false;
+        })
+        .catch((e) => {
+            toast.error(e.message);
+        });
+}
+
+function deleteToken(token: Token) {
+    confirm.show(t("api.confirm-revoke", { name: token.name }), {
+        onResolved: (dialog: { close: () => void }) => {
+            isLoading.value = true;
+            dialog.close();
+            BarAssistantClient.deleteToken(token.id)
+                .then(() => {
+                    isLoading.value = false;
+                    toast.default(t("api.revoke-success"));
+                    refreshTokens();
+                })
+                .catch((e) => {
+                    toast.error(e.message);
+                    isLoading.value = false;
+                });
         },
-        deleteToken(token) {
-            this.$confirm(this.$t('api.confirm-revoke', {name: token.name}), {
-                onResolved: (dialog) => {
-                    this.isLoading = true
-                    dialog.close()
-                    BarAssistantClient.deleteToken(token.id).then(() => {
-                        this.isLoading = false
-                        this.$toast.default(this.$t('api.revoke-success'))
-                        this.refreshTokens()
-                    }).catch(e => {
-                        this.$toast.error(e.message)
-                        this.isLoading = false
-                    })
-                }
-            })
-        }
-    }
+    });
 }
 </script>

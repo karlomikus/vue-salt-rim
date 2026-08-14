@@ -1,8 +1,16 @@
 <template>
-    <button type="button" class="sr-radio" :class="{'sr-radio--selected': isSelected}" @click.prevent="select">
+    <button type="button" class="sr-radio" :class="{ 'sr-radio--selected': isSelected }" @click.prevent="select">
         <div class="sr-radio__image">
-            <svg v-if="isSelected" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22ZM12 16C14.2091 16 16 14.2091 16 12C16 9.79086 14.2091 8 12 8C9.79086 8 8 9.79086 8 12C8 14.2091 9.79086 16 12 16Z"></path></svg>
-            <svg v-else xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22ZM12 20C16.4183 20 20 16.4183 20 12C20 7.58172 16.4183 4 12 4C7.58172 4 4 7.58172 4 12C4 16.4183 7.58172 20 12 20Z"></path></svg>
+            <svg v-if="isSelected" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                <path
+                    d="M12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22ZM12 16C14.2091 16 16 14.2091 16 12C16 9.79086 14.2091 8 12 8C9.79086 8 8 9.79086 8 12C8 14.2091 9.79086 16 12 16Z"
+                ></path>
+            </svg>
+            <svg v-else xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                <path
+                    d="M12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22ZM12 20C16.4183 20 20 16.4183 20 12C20 7.58172 16.4183 4 12 4C7.58172 4 4 7.58172 4 12C4 16.4183 7.58172 20 12 20Z"
+                ></path>
+            </svg>
         </div>
         <div class="sr-radio__content">
             <h3>{{ title }}</h3>
@@ -10,37 +18,21 @@
         </div>
     </button>
 </template>
-<script>
-export default {
-    props: {
-        modelValue: {
-            type: [Number, String],
-            default: null,
-        },
-        value: {
-            type: [Number, String],
-            default: null,
-        },
-        title: {
-            type: String,
-            default: ''
-        },
-        description: {
-            type: String,
-            default: ''
-        }
-    },
-    emits: ['update:modelValue'],
-    computed: {
-        isSelected() {
-            return this.value == this.modelValue
-        }
-    },
-    methods: {
-        select() {
-            this.$emit('update:modelValue', this.value)
-        }
-    }
+<script setup lang="ts">
+import { computed } from "vue";
+
+const model = defineModel<string | number | null>({ default: null });
+
+const props = defineProps<{
+    value: string | number | null;
+    title?: string;
+    description?: string;
+}>();
+
+const isSelected = computed(() => props.value == model.value);
+
+function select(): void {
+    model.value = props.value;
 }
 </script>
 <style scoped>

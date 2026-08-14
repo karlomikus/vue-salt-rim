@@ -1,25 +1,37 @@
 <template>
     <form class="site-autocomplete" novalidate @keyup.esc="close">
-        <div class="dialog-title">{{ t('search.title') }}</div>
+        <div class="dialog-title">{{ t("search.title") }}</div>
         <OverlayLoader v-if="isLoading"></OverlayLoader>
         {{ doFocus() }}
-        <input ref="siteSearchInput" class="form-input" type="search" :placeholder="t('placeholder.site-search')" v-model="currentQuery" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" maxlength="512" @input="debounceSearch">
-        <h4 class="site-autocomplete__index-name">&mdash; {{ t('cocktail.cocktails') }} ({{ cocktailResults.length }})</h4>
+        <input
+            ref="siteSearchInput"
+            class="form-input"
+            type="search"
+            :placeholder="t('placeholder.site-search')"
+            v-model="currentQuery"
+            autocomplete="off"
+            autocorrect="off"
+            autocapitalize="off"
+            spellcheck="false"
+            maxlength="512"
+            @input="debounceSearch"
+        />
+        <h4 class="site-autocomplete__index-name">&mdash; {{ t("cocktail.cocktails") }} ({{ cocktailResults.length }})</h4>
         <ul v-show="cocktailResults.length > 0" class="site-autocomplete__results block-container block-container--inset">
             <li v-for="hit in cocktailResults" :key="hit.slug">
                 <RouterLink class="block-container block-container--hover" :to="{ name: 'cocktails.show', params: { id: hit.slug } }" @click="close">
                     <CocktailThumb :cocktail="hit"></CocktailThumb>
                     <div class="site-autocomplete__results__content">
                         <span>{{ hit.name }}</span>
-                        <small>{{ hit.short_ingredients.join(', ') }}</small>
+                        <small>{{ hit.short_ingredients.join(", ") }}</small>
                     </div>
                 </RouterLink>
             </li>
         </ul>
         <div v-show="cocktailResults.length <= 0" class="block-container block-container--padded block-container--inset">
-            {{ t('cocktails-not-found') }}
+            {{ t("cocktails-not-found") }}
         </div>
-        <h4 class="site-autocomplete__index-name">&mdash; {{ t('ingredient.ingredients') }} ({{ ingredientResults.length }})</h4>
+        <h4 class="site-autocomplete__index-name">&mdash; {{ t("ingredient.ingredients") }} ({{ ingredientResults.length }})</h4>
         <ul v-show="ingredientResults.length > 0" class="site-autocomplete__results block-container block-container--inset">
             <li v-for="hit in ingredientResults" :key="hit.slug">
                 <RouterLink class="block-container block-container--hover" :to="{ name: 'ingredients.show', params: { id: hit.slug } }" @click="close">
@@ -32,66 +44,67 @@
             </li>
         </ul>
         <div v-show="ingredientResults.length <= 0" class="block-container block-container--padded block-container--inset">
-            {{ t('ingredients-not-found') }}
+            {{ t("ingredients-not-found") }}
         </div>
-        <footer class="site-autocomplete__footer block-container block-container--inset">
-            <span>Esc</span> to close, <span>CTRL+K</span> to toggle
-        </footer>
+        <footer class="site-autocomplete__footer block-container block-container--inset"><span>Esc</span> to close, <span>CTRL+K</span> to toggle</footer>
     </form>
 </template>
 
 <script setup lang="ts">
-import { nextTick, ref } from 'vue'
-import IngredientImage from './Ingredient/IngredientImage.vue'
-import CocktailThumb from './Cocktail/CocktailThumb.vue'
-import BarAssistantClient from '@/api/BarAssistantClient'
-import OverlayLoader from './OverlayLoader.vue'
-import AppState from '../AppState'
-import type { SearchResults } from '@/api/SearchResults'
-import { useI18n } from 'vue-i18n'
-import { templateRef } from '@vueuse/core'
-import { useToast } from 'vue-toast-notification'
+import { nextTick, ref } from "vue";
+import IngredientImage from "./Ingredient/IngredientImage.vue";
+import CocktailThumb from "./Cocktail/CocktailThumb.vue";
+import BarAssistantClient from "@/api/BarAssistantClient";
+import OverlayLoader from "./OverlayLoader.vue";
+import AppState from "../AppState";
+import type { SearchResults } from "@/api/SearchResults";
+import { useI18n } from "vue-i18n";
+import { templateRef } from "@vueuse/core";
+import { useToast } from "vue-toast-notification";
 
-const maxHits = 5
-const currentQuery = ref<string>('')
-const { t } = useI18n()
-const isLoading = ref(false)
-const toast = useToast()
-const appState = new AppState()
+const maxHits = 5;
+const currentQuery = ref<string>("");
+const { t } = useI18n();
+const isLoading = ref(false);
+const toast = useToast();
+const appState = new AppState();
 const emit = defineEmits<{
-    closeAutocomplete: []
-}>()
-const ingredientResults = ref<SearchResults['ingredient'][]>([])
-const cocktailResults = ref<SearchResults['cocktail'][]>([])
-const searchInputRef = templateRef<HTMLInputElement>('siteSearchInput')
+    closeAutocomplete: [];
+}>();
+const ingredientResults = ref<SearchResults["ingredient"][]>([]);
+const cocktailResults = ref<SearchResults["cocktail"][]>([]);
+const searchInputRef = templateRef<HTMLInputElement>("siteSearchInput");
 
 let queryTimer: number = 0;
 function debounceSearch() {
-    clearTimeout(queryTimer)
+    clearTimeout(queryTimer);
 
     queryTimer = setTimeout(() => {
-        searchCocktails()
-        searchIngredients()
-    }, 300)
+        searchCocktails();
+        searchIngredients();
+    }, 300);
 }
 
 async function searchIngredients() {
-    const query = currentQuery.value?.trim() ?? ''
+    const query = currentQuery.value?.trim() ?? "";
     if (!query || query.length < 2) {
-        ingredientResults.value = []
-        return
+        ingredientResults.value = [];
+        return;
     }
 
-    isLoading.value = true
+    isLoading.value = true;
 
     try {
-        const results = (await BarAssistantClient.getIngredients({
-            'filter[name]': query,
-            per_page: maxHits,
-            include: 'images,ancestors',
-        }))?.data ?? []
+        const results =
+            (
+                await BarAssistantClient.getIngredients({
+                    "filter[name]": query,
+                    per_page: maxHits,
+                    include: "images,ancestors",
+                })
+            )?.data ?? [];
 
-        ingredientResults.value = results.map(ing => ({
+        ingredientResults.value = results.map((ing) => ({
             id: ing.id,
             slug: ing.slug,
             name: ing.name,
@@ -102,67 +115,70 @@ async function searchIngredients() {
             units: ing.units,
         }));
     } catch (error) {
-        toast.error(t('server-error'))
+        toast.error(t("server-error"));
     } finally {
-        isLoading.value = false
+        isLoading.value = false;
     }
 }
 
 async function searchCocktails() {
-    const query = currentQuery.value?.trim() ?? ''
+    const query = currentQuery.value?.trim() ?? "";
     if (!query || query.length < 2) {
-        cocktailResults.value = []
-        return
+        cocktailResults.value = [];
+        return;
     }
 
-    isLoading.value = true
+    isLoading.value = true;
 
     try {
-        const results = (await BarAssistantClient.getCocktails({
-            'filter[name]': query,
-            per_page: maxHits,
-            include: 'images',
-        }))?.data ?? []
+        const results =
+            (
+                await BarAssistantClient.getCocktails({
+                    "filter[name]": query,
+                    per_page: maxHits,
+                    include: "images",
+                })
+            )?.data ?? [];
 
-        cocktailResults.value = results.map(cocktail => ({
+        cocktailResults.value = results.map((cocktail) => ({
             id: cocktail.id,
             name: cocktail.name,
             slug: cocktail.slug,
             description: cocktail.description,
             image_url: cocktail.images?.[0]?.url ?? null,
-            short_ingredients: cocktail.ingredients?.map(ing => ing.ingredient.name) ?? [],
+            short_ingredients: cocktail.ingredients?.map((ing) => ing.ingredient.name) ?? [],
             tags: [],
             bar_id: appState.bar.id,
         }));
     } catch (error) {
         // console.error('Error searching cocktails:', error)
     } finally {
-        isLoading.value = false
+        isLoading.value = false;
     }
 }
 
 function close() {
-    emit('closeAutocomplete')
+    emit("closeAutocomplete");
 }
 
 function getImageUrl(hit: any, type: string) {
     if (!hit.image_url) {
-        if (type == 'cocktail') {
-            return '/no-cocktail.jpg'
+        if (type == "cocktail") {
+            return "/no-cocktail.jpg";
         }
 
-        return '/no-ingredient.png'
+        return "/no-ingredient.png";
     }
 
-    return hit.image_url
+    return hit.image_url;
 }
 
 function doFocus() {
     nextTick(() => {
         if (searchInputRef) {
-            searchInputRef.value.focus()
+            searchInputRef.value.focus();
         }
-    })
+    });
 }
 </script>
 

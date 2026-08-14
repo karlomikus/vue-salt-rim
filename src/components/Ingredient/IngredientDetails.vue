@@ -1,7 +1,7 @@
 <template>
     <div v-if="!ingredient.id">
         <PageHeader>
-            {{ $t('ingredient.title') }}
+            {{ $t("ingredient.title") }}
         </PageHeader>
         <div class="ingredient-details">
             <OverlayLoader v-if="isLoadingIngredient" />
@@ -11,23 +11,31 @@
         <PageHeader>
             {{ ingredient.name }}
             <small :title="$t('added-on-by', { date: createdDate, name: ingredient.created_user?.name })">
-                <template v-for="(ancestor, index) in ingredient.hierarchy.ancestors" :key="ancestor.id">
-                    <RouterLink :to="{ name: 'ingredients', query: { 'filter[descendants_of]': ancestor.id } }">{{ ancestor.name }}</RouterLink>
-                    <template v-if="index + 1 !== ingredient.hierarchy?.ancestors?.length"> > </template>
+                <template v-if="ingredient.hierarchy">
+                    <template v-for="(ancestor, index) in ingredient.hierarchy.ancestors" :key="ancestor.id">
+                        <RouterLink :to="{ name: 'ingredients', query: { 'filter[descendants_of]': ancestor.id } }">{{ ancestor.name }}</RouterLink>
+                        <template v-if="index + 1 !== ingredient.hierarchy?.ancestors?.length"> > </template>
+                    </template>
                 </template>
             </small>
         </PageHeader>
         <div class="ingredient-details">
             <div class="ingredient-details__column-image">
                 <div class="ingredient-details__graphic" :style="{ 'background-color': backgroundColor }">
-                    <div v-if="mainIngredientImage.copyright" class="ingredient-details__graphic__copyright">{{ $t('imageupload.copyright-notice', { copyright: mainIngredientImage.copyright }) }}</div>
+                    <div v-if="mainIngredientImage.copyright" class="ingredient-details__graphic__copyright">
+                        {{ $t("imageupload.copyright-notice", { copyright: mainIngredientImage.copyright }) }}
+                    </div>
                     <img v-if="mainIngredientImage.url" :src="mainIngredientImage.url" :alt="ingredient.name" />
                 </div>
             </div>
             <div class="ingredient-details__column-sidebar">
-                <h3 class="page-subtitle" style="margin-top: 0;">{{ $t('ingredient.status') }}</h3>
+                <h3 class="page-subtitle" style="margin-top: 0">{{ $t("ingredient.status") }}</h3>
                 <div class="block-container block-container--inset shelf-actions">
-                    <ToggleIngredientBarShelf v-if="ingredient.in_bar_shelf !== undefined && (appState.isAdmin() || appState.isModerator())" :ingredient="ingredient" v-model="ingredient.in_bar_shelf">
+                    <ToggleIngredientBarShelf
+                        v-if="ingredient.in_bar_shelf !== undefined && appState.isAdmin()"
+                        :ingredient="ingredient as Ingredient"
+                        v-model="ingredient.in_bar_shelf"
+                    >
                         <template v-slot="{ isLoading, inList, toggle }">
                             <a href="#" class="block-container block-container--hover shelf-actions__action" @click.prevent="toggle">
                                 <div>
@@ -35,31 +43,15 @@
                                     <IconCheck v-if="inList" class="shelf-actions__action__active"></IconCheck>
                                 </div>
                                 <template v-if="!isLoading">
-                                    <span v-if="!inList">{{ $t('ingredient.add-to-bar-shelf') }}</span>
-                                    <span v-else>{{ $t('ingredient.remove-from-bar-shelf') }}</span>
+                                    <span v-if="!inList">{{ $t("ingredient.add-to-bar-shelf") }}</span>
+                                    <span v-else>{{ $t("ingredient.remove-from-bar-shelf") }}</span>
                                 </template>
-                                <span v-else>{{ $t('loading') }}...</span>
-                                <small>{{ $t('ingredient.shelf-bar-help') }}</small>
+                                <span v-else>{{ $t("loading") }}...</span>
+                                <small>{{ $t("ingredient.shelf-bar-help") }}</small>
                             </a>
                         </template>
                     </ToggleIngredientBarShelf>
-                    <ToggleIngredientShelf v-if="ingredient.in_shelf !== undefined" :ingredient="ingredient" v-model="ingredient.in_shelf">
-                        <template v-slot="{ isLoading, inList, toggle }">
-                            <a href="#" class="block-container block-container--hover shelf-actions__action" @click.prevent="toggle">
-                                <div>
-                                    <IconUserShelf></IconUserShelf>
-                                    <IconCheck v-if="inList" class="shelf-actions__action__active"></IconCheck>
-                                </div>
-                                <template v-if="!isLoading">
-                                    <span v-if="!inList">{{ $t('ingredient.add-to-shelf') }}</span>
-                                    <span v-else>{{ $t('ingredient.remove-from-shelf') }}</span>
-                                </template>
-                                <span v-else>{{ $t('loading') }}...</span>
-                                <small>{{ $t('ingredient.shelf-user-help') }}</small>
-                            </a>
-                        </template>
-                    </ToggleIngredientShelf>
-                    <ToggleIngredientShoppingCart v-if="ingredient.in_shopping_list !== undefined" :ingredient="ingredient" v-model="ingredient.in_shopping_list">
+                    <ToggleIngredientShoppingCart v-if="ingredient.in_shopping_list !== undefined" :ingredient="ingredient as Ingredient" v-model="ingredient.in_shopping_list">
                         <template v-slot="{ isLoading, inList, toggle }">
                             <a href="#" class="block-container block-container--hover shelf-actions__action" @click.prevent="toggle">
                                 <div>
@@ -67,10 +59,10 @@
                                     <IconCheck v-if="inList" class="shelf-actions__action__active"></IconCheck>
                                 </div>
                                 <template v-if="!isLoading">
-                                    <span v-if="!inList">{{ $t('ingredient.add-to-list') }}</span>
-                                    <span v-else>{{ $t('ingredient.remove-from-list') }}</span>
+                                    <span v-if="!inList">{{ $t("ingredient.add-to-list") }}</span>
+                                    <span v-else>{{ $t("ingredient.remove-from-list") }}</span>
                                 </template>
-                                <span v-else>{{ $t('loading') }}...</span>
+                                <span v-else>{{ $t("loading") }}...</span>
                             </a>
                         </template>
                     </ToggleIngredientShoppingCart>
@@ -88,60 +80,76 @@
                             <RouterLink v-if="ingredient.access.can_edit" class="dropdown-menu__item" :to="{ name: 'ingredients.form', query: { id: ingredient.id } }">
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18">
                                     <path fill="none" d="M0 0h24v24H0z" />
-                                    <path d="M6.414 16L16.556 5.858l-1.414-1.414L5 14.586V16h1.414zm.829 2H3v-4.243L14.435 2.322a1 1 0 0 1 1.414 0l2.829 2.829a1 1 0 0 1 0 1.414L7.243 18zM3 20h18v2H3v-2z" />
+                                    <path
+                                        d="M6.414 16L16.556 5.858l-1.414-1.414L5 14.586V16h1.414zm.829 2H3v-4.243L14.435 2.322a1 1 0 0 1 1.414 0l2.829 2.829a1 1 0 0 1 0 1.414L7.243 18zM3 20h18v2H3v-2z"
+                                    />
                                 </svg>
-                                {{ $t('edit') }}
+                                {{ $t("edit") }}
                             </RouterLink>
                             <RouterLink v-if="ingredient.access.can_edit" class="dropdown-menu__item" :to="{ name: 'ingredients.form', query: { variant: ingredient.id } }">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18"><path d="M6.9998 6V3C6.9998 2.44772 7.44752 2 7.9998 2H19.9998C20.5521 2 20.9998 2.44772 20.9998 3V17C20.9998 17.5523 20.5521 18 19.9998 18H16.9998V20.9991C16.9998 21.5519 16.5499 22 15.993 22H4.00666C3.45059 22 3 21.5554 3 20.9991L3.0026 7.00087C3.0027 6.44811 3.45264 6 4.00942 6H6.9998ZM5.00242 8L5.00019 20H14.9998V8H5.00242ZM8.9998 6H16.9998V16H18.9998V4H8.9998V6Z"></path></svg>
-                                {{ $t('ingredient.clone-as-variety') }}
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18">
+                                    <path
+                                        d="M6.9998 6V3C6.9998 2.44772 7.44752 2 7.9998 2H19.9998C20.5521 2 20.9998 2.44772 20.9998 3V17C20.9998 17.5523 20.5521 18 19.9998 18H16.9998V20.9991C16.9998 21.5519 16.5499 22 15.993 22H4.00666C3.45059 22 3 21.5554 3 20.9991L3.0026 7.00087C3.0027 6.44811 3.45264 6 4.00942 6H6.9998ZM5.00242 8L5.00019 20H14.9998V8H5.00242ZM8.9998 6H16.9998V16H18.9998V4H8.9998V6Z"
+                                    ></path>
+                                </svg>
+                                {{ $t("ingredient.clone-as-variety") }}
                             </RouterLink>
                             <SaltRimDialog v-model="showAddToMenuDialog">
                                 <template #trigger>
                                     <a class="dropdown-menu__item" href="#" @click.prevent="showAddToMenuDialog = !showAddToMenuDialog">
                                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18">
                                             <path fill="none" d="M0 0h24v24H0z" />
-                                            <path d="M12.414 5H21a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h7.414l2 2zM4 5v14h16V7h-8.414l-2-2H4zm7 7V9h2v3h3v2h-3v3h-2v-3H8v-2h3z" />
+                                            <path
+                                                d="M12.414 5H21a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h7.414l2 2zM4 5v14h16V7h-8.414l-2-2H4zm7 7V9h2v3h3v2h-3v3h-2v-3H8v-2h3z"
+                                            />
                                         </svg>
-                                        {{ t('menu.add-single') }}
+                                        {{ t("menu.add-single") }}
                                     </a>
                                 </template>
                                 <template #dialog>
-                                    <MenuAddDialog :title="$t('menu.add-multiple')" :items="[ingredient.id]" :menu-item-type="'ingredient'" @menu-add-dialog-closed="showAddToMenuDialog = false" />
+                                    <MenuAddDialog
+                                        :title="$t('menu.add-multiple')"
+                                        :items="[ingredient.id]"
+                                        :menu-item-type="'ingredient'"
+                                        @menu-add-dialog-closed="showAddToMenuDialog = false"
+                                    />
                                 </template>
                             </SaltRimDialog>
-                            <hr v-if="ingredient.access.can_delete" class="dropdown-menu__separator">
+                            <hr v-if="ingredient.access.can_delete" class="dropdown-menu__separator" />
                             <a v-if="ingredient.access.can_delete" class="dropdown-menu__item" href="javascript:;" @click.prevent="deleteIngredient">
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18">
                                     <path fill="none" d="M0 0h24v24H0z" />
                                     <path d="M7 4V2h10v2h5v2h-2v15a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V6H2V4h5zM6 6v14h12V6H6zm3 3h2v8H9V9zm4 0h2v8h-2V9z" />
                                 </svg>
-                                {{ $t('remove') }}
+                                {{ $t("remove") }}
                             </a>
                         </template>
                     </Dropdown>
                 </div>
                 <div class="block-container block-container--padded">
-                    <h2 class="block-container__title">{{ $t('description') }}</h2>
+                    <h2 class="block-container__title">{{ $t("description") }}</h2>
                     <div class="item-details__chips">
                         <div class="item-details__chips__group">
-                            <div class="item-details__chips__group__title">{{ $t('strength') }}:</div>
-                            <ul v-if="ingredient.strength > 0" class="chips-list">
+                            <div class="item-details__chips__group__title">{{ $t("strength") }}:</div>
+                            <ul v-if="ingredient.strength && ingredient.strength > 0" class="chips-list">
                                 <li>
-                                    <span><abbr :title="$t('ABV-definition')">{{ $t('ABV') }}</abbr>: {{ ingredient.strength + '%' }}</span>
+                                    <span
+                                        ><abbr :title="$t('ABV-definition')">{{ $t("ABV") }}</abbr
+                                        >: {{ ingredient.strength + "%" }}</span
+                                    >
                                 </li>
                                 <li>
-                                    <span>{{ $t('alcohol-proof') }}: {{ ingredient.strength * 2 }}</span>
+                                    <span>{{ $t("alcohol-proof") }}: {{ ingredient.strength * 2 }}</span>
                                 </li>
                             </ul>
                             <ul v-else class="chips-list">
                                 <li>
-                                    <span>{{ $t('non-alcoholic') }}</span>
+                                    <span>{{ $t("non-alcoholic") }}</span>
                                 </li>
                             </ul>
                         </div>
                         <div v-if="ingredient.origin" class="item-details__chips__group">
-                            <div class="item-details__chips__group__title">{{ $t('origin') }}:</div>
+                            <div class="item-details__chips__group__title">{{ $t("origin") }}:</div>
                             <ul class="chips-list">
                                 <li>
                                     <span>{{ ingredient.origin }}</span>
@@ -149,7 +157,7 @@
                             </ul>
                         </div>
                         <div v-if="ingredient.distillery" class="item-details__chips__group">
-                            <div class="item-details__chips__group__title">{{ $t('distillery') }}:</div>
+                            <div class="item-details__chips__group__title">{{ $t("distillery") }}:</div>
                             <ul class="chips-list">
                                 <li>
                                     <span>{{ ingredient.distillery }}</span>
@@ -157,7 +165,7 @@
                             </ul>
                         </div>
                         <div v-if="ingredient.sugar_g_per_ml" class="item-details__chips__group">
-                            <div class="item-details__chips__group__title">{{ $t('sweetness') }}:</div>
+                            <div class="item-details__chips__group__title">{{ $t("sweetness") }}:</div>
                             <ul class="chips-list">
                                 <li>
                                     <span>{{ ingredient.sugar_g_per_ml }}</span>
@@ -165,7 +173,7 @@
                             </ul>
                         </div>
                         <div v-if="ingredient.acidity" class="item-details__chips__group">
-                            <div class="item-details__chips__group__title">{{ $t('acidity') }}:</div>
+                            <div class="item-details__chips__group__title">{{ $t("acidity") }}:</div>
                             <ul class="chips-list">
                                 <li>
                                     <span>{{ ingredient.acidity }}</span>
@@ -176,58 +184,68 @@
                     <ul class="block-container block-container--inset ingredient-details__more">
                         <OverlayLoader v-if="isLoadingExtra" />
                         <li v-if="ingredient.ingredient_parts?.length">
-                            {{ $t('contains-ingredients') }}:
-                            <template v-for="(part, index) in ingredient.ingredient_parts" :key="part.id">
-                                <RouterLink :to="{name: 'ingredients.show', params: {id: part.slug}}">{{ part.name }}</RouterLink><template v-if="index + 1 !== ingredient.ingredient_parts.length">, </template>
+                            {{ $t("contains-ingredients") }}:
+                            <template v-for="(part, index) in ingredient.ingredient_parts" :key="part.ingredient.id">
+                                <RouterLink :to="{ name: 'ingredients.show', params: { id: part.ingredient.slug } }"
+                                    >{{ part.ingredient.name }}{{ formatPartUnits(part) }}</RouterLink
+                                ><template v-if="index + 1 !== ingredient.ingredient_parts.length">, </template>
                             </template>
                         </li>
                         <li>
-                            <RouterLink :to="{name: 'cocktails', query: {'filter[specific_ingredients]': ingredient.id}}">
+                            <RouterLink :to="{ name: 'cocktails', query: { 'filter[specific_ingredients]': ingredient.id } }">
                                 <i18n-t keypath="ingredient.used-in">
-                                    <template #count><strong>{{ ingredient.cocktails_count }}</strong></template>
+                                    <template #count
+                                        ><strong>{{ ingredient.cocktails_count }}</strong></template
+                                    >
                                     <template v-if="ingredient.cocktails_as_substitute_count && ingredient.cocktails_as_substitute_count > 0" #substituteCount>
-                                        <strong>({{ t('ingredient.used-in-substitutes', {total: ingredient.cocktails_as_substitute_count}) }})</strong>
+                                        <strong>({{ t("ingredient.used-in-substitutes", { total: ingredient.cocktails_as_substitute_count }) }})</strong>
                                     </template>
                                 </i18n-t>
                             </RouterLink>
                         </li>
-                        <li v-if="extraIfAddedToShelf.length > 0">{{ $t('ingredient.extra-cocktails') }}: <RouterLink :to="{name: 'cocktails', query: {'filter[id]': extraCocktailsIds}}">{{ extraIfAddedToShelf.length }} {{ $t('cocktail.cocktails') }}</RouterLink></li>
+                        <li v-if="extraIfAddedToShelf.length > 0">
+                            {{ $t("ingredient.extra-cocktails") }}:
+                            <RouterLink :to="{ name: 'cocktails', query: { 'filter[id]': extraCocktailsIds } }"
+                                >{{ extraIfAddedToShelf.length }} {{ $t("cocktail.cocktails") }}</RouterLink
+                            >
+                        </li>
                         <li v-if="ingredient.can_be_substituted_with?.length">
-                            {{ $t('ingredient.used_as_substitute_for') }}:
+                            {{ $t("ingredient.used_as_substitute_for") }}:
                             <template v-for="(ing, index) in ingredient.can_be_substituted_with" :key="ing.id">
-                                <RouterLink :to="{name: 'ingredients.show', params: {id: ing.slug}}">{{ ing.name }}</RouterLink><template v-if="index + 1 !== ingredient.can_be_substituted_with.length">, </template>
+                                <RouterLink :to="{ name: 'ingredients.show', params: { id: ing.slug } }">{{ ing.name }}</RouterLink
+                                ><template v-if="index + 1 !== ingredient.can_be_substituted_with.length">, </template>
                             </template>
                         </li>
                         <li v-if="ingredient.used_as_substitute_for?.length">
-                            {{ $t('ingredient.can_be_substituted_with') }}:
+                            {{ $t("ingredient.can_be_substituted_with") }}:
                             <template v-for="(ing, index) in ingredient.used_as_substitute_for" :key="ing.id">
-                                <RouterLink :to="{name: 'ingredients.show', params: {id: ing.slug}}">{{ ing.name }}</RouterLink><template v-if="index + 1 !== ingredient.used_as_substitute_for.length">, </template>
+                                <RouterLink :to="{ name: 'ingredients.show', params: { id: ing.slug } }">{{ ing.name }}</RouterLink
+                                ><template v-if="index + 1 !== ingredient.used_as_substitute_for.length">, </template>
                             </template>
                         </li>
                     </ul>
                     <div v-html="parsedDescription" class="has-markdown"></div>
                 </div>
-                <div class="block-container block-container--padded">
+                <div class="block-container block-container--padded" v-if="ingredient.hierarchy">
                     <IngredientHierarchy :parent-id="ingredient.id" :root-id="ingredient.hierarchy.root_ingredient_id ?? ingredient.id"></IngredientHierarchy>
                 </div>
                 <div v-if="ingredient.calculator_id" class="block-container block-container--padded">
-                    <h2 class="block-container__title">{{ $t('calculators.calculator') }}</h2>
+                    <h2 class="block-container__title">{{ $t("calculators.calculator") }}</h2>
                     <OverlayLoader v-if="isLoadingCalculator" />
                     <CalculatorRender v-if="calculator.id" :calculator="calculator"></CalculatorRender>
                 </div>
                 <div v-if="ingredient.prices && ingredient.prices.length > 0" class="block-container block-container--padded ingredient-details__prices">
-                    <h2 class="block-container__title">{{ $t('price.prices') }}</h2>
+                    <h2 class="block-container__title">{{ $t("price.prices") }}</h2>
                     <div class="ingredient-details__prices__list">
                         <div v-for="ingredientPrice in ingredient.prices" :key="ingredientPrice.created_at" class="ingredient-details__prices__list__item">
                             <h5>{{ ingredientPrice.price_category.name }} ({{ ingredientPrice.price_category.currency }})</h5>
                             <p>
-                                {{ unitHandler.formatPrice(ingredientPrice.price.price, ingredientPrice.price_category.currency) }} &middot; {{ ingredientPrice.amount }}{{ ingredientPrice.units }} <template v-if="ingredientPrice.description">&middot; {{ ingredientPrice.description }}</template>
+                                {{ unitHandler.formatPrice(ingredientPrice.price.price, ingredientPrice.price_category.currency) }} &middot; {{ ingredientPrice.amount
+                                }}{{ ingredientPrice.units }}
+                                <template v-if="ingredientPrice.description">&middot; {{ ingredientPrice.description }}</template>
                             </p>
                         </div>
                     </div>
-                </div>
-                <div style="margin-top: var(--gap-size-2);">
-                    <TimeStamps v-if="ingredient.id" :resource="ingredient"></TimeStamps>
                 </div>
             </div>
         </div>
@@ -235,149 +253,179 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch } from 'vue'
-import { useRoute, useRouter } from 'vue-router'
-import { unitHandler } from '@/composables/useUnits'
-import CalculatorRender from '../Calculator/CalculatorRender.vue'
-import OverlayLoader from '@/components/OverlayLoader.vue'
-import { micromark } from 'micromark'
-import PageHeader from '../PageHeader.vue'
-import BarAssistantClient from '@/api/BarAssistantClient'
-import ToggleIngredientShoppingCart from '@/components/ToggleIngredientShoppingCart.vue'
-import ToggleIngredientShelf from '@/components/ToggleIngredientShelf.vue'
-import ToggleIngredientBarShelf from '../ToggleIngredientBarShelf.vue'
-import Dropdown from '@/components/SaltRimDropdown.vue'
-import { useTitle } from '@/composables/title'
-import IconBarShelf from '../Icons/IconBarShelf.vue'
-import IconUserShelf from '../Icons/IconUserShelf.vue'
-import IconShoppingCart from '../Icons/IconShoppingCart.vue'
-import IconMore from '../Icons/IconMore.vue'
-import IngredientHierarchy from './IngredientHierarchy.vue'
-import IconCheck from '../Icons/IconCheck.vue'
-import { useIngredientBg } from '@/composables/ingredientBg'
-import TimeStamps from '@/components/TimeStamps.vue'
-import type { components } from '@/api/api'
-import { useSaltRimToast } from '@/composables/toast'
-import { useConfirm } from '@/composables/confirm'
-import { useI18n } from 'vue-i18n'
-import AppState from '@/AppState'
-import SaltRimDialog from '../Dialog/SaltRimDialog.vue'
-import MenuAddDialog from '../Menu/MenuAddDialog.vue'
-import { useDateFormat } from '@vueuse/core'
+import { ref, computed, watch } from "vue";
+import { useRoute, useRouter } from "vue-router";
+import { unitHandler } from "@/composables/useUnits";
+import CalculatorRender from "../Calculator/CalculatorRender.vue";
+import OverlayLoader from "@/components/OverlayLoader.vue";
+import { micromark } from "micromark";
+import PageHeader from "../PageHeader.vue";
+import BarAssistantClient from "@/api/BarAssistantClient";
+import ToggleIngredientShoppingCart from "@/components/ToggleIngredientShoppingCart.vue";
+import ToggleIngredientBarShelf from "../ToggleIngredientBarShelf.vue";
+import Dropdown from "@/components/SaltRimDropdown.vue";
+import { useTitle } from "@/composables/title";
+import IconBarShelf from "../Icons/IconBarShelf.vue";
+import IconShoppingCart from "../Icons/IconShoppingCart.vue";
+import IconMore from "../Icons/IconMore.vue";
+import IngredientHierarchy from "./IngredientHierarchy.vue";
+import IconCheck from "../Icons/IconCheck.vue";
+import { useIngredientBg } from "@/composables/ingredientBg";
+import type { components } from "@/api/api";
+import { useSaltRimToast } from "@/composables/toast";
+import { useConfirm } from "@/composables/confirm";
+import { useI18n } from "vue-i18n";
+import AppState from "@/AppState";
+import SaltRimDialog from "../Dialog/SaltRimDialog.vue";
+import MenuAddDialog from "../Menu/MenuAddDialog.vue";
+import { useDateFormat } from "@vueuse/core";
 
-type Ingredient = components['schemas']['Ingredient']
-type CocktailBasic = components['schemas']['CocktailBasic']
-type Calculator = components['schemas']['Calculator']
+type Ingredient = components["schemas"]["Ingredient"];
+type CocktailBasic = components["schemas"]["CocktailBasic"];
+type Calculator = components["schemas"]["Calculator"];
 
-const { t } = useI18n()
-const confirm = useConfirm()
-const toast = useSaltRimToast()
-const route = useRoute()
-const router = useRouter()
-const appState = new AppState()
-const isLoadingIngredient = ref(false)
-const isLoadingCalculator = ref(false)
-const showAddToMenuDialog = ref(false)
-const isLoadingExtra = ref(false)
-const extraIfAddedToShelf = ref<CocktailBasic[]>([])
-const ingredient = ref<Ingredient>({
-    prices: [] as components['schemas']['IngredientPrice'][],
-    ingredient_parts: [] as components['schemas']['IngredientBasic'][],
-} as Ingredient)
-const calculator = ref<Calculator>({} as Calculator)
+const { t } = useI18n();
+const confirm = useConfirm();
+const toast = useSaltRimToast();
+const route = useRoute();
+const router = useRouter();
+const appState = new AppState();
+const isLoadingIngredient = ref(false);
+const isLoadingCalculator = ref(false);
+const showAddToMenuDialog = ref(false);
+const isLoadingExtra = ref(false);
+const extraIfAddedToShelf = ref<CocktailBasic[]>([]);
+const ingredient = ref<Partial<Ingredient>>({
+    hierarchy: {
+        root_ingredient_id: null,
+    } as Partial<Ingredient["hierarchy"]>,
+    prices: [],
+    ingredient_parts: [],
+});
+const calculator = ref<Calculator>({} as Calculator);
 
 async function refreshIngredient() {
-    isLoadingIngredient.value = true
+    isLoadingIngredient.value = true;
     try {
-        ingredient.value = (await BarAssistantClient.getIngredient(route.params.id.toString()))?.data ?? {} as Ingredient
-        useTitle(ingredient.value.name)
+        const resp = await BarAssistantClient.getIngredient(route.params.id.toString());
+        if (!resp || !resp.data) {
+            throw new Error(t("ingredient.not-found"));
+        }
+        ingredient.value = resp.data;
+        useTitle(ingredient.value.name ?? "");
     } catch (e: any) {
-        toast.default(e.message)
-        isLoadingIngredient.value = false
-        router.push({ name: 'ingredients' })
-        return
+        toast.default(e.message);
+        isLoadingIngredient.value = false;
+        router.push({ name: "ingredients" });
+        return;
     }
-    isLoadingIngredient.value = false
+    isLoadingIngredient.value = false;
 
-    isLoadingExtra.value = true
-    extraIfAddedToShelf.value = (await BarAssistantClient.getExtraCocktailsWithIngredient(ingredient.value.id))?.data ?? []
-    isLoadingExtra.value = false
+    isLoadingExtra.value = true;
+    if (ingredient.value.id) {
+        extraIfAddedToShelf.value = (await BarAssistantClient.getExtraBarCocktailsWithIngredient(appState.bar.id, ingredient.value.id))?.data ?? [];
+    }
+    isLoadingExtra.value = false;
 }
 
 async function fetchCalculator() {
     if (!ingredient.value.calculator_id) {
-        return
+        return;
     }
 
-    isLoadingCalculator.value = true
+    isLoadingCalculator.value = true;
     try {
-        calculator.value = (await BarAssistantClient.getCalculator(ingredient.value.calculator_id))?.data ?? {} as Calculator
+        calculator.value = (await BarAssistantClient.getCalculator(ingredient.value.calculator_id))?.data ?? ({} as Calculator);
     } catch (e: any) {
-        toast.default(e.message)
+        toast.default(e.message);
     } finally {
-        isLoadingCalculator.value = false
+        isLoadingCalculator.value = false;
     }
 }
 
 function deleteIngredient() {
-    confirm.show(t('ingredient.delete-confirm', { name: ingredient.value.name, total: ingredient.value.cocktails_count }), {
+    confirm.show(t("ingredient.delete-confirm", { name: ingredient.value.name, total: ingredient.value.cocktails_count }), {
         onResolved: (dialog: any) => {
-            dialog.close()
-            isLoadingIngredient.value = true
-            BarAssistantClient.deleteIngredient(ingredient.value.id).then(() => {
-                toast.default(`Ingredient "${ingredient.value.name}" successfully removed`)
-                router.push({ name: 'ingredients' })
-                isLoadingIngredient.value = false
-            }).catch(e => {
-                toast.error(e.message)
-                isLoadingIngredient.value = false
-            })
-        }
-    })
+            if (!ingredient.value.id) {
+                return;
+            }
+
+            dialog.close();
+            isLoadingIngredient.value = true;
+            BarAssistantClient.deleteIngredient(ingredient.value.id)
+                .then(() => {
+                    toast.default(`Ingredient "${ingredient.value.name}" successfully removed`);
+                    router.push({ name: "ingredients" });
+                    isLoadingIngredient.value = false;
+                })
+                .catch((e) => {
+                    toast.error(e.message);
+                    isLoadingIngredient.value = false;
+                });
+        },
+    });
+}
+
+function formatPartUnits(part: components["schemas"]["IngredientPart"]) {
+    if (!part.amount || !part.units || part.amount <= 0) {
+        return "";
+    }
+
+    return (
+        " " +
+        unitHandler.print(
+            {
+                amount: part.amount,
+                amount_max: part.amount_max,
+                units: part.units,
+            },
+            appState.defaultUnit,
+        )
+    );
 }
 
 const mainIngredientImage = computed(() => {
     if (!ingredient.value.images || ingredient.value.images.length <= 0) {
-        return { url: '/no-ingredient.png', copyright: null }
+        return { url: "/no-ingredient.png", copyright: null };
     }
 
-    return ingredient.value.images[0]
-})
+    return ingredient.value.images[0];
+});
 
 const parsedDescription = computed(() => {
     if (!ingredient.value.description) {
-        return null
+        return null;
     }
 
-    return micromark(ingredient.value.description)
-})
+    return micromark(ingredient.value.description);
+});
 
 const createdDate = computed(() => {
-    const date = useDateFormat(ingredient.value.created_at, 'YYYY-MM-DD')
+    const date = useDateFormat(ingredient.value.created_at, "YYYY-MM-DD");
 
-    return date.value
-})
+    return date.value;
+});
 
 const extraCocktailsIds = computed(() => {
-    return extraIfAddedToShelf.value.map(c => c.id).join(',')
-})
+    return extraIfAddedToShelf.value.map((c) => c.id).join(",");
+});
 
 const backgroundColor = computed(() => {
-    const hex = ingredient.value.color || '#51274c'
+    const hex = ingredient.value.color || "#51274c";
 
-    return useIngredientBg(hex)
-})
+    return useIngredientBg(hex);
+});
 
 watch(
     () => route.params.id,
     async () => {
-        if (route.name == 'ingredients.show') {
-            await refreshIngredient()
-            await fetchCalculator()
+        if (route.name == "ingredients.show") {
+            await refreshIngredient();
+            await fetchCalculator();
         }
     },
-    { immediate: true }
-)
+    { immediate: true },
+);
 </script>
 
 <style scoped>
@@ -451,19 +499,19 @@ watch(
     border-radius: var(--radius-3);
     border-bottom: 1px solid #fff;
     box-shadow:
-        inset 0px 0.4px 0.5px rgba(0, 0, 0, .04),
-        inset 0px 1.1px 1.2px -0.8px rgba(0, 0, 0, .04),
-        inset 0px 2.6px 2.9px -1.7px rgba(0, 0, 0, .04),
-        inset 0px 6.3px 7.1px -2.5px rgba(0, 0, 0, .04);
+        inset 0px 0.4px 0.5px rgba(0, 0, 0, 0.04),
+        inset 0px 1.1px 1.2px -0.8px rgba(0, 0, 0, 0.04),
+        inset 0px 2.6px 2.9px -1.7px rgba(0, 0, 0, 0.04),
+        inset 0px 6.3px 7.1px -2.5px rgba(0, 0, 0, 0.04);
 }
 
 .dark-theme .ingredient-details__graphic {
-    border-bottom: 1px solid rgba(255, 255, 255, .15);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.15);
     box-shadow:
-        inset 0px 0.4px 0.5px rgba(0, 0, 0, .1),
-        inset 0px 1.1px 1.2px -0.8px rgba(0, 0, 0, .1),
-        inset 0px 2.6px 2.9px -1.7px rgba(0, 0, 0, .1),
-        inset 0px 6.3px 7.1px -2.5px rgba(0, 0, 0, .1);
+        inset 0px 0.4px 0.5px rgba(0, 0, 0, 0.1),
+        inset 0px 1.1px 1.2px -0.8px rgba(0, 0, 0, 0.1),
+        inset 0px 2.6px 2.9px -1.7px rgba(0, 0, 0, 0.1),
+        inset 0px 6.3px 7.1px -2.5px rgba(0, 0, 0, 0.1);
 }
 
 .ingredient-details__graphic img {
@@ -489,13 +537,13 @@ watch(
     bottom: 1rem;
     left: 1rem;
     display: inline-block;
-    background-color: rgba(0, 0, 0, .5);
+    background-color: rgba(0, 0, 0, 0.5);
     color: #fff;
     border-radius: var(--radius-3);
     padding: 2px 7px;
     font-size: 0.7rem;
     z-index: 1;
-    text-shadow: 1px 1px 0 rgba(0, 0, 0, .8);
+    text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.8);
 }
 
 .ingredient-chips-list {
@@ -529,7 +577,7 @@ watch(
 }
 
 .dark-theme .ingredient-details__more {
-    background-color: rgba(0, 0, 0, .4);
+    background-color: rgba(0, 0, 0, 0.4);
 }
 
 .ingredient-details__more svg {

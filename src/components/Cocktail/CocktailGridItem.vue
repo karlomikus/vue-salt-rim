@@ -8,82 +8,77 @@
                 <div v-if="cocktail.in_bar_shelf" class="cocktail-badge" :title="$t('in_bar_shelf')">
                     <IconBarShelf></IconBarShelf>
                 </div>
-                <div v-if="cocktail.in_shelf" class="cocktail-badge" :title="$t('in_your_shelf')">
-                    <IconUserShelf></IconUserShelf>
-                </div>
                 <div v-if="cocktail.public_id" class="cocktail-badge" :title="$t('is_public')">
                     <IconPublicLink></IconPublicLink>
                 </div>
             </div>
-            <img class="cocktail-grid-item__graphic__image" :data-img-src="mainCocktailImageUrl" :src="placeholderImage" alt="Main image of the cocktail">
+            <img class="cocktail-grid-item__graphic__image" :data-img-src="mainCocktailImageUrl" :src="placeholderImage" alt="Main image of the cocktail" />
         </div>
         <div class="block-container cocktail-grid-item__content">
             <h2 class="cocktail-grid-item__title sr-grid-title">{{ cocktail.name }}</h2>
             <div class="cocktail-grid-item__rating" v-if="cocktail.rating">
                 <CocktailRating :user-rating="cocktail.rating.user ?? undefined" :average-rating="cocktail.rating.average" />
             </div>
-            <p v-if="shortIngredients.length > 0" class="cocktail-grid-item__ingredients">{{ shortIngredients.join(', ') }}</p>
+            <p v-if="shortIngredients.length > 0" class="cocktail-grid-item__ingredients">{{ shortIngredients.join(", ") }}</p>
             <ul class="cocktail-tags" v-if="cocktail.tags && cocktail.tags.length > 0">
                 <li v-for="tag in cocktail.tags.slice(0, maxTags)" :key="tag.id" class="chip">{{ tag.name }}</li>
-                <li v-if="cocktail.tags.length - maxTags > 0" class="chip" style="opacity: 0.6;">+ {{ cocktail.tags.length - maxTags }} more</li>
+                <li v-if="cocktail.tags.length - maxTags > 0" class="chip" style="opacity: 0.6">+ {{ cocktail.tags.length - maxTags }} more</li>
             </ul>
         </div>
     </RouterLink>
 </template>
 
 <script setup lang="ts">
-import BarAssistantClient from '@/api/BarAssistantClient';
-import { thumbHashToDataURL } from 'thumbhash'
-import CocktailRating from './CocktailRating.vue'
-import IconFavorite from '../Icons/IconFavorite.vue';
-import IconBarShelf from '../Icons/IconBarShelf.vue';
-import IconUserShelf from '../Icons/IconUserShelf.vue';
-import IconPublicLink from '../Icons/IconPublicLink.vue';
-import type { components } from '@/api/api';
-import { computed, onMounted, useTemplateRef, type ComponentPublicInstance } from 'vue';
+import BarAssistantClient from "@/api/BarAssistantClient";
+import { thumbHashToDataURL } from "thumbhash";
+import CocktailRating from "./CocktailRating.vue";
+import IconFavorite from "../Icons/IconFavorite.vue";
+import IconBarShelf from "../Icons/IconBarShelf.vue";
+import IconUserShelf from "../Icons/IconUserShelf.vue";
+import IconPublicLink from "../Icons/IconPublicLink.vue";
+import type { components } from "@/api/api";
+import { computed, onMounted, useTemplateRef, type ComponentPublicInstance } from "vue";
 
-type Cocktail = components['schemas']['Cocktail']
+type Cocktail = components["schemas"]["Cocktail"];
 
 const props = defineProps<{
-    cocktail: Cocktail,
-    observer: IntersectionObserver,
-}>()
-const maxTags = 4
-const el = useTemplateRef<ComponentPublicInstance>('observeElement')
+    cocktail: Cocktail;
+    observer: IntersectionObserver;
+}>();
+const maxTags = 4;
+const el = useTemplateRef<ComponentPublicInstance>("observeElement");
 
 const mainImage = computed(() => {
-    const images = props.cocktail.images ?? []
+    const images = props.cocktail.images ?? [];
 
-    return images.sort((a, b) => a.sort - b.sort)[0]
-})
+    return images.sort((a, b) => a.sort - b.sort)[0];
+});
 
 const placeholderImage = computed(() => {
     if (mainImage.value && mainImage.value.placeholder_hash) {
-        return thumbHashToDataURL(
-            Uint8Array.from(atob(mainImage.value.placeholder_hash), c => c.charCodeAt(0))
-        )
+        return thumbHashToDataURL(Uint8Array.from(atob(mainImage.value.placeholder_hash), (c) => c.charCodeAt(0)));
     }
 
-    return ''
-})
+    return "";
+});
 
 const mainCocktailImageUrl = computed(() => {
     if (mainImage.value) {
-        return BarAssistantClient.getImageThumbUrl(mainImage.value.id)
+        return BarAssistantClient.getImageThumbUrl(mainImage.value.id);
     }
 
-    return '/no-cocktail.jpg'
-})
+    return "/no-cocktail.jpg";
+});
 
 const shortIngredients = computed(() => {
-    return props.cocktail.ingredients?.map(i => i.ingredient.name) ?? []
-})
+    return props.cocktail.ingredients?.map((i) => i.ingredient.name) ?? [];
+});
 
 onMounted(() => {
     if (el.value) {
-        props.observer.observe(el.value.$el)
+        props.observer.observe(el.value.$el);
     }
-})
+});
 </script>
 <style scoped>
 .cocktail-grid-item {
@@ -159,7 +154,7 @@ onMounted(() => {
 }
 
 .cocktail-badge {
-    background-color: rgba(0, 0, 0, .5);
+    background-color: rgba(0, 0, 0, 0.5);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -169,7 +164,7 @@ onMounted(() => {
 }
 
 .cocktail-badge svg {
-    fill: rgba(255, 255, 255, .9);
+    fill: rgba(255, 255, 255, 0.9);
     width: 16px;
     height: 16px;
 }

@@ -1,5 +1,5 @@
-<script setup>
-import CocktailQuantityCalculator from '@/components/Calculator/CocktailQuantityCalculator.vue'
+<script setup lang="ts">
+import CocktailQuantityCalculator from "@/components/Calculator/CocktailQuantityCalculator.vue";
 </script>
 
 <template>

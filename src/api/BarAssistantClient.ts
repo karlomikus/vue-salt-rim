@@ -1,61 +1,70 @@
 import createClient, { type Middleware } from "openapi-fetch";
 import type { paths, components } from "@/api/api";
-import AppState from '@/AppState'
+import AppState from "@/AppState";
 
 let accessToken: string | undefined = undefined;
 
 const checkService: Middleware = {
-  async onResponse({ response }) {
-    if (response.status == 503) {
-      window.location.replace('/service-down')
-    }
-    return undefined;
-  },
+    async onResponse({ response }) {
+        if (response.status == 503) {
+            window.location.replace("/service-down");
+        }
+        return undefined;
+    },
 };
 
 const checkToken: Middleware = {
-  async onResponse({ response }) {
-    if (response.status == 401) {
-      const appState = new AppState()
-      appState.clear()
-      window.location.replace('/')
-    }
-    return undefined;
-  },
+    async onResponse({ response }) {
+        if (response.status == 401) {
+            const appState = new AppState();
+            appState.clear();
+            window.location.replace("/");
+        }
+        return undefined;
+    },
 };
 
 const authMiddleware: Middleware = {
-  async onRequest({ request }) {
-    const scopedState = new AppState()
-    accessToken = scopedState.token ?? ''
-    request.headers.set("Authorization", `Bearer ${accessToken}`);
-    return request;
-  },
+    async onRequest({ request }) {
+        const scopedState = new AppState();
+        accessToken = scopedState.token ?? "";
+        request.headers.set("Authorization", `Bearer ${accessToken}`);
+        return request;
+    },
 };
 
 const barIdMiddleware: Middleware = {
-  async onRequest({ request }) {
-    const appState = new AppState()
-    if (appState.bar && appState.bar.id) {
-      request.headers.set("Bar-Assistant-Bar-Id", appState.bar.id.toString());
-    }
-    return request;
-  },
+    async onRequest({ request }) {
+        const appState = new AppState();
+        if (appState.bar && appState.bar.id) {
+            request.headers.set("Bar-Assistant-Bar-Id", appState.bar.id.toString());
+        }
+        return request;
+    },
 };
 
 const rejectOnError: Middleware = {
-  async onResponse({ response }) {
-    if (response.status >= 400) {
-      const body = await response.clone().json();
+    async onResponse({ response }) {
+        if (response.status >= 400) {
+            const body = await response.clone().json();
 
-      return Promise.reject(body)
-    }
-    return undefined;
-  },
+            return Promise.reject(body);
+        }
+        return undefined;
+    },
 };
 
-const apiBaseUrl = window.srConfig.API_URL + '/api'
-const client = createClient<paths>({ baseUrl: apiBaseUrl, headers: { "Accept": "application/json" } });
+const extractIdFromLocationHeader = (response: Response): string => {
+    const location = response.headers.get("location");
+    if (!location) {
+        throw new Error("Location header not found in response");
+    }
+
+    return location.substring(location.lastIndexOf("/") + 1);
+};
+
+const apiBaseUrl = window.srConfig.API_URL + "/api";
+const client = createClient<paths>({ baseUrl: apiBaseUrl, headers: { Accept: "application/json" } });
 client.use(authMiddleware);
 client.use(barIdMiddleware);
 client.use(rejectOnError);
@@ -63,562 +72,582 @@ client.use(checkToken);
 client.use(checkService);
 
 export default class BarAssistantClient {
-  static getBaseUrl() {
-    return apiBaseUrl
-  }
-
-  static async getLoginToken(email: string, password: string) {
-    return (await client.POST('/auth/login', { body: { email: email, password: password } })).data
-  }
-
-  static async logout() {
-    return (await client.POST('/auth/logout')).data
-  }
-
-  static async getProfile() {
-    return (await client.GET('/profile')).data
-  }
-
-  static async updateProfile(body: components["schemas"]["ProfileRequest"]) {
-    return (await client.POST('/profile', { body: body })).data
-  }
-
-  static async requestPasswordResetEmail(email: string) {
-    return (await client.POST('/auth/forgot-password', { body: { email: email } })).data
-  }
-
-  static async register(body: components["schemas"]["RegisterRequest"]) {
-    return (await client.POST('/auth/register', { body: body })).data
-  }
-
-  static async resetPassword(requestBody: object) {
-    return (await client.POST('/auth/reset-password', { body: requestBody })).data
-  }
-
-  static async confirmAccount(id: number, hash: string) {
-    return (await client.GET('/auth/verify/{id}/{hash}', { params: { path: { id: id, hash: hash } } })).data
-  }
-
-  static async getIngredients(query = {}) {
-    return (await client.GET('/ingredients', { params: { query: query } })).data
-  }
-
-  static async saveIngredient(data: components["schemas"]["IngredientRequest"]) {
-    return (await client.POST('/ingredients', { body: data })).data
-  }
-
-  static async updateIngredient(id: number, body: components["schemas"]["IngredientRequest"]) {
-    return (await client.PUT('/ingredients/{id}', { params: { path: { id: id } }, body: body })).data
-  }
-
-  static async deleteIngredient(id: number) {
-    return (await client.DELETE('/ingredients/{id}', { params: { path: { id: id } } })).data
-  }
-
-  static async getCocktails(query = {}) {
-    return (await client.GET('/cocktails', { params: { query: query } })).data
-  }
-
-  static async getCocktail(id: string) {
-    return (await client.GET('/cocktails/{id}', { params: { path: { id: id } } })).data
-  }
-
-  static async getSimilarCocktail(id: number) {
-    return (await client.GET('/cocktails/{id}/similar', { params: { path: { id: id } } })).data
-  }
-
-  static async getPublicCocktail(id: string) {
-    return (await client.GET('/explore/cocktails/{public_id}', { params: { path: { public_id: id } } })).data
-  }
-
-  static async savePublicCocktailLink(id: number) {
-    return (await client.POST('/cocktails/{id}/public-link', { params: { path: { id: id } } })).data
-  }
-
-  static async deletePublicCocktailLink(id: number) {
-    return (await client.DELETE('/cocktails/{id}/public-link', { params: { path: { id: id } } })).data
-  }
-
-  static async saveCocktail(body: components["schemas"]["CocktailRequest"]) {
-    return (await client.POST('/cocktails', { body: body })).data
-  }
-
-  static async updateCocktail(id: number, body: components["schemas"]["CocktailRequest"]) {
-    return (await client.PUT('/cocktails/{id}', { params: { path: { id: id } }, body: body })).data
-  }
-
-  static async shareCocktail(id: string, query = {}) {
-    return (await client.GET('/cocktails/{id}/share', { params: { path: { id: id }, query: query } })).data
-  }
-
-  static async favoriteCocktail(id: number) {
-    return (await client.POST('/cocktails/{id}/toggle-favorite', { params: { path: { id: id } } })).data
-  }
-
-  static async deleteCocktail(id: number) {
-    return (await client.DELETE('/cocktails/{id}', { params: { path: { id: id } } })).data
-  }
-
-  static async copyCocktail(id: string) {
-    return (await client.POST('/cocktails/{id}/copy', { params: { path: { id: id } } })).data
-  }
-
-  static async rateCocktail(id: number, data: object = {}) {
-    return (await client.POST('/cocktails/{id}/ratings', { params: { path: { id: id } }, body: data })).data
-  }
-
-  static async deleteCocktailRating(id: number) {
-    return (await client.DELETE('/cocktails/{id}/ratings', { params: { path: { id: id } } })).data
-  }
-
-  static async getUserCocktailFavorites(id: number) {
-    return (await client.GET('/users/{id}/cocktails/favorites', { params: { path: { id: id }, query: { per_page: 500 } } })).data
-  }
-
-  static async getUserCocktailShelf(id: number) {
-    return (await client.GET('/users/{id}/cocktails', { params: { path: { id: id }, query: { per_page: 500 } } })).data
-  }
-
-  static async getNotes(query = {}) {
-    return (await client.GET('/notes', { params: { query: query } })).data
-  }
-
-  static async saveNote(data: components["schemas"]["NoteRequest"]) {
-    return (await client.POST('/notes', { body: data })).data
-  }
-
-  static async deleteNote(id: number) {
-    return (await client.DELETE('/notes/{id}', { params: { path: { id: id } } })).data
-  }
-
-  static async getTags() {
-    return (await client.GET('/tags')).data
-  }
-
-  static async deleteTag(id: number) {
-    return (await client.DELETE('/tags/{id}', { params: { path: { id: id } } })).data
-  }
-
-  static async getTag(id: number) {
-    return (await client.GET('/tags/{id}', { params: { path: { id: id } } })).data
-  }
-
-  static async saveTag(data: components["schemas"]["TagRequest"]) {
-    return (await client.POST('/tags', { body: data })).data
-  }
-
-  static async updateTag(id: number, data: components["schemas"]["TagRequest"]) {
-    return (await client.PUT('/tags/{id}', { params: { path: { id: id } }, body: data })).data
-  }
-
-  static async getCocktailMethods(query = {}) {
-    return (await client.GET('/cocktail-methods', { params: { query: query } })).data
-  }
-
-  static async getCocktailMethod(id: number) {
-    return (await client.GET('/cocktail-methods/{id}', { params: { path: { id: id } } })).data
-  }
-
-  static async saveCocktailMethod(data: components["schemas"]["CocktailMethodRequest"]) {
-    return (await client.POST('/cocktail-methods', { body: data })).data
-  }
-
-  static async updateCocktailMethod(id: number, data: components["schemas"]["CocktailMethodRequest"]) {
-    return (await client.PUT('/cocktail-methods/{id}', { params: { path: { id: id } }, body: data })).data
-  }
-
-  static async deleteCocktailMethod(id: number) {
-    return (await client.DELETE('/cocktail-methods/{id}', { params: { path: { id: id } } })).data
-  }
-
-  static async getShoppingList(id: number) {
-    return (await client.GET('/users/{id}/shopping-list', { params: { path: { id: id } } })).data
-  }
-
-  static async addToShoppingList(id: number, data: components["schemas"]["ShoppingListRequest"]) {
-    return (await client.POST('/users/{id}/shopping-list/batch-store', { params: { path: { id: id } }, body: data })).data
-  }
-
-  static async removeFromShoppingList(id: number, data: components["schemas"]["ShoppingListRequest"]) {
-    return (await client.POST('/users/{id}/shopping-list/batch-delete', { params: { path: { id: id } }, body: data })).data
-  }
-
-  static async shareShoppingList(id: number) {
-    return (await client.GET('/users/{id}/shopping-list/share', { params: { path: { id: id } } })).data
-  }
-
-  static async generateExportDownloadURL(id: number) {
-    return (await client.POST('/exports/{id}/download', { params: { path: { id: id } } })).data
-  }
-
-  static async getRecommendedIngredients(id: number) {
-    return (await client.GET('/users/{id}/ingredients/recommend', { params: { path: { id: id } } })).data
-  }
-
-  static async getBarRecommendedIngredients(id: number) {
-    return (await client.GET('/bars/{id}/ingredients/recommend', { params: { path: { id: id } } })).data
-  }
-
-  static async getBars() {
-    return (await client.GET('/bars')).data
-  }
-
-  static async getBar(id: number) {
-    return (await client.GET('/bars/{id}', { params: { path: { id: id } } })).data
-  }
-
-  static async updateBar(id: number, data: components["schemas"]["BarRequest"]) {
-    return (await client.PUT('/bars/{id}', { params: { path: { id: id } }, body: data })).data
-  }
-
-  static async saveBar(data: components["schemas"]["BarRequest"]) {
-    return (await client.POST('/bars', { body: data })).data
-  }
-
-  static async deleteBar(id: number) {
-    return (await client.DELETE('/bars/{id}', { params: { path: { id: id } } })).data
-  }
-
-  static async joinBar(inviteCode: string) {
-    return (await client.POST('/bars/join', { body: { invite_code: inviteCode } })).data
-  }
-
-  static async leaveBar(id: number) {
-    return (await client.DELETE('/bars/{id}/memberships', { params: { path: { id: id } } })).data
-  }
-
-  static async getBarMembers(id: number) {
-    return (await client.GET('/bars/{id}/memberships', { params: { path: { id: id } } })).data
-  }
-
-  static async getSharedCollections(id: number) {
-    return (await client.GET('/bars/{id}/collections', { params: { path: { id: id } } })).data
-  }
-
-  static async updateBarStatus(id:number, status: components["schemas"]["BarStatusEnum"]) {
-    return (await client.POST('/bars/{id}/status', { params: { path: { id: id } }, body: { status: status} })).data
-  }
-
-  static async getBarStats(id: number) {
-    return (await client.GET('/bars/{id}/stats', { params: { path: { id: id } } })).data
-  }
-
-  static async getUserIngredientShelf(id: number) {
-    return (await client.GET('/users/{id}/ingredients', { params: { path: { id: id } } })).data
-  }
-
-  static async addToUserShelf(id: number, data: object = {}) {
-    return (await client.POST('/users/{id}/ingredients/batch-store', { params: { path: { id: id } }, body: data })).data
-  }
-
-  static async removeFromUserShelf(id: number, data: object = {}) {
-    return (await client.POST('/users/{id}/ingredients/batch-delete', { params: { path: { id: id } }, body: data })).data
-  }
-
-  static async getIngredient(id: string) {
-    return (await client.GET('/ingredients/{id}', { params: { path: { id: id } } })).data
-  }
-
-  static async getIngredientTree(id: string) {
-    return (await client.GET('/ingredients/{id}/tree', { params: { path: { id: id } } })).data
-  }
-
-  static async getExtraCocktailsWithIngredient(id: number) {
-    return (await client.GET('/ingredients/{id}/extra', { params: { path: { id: id } } })).data
-  }
-
-  static async getUtensils() {
-    return (await client.GET('/utensils')).data
-  }
-
-  static async getUtensil(id: number) {
-    return (await client.GET('/utensils/{id}', { params: { path: { id: id } } })).data
-  }
-
-  static async saveUtensil(data: components["schemas"]["UtensilRequest"]) {
-    return (await client.POST('/utensils', { body: data })).data
-  }
-
-  static async updateUtensil(id: number, data: components["schemas"]["UtensilRequest"]) {
-    return (await client.PUT('/utensils/{id}', { params: { path: { id: id } }, body: data })).data
-  }
-
-  static async deleteUtensil(id: number) {
-    return (await client.DELETE('/utensils/{id}', { params: { path: { id: id } } })).data
-  }
-
-  static async getPriceCategories() {
-    return (await client.GET('/price-categories')).data
-  }
-
-  static async savePriceCategory(data: components["schemas"]["PriceCategoryRequest"]) {
-    return (await client.POST('/price-categories', { body: data })).data
-  }
-
-  static async updatePriceCategory(id: number, data: components["schemas"]["PriceCategoryRequest"]) {
-    return (await client.PUT('/price-categories/{id}', { params: { path: { id: id } }, body: data })).data
-  }
-
-  static async deletePriceCategory(id: number) {
-    return (await client.DELETE('/price-categories/{id}', { params: { path: { id: id } } })).data
-  }
-
-  static async getUsers() {
-    return (await client.GET('/users')).data
-  }
-
-  static async getUser(id: number) {
-    return (await client.GET('/users/{id}', { params: { path: { id: id } } })).data
-  }
-
-  static async saveUser(data: components["schemas"]["UserRequest"]) {
-    return (await client.POST('/users', { body: data })).data
-  }
-
-  static async updateUser(id: number, data: components["schemas"]["UserRequest"]) {
-    return (await client.PUT('/users/{id}', { params: { path: { id: id } }, body: data })).data
-  }
-
-  static async deleteUser(id: number) {
-    return (await client.DELETE('/users/{id}', { params: { path: { id: id } } })).data
-  }
-
-  static async removeUserFromBar(barId: number, userId: number) {
-    return (await client.DELETE('/bars/{id}/memberships/{userId}', { params: { path: { id: barId, userId: userId } } })).data
-  }
-
-  static async getCollections(query = {}) {
-    return (await client.GET('/collections', { params: { query: query } })).data
-  }
-
-  static async getCollection(id: number) {
-    return (await client.GET('/collections/{id}', { params: { path: { id: id } } })).data
-  }
-
-  static async updateCollection(id: number, data: components["schemas"]["CollectionRequest"]) {
-    return (await client.PUT('/collections/{id}', { params: { path: { id: id } }, body: data })).data
-  }
-
-  static async deleteCollection(id: number) {
-    return (await client.DELETE('/collections/{id}', { params: { path: { id: id } } })).data
-  }
-
-  static async syncCollectionCocktails(id: number, cocktails: number[]) {
-    return (await client.PUT('/collections/{id}/cocktails', { params: { path: { id: id } }, body: { cocktails: cocktails } })).data
-  }
-
-  static async saveCollection(data: components["schemas"]["CollectionRequest"]) {
-    return (await client.POST('/collections', { body: data })).data
-  }
-
-  static async scrapeCocktail(url: string, content: string | null = null) {
-    return (await client.POST('/import/scrape', { body: { source: url, html_content: content } })).data
-  }
-
-  static async getGlasses(query = {}) {
-    return (await client.GET('/glasses', { params: { query: query } })).data
-  }
-
-  static async getGlass(id: number) {
-    return (await client.GET('/glasses/{id}', { params: { path: { id: id } } })).data
-  }
-
-  static async saveGlass(data: components["schemas"]["GlassRequest"]) {
-    return (await client.POST('/glasses', { body: data })).data
-  }
-
-  static async updateGlass(id: number, data: components["schemas"]["GlassRequest"]) {
-    return (await client.PUT('/glasses/{id}', { params: { path: { id: id } }, body: data })).data
-  }
-
-  static async deleteGlass(id: number) {
-    return (await client.DELETE('/glasses/{id}', { params: { path: { id: id } } })).data
-  }
-
-  static getImageThumbUrl(imageId: number) {
-    return `${apiBaseUrl}/images/${imageId}/thumb`
-  }
-
-  static async getServerVersion() {
-    return (await client.GET('/server/version')).data
-  }
-
-  static async uploadImages(images: components["schemas"]["ImageRequest"][]) {
-    return (await client.POST('/images',
-      {
-        body: { images: images }, bodySerializer(body) {
-          const fd = new FormData();
-          let i = 1
-          for (const image of body.images) {
-            if (image.id && image.id) {
-              fd.append('images[' + i + '][id]', image.id?.toString() ?? '')
-            }
-            if (image.image && image.image) {
-              fd.append('images[' + i + '][image]', image.image ?? '')
-            }
-            fd.append('images[' + i + '][copyright]', image.copyright ?? '')
-            fd.append('images[' + i + '][sort]', image.sort?.toString() ?? '1')
-            i++
-          }
-          return fd;
-        }
-      }
-    )).data
-  }
-
-  static async deleteImage(id: number) {
-    return (await client.DELETE('/images/{id}', { params: { path: { id: id } } })).data
-  }
-
-  static async getMenu() {
-    return (await client.GET('/menu')).data
-  }
-
-  static async getPublicMenu(slug: string) {
-    return (await client.GET('/public/{slugOrId}/menu', { params: { path: { slugOrId: slug } } })).data
-  }
-
-  static async updateMenu(data: components["schemas"]["MenuRequest"]) {
-    return (await client.POST('/menu', { body: data })).data
-  }
-
-  static async getTokens() {
-    return (await client.GET('/tokens')).data
-  }
-
-  static async saveToken(data: components["schemas"]["PersonalAccessTokenRequest"]) {
-    return (await client.POST('/tokens', { body: data })).data
-  }
-
-  static async deleteToken(id: number) {
-    return (await client.DELETE('/tokens/{id}', { params: { path: { id: id } } })).data
-  }
-
-  static async getExports() {
-    return (await client.GET('/exports')).data
-  }
-
-  static async saveExport(data: components["schemas"]["ExportRequest"]) {
-    return (await client.POST('/exports', { body: data })).data
-  }
-
-  static async deleteExport(id: number) {
-    return (await client.DELETE('/exports/{id}', { params: { path: { id: id } } })).data
-  }
-
-  static async getSubscriptionStatus() {
-    return (await client.GET('/billing/subscription')).data
-  }
-
-  static async updateSubscriptionStatus(status: string) {
-    return (await client.POST('/billing/subscription', { body: { type: status } })).data
-  }
-
-  static async addToBarShelf(id: number, data: object = {}) {
-    return (await client.POST('/bars/{id}/ingredients/batch-store', { params: { path: { id: id } }, body: data })).data
-  }
-
-  static async removeFromBarShelf(id: number, data: object = {}) {
-    return (await client.POST('/bars/{id}/ingredients/batch-delete', { params: { path: { id: id } }, body: data })).data
-  }
-
-  static async getCocktailPrices(id: string) {
-    return (await client.GET('/cocktails/{id}/prices', { params: { path: { id: id } } })).data
-  }
-
-  static async getBarShelfCocktails(id: number) {
-    return (await client.GET('/bars/{id}/cocktails', { params: { path: { id: id }, query: { per_page: 500 } } })).data
-  }
-
-  static async getMenuExport() {
-    return (await client.GET('/menu/export', {parseAs: 'text'})).data
-  }
-
-  static async importIngredientsAsCSVBody(body: string) {
-    return (await client.POST('/import/ingredients', { parseAs: 'text', body: body, bodySerializer(body) {
-      return body
-    }, headers: { 'Content-Type': 'text/csv' } })).data
-  }
-
-  static async importIngredientsAsCSVFile(file: File) {
-    return (await client.POST('/import/ingredients', {
-      body: { source: file }, bodySerializer(body: any) {
-        const fd = new FormData();
-        fd.append('source', body.source)
-        return fd
-      }
-    })).data
-  }
-
-  static async getCalculators() {
-    return (await client.GET('/calculators')).data
-  }
-
-  static async getCalculator(id: number) {
-    return (await client.GET('/calculators/{id}', { params: { path: { id: id } } })).data
-  }
-
-  static async saveCalculator(data: components["schemas"]["CalculatorRequest"]) {
-    return (await client.POST('/calculators', { body: data })).data
-  }
-
-  static async updateCalculator(id: number, data: components["schemas"]["CalculatorRequest"]) {
-    return (await client.PUT('/calculators/{id}', { params: { path: { id: id } }, body: data })).data
-  }
-
-  static async deleteCalculator(id: number) {
-    return (await client.DELETE('/calculators/{id}', { params: { path: { id: id } } })).data
-  }
-
-  static async getSSOCallback(provider: components["schemas"]["OauthProvider"], code: string) {
-    return (await client.GET('/auth/sso/{provider}/callback', { params: { query: { code: code }, path: { provider: provider } } })).data
-  }
-
-  static async getProvidersList() {
-    return (await client.GET('/auth/sso/providers')).data
-  }
-
-  static async deleteProfileSSOCredentials(provider: components["schemas"]["OauthProvider"]) {
-    return (await client.DELETE('/profile/sso/{provider}', { params: { path: { provider: provider } } })).data
-  }
-
-  static async getRecommendedCocktails() {
-    return (await client.GET('/recommender/cocktails')).data
-  }
-
-  static async optimizeBar(id: number) {
-    return (await client.POST('/bars/{id}/optimize', { params: { path: { id: id } } })).data
-  }
-
-  static async datapackSync(id: number) {
-    return (await client.POST('/bars/{id}/sync-datapack', { params: { path: { id: id } } })).data
-  }
-
-  static async getPublicBar(barId: string) {
-    return (await client.GET('/public/{slugOrId}', { params: { path: { slugOrId: barId } } })).data
-  }
-
-  static async getPublicBarCocktails(barId: string, query = {}) {
-    return (await client.GET('/public/{slugOrId}/cocktails', { params: { path: { slugOrId: barId }, query: query } })).data
-  }
-
-  static async getPublicBarCocktail(barId: string, slug: string) {
-    return (await client.GET('/public/{slugOrId}/cocktails/{cocktailSlug}', { params: { path: { slugOrId: barId, cocktailSlug: slug } } })).data
-  }
-
-  static async aiGenerateIngredient(name: string) {
-    return (await client.POST('/generate/ingredient', { body: { name: name } })).data
-  }
-
-  static async aiGenerateCocktailTags(id: string) {
-    return (await client.POST('/generate/cocktail-tags', { body: { cocktail_id: id } })).data
-  }
-
-  static async aiGenerateCocktailRecipe(recipe: string) {
-    return (await client.POST('/generate/cocktail-recipe-from-text', { body: { recipe: recipe } })).data
-  }
-
-  static async aiGenerateCocktailImage(cocktailId: string) {
-    return (await client.POST('/generate/cocktail-image', { body: { cocktail_id: cocktailId } })).data
-  }
+    static getBaseUrl() {
+        return apiBaseUrl;
+    }
+
+    static async getLoginToken(email: string, password: string) {
+        return (await client.POST("/auth/login", { body: { email: email, password: password } })).data;
+    }
+
+    static async logout() {
+        return (await client.POST("/auth/logout")).data;
+    }
+
+    static async getProfile() {
+        return (await client.GET("/profile")).data;
+    }
+
+    static async updateProfile(body: components["schemas"]["ProfileRequest"]) {
+        return (await client.POST("/profile", { body: body })).data;
+    }
+
+    static async changePassword(body: components["schemas"]["ChangePasswordRequest"]) {
+        return (await client.POST("/profile/change-password", { body: body })).data;
+    }
+
+    static async requestPasswordResetEmail(email: string) {
+        return (await client.POST("/auth/forgot-password", { body: { email: email } })).data;
+    }
+
+    static async register(body: components["schemas"]["RegisterRequest"]) {
+        return (await client.POST("/auth/register", { body: body })).data;
+    }
+
+    static async resetPassword(requestBody: object) {
+        return (await client.POST("/auth/reset-password", { body: requestBody })).data;
+    }
+
+    static async confirmAccount(id: number, hash: string) {
+        return (await client.GET("/auth/verify/{id}/{hash}", { params: { path: { id: id, hash: hash } } })).data;
+    }
+
+    static async getIngredients(query = {}) {
+        return (await client.GET("/ingredients", { params: { query: query } })).data;
+    }
+
+    static async saveIngredient(data: components["schemas"]["IngredientRequest"]) {
+        const { response } = await client.POST("/ingredients", { body: data, parseAs: "stream" });
+
+        return extractIdFromLocationHeader(response);
+    }
+
+    static async updateIngredient(id: number, body: components["schemas"]["IngredientRequest"]) {
+        return (await client.PUT("/ingredients/{id}", { params: { path: { id: id } }, body: body })).data;
+    }
+
+    static async deleteIngredient(id: number) {
+        return (await client.DELETE("/ingredients/{id}", { params: { path: { id: id } } })).data;
+    }
+
+    static async getCocktails(query = {}) {
+        return (await client.GET("/cocktails", { params: { query: query } })).data;
+    }
+
+    static async getCocktail(id: string) {
+        return (await client.GET("/cocktails/{id}", { params: { path: { id: id } } })).data;
+    }
+
+    static async getSimilarCocktail(id: number) {
+        return (await client.GET("/cocktails/{id}/similar", { params: { path: { id: id } } })).data;
+    }
+
+    static async savePublicCocktailLink(id: number) {
+        const { response } = await client.POST("/cocktails/{id}/public-link", { params: { path: { id: id } }, parseAs: "stream" });
+
+        return extractIdFromLocationHeader(response);
+    }
+
+    static async deletePublicCocktailLink(id: number) {
+        return (await client.DELETE("/cocktails/{id}/public-link", { params: { path: { id: id } } })).data;
+    }
+
+    static async saveCocktail(body: components["schemas"]["CocktailRequest"]): Promise<string> {
+        const { response } = await client.POST("/cocktails", { body: body, parseAs: "stream" });
+
+        return extractIdFromLocationHeader(response);
+    }
+
+    static async updateCocktail(id: number, body: components["schemas"]["CocktailRequest"]) {
+        return await client.PUT("/cocktails/{id}", { params: { path: { id: id } }, body: body });
+    }
+
+    static async shareCocktail(id: string, query = {}) {
+        return (await client.GET("/cocktails/{id}/share", { params: { path: { id: id }, query: query } })).data;
+    }
+
+    static async favoriteCocktail(id: number) {
+        return (await client.POST("/cocktails/{id}/toggle-favorite", { params: { path: { id: id } } })).data;
+    }
+
+    static async deleteCocktail(id: number) {
+        return (await client.DELETE("/cocktails/{id}", { params: { path: { id: id } } })).data;
+    }
+
+    static async copyCocktail(id: string) {
+        const { response } = await client.POST("/cocktails/{id}/copy", { params: { path: { id: id } }, parseAs: "stream" });
+
+        return extractIdFromLocationHeader(response);
+    }
+
+    static async rateCocktail(id: number, data: object = {}) {
+        return (await client.POST("/cocktails/{id}/ratings", { params: { path: { id: id } }, body: data })).data;
+    }
+
+    static async deleteCocktailRating(id: number) {
+        return (await client.DELETE("/cocktails/{id}/ratings", { params: { path: { id: id } } })).data;
+    }
+
+    static async getUserCocktailFavorites(id: number) {
+        return (await client.GET("/members/{id}/cocktail-favorites", { params: { path: { id: id }, query: { per_page: 500 } } })).data;
+    }
+
+    static async getNotes(query = {}) {
+        return (await client.GET("/notes", { params: { query: query } })).data;
+    }
+
+    static async saveNote(data: components["schemas"]["NoteRequest"]) {
+        return (await client.POST("/notes", { body: data })).data;
+    }
+
+    static async deleteNote(id: number) {
+        return (await client.DELETE("/notes/{id}", { params: { path: { id: id } } })).data;
+    }
+
+    static async getTags() {
+        return (await client.GET("/tags")).data;
+    }
+
+    static async deleteTag(id: number) {
+        return (await client.DELETE("/tags/{id}", { params: { path: { id: id } } })).data;
+    }
+
+    static async getTag(id: number) {
+        return (await client.GET("/tags/{id}", { params: { path: { id: id } } })).data;
+    }
+
+    static async saveTag(data: components["schemas"]["TagRequest"]) {
+        return (await client.POST("/tags", { body: data })).data;
+    }
+
+    static async updateTag(id: number, data: components["schemas"]["TagRequest"]) {
+        return (await client.PUT("/tags/{id}", { params: { path: { id: id } }, body: data })).data;
+    }
+
+    static async getCocktailMethods(query = {}) {
+        return (await client.GET("/cocktail-methods", { params: { query: query } })).data;
+    }
+
+    static async getCocktailMethod(id: number) {
+        return (await client.GET("/cocktail-methods/{id}", { params: { path: { id: id } } })).data;
+    }
+
+    static async saveCocktailMethod(data: components["schemas"]["CocktailMethodRequest"]) {
+        return (await client.POST("/cocktail-methods", { body: data })).data;
+    }
+
+    static async updateCocktailMethod(id: number, data: components["schemas"]["CocktailMethodRequest"]) {
+        return (await client.PUT("/cocktail-methods/{id}", { params: { path: { id: id } }, body: data })).data;
+    }
+
+    static async deleteCocktailMethod(id: number) {
+        return (await client.DELETE("/cocktail-methods/{id}", { params: { path: { id: id } } })).data;
+    }
+
+    static async getShoppingList(id: number) {
+        return (await client.GET("/members/{id}/shopping-list", { params: { path: { id: id } } })).data;
+    }
+
+    static async addToShoppingList(id: number, data: components["schemas"]["ShoppingListRequest"]) {
+        return (await client.POST("/members/{id}/shopping-list/batch-store", { params: { path: { id: id } }, body: data })).data;
+    }
+
+    static async removeFromShoppingList(id: number, data: components["schemas"]["ShoppingListRequest"]) {
+        return (await client.POST("/members/{id}/shopping-list/batch-delete", { params: { path: { id: id } }, body: data })).data;
+    }
+
+    static async shareShoppingList(id: number) {
+        return (await client.GET("/members/{id}/shopping-list/share", { params: { path: { id: id } } })).data;
+    }
+
+    static async generateExportDownloadURL(id: number) {
+        return (await client.POST("/exports/{id}/download", { params: { path: { id: id } } })).data;
+    }
+
+    static async getBarRecommendedIngredients(id: number) {
+        return (await client.GET("/bars/{id}/inventory/ingredients/recommend", { params: { path: { id: id } } })).data;
+    }
+
+    static async getBars() {
+        return (await client.GET("/bars")).data;
+    }
+
+    static async getBar(id: number) {
+        return (await client.GET("/bars/{id}", { params: { path: { id: id } } })).data;
+    }
+
+    static async updateBar(id: number, data: components["schemas"]["BarRequest"]) {
+        return (await client.PUT("/bars/{id}", { params: { path: { id: id } }, body: data })).data;
+    }
+
+    static async saveBar(data: components["schemas"]["BarRequest"]) {
+        const { response } = await client.POST("/bars", { body: data, parseAs: "stream" });
+        console.log(response);
+
+        return extractIdFromLocationHeader(response);
+    }
+
+    static async deleteBar(id: number) {
+        return (await client.DELETE("/bars/{id}", { params: { path: { id: id } } })).data;
+    }
+
+    static async joinBar(inviteCode: string) {
+        return (await client.POST("/bars/join", { body: { invite_code: inviteCode } })).data;
+    }
+
+    static async leaveBar(id: number) {
+        return (await client.DELETE("/members/{id}", { params: { path: { id: id } } })).data;
+    }
+
+    static async getBarMembers() {
+        return (await client.GET("/members")).data;
+    }
+
+    static async getSharedCollections(id: number) {
+        return (await client.GET("/bars/{id}/collections", { params: { path: { id: id } } })).data;
+    }
+
+    static async updateBarStatus(id: number, status: components["schemas"]["BarStatusEnum"]) {
+        return (await client.POST("/bars/{id}/status", { params: { path: { id: id } }, body: { status: status } })).data;
+    }
+
+    static async getBarTotals(id: number) {
+        return (await client.GET("/bars/{id}/stats/totals", { params: { path: { id: id } } })).data;
+    }
+
+    static async getBarTopStats(id: number) {
+        return (await client.GET("/bars/{id}/stats/top", { params: { path: { id: id } } })).data;
+    }
+
+    static async getMemberTasteProfile(id: number) {
+        return (await client.GET("/bars/{id}/stats/taste", { params: { path: { id: id } } })).data;
+    }
+
+    static async getIngredientDistribution(id: number) {
+        return (await client.GET("/bars/{id}/stats/ingredient-distribution", { params: { path: { id: id } } })).data;
+    }
+
+    static async getIngredient(id: string) {
+        return (await client.GET("/ingredients/{id}", { params: { path: { id: id } } })).data;
+    }
+
+    static async getIngredientTree(id: string) {
+        return (await client.GET("/ingredients/{id}/tree", { params: { path: { id: id } } })).data;
+    }
+
+    static async getExtraBarCocktailsWithIngredient(barId: number, id: number) {
+        return (await client.GET("/bars/{id}/inventory/ingredients/{idOrSlug}/extra", { params: { path: { id: barId, idOrSlug: id } } })).data;
+    }
+
+    static async getUtensils() {
+        return (await client.GET("/utensils")).data;
+    }
+
+    static async getUtensil(id: number) {
+        return (await client.GET("/utensils/{id}", { params: { path: { id: id } } })).data;
+    }
+
+    static async saveUtensil(data: components["schemas"]["UtensilRequest"]) {
+        return (await client.POST("/utensils", { body: data })).data;
+    }
+
+    static async updateUtensil(id: number, data: components["schemas"]["UtensilRequest"]) {
+        return (await client.PUT("/utensils/{id}", { params: { path: { id: id } }, body: data })).data;
+    }
+
+    static async deleteUtensil(id: number) {
+        return (await client.DELETE("/utensils/{id}", { params: { path: { id: id } } })).data;
+    }
+
+    static async getPriceCategories() {
+        return (await client.GET("/price-categories")).data;
+    }
+
+    static async savePriceCategory(data: components["schemas"]["PriceCategoryRequest"]) {
+        const { response } = await client.POST("/price-categories", { body: data, parseAs: "stream" });
+
+        return extractIdFromLocationHeader(response);
+    }
+
+    static async updatePriceCategory(id: number, data: components["schemas"]["PriceCategoryRequest"]) {
+        await client.PUT("/price-categories/{id}", { params: { path: { id: id } }, body: data });
+    }
+
+    static async deletePriceCategory(id: number) {
+        return (await client.DELETE("/price-categories/{id}", { params: { path: { id: id } } })).data;
+    }
+
+    static async getUsers() {
+        return (await client.GET("/members")).data;
+    }
+
+    static async getUser(id: number) {
+        return (await client.GET("/members/{id}", { params: { path: { id: id } } })).data;
+    }
+
+    static async saveMember(data: components["schemas"]["UserRequest"]) {
+        return (await client.POST("/members", { body: data })).data;
+    }
+
+    static async updateMember(id: number, data: components["schemas"]["UserRequest"]) {
+        return (await client.PUT("/members/{id}", { params: { path: { id: id } }, body: data })).data;
+    }
+
+    static async removeUserFromBar(id: number) {
+        return (await client.DELETE("/members/{id}", { params: { path: { id: id } } })).data;
+    }
+
+    static async getCollections(query = {}) {
+        return (await client.GET("/collections", { params: { query: query } })).data;
+    }
+
+    static async getCollection(id: number) {
+        return (await client.GET("/collections/{id}", { params: { path: { id: id } } })).data;
+    }
+
+    static async updateCollection(id: number, data: components["schemas"]["CollectionRequest"]) {
+        return (await client.PUT("/collections/{id}", { params: { path: { id: id } }, body: data })).data;
+    }
+
+    static async deleteCollection(id: number) {
+        return (await client.DELETE("/collections/{id}", { params: { path: { id: id } } })).data;
+    }
+
+    static async syncCollectionCocktails(id: number, cocktails: number[]) {
+        return (await client.PUT("/collections/{id}/cocktails", { params: { path: { id: id } }, body: { cocktails: cocktails } })).data;
+    }
+
+    static async saveCollection(data: components["schemas"]["CollectionRequest"]) {
+        return await client.POST("/collections", { body: data, parseAs: "stream" });
+    }
+
+    static async scrapeCocktail(url: string, content: string | null = null) {
+        return (await client.POST("/import/scrape", { body: { source: url, html_content: content } })).data;
+    }
+
+    static async getGlasses(query = {}) {
+        return (await client.GET("/glasses", { params: { query: query } })).data;
+    }
+
+    static async getGlass(id: number) {
+        return (await client.GET("/glasses/{id}", { params: { path: { id: id } } })).data;
+    }
+
+    static async saveGlass(data: components["schemas"]["GlassRequest"]): Promise<string> {
+        const { response } = await client.POST("/glasses", { body: data, parseAs: "stream" });
+
+        return extractIdFromLocationHeader(response);
+    }
+
+    static async updateGlass(id: number, data: components["schemas"]["GlassRequest"]) {
+        return (await client.PUT("/glasses/{id}", { params: { path: { id: id } }, body: data })).data;
+    }
+
+    static async deleteGlass(id: number) {
+        return (await client.DELETE("/glasses/{id}", { params: { path: { id: id } } })).data;
+    }
+
+    static getImageThumbUrl(imageId: number) {
+        return `${apiBaseUrl}/images/${imageId}/thumb`;
+    }
+
+    static async getServerVersion() {
+        return (await client.GET("/server/version")).data;
+    }
+
+    static async uploadImages(images: components["schemas"]["ImageRequest"][]) {
+        return (
+            await client.POST("/images", {
+                body: { images: images },
+                bodySerializer(body) {
+                    const fd = new FormData();
+                    let i = 1;
+                    for (const image of body.images) {
+                        if (image.id) {
+                            fd.append("images[" + i + "][id]", image.id?.toString() ?? "");
+                        }
+                        if (image.image) {
+                            fd.append("images[" + i + "][image]", image.image ?? "");
+                        }
+                        fd.append("images[" + i + "][copyright]", image.copyright ?? "");
+                        fd.append("images[" + i + "][sort]", image.sort?.toString() ?? "1");
+                        i++;
+                    }
+                    return fd;
+                },
+            })
+        ).data;
+    }
+
+    static async deleteImage(id: number) {
+        return (await client.DELETE("/images/{id}", { params: { path: { id: id } } })).data;
+    }
+
+    static async getMenu() {
+        return (await client.GET("/menu")).data;
+    }
+
+    static async getPublicMenu(slug: string) {
+        return (await client.GET("/public/bars/{slugOrId}/menu", { params: { path: { slugOrId: slug } } })).data;
+    }
+
+    static async updateMenu(data: components["schemas"]["MenuRequest"]) {
+        return (await client.POST("/menu", { body: data })).data;
+    }
+
+    static async getTokens() {
+        return (await client.GET("/tokens")).data;
+    }
+
+    static async saveToken(data: components["schemas"]["PersonalAccessTokenRequest"]) {
+        return (await client.POST("/tokens", { body: data })).data;
+    }
+
+    static async deleteToken(id: number) {
+        return (await client.DELETE("/tokens/{id}", { params: { path: { id: id } } })).data;
+    }
+
+    static async getExports() {
+        return (await client.GET("/exports")).data;
+    }
+
+    static async saveExport(data: components["schemas"]["ExportRequest"]) {
+        return (await client.POST("/exports", { body: data })).data;
+    }
+
+    static async deleteExport(id: number) {
+        return (await client.DELETE("/exports/{id}", { params: { path: { id: id } } })).data;
+    }
+
+    static async getSubscriptionStatus() {
+        return (await client.GET("/billing/subscription")).data;
+    }
+
+    static async updateSubscriptionStatus(status: string) {
+        return (await client.POST("/billing/subscription", { body: { type: status } })).data;
+    }
+
+    static async addToBarShelf(id: number, data: object = {}) {
+        return (await client.POST("/bars/{id}/inventory/ingredients/batch-store", { params: { path: { id: id } }, body: data })).data;
+    }
+
+    static async removeFromBarShelf(id: number, data: object = {}) {
+        return (await client.POST("/bars/{id}/inventory/ingredients/batch-delete", { params: { path: { id: id } }, body: data })).data;
+    }
+
+    static async getCocktailPrices(id: string) {
+        return (await client.GET("/cocktails/{id}/prices", { params: { path: { id: id } } })).data;
+    }
+
+    static async getBarShelfCocktails(id: number) {
+        return (await client.GET("/bars/{id}/inventory/cocktails", { params: { path: { id: id }, query: { per_page: 500 } } })).data;
+    }
+
+    static async getMenuExport() {
+        return (await client.GET("/menu/export", { parseAs: "text" })).data;
+    }
+
+    static async importIngredientsAsCSVBody(body: string) {
+        return (
+            await client.POST("/import/ingredients", {
+                parseAs: "text",
+                body: body,
+                bodySerializer(body) {
+                    return body;
+                },
+                headers: { "Content-Type": "text/csv" },
+            })
+        ).data;
+    }
+
+    static async importIngredientsAsCSVFile(file: File) {
+        return (
+            await client.POST("/import/ingredients", {
+                body: { source: file },
+                bodySerializer(body: any) {
+                    const fd = new FormData();
+                    fd.append("source", body.source);
+                    return fd;
+                },
+            })
+        ).data;
+    }
+
+    static async getCalculators() {
+        return (await client.GET("/calculators")).data;
+    }
+
+    static async getCalculator(id: number) {
+        return (await client.GET("/calculators/{id}", { params: { path: { id: id } } })).data;
+    }
+
+    static async saveCalculator(data: components["schemas"]["CalculatorRequest"]) {
+        const { response } = await client.POST("/calculators", { body: data, parseAs: "stream" });
+
+        return extractIdFromLocationHeader(response);
+    }
+
+    static async updateCalculator(id: number, data: components["schemas"]["CalculatorRequest"]) {
+        return (await client.PUT("/calculators/{id}", { params: { path: { id: id } }, body: data })).data;
+    }
+
+    static async deleteCalculator(id: number) {
+        return (await client.DELETE("/calculators/{id}", { params: { path: { id: id } } })).data;
+    }
+
+    static async getSSOCallback(provider: components["schemas"]["OauthProvider"], code: string) {
+        return (await client.GET("/auth/sso/{provider}/callback", { params: { query: { code: code }, path: { provider: provider } } })).data;
+    }
+
+    static async getProvidersList() {
+        return (await client.GET("/auth/sso/providers")).data;
+    }
+
+    static async deleteProfileSSOCredentials(provider: components["schemas"]["OauthProvider"]) {
+        return (await client.DELETE("/profile/sso/{provider}", { params: { path: { provider: provider } } })).data;
+    }
+
+    static async getRecommendedCocktails() {
+        return (await client.GET("/recommender/cocktails")).data;
+    }
+
+    static async optimizeBar(id: number) {
+        return (await client.POST("/bars/{id}/optimize", { params: { path: { id: id } } })).data;
+    }
+
+    static async datapackSync(id: number) {
+        return (await client.POST("/bars/{id}/sync-datapack", { params: { path: { id: id } } })).data;
+    }
+
+    static async getPublicBar(barId: string) {
+        return (await client.GET("/public/bars/{slugOrId}", { params: { path: { slugOrId: barId } } })).data;
+    }
+
+    static async getPublicBarCocktails(barId: string, query = {}) {
+        return (await client.GET("/public/bars/{slugOrId}/cocktails", { params: { path: { slugOrId: barId }, query: query } })).data;
+    }
+
+    static async getPublicBarCocktail(barId: string, slug: string) {
+        return (await client.GET("/public/bars/{slugOrId}/cocktails/{cocktailSlug}", { params: { path: { slugOrId: barId, cocktailSlug: slug } } })).data;
+    }
+
+    static async getPublicLinkCocktail(publicId: string) {
+        return (await client.GET("/public/links/cocktails/{publicId}", { params: { path: { publicId: publicId } } })).data;
+    }
+
+    static async aiGenerateIngredient(name: string) {
+        return (await client.POST("/generate/ingredient", { body: { name: name } })).data;
+    }
+
+    static async aiGenerateCocktailTags(id: string) {
+        return (await client.POST("/generate/cocktail-tags", { body: { cocktail_id: id } })).data;
+    }
+
+    static async aiGenerateCocktailRecipe(recipe: string) {
+        return (await client.POST("/generate/cocktail-recipe-from-text", { body: { recipe: recipe } })).data;
+    }
+
+    static async aiGenerateCocktailImage(cocktailId: string) {
+        return (await client.POST("/generate/cocktail-image", { body: { cocktail_id: cocktailId } })).data;
+    }
 }

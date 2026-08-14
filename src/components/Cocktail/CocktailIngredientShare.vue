@@ -1,9 +1,11 @@
 <template>
     <div class="cocktail-ingredient-share" itemprop="recipeIngredient" :content="name + ' - ' + amount">
         <div class="cocktail-ingredient-share__ingredient-name">
-            <span>{{ name }} <template v-if="cocktailIngredient.optional">({{ $t('optional') }})</template></span>
-            <span v-if="cocktailIngredient.substitutes.length > 0" class="cocktail-ingredient-share__ingredient-substitutes">
-                {{ $t('substitutes') }}: {{ substitutes }}
+            <span
+                >{{ name }} <template v-if="cocktailIngredient.optional">({{ $t("optional") }})</template></span
+            >
+            <span v-if="cocktailIngredient.substitutes && cocktailIngredient.substitutes.length > 0" class="cocktail-ingredient-share__ingredient-substitutes">
+                {{ $t("substitutes") }}: {{ substitutes }}
             </span>
         </div>
         <div class="cocktail-ingredient-share__ingredient-amount">{{ amount }}</div>
@@ -11,56 +13,46 @@
 </template>
 
 <script setup lang="ts">
-import { unitHandler } from '@/composables/useUnits'
-import { computed } from 'vue';
+import { unitHandler } from "@/composables/useUnits";
+import { computed } from "vue";
+import type { components } from "@/api/api";
 
-export interface CocktailIngredientShare {
-    ingredient: {
-        name: string,
-    },
-    amount: number|string|null;
-    amount_max?: number|string|null;
-    units?: string|null;
-    note: string|null,
-    optional: boolean,
-    substitutes: {
-        ingredient: {
-            name: string,
-        },
-        amount: number|null,
-        unit: string|null,
-        note: string|null,
-    }[],
-}
+type CocktailIngredient = components["schemas"]["CocktailIngredient"];
 
 const {
     cocktailIngredient,
     scaleFactor = 1,
-    units = 'ml',
+    units = "ml",
 } = defineProps<{
-    cocktailIngredient: CocktailIngredientShare,
-    scaleFactor: number,
-    units: string,
-}>()
+    cocktailIngredient: CocktailIngredient;
+    scaleFactor: number;
+    units: string;
+}>();
 
 const name = computed(() => {
-    let name = cocktailIngredient.ingredient.name
+    let name = cocktailIngredient.ingredient.name;
     if (cocktailIngredient.note) {
-        name += ` · ${cocktailIngredient.note}`
+        name += ` · ${cocktailIngredient.note}`;
     }
 
-    return name
-})
+    return name;
+});
 
 const amount = computed(() => {
-    return unitHandler.print(cocktailIngredient, units, scaleFactor)
-})
+    return unitHandler.print(cocktailIngredient, units, scaleFactor);
+});
 
 const substitutes = computed(() => {
-    return cocktailIngredient.substitutes.map(sub => {
-        return new String(sub.ingredient.name + ' ' + unitHandler.print(sub, units, scaleFactor)).trim()
-    }).join(', ')
-})
+    if (!cocktailIngredient.substitutes || cocktailIngredient.substitutes.length === 0) {
+        return null;
+    }
+
+    return cocktailIngredient.substitutes
+        .map((sub) => {
+            return new String(sub.ingredient.name + " " + unitHandler.print(sub, units, scaleFactor)).trim();
+        })
+        .join(", ");
+});
 </script>
 
 <style scoped>

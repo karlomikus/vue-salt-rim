@@ -1,33 +1,42 @@
 <template>
     <form @submit.prevent="save">
         <OverlayLoader v-if="isLoading" />
-        <div class="dialog-title">{{ $t('ingredient.dialog.select-substitutes') }}</div>
-        <p style="margin-bottom: 1rem;">{{ $t('ingredient.dialog.select-substitutes-for', {name: cocktailIngredient.ingredient.name}) }}</p>
-        <IngredientFinderBasic v-if="shouldUseBasicSearch" :selected-ingredients="selectedSubstitutes.map(s => s.ingredient.id)" @ingredient-selected="selectIngredient"></IngredientFinderBasic>
-        <IngredientFinder v-else-if="!shouldUseBasicSearch && appState.bar.search_token" :search-token="appState.bar.search_token" :selected-ingredients="selectedSubstitutes.map(s => s.ingredient.id)" @ingredient-selected="selectIngredient"></IngredientFinder>
+        <div class="dialog-title">{{ $t("ingredient.dialog.select-substitutes") }}</div>
+        <p style="margin-bottom: 1rem">{{ $t("ingredient.dialog.select-substitutes-for", { name: cocktailIngredient.ingredient.name }) }}</p>
+        <IngredientFinderBasic
+            v-if="shouldUseBasicSearch"
+            :selected-ingredients="selectedSubstitutes.map((s) => s.ingredient.id)"
+            @ingredient-selected="selectIngredient"
+        ></IngredientFinderBasic>
+        <IngredientFinder
+            v-else-if="!shouldUseBasicSearch && appState.bar.search_token"
+            :search-token="appState.bar.search_token"
+            :selected-ingredients="selectedSubstitutes.map((s) => s.ingredient.id)"
+            @ingredient-selected="selectIngredient"
+        ></IngredientFinder>
         <div class="substitutes">
-            <h4>{{ $t('substitutes') }}:</h4>
+            <h4>{{ $t("substitutes") }}:</h4>
             <div v-for="(substitute, index) in selectedSubstitutes" :key="substitute.ingredient.id" class="substitutes__substitute">
                 <div class="substitutes__substitute__name">
                     <h5>{{ substitute.ingredient.name }}</h5>
                     <div class="substitutes__substitute__actions">
-                        <a href="#" @click.prevent="toggleAmountDisplay(substitute)">{{ $t('edit-amounts') }}</a>
+                        <a href="#" @click.prevent="toggleAmountDisplay(substitute)">{{ $t("edit-amounts") }}</a>
                         &middot;
-                        <a href="#" @click.prevent="removeIngredient(substitute)">{{ $t('remove') }}</a>
+                        <a href="#" @click.prevent="removeIngredient(substitute)">{{ $t("remove") }}</a>
                     </div>
                 </div>
                 <div v-show="amountDisplayTracker.includes(substitute.ingredient.id)" class="substitutes__substitute__input">
                     <div class="form-group">
-                        <label class="form-label" :for="'sub-ingredient-amount-' + substitute.ingredient.id">{{ $t('amount') }}:</label>
+                        <label class="form-label" :for="'sub-ingredient-amount-' + substitute.ingredient.id">{{ $t("amount") }}:</label>
                         <AmountInput :id="'sub-ingredient-amount-' + substitute.ingredient.id" v-model="substitute.amount"></AmountInput>
                     </div>
                     <div class="form-group">
-                        <label class="form-label" :for="'sub-ingredient-amount-max-' + substitute.ingredient.id">{{ $t('amount-max') }}:</label>
+                        <label class="form-label" :for="'sub-ingredient-amount-max-' + substitute.ingredient.id">{{ $t("amount-max") }}:</label>
                         <AmountInput :id="'sub-ingredient-amount-max-' + substitute.ingredient.id" v-model="substitute.amount_max"></AmountInput>
                     </div>
                     <div class="form-group">
-                        <label class="form-label" :for="'sub-ingredient-units-' + substitute.ingredient.id">{{ $t('units') }}:</label>
-                        <input :id="'sub-ingredient-units-' + substitute.ingredient.id" v-model="substitute.units" class="form-input" type="text" list="common-units">
+                        <label class="form-label" :for="'sub-ingredient-units-' + substitute.ingredient.id">{{ $t("units") }}:</label>
+                        <input :id="'sub-ingredient-units-' + substitute.ingredient.id" v-model="substitute.units" class="form-input" type="text" list="common-units" />
                         <datalist id="common-units">
                             <option>ml</option>
                             <option>oz</option>
@@ -38,49 +47,49 @@
                         </datalist>
                     </div>
                 </div>
-                <div v-if="index != selectedSubstitutes.length - 1" class="substitutes__substitute__separator">{{ $t('or') }}</div>
+                <div v-if="index != selectedSubstitutes.length - 1" class="substitutes__substitute__separator">{{ $t("or") }}</div>
             </div>
             <div v-if="selectedSubstitutes.length == 0">
-                {{ $t('no-substitutes') }}
+                {{ $t("no-substitutes") }}
             </div>
         </div>
         <div class="dialog-actions">
-            <button type="submit" class="button button--dark" :disabled="isLoading">{{ $t('save') }}</button>
+            <button type="submit" class="button button--dark" :disabled="isLoading">{{ $t("save") }}</button>
         </div>
     </form>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
-import OverlayLoader from './../OverlayLoader.vue'
-import IngredientFinder from './../IngredientFinder.vue'
-import AmountInput from './../AmountInput.vue'
-import type { SearchResults } from '@/api/SearchResults';
-import type { components } from '@/api/api'
-import IngredientFinderBasic from '../IngredientFinderBasic.vue';
-import { useBasicSearch } from '@/composables/useBasicSearch'
-import AppState from '@/AppState';
+import { ref } from "vue";
+import OverlayLoader from "./../OverlayLoader.vue";
+import IngredientFinder from "./../IngredientFinder.vue";
+import AmountInput from "./../AmountInput.vue";
+import type { SearchResults } from "@/api/SearchResults";
+import type { components } from "@/api/api";
+import IngredientFinderBasic from "../IngredientFinderBasic.vue";
+import { useBasicSearch } from "@/composables/useBasicSearch";
+import AppState from "@/AppState";
 
-type CocktailIngredient = components['schemas']['CocktailIngredient']
-type CocktailIngredientSubstitute = components['schemas']['CocktailIngredientSubstitute']
-type IngredientSearchResult = SearchResults['ingredient']
+type CocktailIngredient = components["schemas"]["CocktailIngredient"];
+type CocktailIngredientSubstitute = components["schemas"]["CocktailIngredientSubstitute"];
+type IngredientSearchResult = SearchResults["ingredient"];
 
-const shouldUseBasicSearch = useBasicSearch()
+const shouldUseBasicSearch = useBasicSearch();
 const props = defineProps<{
     value: CocktailIngredient;
-}>()
-const appState = new AppState()
-const isLoading = ref(false)
-const amountDisplayTracker = ref<number[]>([])
-const cocktailIngredient = ref<CocktailIngredient>(props.value)
-const selectedSubstitutes = ref<CocktailIngredientSubstitute[]>(props.value.substitutes ?? [])
+}>();
+const appState = new AppState();
+const isLoading = ref(false);
+const amountDisplayTracker = ref<number[]>([]);
+const cocktailIngredient = ref<CocktailIngredient>(props.value);
+const selectedSubstitutes = ref<CocktailIngredientSubstitute[]>(props.value.substitutes ?? []);
 const emit = defineEmits<{
-    close: [type: {type: string}]
-}>()
+    close: [type: { type: string }];
+}>();
 
 function selectIngredient(item: IngredientSearchResult) {
-    if (selectedSubstitutes.value.some(sub => sub.ingredient.id == item.id) || cocktailIngredient.value.ingredient.id == item.id) {
-        return
+    if (selectedSubstitutes.value.some((sub) => sub.ingredient.id == item.id) || cocktailIngredient.value.ingredient.id == item.id) {
+        return;
     }
 
     selectedSubstitutes.value.push({
@@ -93,30 +102,29 @@ function selectIngredient(item: IngredientSearchResult) {
         amount_max: null,
         units: null,
         in_bar_shelf: false,
-        in_shelf: false,
-    })
+    });
 }
 
 function removeIngredient(item: CocktailIngredientSubstitute) {
     selectedSubstitutes.value.splice(
-        selectedSubstitutes.value.findIndex(i => i == item),
-        1
-    )
+        selectedSubstitutes.value.findIndex((i) => i == item),
+        1,
+    );
 }
 
 function toggleAmountDisplay(sub: CocktailIngredientSubstitute) {
     if (amountDisplayTracker.value.includes(sub.ingredient.id)) {
         amountDisplayTracker.value.splice(
-            amountDisplayTracker.value.findIndex(i => i == sub.ingredient.id),
-            1
-        )
+            amountDisplayTracker.value.findIndex((i) => i == sub.ingredient.id),
+            1,
+        );
     } else {
-        amountDisplayTracker.value.push(sub.ingredient.id)
+        amountDisplayTracker.value.push(sub.ingredient.id);
     }
 }
 
 function save() {
-    emit('close', {type: 'save'})
+    emit("close", { type: "save" });
 }
 </script>
 

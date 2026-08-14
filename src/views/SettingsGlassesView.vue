@@ -1,5 +1,5 @@
-<script setup>
-import GlassesList from '../components/Settings/GlassesList.vue'
+<script setup lang="ts">
+import GlassesList from "../components/Settings/GlassesList.vue";
 </script>
 
 <template>

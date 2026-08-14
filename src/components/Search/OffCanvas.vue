@@ -1,7 +1,7 @@
 <template>
     <div class="offcanvas">
         <div class="offcanvas__header">
-            <h2>{{ $t('filters') }}</h2>
+            <h2>{{ $t("filters") }}</h2>
         </div>
         <div class="offcanvas__content">
             <slot></slot>

@@ -1,38 +1,32 @@
 <template>
-    <div v-if="resource.created_user" class="timestamps">
-        {{ $t('created') }}: <DateFormatter :date="resource.created_at" format="long" /> &middot; {{ resource.created_user.name }}
-        <br>
-        <span v-if="resource.updated_user">
-            {{ $t('updated') }}: <DateFormatter :date="resource.updated_at" format="long" /> &middot; {{ resource.updated_user.name }}
-        </span>
+    <div class="timestamps">
+        {{ $t("created") }}: <DateFormatter :date="resource.created_at" format="long" /> &middot; {{ resource.created_user }}
+        <template v-if="resource.updated_user">
+            <br />
+            <span> {{ $t("updated") }}: <DateFormatter v-if="resource.updated_at" :date="resource.updated_at" format="long" /> &middot; {{ resource.updated_user }} </span>
+        </template>
     </div>
 </template>
 
-<script>
-import DateFormatter from './DateFormatter.vue'
+<script setup lang="ts">
+import DateFormatter from "./DateFormatter.vue";
 
-export default {
-    components: {
-        DateFormatter
-    },
-    props: {
-        resource: {
-            type: Object,
-            default() {
-                return {
-                    created_user: {},
-                    updated_user: {},
-                }
-            }
-        }
-    },
+interface Resource {
+    created_user: string;
+    updated_user: string | null;
+    created_at: string;
+    updated_at: string | null;
 }
+
+const props = defineProps<{
+    resource: Resource;
+}>();
 </script>
 <style scoped>
 .timestamps {
     font-size: 0.75rem;
     text-align: left;
-    opacity: .7;
+    opacity: 0.7;
     margin-bottom: 0.5rem;
 }
 </style>

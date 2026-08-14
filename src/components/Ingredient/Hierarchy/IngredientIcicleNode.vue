@@ -9,32 +9,24 @@
             </span>
         </div>
         <div v-if="childrenSortedByName && childrenSortedByName.length" class="ingredient-icicle-row__sub-chart">
-            <IngredientIcicleNode
-                v-for="child in childrenSortedByName"
-                :key="child.ingredient.id"
-                :node="child"
-                :level="level + 1"
-            ></IngredientIcicleNode>
+            <IngredientIcicleNode v-for="child in childrenSortedByName" :key="child.ingredient.id" :node="child" :level="level + 1"></IngredientIcicleNode>
         </div>
     </div>
 </template>
 
 <script setup lang="ts">
-import type { components } from '@/api/api'
-import { computed } from 'vue';
-import { useI18n } from 'vue-i18n';
-type IngredientTree = components['schemas']['IngredientTree'];
+import type { components } from "@/api/api";
+import { computed } from "vue";
+type IngredientTree = components["schemas"]["IngredientTree"];
 
 const props = defineProps<{
     node: IngredientTree;
     level: number;
-}>()
-
-const { t } = useI18n()
+}>();
 
 const childrenSortedByName = computed(() => {
-    return props.node.children?.sort((a, b) => a.ingredient.name.localeCompare(b.ingredient.name)) || [];
-})
+    return [...props.node.children].sort((a, b) => a.ingredient.name.localeCompare(b.ingredient.name)) || [];
+});
 </script>
 
 <style scoped>

@@ -1,24 +1,24 @@
 <script setup lang="ts">
-import { ref } from 'vue'
-import PageHeader from '../PageHeader.vue'
-import SaltRimRadio from '../SaltRimRadio.vue'
-import OverlayLoader from '../OverlayLoader.vue'
-import BarAssistantClient from '@/api/BarAssistantClient'
-import SubscriptionCheck from '../SubscriptionCheck.vue'
-import { useI18n } from 'vue-i18n'
-import { useSaltRimToast } from '@/composables/toast'
-import { useRouter } from 'vue-router'
-import { useTitle } from '@/composables/title'
+import { ref } from "vue";
+import PageHeader from "../PageHeader.vue";
+import SaltRimRadio from "../SaltRimRadio.vue";
+import OverlayLoader from "../OverlayLoader.vue";
+import BarAssistantClient from "@/api/BarAssistantClient";
+import SubscriptionCheck from "../SubscriptionCheck.vue";
+import { useI18n } from "vue-i18n";
+import { useSaltRimToast } from "@/composables/toast";
+import { useRouter } from "vue-router";
+import { useTitle } from "@/composables/title";
 
-const { t } = useI18n()
-const router = useRouter()
-const toast = useSaltRimToast()
-const importType = ref('text')
-const source = ref('')
-const file = ref<File | null>()
-const isLoading = ref(false)
+const { t } = useI18n();
+const router = useRouter();
+const toast = useSaltRimToast();
+const importType = ref("text");
+const source = ref("");
+const file = ref<File | null>();
+const isLoading = ref(false);
 
-useTitle(t('ingredient.import'))
+useTitle(t("ingredient.import"));
 
 async function onFileChanged($event: Event) {
     const target = $event.target as HTMLInputElement;
@@ -28,39 +28,39 @@ async function onFileChanged($event: Event) {
 }
 
 async function importIngredients() {
-    isLoading.value = true
-    toast.default(t('ingredient.csv-import-started'));
+    isLoading.value = true;
+    toast.default(t("ingredient.csv-import-started"));
     if (file.value) {
         try {
-            (await BarAssistantClient.importIngredientsAsCSVFile(file.value))
+            await BarAssistantClient.importIngredientsAsCSVFile(file.value);
         } catch (e: any) {
-            toast.default(e.message)
-            isLoading.value = false
-            return
+            toast.default(e.message);
+            isLoading.value = false;
+            return;
         }
     } else {
         try {
-            (await BarAssistantClient.importIngredientsAsCSVBody(source.value))
+            await BarAssistantClient.importIngredientsAsCSVBody(source.value);
         } catch (e: any) {
-            toast.default(e.message)
-            isLoading.value = false
-            return
+            toast.default(e.message);
+            isLoading.value = false;
+            return;
         }
     }
-    isLoading.value = false
-    router.push({ name: 'ingredients' })
+    isLoading.value = false;
+    router.push({ name: "ingredients" });
 }
 </script>
 <template>
     <form>
         <PageHeader>
-            {{ t('ingredient.import') }}
+            {{ t("ingredient.import") }}
         </PageHeader>
         <SubscriptionCheck>Subscribe to "Mixologist" plan to unlock bulk ingredient import!</SubscriptionCheck>
-        <h3 class="form-section-title">{{ t('import.type') }}</h3>
+        <h3 class="form-section-title">{{ t("import.type") }}</h3>
         <div class="block-container block-container--padded">
             <div class="form-group">
-                <label class="form-label form-label--required">{{ t('type') }}:</label>
+                <label class="form-label form-label--required">{{ t("type") }}:</label>
                 <div class="import-types">
                     <SaltRimRadio v-model="importType" :title="t('import.type-csv-text-title')" :description="t('import.type-csv-text-description')" value="text"></SaltRimRadio>
                     <SaltRimRadio v-model="importType" :title="t('import.type-csv-file-title')" :description="t('import.type-csv-file-description')" value="file"></SaltRimRadio>
@@ -70,7 +70,10 @@ async function importIngredients() {
                 <p>Source CSV has the following guidelines:</p>
                 <ul>
                     <li>It is recommended to use UTF-8 charset</li>
-                    <li>It must contain header row with the following field names: <code>name</code>, <code>strength</code>, <code>description</code>, <code>origin</code>, <code>color</code>, <code>sugar_g_per_ml</code>, <code>acidity</code>, <code>distillery</code></li>
+                    <li>
+                        It must contain header row with the following field names: <code>name</code>, <code>strength</code>, <code>description</code>, <code>origin</code>,
+                        <code>color</code>, <code>sugar_g_per_ml</code>, <code>acidity</code>, <code>distillery</code>
+                    </li>
                     <li>Header row field names are not case sensitive</li>
                     <li>Header row fields are not order sensitive</li>
                     <li>Fields must be comma <code>,</code> separated</li>
@@ -83,22 +86,24 @@ async function importIngredients() {
                 <p>Here is an example of valid CSV:</p>
                 <div class="ingredient-csv-import-notice__example">
                     name,strength,description,origin,color,sugar_g_per_ml,acidity,distillery
-                    <br>
+                    <br />
                     Campari,40,Bitter liquer,Italy,#008800,,,
-                    <br>
+                    <br />
                     Whiskey,,,,,,,
                 </div>
             </div>
             <div v-if="importType === 'file'" class="form-group">
-                <label class="form-label form-label--required" for="import-source">{{ t('source') }}:</label>
-                <input id="import-source" type="file" class="form-input" required @change="onFileChanged($event)">
+                <label class="form-label form-label--required" for="import-source">{{ t("source") }}:</label>
+                <input id="import-source" type="file" class="form-input" required @change="onFileChanged($event)" />
             </div>
             <div v-else class="form-group">
-                <label class="form-label form-label--required" for="import-source">{{ t('source') }}:</label>
+                <label class="form-label form-label--required" for="import-source">{{ t("source") }}:</label>
                 <textarea id="import-source" v-model="source" class="form-input" rows="14" required></textarea>
             </div>
-            <div style="display: flex; gap: var(--gap-size-2); justify-content: flex-end;">
-                <button type="button" class="button button--dark" @click.prevent="importIngredients" :disabled="isLoading"><OverlayLoader v-if="isLoading" />{{ t('import.start') }}</button>
+            <div style="display: flex; gap: var(--gap-size-2); justify-content: flex-end">
+                <button type="button" class="button button--dark" @click.prevent="importIngredients" :disabled="isLoading">
+                    <OverlayLoader v-if="isLoading" />{{ t("import.start") }}
+                </button>
             </div>
         </div>
     </form>

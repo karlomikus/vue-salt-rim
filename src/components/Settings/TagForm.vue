@@ -3,71 +3,66 @@
         <OverlayLoader v-if="isLoading" />
         <div class="dialog-title">{{ dialogTitle }}</div>
         <div class="form-group">
-            <label class="form-label form-label--required" for="name">{{ $t('name') }}:</label>
-            <input id="name" v-model="tag.name" class="form-input" type="text" required>
+            <label class="form-label form-label--required" for="name">{{ $t("name") }}:</label>
+            <input id="name" v-model="tag.name" class="form-input" type="text" required />
         </div>
         <div class="dialog-actions">
-            <button class="button button--outline" @click.prevent="$emit('tagDialogClosed')">{{ $t('cancel') }}</button>
-            <button class="button button--dark" type="submit">{{ $t('save') }}</button>
+            <button class="button button--outline" @click.prevent="$emit('tagDialogClosed')">{{ $t("cancel") }}</button>
+            <button class="button button--dark" type="submit">{{ $t("save") }}</button>
         </div>
     </form>
 </template>
 
-<script>
-import OverlayLoader from '@/components/OverlayLoader.vue'
-import BarAssistantClient from '@/api/BarAssistantClient'
+<script setup lang="ts">
+import { ref } from "vue";
+import { useI18n } from "vue-i18n";
+import OverlayLoader from "@/components/OverlayLoader.vue";
+import BarAssistantClient from "@/api/BarAssistantClient";
+import { useSaltRimToast } from "@/composables/toast";
 
-export default {
-    components: {
-        OverlayLoader,
-    },
-    props: {
-        sourceTag: {
-            type: Object,
-            default() {
-                return {}
-            }
-        },
-        dialogTitle: {
-            type: String,
-            default: ''
-        },
-    },
-    emits: ['tagDialogClosed'],
-    data() {
-        return {
-            isLoading: false,
-            tag: this.sourceTag,
-        }
-    },
-    methods: {
-        submit() {
-            this.isLoading = true
+type Tag = { id?: number; name?: string };
 
-            const postData = {
-                name: this.tag.name
-            }
+const props = withDefaults(defineProps<{ sourceTag?: Tag; dialogTitle?: string }>(), {
+    sourceTag: () => ({}),
+    dialogTitle: "",
+});
+const { t } = useI18n();
+const toast = useSaltRimToast();
 
-            if (this.tag.id) {
-                BarAssistantClient.updateTag(this.tag.id, postData).then(() => {
-                    this.isLoading = false
-                    this.$toast.default(this.$t('tag.update-success'))
-                    this.$emit('tagDialogClosed')
-                }).catch(e => {
-                    this.$toast.error(e.message)
-                    this.isLoading = false
-                })
-            } else {
-                BarAssistantClient.saveTag(postData).then(() => {
-                    this.isLoading = false
-                    this.$toast.default(this.$t('tag.add-success'))
-                    this.$emit('tagDialogClosed')
-                }).catch(e => {
-                    this.$toast.error(e.message)
-                    this.isLoading = false
-                })
-            }
-        }
+const emit = defineEmits<{ tagDialogClosed: [] }>();
+
+const isLoading = ref(false);
+const tag = ref<Tag>(props.sourceTag);
+
+function submit() {
+    isLoading.value = true;
+
+    const postData = {
+        name: tag.value.name ?? "",
+    };
+
+    if (tag.value.id) {
+        BarAssistantClient.updateTag(tag.value.id, postData)
+            .then(() => {
+                isLoading.value = false;
+                toast.default(t("tag.update-success"));
+                emit("tagDialogClosed");
+            })
+            .catch((e) => {
+                toast.error(e.message);
+                isLoading.value = false;
+            });
+    } else {
+        BarAssistantClient.saveTag(postData)
+            .then(() => {
+                isLoading.value = false;
+                toast.default(t("tag.add-success"));
+                emit("tagDialogClosed");
+            })
+            .catch((e) => {
+                toast.error(e.message);
+                isLoading.value = false;
+            });
     }
 }
 </script>

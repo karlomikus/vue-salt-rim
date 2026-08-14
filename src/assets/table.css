@@ -17,7 +17,7 @@
 }
 
 .table td {
-    padding: .5rem;
+    padding: 0.5rem;
     box-shadow: inset var(--table-border-width) calc(var(--table-border-width) * -1) 0 0 var(--table-border-color);
 }
 
@@ -40,7 +40,7 @@
 .table th {
     font-weight: var(--fw-bold);
     font-size: 0.85rem;
-    padding: .5rem;
+    padding: 0.5rem;
     border-bottom: 2px solid var(--table-border-color);
 }
 

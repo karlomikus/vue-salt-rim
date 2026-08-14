@@ -1,5 +1,5 @@
-<script setup>
-import APIList from '../components/Settings/APIList.vue'
+<script setup lang="ts">
+import APIList from "../components/Settings/APIList.vue";
 </script>
 
 <template>

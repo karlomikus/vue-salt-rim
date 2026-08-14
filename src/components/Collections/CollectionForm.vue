@@ -3,83 +3,78 @@
         <OverlayLoader v-if="isLoading" />
         <div class="dialog-title">{{ dialogTitle }}</div>
         <div class="form-group">
-            <label class="form-label form-label--required" for="name">{{ $t('name') }}:</label>
-            <input id="name" v-model="collection.name" class="form-input" type="text" required>
+            <label class="form-label form-label--required" for="name">{{ $t("name") }}:</label>
+            <input id="name" v-model="collection.name" class="form-input" type="text" required />
         </div>
         <div class="form-group">
-            <label class="form-label" for="description">{{ $t('description') }}:</label>
+            <label class="form-label" for="description">{{ $t("description") }}:</label>
             <textarea id="description" v-model="collection.description" rows="5" class="form-input"></textarea>
         </div>
         <div class="form-group">
             <label class="form-checkbox" for="share-in-bar">
-                <input id="share-in-bar" v-model="collection.is_bar_shared" type="checkbox" :value="true">
-                <span>{{ $t('collections.share-in-bar') }}</span>
+                <input id="share-in-bar" v-model="collection.is_bar_shared" type="checkbox" :value="true" />
+                <span>{{ $t("collections.share-in-bar") }}</span>
             </label>
         </div>
         <div class="dialog-actions">
-            <button class="button button--outline" @click.prevent="$emit('collectionDialogClosed')">{{ $t('cancel') }}</button>
-            <button class="button button--dark" type="submit">{{ $t('save') }}</button>
+            <button class="button button--outline" @click.prevent="$emit('collectionDialogClosed')">{{ $t("cancel") }}</button>
+            <button class="button button--dark" type="submit">{{ $t("save") }}</button>
         </div>
     </form>
 </template>
 
-<script>
-import BarAssistantClient from '@/api/BarAssistantClient';
-import OverlayLoader from './../OverlayLoader.vue'
+<script setup lang="ts">
+import { ref } from "vue";
+import { useI18n } from "vue-i18n";
+import BarAssistantClient from "@/api/BarAssistantClient";
+import OverlayLoader from "@/components/OverlayLoader.vue";
+import { useSaltRimToast } from "@/composables/toast";
+import type { components } from "@/api/api";
 
-export default {
-    components: {
-        OverlayLoader
-    },
-    props: {
-        dialogTitle: {
-            type: String,
-            default: ''
-        },
-        sourceCollection: {
-            type: Object,
-            default() {
-                return {}
-            }
-        }
-    },
-    emits: ['collectionDialogClosed'],
-    data() {
-        return {
-            isLoading: false,
-            collection: this.sourceCollection,
-        }
-    },
-    methods: {
-        submit() {
-            this.isLoading = true
+type Collection = components["schemas"]["Collection"];
 
-            const postData = {
-                name: this.collection.name,
-                description: this.collection.description,
-                is_bar_shared: this.collection.is_bar_shared,
-            }
+const props = withDefaults(defineProps<{ dialogTitle?: string; sourceCollection: Collection }>(), {
+    dialogTitle: "",
+});
+const { t } = useI18n();
+const toast = useSaltRimToast();
 
-            if (this.collection.id) {
-                BarAssistantClient.updateCollection(this.collection.id, postData).then(() => {
-                    this.isLoading = false
-                    this.$toast.default(this.$t('collections.update-success'))
-                    this.$emit('collectionDialogClosed')
-                }).catch(e => {
-                    this.$toast.error(e.message)
-                    this.isLoading = false
-                })
-            } else {
-                BarAssistantClient.saveCollection(postData).then(() => {
-                    this.isLoading = false
-                    this.$toast.default(this.$t('collections.add-success'))
-                    this.$emit('collectionDialogClosed')
-                }).catch(e => {
-                    this.$toast.error(e.message)
-                    this.isLoading = false
-                })
-            }
-        }
+const emit = defineEmits<{ collectionDialogClosed: [] }>();
+
+const isLoading = ref(false);
+const collection = ref<Collection>(props.sourceCollection);
+
+function submit() {
+    isLoading.value = true;
+
+    const postData = {
+        name: collection.value.name ?? "",
+        description: collection.value.description,
+        is_bar_shared: collection.value.is_bar_shared,
+    };
+
+    if (collection.value.id) {
+        BarAssistantClient.updateCollection(collection.value.id, postData)
+            .then(() => {
+                isLoading.value = false;
+                toast.default(t("collections.update-success"));
+                emit("collectionDialogClosed");
+            })
+            .catch((e) => {
+                toast.error(e.message);
+                isLoading.value = false;
+            });
+    } else {
+        BarAssistantClient.saveCollection(postData)
+            .then(() => {
+                isLoading.value = false;
+                toast.default(t("collections.add-success"));
+                emit("collectionDialogClosed");
+            })
+            .catch((e) => {
+                toast.error(e.message);
+                isLoading.value = false;
+            });
     }
 }
 </script>

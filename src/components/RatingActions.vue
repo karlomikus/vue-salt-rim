@@ -1,56 +1,60 @@
 <template>
     <div class="rating">
         <OverlayLoader v-if="isLoading" :size="25" />
-        <a v-for="val in max" :key="val" href="#" :class="{'is-rated': val <= currentRating}" @click.prevent="rate(val)"></a>
+        <a v-for="val in max" :key="val" href="#" :class="{ 'is-rated': val <= currentRating }" @click.prevent="rate(val)"></a>
     </div>
 </template>
 
 <script setup lang="ts">
-import { ref, watch } from 'vue'
-import BarAssistantClient from '@/api/BarAssistantClient';
-import OverlayLoader from './OverlayLoader.vue'
-import { useSaltRimToast } from '@/composables/toast';
-import { useI18n } from 'vue-i18n'
+import { ref, watch } from "vue";
+import BarAssistantClient from "@/api/BarAssistantClient";
+import OverlayLoader from "./OverlayLoader.vue";
+import { useSaltRimToast } from "@/composables/toast";
+import { useI18n } from "vue-i18n";
 
-const { t } = useI18n()
-const toast = useSaltRimToast()
-const isLoading = ref(false)
-const max = 5
-const min = 1
+const { t } = useI18n();
+const toast = useSaltRimToast();
+const isLoading = ref(false);
+const max = 5;
+const min = 1;
 const props = defineProps<{
-    rating: number
-    id: number
-    type: string
-}>()
-const currentRating = ref(props.rating)
+    rating: number;
+    id: number;
+    type: string;
+}>();
+const currentRating = ref(props.rating);
 
 async function rate(rating: number) {
     if (isLoading.value || rating < min || rating > max) {
-        return
+        return;
     }
 
-    isLoading.value = true
+    isLoading.value = true;
 
     try {
         if (currentRating.value == rating) {
-            await BarAssistantClient.deleteCocktailRating(props.id)
-            currentRating.value = 0
-            toast.default(t('rating-removed'))
+            await BarAssistantClient.deleteCocktailRating(props.id);
+            currentRating.value = 0;
+            toast.default(t("rating-removed"));
         } else {
-            await BarAssistantClient.rateCocktail(props.id, { rating: rating })
-            currentRating.value = rating
-            toast.default(t('rating-rated', { rating: rating }))
+            await BarAssistantClient.rateCocktail(props.id, { rating: rating });
+            currentRating.value = rating;
+            toast.default(t("rating-rated", { rating: rating }));
         }
     } catch (e) {
-        toast.error(t('server-error'))
+        toast.error(t("server-error"));
     } finally {
-        isLoading.value = false
+        isLoading.value = false;
     }
 }
 
-watch(() => props.id, () => {
-    currentRating.value = props.rating
-}, { immediate: true })
+watch(
+    () => props.id,
+    () => {
+        currentRating.value = props.rating;
+    },
+    { immediate: true },
+);
 </script>
 
 <style scoped>
@@ -78,11 +82,11 @@ watch(() => props.id, () => {
 }
 
 .rating a:before {
-    content: '☆';
+    content: "☆";
 }
 
 .rating a.is-rated:before {
-    content: '★';
+    content: "★";
 }
 
 .rating a:hover ~ a {
@@ -92,5 +96,4 @@ watch(() => props.id, () => {
 .rating a:hover {
     color: var(--color-rated);
 }
-
 </style>

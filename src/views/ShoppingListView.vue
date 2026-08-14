@@ -1,5 +1,5 @@
-<script setup>
-import ShoppingListIndex from '../components/ShoppingList/ShoppingListIndex.vue'
+<script setup lang="ts">
+import ShoppingListIndex from "../components/ShoppingList/ShoppingListIndex.vue";
 </script>
 
 <template>

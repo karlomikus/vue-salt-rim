@@ -1,74 +1,76 @@
 <script setup lang="ts">
-import { computed, ref, watch } from 'vue'
-import type { components } from '@/api/api'
-import { useI18n } from 'vue-i18n'
-import BarAssistantClient from '@/api/BarAssistantClient'
-import IngredientTreeNode from './Hierarchy/IngredientTreeNode.vue'
-import OverlayLoader from '../OverlayLoader.vue'
-import IngredientIcicle from './Hierarchy/IngredientIcicle.vue'
+import { computed, ref, watch } from "vue";
+import type { components } from "@/api/api";
+import { useI18n } from "vue-i18n";
+import BarAssistantClient from "@/api/BarAssistantClient";
+import IngredientTreeNode from "./Hierarchy/IngredientTreeNode.vue";
+import OverlayLoader from "../OverlayLoader.vue";
+import IngredientIcicle from "./Hierarchy/IngredientIcicle.vue";
 
-type IngredientTree = components['schemas']['IngredientTree'];
+type IngredientTree = components["schemas"]["IngredientTree"];
 
-const { t } = useI18n()
-const isLoading = ref(false)
-const hierarchy = ref<IngredientTree | null>(null)
-const currentTab = ref<'dendogram' | 'icicle'>('dendogram')
-const {
-    parentId,
-    rootId,
-} = defineProps<{
+const { t } = useI18n();
+const isLoading = ref(false);
+const hierarchy = ref<IngredientTree | null>(null);
+const currentTab = ref<"dendogram" | "icicle">("dendogram");
+const { parentId, rootId } = defineProps<{
     parentId: number | string;
     rootId: number | string;
 }>();
 
 async function fetchTree(id: string) {
-    isLoading.value = true
+    isLoading.value = true;
     try {
-        hierarchy.value = (await BarAssistantClient.getIngredientTree(id))?.data ?? null
+        hierarchy.value = (await BarAssistantClient.getIngredientTree(id))?.data ?? null;
     } catch (e) {
-        return
+        return;
     }
 
-    isLoading.value = false
+    isLoading.value = false;
 }
 
-const onlyVariants = computed((): IngredientTree|null => {
+const onlyVariants = computed((): IngredientTree | null => {
     if (!hierarchy.value) {
-        return null
+        return null;
     }
 
     if (hierarchy.value.ingredient.id.toString() === parentId.toString()) {
-        return hierarchy.value
+        return hierarchy.value;
     }
 
     function findChildById(node: IngredientTree, targetId: string): IngredientTree | null {
         if (node.ingredient.id.toString() === targetId) {
-            return node
+            return node;
         }
 
         for (const child of node.children) {
-            const found = findChildById(child, targetId)
+            const found = findChildById(child, targetId);
             if (found) {
-                return found
+                return found;
             }
         }
 
-        return null
+        return null;
     }
 
-    return findChildById(hierarchy.value, parentId.toString())
-})
+    return findChildById(hierarchy.value, parentId.toString());
+});
 
-watch(() => parentId, () => {
-    fetchTree(rootId.toString())
-}, { immediate: true })
+watch(
+    () => parentId,
+    () => {
+        fetchTree(rootId.toString());
+    },
+    { immediate: true },
+);
 </script>
 
 <template>
     <div v-if="hierarchy">
-        <h2 class="block-container__title">{{ t('ingredient.hierarchy') }}</h2>
-        <p>{{ t('ingredient.hierarchy-description') }}</p>
-        <a href="#" @click.prevent="currentTab = 'dendogram'">{{ t('ingredient.show-variants') }}</a> &middot; <a href="#" @click.prevent="currentTab = 'icicle'">{{ t('ingredient.icicle-graph') }}</a>
+        <h2 class="block-container__title">{{ t("ingredient.hierarchy") }}</h2>
+        <p>{{ t("ingredient.hierarchy-description") }}</p>
+        <a href="#" @click.prevent="currentTab = 'dendogram'">{{ t("ingredient.show-variants") }}</a> &middot;
+        <a href="#" @click.prevent="currentTab = 'icicle'">{{ t("ingredient.icicle-graph") }}</a>
         <div class="ingredient-hierarchy block-container block-container--padded block-container--inset tf-tree tf-gap-sm" v-if="currentTab === 'dendogram'">
             <OverlayLoader v-if="isLoading" />
             <ul v-if="onlyVariants">

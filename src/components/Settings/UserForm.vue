@@ -3,109 +3,87 @@
         <OverlayLoader v-if="isLoading" />
         <div class="dialog-title">{{ dialogTitle }}</div>
         <div class="form-group">
-            <label class="form-label form-label--required" for="name">{{ $t('users.display-name') }}:</label>
-            <input id="name" v-model="user.name" class="form-input" type="text" required>
+            <label class="form-label form-label--required" for="email">{{ $t("email") }}:</label>
+            <input id="email" v-model="user.email" class="form-input" type="email" :disabled="user.id != null" required />
         </div>
         <div class="form-group">
-            <label class="form-label form-label--required" for="email">{{ $t('email') }}:</label>
-            <input id="email" v-model="user.email" class="form-input" type="email" required>
-        </div>
-        <div class="form-group">
-            <label class="form-label" :class="{ 'form-label--required': !user.id }" for="password">
-                <template v-if="!user.id">
-                    {{ $t('password') }}:
-                </template>
-                <template v-else>
-                    {{ $t('update-password') }}:
-                </template>
-            </label>
-            <input id="password" v-model="user.password" class="form-input" type="password" :required="!user.id">
-        </div>
-        <div class="form-group">
-            <label class="form-label">{{ $t('users.role') }}:</label>
+            <label class="form-label">{{ $t("users.role") }}:</label>
             <div class="user-roles">
-                <SaltRimRadio v-for="role in roles" :key="role.id" v-model="user.role.role_id" :value="role.id" :title="role.name" :description="role.description"></SaltRimRadio>
+                <SaltRimRadio v-for="role in roles" :key="role.id" v-model="user.role.id" :value="role.id" :title="role.name" :description="role.description"></SaltRimRadio>
             </div>
         </div>
         <div class="dialog-actions">
-            <button class="button button--outline" @click.prevent="$emit('userDialogClosed')">{{ $t('cancel') }}</button>
-            <button class="button button--dark" type="submit">{{ $t('save') }}</button>
+            <button class="button button--outline" @click.prevent="$emit('userDialogClosed')">{{ $t("cancel") }}</button>
+            <button class="button button--dark" type="submit">{{ $t("save") }}</button>
         </div>
     </form>
 </template>
 
-<script>
-import BarAssistantClient from '@/api/BarAssistantClient'
-import OverlayLoader from './../OverlayLoader.vue'
-import SaltRimRadio from './../SaltRimRadio.vue'
+<script setup lang="ts">
+import { ref } from "vue";
+import { useI18n } from "vue-i18n";
+import BarAssistantClient from "@/api/BarAssistantClient";
+import OverlayLoader from "@/components/OverlayLoader.vue";
+import SaltRimRadio from "@/components/SaltRimRadio.vue";
+import { useSaltRimToast } from "@/composables/toast";
 
-export default {
-    components: {
-        OverlayLoader,
-        SaltRimRadio
-    },
-    props: {
-        sourceUser: {
-            type: Object,
-            default() {
-                return {
-                    role: {}
-                }
-            }
-        },
-        dialogTitle: {
-            type: String,
-            default: ''
-        },
-    },
-    emits: ['userDialogClosed'],
-    data() {
-        return {
-            isLoading: false,
-            user: this.sourceUser,
-            roles: [
-                { id: 1, name: this.$t('roles.name.Admin'), description: this.$t('roles.description.Admin') },
-                { id: 2, name: this.$t('roles.name.Moderator'), description: this.$t('roles.description.Moderator') },
-                { id: 3, name: this.$t('roles.name.General'), description: this.$t('roles.description.General') },
-                { id: 4, name: this.$t('roles.name.Guest'), description: this.$t('roles.description.Guest') },
-            ]
-        }
-    },
-    methods: {
-        submit() {
-            this.isLoading = true
+type User = { id?: number; email?: string; role?: { id?: number | null } };
+type UserState = { id?: number; email?: string; role: { id?: number | null } };
 
-            const postData = {
-                name: this.user.name,
-                email: this.user.email,
-                role_id: this.user.role.role_id,
-            }
+const props = withDefaults(defineProps<{ sourceUser?: User; dialogTitle?: string }>(), {
+    sourceUser: () => ({ role: {} }),
+    dialogTitle: "",
+});
+const { t } = useI18n();
+const toast = useSaltRimToast();
 
-            if (this.user.id) {
-                if (this.user.password) {
-                    postData.password = this.user.password
-                }
+const emit = defineEmits<{ userDialogClosed: [] }>();
 
-                BarAssistantClient.updateUser(this.user.id, postData).then(() => {
-                    this.isLoading = false
-                    this.$toast.default(this.$t('users.update-success'))
-                    this.$emit('userDialogClosed')
-                }).catch(e => {
-                    this.$toast.error(e.message)
-                    this.isLoading = false
-                })
-            } else {
-                postData.password = this.user.password
-                BarAssistantClient.saveUser(postData).then(() => {
-                    this.isLoading = false
-                    this.$toast.default(this.$t('users.add-success'))
-                    this.$emit('userDialogClosed')
-                }).catch(e => {
-                    this.$toast.error(e.message)
-                    this.isLoading = false
-                })
-            }
-        }
+const isLoading = ref(false);
+const user = ref<UserState>({ ...props.sourceUser, role: props.sourceUser?.role ?? {} });
+const roles = [
+    { id: 1, name: t("roles.name.Admin"), description: t("roles.description.Admin") },
+    { id: 3, name: t("roles.name.General"), description: t("roles.description.General") },
+    { id: 4, name: t("roles.name.Guest"), description: t("roles.description.Guest") },
+];
+
+function submit() {
+    isLoading.value = true;
+
+    if (user.value.id) {
+        const postData = {
+            email: user.value.email ?? "",
+            role_id: user.value.role?.id ?? 0,
+        };
+
+        BarAssistantClient.updateMember(user.value.id, postData)
+            .then(() => {
+                toast.default(t("users.update-success"));
+                emit("userDialogClosed");
+            })
+            .catch(() => {
+                toast.error("Unable to update a member.");
+            })
+            .finally(() => {
+                isLoading.value = false;
+            });
+    } else {
+        const postData = {
+            email: user.value.email ?? "",
+            role_id: user.value.role?.id ?? 0,
+        };
+
+        BarAssistantClient.saveMember(postData)
+            .then(() => {
+                toast.default(t("users.add-success"));
+                emit("userDialogClosed");
+            })
+            .catch(() => {
+                toast.error("Unable to add a member. Make sure the user exists and is not already a member.");
+            })
+            .finally(() => {
+                isLoading.value = false;
+            });
     }
 }
 </script>

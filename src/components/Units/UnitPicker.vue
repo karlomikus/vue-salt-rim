@@ -1,11 +1,14 @@
-<script setup>
-import { inject } from 'vue'
+<script setup lang="ts">
+import { inject } from "vue";
 
-const { currentUnit, updateCurrentUnit } = inject('currentUnit')
+const { currentUnit, updateCurrentUnit } = inject("currentUnit") as {
+    currentUnit: "ml" | "oz" | "cl";
+    updateCurrentUnit: (unit: "ml" | "oz" | "cl") => void;
+};
 </script>
 <template>
-    <div class="button-group" style="text-align:right">
-        <h4>{{ $t('units') }}:</h4>
+    <div class="button-group" style="text-align: right">
+        <h4>{{ $t("units") }}:</h4>
         <button type="button" :class="{ 'is-active': currentUnit == 'ml' }" @click="updateCurrentUnit('ml')">ml</button>
         <button type="button" :class="{ 'is-active': currentUnit == 'oz' }" @click="updateCurrentUnit('oz')">oz</button>
         <button type="button" :class="{ 'is-active': currentUnit == 'cl' }" @click="updateCurrentUnit('cl')">cl</button>
@@ -18,4 +21,4 @@ const { currentUnit, updateCurrentUnit } = inject('currentUnit')
         letter-spacing: 1px;
     }
 }
- </style>
+</style>

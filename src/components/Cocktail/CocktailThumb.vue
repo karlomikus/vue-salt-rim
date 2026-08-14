@@ -1,38 +1,36 @@
 <template>
     <div class="cocktail-thumb">
-        <img :src="mainCocktailImageUrl" alt="Smaller image of cocktail">
+        <img :src="mainCocktailImageUrl" alt="Smaller image of cocktail" />
     </div>
 </template>
-<script>
-import BarAssistantClient from '@/api/BarAssistantClient';
+<script setup lang="ts">
+import { computed } from "vue";
+import BarAssistantClient from "@/api/BarAssistantClient";
 
-export default {
-    props: {
-        cocktail: {
-            type: Object,
-            default() {
-                return {}
-            }
-        }
-    },
-    computed: {
-        mainCocktailImageUrl() {
-            if (!this.cocktail.images && !this.cocktail.image_url) {
-                return '/no-cocktail.jpg'
-            }
+type ThumbCocktail = {
+    image_url?: string | null;
+    images?: { id: number }[];
+};
 
-            if (this.cocktail.image_url) {
-                return this.cocktail.image_url
-            }
+const props = withDefaults(defineProps<{ cocktail?: Partial<ThumbCocktail> }>(), {
+    cocktail: () => ({}),
+});
 
-            if (this.cocktail.images.length == 0) {
-                return '/no-cocktail.jpg'
-            }
-
-            return BarAssistantClient.getImageThumbUrl(this.cocktail.images[0].id)
-        },
+const mainCocktailImageUrl = computed(() => {
+    if (!props.cocktail.images && !props.cocktail.image_url) {
+        return "/no-cocktail.jpg";
     }
-}
+
+    if (props.cocktail.image_url) {
+        return props.cocktail.image_url;
+    }
+
+    if (props.cocktail.images && props.cocktail.images.length == 0) {
+        return "/no-cocktail.jpg";
+    }
+
+    return BarAssistantClient.getImageThumbUrl(props.cocktail.images![0].id);
+});
 </script>
 <style scoped>
 .cocktail-thumb {

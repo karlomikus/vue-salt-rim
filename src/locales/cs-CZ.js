@@ -1,25 +1,27 @@
-import messages from './messages/cs-CZ.json'
+import messages from "./messages/cs-CZ.json";
 
 const datetime = {
-    'short': {
-        'year': 'numeric',
-        'month': 'short',
-        'day': 'numeric'
+    short: {
+        year: "numeric",
+        month: "short",
+        day: "numeric",
     },
-    'long': {
-        'year': 'numeric',
-        'month': 'short',
-        'day': 'numeric',
-        'weekday': 'short',
-        'hour': 'numeric',
-        'minute': 'numeric'
-    }
-}
+    long: {
+        year: "numeric",
+        month: "short",
+        day: "numeric",
+        weekday: "short",
+        hour: "numeric",
+        minute: "numeric",
+    },
+};
 
 const numbers = {
     decimal: {
-        style: 'decimal', minimumFractionDigits: 2, maximumFractionDigits: 2
-    }
-}
+        style: "decimal",
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+    },
+};
 
-export default { messages, datetime, numbers }
+export default { messages, datetime, numbers };

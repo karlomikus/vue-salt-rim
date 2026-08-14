@@ -1,5 +1,5 @@
-<script setup>
-import AuthLogin from '../components/Auth/AuthLogin.vue'
+<script setup lang="ts">
+import AuthLogin from "../components/Auth/AuthLogin.vue";
 </script>
 
 <template>

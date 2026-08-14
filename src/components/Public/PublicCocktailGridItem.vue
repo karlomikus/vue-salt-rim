@@ -1,5 +1,5 @@
 <template>
-    <RouterLink :to="{name: 'public.cocktails.show', params: {barId: bar.slug, slug: cocktail.slug}}" class="public-cocktail-grid-item block-container">
+    <RouterLink :to="{ name: 'public.cocktails.show', params: { barId: bar.slug, slug: cocktail.slug } }" class="public-cocktail-grid-item block-container">
         <h3 class="public-cocktail-grid-item__thumb">
             <img :src="mainImage.url" :alt="mainImage.copyright ?? cocktail.name" />
         </h3>
@@ -7,33 +7,33 @@
             <div class="public-cocktail-grid-item__title">
                 {{ cocktail.name }}
             </div>
-            <div class="public-cocktail-grid-item__ingredients">{{ cocktail.ingredients.map(i => i.name).join(', ') }}</div>
+            <div class="public-cocktail-grid-item__ingredients">{{ cocktail.ingredients.map((i) => i.name).join(", ") }}</div>
         </div>
     </RouterLink>
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'
-import type { components } from '@/api/api'
+import { computed } from "vue";
+import type { components } from "@/api/api";
 
-type Cocktail = components['schemas']['PublicCocktailResource']
-type Bar = components['schemas']['PublicBarResource']
+type Cocktail = components["schemas"]["PublicCocktailResource"];
+type Bar = components["schemas"]["PublicBarResource"];
 
 const props = defineProps<{
-    cocktail: Cocktail,
-    bar: Bar,
-}>()
+    cocktail: Cocktail;
+    bar: Bar;
+}>();
 
 const mainImage = computed(() => {
     if (props.cocktail.images && props.cocktail.images.length > 0) {
-        return  props.cocktail.images[0]
+        return props.cocktail.images[0];
     }
 
     return {
-        url: '/no-cocktail.jpg',
-        copyright: 'Missing cocktail image',
-    }
-})
+        url: "/no-cocktail.jpg",
+        copyright: "Missing cocktail image",
+    };
+});
 </script>
 
 <style scoped>

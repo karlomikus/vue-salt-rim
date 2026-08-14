@@ -1,14 +1,12 @@
-export function getRoleName(roleId: number): string|null {
+export function getRoleName(roleId: number): string | null {
     switch (roleId) {
         case 1:
-            return 'admin'
-        case 2:
-            return 'moderator'
+            return "admin";
         case 3:
-            return 'general'
+            return "general";
         case 4:
-            return 'guest'
+            return "guest";
         default:
-            return null
+            return null;
     }
 }

@@ -1,35 +1,33 @@
 <script setup lang="ts">
-import type { components } from '@/api/api'
-import { thumbHashToDataURL } from 'thumbhash'
-import { computed } from 'vue';
+import type { components } from "@/api/api";
+import { thumbHashToDataURL } from "thumbhash";
+import { computed } from "vue";
 
-type Image = components['schemas']['Image']
+type Image = components["schemas"]["Image"];
 
 const props = defineProps<{
-    image: Image|null
-}>()
+    image: Image | null;
+}>();
 
 const imageUrl = computed(() => {
     if (!props.image) {
-        return '/no-cocktail.jpg'
+        return "/no-cocktail.jpg";
     }
 
-    return `${window.srConfig.API_URL}${props.image.thumb_url}`
-})
+    return `${window.srConfig.API_URL}${props.image.thumb_url}`;
+});
 
 const placeholderImage = computed(() => {
     if (props.image?.placeholder_hash) {
-        return thumbHashToDataURL(
-            Uint8Array.from(atob(props.image.placeholder_hash), c => c.charCodeAt(0))
-        )
+        return thumbHashToDataURL(Uint8Array.from(atob(props.image.placeholder_hash), (c) => c.charCodeAt(0)));
     }
 
-    return ''
-})
+    return "";
+});
 
 const placeholderImageStyles = {
     backgroundImage: `url(${placeholderImage.value})`,
-}
+};
 </script>
 
 <template>

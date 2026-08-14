@@ -72,7 +72,7 @@ $ docker run -d \
 2. Install the dependencies
 
 ``` bash
-$ npm install
+$ bun install
 ```
 
 3. Add configuration
@@ -91,7 +91,7 @@ window.srConfig.ALLOW_REGISTRATION = true;
 4. Run the build commands
 
 ``` bash
-$ npm run build
+$ bun run build
 ```
 
 This will create a `dist/` folder with ready to use static files.
@@ -99,7 +99,7 @@ This will create a `dist/` folder with ready to use static files.
 5. Or run a dev server with the following command
 
 ``` bash
-$ npm run dev
+$ bun run dev
 ```
 
 ## Contributing

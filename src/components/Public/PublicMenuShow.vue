@@ -1,31 +1,31 @@
 <script setup lang="ts">
-import { ref } from 'vue'
-import { useRoute } from 'vue-router'
-import BarAssistantClient from '@/api/BarAssistantClient'
-import { unitHandler } from '@/composables/useUnits'
-import type { components } from '@/api/api'
+import { ref } from "vue";
+import { useRoute } from "vue-router";
+import BarAssistantClient from "@/api/BarAssistantClient";
+import { unitHandler } from "@/composables/useUnits";
+import type { components } from "@/api/api";
 
-type MenuPublic = components["schemas"]["MenuPublic"]
+type MenuPublic = components["schemas"]["MenuPublic"];
 
-const route = useRoute()
-const host = window.location.host
-const protocol = window.location.protocol
-const menu = ref<MenuPublic>()
+const route = useRoute();
+const host = window.location.host;
+const protocol = window.location.protocol;
+const menu = ref<MenuPublic>();
 
 async function refreshMenu() {
     try {
-        const resp = (await BarAssistantClient.getPublicMenu(route.params.barId.toString()))?.data
-        menu.value = resp
+        const resp = (await BarAssistantClient.getPublicMenu(route.params.barId.toString()))?.data;
+        menu.value = resp;
     } catch (e) {
-        return
+        return;
     }
 }
 
 function publicUrl(cocktail: components["schemas"]["MenuPublic"]["categories"][0]["items"][0]) {
-    return `${protocol}//${host}/e/cocktail/${cocktail.public_id}/cocktail`
+    return `${protocol}//${host}/e/cocktail/${cocktail.public_id}/cocktail`;
 }
 
-refreshMenu()
+refreshMenu();
 </script>
 
 <template>
@@ -34,9 +34,14 @@ refreshMenu()
             <h3>{{ category.name }}</h3>
             <div class="public-page-menu__category__cocktails">
                 <div v-for="item in category.items" :key="item.sort" class="block-container public-page-menu__cocktail">
-                    <div :class="{'public-page-menu__cocktail__image': item.type === 'cocktail', 'public-page-menu__ingredient__image': item.type === 'ingredient'}">
-                        <img v-if="item.image" :src="item.image" alt="">
-                        <img v-else src="/no-cocktail.jpg" alt="">
+                    <div
+                        :class="{
+                            'public-page-menu__cocktail__image': item.type === 'cocktail',
+                            'public-page-menu__ingredient__image': item.type === 'ingredient',
+                        }"
+                    >
+                        <img v-if="item.image" :src="item.image" alt="" />
+                        <img v-else src="/no-cocktail.jpg" alt="" />
                     </div>
                     <div class="public-page-menu__cocktail__info">
                         <h4>{{ item.name }}</h4>

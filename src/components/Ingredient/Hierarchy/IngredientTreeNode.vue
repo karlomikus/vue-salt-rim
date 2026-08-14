@@ -1,13 +1,13 @@
 <script setup lang="ts">
-import IngredientTreeNodeItem from './IngredientTreeNodeItem.vue';
-import type { components } from '@/api/api'
+import IngredientTreeNodeItem from "./IngredientTreeNodeItem.vue";
+import type { components } from "@/api/api";
 
-type IngredientTree = components['schemas']['IngredientTree'];
+type IngredientTree = components["schemas"]["IngredientTree"];
 
 defineProps<{
-    hierarchyItem: IngredientTree,
-    currentId: string,
-}>()
+    hierarchyItem: IngredientTree;
+    currentId: string;
+}>();
 </script>
 
 <template>

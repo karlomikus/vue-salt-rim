@@ -1,7 +1,5 @@
 <script setup lang="ts">
-const {
-    tag = 'div',
-} = defineProps<{
+const { tag = "div" } = defineProps<{
     tag?: string;
 }>();
 </script>

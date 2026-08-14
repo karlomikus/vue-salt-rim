@@ -11,50 +11,53 @@
                 <a target="_blank" href="https://www.cocktailsafe.org/">Cocktail safety</a>
                 <template v-if="appState.isBillingEnabled()">
                     <span>&middot;</span>
-                    <a target="_blank" href="https://barassistant.app/terms.html">
-                        Terms
-                    </a>
+                    <a target="_blank" href="https://barassistant.app/terms.html"> Terms </a>
                     <span>&middot;</span>
-                    <a target="_blank" href="https://barassistant.app/privacy.html">
-                        Privacy policy
-                    </a>
+                    <a target="_blank" href="https://barassistant.app/privacy.html"> Privacy policy </a>
                 </template>
             </div>
             <div class="site-footer__links">
-                <span>Salt Rim: <a href="https://github.com/karlomikus/vue-salt-rim/releases" target="_blank">{{ client }}</a></span>
+                <span
+                    >Salt Rim: <a href="https://github.com/karlomikus/vue-salt-rim/releases" target="_blank">{{ client }}</a></span
+                >
                 <span>&middot;</span>
-                <span>Bar Assistant: <a href="https://github.com/karlomikus/bar-assistant/releases" target="_blank">
-                    {{ versions.version }}
-                    <template v-if="!versions.is_latest">
-                        (Update available)
-                    </template>
-                </a></span>
+                <span
+                    >Bar Assistant:
+                    <a href="https://github.com/karlomikus/bar-assistant/releases" target="_blank">
+                        {{ versions?.version }}
+                        <template v-if="versions && !versions.is_latest"> (Update available) </template>
+                    </a></span
+                >
                 <span>&middot;</span>
-                <span>Meilisearch: <a href="https://github.com/meilisearch/meilisearch/releases" target="_blank">{{ versions.search_version }}</a></span>
+                <span
+                    >Meilisearch: <a href="https://github.com/meilisearch/meilisearch/releases" target="_blank">{{ versions?.search_version }}</a></span
+                >
             </div>
         </div>
     </footer>
 </template>
 
-<script>
-import AppState from '../../AppState'
-import BarAssistantClient from '@/api/BarAssistantClient';
+<script setup lang="ts">
+import { ref, onMounted } from "vue";
+import AppState from "@/AppState";
+import BarAssistantClient from "@/api/BarAssistantClient";
+import type { components } from "@/api/api";
 
-export default {
-    data() {
-        return {
-            appState: new AppState(),
-            client: window.srConfig.VERSION || 'local',
-            versions: {}
-        }
-    },
-    created() {
-        BarAssistantClient.getServerVersion().then(resp => {
-            this.versions = resp.data
-        }).catch(() => {
+type ServerVersion = components["schemas"]["ServerVersion"];
+
+const appState = new AppState();
+const client = window.srConfig.VERSION || "local";
+const versions = ref<ServerVersion | null>(null);
+
+onMounted(() => {
+    BarAssistantClient.getServerVersion()
+        .then((resp) => {
+            versions.value = resp?.data ?? null;
         })
-    }
-}
+        .catch(() => {
+            // Silently fail
+        });
+});
 </script>
 
 <style scoped>
@@ -96,6 +99,6 @@ export default {
 .site-footer a:hover,
 .site-footer a:active,
 .site-footer a:focus {
-    color: var(--clr-footer-link-hover)
+    color: var(--clr-footer-link-hover);
 }
 </style>
