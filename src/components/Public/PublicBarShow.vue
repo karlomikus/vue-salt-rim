@@ -29,7 +29,7 @@
         </div>
         <div v-if="bar.description" class="public-bar-details__description block-container block-container--padded">
             <h3>{{ $t("public-bar.description-title") }}</h3>
-            <div v-html="parsedDescription"></div>
+            <div class="has-markdown" v-html="parsedDescription"></div>
         </div>
     </div>
 </template>

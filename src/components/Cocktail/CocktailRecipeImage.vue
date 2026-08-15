@@ -7,7 +7,7 @@
         </div>
         <div class="public-cocktail-recipe__summary">
             <h2 itemprop="name">{{ cocktail.name }}</h2>
-            <div v-show="!!cocktail.description" itemprop="description" class="public-cocktail-recipe__content" v-html="parsedDescription"></div>
+            <div v-show="!!cocktail.description" itemprop="description" class="public-cocktail-recipe__content has-markdown" v-html="parsedDescription"></div>
             <div v-show="hideUnits == false" class="public-cocktail-recipe__units">
                 <button type="button" class="button button--public" :class="{ 'button--active': currentUnit == 'ml' }" @click="currentUnit = 'ml'">ml</button>
                 <button type="button" class="button button--public" :class="{ 'button--active': currentUnit == 'oz' }" @click="currentUnit = 'oz'">oz</button>
@@ -23,11 +23,11 @@
             </div>
             <div class="public-cocktail-recipe__summary__section">
                 <h3>{{ $t("instructions") }}</h3>
-                <div itemprop="recipeInstructions" class="public-cocktail-recipe__content" v-html="parsedInstructions"></div>
+                <div itemprop="recipeInstructions" class="public-cocktail-recipe__content has-markdown" v-html="parsedInstructions"></div>
             </div>
             <div v-show="!!cocktail.garnish" class="public-cocktail-recipe__summary__section">
                 <h3>{{ $t("garnish") }}</h3>
-                <div class="public-cocktail-recipe__content" v-html="parsedGarnish"></div>
+                <div class="public-cocktail-recipe__content has-markdown" v-html="parsedGarnish"></div>
             </div>
         </div>
     </div>
@@ -166,16 +166,6 @@ const parsedGarnish = computed(() => {
 
 .public-cocktail-recipe__content {
     color: var(--clr-content);
-}
-
-:deep(.public-cocktail-recipe__summary ol) {
-    padding-left: 18px;
-    color: var(--clr-content);
-    width: 100%;
-}
-
-:deep(.public-cocktail-recipe__summary ol li::marker) {
-    color: var(--clr-marker);
 }
 
 .public-cocktail-recipe__summary ul {
