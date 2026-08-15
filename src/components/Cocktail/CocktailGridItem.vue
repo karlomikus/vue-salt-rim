@@ -17,7 +17,7 @@
         <div class="block-container cocktail-grid-item__content">
             <h2 class="cocktail-grid-item__title sr-grid-title">{{ cocktail.name }}</h2>
             <div class="cocktail-grid-item__rating" v-if="cocktail.rating">
-                <CocktailRating :user-rating="cocktail.rating.user ?? undefined" :average-rating="cocktail.rating.average" />
+                <CocktailRating :user-rating="cocktail.rating.user" :average-rating="cocktail.rating.average" />
             </div>
             <p v-if="shortIngredients.length > 0" class="cocktail-grid-item__ingredients">{{ shortIngredients.join(", ") }}</p>
             <ul class="cocktail-tags" v-if="cocktail.tags && cocktail.tags.length > 0">
@@ -34,7 +34,6 @@ import { thumbHashToDataURL } from "thumbhash";
 import CocktailRating from "./CocktailRating.vue";
 import IconFavorite from "../Icons/IconFavorite.vue";
 import IconBarShelf from "../Icons/IconBarShelf.vue";
-import IconUserShelf from "../Icons/IconUserShelf.vue";
 import IconPublicLink from "../Icons/IconPublicLink.vue";
 import type { components } from "@/api/api";
 import { computed, onMounted, useTemplateRef, type ComponentPublicInstance } from "vue";
