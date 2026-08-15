@@ -62,7 +62,7 @@
             </button>
         </div>
         <div class="public-cocktail-grid">
-            <CocktailItem v-for="cocktail in cocktails" :key="cocktail.slug" :cocktail="cocktail" :bar="bar"></CocktailItem>
+            <CocktailItem v-for="cocktail in cocktails" :key="cocktail.slug" :cocktail="cocktail"></CocktailItem>
             <div v-if="cocktails.length === 0">{{ $t("no-cocktails") }}</div>
         </div>
         <Pagination v-if="paginationMeta" :meta="paginationMeta" @page-changed="handlePageChange"></Pagination>
@@ -81,12 +81,7 @@ import Pagination, { type PaginationMeta } from "./../Search/SearchPagination.vu
 import { useI18n } from "vue-i18n";
 
 type Cocktail = components["schemas"]["PublicCocktailResource"];
-type Bar = components["schemas"]["PublicBarResource"];
 type Meta = operations["listPublicBarCocktails"]["responses"]["200"]["content"]["application/json"]["meta"];
-
-defineProps<{
-    bar: Bar;
-}>();
 
 const showFiltersDialog = ref(false);
 const cocktails = ref<Cocktail[]>([]);
@@ -102,7 +97,6 @@ const availableSorts = computed(() => [
     { value: "created_at", label: t("public-bar.sort-created-asc") },
     { value: "-created_at", label: t("public-bar.sort-created-desc") },
 ]);
-const barId = route.params.barId.toString();
 
 const defaultRefinements = {
     sort: "-created_at",
@@ -152,7 +146,11 @@ const fetchCocktails = async () => {
     };
 
     try {
-        const response = await BarAssistantClient.getPublicBarCocktails(barId, query);
+        if (!route.params.barId) {
+            return;
+        }
+
+        const response = await BarAssistantClient.getPublicBarCocktails(route.params.barId.toString(), query);
         cocktails.value = response?.data || [];
         paginationMeta.value = {
             current_page: response?.meta?.current_page || 1,
@@ -201,7 +199,7 @@ const applyFilters = () => {
 };
 
 watch(
-    () => route.query,
+    () => [route.query, route.params.barId],
     () => {
         if (route.name === "public.cocktails.index") {
             queryToState();

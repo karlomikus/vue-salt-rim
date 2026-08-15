@@ -640,10 +640,10 @@ fetchShoppingList();
                         </div>
                     </div>
                 </UnitConverter>
-                <div class="block-container block-container--padded has-markdown">
+                <div class="block-container block-container--padded">
                     <h3 class="block-container__title">{{ t("instructions") }}</h3>
                     <WakeLockToggle></WakeLockToggle>
-                    <div v-html="parsedInstructions"></div>
+                    <div class="has-markdown" v-html="parsedInstructions"></div>
                     <div v-if="cocktail.utensils && cocktail.utensils.length > 0">
                         <br />
                         <strong>{{ t("utensils.title") }}</strong

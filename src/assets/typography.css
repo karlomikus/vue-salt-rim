@@ -1,33 +1,3 @@
-.has-markdown h1 {
-    font-size: 2rem;
-    margin: 0.75rem 0 0.25rem 0;
-    font-weight: var(--fw-bold);
-}
-
-.has-markdown h2 {
-    font-size: 1.5rem;
-    margin: 0.7rem 0 0.2rem 0;
-    font-weight: var(--fw-bold);
-}
-
-.has-markdown h2 {
-    font-size: 1.25rem;
-}
-
-.has-markdown ol {
-    padding-left: 30px;
-}
-
-.has-markdown ol li::marker {
-    font-size: 1rem;
-    font-weight: var(--fw-bold);
-}
-
-.has-markdown hr {
-    border: 1px solid var(--clr-gray-300);
-    margin: 0.75rem 0;
-}
-
 .sr-grid-title {
     font-size: 1.5em;
     font-family: var(--font-heading);

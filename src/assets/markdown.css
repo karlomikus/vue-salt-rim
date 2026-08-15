@@ -1,8 +1,203 @@
-.has-markdown-content {
+.has-markdown {
+    line-height: 1.6;
+    word-wrap: break-word;
+
+    & > *:first-child {
+        margin-top: 0;
+    }
+
+    & > *:last-child {
+        margin-bottom: 0;
+    }
+
+    & h1 {
+        font-size: 2rem;
+        margin: 0.75rem 0 0.25rem 0;
+        font-weight: var(--fw-bold);
+        font-family: var(--font-heading);
+        line-height: 1.2;
+    }
+
+    & h2 {
+        font-size: 1.25rem;
+        margin: 0.7rem 0 0.2rem 0;
+        font-weight: var(--fw-bold);
+        font-family: var(--font-heading);
+        line-height: 1.2;
+    }
+
+    & h3 {
+        font-size: 1.1rem;
+        margin: 0.6rem 0 0.2rem 0;
+        font-weight: var(--fw-bold);
+        font-family: var(--font-heading);
+        line-height: 1.2;
+    }
+
+    & h4 {
+        font-size: 1rem;
+        margin: 0.5rem 0 0.15rem 0;
+        font-weight: var(--fw-bold);
+        font-family: var(--font-heading);
+        line-height: 1.2;
+    }
+
+    & h5,
+    & h6 {
+        font-size: 0.9rem;
+        margin: 0.5rem 0 0.15rem 0;
+        font-weight: var(--fw-bold);
+        font-family: var(--font-heading);
+        line-height: 1.2;
+    }
+
+    & p {
+        margin: 0.5rem 0;
+    }
+
+    & a {
+        color: var(--clr-accent-600);
+        text-decoration: underline;
+        text-underline-offset: 2px;
+
+        &:hover,
+        &:focus,
+        &:active {
+            color: var(--clr-accent-700);
+        }
+    }
+
+    .dark-theme & a {
+        color: var(--clr-accent-400);
+
+        &:hover,
+        &:focus,
+        &:active {
+            color: var(--clr-accent-300);
+        }
+    }
+
+    & strong {
+        font-weight: var(--fw-bold);
+    }
+
+    & em {
+        font-style: italic;
+    }
+
+    & ul {
+        padding-left: 30px;
+        margin: 0.5rem 0;
+    }
+
+    & ul li::marker {
+        font-size: 1rem;
+        color: var(--clr-gray-600);
+
+        .dark-theme & {
+            color: var(--clr-gray-400);
+        }
+    }
+
+    & ol {
+        padding-left: 30px;
+        margin: 0.5rem 0;
+    }
+
+    & ol li::marker {
+        font-size: 1rem;
+        font-weight: var(--fw-bold);
+    }
+
+    & li {
+        margin: 0.2rem 0;
+    }
+
     & code {
         padding: 1px 4px;
-        border-radius: 3px;
+        border-radius: var(--radius-1);
         font-size: 0.9em;
+        font-family: var(--font-mono);
         background-color: var(--clr-gray-200);
+
+        .dark-theme & {
+            background-color: var(--clr-gray-800);
+        }
+    }
+
+    & pre {
+        padding: 0.75rem 1rem;
+        margin: 0.5rem 0;
+        border-radius: var(--radius-2);
+        background-color: var(--clr-gray-100);
+        overflow-x: auto;
+
+        .dark-theme & {
+            background-color: var(--clr-gray-900);
+        }
+
+        & code {
+            padding: 0;
+            background-color: transparent;
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+    }
+
+    & blockquote {
+        margin: 0.5rem 0;
+        padding: 0.25rem 0 0.25rem 1rem;
+        border-left: 3px solid var(--clr-accent-300);
+        color: var(--clr-gray-700);
+
+        .dark-theme & {
+            border-left-color: var(--clr-accent-700);
+            color: var(--clr-gray-300);
+        }
+
+        & p {
+            margin: 0.25rem 0;
+        }
+    }
+
+    & hr {
+        border: 1px solid var(--clr-gray-300);
+        margin: 0.75rem 0;
+    }
+
+    & img {
+        max-width: 100%;
+        height: auto;
+        border-radius: var(--radius-2);
+    }
+
+    & table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 0.5rem 0;
+        text-align: left;
+    }
+
+    & th {
+        font-weight: var(--fw-bold);
+        padding: 0.5rem;
+        border-bottom: 2px solid var(--clr-gray-300);
+    }
+
+    & td {
+        padding: 0.5rem;
+        border-bottom: 1px solid var(--clr-gray-200);
+    }
+
+    & del,
+    & s {
+        text-decoration: line-through;
+        color: var(--clr-gray-500);
+    }
+
+    & mark {
+        padding: 1px 4px;
+        border-radius: var(--radius-1);
+        background-color: var(--clr-accent-200);
     }
 }

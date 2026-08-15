@@ -58,7 +58,7 @@ function resolveCalculation(evaluation: CalculatorBlock): string {
 <template>
     <div class="calculator">
         <h3 class="calculator__title">{{ calculator.name }}</h3>
-        <div v-html="parsedDescription"></div>
+        <div class="has-markdown" v-html="parsedDescription"></div>
         <div class="calculator__inputs">
             <div class="form-group" v-for="input in inputs" :key="input.sort">
                 <label class="form-label form-label--required" :for="'calculator-render-' + calculator.id + '-' + input.sort"

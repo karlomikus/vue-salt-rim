@@ -1,5 +1,5 @@
 <template>
-    <div class="public-bar-details">
+    <div class="public-bar-details" v-if="bar">
         <div class="public-bar-details__header">
             <div class="public-bar-details__header__logo">
                 <div class="public-bar-details__header__logo__image">
@@ -29,29 +29,48 @@
         </div>
         <div v-if="bar.description" class="public-bar-details__description block-container block-container--padded">
             <h3>{{ $t("public-bar.description-title") }}</h3>
-            <div v-html="parsedDescription"></div>
+            <div class="has-markdown" v-html="parsedDescription"></div>
         </div>
     </div>
 </template>
 
 <script setup lang="ts">
-import { computed } from "vue";
+import { computed, ref } from "vue";
 import type { components } from "@/api/api";
 import { micromark } from "micromark";
+import BarAssistantClient from "@/api/BarAssistantClient";
 
 type Bar = components["schemas"]["PublicBarResource"];
 
-const { bar } = defineProps<{
-    bar: Bar;
+const bar = ref<Bar | null>(null);
+const { barId } = defineProps<{
+    barId: string;
 }>();
 
+const fetchBar = async () => {
+    try {
+        const resp = (await BarAssistantClient.getPublicBar(barId))?.data;
+        if (resp) {
+            bar.value = resp;
+        }
+    } catch (error) {
+        bar.value = null;
+    }
+};
+
 const parsedDescription = computed(() => {
-    return bar.description ? micromark(bar.description) : "";
+    return bar.value?.description ? micromark(bar.value.description) : "";
 });
 
 const image = computed(() => {
-    return bar.images.length > 0 ? bar.images[0].url : null;
+    if (!bar.value) {
+        return null;
+    }
+
+    return bar.value.images.length > 0 ? bar.value.images[0].url : null;
 });
+
+fetchBar();
 </script>
 
 <style scoped>

@@ -226,7 +226,7 @@ onMounted(() => {
                 <h3 class="page-subtitle">{{ t("about.changelog") }}</h3>
                 <div class="block-container block-container--padded">
                     <h1>{{ frontendRelease.tag_name }}</h1>
-                    <div v-if="frontendChangelogHtml" class="about-info__changelog-content has-markdown-content" v-html="frontendChangelogHtml"></div>
+                    <div v-if="frontendChangelogHtml" class="about-info__changelog-content has-markdown" v-html="frontendChangelogHtml"></div>
                     <p v-else class="about-info__no-notes">
                         {{ t("about.no-release-notes") }}
                     </p>
@@ -239,7 +239,7 @@ onMounted(() => {
                 </h3>
                 <div class="block-container block-container--padded">
                     <h1>{{ backendRelease.tag_name }}</h1>
-                    <div v-if="backendChangelogHtml" class="about-info__changelog-content has-markdown-content" v-html="backendChangelogHtml"></div>
+                    <div v-if="backendChangelogHtml" class="about-info__changelog-content has-markdown" v-html="backendChangelogHtml"></div>
                     <p v-else class="about-info__no-notes">
                         {{ t("about.backend-no-release-notes") }}
                     </p>

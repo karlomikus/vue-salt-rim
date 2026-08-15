@@ -13,10 +13,10 @@
                 <ul class="bar-cocktail-recipe__tags">
                     <li v-for="t in cocktailTags" :key="t.value" class="bar-cocktail-recipe__tag" :class="t.class">{{ t.value }}</li>
                 </ul>
-                <div v-show="cocktail.description" itemprop="description" v-html="parsedDescription"></div>
+                <div class="has-markdown" v-show="cocktail.description" itemprop="description" v-html="parsedDescription"></div>
                 <div class="bar-cocktail-recipe__info__source">
                     <button class="button button--public" @click="showPrintDialog">{{ $t("print-recipe") }}</button>
-                    <a v-if="cocktail.source && isValidURL" :href="cocktail.source"
+                    <a v-if="cocktail.source && isValidURL" :href="cocktail.source" target="_blank" rel="noopener noreferrer"
                         >{{ $t("public-bar.recipe-source") }}
                         <svg class="bar-cocktail-recipe__external-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
                             <path
@@ -58,11 +58,11 @@
             </div>
             <div class="bar-cocktail-recipe__section">
                 <h3>{{ $t("instructions") }}</h3>
-                <div itemprop="recipeInstructions" class="public-cocktail-recipe__content" v-html="parsedInstructions"></div>
+                <div itemprop="recipeInstructions" class="public-cocktail-recipe__content has-markdown" v-html="parsedInstructions"></div>
             </div>
             <div v-show="cocktail.garnish" class="bar-cocktail-recipe__section">
                 <h3>{{ $t("garnish") }}</h3>
-                <div class="public-cocktail-recipe__content" v-html="parsedGarnish"></div>
+                <div class="public-cocktail-recipe__content has-markdown" v-html="parsedGarnish"></div>
             </div>
         </div>
     </div>
@@ -71,7 +71,6 @@
 <script setup lang="ts">
 import { computed, ref, watch } from "vue";
 import type { components } from "@/api/api";
-import { useRouter } from "vue-router";
 import { micromark } from "micromark";
 import CocktailIngredient from "./PublicCocktailIngredient.vue";
 import CocktailRecipeScaler from "./../Cocktail/CocktailRecipeScaler.vue";
@@ -85,13 +84,11 @@ type CocktailTag = {
 };
 
 const appState = new AppState();
-const router = useRouter();
 const currentUnit = ref<"ml" | "oz" | "cl">(appState.defaultUnit);
 const scaleFactor = ref<number>(1);
 const waterDilution = ref<string | null>(null);
 const targetVolumeToScaleTo = ref<null | number>(null);
 const showScaler = ref<boolean>(false);
-const barId = "test";
 const props = defineProps<{
     cocktail: Cocktail;
 }>();
