@@ -16,7 +16,7 @@
                 <div v-show="cocktail.description" itemprop="description" v-html="parsedDescription"></div>
                 <div class="bar-cocktail-recipe__info__source">
                     <button class="button button--public" @click="showPrintDialog">{{ $t("print-recipe") }}</button>
-                    <a v-if="cocktail.source && isValidURL" :href="cocktail.source"
+                    <a v-if="cocktail.source && isValidURL" :href="cocktail.source" target="_blank" rel="noopener noreferrer"
                         >{{ $t("public-bar.recipe-source") }}
                         <svg class="bar-cocktail-recipe__external-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
                             <path
