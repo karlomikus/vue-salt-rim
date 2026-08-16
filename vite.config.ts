@@ -62,7 +62,7 @@ export default defineConfig({
         }
     }), VitePWA({
         workbox: {
-            navigateFallbackDenylist: [/^\/bar/,/^\/api\//]
+            navigateFallbackDenylist: [/^\/bar/,/^\/api/, /^\/search/]
         },
         manifest: manifest,
         registerType: 'autoUpdate',
