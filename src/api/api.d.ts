@@ -176,6 +176,26 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/bars/{id}/members": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * List bar members
+         * @description Show a minimal list of bar members (id and name only). Accessible to any member of the bar.
+         */
+        get: operations["listBarMembers"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/bars/join": {
         parameters: {
             query?: never;
@@ -2288,6 +2308,19 @@ export interface components {
                 ingredients_count: number;
             }[];
         };
+        /** @description Represents a bar member with minimal, privacy-safe fields */
+        BarMember: {
+            /**
+             * @description User ID
+             * @example 1
+             */
+            id: number;
+            /**
+             * @description User name
+             * @example Bartender
+             */
+            name: string;
+        };
         /** @description Represents a bar membership */
         BarMembership: {
             /**
@@ -4123,7 +4156,7 @@ export interface components {
              * Format: binary
              * @description Image file. Base64 encoded images also supported. Max 50MB
              */
-            image: string | null | Blob;
+            image: string | null;
             /** @description Existing image id, used to update an existing image */
             id?: number | null;
             /** @example 1 */
@@ -4956,6 +4989,65 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content?: never;
+            };
+            /** @description You are not authorized for this action. */
+            403: {
+                headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data?: components["schemas"]["APIError"];
+                    };
+                };
+            };
+            /** @description Resource record not found. */
+            404: {
+                headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data?: components["schemas"]["APIError"];
+                    };
+                };
+            };
+        };
+    };
+    listBarMembers: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Database id of a resource */
+                id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful response */
+            200: {
+                headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data: components["schemas"]["BarMember"][];
+                    };
+                };
             };
             /** @description You are not authorized for this action. */
             403: {
@@ -5994,6 +6086,8 @@ export interface operations {
                     collection_id?: string;
                     /** @description Show only user favorites */
                     favorites?: boolean;
+                    /** @description Show only cocktails favorited by every given user. Comma separated list of user IDs */
+                    favorited_by_user?: string;
                     /** @description Show only cocktails on the user's shelf */
                     on_shelf?: boolean;
                     /** @description Show only cocktails on the bar shelf */

@@ -468,6 +468,7 @@
     },
     "remember-me": "Muista minut",
     "user-recipes": "Käyttäjän juomaohjeet",
+    "favorited-by-user": "Favorited by user",
     "billing": {
         "title": "Laskutus",
         "inactive-title": "Korota palvelutasoksesi \"{name}\" jo tänään!",

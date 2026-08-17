@@ -465,6 +465,7 @@
     },
     "remember-me": "Kom ihåg mig",
     "user-recipes": "Recept per användare",
+    "favorited-by-user": "Favorited by user",
     "billing": {
         "title": "Fakturering",
         "inactive-title": "Uppgradera till \"{name}\" idag!",

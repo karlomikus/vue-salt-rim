@@ -67,6 +67,14 @@
                         @change="updateRouterPath"
                     ></Refinement>
                     <Refinement
+                        id="favorited-by-user"
+                        v-model="activeFilters.favorited_by_user"
+                        :searchable="true"
+                        :title="$t('favorited-by-user')"
+                        :refinements="refineUsers"
+                        @change="updateRouterPath"
+                    ></Refinement>
+                    <Refinement
                         id="main-ingredient"
                         v-model="activeFilters.main_ingredient_id"
                         :searchable="true"
@@ -317,6 +325,7 @@ interface ActiveFilters {
     missing_bar_ingredients: string | null;
     user_shelves: string[];
     created_user_id: string[];
+    favorited_by_user: string[];
     ignore_ingredients: string[];
     specific_ingredients: string[];
     ingredient_id: string[];
@@ -395,6 +404,7 @@ const activeFilters = ref<ActiveFilters>({
     missing_bar_ingredients: null,
     user_shelves: [],
     created_user_id: [],
+    favorited_by_user: [],
     ignore_ingredients: [],
     specific_ingredients: [],
     ingredient_id: [],
@@ -595,7 +605,7 @@ function fetchRefinements() {
         availableRefinements.value.collections = resp?.data ?? [];
     });
 
-    BarAssistantClient.getBarMembers().then((resp) => {
+    BarAssistantClient.getBarMembersMinimal(appState.bar.id).then((resp) => {
         availableRefinements.value.members = resp?.data ?? [];
     });
 
@@ -645,6 +655,7 @@ function queryToState() {
     activeFilters.value.collection_id = state.filter && state.filter.collection_id ? String(state.filter.collection_id).split(",") : [];
     activeFilters.value.user_shelves = state.filter && state.filter.user_shelves ? String(state.filter.user_shelves).split(",") : [];
     activeFilters.value.created_user_id = state.filter && state.filter.created_user_id ? String(state.filter.created_user_id).split(",") : [];
+    activeFilters.value.favorited_by_user = state.filter && state.filter.favorited_by_user ? String(state.filter.favorited_by_user).split(",") : [];
     activeFilters.value.on_shelf = state.filter && state.filter.on_shelf ? state.filter.on_shelf : null;
     activeFilters.value.bar_shelf = state.filter && state.filter.bar_shelf ? state.filter.bar_shelf : null;
     activeFilters.value.locked_bar_cocktails = state.filter && state.filter.locked_bar_cocktails ? state.filter.locked_bar_cocktails : null;
@@ -711,6 +722,7 @@ function stateToQuery() {
         user_shelves: activeFilters.value.user_shelves.length > 0 ? activeFilters.value.user_shelves.join(",") : null,
         id: activeFilters.value.id.length > 0 ? activeFilters.value.id.join(",") : null,
         created_user_id: activeFilters.value.created_user_id.length > 0 ? activeFilters.value.created_user_id.join(",") : null,
+        favorited_by_user: activeFilters.value.favorited_by_user.length > 0 ? activeFilters.value.favorited_by_user.join(",") : null,
         abv_min: activeFilters.value.abv ? activeFilters.value.abv.min : null,
         abv_max: activeFilters.value.abv ? activeFilters.value.abv.max : null,
     };
@@ -773,6 +785,7 @@ function clearRefinements() {
         total_ingredients: null,
         user_shelves: [],
         created_user_id: [],
+        favorited_by_user: [],
         ignore_ingredients: [],
         specific_ingredients: [],
         ingredient_id: [],
