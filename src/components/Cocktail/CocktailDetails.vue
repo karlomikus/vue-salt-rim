@@ -652,7 +652,7 @@ fetchShoppingList();
                 </div>
                 <div v-if="cocktail.garnish" class="block-container block-container--padded">
                     <h3 class="block-container__title">{{ t("garnish") }}</h3>
-                    <div v-html="parsedGarnish"></div>
+                    <div class="has-markdown" v-html="parsedGarnish"></div>
                 </div>
                 <div v-if="completeCocktailPrices.length > 0" class="block-container block-container--padded">
                     <h3 class="block-container__title">{{ t("price.prices") }}</h3>

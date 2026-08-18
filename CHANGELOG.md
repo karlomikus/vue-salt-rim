@@ -1,3 +1,11 @@
+# 5.1.0
+## New
+- Added support for author filtering
+- Added support for user favorites filtering
+
+## Fixes
+- Fixed refinement clearing not working
+
 # 5.0.0
 ## New
 - Moved from Node runtime to Bun

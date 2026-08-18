@@ -21,7 +21,7 @@
             <div class="resource-search__refinements__refinement__body">
                 <slot>
                     <div v-for="refinement in refinementsSearched" :key="refinement.id" class="resource-search__refinements__refinement__item">
-                        <input :id="id + '-' + refinement.id" v-model="model" :type="type" :value="refinement.value" />
+                        <input :id="id + '-' + refinement.id" v-model="model" :type="type" :value="refinement.value" @change="emit('change', model)" />
                         <label :for="id + '-' + refinement.id">{{ refinement.name }}</label>
                     </div>
                 </slot>
@@ -58,6 +58,9 @@ const {
     refinements?: Refinement[];
     searchable?: boolean;
     collapsable?: boolean;
+}>();
+const emit = defineEmits<{
+    change: [value: null | object | string[] | number[] | undefined];
 }>();
 const model = defineModel<null | object | string[] | number[]>();
 const searchTerm = ref<string>("");
@@ -97,6 +100,7 @@ function clear() {
     } else {
         model.value = null;
     }
+    emit("change", model.value);
 }
 
 if (isClearable.value) {

@@ -33,7 +33,7 @@
                 <dd>{{ cocktail.year }}</dd>
             </template>
             <template v-if="cocktail.author">
-                <dt>{{ t("author") }}</dt>
+                <dt>{{ t("author.title") }}</dt>
                 <dd>{{ cocktail.author }}</dd>
             </template>
             <template v-if="cocktail.abv && cocktail.abv > 0">

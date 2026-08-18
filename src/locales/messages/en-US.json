@@ -475,6 +475,7 @@
     },
     "remember-me": "Remember me",
     "user-recipes": "Recipes by user",
+    "favorited-by-user": "Favorited by user",
     "billing": {
         "title": "Billing",
         "inactive-title": "Upgrade to \"{name}\" plan today!",
@@ -780,7 +781,9 @@
         "recipe-source": "Recipe source",
         "view-recipe": "View recipe"
     },
-    "author": "Author",
+    "author": {
+        "title": "Author"
+    },
     "about": {
         "title": "About",
         "version": "Version",

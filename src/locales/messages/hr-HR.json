@@ -464,6 +464,7 @@
     },
     "remember-me": "Zapamti me",
     "user-recipes": "Recipes by user",
+    "favorited-by-user": "Favorited by user",
     "billing": {
         "title": "Naplata",
         "inactive-title": "Nadogradi plan na \"{name}\" već danas!",
@@ -767,5 +768,8 @@
     "about.client": "Client",
     "about.api": "API",
     "about.current": "Current",
-    "about.latest": "Latest"
+    "about.latest": "Latest",
+    "author": {
+        "title": "Autor"
+    }
 }

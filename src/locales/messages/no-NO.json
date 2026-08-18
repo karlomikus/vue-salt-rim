@@ -464,6 +464,7 @@
     },
     "remember-me": "Remember me",
     "user-recipes": "Recipes by user",
+    "favorited-by-user": "Favorited by user",
     "billing": {
         "title": "Billing",
         "inactive-title": "Upgrade to \"{name}\" plan today!",
@@ -767,5 +768,8 @@
     "about.client": "Client",
     "about.api": "API",
     "about.current": "Current",
-    "about.latest": "Latest"
+    "about.latest": "Latest",
+    "author": {
+        "title": "Forfatter"
+    }
 }

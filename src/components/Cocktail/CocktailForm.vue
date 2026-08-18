@@ -153,7 +153,7 @@
                     <input id="source" v-model="cocktail.source" class="form-input" type="text" :placeholder="t('placeholder.source')" />
                 </div>
                 <div class="form-group">
-                    <label class="form-label" for="author">{{ t("author") }}:</label>
+                    <label class="form-label" for="author">{{ t("author.title") }}:</label>
                     <input id="author" v-model="cocktail.author" class="form-input" type="text" :placeholder="t('placeholder.author')" />
                 </div>
                 <div class="form-group">

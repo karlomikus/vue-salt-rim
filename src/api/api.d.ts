@@ -176,6 +176,26 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/bars/{id}/members": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * List bar members
+         * @description Show a minimal list of bar members (id and name only). Accessible to any member of the bar.
+         */
+        get: operations["listBarMembers"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/bars/join": {
         parameters: {
             query?: never;
@@ -4989,6 +5009,65 @@ export interface operations {
             };
         };
     };
+    listBarMembers: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Database id of a resource */
+                id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful response */
+            200: {
+                headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data: components["schemas"]["UserBasic"][];
+                    };
+                };
+            };
+            /** @description You are not authorized for this action. */
+            403: {
+                headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data?: components["schemas"]["APIError"];
+                    };
+                };
+            };
+            /** @description Resource record not found. */
+            404: {
+                headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data?: components["schemas"]["APIError"];
+                    };
+                };
+            };
+        };
+    };
     joinBar: {
         parameters: {
             query?: never;
@@ -5986,6 +6065,8 @@ export interface operations {
                     tag_id?: string;
                     /** @description Filter by creator ID(s) */
                     created_user_id?: string;
+                    /** @description Filter by cocktail author name(s). Comma separated list of author names. Exact match. */
+                    author?: string;
                     /** @description Filter by glass ID(s) */
                     glass_id?: string;
                     /** @description Filter by cocktail method ID(s) */
@@ -5994,6 +6075,8 @@ export interface operations {
                     collection_id?: string;
                     /** @description Show only user favorites */
                     favorites?: boolean;
+                    /** @description Show only cocktails favorited by any of the given users. Comma separated list of user IDs */
+                    favorited_by_user?: string;
                     /** @description Show only cocktails on the user's shelf */
                     on_shelf?: boolean;
                     /** @description Show only cocktails on the bar shelf */
@@ -6098,6 +6181,11 @@ export interface operations {
                             to?: number;
                             /** @description The total number of items */
                             total?: number;
+                            filters?: {
+                                authors: {
+                                    name: string;
+                                }[];
+                            };
                         };
                     };
                 };
