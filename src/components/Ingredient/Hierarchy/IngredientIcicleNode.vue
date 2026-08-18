@@ -36,7 +36,7 @@ const childrenSortedByName = computed(() => {
 }
 
 .ingredient-icicle-row__node {
-    width: 250px;
+    width: 200px;
     flex-grow: 0;
     flex-shrink: 0;
     padding: var(--gap-size-1);
