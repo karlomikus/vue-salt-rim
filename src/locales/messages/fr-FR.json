@@ -464,6 +464,7 @@
     },
     "remember-me": "Souviens-toi de moi",
     "user-recipes": "Recettes par utilisateur",
+    "favorited-by-user": "Favorited by user",
     "billing": {
         "title": "Facturation",
         "inactive-title": "Passez à la formule \"{name}\" dès aujourd'hui !",

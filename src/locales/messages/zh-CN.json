@@ -464,6 +464,7 @@
     },
     "remember-me": "记住我",
     "user-recipes": "用户配方",
+    "favorited-by-user": "Favorited by user",
     "billing": {
         "title": "账单",
         "inactive-title": "立即升级至 \"{name}\" 计划！",

@@ -464,6 +464,7 @@
     },
     "remember-me": "Ricordami",
     "user-recipes": "Ricette per utente",
+    "favorited-by-user": "Favorited by user",
     "billing": {
         "title": "Fatturazione",
         "inactive-title": "Aggiorna al piano \"{name}\" oggi!",

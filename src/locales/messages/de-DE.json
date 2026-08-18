@@ -464,6 +464,7 @@
     },
     "remember-me": "Erinnere dich an mich",
     "user-recipes": "Rezepte nach Benutzer",
+    "favorited-by-user": "Favorited by user",
     "billing": {
         "title": "Abrechnung",
         "inactive-title": "Steigen Sie noch heute auf den Tarif „{name}“ um!",

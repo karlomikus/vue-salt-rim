@@ -303,6 +303,10 @@ export default class BarAssistantClient {
         return (await client.GET("/members")).data;
     }
 
+    static async getBarMembersMinimal(barId: number) {
+        return (await client.GET("/bars/{id}/members", { params: { path: { id: barId } } })).data;
+    }
+
     static async getSharedCollections(id: number) {
         return (await client.GET("/bars/{id}/collections", { params: { path: { id: id } } })).data;
     }
