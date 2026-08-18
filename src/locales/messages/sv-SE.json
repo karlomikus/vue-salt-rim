@@ -768,5 +768,8 @@
     "about.client": "Client",
     "about.api": "API",
     "about.current": "Current",
-    "about.latest": "Latest"
+    "about.latest": "Latest",
+    "author": {
+        "title": "Författare"
+    }
 }

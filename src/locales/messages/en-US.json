@@ -780,7 +780,9 @@
         "recipe-source": "Recipe source",
         "view-recipe": "View recipe"
     },
-    "author": "Author",
+    "author": {
+        "title": "Author"
+    },
     "about": {
         "title": "About",
         "version": "Version",
