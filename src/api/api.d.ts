@@ -6183,7 +6183,7 @@ export interface operations {
                             total?: number;
                             filters?: {
                                 authors: {
-                                    name?: string;
+                                    name: string;
                                 }[];
                             };
                         };
