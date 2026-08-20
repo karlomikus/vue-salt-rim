@@ -4,7 +4,7 @@
 
 ## Fixes
 - Fixed unable to leave bar
-- Fixed missig dialog close when joining bar
+- Fixed missing dialog close when joining bar
 - Fixed author refinement not working on cocktails page
 
 # 5.1.0
@@ -35,8 +35,8 @@
 
 # 4.15.0
 ## New
-- Env variables `ANALYTICS_DOMAIN` no longer used
-    - Moved to `ANALYTICS_HOST`
+- Env variables `ANALYTICS_HOST` no longer used
+    - Moved to `ANALYTICS_DOMAIN`
 - Added support for ai cocktail image generation
 - Added /api to PWA fallback deny list
 

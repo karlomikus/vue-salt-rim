@@ -10,6 +10,7 @@
         "zh-CN": "Chinees (vereenvoudigd)",
         "nl-NL": "Nederlands",
         "cs-CZ": "Czech",
+        "fi-FI": "Finnish",
         "help": "Help mee met vertalen"
     },
     "shelf": {
@@ -175,7 +176,9 @@
         "search-ingredients": "Zoek naar ingrediënten...",
         "search-cocktails": "Zoek naar cocktails...",
         "external-image": "Afbeeldings- plakken",
-        "cocktail-year": "Publicatie van recept."
+        "cocktail-year": "Publicatie van recept.",
+        "filter-refinement": "Filter refinement...",
+        "author": "Historical recipe author"
     },
     "amount": "Hoeveelheid",
     "units": "Eenheden",
@@ -183,6 +186,9 @@
         "browse": "Klik hier om te zoeken naar afbeeldingen.",
         "validation": "PNG, JPG, WEBP or GIF · Max 100MB",
         "status": "{current}/{max} afbeeldingen toegevoegd.",
+        "generate": "Generate image with AI",
+        "generate-success": "Image generated successfully.",
+        "generate-limit": "Remove an image before generating another one.",
         "delete-confirm": "Dit zal de afbeelding permanent verwijderen.",
         "delete-success": "Afbeelding succesvol verwijderd.",
         "delete-fail": "Kan de afbeelding niet verwijderen.",
@@ -216,6 +222,8 @@
     "update-password": "Wachtwoord bijwerken",
     "new-password": "Nieuw wachtwoord",
     "repeat-password": "Herhaal wachtwoord",
+    "change-password": "Change password",
+    "current-password": "Current password",
     "profile-updated": "Je profiel is bijgewerkt",
     "tag": {
         "tags": "Labels",
@@ -370,6 +378,7 @@
     "bars": {
         "title": "Bars",
         "bar": "Bar",
+        "information": "Information",
         "join": "Deelnemen aan een bar",
         "add": "Maak bar",
         "add-success": "Bar \"{name}\" succesvol aangemaakt",
@@ -387,6 +396,7 @@
         "join-error": "Het is niet mogelijk om in de bar te komen",
         "select-bar": "Selecteer bar",
         "delete-success": "Bar met succes verwijderd",
+        "leave-success": "You have left the bar",
         "join-success": "Je bent aangesloten bij een nieuwe bar, cheers!",
         "activate": "Activeer bar",
         "status": {
@@ -404,6 +414,7 @@
             "data": "Geen standaard data"
         },
         "optimization-started": "Bar optimalisatie gestart.",
+        "optimization-description": "This action helps synchronize your search data with the actual data. It also recalculates all cocktail ABVs and ingredient materialized paths. You can run this action manually, but it is limited to once every 10 minutes. Regular execution is not necessary, you should only run this if you notice problems with incorrect data.",
         "optimize": "Optimaliseer bar",
         "confirm-optimization": "Hiermee worden balk optimaliseringen uitgevoerd",
         "sync-data": "Synchronize data",
@@ -497,6 +508,8 @@
     "top-rated-cocktails": "Best beoordeelde cocktails",
     "most-popular-ingredients": "Populaire ingrediënten",
     "votes": "Stemmen",
+    "n-cocktails": "No cocktails | {n} cocktail | {n} cocktails",
+    "n-ingredients": "No ingredients | {n} ingredient | {n} ingredients",
     "recommended-ingredients": "Aanbevolen ingrediënten",
     "menu": {
         "title": "Menu",
@@ -514,6 +527,8 @@
         "category-added": "Menu categorie toegevoegd",
         "delete-category-confirm": "Dit zal \"{name}\" menu categorie verwijderen",
         "category-removed": "Menucategorie verwijderd",
+        "move-category-up": "Move up",
+        "move-category-down": "Move down",
         "saved": "Menu bijgewerkt",
         "update-error": "Kan bar menu niet bijwerken",
         "cocktail-already-added": "Cocktail \"{name}\" is al in het menu",
@@ -610,7 +625,16 @@
         "copy-action": "Dupliceren en bewerken",
         "copy-success": "Cocktail gedupliceerd",
         "confirm-copy": "Dit maakt een kopie van \"{name}\"",
-        "randomize": "Show random cocktail"
+        "randomize": "Show random cocktail",
+        "availability": {
+            "match-to": "Match ingredients to",
+            "bar-shelf": "Bar shelf",
+            "my-shelf": "My shelf"
+        },
+        "totals": {
+            "amount-approx": "Approx",
+            "alcohol-units": "units"
+        }
     },
     "ABV-definition": "Alcohol naar volume",
     "last-used-at": "Laatst gebruikt",
@@ -629,7 +653,10 @@
         "category-delete-success": "Prijscategorie verwijderd",
         "category-confirm-delete": "Dit zal de permanent prijs categorie met de naam \\\"{name}\\\" verwijderen.",
         "missing-cocktail-price-calculator": "Er zijn geen prijzen beschikbaar voor deze cocktail. Voeg prijzen toe aan ingrediënten in het recept om de prijs te berekenen.",
-        "missing-price-categories": "Om prijzen van ingrediënt toe te voegen, moet je eerst de bar {link} definiëren."
+        "missing-price-categories": "Om prijzen van ingrediënt toe te voegen, moet je eerst de bar {link} definiëren.",
+        "per-use": "per use",
+        "missing-prices": "Some ingredients are missing prices",
+        "categories-explained": "Prices are categorized by bar price categories. If price category is missing, the ingredients don't have a price in that category. If there are multiple prices in category, the minimum price is used. Keep in mind that the price is just an estimate and might not be accurate."
     },
     "prices": {
         "add": "Prijs toevoegen",
@@ -640,6 +667,12 @@
     "target-volume": "Doel volume",
     "target-volume-dilution": "Optionele verdunning",
     "scale-recipe": "Recept schalen",
+    "scale": {
+        "scaled": "Scaled",
+        "to-quantity": "Scale to target quantity",
+        "to-volume": "Scale to target volume ({unit}) and dilution (%)",
+        "inspired-by": "Inspired by Jeffrey Morgenthaler's"
+    },
     "target-volume-dilution-help": "Verdun met {total} water",
     "bar_shelf": {
         "cocktails": "Bar plank cocktails",
@@ -748,28 +781,31 @@
         "recipe-source": "Recipe source",
         "view-recipe": "View recipe"
     },
-    "about.title": "About",
-    "about.version": "Version",
-    "about.update-available": "Update available",
-    "about.up-to-date": "You are up to date",
-    "about.dev-version": "Development version",
-    "about.check-updates": "Check for updates",
-    "about.changelog": "Changelog",
-    "about.no-release-notes": "No release notes available for this version",
-    "about.update-error": "Unable to check for updates. Please try again later.",
-    "about.latest-version": "Latest version",
-    "about.backend-version": "Backend version",
-    "about.backend-version-unknown": "Backend version not available",
-    "about.backend-up-to-date": "Backend is up to date",
-    "about.backend-update-available": "Backend update available",
-    "about.backend-changelog": "Backend changelog",
-    "about.backend-no-release-notes": "No release notes available for this version",
-    "about.backend-update-error": "Unable to retrieve backend version information.",
-    "about.client": "Client",
-    "about.api": "API",
-    "about.current": "Current",
-    "about.latest": "Latest",
     "author": {
         "title": "Auteur"
-    }
+    },
+    "about": {
+        "title": "About",
+        "version": "Version",
+        "update-available": "Update available",
+        "up-to-date": "You are up to date",
+        "dev-version": "Development version",
+        "check-updates": "Check for updates",
+        "changelog": "Client changelog",
+        "no-release-notes": "No release notes available for this version",
+        "update-error": "Unable to check for updates. Please try again later.",
+        "latest-version": "Latest version",
+        "backend-version": "API version",
+        "backend-version-unknown": "API version not available",
+        "backend-up-to-date": "API is up to date",
+        "backend-update-available": "API update available",
+        "backend-changelog": "API changelog",
+        "backend-no-release-notes": "No release notes available for this version",
+        "backend-update-error": "Unable to retrieve API version information.",
+        "client": "Client",
+        "api": "API",
+        "current": "Current",
+        "latest": "Latest"
+    },
+    "facts": "Quick facts"
 }

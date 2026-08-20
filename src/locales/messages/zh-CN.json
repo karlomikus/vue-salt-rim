@@ -10,6 +10,7 @@
         "zh-CN": "简体中文",
         "nl-NL": "荷兰",
         "cs-CZ": "Czech",
+        "fi-FI": "Finnish",
         "help": "协助翻译"
     },
     "shelf": {
@@ -175,7 +176,9 @@
         "search-ingredients": "搜索配料……",
         "search-cocktails": "搜索鸡尾酒……",
         "external-image": "粘贴图片 URL",
-        "cocktail-year": "鸡尾酒配方发布年份"
+        "cocktail-year": "鸡尾酒配方发布年份",
+        "filter-refinement": "Filter refinement...",
+        "author": "Historical recipe author"
     },
     "amount": "数量",
     "units": "单位",
@@ -183,6 +186,9 @@
         "browse": "点击此处选择图片。",
         "validation": "PNG、JPG、WEBP 或 GIF - 最大 100MB",
         "status": "已添加 {current}/{max} 张图片。",
+        "generate": "Generate image with AI",
+        "generate-success": "Image generated successfully.",
+        "generate-limit": "Remove an image before generating another one.",
         "delete-confirm": "将永久删除此图片。",
         "delete-success": "图片删除成功。",
         "delete-fail": "无法删除图片。",
@@ -216,6 +222,8 @@
     "update-password": "更新密码",
     "new-password": "新密码",
     "repeat-password": "重复密码",
+    "change-password": "Change password",
+    "current-password": "Current password",
     "profile-updated": "个人资料已更新",
     "tag": {
         "tags": "标签",
@@ -370,6 +378,7 @@
     "bars": {
         "title": "酒吧",
         "bar": "酒吧",
+        "information": "Information",
         "join": "加入酒吧",
         "add": "创建酒吧",
         "add-success": "酒吧 \"{name}\" 创建成功",
@@ -387,6 +396,7 @@
         "join-error": "无法加入酒吧",
         "select-bar": "选择酒吧",
         "delete-success": "酒吧删除成功",
+        "leave-success": "You have left the bar",
         "join-success": "成功加入新酒吧！",
         "activate": "激活酒吧",
         "status": {
@@ -404,6 +414,7 @@
             "data": "无默认数据"
         },
         "optimization-started": "酒吧优化已启动",
+        "optimization-description": "This action helps synchronize your search data with the actual data. It also recalculates all cocktail ABVs and ingredient materialized paths. You can run this action manually, but it is limited to once every 10 minutes. Regular execution is not necessary, you should only run this if you notice problems with incorrect data.",
         "optimize": "优化酒吧",
         "confirm-optimization": "此操作将运行酒吧优化程序",
         "sync-data": "Synchronize data",
@@ -497,6 +508,8 @@
     "top-rated-cocktails": "评分最高的鸡尾酒",
     "most-popular-ingredients": "热门配料",
     "votes": "投票数",
+    "n-cocktails": "No cocktails | {n} cocktail | {n} cocktails",
+    "n-ingredients": "No ingredients | {n} ingredient | {n} ingredients",
     "recommended-ingredients": "推荐配料",
     "menu": {
         "title": "菜单",
@@ -514,6 +527,8 @@
         "category-added": "菜单分类已添加",
         "delete-category-confirm": "将删除菜单分类 \"{name}\"",
         "category-removed": "菜单分类已移除",
+        "move-category-up": "Move up",
+        "move-category-down": "Move down",
         "saved": "菜单已更新",
         "update-error": "无法更新酒吧菜单",
         "cocktail-already-added": "项目 \"{name}\" 已在菜单中",
@@ -610,7 +625,16 @@
         "copy-action": "复制并编辑",
         "copy-success": "鸡尾酒已复制",
         "confirm-copy": "将创建 \"{name}\" 的副本",
-        "randomize": "显示随机的 cocktail"
+        "randomize": "显示随机的 cocktail",
+        "availability": {
+            "match-to": "Match ingredients to",
+            "bar-shelf": "Bar shelf",
+            "my-shelf": "My shelf"
+        },
+        "totals": {
+            "amount-approx": "Approx",
+            "alcohol-units": "units"
+        }
     },
     "ABV-definition": "酒精体积分数",
     "last-used-at": "最后使用时间",
@@ -629,7 +653,10 @@
         "category-delete-success": "价格分类已删除",
         "category-confirm-delete": "将永久删除名为 \\\"{name}\\\" 的价格分类。",
         "missing-cocktail-price-calculator": "此鸡尾酒无可用价格。请为配方中的配料添加价格以启用计算。",
-        "missing-price-categories": "要添加配料价格，您需要先定义酒吧 {link}。"
+        "missing-price-categories": "要添加配料价格，您需要先定义酒吧 {link}。",
+        "per-use": "per use",
+        "missing-prices": "Some ingredients are missing prices",
+        "categories-explained": "Prices are categorized by bar price categories. If price category is missing, the ingredients don't have a price in that category. If there are multiple prices in category, the minimum price is used. Keep in mind that the price is just an estimate and might not be accurate."
     },
     "prices": {
         "add": "添加价格",
@@ -640,6 +667,12 @@
     "target-volume": "目标容量",
     "target-volume-dilution": "可选稀释量",
     "scale-recipe": "缩放配方",
+    "scale": {
+        "scaled": "Scaled",
+        "to-quantity": "Scale to target quantity",
+        "to-volume": "Scale to target volume ({unit}) and dilution (%)",
+        "inspired-by": "Inspired by Jeffrey Morgenthaler's"
+    },
     "target-volume-dilution-help": "加水稀释 {total}",
     "bar_shelf": {
         "cocktails": "酒吧货架鸡尾酒",
@@ -748,28 +781,31 @@
         "recipe-source": "Recipe source",
         "view-recipe": "View recipe"
     },
-    "about.title": "About",
-    "about.version": "Version",
-    "about.update-available": "Update available",
-    "about.up-to-date": "You are up to date",
-    "about.dev-version": "Development version",
-    "about.check-updates": "Check for updates",
-    "about.changelog": "Changelog",
-    "about.no-release-notes": "No release notes available for this version",
-    "about.update-error": "Unable to check for updates. Please try again later.",
-    "about.latest-version": "Latest version",
-    "about.backend-version": "Backend version",
-    "about.backend-version-unknown": "Backend version not available",
-    "about.backend-up-to-date": "Backend is up to date",
-    "about.backend-update-available": "Backend update available",
-    "about.backend-changelog": "Backend changelog",
-    "about.backend-no-release-notes": "No release notes available for this version",
-    "about.backend-update-error": "Unable to retrieve backend version information.",
-    "about.client": "Client",
-    "about.api": "API",
-    "about.current": "Current",
-    "about.latest": "Latest",
     "author": {
         "title": "作者"
-    }
+    },
+    "about": {
+        "title": "About",
+        "version": "Version",
+        "update-available": "Update available",
+        "up-to-date": "You are up to date",
+        "dev-version": "Development version",
+        "check-updates": "Check for updates",
+        "changelog": "Client changelog",
+        "no-release-notes": "No release notes available for this version",
+        "update-error": "Unable to check for updates. Please try again later.",
+        "latest-version": "Latest version",
+        "backend-version": "API version",
+        "backend-version-unknown": "API version not available",
+        "backend-up-to-date": "API is up to date",
+        "backend-update-available": "API update available",
+        "backend-changelog": "API changelog",
+        "backend-no-release-notes": "No release notes available for this version",
+        "backend-update-error": "Unable to retrieve API version information.",
+        "client": "Client",
+        "api": "API",
+        "current": "Current",
+        "latest": "Latest"
+    },
+    "facts": "Quick facts"
 }
