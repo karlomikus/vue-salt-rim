@@ -2731,12 +2731,12 @@ export interface components {
             }[];
             rating?: {
                 /**
-                 * @description Current user's rating
+                 * @description Current user's rating on a 0.5 step
                  * @example 1
                  */
                 user: number | null;
                 /**
-                 * @description Average rating
+                 * @description Average rating rounded to the nearest 0.5
                  * @example 4
                  */
                 average: number;
@@ -11203,6 +11203,7 @@ export interface operations {
         requestBody: {
             content: {
                 "application/json": {
+                    /** @description Rating value on a 0.5 step (1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0, 4.5, 5.0) */
                     rating?: number;
                 };
             };
