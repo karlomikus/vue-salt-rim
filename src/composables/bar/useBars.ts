@@ -34,19 +34,6 @@ export function useBars() {
         }
     }
 
-    async function leaveBar(barId: number) {
-        isLoading.value = true;
-        try {
-            await BarAssistantClient.leaveBar(barId);
-            bars.value = bars.value.filter((bar) => bar.id !== barId);
-            toast.default(t("bars.leave-success"));
-        } catch (e: any) {
-            toast.error(e.message);
-        } finally {
-            isLoading.value = false;
-        }
-    }
-
     async function activateBar(barId: number) {
         isLoading.value = true;
         try {
@@ -62,11 +49,8 @@ export function useBars() {
     async function joinBar(inviteCode: string) {
         isLoading.value = true;
         try {
-            const resp = await BarAssistantClient.joinBar(inviteCode);
-            if (resp) {
-                toast.default(t("bars.join-success", { name: resp.data.name }));
-            }
-            return resp;
+            await BarAssistantClient.joinBar(inviteCode);
+            // toast.default(t("bars.join-success", { name: resp.data.name }));
         } catch {
             toast.error(t("bars.join-error"));
         } finally {
@@ -99,7 +83,6 @@ export function useBars() {
         fetchBars,
         groupedBars,
         deleteBar,
-        leaveBar,
         activateBar,
         joinBar,
     };

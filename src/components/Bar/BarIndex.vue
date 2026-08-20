@@ -97,6 +97,7 @@ import SubscriptionCheck from "@/components/SubscriptionCheck.vue";
 import { useSaltRimToast } from "@/composables/toast";
 import { useConfirm } from "@/composables/confirm";
 import { useBars, type Bar } from "@/composables/bar/useBars";
+import { useMembers } from "@/composables/member/useMembers";
 import { useAppState } from "@/composables/useAppState";
 
 const route = useRoute();
@@ -104,7 +105,8 @@ const appState = useAppState();
 const { t } = useI18n();
 const toast = useSaltRimToast();
 const confirm = useConfirm();
-const { bars, isLoading, fetchBars, groupedBars, deleteBar, leaveBar, activateBar } = useBars();
+const { bars, isLoading, fetchBars, groupedBars, deleteBar, activateBar } = useBars();
+const { leaveBar } = useMembers();
 
 const showJoinDialog = ref(route.name == "bars.join");
 
@@ -166,13 +168,15 @@ function confirmDeleteBar(bar: Bar) {
 function confirmLeaveBar(bar: Bar) {
     confirm.show(t("bars.confirm-leave", { name: bar.name }), {
         onResolved: async (dialog: { close: () => void }) => {
-            await leaveBar(bar.id);
+            await leaveBar(appState.user.id, bar.id);
 
             dialog.close();
 
             if (appState.bar.id == bar.id) {
                 appState.forgetBar();
                 window.location.reload();
+            } else {
+                fetchBars();
             }
         },
     });

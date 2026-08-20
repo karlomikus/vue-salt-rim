@@ -2731,12 +2731,12 @@ export interface components {
             }[];
             rating?: {
                 /**
-                 * @description Current user's rating
+                 * @description Current user's rating on a 0.5 step
                  * @example 1
                  */
                 user: number | null;
                 /**
-                 * @description Average rating
+                 * @description Average rating rounded to the nearest 0.5
                  * @example 4
                  */
                 average: number;
@@ -5085,19 +5085,11 @@ export interface operations {
         };
         responses: {
             /** @description Successful response */
-            200: {
+            204: {
                 headers: {
-                    /** @description Max number of attempts. */
-                    "x-ratelimit-limit"?: number;
-                    /** @description Remaining number of attempts. */
-                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
-                content: {
-                    "application/json": {
-                        data: components["schemas"]["Bar"];
-                    };
-                };
+                content?: never;
             };
             /** @description You are not authorized for this action. */
             403: {
@@ -9208,7 +9200,10 @@ export interface operations {
     removeMember: {
         parameters: {
             query?: never;
-            header?: never;
+            header?: {
+                /** @description Database id of a bar. */
+                "Bar-Assistant-Bar-Id"?: number;
+            };
             path: {
                 /** @description Database id of a resource */
                 id: number;
@@ -11203,6 +11198,7 @@ export interface operations {
         requestBody: {
             content: {
                 "application/json": {
+                    /** @description Rating value on a 0.5 step (1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0, 4.5, 5.0) */
                     rating?: number;
                 };
             };
