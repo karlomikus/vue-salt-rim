@@ -72,6 +72,7 @@
                         :searchable="true"
                         :title="$t('author.title')"
                         :refinements="refineAuthors"
+                        @change="updateRouterPath"
                     ></Refinement>
                     <Refinement
                         id="favorited-by-user"

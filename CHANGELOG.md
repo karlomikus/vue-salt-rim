@@ -5,6 +5,7 @@
 ## Fixes
 - Fixed unable to leave bar
 - Fixed missig dialog close when joining bar
+- Fixed author refinement not working on cocktails page
 
 # 5.1.0
 ## New
