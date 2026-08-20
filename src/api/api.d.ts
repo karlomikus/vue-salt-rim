@@ -5085,19 +5085,11 @@ export interface operations {
         };
         responses: {
             /** @description Successful response */
-            200: {
+            204: {
                 headers: {
-                    /** @description Max number of attempts. */
-                    "x-ratelimit-limit"?: number;
-                    /** @description Remaining number of attempts. */
-                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
-                content: {
-                    "application/json": {
-                        data: components["schemas"]["Bar"];
-                    };
-                };
+                content?: never;
             };
             /** @description You are not authorized for this action. */
             403: {
@@ -9208,7 +9200,10 @@ export interface operations {
     removeMember: {
         parameters: {
             query?: never;
-            header?: never;
+            header?: {
+                /** @description Database id of a bar. */
+                "Bar-Assistant-Bar-Id"?: number;
+            };
             path: {
                 /** @description Database id of a resource */
                 id: number;

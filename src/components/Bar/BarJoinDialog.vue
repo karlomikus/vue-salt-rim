@@ -32,8 +32,9 @@ const emit = defineEmits<{ dialogClosed: []; barJoined: [] }>();
 const inviteCode = ref<string | null>((route.params.invite as string) || null);
 
 async function submit() {
-    const result = await joinBar(inviteCode.value ?? "");
-    if (result) {
+    try {
+        await joinBar(inviteCode.value ?? "");
+    } finally {
         emit("dialogClosed");
         emit("barJoined");
     }

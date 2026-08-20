@@ -1,3 +1,11 @@
+# 5.2.0
+## New
+- Added support for half star ratings
+
+## Fixes
+- Fixed unable to leave bar
+- Fixed missig dialog close when joining bar
+
 # 5.1.0
 ## New
 - Added support for author filtering

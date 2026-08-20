@@ -295,8 +295,12 @@ export default class BarAssistantClient {
         return (await client.POST("/bars/join", { body: { invite_code: inviteCode } })).data;
     }
 
-    static async leaveBar(id: number) {
-        return (await client.DELETE("/members/{id}", { params: { path: { id: id } } })).data;
+    static async leaveBar(id: number, barId?: number) {
+        return (
+            await client.DELETE("/members/{id}", {
+                params: { path: { id: id }, header: barId ? { "Bar-Assistant-Bar-Id": barId } : undefined },
+            })
+        ).data;
     }
 
     static async getBarMembers() {
