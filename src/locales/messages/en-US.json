@@ -763,6 +763,8 @@
     "cocktail-variety-of": "Cocktail is variant of",
     "cocktail-select-parent": "Select parent cocktail",
     "year": "Year",
+    "minimum": "Minimum",
+    "maximum": "Maximum",
     "public-bar": {
         "signin": "Sign In",
         "default-subtitle": "Your personal bar assistant",
