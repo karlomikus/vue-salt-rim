@@ -10,6 +10,7 @@
         "zh-CN": "Chinesisch (vereinfacht)",
         "nl-NL": "Niederländisch",
         "cs-CZ": "Tschechisch",
+        "fi-FI": "Finnisch",
         "help": "Hilfe bei Übersetzungen"
     },
     "shelf": {
@@ -31,7 +32,7 @@
         "remove-from-list": "Von der Einkaufsliste entfernen",
         "update-success": "Zutat aktualisiert",
         "create-success": "Zutat erstellt",
-        "name-placeholder": "Not selected",
+        "name-placeholder": "Nicht ausgewählt",
         "delete-confirm": "Dies löscht Zutat \"{name}\". Diese Aktion betrifft {total} Cocktails.",
         "shelf-remove-success": "\"{name}\" wurde erfolgreich aus deiner Bar entfernt",
         "shelf-add-success": "\"{name}\" wurde zu deinem Regal hinzugefügt",
@@ -175,7 +176,9 @@
         "search-ingredients": "Suche nach Zutaten...",
         "search-cocktails": "Suche nach Cocktails...",
         "external-image": "Bild-URL einfügen",
-        "cocktail-year": "Jahr der Veröffentlichung des Cocktailrezepts"
+        "cocktail-year": "Jahr der Veröffentlichung des Cocktailrezepts",
+        "filter-refinement": "Filter verfeinern...",
+        "author": "Historischer Autor des Rezepts"
     },
     "amount": "Menge",
     "units": "Einheiten",
@@ -183,6 +186,9 @@
         "browse": "Klicke hier, um Bildern auszuwählen.",
         "validation": "PNG, JPG, WEBP oder GIF · Max. 100 MB",
         "status": "{current} von {max} Bildern hinzugefügt.",
+        "generate": "Bild mit KI generieren",
+        "generate-success": "Bild erfolgreich generiert.",
+        "generate-limit": "Entferne ein Bild, bevor du ein neues generierst.",
         "delete-confirm": "Das Bild wird permanent entfernt.",
         "delete-success": "Bild erfolgreich entfernt.",
         "delete-fail": "Bild konnte nicht entfernt werden.",
@@ -216,6 +222,8 @@
     "update-password": "Passwort ändern",
     "new-password": "Neues Passwort",
     "repeat-password": "Passwort wiederholen",
+    "change-password": "Passwort ändern",
+    "current-password": "Aktuelles Passwort",
     "profile-updated": "Dein Profil wurde aktualisiert",
     "tag": {
         "tags": "Tags",
@@ -370,6 +378,7 @@
     "bars": {
         "title": "Bars",
         "bar": "Bar",
+        "information": "Information",
         "join": "Treten Sie einer Bar bei",
         "add": "Bar erstellen",
         "add-success": "Bar \"{name}\" erfolgreich erstellt",
@@ -387,6 +396,7 @@
         "join-error": "Bar konnte nicht betreten werden",
         "select-bar": "Bar auswählen",
         "delete-success": "Bar erfolgreich gelöscht",
+        "leave-success": "Du hast die Bar verlassen",
         "join-success": "Du bist einer neuen Bar beigetreten, Prost!",
         "activate": "Bar aktivieren",
         "status": {
@@ -404,6 +414,7 @@
             "data": "Keine Standarddaten"
         },
         "optimization-started": "Bar-Optimierung gestartet",
+        "optimization-description": "Diese Aktion hilft dabei, die Suchdaten mit den tatsächlichen Daten zu synchronisieren. Sie berechnet außerdem alle Cocktail-Alkoholgehalte (ABV) und materialisierten Zutatspfade neu. Sie können diese Aktion manuell ausführen, sie ist jedoch auf einmal alle 10 Minuten begrenzt. Eine regelmäßige Ausführung ist nicht erforderlich; führen Sie dies nur aus, wenn Sie Probleme mit fehlerhaften Daten feststellen.",
         "optimize": "Bar optimieren",
         "confirm-optimization": "Dies führt zu einer Bar-Optimierung",
         "sync-data": "Daten synchronisieren",
@@ -464,7 +475,7 @@
     },
     "remember-me": "Erinnere dich an mich",
     "user-recipes": "Rezepte nach Benutzer",
-    "favorited-by-user": "Favorited by user",
+    "favorited-by-user": "Von Benutzer favorisiert",
     "billing": {
         "title": "Abrechnung",
         "inactive-title": "Steigen Sie noch heute auf den Tarif „{name}“ um!",
@@ -497,6 +508,8 @@
     "top-rated-cocktails": "Die beliebtesten Cocktails",
     "most-popular-ingredients": "Beliebte Zutaten",
     "votes": "Bewertungen",
+    "n-cocktails": "Keine Cocktails | {n} Cocktail | {n} Cocktails",
+    "n-ingredients": "Keine Zutaten | {n} Zutat | {n} Zutaten",
     "recommended-ingredients": "Empfohlene Zutaten",
     "menu": {
         "title": "Menü",
@@ -514,6 +527,8 @@
         "category-added": "Cocktailkarten-Kategorie hinzugefügt",
         "delete-category-confirm": "Dies löscht \"{name}\" Cocktailkarten-Kategorie",
         "category-removed": "Menükategorie entfernt",
+        "move-category-up": "Nach oben verschieben",
+        "move-category-down": "Nach unten verschieben",
         "saved": "Cocktailkarte aktualisiert",
         "update-error": "Cocktailkarten konnte nicht aktualisiert werden",
         "cocktail-already-added": "Cocktail \"{name}\" ist bereits auf der Cocktailkarte",
@@ -610,7 +625,16 @@
         "copy-action": "Kopieren und bearbeiten",
         "copy-success": "Cocktail kopiert",
         "confirm-copy": "Dadurch wird eine Kopie von „{name}“ erstellt",
-        "randomize": "Zufälligen Cocktail anzeigen"
+        "randomize": "Zufälligen Cocktail anzeigen",
+        "availability": {
+            "match-to": "Zutaten abgleichen mit",
+            "bar-shelf": "Bar-Regal",
+            "my-shelf": "Mein Regal"
+        },
+        "totals": {
+            "amount-approx": "Ca.",
+            "alcohol-units": "Einheiten"
+        }
     },
     "ABV-definition": "Volumenprozent Alkohol",
     "last-used-at": "Zuletzt genutzt",
@@ -629,7 +653,10 @@
         "category-delete-success": "Preiskategorie gelöscht",
         "category-confirm-delete": "Dadurch wird die Preiskategorie mit dem Namen \\\"{name}\\\" dauerhaft festgelegt.",
         "missing-cocktail-price-calculator": "Für diesen Cocktail sind keine Preise hinterlegt. Fügen Sie Preise der Zutaten im Rezept hinzu, um die Preisberechnung zu aktivieren.",
-        "missing-price-categories": "Um die Preise der Zutaten hinzufügen zu können, müssen Sie zunächst die Bar {link} festlegen."
+        "missing-price-categories": "Um die Preise der Zutaten hinzufügen zu können, müssen Sie zunächst die Bar {link} festlegen.",
+        "per-use": "pro Verwendung",
+        "missing-prices": "Für einige Zutaten fehlen Preise",
+        "categories-explained": "Preise werden nach Bar-Preiskategorien eingeteilt. Fehlt eine Preiskategorie, haben die Zutaten in dieser Kategorie keinen Preis. Gibt es mehrere Preise in einer Kategorie, wird der Mindestpreis verwendet. Beachten Sie, dass der Preis nur eine Schätzung ist und möglicherweise nicht genau ist."
     },
     "prices": {
         "add": "Preis hinzufügen",
@@ -640,6 +667,12 @@
     "target-volume": "Zielmenge",
     "target-volume-dilution": "Nach Bedarf verdünnen",
     "scale-recipe": "Rezeptmengen anpassen",
+    "scale": {
+        "scaled": "Skaliert",
+        "to-quantity": "Auf Zielmenge skalieren",
+        "to-volume": "Auf Zielvolumen ({unit}) und Verdünnung (%) skalieren",
+        "inspired-by": "Inspiriert von Jeffrey Morgenthaler"
+    },
     "target-volume-dilution-help": "Mit {total} Wasser verdünnen",
     "bar_shelf": {
         "cocktails": "Bar-Regal Cocktails",
@@ -748,28 +781,31 @@
         "recipe-source": "Rezeptquelle",
         "view-recipe": "Rezept anzeigen"
     },
-    "about.title": "About",
-    "about.version": "Version",
-    "about.update-available": "Update available",
-    "about.up-to-date": "You are up to date",
-    "about.dev-version": "Development version",
-    "about.check-updates": "Check for updates",
-    "about.changelog": "Changelog",
-    "about.no-release-notes": "No release notes available for this version",
-    "about.update-error": "Unable to check for updates. Please try again later.",
-    "about.latest-version": "Latest version",
-    "about.backend-version": "Backend version",
-    "about.backend-version-unknown": "Backend version not available",
-    "about.backend-up-to-date": "Backend is up to date",
-    "about.backend-update-available": "Backend update available",
-    "about.backend-changelog": "Backend changelog",
-    "about.backend-no-release-notes": "No release notes available for this version",
-    "about.backend-update-error": "Unable to retrieve backend version information.",
-    "about.client": "Client",
-    "about.api": "API",
-    "about.current": "Current",
-    "about.latest": "Latest",
     "author": {
         "title": "Autor"
-    }
+    },
+    "about": {
+        "title": "Über",
+        "version": "Version",
+        "update-available": "Update verfügbar",
+        "up-to-date": "Auf dem neuesten Stand",
+        "dev-version": "Entwicklungsversion",
+        "check-updates": "Nach Updates suchen",
+        "changelog": "Client-Änderungsprotokoll",
+        "no-release-notes": "Keine Versionshinweise für diese Version verfügbar",
+        "update-error": "Suche nach Updates nicht möglich. Bitte versuchen Sie es später erneut.",
+        "latest-version": "Neueste Version",
+        "backend-version": "API-Version",
+        "backend-version-unknown": "API-Version nicht verfügbar",
+        "backend-up-to-date": "API ist auf dem neuesten Stand",
+        "backend-update-available": "API-Update verfügbar",
+        "backend-changelog": "API-Änderungsprotokoll",
+        "backend-no-release-notes": "Keine Versionshinweise für diese Version verfügbar",
+        "backend-update-error": "API-Versionsinformationen konnten nicht abgerufen werden.",
+        "client": "Client",
+        "api": "API",
+        "current": "Aktuell",
+        "latest": "Neueste"
+    },
+    "facts": "Kurzfakten"
 }

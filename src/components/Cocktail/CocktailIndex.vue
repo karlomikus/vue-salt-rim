@@ -98,6 +98,18 @@
                         @change="updateRouterPath"
                     ></Refinement>
                     <Refinement id="abv" v-model="activeFilters.abv as any" :title="$t('strength')" :refinements="refineABV" type="radio" @change="updateRouterPath"></Refinement>
+                    <Refinement id="year" :title="$t('year')">
+                        <div class="cocktail-index__year-range">
+                            <div>
+                                <label for="year-min">{{ $t('minimum') }}</label>
+                                <input id="year-min" v-model.number="activeFilters.year_min" class="form-input" type="number" step="1" @change="updateRouterPath" />
+                            </div>
+                            <div>
+                                <label for="year-max">{{ $t('maximum') }}</label>
+                                <input id="year-max" v-model.number="activeFilters.year_max" class="form-input" type="number" step="1" @change="updateRouterPath" />
+                            </div>
+                        </div>
+                    </Refinement>
                     <Refinement
                         id="tag"
                         v-model="activeFilters.tag_id"
@@ -328,6 +340,8 @@ interface ActiveFilters {
     user_rating_min: number | null;
     average_rating_min: number | null;
     abv: { min: number | null; max: number | null } | null;
+    year_min: number | null;
+    year_max: number | null;
     total_ingredients: string | null;
     missing_ingredients: string | null;
     missing_bar_ingredients: string | null;
@@ -410,6 +424,8 @@ const activeFilters = ref<ActiveFilters>({
     user_rating_min: null,
     average_rating_min: null,
     abv: null,
+    year_min: null,
+    year_max: null,
     total_ingredients: null,
     missing_ingredients: null,
     missing_bar_ingredients: null,
@@ -698,6 +714,8 @@ function queryToState() {
     if (state.filter && (state.filter.abv_min || state.filter.abv_max)) {
         activeFilters.value.abv = { min: state.filter.abv_min ? state.filter.abv_min : null, max: state.filter.abv_max ? state.filter.abv_max : null };
     }
+    activeFilters.value.year_min = state.filter?.year_min ?? null;
+    activeFilters.value.year_max = state.filter?.year_max ?? null;
 
     if (state.per_page) {
         per_page.value = Number(state.per_page);
@@ -748,6 +766,8 @@ function stateToQuery() {
         favorited_by_user: activeFilters.value.favorited_by_user.length > 0 ? activeFilters.value.favorited_by_user.join(",") : null,
         abv_min: activeFilters.value.abv ? activeFilters.value.abv.min : null,
         abv_max: activeFilters.value.abv ? activeFilters.value.abv.max : null,
+        year_min: activeFilters.value.year_min,
+        year_max: activeFilters.value.year_max,
     };
 
     query.filter = Object.entries(filters).reduce((a: any, [k, v]) => (v === null || v === false ? a : ((a[k] = v), a)), {});
@@ -805,6 +825,8 @@ function clearRefinements() {
         user_rating_min: null,
         average_rating_min: null,
         abv: null,
+        year_min: null,
+        year_max: null,
         total_ingredients: null,
         user_shelves: [],
         created_user_id: [],
@@ -874,6 +896,18 @@ watch(
 );
 </script>
 <style scoped>
+.cocktail-index__year-range {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.5rem;
+}
+
+.cocktail-index__year-range label {
+    display: block;
+    margin-bottom: 0.25rem;
+    font-size: 0.75rem;
+}
+
 .add-to-collection__tabs {
     display: flex;
     gap: 0.5rem;

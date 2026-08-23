@@ -10,6 +10,7 @@
         "zh-CN": "Chinois (simplifié)",
         "nl-NL": "Néerlandais",
         "cs-CZ": "Tchèque",
+        "fi-FI": "Finnish",
         "help": "Aide aux traductions"
     },
     "shelf": {
@@ -175,7 +176,9 @@
         "search-ingredients": "Recherche d’ingrédients...",
         "search-cocktails": "Recherche de cocktails...",
         "external-image": "Coller l'URL de l'image",
-        "cocktail-year": "Année de lancement de la recette de cocktail"
+        "cocktail-year": "Année de lancement de la recette de cocktail",
+        "filter-refinement": "Filter refinement...",
+        "author": "Historical recipe author"
     },
     "amount": "Quantité",
     "units": "Unités",
@@ -183,6 +186,9 @@
         "browse": "Cliquez ici pour rechercher des images.",
         "validation": "PNG, JPG, WEBP ou GIF · Max 100MB",
         "status": "Ajout d’images {current}/{max}.",
+        "generate": "Generate image with AI",
+        "generate-success": "Image generated successfully.",
+        "generate-limit": "Remove an image before generating another one.",
         "delete-confirm": "Cela supprimera définitivement l’image.",
         "delete-success": "Image supprimée avec succès.",
         "delete-fail": "Impossible de supprimer l’image.",
@@ -216,6 +222,8 @@
     "update-password": "Mettre à jour le mot de passe",
     "new-password": "Nouveau mot de passe",
     "repeat-password": "Répéter le mot de passe",
+    "change-password": "Change password",
+    "current-password": "Current password",
     "profile-updated": "Votre profil est mis à jour",
     "tag": {
         "tags": "Étiquettes",
@@ -370,6 +378,7 @@
     "bars": {
         "title": "Bars",
         "bar": "Bar",
+        "information": "Information",
         "join": "Rejoindre un bar",
         "add": "Créer un bar",
         "add-success": "Bar \"{name}\" créé avec succès",
@@ -387,6 +396,7 @@
         "join-error": "Impossible de rejoindre le bar",
         "select-bar": "Sélectionnez le bar",
         "delete-success": "Bar supprimé avec succès",
+        "leave-success": "You have left the bar",
         "join-success": "Nouveau bar rejoint, santé !",
         "activate": "Activer le bar",
         "status": {
@@ -404,6 +414,7 @@
             "data": "Aucune donnée par défaut"
         },
         "optimization-started": "Commencer l'optimisation du bar",
+        "optimization-description": "This action helps synchronize your search data with the actual data. It also recalculates all cocktail ABVs and ingredient materialized paths. You can run this action manually, but it is limited to once every 10 minutes. Regular execution is not necessary, you should only run this if you notice problems with incorrect data.",
         "optimize": "Optimiser le bar",
         "confirm-optimization": "Cela exécutera les optimisations du bar",
         "sync-data": "Synchroniser les données",
@@ -497,6 +508,8 @@
     "top-rated-cocktails": "Cocktails les mieux notés",
     "most-popular-ingredients": "Ingrédients populaires",
     "votes": "Votes",
+    "n-cocktails": "No cocktails | {n} cocktail | {n} cocktails",
+    "n-ingredients": "No ingredients | {n} ingredient | {n} ingredients",
     "recommended-ingredients": "Ingrédients recommandés",
     "menu": {
         "title": "Carte",
@@ -514,6 +527,8 @@
         "category-added": "Catégorie ajoutée",
         "delete-category-confirm": "Cela supprimera la catégorie \"{name}\"",
         "category-removed": "Catégorie supprimée",
+        "move-category-up": "Move up",
+        "move-category-down": "Move down",
         "saved": "Carte mise à jour",
         "update-error": "Impossible de mettre à jour la carte",
         "cocktail-already-added": "Le cocktail \"{name}\" est déjà à la carte",
@@ -610,7 +625,16 @@
         "copy-action": "Dupliquer et modifier",
         "copy-success": "Cocktail dupliqué",
         "confirm-copy": "Ceci va créer une copie de \"{name}\"",
-        "randomize": "Voir des cocktails aléatoires"
+        "randomize": "Voir des cocktails aléatoires",
+        "availability": {
+            "match-to": "Match ingredients to",
+            "bar-shelf": "Bar shelf",
+            "my-shelf": "My shelf"
+        },
+        "totals": {
+            "amount-approx": "Approx",
+            "alcohol-units": "units"
+        }
     },
     "ABV-definition": "Alcool par volume",
     "last-used-at": "Dernière utilisation",
@@ -629,7 +653,10 @@
         "category-delete-success": "Catégorie de prix supprimée",
         "category-confirm-delete": "La catégorie de prix avec le nom \\\"{name}\"\\ sera définitivement supprimé",
         "missing-cocktail-price-calculator": "Le tarif de ce cocktail n'est pas disponible. Ajouter le coût aux ingrédients de la recette pour permettre le calcul des tarifs.",
-        "missing-price-categories": "Pour ajouter le coût des ingrédients, vous devez en premier définir le bar {link}."
+        "missing-price-categories": "Pour ajouter le coût des ingrédients, vous devez en premier définir le bar {link}.",
+        "per-use": "per use",
+        "missing-prices": "Some ingredients are missing prices",
+        "categories-explained": "Prices are categorized by bar price categories. If price category is missing, the ingredients don't have a price in that category. If there are multiple prices in category, the minimum price is used. Keep in mind that the price is just an estimate and might not be accurate."
     },
     "prices": {
         "add": "Ajouter un prix",
@@ -640,6 +667,12 @@
     "target-volume": "",
     "target-volume-dilution": "Dilution en option",
     "scale-recipe": "Échelle de la recette",
+    "scale": {
+        "scaled": "Scaled",
+        "to-quantity": "Scale to target quantity",
+        "to-volume": "Scale to target volume ({unit}) and dilution (%)",
+        "inspired-by": "Inspired by Jeffrey Morgenthaler's"
+    },
     "target-volume-dilution-help": "Dilué avec {total} d'eau",
     "bar_shelf": {
         "cocktails": "Étagère de cocktails du bar",
@@ -748,28 +781,31 @@
         "recipe-source": "Recipe source",
         "view-recipe": "View recipe"
     },
-    "about.title": "About",
-    "about.version": "Version",
-    "about.update-available": "Update available",
-    "about.up-to-date": "You are up to date",
-    "about.dev-version": "Development version",
-    "about.check-updates": "Check for updates",
-    "about.changelog": "Changelog",
-    "about.no-release-notes": "No release notes available for this version",
-    "about.update-error": "Unable to check for updates. Please try again later.",
-    "about.latest-version": "Latest version",
-    "about.backend-version": "Backend version",
-    "about.backend-version-unknown": "Backend version not available",
-    "about.backend-up-to-date": "Backend is up to date",
-    "about.backend-update-available": "Backend update available",
-    "about.backend-changelog": "Backend changelog",
-    "about.backend-no-release-notes": "No release notes available for this version",
-    "about.backend-update-error": "Unable to retrieve backend version information.",
-    "about.client": "Client",
-    "about.api": "API",
-    "about.current": "Current",
-    "about.latest": "Latest",
     "author": {
         "title": "Auteur"
-    }
+    },
+    "about": {
+        "title": "About",
+        "version": "Version",
+        "update-available": "Update available",
+        "up-to-date": "You are up to date",
+        "dev-version": "Development version",
+        "check-updates": "Check for updates",
+        "changelog": "Client changelog",
+        "no-release-notes": "No release notes available for this version",
+        "update-error": "Unable to check for updates. Please try again later.",
+        "latest-version": "Latest version",
+        "backend-version": "API version",
+        "backend-version-unknown": "API version not available",
+        "backend-up-to-date": "API is up to date",
+        "backend-update-available": "API update available",
+        "backend-changelog": "API changelog",
+        "backend-no-release-notes": "No release notes available for this version",
+        "backend-update-error": "Unable to retrieve API version information.",
+        "client": "Client",
+        "api": "API",
+        "current": "Current",
+        "latest": "Latest"
+    },
+    "facts": "Quick facts"
 }

@@ -10,6 +10,7 @@
         "zh-CN": "Chinese (Simplified)",
         "nl-NL": "Netherlands",
         "cs-CZ": "Czech",
+        "fi-FI": "Finnish",
         "help": "Help with translations"
     },
     "shelf": {
@@ -175,7 +176,9 @@
         "search-ingredients": "Search for ingredients...",
         "search-cocktails": "Search for cocktails...",
         "external-image": "Paste image URL",
-        "cocktail-year": "Cocktail recipe release year"
+        "cocktail-year": "Cocktail recipe release year",
+        "filter-refinement": "Filter refinement...",
+        "author": "Historical recipe author"
     },
     "amount": "Amount",
     "units": "Units",
@@ -183,6 +186,9 @@
         "browse": "Click here to browse for images.",
         "validation": "PNG, JPG, WEBP or GIF · Max 100MB",
         "status": "Added {current}/{max} images.",
+        "generate": "Generate image with AI",
+        "generate-success": "Image generated successfully.",
+        "generate-limit": "Remove an image before generating another one.",
         "delete-confirm": "This will permanently remove the image.",
         "delete-success": "Image removed successfully.",
         "delete-fail": "Unable to remove the image.",
@@ -216,6 +222,8 @@
     "update-password": "Update password",
     "new-password": "New password",
     "repeat-password": "Repeat password",
+    "change-password": "Change password",
+    "current-password": "Current password",
     "profile-updated": "Your profile is updated",
     "tag": {
         "tags": "Tags",
@@ -370,6 +378,7 @@
     "bars": {
         "title": "Bars",
         "bar": "Bar",
+        "information": "Information",
         "join": "Join a bar",
         "add": "Create bar",
         "add-success": "Bar \"{name}\" succesfully created",
@@ -387,6 +396,7 @@
         "join-error": "Unable to join bar",
         "select-bar": "Select bar",
         "delete-success": "Bar successfully removed",
+        "leave-success": "You have left the bar",
         "join-success": "Joined a new bar, cheers!",
         "activate": "Activate bar",
         "status": {
@@ -404,6 +414,7 @@
             "data": "No default data"
         },
         "optimization-started": "Started bar optimization",
+        "optimization-description": "This action helps synchronize your search data with the actual data. It also recalculates all cocktail ABVs and ingredient materialized paths. You can run this action manually, but it is limited to once every 10 minutes. Regular execution is not necessary, you should only run this if you notice problems with incorrect data.",
         "optimize": "Optimize bar",
         "confirm-optimization": "This will run bar optimizations",
         "sync-data": "Synchronize data",
@@ -497,6 +508,8 @@
     "top-rated-cocktails": "Top rated cocktails",
     "most-popular-ingredients": "Popular ingredients",
     "votes": "Votes",
+    "n-cocktails": "No cocktails | {n} cocktail | {n} cocktails",
+    "n-ingredients": "No ingredients | {n} ingredient | {n} ingredients",
     "recommended-ingredients": "Recommended ingredients",
     "menu": {
         "title": "Menu",
@@ -514,6 +527,8 @@
         "category-added": "Menu category added",
         "delete-category-confirm": "This will delete \"{name}\" menu category",
         "category-removed": "Menu category removed",
+        "move-category-up": "Move up",
+        "move-category-down": "Move down",
         "saved": "Menu updated",
         "update-error": "Unable to update bar menu",
         "cocktail-already-added": "Item \"{name}\" is already in the menu",
@@ -610,7 +625,16 @@
         "copy-action": "Duplicate and edit",
         "copy-success": "Cocktail duplicated",
         "confirm-copy": "This will create a copy of \"{name}\"",
-        "randomize": "Show random cocktail"
+        "randomize": "Show random cocktail",
+        "availability": {
+            "match-to": "Match ingredients to",
+            "bar-shelf": "Bar shelf",
+            "my-shelf": "My shelf"
+        },
+        "totals": {
+            "amount-approx": "Approx",
+            "alcohol-units": "units"
+        }
     },
     "ABV-definition": "Alcohol by volume",
     "last-used-at": "Last used",
@@ -629,7 +653,10 @@
         "category-delete-success": "Price category deleted",
         "category-confirm-delete": "This will permanently price category with name \\\"{name}\\\".",
         "missing-cocktail-price-calculator": "There are no prices available for this cocktail. Add prices to ingredients in the recipe to enable price calculation.",
-        "missing-price-categories": "To add ingredient prices, you need to define bar {link} first."
+        "missing-price-categories": "To add ingredient prices, you need to define bar {link} first.",
+        "per-use": "per use",
+        "missing-prices": "Some ingredients are missing prices",
+        "categories-explained": "Prices are categorized by bar price categories. If price category is missing, the ingredients don't have a price in that category. If there are multiple prices in category, the minimum price is used. Keep in mind that the price is just an estimate and might not be accurate."
     },
     "prices": {
         "add": "Add price",
@@ -640,6 +667,12 @@
     "target-volume": "Target volume",
     "target-volume-dilution": "Optional dilution",
     "scale-recipe": "Scale recipe",
+    "scale": {
+        "scaled": "Scaled",
+        "to-quantity": "Scale to target quantity",
+        "to-volume": "Scale to target volume ({unit}) and dilution (%)",
+        "inspired-by": "Inspired by Jeffrey Morgenthaler's"
+    },
     "target-volume-dilution-help": "Dilute with {total} of water",
     "bar_shelf": {
         "cocktails": "Bar shelf cocktails",
@@ -748,28 +781,31 @@
         "recipe-source": "Recipe source",
         "view-recipe": "View recipe"
     },
-    "about.title": "About",
-    "about.version": "Version",
-    "about.update-available": "Update available",
-    "about.up-to-date": "You are up to date",
-    "about.dev-version": "Development version",
-    "about.check-updates": "Check for updates",
-    "about.changelog": "Changelog",
-    "about.no-release-notes": "No release notes available for this version",
-    "about.update-error": "Unable to check for updates. Please try again later.",
-    "about.latest-version": "Latest version",
-    "about.backend-version": "Backend version",
-    "about.backend-version-unknown": "Backend version not available",
-    "about.backend-up-to-date": "Backend is up to date",
-    "about.backend-update-available": "Backend update available",
-    "about.backend-changelog": "Backend changelog",
-    "about.backend-no-release-notes": "No release notes available for this version",
-    "about.backend-update-error": "Unable to retrieve backend version information.",
-    "about.client": "Client",
-    "about.api": "API",
-    "about.current": "Current",
-    "about.latest": "Latest",
     "author": {
         "title": "作者"
-    }
+    },
+    "about": {
+        "title": "About",
+        "version": "Version",
+        "update-available": "Update available",
+        "up-to-date": "You are up to date",
+        "dev-version": "Development version",
+        "check-updates": "Check for updates",
+        "changelog": "Client changelog",
+        "no-release-notes": "No release notes available for this version",
+        "update-error": "Unable to check for updates. Please try again later.",
+        "latest-version": "Latest version",
+        "backend-version": "API version",
+        "backend-version-unknown": "API version not available",
+        "backend-up-to-date": "API is up to date",
+        "backend-update-available": "API update available",
+        "backend-changelog": "API changelog",
+        "backend-no-release-notes": "No release notes available for this version",
+        "backend-update-error": "Unable to retrieve API version information.",
+        "client": "Client",
+        "api": "API",
+        "current": "Current",
+        "latest": "Latest"
+    },
+    "facts": "Quick facts"
 }

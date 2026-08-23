@@ -4388,7 +4388,7 @@ export interface components {
          * @description Provides a list of supported SSO providers.
          * @enum {string}
          */
-        OauthProvider: "github" | "google" | "gitlab" | "authentik" | "authelia" | "kanidm" | "keycloak" | "pocketid" | "zitadel" | "OpenIDConnect";
+        OauthProvider: "github" | "google" | "gitlab" | "authentik" | "authelia" | "kanidm" | "keycloak" | "pocketid" | "zitadel" | "oidc";
         /**
          * Cocktail recipe - Draft 04
          * @description Schema for a cocktail recipe.
@@ -6091,6 +6091,10 @@ export interface operations {
                     abv_min?: number;
                     /** @description Filter by less than or equal ABV */
                     abv_max?: number;
+                    /** @description Filter by greater than or equal recipe year */
+                    year_min?: number;
+                    /** @description Filter by less than or equal recipe year */
+                    year_max?: number;
                     /** @description Show only cocktails whose main ingredient is in the given list. Comma separated list of ingredient IDs */
                     main_ingredient_id?: string;
                     /** @description Show only cocktails that contain this ingredient. Comma separated list of ingredient IDs */

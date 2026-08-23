@@ -260,8 +260,8 @@ function deleteAccount() {
         onResolved: (dialog: { close: () => void }) => {
             dialog.close();
             isLoading.value = true;
-            (BarAssistantClient as unknown as { deleteUser: (id: number) => Promise<unknown> })
-                .deleteUser(user.value.id)
+            BarAssistantClient
+                .deleteProfile()
                 .then(() => {
                     isLoading.value = false;
                     appState.clear();
