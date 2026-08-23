@@ -1,3 +1,10 @@
+# 5.3.0
+## New
+- Added support for cocktail year filtering
+
+## Fixes
+- Fixed profile delete not working
+
 # 5.2.0
 ## New
 - Added support for half star ratings
