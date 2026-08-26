@@ -277,6 +277,17 @@
     "shelf-ingredients": "Ainesosat hyllyssä",
     "shopping-list-ingredients": "Ostoslistan ainesosat",
     "notes": "Muistiinpanot",
+    "review": {
+        "reviews": "Reviews",
+        "write": "Write a review",
+        "delete": "Delete review",
+        "added": "Review added successfully",
+        "delete-success": "Review successfully removed",
+        "confirm-delete": "This will permanently delete this review.",
+        "content-required": "Review content must not be empty.",
+        "rating-label": "Your rating",
+        "empty": "No reviews yet. Be the first to write one."
+    },
     "collection-shared": "Jaettu baarin jäsenten kesken",
     "note": {
         "title": "Muistiinpano",

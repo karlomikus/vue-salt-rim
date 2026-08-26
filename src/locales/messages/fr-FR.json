@@ -277,6 +277,17 @@
     "shelf-ingredients": "Ingrédients sur l'étagère",
     "shopping-list-ingredients": "Ingrédients de la liste de courses",
     "notes": "Remarques",
+    "review": {
+        "reviews": "Reviews",
+        "write": "Write a review",
+        "delete": "Delete review",
+        "added": "Review added successfully",
+        "delete-success": "Review successfully removed",
+        "confirm-delete": "This will permanently delete this review.",
+        "content-required": "Review content must not be empty.",
+        "rating-label": "Your rating",
+        "empty": "No reviews yet. Be the first to write one."
+    },
     "collection-shared": "Partagé avec le bar",
     "note": {
         "title": "Note",

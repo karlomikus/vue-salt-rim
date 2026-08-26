@@ -1864,6 +1864,50 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/cocktails/{id}/reviews": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * List cocktail reviews
+         * @description List reviews for a single cocktail
+         */
+        get: operations["listCocktailReviews"];
+        put?: never;
+        /**
+         * Create cocktail review
+         * @description Create a review for a single cocktail
+         */
+        post: operations["saveCocktailReview"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/cocktails/{id}/reviews/{reviewId}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        /**
+         * Delete cocktail review
+         * @description Delete a review for a single cocktail
+         */
+        delete: operations["deleteCocktailReview"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/auth/sso/{provider}/redirect": {
         parameters: {
             query?: never;
@@ -3736,6 +3780,48 @@ export interface components {
              */
             copyright: string | null;
         };
+        /** @description Review resource */
+        Review: {
+            /**
+             * @description Review ID
+             * @example 1
+             */
+            id: number;
+            /**
+             * @description Review text content
+             * @example A great cocktail.
+             */
+            content: string;
+            /**
+             * @description Author current rating for the cocktail, joined live from ratings
+             * @example 4.5
+             */
+            rating: number | null;
+            author: {
+                /**
+                 * @description Author user ID
+                 * @example 1
+                 */
+                id?: number;
+                /**
+                 * @description Author display name
+                 * @example John Doe
+                 */
+                name?: string;
+            };
+            /**
+             * Format: date-time
+             * @description Creation date and time
+             * @example 2022-01-01T00:00:00+00:00
+             */
+            created_at: string;
+            /**
+             * Format: date-time
+             * @description Last update date and time
+             * @example 2022-01-02T00:00:00+00:00
+             */
+            updated_at: string | null;
+        };
         /** @description SSO Provider information */
         SSOProvider: {
             /** @example github */
@@ -4310,6 +4396,10 @@ export interface components {
              * @example password
              */
             password: string;
+        };
+        ReviewRequest: {
+            /** @example A great cocktail, well balanced. */
+            content: string;
         };
         ServerVersion: {
             /**
@@ -11324,6 +11414,218 @@ export interface operations {
                         data: components["schemas"]["CocktailBasic"][];
                     };
                 };
+            };
+            /** @description You are not authorized for this action. */
+            403: {
+                headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data?: components["schemas"]["APIError"];
+                    };
+                };
+            };
+            /** @description Resource record not found. */
+            404: {
+                headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data?: components["schemas"]["APIError"];
+                    };
+                };
+            };
+        };
+    };
+    listCocktailReviews: {
+        parameters: {
+            query?: {
+                /** @description Set current page number */
+                page?: number;
+                /** @description Set number of results per page */
+                per_page?: number;
+            };
+            header?: never;
+            path: {
+                /** @description Database id of a resource */
+                id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful response */
+            200: {
+                headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        /** @description The data for the current page */
+                        data?: components["schemas"]["Review"][];
+                        /** @description Links for pagination */
+                        links?: {
+                            /** @description Link to the first page */
+                            first?: string | null;
+                            /** @description Link to the last page */
+                            last?: string | null;
+                            /** @description Link to the previous page */
+                            prev?: string | null;
+                            /** @description Link to the next page */
+                            next?: string | null;
+                        };
+                        meta?: {
+                            /** @description The current page number */
+                            current_page?: number;
+                            /** @description The starting index of the current page */
+                            from?: number;
+                            /** @description The last page number */
+                            last_page?: number;
+                            links?: {
+                                /** @description The URL of the link */
+                                url?: string | null;
+                                /** @description The label of the link */
+                                label?: string | null;
+                                /** @description Whether the link is active */
+                                active?: boolean | null;
+                            }[];
+                            /** @description The path of the current page */
+                            path?: string;
+                            /** @description The number of items per page */
+                            per_page?: number;
+                            /** @description The ending index of the current page */
+                            to?: number;
+                            /** @description The total number of items */
+                            total?: number;
+                        };
+                    };
+                };
+            };
+            /** @description You are not authorized for this action. */
+            403: {
+                headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data?: components["schemas"]["APIError"];
+                    };
+                };
+            };
+            /** @description Resource record not found. */
+            404: {
+                headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data?: components["schemas"]["APIError"];
+                    };
+                };
+            };
+        };
+    };
+    saveCocktailReview: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Database id of a resource */
+                id: number;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ReviewRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful response */
+            200: {
+                headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description You are not authorized for this action. */
+            403: {
+                headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data?: components["schemas"]["APIError"];
+                    };
+                };
+            };
+            /** @description Resource record not found. */
+            404: {
+                headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data?: components["schemas"]["APIError"];
+                    };
+                };
+            };
+        };
+    };
+    deleteCocktailReview: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Database id of a resource */
+                id: number;
+                /** @description Database id of a review */
+                reviewId: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful response */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
             };
             /** @description You are not authorized for this action. */
             403: {

@@ -4,7 +4,7 @@
             <dt>{{ t("your-rating") }}</dt>
             <dd>
                 <div>
-                    <Rating :id="cocktail.id" :rating="(cocktail.rating && cocktail.rating.user) ?? 0" type="cocktail"></Rating>
+                    <Rating :id="cocktail.id" :rating="(cocktail.rating && cocktail.rating.user) ?? 0" type="cocktail" @rated="onRated"></Rating>
                 </div>
             </dd>
             <template v-if="cocktail.rating">
@@ -81,6 +81,14 @@ const { t } = useI18n();
 const props = defineProps<{
     cocktail: Cocktail;
 }>();
+
+const emit = defineEmits<{
+    (e: "rating-changed", rating: number): void;
+}>();
+
+function onRated(rating: number) {
+    emit("rating-changed", rating);
+}
 
 function isValidUrl(input: string) {
     try {

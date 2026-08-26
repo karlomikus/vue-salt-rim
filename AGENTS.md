@@ -5,9 +5,6 @@
 Application is run in a docker container with Bun as the runtime. Use the following commands to manage the application:
 
 ```bash
-docker compose exec app bun run dev          # Start development server (Vite)
-docker compose exec app bun run build        # Build for production
-docker compose exec app bun run preview      # Preview production build on port 4173
 docker compose exec app bun run lint         # Run oxlint + ESLint (both include --fix)
 docker compose exec app bun run type-check   # Run TypeScript type checking
 docker compose exec app bun run gen          # Generate API types from spec.yml
@@ -24,35 +21,12 @@ docker compose exec app bun run test:unit    # Run Vitest unit tests
 - Use `@/` alias for imports from `src/` directory
 - Path aliases defined in `tsconfig.json`: `@/*` → `./src/*`
 
-### Formatting
-- **Indentation**: 4 spaces (enforced by ESLint via `eslint.config.js`)
-- **Quotes**: Single quotes for strings
-- **Semicolons**: Required
-- **Trailing commas**: Follow ESLint rules
-- Line length: No strict limit, but keep reasonable
-
 ### Naming Conventions
 - **Components**: PascalCase (e.g., `AmountInput.vue`, `CocktailFinder.vue`)
 - **Composables**: `useXxx.ts` pattern (e.g., `useUnits.ts`, `useRecommendedAmounts.ts`)
 - **Views/Pages**: PascalCase in `views/` directory
 - **TypeScript interfaces**: PascalCase, prefixed with component name when local
 - **Test files**: `*.test.ts` in `__tests__` directories
-
-### Component Structure
-```vue
-<script setup lang="ts">
-import { ref, computed } from 'vue'
-import { unitHandler } from '@/composables/useUnits'
-
-const model = defineModel<string | number | null>({ required: true })
-
-// Props, refs, computed, methods in that order
-</script>
-
-<template>
-  <!-- Template content -->
-</template>
-```
 
 ### Error Handling
 - Use try/catch for async operations
@@ -65,7 +39,6 @@ const model = defineModel<string | number | null>({ required: true })
 - Use `v-bind` shorthand `:` for bindings
 - Component tags: PascalCase in templates
 - Use `defineModel` for v-model support (Vue 3.4+)
-- Custom elements (Swiper) registered globally in `main.ts`
 
 ### State Management
 - Use `AppState` class for global app state (src/AppState.ts)

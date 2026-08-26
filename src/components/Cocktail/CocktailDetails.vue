@@ -15,6 +15,9 @@ import OverlayLoader from "@/components/OverlayLoader.vue";
 import { unitHandler } from "@/composables/useUnits";
 import NoteDetails from "@/components/Note/NoteDetails.vue";
 import NoteDialog from "@/components/Note/NoteDialog.vue";
+import ReviewDetails from "@/components/Review/ReviewDetails.vue";
+import ReviewDialog from "@/components/Review/ReviewDialog.vue";
+import { useReviews } from "@/composables/cocktail/useReviews";
 import CocktailPrice from "./CocktailPrice.vue";
 import SaltRimDialog from "@/components/Dialog/SaltRimDialog.vue";
 import CollectionDialog from "@/components/Collections/CollectionDialog.vue";
@@ -56,6 +59,7 @@ const isLoadingFavorite = ref(false);
 const isFavorited = ref(false);
 const showScaler = ref(false);
 const showNoteDialog = ref(false);
+const showReviewDialog = ref(false);
 const showCollectionDialog = ref(false);
 const showPublicDialog = ref(false);
 const showAddToMenuDialog = ref(false);
@@ -66,6 +70,7 @@ const targetVolumeDilution = ref(0);
 const showDownloadImageDialog = ref(false);
 const cocktail = ref({} as Cocktail);
 const userNotes = ref([] as Note[]);
+const { reviews, fetchReviews, isLoading: isLoadingReviews, updateReviewRating } = useReviews();
 const cocktailPrices = ref([] as CocktailPrice[]);
 const userShoppingListIngredients = ref([] as ShoppingList[]);
 const ingredientScaleFactor = ref(1);
@@ -185,6 +190,7 @@ async function fetchCocktail(idOrSlug: string) {
     }
 
     fetchCocktailUserNotes();
+    fetchReviews(cocktail.value.id);
     fetchCocktailPrices();
     fetchFavorites();
 }
@@ -213,6 +219,33 @@ async function fetchCocktailUserNotes() {
         userNotes.value = (await BarAssistantClient.getNotes({ "filter[cocktail_id]": cocktail.value.id }))?.data ?? ([] as Note[]);
     } catch (e) {}
     isLoadingNotes.value = false;
+}
+
+const currentUserReview = computed(() => {
+    return reviews.value.find((r) => r.author.id === appState.user.id) ?? null;
+});
+
+const sortedReviews = computed(() => {
+    const otherReviews = reviews.value
+        .filter((r) => r.author.id !== appState.user.id)
+        .sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
+
+    return currentUserReview.value ? [currentUserReview.value, ...otherReviews] : otherReviews;
+});
+
+function onReviewSaved() {
+    showReviewDialog.value = false;
+    fetchReviews(cocktail.value.id);
+}
+
+function onReviewDeleted() {
+    fetchReviews(cocktail.value.id);
+}
+
+function onRatingChanged(rating: number) {
+    if (currentUserReview.value) {
+        updateReviewRating(currentUserReview.value.id, rating);
+    }
 }
 
 async function fetchCocktailPrices() {
@@ -580,6 +613,22 @@ fetchShoppingList();
                                     />
                                 </template>
                             </SaltRimDialog>
+                            <SaltRimDialog v-if="cocktail.access && cocktail.access.can_add_note && !currentUserReview" v-model="showReviewDialog">
+                                <template #trigger>
+                                    <a class="dropdown-menu__item" href="#" @click.prevent="showReviewDialog = true">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 14V16C8.68629 16 6 18.6863 6 22H4C4 17.5817 7.58172 14 12 14ZM12 13C8.685 13 6 10.315 6 7C6 3.685 8.685 1 12 1C15.315 1 18 3.685 18 7C18 10.315 15.315 13 12 13ZM12 11C14.21 11 16 9.21 16 7C16 4.79 14.21 3 12 3C9.79 3 8 4.79 8 7C8 9.21 9.79 11 12 11ZM18 21.5L15.0611 23.0451L15.6224 19.7725L13.2447 17.4549L16.5305 16.9775L18 14L19.4695 16.9775L22.7553 17.4549L20.3776 19.7725L20.9389 23.0451L18 21.5Z"></path></svg>
+                                        {{ t("review.write") }}
+                                    </a>
+                                </template>
+                                <template #dialog>
+                                    <ReviewDialog
+                                        :cocktail-id="cocktail.id"
+                                        :initial-rating="cocktail.rating?.user ?? 0"
+                                        @review-dialog-closed="showReviewDialog = false"
+                                        @review-saved="onReviewSaved"
+                                    />
+                                </template>
+                            </SaltRimDialog>
                             <hr v-if="cocktail.access && cocktail.access.can_delete" class="dropdown-menu__separator" />
                             <a v-if="cocktail.access && cocktail.access.can_delete" class="dropdown-menu__item" href="javascript:;" @click.prevent="deleteCocktail">
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18">
@@ -593,7 +642,7 @@ fetchShoppingList();
                 </div>
                 <div class="block-container block-container--padded">
                     <h3 class="block-container__title">{{ t("facts") }}</h3>
-                    <CocktailDetailsFacts v-if="cocktail" :cocktail="cocktail"></CocktailDetailsFacts>
+                    <CocktailDetailsFacts v-if="cocktail" :cocktail="cocktail" @rating-changed="onRatingChanged"></CocktailDetailsFacts>
                     <h3 class="block-container__title">{{ t("description") }}</h3>
                     <div class="has-markdown" v-html="parsedDescription"></div>
                 </div>
@@ -665,6 +714,22 @@ fetchShoppingList();
                     <OverlayLoader v-if="isLoadingNotes" />
                     <h3 class="block-container__title">{{ t("notes") }}</h3>
                     <NoteDetails v-for="note in userNotes" :key="note.id" :note="note" @note-deleted="fetchCocktailUserNotes"></NoteDetails>
+                </div>
+                <div v-if="cocktail.access && cocktail.access.can_add_note" class="block-container block-container--padded">
+                    <OverlayLoader v-if="isLoadingReviews" />
+                    <div class="cocktail-reviews__header">
+                        <h3 class="block-container__title">{{ t("review.reviews") }}</h3>
+                    </div>
+                    <ReviewDetails
+                        v-for="rev in sortedReviews"
+                        :key="rev.id"
+                        :review="rev"
+                        :cocktail-id="cocktail.id"
+                        :current-user-id="appState.user.id"
+                        :is-bar-admin="Boolean(appState.isAdmin())"
+                        @review-deleted="onReviewDeleted"
+                    ></ReviewDetails>
+                    <p v-if="reviews.length === 0" class="cocktail-reviews__empty">{{ t("review.empty") }}</p>
                 </div>
             </div>
         </article>
@@ -826,5 +891,17 @@ swiper-container {
     display: flex;
     flex-direction: column;
     gap: var(--gap-size-2);
+}
+
+.cocktail-reviews__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--gap-size-2);
+}
+
+.cocktail-reviews__empty {
+    opacity: 0.65;
+    margin: 0;
 }
 </style>
