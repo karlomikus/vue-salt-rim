@@ -115,7 +115,7 @@ if (isClearable.value) {
     font-size: 0.75rem;
     border-radius: 0;
     width: 100%;
-    height: 100%;
+    height: 2.15rem;
     padding: 5px;
     line-height: 1;
     margin-bottom: 0.5rem;
