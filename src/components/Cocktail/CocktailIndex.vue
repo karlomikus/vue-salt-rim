@@ -192,6 +192,8 @@
                         <option value="average_rating">{{ $t("average-rating") }}</option>
                         <option value="user_rating">{{ $t("user-rating") }}</option>
                         <option value="abv">{{ $t("ABV") }}</option>
+                        <option value="year">{{ $t("year") }}</option>
+                        <option value="reviews_count">{{ $t("reviews-count") }}</option>
                         <option value="random">{{ $t("sort-random") }}</option>
                     </select>
                     <select v-model="sort_dir" class="form-select" @change="updateRouterPath">

@@ -6206,7 +6206,7 @@ export interface operations {
                     /** @description Show only cocktails that bar can't make */
                     locked_bar_cocktails?: boolean;
                 };
-                /** @description Sort by attributes. Available attributes: `name`, `created_at`, `average_rating`, `user_rating`, `abv`, `total_ingredients`, `missing_ingredients`, `missing_bar_ingredients`, `favorited_at`, `random`. */
+                /** @description Sort by attributes. Available attributes: `name`, `created_at`, `average_rating`, `user_rating`, `abv`, `year`, `total_ingredients`, `reviews_count`, `missing_ingredients`, `missing_bar_ingredients`, `favorited_at`, `random`. */
                 sort?: string;
                 /** @description Include additional relationships. Available relations: `glass`, `method`, `user`, `navigation`, `utensils`, `createdUser`, `updatedUser`, `images`, `tags`, `ingredients.ingredient`, `ratings`. */
                 include?: string;
