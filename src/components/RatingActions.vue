@@ -45,6 +45,9 @@ const props = defineProps<{
     id: number;
     type: string;
 }>();
+const emit = defineEmits<{
+    (e: "rated", rating: number): void;
+}>();
 const currentRating = ref(props.rating);
 const previewRating = ref<number | null>(null);
 const displayedRating = computed(() => previewRating.value ?? currentRating.value);
@@ -69,10 +72,12 @@ async function rate(rating: number) {
             await BarAssistantClient.deleteCocktailRating(props.id);
             currentRating.value = 0;
             toast.default(t("rating-removed"));
+            emit("rated", 0);
         } else {
             await BarAssistantClient.rateCocktail(props.id, { rating: rating });
             currentRating.value = rating;
             toast.default(t("rating-rated", { rating: rating }));
+            emit("rated", rating);
         }
     } catch (e) {
         toast.error(t("server-error"));

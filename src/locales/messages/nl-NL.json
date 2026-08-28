@@ -277,6 +277,17 @@
     "shelf-ingredients": "Mijn plank ingrediënten",
     "shopping-list-ingredients": "Winkelwagen met ingrediënten",
     "notes": "Notities",
+    "review": {
+        "reviews": "Reviews",
+        "write": "Write a review",
+        "delete": "Delete review",
+        "added": "Review added successfully",
+        "delete-success": "Review successfully removed",
+        "confirm-delete": "This will permanently delete this review.",
+        "content-required": "Review content must not be empty.",
+        "rating-label": "Your rating",
+        "empty": "No reviews yet. Be the first to write one."
+    },
     "collection-shared": "Gedeeld met bar",
     "note": {
         "title": "Opmerking",
@@ -763,6 +774,7 @@
     "cocktail-variety-of": "Cocktail is variëteit van",
     "cocktail-select-parent": "Selecteer hoofd cocktail",
     "year": "Jaar",
+    "reviews-count": "Reviews count",
     "public-bar": {
         "signin": "Sign In",
         "default-subtitle": "Your personal bar assistant",

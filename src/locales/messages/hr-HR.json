@@ -277,6 +277,17 @@
     "shelf-ingredients": "Sastojci u polici",
     "shopping-list-ingredients": "Sastojci na popisu za kupovinu",
     "notes": "Bilješke",
+    "review": {
+        "reviews": "Reviews",
+        "write": "Write a review",
+        "delete": "Delete review",
+        "added": "Review added successfully",
+        "delete-success": "Review successfully removed",
+        "confirm-delete": "This will permanently delete this review.",
+        "content-required": "Review content must not be empty.",
+        "rating-label": "Your rating",
+        "empty": "No reviews yet. Be the first to write one."
+    },
     "collection-shared": "Podijeljeno s barom",
     "note": {
         "title": "Bilješka",
@@ -763,6 +774,7 @@
     "cocktail-variety-of": "Koktel je varijanta od",
     "cocktail-select-parent": "Odaberite roditeljski koktel",
     "year": "Godina",
+    "reviews-count": "Reviews count",
     "public-bar": {
         "signin": "Prijava",
         "default-subtitle": "Vaš osobni pomoćnik za bar",

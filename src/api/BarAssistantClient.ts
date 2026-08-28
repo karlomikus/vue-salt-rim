@@ -192,6 +192,18 @@ export default class BarAssistantClient {
         return (await client.DELETE("/cocktails/{id}/ratings", { params: { path: { id: id } } })).data;
     }
 
+    static async getCocktailReviews(id: number, query: { page?: number; per_page?: number } = {}) {
+        return (await client.GET("/cocktails/{id}/reviews", { params: { path: { id: id }, query: query } })).data;
+    }
+
+    static async saveReview(id: number, data: components["schemas"]["ReviewRequest"]) {
+        return (await client.POST("/cocktails/{id}/reviews", { params: { path: { id: id } }, body: data })).data;
+    }
+
+    static async deleteReview(id: number, reviewId: number) {
+        return (await client.DELETE("/cocktails/{id}/reviews/{reviewId}", { params: { path: { id: id, reviewId: reviewId } } })).data;
+    }
+
     static async getUserCocktailFavorites(id: number) {
         return (await client.GET("/members/{id}/cocktail-favorites", { params: { path: { id: id }, query: { per_page: 500 } } })).data;
     }

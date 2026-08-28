@@ -277,6 +277,17 @@
     "shelf-ingredients": "Zutaten im Regal",
     "shopping-list-ingredients": "Zutaten auf der Einkaufsliste",
     "notes": "Notizen",
+    "review": {
+        "reviews": "Reviews",
+        "write": "Write a review",
+        "delete": "Delete review",
+        "added": "Review added successfully",
+        "delete-success": "Review successfully removed",
+        "confirm-delete": "This will permanently delete this review.",
+        "content-required": "Review content must not be empty.",
+        "rating-label": "Your rating",
+        "empty": "No reviews yet. Be the first to write one."
+    },
     "collection-shared": "Mit Bar geteilt",
     "note": {
         "title": "Notiz",
@@ -763,6 +774,7 @@
     "cocktail-variety-of": "Cocktail ist eine Variante von",
     "cocktail-select-parent": "Basis-Cocktail auswählen",
     "year": "Jahr",
+    "reviews-count": "Reviews count",
     "public-bar": {
         "signin": "Anmelden",
         "default-subtitle": "Dein persönlicher Bar-Assistent",
