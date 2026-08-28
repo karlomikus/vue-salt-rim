@@ -8523,8 +8523,10 @@ export interface operations {
                     name?: string;
                     /** @description Filter by ingredient name(s) (exact match) */
                     name_exact?: string;
-                    /** @description Filter by ingredient origin */
+                    /** @description Filter by ingredient origin name(s). Comma separated list of origin names. Exact match. */
                     origin?: string;
+                    /** @description Filter by ingredient distillery name(s). Comma separated list of distillery names. Exact match. */
+                    distillery?: string;
                     /** @description Filter by user(s) who created the ingredient */
                     created_user_id?: string;
                     /** @description Show only ingredients that are on the shopping list */
@@ -8613,6 +8615,14 @@ export interface operations {
                             to?: number;
                             /** @description The total number of items */
                             total?: number;
+                            filters?: {
+                                origins: {
+                                    name?: string;
+                                }[];
+                                distilleries: {
+                                    name?: string;
+                                }[];
+                            };
                         };
                     };
                 };
