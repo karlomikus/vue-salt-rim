@@ -1,3 +1,12 @@
+# 5.4.0
+## New
+- Added support for member reviews
+- Added opengraph meta tags to public cocktail page
+- Added support for extra sort fields
+
+## Fixes
+- Fixed refinement filter input box sizing on mobile
+
 # 5.3.0
 ## New
 - Added support for cocktail year filtering

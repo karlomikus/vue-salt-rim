@@ -1,14 +1,20 @@
 /**
  * Recursive type that transforms stringified primitives into their literal types.
  */
+type CommaSeparatedValues<T extends string> = T extends `${infer Head},${infer Tail}`
+    ? Head | CommaSeparatedValues<Tail>
+    : T;
+
 export type ParsedPrimitives<T> = T extends string
-    ? T extends "true"
-        ? boolean
-        : T extends "false"
+    ? T extends `${string},${string}`
+        ? Array<ParsedPrimitives<CommaSeparatedValues<T>>>
+        : T extends "true"
           ? boolean
-          : T extends `${number}`
-            ? number
-            : T
+          : T extends "false"
+            ? boolean
+            : T extends `${number}`
+              ? number
+              : T
     : T extends Array<infer U>
       ? Array<ParsedPrimitives<U>>
       : T extends Record<string, any>
@@ -22,6 +28,10 @@ export type ParsedPrimitives<T> = T extends string
 export function useQueryParser<T>(obj: T): ParsedPrimitives<T> {
     // Base case: Handle string conversions
     if (typeof obj === "string") {
+        if (obj.includes(",")) {
+            return obj.split(",").map((item) => useQueryParser(item)) as any;
+        }
+
         const lower = obj.toLowerCase();
         if (lower === "true") return true as any;
         if (lower === "false") return false as any;
