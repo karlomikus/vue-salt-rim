@@ -1,5 +1,5 @@
 <template>
-    <div class="cocktail-facts">
+    <div class="resource-facts">
         <dl>
             <dt>{{ t("your-rating") }}</dt>
             <dd>
@@ -99,45 +99,3 @@ function isValidUrl(input: string) {
     }
 }
 </script>
-
-<style scoped>
-.cocktail-facts {
-    font-size: 0.85em;
-    margin-bottom: var(--gap-size-3);
-    & dl {
-        display: grid;
-        grid-template-columns: 120px 1fr 120px 1fr;
-        @media (max-width: 800px) {
-            & {
-                grid-template-columns: 120px 1fr;
-            }
-        }
-        & dt,
-        dd {
-            padding: 0.25rem 0;
-            display: flex;
-            align-items: center;
-        }
-        & dt {
-            font-weight: var(--fw-bold);
-            color: var(--clr-gray-600);
-            &:after {
-                content: ":";
-            }
-            .dark-theme & {
-                color: var(--clr-gray-400);
-            }
-        }
-    }
-}
-
-.external-link {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.25rem;
-    & svg {
-        width: 1rem;
-        height: 1rem;
-    }
-}
-</style>

@@ -747,7 +747,7 @@
         "login-with": "通过 {name} 登录"
     },
     "distillery": "酿酒厂",
-    "sweetness": "甜度 (克/毫升)",
+    "sweetness": "甜度",
     "acidity": "酸度 (%)",
     "missing-recommended-cocktails": "收藏一些鸡尾酒以获取推荐。",
     "ui-theme": "默认主题",

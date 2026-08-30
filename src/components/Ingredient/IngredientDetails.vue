@@ -127,60 +127,9 @@
                     </Dropdown>
                 </div>
                 <div class="block-container block-container--padded">
+                    <h3 class="block-container__title">{{ t("facts") }}</h3>
+                    <IngredientDetailsFacts v-if="ingredient" :ingredient="ingredient"></IngredientDetailsFacts>
                     <h2 class="block-container__title">{{ $t("description") }}</h2>
-                    <div class="item-details__chips">
-                        <div class="item-details__chips__group">
-                            <div class="item-details__chips__group__title">{{ $t("strength") }}:</div>
-                            <ul v-if="ingredient.strength && ingredient.strength > 0" class="chips-list">
-                                <li>
-                                    <span
-                                        ><abbr :title="$t('ABV-definition')">{{ $t("ABV") }}</abbr
-                                        >: {{ ingredient.strength + "%" }}</span
-                                    >
-                                </li>
-                                <li>
-                                    <span>{{ $t("alcohol-proof") }}: {{ ingredient.strength * 2 }}</span>
-                                </li>
-                            </ul>
-                            <ul v-else class="chips-list">
-                                <li>
-                                    <span>{{ $t("non-alcoholic") }}</span>
-                                </li>
-                            </ul>
-                        </div>
-                        <div v-if="ingredient.origin" class="item-details__chips__group">
-                            <div class="item-details__chips__group__title">{{ $t("origin") }}:</div>
-                            <ul class="chips-list">
-                                <li>
-                                    <span>{{ ingredient.origin }}</span>
-                                </li>
-                            </ul>
-                        </div>
-                        <div v-if="ingredient.distillery" class="item-details__chips__group">
-                            <div class="item-details__chips__group__title">{{ $t("distillery") }}:</div>
-                            <ul class="chips-list">
-                                <li>
-                                    <span>{{ ingredient.distillery }}</span>
-                                </li>
-                            </ul>
-                        </div>
-                        <div v-if="ingredient.sugar_g_per_ml" class="item-details__chips__group">
-                            <div class="item-details__chips__group__title">{{ $t("sweetness") }}:</div>
-                            <ul class="chips-list">
-                                <li>
-                                    <span>{{ ingredient.sugar_g_per_ml }}</span>
-                                </li>
-                            </ul>
-                        </div>
-                        <div v-if="ingredient.acidity" class="item-details__chips__group">
-                            <div class="item-details__chips__group__title">{{ $t("acidity") }}:</div>
-                            <ul class="chips-list">
-                                <li>
-                                    <span>{{ ingredient.acidity }}</span>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
                     <ul class="block-container block-container--inset ingredient-details__more">
                         <OverlayLoader v-if="isLoadingExtra" />
                         <li v-if="ingredient.ingredient_parts?.length">
@@ -278,6 +227,7 @@ import { useI18n } from "vue-i18n";
 import AppState from "@/AppState";
 import SaltRimDialog from "../Dialog/SaltRimDialog.vue";
 import MenuAddDialog from "../Menu/MenuAddDialog.vue";
+import IngredientDetailsFacts from "./IngredientDetailsFacts.vue";
 import { useDateFormat } from "@vueuse/core";
 
 type Ingredient = components["schemas"]["Ingredient"];

@@ -747,7 +747,7 @@
         "login-with": "Kirjaudu käyttäen: {name}"
     },
     "distillery": "Tislaamo",
-    "sweetness": "Makeus (g/ml)",
+    "sweetness": "Makeus",
     "acidity": "Hapokkuus (%)",
     "missing-recommended-cocktails": "Merkitse juomia suosikeiksisi saadaksesi suosituksia.",
     "ui-theme": "Oletusteema",
