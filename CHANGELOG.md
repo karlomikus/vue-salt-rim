@@ -1,3 +1,8 @@
+# 5.5.0
+## New
+- Added ingredient facts to reflect design in cocktail details
+- Added quick search links to facts
+
 # 5.4.0
 ## New
 - Added support for member reviews

@@ -30,11 +30,11 @@
             </template>
             <template v-if="cocktail.year">
                 <dt>{{ t("year") }}</dt>
-                <dd>{{ cocktail.year }}</dd>
+                <dd><RouterLink :to="{ name: 'cocktails', query: { 'filter[year_min]': cocktail.year, 'filter[year_max]': cocktail.year } }">{{ cocktail.year }}</RouterLink></dd>
             </template>
             <template v-if="cocktail.author">
                 <dt>{{ t("author.title") }}</dt>
-                <dd>{{ cocktail.author }}</dd>
+                <dd><RouterLink :to="{ name: 'cocktails', query: { 'filter[author]': cocktail.author } }">{{ cocktail.author }}</RouterLink></dd>
             </template>
             <template v-if="cocktail.abv && cocktail.abv > 0">
                 <dt>{{ t("ABV") }}</dt>
