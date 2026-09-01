@@ -11066,8 +11066,18 @@ export interface operations {
                     method?: string;
                     /** @description Show only cocktails on the bar shelf */
                     bar_shelf?: boolean;
+                    /** @description Filter by shared collection ID(s), comma-separated */
+                    collection_id?: string;
                     /** @description Filter by greater than or equal ABV. Use >=, >, <=, < operators (e.g., `filter[abv]=>=20` to get cocktails with ABV greater than or equal to 20). */
                     abv?: number;
+                    /** @description Filter by minimum ABV, inclusive */
+                    abv_min?: number;
+                    /** @description Filter by maximum ABV, inclusive */
+                    abv_max?: number;
+                    /** @description Filter by minimum average member rating, inclusive */
+                    average_rating_min?: number;
+                    /** @description Filter by exact tag ID(s), comma-separated */
+                    tag_id?: string;
                 };
                 /** @description Sort by attributes. Available attributes: `name`, `created_at`, `abv`, `random`. */
                 sort?: string;
@@ -11130,6 +11140,10 @@ export interface operations {
                             total?: number;
                             filters?: {
                                 collections: {
+                                    id?: number;
+                                    name?: string;
+                                }[];
+                                tags: {
                                     id?: number;
                                     name?: string;
                                 }[];

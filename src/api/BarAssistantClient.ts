@@ -1,5 +1,5 @@
 import createClient, { type Middleware } from "openapi-fetch";
-import type { paths, components } from "@/api/api";
+import type { paths, components, operations } from "@/api/api";
 import AppState from "@/AppState";
 
 let accessToken: string | undefined = undefined;
@@ -647,7 +647,10 @@ export default class BarAssistantClient {
         return (await client.GET("/public/bars/{slugOrId}", { params: { path: { slugOrId: barId } } })).data;
     }
 
-    static async getPublicBarCocktails(barId: string, query = {}) {
+    static async getPublicBarCocktails(
+        barId: string,
+        query: NonNullable<operations["listPublicBarCocktails"]["parameters"]["query"]>,
+    ) {
         return (await client.GET("/public/bars/{slugOrId}/cocktails", { params: { path: { slugOrId: barId }, query: query } })).data;
     }
 

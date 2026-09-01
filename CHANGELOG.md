@@ -2,6 +2,7 @@
 ## New
 - Added ingredient facts to reflect design in cocktail details
 - Added quick search links to facts
+- Added more public cocktail filters
 
 # 5.4.0
 ## New
