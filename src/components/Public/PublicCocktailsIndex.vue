@@ -30,21 +30,44 @@
                                 </div>
                             </label>
                         </div>
-                        <label class="form-label" for="year">{{ $t("public-bar.filters-collections-label") }}:</label>
+                        <label class="form-label">{{ $t("strength") }}:</label>
                         <div class="form-group form-group--checkbox">
-                            <label class="form-label" :for="'filter-bar-collections-' + collection.id" v-for="collection in meta?.filters?.collections || []" :key="collection.id">
-                                <input
-                                    :id="'filter-bar-collections-' + collection.id"
-                                    type="checkbox"
-                                    :name="'filter-bar-collections-' + collection.id"
-                                    v-model="activeFilters.filter.collection_id"
-                                    :value="collection.id"
-                                />
-                                <div class="form-group-checkbox-content">
-                                    <div class="form-group-checkbox-content__label">{{ collection.name }}</div>
-                                </div>
+                            <label class="form-label" v-for="strength in strengths" :key="strength.id" :for="strength.id">
+                                <input :id="strength.id" type="radio" name="public-cocktail-strength" v-model="activeFilters.filter.abv" :value="strength" />
+                                <div class="form-group-checkbox-content"><div class="form-group-checkbox-content__label">{{ strength.label }}</div></div>
                             </label>
                         </div>
+                        <label class="form-label">{{ $t("avg-rating") }}:</label>
+                        <div class="form-group">
+                            <select class="form-select" v-model="activeFilters.filter.average_rating_min">
+                                <option :value="null">{{ $t("minimum") }}</option>
+                                <option v-for="rating in ratings" :key="rating" :value="rating">{{ rating }}</option>
+                            </select>
+                        </div>
+                        <label class="form-label">{{ $t("tag.tags") }}:</label>
+                        <div class="form-group form-group--checkbox public-cocktail-tags">
+                            <label class="form-label" :for="'filter-bar-tags-' + tag.id" v-for="tag in meta?.filters?.tags || []" :key="tag.id">
+                                <input :id="'filter-bar-tags-' + tag.id" type="checkbox" v-model="activeFilters.filter.tag_id" :value="tag.id" />
+                                <div class="form-group-checkbox-content"><div class="form-group-checkbox-content__label">{{ tag.name }}</div></div>
+                            </label>
+                        </div>
+                        <template v-if="meta?.filters?.collections?.length || 0 > 0">
+                            <label class="form-label" for="year">{{ $t("public-bar.filters-collections-label") }}:</label>
+                            <div class="form-group form-group--checkbox">
+                                <label class="form-label" :for="'filter-bar-collections-' + collection.id" v-for="collection in meta?.filters?.collections || []" :key="collection.id">
+                                    <input
+                                        :id="'filter-bar-collections-' + collection.id"
+                                        type="checkbox"
+                                        :name="'filter-bar-collections-' + collection.id"
+                                        v-model="activeFilters.filter.collection_id"
+                                        :value="collection.id"
+                                    />
+                                    <div class="form-group-checkbox-content">
+                                        <div class="form-group-checkbox-content__label">{{ collection.name }}</div>
+                                    </div>
+                                </label>
+                            </div>
+                        </template>
                     </div>
                     <div class="dialog-actions">
                         <button type="submit" class="button button--outline" @click="showFiltersDialog = false">{{ $t("cancel") }}</button>
@@ -62,6 +85,7 @@
             </button>
         </div>
         <div class="public-cocktail-grid">
+            <OverlayLoader v-if="isLoading"></OverlayLoader>
             <CocktailItem v-for="cocktail in cocktails" :key="cocktail.slug" :cocktail="cocktail"></CocktailItem>
             <div v-if="cocktails.length === 0">{{ $t("no-cocktails") }}</div>
         </div>
@@ -79,9 +103,26 @@ import { useRoute, useRouter, type LocationQueryRaw } from "vue-router";
 import SaltRimDialog from "../Dialog/SaltRimDialog.vue";
 import Pagination, { type PaginationMeta } from "./../Search/SearchPagination.vue";
 import { useI18n } from "vue-i18n";
+import OverlayLoader from "../OverlayLoader.vue";
 
 type Cocktail = components["schemas"]["PublicCocktailResource"];
+type PublicCocktailQuery = NonNullable<operations["listPublicBarCocktails"]["parameters"]["query"]>;
+type PublicCocktailFilters = NonNullable<PublicCocktailQuery["filter"]>;
 type Meta = operations["listPublicBarCocktails"]["responses"]["200"]["content"]["application/json"]["meta"];
+type Strength = { id: string; label: string; min: number | null; max: number | null };
+
+interface ActiveFilters {
+    sort: string;
+    page: number;
+    filter: {
+        name: string | null;
+        bar_shelf: boolean;
+        collection_id: number[];
+        abv: Strength | null;
+        average_rating_min: number | null;
+        tag_id: number[];
+    };
+}
 
 const showFiltersDialog = ref(false);
 const cocktails = ref<Cocktail[]>([]);
@@ -91,36 +132,47 @@ const meta = ref<Meta | null>(null);
 const paginationMeta = ref<PaginationMeta | null>(null);
 const router = useRouter();
 const { t } = useI18n();
+const isLoading = ref(false);
 const availableSorts = computed(() => [
     { value: "name", label: t("public-bar.sort-name-asc") },
     { value: "-name", label: t("public-bar.sort-name-desc") },
     { value: "created_at", label: t("public-bar.sort-created-asc") },
     { value: "-created_at", label: t("public-bar.sort-created-desc") },
 ]);
+const strengths = computed<Strength[]>(() => [
+    { id: "abv_non_alcoholic", label: t("non-alcoholic"), min: null, max: 2 },
+    { id: "abv_weak", label: t("weak"), min: 2, max: 18 },
+    { id: "abv_medium", label: t("medium"), min: 18, max: 28 },
+    { id: "abv_strong", label: t("strong"), min: 28, max: null },
+]);
+const ratings = Array.from({ length: 9 }, (_, index) => index / 2 + 1);
 
-const defaultRefinements = {
+const createDefaultRefinements = (): ActiveFilters => ({
     sort: "-created_at",
     page: 1,
     filter: {
         name: null as string | null,
         bar_shelf: false,
         collection_id: [] as number[],
+        abv: null,
+        average_rating_min: null,
+        tag_id: [] as number[],
     },
-};
-const activeFilters = ref({ ...defaultRefinements, filter: { ...defaultRefinements.filter } });
+});
+const activeFilters = ref<ActiveFilters>(createDefaultRefinements());
 
-const stateToQuery = () => {
-    const query: any = {};
-
-    query.page = activeFilters.value.page;
-    query.sort = activeFilters.value.sort;
-    query.filter = {
+const stateToQuery = (): PublicCocktailQuery => {
+    const filter: PublicCocktailFilters & { collection_id?: string } = {
         name: activeFilters.value.filter.name || undefined,
         bar_shelf: activeFilters.value.filter.bar_shelf || undefined,
         collection_id: activeFilters.value.filter.collection_id.length > 0 ? activeFilters.value.filter.collection_id.join(",") : undefined,
+        abv_min: activeFilters.value.filter.abv?.min ?? undefined,
+        abv_max: activeFilters.value.filter.abv?.max ?? undefined,
+        average_rating_min: activeFilters.value.filter.average_rating_min ?? undefined,
+        tag_id: activeFilters.value.filter.tag_id.length > 0 ? activeFilters.value.filter.tag_id.join(",") : undefined,
     };
 
-    return query;
+    return { page: activeFilters.value.page, sort: activeFilters.value.sort, filter };
 };
 
 const queryToState = () => {
@@ -129,15 +181,28 @@ const queryToState = () => {
         return;
     }
 
-    activeFilters.value.page = route.query.page ? parseInt(route.query.page as string) : defaultRefinements.page;
-    activeFilters.value.sort = route.query.sort ? (route.query.sort as string) : defaultRefinements.sort;
-    activeFilters.value.filter.name = (queryString.filter as any)?.name || defaultRefinements.filter.name;
-    activeFilters.value.filter.bar_shelf = (queryString.filter as any)?.bar_shelf || defaultRefinements.filter.bar_shelf;
+    const defaults = createDefaultRefinements();
+    const filters = (queryString.filter as Record<string, unknown> | undefined) ?? {};
+    const page = Number(route.query.page);
+    const averageRating = Number(filters.average_rating_min);
+    const abvMin = Number(filters.abv_min);
+    const abvMax = Number(filters.abv_max);
+
+    activeFilters.value.page = Number.isInteger(page) && page > 0 ? page : defaults.page;
+    activeFilters.value.sort = route.query.sort ? (route.query.sort as string) : defaults.sort;
+    activeFilters.value.filter.name = typeof filters.name === "string" ? filters.name : defaults.filter.name;
+    activeFilters.value.filter.bar_shelf = filters.bar_shelf === true || filters.bar_shelf === "true";
     activeFilters.value.filter.collection_id = (queryString.filter as any)?.collection_id
         ? String((queryString.filter as any)?.collection_id)
-              .split(",")
-              .map((id: string) => parseInt(id))
-        : defaultRefinements.filter.collection_id;
+                .split(",")
+                .map(Number)
+                .filter(Number.isFinite)
+        : defaults.filter.collection_id;
+    activeFilters.value.filter.abv = strengths.value.find((strength) => strength.min === (Number.isFinite(abvMin) ? abvMin : null) && strength.max === (Number.isFinite(abvMax) ? abvMax : null)) ?? null;
+    activeFilters.value.filter.average_rating_min = Number.isFinite(averageRating) && averageRating >= 1 && averageRating <= 5 ? averageRating : null;
+    activeFilters.value.filter.tag_id = filters.tag_id
+        ? String(filters.tag_id).split(",").map(Number).filter(Number.isFinite)
+        : [];
 };
 
 const fetchCocktails = async () => {
@@ -150,6 +215,8 @@ const fetchCocktails = async () => {
             return;
         }
 
+        isLoading.value = true;
+
         const response = await BarAssistantClient.getPublicBarCocktails(route.params.barId.toString(), query);
         cocktails.value = response?.data || [];
         paginationMeta.value = {
@@ -161,6 +228,8 @@ const fetchCocktails = async () => {
         meta.value = response?.meta || {};
     } catch (error) {
         console.error("Error fetching cocktails:", error);
+    } finally {
+        isLoading.value = false;
     }
 };
 
@@ -184,7 +253,7 @@ const updateRouterPath = () => {
 };
 
 const resetFilters = () => {
-    activeFilters.value = { ...defaultRefinements, filter: { ...defaultRefinements.filter } };
+    activeFilters.value = createDefaultRefinements();
     updateRouterPath();
 };
 
@@ -194,6 +263,7 @@ const handlePageChange = (toPage: number) => {
 };
 
 const applyFilters = () => {
+    activeFilters.value.page = 1;
     showFiltersDialog.value = false;
     updateRouterPath();
 };
@@ -259,5 +329,10 @@ watch(
 
 .form-group-checkbox-content__help {
     font-size: 0.75em;
+}
+
+.public-cocktail-tags {
+    max-height: 16rem;
+    overflow-y: auto;
 }
 </style>

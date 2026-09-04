@@ -747,7 +747,7 @@
         "login-with": "Login with {name}"
     },
     "distillery": "Distillery",
-    "sweetness": "Sweetness (g/ml)",
+    "sweetness": "Sugar content",
     "acidity": "Acidity (%)",
     "missing-recommended-cocktails": "Add some cocktails to your favorites to start getting recommendations.",
     "ui-theme": "Default theme",

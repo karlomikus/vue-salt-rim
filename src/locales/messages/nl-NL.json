@@ -747,7 +747,7 @@
         "login-with": "Inloggen met {name}"
     },
     "distillery": "Distilleerderij",
-    "sweetness": "Zoetheid (g/ml)",
+    "sweetness": "Zoetheid",
     "acidity": "Zuurheid (%)",
     "missing-recommended-cocktails": "Voeg wat cocktails toe aan je favorieten om aanbevelingen te krijgen.",
     "ui-theme": "Standaardthema",

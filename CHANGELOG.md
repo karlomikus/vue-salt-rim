@@ -1,3 +1,18 @@
+# 5.5.0
+## New
+- Added ingredient facts to reflect design in cocktail details
+- Added quick search links to facts
+- Added more public cocktail filters
+
+# 5.4.0
+## New
+- Added support for member reviews
+- Added opengraph meta tags to public cocktail page
+- Added support for extra sort fields
+
+## Fixes
+- Fixed refinement filter input box sizing on mobile
+
 # 5.3.0
 ## New
 - Added support for cocktail year filtering

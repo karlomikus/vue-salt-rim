@@ -34,6 +34,22 @@
                         :collapsable="false"
                     ></Refinement>
                     <Refinement
+                        id="origin"
+                        v-model="activeFilters.filter.origin"
+                        :searchable="true"
+                        :title="$t('origin')"
+                        :refinements="refineOrigins"
+                        @change="updateRouterPath"
+                    ></Refinement>
+                    <Refinement
+                        id="distillery"
+                        v-model="activeFilters.filter.distillery"
+                        :searchable="true"
+                        :title="$t('distillery')"
+                        :refinements="refineDistilleries"
+                        @change="updateRouterPath"
+                    ></Refinement>
+                    <Refinement
                         id="strength"
                         v-model="activeFilters.filter.strength"
                         :title="$t('strength')"
@@ -167,6 +183,8 @@ const ingredients = ref<Ingredient[]>([]);
 const queryTimer = ref<number | null>(null);
 const availableRefinements = ref({
     categories: [] as Ingredient[],
+    origins: [] as { name: string }[],
+    distilleries: [] as { name: string }[],
     global: [
         { name: t("bar-shelf-ingredients"), active: false, id: "bar_shelf" },
         { name: t("shopping-list-ingredients"), active: false, id: "on_shopping_list" },
@@ -187,6 +205,8 @@ const defaultRefinements = {
     filter: {
         name: null as string | null,
         descendants_of: [] as string[],
+        origin: [] as string[],
+        distillery: [] as string[],
         parent_ingredient_id: null as string[] | null,
         on_shelf: false,
         bar_shelf: false,
@@ -218,6 +238,26 @@ const refineCategories = computed(() => {
             id: c.id,
             value: c.id,
             name: c.name,
+        };
+    });
+});
+
+const refineOrigins = computed(() => {
+    return availableRefinements.value.origins.map((o) => {
+        return {
+            id: o.name,
+            value: o.name,
+            name: o.name,
+        };
+    });
+});
+
+const refineDistilleries = computed(() => {
+    return availableRefinements.value.distilleries.map((d) => {
+        return {
+            id: d.name,
+            value: d.name,
+            name: d.name,
         };
     });
 });
@@ -283,6 +323,8 @@ function queryToState() {
         filter: {
             name: queryString.filter?.name || null,
             descendants_of: queryString.filter?.descendants_of?.split(",") || [],
+            origin: queryString.filter?.origin ? String(queryString.filter.origin).split(",") : [],
+            distillery: queryString.filter?.distillery ? String(queryString.filter.distillery).split(",") : [],
             parent_ingredient_id: queryString.filter?.parent_ingredient_id?.split(",") || [],
             on_shelf: Boolean(queryString.filter?.on_shelf),
             bar_shelf: Boolean(queryString.filter?.bar_shelf),
@@ -309,6 +351,8 @@ function stateToQuery(): IngredientQuery {
     query.filter = {
         name: activeFilters.value.filter.name || undefined,
         descendants_of: activeFilters.value.filter.descendants_of.length > 0 ? activeFilters.value.filter.descendants_of.join(",") : undefined,
+        origin: activeFilters.value.filter.origin.length > 0 ? activeFilters.value.filter.origin.join(",") : undefined,
+        distillery: activeFilters.value.filter.distillery.length > 0 ? activeFilters.value.filter.distillery.join(",") : undefined,
         parent_ingredient_id: (activeFilters.value.filter.parent_ingredient_id?.length ?? 0) > 0 ? activeFilters.value.filter.parent_ingredient_id?.join(",") : undefined,
         on_shelf: activeFilters.value.filter.on_shelf || undefined,
         bar_shelf: activeFilters.value.filter.bar_shelf || undefined,
@@ -332,6 +376,8 @@ async function refreshIngredients() {
     const resp = await BarAssistantClient.getIngredients(query);
     if (resp) {
         ingredients.value = resp.data ?? [];
+        availableRefinements.value.origins = resp.meta?.filters?.origins ?? [];
+        availableRefinements.value.distilleries = resp.meta?.filters?.distilleries ?? [];
         meta.value = {
             current_page: resp?.meta?.current_page || 1,
             last_page: resp?.meta?.last_page || 1,

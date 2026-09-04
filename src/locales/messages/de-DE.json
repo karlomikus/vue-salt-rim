@@ -747,7 +747,7 @@
         "login-with": "Mit {name} anmelden"
     },
     "distillery": "Brennerei",
-    "sweetness": "Süße (g/ml)",
+    "sweetness": "Süße",
     "acidity": "Säure (%)",
     "missing-recommended-cocktails": "Füge ein paar Cocktails zu deinen Favoriten hinzu, um erste Empfehlungen zu erhalten.",
     "ui-theme": "Standardfarbschema",

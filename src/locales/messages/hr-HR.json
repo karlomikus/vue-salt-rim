@@ -747,7 +747,7 @@
         "login-with": "Login with {name}"
     },
     "distillery": "Destilerija",
-    "sweetness": "Slatkoća (g/ml)",
+    "sweetness": "Slatkoća",
     "acidity": "Kiselost (%)",
     "missing-recommended-cocktails": "Dodajte neke koktele u svoje favorite kako biste počeli primati preporuke.",
     "ui-theme": "Zadana tema",
