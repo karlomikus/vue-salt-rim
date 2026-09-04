@@ -376,8 +376,8 @@ async function refreshIngredients() {
     const resp = await BarAssistantClient.getIngredients(query);
     if (resp) {
         ingredients.value = resp.data ?? [];
-        availableRefinements.value.origins = resp?.meta?.filters?.origins ?? [];
-        availableRefinements.value.distilleries = resp?.meta?.filters?.distilleries ?? [];
+        availableRefinements.value.origins = resp.meta?.filters?.origins ?? [];
+        availableRefinements.value.distilleries = resp.meta?.filters?.distilleries ?? [];
         meta.value = {
             current_page: resp?.meta?.current_page || 1,
             last_page: resp?.meta?.last_page || 1,

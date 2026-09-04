@@ -8617,10 +8617,10 @@ export interface operations {
                             total?: number;
                             filters?: {
                                 origins: {
-                                    name?: string;
+                                    name: string;
                                 }[];
                                 distilleries: {
-                                    name?: string;
+                                    name: string;
                                 }[];
                             };
                         };
