@@ -3991,7 +3991,7 @@ export interface components {
             description: string | null;
         };
         /** @enum {string} */
-        AbilityEnum: "cocktails.read" | "cocktails.write" | "cocktails.import" | "ingredients.read" | "ingredients.write" | "bars.read" | "bars.write";
+        AbilityEnum: "cocktails.read" | "cocktails.write" | "cocktails.import" | "ingredients.read" | "ingredients.write" | "bars.read" | "bars.write" | "menu.read" | "menu.write";
         /** @enum {string} */
         BarStatusEnum: "provisioning" | "active" | "deactivated";
         /** @enum {string} */
