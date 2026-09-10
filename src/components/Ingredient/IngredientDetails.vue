@@ -1,5 +1,5 @@
 <template>
-    <div v-if="!ingredient.id">
+    <div v-if="!ingredient.id || isLoadingIngredient">
         <PageHeader>
             {{ $t("ingredient.title") }}
         </PageHeader>

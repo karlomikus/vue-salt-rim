@@ -6,11 +6,11 @@
                 <div class="dialog__container">
                     <div class="dialog__content">
                         <div class="dialog-confirm">
-                            <h6 class="dialog-confirm__title">{{ $t("confirm-dialog.title") }}</h6>
+                            <h6 class="dialog-confirm__title">{{ t("confirm-dialog.title") }}</h6>
                             <p class="dialog-confirm__message">{{ body }}</p>
                             <div class="dialog-confirm__actions">
-                                <button class="button button--outline" @click.prevent="cancel">{{ $t("cancel") }}</button>
-                                <button class="button button--dark" @click.prevent="confirm">{{ $t("confirm") }}</button>
+                                <button class="button button--outline" @click.prevent="cancel">{{ t("cancel") }}</button>
+                                <button class="button button--dark" :disabled="loading" @click.prevent="confirm">{{ t("confirm") }} <span v-if="loading" class="loader"></span></button>
                             </div>
                         </div>
                     </div>
@@ -27,13 +27,14 @@ import { dialogBus } from "@/composables/eventBus";
 
 type ConfirmPayload = {
     body: string;
-    onResolved?: (dialog: { close: () => void }) => void;
+    onResolved?: (dialog: { close: () => void }) => void | Promise<void>;
 };
 
 const { t } = useI18n();
 const shown = ref(false);
 const body = ref("");
-const resolve = ref<((dialog: { close: () => void }) => void) | null>(null);
+const resolve = ref<((dialog: { close: () => void }) => void | Promise<void>) | null>(null);
+const loading = ref(false);
 
 watch(shown, (val) => {
     if (val) {
@@ -54,6 +55,7 @@ onMounted(() => {
 function show(payload: ConfirmPayload) {
     body.value = payload.body;
     resolve.value = payload.onResolved ?? null;
+    loading.value = false;
     shown.value = true;
 }
 
@@ -61,8 +63,19 @@ function close() {
     shown.value = false;
 }
 
-function confirm() {
-    resolve.value?.({ close });
+async function confirm() {
+    if (!resolve.value) {
+        close();
+        return;
+    }
+
+    loading.value = true;
+    try {
+        await resolve.value({ close });
+        close();
+    } finally {
+        loading.value = false;
+    }
 }
 
 function cancel() {
@@ -96,4 +109,27 @@ function cancel() {
 .dark-theme .dialog-confirm__message {
     color: var(--clr-gray-300);
 }
+
+.loader {
+  --color-1: #fff;
+  --size: 0.4px;
+  width: calc(48 * var(--size));
+  height: calc(48 * var(--size));
+  border: calc(8 * var(--size)) solid var(--color-1);
+  border-bottom-color: transparent;
+  border-radius: 50%;
+  display: inline-block;
+  box-sizing: border-box;
+  animation: rotation .4s linear infinite;
+}
+
+@keyframes rotation {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
 </style>

@@ -346,7 +346,7 @@ fetchShoppingList();
 </script>
 
 <template>
-    <div v-if="!cocktail.id">
+    <div v-if="!cocktail.id || isLoading">
         <PageHeader>
             {{ $t("cocktail.title") }}
         </PageHeader>
