@@ -48,6 +48,14 @@
                     <input id="default-currency" v-model="bar.settings.default_currency" class="form-input" type="text" />
                     <p class="form-input-hint">{{ $t("bar.default-currency-hint") }}</p>
                 </div>
+                <div class="form-group">
+                    <label class="form-label" for="standard-drink-region">{{ $t("bar.standard-drink-region") }}:</label>
+                    <select id="standard-drink-region" v-model="bar.settings.standard_drink_region" class="form-select">
+                        <option value="uk">{{ $t("bar.standard-drink-region-uk") }}</option>
+                        <option value="us">{{ $t("bar.standard-drink-region-us") }}</option>
+                    </select>
+                    <p class="form-input-hint">{{ $t("bar.standard-drink-region-hint") }}</p>
+                </div>
             </div>
             <div class="form-group">
                 <label class="form-label" for="slug">{{ $t("bar.url") }}:</label>
@@ -118,7 +126,9 @@ const route = useRoute();
 const router = useRouter();
 const uploader = useImageUpload();
 const bar = ref<Bar>({
-    settings: {},
+    settings: {
+        standard_drink_region: "uk",
+    },
 } as Bar);
 const confirm = useConfirm();
 const imagesUpload = useTemplateRef("imagesUpload");
@@ -169,6 +179,7 @@ async function submit() {
         slug: postSlug,
         default_units: bar.value.settings.default_units,
         default_currency: bar.value.settings.default_currency,
+        standard_drink_region: bar.value.settings.standard_drink_region,
         images: [],
     } as BarRequest;
 
