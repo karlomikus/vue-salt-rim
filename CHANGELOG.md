@@ -1,3 +1,8 @@
+# 5.6.0
+## New
+- Added support for UK/US standard drink bar setting
+- Added support for menu permissions on Personal Access Token page
+
 # 5.5.0
 ## New
 - Added ingredient facts to reflect design in cocktail details
