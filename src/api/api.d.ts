@@ -2821,7 +2821,7 @@ export interface components {
             volume_ml?: number;
             /**
              * Format: float
-             * @description Alcohol units in the cocktail
+             * @description Alcohol content expressed in the bar's standard-drink convention: US standard drinks (14 g of pure alcohol) for `us` bars or UK units (8 g) for `uk` bars
              * @example 1.5
              */
             alcohol_units?: number;
@@ -3991,7 +3991,7 @@ export interface components {
             description: string | null;
         };
         /** @enum {string} */
-        AbilityEnum: "cocktails.read" | "cocktails.write" | "cocktails.import" | "ingredients.read" | "ingredients.write" | "bars.read" | "bars.write";
+        AbilityEnum: "cocktails.read" | "cocktails.write" | "cocktails.import" | "ingredients.read" | "ingredients.write" | "bars.read" | "bars.write" | "menu.read" | "menu.write";
         /** @enum {string} */
         BarStatusEnum: "provisioning" | "active" | "deactivated";
         /** @enum {string} */
@@ -4024,6 +4024,12 @@ export interface components {
              * @example EUR
              */
             default_currency?: string | null;
+            /**
+             * @description Convention used to express the alcohol content of cocktails. `uk` for UK alcohol units, `us` for US standard drinks. Default `uk`.
+             * @example uk
+             * @enum {string}
+             */
+            standard_drink_region?: "us" | "uk";
             /** @description Enable users with invite code to join this bar. Default `false`. */
             enable_invites?: boolean;
             /** @description List of data that the bar will start with. Cocktails cannot be imported without ingredients. */
@@ -4036,6 +4042,12 @@ export interface components {
         BarSettings: {
             default_units?: string | null;
             default_currency?: string | null;
+            /**
+             * @description Convention used to express the alcohol content of cocktails. `uk` for UK alcohol units, `us` for US standard drinks.
+             * @example uk
+             * @enum {string}
+             */
+            standard_drink_region?: "us" | "uk";
         };
         CalculatorBlockRequest: {
             label: string;

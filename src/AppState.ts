@@ -7,6 +7,7 @@ class AppState {
     theme: string;
     defaultUnit: "ml" | "oz" | "cl";
     defaultShelf: string;
+    standardDrinkRegion: "us" | "uk";
     language: string | null;
     token: string | null;
     bar: Bar;
@@ -21,6 +22,7 @@ class AppState {
         this.theme = "light";
         this.defaultUnit = "ml";
         this.defaultShelf = "bar";
+        this.standardDrinkRegion = "uk";
         this.language = null;
         this.token = null;
         this.rememberMe = false;
@@ -64,6 +66,7 @@ class AppState {
         if (bar.settings && bar.settings.default_units) {
             this.setDefaultUnits(bar.settings.default_units);
         }
+        this.standardDrinkRegion = bar.settings?.standard_drink_region ?? "uk";
         this._updateState();
     }
 
@@ -75,6 +78,7 @@ class AppState {
 
     forgetBar() {
         this.bar = {} as Bar;
+        this.standardDrinkRegion = "uk";
         this._updateState();
     }
 
@@ -169,6 +173,7 @@ class AppState {
             this.theme = newState.theme;
             this.defaultUnit = newState.defaultUnit;
             this.defaultShelf = newState.defaultShelf;
+            this.standardDrinkRegion = newState.standardDrinkRegion ?? "uk";
             this.language = newState.language;
             this.token = newState.token;
             this.rememberMe = newState.rememberMe;

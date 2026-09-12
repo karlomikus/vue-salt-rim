@@ -644,7 +644,8 @@
         },
         "totals": {
             "amount-approx": "Ca.",
-            "alcohol-units": "Einheiten"
+            "alcohol-units": "Einheiten",
+            "standard-drinks": "standard drinks"
         }
     },
     "ABV-definition": "Volumenprozent Alkohol",

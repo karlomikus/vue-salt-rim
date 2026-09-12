@@ -644,7 +644,8 @@
         },
         "totals": {
             "amount-approx": "Approx",
-            "alcohol-units": "units"
+            "alcohol-units": "units",
+            "standard-drinks": "standard drinks"
         }
     },
     "ABV-definition": "Alcohol naar volume",

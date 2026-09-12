@@ -564,7 +564,11 @@
         "url-help": "Your public bar URL will be: {url}",
         "url-menu-hint": "Used for public access if enabled.",
         "default-currency-hint": "Used as default currency suggestion, can be changed anytime.",
-        "default-units-hint": "Used as default units on cocktail details, can be changed anytime."
+        "default-units-hint": "Used as default units on cocktail details, can be changed anytime.",
+        "standard-drink-region": "Standard drink convention",
+        "standard-drink-region-hint": "Used to express cocktail alcohol content. UK uses units (8 g of pure alcohol), US uses standard drinks (14 g).",
+        "standard-drink-region-us": "US standard drinks",
+        "standard-drink-region-uk": "UK units"
     },
     "api": {
         "tokens": "API Tokens",
@@ -644,7 +648,8 @@
         },
         "totals": {
             "amount-approx": "Approx",
-            "alcohol-units": "units"
+            "alcohol-units": "units",
+            "standard-drinks": "standard drinks"
         }
     },
     "ABV-definition": "Alcohol by volume",

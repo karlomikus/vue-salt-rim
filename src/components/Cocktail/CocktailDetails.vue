@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed, watch } from "vue";
+import { ref, computed, watch, onMounted } from "vue";
 import { useEventListener } from "@vueuse/core";
 import { micromark } from "micromark";
 import { useRoute, useRouter } from "vue-router";
@@ -28,6 +28,7 @@ import Dropdown from "@/components/SaltRimDropdown.vue";
 import type { components } from "@/api/api";
 import DateFormatter from "@/components/DateFormatter.vue";
 import AppState from "@/AppState";
+import { barBus } from "@/composables/eventBus";
 import UnitConverter from "@/components/Units/UnitConverter.vue";
 import UnitPicker from "@/components/Units/UnitPicker.vue";
 import WakeLockToggle from "../WakeLockToggle.vue";
@@ -39,6 +40,7 @@ import CocktailRecipeScaler from "./../Cocktail/CocktailRecipeScaler.vue";
 import CocktailDetailsFacts from "./CocktailDetailsFacts.vue";
 
 type Cocktail = components["schemas"]["Cocktail"];
+type Bar = components["schemas"]["Bar"];
 type Note = components["schemas"]["Note"];
 type ShoppingList = components["schemas"]["ShoppingList"];
 type CocktailBasic = components["schemas"]["CocktailBasic"];
@@ -46,6 +48,7 @@ type CocktailPrice = components["schemas"]["CocktailPrice"];
 
 const { t } = useI18n();
 const appState = new AppState();
+const standardDrinkRegion = ref<"us" | "uk">(appState.standardDrinkRegion);
 const route = useRoute();
 const router = useRouter();
 const toast = useSaltRimToast();
@@ -149,6 +152,18 @@ const calculatedAlcUnits = computed(() => {
     }
 
     return cocktail.value.alcohol_units * ingredientScaleFactor.value;
+});
+
+const alcoholUnitsLabel = computed(() => {
+    return standardDrinkRegion.value === "us" ? t("cocktail.totals.standard-drinks") : t("cocktail.totals.alcohol-units");
+});
+
+onMounted(() => {
+    barBus.on((e, payload) => {
+        if (e === "barUpdated") {
+            standardDrinkRegion.value = (payload as Bar).settings?.standard_drink_region ?? "uk";
+        }
+    });
 });
 
 const totalLiquidConverted = computed(() => {
@@ -346,7 +361,7 @@ fetchShoppingList();
 </script>
 
 <template>
-    <div v-if="!cocktail.id">
+    <div v-if="!cocktail.id || isLoading">
         <PageHeader>
             {{ $t("cocktail.title") }}
         </PageHeader>
@@ -685,7 +700,7 @@ fetchShoppingList();
                             {{ t("cocktail.totals.amount-approx") }}: {{ totalLiquidConverted }}
                             <span v-if="cocktail.glass && cocktail.glass.volume">({{ t("glass-type.title") }}: {{ cocktail.glass.volume }} {{ cocktail.glass.volume_units }})</span>
                             <span v-show="(cocktail?.calories ?? 0) > 0">&middot; {{ calculatedCalories.toFixed(0) }} kcal</span>
-                            <span v-show="(cocktail?.alcohol_units ?? 0) > 0">&middot; {{ calculatedAlcUnits.toFixed(2) }} {{ t("cocktail.totals.alcohol-units") }}</span>
+                            <span v-show="(cocktail?.alcohol_units ?? 0) > 0">&middot; {{ calculatedAlcUnits.toFixed(2) }} {{ alcoholUnitsLabel }}</span>
                         </div>
                     </div>
                 </UnitConverter>
