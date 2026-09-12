@@ -32,7 +32,7 @@ const props = defineProps<{
 const isSelected = computed(() => props.value == model.value);
 
 function select(): void {
-    model.value = props.value;
+    model.value = isSelected.value ? null : props.value;
 }
 </script>
 <style scoped>

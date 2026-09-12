@@ -16,9 +16,11 @@ const props = withDefaults(
         options: TagOption[];
         labelKey: string;
         maxShownOptions?: number;
+        allowCustom?: boolean;
     }>(),
     {
         maxShownOptions: 7,
+        allowCustom: false,
     },
 );
 
@@ -91,15 +93,21 @@ function checkDelimiter(e: Event): void {
 }
 
 function addSelectedOption(): void {
+    if (currentFocusedDropdownOption.value) {
+        selectOption(currentFocusedDropdownOption.value.name);
+        return;
+    }
+
+    if (props.allowCustom && currentOption.value.trim() !== "") {
+        selectOption(currentOption.value.trim());
+        return;
+    }
+
     if (filteredOptions.value.length === 0) {
         return;
     }
 
-    if (currentFocusedDropdownOption.value) {
-        selectOption(currentFocusedDropdownOption.value.name);
-    } else {
-        selectOption(filteredOptions.value[0].name);
-    }
+    selectOption(filteredOptions.value[0].name);
 }
 
 function navigateOptions(dir: "up" | "down"): void {

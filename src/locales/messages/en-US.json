@@ -207,6 +207,8 @@
     "create-public-link": "Create public link",
     "avg-rating": "Avg. rating",
     "your-rating": "Your rating",
+    "total-votes": "{total} votes",
+    "taste-descriptors": "Taste",
     "category": {
         "title": "Category"
     },
@@ -274,6 +276,8 @@
     "clear-filters": "Clear all filters",
     "rating-removed": "Removed cocktail rating",
     "rating-rated": "Cocktail rated with {rating} stars",
+    "ingredient-rating-removed": "Removed ingredient rating",
+    "ingredient-rating-rated": "Ingredient rated with {rating} stars",
     "shelf-ingredients": "Shelf ingredients",
     "shopping-list-ingredients": "Shopping list ingredients",
     "notes": "Notes",
@@ -287,7 +291,15 @@
         "confirm-delete": "This will permanently delete this review.",
         "content-required": "Review content must not be empty.",
         "rating-label": "Your rating",
-        "empty": "No reviews yet. Be the first to write one."
+        "empty": "No reviews yet. Be the first to write one.",
+        "edit": "Edit review",
+        "updated": "Review updated successfully",
+        "recommendation-label": "Recommendation",
+        "recommendation-avoid": "Avoid",
+        "recommendation-decent": "Decent",
+        "recommendation-recommend": "Recommend",
+        "recommendation-clear": "Clear recommendation",
+        "descriptors-label": "Taste descriptors"
     },
     "note": {
         "title": "Note",
