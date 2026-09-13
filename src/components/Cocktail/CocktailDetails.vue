@@ -7,6 +7,7 @@ import { useI18n } from "vue-i18n";
 import { useTitle } from "@/composables/title";
 import { useSaltRimToast } from "@/composables/toast";
 import { useConfirm } from "@/composables/confirm";
+import { useRecipeIssue } from "@/composables/useRecipeIssue";
 import BarAssistantClient from "@/api/BarAssistantClient";
 import PageHeader from "@/components/PageHeader.vue";
 import SimilarCocktails from "@/components/Cocktail/SimilarCocktails.vue";
@@ -33,6 +34,8 @@ import UnitConverter from "@/components/Units/UnitConverter.vue";
 import UnitPicker from "@/components/Units/UnitPicker.vue";
 import WakeLockToggle from "../WakeLockToggle.vue";
 import IconMore from "../Icons/IconMore.vue";
+import IconExternal from "../Icons/IconExternal.vue";
+import SaltRimSpinner from "../SaltRimSpinner.vue";
 import CocktailIngredientView from "./CocktailIngredient.vue";
 import CocktailVarieties from "./CocktailVarieties.vue";
 import MenuAddDialog from "../Menu/MenuAddDialog.vue";
@@ -53,6 +56,7 @@ const route = useRoute();
 const router = useRouter();
 const toast = useSaltRimToast();
 const confirm = useConfirm();
+const { isLoading: isLoadingSuggestImprovement, suggestImprovement } = useRecipeIssue();
 const isLoading = ref(false);
 const isLoadingNotes = ref(false);
 const isLoadingPrices = ref(false);
@@ -323,6 +327,14 @@ function shareFromFormat(format: string) {
             },
         );
     });
+}
+
+async function onSuggestImprovement() {
+    const error = await suggestImprovement(cocktail.value.slug, currentUnit.value);
+
+    if (error) {
+        toast.error(t("suggest-improvement-error"));
+    }
 }
 
 function favorite() {
@@ -644,6 +656,11 @@ fetchShoppingList();
                                     />
                                 </template>
                             </SaltRimDialog>
+                            <a class="dropdown-menu__item" href="#" @click.prevent="onSuggestImprovement">
+                                <SaltRimSpinner v-if="isLoadingSuggestImprovement" :size="18" />
+                                <IconExternal v-else width="18" height="18" />
+                                {{ t("suggest-improvement") }}
+                            </a>
                             <hr v-if="cocktail.access && cocktail.access.can_delete" class="dropdown-menu__separator" />
                             <a v-if="cocktail.access && cocktail.access.can_delete" class="dropdown-menu__item" href="javascript:;" @click.prevent="deleteCocktail">
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18">
