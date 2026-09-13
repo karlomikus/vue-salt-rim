@@ -195,9 +195,6 @@
                     </ul>
                     <div v-html="parsedDescription" class="has-markdown"></div>
                 </div>
-                <div class="block-container block-container--padded" v-if="ingredient.hierarchy">
-                    <IngredientHierarchy :parent-id="ingredient.id" :root-id="ingredient.hierarchy.root_ingredient_id ?? ingredient.id"></IngredientHierarchy>
-                </div>
                 <div v-if="ingredient.calculator_id" class="block-container block-container--padded">
                     <h2 class="block-container__title">{{ $t("calculators.calculator") }}</h2>
                     <OverlayLoader v-if="isLoadingCalculator" />
@@ -232,6 +229,9 @@
                         @review-edit="onReviewEdit"
                     ></IngredientReviewDetails>
                     <p v-if="reviews.length === 0" class="ingredient-reviews__empty">{{ t("review.empty") }}</p>
+                </div>
+                <div class="block-container block-container--padded" v-if="ingredient.hierarchy">
+                    <IngredientHierarchy :parent-id="ingredient.id" :root-id="ingredient.hierarchy.root_ingredient_id ?? ingredient.id"></IngredientHierarchy>
                 </div>
             </div>
         </div>
