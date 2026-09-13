@@ -69,7 +69,7 @@
                 </div>
             </div>
             <div class="ingredient-details__column-content">
-                <div v-if="ingredient.access && (ingredient.access.can_edit || ingredient.access.can_delete)" class="ingredient-details__actions">
+                <div v-if="(ingredient.access && (ingredient.access.can_edit || ingredient.access.can_delete)) || canReview" class="ingredient-details__actions">
                     <Dropdown>
                         <template #default="{ toggleDropdown }">
                             <button type="button" class="button button--outline button--has-icon" @click.prevent="toggleDropdown">
@@ -77,7 +77,7 @@
                             </button>
                         </template>
                         <template #content>
-                            <RouterLink v-if="ingredient.access.can_edit" class="dropdown-menu__item" :to="{ name: 'ingredients.form', query: { id: ingredient.id } }">
+                            <RouterLink v-if="ingredient.access && ingredient.access.can_edit" class="dropdown-menu__item" :to="{ name: 'ingredients.form', query: { id: ingredient.id } }">
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18">
                                     <path fill="none" d="M0 0h24v24H0z" />
                                     <path
@@ -86,7 +86,7 @@
                                 </svg>
                                 {{ $t("edit") }}
                             </RouterLink>
-                            <RouterLink v-if="ingredient.access.can_edit" class="dropdown-menu__item" :to="{ name: 'ingredients.form', query: { variant: ingredient.id } }">
+                            <RouterLink v-if="ingredient.access && ingredient.access.can_edit" class="dropdown-menu__item" :to="{ name: 'ingredients.form', query: { variant: ingredient.id } }">
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18">
                                     <path
                                         d="M6.9998 6V3C6.9998 2.44772 7.44752 2 7.9998 2H19.9998C20.5521 2 20.9998 2.44772 20.9998 3V17C20.9998 17.5523 20.5521 18 19.9998 18H16.9998V20.9991C16.9998 21.5519 16.5499 22 15.993 22H4.00666C3.45059 22 3 21.5554 3 20.9991L3.0026 7.00087C3.0027 6.44811 3.45264 6 4.00942 6H6.9998ZM5.00242 8L5.00019 20H14.9998V8H5.00242ZM8.9998 6H16.9998V16H18.9998V4H8.9998V6Z"
@@ -94,7 +94,7 @@
                                 </svg>
                                 {{ $t("ingredient.clone-as-variety") }}
                             </RouterLink>
-                            <SaltRimDialog v-model="showAddToMenuDialog">
+                            <SaltRimDialog v-if="ingredient.access && ingredient.access.can_edit" v-model="showAddToMenuDialog">
                                 <template #trigger>
                                     <a class="dropdown-menu__item" href="#" @click.prevent="showAddToMenuDialog = !showAddToMenuDialog">
                                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18">
@@ -115,8 +115,28 @@
                                     />
                                 </template>
                             </SaltRimDialog>
-                            <hr v-if="ingredient.access.can_delete" class="dropdown-menu__separator" />
-                            <a v-if="ingredient.access.can_delete" class="dropdown-menu__item" href="javascript:;" @click.prevent="deleteIngredient">
+                            <SaltRimDialog v-model="showReviewDialog">
+                                <template #trigger>
+                                    <a v-if="canReview && !currentUserReview" class="dropdown-menu__item" href="#" @click.prevent="openWriteReview">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor"
+                                            ><path
+                                                d="M12 14V16C8.68629 16 6 18.6863 6 22H4C4 17.5817 7.58172 14 12 14ZM12 13C8.685 13 6 10.315 6 7C6 3.685 8.685 1 12 1C15.315 1 18 3.685 18 7C18 10.315 15.315 13 12 13ZM12 11C14.21 11 16 9.21 16 7C16 4.79 14.21 3 12 3C9.79 3 8 4.79 8 7C8 9.21 9.79 11 12 11ZM18 21.5L15.0611 23.0451L15.6224 19.7725L13.2447 17.4549L16.5305 16.9775L18 14L19.4695 16.9775L22.7553 17.4549L20.3776 19.7725L20.9389 23.0451L18 21.5Z"
+                                        /></svg>
+                                        {{ t("review.write") }}
+                                    </a>
+                                    <span v-else></span>
+                                </template>
+                                <template #dialog>
+                                    <IngredientReviewDialog
+                                        :ingredient-id="ingredient.id as number"
+                                        :review="reviewToEdit"
+                                        @review-dialog-closed="showReviewDialog = false"
+                                        @review-saved="onReviewSaved"
+                                    />
+                                </template>
+                            </SaltRimDialog>
+                            <hr v-if="ingredient.access && ingredient.access.can_delete" class="dropdown-menu__separator" />
+                            <a v-if="ingredient.access && ingredient.access.can_delete" class="dropdown-menu__item" href="javascript:;" @click.prevent="deleteIngredient">
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18">
                                     <path fill="none" d="M0 0h24v24H0z" />
                                     <path d="M7 4V2h10v2h5v2h-2v15a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V6H2V4h5zM6 6v14h12V6H6zm3 3h2v8H9V9zm4 0h2v8h-2V9z" />
@@ -128,7 +148,7 @@
                 </div>
                 <div class="block-container block-container--padded">
                     <h3 class="block-container__title">{{ t("facts") }}</h3>
-                    <IngredientDetailsFacts v-if="ingredient" :ingredient="ingredient"></IngredientDetailsFacts>
+                    <IngredientDetailsFacts v-if="ingredient" :ingredient="ingredient" @rating-changed="onRatingChanged"></IngredientDetailsFacts>
                     <h2 class="block-container__title">{{ $t("description") }}</h2>
                     <ul class="block-container block-container--inset ingredient-details__more">
                         <OverlayLoader v-if="isLoadingExtra" />
@@ -196,6 +216,23 @@
                         </div>
                     </div>
                 </div>
+                <div v-if="canReview && ingredient.id" class="block-container block-container--padded">
+                    <OverlayLoader v-if="isLoadingReviews" />
+                    <div class="ingredient-reviews__header">
+                        <h3 class="block-container__title">{{ t("review.reviews") }}</h3>
+                    </div>
+                    <IngredientReviewDetails
+                        v-for="rev in sortedReviews"
+                        :key="rev.id"
+                        :review="rev"
+                        :ingredient-id="ingredient.id as number"
+                        :current-user-id="appState.user.id"
+                        :is-bar-admin="Boolean(appState.isAdmin())"
+                        @review-deleted="onReviewDeleted"
+                        @review-edit="onReviewEdit"
+                    ></IngredientReviewDetails>
+                    <p v-if="reviews.length === 0" class="ingredient-reviews__empty">{{ t("review.empty") }}</p>
+                </div>
             </div>
         </div>
     </div>
@@ -228,6 +265,10 @@ import AppState from "@/AppState";
 import SaltRimDialog from "../Dialog/SaltRimDialog.vue";
 import MenuAddDialog from "../Menu/MenuAddDialog.vue";
 import IngredientDetailsFacts from "./IngredientDetailsFacts.vue";
+import IngredientReviewDetails from "@/components/Review/IngredientReviewDetails.vue";
+import IngredientReviewDialog from "@/components/Review/IngredientReviewDialog.vue";
+import { useIngredientReviews } from "@/composables/ingredient/useIngredientReviews";
+import type { IngredientReview } from "@/composables/ingredient/useIngredientReviews";
 import { useDateFormat } from "@vueuse/core";
 
 type Ingredient = components["schemas"]["Ingredient"];
@@ -253,6 +294,18 @@ const ingredient = ref<Partial<Ingredient>>({
     ingredient_parts: [],
 });
 const calculator = ref<Calculator>({} as Calculator);
+const { reviews, fetchReviews, isLoading: isLoadingReviews } = useIngredientReviews();
+const showReviewDialog = ref(false);
+const reviewToEdit = ref<IngredientReview | null>(null);
+const canReview = computed(() => Boolean(appState.bar?.access?.role_id));
+const currentUserReview = computed(() => reviews.value.find((review) => review.author.id === appState.user.id) ?? null);
+const sortedReviews = computed(() => {
+    const otherReviews = reviews.value
+        .filter((review) => review.author.id !== appState.user.id)
+        .sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
+
+    return currentUserReview.value ? [currentUserReview.value, ...otherReviews] : otherReviews;
+});
 
 async function refreshIngredient() {
     isLoadingIngredient.value = true;
@@ -274,6 +327,7 @@ async function refreshIngredient() {
     isLoadingExtra.value = true;
     if (ingredient.value.id) {
         extraIfAddedToShelf.value = (await BarAssistantClient.getExtraBarCocktailsWithIngredient(appState.bar.id, ingredient.value.id))?.data ?? [];
+        fetchReviews(ingredient.value.id);
     }
     isLoadingExtra.value = false;
 }
@@ -291,6 +345,51 @@ async function fetchCalculator() {
     } finally {
         isLoadingCalculator.value = false;
     }
+}
+
+async function refreshIngredientSummary() {
+    if (!ingredient.value.id) {
+        return;
+    }
+
+    try {
+        const resp = await BarAssistantClient.getIngredient(ingredient.value.id.toString());
+        if (resp?.data) {
+            ingredient.value.rating = resp.data.rating;
+            ingredient.value.taste_descriptors = resp.data.taste_descriptors;
+        }
+    } catch (e) {
+        // Summary refresh is best-effort; the control already reflects the change.
+    }
+}
+
+async function onRatingChanged() {
+    await refreshIngredientSummary();
+}
+
+function openWriteReview() {
+    reviewToEdit.value = null;
+    showReviewDialog.value = true;
+}
+
+function onReviewEdit(review: IngredientReview) {
+    reviewToEdit.value = review;
+    showReviewDialog.value = true;
+}
+
+function onReviewSaved() {
+    showReviewDialog.value = false;
+    if (ingredient.value.id) {
+        fetchReviews(ingredient.value.id);
+    }
+    refreshIngredientSummary();
+}
+
+function onReviewDeleted() {
+    if (ingredient.value.id) {
+        fetchReviews(ingredient.value.id);
+    }
+    refreshIngredientSummary();
 }
 
 function deleteIngredient() {
@@ -603,5 +702,17 @@ watch(
         display: flex;
         flex-direction: column;
     }
+}
+
+.ingredient-reviews__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--gap-size-2);
+}
+
+.ingredient-reviews__empty {
+    opacity: 0.65;
+    margin: 0;
 }
 </style>

@@ -69,14 +69,24 @@ async function rate(rating: number) {
 
     try {
         if (currentRating.value == rating) {
-            await BarAssistantClient.deleteCocktailRating(props.id);
+            if (props.type === "ingredient") {
+                await BarAssistantClient.deleteIngredientRating(props.id);
+                toast.default(t("ingredient-rating-removed"));
+            } else {
+                await BarAssistantClient.deleteCocktailRating(props.id);
+                toast.default(t("rating-removed"));
+            }
             currentRating.value = 0;
-            toast.default(t("rating-removed"));
             emit("rated", 0);
         } else {
-            await BarAssistantClient.rateCocktail(props.id, { rating: rating });
+            if (props.type === "ingredient") {
+                await BarAssistantClient.rateIngredient(props.id, { rating: rating });
+                toast.default(t("ingredient-rating-rated", { rating: rating }));
+            } else {
+                await BarAssistantClient.rateCocktail(props.id, { rating: rating });
+                toast.default(t("rating-rated", { rating: rating }));
+            }
             currentRating.value = rating;
-            toast.default(t("rating-rated", { rating: rating }));
             emit("rated", rating);
         }
     } catch (e) {

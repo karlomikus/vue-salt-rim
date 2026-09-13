@@ -134,6 +134,34 @@ export default class BarAssistantClient {
         return (await client.DELETE("/ingredients/{id}", { params: { path: { id: id } } })).data;
     }
 
+    static async rateIngredient(id: number, data: { rating: number }) {
+        return (await client.POST("/ingredients/{id}/ratings", { params: { path: { id: id } }, body: data })).data;
+    }
+
+    static async deleteIngredientRating(id: number) {
+        return (await client.DELETE("/ingredients/{id}/ratings", { params: { path: { id: id } } })).data;
+    }
+
+    static async getIngredientReviews(id: number, query: { page?: number; per_page?: number } = {}) {
+        return (await client.GET("/ingredients/{id}/reviews", { params: { path: { id: id }, query: query } })).data;
+    }
+
+    static async saveIngredientReview(id: number, body: components["schemas"]["IngredientReviewRequest"]) {
+        return (await client.POST("/ingredients/{id}/reviews", { params: { path: { id: id } }, body: body })).data;
+    }
+
+    static async updateIngredientReview(id: number, reviewId: number, body: components["schemas"]["IngredientReviewRequest"]) {
+        return (await client.PUT("/ingredients/{id}/reviews/{reviewId}", { params: { path: { id: id, reviewId: reviewId } }, body: body })).data;
+    }
+
+    static async deleteIngredientReview(id: number, reviewId: number) {
+        return (await client.DELETE("/ingredients/{id}/reviews/{reviewId}", { params: { path: { id: id, reviewId: reviewId } } })).data;
+    }
+
+    static async getTasteDescriptors(query: NonNullable<operations["listTasteDescriptors"]["parameters"]["query"]> = {}) {
+        return (await client.GET("/taste-descriptors", { params: { query: query } })).data;
+    }
+
     static async getCocktails(query = {}) {
         return (await client.GET("/cocktails", { params: { query: query } })).data;
     }
