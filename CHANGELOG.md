@@ -1,3 +1,10 @@
+# 5.7.0
+## New
+- Added support for ingredient reviews
+
+## Changes
+- Icicle chart is now the only view for ingredient hierarchy
+
 # 5.6.0
 ## New
 - Added support for UK/US standard drink bar setting

@@ -7,13 +7,11 @@
                     <Rating :id="ingredient.id" :rating="ingredient.rating?.user ?? 0" type="ingredient" @rated="onRated"></Rating>
                 </dd>
             </template>
-            <template v-if="hasRatingSummary">
-                <dt>{{ t("avg-rating") }}</dt>
-                <dd>
-                    <span>{{ ingredient.rating?.average }} ★</span>
-                    <span v-if="ingredient.rating?.total_votes"> ({{ t("total-votes", { total: ingredient.rating?.total_votes }) }})</span>
-                </dd>
-            </template>
+            <dt>{{ t("avg-rating") }}</dt>
+            <dd>
+                <span>{{ ingredient.rating?.average }} ★</span>
+                <span v-if="ingredient.rating?.total_votes"> ({{ t("total-votes", { total: ingredient.rating?.total_votes }) }})</span>
+            </dd>
             <template v-if="ingredient.taste_descriptors && ingredient.taste_descriptors.length > 0">
                 <dt>{{ t("taste-descriptors") }}</dt>
                 <dd>
@@ -80,7 +78,6 @@ const emit = defineEmits<{
 }>();
 
 const canRate = computed(() => Boolean(appState.bar?.access?.role_id));
-const hasRatingSummary = computed(() => (props.ingredient.rating?.total_votes ?? 0) > 0);
 
 function onRated(rating: number) {
     emit("rating-changed", rating);

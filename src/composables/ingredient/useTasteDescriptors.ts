@@ -19,7 +19,7 @@ export function useTasteDescriptors() {
     }
 
     return {
-        descriptors: readonly(descriptors),
+        descriptors: descriptors,
         isLoading: readonly(isLoading),
         fetchDescriptors,
     };

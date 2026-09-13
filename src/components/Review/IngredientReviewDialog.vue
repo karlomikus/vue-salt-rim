@@ -67,7 +67,7 @@ const emit = defineEmits<{
 }>();
 
 const recommendationOptions: Array<{ value: "avoid" | "decent" | "recommend" | null; labelKey: string; labelDescription: string }> = [
-    { value: "avoid", labelKey: "review.recommendation-avoid", labelDescription: "Left a bad taste in my mouth." },
+    { value: "avoid", labelKey: "review.recommendation-avoid", labelDescription: "Never drinking it again." },
     { value: "decent", labelKey: "review.recommendation-decent", labelDescription: "Not bad, but not great either." },
     { value: "recommend", labelKey: "review.recommendation-recommend", labelDescription: "Great for sipping and mixing." },
 ];
