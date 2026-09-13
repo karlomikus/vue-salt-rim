@@ -66,7 +66,7 @@ export function useIngredientReviews() {
     }
 
     return {
-        reviews: readonly(reviews),
+        reviews,
         isLoading: readonly(isLoading),
         fetchReviews,
         saveReview,

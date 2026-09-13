@@ -101,11 +101,11 @@
                     <Refinement id="year" :title="$t('year')">
                         <div class="cocktail-index__year-range">
                             <div>
-                                <label for="year-min">{{ $t('minimum') }}</label>
+                                <label for="year-min">{{ $t("minimum") }}</label>
                                 <input id="year-min" v-model.number="activeFilters.year_min" class="form-input" type="number" step="1" @change="updateRouterPath" />
                             </div>
                             <div>
-                                <label for="year-max">{{ $t('maximum') }}</label>
+                                <label for="year-max">{{ $t("maximum") }}</label>
                                 <input id="year-max" v-model.number="activeFilters.year_max" class="form-input" type="number" step="1" @change="updateRouterPath" />
                             </div>
                         </div>

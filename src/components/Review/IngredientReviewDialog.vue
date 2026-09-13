@@ -4,13 +4,19 @@
         <div class="dialog-title">{{ isEditing ? t("review.edit") : t("review.write") }}</div>
         <div class="form-group">
             <label class="form-label form-label--required" for="ingredient-review-content">{{ t("content") }}:</label>
-            <textarea id="ingredient-review-content" v-model="content" rows="7" class="form-input" ref="contentInput" placeholder="Your personal thoughts about this ingredient..." required></textarea>
+            <textarea
+                id="ingredient-review-content"
+                v-model="content"
+                rows="7"
+                class="form-input"
+                ref="contentInput"
+                placeholder="Your personal thoughts about this ingredient..."
+                required
+            ></textarea>
         </div>
         <div class="form-group">
             <label class="form-label">{{ t("review.recommendation-label") }}:</label>
-            <p class="form-input-hint">
-                Would you recommend this ingredient to others?
-            </p>
+            <p class="form-input-hint">Would you recommend this ingredient to others?</p>
             <div class="ingredient-review-dialog__recommendations">
                 <SaltRimRadio
                     v-for="option in recommendationOptions"
@@ -24,9 +30,7 @@
         </div>
         <div class="form-group">
             <label class="form-label">{{ t("review.descriptors-label") }}:</label>
-            <p class="form-input-hint">
-                Select taste descriptors that best describe this ingredient. You can also add your own custom descriptors.
-            </p>
+            <p class="form-input-hint">Select taste descriptors that best describe this ingredient. You can also add your own custom descriptors.</p>
             <TagSelector v-model="selectedDescriptors" :options="descriptors" label-key="name" :allow-custom="true" />
         </div>
         <div class="dialog-actions">

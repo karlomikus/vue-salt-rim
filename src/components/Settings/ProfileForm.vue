@@ -260,8 +260,7 @@ function deleteAccount() {
         onResolved: (dialog: { close: () => void }) => {
             dialog.close();
             isLoading.value = true;
-            BarAssistantClient
-                .deleteProfile()
+            BarAssistantClient.deleteProfile()
                 .then(() => {
                     isLoading.value = false;
                     appState.clear();

@@ -34,7 +34,9 @@
                         <div class="form-group form-group--checkbox">
                             <label class="form-label" v-for="strength in strengths" :key="strength.id" :for="strength.id">
                                 <input :id="strength.id" type="radio" name="public-cocktail-strength" v-model="activeFilters.filter.abv" :value="strength" />
-                                <div class="form-group-checkbox-content"><div class="form-group-checkbox-content__label">{{ strength.label }}</div></div>
+                                <div class="form-group-checkbox-content">
+                                    <div class="form-group-checkbox-content__label">{{ strength.label }}</div>
+                                </div>
                             </label>
                         </div>
                         <label class="form-label">{{ $t("avg-rating") }}:</label>
@@ -48,13 +50,20 @@
                         <div class="form-group form-group--checkbox public-cocktail-tags">
                             <label class="form-label" :for="'filter-bar-tags-' + tag.id" v-for="tag in meta?.filters?.tags || []" :key="tag.id">
                                 <input :id="'filter-bar-tags-' + tag.id" type="checkbox" v-model="activeFilters.filter.tag_id" :value="tag.id" />
-                                <div class="form-group-checkbox-content"><div class="form-group-checkbox-content__label">{{ tag.name }}</div></div>
+                                <div class="form-group-checkbox-content">
+                                    <div class="form-group-checkbox-content__label">{{ tag.name }}</div>
+                                </div>
                             </label>
                         </div>
                         <template v-if="meta?.filters?.collections?.length || 0 > 0">
                             <label class="form-label" for="year">{{ $t("public-bar.filters-collections-label") }}:</label>
                             <div class="form-group form-group--checkbox">
-                                <label class="form-label" :for="'filter-bar-collections-' + collection.id" v-for="collection in meta?.filters?.collections || []" :key="collection.id">
+                                <label
+                                    class="form-label"
+                                    :for="'filter-bar-collections-' + collection.id"
+                                    v-for="collection in meta?.filters?.collections || []"
+                                    :key="collection.id"
+                                >
                                     <input
                                         :id="'filter-bar-collections-' + collection.id"
                                         type="checkbox"
@@ -194,15 +203,14 @@ const queryToState = () => {
     activeFilters.value.filter.bar_shelf = filters.bar_shelf === true || filters.bar_shelf === "true";
     activeFilters.value.filter.collection_id = (queryString.filter as any)?.collection_id
         ? String((queryString.filter as any)?.collection_id)
-                .split(",")
-                .map(Number)
-                .filter(Number.isFinite)
+              .split(",")
+              .map(Number)
+              .filter(Number.isFinite)
         : defaults.filter.collection_id;
-    activeFilters.value.filter.abv = strengths.value.find((strength) => strength.min === (Number.isFinite(abvMin) ? abvMin : null) && strength.max === (Number.isFinite(abvMax) ? abvMax : null)) ?? null;
+    activeFilters.value.filter.abv =
+        strengths.value.find((strength) => strength.min === (Number.isFinite(abvMin) ? abvMin : null) && strength.max === (Number.isFinite(abvMax) ? abvMax : null)) ?? null;
     activeFilters.value.filter.average_rating_min = Number.isFinite(averageRating) && averageRating >= 1 && averageRating <= 5 ? averageRating : null;
-    activeFilters.value.filter.tag_id = filters.tag_id
-        ? String(filters.tag_id).split(",").map(Number).filter(Number.isFinite)
-        : [];
+    activeFilters.value.filter.tag_id = filters.tag_id ? String(filters.tag_id).split(",").map(Number).filter(Number.isFinite) : [];
 };
 
 const fetchCocktails = async () => {

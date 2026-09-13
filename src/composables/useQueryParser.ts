@@ -1,9 +1,7 @@
 /**
  * Recursive type that transforms stringified primitives into their literal types.
  */
-type CommaSeparatedValues<T extends string> = T extends `${infer Head},${infer Tail}`
-    ? Head | CommaSeparatedValues<Tail>
-    : T;
+type CommaSeparatedValues<T extends string> = T extends `${infer Head},${infer Tail}` ? Head | CommaSeparatedValues<Tail> : T;
 
 export type ParsedPrimitives<T> = T extends string
     ? T extends `${string},${string}`

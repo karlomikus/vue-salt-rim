@@ -90,16 +90,7 @@ export function usePageMeta(options: UsePageMetaOptions = {}) {
         upsertMeta("name", "twitter:card", TWITTER_CARD);
     };
 
-    watch(
-        [
-            () => toValue(options.title),
-            () => toValue(options.description),
-            () => toValue(options.image),
-            () => toValue(options.siteName),
-        ],
-        apply,
-        { immediate: true },
-    );
+    watch([() => toValue(options.title), () => toValue(options.description), () => toValue(options.image), () => toValue(options.siteName)], apply, { immediate: true });
 
     onUnmounted(() => {
         document.title = defaultTitle;

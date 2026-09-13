@@ -16,7 +16,8 @@ export function useReviews() {
         isLoading.value = true;
         try {
             reviews.value = (await BarAssistantClient.getCocktailReviews(cocktailId, { per_page: 100 }))?.data ?? [];
-        } catch (e) {} finally {
+        } catch (e) {
+        } finally {
             isLoading.value = false;
         }
     }
@@ -56,12 +57,12 @@ export function useReviews() {
         }
     }
 
-return {
-            reviews: readonly(reviews),
-            isLoading: readonly(isLoading),
-            fetchReviews,
-            saveReview,
-            deleteReview,
-            updateReviewRating,
-        };
+    return {
+        reviews: readonly(reviews),
+        isLoading: readonly(isLoading),
+        fetchReviews,
+        saveReview,
+        deleteReview,
+        updateReviewRating,
+    };
 }

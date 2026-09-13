@@ -10,7 +10,9 @@
                             <p class="dialog-confirm__message">{{ body }}</p>
                             <div class="dialog-confirm__actions">
                                 <button class="button button--outline" @click.prevent="cancel">{{ t("cancel") }}</button>
-                                <button class="button button--dark" :disabled="loading" @click.prevent="confirm">{{ t("confirm") }} <span v-if="loading" class="loader"></span></button>
+                                <button class="button button--dark" :disabled="loading" @click.prevent="confirm">
+                                    {{ t("confirm") }} <span v-if="loading" class="loader"></span>
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -111,25 +113,24 @@ function cancel() {
 }
 
 .loader {
-  --color-1: #fff;
-  --size: 0.4px;
-  width: calc(48 * var(--size));
-  height: calc(48 * var(--size));
-  border: calc(8 * var(--size)) solid var(--color-1);
-  border-bottom-color: transparent;
-  border-radius: 50%;
-  display: inline-block;
-  box-sizing: border-box;
-  animation: rotation .4s linear infinite;
+    --color-1: #fff;
+    --size: 0.4px;
+    width: calc(48 * var(--size));
+    height: calc(48 * var(--size));
+    border: calc(8 * var(--size)) solid var(--color-1);
+    border-bottom-color: transparent;
+    border-radius: 50%;
+    display: inline-block;
+    box-sizing: border-box;
+    animation: rotation 0.4s linear infinite;
 }
 
 @keyframes rotation {
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(360deg);
-  }
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
 }
-
 </style>

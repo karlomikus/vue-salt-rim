@@ -46,7 +46,7 @@ export function useRecipeIssue() {
             // const minified = JSON.stringify(parsed);
 
             const title = `Recipe: ${parsed.name ?? ""}`;
-            const body = buildIssueBody(parsed.name ?? "", slug, parsed.source ?? null, '');
+            const body = buildIssueBody(parsed.name ?? "", slug, parsed.source ?? null, "");
 
             openedWindow.location.href = `${newIssueUrl}?title=${encodeURIComponent(title)}&body=${encodeURIComponent(body)}`;
             openedWindow.opener = null;

@@ -26,7 +26,9 @@
             </template>
             <template v-if="ingredient.strength && ingredient.strength > 0">
                 <dt>{{ t("ABV") }}</dt>
-                <dd><abbr :title="t('ABV-definition')">{{ ingredient.strength + "%" }}</abbr></dd>
+                <dd>
+                    <abbr :title="t('ABV-definition')">{{ ingredient.strength + "%" }}</abbr>
+                </dd>
                 <dt>{{ t("alcohol-proof") }}</dt>
                 <dd>{{ ingredient.strength * 2 }}</dd>
             </template>
@@ -36,11 +38,15 @@
             </template>
             <template v-if="ingredient.origin">
                 <dt>{{ t("origin") }}</dt>
-                <dd><RouterLink :to="{name: 'ingredients', query: {'filter[origin]': ingredient.origin}}">{{ ingredient.origin }}</RouterLink></dd>
+                <dd>
+                    <RouterLink :to="{ name: 'ingredients', query: { 'filter[origin]': ingredient.origin } }">{{ ingredient.origin }}</RouterLink>
+                </dd>
             </template>
             <template v-if="ingredient.distillery">
                 <dt>{{ t("distillery") }}</dt>
-                <dd><RouterLink :to="{name: 'ingredients', query: {'filter[distillery]': ingredient.distillery}}">{{ ingredient.distillery }}</RouterLink></dd>
+                <dd>
+                    <RouterLink :to="{ name: 'ingredients', query: { 'filter[distillery]': ingredient.distillery } }">{{ ingredient.distillery }}</RouterLink>
+                </dd>
             </template>
             <template v-if="ingredient.sugar_g_per_ml">
                 <dt>{{ t("sweetness") }}</dt>
