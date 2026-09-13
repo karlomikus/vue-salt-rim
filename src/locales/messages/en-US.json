@@ -205,6 +205,8 @@
     "servings": "Servings",
     "print-recipe": "Print recipe",
     "create-public-link": "Create public link",
+    "suggest-improvement": "Suggest an improvement",
+    "suggest-improvement-error": "Unable to prepare the improvement report. Please try again.",
     "avg-rating": "Avg. rating",
     "your-rating": "Your rating",
     "total-votes": "{total} votes",
