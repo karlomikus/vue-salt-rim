@@ -12,7 +12,7 @@ type IngredientTree = components["schemas"]["IngredientTree"];
 const { t } = useI18n();
 const isLoading = ref(false);
 const hierarchy = ref<IngredientTree | null>(null);
-const currentTab = ref<"dendogram" | "icicle">("dendogram");
+const currentTab = ref<"dendogram" | "icicle">("icicle");
 const { parentId, rootId } = defineProps<{
     parentId: number | string;
     rootId: number | string;
@@ -69,8 +69,8 @@ watch(
     <div v-if="hierarchy">
         <h2 class="block-container__title">{{ t("ingredient.hierarchy") }}</h2>
         <p>{{ t("ingredient.hierarchy-description") }}</p>
-        <a href="#" @click.prevent="currentTab = 'dendogram'">{{ t("ingredient.show-variants") }}</a> &middot;
-        <a href="#" @click.prevent="currentTab = 'icicle'">{{ t("ingredient.icicle-graph") }}</a>
+        <!-- <a href="#" @click.prevent="currentTab = 'dendogram'">{{ t("ingredient.show-variants") }}</a> &middot; -->
+        <!-- <a href="#" @click.prevent="currentTab = 'icicle'">{{ t("ingredient.icicle-graph") }}</a> -->
         <div class="ingredient-hierarchy block-container block-container--padded block-container--inset tf-tree tf-gap-sm" v-if="currentTab === 'dendogram'">
             <OverlayLoader v-if="isLoading" />
             <ul v-if="onlyVariants">

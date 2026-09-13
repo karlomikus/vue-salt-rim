@@ -43,11 +43,9 @@ function findPathToIngredient(node: IngredientTree, targetId: number, path: numb
 }
 
 const highlightedIds = computed(() => {
-    if (hoveredId.value === null) {
-        return new Set<number>();
-    }
+    const id = hoveredId.value ?? props.targetIngredientId;
 
-    return new Set(findPathToIngredient(ingredientTree.value, hoveredId.value) ?? []);
+    return new Set(findPathToIngredient(ingredientTree.value, id) ?? []);
 });
 
 provide("icicleHighlightedIds", highlightedIds);

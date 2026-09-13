@@ -11,9 +11,8 @@
         >
             <span class="node-content">
                 <RouterLink :to="{ name: 'ingredients.show', params: { id: node.ingredient.slug } }">
-                    {{ node.ingredient.name }}
+                    {{ node.ingredient.name }} <template v-if="node.children.length > 0"> ({{ node.children.length }})</template>
                 </RouterLink>
-                <template v-if="node.children.length > 0"> &middot; ({{ node.children.length }})</template>
             </span>
         </div>
         <div v-if="childrenSortedByName && childrenSortedByName.length" class="ingredient-icicle-row__sub-chart">
@@ -51,7 +50,7 @@ const childrenSortedByName = computed(() => {
 }
 
 .ingredient-icicle-row__node {
-    width: 200px;
+    width: 160px;
     flex-grow: 0;
     flex-shrink: 0;
     padding: var(--gap-size-1);
