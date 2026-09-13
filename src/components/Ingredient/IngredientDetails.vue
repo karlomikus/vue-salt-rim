@@ -94,7 +94,7 @@
                                 </svg>
                                 {{ $t("ingredient.clone-as-variety") }}
                             </RouterLink>
-                            <SaltRimDialog v-model="showAddToMenuDialog">
+                            <SaltRimDialog v-if="ingredient.access && ingredient.access.can_edit" v-model="showAddToMenuDialog">
                                 <template #trigger>
                                     <a class="dropdown-menu__item" href="#" @click.prevent="showAddToMenuDialog = !showAddToMenuDialog">
                                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18">
