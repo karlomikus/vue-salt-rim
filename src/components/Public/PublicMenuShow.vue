@@ -2,6 +2,7 @@
 import { ref } from "vue";
 import { useRoute } from "vue-router";
 import BarAssistantClient from "@/api/BarAssistantClient";
+import DateFormatter from "@/components/DateFormatter.vue";
 import { unitHandler } from "@/composables/useUnits";
 import type { components } from "@/api/api";
 
@@ -30,6 +31,9 @@ refreshMenu();
 
 <template>
     <div class="public-page-menu" v-if="menu">
+        <p v-if="menu.updated_at" class="public-page-menu__updated">
+            {{ $t("public-bar.last-updated") }}: <DateFormatter :date="menu.updated_at" format="long" />
+        </p>
         <div v-for="category in menu.categories" :key="category.name" class="public-page-menu__category">
             <h3>{{ category.name }}</h3>
             <div class="public-page-menu__category__cocktails">
@@ -63,6 +67,15 @@ refreshMenu();
     display: flex;
     flex-direction: column;
     gap: 1rem;
+}
+
+.public-page-menu__updated {
+    font-size: 0.85em;
+    color: var(--clr-gray-600);
+
+    .dark-theme & {
+        color: var(--clr-gray-400);
+    }
 }
 
 .public-page-menu__category h3 {

@@ -801,7 +801,8 @@
         "sort-created-asc": "Älteste Rezepte",
         "sort-created-desc": "Neueste Rezepte",
         "recipe-source": "Rezeptquelle",
-        "view-recipe": "Rezept anzeigen"
+        "view-recipe": "Rezept anzeigen",
+        "last-updated": "Zuletzt aktualisiert"
     },
     "author": {
         "title": "Autor"

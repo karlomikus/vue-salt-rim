@@ -1,6 +1,7 @@
 # 5.7.0
 ## New
 - Added support for ingredient reviews
+- Added suggest an recipe improvement action to cocktail details
 
 ## Changes
 - Icicle chart is now the only view for ingredient hierarchy

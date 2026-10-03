@@ -814,7 +814,8 @@
         "sort-created-asc": "Oldest recipes",
         "sort-created-desc": "Newest recipes",
         "recipe-source": "Recipe source",
-        "view-recipe": "View recipe"
+        "view-recipe": "View recipe",
+        "last-updated": "Last updated"
     },
     "author": {
         "title": "Author"

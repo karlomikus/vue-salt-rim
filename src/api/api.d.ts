@@ -3560,6 +3560,11 @@ export interface components {
                  */
                 images?: string[];
             };
+            /**
+             * Format: date-time
+             * @description Last update date
+             */
+            updated_at: string | null;
             /** @description List of menu categories */
             categories: {
                 /** @example Category name */
