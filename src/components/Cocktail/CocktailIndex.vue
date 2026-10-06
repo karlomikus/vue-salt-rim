@@ -715,8 +715,8 @@ function queryToState() {
     activeFilters.value.collection_id = state.filter && state.filter.collection_id ? String(state.filter.collection_id).split(",") : [];
     activeFilters.value.user_shelves = state.filter && state.filter.user_shelves ? String(state.filter.user_shelves).split(",") : [];
     activeFilters.value.created_user_id = state.filter && state.filter.created_user_id ? String(state.filter.created_user_id).split(",") : [];
-    activeFilters.value.author = state.filter && state.filter.author ? String(state.filter.author).split(",") : [];
-    activeFilters.value.origin_bar = state.filter && state.filter.origin_bar ? String(state.filter.origin_bar).split(",") : [];
+    activeFilters.value.author = state.filter && state.filter.author ? String(state.filter.author).split("|") : [];
+    activeFilters.value.origin_bar = state.filter && state.filter.origin_bar ? String(state.filter.origin_bar).split("|") : [];
     activeFilters.value.favorited_by_user = state.filter && state.filter.favorited_by_user ? String(state.filter.favorited_by_user).split(",") : [];
     activeFilters.value.on_shelf = state.filter && state.filter.on_shelf ? state.filter.on_shelf : null;
     activeFilters.value.bar_shelf = state.filter && state.filter.bar_shelf ? state.filter.bar_shelf : null;
@@ -786,8 +786,8 @@ function stateToQuery() {
         user_shelves: activeFilters.value.user_shelves.length > 0 ? activeFilters.value.user_shelves.join(",") : null,
         id: activeFilters.value.id.length > 0 ? activeFilters.value.id.join(",") : null,
         created_user_id: activeFilters.value.created_user_id.length > 0 ? activeFilters.value.created_user_id.join(",") : null,
-        author: activeFilters.value.author.length > 0 ? activeFilters.value.author.join(",") : null,
-        origin_bar: activeFilters.value.origin_bar.length > 0 ? activeFilters.value.origin_bar.join(",") : null,
+        author: activeFilters.value.author.length > 0 ? activeFilters.value.author.join("|") : null,
+        origin_bar: activeFilters.value.origin_bar.length > 0 ? activeFilters.value.origin_bar.join("|") : null,
         favorited_by_user: activeFilters.value.favorited_by_user.length > 0 ? activeFilters.value.favorited_by_user.join(",") : null,
         abv_min: activeFilters.value.abv ? activeFilters.value.abv.min : null,
         abv_max: activeFilters.value.abv ? activeFilters.value.abv.max : null,
