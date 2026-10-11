@@ -25,7 +25,6 @@ const calculators = ref<Calculator[]>([]);
 const isLoading = ref<boolean>(false);
 const showImportDialog = ref<boolean>(false);
 const searchTerm = ref<string>("");
-const expandedIds = ref<number[]>([]);
 const { copy, copied, isSupported } = useClipboard();
 
 useTitle(t("calculators.title"));
@@ -39,14 +38,6 @@ const filteredCalculators = computed<Calculator[]>(() => {
 
     return calculators.value.filter((calc) => calc.name.toLowerCase().includes(term) || (calc.description ?? "").toLowerCase().includes(term));
 });
-
-function isExpanded(calculatorId: number): boolean {
-    return expandedIds.value.includes(calculatorId);
-}
-
-function toggleCalculator(calculatorId: number): void {
-    expandedIds.value = isExpanded(calculatorId) ? expandedIds.value.filter((id) => id !== calculatorId) : [...expandedIds.value, calculatorId];
-}
 
 async function fetchCalculators() {
     isLoading.value = true;
@@ -116,18 +107,12 @@ fetchCalculators();
         </template>
     </PageHeader>
     <div class="calculators-index">
-        <input v-if="calculators.length > 0" v-model="searchTerm" class="form-input calculators-index__search" type="search" :placeholder="$t('placeholder.search')" />
+        <div v-if="calculators.length > 0" class="resource-search__content__filter">
+            <input v-model="searchTerm" class="form-input" type="text" :placeholder="$t('placeholder.search')" />
+        </div>
         <OverlayLoader v-if="isLoading" />
         <div v-if="filteredCalculators.length > 0" class="calculators">
-            <CalculatorCard
-                v-for="calc in filteredCalculators"
-                :key="calc.id"
-                :calculator="calc"
-                :expanded="isExpanded(calc.id)"
-                @toggle="toggleCalculator(calc.id)"
-                @share="share"
-                @remove="removeCalculator"
-            />
+            <CalculatorCard v-for="calc in filteredCalculators" :key="calc.id" :calculator="calc" @share="share" @remove="removeCalculator" />
         </div>
         <EmptyState v-else-if="!isLoading && calculators.length == 0">
             <template #icon>
@@ -153,10 +138,6 @@ fetchCalculators();
     display: flex;
     flex-direction: column;
     gap: var(--gap-size-3);
-}
-
-.calculators-index__search {
-    max-width: 420px;
 }
 
 .calculators {
