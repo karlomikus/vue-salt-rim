@@ -3560,6 +3560,11 @@ export interface components {
                  */
                 images?: string[];
             };
+            /**
+             * Format: date-time
+             * @description Last update date
+             */
+            updated_at: string | null;
             /** @description List of menu categories */
             categories: {
                 /** @example Category name */
@@ -6347,7 +6352,7 @@ export interface operations {
                 page?: number;
                 /** @description Set number of results per page */
                 per_page?: number;
-                /** @description Filter by attributes. You can specify multiple matching filter values by passing a comma separated list of values. */
+                /** @description Filter by attributes. You can specify multiple matching filter values by passing a comma separated list of values. The `author` and `origin_bar` filters use a pipe separated list of values. */
                 filter?: {
                     /** @description Filter by cocktail ID(s) */
                     id?: string;
@@ -6359,9 +6364,9 @@ export interface operations {
                     tag_id?: string;
                     /** @description Filter by creator ID(s) */
                     created_user_id?: string;
-                    /** @description Filter by cocktail author name(s). Comma separated list of author names. Exact match. */
+                    /** @description Filter by cocktail author name(s). Pipe separated list of author names. Exact match. */
                     author?: string;
-                    /** @description Filter by origin bar name(s). Comma separated list of origin bar names. Exact match. */
+                    /** @description Filter by origin bar name(s). Pipe separated list of origin bar names. Exact match. */
                     origin_bar?: string;
                     /** @description Filter by glass ID(s) */
                     glass_id?: string;

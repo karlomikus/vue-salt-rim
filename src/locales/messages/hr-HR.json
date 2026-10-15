@@ -801,7 +801,8 @@
         "sort-created-asc": "Najstariji recepti",
         "sort-created-desc": "Najnoviji recepti",
         "recipe-source": "Izvor recepta",
-        "view-recipe": "Pregled recepta"
+        "view-recipe": "Pregled recepta",
+        "last-updated": "Posljednje ažuriranje"
     },
     "author": {
         "title": "Autor"

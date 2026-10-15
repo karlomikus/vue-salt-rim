@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import { ref } from "vue";
+import { computed, ref } from "vue";
 import type { components } from "@/api/api";
 import BarAssistantClient from "@/api/BarAssistantClient";
 import PageHeader from "../PageHeader.vue";
-import CalculatorRender from "./CalculatorRender.vue";
+import CalculatorCard from "./CalculatorCard.vue";
 import OverlayLoader from "./../OverlayLoader.vue";
 import { useConfirm } from "@/composables/confirm";
 import { useTitle } from "@/composables/title";
@@ -24,9 +24,20 @@ const confirm = useConfirm();
 const calculators = ref<Calculator[]>([]);
 const isLoading = ref<boolean>(false);
 const showImportDialog = ref<boolean>(false);
+const searchTerm = ref<string>("");
 const { copy, copied, isSupported } = useClipboard();
 
 useTitle(t("calculators.title"));
+
+const filteredCalculators = computed<Calculator[]>(() => {
+    const term = searchTerm.value.trim().toLowerCase();
+
+    if (!term) {
+        return calculators.value;
+    }
+
+    return calculators.value.filter((calc) => calc.name.toLowerCase().includes(term) || (calc.description ?? "").toLowerCase().includes(term));
+});
 
 async function fetchCalculators() {
     isLoading.value = true;
@@ -95,19 +106,15 @@ fetchCalculators();
             <RouterLink class="button button--dark" :to="{ name: 'calculators.form' }">{{ t("calculators.add") }}</RouterLink>
         </template>
     </PageHeader>
-    <div>
-        <OverlayLoader v-if="isLoading" />
-        <div class="calculators">
-            <div v-for="calc in calculators" :key="calc.id" class="block-container block-container--padded calculators__calculator">
-                <CalculatorRender :calculator="calc"></CalculatorRender>
-                <div class="calculators__calculator__actions">
-                    <RouterLink :to="{ name: 'calculators.form', query: { id: calc.id } }">{{ t("edit") }}</RouterLink> &middot;
-                    <a href="#" @click.prevent="share(calc)">{{ t("share.title") }}</a> &middot;
-                    <a href="#" @click.prevent="removeCalculator(calc)">{{ t("remove") }}</a>
-                </div>
-            </div>
+    <div class="calculators-index">
+        <div v-if="calculators.length > 0" class="resource-search__content__filter">
+            <input v-model="searchTerm" class="form-input" type="text" :placeholder="$t('placeholder.search')" />
         </div>
-        <EmptyState v-if="calculators.length == 0">
+        <OverlayLoader v-if="isLoading" />
+        <div v-if="filteredCalculators.length > 0" class="calculators">
+            <CalculatorCard v-for="calc in filteredCalculators" :key="calc.id" :calculator="calc" @share="share" @remove="removeCalculator" />
+        </div>
+        <EmptyState v-else-if="!isLoading && calculators.length == 0">
             <template #icon>
                 <IconCalculator />
             </template>
@@ -115,23 +122,34 @@ fetchCalculators();
                 {{ $t("calculators.empty") }}
             </template>
         </EmptyState>
+        <EmptyState v-else-if="!isLoading">
+            <template #icon>
+                <IconCalculator />
+            </template>
+            <template #default>
+                {{ $t("calculators.no-results") }}
+            </template>
+        </EmptyState>
     </div>
 </template>
 
 <style scoped>
+.calculators-index {
+    display: flex;
+    flex-direction: column;
+    gap: var(--gap-size-3);
+}
+
 .calculators {
     display: grid;
     gap: var(--gap-size-2);
     grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    align-items: start;
 }
 
 @media (max-width: 450px) {
     .calculators {
         grid-template-columns: 1fr;
     }
-}
-
-.calculators__calculator__actions {
-    padding-top: 1rem;
 }
 </style>
