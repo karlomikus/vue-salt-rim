@@ -43,6 +43,18 @@ export interface CocktailRecipeDraft04 {
      */
     method?: string | null;
     /**
+     * Year the cocktail was created
+     */
+    year?: number | null;
+    /**
+     * Author of the recipe
+     */
+    author?: string | null;
+    /**
+     * Bar where the cocktail originated
+     */
+    origin_bar?: string | null;
+    /**
      * List of cocktail images
      */
     images?: Image[];

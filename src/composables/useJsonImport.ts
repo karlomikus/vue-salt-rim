@@ -23,6 +23,9 @@ export function useJsonImport() {
                 tags: parsed.tags ?? [],
                 glassName: parsed.glass ?? null,
                 methodName: parsed.method ?? null,
+                author: parsed.author ?? null,
+                originBar: parsed.origin_bar ?? null,
+                year: parsed.year ?? null,
                 images:
                     parsed.images?.map((img) => {
                         return {

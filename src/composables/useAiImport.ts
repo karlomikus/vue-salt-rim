@@ -16,6 +16,9 @@ interface AiGeneratedRecipe {
     instructions: string;
     garnish: string | null;
     method: string | null;
+    year: number | null;
+    origin_bar: string | null;
+    author: string | null;
     ingredients: AiGeneratedIngredient[];
 }
 
@@ -45,6 +48,9 @@ export function useAiImport() {
                 tags: [],
                 glassName: null,
                 methodName: schema.method ?? null,
+                author: schema.author ?? null,
+                originBar: schema.origin_bar ?? null,
+                year: schema.year ?? null,
                 images: [],
                 ingredients: schema.ingredients.map((ing, idx) => {
                     return {
