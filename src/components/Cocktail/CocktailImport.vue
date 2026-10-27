@@ -339,7 +339,7 @@ async function finishImporting() {
         garnish: result.value.garnish,
         source: result.value.source,
         author: result.value.author,
-        origin_bar: result.value.origin_bar,
+        origin_bar: result.value.originBar,
         year: typeof result.value.year === "number" ? result.value.year : null,
         method: { id: matchedMethod?.id },
         glass: matchedGlass,
