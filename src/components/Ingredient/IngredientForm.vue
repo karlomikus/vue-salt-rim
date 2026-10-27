@@ -516,7 +516,7 @@ const generateBasicIngredientInfo = async () => {
 
     const result = resp.data;
 
-    ingredient.value.description = ingredient.value.description + "\n\n" + result.description || "";
+    ingredient.value.description = (ingredient.value.description || "") + "\n\n" + result.description || "";
     ingredient.value.description = ingredient.value.description.trim();
 
     if (!ingredient.value.strength) {

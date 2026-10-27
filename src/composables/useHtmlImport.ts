@@ -1,6 +1,6 @@
 import { ref } from "vue";
 import BarAssistantClient from "@/api/BarAssistantClient";
-import type { ImportResult } from "@/schema/ImportResult";
+import type { ImportResult, ScrapedCocktailSchema } from "@/schema/ImportResult";
 
 export function useHtmlImport() {
     const isLoading = ref(false);
@@ -19,24 +19,29 @@ export function useHtmlImport() {
                 throw new Error("No schema returned from HTML scraper");
             }
 
+            const schema = data.schema as ScrapedCocktailSchema;
+
             result.value = {
-                name: data.schema.name,
-                description: data.schema.description ?? null,
-                instructions: data.schema.instructions,
-                garnish: data.schema.garnish ?? null,
+                name: schema.name,
+                description: schema.description ?? null,
+                instructions: schema.instructions,
+                garnish: schema.garnish ?? null,
                 source: "HTML Import",
-                tags: data.schema.tags ?? [],
-                glassName: data.schema.glass ?? null,
-                methodName: data.schema.method ?? null,
+                tags: schema.tags ?? [],
+                glassName: schema.glass ?? null,
+                methodName: schema.method ?? null,
+                author: schema.author ?? null,
+                originBar: schema.origin_bar ?? null,
+                year: schema.year ?? null,
                 images:
-                    data.schema.images?.map((img) => {
+                    schema.images?.map((img) => {
                         return {
                             uri: img.uri as string,
                             copyright: img.copyright,
                         };
                     }) ?? [],
                 ingredients:
-                    data.schema.ingredients?.map((i) => {
+                    schema.ingredients?.map((i) => {
                         return {
                             matchedIngredient: null,
                             name: i.name,

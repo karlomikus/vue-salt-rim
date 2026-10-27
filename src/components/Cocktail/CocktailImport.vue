@@ -338,6 +338,9 @@ async function finishImporting() {
         instructions: result.value.instructions,
         garnish: result.value.garnish,
         source: result.value.source,
+        author: result.value.author,
+        origin_bar: result.value.originBar,
+        year: typeof result.value.year === "number" ? result.value.year : null,
         method: { id: matchedMethod?.id },
         glass: matchedGlass,
         images:
@@ -538,6 +541,18 @@ init();
                 <div class="form-group">
                     <label class="form-label" for="source">{{ t("source") }}</label>
                     <input id="source" v-model="result.source" type="text" class="form-input" />
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="author">{{ t("author.title") }}</label>
+                    <input id="author" v-model="result.author" type="text" class="form-input" :placeholder="t('placeholder.author')" />
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="origin-bar">{{ t("origin-bar.title") }}</label>
+                    <input id="origin-bar" v-model="result.originBar" type="text" class="form-input" :placeholder="t('placeholder.origin-bar')" />
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="year">{{ t("year") }}</label>
+                    <input id="year" v-model.number="result.year" type="number" class="form-input" :placeholder="t('placeholder.cocktail-year')" />
                 </div>
                 <div class="form-group">
                     <label class="form-label" for="glass">{{ t("glass-type.title") }}</label>

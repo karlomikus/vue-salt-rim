@@ -2,6 +2,12 @@ import type { components } from "@/api/api";
 
 type Ingredient = components["schemas"]["IngredientBasic"];
 
+export type ScrapedCocktailSchema = components["schemas"]["cocktail-04.schema"] & {
+    author?: string | null;
+    origin_bar?: string | null;
+    year?: number | null;
+};
+
 export interface ImportResult {
     name: string;
     description: string | null;
@@ -11,6 +17,9 @@ export interface ImportResult {
     tags: string[];
     glassName: string | null;
     methodName: string | null;
+    author: string | null;
+    originBar: string | null;
+    year: number | null;
     images: {
         uri: string;
         copyright: string;

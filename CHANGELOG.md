@@ -1,3 +1,13 @@
+# 5.9.0
+## New
+- Added support for new scrape properties
+
+# 5.8.0
+## New
+- Show last updated timestamp in public menu
+- Support new origin_bar and author delimiter
+- Added search to calculators page
+
 # 5.7.0
 ## New
 - Added support for ingredient reviews
