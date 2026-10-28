@@ -148,7 +148,15 @@
             </div>
         </div>
         <h3 class="form-section-title">{{ $t("media") }}</h3>
-        <ImageUpload ref="imagesUpload" :images="ingredient.images ?? []" :max-images="1" />
+        <ImageUpload
+            ref="imagesUpload"
+            :images="ingredient.images ?? []"
+            :max-images="1"
+            :show-generate-button="!!ingredient.id"
+            :is-generate-loading="isLoadingImageGen"
+            :is-generate-disabled="isLoadingImageGen"
+            @generate="generateImage"
+        />
         <h3 class="form-section-title">{{ $t("price.prices") }}</h3>
         <div class="block-container block-container--padded block-container--inset ingredient-prices">
             <template v-if="priceCategories.length > 0">
@@ -243,6 +251,7 @@ import IngredientPartModal from "./IngredientPartModal.vue";
 import { unitHandler } from "@/composables/useUnits";
 
 type Ingredient = components["schemas"]["Ingredient"];
+type Image = components["schemas"]["Image"];
 type IngredientPart = components["schemas"]["IngredientPart"];
 type IngredientPrice = components["schemas"]["IngredientPrice"];
 type IngredientSearchResult = SearchResults["ingredient"];
@@ -258,6 +267,7 @@ const uploader = useImageUpload();
 const imagesUpload = useTemplateRef("imagesUpload");
 const isLoading = ref(false);
 const isLoadingGen = ref(false);
+const isLoadingImageGen = ref(false);
 const isParent = ref(false);
 const isComplex = ref(false);
 const isDuplicatedAsVariant = ref(false);
@@ -502,6 +512,41 @@ const disabledFinderIngredients = computed(() => {
 
     return [ingredient.value.id].concat(descendantIngredientIds.value);
 });
+
+async function generateImage() {
+    if (!ingredient.value.id || !imagesUpload.value) {
+        return;
+    }
+
+    if (imagesUpload.value.hasMaxImages()) {
+        toast.error(t("imageupload.generate-limit"));
+        return;
+    }
+
+    isLoadingImageGen.value = true;
+
+    try {
+        const resp = await BarAssistantClient.aiGenerateIngredientImage(ingredient.value.id.toString());
+
+        if (!resp?.data) {
+            toast.error(t("server-error"));
+            return;
+        }
+
+        const wasAdded = imagesUpload.value.appendImage(resp.data as Image);
+
+        if (!wasAdded) {
+            toast.error(t("imageupload.generate-limit"));
+            return;
+        }
+
+        toast.default(t("imageupload.generate-success"));
+    } catch (error: any) {
+        toast.error(error?.message ?? t("server-error"));
+    } finally {
+        isLoadingImageGen.value = false;
+    }
+}
 
 const generateBasicIngredientInfo = async () => {
     if (!ingredient.value.name) {

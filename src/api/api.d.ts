@@ -956,6 +956,26 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/generate/ingredient-image": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Ingredient image
+         * @description Generate an ingredient image using an image model and return it as an unassigned image. Bottled ingredients are rendered in a consistent bottle design; the image has a transparent background.
+         */
+        post: operations["generateIngredientImage"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/glasses": {
         parameters: {
             query?: never;
@@ -3037,6 +3057,21 @@ export interface components {
              * @example Shake
              */
             method?: string;
+            /**
+             * @description Generated author or creator of the cocktail
+             * @example Donn Beach
+             */
+            author?: string | null;
+            /**
+             * @description Year the cocktail was created or first published
+             * @example 1934
+             */
+            year?: number | null;
+            /**
+             * @description Historical bar or venue where the cocktail was created
+             * @example American Bar, London
+             */
+            origin_bar?: string | null;
             /** @description List of ingredients required for the cocktail */
             ingredients: {
                 /**
@@ -8111,6 +8146,50 @@ export interface operations {
                      * @example negroni
                      */
                     cocktail_id: string;
+                    /**
+                     * @description Optional visual style hint for the generated image
+                     * @example editorial studio photo
+                     */
+                    style?: string | null;
+                };
+            };
+        };
+        responses: {
+            /** @description Successful response */
+            200: {
+                headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data: components["schemas"]["Image"];
+                    };
+                };
+            };
+        };
+    };
+    generateIngredientImage: {
+        parameters: {
+            query?: never;
+            header?: {
+                /** @description Database id of a bar. */
+                "Bar-Assistant-Bar-Id"?: number;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": {
+                    /**
+                     * @description Id or slug of the ingredient to generate an image for
+                     * @example vodka
+                     */
+                    ingredient_id: string;
                     /**
                      * @description Optional visual style hint for the generated image
                      * @example editorial studio photo

@@ -702,4 +702,8 @@ export default class BarAssistantClient {
     static async aiGenerateCocktailImage(cocktailId: string) {
         return (await client.POST("/generate/cocktail-image", { body: { cocktail_id: cocktailId } })).data;
     }
+
+    static async aiGenerateIngredientImage(ingredientId: string) {
+        return (await client.POST("/generate/ingredient-image", { body: { ingredient_id: ingredientId } })).data;
+    }
 }
