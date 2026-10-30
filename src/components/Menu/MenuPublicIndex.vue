@@ -30,8 +30,14 @@ async function refreshMenu() {
     }
 }
 
-function publicUrl(cocktail: components["schemas"]["MenuPublic"]["categories"][0]["items"][0]) {
-    return `${protocol}//${host}/e/cocktail/${cocktail.public_id}/cocktail`;
+function itemUrl(cocktail: components["schemas"]["MenuPublic"]["categories"][0]["items"][0]) {
+    if (menu.value?.bar.is_public && cocktail.type === "cocktail" && cocktail.slug) {
+        return `${protocol}//${host}/public/${menu.value.bar.slug}/cocktails/${cocktail.slug}`;
+    }
+    if (cocktail.public_id) {
+        return `${protocol}//${host}/e/cocktail/${cocktail.public_id}/cocktail`;
+    }
+    return null;
 }
 
 refreshMenu();
@@ -72,7 +78,7 @@ refreshMenu();
                             <p>
                                 {{ item.description }}
                             </p>
-                            <a v-if="item.public_id" :href="publicUrl(item)">{{ $t("public-bar.view-recipe") }}</a>
+                            <a v-if="itemUrl(item)" :href="itemUrl(item)">{{ $t("public-bar.view-recipe") }}</a>
                         </div>
                         <div v-if="item.price.price > 0" class="public-page-menu__cocktail__price">
                             {{ unitHandler.formatPrice(item.price.price, item.price.currency) }}

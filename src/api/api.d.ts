@@ -3582,6 +3582,13 @@ export interface components {
             bar: {
                 /** @example Bar name */
                 name: string;
+                /**
+                 * @description Whether the bar is publicly accessible
+                 * @example true
+                 */
+                is_public: boolean;
+                /** @example bar-slug */
+                slug: string;
                 /** @example Bar subtitle */
                 subtitle: string | null;
                 /** @example Bar description */
@@ -3613,6 +3620,8 @@ export interface components {
                     price: components["schemas"]["Price"];
                     /** @example 01ARZ3NDEKTSV4RRFFQ69G5FAV */
                     public_id: string | null;
+                    /** @example cocktail-slug */
+                    slug?: string | null;
                     /** @example Cocktail name */
                     name: string;
                     description: string | null;
@@ -4300,7 +4309,7 @@ export interface components {
              * Format: password
              * @example newpassword
              */
-            password: string | null;
+            new_password: string | null;
             /**
              * Format: password
              * @example current
