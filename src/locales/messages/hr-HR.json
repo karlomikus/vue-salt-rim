@@ -796,6 +796,8 @@
         "filters-bar-shelf-help": "Prikazuje samo koktele koji se mogu pripremiti u tom baru",
         "filters-collections-label": "Kolekcije",
         "filters-search-placeholder": "Pretražite koktele po nazivu...",
+        "filters-any-label": "Bilo koji",
+        "filters-ingredients-label": "Min. sastojaka",
         "sort-name-asc": "Naziv (A-Z)",
         "sort-name-desc": "Naziv (Z-A)",
         "sort-created-asc": "Najstariji recepti",

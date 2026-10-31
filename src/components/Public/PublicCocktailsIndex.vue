@@ -46,6 +46,24 @@
                                 <option v-for="rating in ratings" :key="rating" :value="rating">{{ rating }}</option>
                             </select>
                         </div>
+                        <label class="form-label">{{ $t("glass-type.title") }}:</label>
+                        <div class="form-group">
+                            <select class="form-select" v-model="activeFilters.filter.glass_id">
+                                <option :value="null">{{ $t("public-bar.filters-any-label") }}</option>
+                                <option v-for="glass in meta?.filters?.glasses || []" :key="glass.id" :value="glass.id">{{ glass.name }}</option>
+                            </select>
+                        </div>
+                        <label class="form-label">{{ $t("method.title") }}:</label>
+                        <div class="form-group">
+                            <select class="form-select" v-model="activeFilters.filter.cocktail_method_id">
+                                <option :value="null">{{ $t("public-bar.filters-any-label") }}</option>
+                                <option v-for="method in meta?.filters?.methods || []" :key="method.id" :value="method.id">{{ method.name }}</option>
+                            </select>
+                        </div>
+                        <label class="form-label" for="filter-total-ingredients">{{ $t("public-bar.filters-ingredients-label") }}:</label>
+                        <div class="form-group">
+                            <input id="filter-total-ingredients" class="form-input" type="number" min="1" step="1" v-model.number="activeFilters.filter.total_ingredients" />
+                        </div>
                         <label class="form-label">{{ $t("tag.tags") }}:</label>
                         <div class="form-group form-group--checkbox public-cocktail-tags">
                             <label class="form-label" :for="'filter-bar-tags-' + tag.id" v-for="tag in meta?.filters?.tags || []" :key="tag.id">
@@ -130,6 +148,9 @@ interface ActiveFilters {
         abv: Strength | null;
         average_rating_min: number | null;
         tag_id: number[];
+        glass_id: number | null;
+        cocktail_method_id: number | null;
+        total_ingredients: number | null;
     };
 }
 
@@ -166,6 +187,9 @@ const createDefaultRefinements = (): ActiveFilters => ({
         abv: null,
         average_rating_min: null,
         tag_id: [] as number[],
+        glass_id: null as number | null,
+        cocktail_method_id: null as number | null,
+        total_ingredients: null as number | null,
     },
 });
 const activeFilters = ref<ActiveFilters>(createDefaultRefinements());
@@ -179,6 +203,12 @@ const stateToQuery = (): PublicCocktailQuery => {
         abv_max: activeFilters.value.filter.abv?.max ?? undefined,
         average_rating_min: activeFilters.value.filter.average_rating_min ?? undefined,
         tag_id: activeFilters.value.filter.tag_id.length > 0 ? activeFilters.value.filter.tag_id.join(",") : undefined,
+        glass_id: activeFilters.value.filter.glass_id != null ? String(activeFilters.value.filter.glass_id) : undefined,
+        cocktail_method_id: activeFilters.value.filter.cocktail_method_id != null ? String(activeFilters.value.filter.cocktail_method_id) : undefined,
+        total_ingredients:
+            activeFilters.value.filter.total_ingredients != null && Number.isFinite(activeFilters.value.filter.total_ingredients)
+                ? activeFilters.value.filter.total_ingredients
+                : undefined,
     };
 
     return { page: activeFilters.value.page, sort: activeFilters.value.sort, filter };
@@ -196,6 +226,9 @@ const queryToState = () => {
     const averageRating = Number(filters.average_rating_min);
     const abvMin = Number(filters.abv_min);
     const abvMax = Number(filters.abv_max);
+    const glassId = Number(filters.glass_id);
+    const cocktailMethodId = Number(filters.cocktail_method_id);
+    const totalIngredients = Number(filters.total_ingredients);
 
     activeFilters.value.page = Number.isInteger(page) && page > 0 ? page : defaults.page;
     activeFilters.value.sort = route.query.sort ? (route.query.sort as string) : defaults.sort;
@@ -211,6 +244,9 @@ const queryToState = () => {
         strengths.value.find((strength) => strength.min === (Number.isFinite(abvMin) ? abvMin : null) && strength.max === (Number.isFinite(abvMax) ? abvMax : null)) ?? null;
     activeFilters.value.filter.average_rating_min = Number.isFinite(averageRating) && averageRating >= 1 && averageRating <= 5 ? averageRating : null;
     activeFilters.value.filter.tag_id = filters.tag_id ? String(filters.tag_id).split(",").map(Number).filter(Number.isFinite) : [];
+    activeFilters.value.filter.glass_id = Number.isInteger(glassId) && glassId > 0 ? glassId : defaults.filter.glass_id;
+    activeFilters.value.filter.cocktail_method_id = Number.isInteger(cocktailMethodId) && cocktailMethodId > 0 ? cocktailMethodId : defaults.filter.cocktail_method_id;
+    activeFilters.value.filter.total_ingredients = Number.isInteger(totalIngredients) && totalIngredients > 0 ? totalIngredients : defaults.filter.total_ingredients;
 };
 
 const fetchCocktails = async () => {

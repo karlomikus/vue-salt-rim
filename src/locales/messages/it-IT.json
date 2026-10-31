@@ -796,6 +796,8 @@
         "filters-bar-shelf-help": "Only shows cocktails that can be made in the bar",
         "filters-collections-label": "Collections",
         "filters-search-placeholder": "Search cocktails by name...",
+        "filters-any-label": "Qualsiasi",
+        "filters-ingredients-label": "Min. ingredienti",
         "sort-name-asc": "Name (A-Z)",
         "sort-name-desc": "Name (Z-A)",
         "sort-created-asc": "Oldest recipes",

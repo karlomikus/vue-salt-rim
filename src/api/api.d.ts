@@ -4474,7 +4474,7 @@ export interface components {
              * Format: binary
              * @description Image file. Base64 encoded images also supported. Max 50MB
              */
-            image: string | null | Blob;
+            image: string | null;
             /** @description Existing image id, used to update an existing image */
             id?: number | null;
             /** @example 1 */
@@ -11782,6 +11782,12 @@ export interface operations {
                     average_rating_min?: number;
                     /** @description Filter by exact tag ID(s), comma-separated */
                     tag_id?: string;
+                    /** @description Filter by exact glass type ID(s), comma-separated */
+                    glass_id?: string;
+                    /** @description Filter by exact cocktail method ID(s), comma-separated */
+                    cocktail_method_id?: string;
+                    /** @description Filter by minimum total ingredient count, inclusive */
+                    total_ingredients?: number;
                 };
                 /** @description Sort by attributes. Available attributes: `name`, `created_at`, `abv`, `random`. */
                 sort?: string;
@@ -11848,6 +11854,14 @@ export interface operations {
                                     name?: string;
                                 }[];
                                 tags: {
+                                    id?: number;
+                                    name?: string;
+                                }[];
+                                glasses: {
+                                    id?: number;
+                                    name?: string;
+                                }[];
+                                methods: {
                                     id?: number;
                                     name?: string;
                                 }[];
