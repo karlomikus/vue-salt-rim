@@ -976,6 +976,26 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/generate/shelf-from-photo": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Identify shelf photo
+         * @description Identify bottles on an uploaded shelf photo using an AI vision model and mark the matching bar ingredients as in stock. Bottle names that match no bar ingredient are reported in the response and are not stocked. No ingredients are created by this endpoint.
+         */
+        post: operations["identifyShelfFromPhoto"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/glasses": {
         parameters: {
             query?: never;
@@ -4052,6 +4072,24 @@ export interface components {
              */
             enabled: boolean;
         };
+        /** @description Result of identifying bottles on an uploaded shelf photo */
+        ShelfPhotoResultResource: {
+            /** @description Bar ingredients marked as in stock */
+            stocked: {
+                /**
+                 * @description Ingredient id
+                 * @example 1
+                 */
+                id: number;
+                /**
+                 * @description Ingredient name
+                 * @example Cointreau
+                 */
+                name: string;
+            }[];
+            /** @description Bottle names read from the photo that match no bar ingredient and were not stocked */
+            unmatched: string[];
+        };
         /** @description Subscription resource */
         Subscription: {
             type: string;
@@ -4474,7 +4512,7 @@ export interface components {
              * Format: binary
              * @description Image file. Base64 encoded images also supported. Max 50MB
              */
-            image: string | null;
+            image: string | null | Blob;
             /** @description Existing image id, used to update an existing image */
             id?: number | null;
             /** @example 1 */
@@ -8220,6 +8258,57 @@ export interface operations {
                 content: {
                     "application/json": {
                         data: components["schemas"]["Image"];
+                    };
+                };
+            };
+        };
+    };
+    identifyShelfFromPhoto: {
+        parameters: {
+            query?: never;
+            header?: {
+                /** @description Database id of a bar. */
+                "Bar-Assistant-Bar-Id"?: number;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "multipart/form-data": {
+                    /** @description One or more photos of the bar shelf */
+                    images: string[];
+                };
+            };
+        };
+        responses: {
+            /** @description Successful response */
+            200: {
+                headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data: components["schemas"]["ShelfPhotoResultResource"];
+                    };
+                };
+            };
+            /** @description You are not authorized for this action. */
+            403: {
+                headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data?: components["schemas"]["APIError"];
                     };
                 };
             };

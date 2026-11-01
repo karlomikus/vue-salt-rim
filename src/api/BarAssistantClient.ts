@@ -706,4 +706,22 @@ export default class BarAssistantClient {
     static async aiGenerateIngredientImage(ingredientId: string) {
         return (await client.POST("/generate/ingredient-image", { body: { ingredient_id: ingredientId } })).data;
     }
+
+    static async identifyShelfFromPhoto(files: File[]) {
+        const { data, error, response } = await client.POST("/generate/shelf-from-photo", {
+            body: { images: files as unknown as string[] },
+            bodySerializer(body: any) {
+                const fd = new FormData();
+                for (const file of body.images) {
+                    fd.append("images[]", file);
+                }
+                return fd;
+            },
+        });
+        if (error !== undefined) {
+            const err = error as { data?: { message?: string }; message?: string };
+            throw new Error(err.data?.message ?? err.message ?? `Shelf photo scan failed (HTTP ${response.status})`);
+        }
+        return data;
+    }
 }

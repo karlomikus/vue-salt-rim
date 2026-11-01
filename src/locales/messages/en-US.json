@@ -82,7 +82,18 @@
         "default-units-help": "Used to autofill units when selecting ingredient for cocktail recipe",
         "icicle-graph": "Icicle chart",
         "csv-import-started": "CSV import started",
-        "potential-bar-shelf-cocktails": "Potential bar cocktails"
+        "potential-bar-shelf-cocktails": "Potential bar cocktails",
+        "shelf-photo": "Scan shelf",
+        "shelf-photo-title": "Scan shelf from photo",
+        "shelf-photo-intro": "Select one or more photos of your bar shelf. Bottles found on the photos are identified and matching bar ingredients are marked as in stock. Ideally, the photos should be taken from a distance and include all bottles on the shelf.",
+        "shelf-photo-select": "Shelf photos",
+        "shelf-photo-count": "{count} of {max} photos selected",
+        "shelf-photo-too-many": "You can upload at most {max} photos at once",
+        "shelf-photo-submit": "Scan shelf",
+        "shelf-photo-stocked": "Stocked ingredients",
+        "shelf-photo-unmatched": "Unmatched bottles",
+        "shelf-photo-empty": "No bottles were identified in the photos",
+        "shelf-photo-scan-again": "Scan again"
     },
     "share": {
         "title": "Share",
