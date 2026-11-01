@@ -4512,7 +4512,7 @@ export interface components {
              * Format: binary
              * @description Image file. Base64 encoded images also supported. Max 50MB
              */
-            image: string | null | Blob;
+            image: string | Blob | null;
             /** @description Existing image id, used to update an existing image */
             id?: number | null;
             /** @example 1 */
@@ -8277,7 +8277,7 @@ export interface operations {
             content: {
                 "multipart/form-data": {
                     /** @description One or more photos of the bar shelf */
-                    images: string[];
+                    images: (string | Blob)[];
                 };
             };
         };
@@ -8721,7 +8721,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "image/jpg": string;
+                    "image/jpg": string | Blob;
                 };
             };
             /** @description Resource record not found. */
@@ -8878,7 +8878,7 @@ export interface operations {
                      * Format: binary
                      * @description CSV file
                      */
-                    source: string;
+                    source: string | Blob;
                 };
             };
         };

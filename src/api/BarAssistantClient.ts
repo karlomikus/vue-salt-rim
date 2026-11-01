@@ -709,7 +709,7 @@ export default class BarAssistantClient {
 
     static async identifyShelfFromPhoto(files: File[]) {
         const { data, error, response } = await client.POST("/generate/shelf-from-photo", {
-            body: { images: files as unknown as string[] },
+            body: { images: files },
             bodySerializer(body: any) {
                 const fd = new FormData();
                 for (const file of body.images) {
