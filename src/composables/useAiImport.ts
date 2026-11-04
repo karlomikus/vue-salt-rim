@@ -19,6 +19,7 @@ interface AiGeneratedRecipe {
     year: number | null;
     origin_bar: string | null;
     author: string | null;
+    tags: string[] | null;
     ingredients: AiGeneratedIngredient[];
 }
 
@@ -45,7 +46,7 @@ export function useAiImport() {
                 instructions: schema.instructions,
                 garnish: schema.garnish ?? null,
                 source: "Raw text input",
-                tags: [],
+                tags: schema.tags ?? [],
                 glassName: null,
                 methodName: schema.method ?? null,
                 author: schema.author ?? null,

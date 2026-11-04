@@ -3092,6 +3092,8 @@ export interface components {
              * @example American Bar, London
              */
             origin_bar?: string | null;
+            /** @description Suggested tags derived from the recipe text */
+            tags?: string[];
             /** @description List of ingredients required for the cocktail */
             ingredients: {
                 /**
