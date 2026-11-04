@@ -4077,18 +4077,7 @@ export interface components {
         /** @description Result of identifying bottles on an uploaded shelf photo */
         ShelfPhotoResultResource: {
             /** @description Bar ingredients marked as in stock */
-            stocked: {
-                /**
-                 * @description Ingredient id
-                 * @example 1
-                 */
-                id: number;
-                /**
-                 * @description Ingredient name
-                 * @example Cointreau
-                 */
-                name: string;
-            }[];
+            stocked: components["schemas"]["IngredientBasic"][];
             /** @description Bottle names read from the photo that match no bar ingredient and were not stocked */
             unmatched: string[];
         };

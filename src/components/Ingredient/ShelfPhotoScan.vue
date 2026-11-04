@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed, ref } from "vue";
 import OverlayLoader from "../OverlayLoader.vue";
+import IngredientImage from "./IngredientImage.vue";
 import { useI18n } from "vue-i18n";
 import { useShelfPhotoScan } from "@/composables/ingredient/useShelfPhotoScan";
 
@@ -10,7 +11,7 @@ const files = ref<File[]>([]);
 
 const MAX_PHOTOS = 10;
 
-const hasResults = computed(() => (result.value?.stocked.length ?? 0) + (result.value?.unmatched.length ?? 0) > 0);
+const hasResults = computed(() => (result.value?.stocked.length ?? 0)); //+ (result.value?.unmatched.length ?? 0) > 0);
 const tooManyPhotos = computed(() => files.value.length > MAX_PHOTOS);
 
 function onFilesChanged($event: Event) {
@@ -50,18 +51,21 @@ function onFilesChanged($event: Event) {
         </template>
         <template v-else>
             <div v-if="hasResults">
-                <div v-if="result.stocked.length > 0" class="form-group">
+                <div v-if="result.stocked.length > 0">
                     <h3 class="form-section-title">{{ t("ingredient.shelf-photo-stocked") }}</h3>
-                    <ul class="shelf-photo-scan__list">
-                        <li v-for="ingredient in result.stocked" :key="ingredient.id">{{ ingredient.name }}</li>
+                    <ul class="shelf-photo-scan__grid">
+                        <li v-for="ingredient in result.stocked" :key="ingredient.id" class="block-container shelf-photo-scan__grid-item">
+                            <IngredientImage :image-url="ingredient.image?.url ?? null"></IngredientImage>
+                            <span class="shelf-photo-scan__grid-name">{{ ingredient.name }}</span>
+                        </li>
                     </ul>
                 </div>
-                <div v-if="result.unmatched.length > 0" class="form-group">
+                <!-- <div v-if="result.unmatched.length > 0">
                     <h3 class="form-section-title">{{ t("ingredient.shelf-photo-unmatched") }}</h3>
                     <ul class="shelf-photo-scan__list">
                         <li v-for="name in result.unmatched" :key="name">{{ name }}</li>
                     </ul>
-                </div>
+                </div> -->
             </div>
             <p v-else>{{ t("ingredient.shelf-photo-empty") }}</p>
             <div style="display: flex; gap: var(--gap-size-2); justify-content: flex-end">
@@ -87,5 +91,27 @@ function onFilesChanged($event: Event) {
 .shelf-photo-scan__list {
     margin: 0;
     padding-left: 1.2rem;
+}
+.shelf-photo-scan__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    gap: var(--gap-size-2);
+    margin: 0 0 1rem 0;
+    padding: 0;
+    list-style: none;
+}
+.shelf-photo-scan__grid-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--gap-size-1);
+    text-align: center;
+    padding: var(--gap-size-2);
+}
+.shelf-photo-scan__grid-name {
+    font-size: 1em;
+    font-weight: var(--fw-bold);
+    overflow-wrap: anywhere;
+    font-family: var(--font-heading);
 }
 </style>
