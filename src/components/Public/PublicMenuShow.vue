@@ -29,7 +29,7 @@ function itemUrl(cocktail: components["schemas"]["MenuPublic"]["categories"][0][
     if (cocktail.public_id) {
         return `${protocol}//${host}/e/cocktail/${cocktail.public_id}/cocktail`;
     }
-    return null;
+    return '';
 }
 
 refreshMenu();
@@ -58,7 +58,7 @@ refreshMenu();
                         <p>
                             {{ item.description }}
                         </p>
-                        <a v-if="itemUrl(item)" :href="itemUrl(item)">{{ $t("public-bar.view-recipe") }}</a>
+                        <a v-if="itemUrl(item) != ''" :href="itemUrl(item)">{{ $t("public-bar.view-recipe") }}</a>
                     </div>
                     <div v-if="item.price.price > 0" class="public-page-menu__cocktail__price">
                         {{ unitHandler.formatPrice(item.price.price, item.price.currency) }}
