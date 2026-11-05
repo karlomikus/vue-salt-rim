@@ -13,7 +13,7 @@
     "lint:oxlint": "oxlint . --fix",
     "lint:eslint": "eslint . --fix --cache",
     "style": "prettier src --write",
-    "gen": "bunx openapi-typescript ./spec.yml -o ./src/api/api.d.ts"
+    "gen": "bun scripts/generate-api.ts"
   },
   "dependencies": {
     "@floating-ui/vue": "1.1.11",
@@ -38,7 +38,7 @@
     "thumbhash": "0.1.1",
     "treeflex": "2.0.1",
     "vue": "3.5.34",
-    "vue-i18n": "11.4.4",
+    "vue-i18n": "11.4.14",
     "vue-instantsearch": "4.26.4",
     "vue-router": "5.0.7",
     "vue-toast-notification": "3.1.3"

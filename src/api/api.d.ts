@@ -956,6 +956,46 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/generate/ingredient-image": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Ingredient image
+         * @description Generate an ingredient image using an image model and return it as an unassigned image. Bottled ingredients are rendered in a consistent bottle design; the image has a transparent background.
+         */
+        post: operations["generateIngredientImage"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/generate/shelf-from-photo": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Identify shelf photo
+         * @description Identify bottles on an uploaded shelf photo using an AI vision model and mark the matching bar ingredients as in stock. Bottle names that match no bar ingredient are reported in the response and are not stocked. No ingredients are created by this endpoint.
+         */
+        post: operations["identifyShelfFromPhoto"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/glasses": {
         parameters: {
             query?: never;
@@ -3037,6 +3077,23 @@ export interface components {
              * @example Shake
              */
             method?: string;
+            /**
+             * @description Generated author or creator of the cocktail
+             * @example Donn Beach
+             */
+            author?: string | null;
+            /**
+             * @description Year the cocktail was created or first published
+             * @example 1934
+             */
+            year?: number | null;
+            /**
+             * @description Historical bar or venue where the cocktail was created
+             * @example American Bar, London
+             */
+            origin_bar?: string | null;
+            /** @description Suggested tags derived from the recipe text */
+            tags?: string[];
             /** @description List of ingredients required for the cocktail */
             ingredients: {
                 /**
@@ -3547,6 +3604,13 @@ export interface components {
             bar: {
                 /** @example Bar name */
                 name: string;
+                /**
+                 * @description Whether the bar is publicly accessible
+                 * @example true
+                 */
+                is_public: boolean;
+                /** @example bar-slug */
+                slug: string;
                 /** @example Bar subtitle */
                 subtitle: string | null;
                 /** @example Bar description */
@@ -3578,6 +3642,8 @@ export interface components {
                     price: components["schemas"]["Price"];
                     /** @example 01ARZ3NDEKTSV4RRFFQ69G5FAV */
                     public_id: string | null;
+                    /** @example cocktail-slug */
+                    slug?: string | null;
                     /** @example Cocktail name */
                     name: string;
                     description: string | null;
@@ -4008,6 +4074,13 @@ export interface components {
              */
             enabled: boolean;
         };
+        /** @description Result of identifying bottles on an uploaded shelf photo */
+        ShelfPhotoResultResource: {
+            /** @description Bar ingredients marked as in stock */
+            stocked: components["schemas"]["IngredientBasic"][];
+            /** @description Bottle names read from the photo that match no bar ingredient and were not stocked */
+            unmatched: string[];
+        };
         /** @description Subscription resource */
         Subscription: {
             type: string;
@@ -4265,7 +4338,7 @@ export interface components {
              * Format: password
              * @example newpassword
              */
-            password: string | null;
+            new_password: string | null;
             /**
              * Format: password
              * @example current
@@ -4430,7 +4503,7 @@ export interface components {
              * Format: binary
              * @description Image file. Base64 encoded images also supported. Max 50MB
              */
-            image: string | null | Blob;
+            image: string | Blob | null;
             /** @description Existing image id, used to update an existing image */
             id?: number | null;
             /** @example 1 */
@@ -8137,6 +8210,101 @@ export interface operations {
             };
         };
     };
+    generateIngredientImage: {
+        parameters: {
+            query?: never;
+            header?: {
+                /** @description Database id of a bar. */
+                "Bar-Assistant-Bar-Id"?: number;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": {
+                    /**
+                     * @description Id or slug of the ingredient to generate an image for
+                     * @example vodka
+                     */
+                    ingredient_id: string;
+                    /**
+                     * @description Optional visual style hint for the generated image
+                     * @example editorial studio photo
+                     */
+                    style?: string | null;
+                };
+            };
+        };
+        responses: {
+            /** @description Successful response */
+            200: {
+                headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data: components["schemas"]["Image"];
+                    };
+                };
+            };
+        };
+    };
+    identifyShelfFromPhoto: {
+        parameters: {
+            query?: never;
+            header?: {
+                /** @description Database id of a bar. */
+                "Bar-Assistant-Bar-Id"?: number;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "multipart/form-data": {
+                    /** @description One or more photos of the bar shelf */
+                    images: (string | Blob)[];
+                };
+            };
+        };
+        responses: {
+            /** @description Successful response */
+            200: {
+                headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data: components["schemas"]["ShelfPhotoResultResource"];
+                    };
+                };
+            };
+            /** @description You are not authorized for this action. */
+            403: {
+                headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data?: components["schemas"]["APIError"];
+                    };
+                };
+            };
+        };
+    };
     listGlassware: {
         parameters: {
             query?: {
@@ -8544,7 +8712,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "image/jpg": string;
+                    "image/jpg": string | Blob;
                 };
             };
             /** @description Resource record not found. */
@@ -8701,7 +8869,7 @@ export interface operations {
                      * Format: binary
                      * @description CSV file
                      */
-                    source: string;
+                    source: string | Blob;
                 };
             };
         };
@@ -11694,6 +11862,12 @@ export interface operations {
                     average_rating_min?: number;
                     /** @description Filter by exact tag ID(s), comma-separated */
                     tag_id?: string;
+                    /** @description Filter by exact glass type ID(s), comma-separated */
+                    glass_id?: string;
+                    /** @description Filter by exact cocktail method ID(s), comma-separated */
+                    cocktail_method_id?: string;
+                    /** @description Filter by minimum total ingredient count, inclusive */
+                    total_ingredients?: number;
                 };
                 /** @description Sort by attributes. Available attributes: `name`, `created_at`, `abv`, `random`. */
                 sort?: string;
@@ -11760,6 +11934,14 @@ export interface operations {
                                     name?: string;
                                 }[];
                                 tags: {
+                                    id?: number;
+                                    name?: string;
+                                }[];
+                                glasses: {
+                                    id?: number;
+                                    name?: string;
+                                }[];
+                                methods: {
                                     id?: number;
                                     name?: string;
                                 }[];

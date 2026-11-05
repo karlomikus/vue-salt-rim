@@ -796,6 +796,8 @@
         "filters-bar-shelf-help": "Nur Cocktails anzeigen, die in der Bar zubereitet werden können",
         "filters-collections-label": "Sammlungen",
         "filters-search-placeholder": "Suche nach Cocktailname...",
+        "filters-any-label": "Alle",
+        "filters-ingredients-label": "Min. Zutaten",
         "sort-name-asc": "Name (A-Z)",
         "sort-name-desc": "Name (Z-A)",
         "sort-created-asc": "Älteste Rezepte",

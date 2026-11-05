@@ -3,6 +3,14 @@
         {{ $t("ingredient.ingredients") }}
         <template #actions>
             <RouterLink class="button button--outline" :to="{ name: 'ingredients.import' }">{{ $t("ingredient.import") }}</RouterLink>
+            <SaltRimDialog v-model="showShelfPhotoScanDialog">
+                <template #trigger>
+                    <button type="button" class="button button--outline" @click.prevent="showShelfPhotoScanDialog = !showShelfPhotoScanDialog">{{ $t("ingredient.shelf-photo") }}</button>
+                </template>
+                <template #dialog>
+                    <ShelfPhotoScan />
+                </template>
+            </SaltRimDialog>
             <template v-if="appState.isAdmin() || appState.isGeneral()">
                 <RouterLink class="button button--dark" :to="{ name: 'ingredients.form' }">{{ $t("ingredient.add") }}</RouterLink>
             </template>
@@ -188,6 +196,7 @@ import { computed, ref, watch } from "vue";
 import type { components, operations } from "@/api/api";
 import { useI18n } from "vue-i18n";
 import { useRoute, useRouter, type LocationQueryRaw } from "vue-router";
+import ShelfPhotoScan from "./ShelfPhotoScan.vue";
 
 type IngredientQuery = operations["listIngredients"]["parameters"]["query"];
 type Ingredient = components["schemas"]["Ingredient"];
@@ -200,6 +209,7 @@ const appState = new AppState();
 const isLoading = ref(false);
 const showRefinements = ref(false);
 const showAddToMenuDialog = ref(false);
+const showShelfPhotoScanDialog = ref(false);
 const sortDir = ref("");
 const meta = ref<PaginationMeta | null>(null);
 const ingredients = ref<Ingredient[]>([]);
