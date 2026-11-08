@@ -3,14 +3,16 @@
         {{ $t("ingredient.ingredients") }}
         <template #actions>
             <RouterLink class="button button--outline" :to="{ name: 'ingredients.import' }">{{ $t("ingredient.import") }}</RouterLink>
-            <SaltRimDialog v-model="showShelfPhotoScanDialog">
-                <template #trigger>
-                    <button type="button" class="button button--outline" @click.prevent="showShelfPhotoScanDialog = !showShelfPhotoScanDialog">{{ $t("ingredient.shelf-photo") }}</button>
-                </template>
-                <template #dialog>
-                    <ShelfPhotoScan />
-                </template>
-            </SaltRimDialog>
+            <template v-if="showShelfScan">
+                <SaltRimDialog v-model="showShelfPhotoScanDialog">
+                    <template #trigger>
+                        <button type="button" class="button button--outline" @click.prevent="showShelfPhotoScanDialog = !showShelfPhotoScanDialog">{{ $t("ingredient.shelf-photo") }}</button>
+                    </template>
+                    <template #dialog>
+                        <ShelfPhotoScan />
+                    </template>
+                </SaltRimDialog>
+            </template>
             <template v-if="appState.isAdmin() || appState.isGeneral()">
                 <RouterLink class="button button--dark" :to="{ name: 'ingredients.form' }">{{ $t("ingredient.add") }}</RouterLink>
             </template>
@@ -360,6 +362,10 @@ const menuItems = computed(() => {
     return ingredients.value.map((ingredient) => {
         return ingredient.id;
     });
+});
+
+const showShelfScan = computed(() => {
+    return (appState.isAdmin() || appState.isGeneral()) && appState.isAiEnabled;
 });
 
 function queryToState() {
