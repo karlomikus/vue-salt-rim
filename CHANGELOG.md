@@ -1,3 +1,13 @@
+# 5.10.1
+## Fixes
+- Hide shelf scan if AI is not enabled in Bar Assistant API
+
+# 5.10.0
+## New
+- Added support for shelf scan
+- Added new public filters
+- Ingredient images can be generated with AI
+
 # 5.9.0
 ## New
 - Added support for new scrape properties
