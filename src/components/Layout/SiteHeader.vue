@@ -9,14 +9,14 @@
                     <template v-if="appState.bar.id">
                         <SaltRimDialog v-model="showSearchDialog" class="site-autocomplete-dialog">
                             <template #trigger>
-                                <a class="header-bar__navigation__link" href="#" @click.prevent="showSearchDialog = !showSearchDialog">
-                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                <button type="button" class="header-bar__navigation__link" :aria-label="t('search.title')" @click="showSearchDialog = !showSearchDialog">
+                                    <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                                         <path fill="none" d="M0 0h24v24H0z" />
                                         <path
                                             d="M18.031 16.617l4.283 4.282-1.415 1.415-4.282-4.283A8.96 8.96 0 0 1 11 20c-4.968 0-9-4.032-9-9s4.032-9 9-9 9 4.032 9 9a8.96 8.96 0 0 1-1.969 5.617zm-2.006-.742A6.977 6.977 0 0 0 18 11c0-3.868-3.133-7-7-7-3.868 0-7 3.132-7 7 0 3.867 3.132 7 7 7a6.977 6.977 0 0 0 4.875-1.975l.15-.15z"
                                         />
                                     </svg>
-                                </a>
+                                </button>
                             </template>
                             <template #dialog>
                                 <SiteAutocompleteBasic v-if="shouldUseBasicSearch" @close-autocomplete="showSearchDialog = false"></SiteAutocompleteBasic>
@@ -24,16 +24,15 @@
                             </template>
                         </SaltRimDialog>
                     </template>
-                    <ThemeToggle></ThemeToggle>
                     <SaltRimDropdown>
                         <template #default="{ toggleDropdown }">
-                            <a class="header-bar__navigation__link" href="#" @click.prevent="toggleDropdown">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                            <button type="button" class="header-bar__navigation__link" :aria-label="t('profile')" @click="toggleDropdown">
+                                <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                                     <path
                                         d="M20 22H18V20C18 18.3431 16.6569 17 15 17H9C7.34315 17 6 18.3431 6 20V22H4V20C4 17.2386 6.23858 15 9 15H15C17.7614 15 20 17.2386 20 20V22ZM12 13C8.68629 13 6 10.3137 6 7C6 3.68629 8.68629 1 12 1C15.3137 1 18 3.68629 18 7C18 10.3137 15.3137 13 12 13ZM12 11C14.2091 11 16 9.20914 16 7C16 4.79086 14.2091 3 12 3C9.79086 3 8 4.79086 8 7C8 9.20914 9.79086 11 12 11Z"
                                     ></path>
                                 </svg>
-                            </a>
+                            </button>
                         </template>
                         <template #content>
                             <RouterLink class="dropdown-menu__item" :to="{ name: 'settings.profile' }">
@@ -94,7 +93,6 @@ import SiteLogo from "@/components/Layout/SiteLogo.vue";
 import SaltRimDropdown from "@/components/SaltRimDropdown.vue";
 import SiteAutocomplete from "@/components/SiteAutocomplete.vue";
 import SiteAutocompleteBasic from "@/components/SiteAutocompleteBasic.vue";
-import ThemeToggle from "@/components/ThemeToggle.vue";
 
 const { t } = useI18n();
 const router = useRouter();
@@ -127,6 +125,9 @@ function onKeydown(evt: KeyboardEvent) {
 }
 
 onMounted(() => {
+    if (appState.theme) {
+        useTheme(appState.theme);
+    }
     document.addEventListener("keydown", onKeydown);
 });
 
@@ -158,7 +159,7 @@ onUnmounted(() => {
 .header-bar__navigation {
     margin-left: auto;
     display: flex;
-    flex-wrap: wrap;
+    flex-shrink: 0;
     align-items: center;
 }
 
@@ -172,6 +173,7 @@ onUnmounted(() => {
     color: rgba(255, 255, 255, 0.7);
     background: none;
     border: 0;
+    padding: 0;
     cursor: pointer;
 }
 

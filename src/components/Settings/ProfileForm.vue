@@ -107,6 +107,7 @@ import SaltRimDialog from "@/components/Dialog/SaltRimDialog.vue";
 import { useTitle } from "@/composables/title";
 import { useSaltRimToast } from "@/composables/toast";
 import { useConfirm } from "@/composables/confirm";
+import { useTheme } from "@/composables/useTheme";
 import type { components } from "@/api/api";
 
 type Profile = components["schemas"]["Profile"];
@@ -188,6 +189,10 @@ function submit() {
 
     BarAssistantClient.updateProfile(postData)
         .then(() => {
+            if (postData.settings?.theme) {
+                appState.setTheme(postData.settings.theme);
+                useTheme(postData.settings.theme);
+            }
             toast.default(t("profile-updated"));
             isLoading.value = false;
         })
