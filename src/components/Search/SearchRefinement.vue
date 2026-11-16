@@ -1,24 +1,25 @@
 <template>
-    <div class="resource-search__refinements__refinement block-container block-container--inset">
-        <div class="resource-search__refinements__refinement__title">
-            <h4>{{ title }} {{ totalSelected }}</h4>
+    <div class="resource-search__refinements__refinement">
+        <div class="resource-search__refinements__refinement__title" @click="collapsed = !collapsed">
+            <h4>{{ title }}</h4>
             <div class="resource-search__refinements__refinement__title__actions">
                 <button v-show="isClearable" type="button" class="button" @click="clear">
+                    <span v-if="totalSelected">{{ totalSelected }}</span>
                     <IconClose></IconClose>
                 </button>
-                <button v-if="collapsable" type="button" class="button" @click="collapsed = !collapsed">
+                <!-- <button v-if="collapsable" type="button" class="button" @click="collapsed = !collapsed">
                     <svg v-show="collapsed == false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16">
                         <path d="M11.9997 13.1714L16.9495 8.22168L18.3637 9.63589L11.9997 15.9999L5.63574 9.63589L7.04996 8.22168L11.9997 13.1714Z"></path>
                     </svg>
                     <svg v-show="collapsed == true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16">
                         <path d="M10.8284 12.0007L15.7782 16.9504L14.364 18.3646L8 12.0007L14.364 5.63672L15.7782 7.05093L10.8284 12.0007Z"></path>
                     </svg>
-                </button>
+                </button> -->
             </div>
         </div>
         <template v-if="!collapsed">
-            <input v-show="searchable" v-model="searchTerm" class="form-input form-input--refinement" type="text" :placeholder="$t('placeholder.filter-refinement')" />
-            <div class="resource-search__refinements__refinement__body">
+            <input v-show="searchable" v-model="searchTerm" class="form-input form-input--small" type="text" :placeholder="$t('placeholder.filter-refinement')" style="margin-bottom: 0.5rem;" />
+            <div class="resource-search__refinements__refinement__body block-container block-container--inset">
                 <slot>
                     <div v-for="refinement in refinementsSearched" :key="refinement.id" class="resource-search__refinements__refinement__item">
                         <input :id="id + '-' + refinement.id" v-model="model" :type="type" :value="refinement.value" @change="emit('change', model)" />
@@ -87,7 +88,7 @@ const totalSelected = computed(() => {
     }
 
     if (Array.isArray(model.value)) {
-        return `(${model.value.length})`;
+        return `${model.value.length}`;
     }
 
     return "";
@@ -121,11 +122,25 @@ if (isClearable.value) {
     margin-bottom: 0.5rem;
 }
 
+.resource-search__refinements__refinement__title {
+    cursor: pointer;
+    display: flex;
+    min-height: 3rem;
+}
+
 .resource-search__refinements__refinement__title__actions button {
     padding: 0;
     margin: 0;
     width: auto;
     height: auto;
+    display: flex;
+    border-radius: 2px;
+    color: var(--clr-accent-800);
+    background-color: var(--clr-accent-200);
+
+    & span {
+        padding: 0 0.25rem;
+    }
 }
 
 .resource-search__refinements__refinement__title__actions button svg {
@@ -134,7 +149,7 @@ if (isClearable.value) {
 }
 
 .resource-search__refinements__refinement__title__actions svg {
-    fill: var(--clr-gray-700);
+    fill: var(--clr-accent-800);
 }
 
 .dark-theme .resource-search__refinements__refinement__title__actions svg {

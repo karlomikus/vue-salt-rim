@@ -44,13 +44,25 @@ const barIdMiddleware: Middleware = {
 };
 
 const rejectOnError: Middleware = {
-    async onResponse({ response }) {
-        if (response.status >= 400) {
-            const body = await response.clone().json();
-
-            return Promise.reject(body);
+    async onResponse({ response, request }) {
+        if (response.status < 400) {
+            return undefined;
         }
-        return undefined;
+
+        const body = await response
+            .clone()
+            .json()
+            .catch(() => undefined);
+
+        const error = new Error(body?.message ?? `Request failed with status ${response.status}`);
+        error.name = "ApiError";
+        Object.assign(error, {
+            status: response.status,
+            url: request.url,
+            body: body,
+        });
+
+        return Promise.reject(error);
     },
 };
 

@@ -20,6 +20,7 @@
             </div>
         </div>
         <div class="dialog-actions">
+            <button type="button" class="button" @click="emit('cancel')">{{ $t("cancel") }}</button>
             <button type="submit" class="button button--dark" :disabled="isLoading">{{ $t("filter") }}</button>
         </div>
     </form>
@@ -40,7 +41,7 @@ import { useBasicSearch } from "@/composables/useBasicSearch";
 type Ingredient = components["schemas"]["Ingredient"];
 
 type IngredientSearchResult = SearchResults["ingredient"];
-const emit = defineEmits(["close"]);
+const emit = defineEmits(["close", "cancel"]);
 const props = defineProps<{
     title: string;
     value: number[];

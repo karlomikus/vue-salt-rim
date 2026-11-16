@@ -86,6 +86,9 @@ onBeforeUnmount(() => {
                 <div class="drawer__content">
                     <slot :close="close" />
                 </div>
+                <footer v-if="$slots.footer" class="drawer__footer">
+                    <slot name="footer" :close="close" />
+                </footer>
             </div>
         </dialog>
     </Teleport>
@@ -120,7 +123,7 @@ onBeforeUnmount(() => {
 }
 
 .drawer__panel {
-    min-height: 100%;
+    height: 100%;
     display: flex;
     flex-direction: column;
 }
@@ -166,6 +169,16 @@ onBeforeUnmount(() => {
 
 .drawer__content {
     flex: 1;
+    min-height: 0;
+    overflow-y: auto;
     padding: 1rem;
+}
+
+.drawer__footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: var(--gap-size-2);
+    padding: 1rem;
+    border-top: 1px solid var(--clr-gray-200);
 }
 </style>

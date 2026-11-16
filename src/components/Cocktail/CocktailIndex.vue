@@ -6,170 +6,101 @@
             <RouterLink class="button button--dark" :to="{ name: 'cocktails.form' }">{{ $t("cocktail.add") }}</RouterLink>
         </template>
     </PageHeader>
+    <Drawer v-model="showRefinements" :title="$t('filters')">
+        <div class="resource-search__refinements__body">
+            <Refinement id="global" :title="$t('global')" :collapsable="false">
+                <div v-for="filter in availableRefinements.global" :key="filter.id" class="resource-search__refinements__refinement__item">
+                    <input :id="'global-' + filter.id" v-model="draftFilters[filter.id]" type="checkbox" :value="filter.active" />
+                    <label :for="'global-' + filter.id">{{ filter.name }}</label>
+                </div>
+                <a href="#" @click.prevent="toggleIngredientPicker('specific')">{{ $t("search.ingredients") }} ({{ draftFilters.specific_ingredients.length }})</a>
+                <br />
+                <a href="#" @click.prevent="toggleIngredientPicker('ignore')">{{ $t("search.ignore-ingredients") }} ({{ draftFilters.ignore_ingredients.length }})</a>
+            </Refinement>
+            <div v-if="showSpecificIngredientsModal" ref="ingredientPicker" class="resource-search__ingredient-picker">
+                <FilterIngredientsModal
+                    :search-token="appState.bar.search_token"
+                    :title="$t('search.select-specific-ingredients')"
+                    description="Shows recipes that contain all of the selected ingredients."
+                    :value="draftFilters.specific_ingredients as any"
+                    @close="updateSpecificIngredients"
+                    @cancel="showSpecificIngredientsModal = false"
+                ></FilterIngredientsModal>
+            </div>
+            <div v-if="showIgnoreIngredientsModal" ref="ingredientPicker" class="resource-search__ingredient-picker">
+                <FilterIngredientsModal
+                    :search-token="appState.bar.search_token"
+                    :title="$t('search.select-ingredients-to-ignore')"
+                    description="Shows recipes that do not contain all of the selected ingredients."
+                    :value="draftFilters.ignore_ingredients as any"
+                    @close="updateIgnoredIngredients"
+                    @cancel="showIgnoreIngredientsModal = false"
+                ></FilterIngredientsModal>
+            </div>
+            <Refinement
+                v-if="refineCollections.length > 0"
+                id="collection"
+                v-model="draftFilters.collection_id"
+                :title="$t('collections.title')"
+                :refinements="refineCollections"
+            ></Refinement>
+            <Refinement id="users" v-model="draftFilters.created_user_id" :searchable="true" :title="$t('user-recipes')" :refinements="refineUsers"></Refinement>
+            <Refinement id="author" v-model="draftFilters.author" :searchable="true" :title="$t('author.title')" :refinements="refineAuthors"></Refinement>
+            <Refinement id="origin-bar" v-model="draftFilters.origin_bar" :searchable="true" :title="$t('origin-bar.title')" :refinements="refineOriginBars"></Refinement>
+            <Refinement id="favorited-by-user" v-model="draftFilters.favorited_by_user" :searchable="true" :title="$t('favorited-by-user')" :refinements="refineUsers"></Refinement>
+            <Refinement
+                id="main-ingredient"
+                v-model="draftFilters.main_ingredient_id"
+                :searchable="true"
+                :title="$t('ingredient.main')"
+                :refinements="refineMainIngredients"
+            ></Refinement>
+            <Refinement id="method" v-model="draftFilters.cocktail_method_id" :title="$t('method.title')" :refinements="refineMethods"></Refinement>
+            <Refinement id="abv" v-model="draftFilters.abv as any" :title="$t('strength')" :refinements="refineABV" type="radio"></Refinement>
+            <Refinement id="year" :title="$t('year')">
+                <div class="cocktail-index__year-range">
+                    <div>
+                        <label for="year-min">{{ $t("minimum") }}</label>
+                        <input id="year-min" v-model.number="draftFilters.year_min" class="form-input" type="number" step="1" />
+                    </div>
+                    <div>
+                        <label for="year-max">{{ $t("maximum") }}</label>
+                        <input id="year-max" v-model.number="draftFilters.year_max" class="form-input" type="number" step="1" />
+                    </div>
+                </div>
+            </Refinement>
+            <Refinement id="tag" v-model="draftFilters.tag_id" :searchable="true" :title="$t('tag.tags')" :refinements="refineTags"></Refinement>
+            <Refinement id="glass" v-model="draftFilters.glass_id" :title="$t('glass-type.title')" :refinements="refineGlasses"></Refinement>
+            <Refinement
+                id="total-ingredients"
+                v-model="draftFilters.total_ingredients as any"
+                :title="$t('total.ingredients')"
+                :refinements="refineIngredientsCount"
+                type="radio"
+            ></Refinement>
+            <Refinement
+                id="missing-bar-ingredients"
+                v-model="draftFilters.missing_bar_ingredients as any"
+                :title="$t('missing-ingredients') + ' (' + $t('bars.bar') + ')'"
+                :refinements="refineMissingBarIngredients"
+                type="radio"
+            ></Refinement>
+            <Refinement
+                id="missing-ingredients"
+                v-model="draftFilters.missing_ingredients as any"
+                :title="$t('missing-ingredients') + ' (' + $t('shelf.title') + ')'"
+                :refinements="refineMissingIngredients"
+                type="radio"
+            ></Refinement>
+            <Refinement id="user-rating" v-model="draftFilters.user_rating_min as any" :title="$t('your-rating')" :refinements="refineRatings" type="radio"></Refinement>
+            <Refinement id="avg-rating" v-model="draftFilters.average_rating_min as any" :title="$t('avg-rating')" :refinements="refineRatings" type="radio"></Refinement>
+        </div>
+        <template #footer>
+            <button type="button" class="button button--dark" @click="applyFilters">{{ $t("apply-filters") }}</button>
+        </template>
+    </Drawer>
     <div class="resource-search-wrapper">
         <div class="resource-search">
-            <div v-show="showRefinements" class="resource-search__refinements" @click="handleClickAway">
-                <div class="resource-search__refinements__body">
-                    <h3 class="page-subtitle" style="margin-top: 0">{{ $t("filters") }}</h3>
-                    <Refinement id="global" :title="$t('global')" :collapsable="false">
-                        <div v-for="filter in availableRefinements.global" :key="filter.id" class="resource-search__refinements__refinement__item">
-                            <input :id="'global-' + filter.id" v-model="activeFilters[filter.id]" type="checkbox" :value="filter.active" @change="updateRouterPath" />
-                            <label :for="'global-' + filter.id">{{ filter.name }}</label>
-                        </div>
-                        <SaltRimDialog v-model="showSpecificIngredientsModal">
-                            <template #trigger>
-                                <a href="#" @click.prevent="showSpecificIngredientsModal = true"
-                                    >{{ $t("search.ingredients") }} ({{ activeFilters.specific_ingredients.length }})</a
-                                >
-                            </template>
-                            <template #dialog>
-                                <FilterIngredientsModal
-                                    :search-token="appState.bar.search_token"
-                                    :title="$t('search.select-specific-ingredients')"
-                                    description="Shows recipes that contain all of the selected ingredients."
-                                    :value="activeFilters.specific_ingredients as any"
-                                    @close="updateSpecificIngredients"
-                                ></FilterIngredientsModal>
-                            </template>
-                        </SaltRimDialog>
-                        <br />
-                        <SaltRimDialog v-model="showIgnoreIngredientsModal">
-                            <template #trigger>
-                                <a href="#" @click.prevent="showIgnoreIngredientsModal = true"
-                                    >{{ $t("search.ignore-ingredients") }} ({{ activeFilters.ignore_ingredients.length }})</a
-                                >
-                            </template>
-                            <template #dialog>
-                                <FilterIngredientsModal
-                                    :search-token="appState.bar.search_token"
-                                    :title="$t('search.select-ingredients-to-ignore')"
-                                    description="Shows recipes that do not contain all of the selected ingredients."
-                                    :value="activeFilters.ignore_ingredients as any"
-                                    @close="updateIgnoredIngredients"
-                                ></FilterIngredientsModal>
-                            </template>
-                        </SaltRimDialog>
-                    </Refinement>
-                    <Refinement
-                        v-if="refineCollections.length > 0"
-                        id="collection"
-                        v-model="activeFilters.collection_id"
-                        :title="$t('collections.title')"
-                        :refinements="refineCollections"
-                        @change="updateRouterPath"
-                    ></Refinement>
-                    <Refinement
-                        id="users"
-                        v-model="activeFilters.created_user_id"
-                        :searchable="true"
-                        :title="$t('user-recipes')"
-                        :refinements="refineUsers"
-                        @change="updateRouterPath"
-                    ></Refinement>
-                    <Refinement
-                        id="author"
-                        v-model="activeFilters.author"
-                        :searchable="true"
-                        :title="$t('author.title')"
-                        :refinements="refineAuthors"
-                        @change="updateRouterPath"
-                    ></Refinement>
-                    <Refinement
-                        id="origin-bar"
-                        v-model="activeFilters.origin_bar"
-                        :searchable="true"
-                        :title="$t('origin-bar.title')"
-                        :refinements="refineOriginBars"
-                        @change="updateRouterPath"
-                    ></Refinement>
-                    <Refinement
-                        id="favorited-by-user"
-                        v-model="activeFilters.favorited_by_user"
-                        :searchable="true"
-                        :title="$t('favorited-by-user')"
-                        :refinements="refineUsers"
-                        @change="updateRouterPath"
-                    ></Refinement>
-                    <Refinement
-                        id="main-ingredient"
-                        v-model="activeFilters.main_ingredient_id"
-                        :searchable="true"
-                        :title="$t('ingredient.main')"
-                        :refinements="refineMainIngredients"
-                        @change="updateRouterPath"
-                    ></Refinement>
-                    <Refinement
-                        id="method"
-                        v-model="activeFilters.cocktail_method_id"
-                        :title="$t('method.title')"
-                        :refinements="refineMethods"
-                        @change="updateRouterPath"
-                    ></Refinement>
-                    <Refinement id="abv" v-model="activeFilters.abv as any" :title="$t('strength')" :refinements="refineABV" type="radio" @change="updateRouterPath"></Refinement>
-                    <Refinement id="year" :title="$t('year')">
-                        <div class="cocktail-index__year-range">
-                            <div>
-                                <label for="year-min">{{ $t("minimum") }}</label>
-                                <input id="year-min" v-model.number="activeFilters.year_min" class="form-input" type="number" step="1" @change="updateRouterPath" />
-                            </div>
-                            <div>
-                                <label for="year-max">{{ $t("maximum") }}</label>
-                                <input id="year-max" v-model.number="activeFilters.year_max" class="form-input" type="number" step="1" @change="updateRouterPath" />
-                            </div>
-                        </div>
-                    </Refinement>
-                    <Refinement
-                        id="tag"
-                        v-model="activeFilters.tag_id"
-                        :searchable="true"
-                        :title="$t('tag.tags')"
-                        :refinements="refineTags"
-                        @change="updateRouterPath"
-                    ></Refinement>
-                    <Refinement id="glass" v-model="activeFilters.glass_id" :title="$t('glass-type.title')" :refinements="refineGlasses" @change="updateRouterPath"></Refinement>
-                    <Refinement
-                        id="total-ingredients"
-                        v-model="activeFilters.total_ingredients as any"
-                        :title="$t('total.ingredients')"
-                        :refinements="refineIngredientsCount"
-                        type="radio"
-                        @change="updateRouterPath"
-                    ></Refinement>
-                    <Refinement
-                        id="missing-bar-ingredients"
-                        v-model="activeFilters.missing_bar_ingredients as any"
-                        :title="$t('missing-ingredients') + ' (' + $t('bars.bar') + ')'"
-                        :refinements="refineMissingBarIngredients"
-                        type="radio"
-                        @change="updateRouterPath"
-                    ></Refinement>
-                    <Refinement
-                        id="missing-ingredients"
-                        v-model="activeFilters.missing_ingredients as any"
-                        :title="$t('missing-ingredients') + ' (' + $t('shelf.title') + ')'"
-                        :refinements="refineMissingIngredients"
-                        type="radio"
-                        @change="updateRouterPath"
-                    ></Refinement>
-                    <Refinement
-                        id="user-rating"
-                        v-model="activeFilters.user_rating_min as any"
-                        :title="$t('your-rating')"
-                        :refinements="refineRatings"
-                        type="radio"
-                        @change="updateRouterPath"
-                    ></Refinement>
-                    <Refinement
-                        id="avg-rating"
-                        v-model="activeFilters.average_rating_min as any"
-                        :title="$t('avg-rating')"
-                        :refinements="refineRatings"
-                        type="radio"
-                        @change="updateRouterPath"
-                    ></Refinement>
-                    <button class="button button--dark sm-show" type="button" @click="showRefinements = false">{{ $t("cancel") }}</button>
-                </div>
-            </div>
             <div class="resource-search__content">
                 <div class="resource-search__content__filter">
                     <button type="button" class="button button--input" @click.prevent="showRefinements = !showRefinements">
@@ -304,7 +235,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch, onMounted } from "vue";
+import { ref, computed, watch, onMounted, nextTick } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { useI18n } from "vue-i18n";
 import OverlayLoader from "./../OverlayLoader.vue";
@@ -312,6 +243,7 @@ import BarAssistantClient from "@/api/BarAssistantClient";
 import CocktailGridItem from "./CocktailGridItem.vue";
 import CocktailGridContainer from "./CocktailGridContainer.vue";
 import PageHeader from "./../PageHeader.vue";
+import Drawer from "./../Drawer.vue";
 import Refinement from "./../Search/SearchRefinement.vue";
 import MenuAddDialog from "../Menu/MenuAddDialog.vue";
 import Pagination from "./../Search/SearchPagination.vue";
@@ -336,10 +268,8 @@ interface RefinementItem {
 }
 
 interface ActiveFilters {
-    on_shelf: boolean | null;
     bar_shelf: boolean | null;
     locked_bar_cocktails: boolean | null;
-    locked_user_cocktails: boolean | null;
     favorites: boolean | null;
     is_public: boolean | null;
     tag_id: string[];
@@ -404,6 +334,7 @@ const meta = ref<any>({});
 const queryTimer = ref<number | null>(null);
 const currentPage = ref(1);
 const per_page = ref(50);
+const ingredientPicker = ref<HTMLElement | null>(null);
 
 const availableRefinements = ref<AvailableRefinements>({
     global: [],
@@ -423,10 +354,8 @@ const availableRefinements = ref<AvailableRefinements>({
 });
 
 const activeFilters = ref<ActiveFilters>({
-    on_shelf: false,
     bar_shelf: false,
     locked_bar_cocktails: false,
-    locked_user_cocktails: false,
     favorites: false,
     is_public: false,
     tag_id: [],
@@ -453,6 +382,11 @@ const activeFilters = ref<ActiveFilters>({
     ingredient_substitute_id: [],
     id: [],
 });
+const draftFilters = ref<ActiveFilters>(cloneFilters(activeFilters.value));
+
+function cloneFilters(filters: ActiveFilters): ActiveFilters {
+    return JSON.parse(JSON.stringify(filters));
+}
 
 const sortWithDir = computed({
     set(val: string | null) {
@@ -610,10 +544,8 @@ function initializeGlobalRefinements() {
     availableRefinements.value.global = [
         { name: t("bar_shelf.cocktails"), active: false, id: "bar_shelf" },
         { name: t("bar_shelf.locked_cocktails"), active: false, id: "locked_bar_cocktails" },
-        { name: t("shelf.cocktails"), active: false, id: "on_shelf" },
         { name: t("my-favorites"), active: false, id: "favorites" },
         { name: t("cocktail.shared"), active: false, id: "is_public" },
-        { name: t("shelf.locked_cocktails"), active: false, id: "locked_user_cocktails" },
     ];
 
     availableRefinements.value.abv = [
@@ -718,10 +650,8 @@ function queryToState() {
     activeFilters.value.author = state.filter && state.filter.author ? String(state.filter.author).split("|") : [];
     activeFilters.value.origin_bar = state.filter && state.filter.origin_bar ? String(state.filter.origin_bar).split("|") : [];
     activeFilters.value.favorited_by_user = state.filter && state.filter.favorited_by_user ? String(state.filter.favorited_by_user).split(",") : [];
-    activeFilters.value.on_shelf = state.filter && state.filter.on_shelf ? state.filter.on_shelf : null;
     activeFilters.value.bar_shelf = state.filter && state.filter.bar_shelf ? state.filter.bar_shelf : null;
     activeFilters.value.locked_bar_cocktails = state.filter && state.filter.locked_bar_cocktails ? state.filter.locked_bar_cocktails : null;
-    activeFilters.value.locked_user_cocktails = state.filter && state.filter.locked_user_cocktails ? state.filter.locked_user_cocktails : null;
     activeFilters.value.favorites = state.filter && state.filter.favorites ? state.filter.favorites : null;
     activeFilters.value.is_public = state.filter && state.filter.is_public ? state.filter.is_public : null;
     activeFilters.value.total_ingredients = state.filter && state.filter.total_ingredients ? String(state.filter.total_ingredients) : null;
@@ -763,10 +693,8 @@ function stateToQuery() {
 
     const filters: any = {
         name: searchQuery.value != null && searchQuery.value != "" ? searchQuery.value : null,
-        on_shelf: activeFilters.value.on_shelf,
         bar_shelf: activeFilters.value.bar_shelf,
         locked_bar_cocktails: activeFilters.value.locked_bar_cocktails,
-        locked_user_cocktails: activeFilters.value.locked_user_cocktails,
         favorites: activeFilters.value.favorites,
         is_public: activeFilters.value.is_public,
         user_rating_min: activeFilters.value.user_rating_min ? activeFilters.value.user_rating_min : null,
@@ -800,17 +728,44 @@ function stateToQuery() {
     return query;
 }
 
+function toggleIngredientPicker(picker: "specific" | "ignore") {
+    showSpecificIngredientsModal.value = picker === "specific" && !showSpecificIngredientsModal.value;
+    showIgnoreIngredientsModal.value = picker === "ignore" && !showIgnoreIngredientsModal.value;
+}
+
+watch([showSpecificIngredientsModal, showIgnoreIngredientsModal], async ([specific, ignore]) => {
+    if (!specific && !ignore) {
+        return;
+    }
+
+    await nextTick();
+    ingredientPicker.value?.scrollIntoView({ block: "start", behavior: "smooth" });
+});
+
 function updateIgnoredIngredients(e: any) {
-    activeFilters.value.ignore_ingredients = e.newFilters;
+    draftFilters.value.ignore_ingredients = e.newFilters;
     showIgnoreIngredientsModal.value = false;
-    updateRouterPath();
 }
 
 function updateSpecificIngredients(e: any) {
-    activeFilters.value.specific_ingredients = e.newFilters;
+    draftFilters.value.specific_ingredients = e.newFilters;
     showSpecificIngredientsModal.value = false;
+}
+
+function applyFilters() {
+    activeFilters.value = cloneFilters(draftFilters.value);
+    showRefinements.value = false;
     updateRouterPath();
 }
+
+watch(showRefinements, (isOpen) => {
+    if (isOpen) {
+        draftFilters.value = cloneFilters(activeFilters.value);
+    } else {
+        showSpecificIngredientsModal.value = false;
+        showIgnoreIngredientsModal.value = false;
+    }
+});
 
 function handleCollectionsDialogClosed() {
     showCreateNewCollectionDialog.value = false;
@@ -836,10 +791,8 @@ function clearRefinements() {
     currentPage.value = 1;
     per_page.value = 50;
     activeFilters.value = {
-        on_shelf: false,
         bar_shelf: false,
         locked_bar_cocktails: false,
-        locked_user_cocktails: false,
         favorites: false,
         is_public: false,
         tag_id: [],
@@ -868,12 +821,6 @@ function clearRefinements() {
     };
 
     updateRouterPath();
-}
-
-function handleClickAway(e: any) {
-    if (e && e.target && e.target.classList.contains("resource-search__refinements")) {
-        showRefinements.value = !showRefinements.value;
-    }
 }
 
 function goToRandomCocktail() {
@@ -943,5 +890,16 @@ watch(
     button {
         width: 100%;
     }
+}
+
+.resource-search__ingredient-picker {
+    margin: 0.5rem 0;
+    padding: 0.75rem;
+    border-radius: var(--radius-2);
+    background: var(--clr-gray-100);
+}
+
+.dark-theme .resource-search__ingredient-picker {
+    background: var(--clr-gray-900);
 }
 </style>
