@@ -45,6 +45,7 @@ const props = defineProps<{
     observer: IntersectionObserver;
 }>();
 const maxTags = 4;
+const maxIngredients = 4;
 const el = useTemplateRef<ComponentPublicInstance>("observeElement");
 
 const mainImage = computed(() => {
@@ -70,7 +71,13 @@ const mainCocktailImageUrl = computed(() => {
 });
 
 const shortIngredients = computed(() => {
-    return props.cocktail.ingredients?.map((i) => i.ingredient.name) ?? [];
+    const ingredients = props.cocktail.ingredients?.map((i) => i.ingredient.name) ?? [];
+
+    if (ingredients.length <= maxIngredients) {
+        return ingredients;
+    }
+
+    return [...ingredients.slice(0, maxIngredients), `+${ingredients.length - maxIngredients} more`];
 });
 
 onMounted(() => {
