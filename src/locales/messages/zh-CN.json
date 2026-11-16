@@ -97,6 +97,8 @@
         "manual-copy-description": "Automatic copying failed. Please copy the text below manually:"
     },
     "settings": "设置",
+    "more": "更多",
+    "shopping": "购物",
     "logout": "退出登录",
     "profile": "个人资料",
     "filename": "文件名",

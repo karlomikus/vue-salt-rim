@@ -97,6 +97,8 @@
         "manual-copy-description": "Automaattinen kopiointi ei onnistunut. Kopioi alla oleva teksti käsin:"
     },
     "settings": "Asetukset",
+    "more": "Lisää",
+    "shopping": "Ostokset",
     "logout": "Kirjaudu ulos",
     "profile": "Käyttäjätili",
     "filename": "Tiedostonimi",

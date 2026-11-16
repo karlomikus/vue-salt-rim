@@ -97,6 +97,8 @@
         "manual-copy-description": "Automatic copying failed. Please copy the text below manually:"
     },
     "settings": "Settings",
+    "more": "Mer",
+    "shopping": "Handleliste",
     "logout": "Logout",
     "profile": "Profile",
     "filename": "File name",

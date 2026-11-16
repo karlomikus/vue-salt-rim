@@ -97,6 +97,8 @@
         "manual-copy-description": "Automatic copying failed. Please copy the text below manually:"
     },
     "settings": "Settings",
+    "more": "更多",
+    "shopping": "購物",
     "logout": "Logout",
     "profile": "Profile",
     "filename": "File name",

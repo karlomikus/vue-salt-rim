@@ -13,7 +13,7 @@ import IconClose from "@/components/Icons/IconClose.vue";
 
 defineOptions({ name: "SaltRimDrawer" });
 
-withDefaults(defineProps<{ title: string; side?: "left" | "right" }>(), {
+withDefaults(defineProps<{ title: string; side?: "left" | "right" | "bottom" }>(), {
     side: "left",
 });
 
@@ -112,6 +112,21 @@ onBeforeUnmount(() => {
 
 .drawer--right {
     inset: 0 0 0 auto;
+}
+
+.drawer--bottom {
+    inset: auto 0 0 0;
+    width: 100%;
+    height: auto;
+    max-height: 90vh;
+    border-radius: var(--radius-4) var(--radius-4) 0 0;
+    padding-bottom: env(safe-area-inset-bottom);
+    overflow: hidden;
+}
+
+.drawer--bottom .drawer__panel {
+    height: auto;
+    max-height: 90vh;
 }
 
 .drawer::backdrop {

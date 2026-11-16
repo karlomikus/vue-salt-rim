@@ -197,8 +197,21 @@ onUnmounted(() => {
 }
 
 @media (max-width: 750px) {
+    .site-header-wrapper {
+        margin-bottom: 0.5rem;
+    }
+
     .header-bar {
+        padding: 0.5rem;
         justify-content: space-between;
+    }
+
+    .header-bar :deep(.site-logo__title span) {
+        display: none;
+    }
+
+    .subnavigation-bar {
+        display: none;
     }
 }
 
@@ -231,22 +244,5 @@ onUnmounted(() => {
 .subnavigation-bar__nav > a.current-nav {
     color: #fff;
     background-color: rgba(0, 0, 0, 0.25);
-}
-
-@media (max-width: 450px) {
-    .header-bar {
-        padding: 10px;
-        flex-wrap: wrap;
-    }
-
-    .subnavigation-bar__nav {
-        /* justify-content: center; */
-        flex-wrap: nowrap;
-        overflow: auto;
-    }
-
-    .subnavigation-bar__nav > a {
-        padding: 0.5rem 1rem;
-    }
 }
 </style>

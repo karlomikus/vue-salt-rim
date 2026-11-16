@@ -101,4 +101,10 @@ onMounted(() => {
 .site-footer a:focus {
     color: var(--clr-footer-link-hover);
 }
+
+@media (max-width: 750px) {
+    .site-footer-wrapper {
+        padding-bottom: calc(4.75rem + env(safe-area-inset-bottom));
+    }
+}
 </style>

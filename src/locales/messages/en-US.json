@@ -108,6 +108,8 @@
         "manual-copy-description": "Automatic copying failed. Please copy the text below manually:"
     },
     "settings": "Settings",
+    "more": "More",
+    "shopping": "Shopping",
     "logout": "Logout",
     "profile": "Profile",
     "filename": "File name",

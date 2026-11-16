@@ -44,6 +44,17 @@ test("supports initially open drawers, right placement and arbitrary content", a
     expect(drawer.get("dialog").attributes("open")).toBeUndefined();
 });
 
+test("supports bottom placement", () => {
+    wrapper = mount(Drawer, {
+        attachTo: document.body,
+        props: { title: "More", side: "bottom", modelValue: true },
+        global: { stubs: { Teleport: true } },
+    });
+
+    expect(wrapper.get("dialog").classes()).toContain("drawer--bottom");
+    expect(wrapper.get("dialog").attributes("aria-label")).toBe("More");
+});
+
 test("synchronizes parent state and close button, cancel, backdrop and native close", async () => {
     const drawer = mountDrawer();
     await drawer.setProps({ modelValue: true });
