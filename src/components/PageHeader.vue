@@ -63,13 +63,13 @@ function onActionClick(event: MouseEvent) {
 .site-page-header__title h2 {
     font-family: var(--font-heading);
     font-weight: var(--fw-bold);
-    font-size: 2em;
-    line-height: 1.4;
+    font-size: 1.8em;
+    line-height: 1.2;
 }
 
 :deep(.site-page-header__title small) {
     font-family: var(--font-primary);
-    font-size: 0.5em;
+    font-size: 0.4em;
     color: var(--clr-gray-700);
     display: block;
 
@@ -106,7 +106,7 @@ function onActionClick(event: MouseEvent) {
     .site-page-header__actions {
         position: fixed;
         right: 1rem;
-        bottom: calc(4.75rem + 56px + 0.75rem + env(safe-area-inset-bottom));
+        bottom: calc(4.75rem + 56px + 1rem + env(safe-area-inset-bottom));
         z-index: 4;
         flex-direction: column;
         align-items: flex-end;

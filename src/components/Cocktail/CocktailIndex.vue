@@ -43,30 +43,7 @@
                     <input :id="'global-' + filter.id" v-model="draftFilters[filter.id]" type="checkbox" :value="filter.active" />
                     <label :for="'global-' + filter.id">{{ filter.name }}</label>
                 </div>
-                <a href="#" @click.prevent="toggleIngredientPicker('specific')">{{ $t("search.ingredients") }} ({{ draftFilters.specific_ingredients.length }})</a>
-                <br />
-                <a href="#" @click.prevent="toggleIngredientPicker('ignore')">{{ $t("search.ignore-ingredients") }} ({{ draftFilters.ignore_ingredients.length }})</a>
             </Refinement>
-            <div v-if="showSpecificIngredientsModal" ref="ingredientPicker" class="resource-search__ingredient-picker">
-                <FilterIngredientsModal
-                    :search-token="appState.bar.search_token"
-                    :title="$t('search.select-specific-ingredients')"
-                    description="Shows recipes that contain all of the selected ingredients."
-                    :value="draftFilters.specific_ingredients as any"
-                    @close="updateSpecificIngredients"
-                    @cancel="showSpecificIngredientsModal = false"
-                ></FilterIngredientsModal>
-            </div>
-            <div v-if="showIgnoreIngredientsModal" ref="ingredientPicker" class="resource-search__ingredient-picker">
-                <FilterIngredientsModal
-                    :search-token="appState.bar.search_token"
-                    :title="$t('search.select-ingredients-to-ignore')"
-                    description="Shows recipes that do not contain all of the selected ingredients."
-                    :value="draftFilters.ignore_ingredients as any"
-                    @close="updateIgnoredIngredients"
-                    @cancel="showIgnoreIngredientsModal = false"
-                ></FilterIngredientsModal>
-            </div>
             <Refinement
                 v-if="refineCollections.length > 0"
                 id="collection"
@@ -84,6 +61,20 @@
                 :searchable="true"
                 :title="$t('ingredient.main')"
                 :refinements="refineMainIngredients"
+            ></Refinement>
+            <Refinement
+                id="specific-ingredients"
+                v-model="draftFilters.specific_ingredients"
+                :searchable="true"
+                :title="$t('search.ingredients')"
+                :refinements="refineFilterIngredients"
+            ></Refinement>
+            <Refinement
+                id="ignore-ingredients"
+                v-model="draftFilters.ignore_ingredients"
+                :searchable="true"
+                :title="$t('search.ignore-ingredients')"
+                :refinements="refineFilterIngredients"
             ></Refinement>
             <Refinement id="method" v-model="draftFilters.cocktail_method_id" :title="$t('method.title')" :refinements="refineMethods"></Refinement>
             <Refinement id="abv" v-model="draftFilters.abv as any" :title="$t('strength')" :refinements="refineABV" type="radio"></Refinement>
@@ -239,7 +230,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch, onMounted, nextTick } from "vue";
+import { ref, computed, watch, onMounted } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { useI18n } from "vue-i18n";
 import OverlayLoader from "./../OverlayLoader.vue";
@@ -255,7 +246,6 @@ import CollectionDialog from "./../Collections/CollectionDialog.vue";
 import SaltRimDialog from "./../Dialog/SaltRimDialog.vue";
 import AppState from "../../AppState";
 import EmptyState from "./../EmptyState.vue";
-import FilterIngredientsModal from "../Search/FilterIngredientsModal.vue";
 import { useTitle } from "@/composables/title";
 import type { operations } from "@/api/api";
 import qs from "qs";
@@ -312,6 +302,7 @@ interface AvailableRefinements {
     glasses: any[];
     methods: any[];
     main_ingredients: any[];
+    ingredients: any[];
     collections: any[];
     shared_collections: any[];
     members: any[];
@@ -327,8 +318,6 @@ const appState = new AppState();
 const showCreateNewCollectionDialog = ref(false);
 const isLoading = ref(false);
 const showRefinements = ref(false);
-const showIgnoreIngredientsModal = ref(false);
-const showSpecificIngredientsModal = ref(false);
 const cocktails = ref<any[]>([]);
 const searchQuery = ref<string | null>(null);
 const sort = ref("created_at");
@@ -341,7 +330,6 @@ const per_page = ref(50);
 const draftSort = ref(sort.value);
 const draftSortDir = ref(sort_dir.value);
 const draftPerPage = ref(per_page.value);
-const ingredientPicker = ref<HTMLElement | null>(null);
 
 const availableRefinements = ref<AvailableRefinements>({
     global: [],
@@ -353,6 +341,7 @@ const availableRefinements = ref<AvailableRefinements>({
     glasses: [],
     methods: [],
     main_ingredients: [],
+    ingredients: [],
     collections: [],
     shared_collections: [],
     members: [],
@@ -455,6 +444,14 @@ const refineRatings = computed(() => {
 
 const refineMainIngredients = computed(() => {
     return availableRefinements.value.main_ingredients.map((i: any) => ({
+        id: i.id,
+        value: i.id,
+        name: i.name,
+    }));
+});
+
+const refineFilterIngredients = computed(() => {
+    return availableRefinements.value.ingredients.map((i: any) => ({
         id: i.id,
         value: i.id,
         name: i.name,
@@ -598,6 +595,8 @@ function fetchRefinements() {
         availableRefinements.value.main_ingredients = resp?.data ?? [];
     });
 
+    fetchFilterIngredients();
+
     BarAssistantClient.getCollections({ per_page: 100, include: "cocktails" }).then((resp) => {
         availableRefinements.value.collections = resp?.data ?? [];
     });
@@ -609,6 +608,26 @@ function fetchRefinements() {
     BarAssistantClient.getSharedCollections(appState.bar.id).then((resp) => {
         availableRefinements.value.shared_collections = resp?.data ?? [];
     });
+}
+
+async function fetchFilterIngredients() {
+    const perPage = 500;
+    const ingredients: any[] = [];
+    let currentPage = 1;
+    let lastPage = 1;
+
+    try {
+        do {
+            const resp = await BarAssistantClient.getIngredients({ per_page: perPage, page: currentPage, sort: "name" });
+            ingredients.push(...(resp?.data ?? []));
+            lastPage = resp?.meta?.last_page ?? 1;
+            currentPage++;
+        } while (currentPage <= lastPage);
+    } catch {
+        // Ignore, the filter list is optional
+    }
+
+    availableRefinements.value.ingredients = ingredients;
 }
 
 function updateRouterPath() {
@@ -735,30 +754,6 @@ function stateToQuery() {
     return query;
 }
 
-function toggleIngredientPicker(picker: "specific" | "ignore") {
-    showSpecificIngredientsModal.value = picker === "specific" && !showSpecificIngredientsModal.value;
-    showIgnoreIngredientsModal.value = picker === "ignore" && !showIgnoreIngredientsModal.value;
-}
-
-watch([showSpecificIngredientsModal, showIgnoreIngredientsModal], async ([specific, ignore]) => {
-    if (!specific && !ignore) {
-        return;
-    }
-
-    await nextTick();
-    ingredientPicker.value?.scrollIntoView({ block: "start", behavior: "smooth" });
-});
-
-function updateIgnoredIngredients(e: any) {
-    draftFilters.value.ignore_ingredients = e.newFilters;
-    showIgnoreIngredientsModal.value = false;
-}
-
-function updateSpecificIngredients(e: any) {
-    draftFilters.value.specific_ingredients = e.newFilters;
-    showSpecificIngredientsModal.value = false;
-}
-
 function applyFilters() {
     activeFilters.value = cloneFilters(draftFilters.value);
     sort.value = draftSort.value;
@@ -775,9 +770,6 @@ watch(showRefinements, (isOpen) => {
         draftSort.value = sort.value;
         draftSortDir.value = sort_dir.value;
         draftPerPage.value = per_page.value;
-    } else {
-        showSpecificIngredientsModal.value = false;
-        showIgnoreIngredientsModal.value = false;
     }
 });
 
@@ -904,16 +896,5 @@ watch(
     button {
         width: 100%;
     }
-}
-
-.resource-search__ingredient-picker {
-    margin: 0.5rem 0;
-    padding: 0.75rem;
-    border-radius: var(--radius-2);
-    background: var(--clr-gray-100);
-}
-
-.dark-theme .resource-search__ingredient-picker {
-    background: var(--clr-gray-900);
 }
 </style>
