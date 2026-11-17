@@ -8,6 +8,36 @@
     </PageHeader>
     <Drawer v-model="showRefinements" :title="$t('filters')">
         <div class="resource-search__refinements__body">
+            <Refinement id="sort" :title="$t('sort')" :collapsable="false">
+                <select v-model="draftSort" class="form-select">
+                    <option disabled>{{ $t("sort") }}:</option>
+                    <option value="name">{{ $t("name") }}</option>
+                    <option value="created_at">{{ $t("date-added") }}</option>
+                    <option value="favorited_at">{{ $t("date-favorited") }}</option>
+                    <option value="missing_ingredients">{{ $t("missing-ingredients") }}</option>
+                    <option value="missing_bar_ingredients">{{ $t("missing-ingredients") }} ({{ $t("bars.bar") }})</option>
+                    <option value="total_ingredients">{{ $t("total.ingredients") }}</option>
+                    <option value="average_rating">{{ $t("average-rating") }}</option>
+                    <option value="user_rating">{{ $t("user-rating") }}</option>
+                    <option value="abv">{{ $t("ABV") }}</option>
+                    <option value="year">{{ $t("year") }}</option>
+                    <option value="reviews_count">{{ $t("reviews-count") }}</option>
+                    <option value="random">{{ $t("sort-random") }}</option>
+                </select>
+                <select v-model="draftSortDir" class="form-select">
+                    <option disabled>{{ $t("sort-direction") }}:</option>
+                    <option value="">{{ $t("sort-asc") }}</option>
+                    <option value="-">{{ $t("sort-desc") }}</option>
+                </select>
+            </Refinement>
+            <Refinement id="per-page" :title="$t('search.results-per-page')" :collapsable="false">
+                <select v-model="draftPerPage" class="form-select">
+                    <option disabled>{{ $t("search.results-per-page") }}:</option>
+                    <option value="25">25</option>
+                    <option value="50">50</option>
+                    <option value="100">100</option>
+                </select>
+            </Refinement>
             <Refinement id="global" :title="$t('global')" :collapsable="false">
                 <div v-for="filter in availableRefinements.global" :key="filter.id" class="resource-search__refinements__refinement__item">
                     <input :id="'global-' + filter.id" v-model="draftFilters[filter.id]" type="checkbox" :value="filter.active" />
@@ -120,32 +150,6 @@
                         @input="debounceCocktailNameSearch"
                         @keyup.enter="updateRouterPath"
                     />
-                    <select v-model="sort" class="form-select" @change="updateRouterPath">
-                        <option disabled>{{ $t("sort") }}:</option>
-                        <option value="name">{{ $t("name") }}</option>
-                        <option value="created_at">{{ $t("date-added") }}</option>
-                        <option value="favorited_at">{{ $t("date-favorited") }}</option>
-                        <option value="missing_ingredients">{{ $t("missing-ingredients") }}</option>
-                        <option value="missing_bar_ingredients">{{ $t("missing-ingredients") }} ({{ $t("bars.bar") }})</option>
-                        <option value="total_ingredients">{{ $t("total.ingredients") }}</option>
-                        <option value="average_rating">{{ $t("average-rating") }}</option>
-                        <option value="user_rating">{{ $t("user-rating") }}</option>
-                        <option value="abv">{{ $t("ABV") }}</option>
-                        <option value="year">{{ $t("year") }}</option>
-                        <option value="reviews_count">{{ $t("reviews-count") }}</option>
-                        <option value="random">{{ $t("sort-random") }}</option>
-                    </select>
-                    <select v-model="sort_dir" class="form-select" @change="updateRouterPath">
-                        <option disabled>{{ $t("sort-direction") }}:</option>
-                        <option value="">{{ $t("sort-asc") }}</option>
-                        <option value="-">{{ $t("sort-desc") }}</option>
-                    </select>
-                    <select v-model="per_page" class="form-select" @change="updateRouterPath">
-                        <option disabled>{{ $t("search.results-per-page") }}:</option>
-                        <option value="25">25</option>
-                        <option value="50">50</option>
-                        <option value="100">100</option>
-                    </select>
                     <button type="button" class="button button--input" :title="$t('cocktail.randomize')" @click.prevent="goToRandomCocktail">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
                             <path
@@ -334,6 +338,9 @@ const meta = ref<any>({});
 const queryTimer = ref<number | null>(null);
 const currentPage = ref(1);
 const per_page = ref(50);
+const draftSort = ref(sort.value);
+const draftSortDir = ref(sort_dir.value);
+const draftPerPage = ref(per_page.value);
 const ingredientPicker = ref<HTMLElement | null>(null);
 
 const availableRefinements = ref<AvailableRefinements>({
@@ -754,6 +761,10 @@ function updateSpecificIngredients(e: any) {
 
 function applyFilters() {
     activeFilters.value = cloneFilters(draftFilters.value);
+    sort.value = draftSort.value;
+    sort_dir.value = draftSortDir.value;
+    per_page.value = draftPerPage.value;
+    currentPage.value = 1;
     showRefinements.value = false;
     updateRouterPath();
 }
@@ -761,6 +772,9 @@ function applyFilters() {
 watch(showRefinements, (isOpen) => {
     if (isOpen) {
         draftFilters.value = cloneFilters(activeFilters.value);
+        draftSort.value = sort.value;
+        draftSortDir.value = sort_dir.value;
+        draftPerPage.value = per_page.value;
     } else {
         showSpecificIngredientsModal.value = false;
         showIgnoreIngredientsModal.value = false;

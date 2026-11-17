@@ -31,6 +31,7 @@ const observer = new IntersectionObserver((entries: IntersectionObserverEntry[])
     .cocktail-grid-container {
         --cocktail-grid-card-width: 140px;
         gap: var(--gap-size-2);
+        margin-top: 1rem;
     }
 }
 </style>

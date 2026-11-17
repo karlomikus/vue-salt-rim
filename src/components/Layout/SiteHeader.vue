@@ -206,10 +206,6 @@ onUnmounted(() => {
         justify-content: space-between;
     }
 
-    .header-bar :deep(.site-logo__title span) {
-        display: none;
-    }
-
     .subnavigation-bar {
         display: none;
     }

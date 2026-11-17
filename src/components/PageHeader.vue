@@ -54,8 +54,6 @@ function onActionClick(event: MouseEvent) {
     flex-wrap: wrap;
     /* border-bottom: 3px double var(--sph-clr-border); */
     padding-bottom: 1rem;
-    /* margin-bottom: 1rem; */
-    align-items: center;
 }
 
 .dark-theme .site-page-header {
@@ -101,10 +99,6 @@ function onActionClick(event: MouseEvent) {
     .site-page-header__actions {
         margin-left: 0;
         gap: var(--gap-size-2);
-    }
-
-    .site-page-header__title h2 {
-        text-align: center;
     }
 }
 
@@ -162,8 +156,8 @@ function onActionClick(event: MouseEvent) {
     }
 
     .site-page-header__fab svg {
-        width: 26px;
-        height: 26px;
+        width: 40px;
+        height: 40px;
         fill: currentColor;
         transition: transform 200ms ease;
     }

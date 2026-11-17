@@ -20,6 +20,29 @@
     </PageHeader>
     <Drawer v-model="showRefinements" :title="$t('filters')">
         <div class="resource-search__refinements__body">
+            <Refinement id="sort" :title="$t('sort')" :collapsable="false">
+                <select v-model="draftFilters.sort" class="form-select">
+                    <option disabled>{{ $t("sort") }}:</option>
+                    <option value="name">{{ $t("name") }}</option>
+                    <option value="created_at">{{ $t("date-added") }}</option>
+                    <option value="strength">{{ $t("strength") }}</option>
+                    <option value="total_cocktails">{{ $t("total.cocktails") }}</option>
+                    <option value="potential_bar_shelf_cocktails">{{ $t("ingredient.potential-bar-shelf-cocktails") }}</option>
+                </select>
+                <select v-model="draftSortDir" class="form-select">
+                    <option disabled>{{ $t("sort-direction") }}:</option>
+                    <option value="">{{ $t("sort-asc") }}</option>
+                    <option value="-">{{ $t("sort-desc") }}</option>
+                </select>
+            </Refinement>
+            <Refinement id="per-page" :title="$t('search.results-per-page')" :collapsable="false">
+                <select v-model="draftFilters.per_page" class="form-select">
+                    <option disabled>{{ $t("search.results-per-page") }}:</option>
+                    <option value="25">25</option>
+                    <option value="50">50</option>
+                    <option value="100">100</option>
+                </select>
+            </Refinement>
             <Refinement id="global" :title="$t('global')" :collapsable="false">
                 <div v-for="filter in availableRefinements.global" :key="filter.id" class="resource-search__refinements__refinement__item">
                     <input :id="'global-' + filter.id" v-model="draftFilters.filter[filter.id as keyof typeof draftFilters.filter]" type="checkbox" :value="filter.active" />
@@ -70,25 +93,6 @@
                         @input="debounceIngredientSearch"
                         @keyup.enter="updateRouterPath"
                     />
-                    <select v-model="activeFilters.sort" class="form-select" @change="updateRouterPath">
-                        <option disabled>{{ $t("sort") }}:</option>
-                        <option value="name">{{ $t("name") }}</option>
-                        <option value="created_at">{{ $t("date-added") }}</option>
-                        <option value="strength">{{ $t("strength") }}</option>
-                        <option value="total_cocktails">{{ $t("total.cocktails") }}</option>
-                        <option value="potential_bar_shelf_cocktails">{{ $t("ingredient.potential-bar-shelf-cocktails") }}</option>
-                    </select>
-                    <select v-model="sortDir" class="form-select" @change="updateRouterPath">
-                        <option disabled>{{ $t("sort-direction") }}:</option>
-                        <option value="">{{ $t("sort-asc") }}</option>
-                        <option value="-">{{ $t("sort-desc") }}</option>
-                    </select>
-                    <select v-model="activeFilters.per_page" class="form-select" @change="updateRouterPath">
-                        <option disabled>{{ $t("search.results-per-page") }}:</option>
-                        <option value="25">25</option>
-                        <option value="50">50</option>
-                        <option value="100">100</option>
-                    </select>
                     <SaltRimDialog v-model="showAddToMenuDialog">
                         <template #trigger>
                             <button type="button" class="button button--input" :title="$t('collections.add')" @click.prevent="showAddToMenuDialog = !showAddToMenuDialog">
@@ -173,6 +177,7 @@ const showRefinements = ref(false);
 const showAddToMenuDialog = ref(false);
 const showShelfPhotoScanDialog = ref(false);
 const sortDir = ref("");
+const draftSortDir = ref("");
 const meta = ref<PaginationMeta | null>(null);
 const ingredients = ref<Ingredient[]>([]);
 const queryTimer = ref<number | null>(null);
@@ -431,6 +436,8 @@ function updateRouterPath() {
 
 function applyFilters() {
     activeFilters.value = cloneFilters(draftFilters.value);
+    activeFilters.value.page = 1;
+    sortDir.value = draftSortDir.value;
     showRefinements.value = false;
     updateRouterPath();
 }
@@ -438,6 +445,7 @@ function applyFilters() {
 watch(showRefinements, (isOpen) => {
     if (isOpen) {
         draftFilters.value = cloneFilters(activeFilters.value);
+        draftSortDir.value = sortDir.value;
     }
 });
 

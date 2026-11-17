@@ -9,6 +9,7 @@
 
 .resource-search__content__filter {
     display: flex;
+    flex-wrap: nowrap;
     gap: var(--gap-size-2);
     position: relative;
 }
@@ -37,22 +38,13 @@
 }
 
 .resource-search__content__filter .form-input {
-    flex-basis: 100%;
+    flex: 1 1 auto;
+    min-width: 0;
     width: auto;
 }
 
 .resource-search__content__filter .form-select {
     width: auto;
-}
-
-@media (max-width: 850px) {
-    .resource-search__content__filter {
-        flex-wrap: wrap;
-    }
-
-    .resource-search__content__filter .form-input {
-        flex-basis: auto;
-    }
 }
 
 .resource-search__content__pagination {
