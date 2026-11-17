@@ -150,6 +150,10 @@ onBeforeUnmount(() => {
     gap: 1rem;
     padding: 1rem;
     border-bottom: 1px solid var(--clr-gray-200);
+
+    .dark-theme & {
+        border-color: var(--clr-gray-600);
+    }
 }
 
 .drawer__title {
@@ -195,5 +199,9 @@ onBeforeUnmount(() => {
     gap: var(--gap-size-2);
     padding: 1rem;
     border-top: 1px solid var(--clr-gray-200);
+
+    .dark-theme & {
+        border-color: var(--clr-gray-600);
+    }
 }
 </style>
