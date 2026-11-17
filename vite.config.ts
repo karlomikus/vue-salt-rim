@@ -62,7 +62,9 @@ export default defineConfig({
         }
     }), VitePWA({
         workbox: {
-            navigateFallbackDenylist: [/^\/bar/,/^\/api/, /^\/search/]
+            // config.js is generated at runtime, never precache it
+            globIgnores: ["**/config.js"],
+            navigateFallbackDenylist: [/^\/bar(\/|$)/, /^\/api(\/|$)/, /^\/search(\/|$)/]
         },
         manifest: manifest,
         registerType: 'autoUpdate',

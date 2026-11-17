@@ -26,7 +26,63 @@ import nl_NL from "./locales/nl-NL";
 import cs_CZ from "./locales/cs-CZ";
 import fi_FI from "./locales/fi-FI";
 
-registerSW({ immediate: true });
+const UPDATE_CHECK_INTERVAL = 30 * 60 * 1000;
+const UPDATE_CHECK_THROTTLE = 60 * 1000;
+
+let isUpdatePending = false;
+
+document.addEventListener("visibilitychange", () => {
+    if (isUpdatePending && document.visibilityState === "hidden") {
+        window.location.reload();
+    }
+});
+
+registerSW({
+    immediate: true,
+    onNeedReload() {
+        if (document.visibilityState === "hidden") {
+            window.location.reload();
+            return;
+        }
+
+        // Don't reload while the user is working, apply the update once the app is backgrounded
+        isUpdatePending = true;
+    },
+    onRegisteredSW(_swScriptUrl, registration) {
+        if (!registration) {
+            return;
+        }
+
+        let lastUpdateCheck = 0;
+
+        const checkForUpdate = () => {
+            if (!navigator.onLine) {
+                return;
+            }
+
+            if (Date.now() - lastUpdateCheck < UPDATE_CHECK_THROTTLE) {
+                return;
+            }
+
+            lastUpdateCheck = Date.now();
+
+            registration.update().catch(() => {
+                // Update checks are best effort, the next one will retry
+            });
+        };
+
+        setInterval(checkForUpdate, UPDATE_CHECK_INTERVAL);
+
+        document.addEventListener("visibilitychange", () => {
+            if (document.visibilityState === "visible") {
+                checkForUpdate();
+            }
+        });
+
+        window.addEventListener("online", checkForUpdate);
+        window.addEventListener("focus", checkForUpdate);
+    },
+});
 registerSwiperElements();
 
 if (window.srConfig.ANALYTICS_DOMAIN && window.srConfig.ANALYTICS_DOMAIN != "") {
