@@ -4,11 +4,9 @@
             <div class="site-footer__links">
                 <a target="_blank" href="https://barassistant.app">Bar Assistant</a>
                 <span>&middot;</span>
-                <a target="_blank" href="https://bar-assistant.github.io/docs/">Docs</a>
+                <a target="_blank" href="https://docs.barassistant.app/">Docs</a>
                 <span>&middot;</span>
                 <a target="_blank" href="https://github.com/karlomikus/bar-assistant">GitHub</a>
-                <span>&middot;</span>
-                <a target="_blank" href="https://www.cocktailsafe.org/">Cocktail safety</a>
                 <template v-if="appState.isBillingEnabled()">
                     <span>&middot;</span>
                     <a target="_blank" href="https://barassistant.app/terms.html"> Terms </a>
@@ -16,48 +14,28 @@
                     <a target="_blank" href="https://barassistant.app/privacy.html"> Privacy policy </a>
                 </template>
             </div>
-            <div class="site-footer__links">
-                <span
-                    >Salt Rim: <a href="https://github.com/karlomikus/vue-salt-rim/releases" target="_blank">{{ client }}</a></span
-                >
-                <span>&middot;</span>
-                <span
-                    >Bar Assistant:
-                    <a href="https://github.com/karlomikus/bar-assistant/releases" target="_blank">
-                        {{ versions?.version }}
-                        <template v-if="versions && !versions.is_latest"> (Update available) </template>
-                    </a></span
-                >
-                <span>&middot;</span>
-                <span
-                    >Meilisearch: <a href="https://github.com/meilisearch/meilisearch/releases" target="_blank">{{ versions?.search_version }}</a></span
-                >
+            <div class="site-footer__notes">
+                <p>
+                    <strong>Please drink responsibly.</strong> This app is intended for adults of legal drinking age. Never drink and drive, and
+                    don't drink if you are pregnant or have a medical condition that makes alcohol unsafe. Alcohol affects everyone
+                    differently, know your limits.
+                    See how some ingredients react in cocktails by visiting <a target="_blank" href="https://www.cocktailsafe.org/">Cocktail safety</a>.
+                </p>
+                <p>
+                    Recipes here come from many different sources and may vary in ingredients, measurements, and technique. Where the original
+                    source is known, we credit the author and link back to it. If you believe a recipe is credited incorrectly or used without
+                    permission, please <a target="_blank" href="https://github.com/karlomikus/bar-assistant/issues">let us know</a> so we can fix
+                    it.
+                </p>
             </div>
         </div>
     </footer>
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from "vue";
 import AppState from "@/AppState";
-import BarAssistantClient from "@/api/BarAssistantClient";
-import type { components } from "@/api/api";
-
-type ServerVersion = components["schemas"]["ServerVersion"];
 
 const appState = new AppState();
-const client = window.srConfig.VERSION || "local";
-const versions = ref<ServerVersion | null>(null);
-
-onMounted(() => {
-    BarAssistantClient.getServerVersion()
-        .then((resp) => {
-            versions.value = resp?.data ?? null;
-        })
-        .catch(() => {
-            // Silently fail
-        });
-});
 </script>
 
 <style scoped>
@@ -90,6 +68,31 @@ onMounted(() => {
     gap: 0.5rem;
     flex-direction: row;
     flex-wrap: wrap;
+}
+
+.site-footer__notes {
+    margin: 0.75rem 0 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    line-height: 1.5;
+    color: var(--clr-gray-500);
+}
+
+.dark-theme .site-footer__notes {
+    color: var(--clr-gray-400);
+}
+
+.site-footer__notes p {
+    margin: 0;
+}
+
+.site-footer__notes strong {
+    color: var(--clr-gray-700);
+}
+
+.dark-theme .site-footer__notes strong {
+    color: var(--clr-gray-300);
 }
 
 .site-footer a {
