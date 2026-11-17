@@ -1,3 +1,8 @@
+# 5.11.0
+## New
+- Added mobile specific navigation
+- Added mobile specific floating action button for quick actions
+
 # 5.10.1
 ## Fixes
 - Hide shelf scan if AI is not enabled in Bar Assistant API

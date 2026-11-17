@@ -1,6 +1,6 @@
 const metaThemeColor: Record<string, string> = {
     dark: "#282238",
-    light: "#584b75",
+    light: "#564678",
 };
 
 const useTheme = (theme: string): void => {
