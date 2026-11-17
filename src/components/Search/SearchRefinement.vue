@@ -1,20 +1,21 @@
 <template>
     <div class="resource-search__refinements__refinement">
-        <div class="resource-search__refinements__refinement__title" @click="collapsed = !collapsed">
+        <div
+            class="resource-search__refinements__refinement__title"
+            :class="{ 'resource-search__refinements__refinement__title--collapsable': collapsable }"
+            @click="toggleCollapsed"
+        >
+            <IconCaret
+                v-if="collapsable"
+                class="resource-search__refinements__refinement__title__caret"
+                :class="{ 'resource-search__refinements__refinement__title__caret--collapsed': collapsed }"
+            />
             <h4>{{ title }}</h4>
             <div class="resource-search__refinements__refinement__title__actions">
-                <button v-show="isClearable" type="button" class="button" @click="clear">
+                <button v-show="isClearable" type="button" class="button" @click.stop="clear">
                     <span v-if="totalSelected">{{ totalSelected }}</span>
                     <IconClose></IconClose>
                 </button>
-                <!-- <button v-if="collapsable" type="button" class="button" @click="collapsed = !collapsed">
-                    <svg v-show="collapsed == false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16">
-                        <path d="M11.9997 13.1714L16.9495 8.22168L18.3637 9.63589L11.9997 15.9999L5.63574 9.63589L7.04996 8.22168L11.9997 13.1714Z"></path>
-                    </svg>
-                    <svg v-show="collapsed == true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16">
-                        <path d="M10.8284 12.0007L15.7782 16.9504L14.364 18.3646L8 12.0007L14.364 5.63672L15.7782 7.05093L10.8284 12.0007Z"></path>
-                    </svg>
-                </button> -->
             </div>
         </div>
         <template v-if="!collapsed">
@@ -32,6 +33,7 @@
 </template>
 <script setup lang="ts">
 import { computed, ref } from "vue";
+import IconCaret from "../Icons/IconCaret.vue";
 import IconClose from "../Icons/IconClose.vue";
 
 export interface RefinementRange {
@@ -94,6 +96,14 @@ const totalSelected = computed(() => {
     return "";
 });
 
+function toggleCollapsed() {
+    if (!collapsable) {
+        return;
+    }
+
+    collapsed.value = !collapsed.value;
+}
+
 function clear() {
     searchTerm.value = "";
     if (type === "checkbox") {
@@ -123,9 +133,25 @@ if (isClearable.value) {
 }
 
 .resource-search__refinements__refinement__title {
-    cursor: pointer;
     display: flex;
     min-height: 3rem;
+}
+
+.resource-search__refinements__refinement__title--collapsable {
+    cursor: pointer;
+}
+
+.resource-search__refinements__refinement__title__caret {
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+    margin-right: 0.25rem;
+    fill: currentColor;
+    transition: transform 0.20s ease;
+}
+
+.resource-search__refinements__refinement__title__caret--collapsed {
+    transform: rotate(-90deg);
 }
 
 .resource-search__refinements__refinement__title__actions button {
