@@ -137,7 +137,7 @@ watch(
         right: 0.5rem;
         bottom: calc(0.5rem + env(safe-area-inset-bottom));
         left: 0.5rem;
-        z-index: 4;
+        z-index: 2;
         display: flex;
         justify-content: space-around;
         gap: 0.15rem;
