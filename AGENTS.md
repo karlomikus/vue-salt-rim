@@ -60,8 +60,40 @@ docker compose exec app bun run test:unit    # Run Vitest unit tests
 - Generated types in `src/api/api.d.ts` (run `bun run gen` to regenerate)
 - Import types: `import type { components } from '@/api/api'`
 
+## Browser Testing with agent-browser
+
+The dev client runs on `http://localhost:5173` (docker container) with the API on `http://localhost:8000`. Use the `agent-browser` CLI to test the app with a real browser.
+
+### Setup (once per run)
+
+```bash
+SR_ADMIN_EMAIL="..." SR_ADMIN_PASSWORD="..." ./scripts/agent-login.sh
+```
+
+The script requires `SR_ADMIN_EMAIL` and `SR_ADMIN_PASSWORD` env vars pointing at an existing admin account on the local backend. It performs a real UI login (fills `#email` / `#password`, clicks `button[type=submit]`) and prints the agent-browser session name to export for subsequent commands.
+
+- Auth is a Sanctum bearer token stored in `localStorage` under `_salt_rim` (full `AppState`), so the session persists via `agent-browser --restore`.
+- On later runs the script short-circuits when the stored token is still valid — it only re-logs in if the token is missing or expired.
+- **The backend rate-limits login to ~5 attempts per window.** Never brute-force credentials; the script's short-circuit exists to avoid burning attempts.
+
+### Testing loop
+
+```bash
+export AGENT_BROWSER_SESSION="salt-rim-<worktree-hash>"  # printed by agent-login.sh
+agent-browser open http://localhost:5173
+agent-browser snapshot -i          # accessibility tree with @eN refs
+agent-browser click @e1            # act on refs
+agent-browser snapshot -i          # re-snapshot after every change
+agent-browser errors               # check console errors
+```
+
+- Use `#email`, `#password`, `button[type=submit]` selectors for the login form — button labels are i18n-translated, so don't match on text.
+- After login the app redirects to `/` (single bar) or `/bars` (multiple bars).
+- Prefer `agent-browser eval --stdin` with a heredoc for any JS with quotes or special characters.
+
 ### CSS/Styling
 - Plain CSS (no preprocessors)
 - Styles in `src/assets/` organized by component type
 - BEM-like naming conventions
 - Dark theme supported via `.dark-theme` class on body
+- Prefer new nested CSS selectors via `&`
