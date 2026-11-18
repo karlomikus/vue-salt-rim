@@ -97,6 +97,9 @@
         "manual-copy-description": "Automatsko kopiranje nije uspjelo. Molimo kopirajte tekst ispod ručno:"
     },
     "settings": "Postavke",
+    "actions": "Radnje",
+    "more": "Više",
+    "shopping": "Kupovina",
     "logout": "Odjava",
     "profile": "Profil",
     "filename": "Naziv datoteka",

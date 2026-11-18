@@ -69,7 +69,7 @@
     "vitest": "4.1.11",
     "vue-eslint-parser": "10.4.1",
     "vue-i18n-extract": "2.0.7",
-    "vue-tsc": "3.3.11"
+    "vue-tsc": "3.3.14"
   },
   "engines": {
     "node": "^22.18.0 || >=24.12.0"

@@ -97,6 +97,9 @@
         "manual-copy-description": "Automatisk kopiering mislykkedes. Kopier venligst teksten nedenfor manuelt:"
     },
     "settings": "Settings",
+    "actions": "Handlinger",
+    "more": "Mere",
+    "shopping": "Indkøb",
     "logout": "Logout",
     "profile": "Profile",
     "filename": "File name",

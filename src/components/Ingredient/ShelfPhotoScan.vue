@@ -2,16 +2,28 @@
 import { computed, ref } from "vue";
 import OverlayLoader from "../OverlayLoader.vue";
 import IngredientImage from "./IngredientImage.vue";
+import IngredientFinder from "../IngredientFinder.vue";
+import IngredientFinderBasic from "../IngredientFinderBasic.vue";
+import SaltRimDialog from "../Dialog/SaltRimDialog.vue";
 import { useI18n } from "vue-i18n";
+import AppState from "@/AppState";
+import { useBasicSearch } from "@/composables/useBasicSearch";
 import { useShelfPhotoScan } from "@/composables/ingredient/useShelfPhotoScan";
+import type { SearchResults } from "@/api/SearchResults";
+
+type SearchResult = SearchResults["ingredient"];
 
 const { t } = useI18n();
-const { isLoading, scanShelf, result } = useShelfPhotoScan();
+const { isLoading, scanShelf, result, matchUnmatched } = useShelfPhotoScan();
+const appState = new AppState();
+const shouldUseBasicSearch = useBasicSearch();
 const files = ref<File[]>([]);
+const showIngredientDialog = ref(false);
+const unmatchedNameMatch = ref<string | null>(null);
 
 const MAX_PHOTOS = 10;
 
-const hasResults = computed(() => (result.value?.stocked.length ?? 0)); //+ (result.value?.unmatched.length ?? 0) > 0);
+const hasResults = computed(() => (result.value?.stocked.length ?? 0) > 0 || (result.value?.unmatched.length ?? 0) > 0);
 const tooManyPhotos = computed(() => files.value.length > MAX_PHOTOS);
 
 function onFilesChanged($event: Event) {
@@ -22,6 +34,22 @@ function onFilesChanged($event: Event) {
     }
 }
 
+function manuallyMatch(name: string) {
+    unmatchedNameMatch.value = name;
+    showIngredientDialog.value = true;
+}
+
+async function handleIngredientSelected(ingredient: SearchResult) {
+    if (unmatchedNameMatch.value === null) {
+        return;
+    }
+
+    const wasMatched = await matchUnmatched(unmatchedNameMatch.value, ingredient);
+    if (wasMatched) {
+        showIngredientDialog.value = false;
+        unmatchedNameMatch.value = null;
+    }
+}
 </script>
 <template>
     <form @submit.prevent="scanShelf(files)">
@@ -54,18 +82,23 @@ function onFilesChanged($event: Event) {
                 <div v-if="result.stocked.length > 0">
                     <h3 class="form-section-title">{{ t("ingredient.shelf-photo-stocked") }}</h3>
                     <ul class="shelf-photo-scan__grid">
-                        <li v-for="ingredient in result.stocked" :key="ingredient.id" class="block-container shelf-photo-scan__grid-item">
+                        <li v-for="ingredient in result.stocked" :key="ingredient.id" class="shelf-photo-scan__grid-item">
                             <IngredientImage :image-url="ingredient.image?.url ?? null"></IngredientImage>
                             <span class="shelf-photo-scan__grid-name">{{ ingredient.name }}</span>
                         </li>
                     </ul>
                 </div>
-                <!-- <div v-if="result.unmatched.length > 0">
+                <div v-if="result.unmatched.length > 0">
                     <h3 class="form-section-title">{{ t("ingredient.shelf-photo-unmatched") }}</h3>
-                    <ul class="shelf-photo-scan__list">
-                        <li v-for="name in result.unmatched" :key="name">{{ name }}</li>
-                    </ul>
-                </div> -->
+                    <div class="block-container block-container--inset">
+                        <ul class="shelf-photo-scan__list">
+                            <li v-for="name in result.unmatched" :key="name" class="block-container shelf-photo-scan__unmatched-item">
+                                <span>{{ name }}</span>
+                                <a href="#" @click.prevent="manuallyMatch(name)">{{ t("import.manually-match") }}</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
             </div>
             <p v-else>{{ t("ingredient.shelf-photo-empty") }}</p>
             <div style="display: flex; gap: var(--gap-size-2); justify-content: flex-end">
@@ -73,6 +106,27 @@ function onFilesChanged($event: Event) {
                     {{ t("ingredient.shelf-photo-scan-again") }}
                 </button>
             </div>
+            <SaltRimDialog v-if="unmatchedNameMatch" v-model="showIngredientDialog">
+                <template #trigger><span></span></template>
+                <template #dialog>
+                    <div class="dialog-title">{{ t("import.manually-match") }}</div>
+                    <p style="margin-bottom: 1rem">{{ t("import.manual-match-notice", { name: unmatchedNameMatch }) }}</p>
+                    <IngredientFinderBasic
+                        v-if="shouldUseBasicSearch"
+                        :initial-query="unmatchedNameMatch"
+                        @ingredient-selected="handleIngredientSelected"
+                    ></IngredientFinderBasic>
+                    <IngredientFinder
+                        v-else-if="appState.bar.search_token"
+                        :search-token="appState.bar.search_token"
+                        :initial-query="unmatchedNameMatch"
+                        @ingredient-selected="handleIngredientSelected"
+                    ></IngredientFinder>
+                    <div class="dialog-actions">
+                        <button type="button" class="button button--outline" @click="showIngredientDialog = false">{{ t("close") }}</button>
+                    </div>
+                </template>
+            </SaltRimDialog>
         </template>
     </form>
 </template>
@@ -90,13 +144,32 @@ function onFilesChanged($event: Event) {
 }
 .shelf-photo-scan__list {
     margin: 0;
-    padding-left: 1.2rem;
+    padding: var(--gap-size-1);
+    display: flex;
+    flex-direction: column;
+    gap: var(--gap-size-1);
+}
+.shelf-photo-scan__unmatched-item {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--gap-size-2);
+    padding: var(--gap-size-2);
+    span {
+        font-weight: var(--fw-bold);
+    }
+}
+@media (max-width: 550px) {
+    .shelf-photo-scan__unmatched-item {
+        flex-direction: column;
+        gap: 0;
+    }
 }
 .shelf-photo-scan__grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-    gap: var(--gap-size-2);
-    margin: 0 0 1rem 0;
+    grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
+    gap: var(--gap-size-1);
+    margin: 0 0 var(--gap-size-1) 0;
     padding: 0;
     list-style: none;
 }
@@ -106,7 +179,7 @@ function onFilesChanged($event: Event) {
     align-items: center;
     gap: var(--gap-size-1);
     text-align: center;
-    padding: var(--gap-size-2);
+    padding: var(--gap-size-1);
 }
 .shelf-photo-scan__grid-name {
     font-size: 1em;

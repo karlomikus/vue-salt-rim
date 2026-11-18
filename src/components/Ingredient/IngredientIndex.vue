@@ -18,80 +18,62 @@
             </template>
         </template>
     </PageHeader>
+    <Drawer v-model="showRefinements" :title="$t('filters')">
+        <div class="resource-search__refinements__body">
+            <Refinement id="sort" :title="$t('sort')" :collapsable="false">
+                <select v-model="draftFilters.sort" class="form-select">
+                    <option disabled>{{ $t("sort") }}:</option>
+                    <option value="name">{{ $t("name") }}</option>
+                    <option value="created_at">{{ $t("date-added") }}</option>
+                    <option value="strength">{{ $t("strength") }}</option>
+                    <option value="total_cocktails">{{ $t("total.cocktails") }}</option>
+                    <option value="potential_bar_shelf_cocktails">{{ $t("ingredient.potential-bar-shelf-cocktails") }}</option>
+                </select>
+                <select v-model="draftSortDir" class="form-select">
+                    <option disabled>{{ $t("sort-direction") }}:</option>
+                    <option value="">{{ $t("sort-asc") }}</option>
+                    <option value="-">{{ $t("sort-desc") }}</option>
+                </select>
+            </Refinement>
+            <Refinement id="per-page" :title="$t('search.results-per-page')" :collapsable="false">
+                <select v-model="draftFilters.per_page" class="form-select">
+                    <option disabled>{{ $t("search.results-per-page") }}:</option>
+                    <option value="25">25</option>
+                    <option value="50">50</option>
+                    <option value="100">100</option>
+                </select>
+            </Refinement>
+            <Refinement id="global" :title="$t('global')" :collapsable="false">
+                <div v-for="filter in availableRefinements.global" :key="filter.id" class="resource-search__refinements__refinement__item">
+                    <input :id="'global-' + filter.id" v-model="draftFilters.filter[filter.id as keyof typeof draftFilters.filter]" type="checkbox" :value="filter.active" />
+                    <label :for="'global-' + filter.id">{{ filter.name }}</label>
+                </div>
+            </Refinement>
+            <Refinement
+                id="ingredient-category"
+                v-model="draftFilters.filter.descendants_of"
+                :title="$t('category.title')"
+                :refinements="refineCategories"
+                :collapsable="false"
+            ></Refinement>
+            <Refinement id="origin" v-model="draftFilters.filter.origin" :searchable="true" :title="$t('origin')" :refinements="refineOrigins"></Refinement>
+            <Refinement id="distillery" v-model="draftFilters.filter.distillery" :searchable="true" :title="$t('distillery')" :refinements="refineDistilleries"></Refinement>
+            <Refinement id="strength" v-model="draftFilters.filter.strength" :title="$t('strength')" :refinements="refineStrength" type="radio"></Refinement>
+            <Refinement id="user-rating" v-model="draftFilters.filter.user_rating_min as any" :title="$t('your-rating')" :refinements="refineRatings" type="radio"></Refinement>
+            <Refinement id="avg-rating" v-model="draftFilters.filter.average_rating_min as any" :title="$t('avg-rating')" :refinements="refineRatings" type="radio"></Refinement>
+            <Refinement
+                id="review-recommendation"
+                v-model="draftFilters.filter.review_recommendation"
+                :title="$t('review.recommendation-label')"
+                :refinements="refineRecommendations"
+            ></Refinement>
+        </div>
+        <template #footer>
+            <button type="button" class="button button--dark" @click="applyFilters">{{ $t("apply-filters") }}</button>
+        </template>
+    </Drawer>
     <div class="resource-search-wrapper">
         <div class="resource-search">
-            <div v-show="showRefinements" class="resource-search__refinements" @click="handleClickAway">
-                <div class="resource-search__refinements__body">
-                    <h3 class="page-subtitle" style="margin-top: 0">{{ $t("filters") }}</h3>
-                    <Refinement id="global" :title="$t('global')" :collapsable="false">
-                        <div v-for="filter in availableRefinements.global" :key="filter.id" class="resource-search__refinements__refinement__item">
-                            <input
-                                :id="'global-' + filter.id"
-                                v-model="activeFilters.filter[filter.id as keyof typeof activeFilters.filter]"
-                                type="checkbox"
-                                :value="filter.active"
-                                @change="updateRouterPath"
-                            />
-                            <label :for="'global-' + filter.id">{{ filter.name }}</label>
-                        </div>
-                    </Refinement>
-                    <Refinement
-                        id="ingredient-category"
-                        v-model="activeFilters.filter.descendants_of"
-                        :title="$t('category.title')"
-                        :refinements="refineCategories"
-                        @change="updateRouterPath"
-                        :collapsable="false"
-                    ></Refinement>
-                    <Refinement
-                        id="origin"
-                        v-model="activeFilters.filter.origin"
-                        :searchable="true"
-                        :title="$t('origin')"
-                        :refinements="refineOrigins"
-                        @change="updateRouterPath"
-                    ></Refinement>
-                    <Refinement
-                        id="distillery"
-                        v-model="activeFilters.filter.distillery"
-                        :searchable="true"
-                        :title="$t('distillery')"
-                        :refinements="refineDistilleries"
-                        @change="updateRouterPath"
-                    ></Refinement>
-                    <Refinement
-                        id="strength"
-                        v-model="activeFilters.filter.strength"
-                        :title="$t('strength')"
-                        :refinements="refineStrength"
-                        type="radio"
-                        @change="updateRouterPath"
-                    ></Refinement>
-                    <Refinement
-                        id="user-rating"
-                        v-model="activeFilters.filter.user_rating_min as any"
-                        :title="$t('your-rating')"
-                        :refinements="refineRatings"
-                        type="radio"
-                        @change="updateRouterPath"
-                    ></Refinement>
-                    <Refinement
-                        id="avg-rating"
-                        v-model="activeFilters.filter.average_rating_min as any"
-                        :title="$t('avg-rating')"
-                        :refinements="refineRatings"
-                        type="radio"
-                        @change="updateRouterPath"
-                    ></Refinement>
-                    <Refinement
-                        id="review-recommendation"
-                        v-model="activeFilters.filter.review_recommendation"
-                        :title="$t('review.recommendation-label')"
-                        :refinements="refineRecommendations"
-                        @change="updateRouterPath"
-                    ></Refinement>
-                </div>
-            </div>
             <div class="resource-search__content">
                 <div class="resource-search__content__filter" style="margin-bottom: 1rem">
                     <button type="button" class="button button--input" @click.prevent="showRefinements = !showRefinements">
@@ -111,25 +93,6 @@
                         @input="debounceIngredientSearch"
                         @keyup.enter="updateRouterPath"
                     />
-                    <select v-model="activeFilters.sort" class="form-select" @change="updateRouterPath">
-                        <option disabled>{{ $t("sort") }}:</option>
-                        <option value="name">{{ $t("name") }}</option>
-                        <option value="created_at">{{ $t("date-added") }}</option>
-                        <option value="strength">{{ $t("strength") }}</option>
-                        <option value="total_cocktails">{{ $t("total.cocktails") }}</option>
-                        <option value="potential_bar_shelf_cocktails">{{ $t("ingredient.potential-bar-shelf-cocktails") }}</option>
-                    </select>
-                    <select v-model="sortDir" class="form-select" @change="updateRouterPath">
-                        <option disabled>{{ $t("sort-direction") }}:</option>
-                        <option value="">{{ $t("sort-asc") }}</option>
-                        <option value="-">{{ $t("sort-desc") }}</option>
-                    </select>
-                    <select v-model="activeFilters.per_page" class="form-select" @change="updateRouterPath">
-                        <option disabled>{{ $t("search.results-per-page") }}:</option>
-                        <option value="25">25</option>
-                        <option value="50">50</option>
-                        <option value="100">100</option>
-                    </select>
                     <SaltRimDialog v-model="showAddToMenuDialog">
                         <template #trigger>
                             <button type="button" class="button button--input" :title="$t('collections.add')" @click.prevent="showAddToMenuDialog = !showAddToMenuDialog">
@@ -187,6 +150,7 @@ import OverlayLoader from "./../OverlayLoader.vue";
 import IngredientGridContainer from "./../Ingredient/IngredientGridContainer.vue";
 import IngredientGridItem from "./../Ingredient/IngredientGridItem.vue";
 import PageHeader from "./../PageHeader.vue";
+import Drawer from "./../Drawer.vue";
 import Refinement, { type RefinementRange } from "./../Search/SearchRefinement.vue";
 import Pagination, { type PaginationMeta } from "./../Search/SearchPagination.vue";
 import qs from "qs";
@@ -213,6 +177,7 @@ const showRefinements = ref(false);
 const showAddToMenuDialog = ref(false);
 const showShelfPhotoScanDialog = ref(false);
 const sortDir = ref("");
+const draftSortDir = ref("");
 const meta = ref<PaginationMeta | null>(null);
 const ingredients = ref<Ingredient[]>([]);
 const queryTimer = ref<number | null>(null);
@@ -258,6 +223,11 @@ const defaultRefinements = {
     },
 };
 const activeFilters = ref(defaultRefinements);
+const draftFilters = ref(cloneFilters(defaultRefinements));
+
+function cloneFilters(filters: typeof defaultRefinements) {
+    return JSON.parse(JSON.stringify(filters)) as typeof defaultRefinements;
+}
 
 watch(
     () => route.query,
@@ -456,12 +426,6 @@ async function refreshIngredients() {
     isLoading.value = false;
 }
 
-function handleClickAway(e: any) {
-    if (e && e.target && e.target.classList.contains("resource-search__refinements")) {
-        showRefinements.value = !showRefinements.value;
-    }
-}
-
 function updateRouterPath() {
     const query = stateToQuery();
 
@@ -469,6 +433,21 @@ function updateRouterPath() {
         query: query as LocationQueryRaw,
     });
 }
+
+function applyFilters() {
+    activeFilters.value = cloneFilters(draftFilters.value);
+    activeFilters.value.page = 1;
+    sortDir.value = draftSortDir.value;
+    showRefinements.value = false;
+    updateRouterPath();
+}
+
+watch(showRefinements, (isOpen) => {
+    if (isOpen) {
+        draftFilters.value = cloneFilters(activeFilters.value);
+        draftSortDir.value = sortDir.value;
+    }
+});
 
 function handlePageChange(toPage: number) {
     activeFilters.value.page = toPage;

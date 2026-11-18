@@ -3,16 +3,13 @@
     gap: var(--gap-size-3);
 }
 
-.resource-search__refinements {
-    width: 300px;
-}
-
 .resource-search__content {
     width: 100%;
 }
 
 .resource-search__content__filter {
     display: flex;
+    flex-wrap: nowrap;
     gap: var(--gap-size-2);
     position: relative;
 }
@@ -41,22 +38,13 @@
 }
 
 .resource-search__content__filter .form-input {
-    flex-basis: 100%;
+    flex: 1 1 auto;
+    min-width: 0;
     width: auto;
 }
 
 .resource-search__content__filter .form-select {
     width: auto;
-}
-
-@media (max-width: 850px) {
-    .resource-search__content__filter {
-        flex-wrap: wrap;
-    }
-
-    .resource-search__content__filter .form-input {
-        flex-basis: auto;
-    }
 }
 
 .resource-search__content__pagination {
@@ -75,47 +63,25 @@
 .resource-search__refinements__body {
     display: flex;
     flex-direction: column;
-    gap: var(--gap-size-2);
-}
-
-@media (max-width: 750px) {
-    .resource-search__refinements {
-        position: fixed;
-        top: 0;
-        left: 0;
-        background-color: rgba(21, 13, 34, 0.5);
-        width: 100%;
-        z-index: var(--z-mobile-search-refinements);
-        height: 100%;
-    }
-
-    .resource-search__refinements__body {
-        background: var(--clr-accent-50);
-        width: 80%;
-        height: 100%;
-        padding: 1.5rem;
-        overflow-y: scroll;
-    }
-
-    .dark-theme .resource-search__refinements__body {
-        background: var(--clr-gray-950);
-    }
 }
 
 .resource-search__refinements__refinement {
-    padding: var(--gap-size-2);
     display: flex;
     flex-direction: column;
+    border-bottom: 1px solid var(--clr-gray-200);
 }
 
 .dark-theme .resource-search__refinements__refinement {
     border-color: var(--clr-gray-700);
-    background-color: rgba(0, 0, 0, 0.15);
 }
 
 .resource-search__refinements__refinement__body {
     max-height: 300px;
     overflow-y: auto;
+    padding: var(--gap-size-2);
+    display: flex;
+    flex-direction: column;
+    gap: var(--gap-size-1);
 }
 
 .resource-search__refinements__refinement__title {
@@ -133,10 +99,6 @@
 .resource-search__refinements__refinement__title__actions {
     margin-left: auto;
     flex-shrink: 0;
-}
-
-.resource-search__refinements__refinement__item {
-    margin-bottom: 0.5rem;
 }
 
 .resource-search__refinements__refinement__item input[type="checkbox"],

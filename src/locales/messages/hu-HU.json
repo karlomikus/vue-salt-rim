@@ -97,6 +97,9 @@
         "manual-copy-description": "Az automatikus másolás sikertelen. Kérjük, másolja ki az alábbi szöveget kézzel:"
     },
     "settings": "Settings",
+    "actions": "Műveletek",
+    "more": "Több",
+    "shopping": "Vásárlás",
     "logout": "Logout",
     "profile": "Profile",
     "filename": "File name",

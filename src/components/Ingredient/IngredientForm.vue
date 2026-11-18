@@ -77,7 +77,7 @@
                     :description="$t('ingredient.variety-note')"
                 ></SaltRimCheckbox>
             </div>
-            <div v-show="isParent" class="form-group" v-if="bar.search_host">
+            <div v-show="isParent" class="form-group" v-if="shouldUseBasicSearch || bar.search_host">
                 <IngredientFinderBasic
                     v-if="shouldUseBasicSearch"
                     v-show="ingredient.hierarchy?.parent_ingredient?.id == null"
@@ -103,7 +103,7 @@
                     :description="$t('ingredient.complex-note')"
                 ></SaltRimCheckbox>
             </div>
-            <div v-show="isComplex" class="ingredient-form__complex-ingredients" v-if="bar.search_host && ingredient.ingredient_parts">
+            <div v-show="isComplex" class="ingredient-form__complex-ingredients" v-if="(shouldUseBasicSearch || bar.search_host) && ingredient.ingredient_parts">
                 <div>
                     <IngredientFinderBasic
                         v-if="shouldUseBasicSearch"

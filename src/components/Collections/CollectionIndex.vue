@@ -1,18 +1,12 @@
 <template>
     <PageHeader>
         {{ $t("collections.title") }}
-        <template #actions>
+        <template v-if="appState.isSubscribed() || collections.length < 3" #actions>
             <SaltRimDialog v-model="showDialog">
                 <template #trigger>
-                    <button
-                        v-if="(!appState.isSubscribed() && collections.length >= 3) == false"
-                        type="button"
-                        class="button button--dark"
-                        @click.prevent="openDialog($t('collections.add'), {} as Collection)"
-                    >
+                    <button type="button" class="button button--dark" @click.prevent="openDialog($t('collections.add'), {} as Collection)">
                         {{ $t("collections.add") }}
                     </button>
-                    <div v-else></div>
                 </template>
                 <template #dialog>
                     <CollectionForm v-if="editCollection" :source-collection="editCollection" :dialog-title="dialogTitle" @collection-dialog-closed="refreshCollections" />

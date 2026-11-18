@@ -97,6 +97,9 @@
         "manual-copy-description": "Automatic copying failed. Please copy the text below manually:"
     },
     "settings": "Inställningar",
+    "actions": "Åtgärder",
+    "more": "Mer",
+    "shopping": "Inköp",
     "logout": "Logga ut",
     "profile": "Profil",
     "filename": "Filnamn",

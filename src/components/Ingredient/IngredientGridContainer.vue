@@ -17,9 +17,9 @@ const observer = ref<IntersectionObserver | null>(null);
     gap: var(--gap-size-3);
 }
 
-@media (max-width: 450px) {
+@media (max-width: 750px) {
     .ingredient-grid-container {
-        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
     }
 }
 </style>

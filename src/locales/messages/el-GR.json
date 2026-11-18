@@ -97,6 +97,9 @@
         "manual-copy-description": "Η αυτόματη αντιγραφή απέτυχε. Παρακαλώ αντιγράψτε το παρακάτω κείμενο χειροκίνητα:"
     },
     "settings": "Settings",
+    "actions": "Ενέργειες",
+    "more": "Περισσότερα",
+    "shopping": "Αγορές",
     "logout": "Logout",
     "profile": "Profile",
     "filename": "File name",
