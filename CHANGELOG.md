@@ -2,6 +2,12 @@
 ## New
 - Added mobile specific navigation
 - Added mobile specific floating action button for quick actions
+- Unmatched ingredients from shelf scan can be manually matched to ingredients in the bar
+- Filters now use drawer component
+
+## Changes
+- More than 4 cocktail ingredients are now hidden in cocktail grid view
+- Updated footer
 
 # 5.10.1
 ## Fixes
