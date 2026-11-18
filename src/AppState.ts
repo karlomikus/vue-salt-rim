@@ -47,17 +47,16 @@ class AppState {
     }
 
     setBar(bar: Bar) {
-        let searchHost = window.srConfig.MEILISEARCH_URL;
-        if (!searchHost) {
-            searchHost = bar.search_host ?? "";
-        }
+        let searchHost = window.srConfig.MEILISEARCH_URL || bar.search_host || "";
 
-        if (!(searchHost.startsWith("http://") || searchHost.startsWith("https://"))) {
-            if (!searchHost.startsWith("/")) {
-                searchHost = "/" + searchHost;
+        if (searchHost) {
+            if (!(searchHost.startsWith("http://") || searchHost.startsWith("https://"))) {
+                if (!searchHost.startsWith("/")) {
+                    searchHost = "/" + searchHost;
+                }
+
+                searchHost = window.location.origin + searchHost;
             }
-
-            searchHost = window.location.origin + searchHost;
         }
 
         bar.search_host = searchHost;
