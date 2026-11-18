@@ -37,7 +37,7 @@ test("renders the five primary tabs", () => {
 
     expect(nav.findAll(".bottom-nav__item")).toHaveLength(5);
     expect(nav.findAll(".bottom-nav__label").map((label) => label.text())).toEqual([
-        "shelf.title",
+        "bars.bar",
         "cocktail.cocktails",
         "ingredient.ingredients",
         "shopping",
