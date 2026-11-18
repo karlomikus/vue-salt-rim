@@ -66,7 +66,7 @@
         </header>
         <nav v-if="appState.bar.id" class="subnavigation-bar">
             <div class="subnavigation-bar__nav">
-                <RouterLink :to="{ name: 'home' }" exact-active-class="current-nav">{{ t("shelf.title") }}</RouterLink>
+                <RouterLink :to="{ name: 'home' }" exact-active-class="current-nav">{{ t("bars.bar") }}</RouterLink>
                 <RouterLink :to="{ name: 'cocktails' }" :class="{ 'current-nav': route.path.startsWith('/cocktails') }">{{ t("cocktail.cocktails") }}</RouterLink>
                 <RouterLink :to="{ name: 'ingredients' }" :class="{ 'current-nav': route.path.startsWith('/ingredients') }">{{ t("ingredient.ingredients") }}</RouterLink>
                 <RouterLink :to="{ name: 'shopping-list.index' }" :class="{ 'current-nav': route.path.startsWith('/shopping-list') }">{{ t("your-shopping-list") }}</RouterLink>

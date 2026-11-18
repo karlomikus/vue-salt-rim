@@ -2,7 +2,7 @@
     <nav v-if="appState.bar.id" class="bottom-nav">
         <RouterLink :to="{ name: 'home' }" class="bottom-nav__item" :class="{ 'bottom-nav__item--active': route.name === 'home' }">
             <IconBarShelf aria-hidden="true" />
-            <span class="bottom-nav__label">{{ t("shelf.title") }}</span>
+            <span class="bottom-nav__label">{{ t("bars.bar") }}</span>
         </RouterLink>
         <RouterLink
             :to="{ name: 'cocktails' }"
@@ -17,7 +17,7 @@
             class="bottom-nav__item"
             :class="{ 'bottom-nav__item--active': route.path.startsWith('/ingredients') }"
         >
-            <IconBarShelf aria-hidden="true" />
+            <IconIngredients aria-hidden="true" />
             <span class="bottom-nav__label">{{ t("ingredient.ingredients") }}</span>
         </RouterLink>
         <RouterLink
@@ -60,6 +60,7 @@ import IconCocktail from "@/components/Icons/IconCocktail.vue";
 import IconMore from "@/components/Icons/IconMore.vue";
 import IconShoppingCart from "@/components/Icons/IconShoppingCart.vue";
 import IconBarShelf from "@/components/Icons/IconBarShelf.vue";
+import IconIngredients from "../Icons/IconIngredients.vue";
 
 const { t } = useI18n();
 const route = useRoute();
