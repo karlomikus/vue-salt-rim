@@ -4,8 +4,8 @@ ARG BUILD_VERSION
 ENV BUILD_VERSION=${BUILD_VERSION:-develop}
 
 WORKDIR /app
-COPY package*.json ./
-RUN bun install
+COPY package.json bun.lock ./
+RUN bun install --frozen-lockfile
 COPY . .
 
 RUN sed -i "s/{{VERSION}}/$BUILD_VERSION/g" ./docker/config.js
@@ -36,9 +36,9 @@ FROM oven/bun:1 AS dev
 
 WORKDIR /app
 
-COPY package*.json ./
+COPY package.json bun.lock ./
 
-RUN bun install
+RUN bun install --frozen-lockfile
 
 COPY . .
 
