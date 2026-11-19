@@ -2,7 +2,7 @@
     <Teleport to="body">
         <Transition name="dialog-animation">
             <div v-if="shown" class="dialog" style="z-index: 6">
-                <div class="dialog__overlay"></div>
+                <OverlayScrim class="dialog__overlay" />
                 <div class="dialog__container">
                     <div class="dialog__content">
                         <div class="dialog-confirm">
@@ -26,6 +26,7 @@
 import { ref, watch, onMounted } from "vue";
 import { useI18n } from "vue-i18n";
 import { dialogBus } from "@/composables/eventBus";
+import OverlayScrim from "@/components/OverlayScrim.vue";
 
 type ConfirmPayload = {
     body: string;

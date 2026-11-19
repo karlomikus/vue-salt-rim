@@ -67,7 +67,7 @@ test("synchronizes parent state and close button, cancel, backdrop and native cl
     expect(drawer.get("dialog").attributes("open")).toBeUndefined();
 
     await drawer.setProps({ modelValue: true });
-    await drawer.get("dialog").trigger("click");
+    await drawer.get(".drawer__scrim").trigger("click");
     expect(drawer.get("dialog").attributes("open")).toBeUndefined();
 
     await drawer.setProps({ modelValue: true });

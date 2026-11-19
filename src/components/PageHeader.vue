@@ -12,7 +12,7 @@
             <slot name="actions" />
         </div>
         <template v-if="$slots.actions">
-            <div v-if="showActions" class="site-page-header__scrim" @click="showActions = false"></div>
+            <OverlayScrim v-if="showActions" class="site-page-header__scrim" @dismiss="showActions = false" />
             <button
                 type="button"
                 class="site-page-header__fab"
@@ -32,6 +32,7 @@
 
 <script setup lang="ts">
 import { ref } from "vue";
+import OverlayScrim from "@/components/OverlayScrim.vue";
 
 const showActions = ref(false);
 
@@ -185,12 +186,8 @@ function onActionClick(event: MouseEvent) {
     }
 
     .site-page-header__scrim {
-        position: fixed;
-        inset: 0;
-        z-index: 3;
+        --scrim-z-index: 3;
         display: block;
-        background-color: rgba(11, 5, 21, 0.45);
-        backdrop-filter: blur(2px);
     }
 }
 
