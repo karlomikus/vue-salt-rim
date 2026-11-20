@@ -8185,8 +8185,8 @@ export interface operations {
                      */
                     cocktail_id: string;
                     /**
-                     * @description Optional visual style hint for the generated image
-                     * @example editorial studio photo
+                     * @description Optional predefined backend style identifier for the generated image
+                     * @example editorial
                      */
                     style?: string | null;
                 };

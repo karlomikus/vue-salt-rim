@@ -513,7 +513,7 @@ const disabledFinderIngredients = computed(() => {
     return [ingredient.value.id].concat(descendantIngredientIds.value);
 });
 
-async function generateImage() {
+async function generateImage(style: string) {
     if (!ingredient.value.id || !imagesUpload.value) {
         return;
     }
@@ -526,7 +526,7 @@ async function generateImage() {
     isLoadingImageGen.value = true;
 
     try {
-        const resp = await BarAssistantClient.aiGenerateIngredientImage(ingredient.value.id.toString());
+        const resp = await BarAssistantClient.aiGenerateIngredientImage(ingredient.value.id.toString(), style);
 
         if (!resp?.data) {
             toast.error(t("server-error"));

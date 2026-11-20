@@ -10,6 +10,7 @@ import SaltRimDialog from "./Dialog/SaltRimDialog.vue";
 import ImageEditor from "./ImageEditor.vue";
 import IconAI from "./Icons/IconAI.vue";
 import SaltRimSpinner from "./SaltRimSpinner.vue";
+import SaltRimSplitButton from "./SaltRimSplitButton.vue";
 
 import type { components } from "@/api/api";
 import BarAssistantClient from "@/api/BarAssistantClient";
@@ -47,7 +48,7 @@ defineExpose({
 });
 
 const emit = defineEmits<{
-    generate: [];
+    generate: [style: string];
 }>();
 
 const appState = new AppState();
@@ -55,6 +56,13 @@ const externalImageUrl = ref("");
 const toast = useSaltRimToast();
 const confirm = useConfirm();
 const { t } = useI18n();
+const selectedImageStyle = ref("editorial");
+const imageStyleOptions = computed(() => [
+    { label: t("imageupload.style.editorial"), value: "editorial" },
+    { label: t("imageupload.style.vintage"), value: "vintage" },
+    { label: t("imageupload.style.moody"), value: "moody" },
+    { label: t("imageupload.style.illustration"), value: "illustration" },
+]);
 const isLoading = ref(false);
 const imageList = ref(null);
 const isDragover = ref(false);
@@ -203,8 +211,8 @@ function addExternalImage() {
     externalImageUrl.value = "";
 }
 
-function emitGenerate() {
-    emit("generate");
+function emitGenerate(style: string | number) {
+    emit("generate", String(style));
 }
 
 function appendImage(image: ImageWithBase64ImportFile) {
@@ -291,11 +299,24 @@ async function save() {
             <template v-if="!hasMaxImages">
                 <template v-if="showGenerateButton && appState.isAiImageEnabled">
                     <div>
-                        <button type="button" class="button button--dark image-upload__generate-button" :disabled="isGenerateDisabled || isGenerateLoading" @click="emitGenerate">
-                            <IconAI v-if="!isGenerateLoading" />
-                            <SaltRimSpinner v-else fill="currentColor" />
-                            {{ t("imageupload.generate") }}
-                        </button>
+                        <SaltRimSplitButton
+                            v-model="selectedImageStyle"
+                            class="image-upload__generate-button"
+                            :options="imageStyleOptions"
+                            :disabled="isGenerateDisabled"
+                            :loading="isGenerateLoading"
+                            :menu-label="t('imageupload.choose-style')"
+                            :menu-title="t('imageupload.visual-style')"
+                            @click="emitGenerate"
+                        >
+                            <template #prefix>
+                                <IconAI v-if="!isGenerateLoading" />
+                                <SaltRimSpinner v-else fill="currentColor" />
+                            </template>
+                            <template #default="{ option }">
+                                {{ t("imageupload.generate") }}: {{ option?.label }}
+                            </template>
+                        </SaltRimSplitButton>
                     </div>
                     <div>&mdash; {{ t("or") }} &mdash;</div>
                 </template>

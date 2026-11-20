@@ -419,7 +419,7 @@ async function generateTags() {
     }
 }
 
-async function generateImage() {
+async function generateImage(style: string) {
     if (!cocktail.value.id || !imagesUpload.value) {
         return;
     }
@@ -432,7 +432,7 @@ async function generateImage() {
     isLoadingImageGen.value = true;
 
     try {
-        const resp = await BarAssistantClient.aiGenerateCocktailImage(cocktail.value.id.toString());
+        const resp = await BarAssistantClient.aiGenerateCocktailImage(cocktail.value.id.toString(), style);
 
         if (!resp?.data) {
             toast.error(t("server-error"));
