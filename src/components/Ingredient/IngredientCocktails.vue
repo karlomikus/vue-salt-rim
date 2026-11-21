@@ -4,7 +4,14 @@
             <div>
                 <h2 class="block-container__title">{{ t("ingredient.cocktails-with", { name: ingredientName }) }}</h2>
                 <p>
-                    {{ t("ingredient.you-can-make", { count: makeableTotal }) }}.
+                    <i18n-t keypath="ingredient.used-in">
+                        <template #count
+                            ><strong>{{ cocktailsCount }}</strong></template
+                        >
+                        <template v-if="cocktailsAsSubstituteCount > 0" #substituteCount>
+                            <strong>({{ t("ingredient.used-in-substitutes", { total: cocktailsAsSubstituteCount }) }})</strong>
+                        </template>
+                    </i18n-t>. {{ t("ingredient.you-can-make", { count: makeableTotal }) }}.
                     <RouterLink
                         v-if="cocktailsTotal > 0"
                         :to="{
@@ -55,10 +62,14 @@ const props = withDefaults(
         ingredientName: string;
         inBarShelf?: boolean;
         maxCocktails?: number;
+        cocktailsCount?: number;
+        cocktailsAsSubstituteCount?: number;
     }>(),
     {
         inBarShelf: undefined,
         maxCocktails: 6,
+        cocktailsCount: 0,
+        cocktailsAsSubstituteCount: 0,
     },
 );
 

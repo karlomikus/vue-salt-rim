@@ -169,18 +169,6 @@
                                 ><template v-if="index + 1 !== ingredient.ingredient_parts.length">, </template>
                             </template>
                         </li>
-                        <li>
-                            <RouterLink :to="{ name: 'cocktails', query: { 'filter[specific_ingredients]': ingredient.id } }">
-                                <i18n-t keypath="ingredient.used-in">
-                                    <template #count
-                                        ><strong>{{ ingredient.cocktails_count }}</strong></template
-                                    >
-                                    <template v-if="ingredient.cocktails_as_substitute_count && ingredient.cocktails_as_substitute_count > 0" #substituteCount>
-                                        <strong>({{ t("ingredient.used-in-substitutes", { total: ingredient.cocktails_as_substitute_count }) }})</strong>
-                                    </template>
-                                </i18n-t>
-                            </RouterLink>
-                        </li>
                         <li v-if="extraIfAddedToShelf.length > 0">
                             {{ $t("ingredient.extra-cocktails") }}:
                             <RouterLink :to="{ name: 'cocktails', query: { 'filter[id]': extraCocktailsIds } }"
@@ -209,6 +197,8 @@
                     :ingredient-id="ingredient.id"
                     :ingredient-name="ingredient.name ?? ''"
                     :in-bar-shelf="ingredient.in_bar_shelf"
+                    :cocktails-count="ingredient.cocktails_count"
+                    :cocktails-as-substitute-count="ingredient.cocktails_as_substitute_count"
                 />
                 <div v-if="ingredient.calculator_id" class="block-container block-container--padded">
                     <h2 class="block-container__title">{{ $t("calculators.calculator") }}</h2>

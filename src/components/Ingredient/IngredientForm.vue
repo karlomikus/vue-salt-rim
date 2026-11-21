@@ -153,7 +153,7 @@
             :images="ingredient.images ?? []"
             :max-images="1"
             :show-generate-button="!!ingredient.id"
-            :show-style-picker="true"
+            :show-style-picker="false"
             :is-generate-loading="isLoadingImageGen"
             :is-generate-disabled="isLoadingImageGen"
             @generate="generateImage"
