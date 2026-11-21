@@ -120,7 +120,7 @@ export default class BarAssistantClient {
         return (await client.POST("/auth/register", { body: body })).data;
     }
 
-    static async resetPassword(requestBody: object) {
+    static async resetPassword(requestBody: operations["passwordReset"]["requestBody"]["content"]["application/json"]) {
         return (await client.POST("/auth/reset-password", { body: requestBody })).data;
     }
 
@@ -453,7 +453,7 @@ export default class BarAssistantClient {
         return (await client.POST("/members", { body: data })).data;
     }
 
-    static async updateMember(id: number, data: components["schemas"]["UserRequest"]) {
+    static async updateMember(id: number, data: components["schemas"]["UpdateMemberRequest"]) {
         return (await client.PUT("/members/{id}", { params: { path: { id: id } }, body: data })).data;
     }
 
