@@ -3,7 +3,7 @@
         <div class="dialog-title">{{ $t("search.title") }}</div>
         <OverlayLoader v-if="isLoading"></OverlayLoader>
         <ais-instant-search v-if="searchClient" :search-client="searchClient" index-name="cocktails" :future="{ preserveSharedStateOnUnmount: true }">
-            <ais-configure :hits-per-page.camel="5" :restrict-searchable-attributes.camel="['name']" />
+            <ais-configure :hits-per-page.camel="10" :restrict-searchable-attributes.camel="['name']" />
             <ais-search-box autofocus>
                 <template #default="{ currentRefinement, refine }">
                     {{ doFocus() }}
@@ -22,48 +22,98 @@
                     />
                 </template>
             </ais-search-box>
-            <ais-index index-name="cocktails">
-                <ais-hits>
-                    <template #default="{ items }: { items: Hit[] }">
-                        <h4 class="site-autocomplete__index-name">&mdash; {{ $t("cocktail.cocktails") }} ({{ items.length }})</h4>
-                        <ul v-show="items.length > 0" class="site-autocomplete__results block-container block-container--inset">
-                            <li v-for="hit in items" :key="hit.slug">
-                                <RouterLink class="block-container block-container--hover" :to="{ name: 'cocktails.show', params: { id: hit.slug } }" @click="close">
-                                    <div class="site-autocomplete__results__image" :style="{ 'background-image': 'url(' + getImageUrl(hit, 'cocktail') + ')' }"></div>
-                                    <div class="site-autocomplete__results__content">
-                                        <ais-highlight attribute="name" :hit="hit" />
-                                        <small>{{ hit.short_ingredients?.join(", ") }}</small>
-                                    </div>
-                                </RouterLink>
-                            </li>
-                        </ul>
-                        <div v-show="items.length <= 0" class="block-container block-container--padded block-container--inset">
-                            {{ $t("cocktails-not-found") }}
-                        </div>
-                    </template>
-                </ais-hits>
-            </ais-index>
-            <ais-index index-name="ingredients">
-                <ais-hits>
-                    <template #default="{ items }: { items: Hit[] }">
-                        <h4 class="site-autocomplete__index-name">&mdash; {{ $t("ingredient.ingredients") }} ({{ items.length }})</h4>
-                        <ul v-show="items.length > 0" class="site-autocomplete__results block-container block-container--inset">
-                            <li v-for="hit in items" :key="hit.slug">
-                                <RouterLink class="block-container block-container--hover" :to="{ name: 'ingredients.show', params: { id: hit.slug } }" @click="close">
-                                    <div class="site-autocomplete__results__image" :style="{ 'background-image': 'url(' + getImageUrl(hit, 'ingredient') + ')' }"></div>
-                                    <div class="site-autocomplete__results__content">
-                                        <ais-highlight attribute="name" :hit="hit" />
-                                        <small>{{ hit.category }}</small>
-                                    </div>
-                                </RouterLink>
-                            </li>
-                        </ul>
-                        <div v-show="items.length <= 0" class="block-container block-container--padded block-container--inset">
-                            {{ $t("ingredients-not-found") }}
-                        </div>
-                    </template>
-                </ais-hits>
-            </ais-index>
+            <div class="site-autocomplete__tabs" role="tablist" :aria-label="$t('search.title')">
+                <button
+                    ref="cocktailTab"
+                    id="cocktails-tab"
+                    type="button"
+                    class="button"
+                    :class="activeTab === 'cocktails' ? 'button--dark' : 'button--outline'"
+                    role="tab"
+                    :aria-selected="activeTab === 'cocktails'"
+                    :tabindex="activeTab === 'cocktails' ? 0 : -1"
+                    aria-controls="cocktails-panel"
+                    @click="activeTab = 'cocktails'"
+                    @keydown="handleTabKeydown"
+                >
+                    {{ $t("cocktail.cocktails") }} ({{ cocktailHitsCount }})
+                </button>
+                <button
+                    ref="ingredientTab"
+                    id="ingredients-tab"
+                    type="button"
+                    class="button"
+                    :class="activeTab === 'ingredients' ? 'button--dark' : 'button--outline'"
+                    role="tab"
+                    :aria-selected="activeTab === 'ingredients'"
+                    :tabindex="activeTab === 'ingredients' ? 0 : -1"
+                    aria-controls="ingredients-panel"
+                    @click="activeTab = 'ingredients'"
+                    @keydown="handleTabKeydown"
+                >
+                    {{ $t("ingredient.ingredients") }} ({{ ingredientHitsCount }})
+                </button>
+            </div>
+            <div
+                id="cocktails-panel"
+                class="site-autocomplete__tab-panel"
+                role="tabpanel"
+                aria-labelledby="cocktails-tab"
+                :tabindex="activeTab === 'cocktails' ? 0 : -1"
+                v-show="activeTab === 'cocktails'"
+            >
+                <ais-index index-name="cocktails">
+                    <ais-hits>
+                        <template #default="{ items }: { items: Hit[] }">
+                            {{ updateHitCount('cocktails', items.length) }}
+                            <ul v-show="items.length > 0" class="site-autocomplete__results block-container block-container--inset">
+                                <li v-for="hit in items" :key="hit.slug">
+                                    <RouterLink class="block-container block-container--hover" :to="{ name: 'cocktails.show', params: { id: hit.slug } }" @click="close">
+                                        <div class="site-autocomplete__results__image" :style="{ 'background-image': 'url(' + getImageUrl(hit, 'cocktail') + ')' }"></div>
+                                        <div class="site-autocomplete__results__content">
+                                            <ais-highlight attribute="name" :hit="hit" />
+                                            <small>{{ hit.short_ingredients?.join(", ") }}</small>
+                                        </div>
+                                    </RouterLink>
+                                </li>
+                            </ul>
+                            <div v-show="items.length <= 0" class="block-container block-container--padded block-container--inset">
+                                {{ $t("cocktails-not-found") }}
+                            </div>
+                        </template>
+                    </ais-hits>
+                </ais-index>
+            </div>
+            <div
+                id="ingredients-panel"
+                class="site-autocomplete__tab-panel"
+                role="tabpanel"
+                aria-labelledby="ingredients-tab"
+                :tabindex="activeTab === 'ingredients' ? 0 : -1"
+                v-show="activeTab === 'ingredients'"
+            >
+                <ais-index index-name="ingredients">
+                    <ais-hits>
+                        <template #default="{ items }: { items: Hit[] }">
+                            {{ updateIngredientHits(items) }}
+                            <ul v-show="items.length > 0" class="site-autocomplete__results block-container block-container--inset">
+                                <li v-for="hit in items" :key="hit.slug">
+                                    <RouterLink class="block-container block-container--hover" :to="{ name: 'ingredients.show', params: { id: hit.slug } }" @click="close">
+                                        <div class="site-autocomplete__results__image" :style="{ 'background-image': 'url(' + getImageUrl(hit, 'ingredient') + ')' }"></div>
+                                        <div class="site-autocomplete__results__content">
+                                            <ais-highlight attribute="name" :hit="hit" />
+                                            <small>{{ hit.category }}</small>
+                                        </div>
+                                    </RouterLink>
+                                </li>
+                            </ul>
+                            <div v-show="items.length <= 0" class="block-container block-container--padded block-container--inset">
+                                {{ $t("ingredients-not-found") }}
+                            </div>
+                        </template>
+                    </ais-hits>
+                </ais-index>
+            </div>
         </ais-instant-search>
         <footer class="site-autocomplete__footer block-container block-container--inset"><span>Esc</span> to close, <span>CTRL+K</span> to toggle</footer>
     </form>
@@ -79,11 +129,14 @@ import AppState from "@/AppState";
 import { useSaltRimToast } from "@/composables/toast";
 
 type Hit = {
+    id?: number;
     slug: string;
     image_url?: string;
     short_ingredients?: string[];
     category?: string;
     name?: string;
+    in_bar_shelf?: boolean;
+    in_shopping_list?: boolean;
 };
 
 type SearchClient = ReturnType<typeof instantMeiliSearch>["searchClient"];
@@ -96,6 +149,13 @@ const emit = defineEmits<{ closeAutocomplete: [] }>();
 const searchClient = ref<SearchClient | null>(null);
 const isLoading = ref(false);
 const siteSearchInput = ref<HTMLInputElement>();
+const cocktailTab = ref<HTMLButtonElement>();
+const ingredientTab = ref<HTMLButtonElement>();
+const activeTab = ref<"cocktails" | "ingredients">("cocktails");
+const cocktailHitsCount = ref(0);
+const ingredientHitsCount = ref(0);
+const shelfStates = ref<Record<string, boolean>>({});
+const shoppingStates = ref<Record<string, boolean>>({});
 
 const appState = new AppState();
 
@@ -113,6 +173,60 @@ BarAssistantClient.getBar(appState.bar.id)
         isLoading.value = false;
         toast.error(e.message);
     });
+
+function updateHitCount(tab: "cocktails" | "ingredients", count: number) {
+    if (tab === "cocktails" && cocktailHitsCount.value !== count) {
+        cocktailHitsCount.value = count;
+    }
+
+    if (tab === "ingredients" && ingredientHitsCount.value !== count) {
+        ingredientHitsCount.value = count;
+    }
+}
+
+function updateIngredientHits(items: Hit[]) {
+    updateHitCount("ingredients", items.length);
+
+    items.forEach((hit) => {
+        if (hit.id === undefined) {
+            return;
+        }
+
+        const key = String(hit.id);
+        if (shelfStates.value[key] === undefined && hit.in_bar_shelf !== undefined) {
+            shelfStates.value[key] = hit.in_bar_shelf;
+        }
+        if (shoppingStates.value[key] === undefined && hit.in_shopping_list !== undefined) {
+            shoppingStates.value[key] = hit.in_shopping_list;
+        }
+    });
+}
+
+function handleTabKeydown(event: KeyboardEvent) {
+    if (!["ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown", "Home", "End"].includes(event.key)) {
+        return;
+    }
+
+    event.preventDefault();
+
+    let tab: "cocktails" | "ingredients";
+    if (event.key === "Home") {
+        tab = "cocktails";
+    } else if (event.key === "End") {
+        tab = "ingredients";
+    } else {
+        tab = activeTab.value === "cocktails" ? "ingredients" : "cocktails";
+    }
+
+    activeTab.value = tab;
+    nextTick(() => {
+        if (tab === "cocktails") {
+            cocktailTab.value?.focus();
+        } else {
+            ingredientTab.value?.focus();
+        }
+    });
+}
 
 function close() {
     emit("closeAutocomplete");
@@ -142,6 +256,21 @@ function doFocus() {
 <style scoped>
 .site-autocomplete .form-input {
     width: 100%;
+}
+
+.site-autocomplete__tabs {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--gap-size-1);
+    margin: var(--gap-size-2) 0;
+}
+
+.site-autocomplete__tabs .button {
+    width: 100%;
+}
+
+.site-autocomplete__tab-panel {
+    min-width: 0;
 }
 
 .site-autocomplete__results {
