@@ -153,6 +153,7 @@
             :images="ingredient.images ?? []"
             :max-images="1"
             :show-generate-button="!!ingredient.id"
+            :show-style-picker="true"
             :is-generate-loading="isLoadingImageGen"
             :is-generate-disabled="isLoadingImageGen"
             @generate="generateImage"
@@ -513,7 +514,7 @@ const disabledFinderIngredients = computed(() => {
     return [ingredient.value.id].concat(descendantIngredientIds.value);
 });
 
-async function generateImage(style: string) {
+async function generateImage(style?: string) {
     if (!ingredient.value.id || !imagesUpload.value) {
         return;
     }

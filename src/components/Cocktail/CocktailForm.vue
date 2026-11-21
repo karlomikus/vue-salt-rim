@@ -96,6 +96,7 @@
             :images="cocktail.images"
             :max-images="maxImages"
             :show-generate-button="!!cocktail.id"
+            :show-style-picker="true"
             :is-generate-loading="isLoadingImageGen"
             :is-generate-disabled="isLoadingImageGen"
             @generate="generateImage"
@@ -419,7 +420,7 @@ async function generateTags() {
     }
 }
 
-async function generateImage(style: string) {
+async function generateImage(style?: string) {
     if (!cocktail.value.id || !imagesUpload.value) {
         return;
     }
