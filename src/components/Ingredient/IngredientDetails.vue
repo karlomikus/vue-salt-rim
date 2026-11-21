@@ -204,6 +204,12 @@
                     </ul>
                     <div v-html="parsedDescription" class="has-markdown"></div>
                 </div>
+                <IngredientCocktails
+                    v-if="ingredient.id"
+                    :ingredient-id="ingredient.id"
+                    :ingredient-name="ingredient.name ?? ''"
+                    :in-bar-shelf="ingredient.in_bar_shelf"
+                />
                 <div v-if="ingredient.calculator_id" class="block-container block-container--padded">
                     <h2 class="block-container__title">{{ $t("calculators.calculator") }}</h2>
                     <OverlayLoader v-if="isLoadingCalculator" />
@@ -274,6 +280,7 @@ import AppState from "@/AppState";
 import SaltRimDialog from "../Dialog/SaltRimDialog.vue";
 import MenuAddDialog from "../Menu/MenuAddDialog.vue";
 import IngredientDetailsFacts from "./IngredientDetailsFacts.vue";
+import IngredientCocktails from "./IngredientCocktails.vue";
 import IngredientReviewDetails from "@/components/Review/IngredientReviewDetails.vue";
 import IngredientReviewDialog from "@/components/Review/IngredientReviewDialog.vue";
 import { useIngredientReviews } from "@/composables/ingredient/useIngredientReviews";
