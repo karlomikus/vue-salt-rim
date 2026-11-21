@@ -95,6 +95,9 @@
     --font-mono: "Space Mono", Dank Mono, Operator Mono, Inconsolata, Fira Mono, ui-monospace, SF Mono, Monaco, Droid Sans Mono, Source Code Pro, monospace;
     --fw-bold: 700;
 
+    --motion-duration: 180ms;
+    --motion-easing: cubic-bezier(0.2, 0, 0, 1);
+
     --color-site-header: var(--clr-purple-600);
     --color-site-header-subnavigation: var(--clr-purple-700);
     --clr-site-footer: #fff;

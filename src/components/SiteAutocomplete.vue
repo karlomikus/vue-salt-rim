@@ -22,44 +22,17 @@
                     />
                 </template>
             </ais-search-box>
-            <div class="site-autocomplete__tabs" role="tablist" :aria-label="$t('search.title')">
-                <button
-                    ref="cocktailTab"
-                    id="cocktails-tab"
-                    type="button"
-                    class="button"
-                    :class="activeTab === 'cocktails' ? 'button--dark' : 'button--outline'"
-                    role="tab"
-                    :aria-selected="activeTab === 'cocktails'"
-                    :tabindex="activeTab === 'cocktails' ? 0 : -1"
-                    aria-controls="cocktails-panel"
-                    @click="activeTab = 'cocktails'"
-                    @keydown="handleTabKeydown"
-                >
-                    {{ $t("cocktail.cocktails") }} ({{ cocktailHitsCount }})
-                </button>
-                <button
-                    ref="ingredientTab"
-                    id="ingredients-tab"
-                    type="button"
-                    class="button"
-                    :class="activeTab === 'ingredients' ? 'button--dark' : 'button--outline'"
-                    role="tab"
-                    :aria-selected="activeTab === 'ingredients'"
-                    :tabindex="activeTab === 'ingredients' ? 0 : -1"
-                    aria-controls="ingredients-panel"
-                    @click="activeTab = 'ingredients'"
-                    @keydown="handleTabKeydown"
-                >
-                    {{ $t("ingredient.ingredients") }} ({{ ingredientHitsCount }})
-                </button>
-            </div>
+            <SegmentedControl
+                v-model="activeTab"
+                class="site-autocomplete__mode"
+                :options="searchOptions"
+                :aria-label="$t('search.title')"
+            />
             <div
                 id="cocktails-panel"
-                class="site-autocomplete__tab-panel"
-                role="tabpanel"
-                aria-labelledby="cocktails-tab"
-                :tabindex="activeTab === 'cocktails' ? 0 : -1"
+                class="site-autocomplete__mode-panel"
+                role="region"
+                :aria-label="$t('cocktail.cocktails')"
                 v-show="activeTab === 'cocktails'"
             >
                 <ais-index index-name="cocktails">
@@ -86,10 +59,9 @@
             </div>
             <div
                 id="ingredients-panel"
-                class="site-autocomplete__tab-panel"
-                role="tabpanel"
-                aria-labelledby="ingredients-tab"
-                :tabindex="activeTab === 'ingredients' ? 0 : -1"
+                class="site-autocomplete__mode-panel"
+                role="region"
+                :aria-label="$t('ingredient.ingredients')"
                 v-show="activeTab === 'ingredients'"
             >
                 <ais-index index-name="ingredients">
@@ -120,11 +92,12 @@
 </template>
 
 <script setup lang="ts">
-import { ref, nextTick } from "vue";
+import { computed, ref, nextTick } from "vue";
 import { useI18n } from "vue-i18n";
 import { instantMeiliSearch } from "@meilisearch/instant-meilisearch";
 import BarAssistantClient from "@/api/BarAssistantClient";
 import OverlayLoader from "@/components/OverlayLoader.vue";
+import SegmentedControl from "@/components/SegmentedControl.vue";
 import AppState from "@/AppState";
 import { useSaltRimToast } from "@/composables/toast";
 
@@ -149,13 +122,16 @@ const emit = defineEmits<{ closeAutocomplete: [] }>();
 const searchClient = ref<SearchClient | null>(null);
 const isLoading = ref(false);
 const siteSearchInput = ref<HTMLInputElement>();
-const cocktailTab = ref<HTMLButtonElement>();
-const ingredientTab = ref<HTMLButtonElement>();
 const activeTab = ref<"cocktails" | "ingredients">("cocktails");
 const cocktailHitsCount = ref(0);
 const ingredientHitsCount = ref(0);
 const shelfStates = ref<Record<string, boolean>>({});
 const shoppingStates = ref<Record<string, boolean>>({});
+
+const searchOptions = computed(() => [
+    { label: `${t("cocktail.cocktails")} (${cocktailHitsCount.value})`, value: "cocktails" as const },
+    { label: `${t("ingredient.ingredients")} (${ingredientHitsCount.value})`, value: "ingredients" as const },
+]);
 
 const appState = new AppState();
 
@@ -202,32 +178,6 @@ function updateIngredientHits(items: Hit[]) {
     });
 }
 
-function handleTabKeydown(event: KeyboardEvent) {
-    if (!["ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown", "Home", "End"].includes(event.key)) {
-        return;
-    }
-
-    event.preventDefault();
-
-    let tab: "cocktails" | "ingredients";
-    if (event.key === "Home") {
-        tab = "cocktails";
-    } else if (event.key === "End") {
-        tab = "ingredients";
-    } else {
-        tab = activeTab.value === "cocktails" ? "ingredients" : "cocktails";
-    }
-
-    activeTab.value = tab;
-    nextTick(() => {
-        if (tab === "cocktails") {
-            cocktailTab.value?.focus();
-        } else {
-            ingredientTab.value?.focus();
-        }
-    });
-}
-
 function close() {
     emit("closeAutocomplete");
 }
@@ -258,18 +208,12 @@ function doFocus() {
     width: 100%;
 }
 
-.site-autocomplete__tabs {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: var(--gap-size-1);
+.site-autocomplete__mode {
+    width: 100%;
     margin: var(--gap-size-2) 0;
 }
 
-.site-autocomplete__tabs .button {
-    width: 100%;
-}
-
-.site-autocomplete__tab-panel {
+.site-autocomplete__mode-panel {
     min-width: 0;
 }
 

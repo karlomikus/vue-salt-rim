@@ -165,25 +165,12 @@
                             </button>
                         </template>
                         <template #dialog>
-                            <div class="add-to-collection__tabs">
-                                <button
-                                    @click="currentCollectionStore = 'collection'"
-                                    class="button"
-                                    :class="{
-                                        'button--dark': currentCollectionStore == 'collection',
-                                        'button--outline': currentCollectionStore != 'collection',
-                                    }"
-                                >
-                                    Collection
-                                </button>
-                                <button
-                                    @click="currentCollectionStore = 'menu'"
-                                    class="button"
-                                    :class="{ 'button--dark': currentCollectionStore == 'menu', 'button--outline': currentCollectionStore != 'menu' }"
-                                >
-                                    Menu
-                                </button>
-                            </div>
+                            <SegmentedControl
+                                v-model="currentCollectionStore"
+                                class="add-to-collection__mode"
+                                :options="collectionStoreOptions"
+                                :aria-label="$t('collections.title')"
+                            />
                             <CollectionDialog
                                 v-if="currentCollectionStore == 'collection'"
                                 :title="$t('collections.add-from-query')"
@@ -244,6 +231,7 @@ import MenuAddDialog from "../Menu/MenuAddDialog.vue";
 import Pagination from "./../Search/SearchPagination.vue";
 import CollectionDialog from "./../Collections/CollectionDialog.vue";
 import SaltRimDialog from "./../Dialog/SaltRimDialog.vue";
+import SegmentedControl from "./../SegmentedControl.vue";
 import AppState from "../../AppState";
 import EmptyState from "./../EmptyState.vue";
 import { useTitle } from "@/composables/title";
@@ -321,7 +309,12 @@ const showRefinements = ref(false);
 const cocktails = ref<any[]>([]);
 const searchQuery = ref<string | null>(null);
 const sort = ref("created_at");
-const currentCollectionStore = ref("collection");
+const currentCollectionStore = ref<"collection" | "menu">("collection");
+
+const collectionStoreOptions = computed(() => [
+    { label: t("collections.title"), value: "collection" as const },
+    { label: t("menu.title"), value: "menu" as const },
+]);
 const sort_dir = ref("-");
 const meta = ref<any>({});
 const queryTimer = ref<number | null>(null);
@@ -887,14 +880,9 @@ watch(
     font-size: 0.75rem;
 }
 
-.add-to-collection__tabs {
-    display: flex;
-    gap: 0.5rem;
+.add-to-collection__mode {
+    width: 100%;
     margin-bottom: 1rem;
     margin-top: 1rem;
-
-    button {
-        width: 100%;
-    }
 }
 </style>
