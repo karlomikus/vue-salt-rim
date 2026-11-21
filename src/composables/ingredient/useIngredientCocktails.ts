@@ -16,7 +16,7 @@ export function useIngredientCocktails() {
         isLoading.value = true;
         try {
             const resp = await BarAssistantClient.getCocktails({
-                "filter[specific_ingredients]": ingredientId.toString(),
+                "filter[ingredient_id]": ingredientId.toString(),
                 sort: "-random",
                 per_page: maxCocktails,
                 include: "images,ingredients.ingredient",
@@ -42,7 +42,7 @@ export function useIngredientCocktails() {
         try {
             const resp = await BarAssistantClient.getCocktails({
                 "filter[bar_shelf]": true,
-                "filter[specific_ingredients]": ingredientId.toString(),
+                "filter[ingredient_id]": ingredientId.toString(),
                 per_page: 1,
             });
 

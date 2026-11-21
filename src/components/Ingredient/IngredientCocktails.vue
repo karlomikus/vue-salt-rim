@@ -3,22 +3,21 @@
         <div class="ingredient-cocktails__header">
             <div>
                 <h2 class="block-container__title">{{ t("ingredient.cocktails-with", { name: ingredientName }) }}</h2>
-                <p class="ingredient-cocktails__hint">
-                    {{ t("ingredient.you-can-make", { count: makeableTotal }) }}
+                <p>
+                    {{ t("ingredient.you-can-make", { count: makeableTotal }) }}.
+                    <RouterLink
+                        v-if="cocktailsTotal > 0"
+                        :to="{
+                            name: 'cocktails',
+                            query: {
+                                'filter[ingredient_id]': ingredientId,
+                            },
+                        }"
+                    >
+                        {{ t("ingredient.see-all", { total: cocktailsTotal }) }} →
+                    </RouterLink>
                 </p>
             </div>
-            <RouterLink
-                v-if="cocktailsTotal > 0"
-                class="ingredient-cocktails__see-all"
-                :to="{
-                    name: 'cocktails',
-                    query: {
-                        'filter[specific_ingredients]': ingredientId,
-                    },
-                }"
-            >
-                {{ t("ingredient.see-all", { total: cocktailsTotal }) }} →
-            </RouterLink>
         </div>
         <OverlayLoader v-if="isLoading" />
         <div v-else-if="cocktails.length > 0" class="ingredient-cocktails__grid">
@@ -59,7 +58,7 @@ const props = withDefaults(
     }>(),
     {
         inBarShelf: undefined,
-        maxCocktails: 5,
+        maxCocktails: 6,
     },
 );
 
@@ -109,10 +108,6 @@ watch(
 
 <style scoped>
 .ingredient-cocktails__header {
-    display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
-    gap: var(--gap-size-3);
     margin-bottom: var(--gap-size-2);
 }
 
@@ -120,24 +115,9 @@ watch(
     margin-bottom: 0.25rem;
 }
 
-.ingredient-cocktails__hint {
-    margin: 0;
-    color: var(--clr-gray-600);
-}
-
-.dark-theme .ingredient-cocktails__hint {
-    color: var(--clr-gray-300);
-}
-
-.ingredient-cocktails__see-all {
-    flex-shrink: 0;
-    font-weight: 600;
-    white-space: nowrap;
-}
-
 .ingredient-cocktails__grid {
     display: grid;
-    grid-template-columns: repeat(5, minmax(0, 1fr));
+    grid-template-columns: repeat(6, minmax(0, 1fr));
     gap: var(--gap-size-2);
 }
 
@@ -167,8 +147,9 @@ watch(
 
 .ingredient-cocktails__cocktail h3 {
     margin: var(--gap-size-1) 0 0;
-    font-size: 0.9rem;
     line-height: 1.2;
+    font-family: var(--font-heading);
+    font-weight: var(--fw-bold);
 }
 
 .ingredient-cocktails__cocktail p {
