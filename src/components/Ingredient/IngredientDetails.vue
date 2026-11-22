@@ -3,8 +3,47 @@
         <PageHeader>
             {{ $t("ingredient.title") }}
         </PageHeader>
-        <div class="ingredient-details">
-            <OverlayLoader v-if="isLoadingIngredient" />
+        <div class="ingredient-details ingredient-details--skeleton" aria-busy="true">
+            <div class="ingredient-details__column-image ingredient-details-skeleton__image" aria-hidden="true">
+                <SaltRimSkeleton :index="0" :width="'100%'" :height="'100%'" :radius="3" />
+            </div>
+            <aside class="ingredient-details__column-sidebar ingredient-details-skeleton__sidebar" aria-hidden="true">
+                <SaltRimSkeleton :index="1" :width="'35%'" :height="18" :radius="2" />
+                <div class="block-container block-container--inset ingredient-details-skeleton__status">
+                    <SaltRimSkeleton :index="2" :width="'100%'" :height="52" :radius="2" />
+                    <SaltRimSkeleton :index="3" :width="'100%'" :height="52" :radius="2" />
+                </div>
+            </aside>
+            <div class="ingredient-details__column-content ingredient-details-skeleton__content" aria-hidden="true">
+                <div class="ingredient-details-skeleton__actions">
+                    <SaltRimSkeleton :index="4" :width="42" :height="42" :radius="1" />
+                </div>
+                <div class="block-container block-container--padded ingredient-details-skeleton__block">
+                    <SaltRimSkeleton :index="5" :width="'25%'" :height="18" :radius="2" />
+                    <div class="ingredient-details-skeleton__facts">
+                        <SaltRimSkeleton :index="6" :width="'70%'" :height="14" :radius="2" />
+                        <SaltRimSkeleton :index="7" :width="'55%'" :height="14" :radius="2" />
+                        <SaltRimSkeleton :index="8" :width="'60%'" :height="14" :radius="2" />
+                    </div>
+                    <SaltRimSkeleton :index="9" :width="'30%'" :height="18" :radius="2" />
+                    <SaltRimSkeleton :index="10" :width="'100%'" :height="12" :radius="2" />
+                    <SaltRimSkeleton :index="11" :width="'82%'" :height="12" :radius="2" />
+                    <SaltRimSkeleton :index="12" :width="'55%'" :height="12" :radius="2" />
+                </div>
+                <div class="block-container block-container--padded ingredient-details-skeleton__block">
+                    <SaltRimSkeleton :index="13" :width="'35%'" :height="18" :radius="2" />
+                    <div class="ingredient-details-skeleton__cocktails">
+                        <SaltRimSkeleton :index="14" :width="'100%'" :height="72" :radius="3" />
+                        <SaltRimSkeleton :index="15" :width="'100%'" :height="72" :radius="3" />
+                        <SaltRimSkeleton :index="16" :width="'100%'" :height="72" :radius="3" />
+                    </div>
+                </div>
+                <div class="block-container block-container--padded ingredient-details-skeleton__block">
+                    <SaltRimSkeleton :index="17" :width="'28%'" :height="18" :radius="2" />
+                    <SaltRimSkeleton :index="18" :width="'100%'" :height="12" :radius="2" />
+                    <SaltRimSkeleton :index="19" :width="'68%'" :height="12" :radius="2" />
+                </div>
+            </div>
         </div>
     </div>
     <div v-else>
@@ -276,6 +315,7 @@ import IngredientReviewDialog from "@/components/Review/IngredientReviewDialog.v
 import { useIngredientReviews } from "@/composables/ingredient/useIngredientReviews";
 import type { IngredientReview } from "@/composables/ingredient/useIngredientReviews";
 import { useDateFormat } from "@vueuse/core";
+import SaltRimSkeleton from "@/components/SaltRimSkeleton.vue";
 
 type Ingredient = components["schemas"]["Ingredient"];
 type CocktailBasic = components["schemas"]["CocktailBasic"];
@@ -314,6 +354,13 @@ const sortedReviews = computed(() => {
 });
 
 async function refreshIngredient() {
+    ingredient.value = {
+        hierarchy: {
+            root_ingredient_id: null,
+        } as Partial<Ingredient["hierarchy"]>,
+        prices: [],
+        ingredient_parts: [],
+    };
     isLoadingIngredient.value = true;
     try {
         const resp = await BarAssistantClient.getIngredient(route.params.id.toString());
@@ -484,6 +531,80 @@ watch(
 </script>
 
 <style scoped>
+.ingredient-details-skeleton__image {
+    height: 400px;
+}
+
+.ingredient-details-skeleton__sidebar,
+.ingredient-details-skeleton__content {
+    min-width: 0;
+}
+
+.ingredient-details-skeleton__status {
+    display: flex;
+    flex-direction: column;
+    gap: var(--gap-size-2);
+    padding: var(--gap-size-2);
+}
+
+.ingredient-details-skeleton__content {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: var(--gap-size-3);
+}
+
+.ingredient-details-skeleton__actions {
+    position: absolute;
+    right: 20px;
+    top: -25px;
+}
+
+.ingredient-details-skeleton__block {
+    display: flex;
+    flex-direction: column;
+    gap: var(--gap-size-2);
+}
+
+.ingredient-details-skeleton__facts {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--gap-size-3);
+    margin: var(--gap-size-2) 0;
+}
+
+.ingredient-details-skeleton__cocktails {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--gap-size-2);
+    margin-top: var(--gap-size-2);
+}
+
+@media (max-width: 800px) {
+    .ingredient-details-skeleton__cocktails {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 600px) {
+    .ingredient-details-skeleton__image {
+        height: 300px;
+    }
+}
+
+@media (max-width: 450px) {
+    .ingredient-details-skeleton__actions {
+        right: 10px;
+        top: -20px;
+    }
+
+    .ingredient-details-skeleton__facts,
+    .ingredient-details-skeleton__cocktails {
+        grid-template-columns: 1fr;
+        gap: var(--gap-size-2);
+    }
+}
+
 .ingredient-details {
     display: grid;
     gap: var(--gap-size-3);

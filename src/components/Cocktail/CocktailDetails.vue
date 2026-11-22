@@ -41,6 +41,7 @@ import CocktailVarieties from "./CocktailVarieties.vue";
 import MenuAddDialog from "../Menu/MenuAddDialog.vue";
 import CocktailRecipeScaler from "./../Cocktail/CocktailRecipeScaler.vue";
 import CocktailDetailsFacts from "./CocktailDetailsFacts.vue";
+import SaltRimSkeleton from "@/components/SaltRimSkeleton.vue";
 
 type Cocktail = components["schemas"]["Cocktail"];
 type Bar = components["schemas"]["Bar"];
@@ -375,8 +376,60 @@ fetchShoppingList();
         <PageHeader>
             {{ $t("cocktail.title") }}
         </PageHeader>
-        <article class="cocktail-details">
-            <OverlayLoader v-if="isLoading" />
+        <article class="cocktail-details cocktail-details--skeleton" aria-busy="true">
+            <div class="cocktail-details__column-image cocktail-details-skeleton__image" aria-hidden="true">
+                <SaltRimSkeleton :index="0" :width="'100%'" :height="'100%'" :radius="3" />
+            </div>
+            <aside class="cocktail-details__column-sidebar cocktail-details-skeleton__sidebar" aria-hidden="true">
+                <div class="cocktail-details-skeleton__sidebar-section">
+                    <SaltRimSkeleton :index="1" :width="'35%'" :height="18" :radius="2" />
+                    <div class="block-container cocktail-details-skeleton__sidebar-card">
+                        <SaltRimSkeleton :index="2" :width="'100%'" :height="24" :radius="2" />
+                        <SaltRimSkeleton :index="3" :width="'70%'" :height="16" :radius="2" />
+                    </div>
+                </div>
+                <div class="cocktail-details-skeleton__sidebar-section">
+                    <SaltRimSkeleton :index="4" :width="'45%'" :height="18" :radius="2" />
+                    <div class="block-container cocktail-details-skeleton__sidebar-card">
+                        <SaltRimSkeleton :index="5" :width="'55%'" :height="16" :radius="2" />
+                        <SaltRimSkeleton :index="6" :width="'85%'" :height="16" :radius="2" />
+                    </div>
+                </div>
+                <div class="cocktail-details-skeleton__sidebar-section">
+                    <SaltRimSkeleton :index="7" :width="'40%'" :height="18" :radius="2" />
+                    <div class="cocktail-details-skeleton__similar">
+                        <SaltRimSkeleton :index="8" :width="'100%'" :height="72" :radius="3" />
+                        <SaltRimSkeleton :index="9" :width="'100%'" :height="72" :radius="3" />
+                    </div>
+                </div>
+            </aside>
+            <div class="cocktail-details__column-content cocktail-details-skeleton__content" aria-hidden="true">
+                <div class="block-container block-container--padded cocktail-details-skeleton__block">
+                    <SaltRimSkeleton :index="13" :width="'30%'" :height="18" :radius="2" />
+                    <div class="cocktail-details-skeleton__facts">
+                        <SaltRimSkeleton :index="14" :width="'28%'" :height="14" :radius="2" />
+                        <SaltRimSkeleton :index="15" :width="'28%'" :height="14" :radius="2" />
+                        <SaltRimSkeleton :index="16" :width="'28%'" :height="14" :radius="2" />
+                    </div>
+                    <SaltRimSkeleton :index="17" :width="'25%'" :height="18" :radius="2" />
+                    <SaltRimSkeleton :index="18" :width="'100%'" :height="12" :radius="2" />
+                    <SaltRimSkeleton :index="19" :width="'82%'" :height="12" :radius="2" />
+                </div>
+                <div class="block-container block-container--padded cocktail-details-skeleton__block">
+                    <SaltRimSkeleton :index="20" :width="'35%'" :height="18" :radius="2" />
+                    <div class="cocktail-details-skeleton__ingredients">
+                        <SaltRimSkeleton :index="21" :width="'100%'" :height="42" :radius="2" />
+                        <SaltRimSkeleton :index="22" :width="'100%'" :height="42" :radius="2" />
+                        <SaltRimSkeleton :index="23" :width="'100%'" :height="42" :radius="2" />
+                    </div>
+                </div>
+                <div class="block-container block-container--padded cocktail-details-skeleton__block">
+                    <SaltRimSkeleton :index="24" :width="'30%'" :height="18" :radius="2" />
+                    <SaltRimSkeleton :index="25" :width="'100%'" :height="12" :radius="2" />
+                    <SaltRimSkeleton :index="26" :width="'92%'" :height="12" :radius="2" />
+                    <SaltRimSkeleton :index="27" :width="'65%'" :height="12" :radius="2" />
+                </div>
+            </div>
         </article>
     </div>
     <div v-else>
@@ -781,6 +834,83 @@ fetchShoppingList();
 </template>
 
 <style scoped>
+.cocktail-details-skeleton__image {
+    position: relative;
+    height: 700px;
+}
+
+.cocktail-details-skeleton__sidebar,
+.cocktail-details-skeleton__content {
+    min-width: 0;
+}
+
+.cocktail-details-skeleton__sidebar {
+    gap: var(--gap-size-3);
+}
+
+.cocktail-details-skeleton__sidebar-section {
+    display: flex;
+    flex-direction: column;
+    gap: var(--gap-size-2);
+}
+
+.cocktail-details-skeleton__sidebar-card {
+    padding: var(--gap-size-3);
+    display: flex;
+    flex-direction: column;
+    gap: var(--gap-size-2);
+}
+
+.cocktail-details-skeleton__similar {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--gap-size-2);
+}
+
+.cocktail-details-skeleton__content {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: var(--gap-size-3);
+}
+
+.cocktail-details-skeleton__block {
+    display: flex;
+    flex-direction: column;
+    gap: var(--gap-size-2);
+}
+
+.cocktail-details-skeleton__facts {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--gap-size-3);
+    margin: var(--gap-size-2) 0;
+}
+
+.cocktail-details-skeleton__ingredients {
+    display: flex;
+    flex-direction: column;
+    gap: var(--gap-size-2);
+    margin-top: var(--gap-size-2);
+}
+
+@media (max-width: 800px) {
+    .cocktail-details-skeleton__image {
+        height: 400px;
+    }
+}
+
+@media (max-width: 450px) {
+    .cocktail-details-skeleton__facts {
+        grid-template-columns: 1fr;
+        gap: var(--gap-size-2);
+    }
+
+    .cocktail-details-skeleton__similar {
+        grid-template-columns: 1fr;
+    }
+}
+
 swiper-container {
     --swiper-theme-color: #fff;
     --swiper-pagination-bottom: 1.5rem;
