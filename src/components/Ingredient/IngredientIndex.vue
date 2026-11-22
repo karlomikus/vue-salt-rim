@@ -122,11 +122,17 @@
                     </button>
                 </div>
                 <div>
-                    <OverlayLoader v-if="isLoading" />
+                    <IngredientGridContainer v-if="isLoading">
+                        <div class="block-container" style="padding: var(--gap-size-3); display: flex; flex-direction: column; gap: var(--gap-size-2);" v-for="n in 24" :key="n" :height="150">
+                            <SaltRimSkeleton :index="1" :height="50" :width="50" />
+                            <SaltRimSkeleton :index="2" :height="20" />
+                            <SaltRimSkeleton :index="2" :height="20" />
+                        </div>
+                    </IngredientGridContainer>
                     <IngredientGridContainer v-if="ingredients.length > 0">
                         <IngredientGridItem v-for="ingredient in ingredients" :key="ingredient.id" :ingredient="ingredient" />
                     </IngredientGridContainer>
-                    <EmptyState v-else style="margin-top: 1rem">
+                    <EmptyState v-if="ingredients.length == 0 && !isLoading" style="margin-top: 1rem">
                         <template #icon>
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="32" height="32">
                                 <path
@@ -134,7 +140,9 @@
                                 ></path>
                             </svg>
                         </template>
-                        {{ $t("ingredients-not-found") }}
+                        <strong>{{ $t("ingredients-not-found") }}</strong><br>
+                        Try adjusting your search or filters to find what you need.<br>
+                        <a href="#" @click.prevent="clearRefinements">{{ $t("clear-filters") }}</a>
                     </EmptyState>
                 </div>
                 <Pagination v-if="meta" :meta="meta" @page-changed="handlePageChange"></Pagination>
@@ -163,6 +171,7 @@ import type { components, operations } from "@/api/api";
 import { useI18n } from "vue-i18n";
 import { useRoute, useRouter, type LocationQueryRaw } from "vue-router";
 import ShelfPhotoScan from "./ShelfPhotoScan.vue";
+import SaltRimSkeleton from "../SaltRimSkeleton.vue";
 
 type IngredientQuery = operations["listIngredients"]["parameters"]["query"];
 type Ingredient = components["schemas"]["Ingredient"];
@@ -405,6 +414,7 @@ function stateToQuery(): IngredientQuery {
 }
 
 async function refreshIngredients() {
+    ingredients.value = [];
     const query = {
         ...stateToQuery(),
         include: "images,ancestors",
