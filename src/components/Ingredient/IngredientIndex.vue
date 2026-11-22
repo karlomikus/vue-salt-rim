@@ -122,11 +122,19 @@
                     </button>
                 </div>
                 <div>
-                    <IngredientGridContainer v-if="isLoading">
-                        <div class="block-container" style="padding: var(--gap-size-3); display: flex; flex-direction: column; gap: var(--gap-size-2);" v-for="n in 24" :key="n" :height="150">
-                            <SaltRimSkeleton :index="1" :height="50" :width="50" />
-                            <SaltRimSkeleton :index="2" :height="20" />
-                            <SaltRimSkeleton :index="2" :height="20" />
+                    <IngredientGridContainer v-if="isLoading" class="ingredient-grid-skeletons" aria-busy="true">
+                        <div v-for="n in 24" :key="n" class="block-container ingredient-grid-skeleton" aria-hidden="true">
+                            <div class="ingredient-grid-skeleton__header">
+                                <SaltRimSkeleton :index="n - 1" :width="45" :height="45" :radius="1" />
+                                <div class="ingredient-grid-skeleton__title">
+                                    <SaltRimSkeleton :index="n" :width="'55%'" :height="10" :radius="2" />
+                                    <SaltRimSkeleton :index="n + 1" :width="'85%'" :height="18" :radius="2" />
+                                </div>
+                            </div>
+                            <div class="ingredient-grid-skeleton__content">
+                                <SaltRimSkeleton :index="n + 2" :width="'100%'" :height="12" :radius="2" />
+                                <SaltRimSkeleton :index="n + 3" :width="'70%'" :height="12" :radius="2" />
+                            </div>
                         </div>
                     </IngredientGridContainer>
                     <IngredientGridContainer v-if="ingredients.length > 0">
@@ -154,7 +162,6 @@
 <script setup lang="ts">
 import SaltRimDialog from "./../Dialog/SaltRimDialog.vue";
 import MenuAddDialog from "../Menu/MenuAddDialog.vue";
-import OverlayLoader from "./../OverlayLoader.vue";
 import IngredientGridContainer from "./../Ingredient/IngredientGridContainer.vue";
 import IngredientGridItem from "./../Ingredient/IngredientGridItem.vue";
 import PageHeader from "./../PageHeader.vue";
@@ -421,19 +428,22 @@ async function refreshIngredients() {
     };
 
     isLoading.value = true;
-    const resp = await BarAssistantClient.getIngredients(query);
-    if (resp) {
-        ingredients.value = resp.data ?? [];
-        availableRefinements.value.origins = resp.meta?.filters?.origins ?? [];
-        availableRefinements.value.distilleries = resp.meta?.filters?.distilleries ?? [];
-        meta.value = {
-            current_page: resp?.meta?.current_page || 1,
-            last_page: resp?.meta?.last_page || 1,
-            to: resp?.meta?.to || 0,
-            total: resp?.meta?.total || 0,
-        };
+    try {
+        const resp = await BarAssistantClient.getIngredients(query);
+        if (resp) {
+            ingredients.value = resp.data ?? [];
+            availableRefinements.value.origins = resp.meta?.filters?.origins ?? [];
+            availableRefinements.value.distilleries = resp.meta?.filters?.distilleries ?? [];
+            meta.value = {
+                current_page: resp?.meta?.current_page || 1,
+                last_page: resp?.meta?.last_page || 1,
+                to: resp?.meta?.to || 0,
+                total: resp?.meta?.total || 0,
+            };
+        }
+    } finally {
+        isLoading.value = false;
     }
-    isLoading.value = false;
 }
 
 function updateRouterPath() {
@@ -494,3 +504,33 @@ function init() {
 
 init();
 </script>
+
+<style scoped>
+.ingredient-grid-skeleton {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: var(--gap-size-3);
+    padding: var(--gap-size-3);
+}
+
+.ingredient-grid-skeleton__header {
+    display: flex;
+    align-items: center;
+    gap: var(--gap-size-2);
+}
+
+.ingredient-grid-skeleton__title {
+    min-width: 0;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: var(--gap-size-1);
+}
+
+.ingredient-grid-skeleton__content {
+    display: flex;
+    flex-direction: column;
+    gap: var(--gap-size-2);
+}
+</style>

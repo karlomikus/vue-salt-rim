@@ -195,8 +195,24 @@
                     </button>
                 </div>
                 <div>
-                    <OverlayLoader v-if="isLoading" />
-                    <CocktailGridContainer v-if="cocktails.length > 0" v-slot="{ observer }">
+                    <CocktailGridContainer v-if="isLoading" aria-busy="true">
+                        <div v-for="n in 24" :key="n" class="cocktail-grid-skeleton" aria-hidden="true">
+                            <div class="cocktail-grid-skeleton__graphic">
+                                <SaltRimSkeleton :index="n - 1" :width="'100%'" :height="'100%'" :radius="3" />
+                            </div>
+                            <div class="block-container cocktail-grid-skeleton__content">
+                                <SaltRimSkeleton :index="n" :width="'65%'" :height="22" :radius="2" />
+                                <SaltRimSkeleton :index="n + 1" :width="'35%'" :height="14" :radius="2" />
+                                <SaltRimSkeleton :index="n + 2" :width="'90%'" :height="12" :radius="2" />
+                                <div class="cocktail-grid-skeleton__tags">
+                                    <SaltRimSkeleton :index="n + 3" :width="55" :height="20" />
+                                    <SaltRimSkeleton :index="n + 4" :width="70" :height="20" />
+                                    <SaltRimSkeleton :index="n + 5" :width="45" :height="20" />
+                                </div>
+                            </div>
+                        </div>
+                    </CocktailGridContainer>
+                    <CocktailGridContainer v-else-if="cocktails.length > 0" v-slot="{ observer }">
                         <CocktailGridItem v-for="cocktail in cocktails" :key="cocktail.id" :cocktail="cocktail" :observer="observer" />
                     </CocktailGridContainer>
                     <EmptyState v-else style="margin-top: 1rem">
@@ -207,7 +223,9 @@
                                 ></path>
                             </svg>
                         </template>
-                        {{ $t("cocktails-not-found") }}
+                        <strong>{{ $t("cocktails-not-found") }}</strong><br>
+                        Try adjusting your search or filters to find what you need.<br>
+                        <a href="#" @click.prevent="clearRefinements">{{ $t("clear-filters") }}</a>
                     </EmptyState>
                 </div>
                 <Pagination :meta="meta" @page-changed="handlePageChange"></Pagination>
@@ -220,7 +238,7 @@
 import { ref, computed, watch, onMounted } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { useI18n } from "vue-i18n";
-import OverlayLoader from "./../OverlayLoader.vue";
+import SaltRimSkeleton from "../SaltRimSkeleton.vue";
 import BarAssistantClient from "@/api/BarAssistantClient";
 import CocktailGridItem from "./CocktailGridItem.vue";
 import CocktailGridContainer from "./CocktailGridContainer.vue";
@@ -631,24 +649,24 @@ function updateRouterPath() {
     });
 }
 
-function refreshCocktails() {
+async function refreshCocktails() {
     const query = stateToQuery();
     query.include = "ratings,ingredients.ingredient,tags,images";
 
+    cocktails.value = [];
     isLoading.value = true;
-    BarAssistantClient.getCocktails(query)
-        .then(async (resp) => {
-            cocktails.value = resp?.data ?? [];
-            meta.value = resp?.meta;
-            availableRefinements.value.authors = resp?.meta?.filters?.authors ?? [];
-            availableRefinements.value.origin_bars = resp?.meta?.filters?.origin_bars ?? [];
-            isLoading.value = false;
-        })
-        .catch((e) => {
-            // @ts-ignore
-            window.$toast?.error(e.message);
-            isLoading.value = false;
-        });
+    try {
+        const resp = await BarAssistantClient.getCocktails(query);
+        cocktails.value = resp?.data ?? [];
+        meta.value = resp?.meta;
+        availableRefinements.value.authors = resp?.meta?.filters?.authors ?? [];
+        availableRefinements.value.origin_bars = resp?.meta?.filters?.origin_bars ?? [];
+    } catch (e) {
+        // @ts-ignore
+        window.$toast?.error(e instanceof Error ? e.message : String(e));
+    } finally {
+        isLoading.value = false;
+    }
 }
 
 function handlePageChange(toPage: number) {
@@ -868,6 +886,47 @@ watch(
 );
 </script>
 <style scoped>
+.cocktail-grid-skeleton {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+}
+
+.cocktail-grid-skeleton__graphic {
+    height: 260px;
+}
+
+.cocktail-grid-skeleton__content {
+    min-height: 180px;
+    margin-top: -2.25rem;
+    padding: 1.5rem;
+    border-radius: var(--radius-3);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--gap-size-2);
+}
+
+.cocktail-grid-skeleton__tags {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: var(--gap-size-1);
+}
+
+@media (max-width: 545px) {
+    .cocktail-grid-skeleton__graphic {
+        height: 250px;
+    }
+
+    .cocktail-grid-skeleton__content {
+        min-height: 150px;
+        padding: var(--gap-size-3);
+        border-radius: var(--radius-2);
+        gap: var(--gap-size-1);
+    }
+}
+
 .cocktail-index__year-range {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
