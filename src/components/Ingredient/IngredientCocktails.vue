@@ -12,17 +12,6 @@
                             <strong>({{ t("ingredient.used-in-substitutes", { total: cocktailsAsSubstituteCount }) }})</strong>
                         </template>
                     </i18n-t>. {{ t("ingredient.you-can-make", { count: makeableTotal }) }}.
-                    <RouterLink
-                        v-if="cocktailsTotal > 0"
-                        :to="{
-                            name: 'cocktails',
-                            query: {
-                                'filter[ingredient_id]': ingredientId,
-                            },
-                        }"
-                    >
-                        {{ t("ingredient.see-all", { total: cocktailsTotal }) }} →
-                    </RouterLink>
                 </p>
             </div>
         </div>
@@ -43,6 +32,18 @@
                 </p>
             </RouterLink>
         </div>
+        <RouterLink
+            v-if="cocktailsTotal > 0"
+            class="ingredient-cocktails__see-all"
+            :to="{
+                name: 'cocktails',
+                query: {
+                    'filter[ingredient_id]': ingredientId,
+                },
+            }"
+        >
+            {{ t("ingredient.see-all", { total: cocktailsTotal }) }} →
+        </RouterLink>
         <p v-else class="ingredient-cocktails__empty">
             {{ t("ingredient.no-cocktails-with") }}
         </p>
@@ -171,6 +172,11 @@ watch(
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+}
+
+.ingredient-cocktails__see-all {
+    display: block;
+    text-align: right;
 }
 
 .dark-theme .ingredient-cocktails__cocktail p {

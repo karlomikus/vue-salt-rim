@@ -159,10 +159,11 @@
                     <h3 class="block-container__title">{{ t("facts") }}</h3>
                     <IngredientDetailsFacts v-if="ingredient" :ingredient="ingredient" @rating-changed="onRatingChanged"></IngredientDetailsFacts>
                     <h2 class="block-container__title">{{ $t("description") }}</h2>
-                    <ul class="block-container block-container--inset ingredient-details__more">
+                    <div v-html="parsedDescription" class="has-markdown"></div>
+                    <ul class="ingredient-details__more">
                         <OverlayLoader v-if="isLoadingExtra" />
                         <li v-if="ingredient.ingredient_parts?.length">
-                            {{ $t("contains-ingredients") }}:
+                            <strong>{{ $t("contains-ingredients") }}: </strong>
                             <template v-for="(part, index) in ingredient.ingredient_parts" :key="part.ingredient.id">
                                 <RouterLink :to="{ name: 'ingredients.show', params: { id: part.ingredient.slug } }"
                                     >{{ part.ingredient.name }}{{ formatPartUnits(part) }}</RouterLink
@@ -170,27 +171,26 @@
                             </template>
                         </li>
                         <li v-if="extraIfAddedToShelf.length > 0">
-                            {{ $t("ingredient.extra-cocktails") }}:
+                            <strong>{{ $t("ingredient.extra-cocktails") }}: </strong>
                             <RouterLink :to="{ name: 'cocktails', query: { 'filter[id]': extraCocktailsIds } }"
                                 >{{ extraIfAddedToShelf.length }} {{ $t("cocktail.cocktails") }}</RouterLink
                             >
                         </li>
                         <li v-if="ingredient.can_be_substituted_with?.length">
-                            {{ $t("ingredient.used_as_substitute_for") }}:
+                            <strong>{{ $t("ingredient.used_as_substitute_for") }}: </strong>
                             <template v-for="(ing, index) in ingredient.can_be_substituted_with" :key="ing.id">
                                 <RouterLink :to="{ name: 'ingredients.show', params: { id: ing.slug } }">{{ ing.name }}</RouterLink
                                 ><template v-if="index + 1 !== ingredient.can_be_substituted_with.length">, </template>
                             </template>
                         </li>
                         <li v-if="ingredient.used_as_substitute_for?.length">
-                            {{ $t("ingredient.can_be_substituted_with") }}:
+                            <strong>{{ $t("ingredient.can_be_substituted_with") }}: </strong>
                             <template v-for="(ing, index) in ingredient.used_as_substitute_for" :key="ing.id">
                                 <RouterLink :to="{ name: 'ingredients.show', params: { id: ing.slug } }">{{ ing.name }}</RouterLink
                                 ><template v-if="index + 1 !== ingredient.used_as_substitute_for.length">, </template>
                             </template>
                         </li>
                     </ul>
-                    <div v-html="parsedDescription" class="has-markdown"></div>
                 </div>
                 <IngredientCocktails
                     v-if="ingredient.id"
@@ -626,8 +626,8 @@ watch(
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
-    padding: 0.5rem 0.75rem;
-    margin: 0 0 1rem 0;
+    padding: 0;
+    margin: 1rem 0 0 0;
     list-style-type: none;
 }
 
