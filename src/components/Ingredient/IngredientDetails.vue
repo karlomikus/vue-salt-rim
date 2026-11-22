@@ -15,9 +15,6 @@
                 </div>
             </aside>
             <div class="ingredient-details__column-content ingredient-details-skeleton__content" aria-hidden="true">
-                <div class="ingredient-details-skeleton__actions">
-                    <SaltRimSkeleton :index="4" :width="42" :height="42" :radius="1" />
-                </div>
                 <div class="block-container block-container--padded ingredient-details-skeleton__block">
                     <SaltRimSkeleton :index="5" :width="'25%'" :height="18" :radius="2" />
                     <div class="ingredient-details-skeleton__facts">
@@ -57,7 +54,27 @@
                     </template>
                 </template>
             </small>
+            <template v-if="hasIngredientActions" #actions>
+                <IngredientDetailsActions
+                    :ingredient="ingredient as Ingredient"
+                    :can-review="canReview"
+                    :current-user-review="currentUserReview"
+                    @delete="deleteIngredient"
+                    @write-review="openWriteReview"
+                />
+            </template>
         </PageHeader>
+        <SaltRimDialog v-model="showReviewDialog">
+            <template #trigger><span /></template>
+            <template #dialog>
+                <IngredientReviewDialog
+                    :ingredient-id="ingredient.id as number"
+                    :review="reviewToEdit"
+                    @review-dialog-closed="showReviewDialog = false"
+                    @review-saved="onReviewSaved"
+                />
+            </template>
+        </SaltRimDialog>
         <div class="ingredient-details">
             <div class="ingredient-details__column-image">
                 <div class="ingredient-details__graphic" :style="{ 'background-color': backgroundColor }">
@@ -108,92 +125,6 @@
                 </div>
             </div>
             <div class="ingredient-details__column-content">
-                <div v-if="(ingredient.access && (ingredient.access.can_edit || ingredient.access.can_delete)) || canReview" class="ingredient-details__actions">
-                    <Dropdown>
-                        <template #default="{ toggleDropdown }">
-                            <button type="button" class="button button--outline button--has-icon" @click.prevent="toggleDropdown">
-                                <IconMore></IconMore>
-                            </button>
-                        </template>
-                        <template #content>
-                            <RouterLink
-                                v-if="ingredient.access && ingredient.access.can_edit"
-                                class="dropdown-menu__item"
-                                :to="{ name: 'ingredients.form', query: { id: ingredient.id } }"
-                            >
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18">
-                                    <path fill="none" d="M0 0h24v24H0z" />
-                                    <path
-                                        d="M6.414 16L16.556 5.858l-1.414-1.414L5 14.586V16h1.414zm.829 2H3v-4.243L14.435 2.322a1 1 0 0 1 1.414 0l2.829 2.829a1 1 0 0 1 0 1.414L7.243 18zM3 20h18v2H3v-2z"
-                                    />
-                                </svg>
-                                {{ $t("edit") }}
-                            </RouterLink>
-                            <RouterLink
-                                v-if="ingredient.access && ingredient.access.can_edit"
-                                class="dropdown-menu__item"
-                                :to="{ name: 'ingredients.form', query: { variant: ingredient.id } }"
-                            >
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18">
-                                    <path
-                                        d="M6.9998 6V3C6.9998 2.44772 7.44752 2 7.9998 2H19.9998C20.5521 2 20.9998 2.44772 20.9998 3V17C20.9998 17.5523 20.5521 18 19.9998 18H16.9998V20.9991C16.9998 21.5519 16.5499 22 15.993 22H4.00666C3.45059 22 3 21.5554 3 20.9991L3.0026 7.00087C3.0027 6.44811 3.45264 6 4.00942 6H6.9998ZM5.00242 8L5.00019 20H14.9998V8H5.00242ZM8.9998 6H16.9998V16H18.9998V4H8.9998V6Z"
-                                    ></path>
-                                </svg>
-                                {{ $t("ingredient.clone-as-variety") }}
-                            </RouterLink>
-                            <SaltRimDialog v-if="ingredient.access && ingredient.access.can_edit" v-model="showAddToMenuDialog">
-                                <template #trigger>
-                                    <a class="dropdown-menu__item" href="#" @click.prevent="showAddToMenuDialog = !showAddToMenuDialog">
-                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18">
-                                            <path fill="none" d="M0 0h24v24H0z" />
-                                            <path
-                                                d="M12.414 5H21a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h7.414l2 2zM4 5v14h16V7h-8.414l-2-2H4zm7 7V9h2v3h3v2h-3v3h-2v-3H8v-2h3z"
-                                            />
-                                        </svg>
-                                        {{ t("menu.add-single") }}
-                                    </a>
-                                </template>
-                                <template #dialog>
-                                    <MenuAddDialog
-                                        :title="$t('menu.add-multiple')"
-                                        :items="[ingredient.id]"
-                                        :menu-item-type="'ingredient'"
-                                        @menu-add-dialog-closed="showAddToMenuDialog = false"
-                                    />
-                                </template>
-                            </SaltRimDialog>
-                            <SaltRimDialog v-model="showReviewDialog">
-                                <template #trigger>
-                                    <a v-if="canReview && !currentUserReview" class="dropdown-menu__item" href="#" @click.prevent="openWriteReview">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
-                                            <path
-                                                d="M12 14V16C8.68629 16 6 18.6863 6 22H4C4 17.5817 7.58172 14 12 14ZM12 13C8.685 13 6 10.315 6 7C6 3.685 8.685 1 12 1C15.315 1 18 3.685 18 7C18 10.315 15.315 13 12 13ZM12 11C14.21 11 16 9.21 16 7C16 4.79 14.21 3 12 3C9.79 3 8 4.79 8 7C8 9.21 9.79 11 12 11ZM18 21.5L15.0611 23.0451L15.6224 19.7725L13.2447 17.4549L16.5305 16.9775L18 14L19.4695 16.9775L22.7553 17.4549L20.3776 19.7725L20.9389 23.0451L18 21.5Z"
-                                            />
-                                        </svg>
-                                        {{ t("review.write") }}
-                                    </a>
-                                    <span v-else></span>
-                                </template>
-                                <template #dialog>
-                                    <IngredientReviewDialog
-                                        :ingredient-id="ingredient.id as number"
-                                        :review="reviewToEdit"
-                                        @review-dialog-closed="showReviewDialog = false"
-                                        @review-saved="onReviewSaved"
-                                    />
-                                </template>
-                            </SaltRimDialog>
-                            <hr v-if="ingredient.access && ingredient.access.can_delete" class="dropdown-menu__separator" />
-                            <a v-if="ingredient.access && ingredient.access.can_delete" class="dropdown-menu__item" href="javascript:;" @click.prevent="deleteIngredient">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18">
-                                    <path fill="none" d="M0 0h24v24H0z" />
-                                    <path d="M7 4V2h10v2h5v2h-2v15a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V6H2V4h5zM6 6v14h12V6H6zm3 3h2v8H9V9zm4 0h2v8h-2V9z" />
-                                </svg>
-                                {{ $t("remove") }}
-                            </a>
-                        </template>
-                    </Dropdown>
-                </div>
                 <div class="block-container block-container--padded">
                     <h3 class="block-container__title">{{ t("facts") }}</h3>
                     <IngredientDetailsFacts v-if="ingredient" :ingredient="ingredient" @rating-changed="onRatingChanged"></IngredientDetailsFacts>
@@ -293,11 +224,9 @@ import PageHeader from "../PageHeader.vue";
 import BarAssistantClient from "@/api/BarAssistantClient";
 import ToggleIngredientShoppingCart from "@/components/ToggleIngredientShoppingCart.vue";
 import ToggleIngredientBarShelf from "../ToggleIngredientBarShelf.vue";
-import Dropdown from "@/components/SaltRimDropdown.vue";
 import { useTitle } from "@/composables/title";
 import IconBarShelf from "../Icons/IconBarShelf.vue";
 import IconShoppingCart from "../Icons/IconShoppingCart.vue";
-import IconMore from "../Icons/IconMore.vue";
 import IngredientHierarchy from "./IngredientHierarchy.vue";
 import IconCheck from "../Icons/IconCheck.vue";
 import { useIngredientBg } from "@/composables/ingredientBg";
@@ -306,12 +235,12 @@ import { useSaltRimToast } from "@/composables/toast";
 import { useConfirm } from "@/composables/confirm";
 import { useI18n } from "vue-i18n";
 import AppState from "@/AppState";
-import SaltRimDialog from "../Dialog/SaltRimDialog.vue";
-import MenuAddDialog from "../Menu/MenuAddDialog.vue";
+import SaltRimDialog from "@/components/Dialog/SaltRimDialog.vue";
+import IngredientReviewDialog from "@/components/Review/IngredientReviewDialog.vue";
 import IngredientDetailsFacts from "./IngredientDetailsFacts.vue";
 import IngredientCocktails from "./IngredientCocktails.vue";
+import IngredientDetailsActions from "./IngredientDetailsActions.vue";
 import IngredientReviewDetails from "@/components/Review/IngredientReviewDetails.vue";
-import IngredientReviewDialog from "@/components/Review/IngredientReviewDialog.vue";
 import { useIngredientReviews } from "@/composables/ingredient/useIngredientReviews";
 import type { IngredientReview } from "@/composables/ingredient/useIngredientReviews";
 import { useDateFormat } from "@vueuse/core";
@@ -329,7 +258,6 @@ const router = useRouter();
 const appState = new AppState();
 const isLoadingIngredient = ref(false);
 const isLoadingCalculator = ref(false);
-const showAddToMenuDialog = ref(false);
 const isLoadingExtra = ref(false);
 const extraIfAddedToShelf = ref<CocktailBasic[]>([]);
 const ingredient = ref<Partial<Ingredient>>({
@@ -345,6 +273,9 @@ const showReviewDialog = ref(false);
 const reviewToEdit = ref<IngredientReview | null>(null);
 const canReview = computed(() => Boolean(appState.bar?.access?.role_id));
 const currentUserReview = computed(() => reviews.value.find((review) => review.author.id === appState.user.id) ?? null);
+const hasIngredientActions = computed(() => {
+    return Boolean(ingredient.value.access?.can_edit || ingredient.value.access?.can_delete || (canReview.value && !currentUserReview.value));
+});
 const sortedReviews = computed(() => {
     const otherReviews = reviews.value
         .filter((review) => review.author.id !== appState.user.id)
@@ -548,16 +479,9 @@ watch(
 }
 
 .ingredient-details-skeleton__content {
-    position: relative;
     display: flex;
     flex-direction: column;
     gap: var(--gap-size-3);
-}
-
-.ingredient-details-skeleton__actions {
-    position: absolute;
-    right: 20px;
-    top: -25px;
 }
 
 .ingredient-details-skeleton__block {
@@ -593,11 +517,6 @@ watch(
 }
 
 @media (max-width: 450px) {
-    .ingredient-details-skeleton__actions {
-        right: 10px;
-        top: -20px;
-    }
-
     .ingredient-details-skeleton__facts,
     .ingredient-details-skeleton__cocktails {
         grid-template-columns: 1fr;
@@ -652,16 +571,6 @@ watch(
     padding: 30px;
     background-color: #fff;
     border-radius: var(--radius-4);
-}
-
-.ingredient-details__actions {
-    position: absolute;
-    right: 20px;
-    top: -25px;
-    display: grid;
-    grid-template-columns: 1fr;
-    column-gap: var(--gap-size-1);
-    z-index: 1;
 }
 
 .ingredient-details__graphic {
@@ -733,14 +642,6 @@ watch(
 
 .ingredient-chips-list .chip {
     font-size: 1rem;
-}
-
-.ingredient-details__actions {
-    position: absolute;
-    top: -25px;
-    right: 20px;
-    display: flex;
-    gap: var(--gap-size-1);
 }
 
 .ingredient-details__more {

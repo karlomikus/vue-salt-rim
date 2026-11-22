@@ -38,9 +38,11 @@ const showActions = ref(false);
 
 function onActionClick(event: MouseEvent) {
     const target = event.target as HTMLElement | null;
+    const dropdownTrigger = target?.closest(".dropdown-wrapper")?.firstElementChild;
 
-    // Keep the menu open for actions that toggle their own dropdown.
-    if (target?.closest(".dropdown-wrapper")) {
+    // Keep the FAB menu open while a desktop dropdown is being opened. Mobile
+    // dropdown contents are promoted into the FAB menu and close it normally.
+    if (target && dropdownTrigger?.contains(target)) {
         return;
     }
 
@@ -133,6 +135,21 @@ function onActionClick(event: MouseEvent) {
 
     .site-page-header__actions :deep(.button) {
         box-shadow: var(--shadow-elevation-medium);
+    }
+
+    .site-page-header__actions :deep(.dropdown-wrapper > div:first-child) {
+        display: none;
+    }
+
+    .site-page-header__actions :deep(.dropdown-wrapper > .floating-element) {
+        position: static !important;
+        display: block !important;
+        width: min(270px, calc(100vw - 2rem));
+        transform: none !important;
+    }
+
+    .site-page-header__actions :deep(.dropdown-menu) {
+        max-height: min(70vh, calc(100dvh - 10rem - env(safe-area-inset-bottom)));
     }
 
     .site-page-header__fab {

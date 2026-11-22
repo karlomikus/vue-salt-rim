@@ -56,12 +56,23 @@ test("closes after an action is clicked", async () => {
 });
 
 test("stays open when an action opens its own dropdown", async () => {
-    const header = mountHeader('<div class="dropdown-wrapper"><button class="share">Share</button></div>');
+    const header = mountHeader('<div class="dropdown-wrapper"><div><button class="share">Share</button></div></div>');
 
     await header.get(".site-page-header__fab").trigger("click");
     await header.get(".share").trigger("click");
 
     expect(header.get(".site-page-header__actions").classes()).toContain("site-page-header__actions--open");
+});
+
+test("closes after choosing an item from a promoted dropdown", async () => {
+    const header = mountHeader(
+        '<div class="dropdown-wrapper"><div><button class="share">Share</button></div><div class="floating-element"><button class="copy">Copy</button></div></div>',
+    );
+
+    await header.get(".site-page-header__fab").trigger("click");
+    await header.get(".copy").trigger("click");
+
+    expect(header.get(".site-page-header__actions").classes()).not.toContain("site-page-header__actions--open");
 });
 
 test("does not render a floating action button without actions", () => {
