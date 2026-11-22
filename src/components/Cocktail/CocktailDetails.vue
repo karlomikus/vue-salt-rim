@@ -438,6 +438,126 @@ fetchShoppingList();
                 <DateFormatter :date="cocktail.created_at" format="short" />
                 <template v-if="cocktail?.updated_user">&middot; {{ cocktail.updated_user.name }}</template>
             </small>
+            <template #primary-actions>
+                <button type="button" class="button button--outline button--has-icon" :aria-label="$t('my-favorites')" :aria-pressed="isFavorited" @click="favorite">
+                    <OverlayLoader v-if="isLoadingFavorite" />
+                    <svg v-if="!isFavorited" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+                        <path fill="none" d="M0 0H24V24H0z" />
+                        <path
+                            d="M20.243 4.757c2.262 2.268 2.34 5.88.236 8.236l-8.48 8.492-8.478-8.492c-2.104-2.356-2.025-5.974.236-8.236 2.265-2.264 5.888-2.34 8.244-.228 2.349-2.109 5.979-2.039 8.242.228zM5.172 6.172c-1.49 1.49-1.565 3.875-.192 5.451L12 18.654l7.02-7.03c1.374-1.577 1.299-3.959-.193-5.454-1.487-1.49-3.881-1.562-5.453-.186l-4.202 4.203-1.415-1.414 2.825-2.827-.082-.069c-1.575-1.265-3.877-1.157-5.328.295z"
+                        />
+                    </svg>
+                    <svg v-else xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="#C6375F">
+                        <path fill="none" d="M0 0H24V24H0z" />
+                        <path
+                            d="M20.243 4.757c2.262 2.268 2.34 5.88.236 8.236l-8.48 8.492-8.478-8.492c-2.104-2.356-2.025-5.974.236-8.236C5.515 3 8.093 2.56 10.261 3.44L6.343 7.358l1.414 1.415L12 4.53l-.013-.014.014.013c2.349-2.109 5.979-2.039 8.242.228z"
+                        />
+                    </svg>
+                </button>
+                <Dropdown>
+                    <template #default="{ toggleDropdown }">
+                        <button type="button" class="button button--outline button--has-icon" :aria-label="$t('share.title')" @click="toggleDropdown">
+                            <OverlayLoader v-if="isLoadingShare" />
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+                                <path fill="none" d="M0 0h24v24H0z" />
+                                <path
+                                    d="M13.12 17.023l-4.199-2.29a4 4 0 1 1 0-5.465l4.2-2.29a4 4 0 1 1 .959 1.755l-4.2 2.29a4.008 4.008 0 0 1 0 1.954l4.199 2.29a4 4 0 1 1-.959 1.755zM6 14a2 2 0 1 0 0-4 2 2 0 0 0 0 4zm11-6a2 2 0 1 0 0-4 2 2 0 0 0 0 4zm0 12a2 2 0 1 0 0-4 2 2 0 0 0 0 4z"
+                                />
+                            </svg>
+                        </button>
+                    </template>
+                    <template #content>
+                        <RouterLink class="dropdown-menu__item" target="_blank" :to="printUrl">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18">
+                                <path fill="none" d="M0 0h24v24H0z" />
+                                <path
+                                    d="M6 19H3a1 1 0 0 1-1-1V8a1 1 0 0 1 1-1h3V3a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v4h3a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1h-3v2a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1v-2zm0-2v-1a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v1h2V9H4v8h2zM8 4v3h8V4H8zm0 13v3h8v-3H8zm-3-7h3v2H5v-2z"
+                                />
+                            </svg>
+                            {{ t("print-recipe") }}
+                        </RouterLink>
+                        <SaltRimDialog v-if="cocktail.access && cocktail.access.can_edit" v-model="showPublicDialog">
+                            <template #trigger>
+                                <a class="dropdown-menu__item" href="#makepublic" @click.prevent="showPublicDialog = !showPublicDialog">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18">
+                                        <path fill="none" d="M0 0h24v24H0z" />
+                                        <path
+                                            d="M18.364 15.536L16.95 14.12l1.414-1.414a5 5 0 1 0-7.071-7.071L9.879 7.05 8.464 5.636 9.88 4.222a7 7 0 0 1 9.9 9.9l-1.415 1.414zm-2.828 2.828l-1.415 1.414a7 7 0 0 1-9.9-9.9l1.415-1.414L7.05 9.88l-1.414 1.414a5 5 0 1 0 7.071 7.071l1.414-1.414 1.415 1.414zm-.708-10.607l1.415 1.415-7.071 7.07-1.415-1.414 7.071-7.07z"
+                                        />
+                                    </svg>
+                                    {{ t("create-public-link") }}
+                                </a>
+                            </template>
+                            <template #dialog>
+                                <PublicLinkDialog
+                                    :cocktail="cocktail"
+                                    @public-dialog-closed="
+                                        showPublicDialog = false;
+                                        fetchCocktail(cocktail.slug);
+                                    "
+                                />
+                            </template>
+                        </SaltRimDialog>
+                        <SaltRimDialog v-model="showDownloadImageDialog">
+                            <template #trigger>
+                                <a class="dropdown-menu__item" href="#generateimage" @click.prevent="showDownloadImageDialog = !showDownloadImageDialog">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18">
+                                        <path fill="none" d="M0 0h24v24H0z" />
+                                        <path
+                                            d="M4.828 21l-.02.02-.021-.02H2.992A.993.993 0 0 1 2 20.007V3.993A1 1 0 0 1 2.992 3h18.016c.548 0 .992.445.992.993v16.014a1 1 0 0 1-.992.993H4.828zM20 15V5H4v14L14 9l6 6zm0 2.828l-6-6L6.828 19H20v-1.172zM8 11a2 2 0 1 1 0-4 2 2 0 0 1 0 4z"
+                                        />
+                                    </svg>
+                                    {{ t("generate-image") }}
+                                </a>
+                            </template>
+                            <template #dialog>
+                                <GenerateImageDialog :cocktail="cocktail" @generate-image-dialog-closed="showDownloadImageDialog = false" />
+                            </template>
+                        </SaltRimDialog>
+                        <hr class="dropdown-menu__separator" />
+                        <a class="dropdown-menu__item" href="#copy" @click.prevent="shareFromFormat('json')">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18">
+                                <path
+                                    d="M4 18V14.3C4 13.4716 3.32843 12.8 2.5 12.8H2V11.2H2.5C3.32843 11.2 4 10.5284 4 9.7V6C4 4.34315 5.34315 3 7 3H8V5H7C6.44772 5 6 5.44772 6 6V10.1C6 10.9858 5.42408 11.7372 4.62623 12C5.42408 12.2628 6 13.0142 6 13.9V18C6 18.5523 6.44772 19 7 19H8V21H7C5.34315 21 4 19.6569 4 18ZM20 14.3V18C20 19.6569 18.6569 21 17 21H16V19H17C17.5523 19 18 18.5523 18 18V13.9C18 13.0142 18.5759 12.2628 19.3738 12C18.5759 11.7372 18 10.9858 18 10.1V6C18 5.44772 17.5523 5 17 5H16V3H17C18.6569 3 20 4.34315 20 6V9.7C20 10.5284 20.6716 11.2 21.5 11.2H22V12.8H21.5C20.6716 12.8 20 13.4716 20 14.3Z"
+                                ></path>
+                            </svg>
+                            {{ t("share.copy-json") }}
+                        </a>
+                        <a class="dropdown-menu__item" href="#copy" @click.prevent="shareFromFormat('json-ld')">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18">
+                                <path
+                                    d="M15 3C15.5523 3 16 3.44772 16 4V8C16 8.55228 15.5523 9 15 9H13V11H17C17.5523 11 18 11.4477 18 12V15H20C20.5523 15 21 15.4477 21 16V20C21 20.5523 20.5523 21 20 21H14C13.4477 21 13 20.5523 13 20V16C13 15.4477 13.4477 15 14 15H16V13H8V15H10C10.5523 15 11 15.4477 11 16V20C11 20.5523 10.5523 21 10 21H4C3.44772 21 3 20.5523 3 20V16C3 15.4477 3.44772 15 4 15H6V12C6 11.4477 6.44772 11 7 11H11V9H9C8.44772 9 8 8.55228 8 8V4C8 3.44772 8.44772 3 9 3H15ZM9 17H5V19H9V17ZM19 17H15V19H19V17ZM14 5H10V7H14V5Z"
+                                ></path>
+                            </svg>
+                            {{ t("share.copy-json-ld") }}
+                        </a>
+                        <a class="dropdown-menu__item" href="#copy" @click.prevent="shareFromFormat('yaml')">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18">
+                                <path
+                                    d="M6.9998 6V3C6.9998 2.44772 7.44752 2 7.9998 2H19.9998C20.5521 2 20.9998 2.44772 20.9998 3V17C20.9998 17.5523 20.5521 18 19.9998 18H16.9998V20.9991C16.9998 21.5519 16.5499 22 15.993 22H4.00666C3.45059 22 3 21.5554 3 20.9991L3.0026 7.00087C3.0027 6.44811 3.45264 6 4.00942 6H6.9998ZM5.00242 8L5.00019 20H14.9998V8H5.00242ZM8.9998 6H16.9998V16H18.9998V4H8.9998V6ZM7 11H13V13H7V11ZM7 15H13V17H7V15Z"
+                                ></path>
+                            </svg>
+                            {{ t("share.copy-yaml") }}
+                        </a>
+                        <a class="dropdown-menu__item" href="#copy" @click.prevent="shareFromFormat('markdown')">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18">
+                                <path
+                                    d="M3 3H21C21.5523 3 22 3.44772 22 4V20C22 20.5523 21.5523 21 21 21H3C2.44772 21 2 20.5523 2 20V4C2 3.44772 2.44772 3 3 3ZM4 5V19H20V5H4ZM7 15.5H5V8.5H7L9 10.5L11 8.5H13V15.5H11V11.5L9 13.5L7 11.5V15.5ZM18 12.5H20L17 15.5L14 12.5H16V8.5H18V12.5Z"
+                                ></path>
+                            </svg>
+                            {{ t("share.copy-md") }}
+                        </a>
+                        <a class="dropdown-menu__item" href="#copy" @click.prevent="shareFromFormat('xml')">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
+                                <path
+                                    d="M15 4H5V20H19V8H15V4ZM3 2.9918C3 2.44405 3.44749 2 3.9985 2H16L20.9997 7L21 20.9925C21 21.5489 20.5551 22 20.0066 22H3.9934C3.44476 22 3 21.5447 3 21.0082V2.9918ZM17.6569 12L14.1213 15.5355L12.7071 14.1213L14.8284 12L12.7071 9.87868L14.1213 8.46447L17.6569 12ZM6.34315 12L9.87868 8.46447L11.2929 9.87868L9.17157 12L11.2929 14.1213L9.87868 15.5355L6.34315 12Z"
+                                ></path>
+                            </svg>
+                            {{ t("share.copy-xml") }}
+                        </a>
+                    </template>
+                </Dropdown>
+            </template>
             <template #actions>
                 <CocktailDetailsActions
                     v-model:show-collection-dialog="showCollectionDialog"
@@ -486,126 +606,6 @@ fetchShoppingList();
                 <SimilarCocktails v-model="cocktail"></SimilarCocktails>
             </div>
             <div class="cocktail-details__column-content">
-                <div class="cocktail-details__actions">
-                    <button type="button" class="button button--outline button--has-icon" @click="favorite">
-                        <OverlayLoader v-if="isLoadingFavorite" />
-                        <svg v-if="!isFavorited" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
-                            <path fill="none" d="M0 0H24V24H0z" />
-                            <path
-                                d="M20.243 4.757c2.262 2.268 2.34 5.88.236 8.236l-8.48 8.492-8.478-8.492c-2.104-2.356-2.025-5.974.236-8.236 2.265-2.264 5.888-2.34 8.244-.228 2.349-2.109 5.979-2.039 8.242.228zM5.172 6.172c-1.49 1.49-1.565 3.875-.192 5.451L12 18.654l7.02-7.03c1.374-1.577 1.299-3.959-.193-5.454-1.487-1.49-3.881-1.562-5.453-.186l-4.202 4.203-1.415-1.414 2.825-2.827-.082-.069c-1.575-1.265-3.877-1.157-5.328.295z"
-                            />
-                        </svg>
-                        <svg v-else xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="#C6375F">
-                            <path fill="none" d="M0 0H24V24H0z" />
-                            <path
-                                d="M20.243 4.757c2.262 2.268 2.34 5.88.236 8.236l-8.48 8.492-8.478-8.492c-2.104-2.356-2.025-5.974.236-8.236C5.515 3 8.093 2.56 10.261 3.44L6.343 7.358l1.414 1.415L12 4.53l-.013-.014.014.013c2.349-2.109 5.979-2.039 8.242.228z"
-                            />
-                        </svg>
-                    </button>
-                    <Dropdown>
-                        <template #default="{ toggleDropdown }">
-                            <button type="button" class="button button--outline button--has-icon" @click="toggleDropdown">
-                                <OverlayLoader v-if="isLoadingShare" />
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
-                                    <path fill="none" d="M0 0h24v24H0z" />
-                                    <path
-                                        d="M13.12 17.023l-4.199-2.29a4 4 0 1 1 0-5.465l4.2-2.29a4 4 0 1 1 .959 1.755l-4.2 2.29a4.008 4.008 0 0 1 0 1.954l4.199 2.29a4 4 0 1 1-.959 1.755zM6 14a2 2 0 1 0 0-4 2 2 0 0 0 0 4zm11-6a2 2 0 1 0 0-4 2 2 0 0 0 0 4zm0 12a2 2 0 1 0 0-4 2 2 0 0 0 0 4z"
-                                    />
-                                </svg>
-                            </button>
-                        </template>
-                        <template #content>
-                            <RouterLink class="dropdown-menu__item" target="_blank" :to="printUrl">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18">
-                                    <path fill="none" d="M0 0h24v24H0z" />
-                                    <path
-                                        d="M6 19H3a1 1 0 0 1-1-1V8a1 1 0 0 1 1-1h3V3a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v4h3a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1h-3v2a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1v-2zm0-2v-1a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v1h2V9H4v8h2zM8 4v3h8V4H8zm0 13v3h8v-3H8zm-3-7h3v2H5v-2z"
-                                    />
-                                </svg>
-                                {{ t("print-recipe") }}
-                            </RouterLink>
-                            <SaltRimDialog v-if="cocktail.access && cocktail.access.can_edit" v-model="showPublicDialog">
-                                <template #trigger>
-                                    <a class="dropdown-menu__item" href="#makepublic" @click.prevent="showPublicDialog = !showPublicDialog">
-                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18">
-                                            <path fill="none" d="M0 0h24v24H0z" />
-                                            <path
-                                                d="M18.364 15.536L16.95 14.12l1.414-1.414a5 5 0 1 0-7.071-7.071L9.879 7.05 8.464 5.636 9.88 4.222a7 7 0 0 1 9.9 9.9l-1.415 1.414zm-2.828 2.828l-1.415 1.414a7 7 0 0 1-9.9-9.9l1.415-1.414L7.05 9.88l-1.414 1.414a5 5 0 1 0 7.071 7.071l1.414-1.414 1.415 1.414zm-.708-10.607l1.415 1.415-7.071 7.07-1.415-1.414 7.071-7.07z"
-                                            />
-                                        </svg>
-                                        {{ t("create-public-link") }}
-                                    </a>
-                                </template>
-                                <template #dialog>
-                                    <PublicLinkDialog
-                                        :cocktail="cocktail"
-                                        @public-dialog-closed="
-                                            showPublicDialog = false;
-                                            fetchCocktail(cocktail.slug);
-                                        "
-                                    />
-                                </template>
-                            </SaltRimDialog>
-                            <SaltRimDialog v-model="showDownloadImageDialog">
-                                <template #trigger>
-                                    <a class="dropdown-menu__item" href="#generateimage" @click.prevent="showDownloadImageDialog = !showDownloadImageDialog">
-                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18">
-                                            <path fill="none" d="M0 0h24v24H0z" />
-                                            <path
-                                                d="M4.828 21l-.02.02-.021-.02H2.992A.993.993 0 0 1 2 20.007V3.993A1 1 0 0 1 2.992 3h18.016c.548 0 .992.445.992.993v16.014a1 1 0 0 1-.992.993H4.828zM20 15V5H4v14L14 9l6 6zm0 2.828l-6-6L6.828 19H20v-1.172zM8 11a2 2 0 1 1 0-4 2 2 0 0 1 0 4z"
-                                            />
-                                        </svg>
-                                        {{ t("generate-image") }}
-                                    </a>
-                                </template>
-                                <template #dialog>
-                                    <GenerateImageDialog :cocktail="cocktail" @generate-image-dialog-closed="showDownloadImageDialog = false" />
-                                </template>
-                            </SaltRimDialog>
-                            <hr class="dropdown-menu__separator" />
-                            <a class="dropdown-menu__item" href="#copy" @click.prevent="shareFromFormat('json')">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18">
-                                    <path
-                                        d="M4 18V14.3C4 13.4716 3.32843 12.8 2.5 12.8H2V11.2H2.5C3.32843 11.2 4 10.5284 4 9.7V6C4 4.34315 5.34315 3 7 3H8V5H7C6.44772 5 6 5.44772 6 6V10.1C6 10.9858 5.42408 11.7372 4.62623 12C5.42408 12.2628 6 13.0142 6 13.9V18C6 18.5523 6.44772 19 7 19H8V21H7C5.34315 21 4 19.6569 4 18ZM20 14.3V18C20 19.6569 18.6569 21 17 21H16V19H17C17.5523 19 18 18.5523 18 18V13.9C18 13.0142 18.5759 12.2628 19.3738 12C18.5759 11.7372 18 10.9858 18 10.1V6C18 5.44772 17.5523 5 17 5H16V3H17C18.6569 3 20 4.34315 20 6V9.7C20 10.5284 20.6716 11.2 21.5 11.2H22V12.8H21.5C20.6716 12.8 20 13.4716 20 14.3Z"
-                                    ></path>
-                                </svg>
-                                {{ t("share.copy-json") }}
-                            </a>
-                            <a class="dropdown-menu__item" href="#copy" @click.prevent="shareFromFormat('json-ld')">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18">
-                                    <path
-                                        d="M15 3C15.5523 3 16 3.44772 16 4V8C16 8.55228 15.5523 9 15 9H13V11H17C17.5523 11 18 11.4477 18 12V15H20C20.5523 15 21 15.4477 21 16V20C21 20.5523 20.5523 21 20 21H14C13.4477 21 13 20.5523 13 20V16C13 15.4477 13.4477 15 14 15H16V13H8V15H10C10.5523 15 11 15.4477 11 16V20C11 20.5523 10.5523 21 10 21H4C3.44772 21 3 20.5523 3 20V16C3 15.4477 3.44772 15 4 15H6V12C6 11.4477 6.44772 11 7 11H11V9H9C8.44772 9 8 8.55228 8 8V4C8 3.44772 8.44772 3 9 3H15ZM9 17H5V19H9V17ZM19 17H15V19H19V17ZM14 5H10V7H14V5Z"
-                                    ></path>
-                                </svg>
-                                {{ t("share.copy-json-ld") }}
-                            </a>
-                            <a class="dropdown-menu__item" href="#copy" @click.prevent="shareFromFormat('yaml')">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18">
-                                    <path
-                                        d="M6.9998 6V3C6.9998 2.44772 7.44752 2 7.9998 2H19.9998C20.5521 2 20.9998 2.44772 20.9998 3V17C20.9998 17.5523 20.5521 18 19.9998 18H16.9998V20.9991C16.9998 21.5519 16.5499 22 15.993 22H4.00666C3.45059 22 3 21.5554 3 20.9991L3.0026 7.00087C3.0027 6.44811 3.45264 6 4.00942 6H6.9998ZM5.00242 8L5.00019 20H14.9998V8H5.00242ZM8.9998 6H16.9998V16H18.9998V4H8.9998V6ZM7 11H13V13H7V11ZM7 15H13V17H7V15Z"
-                                    ></path>
-                                </svg>
-                                {{ t("share.copy-yaml") }}
-                            </a>
-                            <a class="dropdown-menu__item" href="#copy" @click.prevent="shareFromFormat('markdown')">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18">
-                                    <path
-                                        d="M3 3H21C21.5523 3 22 3.44772 22 4V20C22 20.5523 21.5523 21 21 21H3C2.44772 21 2 20.5523 2 20V4C2 3.44772 2.44772 3 3 3ZM4 5V19H20V5H4ZM7 15.5H5V8.5H7L9 10.5L11 8.5H13V15.5H11V11.5L9 13.5L7 11.5V15.5ZM18 12.5H20L17 15.5L14 12.5H16V8.5H18V12.5Z"
-                                    ></path>
-                                </svg>
-                                {{ t("share.copy-md") }}
-                            </a>
-                            <a class="dropdown-menu__item" href="#copy" @click.prevent="shareFromFormat('xml')">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
-                                    <path
-                                        d="M15 4H5V20H19V8H15V4ZM3 2.9918C3 2.44405 3.44749 2 3.9985 2H16L20.9997 7L21 20.9925C21 21.5489 20.5551 22 20.0066 22H3.9934C3.44476 22 3 21.5447 3 21.0082V2.9918ZM17.6569 12L14.1213 15.5355L12.7071 14.1213L14.8284 12L12.7071 9.87868L14.1213 8.46447L17.6569 12ZM6.34315 12L9.87868 8.46447L11.2929 9.87868L9.17157 12L11.2929 14.1213L9.87868 15.5355L6.34315 12Z"
-                                    ></path>
-                                </svg>
-                                {{ t("share.copy-xml") }}
-                            </a>
-                        </template>
-                    </Dropdown>
-                </div>
                 <div class="block-container block-container--padded">
                     <h3 class="block-container__title">{{ t("facts") }}</h3>
                     <CocktailDetailsFacts v-if="cocktail" :cocktail="cocktail" @rating-changed="onRatingChanged"></CocktailDetailsFacts>
@@ -896,23 +896,6 @@ swiper-container {
     .dark-theme & {
         --ci-clr-list-bg: var(--clr-gray-700);
         color: var(--clr-gray-300);
-    }
-}
-
-.cocktail-details__actions {
-    position: absolute;
-    right: 20px;
-    top: -25px;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    column-gap: var(--gap-size-1);
-    z-index: 1;
-}
-
-@media (max-width: 450px) {
-    .cocktail-details__actions {
-        right: 10px;
-        top: -20px;
     }
 }
 

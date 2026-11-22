@@ -1,7 +1,10 @@
 <template>
-    <header class="site-page-header" @keydown.esc="showActions = false">
+    <header class="site-page-header" :class="{ 'site-page-header--has-primary-actions': $slots['primary-actions'] }" @keydown.esc="showActions = false">
         <div class="site-page-header__title">
             <h2><slot /></h2>
+        </div>
+        <div v-if="$slots['primary-actions']" class="site-page-header__primary-actions">
+            <slot name="primary-actions" />
         </div>
         <div v-if="$slots.actions" class="site-page-header__actions" :class="{ 'site-page-header__actions--open': showActions }" @click="onActionClick">
             <slot name="actions" />
@@ -76,11 +79,24 @@ function onActionClick(event: MouseEvent) {
     }
 }
 
+.site-page-header__primary-actions,
 .site-page-header__actions {
-    margin-left: auto;
     display: flex;
     flex-wrap: wrap;
     gap: var(--gap-size-3);
+}
+
+.site-page-header__primary-actions {
+    margin-left: auto;
+    flex-shrink: 0;
+}
+
+.site-page-header__actions {
+    margin-left: auto;
+}
+
+.site-page-header__primary-actions + .site-page-header__actions {
+    margin-left: var(--gap-size-3);
 }
 
 .site-page-header__fab,
@@ -97,6 +113,21 @@ function onActionClick(event: MouseEvent) {
     .site-page-header__actions {
         margin-left: 0;
         gap: var(--gap-size-2);
+    }
+
+    .site-page-header--has-primary-actions {
+        flex-direction: row;
+        align-items: flex-start;
+    }
+
+    .site-page-header--has-primary-actions .site-page-header__title {
+        min-width: 0;
+        flex: 1;
+    }
+
+    .site-page-header__primary-actions {
+        gap: var(--gap-size-1);
+        margin-left: var(--gap-size-2);
     }
 }
 

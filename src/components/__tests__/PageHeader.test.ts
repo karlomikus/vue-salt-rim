@@ -75,6 +75,21 @@ test("closes after choosing an item from a promoted dropdown", async () => {
     expect(header.get(".site-page-header__actions").classes()).not.toContain("site-page-header__actions--open");
 });
 
+test("renders primary actions independently from FAB actions", () => {
+    wrapper = mount(PageHeader, {
+        slots: {
+            default: "Cocktail",
+            "primary-actions": '<button class="favorite">Favorite</button>',
+            actions: '<button class="more">More</button>',
+        },
+        global: { mocks: { $t: (key: string) => key } },
+    });
+
+    expect(wrapper.get(".site-page-header__primary-actions .favorite").exists()).toBe(true);
+    expect(wrapper.get(".site-page-header__actions .more").exists()).toBe(true);
+    expect(wrapper.get(".site-page-header").classes()).toContain("site-page-header--has-primary-actions");
+});
+
 test("does not render a floating action button without actions", () => {
     const header = mountHeader();
 
