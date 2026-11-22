@@ -3,12 +3,7 @@
         <div class="site-page-header__title">
             <h2><slot /></h2>
         </div>
-        <div
-            v-if="$slots.actions"
-            class="site-page-header__actions"
-            :class="{ 'site-page-header__actions--open': showActions }"
-            @click="onActionClick"
-        >
+        <div v-if="$slots.actions" class="site-page-header__actions" :class="{ 'site-page-header__actions--open': showActions }" @click="onActionClick">
             <slot name="actions" />
         </div>
         <template v-if="$slots.actions">
@@ -114,6 +109,9 @@ function onActionClick(event: MouseEvent) {
         flex-direction: column;
         align-items: flex-end;
         flex-wrap: nowrap;
+        max-height: calc(100dvh - 10rem - env(safe-area-inset-bottom));
+        overflow-y: auto;
+        overscroll-behavior: contain;
         gap: var(--gap-size-2);
         margin: 0;
         visibility: hidden;
@@ -149,7 +147,8 @@ function onActionClick(event: MouseEvent) {
     }
 
     .site-page-header__actions :deep(.dropdown-menu) {
-        max-height: min(70vh, calc(100dvh - 10rem - env(safe-area-inset-bottom)));
+        max-height: none;
+        overflow: visible;
     }
 
     .site-page-header__fab {
