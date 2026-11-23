@@ -1,3 +1,20 @@
+# 5.12.0
+## New
+- Added visual style selection for AI-generated cocktail images
+- Added a cocktail gallery and shelf availability count to ingredient details
+- Added skeleton loading states for cocktail and ingredient lists and detail pages
+
+## Changes
+- Site search now uses separate tabs for cocktail and ingredient results
+- Cocktail and ingredient page actions are now available from the page header
+- Mobile page actions now use a hamburger menu with improved support for dropdown actions
+- Improved empty cocktail and ingredient search states with a quick filter reset action
+- Simplified print and copy actions on the shopping list
+- Clarified the default datapack synchronization confirmation
+
+## Fixes
+- Improved validation for password reset requests and member role updates
+
 # 5.11.0
 ## New
 - Added mobile specific navigation
