@@ -21,7 +21,9 @@
                 @click="showActions = !showActions"
             >
                 <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                    <path d="M11 11V5H13V11H19V13H13V19H11V13H5V11H11Z" />
+                    <path class="site-page-header__fab-line site-page-header__fab-line--top" d="M4 6h16v2H4z" />
+                    <path class="site-page-header__fab-line site-page-header__fab-line--middle" d="M4 11h16v2H4z" />
+                    <path class="site-page-header__fab-line site-page-header__fab-line--bottom" d="M4 16h16v2H4z" />
                 </svg>
             </button>
         </template>
@@ -207,7 +209,14 @@ function onActionClick(event: MouseEvent) {
         width: 40px;
         height: 40px;
         fill: currentColor;
-        transition: transform 200ms ease;
+    }
+
+    .site-page-header__fab-line {
+        transform-box: fill-box;
+        transform-origin: center;
+        transition:
+            transform 200ms ease,
+            opacity 200ms ease;
     }
 
     .site-page-header__fab:is(:hover, :focus-visible) {
@@ -218,8 +227,16 @@ function onActionClick(event: MouseEvent) {
         background-color: var(--clr-purple-900);
     }
 
-    .site-page-header__fab--open svg {
-        transform: rotate(45deg);
+    .site-page-header__fab--open .site-page-header__fab-line--top {
+        transform: translateY(5px) rotate(45deg);
+    }
+
+    .site-page-header__fab--open .site-page-header__fab-line--middle {
+        opacity: 0;
+    }
+
+    .site-page-header__fab--open .site-page-header__fab-line--bottom {
+        transform: translateY(-5px) rotate(-45deg);
     }
 
     .dark-theme .site-page-header__fab {
