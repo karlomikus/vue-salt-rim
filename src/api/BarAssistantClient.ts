@@ -120,7 +120,7 @@ export default class BarAssistantClient {
         return (await client.POST("/auth/register", { body: body })).data;
     }
 
-    static async resetPassword(requestBody: object) {
+    static async resetPassword(requestBody: operations["passwordReset"]["requestBody"]["content"]["application/json"]) {
         return (await client.POST("/auth/reset-password", { body: requestBody })).data;
     }
 
@@ -453,7 +453,7 @@ export default class BarAssistantClient {
         return (await client.POST("/members", { body: data })).data;
     }
 
-    static async updateMember(id: number, data: components["schemas"]["UserRequest"]) {
+    static async updateMember(id: number, data: components["schemas"]["UpdateMemberRequest"]) {
         return (await client.PUT("/members/{id}", { params: { path: { id: id } }, body: data })).data;
     }
 
@@ -711,12 +711,12 @@ export default class BarAssistantClient {
         return (await client.POST("/generate/cocktail-recipe-from-text", { body: { recipe: recipe } })).data;
     }
 
-    static async aiGenerateCocktailImage(cocktailId: string) {
-        return (await client.POST("/generate/cocktail-image", { body: { cocktail_id: cocktailId } })).data;
+    static async aiGenerateCocktailImage(cocktailId: string, style?: string) {
+        return (await client.POST("/generate/cocktail-image", { body: { cocktail_id: cocktailId, style } })).data;
     }
 
-    static async aiGenerateIngredientImage(ingredientId: string) {
-        return (await client.POST("/generate/ingredient-image", { body: { ingredient_id: ingredientId } })).data;
+    static async aiGenerateIngredientImage(ingredientId: string, style?: string) {
+        return (await client.POST("/generate/ingredient-image", { body: { ingredient_id: ingredientId, style } })).data;
     }
 
     static async identifyShelfFromPhoto(files: File[]) {

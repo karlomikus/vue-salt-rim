@@ -17,6 +17,8 @@
 }
 
 .dialog__container {
+    position: relative;
+    z-index: 1;
     height: 100%;
     outline: 0;
     overflow-x: hidden;
@@ -31,18 +33,6 @@
 .dialog-animation-leave-to {
     opacity: 0;
     backdrop-filter: blur(0);
-}
-
-.dialog__overlay {
-    background-color: rgba(180, 175, 189, 0.8);
-    position: fixed;
-    inset: 0;
-    pointer-events: auto;
-    backdrop-filter: blur(5px);
-}
-
-.dark-theme .dialog__overlay {
-    background-color: rgba(11, 5, 21, 0.8);
 }
 
 .dialog__content {

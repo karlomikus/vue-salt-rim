@@ -12,7 +12,7 @@ RUN sed -i "s/{{VERSION}}/$BUILD_VERSION/g" ./docker/config.js
 
 RUN bun run build
 
-FROM docker.io/nginxinc/nginx-unprivileged:stable AS prod
+FROM docker.io/nginx/nginx-unprivileged:stable AS prod
 
 LABEL org.opencontainers.image.source="https://github.com/karlomikus/vue-salt-rim"
 

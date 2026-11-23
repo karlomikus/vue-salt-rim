@@ -56,12 +56,38 @@ test("closes after an action is clicked", async () => {
 });
 
 test("stays open when an action opens its own dropdown", async () => {
-    const header = mountHeader('<div class="dropdown-wrapper"><button class="share">Share</button></div>');
+    const header = mountHeader('<div class="dropdown-wrapper"><div><button class="share">Share</button></div></div>');
 
     await header.get(".site-page-header__fab").trigger("click");
     await header.get(".share").trigger("click");
 
     expect(header.get(".site-page-header__actions").classes()).toContain("site-page-header__actions--open");
+});
+
+test("closes after choosing an item from a promoted dropdown", async () => {
+    const header = mountHeader(
+        '<div class="dropdown-wrapper"><div><button class="share">Share</button></div><div class="floating-element"><button class="copy">Copy</button></div></div>',
+    );
+
+    await header.get(".site-page-header__fab").trigger("click");
+    await header.get(".copy").trigger("click");
+
+    expect(header.get(".site-page-header__actions").classes()).not.toContain("site-page-header__actions--open");
+});
+
+test("renders primary actions independently from FAB actions", () => {
+    wrapper = mount(PageHeader, {
+        slots: {
+            default: "Cocktail",
+            "primary-actions": '<button class="favorite">Favorite</button>',
+            actions: '<button class="more">More</button>',
+        },
+        global: { mocks: { $t: (key: string) => key } },
+    });
+
+    expect(wrapper.get(".site-page-header__primary-actions .favorite").exists()).toBe(true);
+    expect(wrapper.get(".site-page-header__actions .more").exists()).toBe(true);
+    expect(wrapper.get(".site-page-header").classes()).toContain("site-page-header--has-primary-actions");
 });
 
 test("does not render a floating action button without actions", () => {

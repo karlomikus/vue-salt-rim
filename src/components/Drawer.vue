@@ -10,6 +10,7 @@ let previousOverflow = "";
 import { onBeforeUnmount, onMounted, ref, watch } from "vue";
 import { useI18n } from "vue-i18n";
 import IconClose from "@/components/Icons/IconClose.vue";
+import OverlayScrim from "@/components/OverlayScrim.vue";
 
 defineOptions({ name: "SaltRimDrawer" });
 
@@ -76,6 +77,7 @@ onBeforeUnmount(() => {
 <template>
     <Teleport to="body">
         <dialog ref="dialog" class="drawer" :class="`drawer--${side}`" :aria-label="title" @cancel.prevent="close" @close="onNativeClose" @click.self="close">
+            <OverlayScrim class="drawer__scrim" @dismiss="close" />
             <div class="drawer__panel" @touchmove.stop>
                 <header class="drawer__header">
                     <h2 class="drawer__title">{{ title }}</h2>
@@ -97,24 +99,41 @@ onBeforeUnmount(() => {
 <style scoped>
 .drawer {
     position: fixed;
-    inset: 0 auto 0 0;
-    width: min(22rem, 90vw);
+    inset: 0;
+    width: 100%;
     max-width: none;
     height: 100%;
     max-height: none;
     margin: 0;
     padding: 0;
     border: 0;
-    background: var(--clr-gray-50);
+    overflow: hidden;
+    background: transparent;
     color: var(--clr-body-font);
+}
+
+.drawer::backdrop {
+    background: transparent;
+}
+
+.drawer__scrim {
+    --scrim-z-index: 0;
+}
+
+.drawer__panel {
+    position: fixed;
+    inset: 0 auto 0 0;
+    z-index: 1;
+    width: min(22rem, 90vw);
+    background: var(--clr-gray-50);
     box-shadow: var(--shadow-elevation-high-dark);
 }
 
-.drawer--right {
+.drawer--right .drawer__panel {
     inset: 0 0 0 auto;
 }
 
-.drawer--bottom {
+.drawer--bottom .drawer__panel {
     inset: auto 0 0 0;
     width: 100%;
     height: auto;
@@ -124,16 +143,7 @@ onBeforeUnmount(() => {
     overflow: hidden;
 }
 
-.drawer--bottom .drawer__panel {
-    height: auto;
-    max-height: 90vh;
-}
-
-.drawer::backdrop {
-    background: rgba(11, 5, 21, 0.65);
-}
-
-.dark-theme .drawer {
+.dark-theme .drawer__panel {
     background: var(--clr-gray-800);
 }
 

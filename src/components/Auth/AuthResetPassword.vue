@@ -42,13 +42,21 @@ const isLoading = ref(false);
 const reset = ref<{ email?: string; password?: string; passwordRepeat?: string }>({});
 
 function requestPasswordReset() {
-    const token = (route.query.token as string) || null;
+    const token = typeof route.query.token === "string" ? route.query.token : null;
+    const email = reset.value.email;
+    const password = reset.value.password;
+    const passwordConfirmation = reset.value.passwordRepeat;
+
+    if (!token || !email || !password || !passwordConfirmation) {
+        toast.error(t("auth.password-reset-error"));
+        return;
+    }
 
     const postData = {
-        token: token,
-        email: reset.value.email,
-        password: reset.value.password,
-        password_confirmation: reset.value.passwordRepeat,
+        token,
+        email,
+        password,
+        password_confirmation: passwordConfirmation,
     };
 
     isLoading.value = true;

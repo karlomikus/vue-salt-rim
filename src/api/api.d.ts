@@ -287,7 +287,7 @@ export interface paths {
         put?: never;
         /**
          * Sync recipes
-         * @description Triggers synchronization of recipes from the default datapack. Matches data by name, does not overwrite your existing recipes or ingredients.
+         * @description Triggers synchronization from the default datapack. Adds missing cocktails and ingredients, fills only catalog-provided null scalar fields on name-matched existing resources, and preserves existing values and relationships.
          */
         post: operations["syncBarDatapack"];
         delete?: never;
@@ -2811,6 +2811,11 @@ export interface components {
              */
             name: string;
             /**
+             * @description Cocktail method description
+             * @example Shake with ice to chill and dilute
+             */
+            description: string | null;
+            /**
              * @description Dilution percentage
              * @example 20
              */
@@ -3800,7 +3805,7 @@ export interface components {
             memberships: components["schemas"]["BarMembership"][];
             /** @description OAuth credentials */
             oauth_credentials: components["schemas"]["OauthCredential"][];
-            settings: components["schemas"]["ProfileSettings"];
+            settings: components["schemas"]["ProfileSettings"] | null;
         };
         /** @description Public details about a bar */
         PublicBarResource: {
@@ -4064,8 +4069,7 @@ export interface components {
         };
         /** @description SSO Provider information */
         SSOProvider: {
-            /** @example github */
-            name: string;
+            name: components["schemas"]["OauthProvider"];
             /** @example GitHub */
             display_name: string;
             /**
@@ -4338,12 +4342,17 @@ export interface components {
              * Format: password
              * @example newpassword
              */
-            new_password: string | null;
+            new_password: string;
             /**
              * Format: password
              * @example current
              */
-            current_password: string | null;
+            current_password: string;
+            /**
+             * Format: password
+             * @example newpassword
+             */
+            new_password_confirmation: string;
         };
         CocktailIngredientRequest: {
             ingredient_id: number;
@@ -4385,10 +4394,7 @@ export interface components {
         CocktailMethodRequest: {
             /** @example Shake */
             name: string;
-            /**
-             * Format: float
-             * @example 20
-             */
+            /** @example 20 */
             dilution_percentage: number;
             /** @example Shake with ice to chill and dilute */
             description?: string | null;
@@ -4599,7 +4605,10 @@ export interface components {
             taste_descriptors?: string[];
         };
         LoginRequest: {
-            /** @example admin@example.com */
+            /**
+             * Format: email
+             * @example admin@example.com
+             */
             email: string;
             /**
              * Format: password
@@ -4667,17 +4676,22 @@ export interface components {
         ProfileRequest: {
             /** @example Bar Tender */
             name: string;
-            /** @example new@email.com */
+            /**
+             * Format: email
+             * @example new@email.com
+             */
             email: string;
             settings?: components["schemas"]["ProfileSettings"] | null;
-            bar_id?: number | null;
         };
         ProfileSettings: {
             language?: string | null;
             theme?: string | null;
         };
         RegisterRequest: {
-            /** @example admin@example.com */
+            /**
+             * Format: email
+             * @example admin@example.com
+             */
             email: string;
             /** @example Bar Tender */
             name: string;
@@ -4745,10 +4759,23 @@ export interface components {
             /** @example Floral */
             name: string;
         };
+        UpdateMemberRequest: {
+            /**
+             * @example 1
+             * @enum {integer}
+             */
+            role_id: 1 | 3 | 4;
+        };
         UserRequest: {
-            /** @example 1 */
-            role_id: number;
-            /** @example admin@example.com */
+            /**
+             * @example 1
+             * @enum {integer}
+             */
+            role_id: 1 | 3 | 4;
+            /**
+             * Format: email
+             * @example admin@example.com
+             */
             email: string;
         };
         UtensilRequest: {
@@ -4946,6 +4973,30 @@ export interface operations {
                 };
                 content?: never;
             };
+            /** @description Request validation failed. */
+            422: {
+                headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ValidationError"];
+                };
+            };
+            /** @description Reached rate limit. */
+            429: {
+                headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
         };
     };
     logout: {
@@ -4959,6 +5010,13 @@ export interface operations {
         responses: {
             /** @description Successful response */
             204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Unauthenticated */
+            401: {
                 headers: {
                     [name: string]: unknown;
                 };
@@ -5007,6 +5065,30 @@ export interface operations {
                     };
                 };
             };
+            /** @description Request validation failed. */
+            422: {
+                headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ValidationError"];
+                };
+            };
+            /** @description Reached rate limit. */
+            429: {
+                headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
         };
     };
     passwordForgot: {
@@ -5019,8 +5101,11 @@ export interface operations {
         requestBody: {
             content: {
                 "application/json": {
-                    /** @example admin@example.com */
-                    email?: string;
+                    /**
+                     * Format: email
+                     * @example admin@example.com
+                     */
+                    email: string;
                 };
             };
         };
@@ -5028,6 +5113,30 @@ export interface operations {
             /** @description Password reset link sent */
             204: {
                 headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Request validation failed. */
+            422: {
+                headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ValidationError"];
+                };
+            };
+            /** @description Reached rate limit. */
+            429: {
+                headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content?: never;
@@ -5045,13 +5154,22 @@ export interface operations {
             content: {
                 "application/json": {
                     /** @example token-from-email */
-                    token?: string;
-                    /** @example admin@example.com */
-                    email?: string;
-                    /** @example password */
-                    password?: string;
-                    /** @example password */
-                    password_confirmation?: string;
+                    token: string;
+                    /**
+                     * Format: email
+                     * @example admin@example.com
+                     */
+                    email: string;
+                    /**
+                     * Format: password
+                     * @example password
+                     */
+                    password: string;
+                    /**
+                     * Format: password
+                     * @example password
+                     */
+                    password_confirmation: string;
                 };
             };
         };
@@ -5069,6 +5187,19 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content?: never;
+            };
+            /** @description Request validation failed. */
+            422: {
+                headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ValidationError"];
+                };
             };
         };
     };
@@ -6493,8 +6624,6 @@ export interface operations {
                     specific_ingredients?: string;
                     /** @description Show cocktails that do not contain given ingredient ID(s) */
                     ignore_ingredients?: string;
-                    /** @description Show only cocktails that user can't make */
-                    locked_user_cocktails?: boolean;
                     /** @description Show only cocktails that bar can't make */
                     locked_bar_cocktails?: boolean;
                 };
@@ -7260,6 +7389,21 @@ export interface operations {
                     };
                 };
             };
+            /** @description You are not authorized for this action. */
+            403: {
+                headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data?: components["schemas"]["APIError"];
+                    };
+                };
+            };
         };
     };
     saveCocktailMethod: {
@@ -7281,6 +7425,10 @@ export interface operations {
             /** @description Successful response */
             201: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     /** @description URL of the new resource */
                     Location?: string;
                     [name: string]: unknown;
@@ -7300,6 +7448,19 @@ export interface operations {
                     "application/json": {
                         data?: components["schemas"]["APIError"];
                     };
+                };
+            };
+            /** @description Request validation failed. */
+            422: {
+                headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ValidationError"];
                 };
             };
         };
@@ -7382,6 +7543,10 @@ export interface operations {
             /** @description Successful response */
             204: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content?: never;
@@ -7416,6 +7581,19 @@ export interface operations {
                     };
                 };
             };
+            /** @description Request validation failed. */
+            422: {
+                headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ValidationError"];
+                };
+            };
         };
     };
     deleteCocktailMethod: {
@@ -7433,6 +7611,10 @@ export interface operations {
             /** @description Successful response */
             204: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content?: never;
@@ -8185,8 +8367,8 @@ export interface operations {
                      */
                     cocktail_id: string;
                     /**
-                     * @description Optional visual style hint for the generated image
-                     * @example editorial studio photo
+                     * @description Optional predefined backend style identifier for the generated image
+                     * @example editorial
                      */
                     style?: string | null;
                 };
@@ -8339,6 +8521,21 @@ export interface operations {
                     };
                 };
             };
+            /** @description You are not authorized for this action. */
+            403: {
+                headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data?: components["schemas"]["APIError"];
+                    };
+                };
+            };
         };
     };
     saveGlassware: {
@@ -8360,6 +8557,10 @@ export interface operations {
             /** @description Successful response */
             201: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     /** @description URL of the new resource */
                     Location?: string;
                     [name: string]: unknown;
@@ -8379,6 +8580,19 @@ export interface operations {
                     "application/json": {
                         data?: components["schemas"]["APIError"];
                     };
+                };
+            };
+            /** @description Request validation failed. */
+            422: {
+                headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ValidationError"];
                 };
             };
         };
@@ -8461,6 +8675,10 @@ export interface operations {
             /** @description Successful response */
             204: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content?: never;
@@ -8495,6 +8713,19 @@ export interface operations {
                     };
                 };
             };
+            /** @description Request validation failed. */
+            422: {
+                headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ValidationError"];
+                };
+            };
         };
     };
     deleteGlassware: {
@@ -8512,6 +8743,10 @@ export interface operations {
             /** @description Successful response */
             204: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content?: never;
@@ -9921,6 +10156,21 @@ export interface operations {
                     };
                 };
             };
+            /** @description You are not authorized for this action. */
+            403: {
+                headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data?: components["schemas"]["APIError"];
+                    };
+                };
+            };
         };
     };
     saveMember: {
@@ -9961,6 +10211,34 @@ export interface operations {
                     "application/json": {
                         data?: components["schemas"]["APIError"];
                     };
+                };
+            };
+            /** @description Resource record not found. */
+            404: {
+                headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data?: components["schemas"]["APIError"];
+                    };
+                };
+            };
+            /** @description Request validation failed. */
+            422: {
+                headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ValidationError"];
                 };
             };
         };
@@ -10042,7 +10320,7 @@ export interface operations {
         };
         requestBody: {
             content: {
-                "application/json": components["schemas"]["UserRequest"];
+                "application/json": components["schemas"]["UpdateMemberRequest"];
             };
         };
         responses: {
@@ -10081,6 +10359,19 @@ export interface operations {
                     "application/json": {
                         data?: components["schemas"]["APIError"];
                     };
+                };
+            };
+            /** @description Request validation failed. */
+            422: {
+                headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ValidationError"];
                 };
             };
         };
@@ -11594,8 +11885,8 @@ export interface operations {
                     };
                 };
             };
-            /** @description Resource record not found. */
-            404: {
+            /** @description You are not authorized for this action. */
+            403: {
                 headers: {
                     /** @description Max number of attempts. */
                     "x-ratelimit-limit"?: number;
@@ -11627,6 +11918,10 @@ export interface operations {
             /** @description Successful response */
             204: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content?: never;
@@ -11646,6 +11941,34 @@ export interface operations {
                     };
                 };
             };
+            /** @description Resource record not found. */
+            404: {
+                headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data?: components["schemas"]["APIError"];
+                    };
+                };
+            };
+            /** @description Request validation failed. */
+            422: {
+                headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ValidationError"];
+                };
+            };
         };
     };
     deleteProfile: {
@@ -11660,6 +11983,10 @@ export interface operations {
             /** @description Successful response */
             204: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content?: never;
@@ -11712,6 +12039,10 @@ export interface operations {
             /** @description Successful response */
             204: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content?: never;
@@ -11731,6 +12062,34 @@ export interface operations {
                     };
                 };
             };
+            /** @description Resource record not found. */
+            404: {
+                headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data?: components["schemas"]["APIError"];
+                    };
+                };
+            };
+            /** @description Request validation failed. */
+            422: {
+                headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ValidationError"];
+                };
+            };
         };
     };
     deleteSSO: {
@@ -11748,6 +12107,10 @@ export interface operations {
             /** @description Successful response */
             204: {
                 headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
                     [name: string]: unknown;
                 };
                 content?: never;
@@ -12496,6 +12859,8 @@ export interface operations {
             /** @description Redirect response */
             302: {
                 headers: {
+                    /** @description SSO provider authorization URL */
+                    Location?: string;
                     [name: string]: unknown;
                 };
                 content?: never;
@@ -13211,6 +13576,36 @@ export interface operations {
                     };
                 };
             };
+            /** @description You are not authorized for this action. */
+            403: {
+                headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data?: components["schemas"]["APIError"];
+                    };
+                };
+            };
+            /** @description Resource record not found. */
+            404: {
+                headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data?: components["schemas"]["APIError"];
+                    };
+                };
+            };
         };
     };
     saveTag: {
@@ -13251,6 +13646,34 @@ export interface operations {
                     "application/json": {
                         data?: components["schemas"]["APIError"];
                     };
+                };
+            };
+            /** @description Resource record not found. */
+            404: {
+                headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data?: components["schemas"]["APIError"];
+                    };
+                };
+            };
+            /** @description Request validation failed. */
+            422: {
+                headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ValidationError"];
                 };
             };
         };
@@ -13365,6 +13788,19 @@ export interface operations {
                     "application/json": {
                         data?: components["schemas"]["APIError"];
                     };
+                };
+            };
+            /** @description Request validation failed. */
+            422: {
+                headers: {
+                    /** @description Max number of attempts. */
+                    "x-ratelimit-limit"?: number;
+                    /** @description Remaining number of attempts. */
+                    "x-ratelimit-remaining"?: number;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ValidationError"];
                 };
             };
         };

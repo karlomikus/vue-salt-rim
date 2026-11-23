@@ -96,6 +96,7 @@
             :images="cocktail.images"
             :max-images="maxImages"
             :show-generate-button="!!cocktail.id"
+            :show-style-picker="true"
             :is-generate-loading="isLoadingImageGen"
             :is-generate-disabled="isLoadingImageGen"
             @generate="generateImage"
@@ -419,7 +420,7 @@ async function generateTags() {
     }
 }
 
-async function generateImage() {
+async function generateImage(style?: string) {
     if (!cocktail.value.id || !imagesUpload.value) {
         return;
     }
@@ -432,7 +433,7 @@ async function generateImage() {
     isLoadingImageGen.value = true;
 
     try {
-        const resp = await BarAssistantClient.aiGenerateCocktailImage(cocktail.value.id.toString());
+        const resp = await BarAssistantClient.aiGenerateCocktailImage(cocktail.value.id.toString(), style);
 
         if (!resp?.data) {
             toast.error(t("server-error"));

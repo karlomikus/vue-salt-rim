@@ -34,7 +34,7 @@ type BarTopStats = components["schemas"]["BarTopStatsResource"];
 
 const { t } = useI18n();
 
-useTitle(t("shelf.title"));
+useTitle(t("bars.bar"));
 
 const appState = new AppState();
 const favoriteCocktails = ref<Cocktail[]>([]);

@@ -4,11 +4,15 @@ import { onClickOutside } from "@vueuse/core";
 import { useFloating, offset, flip, shift, autoUpdate } from "@floating-ui/vue";
 
 const isShown = ref(false);
-const reference = ref(null);
-const content = ref(null);
+const reference = ref<HTMLElement | null>(null);
+const content = ref<HTMLElement | null>(null);
 
 const toggleDropdown = function () {
     isShown.value = !isShown.value;
+};
+
+const closeDropdown = function () {
+    isShown.value = false;
 };
 
 const { floatingStyles } = useFloating(reference, content, {
@@ -17,19 +21,17 @@ const { floatingStyles } = useFloating(reference, content, {
     whileElementsMounted: autoUpdate,
 });
 
-onClickOutside(reference, () => {
-    isShown.value = false;
-});
+onClickOutside(reference, closeDropdown);
 </script>
 
 <template>
     <div class="dropdown-wrapper">
         <div ref="reference">
-            <slot :toggle-dropdown="toggleDropdown" />
+            <slot :toggle-dropdown="toggleDropdown" :close-dropdown="closeDropdown" :is-shown="isShown" />
         </div>
         <div v-show="isShown" ref="content" class="floating-element" :style="floatingStyles">
             <div class="dropdown-menu">
-                <slot name="content" />
+                <slot name="content" :toggle-dropdown="toggleDropdown" :close-dropdown="closeDropdown" :is-shown="isShown" />
             </div>
         </div>
     </div>

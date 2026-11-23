@@ -6,7 +6,7 @@
         <Teleport to="body">
             <Transition name="dialog-animation">
                 <div v-if="model" class="dialog" :class="attrs.class">
-                    <div class="dialog__overlay"></div>
+                    <OverlayScrim class="dialog__overlay" />
                     <div class="dialog__container">
                         <div class="dialog__content">
                             <CloseButton @closed="toggleDialog"></CloseButton>
@@ -22,6 +22,7 @@
 <script setup lang="ts">
 import { watch, onUnmounted, useAttrs } from "vue";
 import CloseButton from "../CloseButton.vue";
+import OverlayScrim from "../OverlayScrim.vue";
 
 defineOptions({ inheritAttrs: false });
 

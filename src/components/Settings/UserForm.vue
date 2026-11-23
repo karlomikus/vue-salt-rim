@@ -48,12 +48,24 @@ const roles = [
 ];
 
 function submit() {
+    const selectedRoleId = user.value.role.id;
+    let roleId: 1 | 3 | 4;
+    if (selectedRoleId === 1) {
+        roleId = 1;
+    } else if (selectedRoleId === 3) {
+        roleId = 3;
+    } else if (selectedRoleId === 4) {
+        roleId = 4;
+    } else {
+        toast.error("Please select a valid member role.");
+        return;
+    }
+
     isLoading.value = true;
 
     if (user.value.id) {
         const postData = {
-            email: user.value.email ?? "",
-            role_id: user.value.role?.id ?? 0,
+            role_id: roleId,
         };
 
         BarAssistantClient.updateMember(user.value.id, postData)
@@ -70,7 +82,7 @@ function submit() {
     } else {
         const postData = {
             email: user.value.email ?? "",
-            role_id: user.value.role?.id ?? 0,
+            role_id: roleId,
         };
 
         BarAssistantClient.saveMember(postData)
